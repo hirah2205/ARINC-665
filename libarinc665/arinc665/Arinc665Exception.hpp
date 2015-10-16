@@ -1,0 +1,39 @@
+/**
+ * @file
+ * @copyright
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * $Date$
+ * $Revision$
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
+ * @brief Declaration/ definition of class Arinc665Exception.
+ **/
+
+#ifndef ARINC665_ARINC665EXCEPTION_HPP
+#define ARINC665_ARINC665EXCEPTION_HPP
+
+#include <arinc665/Arinc665.hpp>
+
+#include <helper/Exception.hpp>
+
+#include <exception>
+#include <string>
+
+namespace Arinc665
+{
+	//! Base class for ARINC 665 exceptions
+	class Arinc665Exception : public virtual Exception
+	{
+	};
+
+	//!
+	class InvalidArinc665File : public virtual Arinc665Exception
+	{
+	};
+
+}
+
+#endif

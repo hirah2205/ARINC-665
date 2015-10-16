@@ -1,0 +1,97 @@
+/**
+ * @file
+ * @copyright
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * $Date$
+ * $Revision$
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
+ * @brief Definition of string helper functions
+ **/
+
+#include "StringHelper.hpp"
+
+#include <helper/Logger.hpp>
+
+using namespace Arinc665::File;
+
+std::vector< uint8_t>::const_iterator Arinc665::File::getString(
+	std::vector< uint8_t>::const_iterator it,
+	std::string &str)
+{
+	// determine string length
+	uint16_t strLength;
+	it = getInt< uint16_t>( it, strLength);
+
+	// copy string
+	str.assign( it, it+strLength);
+	it += strLength;
+
+	if (strLength % 2 == 1)
+	{
+		++it;
+	}
+
+	return it;
+}
+
+std::vector< uint8_t>::iterator Arinc665::File::setString(
+	std::vector< uint8_t>::iterator it,
+	const std::string &str)
+{
+	// set string length
+	it = setInt< uint16_t>( it, static_cast< uint16_t>( str.size()));
+
+	// copy string
+	it = std::copy( str.begin(), str.end(), it);
+
+	// fill string if it is odd
+	if (str.size() % 2 == 1)
+	{
+		*it = 0;
+		++it;
+	}
+
+	return it;
+}
+
+std::vector< uint8_t>::const_iterator Arinc665::File::getStringList(
+	std::vector< uint8_t>::const_iterator it,
+	std::list< std::string> &strList)
+{
+	// number of strings
+	uint16_t numberOfEntries;
+	it = getInt< uint16_t>( it, numberOfEntries);
+
+	for (unsigned int index = 0; index < numberOfEntries; ++index)
+	{
+		// string
+		std::string str;
+		it = getString( it, str);
+		strList.push_back( str);
+	}
+
+	return it;
+}
+
+std::vector< uint8_t>::iterator Arinc665::File::setStringList(
+	std::vector< uint8_t>::iterator it,
+	const std::list< std::string> &strList)
+{
+	// set number of strings
+	it = setInt< uint16_t>( it, static_cast< uint16_t>( strList.size()));
+
+	for (
+		std::list< std::string>::const_iterator strIt = strList.begin();
+		strIt != strList.end();
+		++strIt)
+	{
+		// string
+		it = setString( it, *strIt);
+	}
+
+	return it;
+}
