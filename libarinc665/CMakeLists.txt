@@ -6,11 +6,15 @@
 # $Revision$
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 2.8)
+cmake_minimum_required( VERSION 3.3)
 
 project ( "ARINC 665 Library")
 
-find_package( Boost REQUIRED)
+find_package( 
+    Boost
+    REQUIRED
+    filesystem
+    unit_test_framework)
 	
 add_library( 
    arinc665
@@ -53,18 +57,9 @@ add_library(
    arinc665/media/test/MediaSetTest.cpp
 )
 
-target_include_directories(
-	arinc665
-	
-	SYSTEM
-	PUBLIC
-	${Boost_INCLUDE_DIRS})
+target_include_directories( arinc665 SYSTEM PUBLIC ${Boost_INCLUDE_DIRS})
+target_include_directories( arinc665 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_include_directories(
-	arinc665
-	
-	PUBLIC
-	${CMAKE_SOURCE_DIR}/helper/libhelper
-	.)
+target_link_libraries( arinc665 helper)
 
 GENERATE_DOCUMENTATION()
