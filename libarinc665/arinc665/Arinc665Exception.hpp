@@ -22,17 +22,17 @@
 #include <exception>
 #include <string>
 
-namespace Arinc665
-{
-	//! Base class for ARINC 665 exceptions
-	class Arinc665Exception : public virtual Exception
-	{
-	};
+namespace Arinc665 {
 
-	//!
-	class InvalidArinc665File : public virtual Arinc665Exception
-	{
-	};
+//! Base class for ARINC 665 exceptions
+class Arinc665Exception: public virtual Exception
+{
+};
+
+//!
+class InvalidArinc665File: public virtual Arinc665Exception
+{
+};
 
 }
 

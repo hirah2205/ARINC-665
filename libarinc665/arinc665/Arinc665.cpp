@@ -14,12 +14,16 @@
 
 #include "Arinc665.hpp"
 
-const std::string Arinc665::ListOfFilesName("FILES.LUM");
+namespace Arinc665 {
 
-const std::string Arinc665::ListOfLoadsName("LOADS.LUM");
+const std::string ListOfFilesName("FILES.LUM");
 
-const std::string Arinc665::ListOfBatchesName("BATCHES.LUM");
+const std::string ListOfLoadsName("LOADS.LUM");
 
-const std::string Arinc665::LoadUploadHeaderExtension(".LUH");
+const std::string ListOfBatchesName("BATCHES.LUM");
 
-const std::string Arinc665::BatchFileExtension(".LUB");
+const std::string LoadUploadHeaderExtension(".LUH");
+
+const std::string BatchFileExtension(".LUB");
+
+}
