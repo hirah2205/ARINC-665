@@ -6,28 +6,18 @@
 # $Revision$
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 2.8)
+cmake_minimum_required( VERSION 3.3)
 
 project( "ARINC 665 unit test application")
 
-find_package( 
-	Boost
-	REQUIRED
-	COMPONENTS
-	unit_test_framework
-	log_setup
-	log
-	system
-	thread)
+find_package( Boost REQUIRED COMPONENTS unit_test_framework)
 
 
-add_executable( 
-    arinc665_unit_test 
-	unit_test.cpp)
+add_executable( arinc665_unit_test arinc665_unit_test.cpp)
 
 target_link_libraries( 
-	arinc665_unit_test 
-	
-	arinc665 helper
-	${Boost_LIBRARIES}
-	${BOOST_THREAD_LIBRARY})
+  arinc665_unit_test 
+
+  arinc665
+  ${Boost_LIBRARIES}
+  ${BOOST_THREAD_LIBRARY})

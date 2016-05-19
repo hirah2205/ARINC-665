@@ -11,4 +11,4 @@ cmake_minimum_required( VERSION 2.8)
 project ( "ARINC 665")
 
 add_subdirectory( libarinc665)
-add_subdirectory( test)
+add_subdirectory( application)
