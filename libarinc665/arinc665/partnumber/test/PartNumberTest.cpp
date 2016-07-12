@@ -23,32 +23,32 @@ using namespace Arinc665;
 
 static void testPartNumber1( void)
 {
-	//EBE3B549720000D
-	ManufacturerCode mc( "EBE");
-	ProductIdentifier pi( "54972000");
-	PartNumber pn( mc, pi);
+  //EBE3B549720000D
+  ManufacturerCode mc( "EBE");
+  ProductIdentifier pi( "54972000");
+  PartNumber pn( mc, pi);
 
-	BOOST_CHECK( pn.getManufacturerCode().get()  == "EBE");
-	BOOST_CHECK( pn.getProductIdentifier().get() == "54972000");
+  BOOST_CHECK( pn.getManufacturerCode().get()  == "EBE");
+  BOOST_CHECK( pn.getProductIdentifier().get() == "54972000");
 
-	BOOST_CHECK( pn.getPartNumber() ==
-		pn.getManufacturerCode().get() +
-		pn.getCheckCode().getStr() +
-		pn.getProductIdentifier().get());
+  BOOST_CHECK( pn.getPartNumber() ==
+    pn.getManufacturerCode().get() +
+    pn.getCheckCode().getStr() +
+    pn.getProductIdentifier().get());
 }
 
 static void testPartNumber2( void)
 {
-	PartNumber pn( "EBE4F54972000");
+  PartNumber pn( "EBE4F54972000");
 
-	BOOST_CHECK( pn.getManufacturerCode().get() == "EBE");
-	BOOST_CHECK( pn.getProductIdentifier().get() == "54972000");
+  BOOST_CHECK( pn.getManufacturerCode().get() == "EBE");
+  BOOST_CHECK( pn.getProductIdentifier().get() == "54972000");
 
-	BOOST_CHECK( pn.getPartNumber() == "EBE4F54972000");
+  BOOST_CHECK( pn.getPartNumber() == "EBE4F54972000");
 }
 
 void testPartNumber( void)
 {
-	boost::unit_test::framework::master_test_suite().add( BOOST_TEST_CASE( &testPartNumber1));
-	boost::unit_test::framework::master_test_suite().add( BOOST_TEST_CASE( &testPartNumber2));
+  boost::unit_test::framework::master_test_suite().add( BOOST_TEST_CASE( &testPartNumber1));
+  boost::unit_test::framework::master_test_suite().add( BOOST_TEST_CASE( &testPartNumber2));
 }

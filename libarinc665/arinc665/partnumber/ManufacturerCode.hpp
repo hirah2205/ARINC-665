@@ -18,52 +18,53 @@
 #include <arinc665/Arinc665.hpp>
 #include <string>
 
-namespace Arinc665
+namespace Arinc665 {
+
+using std::string;
+
+/**
+ * @brief Represents a ARINC 665 manufacturer code.
+ **/
+class ManufacturerCode
 {
-	using std::string;
+  public:
+    //!
+    static const unsigned int LENGTH = 3;
 
-	/**
-	 * @brief Represents a ARINC 665 manufacturer code.
-	 **/
-	class ManufacturerCode
-	{
-		public:
-			//!
-			static const unsigned int LENGTH = 3;
+    /**
+     * @brief Constructs a manufacturer code.
+     *
+     * @param[in] manufacturerCode
+     *   The manufacturer code.
+     *
+     * @throw Arinc665Exception
+     *   When the given string is not an valid manufacturer code.
+     **/
+    ManufacturerCode( const string& manufacturerCode);
 
-			/**
-			 * @brief Constructs a manufacturer code.
-			 *
-			 * @param[in] manufacturerCode
-			 *   The manufacturer code.
-			 *
-			 * @throw Arinc665Exception
-			 *   When the given string is not an valid manufacturer code.
-			 **/
-			ManufacturerCode( const string& manufacturerCode);
+    /**
+     * @brief Returns the manufacturer code as string.
+     *
+     * @return The manufacturer code.
+     **/
+    string get( void) const;
 
-			/**
-			 * @brief Returns the manufacturer code as string.
-			 *
-			 * @return The manufacturer code.
-			 **/
-			string get( void) const;
+    /**
+     * @brief Sets the manufacturer code to the given value.
+     *
+     * @param[in] manufacturerCode
+     *   The manufacturer code.
+     *
+     * @throw Arinc665Exception
+     *   When the given string is not an valid manufacturer code.
+     **/
+    void set( const string& manufacturerCode);
 
-			/**
-			 * @brief Sets the manufacturer code to the given value.
-			 *
-			 * @param[in] manufacturerCode
-			 *   The manufacturer code.
-			 *
-			 * @throw Arinc665Exception
-			 *   When the given string is not an valid manufacturer code.
-			 **/
-			void set( const string& manufacturerCode);
+  private:
+    //! The stored manufacturer code.
+    string manufacturerCode;
+};
 
-		private:
-			//! The stored manufacturer code.
-			string manufacturerCode;
-	};
 }
 
 #endif

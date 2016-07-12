@@ -14,19 +14,21 @@
 
 #include "TargetHardwareId.hpp"
 
-using namespace Arinc665;
+namespace Arinc665 {
 
-TargetHardwareId::TargetHardwareId( const string& targetHardwareId):
-	targetHardwareId( targetHardwareId)
+TargetHardwareId::TargetHardwareId( const string& targetHardwareId) :
+  targetHardwareId( targetHardwareId)
 {
 }
 
 const string& TargetHardwareId::get( void) const
 {
-	return targetHardwareId;
+  return targetHardwareId;
 }
 
 void TargetHardwareId::set( const string &targetHardwareId)
 {
-	this->targetHardwareId = targetHardwareId;
+  this->targetHardwareId = targetHardwareId;
+}
+
 }

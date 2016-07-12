@@ -15,29 +15,31 @@
 #include "ProductIdentifier.hpp"
 #include <arinc665/Arinc665Exception.hpp>
 
-using namespace Arinc665;
+namespace Arinc665 {
 
 ProductIdentifier::ProductIdentifier( const string &productIdentifier)
 {
-	//! call set routine to perform automatic length check
-	//! @throw Arinc665Exception (@sa ProductIdentifier::set())
-	set( productIdentifier);
+  //! call set routine to perform automatic length check
+  //! @throw Arinc665Exception (@sa ProductIdentifier::set())
+  set( productIdentifier);
 }
 
 string ProductIdentifier::get( void) const
 {
-	return productIdentifier;
+  return productIdentifier;
 }
 
 void ProductIdentifier::set( const string& productIdentifier)
 {
-	// check length of string
-	if (productIdentifier.size() != LENGTH)
-	{
-		//! @throw Arinc665Exception if length is invalid.
-		BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-			AdditionalInfo( "length of product identifier string invalid"));
-	}
+  // check length of string
+  if ( productIdentifier.size() != LENGTH)
+  {
+    //! @throw Arinc665Exception if length is invalid.
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "length of product identifier string invalid"));
+  }
 
-	this->productIdentifier = productIdentifier;
+  this->productIdentifier = productIdentifier;
+}
+
 }

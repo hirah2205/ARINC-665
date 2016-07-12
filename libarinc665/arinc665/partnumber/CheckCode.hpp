@@ -20,6 +20,7 @@
 #include <cstdint>
 
 namespace Arinc665 {
+
 class ManufacturerCode;
 class ProductIdentifier;
 

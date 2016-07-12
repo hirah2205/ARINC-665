@@ -18,52 +18,53 @@
 #include <arinc665/Arinc665.hpp>
 #include <string>
 
-namespace Arinc665
+namespace Arinc665 {
+
+using std::string;
+
+/**
+ * @brief Represents the product identifier of an ARINC 665 part number.
+ **/
+class ProductIdentifier
 {
-	using std::string;
+  public:
+    //!
+    static constexpr unsigned int LENGTH = 8;
 
-	/**
-	 * @brief Represents the product identifier of an ARINC 665 part number.
-	 **/
-	class ProductIdentifier
-	{
-		public:
-			//!
-			static constexpr unsigned int LENGTH = 8;
+    /**
+     * @brief Constructs the product identifier for the given string.
+     *
+     * @param[in] productIdentifier
+     *   The product identifier.
+     *
+     * @throw Arinc665Exception
+     *   If the string does not represents an valid product identifier.
+     **/
+    explicit ProductIdentifier( const string &productIdentifier);
 
-			/**
-			 * @brief Constructs the product identifier for the given string.
-			 *
-			 * @param[in] productIdentifier
-			 *   The product identifier.
-			 *
-			 * @throw Arinc665Exception
-			 *   If the string does not represents an valid product identifier.
-			 **/
-			explicit ProductIdentifier( const string &productIdentifier);
+    /**
+     * @brief Returns the product identifier as string.
+     *
+     * @return The product identifier
+     **/
+    string get( void) const;
 
-			/**
-			 * @brief Returns the product identifier as string.
-			 *
-			 * @return The product identifier
-			 **/
-			string get( void) const;
+    /**
+     * @brief Sets the product identifier.
+     *
+     * @param[in] productIdentifier
+     *   The product identifier.
+     *
+     * @throw Arinc665Exception
+     *   If the string does not represents an valid product identifier.
+     **/
+    void set( const string& productIdentifier);
 
-			/**
-			 * @brief Sets the product identifier.
-			 *
-			 * @param[in] productIdentifier
-			 *   The product identifier.
-			 *
-			 * @throw Arinc665Exception
-			 *   If the string does not represents an valid product identifier.
-			 **/
-			void set( const string& productIdentifier);
+  private:
+    //! The product identifier.
+    string productIdentifier;
+};
 
-		private:
-			//! The product identifier.
-			string productIdentifier;
-	};
 }
 
 #endif

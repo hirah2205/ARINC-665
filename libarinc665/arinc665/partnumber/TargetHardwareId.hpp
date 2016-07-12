@@ -18,43 +18,43 @@
 #include <arinc665/Arinc665.hpp>
 #include <string>
 
-namespace Arinc665
+namespace Arinc665 {
+
+using std::string;
+
+/**
+ * @brief Represents a ARINC 665 target hardware ID (THW ID).
+ **/
+class TargetHardwareId
 {
-	using std::string;
+  public:
+    /**
+     * @brief Constructs a target hardware ID with the given string.
+     *
+     * @param[in] targetHardwareId
+     *   The target hardware ID as string.
+     **/
+    TargetHardwareId( const string &targetHardwareId);
 
-	/**
-	 * @brief Represents a ARINC 665 target hardware ID (THW ID).
-	 **/
-	class TargetHardwareId
-	{
-		public:
-			/**
-			 * @brief Constructs a target hardware ID with the given string.
-			 *
-			 * @param[in] targetHardwareId
-			 *   The target hardware ID as string.
-			 **/
-			TargetHardwareId( const string &targetHardwareId);
+    /**
+     * @brief Returns the target hardware ID as string.
+     *
+     * @return The target hardware ID as string.
+     **/
+    const string& get( void) const;
 
-			/**
-			 * @brief Returns the target hardware ID as string.
-			 *
-			 * @return The target hardware ID as string.
-			 **/
-			const string& get( void) const;
+    /**
+     * @brief Sets the target hardware ID to the given string.
+     *
+     * @param[in] targetHardwareId
+     *   The target hardware ID as string.
+     **/
+    void set( const string &targetHardwareId);
 
-			/**
-			 * @brief Sets the target hardware ID to the given string.
-			 *
-			 * @param[in] targetHardwareId
-			 *   The target hardware ID as string.
-			 **/
-			void set( const string &targetHardwareId);
-
-		private:
-			//! The target hardware ID
-			string targetHardwareId;
-	};
+  private:
+    //! The target hardware ID
+    string targetHardwareId;
+};
 }
 
 #endif

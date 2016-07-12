@@ -15,25 +15,27 @@
 #include "ManufacturerCode.hpp"
 #include <arinc665/Arinc665Exception.hpp>
 
-using namespace Arinc665;
+namespace Arinc665 {
 
 ManufacturerCode::ManufacturerCode( const string& manufacturerCode)
 {
-	// call set routine to perform automatic length check
-	set( manufacturerCode);
+  // call set routine to perform automatic length check
+  set( manufacturerCode);
 }
 
 std::string ManufacturerCode::get( void) const
 {
-	return manufacturerCode;
+  return manufacturerCode;
 }
 
 void ManufacturerCode::set( const string& manufacturerCode)
 {
-	// check string length
-	if (manufacturerCode.size()!= LENGTH)
-		BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-			AdditionalInfo( "length of manufacturer code string invalid"));
+  // check string length
+  if (manufacturerCode.size()!= LENGTH)
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo( "length of manufacturer code string invalid"));
 
-	this->manufacturerCode = manufacturerCode;
+  this->manufacturerCode = manufacturerCode;
+}
+
 }
