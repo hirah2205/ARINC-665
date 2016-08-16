@@ -9,6 +9,15 @@
 
 cmake_minimum_required( VERSION 3.5)
 
-project ( "ARINC 665 applications")
+project( "ARINC 665 unit test application")
 
-add_subdirectory( arinc665_unit_test)
+find_package( Boost REQUIRED COMPONENTS unit_test_framework)
+
+add_executable( arinc665_unit_test arinc665_unit_test.cpp)
+
+target_link_libraries( 
+  arinc665_unit_test 
+
+  arinc665
+  ${Boost_LIBRARIES}
+  ${BOOST_THREAD_LIBRARY})
