@@ -19,89 +19,89 @@
 
 #include <cstdint>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace File {
+
+/**
+ * @brief Base class of ARIC 665 file
+ **/
+class Arinc665File
 {
-	namespace File
-	{
-		/**
-		 * @brief Base class of ARIC 665 file
-		 **/
-		class Arinc665File
-		{
-			public:
-				static constexpr unsigned int BaseHeaderOffset = 8;
+  public:
+    static constexpr unsigned int BaseHeaderOffset = 8;
 
-				/**
-				 * @brief Decode the file length information from the given file.
-				 *
-				 * @param[in] file
-				 *   The raw ARINC 665 file.
-				 *
-				 * @return The encoded file length.
-				 *
-				 * @throw InvalidArinc665File
-				 *   If the file size is to small to represent an valid ARINC 665 file.
-				 **/
-				static uint32_t getFileLength( const RawFile &file);
+    /**
+     * @brief Decode the file length information from the given file.
+     *
+     * @param[in] file
+     *   The raw ARINC 665 file.
+     *
+     * @return The encoded file length.
+     *
+     * @throw InvalidArinc665File
+     *   If the file size is to small to represent an valid ARINC 665 file.
+     **/
+    static uint32_t getFileLength( const RawFile &file);
 
-				/**
-				 * @brief Decode the format version information from the given file.
-				 *
-				 * @param[in] file
-				 *   The raw ARINC 665 file.
-				 *
-				 * @return The encoded format version.
-				 *
-				 * @throw InvalidArinc665File
-				 *   If the file size is to small to represent an valid ARINC 665 file.
-				 **/
-				static uint16_t getFormatVersion( const RawFile &file);
+    /**
+     * @brief Decode the format version information from the given file.
+     *
+     * @param[in] file
+     *   The raw ARINC 665 file.
+     *
+     * @return The encoded format version.
+     *
+     * @throw InvalidArinc665File
+     *   If the file size is to small to represent an valid ARINC 665 file.
+     **/
+    static uint16_t getFormatVersion( const RawFile &file);
 
-				/**
-				 * @brief Calculates the checksum over the given file.
-				 *
-				 * @param[in] file
-				 *   The raw ARINC 665 file.
-				 * @param[in] skipLastBytes
-				 *   Defines the number of bytes, which are skipped, e.g. contains the
-				 *   stored checksum.
-				 *
-				 * @return The calculated checksum.
-				 **/
-				static uint16_t calculateChecksum(
-					const RawFile &file,
-					const unsigned int skipLastBytes = 2);
+    /**
+     * @brief Calculates the checksum over the given file.
+     *
+     * @param[in] file
+     *   The raw ARINC 665 file.
+     * @param[in] skipLastBytes
+     *   Defines the number of bytes, which are skipped, e.g. contains the
+     *   stored checksum.
+     *
+     * @return The calculated checksum.
+     **/
+    static uint16_t calculateChecksum(
+      const RawFile &file,
+      const unsigned int skipLastBytes = 2);
 
-				//! Default destructor
-				virtual ~Arinc665File( void) noexcept = default;
+    //! Default destructor
+    virtual ~Arinc665File( void) noexcept = default;
 
-				/**
-				 * @brief Returns the ARINC 665 version of this file.
-				 *
-				 * @return The ARINC 665 version of this file.
-				 **/
-				virtual Arinc665Version getArincVersion( void) const = 0;
+    /**
+     * @brief Returns the ARINC 665 version of this file.
+     *
+     * @return The ARINC 665 version of this file.
+     **/
+    virtual Arinc665Version getArincVersion( void) const = 0;
 
-				uint16_t getCrc( void) const;
+    uint16_t getCrc( void) const;
 
-				void setCrc( const uint16_t crc);
+    void setCrc( const uint16_t crc);
 
-				// virtual void decode( const RawFile &data);
+    // virtual void decode( const RawFile &data);
 
-				// virtual RawFile encode( void) const = 0;
+    // virtual RawFile encode( void) const = 0;
 
-			protected:
-				Arinc665File( void);
+  protected:
+    Arinc665File( void);
 
-				Arinc665File(
-					const RawFile &file,
-					const Arinc665FileFormatVersion expectedFormatVersion,
-					const unsigned int checksumPosition = 2);
+    Arinc665File(
+      const RawFile &file,
+      const Arinc665FileFormatVersion expectedFormatVersion,
+      const unsigned int checksumPosition = 2);
 
-			private:
-				uint16_t crc;
-		};
-	}
+  private:
+    uint16_t crc;
+};
+
+}
 }
 
 #endif

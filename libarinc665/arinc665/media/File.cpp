@@ -16,31 +16,35 @@
 
 #include "File.hpp"
 
-using namespace Arinc665::Media;
+namespace Arinc665 {
+namespace Media {
 
 File::File(
-	const string &name,
-	const uint16_t crc,
-	const uint32_t fileLength,
-	const string &partNumber):
-	PartNumberdEntity( partNumber),
-	name( name),
-	crc( crc),
-	fileLength( fileLength)
+  const string &name,
+  const uint16_t crc,
+  const uint32_t fileLength,
+  const string &partNumber) :
+  PartNumberdEntity( partNumber),
+  name( name),
+  crc( crc),
+  fileLength( fileLength)
 {
 }
 
 const string& File::getName( void) const
 {
-	return name;
+  return name;
 }
 
 uint16_t File::getCrc( void) const
 {
-	return crc;
+  return crc;
 }
 
 void File::setCrc( const uint16_t crc)
 {
-	this->crc = crc;
+  this->crc = crc;
+}
+
+}
 }

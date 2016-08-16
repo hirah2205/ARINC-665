@@ -22,59 +22,58 @@
 #include <list>
 #include <memory>
 
-namespace Arinc665
-{
-	/**
-	 *
-	 **/
-	namespace Media
-	{
-		using std::string;
+namespace Arinc665 {
 
-		class MediaSet;
-		typedef std::shared_ptr< MediaSet> MediaSetPtr;
+/**
+ *
+ **/
+namespace Media {
 
-		class Medium;
-		typedef std::shared_ptr< const Medium> ConstMediumPtr;
-		typedef std::shared_ptr< Medium> MediumPtr;
-		typedef std::map< unsigned int, MediumPtr> MediaMap;
+class MediaSet;
+typedef std::shared_ptr< MediaSet> MediaSetPtr;
 
-		class Directory;
-		typedef std::shared_ptr< const Directory> ConstDirectoryPtr;
-		typedef std::shared_ptr< Directory> DirectoryPtr;
-		typedef std::weak_ptr< Directory> WeakDirectoryPtr;
-		typedef std::map< string, DirectoryPtr > DirectoryMap;
-		typedef std::map< string, ConstDirectoryPtr > ConstDirectoryMap;
+class Medium;
+typedef std::shared_ptr< const Medium> ConstMediumPtr;
+typedef std::shared_ptr< Medium> MediumPtr;
+typedef std::map< unsigned int, MediumPtr> MediaMap;
 
-		class PartNumberEntity;
-		class File;
-		class Load;
-		class Batch;
+class Directory;
+typedef std::shared_ptr< const Directory> ConstDirectoryPtr;
+typedef std::shared_ptr< Directory> DirectoryPtr;
+typedef std::weak_ptr< Directory> WeakDirectoryPtr;
+typedef std::map< std::string, DirectoryPtr> DirectoryMap;
+typedef std::map< std::string, ConstDirectoryPtr> ConstDirectoryMap;
 
-		typedef std::shared_ptr< const File> ConstFilePtr;
-		typedef std::shared_ptr< File> FilePtr;
-		typedef std::weak_ptr< File> WeakFilePtr;
+class PartNumberEntity;
+class File;
+class Load;
+class Batch;
 
-		typedef std::shared_ptr< const Load> ConstLoadPtr;
-		typedef std::shared_ptr< Load> LoadPtr;
+typedef std::shared_ptr< const File> ConstFilePtr;
+typedef std::shared_ptr< File> FilePtr;
+typedef std::weak_ptr< File> WeakFilePtr;
 
-		typedef std::shared_ptr< const Batch> ConstBatchPtr;
-		typedef std::weak_ptr< Load> WeakLoadPtr;
-		typedef std::shared_ptr< Batch> BatchPtr;
+typedef std::shared_ptr< const Load> ConstLoadPtr;
+typedef std::shared_ptr< Load> LoadPtr;
 
-		typedef std::map< string, FilePtr > FileMap;
-		typedef std::map< string, LoadPtr > LoadMap;
-		typedef std::map< string, BatchPtr > BatchMap;
+typedef std::shared_ptr< const Batch> ConstBatchPtr;
+typedef std::weak_ptr< Load> WeakLoadPtr;
+typedef std::shared_ptr< Batch> BatchPtr;
 
-		typedef std::map< string, ConstFilePtr > ConstFileMap;
-		typedef std::map< string, ConstLoadPtr > ConstLoadMap;
-		typedef std::map< string, ConstBatchPtr > ConstBatchMap;
+typedef std::map< std::string, FilePtr> FileMap;
+typedef std::map< std::string, LoadPtr> LoadMap;
+typedef std::map< std::string, BatchPtr> BatchMap;
 
-		typedef std::tuple< const Directory&, ConstFilePtr> ConstDirectoryFileTuple;
-		typedef std::tuple< Directory&, FilePtr> DirectoryFileTuple;
-		typedef std::tuple< const Medium&, const Directory&, ConstFilePtr> ConstMediumDirectoryFileTuple;
-		typedef std::tuple< Medium&, Directory&, FilePtr> MediumDirectoryFileTuple;
-	}
+typedef std::map< std::string, ConstFilePtr> ConstFileMap;
+typedef std::map< std::string, ConstLoadPtr> ConstLoadMap;
+typedef std::map< std::string, ConstBatchPtr> ConstBatchMap;
+
+typedef std::tuple< const Directory&, ConstFilePtr> ConstDirectoryFileTuple;
+typedef std::tuple< Directory&, FilePtr> DirectoryFileTuple;
+typedef std::tuple< const Medium&, const Directory&, ConstFilePtr> ConstMediumDirectoryFileTuple;
+typedef std::tuple< Medium&, Directory&, FilePtr> MediumDirectoryFileTuple;
+
+}
 }
 
 #endif
