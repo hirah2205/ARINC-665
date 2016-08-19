@@ -14,7 +14,8 @@
 
 #include <helper/Logger.hpp>
 
-using namespace Arinc665::File;
+namespace Arinc665 {
+namespace File {
 
 std::list< LoadInfo> LoadInfo::getLoadList( std::vector< uint8_t>::const_iterator &it)
 {
@@ -101,4 +102,7 @@ const std::list<std::string>& LoadInfo::getTargetHardwareIdList( void) const
 std::list<std::string>& LoadInfo::getTargetHardwareIdList( void)
 {
 	return targetHardwareIds;
+}
+
+}
 }

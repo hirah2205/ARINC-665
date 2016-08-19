@@ -22,47 +22,44 @@
 #include <string>
 #include <list>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace Media {
+using std::string;
+
+/**
+ * @brief
+ **/
+class Batch: public PartNumberdEntity
 {
-	namespace Media
-	{
-		using std::string;
+  public:
+    typedef std::list< BatchInfo> BatchInfoList;
 
-		/**
-		 * @brief
-		 **/
-		class Batch : public PartNumberdEntity
-		{
-			public:
-				typedef std::list< BatchInfo> BatchInfoList;
+    Batch( const string &partNumber, const string &comment = string());
 
-				Batch( const string &partNumber, const string &comment = string());
+    /**
+     * @brief Get the comment, which describes the batch.
+     *
+     * @return The comment, which describes the batch.
+     **/
+    string getComment( void) const;
 
-				/**
-				 * @brief Get the comment, which describes the batch.
-				 *
-				 * @return The comment, which describes the batch.
-				 **/
-				string getComment( void) const;
+    /**
+     * @brief Set the comment, which describes the batch.
+     *
+     * @param[in] comment
+     *   The comment, which describes the batch.
+     **/
+    void setComment( const string &comment);
 
-				/**
-				 * @brief Set the comment, which describes the batch.
-				 *
-				 * @param[in] comment
-				 *   The comment, which describes the batch.
-				 **/
-				void setComment( const string &comment);
+    const BatchInfoList& getBatchInfos( void);
 
+    BatchInfo& addBatchInfo( const string &targetHardwareId);
 
-				const BatchInfoList& getBatchInfos( void);
-
-				BatchInfo& addBatchInfo( const string &targetHardwareId);
-
-			private:
-				string comment;
-				BatchInfoList batchInfos;
-		};
-	}
+  private:
+    string comment;
+    BatchInfoList batchInfos;
+};
+}
 }
 
 #endif

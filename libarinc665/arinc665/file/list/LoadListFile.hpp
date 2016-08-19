@@ -15,44 +15,42 @@
 #include <arinc665/file/list/ListFile.hpp>
 #include <arinc665/file/list/LoadInfo.hpp>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace File {
+
+/**
+ * @brief The load list represents each LOADS.LUM file on each media of the
+ *   media set.
+ **/
+class LoadListFile: public ListFile
 {
-	namespace File
-	{
-		/**
-		 * @brief The load list represents each LOADS.LUM file on each media of the
-		 *   media set.
-		 **/
-		class LoadListFile : public ListFile
-		{
-			public:
-				//! Type definition of LoadList
-				typedef std::list< LoadInfo> ListType;
+  public:
+    //! Type definition of LoadList
+    typedef std::list< LoadInfo> ListType;
 
-				LoadListFile( void);
+    LoadListFile( void);
 
-				LoadListFile( const RawFile &file);
+    LoadListFile( const RawFile &file);
 
-				virtual Arinc665Version getArincVersion( void) const override;
+    virtual Arinc665Version getArincVersion( void) const override;
 
-				unsigned int getNumberOfLoads( void) const;
+    unsigned int getNumberOfLoads( void) const;
 
-				const ListType& getLoads( void) const;
+    const ListType& getLoads( void) const;
 
-				ListType& getLoads( void);
+    ListType& getLoads( void);
 
+    const std::vector< uint8_t>& getUserDefinedData( void) const;
 
-				const std::vector< uint8_t>& getUserDefinedData( void) const;
+    void setUserDefinedData( const std::vector< uint8_t> &userDefinedData);
 
-				void setUserDefinedData( const std::vector< uint8_t> &userDefinedData);
-
-			private:
-				//! The load list
-				ListType loadList;
-				//! user defined data
-				std::vector< uint8_t> userDefinedData;
-		};
-	}
+  private:
+    //! The load list
+    ListType loadList;
+    //! user defined data
+    std::vector< uint8_t> userDefinedData;
+};
+}
 }
 
 #endif

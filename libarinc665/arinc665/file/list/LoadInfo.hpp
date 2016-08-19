@@ -18,52 +18,47 @@
 #include <vector>
 #include <cstdint>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace File {
+
+/**
+ * @brief load information, which is part of a load list file.
+ **/
+class LoadInfo
 {
-	namespace File
-	{
-		using std::string;
+  public:
+    using string = std::string;
 
-		/**
-		 * @brief load information, which is part of a load list file.
-		 **/
-		class LoadInfo
-		{
-			public:
-				static std::list< LoadInfo> getLoadList( std::vector< uint8_t>::const_iterator &it);
+    static std::list< LoadInfo> getLoadList(
+      std::vector< uint8_t>::const_iterator &it);
 
+    LoadInfo( void);
 
-				LoadInfo( void);
+    LoadInfo( std::vector< uint8_t>::const_iterator &it);
 
-				LoadInfo( std::vector< uint8_t>::const_iterator &it);
+    string getPartNumber( void) const;
 
+    void setPartNumber( const string &partNumber);
 
-				string getPartNumber( void) const;
+    string getHeaderFilename( void) const;
 
-				void setPartNumber( const string &partNumber);
+    void setHeaderFilename( const string &headerFilename);
 
+    uint16_t getMemberSequenceNumber( void) const;
 
-				string getHeaderFilename( void) const;
+    void setMemberSequenceNumber( const uint16_t memberSequenceNumber);
 
-				void setHeaderFilename( const string &headerFilename);
+    const std::list< string>& getTargetHardwareIdList( void) const;
 
+    std::list< string>& getTargetHardwareIdList( void);
 
-				uint16_t getMemberSequenceNumber( void) const;
-
-				void setMemberSequenceNumber( const uint16_t memberSequenceNumber);
-
-
-				const std::list< string>& getTargetHardwareIdList( void) const;
-
-				std::list< string>& getTargetHardwareIdList( void);
-
-			private:
-				string partNumber;
-				string headerFilename;
-				uint16_t memberSequenceNumber;
-				std::list< string> targetHardwareIds;
-		};
-	}
+  private:
+    string partNumber;
+    string headerFilename;
+    uint16_t memberSequenceNumber;
+    std::list< string> targetHardwareIds;
+};
+}
 }
 
 #endif

@@ -14,23 +14,25 @@
 
 #include <helper/Logger.hpp>
 
-using namespace Arinc665::File;
+namespace Arinc665 {
+namespace File {
 
-std::list< FileInfo> FileInfo::getFileList( std::vector< uint8_t>::const_iterator &it)
+std::list< FileInfo> FileInfo::getFileList(
+  std::vector< uint8_t>::const_iterator &it)
 {
-	//! @todo pass iterator by value
-	std::list< FileInfo> fileList;
+  //! @todo pass iterator by value
+  std::list< FileInfo> fileList;
 
-	// number of files
-	uint16_t numberOfFiles;
-	it = getInt< uint16_t>( it, numberOfFiles);
+  // number of files
+  uint16_t numberOfFiles;
+  it = getInt< uint16_t>( it, numberOfFiles);
 
-	for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex )
-	{
-		fileList.push_back( FileInfo( it));
-	}
+  for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex)
+  {
+    fileList.push_back( FileInfo( it));
+  }
 
-	return fileList;
+  return fileList;
 }
 
 FileInfo::FileInfo( void)
@@ -39,64 +41,67 @@ FileInfo::FileInfo( void)
 
 FileInfo::FileInfo( std::vector< uint8_t>::const_iterator &it)
 {
-	std::vector< uint8_t>::const_iterator workIt = it;
+  std::vector< uint8_t>::const_iterator workIt = it;
 
-	// next file pointer
-	uint16_t filePointer;
-	workIt = getInt< uint16_t>( workIt, filePointer);
+  // next file pointer
+  uint16_t filePointer;
+  workIt = getInt< uint16_t>( workIt, filePointer);
 
-	// filename
-	workIt = getString( workIt, filename);
+  // filename
+  workIt = getString( workIt, filename);
 
-	// path name
-	workIt = getString( workIt, pathName);
+  // path name
+  workIt = getString( workIt, pathName);
 
-	// member sequence number
-	workIt = getInt< uint16_t>( workIt, memberSequenceNumber);
+  // member sequence number
+  workIt = getInt< uint16_t>( workIt, memberSequenceNumber);
 
-	// crc
-	workIt = getInt< uint16_t>( workIt, crc);
+  // crc
+  workIt = getInt< uint16_t>( workIt, crc);
 
-	// set it to begin of next file
-	it += filePointer * 2;
+  // set it to begin of next file
+  it += filePointer * 2;
 }
 
-string FileInfo::getFilename( void) const
+FileInfo::string FileInfo::getFilename( void) const
 {
-	return filename;
+  return filename;
 }
 
 void FileInfo::setFilename( const string &filename)
 {
-	this->filename = filename;
+  this->filename = filename;
 }
 
 std::string FileInfo::getPathName( void) const
 {
-	return pathName;
+  return pathName;
 }
 
 void FileInfo::setPathName( const std::string &pathName)
 {
-	this->pathName = pathName;
+  this->pathName = pathName;
 }
 
 uint16_t FileInfo::getMemberSequenceNumber( void) const
 {
-	return memberSequenceNumber;
+  return memberSequenceNumber;
 }
 
 void FileInfo::setMemberSequenceNumber( const uint16_t memberSequenceNumber)
 {
-	this->memberSequenceNumber = memberSequenceNumber;
+  this->memberSequenceNumber = memberSequenceNumber;
 }
 
 uint16_t FileInfo::getCrc( void) const
 {
-	return crc;
+  return crc;
 }
 
 void FileInfo::setCrc( const uint16_t crc)
 {
-	this->crc=crc;
+  this->crc = crc;
+}
+
+}
 }

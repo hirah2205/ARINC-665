@@ -62,16 +62,16 @@ unsigned int MediaSet::addMedium( void)
 
 ConstFileMap MediaSet::getFiles( void) const
 {
-	ConstFileMap files;
+  ConstFileMap files;
 
-	//! Iterate over all medias and add their files to a complete list.
-	for (const auto &medium: media)
-	{
-		ConstFileMap mediaFiles = ConstMediumPtr( medium.second)->getFiles();
-		files.insert( mediaFiles.begin(), mediaFiles.end());
-	}
+  // Iterate over all medias and add their files to a complete list.
+  for ( const auto &medium : media)
+  {
+    ConstFileMap mediaFiles = ConstMediumPtr( medium.second)->getFiles();
+    files.insert( mediaFiles.begin(), mediaFiles.end());
+  }
 
-	return files;
+  return files;
 }
 
 FileMap MediaSet::getFiles( void)

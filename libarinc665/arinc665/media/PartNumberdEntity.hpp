@@ -18,47 +18,46 @@
 #include <arinc665/media/Media.hpp>
 #include <string>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace Media {
+using std::string;
+
+/**
+ * @brief Base class for classes, which have a part number
+ **/
+class PartNumberdEntity
 {
-	namespace Media
-	{
-		using std::string;
+  public:
+    /**
+     * @brief Return the part number of the entity.
+     *
+     * @return The part number of the entity
+     **/
+    string getPartNumber( void) const;
 
-		/**
-		 * @brief Base class for classes, which have a part number
-		 **/
-		class PartNumberdEntity
-		{
-			public:
-				/**
-				 * @brief Return the part number of the entity.
-				 *
-				 * @return The part number of the entity
-				 **/
-				string getPartNumber( void) const;
+    /**
+     * @brief Set the part number of the entity.
+     *
+     * @param[in] partNumber
+     *   The part number
+     **/
+    void setPartNumber( const string &partNumber);
 
-				/**
-				 * @brief Set the part number of the entity.
-				 *
-				 * @param[in] partNumber
-				 *   The part number
-				 **/
-				void setPartNumber( const string &partNumber);
+  protected:
+    /**
+     * @brief Creates the part numbered entity.
+     *
+     * @param[in] partNumber
+     *   The part number
+     **/
+    PartNumberdEntity( const string &partNumber);
 
-			protected:
-				/**
-				 * @brief Creates the part numbered entity.
-				 *
-				 * @param[in] partNumber
-				 *   The part number
-				 **/
-				PartNumberdEntity( const string &partNumber);
+  private:
+    //! The part number
+    string partNumber;
+};
 
-			private:
-				//! The part number
-				string partNumber;
-		};
-	}
+}
 }
 
 #endif

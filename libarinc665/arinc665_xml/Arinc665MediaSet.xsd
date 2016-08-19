@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+  xmlns="http://www.w3.org/2001/XMLSchema" 
+  targetNamespace="http://www.thomas-vogt.de/Arinc665MediaSet" 
+  xmlns:tns="http://www.thomas-vogt.de/Arinc665MediaSet" 
+  elementFormDefault="qualified">
+  
+  
+
+  <element name="MediaSet" type="tns:MediaSetType"></element>
+  <element name="Medias" type="tns:MediasType"></element>
+  <element name="Medium" type="tns:MediumType"></element>
+  
+  <element name="Files"     type="tns:FilesType"></element>
+  <element name="File"      type="tns:FileType"></element>
+  <element name="Directory" type="tns:DirectoryType"></element>
+  
+  <element name="Loads" type="tns:LoadsType"></element>
+  <element name="Load" type="tns:LoadType"></element>
+  
+  <element name="Batches" type="tns:BatchesType"></element>
+  <element name="Batch" type="tns:BatchType"></element>
+  
+  <complexType name="MediaSetType">
+    <sequence>
+      <element ref="tns:Files"   maxOccurs="1" minOccurs="1"/>
+      <element ref="tns:Loads"   maxOccurs="1" minOccurs="1"/>
+      <element ref="tns:Batches" maxOccurs="1" minOccurs="1"/>
+      <element ref="tns:Medias"  maxOccurs="1" minOccurs="1"/>
+    </sequence>
+    <attribute ref="tns:PartNumber" />
+  </complexType>
+
+  <complexType name="MediasType">
+    <sequence>
+      <element ref="tns:Medium" maxOccurs="unbounded" minOccurs="1" />
+    </sequence>
+  </complexType>
+  
+  <complexType name="MediumType">
+    <attribute ref="tns:PartNumber"></attribute>
+  </complexType>
+  
+  <complexType name="FilesType">
+    <sequence minOccurs="0" maxOccurs="unbounded" >
+      <element ref="tns:Directory" minOccurs="0" maxOccurs="unbounded"  />
+      <element ref="tns:File"      minOccurs="0" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+
+  <complexType name="FileType">
+    <attribute ref="tns:Name" />
+    <attribute ref="tns:Size" />
+    <attribute ref="tns:Crc" />
+    <attribute ref="tns:PartNumber" use="optional" />
+  </complexType>
+
+  <complexType name="DirectoryType">
+    <sequence minOccurs="0" maxOccurs="unbounded" >
+      <element ref="tns:Directory" minOccurs="0" maxOccurs="unbounded"  />
+      <element ref="tns:File"      minOccurs="0" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+
+  <complexType name="LoadsType">
+    <sequence>
+      <element ref="tns:Load" maxOccurs="unbounded" minOccurs="1" />
+    </sequence>
+  </complexType>
+
+  <complexType name="LoadType">
+    <sequence>
+      <element ref="tns:Load" maxOccurs="unbounded" minOccurs="0" />
+    </sequence>
+    <attribute ref="tns:PartNumber" />
+  </complexType>
+
+  <complexType name="BatchesType">
+    <sequence>
+      <element ref="tns:Batch" maxOccurs="unbounded" minOccurs="0" />
+    </sequence>
+  </complexType>
+
+  <complexType name="BatchType">
+    <attribute ref="tns:PartNumber"></attribute>
+  </complexType>
+
+  <attribute name="PartNumber" type="string" />
+  <attribute name="Name" type="string" />
+  <attribute name="MediumNumber" type="integer" />
+  <attribute name="Size" type="integer" />
+  <attribute name="Crc" type="integer" />
+</schema>

@@ -20,41 +20,39 @@
 #include <vector>
 #include <cstdint>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace File {
+
+/**
+ * @brief Represents the parsed file list, which is contained on each media
+ *   of the media set.
+ **/
+class FileListFile: public ListFile
 {
-	namespace File
-	{
-		/**
-		 * @brief Represents the parsed file list, which is contained on each media
-		 *   of the media set.
-		 **/
-		class FileListFile : public ListFile
-		{
-			public:
-				typedef std::list< FileInfo> ListType;
+  public:
+    using ListType = std::list< FileInfo>;
 
-				FileListFile( void);
+    FileListFile( void);
 
-				FileListFile( const RawFile &file);
+    FileListFile( const RawFile &file);
 
-				virtual Arinc665Version getArincVersion( void) const override;
+    virtual Arinc665Version getArincVersion( void) const override;
 
-				unsigned int getNumberOfFiles( void) const;
+    unsigned int getNumberOfFiles( void) const;
 
-				const ListType& getFiles( void) const;
+    const ListType& getFiles( void) const;
 
-				ListType& getFiles( void);
+    ListType& getFiles( void);
 
+    const std::vector< uint8_t>& getUserDefinedData( void) const;
 
-				const std::vector< uint8_t>& getUserDefinedData( void) const;
+    void setUserDefinedData( const std::vector< uint8_t> &userDefinedData);
 
-				void setUserDefinedData( const std::vector< uint8_t> &userDefinedData);
-
-			private:
-				ListType fileList;
-				std::vector< uint8_t> userDefinedData;
-		};
-	}
+  private:
+    ListType fileList;
+    std::vector< uint8_t> userDefinedData;
+};
+}
 }
 
 #endif

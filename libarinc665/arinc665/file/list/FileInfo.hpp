@@ -18,52 +18,47 @@
 #include <vector>
 #include <cstdint>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace File {
+
+/**
+ * @brief The file information, which is part of the FileListFile.
+ **/
+class FileInfo
 {
-	namespace File
-	{
-		using std::string;
+  public:
+    using string = std::string;
 
-		/**
-		 * @brief The file information, which is part of the FileListFile.
-		 **/
-		class FileInfo
-		{
-			public:
-				static std::list< FileInfo> getFileList( std::vector< uint8_t>::const_iterator &it);
+    static std::list< FileInfo> getFileList(
+      std::vector< uint8_t>::const_iterator &it);
 
+    FileInfo( void);
 
-				FileInfo( void);
+    FileInfo( std::vector< uint8_t>::const_iterator &it);
 
-				FileInfo( std::vector< uint8_t>::const_iterator &it);
+    string getFilename( void) const;
 
+    void setFilename( const string &filename);
 
-				string getFilename( void) const;
+    string getPathName( void) const;
 
-				void setFilename( const string &filename);
+    void setPathName( const string &pathName);
 
+    uint16_t getMemberSequenceNumber( void) const;
 
-				string getPathName( void) const;
+    void setMemberSequenceNumber( const uint16_t memberSequenceNumber);
 
-				void setPathName( const string &pathName);
+    uint16_t getCrc( void) const;
 
+    void setCrc( const uint16_t crc);
 
-				uint16_t getMemberSequenceNumber( void) const;
-
-				void setMemberSequenceNumber( const uint16_t memberSequenceNumber);
-
-
-				uint16_t getCrc( void) const;
-
-				void setCrc( const uint16_t crc);
-
-			private:
-				string filename;
-				string pathName;
-				uint16_t memberSequenceNumber;
-				uint16_t crc;
-		};
-	}
+  private:
+    string filename;
+    string pathName;
+    uint16_t memberSequenceNumber;
+    uint16_t crc;
+};
+}
 }
 
 #endif

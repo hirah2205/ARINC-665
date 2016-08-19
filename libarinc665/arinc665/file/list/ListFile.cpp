@@ -14,36 +14,38 @@
 
 #include <helper/Logger.hpp>
 
-using namespace Arinc665::File;
+namespace Arinc665 {
+namespace File {
 
-string ListFile::getMediaSetPn( void) const
+ListFile::string ListFile::getMediaSetPn( void) const
 {
-	return mediaSetPn;
+  return mediaSetPn;
 }
 
 void ListFile::setMediaSetPn( const string &mediaSetPn)
 {
-	this->mediaSetPn = mediaSetPn;
+  this->mediaSetPn = mediaSetPn;
 }
 
 uint8_t ListFile::getMediaSequenceNumber( void) const
 {
-	return mediaSequenceNumber;
+  return mediaSequenceNumber;
 }
 
 void ListFile::setMediaSequenceNumber( const uint8_t mediaSequenceNumber)
 {
-	this->mediaSequenceNumber = mediaSequenceNumber;
+  this->mediaSequenceNumber = mediaSequenceNumber;
 }
 
 uint8_t ListFile::getNumberOfMediaSetMembers( void) const
 {
-	return numberOfMediaSetMembers;
+  return numberOfMediaSetMembers;
 }
 
-void ListFile::setNumberOfMediaSetMembers( const uint8_t numberOfMediaSetMembers)
+void ListFile::setNumberOfMediaSetMembers(
+  const uint8_t numberOfMediaSetMembers)
 {
-	this->numberOfMediaSetMembers = numberOfMediaSetMembers;
+  this->numberOfMediaSetMembers = numberOfMediaSetMembers;
 }
 
 ListFile::ListFile( void)
@@ -51,9 +53,12 @@ ListFile::ListFile( void)
 }
 
 ListFile::ListFile(
-	const RawFile &file,
-	const Arinc665FileFormatVersion expectedFormatVersion,
-	const unsigned int skipLastBytes):
-	Arinc665File( file, expectedFormatVersion, skipLastBytes)
+  const RawFile &file,
+  const Arinc665FileFormatVersion expectedFormatVersion,
+  const unsigned int skipLastBytes) :
+  Arinc665File( file, expectedFormatVersion, skipLastBytes)
 {
+}
+
+}
 }

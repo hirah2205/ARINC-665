@@ -15,35 +15,34 @@
 #include <arinc665/file/list/ListFile.hpp>
 #include <arinc665/file/list/BatchInfo.hpp>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace File {
+
+/**
+ * @brief The load list represents each BATCHES.LUM file on each media of
+ *   the media set.
+ **/
+class BatchListFile: public ListFile
 {
-	namespace File
-	{
-		/**
-		 * @brief The load list represents each BATCHES.LUM file on each media of
-		 *   the media set.
-		 **/
-		class BatchListFile : public ListFile
-		{
-			public:
-				typedef std::list< BatchInfo> BatchList;
+  public:
+    typedef std::list< BatchInfo> BatchList;
 
-				BatchListFile( void);
+    BatchListFile( void);
 
-				BatchListFile( const RawFile &file);
+    BatchListFile( const RawFile &file);
 
-				virtual Arinc665Version getArincVersion( void) const override;
+    virtual Arinc665Version getArincVersion( void) const override;
 
-				unsigned int getNumberOfBatches( void) const;
+    unsigned int getNumberOfBatches( void) const;
 
-				const BatchList& getBatches( void) const;
+    const BatchList& getBatches( void) const;
 
-				BatchList& getBatches( void);
+    BatchList& getBatches( void);
 
-			private:
-				BatchList batchList;
-		};
-	}
+  private:
+    BatchList batchList;
+};
+}
 }
 
 #endif

@@ -17,62 +17,59 @@
 
 #include <string>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace File {
+
+/**
+ * @brief Base class for list files.
+ *
+ * Childs are:
+ * # FileListFile
+ * # LoadListFile
+ * # BatchListFile
+ **/
+class ListFile: public Arinc665File
 {
-	namespace File
-	{
-		using std::string;
+  public:
+    using string = std::string;
 
-		/**
-		 * @brief Base class for list files.
-		 *
-		 * Childs are:
-		 * # FileListFile
-		 * # LoadListFile
-		 * # BatchListFile
-		 **/
-		class ListFile : public Arinc665File
-		{
-			public:
-				/**
-				 * @brief Returns the Media Set Part Number, where the files belongs to.
-				 *
-				 * @return The Media Set Part Number.
-				 **/
-				string getMediaSetPn( void) const;
+    /**
+     * @brief Returns the Media Set Part Number, where the files belongs to.
+     *
+     * @return The Media Set Part Number.
+     **/
+    string getMediaSetPn( void) const;
 
-				/**
-				 * @brief Sets the Media Part Number, where the files belongs to.
-				 *
-				 * @param[in] mediaSetPn
-				 *   The Media Set part Number.
-				 **/
-				void setMediaSetPn( const string &mediaSetPn);
+    /**
+     * @brief Sets the Media Part Number, where the files belongs to.
+     *
+     * @param[in] mediaSetPn
+     *   The Media Set part Number.
+     **/
+    void setMediaSetPn( const string &mediaSetPn);
 
+    uint8_t getMediaSequenceNumber( void) const;
 
-				uint8_t getMediaSequenceNumber( void) const;
+    void setMediaSequenceNumber( const uint8_t mediaSequenceNumber);
 
-				void setMediaSequenceNumber( const uint8_t mediaSequenceNumber);
+    uint8_t getNumberOfMediaSetMembers( void) const;
 
+    void setNumberOfMediaSetMembers( const uint8_t numberOfMediaSetMembers);
 
-				uint8_t getNumberOfMediaSetMembers( void) const;
+  protected:
+    ListFile( void);
 
-				void setNumberOfMediaSetMembers( const uint8_t numberOfMediaSetMembers);
+    ListFile(
+      const RawFile &file,
+      const Arinc665FileFormatVersion expectedFormatVersion,
+      const unsigned int skipLastBytes = 2);
 
-			protected:
-				ListFile( void);
-
-				ListFile(
-					const RawFile &file,
-					const Arinc665FileFormatVersion expectedFormatVersion,
-					const unsigned int skipLastBytes = 2);
-
-			private:
-				string mediaSetPn;
-				uint8_t mediaSequenceNumber;
-				uint8_t numberOfMediaSetMembers;
-		};
-	}
+  private:
+    string mediaSetPn;
+    uint8_t mediaSequenceNumber;
+    uint8_t numberOfMediaSetMembers;
+};
+}
 }
 
 #endif

@@ -24,56 +24,52 @@
 #include <vector>
 #include <cstdint>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace Media {
+using std::string;
+
+/**
+ * @brief
+ **/
+class Load: public PartNumberdEntity
 {
-	namespace Media
-	{
-		using std::string;
+  public:
+    typedef std::list< WeakFilePtr> FileList;
+    typedef std::list< string> ThwIdList;
 
-		/**
-		 * @brief
-		 **/
-		class Load : public PartNumberdEntity
-		{
-			public:
-				typedef std::list< WeakFilePtr > FileList;
-				typedef std::list< string> ThwIdList;
+    /**
+     * @brief
+     *
+     * @param[in] partNumber
+     *   Part number of Load
+     **/
+    Load( const string &partNumber);
 
-				/**
-				 * @brief
-				 *
-				 * @param[in] partNumber
-				 *   Part number of Load
-				 **/
-				Load( const string &partNumber);
+    const ThwIdList& getTargetHardwareIdList( void) const;
 
-				const ThwIdList& getTargetHardwareIdList( void) const;
+    ThwIdList& getTargetHardwareIdList( void);
 
-				ThwIdList& getTargetHardwareIdList( void);
+    void setTargetHardwareIdList( const ThwIdList& thwIdList);
 
-				void setTargetHardwareIdList( const ThwIdList& thwIdList);
+    const FileList& getDataFiles( void) const;
 
-				const FileList& getDataFiles( void) const;
+    void addDataFile( const WeakFilePtr dataFile);
 
-				void addDataFile( const WeakFilePtr dataFile);
+    const FileList& getSupportFiles( void) const;
 
+    void addSupportFile( const WeakFilePtr supportFile);
 
-				const FileList& getSupportFiles( void) const;
+    const std::vector< uint8_t>& getUserDefinedData( void) const;
 
-				void addSupportFile( const WeakFilePtr supportFile);
+    void setUserDefinedData( const std::vector< uint8_t> &userDefinedData);
 
-
-				const std::vector< uint8_t>& getUserDefinedData( void) const;
-
-				void setUserDefinedData( const std::vector< uint8_t> &userDefinedData);
-
-			private:
-				ThwIdList targetHardwareIdList;
-				FileList dataFileList;
-				FileList supportFileList;
-				std::vector< uint8_t> userDefinedData;
-		};
-	}
+  private:
+    ThwIdList targetHardwareIdList;
+    FileList dataFileList;
+    FileList supportFileList;
+    std::vector< uint8_t> userDefinedData;
+};
+}
 }
 
 #endif
