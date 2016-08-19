@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema 
-  xmlns="http://www.w3.org/2001/XMLSchema" 
   targetNamespace="http://www.thomas-vogt.de/Arinc665MediaSet" 
-  xmlns:tns="http://www.thomas-vogt.de/Arinc665MediaSet" 
-  elementFormDefault="qualified">
+  elementFormDefault="qualified"
+  xmlns="http://www.w3.org/2001/XMLSchema" 
+  xmlns:tns="http://www.thomas-vogt.de/Arinc665MediaSet">
   
   <element name="MediaSet" type="tns:MediaSetType" />
   
-  <element name="Files"     type="tns:FilesType" />
-  <element name="File"      type="tns:FileType" />
-  <element name="Directory" type="tns:DirectoryType" />
+  <element name="Files"    type="tns:FilesType" />
   
-  <element name="Loads" type="tns:LoadsType" />
-  <element name="Load" type="tns:LoadType" />
+  <element name="Loads"    type="tns:LoadsType" />
+  <element name="Load"     type="tns:LoadType" />
   
-  <element name="Batches" type="tns:BatchesType" />
-  <element name="Batch" type="tns:BatchType" />
+  <element name="Batches"  type="tns:BatchesType" />
+  <element name="Batch"    type="tns:BatchType" />
   
   <complexType name="MediaSetType">
     <sequence>
@@ -23,91 +21,136 @@
       <element ref="tns:Loads"   maxOccurs="1" minOccurs="1"/>
       <element ref="tns:Batches" maxOccurs="1" minOccurs="1"/>
     </sequence>
-    <attribute ref="tns:PartNumber" />
-    <attribute ref="tns:NumberOfMedias" default="1" />
+    <attribute name="PartNumber"     use="required" type="tns:PartNumberType" />
+    <attribute name="NumberOfMedias" default="1"    type="tns:MediaNumberType" />
   </complexType>
 
   <complexType name="FilesType">
-    <sequence minOccurs="0" maxOccurs="unbounded" >
-      <element ref="tns:Directory" minOccurs="0" maxOccurs="unbounded" />
-      <element ref="tns:File"      minOccurs="0" maxOccurs="unbounded" />
+    <sequence>
+      <group ref="tns:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded"/> 
     </sequence>
+  </complexType>
+
+  <complexType name="BaseFileType">
+    <attribute name="Name"            type="tns:NameType" use="required" />
+    <attribute name="Size"            type="unsignedInt"  use="optional" />
+    <attribute name="Crc"             use="optional" />
+    <attribute name="PartNumber"      use="optional" />
+    <attribute name="LocatedOnMedium" default="1" />
+    <attribute name="SourcePath"      use="optional" />
   </complexType>
 
   <complexType name="FileType">
-    <attribute ref="tns:Name" />
-    <attribute ref="tns:Size" />
-    <attribute ref="tns:Crc" />
-    <attribute ref="tns:PartNumber" use="optional" />
-    <attribute ref="tns:LocatedOnMedium" />
+    <complexContent>
+      <restriction base="tns:BaseFileType">
+        <attribute name="Name"            type="tns:NameType"        use="required" />
+        <attribute name="Size"            type="unsignedInt"         use="required" />
+        <attribute name="Crc"             type="tns:HexValueType"    use="required" />
+        <attribute name="PartNumber"      type="tns:PartNumberType"  use="optional" />
+        <attribute name="LocatedOnMedium" type="tns:MediaNumberType" default="1" />
+        <attribute name="SourcePath"      type="string"              use="optional" />
+      </restriction>
+    </complexContent>
   </complexType>
 
+  <complexType name="LoadFileType">
+    <complexContent>
+      <restriction base="tns:BaseFileType">
+        <attribute name="Name"            type="tns:NameType"        use="required" />
+        <attribute name="Size"            type="unsignedInt"         use="optional" />
+        <attribute name="Crc"             type="tns:HexValueType"    use="optional" />
+        <attribute name="PartNumber"      type="tns:PartNumberType"  use="required" />
+        <attribute name="LocatedOnMedium" type="tns:MediaNumberType" default="1" />
+        <attribute name="SourcePath"      type="string"              use="optional" />
+      </restriction>
+    </complexContent>
+  </complexType>
+  
+  <complexType name="BatchFileType">
+    <complexContent>
+      <restriction base="tns:BaseFileType">
+        <attribute name="Name"            type="tns:NameType"        use="required" />
+        <attribute name="Size"            type="unsignedInt"         use="optional" />
+        <attribute name="Crc"             type="tns:HexValueType"    use="optional" />
+        <attribute name="PartNumber"      type="tns:PartNumberType"  use="required" />
+        <attribute name="LocatedOnMedium" type="tns:MediaNumberType" default="1" />
+        <attribute name="SourcePath"      type="string"              use="optional" />
+      </restriction>
+    </complexContent>
+  </complexType>
+  
   <complexType name="DirectoryType">
-    <sequence minOccurs="0" maxOccurs="unbounded" >
-      <element ref="tns:Directory" minOccurs="0" maxOccurs="unbounded" />
-      <element ref="tns:File"      minOccurs="0" maxOccurs="unbounded" />
+    <sequence>
+      <group ref="tns:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded"/> 
     </sequence>
+    <attribute name="Name" type="tns:NameType" use="required" />
   </complexType>
 
   <complexType name="LoadsType">
     <sequence>
-      <element ref="tns:Load" maxOccurs="unbounded" minOccurs="1" />
+      <element ref="tns:Load" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
   </complexType>
 
   <complexType name="LoadType">
     <sequence>
-      <element name="DataFile"    type="tns:FileRefernceType" minOccurs="1" maxOccurs="unbounded" />
+      <element name="DataFile"    type="tns:FileRefernceType" minOccurs="0" maxOccurs="unbounded" />
       <element name="SupportFile" type="tns:FileRefernceType" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
-    <attribute ref="tns:Name" />
-    <attribute ref="tns:PartNumber" />
-    <attribute ref="tns:LocatedOnMedium" />
+     <attribute name="NameRef" type="IDREF" use="required" />
   </complexType>
 
   <complexType name="FileRefernceType">
-    <attribute ref="tns:NameRef" />
+    <attribute name="NameRef" type="IDREF" use="required" />
   </complexType>
 
 
   <complexType name="BatchesType">
     <sequence>
-      <element ref="tns:Batch" maxOccurs="unbounded" minOccurs="0" />
+      <element ref="tns:Batch" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
   </complexType>
 
   <complexType name="BatchType">
     <sequence>
-      <element name="Load" type="tns:LoadRefernceType" minOccurs="1" maxOccurs="unbounded" />
+      <element name="Load" type="tns:LoadRefernceType" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
-    <attribute ref="tns:Name" />
-    <attribute ref="tns:PartNumber" />
-    <attribute ref="tns:LocatedOnMedium" />
+     <attribute name="NameRef" type="IDREF" use="required" />
   </complexType>
 
   <complexType name="LoadRefernceType">
-    <attribute ref="tns:NameRef" />
+    <attribute name="NameRef" type="IDREF" use="required" />
   </complexType>
 
-  <attribute name="PartNumber" type="string" />
-  <attribute name="Name" type="ID" />
-  <attribute name="NameRef" type="IDREF" />
-  <attribute name="Size" type="integer" />
-  <attribute name="Crc" type="integer" />
-  <attribute name="NumberOfMedias">
-    <simpleType>
-      <restriction base="integer">
-        <minInclusive value="1"></minInclusive>
-        <maxInclusive value="255"></maxInclusive>
-      </restriction>
-    </simpleType>
-  </attribute>
-  <attribute name="LocatedOnMedium">
-    <simpleType>
-      <restriction base="integer">
-        <minInclusive value="1"></minInclusive>
-        <maxInclusive value="255"></maxInclusive>
-      </restriction>
-    </simpleType>
-  </attribute>
+  <simpleType name="PartNumberType">
+    <restriction base="string"></restriction>
+  </simpleType>
+
+  <simpleType name="MediaNumberType">
+    <restriction base="unsignedByte">
+      <minInclusive value="1"></minInclusive>
+      <maxInclusive value="255"></maxInclusive>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="NameType">
+    <restriction base="ID">
+    </restriction>
+  </simpleType>
+
+  <simpleType name="HexValueType">
+    <restriction base="string">
+      <minLength value="3"></minLength>
+      <pattern value="0x([0-9a-fA-F])+"></pattern>
+    </restriction>
+  </simpleType>
+
+  <group name="DirectoryFileGroup">
+    <choice>
+      <element name="Directory" type="tns:DirectoryType" />
+      <element name="File"      type="tns:FileType" />
+      <element name="LoadFile"  type="tns:LoadFileType" />
+      <element name="BatchFile" type="tns:BatchFileType" />
+    </choice>
+  </group>
 </schema>
