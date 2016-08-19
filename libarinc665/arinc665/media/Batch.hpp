@@ -24,7 +24,6 @@
 
 namespace Arinc665 {
 namespace Media {
-using std::string;
 
 /**
  * @brief
@@ -32,7 +31,7 @@ using std::string;
 class Batch: public PartNumberdEntity
 {
   public:
-    typedef std::list< BatchInfo> BatchInfoList;
+    using BatchInfoList = std::list< BatchInfo>;
 
     Batch( const string &partNumber, const string &comment = string());
 
