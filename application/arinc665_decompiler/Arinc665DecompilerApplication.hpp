@@ -11,17 +11,19 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class Arinc665CompilerApplication.
+ * @brief Declaration of class Arinc665DecompilerApplication.
  **/
 
-#ifndef ARINC665COMPILERAPPLICATION_HPP
-#define ARINC665COMPILERAPPLICATION_HPP
+#ifndef ARINC665DECOMPILERAPPLICATION_HPP
+#define ARINC665DECOMPILERAPPLICATION_HPP
 
 #include <boost/program_options.hpp>
 #include <boost/application.hpp>
 #include <boost/filesystem/path.hpp>
 
-class Arinc665CompilerApplication
+#include <vector>
+
+class Arinc665DecompilerApplication
 {
   public:
     /**
@@ -30,7 +32,7 @@ class Arinc665CompilerApplication
      * @param[in] context
      *   The application context.
      **/
-    Arinc665CompilerApplication( boost::application::context &context);
+    Arinc665DecompilerApplication( boost::application::context &context);
 
     /**
      * @brief Executes the FIND client.
@@ -58,8 +60,8 @@ class Arinc665CompilerApplication
 
     //! Media Set XML file
     boost::filesystem::path mediaSetXmlFile;
-    //! Media Set source directory
-    boost::filesystem::path mediaSetSourceDirectory;
+    //! Media Set source directories
+    std::vector< boost::filesystem::path> mediaSetSourceDirectories;
     //! Media Set destination directory
     boost::filesystem::path mediaSetDestinationDirectory;
 };

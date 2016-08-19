@@ -11,10 +11,10 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief ARINC 665 compiler.
+ * @brief ARINC 665 decompiler.
  **/
 
-#include "Arinc665CompilerApplication.hpp"
+#include "Arinc665DecompilerApplication.hpp"
 
 #include <helper/Logger.hpp>
 
@@ -41,7 +41,7 @@ int main( int argc, char ** argv)
 
   boost::application::context context;
 
-  Arinc665CompilerApplication app( context);
+  Arinc665DecompilerApplication app( context);
 
   context.insert< boost::application::args>(
     std::make_shared< boost::application::args >( argc, argv));
