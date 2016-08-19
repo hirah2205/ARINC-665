@@ -17,91 +17,93 @@
 namespace Arinc665 {
 namespace File {
 
-std::list< LoadInfo> LoadInfo::getLoadList( std::vector< uint8_t>::const_iterator &it)
+std::list< LoadInfo> LoadInfo::getLoadList(
+  std::vector< uint8_t>::const_iterator &it)
 {
-	std::vector< uint8_t>::const_iterator workIt = it;
+  std::vector< uint8_t>::const_iterator workIt = it;
 
-	std::list< LoadInfo> loadList;
+  std::list< LoadInfo> loadList;
 
-	// number of loads
-	uint16_t numberOfLoads;
-	workIt = getInt< uint16_t>( workIt, numberOfLoads);
+  // number of loads
+  uint16_t numberOfLoads;
+  workIt = getInt< uint16_t>( workIt, numberOfLoads);
 
-	for ( unsigned int loadIndex = 0; loadIndex < numberOfLoads; ++loadIndex )
-	{
-		loadList.push_back( LoadInfo( workIt));
-	}
+  for ( unsigned int loadIndex = 0; loadIndex < numberOfLoads; ++loadIndex)
+  {
+    loadList.push_back( LoadInfo( workIt));
+  }
 
-	it = workIt;
+  it = workIt;
 
-	return loadList;
+  return loadList;
 }
 
-LoadInfo::LoadInfo( void)
+LoadInfo::LoadInfo( void):
+  memberSequenceNumber( 0)
 {
 }
 
 LoadInfo::LoadInfo( std::vector< uint8_t>::const_iterator &it)
 {
-	std::vector< uint8_t>::const_iterator workIt = it;
+  std::vector< uint8_t>::const_iterator workIt = it;
 
-	// next load pointer
-	uint16_t loadPointer;
-	workIt = getInt< uint16_t>( workIt, loadPointer);
+  // next load pointer
+  uint16_t loadPointer;
+  workIt = getInt< uint16_t>( workIt, loadPointer);
 
-	// part number
-	workIt = getString( workIt, partNumber);
+  // part number
+  workIt = getString( workIt, partNumber);
 
-	// header filename
-	workIt = getString( workIt, headerFilename);
+  // header filename
+  workIt = getString( workIt, headerFilename);
 
-	// member sequence number
-	workIt = getInt< uint16_t>( workIt, memberSequenceNumber);
+  // member sequence number
+  workIt = getInt< uint16_t>( workIt, memberSequenceNumber);
 
-	workIt = getStringList( workIt, targetHardwareIds);
+  workIt = getStringList( workIt, targetHardwareIds);
 
-	// set it to begin of next load
-	it += loadPointer * 2;
+  // set it to begin of next load
+  it += loadPointer * 2;
 }
 
-std::string LoadInfo::getPartNumber( void) const
+LoadInfo::string LoadInfo::getPartNumber( void) const
 {
-	return partNumber;
+  return partNumber;
 }
 
-void LoadInfo::setPartNumber( const std::string &partNumber)
+void LoadInfo::setPartNumber( const string &partNumber)
 {
-	this->partNumber = partNumber;
+  this->partNumber = partNumber;
 }
 
-std::string LoadInfo::getHeaderFilename( void) const
+LoadInfo::string LoadInfo::getHeaderFilename( void) const
 {
-	return headerFilename;
+  return headerFilename;
 }
 
-void LoadInfo::setHeaderFilename( const std::string &headerFilename)
+void LoadInfo::setHeaderFilename( const string &headerFilename)
 {
-	this->headerFilename = headerFilename;
+  this->headerFilename = headerFilename;
 }
 
 uint16_t LoadInfo::getMemberSequenceNumber( void) const
 {
-	return memberSequenceNumber;
+  return memberSequenceNumber;
 }
 
 void LoadInfo::setMemberSequenceNumber( const uint16_t memberSequenceNumber)
 {
-	this->memberSequenceNumber = memberSequenceNumber;
+  this->memberSequenceNumber = memberSequenceNumber;
 }
 
-const std::list<std::string>& LoadInfo::getTargetHardwareIdList( void) const
+const LoadInfo::ThwIds& LoadInfo::getTargetHardwareIdList( void) const
 {
-	return targetHardwareIds;
+  return targetHardwareIds;
 }
 
-std::list<std::string>& LoadInfo::getTargetHardwareIdList( void)
+LoadInfo::ThwIds& LoadInfo::getTargetHardwareIdList( void)
 {
-	return targetHardwareIds;
+  return targetHardwareIds;
 }
 
 }

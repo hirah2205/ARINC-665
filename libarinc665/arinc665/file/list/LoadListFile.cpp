@@ -17,7 +17,9 @@
 namespace Arinc665 {
 namespace File {
 
-LoadListFile::LoadListFile( void)
+LoadListFile::LoadListFile( void):
+  mediaSequenceNumber( 0),
+  numberOfMediaSetMembers( 0)
 {
 }
 
@@ -38,19 +40,13 @@ LoadListFile::LoadListFile( const RawFile &file) :
 
   // media set part number
   it = file.begin() + mediaInformationPtr * 2;
-  std::string mediaSetPn;
   it = getString( it, mediaSetPn);
-  setMediaSetPn( mediaSetPn);
 
   // media sequence number
-  uint8_t mediaSequenceNumber;
   it = getInt< uint8_t>( it, mediaSequenceNumber);
-  setMediaSequenceNumber( mediaSequenceNumber);
 
   // number of media set members
-  uint8_t numberOfMediaSetMembers;
   it = getInt< uint8_t>( it, numberOfMediaSetMembers);
-  setNumberOfMediaSetMembers( numberOfMediaSetMembers);
 
   // load list
   it = file.begin() + 2 * loadListPtr;
@@ -69,6 +65,37 @@ LoadListFile::LoadListFile( const RawFile &file) :
 Arinc665::Arinc665Version LoadListFile::getArincVersion( void) const
 {
   return Arinc665Version::ARINC_665_2;
+}
+
+LoadListFile::string LoadListFile::getMediaSetPn( void) const
+{
+  return mediaSetPn;
+}
+
+void LoadListFile::setMediaSetPn( const string &mediaSetPn)
+{
+  this->mediaSetPn = mediaSetPn;
+}
+
+uint8_t LoadListFile::getMediaSequenceNumber( void) const
+{
+  return mediaSequenceNumber;
+}
+
+void LoadListFile::setMediaSequenceNumber( const uint8_t mediaSequenceNumber)
+{
+  this->mediaSequenceNumber = mediaSequenceNumber;
+}
+
+uint8_t LoadListFile::getNumberOfMediaSetMembers( void) const
+{
+  return numberOfMediaSetMembers;
+}
+
+void LoadListFile::setNumberOfMediaSetMembers(
+  const uint8_t numberOfMediaSetMembers)
+{
+  this->numberOfMediaSetMembers = numberOfMediaSetMembers;
 }
 
 unsigned int LoadListFile::getNumberOfLoads( void) const

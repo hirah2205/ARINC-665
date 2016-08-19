@@ -29,6 +29,8 @@ class LoadInfo
   public:
     using string = std::string;
 
+    using ThwIds = std::list< string>;
+
     static std::list< LoadInfo> getLoadList(
       std::vector< uint8_t>::const_iterator &it);
 
@@ -48,15 +50,15 @@ class LoadInfo
 
     void setMemberSequenceNumber( const uint16_t memberSequenceNumber);
 
-    const std::list< string>& getTargetHardwareIdList( void) const;
+    const ThwIds& getTargetHardwareIdList( void) const;
 
-    std::list< string>& getTargetHardwareIdList( void);
+    ThwIds& getTargetHardwareIdList( void);
 
   private:
     string partNumber;
     string headerFilename;
     uint16_t memberSequenceNumber;
-    std::list< string> targetHardwareIds;
+    ThwIds targetHardwareIds;
 };
 }
 }

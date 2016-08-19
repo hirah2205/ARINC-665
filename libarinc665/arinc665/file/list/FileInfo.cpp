@@ -35,7 +35,9 @@ std::list< FileInfo> FileInfo::getFileList(
   return fileList;
 }
 
-FileInfo::FileInfo( void)
+FileInfo::FileInfo( void):
+  memberSequenceNumber( 0),
+  crc( 0)
 {
 }
 

@@ -25,50 +25,46 @@
 
 #include <boost/filesystem.hpp>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace File {
+
+/**
+ * @brief Factory of ARINC 665 special files.
+ **/
+class FileFactory
 {
-	namespace File
-	{
-		/**
-		 * @brief Factory of ARINC 665 special files.
-		 **/
-		class FileFactory
-		{
-			public:
-				/**
-				 * @brief
-				 * @param file
-				 * @return
-				 **/
-				static FileClassType getArincFileType( const RawFile &file);
+  public:
+    /**
+     * @brief
+     * @param file
+     * @return
+     **/
+    static FileClassType getArincFileType( const RawFile &file);
 
-				static LoadFileFormatVersion getLoadFileFormatVersion(
-					const RawFile &file);
+    static LoadFileFormatVersion getLoadFileFormatVersion( const RawFile &file);
 
-				static BatchFileFormatVersion getBatchFileFormatVersion(
-					const RawFile &file);
+    static BatchFileFormatVersion getBatchFileFormatVersion(
+      const RawFile &file);
 
-				static MediaFileFormatVersion getMediaFileFormatVersion(
-					const RawFile &file);
+    static MediaFileFormatVersion getMediaFileFormatVersion(
+      const RawFile &file);
 
+    static FileType getFileType( const boost::filesystem::path &filename);
 
-				static FileType getFileType( const boost::filesystem::path &filename);
+    static FileListFile getFileListFile( const RawFile &file);
 
+    static LoadListFile getLoadListFile( const RawFile &file);
 
-				static FileListFile getFileListFile( const RawFile &file);
+    static BatchListFile getBatchListFile( const RawFile &file);
 
-				static LoadListFile getLoadListFile( const RawFile &file);
+    static LoadHeaderFile getLoadHeaderFile( const RawFile &file);
 
-				static BatchListFile getBatchListFile( const RawFile &file);
+    static BatchFile getBatchFile( const RawFile &file);
 
-				static LoadHeaderFile getLoadHeaderFile( const RawFile &file);
-
-				static BatchFile getBatchFile( const RawFile &file);
-
-			private:
-				FileFactory( void);
-		};
-	}
+  private:
+    FileFactory( void);
+};
+}
 }
 
 #endif

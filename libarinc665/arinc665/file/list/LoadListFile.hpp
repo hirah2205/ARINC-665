@@ -25,6 +25,8 @@ namespace File {
 class LoadListFile: public ListFile
 {
   public:
+    using UserDefinedData = std::vector< uint8_t>;
+
     //! Type definition of LoadList
     typedef std::list< LoadInfo> ListType;
 
@@ -32,23 +34,74 @@ class LoadListFile: public ListFile
 
     LoadListFile( const RawFile &file);
 
+    //! @copydoc Arinc665File::getArincVersion
     virtual Arinc665Version getArincVersion( void) const override;
 
+    //! @copydoc ListFile::getMediaSetPn
+    virtual string getMediaSetPn( void) const override;
+
+    //! @copydoc ListFile::setMediaSetPn
+    virtual void setMediaSetPn( const string &mediaSetPn) override;
+
+    //! @copydoc ListFile::getMediaSequenceNumber
+    virtual uint8_t getMediaSequenceNumber( void) const override;
+
+    //! @copydoc ListFile::setMediaSequenceNumber
+    virtual void setMediaSequenceNumber( const uint8_t mediaSequenceNumber) override;
+
+    //! @copydoc ListFile::getNumberOfMediaSetMembers
+    virtual uint8_t getNumberOfMediaSetMembers( void) const override;
+
+    //! @copydoc ListFile::setNumberOfMediaSetMembers
+    virtual void setNumberOfMediaSetMembers( const uint8_t numberOfMediaSetMembers) override;
+
+    /**
+     * @brief Returns the number of loads.
+     *
+     * @return The number of loads.
+     **/
     unsigned int getNumberOfLoads( void) const;
 
+    /**
+     * @brief Returns the loads.
+     *
+     * @return The Loads.
+     **/
     const ListType& getLoads( void) const;
 
+    /**
+     * @brief Returns the loads.
+     *
+     * @return The Loads.
+     **/
     ListType& getLoads( void);
 
-    const std::vector< uint8_t>& getUserDefinedData( void) const;
+    /**
+     * @brief Returns the user defined data.
+     *
+     * @return The user defined data.
+     **/
+    const UserDefinedData& getUserDefinedData( void) const;
 
-    void setUserDefinedData( const std::vector< uint8_t> &userDefinedData);
+    /**
+     * @brief Updates the user defined data.
+     *
+     * @param[in] userDefinedData
+     *   The user defined data.
+     **/
+    void setUserDefinedData( const UserDefinedData &userDefinedData);
 
   private:
+    //! Media set part number
+    string mediaSetPn;
+    //! media sequence number
+    uint8_t mediaSequenceNumber;
+    //! number of media set members
+    uint8_t numberOfMediaSetMembers;
     //! The load list
     ListType loadList;
     //! user defined data
-    std::vector< uint8_t> userDefinedData;
+    UserDefinedData userDefinedData;
 };
 }
 }
