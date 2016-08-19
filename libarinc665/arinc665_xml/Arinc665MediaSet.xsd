@@ -5,45 +5,31 @@
   xmlns:tns="http://www.thomas-vogt.de/Arinc665MediaSet" 
   elementFormDefault="qualified">
   
+  <element name="MediaSet" type="tns:MediaSetType" />
   
-
-  <element name="MediaSet" type="tns:MediaSetType"></element>
-  <element name="Medias" type="tns:MediasType"></element>
-  <element name="Medium" type="tns:MediumType"></element>
+  <element name="Files"     type="tns:FilesType" />
+  <element name="File"      type="tns:FileType" />
+  <element name="Directory" type="tns:DirectoryType" />
   
-  <element name="Files"     type="tns:FilesType"></element>
-  <element name="File"      type="tns:FileType"></element>
-  <element name="Directory" type="tns:DirectoryType"></element>
+  <element name="Loads" type="tns:LoadsType" />
+  <element name="Load" type="tns:LoadType" />
   
-  <element name="Loads" type="tns:LoadsType"></element>
-  <element name="Load" type="tns:LoadType"></element>
-  
-  <element name="Batches" type="tns:BatchesType"></element>
-  <element name="Batch" type="tns:BatchType"></element>
+  <element name="Batches" type="tns:BatchesType" />
+  <element name="Batch" type="tns:BatchType" />
   
   <complexType name="MediaSetType">
     <sequence>
       <element ref="tns:Files"   maxOccurs="1" minOccurs="1"/>
       <element ref="tns:Loads"   maxOccurs="1" minOccurs="1"/>
       <element ref="tns:Batches" maxOccurs="1" minOccurs="1"/>
-      <element ref="tns:Medias"  maxOccurs="1" minOccurs="1"/>
     </sequence>
     <attribute ref="tns:PartNumber" />
+    <attribute ref="tns:NumberOfMedias" default="1" />
   </complexType>
 
-  <complexType name="MediasType">
-    <sequence>
-      <element ref="tns:Medium" maxOccurs="unbounded" minOccurs="1" />
-    </sequence>
-  </complexType>
-  
-  <complexType name="MediumType">
-    <attribute ref="tns:PartNumber"></attribute>
-  </complexType>
-  
   <complexType name="FilesType">
     <sequence minOccurs="0" maxOccurs="unbounded" >
-      <element ref="tns:Directory" minOccurs="0" maxOccurs="unbounded"  />
+      <element ref="tns:Directory" minOccurs="0" maxOccurs="unbounded" />
       <element ref="tns:File"      minOccurs="0" maxOccurs="unbounded" />
     </sequence>
   </complexType>
@@ -53,11 +39,12 @@
     <attribute ref="tns:Size" />
     <attribute ref="tns:Crc" />
     <attribute ref="tns:PartNumber" use="optional" />
+    <attribute ref="tns:LocatedOnMedium" />
   </complexType>
 
   <complexType name="DirectoryType">
     <sequence minOccurs="0" maxOccurs="unbounded" >
-      <element ref="tns:Directory" minOccurs="0" maxOccurs="unbounded"  />
+      <element ref="tns:Directory" minOccurs="0" maxOccurs="unbounded" />
       <element ref="tns:File"      minOccurs="0" maxOccurs="unbounded" />
     </sequence>
   </complexType>
@@ -70,10 +57,18 @@
 
   <complexType name="LoadType">
     <sequence>
-      <element ref="tns:Load" maxOccurs="unbounded" minOccurs="0" />
+      <element name="DataFile"    type="tns:FileRefernceType" minOccurs="1" maxOccurs="unbounded" />
+      <element name="SupportFile" type="tns:FileRefernceType" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
+    <attribute ref="tns:Name" />
     <attribute ref="tns:PartNumber" />
+    <attribute ref="tns:LocatedOnMedium" />
   </complexType>
+
+  <complexType name="FileRefernceType">
+    <attribute ref="tns:NameRef" />
+  </complexType>
+
 
   <complexType name="BatchesType">
     <sequence>
@@ -82,12 +77,37 @@
   </complexType>
 
   <complexType name="BatchType">
-    <attribute ref="tns:PartNumber"></attribute>
+    <sequence>
+      <element name="Load" type="tns:LoadRefernceType" minOccurs="1" maxOccurs="unbounded" />
+    </sequence>
+    <attribute ref="tns:Name" />
+    <attribute ref="tns:PartNumber" />
+    <attribute ref="tns:LocatedOnMedium" />
+  </complexType>
+
+  <complexType name="LoadRefernceType">
+    <attribute ref="tns:NameRef" />
   </complexType>
 
   <attribute name="PartNumber" type="string" />
-  <attribute name="Name" type="string" />
-  <attribute name="MediumNumber" type="integer" />
+  <attribute name="Name" type="ID" />
+  <attribute name="NameRef" type="IDREF" />
   <attribute name="Size" type="integer" />
   <attribute name="Crc" type="integer" />
+  <attribute name="NumberOfMedias">
+    <simpleType>
+      <restriction base="integer">
+        <minInclusive value="1"></minInclusive>
+        <maxInclusive value="255"></maxInclusive>
+      </restriction>
+    </simpleType>
+  </attribute>
+  <attribute name="LocatedOnMedium">
+    <simpleType>
+      <restriction base="integer">
+        <minInclusive value="1"></minInclusive>
+        <maxInclusive value="255"></maxInclusive>
+      </restriction>
+    </simpleType>
+  </attribute>
 </schema>
