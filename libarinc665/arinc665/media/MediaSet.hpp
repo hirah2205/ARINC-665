@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,11 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class MediaSet.
+ * @brief Declaration of class Arinc665::Media::MediaSet.
  **/
 
 #ifndef ARINC665_MEDIA_MEDIASET_HPP
@@ -17,13 +19,7 @@
 
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/PartNumberdEntity.hpp>
-
 #include <arinc665/media/Medium.hpp>
-#include <arinc665/media/File.hpp>
-#include <arinc665/media/Load.hpp>
-#include <arinc665/media/Batch.hpp>
-
-#include <string>
 
 namespace Arinc665 {
 namespace Media {
@@ -44,8 +40,6 @@ namespace Media {
 class MediaSet: public PartNumberdEntity
 {
   public:
-    using string = std::string;
-
     /**
      * @brief Creates a new media set.
      *
@@ -57,7 +51,7 @@ class MediaSet: public PartNumberdEntity
      * @param[in] numberOfMedia
      *   The initial number of media in the media set (defaults to 1)
      **/
-    MediaSet( const string &partNumber, const unsigned int numberOfMedia = 1);
+    MediaSet( const string &partNumber, unsigned int numberOfMedia = 1);
 
     /**
      * @brief Get the number of medias within the media set
@@ -71,7 +65,7 @@ class MediaSet: public PartNumberdEntity
      *
      * @return All media as map.
      **/
-    const MediaMap& getMedia( void) const;
+    const Media& getMedia( void) const;
 
     /**
      * @brief Return the medium with the requested index.
@@ -92,7 +86,7 @@ class MediaSet: public PartNumberdEntity
      * @return The medium with the requested index.
      **/
     MediumPtr getMedium( const unsigned int index);
-
+    
     /**
      * @brief Adds an medium to the media set and returns the media index.
      *
@@ -101,64 +95,65 @@ class MediaSet: public PartNumberdEntity
     unsigned int addMedium( void);
 
     /**
+     * @brief
+     *
+     * Set the number of media.
+     *
+     * @param[in] numberOfMedia
+     *   The new number of media. Must be bigger or equal to 1.
+     * @param[in] deleteFiles
+     *   Delete files, which are part of the not existing files.
+     *   Otherwise, they are moved to the first media.
+     **/
+    void setNumberOfMedia( unsigned int numberOfMedia, bool deleteFiles = false) const;
+
+    size_t getNumberOfFiles( void) const;
+
+    /**
      * @brief Returns all files present on the media set.
      *
-     * @return All files as map.
+     * @return All files.
      **/
-    ConstFileMap getFiles( void) const;
+    ConstFiles getFiles( void) const;
 
-    FileMap getFiles( void);
+    Files getFiles( void);
 
     ConstFilePtr getFile( const string &filename) const;
 
     FilePtr getFile( const string &filename);
 
-    FilePtr addFile(
-      MediumPtr medium,
-      const string &filename,
-      const string &path,
-      const uint16_t crc,
-      const uint32_t fileLength = 0,
-      const string &partNumber = string());
 
-    FilePtr addFile(
-      const unsigned int mediumIndex,
-      const string &filename,
-      const string &path,
-      const uint16_t crc,
-      const uint32_t fileLength = 0,
-      const string &partNumber = string());
+    size_t getNumberOfLoads( void) const;
 
-    ConstLoadMap getLoads( void) const;
+    ConstLoads getLoads( void) const;
 
-    LoadPtr addLoad(
-      MediumPtr medium,
-      const string &filename,
-      const string &path,
-      const string &partNumber);
+    Loads getLoads( void);
 
-    LoadPtr addLoad(
-      const unsigned int mediumIndex,
-      const string &filename,
-      const string &path,
-      const string &partNumber);
+    ConstLoadPtr getLoad( const string &filename) const;
 
-    ConstBatchMap getBatches( void) const;
+    LoadPtr getLoad( const string &filename);
 
-    BatchPtr addBatch(
-      MediumPtr medium,
-      const string &filename,
-      const string &path,
-      const string &partNumber);
+    void removeLoad( const string &filename);
 
-    BatchPtr addBatch(
-      const unsigned int mediumIndex,
-      const string &filename,
-      const string &path,
-      const string &partNumber);
+    void removeLoad( ConstLoadPtr load);
+
+
+    size_t getNumberOfBatches( void) const;
+
+    ConstBatches getBatches( void) const;
+
+    Batches getBatches( void);
+
+    ConstBatchPtr getBatch( const string &filename) const;
+
+    BatchPtr getBatch( const string &filename);
+
+    void removeBatch( const string &filename);
+
+    void removeBatch( ConstBatchPtr batch);
 
   private:
-    MediaMap media;
+    Media media;
 };
 
 }

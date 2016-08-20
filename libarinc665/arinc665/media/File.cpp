@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,13 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief @todo Add brief description.
- *
- * TODO Add detailed description.
+ * @brief Definition of class Arinc665::Media::File.
  **/
 
 #include "File.hpp"
@@ -24,16 +24,15 @@ File::File(
   const uint16_t crc,
   const uint32_t fileLength,
   const string &partNumber) :
-  PartNumberdEntity( partNumber),
-  name( name),
+  BaseFile( name, partNumber),
   crc( crc),
   fileLength( fileLength)
 {
 }
 
-const string& File::getName( void) const
+File::FileType File::getFileType( void) const
 {
-  return name;
+  return FileType::RegularFile;
 }
 
 uint16_t File::getCrc( void) const

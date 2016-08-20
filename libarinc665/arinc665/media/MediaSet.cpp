@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,11 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of class MediaSet.
+ * @brief Definition of class Arinc665::Media::MediaSet.
  **/
 
 #include "MediaSet.hpp"
@@ -19,15 +21,23 @@
 
 #include <boost/foreach.hpp>
 
-using namespace Arinc665::Media;
+namespace Arinc665 {
+namespace Media {
 
 MediaSet::MediaSet( const string &partNumber, const unsigned int numberOfMedia):
-	PartNumberdEntity( partNumber)
+	PartNumberdEntity( partNumber),
+	media( numberOfMedia)
 {
-	for (unsigned int i = 0; i < numberOfMedia; ++i)
-	{
-		addMedium();
-	}
+  if (0 == numberOfMedia)
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+      AdditionalInfo( "Invalid number of media"));
+  }
+
+  for ( unsigned int i = 0; i < numberOfMedia; ++i)
+  {
+    addMedium();
+  }
 }
 
 unsigned int MediaSet::getNumberOfMedia( void) const
@@ -36,53 +46,56 @@ unsigned int MediaSet::getNumberOfMedia( void) const
 }
 
 
-const MediaMap& MediaSet::getMedia( void) const
+const Media& MediaSet::getMedia( void) const
 {
 	return media;
 }
 
 ConstMediumPtr MediaSet::getMedium( const unsigned int index) const
 {
-	return media.at( index);
+	return media.at( index - 1);
 }
 
 MediumPtr MediaSet::getMedium( const unsigned int index)
 {
-	return media.at( index);
+	return media.at( index - 1);
 }
 
 unsigned int MediaSet::addMedium( void)
 {
-	const unsigned int newIndex = media.size() + 1;
+  if (media.size() >= 255)
+  {
+    return 0;
+  }
 
-	media.insert( std::make_pair( newIndex, std::make_shared< Medium>( newIndex)));
+  media.push_back( std::make_shared< Medium>());
 
-	return newIndex;
+	return media.size();
 }
 
-ConstFileMap MediaSet::getFiles( void) const
+ConstFiles MediaSet::getFiles( void) const
 {
-  ConstFileMap files;
+  ConstFiles files;
 
   // Iterate over all medias and add their files to a complete list.
   for ( const auto &medium : media)
   {
-    ConstFileMap mediaFiles = ConstMediumPtr( medium.second)->getFiles();
-    files.insert( mediaFiles.begin(), mediaFiles.end());
+    ConstFiles mediaFiles = static_cast< const Medium>(*medium).getFiles( true);
+    files.insert( files.end(), mediaFiles.begin(), mediaFiles.end());
   }
 
   return files;
 }
 
-FileMap MediaSet::getFiles( void)
+Files MediaSet::getFiles( void)
 {
-	FileMap files;
+	Files files;
 
-	//! Iterate over all medias and add their files to a complete list.
+	// Iterate over all medias and add their files to a complete list.
 	for (auto &medium: media)
 	{
-		FileMap mediaFiles = medium.second->getFiles();
-		files.insert( mediaFiles.begin(), mediaFiles.end());
+		Files mediaFiles = medium->getFiles( true);
+		files.insert( files.end(), mediaFiles.begin(), mediaFiles.end());
 	}
 
 	return files;
@@ -92,7 +105,7 @@ ConstFilePtr MediaSet::getFile( const string &filename) const
 {
 	for ( auto const &medium : media)
 	{
-		ConstFilePtr file( medium.second->getFile( filename));
+		ConstFilePtr file( medium->getFile( filename));
 
 		if (file)
 		{
@@ -107,7 +120,7 @@ FilePtr MediaSet::getFile( const string &filename)
 {
 	for ( auto &medium : media)
 	{
-		FilePtr file( medium.second->getFile( filename));
+		FilePtr file( medium->getFile( filename));
 
 		if (file)
 		{
@@ -118,87 +131,31 @@ FilePtr MediaSet::getFile( const string &filename)
 	return FilePtr();
 }
 
-FilePtr MediaSet::addFile(
-	MediumPtr medium,
-	const string &filename,
-	const string &path,
-	const uint16_t crc,
-	const uint32_t fileLength,
-	const string &partNumber)
+ConstLoads MediaSet::getLoads( void) const
 {
-	return medium->addFile( filename, path, crc, fileLength, partNumber);
-}
+  ConstLoads loads;
 
-FilePtr MediaSet::addFile(
-	const unsigned int mediumIndex,
-	const string &filename,
-	const string &path,
-	const uint16_t crc,
-	const uint32_t fileLength,
-	const string &partNumber)
-{
-	return getMedium( mediumIndex)->addFile(
-		filename, path, crc, fileLength, partNumber);
-}
-
-ConstLoadMap MediaSet::getLoads( void) const
-{
-	ConstLoadMap loads;
-
-	for (auto &medium : media)
-	{
-		ConstLoadMap mediaLoads = medium.second->getLoads();
-		loads.insert( mediaLoads.begin(), mediaLoads.end());
-	}
+  for (const auto & medium : media)
+  {
+    ConstLoads mediaLoads = static_cast< const Medium>(*medium).getLoads( true);
+    loads.insert( loads.end(), mediaLoads.begin(), mediaLoads.end());
+  }
 
 	return loads;
 }
 
-LoadPtr MediaSet::addLoad(
-	MediumPtr medium,
-	const string &filename,
-	const string &path,
-	const string &partNumber)
+ConstBatches MediaSet::getBatches( void) const
 {
-	return medium->addLoad( partNumber, filename, path);
+  ConstBatches batches;
+
+  for (const auto & medium : media)
+  {
+    ConstBatches mediaBatches = static_cast< const Medium>(*medium).getBatches( true);
+    batches.insert( batches.end(), mediaBatches.begin(), mediaBatches.end());
+  }
+
+  return batches;
 }
 
-LoadPtr MediaSet::addLoad(
-	const unsigned int mediumIndex,
-	const string &filename,
-	const string &path,
-	const string &partNumber)
-{
-	return getMedium( mediumIndex)->addLoad( filename, path, partNumber);
 }
-
-ConstBatchMap MediaSet::getBatches( void) const
-{
-	ConstBatchMap batches;
-
-	for (auto &medium : media)
-	{
-		ConstBatchMap mediaBatches = medium.second->getBatches();
-		batches.insert( mediaBatches.begin(), mediaBatches.end());
-	}
-
-	return batches;
-}
-
-BatchPtr MediaSet::addBatch(
-	MediumPtr medium,
-	const string &filename,
-	const string &path,
-	const string &partNumber)
-{
-	return medium->addBatch( partNumber, filename, path);
-}
-
-BatchPtr MediaSet::addBatch(
-	const unsigned int mediumIndex,
-	const string &filename,
-	const string &path,
-	const string &partNumber)
-{
-	return getMedium( mediumIndex)->addBatch( partNumber, filename, path);
 }

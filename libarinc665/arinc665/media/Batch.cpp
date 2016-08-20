@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,23 +9,28 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief @todo Add brief description.
- *
- * TODO Add detailed description.
+ * @brief Definition of class Arinc665::Media::Batch.
  **/
 
 #include "Batch.hpp"
 
-using namespace Arinc665::Media;
+namespace Arinc665 {
+namespace Media {
 
-Batch::Batch( const string &partNumber, const string &comment):
-	PartNumberdEntity( partNumber),
+Batch::Batch(
+  const string &name,
+  const string &partNumber,
+  const string &comment) :
+  BaseFile( name, partNumber),
 	comment( comment)
 {
+}
+
+Batch::FileType Batch::getFileType( void) const
+{
+  return FileType::BatchFile;
 }
 
 string Batch::getComment( void) const
@@ -44,4 +53,7 @@ BatchInfo& Batch::addBatchInfo( const string &targetHardwareId)
 	BatchInfo batchInfo( targetHardwareId);
 	batchInfos.push_back( batchInfo);
 	return batchInfos.back();
+}
+
+}
 }

@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,18 +9,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief  Declaration of class Load.
+ * @brief  Declaration of class Arinc665::Media::Load.
  **/
 
 #ifndef ARINC665_MEDIA_LOAD_HPP
 #define ARINC665_MEDIA_LOAD_HPP
 
 #include <arinc665/media/Media.hpp>
-#include <arinc665/media/PartNumberdEntity.hpp>
+#include <arinc665/media/BaseFile.hpp>
 #include <arinc665/media/File.hpp>
 
 #include <string>
@@ -31,11 +33,12 @@ using std::string;
 /**
  * @brief
  **/
-class Load: public PartNumberdEntity
+class Load: public BaseFile
 {
   public:
-    typedef std::list< WeakFilePtr> FileList;
-    typedef std::list< string> ThwIdList;
+    using FileList = std::list< WeakFilePtr>;
+    using ThwIdList = std::list< string>;
+    using UserDefinedData = std::vector< uint8_t>;
 
     /**
      * @brief
@@ -43,7 +46,9 @@ class Load: public PartNumberdEntity
      * @param[in] partNumber
      *   Part number of Load
      **/
-    Load( const string &partNumber);
+    Load( const string &name, const string &partNumber);
+
+    virtual FileType getFileType( void) const override;
 
     const ThwIdList& getTargetHardwareIdList( void) const;
 
@@ -59,15 +64,17 @@ class Load: public PartNumberdEntity
 
     void addSupportFile( const WeakFilePtr supportFile);
 
-    const std::vector< uint8_t>& getUserDefinedData( void) const;
+    const UserDefinedData& getUserDefinedData( void) const;
 
-    void setUserDefinedData( const std::vector< uint8_t> &userDefinedData);
+    UserDefinedData& getUserDefinedData( void);
+
+    void setUserDefinedData( const UserDefinedData &userDefinedData);
 
   private:
     ThwIdList targetHardwareIdList;
     FileList dataFileList;
     FileList supportFileList;
-    std::vector< uint8_t> userDefinedData;
+    UserDefinedData userDefinedData;
 };
 }
 }

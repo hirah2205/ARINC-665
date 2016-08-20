@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,22 +9,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief @todo Add brief description.
- *
- * TODO Add detailed description.
+ * @brief Definition of class Arinc665::Media::.
  **/
 
 #include "Load.hpp"
 
-using namespace Arinc665::Media;
+namespace Arinc665 {
+namespace Media {
 
-Load::Load( const string &partNumber):
-	PartNumberdEntity( partNumber)
+Load::Load( const string &name, const string &partNumber):
+  BaseFile( name, partNumber)
 {
+}
+
+Load::FileType Load::getFileType( void) const
+{
+  return FileType::LoadFile;
 }
 
 const Load::ThwIdList& Load::getTargetHardwareIdList( void) const
@@ -66,4 +72,7 @@ const std::vector< uint8_t>& Load::getUserDefinedData( void) const
 void Load::setUserDefinedData( const std::vector< uint8_t> &userDefinedData)
 {
 	this->userDefinedData = userDefinedData;
+}
+
+}
 }

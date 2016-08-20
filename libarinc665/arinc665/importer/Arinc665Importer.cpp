@@ -41,10 +41,10 @@ void Arinc665Importer::import( GetMediumHandler getMediumHandler)
 			AdditionalInfo( "Medium path does not exists"));
 	}
 
-	//! Load list of files file
+	// Load list of files file
 	path listOfFilesPath = mediumPath / Arinc665::ListOfFilesName;
 
-	//! check for existence of list of loads file
+	// check for existence of list of loads file
 	if (!boost::filesystem::is_regular( listOfFilesPath))
 	{
 		BOOST_THROW_EXCEPTION( InvalidArinc665File() <<
@@ -53,15 +53,15 @@ void Arinc665Importer::import( GetMediumHandler getMediumHandler)
 
 	FileListFile fileListFile( loadFile( listOfFilesPath));
 
-	//! create Media set
+	// create Media set
 	mediaSet = std::make_shared< Media::MediaSet>(
 		fileListFile.getMediaSetPn(),
 		fileListFile.getNumberOfMediaSetMembers());
 
-	//! Add content of medium to media set
+	// Add content of medium to media set
 	addMedium( 1, mediumPath);
 
-	//! add additional media
+	// add additional media
 	for (unsigned int mediaIndex = 2; mediaIndex < mediaSet->getNumberOfMedia(); ++mediaIndex)
 	{
 		mediumPath = getMediumHandler( mediaIndex);
@@ -78,10 +78,10 @@ void Arinc665Importer::addMedium( const unsigned int mediaIndex, const path &med
 			AdditionalInfo( "Medium path does not exists"));
 	}
 
-	//! Load list of files file
+	// Load list of files file
 	path listOfFilesPath = mediumPath / Arinc665::ListOfFilesName;
 
-	//! check for existence of list of loads file
+	// check for existence of list of loads file
 	if (!boost::filesystem::is_regular( listOfFilesPath))
 	{
 		BOOST_THROW_EXCEPTION( InvalidArinc665File() <<
@@ -90,7 +90,7 @@ void Arinc665Importer::addMedium( const unsigned int mediaIndex, const path &med
 
 	FileListFile fileListFile( loadFile( listOfFilesPath));
 
-	//! check for consistency
+	// check for consistency
 	if ((mediaSet->getPartNumber() != fileListFile.getMediaSetPn()) ||
 			(mediaSet->getNumberOfMedia() != fileListFile.getNumberOfMediaSetMembers()) ||
 			(fileListFile.getMediaSequenceNumber() != mediaIndex))
@@ -139,7 +139,7 @@ void Arinc665Importer::addMedium( const unsigned int mediaIndex, const path &med
 		}
 	}
 
-	//! iterate over data files
+	// iterate over data files
 	for ( auto &dataFile : dataFiles)
 	{
 		path dataFilePath = mediumPath / dataFile.getFilename();
@@ -148,22 +148,20 @@ void Arinc665Importer::addMedium( const unsigned int mediaIndex, const path &med
 
 		uint16_t crc = Arinc665File::calculateChecksum( rawFile, 0);
 
-		//! compare checksums
+		// compare checksums
 		if (crc != dataFile.getCrc())
 		{
 			BOOST_THROW_EXCEPTION( Arinc665Exception() <<
 				AdditionalInfo( "CRC of files invalid"));
 		}
 
-		//! add data file
-		mediaSet->addFile(
-			dataFile.getMemberSequenceNumber(),
+		// add data file
+		mediaSet->getMedium( dataFile.getMemberSequenceNumber())->addFile(
 			dataFile.getFilename(),
-			dataFile.getPathName(),
 			dataFile.getCrc());
 	}
 
-	//! iterate over load files
+	// iterate over load files
 	for ( auto &loadHeaderFileIt : loadFiles)
 	{
 		path loadHeaderFilePath = mediumPath / loadHeaderFileIt.getFilename();

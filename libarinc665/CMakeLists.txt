@@ -44,14 +44,26 @@ add_library(
   arinc665/partnumber/test/PartNumberTest.cpp
   arinc665/partnumber/test/CheckCodeTest.cpp
  
+  arinc665/media/PartNumberdEntity.hpp
   arinc665/media/PartNumberdEntity.cpp
+  arinc665/media/MediaSet.hpp
   arinc665/media/MediaSet.cpp
+  arinc665/media/ContainerEntity.hpp
+  arinc665/media/ContainerEntity.cpp
+  arinc665/media/Medium.hpp
   arinc665/media/Medium.cpp
+  arinc665/media/Directory.hpp
   arinc665/media/Directory.cpp
+  arinc665/media/BaseFile.hpp
+  arinc665/media/BaseFile.cpp
+  arinc665/media/File.hpp
   arinc665/media/File.cpp
+  arinc665/media/Load.hpp
   arinc665/media/Load.cpp
+  arinc665/media/Batch.hpp
   arinc665/media/Batch.cpp
-  arinc665/media/BatchInfo.cpp   
+  arinc665/media/BatchInfo.hpp
+  arinc665/media/BatchInfo.cpp
 
   arinc665/importer/Arinc665Importer.cpp   
 

@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,21 +9,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class Batch
+ * @brief Declaration of class Arinc665::Media::Batch
  **/
 
 #ifndef ARINC665_MEDIA_BATCH_HPP
 #define ARINC665_MEDIA_BATCH_HPP
 
 #include <arinc665/media/Media.hpp>
-#include <arinc665/media/PartNumberdEntity.hpp>
+#include <arinc665/media/BaseFile.hpp>
 #include <arinc665/media/BatchInfo.hpp>
 
-#include <string>
 #include <list>
 
 namespace Arinc665 {
@@ -28,12 +29,17 @@ namespace Media {
 /**
  * @brief
  **/
-class Batch: public PartNumberdEntity
+class Batch: public BaseFile
 {
   public:
     using BatchInfoList = std::list< BatchInfo>;
 
-    Batch( const string &partNumber, const string &comment = string());
+    Batch(
+      const string &name,
+      const string &partNumber,
+      const string &comment = string());
+
+    virtual FileType getFileType( void) const override;
 
     /**
      * @brief Get the comment, which describes the batch.
@@ -58,6 +64,7 @@ class Batch: public PartNumberdEntity
     string comment;
     BatchInfoList batchInfos;
 };
+
 }
 }
 

@@ -39,10 +39,6 @@ static void testMediaSet1( void)
 
 	BOOST_CHECK( medium->getNumberOfFiles() == 0);
 
-	BOOST_CHECK( medium->getIndex() == 0);
-
-	FilePtr file = mediaSet.addFile( medium, "FILE1", "\\", 99, 99, "PART1");
-
 	BOOST_CHECK( medium->getNumberOfFiles() == 1);
 
 	FilePtr file2 = medium->getFile( "FILE1");
@@ -50,7 +46,6 @@ static void testMediaSet1( void)
 	BOOST_CHECK( file2);
 
 	BOOST_CHECK( file2->getPartNumber() == "PART1");
-	BOOST_CHECK( file2->getCrc() == 99);
 }
 
 void testMediaSet( void)

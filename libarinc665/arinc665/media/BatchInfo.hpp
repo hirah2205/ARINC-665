@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,11 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class BatchInfo.
+ * @brief Declaration of class Arinc665::Media::BatchInfo.
  **/
 
 #ifndef ARINC665_MEDIA_BATCHINFO_HPP
@@ -21,35 +23,34 @@
 #include <string>
 #include <list>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace Media {
+
+/**
+ * @brief
+ **/
+class BatchInfo
 {
-	namespace Media
-	{
-		using std::string;
+  public:
+    using string = std::string;
+    using LoadList = std::list< WeakLoadPtr>;
 
-		/**
-		 * @brief
-		 **/
-		class BatchInfo
-		{
-			public:
-				typedef std::list< WeakLoadPtr > LoadList;
+    BatchInfo( const string &targetHardwareId);
 
-				BatchInfo( const string &targetHardwareId);
+    string getTargetHardwareId( void) const;
 
-				string getTargetHardwareId( void) const;
+    void setTargetHardwareId( const string &targetHardwareId);
 
-				void setTargetHardwareId( const string &targetHardwareId);
+    LoadList& getLoadList( void);
 
-				LoadList& getLoadList( void);
+    void addLoad( const WeakLoadPtr load);
 
-				void addLoad( const WeakLoadPtr load);
+  private:
+    string targetHardwareId;
+    LoadList loadList;
+};
 
-			private:
-				string targetHardwareId;
-				LoadList loadList;
-		};
-	}
+}
 }
 
 #endif

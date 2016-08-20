@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,11 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class PartNumberdEntity.
+ * @brief Declaration of class Arinc665::Media::PartNumberdEntity.
  **/
 
 #ifndef ARINC665_MEDIA_PARTNUMBERDENTITY_HPP
@@ -20,7 +22,6 @@
 
 namespace Arinc665 {
 namespace Media {
-using std::string;
 
 /**
  * @brief Base class for classes, which have a part number
@@ -28,6 +29,7 @@ using std::string;
 class PartNumberdEntity
 {
   public:
+    using string = std::string;
     /**
      * @brief Return the part number of the entity.
      *

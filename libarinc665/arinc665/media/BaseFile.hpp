@@ -1,0 +1,64 @@
+/*
+ * $Date$
+ * $Revision$
+ */
+/**
+ * @file
+ * @copyright
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
+ * @brief Declaration of class Arinc665::Media::BaseFile.
+ **/
+
+#ifndef ARINC665_MEDIA_BASEFILE_HPP
+#define ARINC665_MEDIA_BASEFILE_HPP
+
+#include <arinc665/media/Media.hpp>
+#include <arinc665/media/PartNumberdEntity.hpp>
+
+namespace Arinc665 {
+namespace Media {
+
+/**
+ * @brief
+ **/
+class BaseFile: public PartNumberdEntity
+{
+  public:
+    enum class FileType
+    {
+      RegularFile,
+      LoadFile,
+      BatchFile
+    };
+
+    BaseFile(
+      const string &name,
+      const string &partNumber = string());
+
+    virtual ~BaseFile( void) = default;
+
+    /**
+     * @brief Returns the name of the file.
+     *
+     * @return The name of the file.
+     **/
+    const string& getName( void) const;
+
+    //void setName( void);
+
+    virtual FileType getFileType( void) const = 0;
+
+  private:
+    //! The file name
+    const string name;
+};
+
+}
+}
+
+#endif

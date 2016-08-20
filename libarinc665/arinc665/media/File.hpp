@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,18 +9,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class File.
+ * @brief Declaration of class Arinc665::Media::File.
  **/
 
 #ifndef ARINC665_MEDIA_FILE_HPP
 #define ARINC665_MEDIA_FILE_HPP
 
 #include <arinc665/media/Media.hpp>
-#include <arinc665/media/PartNumberdEntity.hpp>
+#include <arinc665/media/BaseFile.hpp>
 
 #include <string>
 #include <cstdint>
@@ -24,12 +26,10 @@
 namespace Arinc665 {
 namespace Media {
 
-using std::string;
-
 /**
  * @brief
  **/
-class File: public PartNumberdEntity
+class File: public BaseFile
 {
   public:
     /**
@@ -58,12 +58,7 @@ class File: public PartNumberdEntity
       const uint32_t fileLength = 0,
       const string &partNumber = string());
 
-      /**
-       * @brief Returns the name of the file.
-       *
-       * @return The name of the file.
-       **/
-      const string& getName( void) const;
+    virtual FileType getFileType( void) const override;
 
     /**
      * @brief Returns the CRC of the file.
@@ -96,8 +91,6 @@ class File: public PartNumberdEntity
     void setFileLength( const uint32_t fileLength);
 
   private:
-    //! The file name
-    const string name;
     //! The CRC
     uint16_t crc;
     //! The file length
