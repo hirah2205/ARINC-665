@@ -20,25 +20,25 @@
 #include <vector>
 #include <cstdint>
 
-namespace Arinc665
-{
-	/**
-	 *
-	 **/
-	namespace File
-	{
-		//! Raw file type definition.
-		typedef std::vector< uint8_t> RawFile;
+namespace Arinc665 {
 
-		class FileFactory;
+/**
+ *
+ **/
+namespace File {
+//! Raw file type definition.
+typedef std::vector< uint8_t> RawFile;
 
-		class Arinc665File;
-		class BatchFile;
-		class LoadHeaderFile;
-		class BatchListFile;
-		class LoadListFile;
-		class FileListFile;
-	}
+class FileFactory;
+
+class Arinc665File;
+class BatchFile;
+class LoadHeaderFile;
+class BatchListFile;
+class LoadListFile;
+class FileListFile;
+
+}
 }
 
 #endif

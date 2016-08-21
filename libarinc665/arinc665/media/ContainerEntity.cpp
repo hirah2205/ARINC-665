@@ -535,7 +535,7 @@ ConstBatchPtr ContainerEntity::getBatch( const string &filename, bool recursive)
 
 BatchPtr ContainerEntity::getBatch( const string &filename, bool recursive)
 {
-  ConstFilePtr file = getFile( filename, recursive);
+  FilePtr file = getFile( filename, recursive);
 
   if (!file)
   {
