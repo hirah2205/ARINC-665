@@ -80,13 +80,16 @@ class Arinc665ImporterImpl : public Arinc665Importer
     RawFile loadFile( const path &filePath);
 
   private:
+    using LoadHeaderFiles = std::map< std::string, LoadHeaderFile>;
+    using BatchFiles = std::map< std::string, BatchFile>;
+
     //! The media set.
     MediaSetPtr mediaSet;
     boost::optional < FileListFile> fileListFile;
     boost::optional < LoadListFile> loadListFile;
     boost::optional < BatchListFile> batchListFile;
-    std::map< std::string, LoadHeaderFile> loadHeaderFiles;
-    std::map< std::string, BatchFile> batchFiles;
+    LoadHeaderFiles loadHeaderFiles;
+    BatchFiles batchFiles;
 
     FileListFile::FileMap files;
     LoadListFile::LoadMap loads;
