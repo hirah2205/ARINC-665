@@ -65,8 +65,12 @@ add_library(
   arinc665/media/BatchInfo.hpp
   arinc665/media/BatchInfo.cpp
 
-  arinc665/importer/Arinc665Importer.cpp   
-
+  arinc665/utils/Utils.hpp   
+  arinc665/utils/Arinc665Importer.hpp   
+  arinc665/utils/Arinc665Importer.cpp   
+  arinc665/utils/implementation/Arinc665ImporterImpl.hpp
+  arinc665/utils/implementation/Arinc665ImporterImpl.cpp
+  
   arinc665/media/test/MediaSetTest.cpp)
 
 target_include_directories( arinc665 SYSTEM PUBLIC ${Boost_INCLUDE_DIRS})

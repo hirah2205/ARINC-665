@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,19 +9,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author @todo Add author
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief @todo Add brief description
+ * @brief Definition of class Arinc665::Importer::Arinc665ImporterImpl.
  **/
 
-#include "Arinc665Importer.hpp"
+#include "Arinc665ImporterImpl.hpp"
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/file/FileFactory.hpp>
 
 #include <fstream>
 
-using namespace Arinc665::Importer;
+namespace Arinc665 {
+namespace Utils {
 
 using Arinc665::File::FileFactory;
 using Arinc665::File::FileListFile;
@@ -26,12 +31,12 @@ using Arinc665::File::BatchListFile;
 using Arinc665::File::LoadHeaderFile;
 using Arinc665::File::FileInfo;
 
-MediaSetPtr Arinc665Importer::getMediaSet( void)
+MediaSetPtr Arinc665ImporterImpl::getMediaSet( void)
 {
 	return mediaSet;
 }
 
-void Arinc665Importer::import( GetMediumHandler getMediumHandler)
+void Arinc665ImporterImpl::import( GetMediumHandler getMediumHandler)
 {
 	path mediumPath = getMediumHandler( 1);
 
@@ -70,7 +75,7 @@ void Arinc665Importer::import( GetMediumHandler getMediumHandler)
 	}
 }
 
-void Arinc665Importer::addMedium( const unsigned int mediaIndex, const path &mediumPath)
+void Arinc665ImporterImpl::addMedium( const unsigned int mediaIndex, const path &mediumPath)
 {
 	if (!boost::filesystem::is_directory( mediumPath))
 	{
@@ -242,7 +247,7 @@ void Arinc665Importer::addMedium( const unsigned int mediaIndex, const path &med
 	}
 }
 
-Arinc665::File::RawFile Arinc665Importer::loadFile( const path &filePath)
+Arinc665::File::RawFile Arinc665ImporterImpl::loadFile( const path &filePath)
 {
 	RawFile data( boost::filesystem::file_size( filePath));
 
@@ -261,4 +266,7 @@ Arinc665::File::RawFile Arinc665Importer::loadFile( const path &filePath)
 
 	//! return the buffer
 	return data;
+}
+
+}
 }
