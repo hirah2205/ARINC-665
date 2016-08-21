@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -16,14 +20,14 @@
 
 namespace Arinc665 {
 
-const std::string ListOfFilesName("FILES.LUM");
+const std::string ListOfFilesName( "FILES.LUM");
 
-const std::string ListOfLoadsName("LOADS.LUM");
+const std::string ListOfLoadsName( "LOADS.LUM");
 
-const std::string ListOfBatchesName("BATCHES.LUM");
+const std::string ListOfBatchesName( "BATCHES.LUM");
 
-const std::string LoadUploadHeaderExtension(".LUH");
+const std::string LoadUploadHeaderExtension( ".LUH");
 
-const std::string BatchFileExtension(".LUB");
+const std::string BatchFileExtension( ".LUB");
 
 }

@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,11 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief General definitions for the ARINC 665 implementation.
+ * @brief Declaration of namespace Arinc665.
  **/
 
 #ifndef ARINC665_ARINC665_HPP
@@ -19,14 +21,10 @@
 #include <cstdint>
 
 /**
- * @defgroup arinc_665 ARINC 665
- * @brief The implementation of the ARINC 665 standard.
- **/
-
-/**
  * @brief Namespace of ARINC 665 implementation
  *
- * @ingroup arinc_665
+ * General definitions for the ARINC 665 implementation.
+ * The implementation of the ARINC 665 standard.
  **/
 namespace Arinc665 {
 
