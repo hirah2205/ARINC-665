@@ -9,10 +9,10 @@
 
 cmake_minimum_required( VERSION 3.5)
 
-project ( "ARINC 665 applications")
+project( DataLoaderTestApps)
 
-add_subdirectory( arinc665_compiler)
-add_subdirectory( arinc665_decompiler)
-add_subdirectory( arinc665_print_files)
-add_subdirectory( arinc665_print_media_set)
-add_subdirectory( arinc665_unit_test)
+add_executable( arinc665test 
+  arinc665test.cpp
+)
+
+target_link_libraries( arinc665test arinc665 helper)
