@@ -26,15 +26,29 @@ add_library(
   arinc665/file/FileFactory.cpp
   arinc665/file/StringHelper.cpp
  
-  arinc665/file/list/LoadListFile.cpp
-  arinc665/file/list/FileInfo.cpp
-  arinc665/file/list/FileListFile.cpp
-  arinc665/file/list/LoadInfo.cpp
+  arinc665/file/list/ListFile.hpp
   arinc665/file/list/ListFile.cpp
+  arinc665/file/list/FileInfo.hpp
+  arinc665/file/list/FileInfo.cpp
+  arinc665/file/list/FileListFile.hpp
+  arinc665/file/list/FileListFile.cpp
+  arinc665/file/list/LoadInfo.hpp
+  arinc665/file/list/LoadInfo.cpp
+  arinc665/file/list/LoadListFile.hpp
+  arinc665/file/list/LoadListFile.cpp
+  arinc665/file/list/BatchInfo.hpp
+  arinc665/file/list/BatchInfo.cpp
+  arinc665/file/list/BatchListFile.hpp
+  arinc665/file/list/BatchListFile.cpp
  
   arinc665/file/load/LoadHeaderFile.cpp
   arinc665/file/load/LoadFileInfo.cpp
  
+  arinc665/file/batch/BatchFile.hpp
+  arinc665/file/batch/BatchFile.cpp
+  arinc665/file/batch/BatchLoadInfo.hpp
+  arinc665/file/batch/TargetHardwareLoad.hpp
+
   arinc665/partnumber/PartNumber.cpp
   arinc665/partnumber/TargetHardwareId.cpp
   arinc665/partnumber/ManufacturerCode.cpp

@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,13 +9,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @brief Declaration of class FileInfo
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
+ * @brief Declaration of class Arinc665::File::FileInfo.
  **/
 
 #ifndef ARINC665_FILEINFO_HPP
 #define ARINC665_FILEINFO_HPP
 
 #include <arinc665/file/File.hpp>
+
+#include <boost/filesystem/path.hpp>
 
 #include <string>
 #include <vector>
@@ -27,13 +35,15 @@ class FileInfo
 {
   public:
     using string = std::string;
+    using FileInfoList = std::vector< FileInfo>;
+    using path = boost::filesystem::path;
 
-    static std::vector< FileInfo> getFileList(
+    static FileInfoList getFileList(
       RawFile::const_iterator &it);
 
     FileInfo( void);
 
-    FileInfo( std::vector< uint8_t>::const_iterator &it);
+    FileInfo( RawFile::const_iterator &it);
 
     string getFilename( void) const;
 
@@ -43,6 +53,8 @@ class FileInfo
 
     void setPathName( const string &pathName);
 
+    path getPath( void) const;
+
     uint16_t getMemberSequenceNumber( void) const;
 
     void setMemberSequenceNumber( const uint16_t memberSequenceNumber);
@@ -50,6 +62,10 @@ class FileInfo
     uint16_t getCrc( void) const;
 
     void setCrc( const uint16_t crc);
+
+    bool operator ==( const FileInfo &other) const;
+
+    bool operator !=( const FileInfo &other) const;
 
   private:
     string filename;

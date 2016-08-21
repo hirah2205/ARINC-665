@@ -5,7 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @brief Declaration of class BatchFile
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
+ * @brief Declaration of class Arinc665::File::BatchFile
  **/
 
 #ifndef ARINC665_FILE_BATCH_HPP
@@ -18,48 +20,44 @@
 #include <string>
 #include <list>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace File {
+
+/**
+ * @brief A batch file represents a list of loads of target hardwares.
+ *
+ *
+ **/
+class BatchFile: public Arinc665File
 {
-	namespace File
-	{
-		using std::string;
+  public:
+    using ListType = std::list< TargetHardwareLoad>;
 
-		/**
-		 * @brief A batch file represents a list of loads of target hardwares.
-		 *
-		 *
-		 **/
-		class BatchFile : public Arinc665File
-		{
-			public:
-				typedef std::list< TargetHardwareLoad> ListType;
+    BatchFile( void) = default;
 
-				BatchFile( void);
+    BatchFile( const RawFile &file);
 
-				BatchFile( const RawFile &file);
+    virtual Arinc665Version getArincVersion( void) const override;
 
-				virtual Arinc665Version getArincVersion( void) const override;
+    string getPartNumber( void) const;
 
-				string getPartNumber( void) const;
+    void setPartNumber( const string &partNumber);
 
-				void setPartNumber( const string &partNumber);
+    string getComment( void) const;
 
+    void setComment( const string &comment);
 
-				string getComment( void) const;
+    const ListType& getTargetHardwareLoadList( void) const;
 
-				void setComment( const string &comment);
+    ListType& getTargetHardwareLoadList( void);
 
+  private:
+    string partNumber;
+    string comment;
+    ListType targetHardwareLoadList;
+};
 
-				const ListType& getTargetHardwareLoadList( void) const;
-
-				ListType& getTargetHardwareLoadList( void);
-
-			private:
-				string partNumber;
-				string comment;
-				ListType targetHardwareLoadList;
-		};
-	}
+}
 }
 
 #endif

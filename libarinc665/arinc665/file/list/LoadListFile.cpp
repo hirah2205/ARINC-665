@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,7 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @brief Definition of class LoadListFile
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
+ * @brief Definition of class Arinc665::File::LoadListFile.
  **/
 
 #include "LoadListFile.hpp"
@@ -103,19 +109,19 @@ unsigned int LoadListFile::getNumberOfLoads( void) const
   return loadList.size();
 }
 
-const LoadListFile::LoadListType& LoadListFile::getLoads( void) const
+const LoadListFile::LoadList& LoadListFile::getLoads( void) const
 {
   return loadList;
 }
 
-LoadListFile::LoadListType& LoadListFile::getLoads( void)
+LoadListFile::LoadList& LoadListFile::getLoads( void)
 {
   return loadList;
 }
 
-LoadListFile::LoadMapType LoadListFile::getLoadMap( void) const
+LoadListFile::LoadMap LoadListFile::getLoadMap( void) const
 {
-  LoadMapType loads;
+  LoadMap loads;
 
   for (const auto & load : loadList)
   {
@@ -128,6 +134,16 @@ LoadListFile::LoadMapType LoadListFile::getLoadMap( void) const
   }
 
   return loads;
+}
+
+const LoadListFile::UserDefinedData& LoadListFile::getUserDefinedData( void) const
+{
+  return userDefinedData;
+}
+
+void LoadListFile::setUserDefinedData( const UserDefinedData &userDefinedData)
+{
+  this->userDefinedData = userDefinedData;
 }
 
 bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const

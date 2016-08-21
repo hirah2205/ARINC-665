@@ -20,9 +20,9 @@
 using namespace Arinc665::File;
 
 LoadFileInfo::LoadFileInfoList LoadFileInfo::getFileList(
-	std::vector< uint8_t>::const_iterator &it)
+  RawFile::const_iterator &it)
 {
-	std::vector< uint8_t>::const_iterator workIt = it;
+  RawFile::const_iterator workIt = it;
 
 	std::list< LoadFileInfo> files;
 
@@ -46,9 +46,9 @@ LoadFileInfo::LoadFileInfo( void):
 {
 }
 
-LoadFileInfo::LoadFileInfo( std::vector< uint8_t>::const_iterator &it)
+LoadFileInfo::LoadFileInfo( RawFile::const_iterator &it)
 {
-	std::vector< uint8_t>::const_iterator workIt = it;
+  RawFile::const_iterator workIt = it;
 
 	// next file pointer
 	uint16_t filePointer;

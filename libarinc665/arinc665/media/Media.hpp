@@ -42,9 +42,10 @@ using MediumPtr = std::shared_ptr< Medium>;
 using Media = std::vector< MediumPtr>;
 
 class Directory;
-typedef std::shared_ptr< const Directory> ConstDirectoryPtr;
-typedef std::shared_ptr< Directory> DirectoryPtr;
-typedef std::weak_ptr< Directory> WeakDirectoryPtr;
+using ConstDirectoryPtr = std::shared_ptr< const Directory>;
+using DirectoryPtr = std::shared_ptr< Directory>;
+using WeakDirectoryPtr = std::weak_ptr< Directory>;
+
 using Directories = std::vector< DirectoryPtr>;
 using ConstDirectories = std::vector< ConstDirectoryPtr>;
 

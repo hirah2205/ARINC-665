@@ -9,10 +9,11 @@
 
 cmake_minimum_required( VERSION 3.5)
 
-project( DataLoaderTestApps)
+project( "ARINC 665 File Printer")
 
-add_executable( arinc665test 
-  arinc665test.cpp
+add_executable( 
+  arinc665_print_files 
+  arinc665_print_files.cpp
 )
 
-target_link_libraries( arinc665test arinc665 helper)
+target_link_libraries( arinc665_print_files arinc665)

@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,7 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @brief Definition of class LoadInfo
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
+ * @brief Definition of class Arinc665::File::LoadInfo.
  **/
 
 #include "LoadInfo.hpp"
@@ -18,9 +24,9 @@ namespace Arinc665 {
 namespace File {
 
 std::list< LoadInfo> LoadInfo::getLoadList(
-  std::vector< uint8_t>::const_iterator &it)
+ RawFile::const_iterator &it)
 {
-  std::vector< uint8_t>::const_iterator workIt = it;
+  RawFile::const_iterator workIt = it;
 
   std::list< LoadInfo> loadList;
 
@@ -43,9 +49,9 @@ LoadInfo::LoadInfo( void):
 {
 }
 
-LoadInfo::LoadInfo( std::vector< uint8_t>::const_iterator &it)
+LoadInfo::LoadInfo( RawFile::const_iterator &it)
 {
-  std::vector< uint8_t>::const_iterator workIt = it;
+  RawFile::const_iterator workIt = it;
 
   // next load pointer
   uint16_t loadPointer;

@@ -16,12 +16,14 @@
 
 #include "Arinc665Importer.hpp"
 
+#include <arinc665/utils/implementation/Arinc665ImporterImpl.hpp>
+
 namespace Arinc665 {
 namespace Utils {
 
 Arinc665ImporterPtr Arinc665Importer::create( void)
 {
-  return Arinc665ImporterPtr();
+  return std::make_shared< Arinc665ImporterImpl>();
 }
 
 }

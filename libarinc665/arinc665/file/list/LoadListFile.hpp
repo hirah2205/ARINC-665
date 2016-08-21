@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,7 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @brief Declaration of class LoadListFile
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
+ * @brief Declaration of class Arinc665::File::LoadListFile.
  **/
 
 #ifndef ARINC665_LOADLISTFILE_HPP
@@ -28,11 +34,10 @@ namespace File {
 class LoadListFile: public ListFile
 {
   public:
-    using UserDefinedData = std::vector< uint8_t>;
-
     //! Type definition of LoadList
-    using LoadListType = std::list< LoadInfo>;
-    using LoadMapType = std::map< std::pair< uint8_t, string>, LoadInfo>;
+    using LoadList = std::list< LoadInfo>;
+    using LoadMap = std::map< std::pair< uint8_t, string>, LoadInfo>;
+    using UserDefinedData = std::vector< uint8_t>;
 
     LoadListFile( void);
 
@@ -71,16 +76,21 @@ class LoadListFile: public ListFile
      *
      * @return The Loads.
      **/
-    const LoadListType& getLoads( void) const;
+    const LoadList& getLoads( void) const;
 
     /**
      * @brief Returns the loads.
      *
      * @return The Loads.
      **/
-    LoadListType& getLoads( void);
+    LoadList& getLoads( void);
 
-    LoadMapType getLoadMap( void) const;
+    /**
+     * @brief Returns the loads as map for easy access.
+     *
+     * @return The loads as map.
+     */
+    LoadMap getLoadMap( void) const;
 
     /**
      * @brief Returns the user defined data.
@@ -107,10 +117,11 @@ class LoadListFile: public ListFile
     //! number of media set members
     uint8_t numberOfMediaSetMembers;
     //! The load list
-    LoadListType loadList;
+    LoadList loadList;
     //! user defined data
     UserDefinedData userDefinedData;
 };
+
 }
 }
 

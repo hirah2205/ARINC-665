@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,7 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @brief Definition of class FileInfo
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
+ * @brief Definition of class Arinc665::File::FileInfo.
  **/
 
 #include "FileInfo.hpp"
@@ -14,14 +20,16 @@
 
 #include <helper/Logger.hpp>
 
+#include <algorithm>
+
 namespace Arinc665 {
 namespace File {
 
-std::vector< FileInfo> FileInfo::getFileList(
+FileInfo::FileInfoList FileInfo::getFileList(
   RawFile::const_iterator &it)
 {
   //! @todo pass iterator by value
-  std::vector< FileInfo> fileList;
+  FileInfoList fileList;
 
   // number of files
   uint16_t numberOfFiles;
@@ -41,9 +49,9 @@ FileInfo::FileInfo( void):
 {
 }
 
-FileInfo::FileInfo( std::vector< uint8_t>::const_iterator &it)
+FileInfo::FileInfo( RawFile::const_iterator &it)
 {
-  std::vector< uint8_t>::const_iterator workIt = it;
+  RawFile::const_iterator workIt = it;
 
   // next file pointer
   uint16_t filePointer;
@@ -85,6 +93,15 @@ void FileInfo::setPathName( const string &pathName)
   this->pathName = pathName;
 }
 
+FileInfo::path FileInfo::getPath( void) const
+{
+  string newPathName( pathName);
+
+  std::replace( newPathName.begin(), newPathName.end(), '\\', '/');
+
+  return path( newPathName) / filename;
+}
+
 uint16_t FileInfo::getMemberSequenceNumber( void) const
 {
   return memberSequenceNumber;
@@ -103,6 +120,20 @@ uint16_t FileInfo::getCrc( void) const
 void FileInfo::setCrc( const uint16_t crc)
 {
   this->crc = crc;
+}
+
+bool FileInfo::operator ==( const FileInfo &other) const
+{
+  return
+    (filename == other.getFilename()) &&
+    (pathName == other.getPathName()) &&
+    (memberSequenceNumber == other.getMemberSequenceNumber()) &&
+    (crc == other.getCrc());
+}
+
+bool FileInfo::operator !=( const FileInfo &other) const
+{
+  return !(*this == other);
 }
 
 }

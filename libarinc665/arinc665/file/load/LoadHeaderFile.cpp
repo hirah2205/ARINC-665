@@ -84,7 +84,7 @@ Arinc665::Arinc665Version LoadHeaderFile::getArincVersion( void) const
 	return Arinc665Version::ARINC_665_2;
 }
 
-string LoadHeaderFile::getPartNumber( void) const
+LoadHeaderFile::string LoadHeaderFile::getPartNumber( void) const
 {
 	return partNumber;
 }
@@ -124,13 +124,13 @@ LoadHeaderFile::LoadFileInfoList& LoadHeaderFile::getSupportFileList( void)
 	return supportFileList;
 }
 
-const std::vector< uint8_t>& LoadHeaderFile::getUserDefinedData( void) const
+const LoadHeaderFile::UserDefinedData& LoadHeaderFile::getUserDefinedData( void) const
 {
 	return userDefinedData;
 }
 
 void LoadHeaderFile::setUserDefinedData(
-	const std::vector< uint8_t> &userDefinedData)
+	const UserDefinedData &userDefinedData)
 {
 	this->userDefinedData = userDefinedData;
 }

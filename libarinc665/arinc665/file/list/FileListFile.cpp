@@ -11,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of class FileListFile
+ * @brief Definition of class Arinc665::File::FileListFile.
  **/
 
 #include "FileListFile.hpp"
@@ -110,19 +110,36 @@ unsigned int FileListFile::getNumberOfFiles( void) const
   return fileList.size();
 }
 
-const FileListFile::FileListType& FileListFile::getFiles( void) const
+const FileListFile::FileList& FileListFile::getFiles( void) const
 {
   return fileList;
 }
 
-FileListFile::FileListType& FileListFile::getFiles( void)
+FileListFile::FileList& FileListFile::getFiles( void)
 {
   return fileList;
 }
 
-FileListFile::FileMapType FileListFile::getFileMap( void) const
+FileListFile::FileMap FileListFile::getFileMap( void) const
 {
-  FileMapType fileMap;
+  FileMap fileMap;
+
+  for ( const auto &file : fileList)
+  {
+    fileMap.insert(
+      std::make_pair(
+        std::make_pair(
+          file.getMemberSequenceNumber(),
+          file.getFilename()),
+        file));
+  }
+
+  return fileMap;
+}
+
+FileListFile::FilePathMap FileListFile::getFilePathMap( void) const
+{
+  FilePathMap fileMap;
 
   for ( const auto &file : fileList)
   {
@@ -158,7 +175,7 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
     return false;
   }
 
-  FileListType otherFileList( other.getFiles());
+  FileList otherFileList( other.getFiles());
 
   if (fileList.size() != otherFileList.size())
   {

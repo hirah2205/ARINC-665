@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,13 +9,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @brief Declaration of class BatchInfo
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
+ * @brief Declaration of class Arinc665::File::BatchInfo.
  **/
 
 #ifndef ARINC665_FILE_BATCHINFO_HPP
 #define ARINC665_FILE_BATCHINFO_HPP
 
 #include <arinc665/file/File.hpp>
+
+#include <vector>
 
 namespace Arinc665 {
 namespace File {
@@ -20,6 +28,14 @@ class BatchInfo
 {
   public:
     using string = std::string;
+    using BatchInfoList = std::vector< BatchInfo>;
+
+    static BatchInfoList getBatchList(
+      RawFile::const_iterator &it);
+
+    BatchInfo( void);
+
+    BatchInfo( RawFile::const_iterator &it);
 
     string getPartNumber( void) const;
 
@@ -33,11 +49,16 @@ class BatchInfo
 
     void setMemberSequenceNumber( const uint16_t memberSequenceNumber);
 
+    bool operator ==( const BatchInfo &other) const;
+
+    bool operator !=( const BatchInfo &other) const;
+
   private:
     string partNumber;
     string filename;
     uint16_t memberSequenceNumber;
 };
+
 }
 }
 

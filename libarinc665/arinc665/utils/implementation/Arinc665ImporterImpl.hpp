@@ -23,12 +23,16 @@
 #include <arinc665/file/list/FileListFile.hpp>
 #include <arinc665/file/list/LoadListFile.hpp>
 #include <arinc665/file/list/BatchListFile.hpp>
+#include <arinc665/file/load/LoadHeaderFile.hpp>
+#include <arinc665/file/batch/BatchFile.hpp>
 
 
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/MediaSet.hpp>
 
 #include <boost/optional.hpp>
+
+#include <map>
 
 namespace Arinc665 {
 namespace Utils {
@@ -40,7 +44,9 @@ class Arinc665ImporterImpl : public Arinc665Importer
     using FileListFile = Arinc665::File::FileListFile;
     using LoadListFile = Arinc665::File::LoadListFile;
     using BatchListFile = Arinc665::File::BatchListFile;
-    using MediaSetPtr = Arinc665::Media::MediaSetPtr;
+    using LoadHeaderFile = Arinc665::File::LoadHeaderFile;
+    using BatchFile = Arinc665::File::BatchFile;
+    using ContainerEntityPtr = std::shared_ptr< Media::ContainerEntity>;
 
     void import( GetMediumHandler getMediumHandler);
 
@@ -55,6 +61,14 @@ class Arinc665ImporterImpl : public Arinc665Importer
     void loadLoadListFile( const unsigned int mediaIndex, const path &mediumPath);
 
     void loadBatchListFile( const unsigned int mediaIndex, const path &mediumPath);
+
+    void loadLoadHeaderFiles( const unsigned int mediaIndex, const path &mediumPath);
+
+    void loadBatchFiles( const unsigned int mediaIndex, const path &mediumPath);
+
+    void addFiles( void);
+
+    ContainerEntityPtr checkCreateDirectory( const unsigned int mediaIndex, const path &mediumPath);
 
     /**
      * @brief loads the file.
@@ -71,8 +85,12 @@ class Arinc665ImporterImpl : public Arinc665Importer
     boost::optional < FileListFile> fileListFile;
     boost::optional < LoadListFile> loadListFile;
     boost::optional < BatchListFile> batchListFile;
+    std::map< std::string, LoadHeaderFile> loadHeaderFiles;
+    std::map< std::string, BatchFile> batchFiles;
 
-    FileListFile::FileMapType files;
+    FileListFile::FileMap files;
+    LoadListFile::LoadMap loads;
+    BatchListFile::BatchMap batches;
 };
 
 }

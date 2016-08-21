@@ -18,6 +18,7 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/file/FileFactory.hpp>
+#include <arinc665/media/Directory.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -60,7 +61,7 @@ void Arinc665ImporterImpl::import( GetMediumHandler getMediumHandler)
 	  if (!boost::filesystem::is_directory( mediumPath))
 	  {
 	    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-	      AdditionalInfo( "Medium path does not exists"));
+	      AdditionalInfo( mediumPath.string() + " is not a valid medium path"));
 	  }
 
 	  addMedium( mediaIndex, mediumPath);
@@ -69,8 +70,11 @@ void Arinc665ImporterImpl::import( GetMediumHandler getMediumHandler)
 
 void Arinc665ImporterImpl::addMedium( const unsigned int mediaIndex, const path &mediumPath)
 {
-	// Load list of files file
-	//FileListFile fileListFile( loadFileListFile( mediaIndex, mediumPath / Arinc665::ListOfFilesName));
+  loadFileListFile( mediaIndex, mediumPath);
+  loadLoadListFile( mediaIndex, mediumPath);
+  loadBatchListFile( mediaIndex, mediumPath);
+  loadLoadHeaderFiles( mediaIndex, mediumPath);
+  loadBatchFiles( mediaIndex, mediumPath);
 
 #if 0
 	const FileListFile::FileListType &files = fileListFile.getFiles();
@@ -206,24 +210,29 @@ void Arinc665ImporterImpl::loadFileListFile( const unsigned int mediaIndex, cons
   if (!this->fileListFile)
   {
     this->fileListFile = fileListFile;
+    files = fileListFile.getFileMap();
   }
 
   // check for consistency
   if ((mediaSet->getPartNumber() != fileListFile.getMediaSetPn()) ||
       (mediaSet->getNumberOfMedia() != fileListFile.getNumberOfMediaSetMembers()) ||
-      (fileListFile.getMediaSequenceNumber() != mediaIndex))
+      (mediaIndex != fileListFile.getMediaSequenceNumber()))
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "Medium is not consistent to media set"));
+      AdditionalInfo(
+        (mediumPath / Arinc665::ListOfFilesName).string() +
+        " is not consistent to media set"));
   }
 
-  if (this->fileListFile.get().belongsToSameMediaSet( fileListFile))
+  if (!this->fileListFile.get().belongsToSameMediaSet( fileListFile))
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "Medium is not consistent to media set"));
+      AdditionalInfo(
+        (mediumPath / Arinc665::ListOfFilesName).string() +
+        " is not consistent to other file list"));
   }
 
-  // iterate over data files
+  // iterate over files
   for ( auto &file : fileListFile.getFiles())
   {
     if (file.getMemberSequenceNumber() != mediaIndex)
@@ -231,7 +240,7 @@ void Arinc665ImporterImpl::loadFileListFile( const unsigned int mediaIndex, cons
       continue;
     }
 
-    path dataFilePath = mediumPath / file.getPathName() / file.getFilename();
+    path dataFilePath( mediumPath / file.getPath());
 
     RawFile rawFile( loadFile( dataFilePath));
 
@@ -241,18 +250,64 @@ void Arinc665ImporterImpl::loadFileListFile( const unsigned int mediaIndex, cons
     if (crc != file.getCrc())
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-        AdditionalInfo( "CRC of files invalid"));
+        AdditionalInfo(
+          (dataFilePath).string() +
+            ": CRC of file invalid"));
     }
   }
 }
 
 void Arinc665ImporterImpl::loadLoadListFile( const unsigned int mediaIndex, const path &mediumPath)
 {
+  // Load list of loads file
+  LoadListFile loadListFile( loadFile( mediumPath / Arinc665::ListOfLoadsName));
 
+  if (!this->loadListFile)
+  {
+    this->loadListFile = loadListFile;
+  }
+
+  // check for consistency
+  if ((mediaSet->getPartNumber() != loadListFile.getMediaSetPn()) ||
+      (mediaSet->getNumberOfMedia() != loadListFile.getNumberOfMediaSetMembers()) ||
+      (loadListFile.getMediaSequenceNumber() != mediaIndex))
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo(
+        (mediumPath / Arinc665::ListOfLoadsName).string() +
+        " is not consistent to media set"));
+  }
+
+  if (!this->loadListFile.get().belongsToSameMediaSet( loadListFile))
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo(
+        (mediumPath / Arinc665::ListOfLoadsName).string() +
+        " is not consistent to other loads list"));
+  }
+
+  if (1 == mediaIndex)
+  {
+    // iterate over all loads
+    for ( auto &load : loadListFile.getLoads())
+    {
+      FileListFile::FileMap::iterator file =
+        files.find( std::make_pair(
+          load.getMemberSequenceNumber(),
+          load.getHeaderFilename()));
+
+      if (file == files.end())
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+          AdditionalInfo( load.getHeaderFilename() + ": load header file not found"));
+      }
+    }
+  }
 }
 
 void Arinc665ImporterImpl::loadBatchListFile( const unsigned int mediaIndex, const path &mediumPath)
 {
+  // Check for optional batch list file
   if (!boost::filesystem::is_regular( mediumPath / Arinc665::ListOfBatchesName))
   {
     if (mediaIndex == 1)
@@ -264,12 +319,205 @@ void Arinc665ImporterImpl::loadBatchListFile( const unsigned int mediaIndex, con
     {
       return;
     }
+
     // List Batches Files was present on first medium --> if no missing, error
     BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "Medium is not consistent to media set"));
+      AdditionalInfo(
+        (mediumPath / Arinc665::ListOfBatchesName).string() +
+        " expected but not existing"));
   }
 
+  // Load list of batches file
+  BatchListFile batchListFile( loadFile( mediumPath / Arinc665::ListOfBatchesName));
 
+  if (!this->batchListFile)
+  {
+    this->batchListFile = batchListFile;
+  }
+
+  // check for consistency
+  if ((mediaSet->getPartNumber() != batchListFile.getMediaSetPn()) ||
+      (mediaSet->getNumberOfMedia() != batchListFile.getNumberOfMediaSetMembers()) ||
+      (batchListFile.getMediaSequenceNumber() != mediaIndex))
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+       AdditionalInfo(
+         (mediumPath / Arinc665::ListOfBatchesName).string() +
+         " is not consistent to media set"));
+  }
+
+  if (!this->batchListFile.get().belongsToSameMediaSet( batchListFile))
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo(
+        (mediumPath / Arinc665::ListOfBatchesName).string() +
+        " is not consistent to other batches list"));
+  }
+
+  if (1 == mediaIndex)
+  {
+    // iterate over all batches
+    for ( auto &batch : batchListFile.getBatches())
+    {
+      FileListFile::FileMap::iterator file =
+        files.find( std::make_pair(
+          batch.getMemberSequenceNumber(),
+          batch.getFilename()));
+
+      if (file == files.end())
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+          AdditionalInfo( batch.getFilename() + ": batch file not found"));
+      }
+    }
+  }
+}
+
+void Arinc665ImporterImpl::loadLoadHeaderFiles( const unsigned int mediaIndex, const path &mediumPath)
+{
+  for ( const auto &load : loads)
+  {
+    if ( load.first.first != mediaIndex)
+    {
+      continue;
+    }
+
+    FileListFile::FileMap::const_iterator loadHeaderFileIt(
+      files.find( load.first));
+
+    if (files.end() == loadHeaderFileIt)
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+        AdditionalInfo( "Medium is not consistent to media set"));
+    }
+
+    LoadHeaderFile loadHeaderFile(
+      loadFile(
+        mediumPath /
+        loadHeaderFileIt->second.getPathName() /
+        loadHeaderFileIt->second.getFilename()));
+
+    if (loadHeaderFile.getCrc() != loadHeaderFileIt->second.getCrc())
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+        AdditionalInfo( "Medium is not consistent to media set"));
+    }
+
+    loadHeaderFiles.insert(
+      std::make_pair( loadHeaderFileIt->second.getFilename(), loadHeaderFile));
+  }
+}
+
+void Arinc665ImporterImpl::loadBatchFiles( const unsigned int mediaIndex, const path &mediumPath)
+{
+  for ( const auto &batch : batches)
+  {
+    if ( batch.first.first != mediaIndex)
+    {
+      continue;
+    }
+
+    FileListFile::FileMap::const_iterator batchFileIt(
+      files.find( batch.first));
+
+    if (files.end() == batchFileIt)
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+        AdditionalInfo( "Medium is not consistent to media set"));
+    }
+
+    BatchFile batchFile(
+      loadFile(
+        mediumPath /
+        batchFileIt->second.getPathName() /
+        batchFileIt->second.getFilename()));
+
+    if (batchFile.getCrc() != batchFileIt->second.getCrc())
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+        AdditionalInfo( "Medium is not consistent to media set"));
+    }
+
+    batchFiles.insert(
+      std::make_pair( batchFileIt->second.getFilename(), batchFile));
+  }
+}
+
+void Arinc665ImporterImpl::addFiles( void)
+{
+  FileListFile::FileMap loadHeaders;
+  FileListFile::FileMap batches;
+
+  // add not load headers and batch files
+  for ( const auto &file : files)
+  {
+    Arinc665::FileType fileType( Arinc665::File::FileFactory::getFileType( file.first.second));
+
+    switch ( fileType)
+    {
+      case Arinc665::FileType::ARINC_665_FILE_TYPE_FILE_LIST:
+      case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_LIST:
+      case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_LIST:
+        continue;
+
+      case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER:
+        loadHeaders.insert( file);
+        continue;
+
+      case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_FILE:
+        batches.insert( file);
+        continue;
+
+      default:
+        break;
+    }
+
+    ContainerEntityPtr container(
+      checkCreateDirectory( file.first.first, file.second.getPath()));
+
+    container->addFile(
+      file.second.getFilename(),
+      file.second.getCrc(),
+      0);
+  }
+
+  // loads
+  for ( const auto &file : loadHeaders)
+  {
+    LoadListFile::LoadMap::const_iterator loadHeader = loads.find( file.first);
+
+    ContainerEntityPtr container(
+      checkCreateDirectory( file.first.first, file.second.getPath()));
+
+    container->addLoad( file.second.getFilename(), loadHeader->second.getPartNumber());
+#if 0
+    for ( const auto &dataFile : loadHeader->second. getDataFileList())
+    {
+      mediaSet->getFile( dataFile.getName())->setPartNumber( dataFile.getPartNumber());
+    }
+#endif
+  }
+}
+
+Arinc665ImporterImpl::ContainerEntityPtr Arinc665ImporterImpl::checkCreateDirectory( const unsigned int mediaIndex, const path &mediumPath)
+{
+  path dirPath( mediumPath.parent_path());
+
+  Arinc665::Media::MediumPtr medium( mediaSet->getMedium( mediaIndex));
+
+  if ( dirPath == "/")
+  {
+    return medium;
+  }
+
+  ContainerEntityPtr dir = medium;
+
+  for ( path::iterator it = ++dirPath.begin(); it != dirPath.end(); ++it)
+  {
+    dir = dir->getSubDirectory( it->string());
+  }
+
+  return dir;
 }
 
 Arinc665::File::RawFile Arinc665ImporterImpl::loadFile( const path &filePath)

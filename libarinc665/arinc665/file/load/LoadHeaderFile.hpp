@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,8 +9,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
  * @brief Declaration of class Arinc665::File::LoadHeaderFile.
@@ -24,72 +26,66 @@
 #include <vector>
 #include <cstdint>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace File {
+
+/**
+ * @brief Representation of the content of an Load Upload Header file (.LUH)
+ **/
+class LoadHeaderFile: public Arinc665File
 {
-	namespace File
-	{
-		using std::string;
-		using std::vector;
+  public:
+    using string = std::string;
+    using LoadFileInfoList = std::list< LoadFileInfo>;
+    using TargetHardwareIdList = std::list< string>;
+    using UserDefinedData = std::vector< uint8_t>;
 
-		/**
-		 * @brief Representation of the content of an Load Upload Header file (.LUH)
-		 **/
-		class LoadHeaderFile : public Arinc665File
-		{
-			public:
-				typedef std::list< LoadFileInfo> LoadFileInfoList;
-				typedef std::list< string> TargetHardwareIdList;
+    LoadHeaderFile( void);
 
-				LoadHeaderFile( void);
+    LoadHeaderFile( const RawFile &file);
 
-				LoadHeaderFile( const RawFile &file);
+    virtual Arinc665Version getArincVersion( void) const override;
 
-				virtual Arinc665Version getArincVersion( void) const override;
+    string getPartNumber( void) const;
 
-				string getPartNumber( void) const;
+    void setPartNumber( const string &partNumber);
 
-				void setPartNumber( const string &partNumber);
+    const TargetHardwareIdList& getTargetHardwareIdList( void) const;
 
+    TargetHardwareIdList& getTargetHardwareIdList( void);
 
-				const TargetHardwareIdList& getTargetHardwareIdList( void) const;
+    const LoadFileInfoList& getDataFileList( void) const;
 
-				TargetHardwareIdList& getTargetHardwareIdList( void);
+    LoadFileInfoList& getDataFileList( void);
 
+    const LoadFileInfoList& getSupportFileList( void) const;
 
-				const LoadFileInfoList& getDataFileList( void) const;
+    LoadFileInfoList& getSupportFileList( void);
 
-				LoadFileInfoList& getDataFileList( void);
+    const UserDefinedData& getUserDefinedData( void) const;
 
+    void setUserDefinedData( const UserDefinedData &userDefinedData);
 
-				const LoadFileInfoList& getSupportFileList( void) const;
+    uint32_t getLoadCrc( void) const;
 
-				LoadFileInfoList& getSupportFileList( void);
+    void setLoadCrc( const uint32_t loadCrc);
 
+  private:
+    //! Part number of the load
+    string partNumber;
+    //! List of compatible target hardware IDs
+    TargetHardwareIdList targetHardwareIdList;
+    //! List of data files
+    LoadFileInfoList dataFileList;
+    //! List of Support files
+    LoadFileInfoList supportFileList;
+    //! User defined data
+    UserDefinedData userDefinedData;
+    //! CRC of the complete load
+    uint32_t loadCrc;
+};
 
-				const std::vector< uint8_t>& getUserDefinedData( void) const;
-
-				void setUserDefinedData( const std::vector< uint8_t> &userDefinedData);
-
-
-				uint32_t getLoadCrc( void) const;
-
-				void setLoadCrc( const uint32_t loadCrc);
-
-			private:
-				//! Part number of the load
-				string partNumber;
-				//! List of compatible target hardware IDs
-				TargetHardwareIdList  targetHardwareIdList;
-				//! List of data files
-				LoadFileInfoList dataFileList;
-				//! List of Support files
-				LoadFileInfoList supportFileList;
-				//! User defined data
-				vector< uint8_t> userDefinedData;
-				//! CRC of the complete load
-				uint32_t loadCrc;
-		};
-	}
+}
 }
 
 #endif

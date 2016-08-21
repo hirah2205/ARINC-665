@@ -25,8 +25,7 @@ namespace Arinc665 {
 namespace Media {
 
 MediaSet::MediaSet( const string &partNumber, const unsigned int numberOfMedia):
-	PartNumberdEntity( partNumber),
-	media( numberOfMedia)
+	PartNumberdEntity( partNumber)
 {
   if (0 == numberOfMedia)
   {
@@ -53,11 +52,15 @@ const Media& MediaSet::getMedia( void) const
 
 ConstMediumPtr MediaSet::getMedium( const unsigned int index) const
 {
+  assert( media.at( index - 1));
+
 	return media.at( index - 1);
 }
 
 MediumPtr MediaSet::getMedium( const unsigned int index)
 {
+  assert( media.at( index - 1));
+
 	return media.at( index - 1);
 }
 
@@ -142,6 +145,19 @@ ConstLoads MediaSet::getLoads( void) const
   }
 
 	return loads;
+}
+
+Loads MediaSet::getLoads( void)
+{
+  Loads loads;
+
+  for (const auto & medium : media)
+  {
+    Loads mediaLoads =medium->getLoads( true);
+    loads.insert( loads.end(), mediaLoads.begin(), mediaLoads.end());
+  }
+
+  return loads;
 }
 
 ConstBatches MediaSet::getBatches( void) const

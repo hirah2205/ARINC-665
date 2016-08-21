@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,7 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @brief Declaration of class BatchListFile
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
+ * @brief Declaration of class Arinc665::File::BatchListFile.
  **/
 
 #ifndef ARINC665_BATCHLISTFILE_HPP
@@ -14,6 +20,10 @@
 #include <arinc665/file/File.hpp>
 #include <arinc665/file/list/ListFile.hpp>
 #include <arinc665/file/list/BatchInfo.hpp>
+
+#include <list>
+#include <vector>
+#include <map>
 
 namespace Arinc665 {
 namespace File {
@@ -25,7 +35,9 @@ namespace File {
 class BatchListFile: public ListFile
 {
   public:
-    typedef std::list< BatchInfo> BatchList;
+    using BatchList = BatchInfo::BatchInfoList;
+    using BatchMap = std::map< std::pair< uint8_t, string>, BatchInfo>;
+    using UserDefinedData = std::vector< uint8_t>;
 
     BatchListFile( void);
 
@@ -59,6 +71,23 @@ class BatchListFile: public ListFile
 
     BatchList& getBatches( void);
 
+    BatchMap getBatchesMap( void) const;
+
+    /**
+     * @brief Returns the user defined data.
+     *
+     * @return The user defined data.
+     **/
+    const UserDefinedData& getUserDefinedData( void) const;
+
+    /**
+     * @brief Updates the user defined data.
+     *
+     * @param[in] userDefinedData
+     *   The user defined data.
+     **/
+    void setUserDefinedData( const UserDefinedData &userDefinedData);
+
     bool belongsToSameMediaSet( const BatchListFile &other) const;
 
   private:
@@ -66,6 +95,8 @@ class BatchListFile: public ListFile
     uint8_t mediaSequenceNumber;
     uint8_t numberOfMediaSetMembers;
     BatchList batchList;
+    //! user defined data
+    UserDefinedData userDefinedData;
 };
 }
 }

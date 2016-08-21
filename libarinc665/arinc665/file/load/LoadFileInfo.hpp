@@ -22,56 +22,57 @@
 #include <list>
 #include <cstdint>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace File {
+
+/**
+ * @brief the File information within the file list of the load upload header.
+ **/
+class LoadFileInfo
 {
-	namespace File
-	{
-		using std::string;
+  public:
+    using string = std::string;
 
-		/**
-		 * @brief the File information within the file list of the load upload header.
-		 **/
-		class LoadFileInfo
-		{
-			public:
-				//
-				typedef std::list< LoadFileInfo> LoadFileInfoList;
+    //
+    using LoadFileInfoList = std::list< LoadFileInfo>;
 
-				static LoadFileInfoList getFileList( std::vector< uint8_t>::const_iterator &it);
+    static LoadFileInfoList getFileList(
+      RawFile::const_iterator &it);
 
-				LoadFileInfo( void);
+    LoadFileInfo( void);
 
-				LoadFileInfo(
-					const string &name,
-					const string partNumber,
-					const uint32_t length,
-					const uint16_t crc);
+    LoadFileInfo(
+      const string &name,
+      const string partNumber,
+      const uint32_t length,
+      const uint16_t crc);
 
-				LoadFileInfo( std::vector< uint8_t>::const_iterator &it);
+    LoadFileInfo( RawFile::const_iterator &it);
 
-				string getName( void) const;
-				void setName( const string &name);
+    string getName( void) const;
+    void setName( const string &name);
 
-				string getPartNumber( void) const;
-				void setPartNumber( const string &partNumber);
+    string getPartNumber( void) const;
+    void setPartNumber( const string &partNumber);
 
-				uint32_t getLength( void) const;
-				void setLength( uint32_t length);
+    uint32_t getLength( void) const;
+    void setLength( uint32_t length);
 
-				uint16_t getCrc( void) const;
-				void setCrc( const uint16_t crc);
+    uint16_t getCrc( void) const;
+    void setCrc( const uint16_t crc);
 
-			private:
-				//! Filename
-				string name;
-				//! File part number
-				string partNumber;
-				//! File length
-				uint32_t length;
-				//! File CRC
-				uint16_t crc;
-		};
-	}
+  private:
+    //! Filename
+    string name;
+    //! File part number
+    string partNumber;
+    //! File length
+    uint32_t length;
+    //! File CRC
+    uint16_t crc;
+};
+
+}
 }
 
 #endif

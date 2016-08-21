@@ -11,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class FileListFile
+ * @brief Declaration of class Arinc665::File::FileListFile
  **/
 
 #ifndef ARINC665_FILELISTFILE_HPP
@@ -37,9 +37,10 @@ namespace File {
 class FileListFile: public ListFile
 {
   public:
-    using FileListType = std::vector< FileInfo>;
+    using FileList = FileInfo::FileInfoList;
     using path = boost::filesystem::path;
-    using FileMapType = std::map< std::pair< unsigned int, path>, FileInfo>;
+    using FileMap = std::map< std::pair< unsigned int, string>, FileInfo>;
+    using FilePathMap= std::map< std::pair< unsigned int, path>, FileInfo>;
     using UserDefinedData = std::vector< uint8_t>;
 
     FileListFile( void);
@@ -74,11 +75,13 @@ class FileListFile: public ListFile
      **/
     unsigned int getNumberOfFiles( void) const;
 
-    const FileListType& getFiles( void) const;
+    const FileList& getFiles( void) const;
 
-    FileListType& getFiles( void);
+    FileList& getFiles( void);
 
-    FileMapType getFileMap( void) const;
+    FileMap getFileMap( void) const;
+
+    FilePathMap getFilePathMap( void) const;
 
     const UserDefinedData& getUserDefinedData( void) const;
 
@@ -90,7 +93,7 @@ class FileListFile: public ListFile
     string mediaSetPn;
     uint8_t mediaSequenceNumber;
     uint8_t numberOfMediaSetMembers;
-    FileListType fileList;
+    FileList fileList;
     UserDefinedData userDefinedData;
 };
 
