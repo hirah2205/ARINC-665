@@ -106,5 +106,19 @@ LoadInfo::ThwIds& LoadInfo::getTargetHardwareIdList( void)
   return targetHardwareIds;
 }
 
+bool LoadInfo::operator ==( const LoadInfo &other) const
+{
+  return
+    (partNumber == other.getPartNumber()) &&
+    (headerFilename == other.getHeaderFilename()) &&
+    (memberSequenceNumber == other.getMemberSequenceNumber()) &&
+    (targetHardwareIds == other.getTargetHardwareIdList());
+}
+
+bool LoadInfo::operator !=( const LoadInfo &other) const
+{
+  return !(*this == other);
+}
+
 }
 }

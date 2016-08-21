@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,12 +9,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
  * @brief Definition of class FileListFile
  **/
 
 #include "FileListFile.hpp"
 
 #include <arinc665/file/StringHelper.hpp>
+#include <arinc665/file/FileFactory.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -103,25 +110,90 @@ unsigned int FileListFile::getNumberOfFiles( void) const
   return fileList.size();
 }
 
-const FileListFile::ListType& FileListFile::getFiles( void) const
+const FileListFile::FileListType& FileListFile::getFiles( void) const
 {
   return fileList;
 }
 
-FileListFile::ListType& FileListFile::getFiles( void)
+FileListFile::FileListType& FileListFile::getFiles( void)
 {
   return fileList;
 }
 
-const std::vector< uint8_t>& FileListFile::getUserDefinedData( void) const
+FileListFile::FileMapType FileListFile::getFileMap( void) const
+{
+  FileMapType fileMap;
+
+  for ( const auto &file : fileList)
+  {
+    fileMap.insert(
+      std::make_pair(
+        std::make_pair(
+          file.getMemberSequenceNumber(),
+          path( file.getPathName()) / file.getFilename()),
+        file));
+  }
+
+  return fileMap;
+}
+
+const FileListFile::UserDefinedData& FileListFile::getUserDefinedData( void) const
 {
   return userDefinedData;
 }
 
 void FileListFile::setUserDefinedData(
-  const std::vector< uint8_t> &userDefinedData)
+  const UserDefinedData &userDefinedData)
 {
   this->userDefinedData = userDefinedData;
+}
+
+bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
+{
+  if (
+    (mediaSetPn != other.getMediaSetPn()) ||
+    (numberOfMediaSetMembers != other.getNumberOfMediaSetMembers()) ||
+    (userDefinedData != other.getUserDefinedData()))
+  {
+    return false;
+  }
+
+  FileListType otherFileList( other.getFiles());
+
+  if (fileList.size() != otherFileList.size())
+  {
+    return false;
+  }
+
+  for ( unsigned int i = 0; i < fileList.size(); ++i)
+  {
+    if (
+      (fileList[i].getFilename() != otherFileList[i].getFilename()) ||
+      (fileList[i].getPathName() != otherFileList[i].getPathName()))
+    {
+      return false;
+    }
+
+    switch ( FileFactory::getFileType( fileList[i].getFilename()))
+    {
+      case FileType::ARINC_665_FILE_TYPE_LOAD_LIST:
+      case FileType::ARINC_665_FILE_TYPE_BATCH_LIST:
+        // skip test of CRC and Member Sequence Number
+        break;
+
+      default:
+        if (
+          (fileList[i].getCrc() != otherFileList[i].getCrc()) ||
+          (fileList[i].getMemberSequenceNumber() != otherFileList[i].getMemberSequenceNumber()))
+        {
+          return false;
+        }
+
+        break;
+    }
+  }
+
+  return true;
 }
 
 }

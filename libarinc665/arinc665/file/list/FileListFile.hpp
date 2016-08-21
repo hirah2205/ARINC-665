@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,7 +9,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
  * @brief Declaration of class FileListFile
  **/
@@ -17,7 +21,10 @@
 #include <arinc665/file/list/ListFile.hpp>
 #include <arinc665/file/list/FileInfo.hpp>
 
+#include <boost/filesystem.hpp>
+
 #include <vector>
+#include <map>
 #include <cstdint>
 
 namespace Arinc665 {
@@ -30,7 +37,10 @@ namespace File {
 class FileListFile: public ListFile
 {
   public:
-    using ListType = std::list< FileInfo>;
+    using FileListType = std::vector< FileInfo>;
+    using path = boost::filesystem::path;
+    using FileMapType = std::map< std::pair< unsigned int, path>, FileInfo>;
+    using UserDefinedData = std::vector< uint8_t>;
 
     FileListFile( void);
 
@@ -57,23 +67,33 @@ class FileListFile: public ListFile
     //! @copydoc ListFile::setNumberOfMediaSetMembers
     virtual void setNumberOfMediaSetMembers( const uint8_t numberOfMediaSetMembers) override;
 
+    /**
+     * @brief Returns the number of files.
+     *
+     * @return The number of files.
+     **/
     unsigned int getNumberOfFiles( void) const;
 
-    const ListType& getFiles( void) const;
+    const FileListType& getFiles( void) const;
 
-    ListType& getFiles( void);
+    FileListType& getFiles( void);
 
-    const std::vector< uint8_t>& getUserDefinedData( void) const;
+    FileMapType getFileMap( void) const;
 
-    void setUserDefinedData( const std::vector< uint8_t> &userDefinedData);
+    const UserDefinedData& getUserDefinedData( void) const;
+
+    void setUserDefinedData( const UserDefinedData &userDefinedData);
+
+    bool belongsToSameMediaSet( const FileListFile &other) const;
 
   private:
     string mediaSetPn;
     uint8_t mediaSequenceNumber;
     uint8_t numberOfMediaSetMembers;
-    ListType fileList;
-    std::vector< uint8_t> userDefinedData;
+    FileListType fileList;
+    UserDefinedData userDefinedData;
 };
+
 }
 }
 

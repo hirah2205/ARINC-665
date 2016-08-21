@@ -15,6 +15,9 @@
 #include <arinc665/file/list/ListFile.hpp>
 #include <arinc665/file/list/LoadInfo.hpp>
 
+#include <vector>
+#include <map>
+
 namespace Arinc665 {
 namespace File {
 
@@ -28,7 +31,8 @@ class LoadListFile: public ListFile
     using UserDefinedData = std::vector< uint8_t>;
 
     //! Type definition of LoadList
-    typedef std::list< LoadInfo> ListType;
+    using LoadListType = std::list< LoadInfo>;
+    using LoadMapType = std::map< std::pair< uint8_t, string>, LoadInfo>;
 
     LoadListFile( void);
 
@@ -67,14 +71,16 @@ class LoadListFile: public ListFile
      *
      * @return The Loads.
      **/
-    const ListType& getLoads( void) const;
+    const LoadListType& getLoads( void) const;
 
     /**
      * @brief Returns the loads.
      *
      * @return The Loads.
      **/
-    ListType& getLoads( void);
+    LoadListType& getLoads( void);
+
+    LoadMapType getLoadMap( void) const;
 
     /**
      * @brief Returns the user defined data.
@@ -91,6 +97,8 @@ class LoadListFile: public ListFile
      **/
     void setUserDefinedData( const UserDefinedData &userDefinedData);
 
+    bool belongsToSameMediaSet( const LoadListFile &other) const;
+
   private:
     //! Media set part number
     string mediaSetPn;
@@ -99,7 +107,7 @@ class LoadListFile: public ListFile
     //! number of media set members
     uint8_t numberOfMediaSetMembers;
     //! The load list
-    ListType loadList;
+    LoadListType loadList;
     //! user defined data
     UserDefinedData userDefinedData;
 };

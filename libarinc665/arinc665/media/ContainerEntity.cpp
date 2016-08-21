@@ -592,6 +592,21 @@ void ContainerEntity::removeBatch( ConstBatchPtr batch)
   removeFile( batch);
 }
 
+ConstFiles ContainerEntity::getFiles( BaseFile::FileType fileType) const
+{
+  ConstFiles result;
+
+  for ( auto & file : files)
+  {
+    if ( file->getFileType() == fileType)
+    {
+      result.push_back( file);
+    }
+  }
+
+  return result;
+}
+
 Files ContainerEntity::getFiles( BaseFile::FileType fileType)
 {
   Files result;

@@ -59,6 +59,8 @@ class BatchListFile: public ListFile
 
     BatchList& getBatches( void);
 
+    bool belongsToSameMediaSet( const BatchListFile &other) const;
+
   private:
     string mediaSetPn;
     uint8_t mediaSequenceNumber;

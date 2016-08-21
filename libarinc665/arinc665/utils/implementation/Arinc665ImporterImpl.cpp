@@ -19,19 +19,14 @@
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/file/FileFactory.hpp>
 
+#include <helper/Logger.hpp>
+
 #include <fstream>
 
 namespace Arinc665 {
 namespace Utils {
 
-using Arinc665::File::FileFactory;
-using Arinc665::File::FileListFile;
-using Arinc665::File::LoadListFile;
-using Arinc665::File::BatchListFile;
-using Arinc665::File::LoadHeaderFile;
-using Arinc665::File::FileInfo;
-
-MediaSetPtr Arinc665ImporterImpl::getMediaSet( void)
+Arinc665ImporterImpl::MediaSetPtr Arinc665ImporterImpl::getMediaSet( void)
 {
 	return mediaSet;
 }
@@ -47,16 +42,7 @@ void Arinc665ImporterImpl::import( GetMediumHandler getMediumHandler)
 	}
 
 	// Load list of files file
-	path listOfFilesPath = mediumPath / Arinc665::ListOfFilesName;
-
-	// check for existence of list of loads file
-	if (!boost::filesystem::is_regular( listOfFilesPath))
-	{
-		BOOST_THROW_EXCEPTION( InvalidArinc665File() <<
-			AdditionalInfo( listOfFilesPath.string() + std::string( " not found")));
-	}
-
-	FileListFile fileListFile( loadFile( listOfFilesPath));
+	FileListFile fileListFile( loadFile( mediumPath / Arinc665::ListOfFilesName));
 
 	// create Media set
 	mediaSet = std::make_shared< Media::MediaSet>(
@@ -71,40 +57,23 @@ void Arinc665ImporterImpl::import( GetMediumHandler getMediumHandler)
 	{
 		mediumPath = getMediumHandler( mediaIndex);
 
-		addMedium( mediaIndex, mediumPath);
+	  if (!boost::filesystem::is_directory( mediumPath))
+	  {
+	    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+	      AdditionalInfo( "Medium path does not exists"));
+	  }
+
+	  addMedium( mediaIndex, mediumPath);
 	}
 }
 
 void Arinc665ImporterImpl::addMedium( const unsigned int mediaIndex, const path &mediumPath)
 {
-	if (!boost::filesystem::is_directory( mediumPath))
-	{
-		BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-			AdditionalInfo( "Medium path does not exists"));
-	}
-
 	// Load list of files file
-	path listOfFilesPath = mediumPath / Arinc665::ListOfFilesName;
+	//FileListFile fileListFile( loadFileListFile( mediaIndex, mediumPath / Arinc665::ListOfFilesName));
 
-	// check for existence of list of loads file
-	if (!boost::filesystem::is_regular( listOfFilesPath))
-	{
-		BOOST_THROW_EXCEPTION( InvalidArinc665File() <<
-			AdditionalInfo( Arinc665::ListOfFilesName + std::string( " not found")));
-	}
-
-	FileListFile fileListFile( loadFile( listOfFilesPath));
-
-	// check for consistency
-	if ((mediaSet->getPartNumber() != fileListFile.getMediaSetPn()) ||
-			(mediaSet->getNumberOfMedia() != fileListFile.getNumberOfMediaSetMembers()) ||
-			(fileListFile.getMediaSequenceNumber() != mediaIndex))
-	{
-		BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-			AdditionalInfo( "Medium is not consistent to media set"));
-	}
-
-	const FileListFile::ListType &files = fileListFile.getFiles();
+#if 0
+	const FileListFile::FileListType &files = fileListFile.getFiles();
 	FileListFile::ListType dataFiles;
 	FileListFile::ListType loadFiles;
 	FileListFile::ListType batchFiles;
@@ -114,6 +83,8 @@ void Arinc665ImporterImpl::addMedium( const unsigned int mediaIndex, const path 
 	// iterate over all files
 	for ( auto &file : files)
 	{
+	  using Arinc665::File::FileFactory;
+
 		switch (FileFactory::getFileType( file.getFilename()))
 		{
 			case FileType::ARINC_665_FILE_TYPE_BATCH_FILE:
@@ -144,27 +115,6 @@ void Arinc665ImporterImpl::addMedium( const unsigned int mediaIndex, const path 
 		}
 	}
 
-	// iterate over data files
-	for ( auto &dataFile : dataFiles)
-	{
-		path dataFilePath = mediumPath / dataFile.getFilename();
-
-		RawFile rawFile( loadFile( dataFilePath));
-
-		uint16_t crc = Arinc665File::calculateChecksum( rawFile, 0);
-
-		// compare checksums
-		if (crc != dataFile.getCrc())
-		{
-			BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-				AdditionalInfo( "CRC of files invalid"));
-		}
-
-		// add data file
-		mediaSet->getMedium( dataFile.getMemberSequenceNumber())->addFile(
-			dataFile.getFilename(),
-			dataFile.getCrc());
-	}
 
 	// iterate over load files
 	for ( auto &loadHeaderFileIt : loadFiles)
@@ -245,11 +195,93 @@ void Arinc665ImporterImpl::addMedium( const unsigned int mediaIndex, const path 
 		//! add user defined data part
 		load->setUserDefinedData( loadHeaderFile.getUserDefinedData());
 	}
+#endif
+}
+
+void Arinc665ImporterImpl::loadFileListFile( const unsigned int mediaIndex, const path &mediumPath)
+{
+  // Load list of files file
+  FileListFile fileListFile( loadFile( mediumPath / Arinc665::ListOfFilesName));
+
+  if (!this->fileListFile)
+  {
+    this->fileListFile = fileListFile;
+  }
+
+  // check for consistency
+  if ((mediaSet->getPartNumber() != fileListFile.getMediaSetPn()) ||
+      (mediaSet->getNumberOfMedia() != fileListFile.getNumberOfMediaSetMembers()) ||
+      (fileListFile.getMediaSequenceNumber() != mediaIndex))
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo( "Medium is not consistent to media set"));
+  }
+
+  if (this->fileListFile.get().belongsToSameMediaSet( fileListFile))
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo( "Medium is not consistent to media set"));
+  }
+
+  // iterate over data files
+  for ( auto &file : fileListFile.getFiles())
+  {
+    if (file.getMemberSequenceNumber() != mediaIndex)
+    {
+      continue;
+    }
+
+    path dataFilePath = mediumPath / file.getPathName() / file.getFilename();
+
+    RawFile rawFile( loadFile( dataFilePath));
+
+    uint16_t crc = File::Arinc665File::calculateChecksum( rawFile, 0);
+
+    // compare checksums
+    if (crc != file.getCrc())
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+        AdditionalInfo( "CRC of files invalid"));
+    }
+  }
+}
+
+void Arinc665ImporterImpl::loadLoadListFile( const unsigned int mediaIndex, const path &mediumPath)
+{
+
+}
+
+void Arinc665ImporterImpl::loadBatchListFile( const unsigned int mediaIndex, const path &mediumPath)
+{
+  if (!boost::filesystem::is_regular( mediumPath / Arinc665::ListOfBatchesName))
+  {
+    if (mediaIndex == 1)
+    {
+      return;
+    }
+
+    if (batchListFile)
+    {
+      return;
+    }
+    // List Batches Files was present on first medium --> if no missing, error
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo( "Medium is not consistent to media set"));
+  }
+
+
 }
 
 Arinc665::File::RawFile Arinc665ImporterImpl::loadFile( const path &filePath)
 {
-	RawFile data( boost::filesystem::file_size( filePath));
+  if (!boost::filesystem::is_regular( filePath))
+  {
+    //! @throw Arinc665Exception
+    BOOST_THROW_EXCEPTION(
+      Arinc665Exception() << AdditionalInfo( filePath.string() + " not found"));
+  }
+
+  RawFile data( boost::filesystem::file_size( filePath));
 
 	std::ifstream file(
 		filePath.string().c_str(),
@@ -257,14 +289,15 @@ Arinc665::File::RawFile Arinc665ImporterImpl::loadFile( const path &filePath)
 
 	if (!file.is_open())
 	{
+    //! @throw Arinc665Exception
 		BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
 			AdditionalInfo( "Error opening files"));
 	}
 
-	//! read the data to the buffer
+	// read the data to the buffer
 	file.read( (char*)&data.at(0), data.size());
 
-	//! return the buffer
+	// return the buffer
 	return data;
 }
 

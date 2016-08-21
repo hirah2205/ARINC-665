@@ -17,11 +17,11 @@
 namespace Arinc665 {
 namespace File {
 
-std::list< FileInfo> FileInfo::getFileList(
-  std::vector< uint8_t>::const_iterator &it)
+std::vector< FileInfo> FileInfo::getFileList(
+  RawFile::const_iterator &it)
 {
   //! @todo pass iterator by value
-  std::list< FileInfo> fileList;
+  std::vector< FileInfo> fileList;
 
   // number of files
   uint16_t numberOfFiles;
@@ -75,12 +75,12 @@ void FileInfo::setFilename( const string &filename)
   this->filename = filename;
 }
 
-std::string FileInfo::getPathName( void) const
+FileInfo::string FileInfo::getPathName( void) const
 {
   return pathName;
 }
 
-void FileInfo::setPathName( const std::string &pathName)
+void FileInfo::setPathName( const string &pathName)
 {
   this->pathName = pathName;
 }

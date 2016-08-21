@@ -34,9 +34,7 @@ class Arinc665Importer
     using MediaSetPtr = Arinc665::Media::MediaSetPtr;
     using path = boost::filesystem::path;
 
-    using GetMedium = path (*)( unsigned int mediumNumber);
-
-    using GetMediumHandler = std::function< GetMedium>;
+    using GetMediumHandler = std::function< path( uint8_t mediumNumber)>;
 
     static Arinc665ImporterPtr create( void);
 

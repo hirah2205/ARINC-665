@@ -103,14 +103,40 @@ unsigned int LoadListFile::getNumberOfLoads( void) const
   return loadList.size();
 }
 
-const LoadListFile::ListType& LoadListFile::getLoads( void) const
+const LoadListFile::LoadListType& LoadListFile::getLoads( void) const
 {
   return loadList;
 }
 
-LoadListFile::ListType& LoadListFile::getLoads( void)
+LoadListFile::LoadListType& LoadListFile::getLoads( void)
 {
   return loadList;
+}
+
+LoadListFile::LoadMapType LoadListFile::getLoadMap( void) const
+{
+  LoadMapType loads;
+
+  for (const auto & load : loadList)
+  {
+    loads.insert(
+      std::make_pair(
+        std::make_pair(
+          load.getMemberSequenceNumber(),
+          load.getHeaderFilename()),
+        load));
+  }
+
+  return loads;
+}
+
+bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
+{
+  return
+    (mediaSetPn == other.getMediaSetPn()) &&
+    (numberOfMediaSetMembers == other.getNumberOfMediaSetMembers()) &&
+    (loadList == other.getLoads()) &&
+    (userDefinedData == other.getUserDefinedData());
 }
 
 }

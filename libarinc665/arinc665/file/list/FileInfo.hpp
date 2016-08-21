@@ -14,7 +14,6 @@
 #include <arinc665/file/File.hpp>
 
 #include <string>
-#include <list>
 #include <vector>
 #include <cstdint>
 
@@ -29,8 +28,8 @@ class FileInfo
   public:
     using string = std::string;
 
-    static std::list< FileInfo> getFileList(
-      std::vector< uint8_t>::const_iterator &it);
+    static std::vector< FileInfo> getFileList(
+      RawFile::const_iterator &it);
 
     FileInfo( void);
 

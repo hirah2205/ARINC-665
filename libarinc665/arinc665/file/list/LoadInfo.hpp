@@ -54,6 +54,9 @@ class LoadInfo
 
     ThwIds& getTargetHardwareIdList( void);
 
+    bool operator ==( const LoadInfo &other) const;
+
+    bool operator !=( const LoadInfo &other) const;
   private:
     string partNumber;
     string headerFilename;

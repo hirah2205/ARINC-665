@@ -20,25 +20,28 @@
 #include <arinc665/utils/Arinc665Importer.hpp>
 
 
-#include <arinc665/file/Arinc665File.hpp>
+#include <arinc665/file/list/FileListFile.hpp>
+#include <arinc665/file/list/LoadListFile.hpp>
+#include <arinc665/file/list/BatchListFile.hpp>
+
 
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/MediaSet.hpp>
 
-#include <boost/filesystem.hpp>
-
-#include <functional>
+#include <boost/optional.hpp>
 
 namespace Arinc665 {
 namespace Utils {
 
-using Arinc665::File::RawFile;
-using Arinc665::File::Arinc665File;
-using Arinc665::Media::MediaSetPtr;
-
 class Arinc665ImporterImpl : public Arinc665Importer
 {
   public:
+    using RawFile = Arinc665::File::RawFile;
+    using FileListFile = Arinc665::File::FileListFile;
+    using LoadListFile = Arinc665::File::LoadListFile;
+    using BatchListFile = Arinc665::File::BatchListFile;
+    using MediaSetPtr = Arinc665::Media::MediaSetPtr;
+
     void import( GetMediumHandler getMediumHandler);
 
     MediaSetPtr getMediaSet( void);
@@ -47,11 +50,29 @@ class Arinc665ImporterImpl : public Arinc665Importer
 
     void addMedium( const unsigned int mediaIndex, const path &mediumPath);
 
+    void loadFileListFile( const unsigned int mediaIndex, const path &mediumPath);
+
+    void loadLoadListFile( const unsigned int mediaIndex, const path &mediumPath);
+
+    void loadBatchListFile( const unsigned int mediaIndex, const path &mediumPath);
+
+    /**
+     * @brief loads the file.
+     *
+     * @param filePath
+     *
+     * @return
+     **/
     RawFile loadFile( const path &filePath);
 
   private:
     //! The media set.
     MediaSetPtr mediaSet;
+    boost::optional < FileListFile> fileListFile;
+    boost::optional < LoadListFile> loadListFile;
+    boost::optional < BatchListFile> batchListFile;
+
+    FileListFile::FileMapType files;
 };
 
 }
