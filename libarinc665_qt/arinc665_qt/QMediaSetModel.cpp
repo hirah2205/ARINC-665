@@ -16,6 +16,13 @@
 
 #include "QMediaSetModel.hpp"
 
+#include <arinc665/media/MediaSet.hpp>
+#include <arinc665/media/Medium.hpp>
+#include <arinc665/media/Directory.hpp>
+#include <arinc665/media/File.hpp>
+#include <arinc665/media/Load.hpp>
+#include <arinc665/media/Batch.hpp>
+
 #include <iterator>
 
 namespace Arinc665Qt {
@@ -33,19 +40,41 @@ QModelIndex QMediaSetModelModel::index(
   int column,
   const QModelIndex &parent) const
 {
-#if 0
-  using Bhm::Asf::ConstAsfMessageElements;
-  using Bhm::Asf::AsfMessageElement;
-
   // check if model contains valid message
-  if (!message)
+  if (!mediaSet)
   {
     return QModelIndex();
   }
 
+  if ( parent == QModelIndex())
+  {
+    return createIndex( row, column, nullptr);
+  }
+
+  using Arinc665::Media::ContainerEntity;
+
+  ContainerEntity * container =
+    static_cast< ContainerEntity*>( parent.internalPointer());
+
+  Arinc665::Media::Directories dirs = container->getSubDirectories();
+
+  if (row < dirs.size())
+  {
+    return createIndex(
+      row,
+      column,
+      dirs.at( row).get());
+  }
+
+
+#if 0
+  using Bhm::Asf::ConstAsfMessageElements;
+  using Bhm::Asf::AsfMessageElement;
+
+
   // top-level elements directly use message - the other casts the internak pointer
   ConstAsfMessageElements elements{
-    (parent == QModelIndex()) ?
+    () ?
       message->getChildElements() :
       getMessageElement( parent)->getChildElements()};
 
