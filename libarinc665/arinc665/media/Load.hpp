@@ -46,7 +46,10 @@ class Load: public BaseFile
      * @param[in] partNumber
      *   Part number of Load
      **/
-    Load( const string &name, const string &partNumber);
+    Load(
+      ContainerEntityPtr parent,
+      const string &name,
+      const string &partNumber);
 
     virtual FileType getFileType( void) const override;
 

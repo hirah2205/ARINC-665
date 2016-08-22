@@ -36,10 +36,6 @@ class BaseFile: public PartNumberdEntity
       BatchFile
     };
 
-    BaseFile(
-      const string &name,
-      const string &partNumber = string());
-
     virtual ~BaseFile( void) = default;
 
     /**
@@ -53,7 +49,21 @@ class BaseFile: public PartNumberdEntity
 
     virtual FileType getFileType( void) const = 0;
 
+    ContainerEntityPtr getParent( void);
+
+    ConstContainerEntityPtr getParent( void) const;
+
+  protected:
+    BaseFile(
+      ContainerEntityPtr parent,
+      const string &name,
+      const string &partNumber = string());
+
+    void setParent( ContainerEntityPtr parent);
+
   private:
+    //! The parent
+    WeakContainerEntityPtr parent;
     //! The file name
     const string name;
 };

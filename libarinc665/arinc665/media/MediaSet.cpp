@@ -71,7 +71,7 @@ unsigned int MediaSet::addMedium( void)
     return 0;
   }
 
-  media.push_back( std::make_shared< Medium>());
+  media.push_back( std::make_shared< Medium>( shared_from_this()));
 
 	return media.size();
 }
@@ -92,16 +92,16 @@ ConstFiles MediaSet::getFiles( void) const
 
 Files MediaSet::getFiles( void)
 {
-	Files files;
+  Files files;
 
-	// Iterate over all medias and add their files to a complete list.
-	for (auto &medium: media)
-	{
-		Files mediaFiles = medium->getFiles( true);
-		files.insert( files.end(), mediaFiles.begin(), mediaFiles.end());
-	}
+  // Iterate over all medias and add their files to a complete list.
+  for ( auto &medium : media)
+  {
+    Files mediaFiles = medium->getFiles( true);
+    files.insert( files.end(), mediaFiles.begin(), mediaFiles.end());
+  }
 
-	return files;
+  return files;
 }
 
 ConstFilePtr MediaSet::getFile( const string &filename) const

@@ -20,11 +20,12 @@ namespace Arinc665 {
 namespace Media {
 
 Batch::Batch(
+  ContainerEntityPtr parent,
   const string &name,
   const string &partNumber,
   const string &comment) :
-  BaseFile( name, partNumber),
-	comment( comment)
+  BaseFile( parent, name, partNumber),
+  comment( comment)
 {
 }
 
@@ -35,24 +36,24 @@ Batch::FileType Batch::getFileType( void) const
 
 string Batch::getComment( void) const
 {
-	return comment;
+  return comment;
 }
 
 void Batch::setComment( const string &comment)
 {
-	this->comment = comment;
+  this->comment = comment;
 }
 
 const Batch::BatchInfoList& Batch::getBatchInfos( void)
 {
-	return batchInfos;
+  return batchInfos;
 }
 
 BatchInfo& Batch::addBatchInfo( const string &targetHardwareId)
 {
-	BatchInfo batchInfo( targetHardwareId);
-	batchInfos.push_back( batchInfo);
-	return batchInfos.back();
+  BatchInfo batchInfo( targetHardwareId);
+  batchInfos.push_back( batchInfo);
+  return batchInfos.back();
 }
 
 }

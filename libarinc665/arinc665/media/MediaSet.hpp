@@ -21,6 +21,7 @@
 #include <arinc665/media/PartNumberdEntity.hpp>
 #include <arinc665/media/Medium.hpp>
 
+#include <memory>
 namespace Arinc665 {
 namespace Media {
 
@@ -37,7 +38,9 @@ namespace Media {
  * number handling) - maybe also added to media file list
  * @li remove media from class hierarchies
  **/
-class MediaSet: public PartNumberdEntity
+class MediaSet:
+  public PartNumberdEntity,
+  public std::enable_shared_from_this< MediaSet>
 {
   public:
     /**

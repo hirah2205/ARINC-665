@@ -32,9 +32,14 @@ namespace Arinc665 {
 namespace Media {
 
 class MediaSet;
+using ConstMediaSetPtr = std::shared_ptr< const MediaSet>;
 using MediaSetPtr = std::shared_ptr< MediaSet>;
+using WeakMediaSetPtr = std::weak_ptr< MediaSet>;
 
 class ContainerEntity;
+using ConstContainerEntityPtr = std::shared_ptr< const ContainerEntity>;
+using ContainerEntityPtr = std::shared_ptr< ContainerEntity>;
+using WeakContainerEntityPtr = std::weak_ptr< ContainerEntity>;
 
 class Medium;
 using ConstMediumPtr = std::shared_ptr< const Medium>;

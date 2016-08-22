@@ -53,6 +53,7 @@ class File: public BaseFile
      *   member files.)
      **/
     File(
+      ContainerEntityPtr parent,
       const string &name,
       const uint16_t crc,
       const uint32_t fileLength = 0,

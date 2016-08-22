@@ -98,20 +98,22 @@ DirectoryPtr ContainerEntity::getSubDirectory( const string &name)
 
 DirectoryPtr ContainerEntity::addSubDirectory( const string &name)
 {
-	if (getSubDirectory( name))
-	{
-		BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-			AdditionalInfo( "sub-directory already exists"));
-	}
+  if ( getSubDirectory( name))
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception() << AdditionalInfo( "sub-directory already exists"));
+  }
 
-	// create new sub-directory
-	DirectoryPtr subDirectory( std::make_shared< Directory>( name));
+  // create new sub-directory
+  DirectoryPtr subDirectory( std::make_shared< Directory>(
+    shared_from_this(),
+    name));
 
-	// insert into map
-	subDirectories.push_back( subDirectory);
+  // insert into map
+  subDirectories.push_back( subDirectory);
 
-	// return new sub-directory
-	return subDirectory;
+  // return new sub-directory
+  return subDirectory;
 }
 
 void ContainerEntity::removeSubDirectory( const string &name)
@@ -257,25 +259,31 @@ FilePtr ContainerEntity::getFile( const string &filename, bool recursive)
 }
 
 FilePtr ContainerEntity::addFile(
-	const string &filename,
-	const uint16_t crc,
-	const uint32_t fileLength,
-	const string &partNumber)
+  const string &filename,
+  const uint16_t crc,
+  const uint32_t fileLength,
+  const string &partNumber)
 {
-	if (getFile( filename))
-	{
-		BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-			AdditionalInfo( "File already exists"));
-	}
+  if ( getFile( filename))
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception() << AdditionalInfo( "File already exists"));
+  }
 
-	// create file
-	FilePtr file( std::make_shared< File>( filename, crc, fileLength, partNumber));
+  // create file
+  FilePtr file(
+    std::make_shared< File>(
+      shared_from_this(),
+      filename,
+      crc,
+      fileLength,
+      partNumber));
 
-	// insert into map
-	files.push_back( file);
+  // insert into map
+  files.push_back( file);
 
-	// return new file
-	return file;
+  // return new file
+  return file;
 }
 
 void ContainerEntity::removeFile( const string &filename)
@@ -410,41 +418,45 @@ LoadPtr ContainerEntity::getLoad( const string &filename, bool recursive)
   return std::dynamic_pointer_cast< Load>( file);
 }
 
-LoadPtr ContainerEntity::addLoad( const string &filename, const string &partNumber)
+LoadPtr ContainerEntity::addLoad(
+  const string &filename,
+  const string &partNumber)
 {
-	if (getFile( filename))
-	{
-		BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-			AdditionalInfo( "Load already exists"));
-	}
+  if ( getFile( filename))
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+      AdditionalInfo( "File with this name already exists"));
+  }
 
-	// create file
-	LoadPtr load( std::make_shared< Load>( filename, partNumber));
+  // create file
+  LoadPtr load(
+    std::make_shared< Load>( shared_from_this(), filename, partNumber));
 
-	// insert into map
-	files.push_back( load);
+  // insert into map
+  files.push_back( load);
 
-	// return new file
-	return load;
+  // return new file
+  return load;
 }
 
 void ContainerEntity::removeLoad( const string &filename)
 {
-	FilePtr loadFile = getFile( filename);
+  FilePtr loadFile = getFile( filename);
 
-	if (!loadFile)
-	{
-		BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-			AdditionalInfo( "Load does not exists"));
-	}
+  if ( !loadFile)
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception() << AdditionalInfo( "Load does not exists"));
+  }
 
-	if (BaseFile::FileType::LoadFile != loadFile->getFileType())
-	{
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      AdditionalInfo( "File does not name a load"));
-	}
+  if ( BaseFile::FileType::LoadFile != loadFile->getFileType())
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception()
+        << AdditionalInfo( "File does not name a load"));
+  }
 
-	removeFile( loadFile);
+  removeFile( loadFile);
 }
 
 void ContainerEntity::removeLoad( ConstLoadPtr load)
@@ -454,18 +466,18 @@ void ContainerEntity::removeLoad( ConstLoadPtr load)
 
 size_t ContainerEntity::getNumberOfBatches( bool recursive) const
 {
-	size_t numberOfBatches( getFiles( BaseFile::FileType::BatchFile).size());
+  size_t numberOfBatches( getFiles( BaseFile::FileType::BatchFile).size());
 
-	// descent to sub directories if requested
-	if (recursive)
-	{
-		for (const auto &subDirectory : subDirectories)
-		{
-			numberOfBatches += subDirectory->getNumberOfBatches( true);
-		}
-	}
+  // descent to sub directories if requested
+  if ( recursive)
+  {
+    for ( const auto &subDirectory : subDirectories)
+    {
+      numberOfBatches += subDirectory->getNumberOfBatches( true);
+    }
+  }
 
-	return numberOfBatches;
+  return numberOfBatches;
 }
 
 ConstBatches ContainerEntity::getBatches( bool recursive) const
@@ -550,22 +562,25 @@ BatchPtr ContainerEntity::getBatch( const string &filename, bool recursive)
   return std::dynamic_pointer_cast< Batch>( file);
 }
 
-BatchPtr ContainerEntity::addBatch( const string &filename, const string &partNumber)
+BatchPtr ContainerEntity::addBatch(
+  const string &filename,
+  const string &partNumber)
 {
-  if (getFile( filename))
+  if ( getFile( filename))
   {
-		BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-			AdditionalInfo( "batch does not exists"));
-	}
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+      AdditionalInfo( "File with this name already exists"));
+  }
 
-	// create file
-	BatchPtr batch( std::make_shared< Batch>( filename, partNumber));
+  // create file
+  BatchPtr batch(
+    std::make_shared< Batch>( shared_from_this(), filename, partNumber));
 
-	// insert into map
-	files.push_back( batch);
+  // insert into map
+  files.push_back( batch);
 
-	// return new file
-	return batch;
+  // return new file
+  return batch;
 }
 
 void ContainerEntity::removeBatch( const string &filename)
@@ -590,6 +605,21 @@ void ContainerEntity::removeBatch( const string &filename)
 void ContainerEntity::removeBatch( ConstBatchPtr batch)
 {
   removeFile( batch);
+}
+
+ContainerEntityPtr ContainerEntity::getParent( void)
+{
+  return parent.lock();
+}
+
+ConstContainerEntityPtr ContainerEntity::getParent( void) const
+{
+  return parent.lock();
+}
+
+ContainerEntity::ContainerEntity( ContainerEntityPtr parent):
+  parent( parent)
+{
 }
 
 ConstFiles ContainerEntity::getFiles( BaseFile::FileType fileType) const
@@ -620,6 +650,28 @@ Files ContainerEntity::getFiles( BaseFile::FileType fileType)
   }
 
   return result;
+}
+
+void ContainerEntity::setParent( ContainerEntityPtr parent)
+{
+  if (!parent)
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+      AdditionalInfo( "parent must be valid"));
+  }
+
+  if (shared_from_this() == parent)
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+      AdditionalInfo( "Recursion not allowed"));
+  }
+
+  if (this->parent.lock() == parent)
+  {
+    return;
+  }
+
+  this->parent = parent;
 }
 
 }

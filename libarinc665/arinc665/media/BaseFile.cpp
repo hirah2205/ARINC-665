@@ -16,20 +16,57 @@
 
 #include "BaseFile.hpp"
 
+#include <arinc665/media/ContainerEntity.hpp>
+
+#include <arinc665/Arinc665Exception.hpp>
+
 namespace Arinc665 {
 namespace Media {
-
-BaseFile::BaseFile(
-  const string &name,
-  const string &partNumber) :
-  PartNumberdEntity( partNumber),
-  name( name)
-{
-}
 
 const BaseFile::string& BaseFile::getName( void) const
 {
   return name;
+}
+
+ContainerEntityPtr BaseFile::getParent( void)
+{
+  return parent.lock();
+}
+
+ConstContainerEntityPtr BaseFile::getParent( void) const
+{
+  return parent.lock();
+}
+
+BaseFile::BaseFile(
+  ContainerEntityPtr parent,
+  const string &name,
+  const string &partNumber) :
+  PartNumberdEntity( partNumber),
+  parent( parent),
+  name( name)
+{
+  if (!parent)
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+      AdditionalInfo( "parent must be valid"));
+  }
+}
+
+void BaseFile::setParent( ContainerEntityPtr parent)
+{
+  if (!parent)
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+      AdditionalInfo( "parent must be valid"));
+  }
+
+  if (this->parent.lock() == parent)
+  {
+    return;
+  }
+
+  this->parent = parent;
 }
 
 }

@@ -21,14 +21,15 @@
 namespace Arinc665 {
 namespace Media {
 
-Directory::Directory( const string &name):
-	name( name)
+Directory::Directory( ContainerEntityPtr parent, const string &name):
+  ContainerEntity( parent),
+  name( name)
 {
 }
 
 const string& Directory::getName( void) const
 {
-	return name;
+  return name;
 }
 
 }

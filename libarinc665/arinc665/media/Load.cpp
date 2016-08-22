@@ -19,8 +19,11 @@
 namespace Arinc665 {
 namespace Media {
 
-Load::Load( const string &name, const string &partNumber):
-  BaseFile( name, partNumber)
+Load::Load(
+  ContainerEntityPtr parent,
+  const string &name,
+  const string &partNumber) :
+  BaseFile( parent, name, partNumber)
 {
 }
 

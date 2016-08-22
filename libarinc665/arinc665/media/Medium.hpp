@@ -27,7 +27,14 @@ namespace Media {
 class Medium : public ContainerEntity
 {
   public:
-    Medium( void) = default;
+    Medium( MediaSetPtr mediaSet);
+
+    ConstMediaSetPtr getMediaSet( void) const;
+
+    MediaSetPtr getMediaSet( void);
+
+  private:
+    WeakMediaSetPtr mediaSet;
 };
 
 }

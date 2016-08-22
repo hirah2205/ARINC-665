@@ -31,7 +31,7 @@ namespace Media {
 /**
  *
  **/
-class ContainerEntity
+class ContainerEntity : public std::enable_shared_from_this< ContainerEntity>
 {
   public:
     using string = std::string;
@@ -122,14 +122,23 @@ class ContainerEntity
 
     void removeBatch( ConstBatchPtr batch);
 
+    ContainerEntityPtr getParent( void);
+
+    ConstContainerEntityPtr getParent( void) const;
+
   protected:
+    ContainerEntity( ContainerEntityPtr parent);
+
     ConstFiles getFiles( BaseFile::FileType fileType) const;
 
     Files getFiles( BaseFile::FileType fileType);
 
+    void setParent( ContainerEntityPtr parent);
+
   private:
     Directories subDirectories;
     Files files;
+    WeakContainerEntityPtr parent;
 };
 }
 }

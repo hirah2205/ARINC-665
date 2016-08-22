@@ -28,15 +28,13 @@ namespace Media {
 class Directory : public ContainerEntity
 {
   public:
-    Directory( const string &name);
+    Directory( ContainerEntityPtr parent, const string &name);
 
     const string& getName( void) const;
 
   private:
     //! Directory name
     const string name;
-    //! parent
-
 };
 
 }

@@ -20,11 +20,12 @@ namespace Arinc665 {
 namespace Media {
 
 File::File(
+  ContainerEntityPtr parent,
   const string &name,
   const uint16_t crc,
   const uint32_t fileLength,
   const string &partNumber) :
-  BaseFile( name, partNumber),
+  BaseFile( parent, name, partNumber),
   crc( crc),
   fileLength( fileLength)
 {
