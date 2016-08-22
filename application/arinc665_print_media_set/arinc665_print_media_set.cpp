@@ -41,40 +41,40 @@ static void printMediaSet( MediaSetPtr &mediaSet);
 
 int main( int argc, char* argv[])
 {
-	if (argc != 2)
-	{
-		std::cout << "enter load directory" << std::endl;
+  if ( argc != 2)
+  {
+    std::cout << "enter load directory" << std::endl;
 
-		return EXIT_FAILURE;
-	}
+    return EXIT_FAILURE;
+  }
 
-	try
-	{
-		boost::filesystem::path loadDir( argv[1]);
+  try
+  {
+    boost::filesystem::path loadDir( argv[1]);
 
-		std::cout  << std::endl << "Load Media Set " << std::endl;
-		MediaSetPtr mediaSet( loadMediaSet( loadDir));
+    std::cout << std::endl << "Load Media Set " << std::endl;
+    MediaSetPtr mediaSet( loadMediaSet( loadDir));
 
-		std::cout  << std::endl << "Print Media Set " << std::endl;
-		printMediaSet( mediaSet);
-	}
-	catch (boost::exception &e)
-	{
-		std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
-		return EXIT_FAILURE;
-	}
-	catch ( std::exception &e)
-	{
-		std::cout << "std exception: " << e.what() << std::endl;
-		return EXIT_FAILURE;
-	}
-	catch (...)
-	{
-		std::cout << "unknown exception occurred" << std::endl;
-		return EXIT_FAILURE;
-	}
+    std::cout << std::endl << "Print Media Set " << std::endl;
+    printMediaSet( mediaSet);
+  }
+  catch ( boost::exception &e)
+  {
+    std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
+    return EXIT_FAILURE;
+  }
+  catch ( std::exception &e)
+  {
+    std::cout << "std exception: " << e.what() << std::endl;
+    return EXIT_FAILURE;
+  }
+  catch ( ...)
+  {
+    std::cout << "unknown exception occurred" << std::endl;
+    return EXIT_FAILURE;
+  }
 
-	return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }
 
 

@@ -601,7 +601,9 @@ Arinc665::File::RawFile Arinc665ImporterImpl::loadFile( const path &filePath)
   {
     //! @throw Arinc665Exception
     BOOST_THROW_EXCEPTION(
-      Arinc665Exception() << AdditionalInfo( filePath.string() + " not found"));
+      Arinc665Exception() <<
+        boost::errinfo_file_name( filePath.c_str()) <<
+        AdditionalInfo( "File not found"));
   }
 
   RawFile data( boost::filesystem::file_size( filePath));
