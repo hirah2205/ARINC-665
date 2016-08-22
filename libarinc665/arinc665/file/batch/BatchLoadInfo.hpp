@@ -15,32 +15,29 @@
 
 #include <string>
 
-namespace Arinc665
+namespace Arinc665 {
+namespace File {
+
+/**
+ * @brief The load info the batch load entry.
+ **/
+class BatchLoadInfo
 {
-	namespace File
-	{
-		using std::string;
+  public:
+    using string = std::string;
+    string getHeaderFilename( void) const;
 
-		/**
-		 * @brief The load info the batch load entry.
-		 **/
-		class BatchLoadInfo
-		{
-			public:
-				string getHeaderFilename( void) const;
+    void setHeaderFilename( const string &headerFilename);
 
-				void setHeaderFilename( const string &headerFilename);
+    string getPartNumber( void) const;
 
+    void setPartNumber( const string &partNumber);
 
-				string getPartNumber( void) const;
-
-				void setPartNumber( const string &partNumber);
-
-			private:
-				string headerFilename;
-				string partNumber;
-		};
-	}
+  private:
+    string headerFilename;
+    string partNumber;
+};
+}
 }
 
 #endif

@@ -16,7 +16,8 @@
 
 #include <arinc665/file/Arinc665File.hpp>
 
-using namespace Arinc665::File;
+namespace Arinc665 {
+namespace File {
 
 Arinc665::FileClassType FileFactory::getArincFileType( const RawFile &file)
 {
@@ -96,38 +97,38 @@ Arinc665::MediaFileFormatVersion FileFactory::getMediaFileFormatVersion(
 }
 
 Arinc665::FileType FileFactory::getFileType(
-	const boost::filesystem::path &filename)
+  const boost::filesystem::path &filename)
 {
-	string filenameN = filename.filename().string();
+  std::string filenameN = filename.filename().string();
 
-	if (filenameN == ListOfLoadsName)
-	{
-		return FileType::ARINC_665_FILE_TYPE_LOAD_LIST;
-	}
+  if ( filenameN == ListOfLoadsName)
+  {
+    return FileType::ARINC_665_FILE_TYPE_LOAD_LIST;
+  }
 
-	if (filenameN == ListOfBatchesName)
-	{
-		return FileType::ARINC_665_FILE_TYPE_BATCH_LIST;
-	}
+  if ( filenameN == ListOfBatchesName)
+  {
+    return FileType::ARINC_665_FILE_TYPE_BATCH_LIST;
+  }
 
-	if (filenameN == ListOfFilesName)
-	{
-		return FileType::ARINC_665_FILE_TYPE_FILE_LIST;
-	}
+  if ( filenameN == ListOfFilesName)
+  {
+    return FileType::ARINC_665_FILE_TYPE_FILE_LIST;
+  }
 
-	string extension = filename.extension().string();
+  std::string extension = filename.extension().string();
 
-	if (extension == LoadUploadHeaderExtension)
-	{
-		return FileType::ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER;
-	}
+  if ( extension == LoadUploadHeaderExtension)
+  {
+    return FileType::ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER;
+  }
 
-	if (extension == BatchFileExtension)
-	{
-		return FileType::ARINC_665_FILE_TYPE_BATCH_FILE;
-	}
+  if ( extension == BatchFileExtension)
+  {
+    return FileType::ARINC_665_FILE_TYPE_BATCH_FILE;
+  }
 
-	return FileType::ARINC_665_FILE_TYPE_INVALID;
+  return FileType::ARINC_665_FILE_TYPE_INVALID;
 }
 
 FileListFile FileFactory::getFileListFile( const RawFile &file)
@@ -159,3 +160,6 @@ BatchFile FileFactory::getBatchFile( const RawFile &file)
 	return BatchFile( file);
 }
 #endif
+
+}
+}

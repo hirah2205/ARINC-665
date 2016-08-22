@@ -31,6 +31,7 @@ namespace File {
 class BatchFile: public Arinc665File
 {
   public:
+    using string = std::string;
     using ListType = std::list< TargetHardwareLoad>;
 
     BatchFile( void) = default;

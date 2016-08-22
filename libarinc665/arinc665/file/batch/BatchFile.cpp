@@ -48,7 +48,7 @@ Arinc665Version BatchFile::getArincVersion( void) const
   return Arinc665Version::ARINC_665_2;
 }
 
-string BatchFile::getPartNumber( void) const
+BatchFile::string BatchFile::getPartNumber( void) const
 {
   return partNumber;
 }
@@ -58,7 +58,7 @@ void BatchFile::setPartNumber( const string &partNumber)
   this->partNumber = partNumber;
 }
 
-string BatchFile::getComment( void) const
+BatchFile::string BatchFile::getComment( void) const
 {
   return comment;
 }
