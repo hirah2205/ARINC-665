@@ -46,9 +46,8 @@ void Arinc665ImporterImpl::import( GetMediumHandler getMediumHandler)
   FileListFile fileListFile( loadFile( mediumPath / Arinc665::ListOfFilesName));
 
   // create Media set
-  mediaSet = std::make_shared< Media::MediaSet>(
-    fileListFile.getMediaSetPn(),
-    fileListFile.getNumberOfMediaSetMembers());
+  mediaSet = std::make_shared< Media::MediaSet>( fileListFile.getMediaSetPn());
+  mediaSet->setNumberOfMedia( fileListFile.getNumberOfMediaSetMembers());
 
   // Add content of medium to media set
   addMedium( 1, mediumPath);
@@ -501,8 +500,6 @@ void Arinc665ImporterImpl::addFiles( void)
       checkCreateDirectory( fileInfo.first.first, fileInfo.second.getPath()));
 
     Arinc665::Media::FilePtr filePtr = container->addFile( fileInfo.second.getFilename());
-
-    filePtr->setCrc( fileInfo.second.getCrc());
   }
 
   // loads

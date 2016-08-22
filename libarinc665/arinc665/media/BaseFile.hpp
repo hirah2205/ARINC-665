@@ -50,21 +50,6 @@ class BaseFile: public PartNumberdEntity
 
     //void setName( void);
 
-    /**
-     * @brief Returns the CRC of the file.
-     *
-     * @return The CRC of the file.
-     **/
-    uint16_t getCrc( void) const;
-
-    /**
-     * @brief Sets the CRC of the file.
-     *
-     * @param[in] crc
-     *   The CRC of the file.
-     **/
-    void setCrc( const uint16_t crc);
-
     virtual FileType getFileType( void) const = 0;
 
     ContainerEntityPtr getParent( void);
@@ -81,8 +66,6 @@ class BaseFile: public PartNumberdEntity
     WeakContainerEntityPtr parent;
     //! The file name
     const string name;
-    //! The CRC
-    uint16_t crc;
 };
 
 }

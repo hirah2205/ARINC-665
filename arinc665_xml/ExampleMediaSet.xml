@@ -4,10 +4,10 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xsi:schemaLocation="http://www.thomas-vogt.de/Arinc665MediaSet Arinc665MediaSet.xsd">
   <Medium>
-    <File Name="File1" Size="11" Crc="0x11111111" />
+    <File Name="File1" />
     <LoadFile Name="Load1" PartNumber="AABBCC" />
     <Directory Name="Directory1">
-      <File Name="File2" Size="11" Crc="0x22222222" />
+      <File Name="File2" />
     </Directory>
   </Medium>
   <Loads>

@@ -24,22 +24,12 @@
 namespace Arinc665 {
 namespace Media {
 
-MediaSet::MediaSet( const string &partNumber, const unsigned int numberOfMedia):
+MediaSet::MediaSet( const string &partNumber):
 	PartNumberdEntity( partNumber)
 {
-  if (0 == numberOfMedia)
-  {
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      AdditionalInfo( "Invalid number of media"));
-  }
-
-  for ( unsigned int i = 0; i < numberOfMedia; ++i)
-  {
-    addMedium();
-  }
 }
 
-unsigned int MediaSet::getNumberOfMedia( void) const
+uint8_t MediaSet::getNumberOfMedia( void) const
 {
 	return media.size();
 }
@@ -50,14 +40,14 @@ const Media& MediaSet::getMedia( void) const
 	return media;
 }
 
-ConstMediumPtr MediaSet::getMedium( const unsigned int index) const
+ConstMediumPtr MediaSet::getMedium( uint8_t index) const
 {
   assert( media.at( index - 1));
 
 	return media.at( index - 1);
 }
 
-MediumPtr MediaSet::getMedium( const unsigned int index)
+MediumPtr MediaSet::getMedium( uint8_t index)
 {
   assert( media.at( index - 1));
 
@@ -74,6 +64,26 @@ unsigned int MediaSet::addMedium( void)
   media.push_back( std::make_shared< Medium>( shared_from_this()));
 
 	return media.size();
+}
+
+void MediaSet::setNumberOfMedia( uint8_t numberOfMedia, bool deleteFiles)
+{
+  if (numberOfMedia == media.size())
+  {
+    return;
+  }
+
+  if (numberOfMedia > media.size())
+  {
+    for (unsigned int i = 0; i < numberOfMedia - media.size(); ++i)
+    {
+      addMedium();
+    }
+  }
+  else
+  {
+    //! todo
+  }
 }
 
 ConstFiles MediaSet::getFiles( void) const

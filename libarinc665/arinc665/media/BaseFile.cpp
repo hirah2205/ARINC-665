@@ -40,8 +40,7 @@ ConstContainerEntityPtr BaseFile::getParent( void) const
 
 BaseFile::BaseFile( ContainerEntityPtr parent, const string &name) :
   parent( parent),
-  name( name),
-  crc( 0)
+  name( name)
 {
   if (!parent)
   {
@@ -65,17 +64,6 @@ void BaseFile::setParent( ContainerEntityPtr parent)
 
   this->parent = parent;
 }
-
-uint16_t BaseFile::getCrc( void) const
-{
-  return crc;
-}
-
-void BaseFile::setCrc( const uint16_t crc)
-{
-  this->crc = crc;
-}
-
 
 }
 }

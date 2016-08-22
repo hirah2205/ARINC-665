@@ -31,19 +31,15 @@
   </complexType>
 
   <complexType name="BaseFileType">
-    <attribute name="Name"            type="tns:NameType" use="required" />
-    <attribute name="Size"            type="unsignedInt"  use="optional" />
-    <attribute name="Crc"             use="optional" />
-    <attribute name="PartNumber"      use="optional" />
-    <attribute name="SourcePath"      use="optional" />
+    <attribute name="Name"            type="tns:NameType"       use="required" />
+    <attribute name="PartNumber"      type="tns:PartNumberType" use="optional" />
+    <attribute name="SourcePath"      type="string"             use="optional" />
   </complexType>
 
   <complexType name="FileType">
     <complexContent>
       <restriction base="tns:BaseFileType">
         <attribute name="Name"            type="tns:NameType"        use="required" />
-        <attribute name="Size"            type="unsignedInt"         use="required" />
-        <attribute name="Crc"             type="tns:HexValueType"    use="required" />
         <attribute name="PartNumber"      type="tns:PartNumberType"  use="optional" />
         <attribute name="SourcePath"      type="string"              use="optional" />
       </restriction>
@@ -54,8 +50,6 @@
     <complexContent>
       <restriction base="tns:BaseFileType">
         <attribute name="Name"            type="tns:NameType"        use="required" />
-        <attribute name="Size"            type="unsignedInt"         use="optional" />
-        <attribute name="Crc"             type="tns:HexValueType"    use="optional" />
         <attribute name="PartNumber"      type="tns:PartNumberType"  use="required" />
         <attribute name="SourcePath"      type="string"              use="optional" />
       </restriction>
@@ -66,8 +60,6 @@
     <complexContent>
       <restriction base="tns:BaseFileType">
         <attribute name="Name"            type="tns:NameType"        use="required" />
-        <attribute name="Size"            type="unsignedInt"         use="optional" />
-        <attribute name="Crc"             type="tns:HexValueType"    use="optional" />
         <attribute name="PartNumber"      type="tns:PartNumberType"  use="required" />
         <attribute name="SourcePath"      type="string"              use="optional" />
       </restriction>

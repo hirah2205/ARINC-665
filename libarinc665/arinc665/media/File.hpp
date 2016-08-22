@@ -48,25 +48,6 @@ class File: public BaseFile
     File( ContainerEntityPtr parent, const string &name);
 
     virtual FileType getFileType( void) const override;
-
-    /**
-     * @brief Returns the length of the file.
-     *
-     * @return The length of the file.
-     **/
-    uint32_t getFileLength( void) const;
-
-    /**
-     * @brief Sets the length of the file.
-     *
-     * @param[in] fileLength
-     *   The file length.
-     **/
-    void setFileLength( const uint32_t fileLength);
-
-  private:
-    //! The file length
-    uint32_t fileLength;
 };
 
 }

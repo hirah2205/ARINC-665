@@ -20,25 +20,13 @@ namespace Arinc665 {
 namespace Media {
 
 File::File( ContainerEntityPtr parent, const string &name) :
-  BaseFile( parent, name),
-  fileLength( 0)
+  BaseFile( parent, name)
 {
 }
 
 File::FileType File::getFileType( void) const
 {
   return FileType::RegularFile;
-}
-
-uint32_t File::getFileLength( void) const
-{
-  return fileLength;
-}
-
-
-void File::setFileLength( const uint32_t fileLength)
-{
-  this->fileLength = fileLength;
 }
 
 }

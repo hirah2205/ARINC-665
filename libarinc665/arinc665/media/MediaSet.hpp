@@ -51,17 +51,15 @@ class MediaSet:
      *
      * @param[in] partNumber
      *   Part number of the media set
-     * @param[in] numberOfMedia
-     *   The initial number of media in the media set (defaults to 1)
      **/
-    MediaSet( const string &partNumber, unsigned int numberOfMedia = 1);
+    MediaSet( const string &partNumber);
 
     /**
      * @brief Get the number of medias within the media set
      *
      * @return The number of medias within the media set.
      **/
-    unsigned int getNumberOfMedia( void) const;
+    uint8_t getNumberOfMedia( void) const;
 
     /**
      * @brief Returns all media.
@@ -78,7 +76,7 @@ class MediaSet:
      *
      * @return The medium with the requested index.
      **/
-    ConstMediumPtr getMedium( const unsigned int index) const;
+    ConstMediumPtr getMedium( uint8_t index) const;
 
     /**
      * @brief Return the medium with the requested index.
@@ -88,7 +86,7 @@ class MediaSet:
      *
      * @return The medium with the requested index.
      **/
-    MediumPtr getMedium( const unsigned int index);
+    MediumPtr getMedium( uint8_t index);
     
     /**
      * @brief Adds an medium to the media set and returns the media index.
@@ -108,7 +106,7 @@ class MediaSet:
      *   Delete files, which are part of the not existing files.
      *   Otherwise, they are moved to the first media.
      **/
-    void setNumberOfMedia( unsigned int numberOfMedia, bool deleteFiles = false) const;
+    void setNumberOfMedia( uint8_t numberOfMedia, bool deleteFiles = false);
 
     size_t getNumberOfFiles( void) const;
 
