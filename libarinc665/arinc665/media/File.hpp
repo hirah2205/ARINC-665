@@ -44,37 +44,10 @@ class File: public BaseFile
      *
      * @param[in] name
      *   Name of the file.
-     * @param[in] crc
-     *   The CRC-16 of the file
-     * @param[in] fileLength
-     *   The file length - only used for load member files.
-     * @param[in] partNumber
-     *   The part number. (Defaults to empty string - is only used for load
-     *   member files.)
      **/
-    File(
-      ContainerEntityPtr parent,
-      const string &name,
-      const uint16_t crc,
-      const uint32_t fileLength = 0,
-      const string &partNumber = string());
+    File( ContainerEntityPtr parent, const string &name);
 
     virtual FileType getFileType( void) const override;
-
-    /**
-     * @brief Returns the CRC of the file.
-     *
-     * @return The CRC of the file.
-     **/
-    uint16_t getCrc( void) const;
-
-    /**
-     * @brief Sets the CRC of the file.
-     *
-     * @param[in] crc
-     *   The CRC of the file.
-     **/
-    void setCrc( const uint16_t crc);
 
     /**
      * @brief Returns the length of the file.
@@ -92,8 +65,6 @@ class File: public BaseFile
     void setFileLength( const uint32_t fileLength);
 
   private:
-    //! The CRC
-    uint16_t crc;
     //! The file length
     uint32_t fileLength;
 };

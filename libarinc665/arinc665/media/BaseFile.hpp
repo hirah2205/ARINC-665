@@ -24,7 +24,10 @@ namespace Arinc665 {
 namespace Media {
 
 /**
- * @brief
+ * @brief The base class of all files, presented within a media set.
+ *
+ * CRC is part of this, because this information is available in the
+ * list of files.
  **/
 class BaseFile: public PartNumberdEntity
 {
@@ -47,6 +50,21 @@ class BaseFile: public PartNumberdEntity
 
     //void setName( void);
 
+    /**
+     * @brief Returns the CRC of the file.
+     *
+     * @return The CRC of the file.
+     **/
+    uint16_t getCrc( void) const;
+
+    /**
+     * @brief Sets the CRC of the file.
+     *
+     * @param[in] crc
+     *   The CRC of the file.
+     **/
+    void setCrc( const uint16_t crc);
+
     virtual FileType getFileType( void) const = 0;
 
     ContainerEntityPtr getParent( void);
@@ -54,10 +72,7 @@ class BaseFile: public PartNumberdEntity
     ConstContainerEntityPtr getParent( void) const;
 
   protected:
-    BaseFile(
-      ContainerEntityPtr parent,
-      const string &name,
-      const string &partNumber = string());
+    BaseFile( ContainerEntityPtr parent, const string &name);
 
     void setParent( ContainerEntityPtr parent);
 
@@ -66,6 +81,8 @@ class BaseFile: public PartNumberdEntity
     WeakContainerEntityPtr parent;
     //! The file name
     const string name;
+    //! The CRC
+    uint16_t crc;
 };
 
 }

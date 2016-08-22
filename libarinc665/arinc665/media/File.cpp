@@ -19,15 +19,9 @@
 namespace Arinc665 {
 namespace Media {
 
-File::File(
-  ContainerEntityPtr parent,
-  const string &name,
-  const uint16_t crc,
-  const uint32_t fileLength,
-  const string &partNumber) :
-  BaseFile( parent, name, partNumber),
-  crc( crc),
-  fileLength( fileLength)
+File::File( ContainerEntityPtr parent, const string &name) :
+  BaseFile( parent, name),
+  fileLength( 0)
 {
 }
 
@@ -36,14 +30,15 @@ File::FileType File::getFileType( void) const
   return FileType::RegularFile;
 }
 
-uint16_t File::getCrc( void) const
+uint32_t File::getFileLength( void) const
 {
-  return crc;
+  return fileLength;
 }
 
-void File::setCrc( const uint16_t crc)
+
+void File::setFileLength( const uint32_t fileLength)
 {
-  this->crc = crc;
+  this->fileLength = fileLength;
 }
 
 }

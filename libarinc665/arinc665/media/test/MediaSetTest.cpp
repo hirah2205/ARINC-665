@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,11 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of unit tests.
+ * @brief Definition of unit tests for .
  **/
 
 
@@ -25,30 +27,30 @@ using namespace Arinc665::Media;
 
 static void testMediaSet1( void)
 {
-	MediaSet mediaSet( "XXX");
+  MediaSet mediaSet( "XXX");
 
-	BOOST_CHECK( mediaSet.getPartNumber() == "XXX");
+  BOOST_CHECK( mediaSet.getPartNumber() == "XXX");
 
-	mediaSet.setPartNumber( "YYY");
+  mediaSet.setPartNumber( "YYY");
 
-	BOOST_CHECK( mediaSet.getPartNumber() == "YYY");
+  BOOST_CHECK( mediaSet.getPartNumber() == "YYY");
 
-	BOOST_CHECK( mediaSet.getNumberOfMedia() == 1);
+  BOOST_CHECK( mediaSet.getNumberOfMedia() == 1);
 
-	MediumPtr medium = mediaSet.getMedium( 0);
+  MediumPtr medium = mediaSet.getMedium( 0);
 
-	BOOST_CHECK( medium->getNumberOfFiles() == 0);
+  BOOST_CHECK( medium->getNumberOfFiles() == 0);
 
-	BOOST_CHECK( medium->getNumberOfFiles() == 1);
+  BOOST_CHECK( medium->getNumberOfFiles() == 1);
 
-	FilePtr file2 = medium->getFile( "FILE1");
+  FilePtr file2 = medium->getFile( "FILE1");
 
-	BOOST_CHECK( file2);
+  BOOST_CHECK( file2);
 
-	BOOST_CHECK( file2->getPartNumber() == "PART1");
+  BOOST_CHECK( file2->getPartNumber() == "PART1");
 }
 
 void testMediaSet( void)
 {
-	boost::unit_test::framework::master_test_suite().add( BOOST_TEST_CASE( &testMediaSet1));
+  boost::unit_test::framework::master_test_suite().add( BOOST_TEST_CASE( &testMediaSet1));
 }

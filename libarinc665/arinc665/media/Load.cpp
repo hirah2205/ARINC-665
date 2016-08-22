@@ -19,11 +19,8 @@
 namespace Arinc665 {
 namespace Media {
 
-Load::Load(
-  ContainerEntityPtr parent,
-  const string &name,
-  const string &partNumber) :
-  BaseFile( parent, name, partNumber)
+Load::Load( ContainerEntityPtr parent, const string &name) :
+  BaseFile( parent, name)
 {
 }
 
@@ -34,47 +31,47 @@ Load::FileType Load::getFileType( void) const
 
 const Load::ThwIdList& Load::getTargetHardwareIdList( void) const
 {
-	return targetHardwareIdList;
+  return targetHardwareIdList;
 }
 
 Load::ThwIdList& Load::getTargetHardwareIdList( void)
 {
-	return targetHardwareIdList;
+  return targetHardwareIdList;
 }
 
 void Load::setTargetHardwareIdList( const ThwIdList& thwIdList)
 {
-	this->targetHardwareIdList = thwIdList;
+  this->targetHardwareIdList = thwIdList;
 }
 
 const Load::FileList& Load::getDataFiles( void) const
 {
-	return dataFileList;
+  return dataFileList;
 }
 
 void Load::addDataFile( const WeakFilePtr dataFile)
 {
-	dataFileList.push_back( dataFile);
+  dataFileList.push_back( dataFile);
 }
 
 const Load::FileList& Load::getSupportFiles( void) const
 {
-	return supportFileList;
+  return supportFileList;
 }
 
 void Load::addSupportFile( const WeakFilePtr supportFile)
 {
-	supportFileList.push_back( supportFile);
+  supportFileList.push_back( supportFile);
 }
 
 const std::vector< uint8_t>& Load::getUserDefinedData( void) const
 {
-	return userDefinedData;
+  return userDefinedData;
 }
 
 void Load::setUserDefinedData( const std::vector< uint8_t> &userDefinedData)
 {
-	this->userDefinedData = userDefinedData;
+  this->userDefinedData = userDefinedData;
 }
 
 }

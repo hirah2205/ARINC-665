@@ -19,13 +19,8 @@
 namespace Arinc665 {
 namespace Media {
 
-Batch::Batch(
-  ContainerEntityPtr parent,
-  const string &name,
-  const string &partNumber,
-  const string &comment) :
-  BaseFile( parent, name, partNumber),
-  comment( comment)
+Batch::Batch( ContainerEntityPtr parent, const string &name) :
+  BaseFile( parent, name)
 {
 }
 

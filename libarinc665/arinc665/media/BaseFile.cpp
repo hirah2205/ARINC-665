@@ -38,13 +38,10 @@ ConstContainerEntityPtr BaseFile::getParent( void) const
   return parent.lock();
 }
 
-BaseFile::BaseFile(
-  ContainerEntityPtr parent,
-  const string &name,
-  const string &partNumber) :
-  PartNumberdEntity( partNumber),
+BaseFile::BaseFile( ContainerEntityPtr parent, const string &name) :
   parent( parent),
-  name( name)
+  name( name),
+  crc( 0)
 {
   if (!parent)
   {
@@ -68,6 +65,17 @@ void BaseFile::setParent( ContainerEntityPtr parent)
 
   this->parent = parent;
 }
+
+uint16_t BaseFile::getCrc( void) const
+{
+  return crc;
+}
+
+void BaseFile::setCrc( const uint16_t crc)
+{
+  this->crc = crc;
+}
+
 
 }
 }

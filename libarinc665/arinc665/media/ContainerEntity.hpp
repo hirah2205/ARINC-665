@@ -72,17 +72,10 @@ class ContainerEntity : public std::enable_shared_from_this< ContainerEntity>
      * @brief Adds a file into this directory.
      *
      * @param filename
-     * @param crc
-     * @param fileLength
-     * @param partNumber
      *
      * @return
      **/
-    FilePtr addFile(
-      const string &filename,
-      const uint16_t crc,
-      const uint32_t fileLength = 0,
-      const string &partNumber = string());
+    FilePtr addFile( const string &filename);
 
     void removeFile( const string &filename);
 
@@ -99,7 +92,7 @@ class ContainerEntity : public std::enable_shared_from_this< ContainerEntity>
 
     LoadPtr getLoad( const string &filename, bool recursive = false);
 
-    LoadPtr addLoad( const string &filename, const string &partNumber);
+    LoadPtr addLoad( const string &filename);
 
     void removeLoad( const string &filename);
 
@@ -116,7 +109,7 @@ class ContainerEntity : public std::enable_shared_from_this< ContainerEntity>
 
     BatchPtr getBatch( const string &filename, bool recursive = false);
 
-    BatchPtr addBatch( const string &filename, const string &partNumber);
+    BatchPtr addBatch( const string &filename);
 
     void removeBatch( const string &filename);
 

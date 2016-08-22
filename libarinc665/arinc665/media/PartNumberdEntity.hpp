@@ -52,7 +52,7 @@ class PartNumberdEntity
      * @param[in] partNumber
      *   The part number
      **/
-    PartNumberdEntity( const string &partNumber);
+    PartNumberdEntity( const string &partNumber = string());
 
   private:
     //! The part number

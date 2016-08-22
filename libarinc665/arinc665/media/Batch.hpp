@@ -34,11 +34,7 @@ class Batch: public BaseFile
   public:
     using BatchInfoList = std::list< BatchInfo>;
 
-    Batch(
-      ContainerEntityPtr parent,
-      const string &name,
-      const string &partNumber,
-      const string &comment = string());
+    Batch( ContainerEntityPtr parent, const string &name);
 
     virtual FileType getFileType( void) const override;
 

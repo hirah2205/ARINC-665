@@ -478,10 +478,9 @@ void Arinc665ImporterImpl::addFiles( void)
     ContainerEntityPtr container(
       checkCreateDirectory( file.first.first, file.second.getPath()));
 
-    container->addFile(
-      file.second.getFilename(),
-      file.second.getCrc(),
-      0);
+    Arinc665::Media::FilePtr filePtr = container->addFile( file.second.getFilename());
+
+    filePtr->setCrc( file.second.getCrc());
   }
 
   // loads
@@ -493,8 +492,10 @@ void Arinc665ImporterImpl::addFiles( void)
     ContainerEntityPtr container(
       checkCreateDirectory( loadHeader.first.first, loadHeader.second.getPath()));
 
-    Arinc665::Media::LoadPtr loadPtr =
-      container->addLoad( loadHeader.second.getFilename(), load->second.getPartNumber());
+    Arinc665::Media::LoadPtr loadPtr(
+      container->addLoad( loadHeader.second.getFilename()));
+
+    loadPtr->setPartNumber( load->second.getPartNumber());
 
     // iterate over data files
     for ( const auto &dataFile : loadHeaderFile->second.getDataFileList())
@@ -524,8 +525,9 @@ void Arinc665ImporterImpl::addFiles( void)
     ContainerEntityPtr container(
       checkCreateDirectory( batch.first.first, batch.second.getPath()));
 
-    Arinc665::Media::LoadPtr loadPtr =
-      container->addLoad( batch.second.getFilename(), batchInfo->second.getPartNumber());
+    Arinc665::Media::BatchPtr batchPtr( container->addBatch( batch.second.getFilename()));
+
+    batchPtr->setPartNumber( batchInfo->second.getPartNumber());
 
     // iterate over loads
     for ( const auto &load : batchFile->second.getTargetHardwareLoadList())

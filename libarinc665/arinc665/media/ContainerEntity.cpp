@@ -258,11 +258,7 @@ FilePtr ContainerEntity::getFile( const string &filename, bool recursive)
   return FilePtr();
 }
 
-FilePtr ContainerEntity::addFile(
-  const string &filename,
-  const uint16_t crc,
-  const uint32_t fileLength,
-  const string &partNumber)
+FilePtr ContainerEntity::addFile( const string &filename)
 {
   if ( getFile( filename))
   {
@@ -271,13 +267,7 @@ FilePtr ContainerEntity::addFile(
   }
 
   // create file
-  FilePtr file(
-    std::make_shared< File>(
-      shared_from_this(),
-      filename,
-      crc,
-      fileLength,
-      partNumber));
+  FilePtr file( std::make_shared< File>( shared_from_this(), filename));
 
   // insert into map
   files.push_back( file);
@@ -418,9 +408,7 @@ LoadPtr ContainerEntity::getLoad( const string &filename, bool recursive)
   return std::dynamic_pointer_cast< Load>( file);
 }
 
-LoadPtr ContainerEntity::addLoad(
-  const string &filename,
-  const string &partNumber)
+LoadPtr ContainerEntity::addLoad( const string &filename)
 {
   if ( getFile( filename))
   {
@@ -430,7 +418,7 @@ LoadPtr ContainerEntity::addLoad(
 
   // create file
   LoadPtr load(
-    std::make_shared< Load>( shared_from_this(), filename, partNumber));
+    std::make_shared< Load>( shared_from_this(), filename));
 
   // insert into map
   files.push_back( load);
@@ -562,9 +550,7 @@ BatchPtr ContainerEntity::getBatch( const string &filename, bool recursive)
   return std::dynamic_pointer_cast< Batch>( file);
 }
 
-BatchPtr ContainerEntity::addBatch(
-  const string &filename,
-  const string &partNumber)
+BatchPtr ContainerEntity::addBatch( const string &filename)
 {
   if ( getFile( filename))
   {
@@ -574,7 +560,7 @@ BatchPtr ContainerEntity::addBatch(
 
   // create file
   BatchPtr batch(
-    std::make_shared< Batch>( shared_from_this(), filename, partNumber));
+    std::make_shared< Batch>( shared_from_this(), filename));
 
   // insert into map
   files.push_back( batch);
