@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,165 +9,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief General definitions for the ARINC 665 implementation.
+ * @brief Declaration of namespace Arinc665Qt.
  **/
 
-#ifndef ARINC665_ARINC665_HPP
-#define ARINC665_ARINC665_HPP
-
-#include <string>
-#include <cstdint>
+#ifndef ARINC665_QT_ARINC665QT_HPP
+#define ARINC665_QT_ARINC665QT_HPP
 
 /**
- * @defgroup arinc_665 ARINC 665
- * @brief The implementation of the ARINC 665 standard.
+ * @brief Namespace of ARINC 665 QT implementation
  **/
-
-/**
- * @brief Namespace of ARINC 665 implementation
- *
- * @ingroup arinc_665
- **/
-namespace Arinc665 {
-
-//! Enumeration of ARINC 665 versions.
-enum class Arinc665Version
-{
-  //! ARINC 665 Supplement 2
-  ARINC_665_2,
-  //! ARINC 665 Supplement 3
-  ARINC_665_3
-};
-
-//! Enumeration of file types.
-enum class FileClassType
-{
-  //! ARINC 665 Load file
-  ARINC_665_FILE_CLASS_LOAD_FILE,
-  //! ARINC 665 Batch file
-  ARINC_665_FILE_CLASS_BATCH_FILE,
-  //! ARINC 665 Media files (List files)
-  ARINC_665_FILE_CLASS_MEDIA_FILE,
-
-  //! None ARINC 665 File (Not specified through standard)
-  ARINC_665_FILE_CLASS_INVALID
-};
-
-/**
- * @brief Enumeration of load file versions.
- *
- * Used for load upload header files
- **/
-enum class LoadFileFormatVersion : uint16_t
-{
-  //! ARINC 665-2 version of load file
-  ARINC_665_LOAD_FILE_VERSION_2 = 0x8003,
-  //! ARINC 665-3 version of load file
-  ARINC_665_LOAD_FILE_VERSION_3 = 0x8004,
-
-  //! invalid value
-  ARINC_665_LOAD_FILE_INVALID   = 0xFFFF
-};
-
-/**
- * @brief Enumeration of batch file versions.
- *
- * Used for batch files
- **/
-enum class BatchFileFormatVersion : uint16_t
-{
-  //! ARINC 665-2 version of batch file
-  ARINC_665_BATCH_FILE_VERSION_2 = 0x9003,
-  //! ARINC 665-3 version of batch file
-  ARINC_665_BATCH_FILE_VERSION_3 = 0x9004,
-
-  //! invalid value
-  ARINC_665_BATCH_FILE_INVALID   = 0xFFFF
-};
-
-/**
- * @brief Enumeration of media file versions.
- *
- * Used for:
- * @li list of batch file,
- * @li list of loads file, and
- * @li list of files file
- **/
-enum class MediaFileFormatVersion : uint16_t
-{
-  //! ARINC 665-2 version of media file
-  ARINC_665_MEDIA_FILE_VERSION_2 = 0xA003,
-  //! ARINC 665-3 version of media file
-  ARINC_665_MEDIA_FILE_VERSION_3 = 0xA004,
-
-  //! invalid value
-  ARINC_665_MEDIA_FILE_INVALID   = 0xFFFF
-};
-
-//! All ARINC 665 file types combined
-enum class Arinc665FileFormatVersion : uint16_t
-{
-  LOAD_FILE_VERSION_2 = static_cast< uint16_t>(
-    LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_2),
-  LOAD_FILE_VERSION_3 =	static_cast< uint16_t>(
-    LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_3),
-
-  BATCH_FILE_VERSION_2 = static_cast< uint16_t>(
-    BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_2),
-  BATCH_FILE_VERSION_3 = static_cast< uint16_t>(
-    BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_3),
-
-  MEDIA_FILE_VERSION_2 = static_cast< uint16_t>(
-    MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_2),
-  MEDIA_FILE_VERSION_3 = static_cast< uint16_t>(
-    MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_3),
-
-  ARINC_665_FILE_INVALID   = 0xFFFF  //!< invalid value
-};
-
-//! @brief ARINC 665 file types
-enum class FileType
-{
-  ARINC_665_FILE_TYPE_BATCH_FILE,         //!< ARINC 665 batch file
-  ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER, //!< ARINC 665 load upload header file
-  ARINC_665_FILE_TYPE_LOAD_LIST,          //!< ARINC 665 load list file
-  ARINC_665_FILE_TYPE_BATCH_LIST,         //!< ARINC 665 batch list file
-  ARINC_665_FILE_TYPE_FILE_LIST,          //!< ARINC 665 file list file
-
-  ARINC_665_FILE_TYPE_INVALID             //!< invalid value
-};
-
-//! The default filename of the list of files: "FILES.LUM"
-extern const std::string ListOfFilesName;
-
-//! The default filename of the list of loads: "LOADS.LUM"
-extern const std::string ListOfLoadsName;
-
-//! The default filename of the list of batches: "BATCHES.LUM"
-extern const std::string ListOfBatchesName;
-
-//! The default extension of a load upload header: ".LUH"
-extern const std::string LoadUploadHeaderExtension;
-
-//! The default extension of a batch file: ".LUB"
-extern const std::string BatchFileExtension;
-
-constexpr uint8_t Crc8Polynom = 0x80;
-constexpr uint8_t Crc8Init = 0x00;
-constexpr uint8_t Crc8FinalXor = 0x00;
-
-constexpr uint16_t Crc16Polynom = 0x1021;
-constexpr uint16_t Crc16Init = 0xFFFF;
-constexpr uint16_t Crc16FinalXor = 0x0000;
-
-constexpr uint32_t Crc32Polynom = 0x04C11DB7;
-constexpr uint32_t Crc32Init = 0xFFFF;
-constexpr uint32_t Crc32FinalXor = 0xFFFFFFFF;
-
+namespace Arinc665Qt {
+  class QMediaSetModelModel;
 }
 
 #endif

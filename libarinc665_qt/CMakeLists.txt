@@ -24,7 +24,9 @@ set( CMAKE_AUTOMOC ON)
 add_library(
   arinc665_qt
   
-  arinc665_qt/Arinc665Qt.hpp  
+  arinc665_qt/Arinc665Qt.hpp
+  arinc665_qt/QMediaSetModel.hpp
+  arinc665_qt/QMediaSetModel.cpp
 #  ${bhm_qt_ui}
   )
 
