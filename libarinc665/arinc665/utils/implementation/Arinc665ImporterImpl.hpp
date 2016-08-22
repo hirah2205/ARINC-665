@@ -40,19 +40,20 @@ namespace Utils {
 class Arinc665ImporterImpl : public Arinc665Importer
 {
   public:
+    void import( GetMediumHandler getMediumHandler);
+
+    MediaSetPtr getMediaSet( void);
+
+  private:
     using RawFile = Arinc665::File::RawFile;
     using FileListFile = Arinc665::File::FileListFile;
     using LoadListFile = Arinc665::File::LoadListFile;
     using BatchListFile = Arinc665::File::BatchListFile;
     using LoadHeaderFile = Arinc665::File::LoadHeaderFile;
     using BatchFile = Arinc665::File::BatchFile;
+    using LoadHeaderFiles = std::map< std::string, LoadHeaderFile>;
+    using BatchFiles = std::map< std::string, BatchFile>;
     using ContainerEntityPtr = std::shared_ptr< Media::ContainerEntity>;
-
-    void import( GetMediumHandler getMediumHandler);
-
-    MediaSetPtr getMediaSet( void);
-
-  protected:
 
     void addMedium( const unsigned int mediaIndex, const path &mediumPath);
 
@@ -68,7 +69,11 @@ class Arinc665ImporterImpl : public Arinc665Importer
 
     void addFiles( void);
 
-    ContainerEntityPtr checkCreateDirectory( const unsigned int mediaIndex, const path &mediumPath);
+    void addLoads( FileListFile::FileMap &loadHeaders);
+
+    void addBatches( FileListFile::FileMap &batches);
+
+    ContainerEntityPtr checkCreateDirectory( const unsigned int mediaIndex, const path &filePath);
 
     /**
      * @brief loads the file.
@@ -79,10 +84,6 @@ class Arinc665ImporterImpl : public Arinc665Importer
      **/
     RawFile loadFile( const path &filePath);
 
-  private:
-    using LoadHeaderFiles = std::map< std::string, LoadHeaderFile>;
-    using BatchFiles = std::map< std::string, BatchFile>;
-
     //! The media set.
     MediaSetPtr mediaSet;
     boost::optional < FileListFile> fileListFile;
@@ -92,8 +93,8 @@ class Arinc665ImporterImpl : public Arinc665Importer
     BatchFiles batchFiles;
 
     FileListFile::FileMap files;
-    LoadListFile::LoadMap loads;
-    BatchListFile::BatchMap batches;
+    LoadListFile::LoadInfoMap loadInfos;
+    BatchListFile::BatchInfoMap batchInfos;
 };
 
 }

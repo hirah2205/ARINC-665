@@ -17,14 +17,14 @@
 #include "LoadInfo.hpp"
 
 #include <arinc665/file/StringHelper.hpp>
+#include <arinc665/file/list/FileInfo.hpp>
 
 #include <helper/Logger.hpp>
 
 namespace Arinc665 {
 namespace File {
 
-std::list< LoadInfo> LoadInfo::getLoadList(
- RawFile::const_iterator &it)
+LoadInfo::LoadInfos LoadInfo::getLoadInfos( RawFile::const_iterator &it)
 {
   RawFile::const_iterator workIt = it;
 
@@ -124,6 +124,28 @@ bool LoadInfo::operator ==( const LoadInfo &other) const
 bool LoadInfo::operator !=( const LoadInfo &other) const
 {
   return !(*this == other);
+}
+
+bool LoadInfo::operator ==( const FileInfo &other) const
+{
+  return
+    (headerFilename == other.getFilename()) &&
+    (memberSequenceNumber == other.getMemberSequenceNumber());
+}
+
+bool LoadInfo::operator !=( const FileInfo &other) const
+{
+  return !(*this == other);
+}
+
+bool operator ==( const FileInfo &fileInfo, const LoadInfo &loadInfo)
+{
+  return loadInfo == fileInfo;
+}
+
+bool operator !=( const FileInfo &fileInfo, const LoadInfo &loadInfo)
+{
+  return loadInfo != fileInfo;
 }
 
 }

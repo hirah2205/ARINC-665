@@ -16,6 +16,7 @@
 
 #include "BatchInfo.hpp"
 
+#include <arinc665/file/list/FileInfo.hpp>
 #include <arinc665/file/StringHelper.hpp>
 
 #include <helper/Logger.hpp>
@@ -23,7 +24,7 @@
 namespace Arinc665 {
 namespace File {
 
-BatchInfo::BatchInfoList BatchInfo::getBatchList(
+BatchInfo::BatchInfoList BatchInfo::getBatchInfos(
   RawFile::const_iterator &it)
 {
   RawFile::const_iterator workIt = it;
@@ -111,6 +112,28 @@ bool BatchInfo::operator ==( const BatchInfo &other) const
 bool BatchInfo::operator !=( const BatchInfo &other) const
 {
   return !(*this == other);
+}
+
+bool BatchInfo::operator ==( const FileInfo &other) const
+{
+  return
+    (filename == other.getFilename()) &&
+    (memberSequenceNumber == other.getMemberSequenceNumber());
+}
+
+bool BatchInfo::operator !=( const FileInfo &other) const
+{
+  return !(*this == other);
+}
+
+bool operator ==( const FileInfo &fileInfo, const BatchInfo &batchInfo)
+{
+  return batchInfo == fileInfo;
+}
+
+bool operator !=( const FileInfo &fileInfo, const BatchInfo &batchInfo)
+{
+  return batchInfo != fileInfo;
 }
 
 }

@@ -27,15 +27,24 @@ namespace Arinc665 {
  **/
 namespace File {
 //! Raw file type definition.
-typedef std::vector< uint8_t> RawFile;
+using RawFile = std::vector< uint8_t>;
 
 class FileFactory;
 
 class Arinc665File;
+
 class BatchFile;
+
+class LoadFileInfo;
 class LoadHeaderFile;
+
+class BatchInfo;
 class BatchListFile;
+
+class LoadInfo;
 class LoadListFile;
+
+class FileInfo;
 class FileListFile;
 
 }

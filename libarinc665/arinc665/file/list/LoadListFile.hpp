@@ -35,8 +35,8 @@ class LoadListFile: public ListFile
 {
   public:
     //! Type definition of LoadList
-    using LoadList = std::list< LoadInfo>;
-    using LoadMap = std::map< std::pair< uint8_t, string>, LoadInfo>;
+    using LoadInfoList = std::list< LoadInfo>;
+    using LoadInfoMap = std::map< std::pair< uint8_t, string>, LoadInfo>;
     using UserDefinedData = std::vector< uint8_t>;
 
     LoadListFile( void);
@@ -76,21 +76,21 @@ class LoadListFile: public ListFile
      *
      * @return The Loads.
      **/
-    const LoadList& getLoads( void) const;
+    const LoadInfoList& getLoads( void) const;
 
     /**
      * @brief Returns the loads.
      *
      * @return The Loads.
      **/
-    LoadList& getLoads( void);
+    LoadInfoList& getLoads( void);
 
     /**
      * @brief Returns the loads as map for easy access.
      *
      * @return The loads as map.
      */
-    LoadMap getLoadMap( void) const;
+    LoadInfoMap getLoadMap( void) const;
 
     /**
      * @brief Returns the user defined data.
@@ -117,7 +117,7 @@ class LoadListFile: public ListFile
     //! number of media set members
     uint8_t numberOfMediaSetMembers;
     //! The load list
-    LoadList loadList;
+    LoadInfoList loadInfos;
     //! user defined data
     UserDefinedData userDefinedData;
 };

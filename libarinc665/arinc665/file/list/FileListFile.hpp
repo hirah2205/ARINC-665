@@ -14,8 +14,8 @@
  * @brief Declaration of class Arinc665::File::FileListFile
  **/
 
-#ifndef ARINC665_FILELISTFILE_HPP
-#define ARINC665_FILELISTFILE_HPP
+#ifndef ARINC665_FILE_FILELISTFILE_HPP
+#define ARINC665_FILE_FILELISTFILE_HPP
 
 #include <arinc665/file/File.hpp>
 #include <arinc665/file/list/ListFile.hpp>
@@ -75,12 +75,32 @@ class FileListFile: public ListFile
      **/
     unsigned int getNumberOfFiles( void) const;
 
+    /**
+     * @brief Return the list of files.
+     *
+     * @return The list of files
+     **/
     const FileList& getFiles( void) const;
 
+    /**
+     * @brief Return the list of files.
+     *
+     * @return The list of files
+     **/
     FileList& getFiles( void);
 
+    /**
+     * @brief Return the list of files as map ( media index and filename as key).
+     *
+     * @return The list of files
+     **/
     FileMap getFileMap( void) const;
 
+    /**
+     * @brief Return the list of files as map ( media index and complete path as key).
+     *
+     * @return The list of files
+     **/
     FilePathMap getFilePathMap( void) const;
 
     const UserDefinedData& getUserDefinedData( void) const;

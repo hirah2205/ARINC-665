@@ -30,7 +30,7 @@ class BatchInfo
     using string = std::string;
     using BatchInfoList = std::vector< BatchInfo>;
 
-    static BatchInfoList getBatchList(
+    static BatchInfoList getBatchInfos(
       RawFile::const_iterator &it);
 
     BatchInfo( void);
@@ -53,11 +53,19 @@ class BatchInfo
 
     bool operator !=( const BatchInfo &other) const;
 
+    bool operator ==( const FileInfo &other) const;
+
+    bool operator !=( const FileInfo &other) const;
+
   private:
     string partNumber;
     string filename;
     uint16_t memberSequenceNumber;
 };
+
+bool operator ==( const FileInfo &fileInfo, const BatchInfo &batchInfo);
+
+bool operator !=( const FileInfo &fileInfo, const BatchInfo &batchInfo);
 
 }
 }

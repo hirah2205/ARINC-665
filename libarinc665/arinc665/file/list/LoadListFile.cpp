@@ -56,7 +56,7 @@ LoadListFile::LoadListFile( const RawFile &file) :
 
   // load list
   it = file.begin() + 2 * loadListPtr;
-  loadList = LoadInfo::getLoadList( it);
+  loadInfos = LoadInfo::getLoadInfos( it);
 
   // user defined data
   if ( 0 != userDefinedDataPtr)
@@ -106,31 +106,31 @@ void LoadListFile::setNumberOfMediaSetMembers(
 
 unsigned int LoadListFile::getNumberOfLoads( void) const
 {
-  return loadList.size();
+  return loadInfos.size();
 }
 
-const LoadListFile::LoadList& LoadListFile::getLoads( void) const
+const LoadListFile::LoadInfoList& LoadListFile::getLoads( void) const
 {
-  return loadList;
+  return loadInfos;
 }
 
-LoadListFile::LoadList& LoadListFile::getLoads( void)
+LoadListFile::LoadInfoList& LoadListFile::getLoads( void)
 {
-  return loadList;
+  return loadInfos;
 }
 
-LoadListFile::LoadMap LoadListFile::getLoadMap( void) const
+LoadListFile::LoadInfoMap LoadListFile::getLoadMap( void) const
 {
-  LoadMap loads;
+  LoadInfoMap loads;
 
-  for (const auto & load : loadList)
+  for (const auto & loadInfo : loadInfos)
   {
     loads.insert(
       std::make_pair(
         std::make_pair(
-          load.getMemberSequenceNumber(),
-          load.getHeaderFilename()),
-        load));
+          loadInfo.getMemberSequenceNumber(),
+          loadInfo.getHeaderFilename()),
+        loadInfo));
   }
 
   return loads;
@@ -151,7 +151,7 @@ bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
   return
     (mediaSetPn == other.getMediaSetPn()) &&
     (numberOfMediaSetMembers == other.getNumberOfMediaSetMembers()) &&
-    (loadList == other.getLoads()) &&
+    (loadInfos == other.getLoads()) &&
     (userDefinedData == other.getUserDefinedData());
 }
 

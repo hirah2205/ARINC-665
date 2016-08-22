@@ -34,11 +34,10 @@ class LoadInfo
 {
   public:
     using string = std::string;
-
     using ThwIds = std::list< string>;
+    using LoadInfos = std::list< LoadInfo>;
 
-    static std::list< LoadInfo> getLoadList(
-      std::vector< uint8_t>::const_iterator &it);
+    static LoadInfos getLoadInfos( RawFile::const_iterator &it);
 
     LoadInfo( void);
 
@@ -63,12 +62,22 @@ class LoadInfo
     bool operator ==( const LoadInfo &other) const;
 
     bool operator !=( const LoadInfo &other) const;
+
+    bool operator ==( const FileInfo &other) const;
+
+    bool operator !=( const FileInfo &other) const;
+
   private:
     string partNumber;
     string headerFilename;
     uint16_t memberSequenceNumber;
     ThwIds targetHardwareIds;
 };
+
+bool operator ==( const FileInfo &fileInfo, const LoadInfo &loadInfo);
+
+bool operator !=( const FileInfo &fileInfo, const LoadInfo &loadInfo);
+
 }
 }
 
