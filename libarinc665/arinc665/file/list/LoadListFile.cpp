@@ -109,17 +109,17 @@ unsigned int LoadListFile::getNumberOfLoads( void) const
   return loadInfos.size();
 }
 
-const LoadListFile::LoadInfoList& LoadListFile::getLoads( void) const
+const LoadListFile::LoadInfoList& LoadListFile::getLoadInfos( void) const
 {
   return loadInfos;
 }
 
-LoadListFile::LoadInfoList& LoadListFile::getLoads( void)
+LoadListFile::LoadInfoList& LoadListFile::getLoadInfos( void)
 {
   return loadInfos;
 }
 
-LoadListFile::LoadInfoMap LoadListFile::getLoadMap( void) const
+LoadListFile::LoadInfoMap LoadListFile::getLoadInfosAsMap( void) const
 {
   LoadInfoMap loads;
 
@@ -151,7 +151,7 @@ bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
   return
     (mediaSetPn == other.getMediaSetPn()) &&
     (numberOfMediaSetMembers == other.getNumberOfMediaSetMembers()) &&
-    (loadInfos == other.getLoads()) &&
+    (loadInfos == other.getLoadInfos()) &&
     (userDefinedData == other.getUserDefinedData());
 }
 

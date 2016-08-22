@@ -38,7 +38,7 @@ class FileInfo
     using FileInfoList = std::vector< FileInfo>;
     using path = boost::filesystem::path;
 
-    static FileInfoList getFileList(
+    static FileInfoList getFileInfos(
       RawFile::const_iterator &it);
 
     FileInfo( void);

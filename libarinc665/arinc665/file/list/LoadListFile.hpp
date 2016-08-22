@@ -76,21 +76,21 @@ class LoadListFile: public ListFile
      *
      * @return The Loads.
      **/
-    const LoadInfoList& getLoads( void) const;
+    const LoadInfoList& getLoadInfos( void) const;
 
     /**
      * @brief Returns the loads.
      *
      * @return The Loads.
      **/
-    LoadInfoList& getLoads( void);
+    LoadInfoList& getLoadInfos( void);
 
     /**
      * @brief Returns the loads as map for easy access.
      *
      * @return The loads as map.
      */
-    LoadInfoMap getLoadMap( void) const;
+    LoadInfoMap getLoadInfosAsMap( void) const;
 
     /**
      * @brief Returns the user defined data.

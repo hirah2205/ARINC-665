@@ -37,10 +37,10 @@ namespace File {
 class FileListFile: public ListFile
 {
   public:
-    using FileList = FileInfo::FileInfoList;
+    using FileInfoList = FileInfo::FileInfoList;
     using path = boost::filesystem::path;
-    using FileMap = std::map< std::pair< unsigned int, string>, FileInfo>;
-    using FilePathMap= std::map< std::pair< unsigned int, path>, FileInfo>;
+    using FileInfoMap = std::map< std::pair< unsigned int, string>, FileInfo>;
+    using FileInfoPathMap= std::map< std::pair< unsigned int, path>, FileInfo>;
     using UserDefinedData = std::vector< uint8_t>;
 
     FileListFile( void);
@@ -80,28 +80,28 @@ class FileListFile: public ListFile
      *
      * @return The list of files
      **/
-    const FileList& getFiles( void) const;
+    const FileInfoList& getFileInfos( void) const;
 
     /**
      * @brief Return the list of files.
      *
      * @return The list of files
      **/
-    FileList& getFiles( void);
+    FileInfoList& getFileInfos( void);
 
     /**
      * @brief Return the list of files as map ( media index and filename as key).
      *
      * @return The list of files
      **/
-    FileMap getFileMap( void) const;
+    FileInfoMap getFileInfosAsMap( void) const;
 
     /**
      * @brief Return the list of files as map ( media index and complete path as key).
      *
      * @return The list of files
      **/
-    FilePathMap getFilePathMap( void) const;
+    FileInfoPathMap getFileInfosAsPathMap( void) const;
 
     const UserDefinedData& getUserDefinedData( void) const;
 
@@ -113,7 +113,7 @@ class FileListFile: public ListFile
     string mediaSetPn;
     uint8_t mediaSequenceNumber;
     uint8_t numberOfMediaSetMembers;
-    FileList fileList;
+    FileInfoList fileInfos;
     UserDefinedData userDefinedData;
 };
 

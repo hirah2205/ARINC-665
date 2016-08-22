@@ -142,8 +142,8 @@ void list_loads_lum( const boost::filesystem::path &loadsLum)
 		std::cout << "no of media set members: " << (int)loadList.getNumberOfMediaSetMembers() << std::endl;
 
 		for (
-			std::list< LoadInfo>::const_iterator it = loadList.getLoads().begin();
-			it != loadList.getLoads().end();
+			std::list< LoadInfo>::const_iterator it = loadList.getLoadInfos().begin();
+			it != loadList.getLoadInfos().end();
 			++it)
 		{
 			std::cout << "load load pn: "                << it->getPartNumber() << std::endl;
@@ -181,54 +181,54 @@ void list_files_lum( const boost::filesystem::path &filesLum)
   using Arinc665::File::FileInfo;
 
   try
-	{
-		std::cout << "File size is: " << std::dec << boost::filesystem::file_size( filesLum) << std::endl;
+  {
+    std::cout << "File size is: " << std::dec << boost::filesystem::file_size( filesLum) << std::endl;
 
-		std::vector< uint8_t> data( boost::filesystem::file_size( filesLum));
+    std::vector< uint8_t> data( boost::filesystem::file_size( filesLum));
 
-		std::ifstream file(
-			filesLum.string().c_str(),
-			std::ifstream::binary | std::ifstream::in);
+    std::ifstream file(
+      filesLum.string().c_str(),
+      std::ifstream::binary | std::ifstream::in);
 
-		if (!file.is_open())
-		{
-			std::cout << "Error opening file: " << filesLum.string() << std::endl;
-			return;
-		}
+    if ( !file.is_open())
+    {
+      std::cout << "Error opening file: " << filesLum.string() << std::endl;
+      return;
+    }
 
-		file.read( (char*)&data.at(0), data.size());
+    file.read( (char*) &data.at( 0), data.size());
 
-		FileListFile fileList( data);
+    FileListFile fileList( data);
 
-		std::cout << "media set pn: " << fileList.getMediaSetPn() << std::endl;
+    std::cout << "media set pn: " << fileList.getMediaSetPn() << std::endl;
 
-		std::cout << "media seq no: " << (int)fileList.getMediaSequenceNumber() << std::endl;
+    std::cout << "media seq no: " << (int)fileList.getMediaSequenceNumber() << std::endl;
 
-		std::cout << "no of media set members: " << std::dec << (int)fileList.getNumberOfMediaSetMembers() << std::endl;
+    std::cout << "no of media set members: " << std::dec << (int)fileList.getNumberOfMediaSetMembers() << std::endl;
 
-		for ( const auto & file : fileList.getFiles())
-		{
-			std::cout << "file file name: " << file.getFilename() << "\n";
-			std::cout << "file path name: " << file.getPathName() << "\n";
-			std::cout << "file member sequence number: " << std::dec << file.getMemberSequenceNumber() << "\n";
-			std::cout << "file crc: " << std::hex << file.getCrc() << "\n\n";
-		}
+    for ( const auto & file : fileList.getFileInfos())
+    {
+      std::cout << "file file name: " << file.getFilename() << "\n";
+      std::cout << "file path name: " << file.getPathName() << "\n";
+      std::cout << "file member sequence number: " << std::dec << file.getMemberSequenceNumber() << "\n";
+      std::cout << "file crc: " << std::hex << file.getCrc() << "\n\n";
+    }
 
-		std::cout << "file list crc: " << std::hex << (int)fileList.getCrc() << std::endl;
+    std::cout << "file list crc: " << std::hex << (int)fileList.getCrc() << std::endl;
 
 	}
-	catch (boost::exception &e)
-	{
-		std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
-	}
-	catch ( std::exception &e)
-	{
-		std::cout << "std exception: " << e.what() << std::endl;
-	}
-	catch (...)
-	{
-		std::cout << "unknown exception occurred" << std::endl;
-	}
+  catch (boost::exception &e)
+  {
+    std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
+  }
+  catch ( std::exception &e)
+  {
+    std::cout << "std exception: " << e.what() << std::endl;
+  }
+  catch ( ...)
+  {
+    std::cout << "unknown exception occurred" << std::endl;
+  }
 }
 
 void list_file( const boost::filesystem::path &filename)
@@ -237,108 +237,108 @@ void list_file( const boost::filesystem::path &filename)
 
 static void list_files( const boost::filesystem::path &loadDir)
 {
-	std::cout << "directory: " << loadDir << std::endl;
+  std::cout << "directory: " << loadDir << std::endl;
 
-	for (boost::filesystem::directory_iterator itr( loadDir);
-		itr!=boost::filesystem::directory_iterator();
-		++itr)
-	{
-		std::cout << itr->path().filename() << std::endl;
+  for ( boost::filesystem::directory_iterator itr( loadDir);
+    itr != boost::filesystem::directory_iterator(); ++itr)
+  {
+    std::cout << itr->path().filename() << std::endl;
 
-		if (is_regular_file(itr->status()))
-		{
-			std::cout << " - ";
+    if ( is_regular_file( itr->status()))
+    {
+      std::cout << " - ";
 
-			switch (Arinc665::File::FileFactory::getFileType( itr->path().filename()))
-			{
-				case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_FILE:
-					std::cout << "ARINC 665 BATCH file";
-					break;
+      switch ( Arinc665::File::FileFactory::getFileType( itr->path().filename()))
+      {
+        case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_FILE:
+          std::cout << "ARINC 665 BATCH file";
+          break;
 
-				case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER:
-					std::cout << "ARINC 665 LOAD UPLOAD HEADER file";
-					break;
+        case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER:
+          std::cout << "ARINC 665 LOAD UPLOAD HEADER file";
+          break;
 
-				case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_LIST:
-					std::cout << "ARINC 665 LOAD LIST file";
-					break;
+        case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_LIST:
+          std::cout << "ARINC 665 LOAD LIST file";
+          break;
 
-				case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_LIST:
-					std::cout << "ARINC 665 BATCH LIST file";
-					break;
+        case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_LIST:
+          std::cout << "ARINC 665 BATCH LIST file";
+          break;
 
-				case Arinc665::FileType::ARINC_665_FILE_TYPE_FILE_LIST:
-					std::cout << "ARINC 665 FILE LIST file";
-					break;
+        case Arinc665::FileType::ARINC_665_FILE_TYPE_FILE_LIST:
+          std::cout << "ARINC 665 FILE LIST file";
+          break;
 
-				default:
-					std::cout << "No special ARINC 665 file";
-					break;
-			}
+        default:
+          std::cout << "No special ARINC 665 file";
+          break;
+      }
 
-			std::cout << std::endl;
+      std::cout << std::endl;
 
-			switch (Arinc665::File::FileFactory::getFileType( itr->path().filename()))
-			{
-				case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_FILE:
-					break;
+      switch ( Arinc665::File::FileFactory::getFileType( itr->path().filename()))
+      {
+        case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_FILE:
+          break;
 
-				case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER:
-					list_file( itr->path());
-					list_luh( itr->path());
-					break;
+        case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER:
+          list_file( itr->path());
+          list_luh( itr->path());
+          break;
 
-				case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_LIST:
-					list_loads_lum( itr->path());
-					break;
+        case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_LIST:
+          list_loads_lum( itr->path());
+          break;
 
-				case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_LIST:
-					break;
+        case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_LIST:
+          break;
 
-				case Arinc665::FileType::ARINC_665_FILE_TYPE_FILE_LIST:
-					list_files_lum( itr->path());
-					break;
+        case Arinc665::FileType::ARINC_665_FILE_TYPE_FILE_LIST:
+          list_files_lum( itr->path());
+          break;
 
-				default:
-					list_file( itr->path());
-					break;
-			}
-		}
-	}
+        default:
+          list_file( itr->path());
+          break;
+      }
+    }
+  }
 }
 
 int main( int argc, char* argv[])
 {
-	if (argc != 2)
-	{
-		std::cout << "enter load directory" << std::endl;
+  if ( argc != 2)
+  {
+    std::cout << "enter load directory" << std::endl;
 
-		return EXIT_FAILURE;
-	}
+    return EXIT_FAILURE;
+  }
 
-	try
-	{
-		boost::filesystem::path loadDir( argv[1]);
+  try
+  {
+    boost::filesystem::path loadDir( argv[1]);
 
-		std::cout << "List files" << std::endl;
-		list_files( loadDir);
-	}
-	catch (boost::exception &e)
-	{
-		std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
-		return EXIT_FAILURE;
-	}
-	catch ( std::exception &e)
-	{
-		std::cout << "std exception: " << e.what() << std::endl;
-		return EXIT_FAILURE;
-	}
-	catch (...)
-	{
-		std::cout << "unknown exception occurred" << std::endl;
-		return EXIT_FAILURE;
-	}
+    std::cout << "List files" << std::endl;
+    list_files( loadDir);
+  }
+  catch ( boost::exception &e)
+  {
+    std::cout << "Boost exception: " << boost::diagnostic_information( e)
+      << std::endl;
+    return EXIT_FAILURE;
+  }
+  catch ( std::exception &e)
+  {
+    std::cout << "std exception: " << e.what() << std::endl;
+    return EXIT_FAILURE;
+  }
+  catch ( ...)
+  {
+    std::cout << "unknown exception occurred" << std::endl;
+    return EXIT_FAILURE;
+  }
 
-	return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }
 

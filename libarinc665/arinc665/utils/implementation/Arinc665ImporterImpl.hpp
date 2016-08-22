@@ -69,9 +69,9 @@ class Arinc665ImporterImpl : public Arinc665Importer
 
     void addFiles( void);
 
-    void addLoads( FileListFile::FileMap &loadHeaders);
+    void addLoads( FileListFile::FileInfoMap &loadHeaders);
 
-    void addBatches( FileListFile::FileMap &batches);
+    void addBatches( FileListFile::FileInfoMap &batches);
 
     ContainerEntityPtr checkCreateDirectory( const unsigned int mediaIndex, const path &filePath);
 
@@ -92,7 +92,7 @@ class Arinc665ImporterImpl : public Arinc665Importer
     LoadHeaderFiles loadHeaderFiles;
     BatchFiles batchFiles;
 
-    FileListFile::FileMap files;
+    FileListFile::FileInfoMap fileInfos;
     LoadListFile::LoadInfoMap loadInfos;
     BatchListFile::BatchInfoMap batchInfos;
 };

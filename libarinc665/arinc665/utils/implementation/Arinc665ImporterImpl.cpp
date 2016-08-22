@@ -215,7 +215,7 @@ void Arinc665ImporterImpl::loadFileListFile( const unsigned int mediaIndex, cons
   if (!this->fileListFile)
   {
     this->fileListFile = fileListFile;
-    files = fileListFile.getFileMap();
+    fileInfos = fileListFile.getFileInfosAsMap();
   }
 
   // check for consistency of current file list file
@@ -238,22 +238,22 @@ void Arinc665ImporterImpl::loadFileListFile( const unsigned int mediaIndex, cons
   }
 
   // iterate over files
-  for ( auto &file : fileListFile.getFiles())
+  for ( auto &fileInfo : fileInfos)
   {
     // skip files, which are not part of the current medium
-    if (file.getMemberSequenceNumber() != mediaIndex)
+    if (fileInfo.second.getMemberSequenceNumber() != mediaIndex)
     {
       continue;
     }
 
-    path dataFilePath( mediumPath / file.getPath());
+    path dataFilePath( mediumPath / fileInfo.second.getPath());
 
     RawFile rawFile( loadFile( dataFilePath));
 
     uint16_t crc = File::Arinc665File::calculateChecksum( rawFile, 0);
 
     // compare checksums
-    if (crc != file.getCrc())
+    if (crc != fileInfo.second.getCrc())
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception() <<
         AdditionalInfo(
@@ -274,7 +274,7 @@ void Arinc665ImporterImpl::loadLoadListFile(
   if (!this->loadListFile)
   {
     this->loadListFile = loadListFile;
-    loadInfos = loadListFile.getLoadMap();
+    loadInfos = loadListFile.getLoadInfosAsMap();
   }
 
   // check for consistency
@@ -304,10 +304,10 @@ void Arinc665ImporterImpl::loadLoadListFile(
     {
       // check existence of load header files.
 
-      FileListFile::FileMap::iterator file =
-        files.find( loadInfo.first);
+      FileListFile::FileInfoMap::iterator file =
+        fileInfos.find( loadInfo.first);
 
-      if (file == files.end())
+      if (file == fileInfos.end())
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception() <<
           AdditionalInfo( loadInfo.first.second + ": load header file not found"));
@@ -380,9 +380,9 @@ void Arinc665ImporterImpl::loadBatchListFile( const unsigned int mediaIndex, con
     // iterate over all batches
     for ( auto &batchInfo : batchInfos)
     {
-      FileListFile::FileMap::iterator file = files.find( batchInfo.first);
+      FileListFile::FileInfoMap::iterator file = fileInfos.find( batchInfo.first);
 
-      if (file == files.end())
+      if (file == fileInfos.end())
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception() <<
           AdditionalInfo( batchInfo.first.second + ": batch file not found"));
@@ -407,10 +407,10 @@ void Arinc665ImporterImpl::loadLoadHeaderFiles( const unsigned int mediaIndex, c
       continue;
     }
 
-    FileListFile::FileMap::const_iterator loadHeaderFileIt(
-      files.find( loadInfo.first));
+    FileListFile::FileInfoMap::const_iterator loadHeaderFileIt(
+      fileInfos.find( loadInfo.first));
 
-    if (files.end() == loadHeaderFileIt)
+    if (fileInfos.end() == loadHeaderFileIt)
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception() <<
         AdditionalInfo( "Medium is not consistent to media set"));
@@ -442,10 +442,10 @@ void Arinc665ImporterImpl::loadBatchFiles( const unsigned int mediaIndex, const 
       continue;
     }
 
-    FileListFile::FileMap::const_iterator batchFileIt(
-      files.find( batchInfo.first));
+    FileListFile::FileInfoMap::const_iterator batchFileIt(
+      fileInfos.find( batchInfo.first));
 
-    if (files.end() == batchFileIt)
+    if (fileInfos.end() == batchFileIt)
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception() <<
         AdditionalInfo( "Medium is not consistent to media set"));
@@ -470,13 +470,13 @@ void Arinc665ImporterImpl::loadBatchFiles( const unsigned int mediaIndex, const 
 
 void Arinc665ImporterImpl::addFiles( void)
 {
-  FileListFile::FileMap loadHeaders;
-  FileListFile::FileMap batches;
+  FileListFile::FileInfoMap loadHeaders;
+  FileListFile::FileInfoMap batches;
 
   // add not load headers and batch files
-  for ( const auto &file : files)
+  for ( const auto &fileInfo : fileInfos)
   {
-    Arinc665::FileType fileType( Arinc665::File::FileFactory::getFileType( file.first.second));
+    Arinc665::FileType fileType( Arinc665::File::FileFactory::getFileType( fileInfo.first.second));
 
     switch ( fileType)
     {
@@ -486,11 +486,11 @@ void Arinc665ImporterImpl::addFiles( void)
         continue;
 
       case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER:
-        loadHeaders.insert( file);
+        loadHeaders.insert( fileInfo);
         continue;
 
       case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_FILE:
-        batches.insert( file);
+        batches.insert( fileInfo);
         continue;
 
       default:
@@ -498,11 +498,11 @@ void Arinc665ImporterImpl::addFiles( void)
     }
 
     ContainerEntityPtr container(
-      checkCreateDirectory( file.first.first, file.second.getPath()));
+      checkCreateDirectory( fileInfo.first.first, fileInfo.second.getPath()));
 
-    Arinc665::Media::FilePtr filePtr = container->addFile( file.second.getFilename());
+    Arinc665::Media::FilePtr filePtr = container->addFile( fileInfo.second.getFilename());
 
-    filePtr->setCrc( file.second.getCrc());
+    filePtr->setCrc( fileInfo.second.getCrc());
   }
 
   // loads
@@ -512,7 +512,7 @@ void Arinc665ImporterImpl::addFiles( void)
   addBatches( batches);
 }
 
-void Arinc665ImporterImpl::addLoads( FileListFile::FileMap &loadHeaders)
+void Arinc665ImporterImpl::addLoads( FileListFile::FileInfoMap &loadHeaders)
 {
   for ( const auto &loadHeader : loadHeaders)
   {
@@ -547,7 +547,7 @@ void Arinc665ImporterImpl::addLoads( FileListFile::FileMap &loadHeaders)
   }
 }
 
-void Arinc665ImporterImpl::addBatches( FileListFile::FileMap &batches)
+void Arinc665ImporterImpl::addBatches( FileListFile::FileInfoMap &batches)
 {
   for ( const auto &batch : batches)
   {
@@ -606,22 +606,22 @@ Arinc665::File::RawFile Arinc665ImporterImpl::loadFile( const path &filePath)
 
   RawFile data( boost::filesystem::file_size( filePath));
 
-	std::ifstream file(
-		filePath.string().c_str(),
-		std::ifstream::binary | std::ifstream::in);
+  std::ifstream file(
+    filePath.string().c_str(),
+    std::ifstream::binary | std::ifstream::in);
 
-	if (!file.is_open())
-	{
+  if ( !file.is_open())
+  {
     //! @throw Arinc665Exception
-		BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-			AdditionalInfo( "Error opening files"));
-	}
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception() << AdditionalInfo( "Error opening files"));
+  }
 
-	// read the data to the buffer
-	file.read( (char*)&data.at(0), data.size());
+  // read the data to the buffer
+  file.read( (char*) &data.at( 0), data.size());
 
-	// return the buffer
-	return data;
+  // return the buffer
+  return data;
 }
 
 }

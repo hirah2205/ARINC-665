@@ -25,7 +25,7 @@
 namespace Arinc665 {
 namespace File {
 
-FileInfo::FileInfoList FileInfo::getFileList(
+FileInfo::FileInfoList FileInfo::getFileInfos(
   RawFile::const_iterator &it)
 {
   //! @todo pass iterator by value
