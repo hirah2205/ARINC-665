@@ -29,6 +29,11 @@ namespace Arinc665 {
 //! Base class for ARINC 665 exceptions
 class Arinc665Exception: public virtual Exception
 {
+  public:
+    virtual const char* what( void) const noexcept override
+    {
+      return "ARINC 665 Exception";
+    }
 };
 
 //!
