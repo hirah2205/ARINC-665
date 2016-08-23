@@ -36,6 +36,7 @@ class Medium : public ContainerEntity
     MediaSetPtr getMediaSet( void);
 
   private:
+    // Pointer to media set
     WeakMediaSetPtr mediaSet;
 };
 

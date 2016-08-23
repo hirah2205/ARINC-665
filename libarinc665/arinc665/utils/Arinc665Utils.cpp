@@ -11,19 +11,25 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of class Arinc665::Importer::Arinc665Importer.
+ * @brief Definition of class Arinc665::Importer::Arinc665Utils.
  **/
 
-#include "Arinc665Importer.hpp"
+#include "Arinc665Utils.hpp"
 
 #include <arinc665/utils/implementation/Arinc665ImporterImpl.hpp>
 
 namespace Arinc665 {
 namespace Utils {
 
-Arinc665ImporterPtr Arinc665Importer::create( void)
+Arinc665Utils::Arinc665Importer Arinc665Utils::createArinc665Importer(
+  GetMediumPathHandler getMediumPathHandler)
 {
-  return std::make_shared< Arinc665ImporterImpl>();
+  Arinc665Importer importer( std::bind(
+    &Arinc665ImporterImpl::operator(),
+    std::make_shared< Arinc665ImporterImpl>(
+      getMediumPathHandler)));
+
+  return importer;
 }
 
 }

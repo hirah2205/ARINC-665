@@ -17,8 +17,7 @@
 #ifndef ARINC665_UTILS_ARINC665IMPORTERIMPL_HPP
 #define ARINC665_UTILS_ARINC665IMPORTERIMPL_HPP
 
-#include <arinc665/utils/Arinc665Importer.hpp>
-
+#include <arinc665/utils/Arinc665Utils.hpp>
 
 #include <arinc665/file/list/FileListFile.hpp>
 #include <arinc665/file/list/LoadListFile.hpp>
@@ -37,12 +36,15 @@
 namespace Arinc665 {
 namespace Utils {
 
-class Arinc665ImporterImpl : public Arinc665Importer
+class Arinc665ImporterImpl
 {
   public:
-    void import( GetMediumHandler getMediumHandler);
+    using MediaSetPtr = Arinc665Utils::MediaSetPtr;
+    using path = Arinc665Utils::path;
 
-    MediaSetPtr getMediaSet( void);
+    Arinc665ImporterImpl( Arinc665Utils::GetMediumPathHandler getMediumPathHandler);
+
+    MediaSetPtr operator ()( void);
 
   private:
     using RawFile = Arinc665::File::RawFile;
@@ -84,8 +86,11 @@ class Arinc665ImporterImpl : public Arinc665Importer
      **/
     RawFile loadFile( const path &filePath);
 
-    //! The media set.
+    Arinc665Utils::GetMediumPathHandler getMediumPathHandler;
+
+    //! The Media Set
     MediaSetPtr mediaSet;
+
     boost::optional < FileListFile> fileListFile;
     boost::optional < LoadListFile> loadListFile;
     boost::optional < BatchListFile> batchListFile;

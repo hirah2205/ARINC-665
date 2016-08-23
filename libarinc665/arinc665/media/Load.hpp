@@ -43,8 +43,10 @@ class Load: public BaseFile
     /**
      * @brief
      *
-     * @param[in] partNumber
-     *   Part number of Load
+     * @param[in] parent
+     *   The parent of this load.
+     * @param[in] name
+     *   Name of the Load
      **/
     Load( ContainerEntityPtr parent, const string &name);
 
@@ -76,6 +78,7 @@ class Load: public BaseFile
     FileList supportFileList;
     UserDefinedData userDefinedData;
 };
+
 }
 }
 

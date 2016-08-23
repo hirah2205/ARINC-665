@@ -40,6 +40,6 @@ target_link_libraries(
 
 set( 
   DOXYGEN_TAGFILES 
-  "libhelper.TAGFILE=../../libhelper/html libbhm.TAGFILE=../../libarinc665/html")
+  "libhelper.TAGFILE=../../libhelper/html libarinc665.TAGFILE=../../libarinc665/html")
 
 GENERATE_DOCUMENTATION()

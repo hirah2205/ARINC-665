@@ -27,14 +27,15 @@
 namespace Arinc665 {
 namespace Utils {
 
-Arinc665ImporterImpl::MediaSetPtr Arinc665ImporterImpl::getMediaSet( void)
+Arinc665ImporterImpl::Arinc665ImporterImpl(
+  Arinc665Utils::GetMediumPathHandler getMediumPathHandler):
+  getMediumPathHandler( getMediumPathHandler)
 {
-  return mediaSet;
 }
 
-void Arinc665ImporterImpl::import( GetMediumHandler getMediumHandler)
+Arinc665ImporterImpl::MediaSetPtr Arinc665ImporterImpl::operator ()( void)
 {
-  path mediumPath = getMediumHandler( 1);
+  path mediumPath = getMediumPathHandler( 1);
 
   if ( !boost::filesystem::is_directory( mediumPath))
   {
@@ -56,7 +57,7 @@ void Arinc665ImporterImpl::import( GetMediumHandler getMediumHandler)
   for ( unsigned int mediaIndex = 2; mediaIndex < mediaSet->getNumberOfMedia();
     ++mediaIndex)
   {
-    mediumPath = getMediumHandler( mediaIndex);
+    mediumPath = getMediumPathHandler( mediaIndex);
 
     if ( !boost::filesystem::is_directory( mediumPath))
     {
@@ -68,6 +69,8 @@ void Arinc665ImporterImpl::import( GetMediumHandler getMediumHandler)
 
     addMedium( mediaIndex, mediumPath);
   }
+
+  return mediaSet;
 }
 
 void Arinc665ImporterImpl::addMedium( const unsigned int mediaIndex, const path &mediumPath)

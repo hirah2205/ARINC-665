@@ -80,8 +80,8 @@ add_library(
   arinc665/media/BatchInfo.cpp
 
   arinc665/utils/Utils.hpp   
-  arinc665/utils/Arinc665Importer.hpp   
-  arinc665/utils/Arinc665Importer.cpp   
+  arinc665/utils/Arinc665Utils.hpp   
+  arinc665/utils/Arinc665Utils.cpp   
   arinc665/utils/implementation/Arinc665ImporterImpl.hpp
   arinc665/utils/implementation/Arinc665ImporterImpl.cpp
   

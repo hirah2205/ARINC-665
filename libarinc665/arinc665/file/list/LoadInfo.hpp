@@ -41,7 +41,7 @@ class LoadInfo
 
     LoadInfo( void);
 
-    LoadInfo( std::vector< uint8_t>::const_iterator &it);
+    LoadInfo( RawFile::const_iterator &it);
 
     string getPartNumber( void) const;
 

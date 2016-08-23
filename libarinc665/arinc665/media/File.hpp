@@ -42,6 +42,8 @@ class File: public BaseFile
      * @li Load upload header file
      * @li Batch file
      *
+     * @param[in] parent
+     *   The parent of this file.
      * @param[in] name
      *   Name of the file.
      **/

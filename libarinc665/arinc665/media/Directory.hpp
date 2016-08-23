@@ -32,6 +32,7 @@ class Directory : public ContainerEntity
 
     const string& getName( void) const;
 
+    // void rename( const string& name);
   private:
     //! Directory name
     const string name;
