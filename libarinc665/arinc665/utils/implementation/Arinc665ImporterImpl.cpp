@@ -429,6 +429,12 @@ void Arinc665ImporterImpl::loadLoadHeaderFiles( const unsigned int mediaIndex, c
         AdditionalInfo( "Medium is not consistent to media set"));
     }
 
+    if (loadHeaderFile.getTargetHardwareIdList() != loadInfo.second.getTargetHardwareIdList())
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+        AdditionalInfo( "Medium is not consistent to media set"));
+    }
+
     loadHeaderFiles.insert(
       std::make_pair( loadHeaderFileIt->second.getFilename(), loadHeaderFile));
   }
@@ -526,6 +532,7 @@ void Arinc665ImporterImpl::addLoads( FileListFile::FileInfoMap &loadHeaders)
       container->addLoad( loadHeader.second.getFilename()));
 
     loadPtr->setPartNumber( load->second.getPartNumber());
+    loadPtr->setTargetHardwareIdList( load->second.getTargetHardwareIdList());
 
     // iterate over data files
     for ( const auto &dataFile : loadHeaderFile->second.getDataFileList())

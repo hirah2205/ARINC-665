@@ -101,37 +101,41 @@ static void printMediaSet( MediaSetPtr &mediaSet)
   std::cout << "Media Set " << mediaSet->getPartNumber() << std::endl;
 
   // iterate over files
+  std::cout << " * Files " << "\n";
+
   for ( auto const &file : mediaSet->getFiles())
   {
-    std::cout << "File " << file->getName() << "\n";
+    std::cout << "   * File " << file->getName() << "\n";
   }
 
   // iterate over loads
+  std::cout << " * Loads " << "\n";
+
   for ( auto const &load : mediaSet->getLoads())
   {
-    std::cout << "Load " << load->getName() << " " << load->getPartNumber()
+    std::cout << "   * Load " << load->getName() << " " << load->getPartNumber()
       << std::endl;
 
-    std::cout << "Compatible THW IDs" << std::endl;
+    std::cout << "     Compatible THW IDs" << std::endl;
     // iterate over THW ID list
     for ( auto const & thwId : load->getTargetHardwareIdList())
     {
-      std::cout << " * " << thwId << std::endl;
+      std::cout << "      * " << thwId << std::endl;
     }
 
-    std::cout << "Data Files" << std::endl;
+    std::cout << "     Data Files" << std::endl;
     // iterate over Data Files
     for ( const auto & dataFile : load->getDataFiles())
     {
-      std::cout << " * " << dataFile.lock()->getName() << " "
+      std::cout << "      * " << dataFile.lock()->getName() << " "
         << dataFile.lock()->getPartNumber() << std::endl;
     }
 
-    std::cout << "Support Files" << std::endl;
+    std::cout << "     Support Files" << std::endl;
     // iterate over Data Files
     for ( const auto & supportFile : load->getSupportFiles())
     {
-      std::cout << " * " << supportFile.lock()->getName() << " "
+      std::cout << "      * " << supportFile.lock()->getName() << " "
         << supportFile.lock()->getPartNumber() << std::endl;
     }
   }
