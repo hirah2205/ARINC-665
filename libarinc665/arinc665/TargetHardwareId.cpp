@@ -11,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of class TargetHardwareId
+ * @brief Definition of class Arinc665::TargetHardwareId.
  **/
 
 #include "TargetHardwareId.hpp"

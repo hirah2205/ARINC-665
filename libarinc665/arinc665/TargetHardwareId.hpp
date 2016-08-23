@@ -11,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class TargetHardwareId.
+ * @brief Declaration of class Arinc665::TargetHardwareId.
  **/
 
 #ifndef ARINC665_TARGETHARDWAREWID_HPP

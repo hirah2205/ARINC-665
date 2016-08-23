@@ -19,6 +19,7 @@
 #include <arinc665/file/StringHelper.hpp>
 #include <arinc665/file/FileFactory.hpp>
 
+#include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
 namespace Arinc665 {

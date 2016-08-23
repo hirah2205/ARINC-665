@@ -11,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class ManufacturerCode
+ * @brief Declaration of class Arinc665::ManufacturerCode.
  **/
 
 #ifndef ARINC665_MANUFACTURERCODE_HPP

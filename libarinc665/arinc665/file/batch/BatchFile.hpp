@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -7,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class Arinc665::File::BatchFile
+ * @brief Declaration of class Arinc665::File::BatchFile.
  **/
 
 #ifndef ARINC665_FILE_BATCH_HPP

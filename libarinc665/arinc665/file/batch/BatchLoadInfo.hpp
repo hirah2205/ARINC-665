@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,7 +9,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @brief Declaration of class BatchLoadInfo
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
+ * @brief Declaration of class Arinc665::File::BatchLoadInfo.
  **/
 
 #ifndef ARINC665_FILE_BATCHLOADINFO_HPP
@@ -37,6 +43,7 @@ class BatchLoadInfo
     string headerFilename;
     string partNumber;
 };
+
 }
 }
 

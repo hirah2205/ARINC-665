@@ -11,12 +11,14 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of class Arinc665::File::BatchFile
+ * @brief Definition of class Arinc665::File::BatchFile.
  **/
 
 #include "BatchFile.hpp"
 
 #include <arinc665/file/StringHelper.hpp>
+
+#include <helper/Endianess.hpp>
 
 namespace Arinc665 {
 namespace File {

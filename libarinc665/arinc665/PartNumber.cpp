@@ -11,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of class PartNumber
+ * @brief Definition of class Arinc665::PartNumber.
  **/
 
 #include "PartNumber.hpp"

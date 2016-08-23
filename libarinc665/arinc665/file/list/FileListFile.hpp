@@ -11,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class Arinc665::File::FileListFile
+ * @brief Declaration of class Arinc665::File::FileListFile.
  **/
 
 #ifndef ARINC665_FILE_FILELISTFILE_HPP

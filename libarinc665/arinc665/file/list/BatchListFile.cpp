@@ -18,6 +18,7 @@
 
 #include <arinc665/file/StringHelper.hpp>
 
+#include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
 namespace Arinc665 {

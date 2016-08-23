@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,8 +9,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
  * @brief Definition of string helper functions
@@ -15,11 +17,14 @@
 #include "StringHelper.hpp"
 
 #include <helper/Logger.hpp>
+#include <helper/Endianess.hpp>
 
-using namespace Arinc665::File;
 
-std::vector< uint8_t>::const_iterator Arinc665::File::getString(
-	std::vector< uint8_t>::const_iterator it,
+namespace Arinc665 {
+namespace File {
+
+RawFile::const_iterator getString(
+	RawFile::const_iterator it,
 	std::string &str)
 {
 	// determine string length
@@ -38,8 +43,8 @@ std::vector< uint8_t>::const_iterator Arinc665::File::getString(
 	return it;
 }
 
-std::vector< uint8_t>::iterator Arinc665::File::setString(
-	std::vector< uint8_t>::iterator it,
+RawFile::iterator setString(
+	RawFile::iterator it,
 	const std::string &str)
 {
 	// set string length
@@ -58,8 +63,8 @@ std::vector< uint8_t>::iterator Arinc665::File::setString(
 	return it;
 }
 
-std::vector< uint8_t>::const_iterator Arinc665::File::getStringList(
-	std::vector< uint8_t>::const_iterator it,
+RawFile::const_iterator getStringList(
+	RawFile::const_iterator it,
 	std::list< std::string> &strList)
 {
 	// number of strings
@@ -77,8 +82,8 @@ std::vector< uint8_t>::const_iterator Arinc665::File::getStringList(
 	return it;
 }
 
-std::vector< uint8_t>::iterator Arinc665::File::setStringList(
-	std::vector< uint8_t>::iterator it,
+RawFile::iterator setStringList(
+	RawFile::iterator it,
 	const std::list< std::string> &strList)
 {
 	// set number of strings
@@ -94,4 +99,7 @@ std::vector< uint8_t>::iterator Arinc665::File::setStringList(
 	}
 
 	return it;
+}
+
+}
 }

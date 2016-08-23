@@ -11,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class PartNumber
+ * @brief Declaration of class Arinc665::PartNumber.
  **/
 
 #ifndef ARINC665_PARTNUMBER_HPP
