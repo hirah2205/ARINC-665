@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -12,7 +16,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <arinc665/partnumber/PartNumber.hpp>
+#include <arinc665/PartNumber.hpp>
 
 #include <helper/Dump.hpp>
 #include <helper/Logger.hpp>

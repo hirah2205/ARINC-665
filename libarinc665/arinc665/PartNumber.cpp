@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,8 +9,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
  * @brief Definition of class PartNumber
@@ -26,14 +28,14 @@ PartNumber::PartNumber(
 }
 
 PartNumber::PartNumber( const string& partNumber) :
-  manufacturerCode( partNumber.substr( 0, ManufacturerCode::LENGTH)),
+  manufacturerCode( partNumber.substr( 0, ManufacturerCode::Length)),
   productIdentifier(
     partNumber.substr(
-      ManufacturerCode::LENGTH + CheckCode::LENGTH,
-      ProductIdentifier::LENGTH))
+      ManufacturerCode::Length + CheckCode::Length,
+      ProductIdentifier::Length))
 {
   // check size of part number
-  if ( partNumber.size() != LENGTH)
+  if ( partNumber.size() != Length)
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << AdditionalInfo( "Invalid size of part number string"));
@@ -41,11 +43,12 @@ PartNumber::PartNumber( const string& partNumber) :
 
   // decode check code
   CheckCode checkCodeDecoded(
-    partNumber.substr( ManufacturerCode::LENGTH, CheckCode::LENGTH));
+    partNumber.substr( ManufacturerCode::Length, CheckCode::Length));
 
   // compare check code with calculated one
   if ( checkCodeDecoded != getCheckCode())
   {
+    //! @throw Arinc665Exception, when calculated check code differs from current
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << AdditionalInfo( "calculated and given check code differs"));
   }
@@ -87,7 +90,7 @@ CheckCode PartNumber::getCheckCode( void) const
   return CheckCode( manufacturerCode, productIdentifier);
 }
 
-std::string PartNumber::getPartNumber( void) const
+PartNumber::string PartNumber::getPartNumber( void) const
 {
   return manufacturerCode.get() + getCheckCode().getStr()
     + productIdentifier.get();

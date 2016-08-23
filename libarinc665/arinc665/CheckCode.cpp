@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,8 +9,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
  * @brief Definition of class Arinc665::CheckCode.
@@ -15,8 +17,8 @@
 #include "CheckCode.hpp"
 
 #include <arinc665/Arinc665Exception.hpp>
-#include <arinc665/partnumber/ManufacturerCode.hpp>
-#include <arinc665/partnumber/ProductIdentifier.hpp>
+#include <arinc665/ManufacturerCode.hpp>
+#include <arinc665/ProductIdentifier.hpp>
 
 #include <boost/format.hpp>
 
@@ -56,8 +58,8 @@ void CheckCode::set( const uint8_t checkCode)
 
 void CheckCode::set( const string &checkCode)
 {
-  //! check length of string
-  if ( checkCode.size() != LENGTH)
+  // check length of string
+  if ( checkCode.size() != Length)
   {
     //! @throw Arinc665Exception if length of checkCode is invalid.
     BOOST_THROW_EXCEPTION(
@@ -65,7 +67,7 @@ void CheckCode::set( const string &checkCode)
         << AdditionalInfo( "length of check code string invalid"));
   }
 
-  //! decode string to integer
+  // decode string to integer
   unsigned long parsedCheckCode = std::stoul( checkCode, 0, 16);
 
   this->checkCode = parsedCheckCode;

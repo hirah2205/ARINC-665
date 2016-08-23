@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,8 +9,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
  * @brief Declaration of class Arinc665::CheckCode.
@@ -24,16 +26,16 @@ namespace Arinc665 {
 class ManufacturerCode;
 class ProductIdentifier;
 
-using std::string;
-
 /**
  * @brief Represents the check code of an ARINC 665 part number.
  **/
 class CheckCode
 {
   public:
+    using string = std::string;
+
     //! The length of the check code when represented as string
-    static constexpr unsigned int LENGTH = 2;
+    static constexpr size_t Length = 2;
 
     /**
      * @brief Generates CheckCode class with the given check code.
@@ -96,9 +98,6 @@ class CheckCode
      *
      * @param[in] checkCode
      *   Check code represented as string
-     *
-     * @throw Arinc665Exception
-     *   When the length of the string is invalid
      **/
     void set( const string &checkCode);
 

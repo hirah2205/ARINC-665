@@ -20,8 +20,21 @@ find_package(
 add_library( 
   arinc665
  
+  arinc665/Arinc665.hpp
   arinc665/Arinc665.cpp
-
+  arinc665/PartNumber.hpp
+  arinc665/PartNumber.cpp
+  arinc665/PartNumberTest.cpp
+  arinc665/TargetHardwareId.hpp
+  arinc665/TargetHardwareId.cpp
+  arinc665/ManufacturerCode.hpp
+  arinc665/ManufacturerCode.cpp
+  arinc665/CheckCode.hpp
+  arinc665/CheckCode.cpp
+  arinc665/CheckCodeTest.cpp
+  arinc665/ProductIdentifier.hpp
+  arinc665/ProductIdentifier.cpp
+ 
   arinc665/file/Arinc665File.cpp
   arinc665/file/FileFactory.cpp
   arinc665/file/StringHelper.cpp
@@ -49,15 +62,6 @@ add_library(
   arinc665/file/batch/BatchLoadInfo.hpp
   arinc665/file/batch/TargetHardwareLoad.hpp
 
-  arinc665/partnumber/PartNumber.cpp
-  arinc665/partnumber/TargetHardwareId.cpp
-  arinc665/partnumber/ManufacturerCode.cpp
-  arinc665/partnumber/CheckCode.cpp
-  arinc665/partnumber/ProductIdentifier.cpp
- 
-  arinc665/partnumber/test/PartNumberTest.cpp
-  arinc665/partnumber/test/CheckCodeTest.cpp
- 
   arinc665/media/PartNumberdEntity.hpp
   arinc665/media/PartNumberdEntity.cpp
   arinc665/media/MediaSet.hpp

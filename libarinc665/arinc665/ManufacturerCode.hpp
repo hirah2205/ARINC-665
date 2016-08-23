@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,8 +9,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
  * @brief Declaration of class ManufacturerCode
@@ -20,16 +22,16 @@
 
 namespace Arinc665 {
 
-using std::string;
-
 /**
  * @brief Represents a ARINC 665 manufacturer code.
  **/
 class ManufacturerCode
 {
   public:
-    //!
-    static const unsigned int LENGTH = 3;
+    using string = std::string;
+
+    //! Length of manufacturer code
+    static const size_t Length = 3;
 
     /**
      * @brief Constructs a manufacturer code.
@@ -54,9 +56,6 @@ class ManufacturerCode
      *
      * @param[in] manufacturerCode
      *   The manufacturer code.
-     *
-     * @throw Arinc665Exception
-     *   When the given string is not an valid manufacturer code.
      **/
     void set( const string& manufacturerCode);
 

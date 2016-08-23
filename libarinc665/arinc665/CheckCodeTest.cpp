@@ -1,15 +1,25 @@
 /*
+ * $Date$
+ * $Revision$
+ */
+/**
+ * @file
+ * @copyright
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- */
+ *
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
+ * @brief Definition of unit tests for the class Arinc665::CheckCode.
+ **/
 
 #ifndef CHECKCODETEST_CPP
 #define CHECKCODETEST_CPP
 
 #include <boost/test/unit_test.hpp>
 
-#include <arinc665/partnumber/CheckCode.hpp>
+#include <arinc665/CheckCode.hpp>
 
 #include <iostream>
 

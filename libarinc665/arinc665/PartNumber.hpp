@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,8 +9,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
  * @brief Declaration of class PartNumber
@@ -16,9 +18,9 @@
 #define ARINC665_PARTNUMBER_HPP
 
 #include <arinc665/Arinc665.hpp>
-#include <arinc665/partnumber/ManufacturerCode.hpp>
-#include <arinc665/partnumber/ProductIdentifier.hpp>
-#include <arinc665/partnumber/CheckCode.hpp>
+#include <arinc665/ManufacturerCode.hpp>
+#include <arinc665/ProductIdentifier.hpp>
+#include <arinc665/CheckCode.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 
@@ -26,8 +28,6 @@
 #include <cstdint>
 
 namespace Arinc665 {
-
-using std::string;
 
 /**
  * @brief Represents a ARINC665 Part Number.
@@ -48,9 +48,11 @@ using std::string;
 class PartNumber
 {
   public:
+    using string = std::string;
+
     //! The length of an ARINC 665 part number
-    static const unsigned int LENGTH = ManufacturerCode::LENGTH
-      + CheckCode::LENGTH + ProductIdentifier::LENGTH;
+    static const size_t Length = ManufacturerCode::Length
+      + CheckCode::Length + ProductIdentifier::Length;
 
     /**
      * @brief Constructs an ARINC 665 part number based on manufacturer code
@@ -138,8 +140,10 @@ class PartNumber
     string getPartNumber( void) const;
 
   private:
-    ManufacturerCode manufacturerCode;   //!< The manufacture code
-    ProductIdentifier productIdentifier; //!< the product identifier
+    //! The manufacture code
+    ManufacturerCode manufacturerCode;
+    //! the product identifier
+    ProductIdentifier productIdentifier;
 };
 
 }

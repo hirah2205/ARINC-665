@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,8 +9,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
  * @brief Declaration of class TargetHardwareId.
@@ -20,14 +22,14 @@
 
 namespace Arinc665 {
 
-using std::string;
-
 /**
  * @brief Represents a ARINC 665 target hardware ID (THW ID).
  **/
 class TargetHardwareId
 {
   public:
+    using string = std::string;
+
     /**
      * @brief Constructs a target hardware ID with the given string.
      *

@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,14 +9,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
  * @brief Definition of class Arinc665::ProductIdentifier.
  **/
 
 #include "ProductIdentifier.hpp"
+
 #include <arinc665/Arinc665Exception.hpp>
 
 namespace Arinc665 {
@@ -24,7 +27,7 @@ ProductIdentifier::ProductIdentifier( const string &productIdentifier)
   set( productIdentifier);
 }
 
-string ProductIdentifier::get( void) const
+ProductIdentifier::string ProductIdentifier::get( void) const
 {
   return productIdentifier;
 }
@@ -32,7 +35,7 @@ string ProductIdentifier::get( void) const
 void ProductIdentifier::set( const string& productIdentifier)
 {
   // check length of string
-  if ( productIdentifier.size() != LENGTH)
+  if ( productIdentifier.size() != Length)
   {
     //! @throw Arinc665Exception if length is invalid.
     BOOST_THROW_EXCEPTION( Arinc665Exception()

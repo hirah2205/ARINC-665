@@ -1,3 +1,7 @@
+/*
+ * $Date$
+ * $Revision$
+ */
 /**
  * @file
  * @copyright
@@ -5,8 +9,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * $Date$
- * $Revision$
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
  * @brief Declaration of class Arinc665::ProductIdentifier.
@@ -20,16 +22,16 @@
 
 namespace Arinc665 {
 
-using std::string;
-
 /**
  * @brief Represents the product identifier of an ARINC 665 part number.
  **/
 class ProductIdentifier
 {
   public:
-    //!
-    static constexpr unsigned int LENGTH = 8;
+    using string = std::string;
+
+    //! Length of product identifier
+    static constexpr unsigned int Length = 8;
 
     /**
      * @brief Constructs the product identifier for the given string.
@@ -54,9 +56,6 @@ class ProductIdentifier
      *
      * @param[in] productIdentifier
      *   The product identifier.
-     *
-     * @throw Arinc665Exception
-     *   If the string does not represents an valid product identifier.
      **/
     void set( const string& productIdentifier);
 
