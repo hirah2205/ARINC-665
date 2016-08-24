@@ -19,6 +19,8 @@
 
 #include <arinc665/media/Media.hpp>
 
+#include <arinc665/media/Base.hpp>
+
 #include <arinc665/media/File.hpp>
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/Batch.hpp>
@@ -31,12 +33,18 @@ namespace Media {
 /**
  *
  **/
-class ContainerEntity : public std::enable_shared_from_this< ContainerEntity>
+class ContainerEntity :
+  public Base,
+  public std::enable_shared_from_this< ContainerEntity>
 {
   public:
     using string = std::string;
 
     ContainerEntity( void) = default;
+
+    bool hasChildren( void) const;
+
+    size_t getNumberOfSubDirectories( void) const;
 
     ConstDirectories getSubDirectories( void) const;
 

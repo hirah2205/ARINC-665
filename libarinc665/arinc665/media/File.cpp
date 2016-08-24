@@ -16,12 +16,15 @@
 
 #include "File.hpp"
 
+#include <cassert>
+
 namespace Arinc665 {
 namespace Media {
 
 File::File( ContainerEntityPtr parent, const string &name) :
   BaseFile( parent, name)
 {
+  assert( parent);
 }
 
 File::FileType File::getFileType( void) const

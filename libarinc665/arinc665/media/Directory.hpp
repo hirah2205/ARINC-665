@@ -30,6 +30,12 @@ class Directory : public ContainerEntity
   public:
     Directory( ContainerEntityPtr parent, const string &name);
 
+    virtual ConstMediaSetPtr getMediaSet( void) const override;
+
+    virtual MediaSetPtr getMediaSet( void) override;
+
+    virtual Type getType( void) const override final;
+
     const string& getName( void) const;
 
     // void rename( const string& name);

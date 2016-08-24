@@ -25,33 +25,48 @@ namespace Arinc665 {
 namespace Media {
 
 MediaSet::MediaSet( const string &partNumber):
-	PartNumberdEntity( partNumber)
+  PartNumberdEntity( partNumber)
 {
+}
+
+ConstMediaSetPtr MediaSet::getMediaSet( void) const
+{
+  return shared_from_this();
+}
+
+MediaSetPtr MediaSet::getMediaSet( void)
+{
+  return shared_from_this();
+}
+
+MediaSet::Type MediaSet::getType( void) const
+{
+  return Type::MediaSet;
 }
 
 uint8_t MediaSet::getNumberOfMedia( void) const
 {
-	return media.size();
+  return media.size();
 }
 
 
 const Media& MediaSet::getMedia( void) const
 {
-	return media;
+  return media;
 }
 
 ConstMediumPtr MediaSet::getMedium( uint8_t index) const
 {
   assert( media.at( index - 1));
 
-	return media.at( index - 1);
+  return media.at( index - 1);
 }
 
 MediumPtr MediaSet::getMedium( uint8_t index)
 {
   assert( media.at( index - 1));
 
-	return media.at( index - 1);
+  return media.at( index - 1);
 }
 
 unsigned int MediaSet::addMedium( void)
@@ -61,7 +76,7 @@ unsigned int MediaSet::addMedium( void)
     return 0;
   }
 
-  media.push_back( std::make_shared< Medium>( shared_from_this()));
+  media.push_back( std::make_shared< Medium>( shared_from_this(), media.size()));
 
 	return media.size();
 }
@@ -116,32 +131,32 @@ Files MediaSet::getFiles( void)
 
 ConstFilePtr MediaSet::getFile( const string &filename) const
 {
-	for ( auto const &medium : media)
-	{
-		ConstFilePtr file( medium->getFile( filename));
+  for ( auto const &medium : media)
+  {
+    ConstFilePtr file( medium->getFile( filename));
 
-		if (file)
-		{
-			return file;
-		}
-	}
+    if ( file)
+    {
+      return file;
+    }
+  }
 
-	return ConstFilePtr();
+  return ConstFilePtr();
 }
 
 FilePtr MediaSet::getFile( const string &filename)
 {
-	for ( auto &medium : media)
-	{
-		FilePtr file( medium->getFile( filename));
+  for ( auto &medium : media)
+  {
+    FilePtr file( medium->getFile( filename));
 
-		if (file)
-		{
-			return file;
-		}
-	}
+    if ( file)
+    {
+      return file;
+    }
+  }
 
-	return FilePtr();
+  return FilePtr();
 }
 
 ConstLoads MediaSet::getLoads( void) const
@@ -154,7 +169,7 @@ ConstLoads MediaSet::getLoads( void) const
     loads.insert( loads.end(), mediaLoads.begin(), mediaLoads.end());
   }
 
-	return loads;
+  return loads;
 }
 
 Loads MediaSet::getLoads( void)

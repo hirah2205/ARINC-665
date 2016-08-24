@@ -18,10 +18,12 @@
 #define ARINC665_MEDIA_MEDIASET_HPP
 
 #include <arinc665/media/Media.hpp>
+#include <arinc665/media/Base.hpp>
 #include <arinc665/media/PartNumberdEntity.hpp>
 #include <arinc665/media/Medium.hpp>
 
 #include <memory>
+
 namespace Arinc665 {
 namespace Media {
 
@@ -32,13 +34,9 @@ namespace Media {
  *
  * Each media consists of one or more files.
  *
- * @par Design considerations
- * @li where to hold the Batches and Load Headers (media or media set)?
- * @li Should be a batch and a load header a normal file? (filename and part
- * number handling) - maybe also added to media file list
- * @li remove media from class hierarchies
  **/
 class MediaSet:
+  public Base,
   public PartNumberdEntity,
   public std::enable_shared_from_this< MediaSet>
 {
@@ -53,6 +51,12 @@ class MediaSet:
      *   Part number of the media set
      **/
     MediaSet( const string &partNumber);
+
+    virtual ConstMediaSetPtr getMediaSet( void) const override final;
+
+    virtual MediaSetPtr getMediaSet( void) override final;
+
+    virtual Type getType( void) const override final;
 
     /**
      * @brief Get the number of medias within the media set

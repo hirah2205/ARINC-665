@@ -62,6 +62,7 @@ add_library(
   arinc665/file/batch/BatchLoadInfo.hpp
   arinc665/file/batch/TargetHardwareLoad.hpp
 
+  arinc665/media/Base.hpp
   arinc665/media/PartNumberdEntity.hpp
   arinc665/media/PartNumberdEntity.cpp
   arinc665/media/MediaSet.hpp

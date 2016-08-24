@@ -23,6 +23,21 @@
 namespace Arinc665 {
 namespace Media {
 
+ConstMediaSetPtr BaseFile::getMediaSet( void) const
+{
+  return getParent()->getMediaSet();
+}
+
+MediaSetPtr BaseFile::getMediaSet( void)
+{
+  return getParent()->getMediaSet();
+}
+
+BaseFile::Type BaseFile::getType( void) const
+{
+  return Type::File;
+}
+
 const BaseFile::string& BaseFile::getName( void) const
 {
   return name;

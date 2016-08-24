@@ -18,12 +18,16 @@
 
 #include <arinc665/media/Directory.hpp>
 
+#include <cassert>
+
 namespace Arinc665 {
 namespace Media {
 
-Medium::Medium( MediaSetPtr mediaSet):
-  mediaSet( mediaSet)
+Medium::Medium( MediaSetPtr mediaSet, uint8_t mediumNumber):
+  mediaSet( mediaSet),
+  mediumNumber( mediumNumber)
 {
+  assert( mediaSet);
 }
 
 ConstMediaSetPtr Medium::getMediaSet( void) const
@@ -34,6 +38,16 @@ ConstMediaSetPtr Medium::getMediaSet( void) const
 MediaSetPtr Medium::getMediaSet( void)
 {
   return mediaSet.lock();
+}
+
+Medium::Type Medium::getType( void) const
+{
+  return Type::Medium;
+}
+
+uint8_t Medium::getMediumNumber( void) const
+{
+  return mediumNumber;
 }
 
 }

@@ -18,6 +18,8 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <cassert>
+
 namespace Arinc665 {
 namespace Media {
 
@@ -25,6 +27,22 @@ Directory::Directory( ContainerEntityPtr parent, const string &name):
   ContainerEntity( parent),
   name( name)
 {
+  assert( parent);
+}
+
+ConstMediaSetPtr Directory::getMediaSet( void) const
+{
+  return getParent()->getMediaSet();
+}
+
+MediaSetPtr Directory::getMediaSet( void)
+{
+  return getParent()->getMediaSet();
+}
+
+Directory::Type Directory::getType( void) const
+{
+  return Type::Directory;
 }
 
 const string& Directory::getName( void) const

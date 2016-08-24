@@ -31,6 +31,8 @@ namespace Arinc665 {
  **/
 namespace Media {
 
+class Base;
+
 class MediaSet;
 using ConstMediaSetPtr = std::shared_ptr< const MediaSet>;
 using MediaSetPtr = std::shared_ptr< MediaSet>;

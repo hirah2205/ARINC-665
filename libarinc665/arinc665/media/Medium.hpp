@@ -29,15 +29,29 @@ namespace Media {
 class Medium : public ContainerEntity
 {
   public:
-    Medium( MediaSetPtr mediaSet);
+    /**
+     * @brief Creates the medium.
+     *
+     * @param[in] mediaSet
+     *   Stores the pointer to the media set
+     **/
+    Medium( MediaSetPtr mediaSet, uint8_t mediumNumber);
 
-    ConstMediaSetPtr getMediaSet( void) const;
+    //! @copydoc ContainerEntity::
+    virtual ConstMediaSetPtr getMediaSet( void) const override final;
 
-    MediaSetPtr getMediaSet( void);
+    //! @copydoc ContainerEntity::
+    virtual MediaSetPtr getMediaSet( void) override final;
+
+    //! @copydoc ContainerEntity::
+    virtual Type getType( void) const override final;
+
+    uint8_t getMediumNumber( void) const;
 
   private:
     // Pointer to media set
     WeakMediaSetPtr mediaSet;
+    uint8_t mediumNumber;
 };
 
 }

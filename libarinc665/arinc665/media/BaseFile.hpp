@@ -18,6 +18,8 @@
 #define ARINC665_MEDIA_BASEFILE_HPP
 
 #include <arinc665/media/Media.hpp>
+
+#include <arinc665/media/Base.hpp>
 #include <arinc665/media/PartNumberdEntity.hpp>
 
 namespace Arinc665 {
@@ -29,7 +31,9 @@ namespace Media {
  * CRC is part of this, because this information is available in the
  * list of files.
  **/
-class BaseFile: public PartNumberdEntity
+class BaseFile :
+  public Base,
+  public PartNumberdEntity
 {
   public:
     enum class FileType
@@ -41,7 +45,13 @@ class BaseFile: public PartNumberdEntity
 
     virtual ~BaseFile( void) = default;
 
-    /**
+    virtual ConstMediaSetPtr getMediaSet( void) const override final;
+
+    virtual MediaSetPtr getMediaSet( void) override final;
+
+    virtual Type getType( void) const override final;
+
+     /**
      * @brief Returns the name of the file.
      *
      * @return The name of the file.

@@ -21,53 +21,25 @@
 
 namespace Arinc665{
 namespace Media {
-#if 0
-Directory& ContainerEntity::getDirectory( const string &path)
+
+bool ContainerEntity::hasChildren( void) const
 {
-	//! Check if supplied parameter is correct
-	if (path.empty() || path[0] != '\\')
-	{
-		BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-			AdditionalInfo( "invalid path: '" + path + "'"));
-	}
-
-	//! if the path only contains the backslash -> we request ourself
-	if (path == "\\")
-	{
-		return *this;
-	}
-
-	//! get next path separator
-	string::size_type separatorPos = path.find( '\\', 1);
-
-	//! find sub-directory
-	DirectoryPtr subDirectory( getSubDirectory( string( path, 1, separatorPos)));
-
-	if (!subDirectory)
-	{
-		BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-			AdditionalInfo( "Path not found"));
-	}
-
-	string tail( path, separatorPos);
-
-	if (tail.empty())
-	{
-		return *subDirectory;
-	}
-
-	return subDirectory->getDirectory( tail);
+  return !subDirectories.empty() || !files.empty();
 }
-#endif
+
+size_t ContainerEntity::getNumberOfSubDirectories( void) const
+{
+  return subDirectories.size();
+}
 
 ConstDirectories ContainerEntity::getSubDirectories( void) const
 {
-	return ConstDirectories( subDirectories.begin(), subDirectories.end());
+  return ConstDirectories( subDirectories.begin(), subDirectories.end());
 }
 
 Directories ContainerEntity::getSubDirectories( void)
 {
-	return subDirectories;
+  return subDirectories;
 }
 
 ConstDirectoryPtr ContainerEntity::getSubDirectory( const string &name) const
@@ -152,18 +124,18 @@ void ContainerEntity::removeSubDirectory( DirectoryPtr subDirectory)
 
 size_t ContainerEntity::getNumberOfFiles( bool recursive) const
 {
-	size_t fileSize( files.size());
+  size_t fileSize( files.size());
 
-	// descent to sub directories if requested
-	if (recursive)
-	{
-		for (const auto &subDirectory : subDirectories)
-		{
-			fileSize += subDirectory->getNumberOfFiles( true);
-		}
-	}
+  // descent to sub directories if requested
+  if ( recursive)
+  {
+    for ( const auto &subDirectory : subDirectories)
+    {
+      fileSize += subDirectory->getNumberOfFiles( true);
+    }
+  }
 
-	return fileSize;
+  return fileSize;
 }
 
 ConstFiles ContainerEntity::getFiles( bool recursive) const
