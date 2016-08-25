@@ -19,12 +19,17 @@
 
 #include <arinc665/media/Media.hpp>
 
+#include <string>
+
 namespace Arinc665 {
 namespace Media {
 
 class Base
 {
   public:
+    using string = std::string;
+
+    //! item type
     enum class Type
     {
       MediaSet,
@@ -35,11 +40,43 @@ class Base
 
     virtual ~Base( void) noexcept = default;
 
+    /**
+     * @brief Returns the owning media set.
+     *
+     * @return The owning media set
+     **/
     virtual ConstMediaSetPtr getMediaSet( void) const = 0;
 
+    /**
+     * @brief Returns the owning media set.
+     *
+     * @return The owning media set
+     **/
     virtual MediaSetPtr getMediaSet( void) = 0;
 
+    /**
+     * @brief Returns the item type.
+     *
+     * @return The item type
+     **/
     virtual Type getType( void) const = 0;
+
+    /**
+    * @brief Returns the name of the file.
+    *
+    * @return The name of the file.
+    **/
+   virtual const string& getName( void) const = 0;
+
+   /**
+    * @brief Return the part number of the entity.
+    *
+    * If the entity itself does not have an part number (e.i. media and
+    * directories) the parent part number is returned
+    *
+    * @return The part number of the entity
+    **/
+   virtual const string& getPartNumber( void) const = 0;
 };
 
 }

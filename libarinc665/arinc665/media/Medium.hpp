@@ -34,24 +34,34 @@ class Medium : public ContainerEntity
      *
      * @param[in] mediaSet
      *   Stores the pointer to the media set
+     * @param[in]
+     *   The medium number.
      **/
     Medium( MediaSetPtr mediaSet, uint8_t mediumNumber);
 
-    //! @copydoc ContainerEntity::
+    //! @copydoc ContainerEntity::getMediaSet
     virtual ConstMediaSetPtr getMediaSet( void) const override final;
 
-    //! @copydoc ContainerEntity::
+    //! @copydoc ContainerEntity::getMediaSet
     virtual MediaSetPtr getMediaSet( void) override final;
 
-    //! @copydoc ContainerEntity::
+    //! @copydoc ContainerEntity::getType
     virtual Type getType( void) const override final;
 
+    //! @copydoc ContainerEntity::getName
+    virtual const string& getName( void) const override final;
+
+    //! @copydoc ContainerEntity::getPartNumber
+    virtual const string& getPartNumber( void) const override final;
+
+    //! @copydoc ContainerEntity::getMediumNumber
     uint8_t getMediumNumber( void) const;
 
   private:
-    // Pointer to media set
+    //! Pointer to media set
     WeakMediaSetPtr mediaSet;
-    uint8_t mediumNumber;
+    //! The medium number
+    const uint8_t mediumNumber;
 };
 
 }

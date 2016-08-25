@@ -17,6 +17,7 @@
 #include "Medium.hpp"
 
 #include <arinc665/media/Directory.hpp>
+#include <arinc665/media/MediaSet.hpp>
 
 #include <cassert>
 
@@ -43,6 +44,16 @@ MediaSetPtr Medium::getMediaSet( void)
 Medium::Type Medium::getType( void) const
 {
   return Type::Medium;
+}
+
+const Medium::string& Medium::getName( void) const
+{
+  return mediaSet.lock()->getName();
+}
+
+const Medium::string& Medium::getPartNumber( void) const
+{
+  return mediaSet.lock()->getPartNumber();
 }
 
 uint8_t Medium::getMediumNumber( void) const

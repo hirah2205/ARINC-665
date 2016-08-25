@@ -43,6 +43,16 @@ const BaseFile::string& BaseFile::getName( void) const
   return name;
 }
 
+const BaseFile::string& BaseFile::getPartNumber( void) const
+{
+  return partNumber;
+}
+
+void BaseFile::setPartNumber( const string &partNumber)
+{
+  this->partNumber = partNumber;
+}
+
 ContainerEntityPtr BaseFile::getParent( void)
 {
   return parent.lock();

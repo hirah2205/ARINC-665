@@ -25,7 +25,7 @@ namespace Arinc665 {
 namespace Media {
 
 MediaSet::MediaSet( const string &partNumber):
-  PartNumberdEntity( partNumber)
+  partNumber( partNumber)
 {
 }
 
@@ -42,6 +42,26 @@ MediaSetPtr MediaSet::getMediaSet( void)
 MediaSet::Type MediaSet::getType( void) const
 {
   return Type::MediaSet;
+}
+
+const MediaSet::string& MediaSet::getName( void) const
+{
+  return name;
+}
+
+void MediaSet::setName( const string& name)
+{
+  this->name = name;
+}
+
+const MediaSet::string& MediaSet::getPartNumber( void) const
+{
+  return partNumber;
+}
+
+void MediaSet::setPartNumber( const string &partNumber)
+{
+  this->partNumber = partNumber;
 }
 
 uint8_t MediaSet::getNumberOfMedia( void) const

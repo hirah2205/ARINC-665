@@ -45,9 +45,14 @@ Directory::Type Directory::getType( void) const
   return Type::Directory;
 }
 
-const string& Directory::getName( void) const
+const Directory::string& Directory::getName( void) const
 {
   return name;
+}
+
+const Directory::string& Directory::getPartNumber( void) const
+{
+  return getParent()->getPartNumber();
 }
 
 }

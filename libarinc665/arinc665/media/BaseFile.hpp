@@ -20,7 +20,6 @@
 #include <arinc665/media/Media.hpp>
 
 #include <arinc665/media/Base.hpp>
-#include <arinc665/media/PartNumberdEntity.hpp>
 
 namespace Arinc665 {
 namespace Media {
@@ -31,9 +30,7 @@ namespace Media {
  * CRC is part of this, because this information is available in the
  * list of files.
  **/
-class BaseFile :
-  public Base,
-  public PartNumberdEntity
+class BaseFile: public Base
 {
   public:
     enum class FileType
@@ -51,14 +48,18 @@ class BaseFile :
 
     virtual Type getType( void) const override final;
 
-     /**
-     * @brief Returns the name of the file.
-     *
-     * @return The name of the file.
-     **/
-    const string& getName( void) const;
+    /**
+    * @brief Returns the name of the file.
+    *
+    * @return The name of the file.
+    **/
+    virtual const string& getName( void) const override;
 
-    //void setName( void);
+   //void setName( void);
+
+    virtual const string& getPartNumber( void) const override;
+
+    void setPartNumber( const string &partNumber);
 
     virtual FileType getFileType( void) const = 0;
 
@@ -76,6 +77,8 @@ class BaseFile :
     WeakContainerEntityPtr parent;
     //! The file name
     const string name;
+    //! The part number
+    string partNumber;
 };
 
 }

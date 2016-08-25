@@ -262,38 +262,42 @@ QVariant QMediaSetModelModel::data( const QModelIndex & index, int role) const
   switch (index.column())
   {
     case 0:
+      return QString::fromStdString( base->getName());
+
+    case 1:
+      return QString::fromStdString( base->getPartNumber());
+
+    case 2:
       switch (base->getType())
       {
         case Arinc665::Media::Base::Type::MediaSet:
-        {
-          // The media set has medias
-          Arinc665::Media::MediaSet * mediaSet = dynamic_cast< Arinc665::Media::MediaSet *>( base);
-          return QString::fromStdString( mediaSet->getPartNumber());
-        }
+          return QString( "Media Set");
 
         case Arinc665::Media::Base::Type::Medium:
-          return "Medium";
+          return QString( "Medium");
 
         case Arinc665::Media::Base::Type::Directory:
-        {
-          Arinc665::Media::Directory * directory = dynamic_cast< Arinc665::Media::Directory *>( base);
-          return QString::fromStdString( directory->getName());
-        }
+          return QString( "Directory");
 
         case Arinc665::Media::Base::Type::File:
         {
-          Arinc665::Media::BaseFile * file = dynamic_cast< Arinc665::Media::BaseFile *>( base);
-          return QString::fromStdString( file->getName());
+          Arinc665::Media::BaseFile * file = dynamic_cast< Arinc665::Media::BaseFile*>( base);
+          switch (file->getFileType())
+          {
+            case Arinc665::Media::BaseFile::FileType::RegularFile:
+              return QString( "Regular File");
+
+            case Arinc665::Media::BaseFile::FileType::LoadFile:
+              return QString( "Load");
+
+            case Arinc665::Media::BaseFile::FileType::BatchFile:
+              return QString( "Batch");
+
+            default:
+              return QVariant();
+          }
         }
-
-        default:
-          // Should not happen
-          return 0;
       }
-      break;
-
-    case 1:
-      return QVariant();
       break;
 
     default:
@@ -322,7 +326,10 @@ QVariant QMediaSetModelModel::headerData(
       return QString( "Name");
 
     case 1:
-      return QVariant();
+      return QString( "Part Number");
+
+    case 2:
+      return QString( "Type");
 
     default:
       return QVariant();

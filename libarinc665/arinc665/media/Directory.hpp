@@ -36,9 +36,12 @@ class Directory : public ContainerEntity
 
     virtual Type getType( void) const override final;
 
-    const string& getName( void) const;
+    virtual const string& getName( void) const override;
 
     // void rename( const string& name);
+
+    virtual const string& getPartNumber( void) const override;
+
   private:
     //! Directory name
     const string name;

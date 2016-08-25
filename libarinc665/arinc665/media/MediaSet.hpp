@@ -19,7 +19,6 @@
 
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/Base.hpp>
-#include <arinc665/media/PartNumberdEntity.hpp>
 #include <arinc665/media/Medium.hpp>
 
 #include <memory>
@@ -37,7 +36,6 @@ namespace Media {
  **/
 class MediaSet:
   public Base,
-  public PartNumberdEntity,
   public std::enable_shared_from_this< MediaSet>
 {
   public:
@@ -57,6 +55,20 @@ class MediaSet:
     virtual MediaSetPtr getMediaSet( void) override final;
 
     virtual Type getType( void) const override final;
+
+    virtual const string& getName( void) const override final;
+
+    void setName( const string& name);
+
+    virtual const string& getPartNumber( void) const override final;
+
+    /**
+     * @brief Set the part number of the entity.
+     *
+     * @param[in] partNumber
+     *   The part number
+     **/
+    void setPartNumber( const string &partNumber);
 
     /**
      * @brief Get the number of medias within the media set
@@ -158,7 +170,12 @@ class MediaSet:
     void removeBatch( ConstBatchPtr batch);
 
   private:
+    //! the media
     Media media;
+    //! name
+    string name;
+    //! The part number
+    string partNumber;
 };
 
 }
