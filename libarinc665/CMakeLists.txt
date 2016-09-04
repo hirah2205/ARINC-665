@@ -7,7 +7,7 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.5)
+cmake_minimum_required( VERSION 3.6)
 
 project ( "ARINC 665 Library")
 
@@ -93,6 +93,6 @@ add_library(
 target_include_directories( arinc665 SYSTEM PUBLIC ${Boost_INCLUDE_DIRS})
 target_include_directories( arinc665 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_link_libraries( arinc665 helper)
+target_link_libraries( arinc665 helper ${Boost_LIBRARIES})
 
 GENERATE_DOCUMENTATION()
