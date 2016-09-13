@@ -21,7 +21,7 @@
 
 #include <arinc665/media/Base.hpp>
 
-#include <arinc665/media/RegularFile.hpp>
+#include <arinc665/media/File.hpp>
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/Batch.hpp>
 
@@ -42,8 +42,18 @@ class ContainerEntity :
 
     ContainerEntity( void) = default;
 
+    /**
+     * @brief Indicates, if the container has child elements.
+     *
+     * @return if there are sub-directories or files
+     **/
     bool hasChildren( void) const;
 
+    /**
+     * @brief Return the number of sub-directories.
+     *
+     * @return The number of sub-directories.
+     **/
     size_t getNumberOfSubDirectories( void) const;
 
     ConstDirectories getSubDirectories( void) const;
@@ -137,8 +147,11 @@ class ContainerEntity :
     void setParent( ContainerEntityPtr parent);
 
   private:
+    //! sub-directories
     Directories subDirectories;
+    //! files
     Files files;
+    //! the parent
     WeakContainerEntityPtr parent;
 };
 

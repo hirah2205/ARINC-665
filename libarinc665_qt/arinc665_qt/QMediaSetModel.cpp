@@ -297,8 +297,11 @@ QVariant QMediaSetModelModel::data( const QModelIndex & index, int role) const
               return QVariant();
           }
         }
+
+        default:
+          // Should never happen
+          return QVariant();
       }
-      break;
 
     default:
       return QVariant();

@@ -50,7 +50,9 @@ class File: public BaseFile
     File( ContainerEntityPtr parent, const string &name);
 
     /**
-     * @copydoc
+     * @copydoc BaseFile::getFileType
+     * @retval FileType::RegularFile
+     *   Always
      **/
     virtual FileType getFileType( void) const override final;
 };

@@ -50,16 +50,25 @@ class MediaSet:
      **/
     MediaSet( const string &partNumber);
 
+    //! @copydoc Base::getMediaSet
     virtual ConstMediaSetPtr getMediaSet( void) const override final;
 
+    //! @copydoc Base::getType
     virtual MediaSetPtr getMediaSet( void) override final;
 
+    //! @copydoc Base::getType
     virtual Type getType( void) const override final;
 
+    //! @copydoc Base::getName
     virtual const string& getName( void) const override final;
 
+    /**
+     *
+     * @param name
+     **/
     void setName( const string& name);
 
+    //! @copydoc Base::getPartNumber
     virtual const string& getPartNumber( void) const override final;
 
     /**
@@ -124,6 +133,11 @@ class MediaSet:
      **/
     void setNumberOfMedia( uint8_t numberOfMedia, bool deleteFiles = false);
 
+    /**
+     * @brief Return the total number of files within the media set.
+     *
+     * @return The number of files.
+     **/
     size_t getNumberOfFiles( void) const;
 
     /**

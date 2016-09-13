@@ -60,7 +60,10 @@ class BaseFile: public Base
     //! @copydoc Base::getPartNumber
     virtual const string& getPartNumber( void) const override final;
 
-    //! @copydoc Base::setPartNumber
+    /**
+     *
+     * @param partNumber
+     **/
     void setPartNumber( const string &partNumber);
 
     /**

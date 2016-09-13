@@ -34,7 +34,7 @@ class Medium : public ContainerEntity
      *
      * @param[in] mediaSet
      *   The owning the media set
-     * @param[in]
+     * @param[in] mediumNumber
      *   The medium number.
      **/
     Medium( MediaSetPtr mediaSet, uint8_t mediumNumber);
