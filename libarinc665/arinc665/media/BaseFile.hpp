@@ -26,9 +26,6 @@ namespace Media {
 
 /**
  * @brief The base class of all files, presented within a media set.
- *
- * CRC is part of this, because this information is available in the
- * list of files.
  **/
 class BaseFile: public Base
 {
@@ -42,25 +39,35 @@ class BaseFile: public Base
 
     virtual ~BaseFile( void) = default;
 
+    //! @copydoc Base::getMediaSet
     virtual ConstMediaSetPtr getMediaSet( void) const override final;
 
+    //! @copydoc Base::getMediaSet
     virtual MediaSetPtr getMediaSet( void) override final;
 
+    //! @copydoc Base::getType
     virtual Type getType( void) const override final;
 
     /**
-    * @brief Returns the name of the file.
-    *
-    * @return The name of the file.
-    **/
+     * @copydoc Base::getType
+     *
+     * @return The name of the file.
+     **/
     virtual const string& getName( void) const override;
 
    //void setName( void);
 
-    virtual const string& getPartNumber( void) const override;
+    //! @copydoc Base::getPartNumber
+    virtual const string& getPartNumber( void) const override final;
 
+    //! @copydoc Base::setPartNumber
     void setPartNumber( const string &partNumber);
 
+    /**
+     * @brief Returns the file type.
+     *
+     * @return The file type
+     **/
     virtual FileType getFileType( void) const = 0;
 
     ContainerEntityPtr getParent( void);

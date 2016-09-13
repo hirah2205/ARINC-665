@@ -33,6 +33,7 @@ class Batch: public BaseFile
 {
   public:
     using BatchInfoList = std::list< BatchInfo>;
+    using ConstBatchInfoList = std::list< const BatchInfo>;
 
     Batch( ContainerEntityPtr parent, const string &name);
 

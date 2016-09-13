@@ -21,7 +21,7 @@
 
 #include <arinc665/media/Base.hpp>
 
-#include <arinc665/media/File.hpp>
+#include <arinc665/media/RegularFile.hpp>
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/Batch.hpp>
 
@@ -141,6 +141,7 @@ class ContainerEntity :
     Files files;
     WeakContainerEntityPtr parent;
 };
+
 }
 }
 

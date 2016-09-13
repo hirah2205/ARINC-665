@@ -23,24 +23,29 @@ namespace Arinc665 {
 namespace Media {
 
 /**
- *
+ * @brief Represents a directory within a medium.
  **/
 class Directory : public ContainerEntity
 {
   public:
     Directory( ContainerEntityPtr parent, const string &name);
 
-    virtual ConstMediaSetPtr getMediaSet( void) const override;
+    //! @copydoc ContainerEntity::getMediaSet
+    virtual ConstMediaSetPtr getMediaSet( void) const override final;
 
-    virtual MediaSetPtr getMediaSet( void) override;
+    //! @copydoc ContainerEntity::getMediaSet
+    virtual MediaSetPtr getMediaSet( void) override final;
 
+    //! @copydoc ContainerEntity::getType
     virtual Type getType( void) const override final;
 
-    virtual const string& getName( void) const override;
+    //! @copydoc ContainerEntity::getName
+    virtual const string& getName( void) const override final;
 
     // void rename( const string& name);
 
-    virtual const string& getPartNumber( void) const override;
+    //! @copydoc ContainerEntity::getPartNumber
+    virtual const string& getPartNumber( void) const override final;
 
   private:
     //! Directory name

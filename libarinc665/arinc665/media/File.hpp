@@ -49,7 +49,10 @@ class File: public BaseFile
      **/
     File( ContainerEntityPtr parent, const string &name);
 
-    virtual FileType getFileType( void) const override;
+    /**
+     * @copydoc
+     **/
+    virtual FileType getFileType( void) const override final;
 };
 
 }
