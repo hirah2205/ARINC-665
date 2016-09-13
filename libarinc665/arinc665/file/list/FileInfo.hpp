@@ -68,11 +68,16 @@ class FileInfo
     bool operator !=( const FileInfo &other) const;
 
   private:
+    //! file name
     string filename;
+    //! path name
     string pathName;
+    //! member sequence number
     uint16_t memberSequenceNumber;
+    //! crc
     uint16_t crc;
 };
+
 }
 }
 

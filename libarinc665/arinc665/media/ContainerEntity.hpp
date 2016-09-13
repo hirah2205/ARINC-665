@@ -11,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class Arinc665::ContainerEntity.
+ * @brief Declaration of class Arinc665::Media::ContainerEntity.
  **/
 
 #ifndef ARINC665_MEDIA_CONTAINERENTITY_HPP

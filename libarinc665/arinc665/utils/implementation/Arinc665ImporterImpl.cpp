@@ -11,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of class Arinc665::Importer::Arinc665ImporterImpl.
+ * @brief Definition of class Arinc665::Utils::Arinc665ImporterImpl.
  **/
 
 #include "Arinc665ImporterImpl.hpp"

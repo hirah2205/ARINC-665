@@ -25,7 +25,7 @@
 namespace Arinc665 {
 
 /**
- *
+ * @brief Namespace, which holds the decoding/ encoding of the ARINC 665 files.
  **/
 namespace File {
 //! Raw file type definition.

@@ -74,8 +74,24 @@ class LoadInfo
     ThwIds targetHardwareIds;
 };
 
+/**
+ * @brief Compares FileInfo against LoadInfo
+ *
+ * @param fileInfo
+ * @param loadInfo
+ *
+ * @return
+ **/
 bool operator ==( const FileInfo &fileInfo, const LoadInfo &loadInfo);
 
+/**
+ * @brief Compares FileInfo against LoadInfo
+ *
+ * @param fileInfo
+ * @param loadInfo
+ *
+ * @return
+ **/
 bool operator !=( const FileInfo &fileInfo, const LoadInfo &loadInfo);
 
 }

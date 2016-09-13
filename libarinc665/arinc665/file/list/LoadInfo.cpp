@@ -141,11 +141,13 @@ bool LoadInfo::operator !=( const FileInfo &other) const
 
 bool operator ==( const FileInfo &fileInfo, const LoadInfo &loadInfo)
 {
+  // delegate to class member compare operator
   return loadInfo == fileInfo;
 }
 
 bool operator !=( const FileInfo &fileInfo, const LoadInfo &loadInfo)
 {
+  // delegate to class member compare operator
   return loadInfo != fileInfo;
 }
 

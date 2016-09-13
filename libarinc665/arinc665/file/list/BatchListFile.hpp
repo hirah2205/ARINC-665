@@ -98,6 +98,7 @@ class BatchListFile: public ListFile
     //! user defined data
     UserDefinedData userDefinedData;
 };
+
 }
 }
 

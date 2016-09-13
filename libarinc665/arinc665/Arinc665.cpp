@@ -11,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief General definitions for the ARINC 665 implementation.
+ * @brief Definition of namespace Arinc665.
  **/
 
 #include "Arinc665.hpp"

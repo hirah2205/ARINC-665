@@ -11,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of class Arinc665::Files::BatchListFile.
+ * @brief Definition of class Arinc665::File::BatchListFile.
  **/
 
 #include "BatchListFile.hpp"

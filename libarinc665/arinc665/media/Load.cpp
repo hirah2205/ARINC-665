@@ -11,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of class Arinc665::Media::.
+ * @brief Definition of class Arinc665::Media::Load.
  **/
 
 #include "Load.hpp"

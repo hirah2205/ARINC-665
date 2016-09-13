@@ -21,10 +21,19 @@
 #include <cstdint>
 
 /**
+ * @mainpage
+ * @brief Implementation of the ARINC 665 specification.
+ *
+ * This library implements the ARINC 665 specification.
+ *
+ * @par Referenced Documents
+ * -
+ **/
+
+/**
  * @brief Namespace of ARINC 665 implementation
  *
  * General definitions for the ARINC 665 implementation.
- * The implementation of the ARINC 665 standard.
  **/
 namespace Arinc665 {
 
