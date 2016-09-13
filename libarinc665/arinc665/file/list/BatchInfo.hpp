@@ -49,17 +49,36 @@ class BatchInfo
 
     void setMemberSequenceNumber( const uint16_t memberSequenceNumber);
 
+    /**
+     * @brief Compares batch info against each other
+     *
+     * @param[in] other
+     *   Right hand side, which should be compared with this.
+     *
+     * @return If this is equal to [other].
+     **/
     bool operator ==( const BatchInfo &other) const;
 
     bool operator !=( const BatchInfo &other) const;
 
+    /**
+     * @brief Compares batch info against file info
+     *
+     * @param[in] other
+     *   Right hand side, which should be compared with this.
+     *
+     * @return If this is equal to [other].
+     **/
     bool operator ==( const FileInfo &other) const;
 
     bool operator !=( const FileInfo &other) const;
 
   private:
+    //! part number
     string partNumber;
+    //! file name
     string filename;
+    //! member sequence number
     uint16_t memberSequenceNumber;
 };
 

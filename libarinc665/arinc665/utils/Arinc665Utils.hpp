@@ -35,7 +35,9 @@ class Arinc665Utils
     using ConstMediaSetPtr = Arinc665::Media::ConstMediaSetPtr;
     using path = boost::filesystem::path;
 
+    //! Handler, which is called to obtain the path to the next medium.
     using GetMediumPathHandler = std::function< path( uint8_t mediumNumber)>;
+    //! Handler, which is called to obtain the path to the requested file
     using CopyFileHandler = std::function< path( const path &destination)>;
 
     /**
