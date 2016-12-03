@@ -54,7 +54,7 @@ class File: public BaseFile
      * @retval FileType::RegularFile
      *   Always
      **/
-    virtual FileType getFileType( void) const override final;
+    virtual FileType getFileType() const override final;
 };
 
 }

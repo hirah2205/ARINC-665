@@ -50,25 +50,30 @@ class Load: public BaseFile
      **/
     Load( ContainerEntityPtr parent, const string &name);
 
-    virtual FileType getFileType( void) const override;
+    /**
+     * @copydoc BaseFile::getFileType()
+     *
+     * @return FileType::LoadFile always.
+     **/
+    virtual FileType getFileType() const override final;
 
-    const ThwIdList& getTargetHardwareIdList( void) const;
+    const ThwIdList& getTargetHardwareIdList() const;
 
-    ThwIdList& getTargetHardwareIdList( void);
+    ThwIdList& getTargetHardwareIdList();
 
     void setTargetHardwareIdList( const ThwIdList& thwIdList);
 
-    const FileList& getDataFiles( void) const;
+    const FileList& getDataFiles() const;
 
     void addDataFile( const WeakFilePtr dataFile);
 
-    const FileList& getSupportFiles( void) const;
+    const FileList& getSupportFiles() const;
 
     void addSupportFile( const WeakFilePtr supportFile);
 
-    const UserDefinedData& getUserDefinedData( void) const;
+    const UserDefinedData& getUserDefinedData() const;
 
-    UserDefinedData& getUserDefinedData( void);
+    UserDefinedData& getUserDefinedData();
 
     void setUserDefinedData( const UserDefinedData &userDefinedData);
 

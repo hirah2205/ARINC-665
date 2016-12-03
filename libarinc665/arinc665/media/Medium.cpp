@@ -31,32 +31,32 @@ Medium::Medium( MediaSetPtr mediaSet, uint8_t mediumNumber):
   assert( mediaSet);
 }
 
-ConstMediaSetPtr Medium::getMediaSet( void) const
+ConstMediaSetPtr Medium::getMediaSet() const
 {
   return mediaSet.lock();
 }
 
-MediaSetPtr Medium::getMediaSet( void)
+MediaSetPtr Medium::getMediaSet()
 {
   return mediaSet.lock();
 }
 
-Medium::Type Medium::getType( void) const
+Medium::Type Medium::getType() const
 {
   return Type::Medium;
 }
 
-const Medium::string& Medium::getName( void) const
+const Medium::string& Medium::getName() const
 {
   return mediaSet.lock()->getName();
 }
 
-const Medium::string& Medium::getPartNumber( void) const
+const Medium::string& Medium::getPartNumber() const
 {
   return mediaSet.lock()->getPartNumber();
 }
 
-uint8_t Medium::getMediumNumber( void) const
+uint8_t Medium::getMediumNumber() const
 {
   return mediumNumber;
 }

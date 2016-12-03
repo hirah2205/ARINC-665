@@ -40,10 +40,10 @@ class Medium : public ContainerEntity
     Medium( MediaSetPtr mediaSet, uint8_t mediumNumber);
 
     //! @copydoc ContainerEntity::getMediaSet
-    virtual ConstMediaSetPtr getMediaSet( void) const override final;
+    virtual ConstMediaSetPtr getMediaSet() const override final;
 
     //! @copydoc ContainerEntity::getMediaSet
-    virtual MediaSetPtr getMediaSet( void) override final;
+    virtual MediaSetPtr getMediaSet() override final;
 
     /**
      * @copydoc ContainerEntity::getType
@@ -51,27 +51,27 @@ class Medium : public ContainerEntity
      * @retval Type::Medium
      *   Always
      **/
-    virtual Type getType( void) const override final;
+    virtual Type getType() const override final;
 
     /**
      * @copydoc ContainerEntity::getName
      * @return The name of the owning media set.
      **/
-    virtual const string& getName( void) const override final;
+    virtual const string& getName() const override final;
 
     /**
      * @copydoc ContainerEntity::getPartNumber
      *
      * @return The part number of the owning media set.
      **/
-    virtual const string& getPartNumber( void) const override final;
+    virtual const string& getPartNumber() const override final;
 
     /**
      * @brief Returns the medium number.
      *
      * @return The medium number
      **/
-    uint8_t getMediumNumber( void) const;
+    uint8_t getMediumNumber() const;
 
   private:
     //! Pointer to media set

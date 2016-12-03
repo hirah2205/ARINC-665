@@ -31,21 +31,21 @@ class Directory : public ContainerEntity
     Directory( ContainerEntityPtr parent, const string &name);
 
     //! @copydoc ContainerEntity::getMediaSet
-    virtual ConstMediaSetPtr getMediaSet( void) const override final;
+    virtual ConstMediaSetPtr getMediaSet() const override final;
 
     //! @copydoc ContainerEntity::getMediaSet
-    virtual MediaSetPtr getMediaSet( void) override final;
+    virtual MediaSetPtr getMediaSet() override final;
 
     //! @copydoc ContainerEntity::getType
-    virtual Type getType( void) const override final;
+    virtual Type getType() const override final;
 
     //! @copydoc ContainerEntity::getName
-    virtual const string& getName( void) const override final;
+    virtual const string& getName() const override final;
 
     // void rename( const string& name);
 
     //! @copydoc ContainerEntity::getPartNumber
-    virtual const string& getPartNumber( void) const override final;
+    virtual const string& getPartNumber() const override final;
 
   private:
     //! Directory name

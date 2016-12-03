@@ -40,25 +40,25 @@ class BaseFile: public Base
     virtual ~BaseFile( void) = default;
 
     //! @copydoc Base::getMediaSet
-    virtual ConstMediaSetPtr getMediaSet( void) const override final;
+    virtual ConstMediaSetPtr getMediaSet() const override final;
 
     //! @copydoc Base::getMediaSet
-    virtual MediaSetPtr getMediaSet( void) override final;
+    virtual MediaSetPtr getMediaSet() override final;
 
     //! @copydoc Base::getType
-    virtual Type getType( void) const override final;
+    virtual Type getType() const override final;
 
     /**
      * @copydoc Base::getType
      *
      * @return The name of the file.
      **/
-    virtual const string& getName( void) const override;
+    virtual const string& getName() const override;
 
    //void setName( void);
 
     //! @copydoc Base::getPartNumber
-    virtual const string& getPartNumber( void) const override final;
+    virtual const string& getPartNumber() const override final;
 
     /**
      *
@@ -71,11 +71,21 @@ class BaseFile: public Base
      *
      * @return The file type
      **/
-    virtual FileType getFileType( void) const = 0;
+    virtual FileType getFileType() const = 0;
 
-    ContainerEntityPtr getParent( void);
+    /**
+     * @brief Returns the container element.
+     *
+     * @return The parent container element
+     **/
+    ContainerEntityPtr getParent();
 
-    ConstContainerEntityPtr getParent( void) const;
+    /**
+     * @brief Returns the container element.
+     *
+     * @return The parent container element
+     **/
+    ConstContainerEntityPtr getParent() const;
 
   protected:
     BaseFile( ContainerEntityPtr parent, const string &name);

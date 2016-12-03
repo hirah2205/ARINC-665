@@ -46,28 +46,28 @@ class Base
      *
      * @return The owning media set
      **/
-    virtual ConstMediaSetPtr getMediaSet( void) const = 0;
+    virtual ConstMediaSetPtr getMediaSet() const = 0;
 
     /**
      * @brief Returns the owning media set.
      *
      * @return The owning media set
      **/
-    virtual MediaSetPtr getMediaSet( void) = 0;
+    virtual MediaSetPtr getMediaSet() = 0;
 
     /**
      * @brief Returns the item type.
      *
      * @return The item type
      **/
-    virtual Type getType( void) const = 0;
+    virtual Type getType() const = 0;
 
     /**
     * @brief Returns the name of the file.
     *
     * @return The name of the file.
     **/
-   virtual const string& getName( void) const = 0;
+   virtual const string& getName() const = 0;
 
    /**
     * @brief Return the part number of the entity.
@@ -77,7 +77,7 @@ class Base
     *
     * @return The part number of the entity
     **/
-   virtual const string& getPartNumber( void) const = 0;
+   virtual const string& getPartNumber() const = 0;
 };
 
 }

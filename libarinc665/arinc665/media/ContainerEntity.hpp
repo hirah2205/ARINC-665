@@ -40,25 +40,25 @@ class ContainerEntity :
   public:
     using string = std::string;
 
-    ContainerEntity( void) = default;
+    ContainerEntity() = default;
 
     /**
      * @brief Indicates, if the container has child elements.
      *
      * @return if there are sub-directories or files
      **/
-    bool hasChildren( void) const;
+    bool hasChildren() const;
 
     /**
      * @brief Return the number of sub-directories.
      *
      * @return The number of sub-directories.
      **/
-    size_t getNumberOfSubDirectories( void) const;
+    size_t getNumberOfSubDirectories() const;
 
-    ConstDirectories getSubDirectories( void) const;
+    ConstDirectories getSubDirectories() const;
 
-    Directories getSubDirectories( void);
+    Directories getSubDirectories();
 
     ConstDirectoryPtr getSubDirectory( const string &name) const;
 

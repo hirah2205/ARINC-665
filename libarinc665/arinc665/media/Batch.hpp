@@ -27,7 +27,7 @@ namespace Arinc665 {
 namespace Media {
 
 /**
- * @brief
+ * @brief File which represents a batch.
  **/
 class Batch: public BaseFile
 {
@@ -37,14 +37,19 @@ class Batch: public BaseFile
 
     Batch( ContainerEntityPtr parent, const string &name);
 
-    virtual FileType getFileType( void) const override;
+    /**
+     * @copydoc BaseFile::getFileType()
+     *
+     * @return FileType::BatchFile always.
+     **/
+    virtual FileType getFileType() const override final;
 
     /**
      * @brief Get the comment, which describes the batch.
      *
      * @return The comment, which describes the batch.
      **/
-    string getComment( void) const;
+    string getComment() const;
 
     /**
      * @brief Set the comment, which describes the batch.
@@ -54,12 +59,14 @@ class Batch: public BaseFile
      **/
     void setComment( const string &comment);
 
-    const BatchInfoList& getBatchInfos( void);
+    const BatchInfoList& getBatchInfos();
 
     BatchInfo& addBatchInfo( const string &targetHardwareId);
 
   private:
+    //! Batch comment
     string comment;
+    //! Batch informations
     BatchInfoList batchInfos;
 };
 

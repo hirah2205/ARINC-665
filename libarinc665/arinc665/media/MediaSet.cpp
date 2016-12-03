@@ -89,16 +89,16 @@ MediumPtr MediaSet::getMedium( uint8_t index)
   return media.at( index - 1);
 }
 
-unsigned int MediaSet::addMedium( void)
+uint8_t MediaSet::addMedium()
 {
   if (media.size() >= 255)
   {
-    return 0;
+    return 0U;
   }
 
   media.push_back( std::make_shared< Medium>( shared_from_this(), media.size()));
 
-	return media.size();
+  return static_cast< uint8_t>( media.size());
 }
 
 void MediaSet::setNumberOfMedia( uint8_t numberOfMedia, bool deleteFiles)
@@ -110,14 +110,17 @@ void MediaSet::setNumberOfMedia( uint8_t numberOfMedia, bool deleteFiles)
 
   if (numberOfMedia > media.size())
   {
-    for (unsigned int i = 0; i < numberOfMedia - media.size(); ++i)
+    while (numberOfMedia < media.size())
     {
       addMedium();
     }
   }
   else
   {
-    //! todo
+    while (numberOfMedia > media.size())
+    {
+      //! todo
+    }
   }
 }
 

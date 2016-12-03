@@ -44,12 +44,12 @@ class Arinc665Utils
      * The ARINC 665 Media Set importer.
      * Returns the MediaSet
      **/
-    using Arinc665Importer = std::function< MediaSetPtr( void)>;
+    using Arinc665Importer = std::function< MediaSetPtr()>;
 
     /**
      * The ARINC 665 Media Set exporter.
      **/
-    using Arinc665Exporter = std::function< void( void)>;
+    using Arinc665Exporter = std::function< void()>;
 
     /**
      * @brief Create a ARINC 665 Media Set importer.

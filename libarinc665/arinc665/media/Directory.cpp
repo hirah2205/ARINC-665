@@ -30,27 +30,27 @@ Directory::Directory( ContainerEntityPtr parent, const string &name):
   assert( parent);
 }
 
-ConstMediaSetPtr Directory::getMediaSet( void) const
+ConstMediaSetPtr Directory::getMediaSet() const
 {
   return getParent()->getMediaSet();
 }
 
-MediaSetPtr Directory::getMediaSet( void)
+MediaSetPtr Directory::getMediaSet()
 {
   return getParent()->getMediaSet();
 }
 
-Directory::Type Directory::getType( void) const
+Directory::Type Directory::getType() const
 {
   return Type::Directory;
 }
 
-const Directory::string& Directory::getName( void) const
+const Directory::string& Directory::getName() const
 {
   return name;
 }
 
-const Directory::string& Directory::getPartNumber( void) const
+const Directory::string& Directory::getPartNumber() const
 {
   return getParent()->getPartNumber();
 }

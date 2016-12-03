@@ -51,25 +51,26 @@ class MediaSet:
     MediaSet( const string &partNumber);
 
     //! @copydoc Base::getMediaSet
-    virtual ConstMediaSetPtr getMediaSet( void) const override final;
+    virtual ConstMediaSetPtr getMediaSet() const override final;
 
     //! @copydoc Base::getType
-    virtual MediaSetPtr getMediaSet( void) override final;
+    virtual MediaSetPtr getMediaSet() override final;
 
     //! @copydoc Base::getType
-    virtual Type getType( void) const override final;
+    virtual Type getType() const override final;
 
     //! @copydoc Base::getName
-    virtual const string& getName( void) const override final;
+    virtual const string& getName() const override final;
 
     /**
+     * @brief Sets the name of the media set.
      *
-     * @param name
+     * @param[in] name
      **/
     void setName( const string& name);
 
     //! @copydoc Base::getPartNumber
-    virtual const string& getPartNumber( void) const override final;
+    virtual const string& getPartNumber() const override final;
 
     /**
      * @brief Set the part number of the entity.
@@ -84,14 +85,14 @@ class MediaSet:
      *
      * @return The number of medias within the media set.
      **/
-    uint8_t getNumberOfMedia( void) const;
+    uint8_t getNumberOfMedia() const;
 
     /**
      * @brief Returns all media.
      *
      * @return All media as map.
      **/
-    const Media& getMedia( void) const;
+    const Media& getMedia() const;
 
     /**
      * @brief Return the medium with the requested index.
@@ -118,7 +119,7 @@ class MediaSet:
      *
      * @return The media index of the new medium.
      **/
-    unsigned int addMedium( void);
+    uint8_t addMedium();
 
     /**
      * @brief
@@ -138,49 +139,158 @@ class MediaSet:
      *
      * @return The number of files.
      **/
-    size_t getNumberOfFiles( void) const;
+    size_t getNumberOfFiles() const;
 
     /**
      * @brief Returns all files present on the media set.
      *
      * @return All files.
      **/
-    ConstFiles getFiles( void) const;
+    ConstFiles getFiles() const;
 
-    Files getFiles( void);
+    /**
+     * @brief Returns all files present on the media set.
+     *
+     * @return All files.
+     **/
+    Files getFiles();
 
+    /**
+     * @brief Returns file with the given filename.
+     *
+     * @param[in] filename
+     *   The filename.
+     *
+     * @return File with the given filename.
+     * @retval ConstFilePtr()
+     *   If file is not found.
+     **/
     ConstFilePtr getFile( const string &filename) const;
 
+    /**
+     * @brief Returns file with the given filename.
+     *
+     * @param[in] filename
+     *   The filename.
+     *
+     * @return File with the given filename.
+     * @retval ConstFilePtr()
+     *   If file is not found.
+     **/
     FilePtr getFile( const string &filename);
 
+    /**
+     * @brief Return the number of loads within the media set.
+     *
+     * @return The number of loads within the media set.
+     **/
+    size_t getNumberOfLoads() const;
 
-    size_t getNumberOfLoads( void) const;
+    /**
+     * @brief Returns the loads within the media set.
+     *
+     * @return The loads within the media set.
+     **/
+    ConstLoads getLoads() const;
 
-    ConstLoads getLoads( void) const;
+    /**
+     * @brief Returns the loads within the media set.
+     *
+     * @return The loads within the media set.
+     **/
+    Loads getLoads();
 
-    Loads getLoads( void);
-
+    /**
+     * @brief return the load with the given filename.
+     *
+     * @param[in] filename
+     *   The filename of the load.
+     *
+     * @return The load with the given filename.
+     **/
     ConstLoadPtr getLoad( const string &filename) const;
 
+    /**
+     * @brief return the load with the given filename.
+     *
+     * @param[in] filename
+     *   The filename of the load.
+     *
+     * @return The load with the given filename.
+     **/
     LoadPtr getLoad( const string &filename);
 
+    /**
+     * @brief Removes the load with the given filename.
+     *
+     * @param[in] filename
+     *   The filename of the load.
+     **/
     void removeLoad( const string &filename);
 
+    /**
+     * @brief Removes the given load from the media set.
+     *
+     * @param[in] load
+     *   The load to remove.
+     **/
     void removeLoad( ConstLoadPtr load);
 
+    /**
+     * @brief Return the number of batches within the media set.
+     *
+     * @return The number of batches within the media set.
+     **/
+    size_t getNumberOfBatches() const;
 
-    size_t getNumberOfBatches( void) const;
+    /**
+     * @brief Returns the batches within the media set.
+     *
+     * @return The batches within the media set.
+     **/
+    ConstBatches getBatches() const;
 
-    ConstBatches getBatches( void) const;
+    /**
+     * @brief Returns the batches within the media set.
+     *
+     * @return The batches within the media set.
+     **/
+    Batches getBatches();
 
-    Batches getBatches( void);
-
+    /**
+     * @brief return the batch with the given filename.
+     *
+     * @param[in] filename
+     *   The filename of the batch.
+     *
+     * @return The batch with the given filename.
+     **/
     ConstBatchPtr getBatch( const string &filename) const;
 
+    /**
+     * @brief return the batch with the given filename.
+     *
+     * @param[in] filename
+     *   The filename of the batch.
+     *
+     * @return The batch with the given filename.
+     **/
     BatchPtr getBatch( const string &filename);
 
+    /**
+     * @brief Removes the batch with the given filename.
+     *
+     * @param[in] filename
+     *   The filename of the batch.
+     **/
     void removeBatch( const string &filename);
 
+    /**
+     * @brief Removes the given batch from the media set.
+     *
+     * @param[in] batch
+     *   The batch to remove.
+     **/
     void removeBatch( ConstBatchPtr batch);
 
   private:

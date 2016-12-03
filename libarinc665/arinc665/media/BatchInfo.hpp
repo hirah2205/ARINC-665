@@ -37,11 +37,11 @@ class BatchInfo
 
     BatchInfo( const string &targetHardwareId);
 
-    string getTargetHardwareId( void) const;
+    string getTargetHardwareId() const;
 
     void setTargetHardwareId( const string &targetHardwareId);
 
-    LoadList& getLoadList( void);
+    LoadList& getLoadList();
 
     void addLoad( const WeakLoadPtr load);
 
