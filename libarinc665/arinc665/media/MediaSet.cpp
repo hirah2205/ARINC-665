@@ -29,22 +29,22 @@ MediaSet::MediaSet( const string &partNumber):
 {
 }
 
-ConstMediaSetPtr MediaSet::getMediaSet( void) const
+ConstMediaSetPtr MediaSet::getMediaSet() const
 {
   return shared_from_this();
 }
 
-MediaSetPtr MediaSet::getMediaSet( void)
+MediaSetPtr MediaSet::getMediaSet()
 {
   return shared_from_this();
 }
 
-MediaSet::Type MediaSet::getType( void) const
+MediaSet::Type MediaSet::getType() const
 {
   return Type::MediaSet;
 }
 
-const MediaSet::string& MediaSet::getName( void) const
+const MediaSet::string& MediaSet::getName() const
 {
   return name;
 }
@@ -54,7 +54,7 @@ void MediaSet::setName( const string& name)
   this->name = name;
 }
 
-const MediaSet::string& MediaSet::getPartNumber( void) const
+const MediaSet::string& MediaSet::getPartNumber() const
 {
   return partNumber;
 }
@@ -64,27 +64,33 @@ void MediaSet::setPartNumber( const string &partNumber)
   this->partNumber = partNumber;
 }
 
-uint8_t MediaSet::getNumberOfMedia( void) const
+uint8_t MediaSet::getNumberOfMedia() const
 {
   return media.size();
 }
 
 
-const Media& MediaSet::getMedia( void) const
+const Media& MediaSet::getMedia() const
 {
   return media;
 }
 
-ConstMediumPtr MediaSet::getMedium( uint8_t index) const
+ConstMediumPtr MediaSet::getMedium( const uint8_t index) const
 {
-  assert( media.at( index - 1));
+  if (0 == index)
+  {
+    return MediumPtr();
+  }
 
   return media.at( index - 1);
 }
 
-MediumPtr MediaSet::getMedium( uint8_t index)
+MediumPtr MediaSet::getMedium( const uint8_t index)
 {
-  assert( media.at( index - 1));
+  if (0 == index)
+  {
+    return MediumPtr();
+  }
 
   return media.at( index - 1);
 }
@@ -124,7 +130,19 @@ void MediaSet::setNumberOfMedia( uint8_t numberOfMedia, bool deleteFiles)
   }
 }
 
-ConstFiles MediaSet::getFiles( void) const
+size_t MediaSet::getNumberOfFiles() const
+{
+  size_t numberOfFiles = 0;
+
+  for ( const auto &medium : media)
+  {
+    numberOfFiles += medium->getNumberOfFiles( true);
+  }
+
+  return numberOfFiles;
+}
+
+ConstFiles MediaSet::getFiles() const
 {
   ConstFiles files;
 
@@ -138,7 +156,7 @@ ConstFiles MediaSet::getFiles( void) const
   return files;
 }
 
-Files MediaSet::getFiles( void)
+Files MediaSet::getFiles()
 {
   Files files;
 
@@ -182,7 +200,19 @@ FilePtr MediaSet::getFile( const string &filename)
   return FilePtr();
 }
 
-ConstLoads MediaSet::getLoads( void) const
+size_t MediaSet::getNumberOfLoads() const
+{
+  size_t numberOfLoads = 0;
+
+  for ( const auto &medium : media)
+  {
+    numberOfLoads += medium->getNumberOfLoads( true);
+  }
+
+  return numberOfLoads;
+}
+
+ConstLoads MediaSet::getLoads() const
 {
   ConstLoads loads;
 
@@ -195,7 +225,7 @@ ConstLoads MediaSet::getLoads( void) const
   return loads;
 }
 
-Loads MediaSet::getLoads( void)
+Loads MediaSet::getLoads()
 {
   Loads loads;
 
@@ -208,13 +238,38 @@ Loads MediaSet::getLoads( void)
   return loads;
 }
 
-ConstBatches MediaSet::getBatches( void) const
+size_t MediaSet::getNumberOfBatches() const
+{
+  size_t numberOfBatches = 0;
+
+  for ( const auto &medium : media)
+  {
+    numberOfBatches += medium->getNumberOfBatches( true);
+  }
+
+  return numberOfBatches;
+}
+
+ConstBatches MediaSet::getBatches() const
 {
   ConstBatches batches;
 
   for (const auto & medium : media)
   {
     ConstBatches mediaBatches = static_cast< const Medium>(*medium).getBatches( true);
+    batches.insert( batches.end(), mediaBatches.begin(), mediaBatches.end());
+  }
+
+  return batches;
+}
+
+Batches MediaSet::getBatches()
+{
+  Batches batches;
+
+  for (const auto & medium : media)
+  {
+    Batches mediaBatches = medium->getBatches( true);
     batches.insert( batches.end(), mediaBatches.begin(), mediaBatches.end());
   }
 

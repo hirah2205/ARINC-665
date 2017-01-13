@@ -27,7 +27,7 @@ ProductIdentifier::ProductIdentifier( const string &productIdentifier)
   set( productIdentifier);
 }
 
-ProductIdentifier::string ProductIdentifier::get( void) const
+ProductIdentifier::string ProductIdentifier::get() const
 {
   return productIdentifier;
 }

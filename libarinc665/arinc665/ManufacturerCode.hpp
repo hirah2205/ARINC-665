@@ -31,7 +31,7 @@ class ManufacturerCode
     using string = std::string;
 
     //! Length of manufacturer code
-    static const size_t Length = 3;
+    static constexpr size_t Length = 3;
 
     /**
      * @brief Constructs a manufacturer code.
@@ -49,7 +49,7 @@ class ManufacturerCode
      *
      * @return The manufacturer code.
      **/
-    string get( void) const;
+    string get() const;
 
     /**
      * @brief Sets the manufacturer code to the given value.

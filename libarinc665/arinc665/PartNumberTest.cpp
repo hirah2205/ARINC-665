@@ -14,18 +14,15 @@
  * @brief Definition of unit tests for the class Arinc665::PartNumber.
  **/
 
-#include <boost/test/unit_test.hpp>
-
 #include <arinc665/PartNumber.hpp>
 
-#include <helper/Dump.hpp>
-#include <helper/Logger.hpp>
+#include <boost/test/unit_test.hpp>
 
-#include <iostream>
+namespace Arinc665 {
 
-using namespace Arinc665;
+BOOST_AUTO_TEST_SUITE( PartNumberTest)
 
-static void testPartNumber1( void)
+BOOST_AUTO_TEST_CASE( testPartNumber1)
 {
   //EBE3B549720000D
   ManufacturerCode mc( "EBE");
@@ -41,7 +38,7 @@ static void testPartNumber1( void)
     pn.getProductIdentifier().get());
 }
 
-static void testPartNumber2( void)
+BOOST_AUTO_TEST_CASE( testPartNumber2)
 {
   PartNumber pn( "EBE4F54972000");
 
@@ -51,8 +48,5 @@ static void testPartNumber2( void)
   BOOST_CHECK( pn.getPartNumber() == "EBE4F54972000");
 }
 
-void testPartNumber( void)
-{
-  boost::unit_test::framework::master_test_suite().add( BOOST_TEST_CASE( &testPartNumber1));
-  boost::unit_test::framework::master_test_suite().add( BOOST_TEST_CASE( &testPartNumber2));
+BOOST_AUTO_TEST_SUITE_END()
 }

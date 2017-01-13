@@ -49,7 +49,7 @@ class ProductIdentifier
      *
      * @return The product identifier
      **/
-    string get( void) const;
+    string get() const;
 
     /**
      * @brief Sets the product identifier.

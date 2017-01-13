@@ -26,7 +26,7 @@ ManufacturerCode::ManufacturerCode( const string& manufacturerCode)
   set( manufacturerCode);
 }
 
-std::string ManufacturerCode::get( void) const
+std::string ManufacturerCode::get() const
 {
   return manufacturerCode;
 }

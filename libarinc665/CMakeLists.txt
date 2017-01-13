@@ -99,8 +99,11 @@ add_library(
   OBJECT
   
   arinc665/CheckCodeTest.cpp
+  arinc665/ManufacturerCodeTest.cpp
   arinc665/PartNumberTest.cpp
-  arinc665/media/test/MediaSetTest.cpp
+  arinc665/ProductIdentifierTest.cpp
+  
+  arinc665/media/MediaSetTest.cpp
   )
 
 target_include_directories( arinc665_test PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES>)

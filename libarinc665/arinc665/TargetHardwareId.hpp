@@ -43,7 +43,7 @@ class TargetHardwareId
      *
      * @return The target hardware ID as string.
      **/
-    const string& get( void) const;
+    const string& get() const;
 
     /**
      * @brief Sets the target hardware ID to the given string.

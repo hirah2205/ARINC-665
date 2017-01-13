@@ -39,7 +39,7 @@ class Base
     };
 
     //! Default destructor
-    virtual ~Base( void) noexcept = default;
+    virtual ~Base() noexcept = default;
 
     /**
      * @brief Returns the owning media set.

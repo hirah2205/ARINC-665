@@ -23,7 +23,7 @@ TargetHardwareId::TargetHardwareId( const string& targetHardwareId) :
 {
 }
 
-const TargetHardwareId::string& TargetHardwareId::get( void) const
+const TargetHardwareId::string& TargetHardwareId::get() const
 {
   return targetHardwareId;
 }
