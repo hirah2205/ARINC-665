@@ -7,13 +7,17 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.5)
+cmake_minimum_required( VERSION 3.7)
 
 project( "ARINC 665 unit test application")
 
 find_package( Boost REQUIRED COMPONENTS unit_test_framework)
 
-add_executable( arinc665_unit_test arinc665_unit_test.cpp)
+add_executable( 
+  arinc665_unit_test 
+  
+  $<TARGET_OBJECTS:arinc665_test>
+  arinc665_unit_test.cpp)
 
 target_link_libraries( 
   arinc665_unit_test 
@@ -21,3 +25,5 @@ target_link_libraries(
   arinc665
   ${Boost_LIBRARIES}
   ${BOOST_THREAD_LIBRARY})
+
+add_test( NAME arinc665_unit_test COMMAND arinc665_unit_test)

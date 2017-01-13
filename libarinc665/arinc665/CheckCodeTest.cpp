@@ -14,18 +14,15 @@
  * @brief Definition of unit tests for the class Arinc665::CheckCode.
  **/
 
-#ifndef CHECKCODETEST_CPP
-#define CHECKCODETEST_CPP
+#include <arinc665/CheckCode.hpp>
 
 #include <boost/test/unit_test.hpp>
 
-#include <arinc665/CheckCode.hpp>
+namespace Arinc665 {
 
-#include <iostream>
+BOOST_AUTO_TEST_SUITE( CheckCodeTest)
 
-using namespace Arinc665;
-
-static void testCheckCode1( void)
+BOOST_AUTO_TEST_CASE( testCheckCode1)
 {
   CheckCode checkCode1( "01");
   CheckCode checkCode2( "20");
@@ -62,9 +59,6 @@ static void testCheckCode1( void)
   BOOST_CHECK( checkCode4 == checkCode4);
 }
 
-void testCheckCode( void)
-{
-  boost::unit_test::framework::master_test_suite().add( BOOST_TEST_CASE( &testCheckCode1));
-}
+BOOST_AUTO_TEST_SUITE_END()
 
-#endif
+}

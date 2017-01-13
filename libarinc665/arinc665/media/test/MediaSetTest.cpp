@@ -11,7 +11,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of unit tests for .
+ * @brief Definition of unit tests for class MediaSet.
  **/
 
 
@@ -21,11 +21,12 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <iostream>
+namespace Arinc665 {
+namespace Media {
 
-using namespace Arinc665::Media;
+BOOST_AUTO_TEST_SUITE( MediaSetTest)
 
-static void testMediaSet1( void)
+BOOST_AUTO_TEST_CASE( testMediaSet1)
 {
   MediaSet mediaSet( "XXX");
 
@@ -50,7 +51,7 @@ static void testMediaSet1( void)
   BOOST_CHECK( file2->getPartNumber() == "PART1");
 }
 
-void testMediaSet( void)
-{
-  boost::unit_test::framework::master_test_suite().add( BOOST_TEST_CASE( &testMediaSet1));
+BOOST_AUTO_TEST_SUITE_END()
+
+}
 }

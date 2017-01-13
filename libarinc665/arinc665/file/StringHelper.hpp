@@ -31,44 +31,49 @@ namespace Arinc665 {
 namespace File {
 
 /**
- * @brief
+ * @brief Decodes the ARINC 665 string from the stream.
  *
  * @param[in] it
  * @param[out] str
  *
- * @return
+ * @return New iterator position.
  **/
 RawFile::const_iterator getString(
   RawFile::const_iterator it,
   std::string &str);
 
 /**
- * @brief
+ * @brief Encodes the ARINC 665 string to the stream.
  *
- * @param[in,out] it
+ * @param[in] it
  * @param[in] str
+ *
+ * @return New iterator position.
  **/
 RawFile::iterator setString(
   RawFile::iterator it,
   const std::string &str);
 
 /**
- * @brief
+ * @brief Decodes the ARINC 665 string list from the stream.
  *
- * @param[in,out] it
- * @param strList
+ * @param[in] it
+ * @param[out] strList
  *
- * @return
+ *
+ * @return New iterator position.
  **/
 RawFile::const_iterator getStringList(
   RawFile::const_iterator it,
   std::list< std::string> &strList);
 
 /**
- * @brief
+ * @brief Encodes the ARINC 665 string list to the stream.
  *
- * @param[in,out] it
+ * @param[in] it
  * @param[in] strList
+ *
+ * @return New iterator position.
  **/
 RawFile::iterator setStringList(
   RawFile::iterator it,

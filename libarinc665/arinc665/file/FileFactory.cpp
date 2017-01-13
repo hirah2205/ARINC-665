@@ -23,79 +23,79 @@ namespace File {
 
 Arinc665::FileClassType FileFactory::getArincFileType( const RawFile &file)
 {
-	uint16_t formatVersion = Arinc665File::getFormatVersion( file);
+  const uint16_t formatVersion = Arinc665File::getFormatVersion( file);
 
-	switch (formatVersion)
-	{
-		case static_cast< uint16_t>( LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_2):
-		case static_cast< uint16_t>( LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_3):
-			return FileClassType::ARINC_665_FILE_CLASS_LOAD_FILE;
+  switch (formatVersion)
+  {
+    case static_cast< uint16_t>( LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_2):
+    case static_cast< uint16_t>( LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_3):
+      return FileClassType::ARINC_665_FILE_CLASS_LOAD_FILE;
 
-		case static_cast< uint16_t>( BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_2):
-		case static_cast< uint16_t>( BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_3):
-			return FileClassType::ARINC_665_FILE_CLASS_BATCH_FILE;
+    case static_cast< uint16_t>( BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_2):
+    case static_cast< uint16_t>( BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_3):
+      return FileClassType::ARINC_665_FILE_CLASS_BATCH_FILE;
 
-		case static_cast< uint16_t>( MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_2):
-		case static_cast< uint16_t>( MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_3):
-			return FileClassType::ARINC_665_FILE_CLASS_MEDIA_FILE;
+    case static_cast< uint16_t>( MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_2):
+    case static_cast< uint16_t>( MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_3):
+      return FileClassType::ARINC_665_FILE_CLASS_MEDIA_FILE;
 
-		default:
-			return FileClassType::ARINC_665_FILE_CLASS_INVALID;
-	}
+    default:
+      return FileClassType::ARINC_665_FILE_CLASS_INVALID;
+  }
 }
 
 Arinc665::LoadFileFormatVersion FileFactory::getLoadFileFormatVersion(
-	const RawFile &file)
+  const RawFile &file)
 {
-	uint16_t formatVersion = Arinc665File::getFormatVersion( file);
+  const uint16_t formatVersion = Arinc665File::getFormatVersion( file);
 
-	switch (formatVersion)
-	{
-		case static_cast< uint16_t>( LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_2):
-		case static_cast< uint16_t>( LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_3):
-			break;
+  switch (formatVersion)
+  {
+    case static_cast< uint16_t>( LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_2):
+    case static_cast< uint16_t>( LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_3):
+      break;
 
-		default:
-			return LoadFileFormatVersion::ARINC_665_LOAD_FILE_INVALID;
-	}
+    default:
+      return LoadFileFormatVersion::ARINC_665_LOAD_FILE_INVALID;
+  }
 
-	return static_cast< LoadFileFormatVersion>( formatVersion);
+  return static_cast< LoadFileFormatVersion>( formatVersion);
 }
 
 Arinc665::BatchFileFormatVersion FileFactory::getBatchFileFormatVersion(
-	const RawFile &file)
+  const RawFile &file)
 {
-	uint16_t formatVersion = Arinc665File::getFormatVersion( file);
+  const uint16_t formatVersion = Arinc665File::getFormatVersion( file);
 
-	switch (formatVersion)
-	{
-		case static_cast< uint16_t>( BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_2):
-		case static_cast< uint16_t>( BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_3):
-			break;
+  switch (formatVersion)
+  {
+    case static_cast< uint16_t>( BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_2):
+    case static_cast< uint16_t>( BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_3):
+      break;
 
-		default:
-			return BatchFileFormatVersion::ARINC_665_BATCH_FILE_INVALID;
-	}
+    default:
+      return BatchFileFormatVersion::ARINC_665_BATCH_FILE_INVALID;
+  }
 
-	return static_cast< BatchFileFormatVersion>( formatVersion);
+  return static_cast< BatchFileFormatVersion>( formatVersion);
 }
 
 Arinc665::MediaFileFormatVersion FileFactory::getMediaFileFormatVersion(
-	const RawFile &file)
+  const RawFile &file)
 {
-	uint16_t formatVersion = Arinc665File::getFormatVersion( file);
+  const uint16_t formatVersion = Arinc665File::getFormatVersion( file);
 
-	switch (formatVersion)
-	{
-		case static_cast< uint16_t>( MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_2):
-		case static_cast< uint16_t>( MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_3):
-			break;
+  switch (formatVersion)
+  {
+    case static_cast< uint16_t>( MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_2):
+    case static_cast< uint16_t>( MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_3):
+      break;
 
-		default:
-			return MediaFileFormatVersion::ARINC_665_MEDIA_FILE_INVALID;
-	}
+    default:
+      return MediaFileFormatVersion::ARINC_665_MEDIA_FILE_INVALID;
+  }
 
-	return static_cast< MediaFileFormatVersion>( formatVersion);
+  return static_cast< MediaFileFormatVersion>( formatVersion);
 }
 
 Arinc665::FileType FileFactory::getFileType(

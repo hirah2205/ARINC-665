@@ -54,12 +54,12 @@ PartNumber::PartNumber( const string& partNumber) :
   }
 }
 
-ManufacturerCode PartNumber::getManufacturerCode( void) const
+ManufacturerCode PartNumber::getManufacturerCode() const
 {
   return manufacturerCode;
 }
 
-ManufacturerCode& PartNumber::getManufacturerCode( void)
+ManufacturerCode& PartNumber::getManufacturerCode()
 {
   return manufacturerCode;
 }
@@ -69,12 +69,12 @@ void PartNumber::setManufacturerCode( const ManufacturerCode& manufacturerCode)
   this->manufacturerCode = manufacturerCode;
 }
 
-ProductIdentifier PartNumber::getProductIdentifier( void) const
+ProductIdentifier PartNumber::getProductIdentifier() const
 {
   return productIdentifier;
 }
 
-ProductIdentifier& PartNumber::getProductIdentifier( void)
+ProductIdentifier& PartNumber::getProductIdentifier()
 {
   return productIdentifier;
 }
@@ -85,12 +85,12 @@ void PartNumber::setProductIdentifier(
   this->productIdentifier = productIdentifier;
 }
 
-CheckCode PartNumber::getCheckCode( void) const
+CheckCode PartNumber::getCheckCode() const
 {
   return CheckCode( manufacturerCode, productIdentifier);
 }
 
-PartNumber::string PartNumber::getPartNumber( void) const
+PartNumber::string PartNumber::getPartNumber() const
 {
   return manufacturerCode.get() + getCheckCode().getStr()
     + productIdentifier.get();

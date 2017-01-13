@@ -64,7 +64,7 @@ class FileFactory
     static BatchFile getBatchFile( const RawFile &file);
 
   private:
-    FileFactory( void);
+    FileFactory() = delete;
 };
 }
 }

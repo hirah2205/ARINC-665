@@ -7,16 +7,15 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.6)
+cmake_minimum_required( VERSION 3.7)
 
 project ( "ARINC 665 Library")
 
 find_package( 
   Boost
   REQUIRED
-  filesystem
-  unit_test_framework)
-	
+  filesystem)
+
 add_library( 
   arinc665
  
@@ -24,14 +23,14 @@ add_library(
   arinc665/Arinc665.cpp
   arinc665/PartNumber.hpp
   arinc665/PartNumber.cpp
-  arinc665/PartNumberTest.cpp
+  
   arinc665/TargetHardwareId.hpp
   arinc665/TargetHardwareId.cpp
   arinc665/ManufacturerCode.hpp
   arinc665/ManufacturerCode.cpp
   arinc665/CheckCode.hpp
   arinc665/CheckCode.cpp
-  arinc665/CheckCodeTest.cpp
+  
   arinc665/ProductIdentifier.hpp
   arinc665/ProductIdentifier.cpp
  
@@ -87,12 +86,23 @@ add_library(
   arinc665/utils/Arinc665Utils.cpp   
   arinc665/utils/implementation/Arinc665ImporterImpl.hpp
   arinc665/utils/implementation/Arinc665ImporterImpl.cpp
-  
-  arinc665/media/test/MediaSetTest.cpp)
+  )
 
 target_include_directories( arinc665 SYSTEM PUBLIC ${Boost_INCLUDE_DIRS})
 target_include_directories( arinc665 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries( arinc665 helper ${Boost_LIBRARIES})
+
+
+add_library( 
+  arinc665_test 
+  OBJECT
+  
+  arinc665/CheckCodeTest.cpp
+  arinc665/PartNumberTest.cpp
+  arinc665/media/test/MediaSetTest.cpp
+  )
+
+target_include_directories( arinc665_test PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES>)
 
 GENERATE_DOCUMENTATION()

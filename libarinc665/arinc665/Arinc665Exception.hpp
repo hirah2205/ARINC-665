@@ -30,7 +30,7 @@ namespace Arinc665 {
 class Arinc665Exception: public virtual Exception
 {
   public:
-    virtual const char* what( void) const noexcept override
+    virtual const char* what() const noexcept override
     {
       return "ARINC 665 Exception";
     }

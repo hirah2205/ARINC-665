@@ -51,7 +51,7 @@ class PartNumber
     using string = std::string;
 
     //! The length of an ARINC 665 part number
-    static const size_t Length = ManufacturerCode::Length
+    static constexpr size_t Length = ManufacturerCode::Length
       + CheckCode::Length + ProductIdentifier::Length;
 
     /**
@@ -86,14 +86,14 @@ class PartNumber
      *
      * @return The manufacturer code.
      **/
-    ManufacturerCode getManufacturerCode( void) const;
+    ManufacturerCode getManufacturerCode() const;
 
     /**
      * @brief Returns the manufacturer code.
      *
      * @return The manufacturer code.
      **/
-    ManufacturerCode& getManufacturerCode( void);
+    ManufacturerCode& getManufacturerCode();
 
     /**
      * @brief Sets the manufacturer code.
@@ -108,14 +108,14 @@ class PartNumber
      *
      * @return The product identifier.
      **/
-    ProductIdentifier getProductIdentifier( void) const;
+    ProductIdentifier getProductIdentifier() const;
 
     /**
      * @brief Returns the product identifier.
      *
      * @return The product identifier.
      **/
-    ProductIdentifier& getProductIdentifier( void);
+    ProductIdentifier& getProductIdentifier();
 
     /**
      * @brief Sets the product identifier.
@@ -130,14 +130,14 @@ class PartNumber
      *
      * @return The calculated check code
      **/
-    CheckCode getCheckCode( void) const;
+    CheckCode getCheckCode() const;
 
     /**
      * @brief Returns the part number as string
      *
      * @return The part number as string
      **/
-    string getPartNumber( void) const;
+    string getPartNumber() const;
 
   private:
     //! The manufacture code
