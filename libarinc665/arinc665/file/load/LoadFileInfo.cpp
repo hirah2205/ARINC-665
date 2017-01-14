@@ -21,32 +21,33 @@
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
-using namespace Arinc665::File;
+namespace Arinc665 {
+namespace File {
 
 LoadFileInfo::LoadFileInfoList LoadFileInfo::getFileList(
   RawFile::const_iterator &it)
 {
   RawFile::const_iterator workIt = it;
 
-	std::list< LoadFileInfo> files;
+  std::list< LoadFileInfo> files;
 
-	// number of data files
-	uint16_t numberOfFiles;
-	workIt = getInt< uint16_t>( workIt, numberOfFiles);
+  // number of data files
+  uint16_t numberOfFiles;
+  workIt = getInt< uint16_t>( workIt, numberOfFiles);
 
-	for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex)
-	{
-		files.push_back( LoadFileInfo( workIt));
-	}
+  for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex)
+  {
+    files.push_back( LoadFileInfo( workIt));
+  }
 
-	it = workIt;
+  it = workIt;
 
-	return files;
+  return files;
 }
 
-LoadFileInfo::LoadFileInfo( void):
-	length( 0),
-	crc( 0)
+LoadFileInfo::LoadFileInfo():
+  length( 0),
+  crc( 0)
 {
 }
 
@@ -54,62 +55,65 @@ LoadFileInfo::LoadFileInfo( RawFile::const_iterator &it)
 {
   RawFile::const_iterator workIt = it;
 
-	// next file pointer
-	uint16_t filePointer;
-	workIt = getInt< uint16_t>( workIt, filePointer);
+  // next file pointer
+  uint16_t filePointer;
+  workIt = getInt< uint16_t>( workIt, filePointer);
 
-	// filename
-	workIt = getString( workIt, name);
+  // filename
+  workIt = getString( workIt, name);
 
-	// part number
-	workIt = getString( workIt, partNumber);
+  // part number
+  workIt = getString( workIt, partNumber);
 
-	// file length
-	 workIt = getInt< uint32_t>( workIt, length);
+  // file length
+  workIt = getInt< uint32_t>( workIt, length);
 
-	// CRC
-	workIt = getInt< uint16_t>( workIt, crc);
+  // CRC
+  workIt = getInt< uint16_t>( workIt, crc);
 
-	// set it to begin of next file
-	it += filePointer * 2;
+  // set it to begin of next file
+  it += filePointer * 2;
 }
 
-std::string LoadFileInfo::getName( void) const
+std::string LoadFileInfo::getName() const
 {
-	return name;
+  return name;
 }
 
-void LoadFileInfo::setName( const std::string &name)
+void LoadFileInfo::setName( const string &name)
 {
-	this->name = name;
+  this->name = name;
 }
 
-std::string LoadFileInfo::getPartNumber( void) const
+LoadFileInfo::string LoadFileInfo::getPartNumber() const
 {
-	return partNumber;
+  return partNumber;
 }
 
-void LoadFileInfo::setPartNumber( const std::string &partNumber)
+void LoadFileInfo::setPartNumber( const string &partNumber)
 {
-	this->partNumber = partNumber;
+  this->partNumber = partNumber;
 }
 
-uint32_t LoadFileInfo::getLength( void) const
+uint32_t LoadFileInfo::getLength() const
 {
-	return length;
+  return length;
 }
 
-void LoadFileInfo::setLength( uint32_t length)
+void LoadFileInfo::setLength( const uint32_t length)
 {
-	this->length = length;
+  this->length = length;
 }
 
-uint16_t LoadFileInfo::getCrc( void) const
+uint16_t LoadFileInfo::getCrc() const
 {
-	return crc;
+  return crc;
 }
 
 void LoadFileInfo::setCrc( const uint16_t crc)
 {
-	this->crc = crc;
+  this->crc = crc;
+}
+
+}
 }

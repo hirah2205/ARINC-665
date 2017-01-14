@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<MediaSet PartNumber="CCC"
+<MediaSet Name="MediaSetX" PartNumber="CCC"
   xmlns="http://www.thomas-vogt.de/Arinc665MediaSet" 
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xsi:schemaLocation="http://www.thomas-vogt.de/Arinc665MediaSet Arinc665MediaSet.xsd">
   <Medium>
-    <File Name="File1" />
+    <File Name="File1" PartNumber="AABBCC1"/>
     <LoadFile Name="Load1" PartNumber="AABBCC" />
+    <LoadFile Name="Load2" PartNumber="AABBDD" />
     <Directory Name="Directory1">
-      <File Name="File2" />
+      <File Name="File2"  PartNumber="AABBCC2" />
     </Directory>
+    <File Name="Readme.txt" />
+    <BatchFile Name="Batch1" PartNumber="AABBEE"/>
   </Medium>
+  
   <Loads>
     <Load NameRef="Load1">
-      <DataFile NameRef="File1" />
+      <DataFile    NameRef="File1" />
+      <SupportFile NameRef="File2" />
+    </Load>
+    <Load NameRef="Load2">
+      <DataFile    NameRef="File1" />
       <SupportFile NameRef="File2" />
     </Load>
   </Loads>
-  <Batches></Batches>
+  
+  <Batches>
+    <Batch NameRef="Batch1" >
+      <Load NameRef="Load1" />
+      <Load NameRef="Load2" />
+    </Batch>
+  </Batches>
 </MediaSet>

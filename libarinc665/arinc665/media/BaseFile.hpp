@@ -37,7 +37,7 @@ class BaseFile: public Base
       BatchFile
     };
 
-    virtual ~BaseFile( void) = default;
+    virtual ~BaseFile() = default;
 
     //! @copydoc Base::getMediaSet
     virtual ConstMediaSetPtr getMediaSet() const override final;

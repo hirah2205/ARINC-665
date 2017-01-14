@@ -40,74 +40,74 @@ void list_luh( const boost::filesystem::path &luhFile)
   using Arinc665::File::LoadHeaderFile;
   using Arinc665::File::LoadFileInfo;
 
-	try
-	{
-		std::cout << "File size is: " << std::dec << boost::filesystem::file_size( luhFile) << std::endl;
+  try
+  {
+    std::cout << "File size is: " << std::dec << boost::filesystem::file_size( luhFile) << std::endl;
 
-		std::vector< uint8_t> data( boost::filesystem::file_size( luhFile));
+    std::vector< uint8_t> data( boost::filesystem::file_size( luhFile));
 
-		std::ifstream file(
-			luhFile.string().c_str(),
-			std::ifstream::binary | std::ifstream::in);
+    std::ifstream file(
+      luhFile.string().c_str(),
+      std::ifstream::binary | std::ifstream::in);
 
-		if (!file.is_open())
-		{
-			std::cout << "Error opening file: " << luhFile.string() << std::endl;
-			return;
-		}
+    if (!file.is_open())
+    {
+      std::cout << "Error opening file: " << luhFile.string() << std::endl;
+      return;
+    }
 
-		file.read( (char*)&data.at(0), data.size());
+    file.read( (char*)&data.at(0), data.size());
 
-		LoadHeaderFile load( data);
+    LoadHeaderFile load( data);
 
-		std::cout << "part number: "<< load.getPartNumber() << std::endl;
+    std::cout << "part number: "<< load.getPartNumber() << std::endl;
 
-		for (
-			std::list< std::string>::const_iterator it = load.getTargetHardwareIdList().begin();
-			it != load.getTargetHardwareIdList().end();
-			++it)
-		{
-			std::cout << "target hw id: " << *it << std::endl;
-		}
+    for (
+      std::list< std::string>::const_iterator it = load.getTargetHardwareIdList().begin();
+      it != load.getTargetHardwareIdList().end();
+      ++it)
+    {
+      std::cout << "target hw id: " << *it << std::endl;
+    }
 
-		for (
-			std::list< LoadFileInfo>::const_iterator it = load.getDataFileList().begin();
-			it != load.getDataFileList().end();
-			++it)
-		{
-			std::cout << "data file name: " << it->getName() << std::endl;
-			std::cout << "data file PN: "   << it->getPartNumber() << std::endl;
-			std::cout << "data file size: " << std::dec << it->getLength() << std::endl;
-			std::cout << "data file crc: "  << std::hex << it->getCrc() << std::endl << std::endl;
-		}
+    for (
+      std::list< LoadFileInfo>::const_iterator it = load.getDataFileList().begin();
+      it != load.getDataFileList().end();
+      ++it)
+    {
+      std::cout << "data file name: " << it->getName() << std::endl;
+      std::cout << "data file PN: "   << it->getPartNumber() << std::endl;
+      std::cout << "data file size: " << std::dec << it->getLength() << std::endl;
+      std::cout << "data file crc: "  << std::hex << it->getCrc() << std::endl << std::endl;
+    }
 
-		for (
-			std::list< LoadFileInfo>::const_iterator it = load.getSupportFileList().begin();
-			it != load.getSupportFileList().end();
-			++it)
-		{
-			std::cout << "support file name: " << it->getName() << std::endl;
-			std::cout << "support file PN: "   << it->getPartNumber() << std::endl;
-			std::cout << "support file size: " << std::dec << it->getLength() << std::endl;
-			std::cout << "support file crc: "  << std::hex << it->getCrc() << std::endl << std::endl;
-		}
+    for (
+      std::list< LoadFileInfo>::const_iterator it = load.getSupportFileList().begin();
+      it != load.getSupportFileList().end();
+      ++it)
+    {
+      std::cout << "support file name: " << it->getName() << std::endl;
+      std::cout << "support file PN: "   << it->getPartNumber() << std::endl;
+      std::cout << "support file size: " << std::dec << it->getLength() << std::endl;
+      std::cout << "support file crc: "  << std::hex << it->getCrc() << std::endl << std::endl;
+    }
 
-		std::cout << "load crc " << std::hex << load.getLoadCrc() << std::endl;
+    std::cout << "load crc " << std::hex << load.getLoadCrc() << std::endl;
 
-		std::cout << "header file crc " << std::hex << load.getCrc() << std::endl << std::endl;
-	}
-	catch (boost::exception &e)
-	{
-		std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
-	}
-	catch ( std::exception &e)
-	{
-		std::cout << "std exception: " << e.what() << std::endl;
-	}
-	catch (...)
-	{
-		std::cout << "unknown exception occurred" << std::endl;
-	}
+    std::cout << "header file crc " << std::hex << load.getCrc() << std::endl << std::endl;
+  }
+  catch (boost::exception &e)
+  {
+    std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
+  }
+  catch ( std::exception &e)
+  {
+    std::cout << "std exception: " << e.what() << std::endl;
+  }
+  catch (...)
+  {
+    std::cout << "unknown exception occurred" << std::endl;
+  }
 }
 
 void list_loads_lum( const boost::filesystem::path &loadsLum)
@@ -116,63 +116,63 @@ void list_loads_lum( const boost::filesystem::path &loadsLum)
   using Arinc665::File::LoadInfo;
 
   try
-	{
-		std::cout << "File size is: " << std::dec << boost::filesystem::file_size( loadsLum) << std::endl;
+  {
+    std::cout << "File size is: " << std::dec << boost::filesystem::file_size( loadsLum) << std::endl;
 
-		std::vector< uint8_t> data( boost::filesystem::file_size( loadsLum));
+    std::vector< uint8_t> data( boost::filesystem::file_size( loadsLum));
 
-		std::ifstream file(
-			loadsLum.string().c_str(),
-			std::ifstream::binary | std::ifstream::in);
+    std::ifstream file(
+      loadsLum.string().c_str(),
+      std::ifstream::binary | std::ifstream::in);
 
-		if (!file.is_open())
-		{
-			std::cout << "Error opening file: " << loadsLum.string() << std::endl;
-			return;
-		}
+    if (!file.is_open())
+    {
+      std::cout << "Error opening file: " << loadsLum.string() << std::endl;
+      return;
+    }
 
-		file.read( (char*)&data.at(0), data.size());
+    file.read( (char*)&data.at(0), data.size());
 
-		LoadListFile loadList( data);
+    LoadListFile loadList( data);
 
-		std::cout << "media set pn: " << loadList.getMediaSetPn() << std::endl;
+    std::cout << "media set pn: " << loadList.getMediaSetPn() << std::endl;
 
-		std::cout << "media seq no: " << std::dec << (int)loadList.getMediaSequenceNumber() << std::endl;
+    std::cout << "media seq no: " << std::dec << (int)loadList.getMediaSequenceNumber() << std::endl;
 
-		std::cout << "no of media set members: " << (int)loadList.getNumberOfMediaSetMembers() << std::endl;
+    std::cout << "no of media set members: " << (int)loadList.getNumberOfMediaSetMembers() << std::endl;
 
-		for (
-			std::list< LoadInfo>::const_iterator it = loadList.getLoadInfos().begin();
-			it != loadList.getLoadInfos().end();
-			++it)
-		{
-			std::cout << "load load pn: "                << it->getPartNumber() << std::endl;
-			std::cout << "load header file name: "       << it->getHeaderFilename() << std::endl;
-			std::cout << "load member sequence number: " << std::dec << it->getMemberSequenceNumber() << std::endl << std::endl;
+    for (
+      std::list< LoadInfo>::const_iterator it = loadList.getLoadInfos().begin();
+      it != loadList.getLoadInfos().end();
+      ++it)
+    {
+      std::cout << "load load pn: "                << it->getPartNumber() << std::endl;
+      std::cout << "load header file name: "       << it->getHeaderFilename() << std::endl;
+      std::cout << "load member sequence number: " << std::dec << it->getMemberSequenceNumber() << std::endl << std::endl;
 
-			for (
-				std::list< std::string>::const_iterator thwIt = it->getTargetHardwareIdList().begin();
-				thwIt != it->getTargetHardwareIdList().end();
-				++thwIt)
-			{
-				std::cout << "target hardware id: " << *thwIt << std::endl << std::endl;
-			}
-		}
+      for (
+        std::list< std::string>::const_iterator thwIt = it->getTargetHardwareIdList().begin();
+        thwIt != it->getTargetHardwareIdList().end();
+        ++thwIt)
+      {
+        std::cout << "target hardware id: " << *thwIt << std::endl << std::endl;
+      }
+    }
 
-		std::cout << "load list crc: " << std::hex << (int)loadList.getCrc() << std::endl;
-	}
-	catch (boost::exception &e)
-	{
-		std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
-	}
-	catch ( std::exception &e)
-	{
-		std::cout << "std exception: " << e.what() << std::endl;
-	}
-	catch (...)
-	{
-		std::cout << "unknown exception occurred" << std::endl;
-	}
+    std::cout << "load list crc: " << std::hex << (int)loadList.getCrc() << std::endl;
+  }
+  catch (boost::exception &e)
+  {
+    std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
+  }
+  catch ( std::exception &e)
+  {
+    std::cout << "std exception: " << e.what() << std::endl;
+  }
+  catch (...)
+  {
+    std::cout << "unknown exception occurred" << std::endl;
+  }
 }
 
 void list_files_lum( const boost::filesystem::path &filesLum)

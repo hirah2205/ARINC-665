@@ -44,7 +44,7 @@ class Arinc665ImporterImpl
 
     Arinc665ImporterImpl( Arinc665Utils::GetMediumPathHandler getMediumPathHandler);
 
-    MediaSetPtr operator ()( void);
+    MediaSetPtr operator ()();
 
   private:
     using RawFile = Arinc665::File::RawFile;
@@ -57,25 +57,25 @@ class Arinc665ImporterImpl
     using BatchFiles = std::map< std::string, BatchFile>;
     using ContainerEntityPtr = std::shared_ptr< Media::ContainerEntity>;
 
-    void addMedium( const unsigned int mediaIndex, const path &mediumPath);
+    void addMedium( unsigned int mediaIndex, const path &mediumPath);
 
-    void loadFileListFile( const unsigned int mediaIndex, const path &mediumPath);
+    void loadFileListFile( unsigned int mediaIndex, const path &mediumPath);
 
-    void loadLoadListFile( const unsigned int mediaIndex, const path &mediumPath);
+    void loadLoadListFile( unsigned int mediaIndex, const path &mediumPath);
 
-    void loadBatchListFile( const unsigned int mediaIndex, const path &mediumPath);
+    void loadBatchListFile( unsigned int mediaIndex, const path &mediumPath);
 
-    void loadLoadHeaderFiles( const unsigned int mediaIndex, const path &mediumPath);
+    void loadLoadHeaderFiles( unsigned int mediaIndex, const path &mediumPath);
 
-    void loadBatchFiles( const unsigned int mediaIndex, const path &mediumPath);
+    void loadBatchFiles( unsigned int mediaIndex, const path &mediumPath);
 
-    void addFiles( void);
+    void addFiles();
 
     void addLoads( FileListFile::FileInfoMap &loadHeaders);
 
     void addBatches( FileListFile::FileInfoMap &batches);
 
-    ContainerEntityPtr checkCreateDirectory( const unsigned int mediaIndex, const path &filePath);
+    ContainerEntityPtr checkCreateDirectory( unsigned int mediaIndex, const path &filePath);
 
     /**
      * @brief loads the file.

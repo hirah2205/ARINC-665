@@ -43,7 +43,7 @@ class Arinc665DecompilerApplication
      * @retval EXIT_FAILURE
      *   If an error has occurred.
      **/
-    int operator()( void);
+    int operator()();
 
   private:
     /**
@@ -51,7 +51,7 @@ class Arinc665DecompilerApplication
      *
      * @return If parsing was successful
      **/
-    bool handleCommandLine( void);
+    bool handleCommandLine();
 
     //! The application context
     boost::application::context& context;

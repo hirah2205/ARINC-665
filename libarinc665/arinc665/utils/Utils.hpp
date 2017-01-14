@@ -28,9 +28,9 @@ namespace Arinc665 {
  **/
 namespace Utils {
 
-class Arinc665Importer;
+class Arinc665Xml;
 
-using Arinc665ImporterPtr = std::shared_ptr< Arinc665Importer>;
+using Arinc665XmlPtr = std::unique_ptr< Arinc665Xml>;
 
 }
 }

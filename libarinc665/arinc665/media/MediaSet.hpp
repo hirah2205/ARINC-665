@@ -45,10 +45,10 @@ class MediaSet:
      * An empty media is automatically created.
      * This media set contains no data files, no loads and no batches.
      *
-     * @param[in] partNumber
-     *   Part number of the media set
+     * @param[in] name
+     *   name of the media set
      **/
-    MediaSet( const string &partNumber);
+    MediaSet( const string &name);
 
     //! @copydoc Base::getMediaSet
     virtual ConstMediaSetPtr getMediaSet() const override final;
@@ -88,13 +88,6 @@ class MediaSet:
     uint8_t getNumberOfMedia() const;
 
     /**
-     * @brief Returns all media.
-     *
-     * @return All media as map.
-     **/
-    const Media& getMedia() const;
-
-    /**
      * @brief Return the medium with the requested index.
      *
      * @param[in] index
@@ -119,7 +112,7 @@ class MediaSet:
      *
      * @return The media index of the new medium.
      **/
-    uint8_t addMedium();
+    MediumPtr addMedium();
 
     /**
      * @brief

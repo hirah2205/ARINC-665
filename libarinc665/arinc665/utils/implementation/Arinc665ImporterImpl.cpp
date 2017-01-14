@@ -33,7 +33,7 @@ Arinc665ImporterImpl::Arinc665ImporterImpl(
 {
 }
 
-Arinc665ImporterImpl::MediaSetPtr Arinc665ImporterImpl::operator ()( void)
+Arinc665ImporterImpl::MediaSetPtr Arinc665ImporterImpl::operator ()()
 {
   path mediumPath = getMediumPathHandler( 1);
 
@@ -54,7 +54,7 @@ Arinc665ImporterImpl::MediaSetPtr Arinc665ImporterImpl::operator ()( void)
   addMedium( 1, mediumPath);
 
   // add additional media
-  for ( unsigned int mediaIndex = 2; mediaIndex < mediaSet->getNumberOfMedia();
+  for ( unsigned int mediaIndex = 2; mediaIndex <= mediaSet->getNumberOfMedia();
     ++mediaIndex)
   {
     mediumPath = getMediumPathHandler( mediaIndex);
@@ -208,7 +208,9 @@ void Arinc665ImporterImpl::addMedium( const unsigned int mediaIndex, const path 
 #endif
 }
 
-void Arinc665ImporterImpl::loadFileListFile( const unsigned int mediaIndex, const path &mediumPath)
+void Arinc665ImporterImpl::loadFileListFile(
+  const unsigned int mediaIndex,
+  const path &mediumPath)
 {
   // Load list of files file
   FileListFile fileListFile( loadFile( mediumPath / Arinc665::ListOfFilesName));
@@ -324,7 +326,9 @@ void Arinc665ImporterImpl::loadLoadListFile(
   }
 }
 
-void Arinc665ImporterImpl::loadBatchListFile( const unsigned int mediaIndex, const path &mediumPath)
+void Arinc665ImporterImpl::loadBatchListFile(
+  const unsigned int mediaIndex,
+  const path &mediumPath)
 {
   // Check for optional batch list file
   if (!boost::filesystem::is_regular( mediumPath / Arinc665::ListOfBatchesName))
@@ -399,7 +403,9 @@ void Arinc665ImporterImpl::loadBatchListFile( const unsigned int mediaIndex, con
   }
 }
 
-void Arinc665ImporterImpl::loadLoadHeaderFiles( const unsigned int mediaIndex, const path &mediumPath)
+void Arinc665ImporterImpl::loadLoadHeaderFiles(
+  const unsigned int mediaIndex,
+  const path &mediumPath)
 {
   for ( const auto &loadInfo : loadInfos)
   {
@@ -440,7 +446,9 @@ void Arinc665ImporterImpl::loadLoadHeaderFiles( const unsigned int mediaIndex, c
   }
 }
 
-void Arinc665ImporterImpl::loadBatchFiles( const unsigned int mediaIndex, const path &mediumPath)
+void Arinc665ImporterImpl::loadBatchFiles(
+  const unsigned int mediaIndex,
+  const path &mediumPath)
 {
   for ( const auto &batchInfo : batchInfos)
   {
@@ -476,28 +484,33 @@ void Arinc665ImporterImpl::loadBatchFiles( const unsigned int mediaIndex, const 
   }
 }
 
-void Arinc665ImporterImpl::addFiles( void)
+void Arinc665ImporterImpl::addFiles()
 {
   FileListFile::FileInfoMap loadHeaders;
   FileListFile::FileInfoMap batches;
 
-  // add not load headers and batch files
+  // skip list files and handle load headers and batch files separate
   for ( const auto &fileInfo : fileInfos)
   {
-    Arinc665::FileType fileType( Arinc665::File::FileFactory::getFileType( fileInfo.first.second));
+    // get file type
+    Arinc665::FileType fileType(
+      Arinc665::File::FileFactory::getFileType( fileInfo.first.second));
 
     switch ( fileType)
     {
       case Arinc665::FileType::ARINC_665_FILE_TYPE_FILE_LIST:
       case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_LIST:
       case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_LIST:
+        // List files are ignored
         continue;
 
       case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER:
+        // load header files are handled later - all regular files must be loaded first
         loadHeaders.insert( fileInfo);
         continue;
 
       case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_FILE:
+        // batch files are handled later - all load header files must be loaded first
         batches.insert( fileInfo);
         continue;
 
@@ -505,10 +518,13 @@ void Arinc665ImporterImpl::addFiles( void)
         break;
     }
 
+    // get directory, where file will be placed into.
     ContainerEntityPtr container(
       checkCreateDirectory( fileInfo.first.first, fileInfo.second.getPath()));
 
-    Arinc665::Media::FilePtr filePtr = container->addFile( fileInfo.second.getFilename());
+    // place file
+    Arinc665::Media::FilePtr filePtr = container->addFile(
+      fileInfo.second.getFilename());
   }
 
   // loads
@@ -522,8 +538,10 @@ void Arinc665ImporterImpl::addLoads( FileListFile::FileInfoMap &loadHeaders)
 {
   for ( const auto &loadHeader : loadHeaders)
   {
-    LoadListFile::LoadInfoMap::const_iterator load = loadInfos.find( loadHeader.first);
-    LoadHeaderFiles::const_iterator loadHeaderFile = loadHeaderFiles.find( loadHeader.first.second);
+    LoadListFile::LoadInfoMap::const_iterator load =
+      loadInfos.find( loadHeader.first);
+    LoadHeaderFiles::const_iterator loadHeaderFile =
+      loadHeaderFiles.find( loadHeader.first.second);
 
     ContainerEntityPtr container(
       checkCreateDirectory( loadHeader.first.first, loadHeader.second.getPath()));
@@ -544,7 +562,7 @@ void Arinc665ImporterImpl::addLoads( FileListFile::FileInfoMap &loadHeaders)
       loadPtr->addDataFile( dataFilePtr);
     }
 
-    // iterate over data files
+    // iterate over support files
     for ( const auto &supportFile : loadHeaderFile->second.getSupportFileList())
     {
       Arinc665::Media::FilePtr supportFilePtr = mediaSet->getFile( supportFile.getName());
@@ -581,7 +599,10 @@ void Arinc665ImporterImpl::addBatches( FileListFile::FileInfoMap &batches)
   }
 }
 
-Arinc665ImporterImpl::ContainerEntityPtr Arinc665ImporterImpl::checkCreateDirectory( const unsigned int mediaIndex, const path &filePath)
+Arinc665ImporterImpl::ContainerEntityPtr
+Arinc665ImporterImpl::checkCreateDirectory(
+  const unsigned int mediaIndex,
+  const path &filePath)
 {
   path dirPath( filePath.parent_path());
 

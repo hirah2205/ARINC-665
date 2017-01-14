@@ -40,33 +40,33 @@ class LoadHeaderFile: public Arinc665File
     using TargetHardwareIdList = std::list< string>;
     using UserDefinedData = std::vector< uint8_t>;
 
-    LoadHeaderFile( void);
+    LoadHeaderFile();
 
     LoadHeaderFile( const RawFile &file);
 
-    virtual Arinc665Version getArincVersion( void) const override;
+    virtual Arinc665Version getArincVersion() const override;
 
-    string getPartNumber( void) const;
+    string getPartNumber() const;
 
     void setPartNumber( const string &partNumber);
 
-    const TargetHardwareIdList& getTargetHardwareIdList( void) const;
+    const TargetHardwareIdList& getTargetHardwareIdList() const;
 
-    TargetHardwareIdList& getTargetHardwareIdList( void);
+    TargetHardwareIdList& getTargetHardwareIdList();
 
-    const LoadFileInfoList& getDataFileList( void) const;
+    const LoadFileInfoList& getDataFileList() const;
 
-    LoadFileInfoList& getDataFileList( void);
+    LoadFileInfoList& getDataFileList();
 
-    const LoadFileInfoList& getSupportFileList( void) const;
+    const LoadFileInfoList& getSupportFileList() const;
 
-    LoadFileInfoList& getSupportFileList( void);
+    LoadFileInfoList& getSupportFileList();
 
-    const UserDefinedData& getUserDefinedData( void) const;
+    const UserDefinedData& getUserDefinedData() const;
 
     void setUserDefinedData( const UserDefinedData &userDefinedData);
 
-    uint32_t getLoadCrc( void) const;
+    uint32_t getLoadCrc() const;
 
     void setLoadCrc( const uint32_t loadCrc);
 

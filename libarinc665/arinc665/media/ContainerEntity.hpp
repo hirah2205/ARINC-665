@@ -133,9 +133,9 @@ class ContainerEntity :
 
     void removeBatch( ConstBatchPtr batch);
 
-    ContainerEntityPtr getParent( void);
+    ContainerEntityPtr getParent();
 
-    ConstContainerEntityPtr getParent( void) const;
+    ConstContainerEntityPtr getParent() const;
 
   protected:
     ContainerEntity( ContainerEntityPtr parent);

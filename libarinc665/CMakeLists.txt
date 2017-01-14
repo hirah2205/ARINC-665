@@ -84,14 +84,18 @@ add_library(
   arinc665/utils/Utils.hpp   
   arinc665/utils/Arinc665Utils.hpp   
   arinc665/utils/Arinc665Utils.cpp   
+  arinc665/utils/Arinc665Xml.cpp
+  arinc665/utils/Arinc665Xml.hpp
   arinc665/utils/implementation/Arinc665ImporterImpl.hpp
   arinc665/utils/implementation/Arinc665ImporterImpl.cpp
+  arinc665/utils/implementation/Arinc665XmlPugiXmlImpl.hpp
+  arinc665/utils/implementation/Arinc665XmlPugiXmlImpl.cpp
   )
 
 target_include_directories( arinc665 SYSTEM PUBLIC ${Boost_INCLUDE_DIRS})
 target_include_directories( arinc665 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_link_libraries( arinc665 helper ${Boost_LIBRARIES})
+target_link_libraries( arinc665 helper pugixml ${Boost_LIBRARIES})
 
 
 add_library( 

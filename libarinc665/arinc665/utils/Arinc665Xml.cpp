@@ -11,25 +11,18 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of class Arinc665::Media::File.
+ * @brief Definition of class Arinc665::Utils::Arinc665Xml.
  **/
 
-#include "File.hpp"
-
-#include <cassert>
+#include "Arinc665Xml.hpp"
+#include <arinc665/utils/implementation/Arinc665XmlPugiXmlImpl.hpp>
 
 namespace Arinc665 {
-namespace Media {
+namespace Utils {
 
-File::File( ContainerEntityPtr parent, const string &name) :
-  BaseFile( parent, name)
+Arinc665XmlPtr Arinc665Xml::getInstance()
 {
-  assert( parent);
-}
-
-File::FileType File::getFileType() const
-{
-  return FileType::RegularFile;
+  return std::make_unique< Arinc665XmlPugiXmlImpl>();
 }
 
 }

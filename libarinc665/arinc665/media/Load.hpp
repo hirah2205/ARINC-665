@@ -57,10 +57,25 @@ class Load: public BaseFile
      **/
     virtual FileType getFileType() const override final;
 
+    /**
+     * @brief Returns the List of Target HW IDs.
+     *
+     * @return The list of Target HW IDs.
+     **/
     const ThwIdList& getTargetHardwareIdList() const;
 
+    /**
+     * @brief Returns the List of Target HW IDs.
+     *
+     * @return The list of Target HW IDs (modifiable).
+     **/
     ThwIdList& getTargetHardwareIdList();
 
+    /**
+     * @brief Updates the list of Target HW IDs.
+     * @param[in] thwIdList
+     *   The list of Target HW IDs.
+     **/
     void setTargetHardwareIdList( const ThwIdList& thwIdList);
 
     const FileList& getDataFiles() const;

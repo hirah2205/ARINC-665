@@ -23,27 +23,27 @@
 namespace Arinc665 {
 namespace Media {
 
-ConstMediaSetPtr BaseFile::getMediaSet( void) const
+ConstMediaSetPtr BaseFile::getMediaSet() const
 {
   return getParent()->getMediaSet();
 }
 
-MediaSetPtr BaseFile::getMediaSet( void)
+MediaSetPtr BaseFile::getMediaSet()
 {
   return getParent()->getMediaSet();
 }
 
-BaseFile::Type BaseFile::getType( void) const
+BaseFile::Type BaseFile::getType() const
 {
   return Type::File;
 }
 
-const BaseFile::string& BaseFile::getName( void) const
+const BaseFile::string& BaseFile::getName() const
 {
   return name;
 }
 
-const BaseFile::string& BaseFile::getPartNumber( void) const
+const BaseFile::string& BaseFile::getPartNumber() const
 {
   return partNumber;
 }
@@ -53,12 +53,12 @@ void BaseFile::setPartNumber( const string &partNumber)
   this->partNumber = partNumber;
 }
 
-ContainerEntityPtr BaseFile::getParent( void)
+ContainerEntityPtr BaseFile::getParent()
 {
   return parent.lock();
 }
 
-ConstContainerEntityPtr BaseFile::getParent( void) const
+ConstContainerEntityPtr BaseFile::getParent() const
 {
   return parent.lock();
 }

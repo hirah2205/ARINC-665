@@ -24,8 +24,8 @@
 namespace Arinc665 {
 namespace Media {
 
-MediaSet::MediaSet( const string &partNumber):
-  partNumber( partNumber)
+MediaSet::MediaSet( const string &name):
+  name( name)
 {
 }
 
@@ -70,11 +70,6 @@ uint8_t MediaSet::getNumberOfMedia() const
 }
 
 
-const Media& MediaSet::getMedia() const
-{
-  return media;
-}
-
 ConstMediumPtr MediaSet::getMedium( const uint8_t index) const
 {
   if (0 == index)
@@ -95,16 +90,18 @@ MediumPtr MediaSet::getMedium( const uint8_t index)
   return media.at( index - 1);
 }
 
-uint8_t MediaSet::addMedium()
+MediumPtr MediaSet::addMedium()
 {
   if (media.size() >= 255)
   {
     return 0U;
   }
 
-  media.push_back( std::make_shared< Medium>( shared_from_this(), media.size()));
+  MediumPtr medium( std::make_shared< Medium>( shared_from_this(), media.size()));
 
-  return static_cast< uint8_t>( media.size());
+  media.push_back( medium);
+
+  return medium;
 }
 
 void MediaSet::setNumberOfMedia( uint8_t numberOfMedia, bool deleteFiles)

@@ -21,7 +21,8 @@
       <element ref="tns:Loads"   minOccurs="1" maxOccurs="1" />
       <element ref="tns:Batches" minOccurs="1" maxOccurs="1" />
     </sequence>
-    <attribute name="PartNumber" use="required" type="tns:PartNumberType" />
+    <attribute name="Name"       type="tns:NameType"       use="required" />
+    <attribute name="PartNumber" type="tns:PartNumberType" use="required" />
   </complexType>
 
   <complexType name="MediumType">
@@ -84,7 +85,7 @@
       <element name="DataFile"    type="tns:FileRefernceType" minOccurs="0" maxOccurs="unbounded" />
       <element name="SupportFile" type="tns:FileRefernceType" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
-     <attribute name="NameRef" type="IDREF" use="required" />
+    <attribute name="NameRef" type="IDREF" use="required" />
   </complexType>
 
   <complexType name="FileRefernceType">
@@ -102,7 +103,7 @@
     <sequence>
       <element name="Load" type="tns:LoadRefernceType" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
-     <attribute name="NameRef" type="IDREF" use="required" />
+    <attribute name="NameRef" type="IDREF" use="required" />
   </complexType>
 
   <complexType name="LoadRefernceType">

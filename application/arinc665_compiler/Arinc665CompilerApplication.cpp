@@ -54,7 +54,7 @@ Arinc665CompilerApplication::Arinc665CompilerApplication(
     );
 }
 
-int Arinc665CompilerApplication::operator()( void)
+int Arinc665CompilerApplication::operator()()
 {
   try
   {
@@ -94,7 +94,7 @@ int Arinc665CompilerApplication::operator()( void)
   return EXIT_SUCCESS;
 }
 
-bool Arinc665CompilerApplication::handleCommandLine( void)
+bool Arinc665CompilerApplication::handleCommandLine()
 {
   try
   {

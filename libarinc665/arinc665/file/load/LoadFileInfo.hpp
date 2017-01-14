@@ -41,7 +41,7 @@ class LoadFileInfo
     static LoadFileInfoList getFileList(
       RawFile::const_iterator &it);
 
-    LoadFileInfo( void);
+    LoadFileInfo();
 
     LoadFileInfo(
       const string &name,
@@ -51,17 +51,17 @@ class LoadFileInfo
 
     LoadFileInfo( RawFile::const_iterator &it);
 
-    string getName( void) const;
+    string getName() const;
     void setName( const string &name);
 
-    string getPartNumber( void) const;
+    string getPartNumber() const;
     void setPartNumber( const string &partNumber);
 
-    uint32_t getLength( void) const;
+    uint32_t getLength() const;
     void setLength( uint32_t length);
 
-    uint16_t getCrc( void) const;
-    void setCrc( const uint16_t crc);
+    uint16_t getCrc() const;
+    void setCrc( uint16_t crc);
 
   private:
     //! Filename
