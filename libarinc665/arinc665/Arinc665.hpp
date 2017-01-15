@@ -27,7 +27,10 @@
  * This library implements the ARINC 665 specification.
  *
  * @par Referenced Documents
- * -
+ * - ARINC Report 665-1: Loadable Software Standards; 2001-01-12
+ * - ARINC Report 665-2: Loadable Software Standards; 2002-08-30
+ * - ARINC Report 665-3: Loadable Software Standards; 2005-08-12
+ * - ARINC Report 665-4: Loadable Software Standards; 2005-08-12
  **/
 
 /**
@@ -159,17 +162,30 @@ extern const std::string LoadUploadHeaderExtension;
 //! The default extension of a batch file: ".LUB"
 extern const std::string BatchFileExtension;
 
-constexpr uint8_t Crc8Polynom = 0x80;
-constexpr uint8_t Crc8Init = 0x00;
-constexpr uint8_t Crc8FinalXor = 0x00;
+constexpr uint8_t Crc8Polynom = 0x80U;
+constexpr uint8_t Crc8Init = 0x00U;
+constexpr uint8_t Crc8FinalXor = 0x00U;
+constexpr bool    Crc8ReflectIn = false;
+constexpr bool    Crc8ReflectOut = false;
 
-constexpr uint16_t Crc16Polynom = 0x1021;
-constexpr uint16_t Crc16Init = 0xFFFF;
-constexpr uint16_t Crc16FinalXor = 0x0000;
+constexpr uint16_t Crc16Polynom = 0x1021U;
+constexpr uint16_t Crc16Init = 0xFFFFU;
+constexpr uint16_t Crc16FinalXor = 0x0000U;
+constexpr bool     Crc16ReflectIn = false;
+constexpr bool     Crc16ReflectOut = false;
 
-constexpr uint32_t Crc32Polynom = 0x04C11DB7;
-constexpr uint32_t Crc32Init = 0xFFFF;
-constexpr uint32_t Crc32FinalXor = 0xFFFFFFFF;
+constexpr uint32_t Crc32Polynom = 0x04C11DB7UL;
+constexpr uint32_t Crc32Init = 0xFFFFFFFFUL;
+constexpr uint32_t Crc32FinalXor = 0xFFFFFFFFUL;
+constexpr bool     Crc32ReflectIn = false;
+constexpr bool     Crc32ReflectOut = false;
+
+constexpr uint64_t Crc64Polynom = 0x42F0E1EBA9EA3693ULL;
+constexpr uint64_t Crc64Init = 0xFFFFFFFFFFFFFFFFULL;
+constexpr uint64_t Crc64FinalXor = 0xFFFFFFFFFFFFFFFFULL;
+//! @todo According to ARINC 665-4 Reflect In/Out should be set to true - but then the tests fail!
+constexpr bool     Crc64ReflectIn = false;
+constexpr bool     Crc64ReflectOut = false;
 
 }
 

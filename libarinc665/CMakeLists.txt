@@ -21,6 +21,7 @@ add_library(
  
   arinc665/Arinc665.hpp
   arinc665/Arinc665.cpp
+  arinc665/Arinc665Crc.hpp
   arinc665/PartNumber.hpp
   arinc665/PartNumber.cpp
   
@@ -102,6 +103,7 @@ add_library(
   arinc665_test 
   OBJECT
   
+  arinc665/Arinc665CrcTest.cpp
   arinc665/CheckCodeTest.cpp
   arinc665/ManufacturerCodeTest.cpp
   arinc665/PartNumberTest.cpp

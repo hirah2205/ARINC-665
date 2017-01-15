@@ -19,6 +19,8 @@
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/Medium.hpp>
 
+#include <helper/Logger.hpp>
+
 #include <boost/test/unit_test.hpp>
 
 namespace Arinc665 {
@@ -31,10 +33,10 @@ BOOST_AUTO_TEST_CASE( constructor)
 {
   MediaSet mediaSet( "XXX");
 
-  BOOST_CHECK( mediaSet.getPartNumber() == "XXX");
+  BOOST_CHECK( mediaSet.getName() == "XXX");
+  BOOST_CHECK( mediaSet.getPartNumber() == "");
   BOOST_CHECK( mediaSet.getNumberOfMedia() == 0);
   BOOST_CHECK( mediaSet.getType() == MediaSet::Type::MediaSet);
-  BOOST_CHECK( mediaSet.getName() == "");
 
   BOOST_CHECK_THROW( mediaSet.shared_from_this(), std::bad_weak_ptr);
 
@@ -51,11 +53,41 @@ BOOST_AUTO_TEST_CASE( constructor)
 BOOST_AUTO_TEST_CASE( partNumber)
 {
   MediaSet mediaSet( "XXX");
-  BOOST_CHECK( mediaSet.getPartNumber() == "XXX");
+  BOOST_CHECK( mediaSet.getPartNumber() == "");
 
   mediaSet.setPartNumber( "YYY");
 
   BOOST_CHECK( mediaSet.getPartNumber() == "YYY");
+}
+
+BOOST_AUTO_TEST_CASE( name)
+{
+  MediaSet mediaSet( "XXX");
+  BOOST_CHECK( mediaSet.getName() == "XXX");
+
+  mediaSet.setName( "YYY");
+
+  BOOST_CHECK( mediaSet.getName() == "YYY");
+}
+
+BOOST_AUTO_TEST_CASE( medium)
+{
+  MediaSetPtr mediaSet = std::make_shared< MediaSet>( "XXX");
+  BOOST_CHECK( mediaSet->getNumberOfMedia() == 0);
+
+  BOOST_CHECK( mediaSet->addMedium());
+  BOOST_CHECK( mediaSet->getNumberOfMedia() == 1);
+
+  BOOST_CHECK( mediaSet->addMedium());
+  BOOST_CHECK( mediaSet->getNumberOfMedia() == 2);
+
+  BOOST_CHECK_NO_THROW( mediaSet->setNumberOfMedia( 5, false));
+  BOOST_CHECK( mediaSet->getNumberOfMedia() == 5);
+
+#if 0
+  BOOST_CHECK_NO_THROW( mediaSet->setNumberOfMedia( 1, false));
+  BOOST_CHECK( mediaSet->getNumberOfMedia() == 1);
+#endif
 }
 
 BOOST_AUTO_TEST_SUITE_END()

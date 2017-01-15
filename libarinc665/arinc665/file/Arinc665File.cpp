@@ -17,12 +17,11 @@
 #include "Arinc665File.hpp"
 
 #include <arinc665/Arinc665Exception.hpp>
+#include <arinc665/Arinc665Crc.hpp>
 #include <arinc665/file/StringHelper.hpp>
 
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
-
-#include <boost/crc.hpp>
 
 namespace Arinc665 {
 namespace File {
@@ -63,7 +62,7 @@ uint16_t Arinc665File::calculateChecksum(
   const RawFile &file,
   const unsigned int skipLastBytes)
 {
-  boost::crc_optimal< 16, Crc16Polynom, Crc16Init, Crc16FinalXor> arincCrc16;
+  Arinc665Crc16 arincCrc16;
 
   arincCrc16.process_block(
     &(*file.begin()),
@@ -72,7 +71,7 @@ uint16_t Arinc665File::calculateChecksum(
   return arincCrc16.checksum();
 }
 
-uint16_t Arinc665File::getCrc( void) const
+uint16_t Arinc665File::getCrc() const
 {
   return crc;
 }
@@ -82,7 +81,7 @@ void Arinc665File::setCrc( const uint16_t crc)
   this->crc = crc;
 }
 
-Arinc665File::Arinc665File( void) :
+Arinc665File::Arinc665File():
   crc( 0)
 {
 }

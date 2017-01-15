@@ -71,7 +71,7 @@ class Arinc665File
      **/
     static uint16_t calculateChecksum(
       const RawFile &file,
-      const unsigned int skipLastBytes = 2);
+      unsigned int skipLastBytes = 2);
 
     //! Default destructor
     virtual ~Arinc665File( void) noexcept = default;
@@ -81,23 +81,34 @@ class Arinc665File
      *
      * @return The ARINC 665 version of this file.
      **/
-    virtual Arinc665Version getArincVersion( void) const = 0;
+    virtual Arinc665Version getArincVersion() const = 0;
 
-    uint16_t getCrc( void) const;
+    /**
+     * @brief Returns the CRC of this file.
+     *
+     * @return The CRC of this file.
+     **/
+    uint16_t getCrc() const;
 
-    void setCrc( const uint16_t crc);
+    /**
+     * @brief Updates the CRC of this file.
+     *
+     * @param[in] crc
+     *   The new CRC of this file
+     **/
+    void setCrc( uint16_t crc);
 
     // virtual void decode( const RawFile &data);
 
     // virtual RawFile encode( void) const = 0;
 
   protected:
-    Arinc665File( void);
+    Arinc665File();
 
     Arinc665File(
       const RawFile &file,
-      const Arinc665FileFormatVersion expectedFormatVersion,
-      const unsigned int checksumPosition = 2);
+      Arinc665FileFormatVersion expectedFormatVersion,
+      unsigned int checksumPosition = 2);
 
   private:
     uint16_t crc;

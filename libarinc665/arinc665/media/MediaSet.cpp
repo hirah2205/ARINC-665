@@ -21,6 +21,8 @@
 
 #include <boost/foreach.hpp>
 
+#include <helper/Logger.hpp>
+
 namespace Arinc665 {
 namespace Media {
 
@@ -94,7 +96,8 @@ MediumPtr MediaSet::addMedium()
 {
   if (media.size() >= 255)
   {
-    return 0U;
+    BOOST_LOG_TRIVIAL( warning) << "Maximum number of media reached";
+    return MediumPtr();
   }
 
   MediumPtr medium( std::make_shared< Medium>( shared_from_this(), media.size()));
@@ -104,25 +107,31 @@ MediumPtr MediaSet::addMedium()
   return medium;
 }
 
-void MediaSet::setNumberOfMedia( uint8_t numberOfMedia, bool deleteFiles)
+void MediaSet::setNumberOfMedia(
+  const uint8_t numberOfMedia,
+  const bool deleteFiles)
 {
   if (numberOfMedia == media.size())
   {
+    BOOST_LOG_TRIVIAL( info) << "No actions needed";
     return;
   }
 
   if (numberOfMedia > media.size())
   {
-    while (numberOfMedia < media.size())
+    // Add media
+    while (numberOfMedia > media.size())
     {
       addMedium();
     }
   }
   else
   {
-    while (numberOfMedia > media.size())
+    // remove media
+    while (numberOfMedia < media.size())
     {
       //! todo
+      return;
     }
   }
 }
@@ -253,7 +262,8 @@ ConstBatches MediaSet::getBatches() const
 
   for (const auto & medium : media)
   {
-    ConstBatches mediaBatches = static_cast< const Medium>(*medium).getBatches( true);
+    ConstBatches mediaBatches =
+      static_cast< const Medium>(*medium).getBatches( true);
     batches.insert( batches.end(), mediaBatches.begin(), mediaBatches.end());
   }
 
