@@ -18,13 +18,11 @@
 #define ARINC665_CHECKCODE_HPP
 
 #include <arinc665/Arinc665.hpp>
+
 #include <string>
 #include <cstdint>
 
 namespace Arinc665 {
-
-class ManufacturerCode;
-class ProductIdentifier;
 
 /**
  * @brief Represents the check code of an ARINC 665 part number.
@@ -43,7 +41,7 @@ class CheckCode
      * @param[in] checkCode
      *   The check code.
      **/
-    explicit CheckCode( const uint8_t checkCode);
+    explicit CheckCode( uint8_t checkCode);
 
     /**
      * @brief Generates CheckCode class for the given check code string.
@@ -76,14 +74,14 @@ class CheckCode
      *
      * @return The check code.
      **/
-    uint8_t get( void) const;
+    uint8_t get() const noexcept;
 
     /**
      * @brief Returns the check code as string.
      *
      * @return The check code as string
      **/
-    string getStr( void) const;
+    string getStr() const;
 
     /**
      * @brief Set the check code to the given value.
@@ -91,7 +89,7 @@ class CheckCode
      * @param[in] checkCode
      *   The check code value.
      **/
-    void set( const uint8_t checkCode);
+    void set( uint8_t checkCode);
 
     /**
      * @brief Decodes the check code from the given string.

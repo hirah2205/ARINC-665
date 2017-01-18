@@ -108,6 +108,7 @@ add_library(
   arinc665/ManufacturerCodeTest.cpp
   arinc665/PartNumberTest.cpp
   arinc665/ProductIdentifierTest.cpp
+  arinc665/TargetHardwareIdTest.cpp
   
   arinc665/media/MediaSetTest.cpp
   )

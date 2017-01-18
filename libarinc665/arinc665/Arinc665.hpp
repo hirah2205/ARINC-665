@@ -187,6 +187,12 @@ constexpr uint64_t Crc64FinalXor = 0xFFFFFFFFFFFFFFFFULL;
 constexpr bool     Crc64ReflectIn = false;
 constexpr bool     Crc64ReflectOut = false;
 
+class CheckCode;
+class ManufacturerCode;
+class PartNumber;
+class ProductIdentifier;
+class TargetHardwareId;
+
 }
 
 #endif

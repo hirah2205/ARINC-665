@@ -23,7 +23,7 @@ TargetHardwareId::TargetHardwareId( const string& targetHardwareId) :
 {
 }
 
-const TargetHardwareId::string& TargetHardwareId::get() const
+const TargetHardwareId::string& TargetHardwareId::get() const noexcept
 {
   return targetHardwareId;
 }

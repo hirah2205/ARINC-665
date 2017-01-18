@@ -29,7 +29,7 @@ CheckCode::CheckCode( const uint8_t checkCode) :
 {
 }
 
-CheckCode::CheckCode( const std::string &checkCode)
+CheckCode::CheckCode( const string &checkCode)
 {
   set( checkCode);
 }
@@ -41,12 +41,12 @@ CheckCode::CheckCode(
   calculate( manufacturerCode, productIdentifier);
 }
 
-uint8_t CheckCode::get( void) const
+uint8_t CheckCode::get() const noexcept
 {
   return checkCode;
 }
 
-std::string CheckCode::getStr( void) const
+std::string CheckCode::getStr() const
 {
   return (boost::format( "%02X") % (unsigned int) checkCode).str();
 }
@@ -68,6 +68,7 @@ void CheckCode::set( const string &checkCode)
   }
 
   // decode string to integer
+  //! @throw std::invalid_argument When invalid string is supplied
   unsigned long parsedCheckCode = std::stoul( checkCode, 0, 16);
 
   this->checkCode = parsedCheckCode;

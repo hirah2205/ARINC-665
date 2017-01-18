@@ -15,6 +15,7 @@
  **/
 
 #include <arinc665/CheckCode.hpp>
+#include <arinc665/Arinc665Exception.hpp>
 
 #include <boost/test/unit_test.hpp>
 
@@ -22,41 +23,55 @@ namespace Arinc665 {
 
 BOOST_AUTO_TEST_SUITE( CheckCodeTest)
 
-BOOST_AUTO_TEST_CASE( testCheckCode1)
+BOOST_AUTO_TEST_CASE( constructor)
 {
-  CheckCode checkCode1( "01");
-  CheckCode checkCode2( "20");
-  CheckCode checkCode3( 0x01);
-  CheckCode checkCode4( 0x20);
+  BOOST_CHECK( CheckCode( "01").get() == 0x01);
+  BOOST_CHECK( CheckCode( "FF").get() == 0xFF);
+  BOOST_CHECK( CheckCode( 0x01).get() == 0x01);
+  BOOST_CHECK( CheckCode( 0xFF).get() == 0xFF);
+}
 
-  BOOST_CHECK( checkCode1.get() == 0x01);
-  BOOST_CHECK( checkCode1.getStr() == "01");
-  BOOST_CHECK( checkCode2.get() == 0x20);
-  BOOST_CHECK( checkCode2.getStr() == "20");
-  BOOST_CHECK( checkCode3.get() == 0x01);
-  BOOST_CHECK( checkCode3.getStr() == "01");
-  BOOST_CHECK( checkCode4.get() == 0x20);
-  BOOST_CHECK( checkCode4.getStr() == "20");
+BOOST_AUTO_TEST_CASE( set)
+{
+  CheckCode checkCode( 0x00);
+  BOOST_CHECK( checkCode.get() == 0x00);
 
-  BOOST_CHECK( checkCode1 == checkCode1);
-  BOOST_CHECK( checkCode1 != checkCode2);
-  BOOST_CHECK( checkCode1 == checkCode3);
-  BOOST_CHECK( checkCode1 != checkCode4);
+  BOOST_CHECK_NO_THROW( checkCode.set( 0x01));
+  BOOST_CHECK( checkCode.get() == 0x01);
 
-  BOOST_CHECK( checkCode2 != checkCode1);
-  BOOST_CHECK( checkCode2 == checkCode2);
-  BOOST_CHECK( checkCode2 != checkCode3);
-  BOOST_CHECK( checkCode2 == checkCode4);
+  BOOST_CHECK_NO_THROW( checkCode.set( "FF"));
+  BOOST_CHECK( checkCode.get() == 0xFF);
 
-  BOOST_CHECK( checkCode3 == checkCode1);
-  BOOST_CHECK( checkCode3 != checkCode2);
-  BOOST_CHECK( checkCode3 == checkCode3);
-  BOOST_CHECK( checkCode3 != checkCode4);
+  BOOST_CHECK_THROW( checkCode.set( ""), Arinc665Exception);
+  BOOST_CHECK_THROW( checkCode.set( "1"), Arinc665Exception);
+  BOOST_CHECK_THROW( checkCode.set( "123"), Arinc665Exception);
 
-  BOOST_CHECK( checkCode4 != checkCode1);
-  BOOST_CHECK( checkCode4 == checkCode2);
-  BOOST_CHECK( checkCode4 != checkCode3);
-  BOOST_CHECK( checkCode4 == checkCode4);
+  BOOST_CHECK_THROW( checkCode.set( "ZZ"), std::invalid_argument);
+  BOOST_CHECK( checkCode.get() == 0xFF);
+}
+
+BOOST_AUTO_TEST_CASE( getStr)
+{
+  CheckCode checkCode( 0x00);
+
+  BOOST_CHECK( checkCode.get() == 0x00);
+  BOOST_CHECK( checkCode.getStr() == "00");
+
+  BOOST_CHECK_NO_THROW( checkCode.set( 0xFF));
+  BOOST_CHECK( checkCode.get() == 0xFF);
+  BOOST_CHECK( checkCode.getStr() == "FF");
+}
+
+BOOST_AUTO_TEST_CASE( compare)
+{
+  BOOST_CHECK( CheckCode(0x00) == CheckCode(0x00));
+  BOOST_CHECK( (CheckCode(0x00) != CheckCode(0x00)) == false);
+
+  BOOST_CHECK( CheckCode(0xFF) == CheckCode(0xFF));
+  BOOST_CHECK( (CheckCode(0xFF) != CheckCode(0xFF)) == false);
+
+  BOOST_CHECK( (CheckCode(0xFF) == CheckCode(0x00)) == false);
+  BOOST_CHECK( CheckCode(0xFF) != CheckCode(0x00));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
