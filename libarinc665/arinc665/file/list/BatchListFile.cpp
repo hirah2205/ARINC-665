@@ -94,7 +94,7 @@ void BatchListFile::setMediaSequenceNumber( const uint8_t mediaSequenceNumber)
   this->mediaSequenceNumber = mediaSequenceNumber;
 }
 
-uint8_t BatchListFile::getNumberOfMediaSetMembers( void) const
+uint8_t BatchListFile::getNumberOfMediaSetMembers() const
 {
   return numberOfMediaSetMembers;
 }
@@ -102,6 +102,7 @@ uint8_t BatchListFile::getNumberOfMediaSetMembers( void) const
 void BatchListFile::setNumberOfMediaSetMembers(
   const uint8_t numberOfMediaSetMembers)
 {
+  this->numberOfMediaSetMembers = numberOfMediaSetMembers;
 }
 
 unsigned int BatchListFile::getNumberOfBatches( void) const
