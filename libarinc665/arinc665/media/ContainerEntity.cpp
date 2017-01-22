@@ -22,22 +22,22 @@
 namespace Arinc665{
 namespace Media {
 
-bool ContainerEntity::hasChildren( void) const
+bool ContainerEntity::hasChildren() const
 {
   return !subDirectories.empty() || !files.empty();
 }
 
-size_t ContainerEntity::getNumberOfSubDirectories( void) const
+size_t ContainerEntity::getNumberOfSubDirectories() const
 {
   return subDirectories.size();
 }
 
-ConstDirectories ContainerEntity::getSubDirectories( void) const
+ConstDirectories ContainerEntity::getSubDirectories() const
 {
   return ConstDirectories( subDirectories.begin(), subDirectories.end());
 }
 
-Directories ContainerEntity::getSubDirectories( void)
+Directories ContainerEntity::getSubDirectories()
 {
   return subDirectories;
 }
@@ -122,7 +122,7 @@ void ContainerEntity::removeSubDirectory( DirectoryPtr subDirectory)
    subDirectories.erase( dir);
 }
 
-size_t ContainerEntity::getNumberOfFiles( bool recursive) const
+size_t ContainerEntity::getNumberOfFiles( const bool recursive) const
 {
   size_t fileSize( files.size());
 
@@ -138,7 +138,7 @@ size_t ContainerEntity::getNumberOfFiles( bool recursive) const
   return fileSize;
 }
 
-ConstFiles ContainerEntity::getFiles( bool recursive) const
+ConstFiles ContainerEntity::getFiles( const bool recursive) const
 {
   if (!recursive)
   {
@@ -149,7 +149,8 @@ ConstFiles ContainerEntity::getFiles( bool recursive) const
 
   for (const auto &subDirectory : subDirectories)
   {
-    ConstFiles subFiles( static_cast< const Directory>(*subDirectory).getFiles( true));
+    ConstFiles subFiles(
+      static_cast< const Directory&>(*subDirectory).getFiles( true));
 
     allfiles.insert( allfiles.begin(), subFiles.begin(), subFiles.end());
   }
@@ -157,7 +158,7 @@ ConstFiles ContainerEntity::getFiles( bool recursive) const
   return allfiles;
 }
 
-Files ContainerEntity::getFiles( bool recursive)
+Files ContainerEntity::getFiles( const bool recursive)
 {
   if (!recursive)
   {
@@ -174,10 +175,12 @@ Files ContainerEntity::getFiles( bool recursive)
   }
 
   return allFiles;
-  }
+}
 
-  ConstFilePtr ContainerEntity::getFile( const string &filename, bool recursive) const
-  {
+ConstFilePtr ContainerEntity::getFile(
+  const string &filename,
+  const bool recursive) const
+{
   for ( auto & file : files)
   {
     if ( file->getName() == filename)
@@ -203,7 +206,7 @@ Files ContainerEntity::getFiles( bool recursive)
   return ConstFilePtr();
 }
 
-FilePtr ContainerEntity::getFile( const string &filename, bool recursive)
+FilePtr ContainerEntity::getFile( const string &filename, const bool recursive)
 {
   for ( auto & file : files)
   {
@@ -282,7 +285,7 @@ void ContainerEntity::removeFile( ConstFilePtr file)
   files.erase( fileIt);
 }
 
-size_t ContainerEntity::getNumberOfLoads( bool recursive) const
+size_t ContainerEntity::getNumberOfLoads( const bool recursive) const
 {
   size_t numberOfLoads( getFiles( BaseFile::FileType::LoadFile).size());
 
@@ -298,7 +301,7 @@ size_t ContainerEntity::getNumberOfLoads( bool recursive) const
   return numberOfLoads;
 }
 
-ConstLoads ContainerEntity::getLoads( bool recursive) const
+ConstLoads ContainerEntity::getLoads( const bool recursive) const
 {
   ConstFiles loadFiles = getFiles( BaseFile::FileType::LoadFile);
 
@@ -313,7 +316,8 @@ ConstLoads ContainerEntity::getLoads( bool recursive) const
   {
     for (const auto &subDirectory : subDirectories)
     {
-      ConstLoads subLoads( static_cast< const Directory>(*subDirectory).getLoads( true));
+      ConstLoads subLoads(
+        static_cast< const Directory&>(*subDirectory).getLoads( true));
 
       loads.insert( loads.end(), subLoads.begin(), subLoads.end());
     }
@@ -322,7 +326,7 @@ ConstLoads ContainerEntity::getLoads( bool recursive) const
   return loads;
 }
 
-Loads ContainerEntity::getLoads( bool recursive)
+Loads ContainerEntity::getLoads( const bool recursive)
 {
   Files loadFiles = getFiles( BaseFile::FileType::LoadFile);
 
@@ -346,7 +350,9 @@ Loads ContainerEntity::getLoads( bool recursive)
   return loads;
 }
 
-ConstLoadPtr ContainerEntity::getLoad( const string &filename, bool recursive) const
+ConstLoadPtr ContainerEntity::getLoad(
+  const string &filename,
+  const bool recursive) const
 {
   ConstFilePtr file = getFile( filename, recursive);
 
@@ -363,7 +369,7 @@ ConstLoadPtr ContainerEntity::getLoad( const string &filename, bool recursive) c
 	return std::dynamic_pointer_cast< const Load>( file);
 }
 
-LoadPtr ContainerEntity::getLoad( const string &filename, bool recursive)
+LoadPtr ContainerEntity::getLoad( const string &filename, const bool recursive)
 {
   FilePtr file = getFile( filename, recursive);
 
@@ -424,7 +430,7 @@ void ContainerEntity::removeLoad( ConstLoadPtr load)
   removeFile( load);
 }
 
-size_t ContainerEntity::getNumberOfBatches( bool recursive) const
+size_t ContainerEntity::getNumberOfBatches( const bool recursive) const
 {
   size_t numberOfBatches( getFiles( BaseFile::FileType::BatchFile).size());
 
@@ -440,7 +446,7 @@ size_t ContainerEntity::getNumberOfBatches( bool recursive) const
   return numberOfBatches;
 }
 
-ConstBatches ContainerEntity::getBatches( bool recursive) const
+ConstBatches ContainerEntity::getBatches( const bool recursive) const
 {
   ConstFiles batchFiles = getFiles( BaseFile::FileType::LoadFile);
 
@@ -455,7 +461,8 @@ ConstBatches ContainerEntity::getBatches( bool recursive) const
   {
     for (const auto &subDirectory : subDirectories)
     {
-      ConstBatches subBatches( static_cast< const Directory>(*subDirectory).getBatches( true));
+      ConstBatches subBatches(
+        static_cast< const Directory&>(*subDirectory).getBatches( true));
 
       batches.insert( batches.end(), subBatches.begin(), subBatches.end());
     }
@@ -464,7 +471,7 @@ ConstBatches ContainerEntity::getBatches( bool recursive) const
   return batches;
 }
 
-Batches ContainerEntity::getBatches( bool recursive)
+Batches ContainerEntity::getBatches( const bool recursive)
 {
   Files batchFiles = getFiles( BaseFile::FileType::LoadFile);
 
@@ -488,7 +495,9 @@ Batches ContainerEntity::getBatches( bool recursive)
   return batches;
 }
 
-ConstBatchPtr ContainerEntity::getBatch( const string &filename, bool recursive) const
+ConstBatchPtr ContainerEntity::getBatch(
+  const string &filename,
+  const bool recursive) const
 {
   ConstFilePtr file = getFile( filename, recursive);
 
@@ -505,7 +514,7 @@ ConstBatchPtr ContainerEntity::getBatch( const string &filename, bool recursive)
   return std::dynamic_pointer_cast< const Batch>( file);
 }
 
-BatchPtr ContainerEntity::getBatch( const string &filename, bool recursive)
+BatchPtr ContainerEntity::getBatch( const string &filename, const bool recursive)
 {
   FilePtr file = getFile( filename, recursive);
 
@@ -565,12 +574,12 @@ void ContainerEntity::removeBatch( ConstBatchPtr batch)
   removeFile( batch);
 }
 
-ContainerEntityPtr ContainerEntity::getParent( void)
+ContainerEntityPtr ContainerEntity::getParent()
 {
   return parent.lock();
 }
 
-ConstContainerEntityPtr ContainerEntity::getParent( void) const
+ConstContainerEntityPtr ContainerEntity::getParent() const
 {
   return parent.lock();
 }

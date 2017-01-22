@@ -56,39 +56,39 @@ BOOST_AUTO_TEST_CASE( crc16)
   BOOST_CHECK( 0xFFFF == arincCrc16.checksum());
 
   arincCrc16.reset();
-  arincCrc16.process_block(
+  arincCrc16.process_bytes(
     &(*arincCrcData.t02a.begin()),
-    &(*arincCrcData.t02a.end()));
+    arincCrcData.t02a.size());
   BOOST_CHECK( 0x1DA3 == arincCrc16.checksum());
 
   arincCrc16.reset();
-  arincCrc16.process_block(
+  arincCrc16.process_bytes(
     &(*arincCrcData.t03a.begin()),
-    &(*arincCrcData.t03a.end()));
+    arincCrcData.t03a.size());
   BOOST_CHECK( 0x4634 == arincCrc16.checksum());
 
   arincCrc16.reset();
-  arincCrc16.process_block(
+  arincCrc16.process_bytes(
     &(*arincCrcData.t04a.begin()),
-    &(*arincCrcData.t04a.end()));
+    arincCrcData.t04a.size()*2);
   BOOST_CHECK( 0x1D7E == arincCrc16.checksum());
 
   arincCrc16.reset();
-  arincCrc16.process_block(
+  arincCrc16.process_bytes(
     &(*arincCrcData.t11a.begin()),
-    &(*arincCrcData.t11a.end()));
+    arincCrcData.t11a.size());
   BOOST_CHECK( 0x3FBD == arincCrc16.checksum());
 
   arincCrc16.reset();
-  arincCrc16.process_block(
+  arincCrc16.process_bytes(
     &(*arincCrcData.t12a.begin()),
-    &(*arincCrcData.t12a.end()));
+    arincCrcData.t12a.size());
 //  BOOST_CHECK( 0x3FBD == arincCrc16.checksum());
 
   arincCrc16.reset();
-  arincCrc16.process_block(
+  arincCrc16.process_bytes(
     &(*arincCrcData.t13a.begin()),
-    &(*arincCrcData.t13a.end()));
+    arincCrcData.t13a.size());
 //  BOOST_CHECK( 0x3FBD == arincCrc16.checksum());
 }
 
@@ -100,39 +100,39 @@ BOOST_AUTO_TEST_CASE( crc32)
   BOOST_CHECK( 0x00000000UL == arincCrc32.checksum());
 
   arincCrc32.reset();
-  arincCrc32.process_block(
+  arincCrc32.process_bytes(
     &(*arincCrcData.t02a.begin()),
-    &(*arincCrcData.t02a.end()));
+    arincCrcData.t02a.size());
   BOOST_CHECK( 0x322AB4A6 == arincCrc32.checksum());
 
   arincCrc32.reset();
-  arincCrc32.process_block(
+  arincCrc32.process_bytes(
     &(*arincCrcData.t03a.begin()),
-    &(*arincCrcData.t03a.end()));
+    arincCrcData.t03a.size());
   BOOST_CHECK( 0x53631199 == arincCrc32.checksum());
 
   arincCrc32.reset();
-  arincCrc32.process_block(
+  arincCrc32.process_bytes(
     &(*arincCrcData.t04a.begin()),
-    &(*arincCrcData.t04a.end()));
+    arincCrcData.t04a.size()*2);
   BOOST_CHECK( 0xC2F270BC == arincCrc32.checksum());
 
   arincCrc32.reset();
-  arincCrc32.process_block(
+  arincCrc32.process_bytes(
     &(*arincCrcData.t11a.begin()),
-    &(*arincCrcData.t11a.end()));
+    arincCrcData.t11a.size());
   BOOST_CHECK( 0xB6B5EE95UL == arincCrc32.checksum());
 
   arincCrc32.reset();
-  arincCrc32.process_block(
+  arincCrc32.process_bytes(
     &(*arincCrcData.t12a.begin()),
-    &(*arincCrcData.t12a.end()));
+    arincCrcData.t12a.size());
 //  BOOST_CHECK( 0x3FBD == arincCrc32.checksum());
 
   arincCrc32.reset();
-  arincCrc32.process_block(
+  arincCrc32.process_bytes(
     &(*arincCrcData.t13a.begin()),
-    &(*arincCrcData.t13a.end()));
+    arincCrcData.t13a.size());
 //  BOOST_CHECK( 0x3FBD == arincCrc32.checksum());
 }
 
@@ -144,39 +144,39 @@ BOOST_AUTO_TEST_CASE( crc64)
   BOOST_CHECK( 0x0000000000000000ULL == arincCrc64.checksum());
 
   arincCrc64.reset();
-  arincCrc64.process_block(
+  arincCrc64.process_bytes(
     &(*arincCrcData.t02a.begin()),
-    &(*arincCrcData.t02a.end()));
+    arincCrcData.t02a.size());
   BOOST_CHECK( 0x034528B5989BED4DULL == arincCrc64.checksum());
 
   arincCrc64.reset();
-  arincCrc64.process_block(
+  arincCrc64.process_bytes(
     &(*arincCrcData.t03a.begin()),
-    &(*arincCrcData.t03a.end()));
+    arincCrcData.t03a.size());
   BOOST_CHECK( 0x5B2ACFD2703ED63DULL == arincCrc64.checksum());
 
   arincCrc64.reset();
-  arincCrc64.process_block(
+  arincCrc64.process_bytes(
     &(*arincCrcData.t04a.begin()),
-    &(*arincCrcData.t04a.end()));
+    arincCrcData.t04a.size()*2);
   BOOST_CHECK( 0x428A028B474233E4ULL == arincCrc64.checksum());
 
   arincCrc64.reset();
-  arincCrc64.process_block(
+  arincCrc64.process_bytes(
     &(*arincCrcData.t11a.begin()),
-    &(*arincCrcData.t11a.end()));
+    arincCrcData.t11a.size());
   BOOST_CHECK( 0x59C3325B2927A19AULL == arincCrc64.checksum());
 
   arincCrc64.reset();
-  arincCrc64.process_block(
+  arincCrc64.process_bytes(
     &(*arincCrcData.t12a.begin()),
-    &(*arincCrcData.t12a.end()));
+    arincCrcData.t12a.size());
 //  BOOST_CHECK( 0x59C3325B2927A19AULL == arincCrc64.checksum());
 
   arincCrc64.reset();
-  arincCrc64.process_block(
+  arincCrc64.process_bytes(
     &(*arincCrcData.t13a.begin()),
-    &(*arincCrcData.t13a.end()));
+    arincCrcData.t13a.size());
 //  BOOST_CHECK( 0x59C3325B2927A19AULL == arincCrc64.checksum());
 }
 

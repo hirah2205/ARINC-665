@@ -23,6 +23,8 @@
 
 #include <helper/Logger.hpp>
 
+#include <cassert>
+
 namespace Arinc665 {
 namespace Media {
 
@@ -68,7 +70,9 @@ void MediaSet::setPartNumber( const string &partNumber)
 
 uint8_t MediaSet::getNumberOfMedia() const
 {
-  return media.size();
+  assert( media.size() <= std::numeric_limits< uint8_t>::max());
+
+  return static_cast< uint8_t>( media.size());
 }
 
 
@@ -155,7 +159,8 @@ ConstFiles MediaSet::getFiles() const
   // Iterate over all medias and add their files to a complete list.
   for ( const auto &medium : media)
   {
-    ConstFiles mediaFiles = static_cast< const Medium>(*medium).getFiles( true);
+    ConstFiles mediaFiles =
+      static_cast< const Medium&>(*medium).getFiles( true);
     files.insert( files.end(), mediaFiles.begin(), mediaFiles.end());
   }
 
@@ -224,7 +229,8 @@ ConstLoads MediaSet::getLoads() const
 
   for (const auto & medium : media)
   {
-    ConstLoads mediaLoads = static_cast< const Medium>(*medium).getLoads( true);
+    ConstLoads mediaLoads =
+      static_cast< const Medium&>(*medium).getLoads( true);
     loads.insert( loads.end(), mediaLoads.begin(), mediaLoads.end());
   }
 
@@ -263,7 +269,7 @@ ConstBatches MediaSet::getBatches() const
   for (const auto & medium : media)
   {
     ConstBatches mediaBatches =
-      static_cast< const Medium>(*medium).getBatches( true);
+      static_cast< const Medium&>(*medium).getBatches( true);
     batches.insert( batches.end(), mediaBatches.begin(), mediaBatches.end());
   }
 
