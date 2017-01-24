@@ -115,9 +115,19 @@ class MediaSet:
     MediumPtr addMedium();
 
     /**
-     * @brief
+     * @brief Removes the last medium.
      *
-     * Set the number of media.
+     * @param[in] deleteFiles
+     *   Delete files, which are part of the not existing medium.
+     *   Otherwise, they are moved to the first media.
+     **/
+    void removeMedium( bool deleteFiles = false);
+
+    /**
+     * @brief Set the number of media.
+     *
+     * If there are fewer media than requested, the media are created empty,
+     * otherwise the media are deleted.
      *
      * @param[in] numberOfMedia
      *   The new number of media. Must be bigger or equal to 1.

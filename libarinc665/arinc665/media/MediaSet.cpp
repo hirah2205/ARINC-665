@@ -111,6 +111,12 @@ MediumPtr MediaSet::addMedium()
   return medium;
 }
 
+void MediaSet::removeMedium( const bool deleteFiles [[gnu::unused]])
+{
+  //! @todo implement
+  BOOST_THROW_EXCEPTION( std::exception());
+}
+
 void MediaSet::setNumberOfMedia(
   const uint8_t numberOfMedia,
   const bool deleteFiles)
@@ -134,8 +140,7 @@ void MediaSet::setNumberOfMedia(
     // remove media
     while (numberOfMedia < media.size())
     {
-      //! todo
-      return;
+      removeMedium( deleteFiles);
     }
   }
 }
