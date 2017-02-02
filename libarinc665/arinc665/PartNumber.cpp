@@ -37,6 +37,7 @@ PartNumber::PartNumber( const string& partNumber) :
   // check size of part number
   if ( partNumber.size() != Length)
   {
+    /** @throw Arinc665Exception If string size is invalid **/
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << AdditionalInfo( "Invalid size of part number string"));
   }

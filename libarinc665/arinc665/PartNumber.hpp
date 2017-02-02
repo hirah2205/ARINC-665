@@ -73,11 +73,6 @@ class PartNumber
      *
      * @param[in] partNumber
      *   The part number as string
-     *
-     * @throw Arinc665Exception
-     *   If string size is invalid
-     * @throw Arinc665Exception
-     *   If check code differs from calculated value
      **/
     PartNumber( const string& partNumber);
 
