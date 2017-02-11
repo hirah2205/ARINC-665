@@ -7,11 +7,13 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.5)
+cmake_minimum_required( VERSION 3.7)
 
 project( "ARINC 665 QT Library")
 
-find_package( Qt5Widgets REQUIRED)
+find_package( Qt5Widgets)
+
+if( DEFINED Qt5Widgets_FOUND)
 
 #QT5_WRAP_UI(
 #  bhm_qt_ui
@@ -43,3 +45,5 @@ set(
   "libhelper.TAGFILE=../../libhelper/html libarinc665.TAGFILE=../../libarinc665/html")
 
 GENERATE_DOCUMENTATION()
+
+endif()
