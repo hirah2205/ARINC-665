@@ -21,4 +21,5 @@ add_executable(
 target_link_libraries(
   arinc665_decompiler
   
-  arinc665)
+  arinc665
+  boost_application)
