@@ -11,9 +11,9 @@ cmake_minimum_required( VERSION 3.7)
 
 project( "ARINC 665 QT Library")
 
-find_package( Qt5Widgets)
+find_package( Qt5Widgets QUIET)
 
-if( DEFINED Qt5Widgets_FOUND)
+if(Qt5Widgets_FOUND)
 
 #QT5_WRAP_UI(
 #  bhm_qt_ui
@@ -46,4 +46,4 @@ set(
 
 GENERATE_DOCUMENTATION()
 
-endif()
+endif(Qt5Widgets_FOUND)
