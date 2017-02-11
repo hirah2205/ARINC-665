@@ -11,7 +11,7 @@ cmake_minimum_required( VERSION 3.7)
 
 project( "ARINC 665 unit test application")
 
-find_package( Boost REQUIRED COMPONENTS unit_test_framework)
+find_package( Boost REQUIRED)
 
 add_executable( 
   arinc665_unit_test 
@@ -19,11 +19,6 @@ add_executable(
   $<TARGET_OBJECTS:arinc665_test>
   arinc665_unit_test.cpp)
 
-target_link_libraries( 
-  arinc665_unit_test 
-
-  arinc665
-  ${Boost_LIBRARIES}
-  ${BOOST_THREAD_LIBRARY})
+target_link_libraries( arinc665_unit_test arinc665)
 
 add_test( NAME arinc665_unit_test COMMAND arinc665_unit_test)
