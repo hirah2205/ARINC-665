@@ -18,6 +18,7 @@
 
 #include <arinc665/file/StringHelper.hpp>
 #include <arinc665/file/list/FileInfo.hpp>
+#include <arinc665/Arinc665Exception.hpp>
 
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
@@ -65,7 +66,14 @@ LoadInfo::LoadInfo( RawFile::const_iterator &it)
   workIt = getString( workIt, headerFilename);
 
   // member sequence number
-  workIt = getInt< uint16_t>( workIt, memberSequenceNumber);
+  uint16_t fileMemberSequenceNumber;
+  workIt = getInt< uint16_t>( workIt, fileMemberSequenceNumber);
+  if (( fileMemberSequenceNumber < 1 ) || (fileMemberSequenceNumber > 255))
+  {
+    //! @throw XXX
+    BOOST_THROW_EXCEPTION( InvalidArinc665File());
+  }
+  memberSequenceNumber = static_cast< uint8_t>( fileMemberSequenceNumber);
 
   workIt = getStringList( workIt, targetHardwareIds);
 
@@ -93,7 +101,7 @@ void LoadInfo::setHeaderFilename( const string &headerFilename)
   this->headerFilename = headerFilename;
 }
 
-uint16_t LoadInfo::getMemberSequenceNumber() const
+uint8_t LoadInfo::getMemberSequenceNumber() const
 {
   return memberSequenceNumber;
 }

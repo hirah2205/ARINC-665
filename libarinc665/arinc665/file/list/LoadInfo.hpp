@@ -39,7 +39,7 @@ class LoadInfo
 
     static LoadInfos getLoadInfos( RawFile::const_iterator &it);
 
-    LoadInfo( void);
+    LoadInfo();
 
     LoadInfo( RawFile::const_iterator &it);
 
@@ -51,7 +51,7 @@ class LoadInfo
 
     void setHeaderFilename( const string &headerFilename);
 
-    uint16_t getMemberSequenceNumber() const;
+    uint8_t getMemberSequenceNumber() const;
 
     void setMemberSequenceNumber( uint16_t memberSequenceNumber);
 
@@ -70,7 +70,7 @@ class LoadInfo
   private:
     string partNumber;
     string headerFilename;
-    uint16_t memberSequenceNumber;
+    uint8_t memberSequenceNumber;
     ThwIds targetHardwareIds;
 };
 
