@@ -19,7 +19,7 @@
 namespace Arinc665 {
 namespace File {
 
-ListFile::ListFile( void)
+ListFile::ListFile()
 {
 }
 

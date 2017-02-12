@@ -48,62 +48,62 @@ class FileListFile: public ListFile
     FileListFile( const RawFile &file);
 
     //! @copydoc Arinc665File::getArincVersion
-    virtual Arinc665Version getArincVersion( void) const override;
+    virtual Arinc665Version getArincVersion() const override;
 
     //! @copydoc ListFile::getMediaSetPn
-    virtual string getMediaSetPn( void) const override;
+    virtual string getMediaSetPn() const override;
 
     //! @copydoc ListFile::setMediaSetPn
     virtual void setMediaSetPn( const string &mediaSetPn) override;
 
     //! @copydoc ListFile::getMediaSequenceNumber
-    virtual uint8_t getMediaSequenceNumber( void) const override;
+    virtual uint8_t getMediaSequenceNumber() const override;
 
     //! @copydoc ListFile::setMediaSequenceNumber
-    virtual void setMediaSequenceNumber( const uint8_t mediaSequenceNumber) override;
+    virtual void setMediaSequenceNumber( uint8_t mediaSequenceNumber) override;
 
     //! @copydoc ListFile::getNumberOfMediaSetMembers
-    virtual uint8_t getNumberOfMediaSetMembers( void) const override;
+    virtual uint8_t getNumberOfMediaSetMembers() const override;
 
     //! @copydoc ListFile::setNumberOfMediaSetMembers
-    virtual void setNumberOfMediaSetMembers( const uint8_t numberOfMediaSetMembers) override;
+    virtual void setNumberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) override;
 
     /**
      * @brief Returns the number of files.
      *
      * @return The number of files.
      **/
-    unsigned int getNumberOfFiles( void) const;
+    size_t getNumberOfFiles() const;
 
     /**
      * @brief Return the list of files.
      *
      * @return The list of files
      **/
-    const FileInfoList& getFileInfos( void) const;
+    const FileInfoList& getFileInfos() const;
 
     /**
      * @brief Return the list of files.
      *
      * @return The list of files
      **/
-    FileInfoList& getFileInfos( void);
+    FileInfoList& getFileInfos();
 
     /**
      * @brief Return the list of files as map ( media index and filename as key).
      *
      * @return The list of files
      **/
-    FileInfoMap getFileInfosAsMap( void) const;
+    FileInfoMap getFileInfosAsMap() const;
 
     /**
      * @brief Return the list of files as map ( media index and complete path as key).
      *
      * @return The list of files
      **/
-    FileInfoPathMap getFileInfosAsPathMap( void) const;
+    FileInfoPathMap getFileInfosAsPathMap() const;
 
-    const UserDefinedData& getUserDefinedData( void) const;
+    const UserDefinedData& getUserDefinedData() const;
 
     void setUserDefinedData( const UserDefinedData &userDefinedData);
 

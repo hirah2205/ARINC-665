@@ -82,9 +82,12 @@ void CheckCode::calculate(
 {
   checkCode = 0;
 
-  string calcString = manufacturerCode.get() + productIdentifier.get();
+  for ( const auto &character : manufacturerCode.get())
+  {
+    checkCode ^= character;
+  }
 
-  for ( const auto &character : calcString)
+  for ( const auto &character : productIdentifier.get())
   {
     checkCode ^= character;
   }

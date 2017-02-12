@@ -69,12 +69,12 @@ LoadListFile::LoadListFile( const RawFile &file) :
   // file crc decoded and checked within base class
 }
 
-Arinc665::Arinc665Version LoadListFile::getArincVersion( void) const
+Arinc665::Arinc665Version LoadListFile::getArincVersion() const
 {
   return Arinc665Version::ARINC_665_2;
 }
 
-LoadListFile::string LoadListFile::getMediaSetPn( void) const
+LoadListFile::string LoadListFile::getMediaSetPn() const
 {
   return mediaSetPn;
 }
@@ -84,7 +84,7 @@ void LoadListFile::setMediaSetPn( const string &mediaSetPn)
   this->mediaSetPn = mediaSetPn;
 }
 
-uint8_t LoadListFile::getMediaSequenceNumber( void) const
+uint8_t LoadListFile::getMediaSequenceNumber() const
 {
   return mediaSequenceNumber;
 }
@@ -94,7 +94,7 @@ void LoadListFile::setMediaSequenceNumber( const uint8_t mediaSequenceNumber)
   this->mediaSequenceNumber = mediaSequenceNumber;
 }
 
-uint8_t LoadListFile::getNumberOfMediaSetMembers( void) const
+uint8_t LoadListFile::getNumberOfMediaSetMembers() const
 {
   return numberOfMediaSetMembers;
 }
@@ -105,22 +105,22 @@ void LoadListFile::setNumberOfMediaSetMembers(
   this->numberOfMediaSetMembers = numberOfMediaSetMembers;
 }
 
-unsigned int LoadListFile::getNumberOfLoads( void) const
+size_t LoadListFile::getNumberOfLoads() const
 {
   return loadInfos.size();
 }
 
-const LoadListFile::LoadInfoList& LoadListFile::getLoadInfos( void) const
+const LoadListFile::LoadInfoList& LoadListFile::getLoadInfos() const
 {
   return loadInfos;
 }
 
-LoadListFile::LoadInfoList& LoadListFile::getLoadInfos( void)
+LoadListFile::LoadInfoList& LoadListFile::getLoadInfos()
 {
   return loadInfos;
 }
 
-LoadListFile::LoadInfoMap LoadListFile::getLoadInfosAsMap( void) const
+LoadListFile::LoadInfoMap LoadListFile::getLoadInfosAsMap() const
 {
   LoadInfoMap loads;
 
@@ -137,7 +137,7 @@ LoadListFile::LoadInfoMap LoadListFile::getLoadInfosAsMap( void) const
   return loads;
 }
 
-const LoadListFile::UserDefinedData& LoadListFile::getUserDefinedData( void) const
+const LoadListFile::UserDefinedData& LoadListFile::getUserDefinedData() const
 {
   return userDefinedData;
 }

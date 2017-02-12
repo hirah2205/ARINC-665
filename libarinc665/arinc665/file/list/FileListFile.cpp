@@ -70,12 +70,12 @@ FileListFile::FileListFile( const RawFile &file) :
   // file crc decoded and checked within base class
 }
 
-Arinc665::Arinc665Version FileListFile::getArincVersion( void) const
+Arinc665::Arinc665Version FileListFile::getArincVersion() const
 {
   return Arinc665Version::ARINC_665_2;
 }
 
-FileListFile::string FileListFile::getMediaSetPn( void) const
+FileListFile::string FileListFile::getMediaSetPn() const
 {
   return mediaSetPn;
 }
@@ -85,7 +85,7 @@ void FileListFile::setMediaSetPn( const string &mediaSetPn)
   this->mediaSetPn = mediaSetPn;
 }
 
-uint8_t FileListFile::getMediaSequenceNumber( void) const
+uint8_t FileListFile::getMediaSequenceNumber() const
 {
   return mediaSequenceNumber;
 }
@@ -95,7 +95,7 @@ void FileListFile::setMediaSequenceNumber( const uint8_t mediaSequenceNumber)
   this->mediaSequenceNumber = mediaSequenceNumber;
 }
 
-uint8_t FileListFile::getNumberOfMediaSetMembers( void) const
+uint8_t FileListFile::getNumberOfMediaSetMembers() const
 {
   return numberOfMediaSetMembers;
 }
@@ -106,22 +106,22 @@ void FileListFile::setNumberOfMediaSetMembers(
   this->numberOfMediaSetMembers = numberOfMediaSetMembers;
 }
 
-unsigned int FileListFile::getNumberOfFiles( void) const
+size_t FileListFile::getNumberOfFiles() const
 {
   return fileInfos.size();
 }
 
-const FileListFile::FileInfoList& FileListFile::getFileInfos( void) const
+const FileListFile::FileInfoList& FileListFile::getFileInfos() const
 {
   return fileInfos;
 }
 
-FileListFile::FileInfoList& FileListFile::getFileInfos( void)
+FileListFile::FileInfoList& FileListFile::getFileInfos()
 {
   return fileInfos;
 }
 
-FileListFile::FileInfoMap FileListFile::getFileInfosAsMap( void) const
+FileListFile::FileInfoMap FileListFile::getFileInfosAsMap() const
 {
   FileInfoMap fileMap;
 
@@ -138,7 +138,7 @@ FileListFile::FileInfoMap FileListFile::getFileInfosAsMap( void) const
   return fileMap;
 }
 
-FileListFile::FileInfoPathMap FileListFile::getFileInfosAsPathMap( void) const
+FileListFile::FileInfoPathMap FileListFile::getFileInfosAsPathMap() const
 {
   FileInfoPathMap fileMap;
 
@@ -155,7 +155,7 @@ FileListFile::FileInfoPathMap FileListFile::getFileInfosAsPathMap( void) const
   return fileMap;
 }
 
-const FileListFile::UserDefinedData& FileListFile::getUserDefinedData( void) const
+const FileListFile::UserDefinedData& FileListFile::getUserDefinedData() const
 {
   return userDefinedData;
 }

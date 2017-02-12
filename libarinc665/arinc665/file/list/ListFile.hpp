@@ -44,7 +44,7 @@ class ListFile: public Arinc665File
      *
      * @return The Media Set Part Number.
      **/
-    virtual string getMediaSetPn( void) const = 0;
+    virtual string getMediaSetPn() const = 0;
 
     /**
      * @brief Sets the Media Part Number, where the files belongs to.
@@ -58,34 +58,34 @@ class ListFile: public Arinc665File
      *
      * @return
      **/
-    virtual uint8_t getMediaSequenceNumber( void) const = 0;
+    virtual uint8_t getMediaSequenceNumber() const = 0;
 
     /**
      *
      * @param mediaSequenceNumber
      **/
-    virtual void setMediaSequenceNumber( const uint8_t mediaSequenceNumber) = 0;
+    virtual void setMediaSequenceNumber( uint8_t mediaSequenceNumber) = 0;
 
     /**
      *
      * @return
      **/
-    virtual uint8_t getNumberOfMediaSetMembers( void) const = 0;
+    virtual uint8_t getNumberOfMediaSetMembers() const = 0;
 
     /**
      *
      * @param numberOfMediaSetMembers
      **/
     virtual void setNumberOfMediaSetMembers(
-      const uint8_t numberOfMediaSetMembers) = 0;
+      uint8_t numberOfMediaSetMembers) = 0;
 
   protected:
-    ListFile( void);
+    ListFile();
 
     ListFile(
       const RawFile &file,
-      const Arinc665FileFormatVersion expectedFormatVersion,
-      const unsigned int skipLastBytes = 2);
+      Arinc665FileFormatVersion expectedFormatVersion,
+      unsigned int skipLastBytes = 2);
 };
 }
 }

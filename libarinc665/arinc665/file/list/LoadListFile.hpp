@@ -44,60 +44,60 @@ class LoadListFile: public ListFile
     LoadListFile( const RawFile &file);
 
     //! @copydoc Arinc665File::getArincVersion
-    virtual Arinc665Version getArincVersion( void) const override;
+    virtual Arinc665Version getArincVersion() const override;
 
     //! @copydoc ListFile::getMediaSetPn
-    virtual string getMediaSetPn( void) const override;
+    virtual string getMediaSetPn() const override;
 
     //! @copydoc ListFile::setMediaSetPn
     virtual void setMediaSetPn( const string &mediaSetPn) override;
 
     //! @copydoc ListFile::getMediaSequenceNumber
-    virtual uint8_t getMediaSequenceNumber( void) const override;
+    virtual uint8_t getMediaSequenceNumber() const override;
 
     //! @copydoc ListFile::setMediaSequenceNumber
-    virtual void setMediaSequenceNumber( const uint8_t mediaSequenceNumber) override;
+    virtual void setMediaSequenceNumber( uint8_t mediaSequenceNumber) override;
 
     //! @copydoc ListFile::getNumberOfMediaSetMembers
-    virtual uint8_t getNumberOfMediaSetMembers( void) const override;
+    virtual uint8_t getNumberOfMediaSetMembers() const override;
 
     //! @copydoc ListFile::setNumberOfMediaSetMembers
-    virtual void setNumberOfMediaSetMembers( const uint8_t numberOfMediaSetMembers) override;
+    virtual void setNumberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) override;
 
     /**
      * @brief Returns the number of loads.
      *
      * @return The number of loads.
      **/
-    unsigned int getNumberOfLoads( void) const;
+    size_t getNumberOfLoads() const;
 
     /**
      * @brief Returns the loads.
      *
      * @return The Loads.
      **/
-    const LoadInfoList& getLoadInfos( void) const;
+    const LoadInfoList& getLoadInfos() const;
 
     /**
      * @brief Returns the loads.
      *
      * @return The Loads.
      **/
-    LoadInfoList& getLoadInfos( void);
+    LoadInfoList& getLoadInfos();
 
     /**
      * @brief Returns the loads as map for easy access.
      *
      * @return The loads as map.
      */
-    LoadInfoMap getLoadInfosAsMap( void) const;
+    LoadInfoMap getLoadInfosAsMap() const;
 
     /**
      * @brief Returns the user defined data.
      *
      * @return The user defined data.
      **/
-    const UserDefinedData& getUserDefinedData( void) const;
+    const UserDefinedData& getUserDefinedData() const;
 
     /**
      * @brief Updates the user defined data.
