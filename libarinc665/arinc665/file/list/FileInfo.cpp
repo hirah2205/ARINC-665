@@ -44,7 +44,7 @@ FileInfo::FileInfoList FileInfo::getFileInfos(
   return fileList;
 }
 
-FileInfo::FileInfo( void):
+FileInfo::FileInfo():
   memberSequenceNumber( 0),
   crc( 0)
 {
@@ -74,7 +74,7 @@ FileInfo::FileInfo( RawFile::const_iterator &it)
   it += filePointer * 2;
 }
 
-FileInfo::string FileInfo::getFilename( void) const
+FileInfo::string FileInfo::getFilename() const
 {
   return filename;
 }
@@ -84,7 +84,7 @@ void FileInfo::setFilename( const string &filename)
   this->filename = filename;
 }
 
-FileInfo::string FileInfo::getPathName( void) const
+FileInfo::string FileInfo::getPathName() const
 {
   return pathName;
 }
@@ -94,7 +94,7 @@ void FileInfo::setPathName( const string &pathName)
   this->pathName = pathName;
 }
 
-FileInfo::path FileInfo::getPath( void) const
+FileInfo::path FileInfo::getPath() const
 {
   string newPathName( pathName);
 
@@ -103,7 +103,7 @@ FileInfo::path FileInfo::getPath( void) const
   return path( newPathName) / filename;
 }
 
-uint16_t FileInfo::getMemberSequenceNumber( void) const
+uint16_t FileInfo::getMemberSequenceNumber() const
 {
   return memberSequenceNumber;
 }
@@ -113,7 +113,7 @@ void FileInfo::setMemberSequenceNumber( const uint16_t memberSequenceNumber)
   this->memberSequenceNumber = memberSequenceNumber;
 }
 
-uint16_t FileInfo::getCrc( void) const
+uint16_t FileInfo::getCrc() const
 {
   return crc;
 }

@@ -45,12 +45,12 @@ BatchFile::BatchFile( const RawFile &file):
   // file crc decoded and checked within base class
 }
 
-Arinc665Version BatchFile::getArincVersion( void) const
+Arinc665Version BatchFile::getArincVersion() const
 {
   return Arinc665Version::ARINC_665_2;
 }
 
-BatchFile::string BatchFile::getPartNumber( void) const
+BatchFile::string BatchFile::getPartNumber() const
 {
   return partNumber;
 }
@@ -60,7 +60,7 @@ void BatchFile::setPartNumber( const string &partNumber)
   this->partNumber = partNumber;
 }
 
-BatchFile::string BatchFile::getComment( void) const
+BatchFile::string BatchFile::getComment() const
 {
   return comment;
 }
@@ -70,12 +70,12 @@ void BatchFile::setComment( const string &comment)
   this->comment = comment;
 }
 
-const BatchFile::ListType& BatchFile::getTargetHardwareLoadList( void) const
+const BatchFile::ListType& BatchFile::getTargetHardwareLoadList() const
 {
   return targetHardwareLoadList;
 }
 
-BatchFile::ListType& BatchFile::getTargetHardwareLoadList( void)
+BatchFile::ListType& BatchFile::getTargetHardwareLoadList()
 {
   return targetHardwareLoadList;
 }

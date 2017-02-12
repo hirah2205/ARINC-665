@@ -24,7 +24,7 @@
 namespace Arinc665 {
 namespace File {
 
-BatchListFile::BatchListFile( void):
+BatchListFile::BatchListFile():
   mediaSequenceNumber( 0),
   numberOfMediaSetMembers( 0)
 {
@@ -69,12 +69,12 @@ BatchListFile::BatchListFile( const RawFile &file):
   // file crc decoded and checked within base class
 }
 
-Arinc665Version BatchListFile::getArincVersion( void) const
+Arinc665Version BatchListFile::getArincVersion() const
 {
   return Arinc665Version::ARINC_665_2;
 }
 
-BatchListFile::string BatchListFile::getMediaSetPn( void) const
+BatchListFile::string BatchListFile::getMediaSetPn() const
 {
   return mediaSetPn;
 }
@@ -84,7 +84,7 @@ void BatchListFile::setMediaSetPn( const string &mediaSetPn)
   this->mediaSetPn = mediaSetPn;
 }
 
-uint8_t BatchListFile::getMediaSequenceNumber( void) const
+uint8_t BatchListFile::getMediaSequenceNumber() const
 {
   return mediaSequenceNumber;
 }
@@ -105,22 +105,22 @@ void BatchListFile::setNumberOfMediaSetMembers(
   this->numberOfMediaSetMembers = numberOfMediaSetMembers;
 }
 
-unsigned int BatchListFile::getNumberOfBatches( void) const
+unsigned int BatchListFile::getNumberOfBatches() const
 {
   return batchInfoList.size();
 }
 
-const BatchListFile::BatchInfoList& BatchListFile::getBatchInfos( void) const
+const BatchListFile::BatchInfoList& BatchListFile::getBatchInfos() const
 {
   return batchInfoList;
 }
 
-BatchListFile::BatchInfoList& BatchListFile::getBatchInfos( void)
+BatchListFile::BatchInfoList& BatchListFile::getBatchInfos()
 {
   return batchInfoList;
 }
 
-BatchListFile::BatchInfoMap BatchListFile::getBatchInfosAsMap( void) const
+BatchListFile::BatchInfoMap BatchListFile::getBatchInfosAsMap() const
 {
   BatchInfoMap batches;
 
@@ -137,7 +137,7 @@ BatchListFile::BatchInfoMap BatchListFile::getBatchInfosAsMap( void) const
   return batches;
 }
 
-const BatchListFile::UserDefinedData& BatchListFile::getUserDefinedData( void) const
+const BatchListFile::UserDefinedData& BatchListFile::getUserDefinedData() const
 {
   return userDefinedData;
 }

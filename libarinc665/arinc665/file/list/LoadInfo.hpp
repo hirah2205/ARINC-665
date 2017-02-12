@@ -43,21 +43,21 @@ class LoadInfo
 
     LoadInfo( RawFile::const_iterator &it);
 
-    string getPartNumber( void) const;
+    string getPartNumber() const;
 
     void setPartNumber( const string &partNumber);
 
-    string getHeaderFilename( void) const;
+    string getHeaderFilename() const;
 
     void setHeaderFilename( const string &headerFilename);
 
-    uint16_t getMemberSequenceNumber( void) const;
+    uint16_t getMemberSequenceNumber() const;
 
-    void setMemberSequenceNumber( const uint16_t memberSequenceNumber);
+    void setMemberSequenceNumber( uint16_t memberSequenceNumber);
 
-    const ThwIds& getTargetHardwareIdList( void) const;
+    const ThwIds& getTargetHardwareIdList() const;
 
-    ThwIds& getTargetHardwareIdList( void);
+    ThwIds& getTargetHardwareIdList();
 
     bool operator ==( const LoadInfo &other) const;
 

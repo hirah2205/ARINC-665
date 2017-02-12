@@ -21,129 +21,131 @@
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
-using namespace Arinc665::File;
+namespace Arinc665 {
+namespace File {
 
-LoadHeaderFile::LoadHeaderFile( void):
-	loadCrc( 0)
+LoadHeaderFile::LoadHeaderFile() :
+  loadCrc( 0)
 {
 }
 
-LoadHeaderFile::LoadHeaderFile( const RawFile &file):
-	Arinc665File( file, Arinc665FileFormatVersion::LOAD_FILE_VERSION_2, 6)
+LoadHeaderFile::LoadHeaderFile( const RawFile &file) :
+  Arinc665File( file, Arinc665FileFormatVersion::LOAD_FILE_VERSION_2, 6)
 {
-	// set processing start to position after spare
-	RawFile::const_iterator it = file.begin() + BaseHeaderOffset;
+  // set processing start to position after spare
+  RawFile::const_iterator it = file.begin() + BaseHeaderOffset;
 
-	uint32_t loadPartNumberPtr;
-	it = getInt< uint32_t>( it, loadPartNumberPtr);
+  uint32_t loadPartNumberPtr;
+  it = getInt< uint32_t>( it, loadPartNumberPtr);
 
-	uint32_t targetHardwareIdListPtr;
-	it = getInt< uint32_t>( it, targetHardwareIdListPtr);
+  uint32_t targetHardwareIdListPtr;
+  it = getInt< uint32_t>( it, targetHardwareIdListPtr);
 
-	uint32_t dataFileListPtr;
-	it = getInt< uint32_t>( it, dataFileListPtr);
+  uint32_t dataFileListPtr;
+  it = getInt< uint32_t>( it, dataFileListPtr);
 
-	uint32_t supportFileListPtr;
-	it = getInt< uint32_t>( it, supportFileListPtr);
+  uint32_t supportFileListPtr;
+  it = getInt< uint32_t>( it, supportFileListPtr);
 
-	uint32_t userDefinedDataPtr;
-	it = getInt< uint32_t>( it, userDefinedDataPtr);
+  uint32_t userDefinedDataPtr;
+  it = getInt< uint32_t>( it, userDefinedDataPtr);
 
+  //! load part number
+  it = file.begin() + loadPartNumberPtr * 2;
+  it = getString( it, partNumber);
 
-	//! load part number
-	it = file.begin() + loadPartNumberPtr * 2;
-	it = getString( it, partNumber);
+  //! target hardware id list
+  it = file.begin() + targetHardwareIdListPtr * 2;
+  it = getStringList( it, targetHardwareIdList);
 
-	//! target hardware id list
-	it = file.begin() + targetHardwareIdListPtr * 2;
-	it = getStringList( it, targetHardwareIdList);
+  // data file list
+  it = file.begin() + dataFileListPtr * 2;
+  dataFileList = LoadFileInfo::getFileList( it);
 
-	// data file list
-	it = file.begin() + dataFileListPtr * 2;
-	dataFileList = LoadFileInfo::getFileList( it);
+  // support file list
+  if ( 0 != supportFileListPtr)
+  {
+    it = file.begin() + supportFileListPtr * 2;
+    supportFileList = LoadFileInfo::getFileList( it);
+  }
 
-	// support file list
-	if (0 != supportFileListPtr)
-	{
-		it = file.begin() + supportFileListPtr * 2;
-		supportFileList = LoadFileInfo::getFileList( it);
-	}
+  // user defined data
+  if ( 0 != userDefinedDataPtr)
+  {
+    it = file.begin() + userDefinedDataPtr * 2;
+    userDefinedData.assign( it, file.end() - 6);
+  }
 
-	// user defined data
-	if (0 != userDefinedDataPtr)
-	{
-		it = file.begin() + userDefinedDataPtr * 2;
-		userDefinedData.assign( it, file.end() - 6);
-	}
+  // file crc decoded and checked within base class
 
-	// file crc decoded and checked within base class
-
-	// load crc
-	getInt< uint32_t>( it, loadCrc);
+  // load crc
+  getInt< uint32_t>( it, loadCrc);
 }
 
-Arinc665::Arinc665Version LoadHeaderFile::getArincVersion( void) const
+Arinc665::Arinc665Version LoadHeaderFile::getArincVersion() const
 {
-	return Arinc665Version::ARINC_665_2;
+  return Arinc665Version::ARINC_665_2;
 }
 
-LoadHeaderFile::string LoadHeaderFile::getPartNumber( void) const
+LoadHeaderFile::string LoadHeaderFile::getPartNumber() const
 {
-	return partNumber;
+  return partNumber;
 }
 
 void LoadHeaderFile::setPartNumber( const string &partNumber)
 {
-	this->partNumber = partNumber;
+  this->partNumber = partNumber;
 }
 
-const std::list< std::string>& LoadHeaderFile::getTargetHardwareIdList( void) const
+const std::list< std::string>& LoadHeaderFile::getTargetHardwareIdList() const
 {
-	return targetHardwareIdList;
+  return targetHardwareIdList;
 }
 
-std::list< std::string>& LoadHeaderFile::getTargetHardwareIdList( void)
+std::list< std::string>& LoadHeaderFile::getTargetHardwareIdList()
 {
-	return targetHardwareIdList;
+  return targetHardwareIdList;
 }
 
-const LoadHeaderFile::LoadFileInfoList& LoadHeaderFile::getDataFileList( void) const
+const LoadHeaderFile::LoadFileInfoList& LoadHeaderFile::getDataFileList() const
 {
-	return dataFileList;
+  return dataFileList;
 }
 
-LoadHeaderFile::LoadFileInfoList& LoadHeaderFile::getDataFileList( void)
+LoadHeaderFile::LoadFileInfoList& LoadHeaderFile::getDataFileList()
 {
-	return dataFileList;
+  return dataFileList;
 }
 
-const LoadHeaderFile::LoadFileInfoList& LoadHeaderFile::getSupportFileList( void) const
+const LoadHeaderFile::LoadFileInfoList& LoadHeaderFile::getSupportFileList() const
 {
-	return supportFileList;
+  return supportFileList;
 }
 
-LoadHeaderFile::LoadFileInfoList& LoadHeaderFile::getSupportFileList( void)
+LoadHeaderFile::LoadFileInfoList& LoadHeaderFile::getSupportFileList()
 {
-	return supportFileList;
+  return supportFileList;
 }
 
-const LoadHeaderFile::UserDefinedData& LoadHeaderFile::getUserDefinedData( void) const
+const LoadHeaderFile::UserDefinedData& LoadHeaderFile::getUserDefinedData() const
 {
-	return userDefinedData;
+  return userDefinedData;
 }
 
-void LoadHeaderFile::setUserDefinedData(
-	const UserDefinedData &userDefinedData)
+void LoadHeaderFile::setUserDefinedData( const UserDefinedData &userDefinedData)
 {
-	this->userDefinedData = userDefinedData;
+  this->userDefinedData = userDefinedData;
 }
 
-uint32_t LoadHeaderFile::getLoadCrc( void) const
+uint32_t LoadHeaderFile::getLoadCrc() const
 {
-	return loadCrc;
+  return loadCrc;
 }
 
 void LoadHeaderFile::setLoadCrc( const uint32_t loadCrc)
 {
-	this->loadCrc = loadCrc;
+  this->loadCrc = loadCrc;
+}
+
+}
 }

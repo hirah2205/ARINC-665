@@ -74,7 +74,7 @@ class Arinc665File
       unsigned int skipLastBytes = 2);
 
     //! Default destructor
-    virtual ~Arinc665File( void) noexcept = default;
+    virtual ~Arinc665File() noexcept = default;
 
     /**
      * @brief Returns the ARINC 665 version of this file.

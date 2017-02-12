@@ -41,7 +41,7 @@ class TargetHardwareLoad
      *
      * @return The target hardware id
      **/
-    string getTargetHardwareId( void) const;
+    string getTargetHardwareId() const;
 
     /**
      * @brief Updates the target hardware ID for this loads info.
@@ -56,14 +56,14 @@ class TargetHardwareLoad
      *
      * @return The list of loads (const version).
      **/
-    const ListType& getLoadList( void) const;
+    const ListType& getLoadList() const;
 
     /**
      * @brief Returns the list of available loads for this target hardware.
      *
      * @return The list of loads (modifiable version).
      **/
-    ListType& getLoadList( void);
+    ListType& getLoadList();
 
   private:
     //! The target hardware id

@@ -46,7 +46,7 @@ BatchInfo::BatchInfoList BatchInfo::getBatchInfos(
   return batchInfo;
 }
 
-BatchInfo::BatchInfo( void):
+BatchInfo::BatchInfo():
   memberSequenceNumber( 0)
 {
 }
@@ -72,7 +72,7 @@ BatchInfo::BatchInfo( RawFile::const_iterator &it)
   it += batchPointer * 2;
 }
 
-BatchInfo::string BatchInfo::getPartNumber( void) const
+BatchInfo::string BatchInfo::getPartNumber() const
 {
   return partNumber;
 }
@@ -82,7 +82,7 @@ void BatchInfo::setPartNumber( const string &partNumber)
   this->partNumber = partNumber;
 }
 
-BatchInfo::string BatchInfo::getFilename( void) const
+BatchInfo::string BatchInfo::getFilename() const
 {
   return filename;
 }
@@ -92,7 +92,7 @@ void BatchInfo::setFilename( const string &filename)
   this->filename = filename;
 }
 
-uint16_t BatchInfo::getMemberSequenceNumber( void) const
+uint16_t BatchInfo::getMemberSequenceNumber() const
 {
   return memberSequenceNumber;
 }

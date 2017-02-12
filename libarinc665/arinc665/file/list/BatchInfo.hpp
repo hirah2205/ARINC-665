@@ -37,17 +37,17 @@ class BatchInfo
 
     BatchInfo( RawFile::const_iterator &it);
 
-    string getPartNumber( void) const;
+    string getPartNumber() const;
 
     void setPartNumber( const string &partNumber);
 
-    string getFilename( void) const;
+    string getFilename() const;
 
     void setFilename( const string &filename);
 
-    uint16_t getMemberSequenceNumber( void) const;
+    uint16_t getMemberSequenceNumber() const;
 
-    void setMemberSequenceNumber( const uint16_t memberSequenceNumber);
+    void setMemberSequenceNumber( uint16_t memberSequenceNumber);
 
     /**
      * @brief Compares batch info against each other

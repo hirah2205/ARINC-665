@@ -45,7 +45,7 @@ LoadInfo::LoadInfos LoadInfo::getLoadInfos( RawFile::const_iterator &it)
   return loadList;
 }
 
-LoadInfo::LoadInfo( void):
+LoadInfo::LoadInfo():
   memberSequenceNumber( 0)
 {
 }
@@ -73,7 +73,7 @@ LoadInfo::LoadInfo( RawFile::const_iterator &it)
   it += loadPointer * 2;
 }
 
-LoadInfo::string LoadInfo::getPartNumber( void) const
+LoadInfo::string LoadInfo::getPartNumber() const
 {
   return partNumber;
 }
@@ -83,7 +83,7 @@ void LoadInfo::setPartNumber( const string &partNumber)
   this->partNumber = partNumber;
 }
 
-LoadInfo::string LoadInfo::getHeaderFilename( void) const
+LoadInfo::string LoadInfo::getHeaderFilename() const
 {
   return headerFilename;
 }
@@ -93,7 +93,7 @@ void LoadInfo::setHeaderFilename( const string &headerFilename)
   this->headerFilename = headerFilename;
 }
 
-uint16_t LoadInfo::getMemberSequenceNumber( void) const
+uint16_t LoadInfo::getMemberSequenceNumber() const
 {
   return memberSequenceNumber;
 }
@@ -103,12 +103,12 @@ void LoadInfo::setMemberSequenceNumber( const uint16_t memberSequenceNumber)
   this->memberSequenceNumber = memberSequenceNumber;
 }
 
-const LoadInfo::ThwIds& LoadInfo::getTargetHardwareIdList( void) const
+const LoadInfo::ThwIds& LoadInfo::getTargetHardwareIdList() const
 {
   return targetHardwareIds;
 }
 
-LoadInfo::ThwIds& LoadInfo::getTargetHardwareIdList( void)
+LoadInfo::ThwIds& LoadInfo::getTargetHardwareIdList()
 {
   return targetHardwareIds;
 }

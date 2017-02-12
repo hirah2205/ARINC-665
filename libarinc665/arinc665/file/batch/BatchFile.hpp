@@ -42,19 +42,19 @@ class BatchFile: public Arinc665File
 
     BatchFile( const RawFile &file);
 
-    virtual Arinc665Version getArincVersion( void) const override;
+    virtual Arinc665Version getArincVersion() const override;
 
-    string getPartNumber( void) const;
+    string getPartNumber() const;
 
     void setPartNumber( const string &partNumber);
 
-    string getComment( void) const;
+    string getComment() const;
 
     void setComment( const string &comment);
 
-    const ListType& getTargetHardwareLoadList( void) const;
+    const ListType& getTargetHardwareLoadList() const;
 
-    ListType& getTargetHardwareLoadList( void);
+    ListType& getTargetHardwareLoadList();
 
   private:
     string partNumber;

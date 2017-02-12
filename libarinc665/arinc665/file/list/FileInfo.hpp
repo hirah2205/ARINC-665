@@ -45,23 +45,23 @@ class FileInfo
 
     FileInfo( RawFile::const_iterator &it);
 
-    string getFilename( void) const;
+    string getFilename() const;
 
     void setFilename( const string &filename);
 
-    string getPathName( void) const;
+    string getPathName() const;
 
     void setPathName( const string &pathName);
 
-    path getPath( void) const;
+    path getPath() const;
 
-    uint16_t getMemberSequenceNumber( void) const;
+    uint16_t getMemberSequenceNumber() const;
 
-    void setMemberSequenceNumber( const uint16_t memberSequenceNumber);
+    void setMemberSequenceNumber( uint16_t memberSequenceNumber);
 
-    uint16_t getCrc( void) const;
+    uint16_t getCrc() const;
 
-    void setCrc( const uint16_t crc);
+    void setCrc( uint16_t crc);
 
     bool operator ==( const FileInfo &other) const;
 

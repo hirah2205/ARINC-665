@@ -31,11 +31,11 @@ class BatchLoadInfo
 {
   public:
     using string = std::string;
-    string getHeaderFilename( void) const;
+    string getHeaderFilename() const;
 
     void setHeaderFilename( const string &headerFilename);
 
-    string getPartNumber( void) const;
+    string getPartNumber() const;
 
     void setPartNumber( const string &partNumber);
 

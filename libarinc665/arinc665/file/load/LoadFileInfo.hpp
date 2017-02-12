@@ -46,8 +46,8 @@ class LoadFileInfo
     LoadFileInfo(
       const string &name,
       const string partNumber,
-      const uint32_t length,
-      const uint16_t crc);
+      uint32_t length,
+      uint16_t crc);
 
     LoadFileInfo( RawFile::const_iterator &it);
 

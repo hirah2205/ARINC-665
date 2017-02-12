@@ -68,7 +68,7 @@ class LoadHeaderFile: public Arinc665File
 
     uint32_t getLoadCrc() const;
 
-    void setLoadCrc( const uint32_t loadCrc);
+    void setLoadCrc( uint32_t loadCrc);
 
   private:
     //! Part number of the load
