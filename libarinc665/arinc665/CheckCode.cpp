@@ -71,7 +71,9 @@ void CheckCode::set( const string &checkCode)
   //! @throw std::invalid_argument When invalid string is supplied
   unsigned long parsedCheckCode = std::stoul( checkCode, 0, 16);
 
-  this->checkCode = parsedCheckCode;
+  assert( parsedCheckCode <= 255U);
+
+  this->checkCode = static_cast< uint8_t>( parsedCheckCode);
 }
 
 void CheckCode::calculate(
