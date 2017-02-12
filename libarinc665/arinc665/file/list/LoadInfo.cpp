@@ -106,7 +106,7 @@ uint8_t LoadInfo::getMemberSequenceNumber() const
   return memberSequenceNumber;
 }
 
-void LoadInfo::setMemberSequenceNumber( const uint16_t memberSequenceNumber)
+void LoadInfo::setMemberSequenceNumber( const uint8_t memberSequenceNumber)
 {
   this->memberSequenceNumber = memberSequenceNumber;
 }

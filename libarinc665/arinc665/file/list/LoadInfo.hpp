@@ -53,7 +53,7 @@ class LoadInfo
 
     uint8_t getMemberSequenceNumber() const;
 
-    void setMemberSequenceNumber( uint16_t memberSequenceNumber);
+    void setMemberSequenceNumber( uint8_t memberSequenceNumber);
 
     const ThwIds& getTargetHardwareIdList() const;
 

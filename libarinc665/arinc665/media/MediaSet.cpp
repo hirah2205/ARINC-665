@@ -104,7 +104,9 @@ MediumPtr MediaSet::addMedium()
     return MediumPtr();
   }
 
-  MediumPtr medium( std::make_shared< Medium>( shared_from_this(), media.size()));
+  MediumPtr medium( std::make_shared< Medium>(
+    shared_from_this(),
+    static_cast< uint8_t>( media.size())));
 
   media.push_back( medium);
 
