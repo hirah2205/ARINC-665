@@ -7,10 +7,11 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.5)
+cmake_minimum_required( VERSION 3.7)
 
 project( "ARINC 665")
 
-add_subdirectory( libarinc665)
-add_subdirectory( libarinc665_qt)
+add_subdirectory( arinc665)
+add_subdirectory( arinc665_qt)
+
 add_subdirectory( application)

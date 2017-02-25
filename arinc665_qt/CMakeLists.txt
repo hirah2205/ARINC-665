@@ -26,13 +26,13 @@ set( CMAKE_AUTOMOC ON)
 add_library(
   arinc665_qt
   
-  arinc665_qt/Arinc665Qt.hpp
-  arinc665_qt/QMediaSetModel.hpp
-  arinc665_qt/QMediaSetModel.cpp
+  Arinc665Qt.hpp
+  QMediaSetModel.hpp
+  QMediaSetModel.cpp
 #  ${bhm_qt_ui}
   )
 
-target_include_directories( arinc665_qt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories( arinc665_qt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
 target_include_directories( arinc665_qt PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_libraries( 
