@@ -27,20 +27,20 @@ Arinc665::FileClassType FileFactory::getArincFileType( const RawFile &file)
 
   switch (formatVersion)
   {
-    case static_cast< uint16_t>( LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_2):
-    case static_cast< uint16_t>( LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_3):
-      return FileClassType::ARINC_665_FILE_CLASS_LOAD_FILE;
+    case static_cast< uint16_t>( LoadFileFormatVersion::Version2):
+    case static_cast< uint16_t>( LoadFileFormatVersion::Version3):
+      return FileClassType::LoadFile;
 
-    case static_cast< uint16_t>( BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_2):
-    case static_cast< uint16_t>( BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_3):
-      return FileClassType::ARINC_665_FILE_CLASS_BATCH_FILE;
+    case static_cast< uint16_t>( BatchFileFormatVersion::Version2):
+    case static_cast< uint16_t>( BatchFileFormatVersion::Version3):
+      return FileClassType::BatchFile;
 
-    case static_cast< uint16_t>( MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_2):
-    case static_cast< uint16_t>( MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_3):
-      return FileClassType::ARINC_665_FILE_CLASS_MEDIA_FILE;
+    case static_cast< uint16_t>( MediaFileFormatVersion::Version2):
+    case static_cast< uint16_t>( MediaFileFormatVersion::Version3):
+      return FileClassType::MediaFile;
 
     default:
-      return FileClassType::ARINC_665_FILE_CLASS_INVALID;
+      return FileClassType::Invalid;
   }
 }
 
@@ -51,12 +51,12 @@ Arinc665::LoadFileFormatVersion FileFactory::getLoadFileFormatVersion(
 
   switch (formatVersion)
   {
-    case static_cast< uint16_t>( LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_2):
-    case static_cast< uint16_t>( LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_3):
+    case static_cast< uint16_t>( LoadFileFormatVersion::Version2):
+    case static_cast< uint16_t>( LoadFileFormatVersion::Version3):
       break;
 
     default:
-      return LoadFileFormatVersion::ARINC_665_LOAD_FILE_INVALID;
+      return LoadFileFormatVersion::Invalid;
   }
 
   return static_cast< LoadFileFormatVersion>( formatVersion);
@@ -69,12 +69,12 @@ Arinc665::BatchFileFormatVersion FileFactory::getBatchFileFormatVersion(
 
   switch (formatVersion)
   {
-    case static_cast< uint16_t>( BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_2):
-    case static_cast< uint16_t>( BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_3):
+    case static_cast< uint16_t>( BatchFileFormatVersion::Version2):
+    case static_cast< uint16_t>( BatchFileFormatVersion::Version3):
       break;
 
     default:
-      return BatchFileFormatVersion::ARINC_665_BATCH_FILE_INVALID;
+      return BatchFileFormatVersion::Invalid;
   }
 
   return static_cast< BatchFileFormatVersion>( formatVersion);
@@ -87,12 +87,12 @@ Arinc665::MediaFileFormatVersion FileFactory::getMediaFileFormatVersion(
 
   switch (formatVersion)
   {
-    case static_cast< uint16_t>( MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_2):
-    case static_cast< uint16_t>( MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_3):
+    case static_cast< uint16_t>( MediaFileFormatVersion::Version2):
+    case static_cast< uint16_t>( MediaFileFormatVersion::Version3):
       break;
 
     default:
-      return MediaFileFormatVersion::ARINC_665_MEDIA_FILE_INVALID;
+      return MediaFileFormatVersion::Invalid;
   }
 
   return static_cast< MediaFileFormatVersion>( formatVersion);
@@ -105,61 +105,61 @@ Arinc665::FileType FileFactory::getFileType(
 
   if ( filenameN == ListOfLoadsName)
   {
-    return FileType::ARINC_665_FILE_TYPE_LOAD_LIST;
+    return FileType::LoadList;
   }
 
   if ( filenameN == ListOfBatchesName)
   {
-    return FileType::ARINC_665_FILE_TYPE_BATCH_LIST;
+    return FileType::BatchList;
   }
 
   if ( filenameN == ListOfFilesName)
   {
-    return FileType::ARINC_665_FILE_TYPE_FILE_LIST;
+    return FileType::FileList;
   }
 
   std::string extension = filename.extension().string();
 
   if ( extension == LoadUploadHeaderExtension)
   {
-    return FileType::ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER;
+    return FileType::LoadUploadHeader;
   }
 
   if ( extension == BatchFileExtension)
   {
-    return FileType::ARINC_665_FILE_TYPE_BATCH_FILE;
+    return FileType::BatchFile;
   }
 
-  return FileType::ARINC_665_FILE_TYPE_INVALID;
+  return FileType::Invalid;
 }
 
 FileListFile FileFactory::getFileListFile( const RawFile &file)
 {
-	return FileListFile( file);
+  return FileListFile( file);
 }
 
 LoadListFile FileFactory::getLoadListFile( const RawFile &file)
 {
-	return LoadListFile( file);
+  return LoadListFile( file);
 }
 
 #if 0
 BatchListFile FileFactory::getBatchListFile(
-	const RawFile &file)
+  const RawFile &file)
 {
-	return BatchListFile( file);
+  return BatchListFile( file);
 }
 #endif
 
 LoadHeaderFile FileFactory::getLoadHeaderFile( const RawFile &file)
 {
-	return LoadHeaderFile( file);
+  return LoadHeaderFile( file);
 }
 
 #if 0
 BatchFile FileFactory::getBatchFile( const RawFile &file)
 {
-	return BatchFile( file);
+  return BatchFile( file);
 }
 #endif
 

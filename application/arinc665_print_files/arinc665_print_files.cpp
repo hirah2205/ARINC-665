@@ -33,8 +33,6 @@
 #include <fstream>
 #include <iostream>
 
-using boost::filesystem::path;
-
 void list_luh( const boost::filesystem::path &luhFile)
 {
   using Arinc665::File::LoadHeaderFile;
@@ -223,7 +221,7 @@ void list_files_lum( const boost::filesystem::path &filesLum)
   }
   catch ( std::exception &e)
   {
-    std::cout << "std exception: " << e.what() << std::endl;
+    std::cout << "std::exception: " << e.what() << std::endl;
   }
   catch ( ...)
   {
@@ -250,23 +248,23 @@ static void list_files( const boost::filesystem::path &loadDir)
 
       switch ( Arinc665::File::FileFactory::getFileType( itr->path().filename()))
       {
-        case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_FILE:
+        case Arinc665::FileType::BatchFile:
           std::cout << "ARINC 665 BATCH file";
           break;
 
-        case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER:
+        case Arinc665::FileType::LoadUploadHeader:
           std::cout << "ARINC 665 LOAD UPLOAD HEADER file";
           break;
 
-        case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_LIST:
+        case Arinc665::FileType::LoadList:
           std::cout << "ARINC 665 LOAD LIST file";
           break;
 
-        case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_LIST:
+        case Arinc665::FileType::BatchList:
           std::cout << "ARINC 665 BATCH LIST file";
           break;
 
-        case Arinc665::FileType::ARINC_665_FILE_TYPE_FILE_LIST:
+        case Arinc665::FileType::FileList:
           std::cout << "ARINC 665 FILE LIST file";
           break;
 
@@ -279,22 +277,22 @@ static void list_files( const boost::filesystem::path &loadDir)
 
       switch ( Arinc665::File::FileFactory::getFileType( itr->path().filename()))
       {
-        case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_FILE:
+        case Arinc665::FileType::BatchFile:
           break;
 
-        case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER:
+        case Arinc665::FileType::LoadUploadHeader:
           list_file( itr->path());
           list_luh( itr->path());
           break;
 
-        case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_LIST:
+        case Arinc665::FileType::LoadList:
           list_loads_lum( itr->path());
           break;
 
-        case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_LIST:
+        case Arinc665::FileType::BatchList:
           break;
 
-        case Arinc665::FileType::ARINC_665_FILE_TYPE_FILE_LIST:
+        case Arinc665::FileType::FileList:
           list_files_lum( itr->path());
           break;
 

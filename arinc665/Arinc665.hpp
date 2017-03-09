@@ -53,14 +53,14 @@ enum class Arinc665Version
 enum class FileClassType
 {
   //! ARINC 665 Load file
-  ARINC_665_FILE_CLASS_LOAD_FILE,
+  LoadFile,
   //! ARINC 665 Batch file
-  ARINC_665_FILE_CLASS_BATCH_FILE,
+  BatchFile,
   //! ARINC 665 Media files (List files)
-  ARINC_665_FILE_CLASS_MEDIA_FILE,
+  MediaFile,
 
   //! None ARINC 665 File (Not specified through standard)
-  ARINC_665_FILE_CLASS_INVALID
+  Invalid
 };
 
 /**
@@ -71,12 +71,12 @@ enum class FileClassType
 enum class LoadFileFormatVersion : uint16_t
 {
   //! ARINC 665-2 version of load file
-  ARINC_665_LOAD_FILE_VERSION_2 = 0x8003,
+  Version2 = 0x8003,
   //! ARINC 665-3 version of load file
-  ARINC_665_LOAD_FILE_VERSION_3 = 0x8004,
+  Version3 = 0x8004,
 
   //! invalid value
-  ARINC_665_LOAD_FILE_INVALID   = 0xFFFF
+  Invalid  = 0xFFFF
 };
 
 /**
@@ -87,12 +87,12 @@ enum class LoadFileFormatVersion : uint16_t
 enum class BatchFileFormatVersion : uint16_t
 {
   //! ARINC 665-2 version of batch file
-  ARINC_665_BATCH_FILE_VERSION_2 = 0x9003,
+  Version2 = 0x9003,
   //! ARINC 665-3 version of batch file
-  ARINC_665_BATCH_FILE_VERSION_3 = 0x9004,
+  Version3 = 0x9004,
 
   //! invalid value
-  ARINC_665_BATCH_FILE_INVALID   = 0xFFFF
+  Invalid  = 0xFFFF
 };
 
 /**
@@ -106,31 +106,25 @@ enum class BatchFileFormatVersion : uint16_t
 enum class MediaFileFormatVersion : uint16_t
 {
   //! ARINC 665-2 version of media file
-  ARINC_665_MEDIA_FILE_VERSION_2 = 0xA003,
+  Version2 = 0xA003,
   //! ARINC 665-3 version of media file
-  ARINC_665_MEDIA_FILE_VERSION_3 = 0xA004,
+  Version3 = 0xA004,
 
   //! invalid value
-  ARINC_665_MEDIA_FILE_INVALID   = 0xFFFF
+  Invalid  = 0xFFFF
 };
 
 //! All ARINC 665 file types combined
 enum class Arinc665FileFormatVersion : uint16_t
 {
-  LOAD_FILE_VERSION_2 = static_cast< uint16_t>(
-    LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_2),
-  LOAD_FILE_VERSION_3 =	static_cast< uint16_t>(
-    LoadFileFormatVersion::ARINC_665_LOAD_FILE_VERSION_3),
+  LOAD_FILE_VERSION_2 = static_cast< uint16_t>( LoadFileFormatVersion::Version2),
+  LOAD_FILE_VERSION_3 = static_cast< uint16_t>( LoadFileFormatVersion::Version3),
 
-  BATCH_FILE_VERSION_2 = static_cast< uint16_t>(
-    BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_2),
-  BATCH_FILE_VERSION_3 = static_cast< uint16_t>(
-    BatchFileFormatVersion::ARINC_665_BATCH_FILE_VERSION_3),
+  BATCH_FILE_VERSION_2 = static_cast< uint16_t>( BatchFileFormatVersion::Version2),
+  BATCH_FILE_VERSION_3 = static_cast< uint16_t>( BatchFileFormatVersion::Version3),
 
-  MEDIA_FILE_VERSION_2 = static_cast< uint16_t>(
-    MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_2),
-  MEDIA_FILE_VERSION_3 = static_cast< uint16_t>(
-    MediaFileFormatVersion::ARINC_665_MEDIA_FILE_VERSION_3),
+  MEDIA_FILE_VERSION_2 = static_cast< uint16_t>( MediaFileFormatVersion::Version2),
+  MEDIA_FILE_VERSION_3 = static_cast< uint16_t>( MediaFileFormatVersion::Version3),
 
   ARINC_665_FILE_INVALID   = 0xFFFF  //!< invalid value
 };
@@ -138,13 +132,13 @@ enum class Arinc665FileFormatVersion : uint16_t
 //! @brief ARINC 665 file types
 enum class FileType
 {
-  ARINC_665_FILE_TYPE_BATCH_FILE,         //!< ARINC 665 batch file
-  ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER, //!< ARINC 665 load upload header file
-  ARINC_665_FILE_TYPE_LOAD_LIST,          //!< ARINC 665 load list file
-  ARINC_665_FILE_TYPE_BATCH_LIST,         //!< ARINC 665 batch list file
-  ARINC_665_FILE_TYPE_FILE_LIST,          //!< ARINC 665 file list file
+  BatchFile,        //!< ARINC 665 batch file
+  LoadUploadHeader, //!< ARINC 665 load upload header file
+  LoadList,         //!< ARINC 665 load list file
+  BatchList,        //!< ARINC 665 batch list file
+  FileList,         //!< ARINC 665 file list file
 
-  ARINC_665_FILE_TYPE_INVALID             //!< invalid value
+  Invalid           //!< invalid value
 };
 
 //! The default filename of the list of files: "FILES.LUM"

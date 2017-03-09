@@ -194,8 +194,8 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
 
     switch ( FileFactory::getFileType( fileInfos[i].getFilename()))
     {
-      case FileType::ARINC_665_FILE_TYPE_LOAD_LIST:
-      case FileType::ARINC_665_FILE_TYPE_BATCH_LIST:
+      case FileType::LoadList:
+      case FileType::BatchList:
         // skip test of CRC and Member Sequence Number
         break;
 

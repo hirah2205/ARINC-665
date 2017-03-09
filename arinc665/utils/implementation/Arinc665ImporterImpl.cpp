@@ -498,18 +498,18 @@ void Arinc665ImporterImpl::addFiles()
 
     switch ( fileType)
     {
-      case Arinc665::FileType::ARINC_665_FILE_TYPE_FILE_LIST:
-      case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_LIST:
-      case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_LIST:
+      case Arinc665::FileType::FileList:
+      case Arinc665::FileType::LoadList:
+      case Arinc665::FileType::BatchList:
         // List files are ignored
         continue;
 
-      case Arinc665::FileType::ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER:
+      case Arinc665::FileType::LoadUploadHeader:
         // load header files are handled later - all regular files must be loaded first
         loadHeaders.insert( fileInfo);
         continue;
 
-      case Arinc665::FileType::ARINC_665_FILE_TYPE_BATCH_FILE:
+      case Arinc665::FileType::BatchFile:
         // batch files are handled later - all load header files must be loaded first
         batches.insert( fileInfo);
         continue;
