@@ -35,8 +35,11 @@ add_library(
   ProductIdentifier.hpp
   ProductIdentifier.cpp
  
+  file/Arinc665File.hpp
   file/Arinc665File.cpp
+  file/FileFactory.hpp
   file/FileFactory.cpp
+  file/StringHelper.hpp
   file/StringHelper.cpp
  
   file/list/ListFile.hpp
@@ -54,7 +57,9 @@ add_library(
   file/list/BatchListFile.hpp
   file/list/BatchListFile.cpp
  
+  file/load/LoadHeaderFile.hpp
   file/load/LoadHeaderFile.cpp
+  file/load/LoadFileInfo.hpp
   file/load/LoadFileInfo.cpp
  
   file/batch/BatchFile.hpp
@@ -82,18 +87,18 @@ add_library(
   media/BatchInfo.hpp
   media/BatchInfo.cpp
 
-  utils/Utils.hpp   
-  utils/Arinc665Utils.hpp   
-  utils/Arinc665Utils.cpp   
-  utils/Arinc665Xml.cpp
+  utils/Utils.hpp
+  utils/Arinc665Utils.hpp
+  utils/Arinc665Utils.cpp
   utils/Arinc665Xml.hpp
+  utils/Arinc665Xml.cpp
+  
   utils/implementation/Arinc665ImporterImpl.hpp
   utils/implementation/Arinc665ImporterImpl.cpp
   utils/implementation/Arinc665XmlPugiXmlImpl.hpp
   utils/implementation/Arinc665XmlPugiXmlImpl.cpp
   )
 
-target_include_directories( arinc665 SYSTEM PUBLIC ${Boost_INCLUDE_DIRS})
 target_include_directories( arinc665 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 target_link_libraries( arinc665 helper pugixml Boost::filesystem)
@@ -115,4 +120,4 @@ add_library(
 
 target_include_directories( arinc665_test PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES>)
 
-GENERATE_DOCUMENTATION()
+add_documentation( TARGET arinc665)

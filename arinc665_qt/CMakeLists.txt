@@ -40,10 +40,6 @@ target_link_libraries(
   arinc665
   Qt5::Widgets)
 
-set( 
-  DOXYGEN_TAGFILES 
-  "libhelper.TAGFILE=../../libhelper/html libarinc665.TAGFILE=../../libarinc665/html")
-
-GENERATE_DOCUMENTATION()
+add_documentation( TARGET arinc665_qt)
 
 endif(Qt5Widgets_FOUND)
