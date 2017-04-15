@@ -7,9 +7,9 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.7)
+cmake_minimum_required( VERSION 3.8)
 
-project ( "ARINC 665 Library")
+project ( "ARINC 665 Library" VERSION 1.0)
 
 find_package( 
   Boost
@@ -99,9 +99,11 @@ add_library(
   utils/implementation/Arinc665XmlPugiXmlImpl.cpp
   )
 
-target_include_directories( arinc665 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
+target_include_directories( arinc665 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>)
 
 target_link_libraries( arinc665 helper pugixml Boost::filesystem)
+
+target_compile_features( arinc665 PUBLIC cxx_std_14)
 
 
 add_library( 
@@ -121,3 +123,28 @@ add_library(
 target_include_directories( arinc665_test PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES>)
 
 add_documentation( TARGET arinc665)
+
+# INSTALL
+include( GNUInstallDirs)
+
+install(
+  TARGETS arinc665
+  COMPONENT runtime
+  EXPORT arinc665-config 
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+install(
+  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  COMPONENT development
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  FILES_MATCHING
+    PATTERN "*.hpp"
+    PATTERN "*Test.*" EXCLUDE
+    PATTERN "implementation" EXCLUDE)
+
+install( 
+  EXPORT arinc665-config 
+  COMPONENT development
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
