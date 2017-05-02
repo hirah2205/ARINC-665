@@ -11,11 +11,11 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class Arinc665Qt::QMediaSetModelModel.
+ * @brief Declaration of class Arinc665Qt::MediaSetModelModel.
  **/
 
-#ifndef ARINC665_QT_QMEDIASETMODEL_HPP
-#define ARINC665_QT_QMEDIASETMODEL_HPP
+#ifndef ARINC665_QT_MEDIASETMODEL_HPP
+#define ARINC665_QT_MEDIASETMODEL_HPP
 
 #include <arinc665_qt/Arinc665Qt.hpp>
 
@@ -28,18 +28,18 @@ namespace Arinc665Qt {
 /**
  * @brief QT Adaption of ARINC 665 Media Set.
  **/
-class QMediaSetModelModel: public QAbstractItemModel
+class MediaSetModelModel: public QAbstractItemModel
 {
   Q_OBJECT
 
   public:
     using MediaSetPtr = Arinc665::Media::MediaSetPtr;
 
-    QMediaSetModelModel(
+    MediaSetModelModel(
       MediaSetPtr mediaSet = MediaSetPtr(),
       QObject * parent = nullptr);
 
-    virtual ~QMediaSetModelModel( void) = default;
+    virtual ~MediaSetModelModel( void) = default;
 
     virtual QModelIndex index(
       int row,

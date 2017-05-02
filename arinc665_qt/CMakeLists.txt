@@ -7,7 +7,7 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.7)
+cmake_minimum_required( VERSION 3.8)
 
 project( "ARINC 665 QT Library")
 
@@ -27,8 +27,8 @@ add_library(
   arinc665_qt
   
   Arinc665Qt.hpp
-  QMediaSetModel.hpp
-  QMediaSetModel.cpp
+  MediaSetModel.hpp
+  MediaSetModel.cpp
 #  ${bhm_qt_ui}
   )
 

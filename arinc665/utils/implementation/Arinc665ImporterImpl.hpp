@@ -39,12 +39,11 @@ namespace Utils {
 class Arinc665ImporterImpl
 {
   public:
-    using MediaSetPtr = Arinc665Utils::MediaSetPtr;
     using path = Arinc665Utils::path;
 
     Arinc665ImporterImpl( Arinc665Utils::GetMediumPathHandler getMediumPathHandler);
 
-    MediaSetPtr operator ()();
+    Media::MediaSetPtr operator()();
 
   private:
     using RawFile = Arinc665::File::RawFile;
@@ -89,7 +88,7 @@ class Arinc665ImporterImpl
     Arinc665Utils::GetMediumPathHandler getMediumPathHandler;
 
     //! The Media Set
-    MediaSetPtr mediaSet;
+    Media::MediaSetPtr mediaSet;
 
     boost::optional < FileListFile> fileListFile;
     boost::optional < LoadListFile> loadListFile;

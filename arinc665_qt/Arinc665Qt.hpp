@@ -21,7 +21,11 @@
  * @brief Namespace of ARINC 665 QT implementation
  **/
 namespace Arinc665Qt {
-  class QMediaSetModelModel;
+
+class MediaSetModelModel;
+class LoadModel;
+class BatchModel;
+
 }
 
 #endif

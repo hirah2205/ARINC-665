@@ -24,6 +24,11 @@
 namespace Arinc665 {
 namespace Media {
 
+/**
+ * @brief Base class for media set elements.
+ *
+ * Provides common attributes.
+ */
 class Base
 {
   public:

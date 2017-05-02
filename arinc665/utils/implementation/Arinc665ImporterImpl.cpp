@@ -33,7 +33,7 @@ Arinc665ImporterImpl::Arinc665ImporterImpl(
 {
 }
 
-Arinc665ImporterImpl::MediaSetPtr Arinc665ImporterImpl::operator ()()
+Media::MediaSetPtr Arinc665ImporterImpl::operator ()()
 {
   path mediumPath = getMediumPathHandler( 1);
 

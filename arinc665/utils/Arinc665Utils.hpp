@@ -31,20 +31,20 @@ namespace Utils {
 class Arinc665Utils
 {
   public:
-    using MediaSetPtr = Arinc665::Media::MediaSetPtr;
-    using ConstMediaSetPtr = Arinc665::Media::ConstMediaSetPtr;
     using path = boost::filesystem::path;
 
     //! Handler, which is called to obtain the path to the next medium.
     using GetMediumPathHandler = std::function< path( uint8_t mediumNumber)>;
-    //! Handler, which is called to obtain the path to the requested file
-    using CopyFileHandler = std::function< path( const path &destination)>;
+
+    //! Handler, which is called to generate the given file at the requested position.
+    using CopyFileHandler =
+      std::function< path( Media::ConstFilePtr file, const path &destination)>;
 
     /**
      * The ARINC 665 Media Set importer.
      * Returns the MediaSet
      **/
-    using Arinc665Importer = std::function< MediaSetPtr()>;
+    using Arinc665Importer = std::function< Media::MediaSetPtr()>;
 
     /**
      * The ARINC 665 Media Set exporter.
@@ -81,7 +81,7 @@ class Arinc665Utils
      * @return The ARINC 665 Media Set exporter.
      **/
     static Arinc665Exporter createArinc665Exporter(
-      ConstMediaSetPtr mediaSet,
+      Media::ConstMediaSetPtr mediaSet,
       GetMediumPathHandler getMediumPathHandler,
       CopyFileHandler copyFileHandler,
       bool createBatchFiles = true,
