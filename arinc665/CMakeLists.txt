@@ -22,19 +22,19 @@ add_library(
   Arinc665.hpp
   Arinc665.cpp
   Arinc665Crc.hpp
-  PartNumber.hpp
-  PartNumber.cpp
-  
-  TargetHardwareId.hpp
-  TargetHardwareId.cpp
-  ManufacturerCode.hpp
-  ManufacturerCode.cpp
+  Arinc665Exception.hpp
+  Arinc665Logger.hpp
   CheckCode.hpp
   CheckCode.cpp
-  
+  ManufacturerCode.hpp
+  ManufacturerCode.cpp
+  PartNumber.hpp
+  PartNumber.cpp
   ProductIdentifier.hpp
   ProductIdentifier.cpp
- 
+  TargetHardwareId.hpp
+  TargetHardwareId.cpp
+
   file/Arinc665File.hpp
   file/Arinc665File.cpp
   file/FileFactory.hpp
