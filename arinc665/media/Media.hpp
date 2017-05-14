@@ -19,8 +19,6 @@
 
 #include <arinc665/Arinc665.hpp>
 
-#include <boost/filesystem/path.hpp>
-
 #include <map>
 #include <vector>
 #include <memory>
@@ -48,6 +46,7 @@ class Medium;
 using ConstMediumPtr = std::shared_ptr< const Medium>;
 using MediumPtr = std::shared_ptr< Medium>;
 using Media = std::vector< MediumPtr>;
+using ConstMedia = std::vector< ConstMediumPtr>;
 
 class Directory;
 using ConstDirectoryPtr = std::shared_ptr< const Directory>;
@@ -63,9 +62,9 @@ class File;
 class Load;
 class Batch;
 
-typedef std::shared_ptr< const BaseFile> ConstBaseFilePtr;
-typedef std::shared_ptr< BaseFile> BaseFilePtr;
-typedef std::weak_ptr< BaseFile> WeakBaseFilePtr;
+using ConstBaseFilePtr = std::shared_ptr< const BaseFile>;
+using BaseFilePtr = std::shared_ptr< BaseFile>;
+using WeakBaseFilePtr = std::weak_ptr< BaseFile>;
 
 using Files = std::vector< BaseFilePtr>;
 using ConstFiles = std::vector< ConstBaseFilePtr>;
@@ -87,9 +86,6 @@ using ConstBatches = std::vector< ConstBatchPtr>;
 
 using ConstDirectoryFileTuple  = std::tuple< const Directory&, ConstFilePtr>;
 using DirectoryFileTuple = std::tuple< Directory&, FilePtr>;
-
-using FilePathMapping = std::map< FilePtr, boost::filesystem::path>;
-using ConstFilePathMapping = std::map< const FilePtr, boost::filesystem::path>;
 
 }
 }

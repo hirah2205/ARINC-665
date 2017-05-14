@@ -88,6 +88,16 @@ class MediaSet:
     uint8_t getNumberOfMedia() const;
 
     /**
+     * @brief Returns all media.
+     *
+     * @return All media of the media set.
+     **/
+    ConstMedia getMedia() const;
+
+    //! @copydoc MediaSet::getMedia() const
+    Media getMedia();
+
+    /**
      * @brief Return the medium with the requested index.
      *
      * @param[in] index

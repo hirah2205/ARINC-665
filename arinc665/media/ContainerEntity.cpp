@@ -16,8 +16,10 @@
 
 #include "ContainerEntity.hpp"
 
-#include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/media/Directory.hpp>
+#include <arinc665/media/Medium.hpp>
+
+#include <arinc665/Arinc665Exception.hpp>
 
 namespace Arinc665{
 namespace Media {
@@ -582,6 +584,36 @@ ContainerEntityPtr ContainerEntity::getParent()
 ConstContainerEntityPtr ContainerEntity::getParent() const
 {
   return parent.lock();
+}
+
+MediumPtr ContainerEntity::getMedium()
+{
+  if (getType() == Type::Medium)
+  {
+    return std::dynamic_pointer_cast< Medium>( shared_from_this());
+  }
+
+  if (parent.expired())
+  {
+    return {};
+  }
+
+  return parent.lock()->getMedium();
+}
+
+ConstMediumPtr ContainerEntity::getMedium() const
+{
+  if (getType() == Type::Medium)
+  {
+    return std::dynamic_pointer_cast< const Medium>( shared_from_this());
+  }
+
+  if (parent.expired())
+  {
+    return {};
+  }
+
+  return parent.lock()->getMedium();
 }
 
 ContainerEntity::ContainerEntity( ContainerEntityPtr parent):

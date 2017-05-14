@@ -17,11 +17,11 @@
 #include "MediaSet.hpp"
 
 #include <arinc665/media/Medium.hpp>
+
 #include <arinc665/Arinc665Exception.hpp>
+#include <arinc665/Arinc665Logger.hpp>
 
 #include <boost/foreach.hpp>
-
-#include <helper/Logger.hpp>
 
 #include <cassert>
 
@@ -75,12 +75,21 @@ uint8_t MediaSet::getNumberOfMedia() const
   return static_cast< uint8_t>( media.size());
 }
 
+ConstMedia MediaSet::getMedia() const
+{
+  return ConstMedia( media.begin(), media.end());
+}
+
+Media MediaSet::getMedia()
+{
+  return media;
+}
 
 ConstMediumPtr MediaSet::getMedium( const uint8_t index) const
 {
   if (0 == index)
   {
-    return MediumPtr();
+    return {};
   }
 
   return media.at( index - 1);
@@ -90,7 +99,7 @@ MediumPtr MediaSet::getMedium( const uint8_t index)
 {
   if (0 == index)
   {
-    return MediumPtr();
+    return {};
   }
 
   return media.at( index - 1);
@@ -100,7 +109,8 @@ MediumPtr MediaSet::addMedium()
 {
   if (media.size() >= 255)
   {
-    BOOST_LOG_TRIVIAL( warning) << "Maximum number of media reached";
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning) <<
+      "Maximum number of media reached";
     return MediumPtr();
   }
 
@@ -125,7 +135,8 @@ void MediaSet::setNumberOfMedia(
 {
   if (numberOfMedia == media.size())
   {
-    BOOST_LOG_TRIVIAL( info) << "No actions needed";
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
+      "No actions needed";
     return;
   }
 

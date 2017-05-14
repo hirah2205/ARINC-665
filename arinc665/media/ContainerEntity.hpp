@@ -137,6 +137,10 @@ class ContainerEntity :
 
     ConstContainerEntityPtr getParent() const;
 
+    MediumPtr getMedium();
+
+    ConstMediumPtr getMedium() const;
+
   protected:
     ContainerEntity( ContainerEntityPtr parent);
 
