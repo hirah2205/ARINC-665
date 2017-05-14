@@ -47,6 +47,9 @@ class Directory : public ContainerEntity
     //! @copydoc ContainerEntity::getPartNumber
     virtual const string& getPartNumber() const override final;
 
+    //! @copydoc ContainerEntity::getPath() const
+    virtual path getPath() const override final;
+
   private:
     //! Directory name
     const string name;

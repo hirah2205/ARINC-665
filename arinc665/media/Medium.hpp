@@ -66,6 +66,9 @@ class Medium : public ContainerEntity
      **/
     virtual const string& getPartNumber() const override final;
 
+    //! @copydoc ContainerEntity::getPath() const
+    virtual path getPath() const override final;
+
     /**
      * @brief Returns the medium number.
      *

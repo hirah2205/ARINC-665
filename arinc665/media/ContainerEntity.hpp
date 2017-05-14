@@ -25,6 +25,8 @@
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/Batch.hpp>
 
+#include <boost/filesystem/path.hpp>
+
 #include <string>
 
 namespace Arinc665 {
@@ -38,9 +40,19 @@ class ContainerEntity :
   public std::enable_shared_from_this< ContainerEntity>
 {
   public:
+    using path = boost::filesystem::path;
+
     using string = std::string;
 
+    //! Default constructord
     ContainerEntity() = default;
+
+    /**
+     * @brief Returns the path up to the medium root.
+     *
+     * @return The path up to the medium root.
+     **/
+    virtual path getPath() const = 0;
 
     /**
      * @brief Indicates, if the container has child elements.

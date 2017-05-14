@@ -55,5 +55,10 @@ const Directory::string& Directory::getPartNumber() const
   return getParent()->getPartNumber();
 }
 
+Directory::path Directory::getPath() const
+{
+  return getParent()->getPath() / name;
+}
+
 }
 }

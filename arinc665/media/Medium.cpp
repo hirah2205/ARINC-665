@@ -24,11 +24,11 @@
 namespace Arinc665 {
 namespace Media {
 
-Medium::Medium( MediaSetPtr mediaSet, uint8_t mediumNumber):
+Medium::Medium( MediaSetPtr mediaSet, const uint8_t mediumNumber):
   mediaSet( mediaSet),
   mediumNumber( mediumNumber)
 {
-  assert( mediaSet);
+  assert( mediaSet && (mediumNumber > 0));
 }
 
 ConstMediaSetPtr Medium::getMediaSet() const
@@ -54,6 +54,11 @@ const Medium::string& Medium::getName() const
 const Medium::string& Medium::getPartNumber() const
 {
   return mediaSet.lock()->getPartNumber();
+}
+
+Medium::path Medium::getPath() const
+{
+  return "/";
 }
 
 uint8_t Medium::getMediumNumber() const

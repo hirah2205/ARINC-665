@@ -63,6 +63,11 @@ ConstContainerEntityPtr BaseFile::getParent() const
   return parent.lock();
 }
 
+BaseFile::path BaseFile::getPath() const
+{
+  return parent.lock()->getPath() / name;
+}
+
 BaseFile::BaseFile( ContainerEntityPtr parent, const string &name) :
   parent( parent),
   name( name)

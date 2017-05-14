@@ -18,8 +18,9 @@
 #define ARINC665_MEDIA_BASEFILE_HPP
 
 #include <arinc665/media/Media.hpp>
-
 #include <arinc665/media/Base.hpp>
+
+#include <boost/filesystem/path.hpp>
 
 namespace Arinc665 {
 namespace Media {
@@ -30,6 +31,8 @@ namespace Media {
 class BaseFile: public Base
 {
   public:
+    using path = boost::filesystem::path;
+
     enum class FileType
     {
       RegularFile,
@@ -86,6 +89,13 @@ class BaseFile: public Base
      * @return The parent container element
      **/
     ConstContainerEntityPtr getParent() const;
+
+    /**
+     * @brief Returns the path up to the medium root.
+     *
+     * @return The path up to the medium root.
+     **/
+    path getPath() const;
 
   protected:
     BaseFile( ContainerEntityPtr parent, const string &name);
