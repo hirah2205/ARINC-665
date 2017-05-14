@@ -26,8 +26,8 @@ Arinc665Utils::Arinc665Importer Arinc665Utils::createArinc665Importer(
 {
   Arinc665Importer importer( std::bind(
     &Arinc665ImporterImpl::operator(),
-    std::make_shared< Arinc665ImporterImpl>(
-      getMediumPathHandler)));
+    std::make_shared< Arinc665ImporterImpl>( getMediumPathHandler),
+    std::placeholders::_1));
 
   return importer;
 }

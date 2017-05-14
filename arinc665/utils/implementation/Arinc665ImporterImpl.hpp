@@ -41,6 +41,8 @@ class Arinc665ImporterImpl
   public:
     using path = Arinc665Utils::path;
 
+    using string = std::string;
+
     /**
      * @brief Initialises the ARINC 665 media set importer
      *
@@ -55,7 +57,7 @@ class Arinc665ImporterImpl
      *
      * @return
      **/
-    Media::MediaSetPtr operator()();
+    Media::MediaSetPtr operator()( const string &mediaSetName);
 
   private:
     using RawFile = Arinc665::File::RawFile;
@@ -68,17 +70,25 @@ class Arinc665ImporterImpl
     using BatchFiles = std::map< std::string, BatchFile>;
     using ContainerEntityPtr = std::shared_ptr< Media::ContainerEntity>;
 
-    void addMedium( unsigned int mediaIndex, const path &mediumPath);
+    /**
+     * @brief Loads the information of the given medium
+     *
+     * @param[in] mediumIndex
+     *   The medium index.
+     * @param mediumPath
+     *   The medium path.
+     **/
+    void addMedium( uint8_t mediumIndex, const path &mediumPath);
 
-    void loadFileListFile( unsigned int mediaIndex, const path &mediumPath);
+    void loadFileListFile( uint8_t mediumIndex, const path &mediumPath);
 
-    void loadLoadListFile( unsigned int mediaIndex, const path &mediumPath);
+    void loadLoadListFile( uint8_t mediumIndex, const path &mediumPath);
 
-    void loadBatchListFile( unsigned int mediaIndex, const path &mediumPath);
+    void loadBatchListFile( uint8_t mediumIndex, const path &mediumPath);
 
-    void loadLoadHeaderFiles( unsigned int mediaIndex, const path &mediumPath);
+    void loadLoadHeaderFiles( uint8_t mediumIndex, const path &mediumPath);
 
-    void loadBatchFiles( unsigned int mediaIndex, const path &mediumPath);
+    void loadBatchFiles( uint8_t mediumIndex, const path &mediumPath);
 
     void addFiles();
 
@@ -86,7 +96,7 @@ class Arinc665ImporterImpl
 
     void addBatches( FileListFile::FileInfoMap &batches);
 
-    ContainerEntityPtr checkCreateDirectory( unsigned int mediaIndex, const path &filePath);
+    ContainerEntityPtr checkCreateDirectory( uint8_t mediumIndex, const path &filePath);
 
     /**
      * @brief loads the file.

@@ -87,7 +87,7 @@ static MediaSetPtr loadMediaSet( const path &mediaSetDirectory)
         return mediaSetDirectory;
       }));
 
-  MediaSetPtr mediaSet( importer());
+  MediaSetPtr mediaSet( importer( ""));
 
   std::cout << "media set pn: " << mediaSet->getPartNumber() << std::endl;
 

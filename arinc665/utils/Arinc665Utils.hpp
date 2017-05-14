@@ -24,6 +24,7 @@
 #include <boost/filesystem.hpp>
 
 #include <functional>
+#include <string>
 
 namespace Arinc665 {
 namespace Utils {
@@ -33,6 +34,8 @@ class Arinc665Utils
   public:
     using path = boost::filesystem::path;
 
+    using string = std::string;
+
     //! Handler, which is called to obtain the path to the next medium.
     using GetMediumPathHandler = std::function< path( uint8_t mediumNumber)>;
 
@@ -40,15 +43,13 @@ class Arinc665Utils
     using CopyFileHandler =
       std::function< path( Media::ConstFilePtr file, const path &destination)>;
 
-    //! The result, which is provided by the ARINC 665 importer.
-    using Arinc665ImporterResult =
-      std::tuple< Media::MediaSetPtr, Media::FilePathMapping>;
-
     /**
      * The ARINC 665 Media Set importer.
+     * Takes the media set name as input.
      * Returns the MediaSet
      **/
-    using Arinc665Importer = std::function< Media::MediaSetPtr()>;
+    using Arinc665Importer = std::function< Media::MediaSetPtr(
+      const string &mediaSetName)>;
 
     /**
      * The ARINC 665 Media Set exporter.
