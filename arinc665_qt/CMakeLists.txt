@@ -9,8 +9,6 @@
 
 cmake_minimum_required( VERSION 3.8)
 
-project( "ARINC 665 QT Library")
-
 find_package( Qt5Widgets QUIET)
 
 if(Qt5Widgets_FOUND)
@@ -27,6 +25,7 @@ add_library(
   arinc665_qt
   
   Arinc665Qt.hpp
+  LoadsModel.hpp
   MediaSetModel.hpp
   MediaSetModel.cpp
 #  ${bhm_qt_ui}
@@ -40,6 +39,8 @@ target_link_libraries(
   arinc665
   Qt5::Widgets)
 
-add_documentation( TARGET arinc665_qt)
+add_documentation( 
+  TARGET arinc665_qt
+  NAME "ARINC 665 QT Library")
 
 endif(Qt5Widgets_FOUND)

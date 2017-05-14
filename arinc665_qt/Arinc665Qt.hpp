@@ -26,6 +26,8 @@ class MediaSetModelModel;
 class LoadModel;
 class BatchModel;
 
+class LoadsModel;
+
 }
 
 #endif
