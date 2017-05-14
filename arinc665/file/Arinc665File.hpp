@@ -39,9 +39,6 @@ class Arinc665File
      *   The raw ARINC 665 file.
      *
      * @return The encoded file length.
-     *
-     * @throw InvalidArinc665File
-     *   If the file size is to small to represent an valid ARINC 665 file.
      **/
     static uint32_t getFileLength( const RawFile &file);
 
@@ -52,9 +49,6 @@ class Arinc665File
      *   The raw ARINC 665 file.
      *
      * @return The encoded format version.
-     *
-     * @throw InvalidArinc665File
-     *   If the file size is to small to represent an valid ARINC 665 file.
      **/
     static uint16_t getFormatVersion( const RawFile &file);
 
@@ -103,8 +97,18 @@ class Arinc665File
     // virtual RawFile encode( void) const = 0;
 
   protected:
+    /**
+     * @brief Default constructor
+     **/
     Arinc665File();
 
+    /**
+     * @brief Initialises class with the given raw data.
+     *
+     * @param[in] file
+     * @param[in] expectedFormatVersion
+     * @param[in] checksumPosition
+     **/
     Arinc665File(
       const RawFile &file,
       Arinc665FileFormatVersion expectedFormatVersion,

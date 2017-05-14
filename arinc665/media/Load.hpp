@@ -73,24 +73,62 @@ class Load: public BaseFile
 
     /**
      * @brief Updates the list of Target HW IDs.
+     *
      * @param[in] thwIdList
      *   The list of Target HW IDs.
      **/
     void setTargetHardwareIdList( const ThwIdList& thwIdList);
 
+    /**
+     * @brief Returns the data files.
+     *
+     * @return The data files.
+     **/
     const FileList& getDataFiles() const;
 
+    /**
+     * @brief Add the given file as data file.
+     *
+     * @param[in] dataFile
+     *   The data file.
+     **/
     void addDataFile( const WeakFilePtr dataFile);
 
+    /**
+     * @brief Returns the support files.
+     *
+     * @return The support files.
+     **/
     const FileList& getSupportFiles() const;
 
+    /**
+     * @brief Add the given file as support file.
+     *
+     * @param[in] supportFile
+     *   The support file.
+     **/
     void addSupportFile( const WeakFilePtr supportFile);
 
+    /**
+     * @brief Returns the user-defined data stored in the load header.
+     *
+     * @return The user-defined data.
+     **/
     const UserDefinedData& getUserDefinedData() const;
 
+    //! @copydoc Load::getUserDefinedData() const
     UserDefinedData& getUserDefinedData();
 
+    /**
+     * @brief Sets the user-defined data stored in the load header.
+     *
+     * @param[in] userDefinedData
+     *   The updated user-defined data.
+     **/
     void setUserDefinedData( const UserDefinedData &userDefinedData);
+
+    //! @copydoc Load::setUserDefinedData(const UserDefinedData&)
+    void setUserDefinedData( UserDefinedData &&userDefinedData);
 
   private:
     ThwIdList targetHardwareIdList;

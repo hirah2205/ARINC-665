@@ -74,5 +74,10 @@ void Load::setUserDefinedData( const std::vector< uint8_t> &userDefinedData)
   this->userDefinedData = userDefinedData;
 }
 
+void Load::setUserDefinedData( Load::UserDefinedData &&userDefinedData)
+{
+  this->userDefinedData= std::move( userDefinedData);
+}
+
 }
 }

@@ -231,6 +231,7 @@ void list_files_lum( const boost::filesystem::path &filesLum)
 
 void list_file( const boost::filesystem::path &filename)
 {
+  std::cout << filename << "\n";
 }
 
 static void list_files( const boost::filesystem::path &loadDir)

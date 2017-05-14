@@ -31,7 +31,9 @@ uint32_t Arinc665File::getFileLength( const RawFile &file)
   // check file size
   if ( file.size() < 8)
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
+    //! @throw InvalidArinc665File
+    //!   If the file size is to small to represent an valid ARINC 665 file.
+    BOOST_THROW_EXCEPTION( InvalidArinc665File()
         << AdditionalInfo( "length of check code string invalid"));
   }
 
@@ -47,6 +49,8 @@ uint16_t Arinc665File::getFormatVersion( const RawFile &file)
   // check file size
   if ( file.size() < 8)
   {
+    //! @throw InvalidArinc665File
+    //!   If the file size is to small to represent an valid ARINC 665 file.
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << AdditionalInfo( "file content to small"));
   }
@@ -94,6 +98,7 @@ Arinc665File::Arinc665File(
   // Check file size
   if ( file.size() <= BaseHeaderOffset)
   {
+    //! @throw InvalidArinc665File When file is to small
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << AdditionalInfo( "File to small"));
   }
@@ -101,6 +106,7 @@ Arinc665File::Arinc665File(
   // check size field
   if ( getFileLength( file) * 2 != file.size())
   {
+    //! @throw InvalidArinc665File When file size field is invalid
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << AdditionalInfo( "file size invalid"));
   }
@@ -109,6 +115,7 @@ Arinc665File::Arinc665File(
   if ( getFormatVersion( file)
     != static_cast< uint16_t>( expectedFormatVersion))
   {
+    //! @throw InvalidArinc665File When file format is wrong
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << AdditionalInfo( "wrong file format"));
   }
@@ -122,6 +129,7 @@ Arinc665File::Arinc665File(
   uint16_t calcCrc = calculateChecksum( file, checksumPosition);
   if ( crc != calcCrc)
   {
+    //! @throw InvalidArinc665File When CRC is invalid
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << AdditionalInfo( "Invalid Checksum"));
   }

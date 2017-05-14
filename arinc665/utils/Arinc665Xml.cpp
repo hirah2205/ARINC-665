@@ -20,7 +20,7 @@
 namespace Arinc665 {
 namespace Utils {
 
-Arinc665XmlPtr Arinc665Xml::getInstance()
+Arinc665XmlPtr Arinc665Xml::createInstance()
 {
   return std::make_unique< Arinc665XmlPugiXmlImpl>();
 }

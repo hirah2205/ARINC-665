@@ -41,8 +41,20 @@ class Arinc665ImporterImpl
   public:
     using path = Arinc665Utils::path;
 
-    Arinc665ImporterImpl( Arinc665Utils::GetMediumPathHandler getMediumPathHandler);
+    /**
+     * @brief Initialises the ARINC 665 media set importer
+     *
+     * @param[in] getMediumPathHandler
+     *   The handler which is called to obtain the path of a medium.
+     **/
+    Arinc665ImporterImpl(
+      Arinc665Utils::GetMediumPathHandler getMediumPathHandler);
 
+    /**
+     * @brief Entry-point of the ARINC 665 media set importer.
+     *
+     * @return
+     **/
     Media::MediaSetPtr operator()();
 
   private:

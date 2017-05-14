@@ -19,7 +19,8 @@
 
 #include <arinc665/Arinc665.hpp>
 
-#include <string>
+#include <boost/filesystem/path.hpp>
+
 #include <map>
 #include <vector>
 #include <memory>
@@ -86,6 +87,9 @@ using ConstBatches = std::vector< ConstBatchPtr>;
 
 using ConstDirectoryFileTuple  = std::tuple< const Directory&, ConstFilePtr>;
 using DirectoryFileTuple = std::tuple< Directory&, FilePtr>;
+
+using FilePathMapping = std::map< FilePtr, boost::filesystem::path>;
+using ConstFilePathMapping = std::map< const FilePtr, boost::filesystem::path>;
 
 }
 }

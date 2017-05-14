@@ -40,6 +40,10 @@ class Arinc665Utils
     using CopyFileHandler =
       std::function< path( Media::ConstFilePtr file, const path &destination)>;
 
+    //! The result, which is provided by the ARINC 665 importer.
+    using Arinc665ImporterResult =
+      std::tuple< Media::MediaSetPtr, Media::FilePathMapping>;
+
     /**
      * The ARINC 665 Media Set importer.
      * Returns the MediaSet
