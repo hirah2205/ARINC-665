@@ -39,8 +39,10 @@ class FileListFile: public ListFile
   public:
     using FileInfoList = FileInfo::FileInfoList;
     using path = boost::filesystem::path;
-    using FileInfoMap = std::map< std::pair< unsigned int, string>, FileInfo>;
-    using FileInfoPathMap= std::map< std::pair< unsigned int, path>, FileInfo>;
+    //! Maps media <sequence number, file name> to File Info
+    using FileInfoMap = std::map< std::pair< uint8_t, string>, FileInfo>;
+    //! Maps media <sequence number, file path> to File Info
+    using FileInfoPathMap= std::map< std::pair< uint8_t, path>, FileInfo>;
     using UserDefinedData = std::vector< uint8_t>;
 
     FileListFile( void);

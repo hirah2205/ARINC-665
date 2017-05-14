@@ -41,7 +41,7 @@ class FileInfo
     static FileInfoList getFileInfos(
       RawFile::const_iterator &it);
 
-    FileInfo( void);
+    FileInfo();
 
     FileInfo( RawFile::const_iterator &it);
 

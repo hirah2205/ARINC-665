@@ -126,12 +126,11 @@ LoadListFile::LoadInfoMap LoadListFile::getLoadInfosAsMap() const
 
   for (const auto & loadInfo : loadInfos)
   {
-    loads.insert(
+    loads.insert( std::make_pair(
       std::make_pair(
-        std::make_pair(
-          loadInfo.getMemberSequenceNumber(),
-          loadInfo.getHeaderFilename()),
-        loadInfo));
+        loadInfo.getMemberSequenceNumber(),
+        loadInfo.getHeaderFilename()),
+      loadInfo));
   }
 
   return loads;

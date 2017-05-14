@@ -107,6 +107,21 @@ class LoadListFile: public ListFile
      **/
     void setUserDefinedData( const UserDefinedData &userDefinedData);
 
+    /**
+     * @brief Returns if the given load list file belongs to the same media set.
+     *
+     * Compares:
+     * - Part number,
+     * - number of media set members,
+     * - the load list, and
+     * - the user-defined data
+     * for match.
+     *
+     * @param[in] other
+     *   The other load list file
+     *
+     * @return If the given load list files belongs to the same media set
+     **/
     bool belongsToSameMediaSet( const LoadListFile &other) const;
 
   private:
