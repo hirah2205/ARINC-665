@@ -45,7 +45,7 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
     *
     * @return The loaded Media Set information.
     **/
-   virtual MediaSetPtr loadFromXml( const path &xmlFile) override final;
+   virtual Media::MediaSetPtr loadFromXml( const path &xmlFile) override final;
 
    /**
     * @brief Saves the given Media Set information to the given XML file.
@@ -55,32 +55,42 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
     * @param[in] xmlFile
     *   The ARINC 665 XML file.
     */
-   virtual void saveToXml( ConstMediaSetPtr mediaSet, const path &xmlFile) override final;
+   virtual void saveToXml(
+     Media::ConstMediaSetPtr mediaSet,
+     const FilePathMapping &filePathMapping,
+     const path &xmlFile) override final;
 
   private:
-   using ConstMediumPtr = Media::ConstMediumPtr;
-   using ContainerEntityPtr = Media::ContainerEntityPtr;
-   using ConstContainerEntityPtr = Media::ConstContainerEntityPtr;
-   using ConstDirectoryPtr = Media::ConstDirectoryPtr;
+    Media::MediaSetPtr loadMediaSet( const pugi::xml_node &mediaSetNode);
 
-    MediaSetPtr loadMediaSet( const pugi::xml_node &mediaSetNode);
-
-    void saveMediaSet( ConstMediaSetPtr mediaSet, pugi::xml_node &mediaSetNode);
+    void saveMediaSet(
+      Media::ConstMediaSetPtr mediaSet,
+      pugi::xml_node &mediaSetNode);
 
 
-    void loadMedium( MediaSetPtr mediaSet, const pugi::xml_node &mediumNode);
+    void loadMedium(
+      Media::MediaSetPtr mediaSet,
+      const pugi::xml_node &mediumNode);
 
-    void saveMedium( ConstMediumPtr medium, pugi::xml_node &mediumNode);
-
-
-    void loadDirectory( ContainerEntityPtr parent, const pugi::xml_node &directoryNode);
-
-    void saveDirectory( ConstDirectoryPtr directory, pugi::xml_node &directoryNode);
+    void saveMedium( Media::ConstMediumPtr medium, pugi::xml_node &mediumNode);
 
 
-    void loadEntries( ContainerEntityPtr current, const pugi::xml_node &currentNode);
+    void loadDirectory(
+      Media::ContainerEntityPtr parent,
+      const pugi::xml_node &directoryNode);
 
-    void saveEntries( ConstContainerEntityPtr current, pugi::xml_node &currentNode);
+    void saveDirectory(
+      Media::ConstDirectoryPtr directory,
+      pugi::xml_node &directoryNode);
+
+
+    void loadEntries(
+      Media::ContainerEntityPtr current,
+      const pugi::xml_node &currentNode);
+
+    void saveEntries(
+      Media::ConstContainerEntityPtr current,
+      pugi::xml_node &currentNode);
 };
 
 }

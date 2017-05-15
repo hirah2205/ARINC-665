@@ -22,6 +22,7 @@
 
 #include <boost/filesystem.hpp>
 
+#include <map>
 namespace Arinc665 {
 namespace Utils {
 
@@ -31,11 +32,12 @@ namespace Utils {
 class Arinc665Xml
 {
   public:
-    using MediaSetPtr = Media::MediaSetPtr;
-    using ConstMediaSetPtr = Media::ConstMediaSetPtr;
-
     using path = boost::filesystem::path;
 
+    using FilePathMapping =
+      std::map< Media::ConstBaseFilePtr, path>;
+
+    using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping>;
     /**
      * @brief Creates an ARINC 665 XML handler instance.
      *
@@ -51,7 +53,7 @@ class Arinc665Xml
      *
      * @return The loaded Media Set information.
      **/
-    virtual MediaSetPtr loadFromXml( const path &xmlFile) = 0;
+    virtual Media::MediaSetPtr loadFromXml( const path &xmlFile) = 0;
 
     /**
      * @brief Saves the given Media Set information to the given XML file.
@@ -61,7 +63,10 @@ class Arinc665Xml
      * @param[in] xmlFile
      *   The ARINC 665 XML file.
      */
-    virtual void saveToXml( ConstMediaSetPtr mediaSet, const path &xmlFile) = 0;
+    virtual void saveToXml(
+      Media::ConstMediaSetPtr mediaSet,
+      const FilePathMapping &filePathMapping,
+      const path &xmlFile) = 0;
 
     //! Default descructor
     virtual ~Arinc665Xml() = default;

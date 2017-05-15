@@ -23,19 +23,18 @@
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/Batch.hpp>
 
-#include <helper/Logger.hpp>
+#include <arinc665/Arinc665Logger.hpp>
 
 namespace Arinc665 {
 namespace Utils {
 
-Arinc665XmlPugiXmlImpl::MediaSetPtr Arinc665XmlPugiXmlImpl::loadFromXml(
-  const path &xmlFile)
+Media::MediaSetPtr Arinc665XmlPugiXmlImpl::loadFromXml( const path &xmlFile)
 {
   BOOST_LOG_FUNCTION();
 
   if (boost::filesystem::is_regular( xmlFile))
   {
-    return MediaSetPtr();
+    return {};
   }
 
   pugi::xml_document xmlDoc;
@@ -47,7 +46,8 @@ Arinc665XmlPugiXmlImpl::MediaSetPtr Arinc665XmlPugiXmlImpl::loadFromXml(
 }
 
 void Arinc665XmlPugiXmlImpl::saveToXml(
-  ConstMediaSetPtr mediaSet,
+  Media::ConstMediaSetPtr mediaSet,
+  const FilePathMapping &filePathMapping,
   const path &xmlFile)
 {
   BOOST_LOG_FUNCTION();
@@ -60,13 +60,13 @@ void Arinc665XmlPugiXmlImpl::saveToXml(
   xmlDoc.save_file( xmlFile.c_str());
 }
 
-Arinc665XmlPugiXmlImpl::MediaSetPtr Arinc665XmlPugiXmlImpl::loadMediaSet(
+Media::MediaSetPtr Arinc665XmlPugiXmlImpl::loadMediaSet(
   const pugi::xml_node &mediaSetNode)
 {
   std::string name( mediaSetNode.attribute( "Name").as_string());
   std::string partNumber( mediaSetNode.attribute( "PartNumber").as_string());
 
-  MediaSetPtr mediaSet( std::make_shared< Media::MediaSet>( name));
+  auto mediaSet( std::make_shared< Media::MediaSet>( name));
   mediaSet->setPartNumber( partNumber);
 
   for ( pugi::xml_node mediumNode : mediaSetNode.children( "Medium"))
@@ -78,7 +78,7 @@ Arinc665XmlPugiXmlImpl::MediaSetPtr Arinc665XmlPugiXmlImpl::loadMediaSet(
 }
 
 void Arinc665XmlPugiXmlImpl::saveMediaSet(
-  ConstMediaSetPtr mediaSet,
+  Media::ConstMediaSetPtr mediaSet,
   pugi::xml_node &mediaSetNode)
 {
   mediaSetNode.append_attribute( "Name") = mediaSet->getName().c_str();
@@ -97,34 +97,44 @@ void Arinc665XmlPugiXmlImpl::saveMediaSet(
   }
 }
 
-void Arinc665XmlPugiXmlImpl::loadMedium( MediaSetPtr mediaSet, const pugi::xml_node &mediumNode)
+void Arinc665XmlPugiXmlImpl::loadMedium(
+  Media::MediaSetPtr mediaSet,
+  const pugi::xml_node &mediumNode)
 {
-  Media::MediumPtr medium( mediaSet->addMedium());
+  auto medium( mediaSet->addMedium());
 
   loadEntries( medium, mediumNode);
 }
 
-void Arinc665XmlPugiXmlImpl::saveMedium( ConstMediumPtr medium, pugi::xml_node &mediumNode)
+void Arinc665XmlPugiXmlImpl::saveMedium(
+  Media::ConstMediumPtr medium,
+  pugi::xml_node &mediumNode)
 {
   saveEntries( medium, mediumNode);
 }
 
-void Arinc665XmlPugiXmlImpl::loadDirectory( ContainerEntityPtr parent, const pugi::xml_node &directoryNode)
+void Arinc665XmlPugiXmlImpl::loadDirectory(
+  Media::ContainerEntityPtr parent,
+  const pugi::xml_node &directoryNode)
 {
-  Media::DirectoryPtr directory(
+  auto directory(
     parent->addSubDirectory( directoryNode.attribute( "Name").as_string()));
 
   loadEntries( directory, directoryNode);
 }
 
-void Arinc665XmlPugiXmlImpl::saveDirectory( ConstDirectoryPtr directory, pugi::xml_node &directoryNode)
+void Arinc665XmlPugiXmlImpl::saveDirectory(
+  Media::ConstDirectoryPtr directory,
+  pugi::xml_node &directoryNode)
 {
   directoryNode.append_attribute( "Name") = directory->getName().c_str();
 
   saveEntries( directory, directoryNode);
 }
 
-void Arinc665XmlPugiXmlImpl::loadEntries( ContainerEntityPtr current, const pugi::xml_node &currentNode)
+void Arinc665XmlPugiXmlImpl::loadEntries(
+  Media::ContainerEntityPtr current,
+  const pugi::xml_node &currentNode)
 {
   for ( pugi::xml_node entryNode : currentNode.children())
   {
@@ -171,7 +181,9 @@ void Arinc665XmlPugiXmlImpl::loadEntries( ContainerEntityPtr current, const pugi
   }
 }
 
-void Arinc665XmlPugiXmlImpl::saveEntries( ConstContainerEntityPtr current, pugi::xml_node &currentNode)
+void Arinc665XmlPugiXmlImpl::saveEntries(
+  Media::ConstContainerEntityPtr current,
+  pugi::xml_node &currentNode)
 {
   for (auto dirEntry : current->getSubDirectories())
   {
