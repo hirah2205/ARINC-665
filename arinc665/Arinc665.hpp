@@ -43,10 +43,14 @@ namespace Arinc665 {
 //! Enumeration of ARINC 665 versions.
 enum class Arinc665Version
 {
+  //! ARINC 665 Supplement 1
+  ARINC_665_1,
   //! ARINC 665 Supplement 2
   ARINC_665_2,
   //! ARINC 665 Supplement 3
-  ARINC_665_3
+  ARINC_665_3,
+  //! ARINC 665 Supplement 4
+  ARINC_665_4
 };
 
 //! Enumeration of file types.
@@ -76,7 +80,7 @@ enum class LoadFileFormatVersion : uint16_t
   Version3 = 0x8004,
 
   //! invalid value
-  Invalid  = 0xFFFF
+  Invalid  = 0xFFFFU
 };
 
 /**
@@ -92,7 +96,7 @@ enum class BatchFileFormatVersion : uint16_t
   Version3 = 0x9004,
 
   //! invalid value
-  Invalid  = 0xFFFF
+  Invalid  = 0xFFFFU
 };
 
 /**
@@ -111,7 +115,7 @@ enum class MediaFileFormatVersion : uint16_t
   Version3 = 0xA004,
 
   //! invalid value
-  Invalid  = 0xFFFF
+  Invalid  = 0xFFFFU
 };
 
 //! All ARINC 665 file types combined

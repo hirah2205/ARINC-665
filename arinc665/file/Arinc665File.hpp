@@ -112,7 +112,7 @@ class Arinc665File
     Arinc665File(
       const RawFile &file,
       Arinc665FileFormatVersion expectedFormatVersion,
-      unsigned int checksumPosition = 2);
+      unsigned int checksumPosition = 2U);
 
   private:
     uint16_t crc;

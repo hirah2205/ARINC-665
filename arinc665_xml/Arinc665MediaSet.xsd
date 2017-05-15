@@ -82,10 +82,23 @@
 
   <complexType name="LoadType">
     <sequence>
-      <element name="DataFile"    type="tns:FileRefernceType" minOccurs="0" maxOccurs="unbounded" />
-      <element name="SupportFile" type="tns:FileRefernceType" minOccurs="0" maxOccurs="unbounded" />
+      <element name="TargetHardware" type="tns:TargetHardwareType" minOccurs="1" maxOccurs="unbounded" />
+      <element name="DataFile"       type="tns:FileRefernceType"   minOccurs="0" maxOccurs="unbounded" />
+      <element name="SupportFile"    type="tns:FileRefernceType"   minOccurs="0" maxOccurs="unbounded" />
     </sequence>
-    <attribute name="NameRef" type="IDREF" use="required" />
+    <attribute name="NameRef"     type="IDREF"          use="required" />
+    <attribute name="Description" type="tns:StringType" use="optional" />
+  </complexType>
+
+  <complexType name="TargetHardwareType">
+    <sequence>
+      <element name="Position" type="tns:PositionType" minOccurs="0" maxOccurs="unbounded" />
+    </sequence>
+    <attribute name="ThwId" type="tns:TargetHardwareIdType" use="required" />
+  </complexType>
+
+  <complexType name="PositionType">
+    <attribute name="Pos" type="tns:PosType" use="required" />
   </complexType>
 
   <complexType name="FileRefernceType">
@@ -101,11 +114,19 @@
 
   <complexType name="BatchType">
     <sequence>
-      <element name="Load" type="tns:LoadRefernceType" minOccurs="0" maxOccurs="unbounded" />
+      <element name="Target" type="tns:BatchTargetType" minOccurs="1" maxOccurs="unbounded"/>
     </sequence>
-    <attribute name="NameRef" type="IDREF" use="required" />
+    <attribute name="NameRef" type="IDREF"          use="required" />
+    <attribute name="Comment" type="tns:StringType" use="optional" />
   </complexType>
 
+  <complexType name="BatchTargetType">
+      <sequence>
+      <element name="Load" type="tns:LoadRefernceType" minOccurs="1" maxOccurs="unbounded" />
+    </sequence>
+    <attribute name="ThwIdPos" type="tns:TargetHardwareIdPosType" use="required" />
+  </complexType>
+  
   <complexType name="LoadRefernceType">
     <attribute name="NameRef" type="IDREF" use="required" />
   </complexType>
@@ -114,9 +135,25 @@
     <restriction base="string"></restriction>
   </simpleType>
 
+  <simpleType name="StringType">
+    <restriction base="string"></restriction>
+  </simpleType>
+
   <simpleType name="NameType">
     <restriction base="ID">
     </restriction>
+  </simpleType>
+
+  <simpleType name="TargetHardwareIdType">
+    <restriction base="string"></restriction>
+  </simpleType>
+
+  <simpleType name="PosType">
+    <restriction base="string"></restriction>
+  </simpleType>
+
+  <simpleType name="TargetHardwareIdPosType">
+    <restriction base="string"></restriction>
   </simpleType>
 
   <simpleType name="HexValueType">

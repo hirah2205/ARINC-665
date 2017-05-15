@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<MediaSet Name="MediaSetX" PartNumber="CCC"
+<MediaSet 
   xmlns="http://www.thomas-vogt.de/Arinc665MediaSet" 
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xsi:schemaLocation="http://www.thomas-vogt.de/Arinc665MediaSet Arinc665MediaSet.xsd">
+  xsi:schemaLocation="http://www.thomas-vogt.de/Arinc665MediaSet Arinc665MediaSet.xsd"
+  
+  Name="MediaSetX"
+  PartNumber="CCC" >
   <Medium>
     <File Name="File1" PartNumber="AABBCC1"/>
     <LoadFile Name="Load1" PartNumber="AABBCC" />
@@ -11,24 +14,33 @@
       <File Name="File2"  PartNumber="AABBCC2" />
     </Directory>
     <File Name="Readme.txt" />
-    <BatchFile Name="Batch1" PartNumber="AABBEE"/>
+    <BatchFile Name="Batch1" PartNumber="AABBEE" />
   </Medium>
   
   <Loads>
-    <Load NameRef="Load1">
+    <Load NameRef="Load1" Description="Test Description">
+      <TargetHardware ThwId="AAA">
+        <Position Pos="sss"/>
+      </TargetHardware>
+      
       <DataFile    NameRef="File1" />
       <SupportFile NameRef="File2" />
     </Load>
     <Load NameRef="Load2">
+      <TargetHardware ThwId="AAA" />
+      <TargetHardware ThwId="BBB" />
+
       <DataFile    NameRef="File1" />
       <SupportFile NameRef="File2" />
     </Load>
   </Loads>
   
   <Batches>
-    <Batch NameRef="Batch1" >
-      <Load NameRef="Load1" />
-      <Load NameRef="Load2" />
+    <Batch NameRef="Batch1" Comment="Comment Text" >
+      <Target ThwIdPos="XXXYY_123">
+        <Load NameRef="Load1" />
+        <Load NameRef="Load2" />
+      </Target>
     </Batch>
   </Batches>
 </MediaSet>

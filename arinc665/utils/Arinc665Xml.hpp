@@ -53,7 +53,7 @@ class Arinc665Xml
      *
      * @return The loaded Media Set information.
      **/
-    virtual Media::MediaSetPtr loadFromXml( const path &xmlFile) = 0;
+    virtual LoadXmlResult loadFromXml( const path &xmlFile) = 0;
 
     /**
      * @brief Saves the given Media Set information to the given XML file.
