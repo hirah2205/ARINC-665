@@ -27,7 +27,7 @@ namespace Arinc665 {
 namespace Media {
 
 /**
- * @brief
+ * @brief Represents a batch information stored within the batch.
  **/
 class BatchInfo
 {

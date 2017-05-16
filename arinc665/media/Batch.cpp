@@ -24,12 +24,12 @@ Batch::Batch( ContainerEntityPtr parent, const string &name) :
 {
 }
 
-Batch::FileType Batch::getFileType( void) const
+Batch::FileType Batch::getFileType() const
 {
   return FileType::BatchFile;
 }
 
-string Batch::getComment( void) const
+Batch::string Batch::getComment() const
 {
   return comment;
 }

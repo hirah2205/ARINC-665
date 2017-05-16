@@ -58,12 +58,12 @@ class Arinc665DecompilerApplication
     //! Program Options description
     boost::program_options::options_description optionsDescription;
 
-    //! Media Set XML file
-    boost::filesystem::path mediaSetXmlFile;
-    //! Media Set source directories
-    std::vector< boost::filesystem::path> mediaSetSourceDirectories;
+    //! Media Set media source directories
+    std::vector< boost::filesystem::path> mediaSourceDirectories;
     //! Media Set destination directory
     boost::filesystem::path mediaSetDestinationDirectory;
+    //! name of the media set
+    std::string mediaSetName;
 };
 
 #endif

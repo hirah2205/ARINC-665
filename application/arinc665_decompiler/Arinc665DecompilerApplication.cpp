@@ -18,6 +18,9 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <arinc665/utils/Arinc665Utils.hpp>
+#include <arinc665/utils/Arinc665Xml.hpp>
+
 #include <helper/Logger.hpp>
 
 #include <boost/program_options.hpp>
@@ -38,19 +41,19 @@ Arinc665DecompilerApplication::Arinc665DecompilerApplication(
       "print this help screen"
     )
     (
-      "xml-file",
-      boost::program_options::value( &mediaSetXmlFile)->required(),
-      "ARINC 665 media set description file"
-    )
-    (
       "source-directory",
-      boost::program_options::value( &mediaSetSourceDirectories)->required()->composing(),
-      "ARINC 665 source directories"
+      boost::program_options::value( &mediaSourceDirectories)->required()->composing(),
+      "ARINC 665 media source directories"
     )
     (
       "destination-directory",
       boost::program_options::value( &mediaSetDestinationDirectory)->required(),
       "Output directory for ARINC 665 media set"
+    )
+    (
+      "name",
+      boost::program_options::value( &mediaSetName)->required(),
+      "Name of ARINC 665 media set"
     );
 }
 
@@ -65,7 +68,23 @@ int Arinc665DecompilerApplication::operator()()
       return EXIT_FAILURE;
     }
 
+    // create importer
+    auto importer( Arinc665::Utils::Arinc665Utils::createArinc665Importer(
+      [this]( const uint8_t mediumNumber)
+      {
+        if (mediumNumber > this->mediaSourceDirectories.size())
+        {
+          return boost::filesystem::path();
+        }
 
+        return this->mediaSourceDirectories[mediumNumber-1];
+      }));
+
+    // perform import
+    auto result( importer( mediaSetName));
+
+    // exporter
+    //! @todo
   }
   catch ( Arinc665::Arinc665Exception &e)
   {

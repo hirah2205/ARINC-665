@@ -26,6 +26,8 @@ add_library(
   Arinc665Logger.hpp
   CheckCode.hpp
   CheckCode.cpp
+  FileTypeDescription.hpp
+  FileTypeDescription.cpp
   ManufacturerCode.hpp
   ManufacturerCode.cpp
   PartNumber.hpp
