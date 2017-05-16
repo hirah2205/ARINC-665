@@ -7,13 +7,10 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.5)
-
-project( "ARINC 665 File Printer")
+cmake_minimum_required( VERSION 3.8)
 
 add_executable( 
-  arinc665_print_files 
-  arinc665_print_files.cpp
-)
+  arinc665_ls 
+  arinc665_ls.cpp)
 
-target_link_libraries( arinc665_print_files arinc665)
+target_link_libraries( arinc665_ls arinc665)

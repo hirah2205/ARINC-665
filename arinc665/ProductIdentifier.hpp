@@ -31,7 +31,7 @@ class ProductIdentifier
     using string = std::string;
 
     //! Length of product identifier
-    static constexpr unsigned int Length = 8;
+    static constexpr unsigned int Length = 8U;
 
     /**
      * @brief Constructs the product identifier for the given string.

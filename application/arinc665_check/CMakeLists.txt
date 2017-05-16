@@ -8,15 +8,3 @@
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
 cmake_minimum_required( VERSION 3.8)
-
-find_package( Boost REQUIRED)
-
-add_executable( 
-  arinc665_unit_test 
-  
-  $<TARGET_OBJECTS:arinc665_test>
-  arinc665_unit_test.cpp)
-
-target_link_libraries( arinc665_unit_test arinc665)
-
-add_test( NAME arinc665_unit_test COMMAND arinc665_unit_test)

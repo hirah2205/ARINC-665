@@ -16,10 +16,12 @@
 
 /**
  * tasks:
+ * # check integrity of media set
  * # check integrity of all files
  * # check integrity of all loads
  * # check integrity of all batches
  *
+ * # verbose options print file-contents
  **/
 
 int main()

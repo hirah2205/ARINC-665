@@ -13,6 +13,9 @@ project ( "ARINC 665 applications")
 
 add_subdirectory( arinc665_compiler)
 add_subdirectory( arinc665_decompiler)
-add_subdirectory( arinc665_print_files)
-add_subdirectory( arinc665_print_media_set)
+add_subdirectory( arinc665_check)
+add_subdirectory( arinc665_ls)
+
 add_subdirectory( arinc665_unit_test)
+
+add_subdirectory( arinc665_print_media_set)

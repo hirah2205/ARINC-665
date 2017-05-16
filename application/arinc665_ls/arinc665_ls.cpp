@@ -11,7 +11,8 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief TODO Enter Brief description
+ * @brief Utility to scan directories/ files for ARINC 665 content ad decodes
+ *   them.
  **/
 
 #include <arinc665/Arinc665.hpp>
