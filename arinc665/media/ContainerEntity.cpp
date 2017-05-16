@@ -450,21 +450,24 @@ size_t ContainerEntity::getNumberOfBatches( const bool recursive) const
 
 ConstBatches ContainerEntity::getBatches( const bool recursive) const
 {
-  ConstFiles batchFiles = getFiles( BaseFile::FileType::LoadFile);
+  auto batchFiles( getFiles( BaseFile::FileType::BatchFile));
 
   ConstBatches batches;
 
+  // add batch files to list
   for ( auto &batchFile : batchFiles)
   {
     batches.push_back( std::dynamic_pointer_cast< const Batch>( batchFile));
   }
 
+  // iterate over sub-directories
   if (recursive)
   {
-    for (const auto &subDirectory : subDirectories)
+    for (auto &subDirectory : subDirectories)
     {
-      ConstBatches subBatches(
-        static_cast< const Directory&>(*subDirectory).getBatches( true));
+      auto subBatches(
+        std::const_pointer_cast< const Directory>(
+          subDirectory)->getBatches( true));
 
       batches.insert( batches.end(), subBatches.begin(), subBatches.end());
     }
@@ -475,20 +478,22 @@ ConstBatches ContainerEntity::getBatches( const bool recursive) const
 
 Batches ContainerEntity::getBatches( const bool recursive)
 {
-  Files batchFiles = getFiles( BaseFile::FileType::LoadFile);
+  auto batchFiles( getFiles( BaseFile::FileType::LoadFile));
 
   Batches batches;
 
+  // add batch files to list
   for ( auto &batchFile : batchFiles)
   {
     batches.push_back( std::dynamic_pointer_cast< Batch>( batchFile));
   }
 
+  // iterate over sub-directories
   if (recursive)
   {
-    for (const auto &subDirectory : subDirectories)
+    for (auto &subDirectory : subDirectories)
     {
-      Batches subBatches( subDirectory->getBatches( true));
+      auto subBatches( subDirectory->getBatches( true));
 
       batches.insert( batches.end(), subBatches.begin(), subBatches.end());
     }
@@ -501,7 +506,7 @@ ConstBatchPtr ContainerEntity::getBatch(
   const string &filename,
   const bool recursive) const
 {
-  ConstFilePtr file = getFile( filename, recursive);
+  auto file( getFile( filename, recursive));
 
   if (!file)
   {

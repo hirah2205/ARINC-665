@@ -42,7 +42,8 @@ Arinc665DecompilerApplication::Arinc665DecompilerApplication(
     )
     (
       "source-directory",
-      boost::program_options::value( &mediaSourceDirectories)->required()->composing(),
+      boost::program_options::value(
+        &mediaSourceDirectories)->required()->composing(),
       "ARINC 665 media source directories"
     )
     (
@@ -84,7 +85,12 @@ int Arinc665DecompilerApplication::operator()()
     auto result( importer( mediaSetName));
 
     // exporter
-    //! @todo
+    auto xml( Arinc665::Utils::Arinc665Xml::createInstance());
+
+    xml->saveToXml(
+      result,
+      {},
+      (mediaSetDestinationDirectory / mediaSetName) += ".xml");
   }
   catch ( Arinc665::Arinc665Exception &e)
   {

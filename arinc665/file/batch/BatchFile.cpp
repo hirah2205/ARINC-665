@@ -70,14 +70,14 @@ void BatchFile::setComment( const string &comment)
   this->comment = comment;
 }
 
-const BatchFile::ListType& BatchFile::getTargetHardwareLoadList() const
+const BatchTargetsInfo& BatchFile::getTargetHardwares() const
 {
-  return targetHardwareLoadList;
+  return targetHardwares;
 }
 
-BatchFile::ListType& BatchFile::getTargetHardwareLoadList()
+BatchTargetsInfo& BatchFile::getTargetHardwares()
 {
-  return targetHardwareLoadList;
+  return targetHardwares;
 }
 
 }

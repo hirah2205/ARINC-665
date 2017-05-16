@@ -76,8 +76,11 @@ using WeakFilePtr = std::weak_ptr< BaseFile>;
 using ConstLoadPtr = std::shared_ptr< const Load>;
 using LoadPtr = std::shared_ptr< Load>;
 using WeakLoadPtr = std::weak_ptr< Load>;
+using ConstWeakLoadPtr = std::weak_ptr< const Load>;
 using Loads = std::vector< LoadPtr>;
 using ConstLoads = std::vector< ConstLoadPtr>;
+using WeakLoads = std::vector< WeakLoadPtr>;
+using ConstWeakLoads = std::vector< ConstWeakLoadPtr>;
 
 using ConstBatchPtr = std::shared_ptr< const Batch> ;
 using BatchPtr = std::shared_ptr< Batch> ;

@@ -268,6 +268,36 @@ Loads MediaSet::getLoads()
   return loads;
 }
 
+ConstLoadPtr MediaSet::getLoad( const string &filename) const
+{
+  for (const auto & medium : media)
+  {
+    auto load( medium->getLoad( filename, true));
+
+    if (load)
+    {
+      return load;
+    }
+  }
+
+  return {};
+}
+
+LoadPtr MediaSet::getLoad( const string &filename)
+{
+  for (const auto & medium : media)
+  {
+    auto load( medium->getLoad( filename, true));
+
+    if (load)
+    {
+      return load;
+    }
+  }
+
+  return {};
+}
+
 size_t MediaSet::getNumberOfBatches() const
 {
   size_t numberOfBatches = 0;
@@ -286,8 +316,8 @@ ConstBatches MediaSet::getBatches() const
 
   for (const auto & medium : media)
   {
-    ConstBatches mediaBatches =
-      static_cast< const Medium&>(*medium).getBatches( true);
+    auto mediaBatches(
+      static_cast< const Medium&>(*medium).getBatches( true));
     batches.insert( batches.end(), mediaBatches.begin(), mediaBatches.end());
   }
 
@@ -305,6 +335,36 @@ Batches MediaSet::getBatches()
   }
 
   return batches;
+}
+
+ConstBatchPtr MediaSet::getBatch( const string &filename) const
+{
+  for (const auto & medium : media)
+  {
+    auto batch( medium->getBatch( filename, true));
+
+    if (batch)
+    {
+      return batch;
+    }
+  }
+
+  return {};
+}
+
+BatchPtr MediaSet::getBatch( const string &filename)
+{
+  for (const auto & medium : media)
+  {
+    auto batch( medium->getBatch( filename, true));
+
+    if (batch)
+    {
+      return batch;
+    }
+  }
+
+  return {};
 }
 
 }

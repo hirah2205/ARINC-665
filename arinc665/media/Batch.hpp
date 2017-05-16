@@ -19,9 +19,8 @@
 
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/BaseFile.hpp>
-#include <arinc665/media/BatchInfo.hpp>
 
-#include <list>
+#include <map>
 
 namespace Arinc665 {
 namespace Media {
@@ -32,8 +31,7 @@ namespace Media {
 class Batch: public BaseFile
 {
   public:
-    using BatchInfoList = std::list< BatchInfo>;
-    using ConstBatchInfoList = std::list< const BatchInfo>;
+    using BatchInfo = std::map< string, WeakLoads>;
 
     Batch( ContainerEntityPtr parent, const string &name);
 
@@ -59,15 +57,53 @@ class Batch: public BaseFile
      **/
     void setComment( const string &comment);
 
-    const BatchInfoList& getBatchInfos();
+    /**
+     * @brief Return the batch info for the given target hardware ID
+     *
+     * @param[in] targetHardwareId
+     *   Target hardware ID
+     *
+     * @return The corresponding loads
+     **/
+    const WeakLoads getTarget( const string &targetHardwareId) const;
 
-    BatchInfo& addBatchInfo( const string &targetHardwareId);
+    /**
+     * @brief Return the batch info for the given target hardware ID
+     *
+     * @param[in] targetHardwareId
+     *   Target hardware ID
+     *
+     * @return The corresponding loads
+     **/
+    WeakLoads getTarget( const string &targetHardwareId);
+
+    /**
+     * @brief Add  batch info for the given target hardware ID.
+     *
+     * @param[in] targetHardwareId
+     * @param[in] loads
+     */
+    void addTarget( const string &targetHardwareId, WeakLoads loads);
+
+    /**
+     * @brief Return batches.
+     *
+     * @return
+     **/
+    const BatchInfo& getTargets() const;
+
+    /**
+     * @brief Return batches.
+     *
+     * @return
+     **/
+    BatchInfo& getTargets();
 
   private:
     //! Batch comment
     string comment;
     //! Batch informations
-    BatchInfoList batchInfos;
+    BatchInfo batches;
 };
 
 }

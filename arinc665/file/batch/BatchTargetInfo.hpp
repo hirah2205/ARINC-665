@@ -11,17 +11,16 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class Arinc665::File::TargetHardwareLoad.
+ * @brief Declaration of class Arinc665::File::BatchTargetInfo.
  **/
 
-#ifndef ARINC665_FILE_TARGETHARDWARELOAD_HPP
-#define ARINC665_FILE_TARGETHARDWARELOAD_HPP
+#ifndef ARINC665_FILE_BATCHTARGETINFO_HPP
+#define ARINC665_FILE_BATCHTARGETINFO_HPP
 
 #include <arinc665/file/File.hpp>
 #include <arinc665/file/batch/BatchLoadInfo.hpp>
 
 #include <string>
-#include <list>
 
 namespace Arinc665 {
 namespace File {
@@ -29,12 +28,18 @@ namespace File {
 /**
  * @brief The list of loads for the given target hardware
  **/
-class TargetHardwareLoad
+class BatchTargetInfo
 {
   public:
     using string = std::string;
-    //! Short form of the load list info
-    using ListType = std::list< BatchLoadInfo>;
+
+    explicit BatchTargetInfo(
+      const string &targetHardwareId,
+      const BatchLoadsInfo &loads = {});
+
+    explicit BatchTargetInfo(
+      string &&targetHardwareId,
+      BatchLoadsInfo &&loads = {});
 
     /**
      * @brief Returns the target hardware ID for this loads info.
@@ -56,20 +61,28 @@ class TargetHardwareLoad
      *
      * @return The list of loads (const version).
      **/
-    const ListType& getLoadList() const;
+    const BatchLoadsInfo& getLoads() const;
 
     /**
      * @brief Returns the list of available loads for this target hardware.
      *
      * @return The list of loads (modifiable version).
      **/
-    ListType& getLoadList();
+    BatchLoadsInfo& getLoads();
+
+    void setLoads( const BatchLoadsInfo &loads);
+
+    void setLoads( BatchLoadsInfo &&loads);
+
+    void addLoad( const BatchLoadInfo &load);
+
+    void addLoad( BatchLoadInfo &&load);
 
   private:
     //! The target hardware id
     string targetHardwareId;
     //! The list of loads
-    ListType loadList;
+    BatchLoadsInfo loads;
 };
 
 }

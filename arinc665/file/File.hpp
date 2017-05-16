@@ -20,6 +20,7 @@
 #include <arinc665/Arinc665.hpp>
 
 #include <vector>
+#include <list>
 #include <cstdint>
 
 namespace Arinc665 {
@@ -35,10 +36,14 @@ class FileFactory;
 
 class Arinc665File;
 
-class BatchFile;
-
 class LoadFileInfo;
 class LoadHeaderFile;
+
+class BatchTargetInfo;
+using BatchTargetsInfo = std::list< BatchTargetInfo>;
+class BatchLoadInfo;
+using BatchLoadsInfo = std::list< BatchLoadInfo>;
+class BatchFile;
 
 class BatchInfo;
 class BatchListFile;

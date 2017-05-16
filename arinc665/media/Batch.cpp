@@ -39,16 +39,43 @@ void Batch::setComment( const string &comment)
   this->comment = comment;
 }
 
-const Batch::BatchInfoList& Batch::getBatchInfos( void)
+const WeakLoads Batch::getTarget( const string &targetHardwareId) const
 {
-  return batchInfos;
+  auto it( batches.find( targetHardwareId));
+
+  if (it == batches.end())
+  {
+    return {};
+  }
+
+  return it->second;
 }
 
-BatchInfo& Batch::addBatchInfo( const string &targetHardwareId)
+WeakLoads Batch::getTarget( const string &targetHardwareId)
 {
-  BatchInfo batchInfo( targetHardwareId);
-  batchInfos.push_back( batchInfo);
-  return batchInfos.back();
+  auto it( batches.find( targetHardwareId));
+
+  if (it == batches.end())
+  {
+    return {};
+  }
+
+  return it->second;
+}
+
+void Batch::addTarget( const string &targetHardwareId, WeakLoads loads)
+{
+  batches.insert( {targetHardwareId, loads});
+}
+
+const Batch::BatchInfo& Batch::getTargets() const
+{
+  return batches;
+}
+
+Batch::BatchInfo& Batch::getTargets()
+{
+  return batches;
 }
 
 }

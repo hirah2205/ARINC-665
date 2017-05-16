@@ -128,16 +128,20 @@ void Arinc665XmlPugiXmlImpl::saveMediaSet(
   // iterate over loads
   for ( auto load : mediaSet->getLoads())
   {
-    //loadLoad( mediaSet, loadNode);
+    pugi::xml_node loadNode( loadsNode.append_child( "Load"));
+
+    saveLoad( load, loadNode);
   }
 
   // handle Batches
   auto batchesNode( mediaSetNode.append_child( "Batches"));
 
-  // iterate over loads
+  // iterate over batches
   for ( auto batch : mediaSet->getBatches())
   {
-    //loadBatch( mediaSet, batchNode);
+    pugi::xml_node batchNode( batchesNode.append_child( "Batch"));
+
+    saveBatch( batch, batchNode);
   }
 }
 
@@ -223,14 +227,18 @@ void Arinc665XmlPugiXmlImpl::loadEntries(
     }
     else
     {
+      BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning) <<
+        "Ignore element " << entryNode.name();
       continue;
     }
 
+    // set part number if attribute is present
     if (!partNumber.empty())
     {
       file->setPartNumber( partNumber);
     }
 
+    // set source path if attribute is present
     if (!sourcePath.empty())
     {
       filePathMapping.insert( {file, sourcePath});
@@ -299,10 +307,30 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
   const pugi::xml_node &loadNode)
 {
   // name
-  std::string nameRef( loadNode.attribute( "NameRef").as_string());
+  const std::string nameRef( loadNode.attribute( "NameRef").as_string());
 
   auto load( mediaSet->getLoad( nameRef));
   //! @todo error handling
+
+  Media::Load::ThwIdList thwIdList;
+
+  // iterate over target hardware
+  for ( pugi::xml_node targetHardwareNode : loadNode.children( "TargetHardware"))
+  {
+    const std::string thwId( targetHardwareNode.attribute( "ThwId").as_string());
+
+    // iterate over positions
+    /*
+    for ( pugi::xml_node positionNode : targetHardwareNode.children( "Position"))
+    {
+      const std::string position( targetHardwareNode.attribute( "Pos").as_string());
+    }
+    */
+
+    thwIdList.push_back( thwId);
+  }
+
+  load->setTargetHardwareIdList( thwIdList);
 
   // iterate over data files
   for ( pugi::xml_node dataFileNode : loadNode.children( "DataFile"))
@@ -335,6 +363,15 @@ void Arinc665XmlPugiXmlImpl::saveLoad(
 {
   loadNode.append_attribute( "NameRef") = load->getName().c_str();
 
+
+  // iterate over target hardware id
+  for (auto targetHardware : load->getTargetHardwareIdList())
+  {
+    auto targetHardwareNode( loadNode.append_child( "TargetHardware"));
+    targetHardwareNode.append_attribute( "ThwId") =
+      targetHardware.c_str();
+  }
+
   // iterate over data files
   for (auto dataFile : load->getDataFiles())
   {
@@ -357,21 +394,32 @@ void Arinc665XmlPugiXmlImpl::loadBatch(
   const pugi::xml_node &batchNode)
 {
   // name
-  std::string nameRef( batchNode.attribute( "NameRef").as_string());
+  const std::string nameRef( batchNode.attribute( "NameRef").as_string());
 
   auto batch( mediaSet->getBatch( nameRef));
   //! @todo error handling
 
-  // iterate over loads
-  for ( pugi::xml_node dataFileNode : batchNode.children( "Load"))
+  // iterate over targets
+  for ( pugi::xml_node targetNode : batchNode.children( "Target"))
   {
-    std::string loadNameRef( dataFileNode.attribute( "NameRef").as_string());
+    const std::string thwIdPos( targetNode.attribute( "ThwIdPos").as_string());
 
-    auto load( mediaSet->getLoad( loadNameRef));
+    Media::WeakLoads loads;
 
-    //! @todo error handling
+    // iterate over loads
+    for ( pugi::xml_node LoadNode : targetNode.children( "Load"))
+    {
+      const std::string loadNameRef( LoadNode.attribute( "NameRef").as_string());
 
-    //batch->addBatchInfo()( file);
+      auto load( mediaSet->getLoad( loadNameRef));
+
+      //! @todo error handling
+
+      loads.push_back( load);
+    }
+
+    // add load
+    batch->addTarget( thwIdPos, loads);
   }
 }
 
@@ -381,15 +429,21 @@ void Arinc665XmlPugiXmlImpl::saveBatch(
 {
   batchNode.append_attribute( "NameRef") = batch->getName().c_str();
 
-#if 0
-  // iterate over loads
-  for (auto dataFile : batch->get())
+  // Iterate over batch infos
+  for ( auto target : batch->getTargets())
   {
-    auto dataFileNode( loadNode.append_child( "DataFile"));
-    dataFileNode.append_attribute( "NameRef") =
-      dataFile.lock()->getName().c_str();
+    auto targetNode( batchNode.append_child( "Target"));
+
+    targetNode.append_attribute( "ThwIdPos") = target.first.c_str();
+
+    // iterate over loads
+    for ( auto load : target.second)
+    {
+      auto loadNode( targetNode.append_child( "Load"));
+
+      loadNode.append_attribute( "NameRef")= load.lock()->getName().c_str();
+    }
   }
-#endif
 }
 
 }

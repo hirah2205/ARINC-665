@@ -19,10 +19,9 @@
 
 #include <arinc665/file/File.hpp>
 #include <arinc665/file/Arinc665File.hpp>
-#include <arinc665/file/batch/TargetHardwareLoad.hpp>
+#include <arinc665/file/batch/BatchTargetInfo.hpp>
 
 #include <string>
-#include <list>
 
 namespace Arinc665 {
 namespace File {
@@ -36,9 +35,16 @@ class BatchFile: public Arinc665File
 {
   public:
     using string = std::string;
-    using ListType = std::list< TargetHardwareLoad>;
 
-    BatchFile( void) = default;
+    explicit BatchFile(
+      const string &partNumber = {},
+      const string &comment = {},
+      const BatchTargetsInfo &targets = {});
+
+    explicit BatchFile(
+      string &&partNumber = {},
+      string &&comment = {},
+      BatchTargetsInfo &&targets = {});
 
     BatchFile( const RawFile &file);
 
@@ -52,14 +58,14 @@ class BatchFile: public Arinc665File
 
     void setComment( const string &comment);
 
-    const ListType& getTargetHardwareLoadList() const;
+    const BatchTargetsInfo& getTargetHardwares() const;
 
-    ListType& getTargetHardwareLoadList();
+    BatchTargetsInfo& getTargetHardwares();
 
   private:
     string partNumber;
     string comment;
-    ListType targetHardwareLoadList;
+    BatchTargetsInfo targetHardwares;
 };
 
 }

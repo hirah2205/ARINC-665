@@ -43,7 +43,7 @@ add_library(
   file/FileFactory.cpp
   file/StringHelper.hpp
   file/StringHelper.cpp
- 
+
   file/list/ListFile.hpp
   file/list/ListFile.cpp
   file/list/FileInfo.hpp
@@ -58,16 +58,16 @@ add_library(
   file/list/BatchInfo.cpp
   file/list/BatchListFile.hpp
   file/list/BatchListFile.cpp
- 
+
   file/load/LoadHeaderFile.hpp
   file/load/LoadHeaderFile.cpp
   file/load/LoadFileInfo.hpp
   file/load/LoadFileInfo.cpp
- 
+
   file/batch/BatchFile.hpp
   file/batch/BatchFile.cpp
   file/batch/BatchLoadInfo.hpp
-  file/batch/TargetHardwareLoad.hpp
+  file/batch/BatchTargetInfo.hpp
 
   media/Base.hpp
   media/MediaSet.hpp
@@ -86,8 +86,6 @@ add_library(
   media/Load.cpp
   media/Batch.hpp
   media/Batch.cpp
-  media/BatchInfo.hpp
-  media/BatchInfo.cpp
 
   utils/Utils.hpp
   utils/Arinc665Utils.hpp
