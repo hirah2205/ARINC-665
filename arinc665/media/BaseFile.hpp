@@ -91,11 +91,26 @@ class BaseFile: public Base
     ConstContainerEntityPtr getParent() const;
 
     /**
-     * @brief Returns the path up to the medium root.
+     * @brief Returns the medium where this file is located.
      *
-     * @return The path up to the medium root.
+     * @return The medium where this file is located.
      **/
-    path getPath() const;
+    ConstMediumPtr getMedium() const;
+
+    //! @copydoc getMedium() const
+    MediumPtr getMedium();
+
+    /**
+     * @brief Returns the file path up to the medium root.
+     *
+     * This also contains the filename.
+     * The pathname is an absolute path originate in the medium root directory.
+     *
+     * @return The pathname up to the medium root.
+     * @retval {}
+     *   If parent is not available. (Should never happen)
+     **/
+    path getPathname() const;
 
   protected:
     BaseFile( ContainerEntityPtr parent, const string &name);

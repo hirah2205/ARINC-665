@@ -25,12 +25,26 @@ namespace Media {
 
 ConstMediaSetPtr BaseFile::getMediaSet() const
 {
-  return getParent()->getMediaSet();
+  auto parent( getParent());
+
+  if (!parent)
+  {
+    return {};
+  }
+
+  return parent->getMediaSet();
 }
 
 MediaSetPtr BaseFile::getMediaSet()
 {
-  return getParent()->getMediaSet();
+  auto parent( getParent());
+
+  if (!parent)
+  {
+    return {};
+  }
+
+  return parent->getMediaSet();
 }
 
 BaseFile::Type BaseFile::getType() const
@@ -63,9 +77,40 @@ ConstContainerEntityPtr BaseFile::getParent() const
   return parent.lock();
 }
 
-BaseFile::path BaseFile::getPath() const
+ConstMediumPtr BaseFile::getMedium() const
 {
-  return parent.lock()->getPath() / name;
+  auto parent( getParent());
+
+  if (!parent)
+  {
+    return {};
+  }
+
+  return parent->getMedium();
+}
+
+MediumPtr BaseFile::getMedium()
+{
+  auto parent( getParent());
+
+  if (!parent)
+  {
+    return {};
+  }
+
+  return parent->getMedium();
+}
+
+BaseFile::path BaseFile::getPathname() const
+{
+  auto parentPtr( parent.lock());
+
+  if ( parentPtr)
+  {
+    return parentPtr->getPath() / name;
+  }
+
+  return {};
 }
 
 BaseFile::BaseFile( ContainerEntityPtr parent, const string &name) :

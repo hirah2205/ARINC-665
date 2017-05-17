@@ -33,7 +33,12 @@ namespace Arinc665 {
 namespace Media {
 
 /**
+ * @brief Container base class.
  *
+ * Contains common operations needed for containers.
+ * Direct children are:
+ * @li Media, and
+ * @li Directory
  **/
 class ContainerEntity :
   public Base,
@@ -57,7 +62,7 @@ class ContainerEntity :
     /**
      * @brief Indicates, if the container has child elements.
      *
-     * @return if there are sub-directories or files
+     * @return if there are sub-directories or files.
      **/
     bool hasChildren() const;
 
@@ -68,18 +73,61 @@ class ContainerEntity :
      **/
     size_t getNumberOfSubDirectories() const;
 
+    /**
+     * @brief Returns all sub-directories within the current container.
+     *
+     * @return All sub-directories contained in the current container.
+     **/
     ConstDirectories getSubDirectories() const;
 
+    //! @copydoc getSubDirectories() const
     Directories getSubDirectories();
 
+    /**
+     * @brief Returns the sub-directory with the given name.
+     *
+     * @param[in] name
+     *   The name of the requested sub-directory.
+     *
+     * @return The sub-directory with the given name.
+     * @retval {}
+     *   If no such sub-directory exists.
+     **/
     ConstDirectoryPtr getSubDirectory( const string &name) const;
 
+    //! @copydoc getSubDirectory() const
     DirectoryPtr getSubDirectory( const string &name);
 
+    /**
+     * @brief Adds a sub-directory with the given name.
+     *
+     * It is a failure to try to create an already existing directory.
+     *
+     * @param[in] name
+     *   The name of the requested sub-directory.
+     *
+     * @return The created sub-directory.
+     **/
     DirectoryPtr addSubDirectory( const string &name);
 
+    /**
+     * @brief Removes the sub-directory with the given name.
+     *
+     * It is a failure to try to delete a non-existing directory.
+     *
+     * @param[in] name
+     *   The name of the requested sub-directory to be deleted.
+     **/
     void removeSubDirectory( const string &name);
 
+    /**
+     * @brief Removes the given sub-directory.
+     *
+     * It is a failure to try to delete a non-existing directory.
+     *
+     * @param[in] subDirectory
+     *   The sub-directory to be deleted,
+     **/
     void removeSubDirectory( DirectoryPtr subDirectory);
 
     /**
@@ -90,12 +138,41 @@ class ContainerEntity :
      **/
     size_t getNumberOfFiles( bool recursive = false) const;
 
+    /**
+     * @brief Returns all files present in the given container.
+     *
+     * @param[in] recursive
+     *   If set to true recursive scan all sub-directories.
+     *
+     * @return All files of the current container.
+     **/
     ConstFiles getFiles( bool recursive = false) const;
 
+    //! @copydoc getFiles() const
     Files getFiles( bool recursive = false);
 
+    /**
+     * @brief Returns the file with the given name.
+     *
+     * The file type is not relevant (file can be load header file, batch file,
+     * or other file).
+     *
+     * @note
+     * If a file with the same name exists in multiple sub-directories exists,
+     * only the first one is returned (which is the first is not specified).
+     *
+     * @param[in] filename
+     *   The name of the requested file.
+     * @param[in] recursive
+     *   If set to true scans all sub-directories for the file.
+     *
+     * @return The file with the given name.
+     * @retval {}
+     *   If no such file exists.
+     **/
     ConstFilePtr getFile( const string &filename, bool recursive = false) const;
 
+    //! @copydoc getFile() const
     FilePtr getFile( const string &filename, bool recursive = false);
 
     /**
@@ -103,7 +180,7 @@ class ContainerEntity :
      *
      * @param filename
      *
-     * @return
+     * @return The created file.
      **/
     FilePtr addFile( const string &filename);
 
@@ -149,9 +226,17 @@ class ContainerEntity :
 
     ConstContainerEntityPtr getParent() const;
 
-    MediumPtr getMedium();
-
+    /**
+     * @brief Returns the medium where this container is located.
+     *
+     * The returned medium could be the container itself.
+     *
+     * @return The medium where this container is located.
+     **/
     ConstMediumPtr getMedium() const;
+
+    //! @copydoc getMedium() const
+    MediumPtr getMedium();
 
   protected:
     ContainerEntity( ContainerEntityPtr parent);

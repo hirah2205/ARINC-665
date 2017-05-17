@@ -74,8 +74,9 @@ DirectoryPtr ContainerEntity::addSubDirectory( const string &name)
 {
   if ( getSubDirectory( name))
   {
+    //! @throw Arinc665Exception() if directory already exists.
     BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() << AdditionalInfo( "sub-directory already exists"));
+      Arinc665Exception() << AdditionalInfo( "sub-directory already exists"));
   }
 
   // create new sub-directory
@@ -101,7 +102,8 @@ void ContainerEntity::removeSubDirectory( const string &name)
 
   if (subDirectories.end() == dir)
   {
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+    //! @throw Arinc665Exception() if directory does not exists.
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
       AdditionalInfo( "sub-directory does not exists"));
   }
 
@@ -117,7 +119,8 @@ void ContainerEntity::removeSubDirectory( DirectoryPtr subDirectory)
 
   if (subDirectories.end() == dir)
    {
-     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+     //! @throw Arinc665Exception() if directory does not exists.
+     BOOST_THROW_EXCEPTION( Arinc665Exception() <<
        AdditionalInfo( "sub-directory does not exists"));
    }
 
@@ -205,7 +208,7 @@ ConstFilePtr ContainerEntity::getFile(
     }
   }
 
-  return ConstFilePtr();
+  return {};
 }
 
 FilePtr ContainerEntity::getFile( const string &filename, const bool recursive)
@@ -232,7 +235,7 @@ FilePtr ContainerEntity::getFile( const string &filename, const bool recursive)
     }
   }
 
-  return FilePtr();
+  return {};
 }
 
 FilePtr ContainerEntity::addFile( const string &filename)
@@ -264,6 +267,7 @@ void ContainerEntity::removeFile( const string &filename)
 
   if (files.end() == file)
   {
+    //! @throw Arinc665Exception() if file does not exists.
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
       AdditionalInfo( "File not found"));
   }
@@ -280,6 +284,7 @@ void ContainerEntity::removeFile( ConstFilePtr file)
 
   if (files.end() == fileIt)
   {
+    //! @throw Arinc665Exception() if file does not exists.
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
       AdditionalInfo( "File not found"));
   }
@@ -413,12 +418,14 @@ void ContainerEntity::removeLoad( const string &filename)
 
   if ( !loadFile)
   {
+    //! @throw Arinc665Exception() if load does not exists.
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception() << AdditionalInfo( "Load does not exists"));
   }
 
   if ( BaseFile::FileType::LoadFile != loadFile->getFileType())
   {
+    //! @throw Arinc665Exception() if filename does not address a load.
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception()
         << AdditionalInfo( "File does not name a load"));
@@ -542,6 +549,7 @@ BatchPtr ContainerEntity::addBatch( const string &filename)
 {
   if ( getFile( filename))
   {
+    //! @throw Arinc665Exception() if batch already exists.
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
       AdditionalInfo( "File with this name already exists"));
   }
@@ -563,12 +571,14 @@ void ContainerEntity::removeBatch( const string &filename)
 
   if (!batchFile)
   {
+    //! @throw Arinc665Exception() if load does not exists.
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
       AdditionalInfo( "Batch does not exists"));
   }
 
   if (BaseFile::FileType::BatchFile != batchFile->getFileType())
   {
+    //! @throw Arinc665Exception() if filename does not address a batch
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
       AdditionalInfo( "File does not name a batch"));
   }
@@ -591,21 +601,6 @@ ConstContainerEntityPtr ContainerEntity::getParent() const
   return parent.lock();
 }
 
-MediumPtr ContainerEntity::getMedium()
-{
-  if (getType() == Type::Medium)
-  {
-    return std::dynamic_pointer_cast< Medium>( shared_from_this());
-  }
-
-  if (parent.expired())
-  {
-    return {};
-  }
-
-  return parent.lock()->getMedium();
-}
-
 ConstMediumPtr ContainerEntity::getMedium() const
 {
   if (getType() == Type::Medium)
@@ -613,17 +608,41 @@ ConstMediumPtr ContainerEntity::getMedium() const
     return std::dynamic_pointer_cast< const Medium>( shared_from_this());
   }
 
-  if (parent.expired())
+  auto parentPtr( parent.lock());
+
+  if (!parentPtr)
   {
     return {};
   }
 
-  return parent.lock()->getMedium();
+  return parentPtr->getMedium();
+}
+
+MediumPtr ContainerEntity::getMedium()
+{
+  if (getType() == Type::Medium)
+  {
+    return std::dynamic_pointer_cast< Medium>( shared_from_this());
+  }
+
+  auto parentPtr( parent.lock());
+
+  if (!parentPtr)
+  {
+    return {};
+  }
+
+  return parentPtr->getMedium();
 }
 
 ContainerEntity::ContainerEntity( ContainerEntityPtr parent):
   parent( parent)
 {
+  if (!parent)
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+      AdditionalInfo( "parent must be valid"));
+  }
 }
 
 ConstFiles ContainerEntity::getFiles( BaseFile::FileType fileType) const

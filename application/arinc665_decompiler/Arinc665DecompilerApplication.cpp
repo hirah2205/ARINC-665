@@ -18,6 +18,9 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <arinc665/media/MediaSet.hpp>
+#include <arinc665/media/File.hpp>
+
 #include <arinc665/utils/Arinc665Utils.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
 
@@ -84,12 +87,23 @@ int Arinc665DecompilerApplication::operator()()
     // perform import
     auto result( importer( mediaSetName));
 
+    Arinc665::Utils::Arinc665Xml::FilePathMapping fileMapping;
+
+    for (auto file : result->getFiles())
+    {
+      boost::filesystem::path filePath(
+        mediaSourceDirectories[ file->getMedium()->getMediumNumber()-1] /
+        file->getPathname().relative_path());
+
+      fileMapping.insert( {file, filePath});
+    }
+
     // exporter
     auto xml( Arinc665::Utils::Arinc665Xml::createInstance());
 
     xml->saveToXml(
       result,
-      {},
+      fileMapping,
       (mediaSetDestinationDirectory / mediaSetName) += ".xml");
   }
   catch ( Arinc665::Arinc665Exception &e)
