@@ -16,7 +16,7 @@
 
 #include "Arinc665Utils.hpp"
 
-#include <arinc665/utils/implementation/Arinc665ImporterImpl.hpp>
+#include <arinc665/utils/implementation/MediaSetImporterImpl.hpp>
 
 namespace Arinc665 {
 namespace Utils {
@@ -25,8 +25,8 @@ Arinc665Utils::Arinc665Importer Arinc665Utils::createArinc665Importer(
   GetMediumPathHandler getMediumPathHandler)
 {
   Arinc665Importer importer( std::bind(
-    &Arinc665ImporterImpl::operator(),
-    std::make_shared< Arinc665ImporterImpl>( getMediumPathHandler),
+    &MediaSetImporterImpl::operator(),
+    std::make_shared< MediaSetImporterImpl>( getMediumPathHandler),
     std::placeholders::_1));
 
   return importer;

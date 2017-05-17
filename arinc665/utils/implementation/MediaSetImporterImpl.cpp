@@ -11,10 +11,10 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of class Arinc665::Utils::Arinc665ImporterImpl.
+ * @brief Definition of class Arinc665::Utils::MediaSetImporterImpl.
  **/
 
-#include "Arinc665ImporterImpl.hpp"
+#include "MediaSetImporterImpl.hpp"
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
@@ -28,13 +28,13 @@
 namespace Arinc665 {
 namespace Utils {
 
-Arinc665ImporterImpl::Arinc665ImporterImpl(
+MediaSetImporterImpl::MediaSetImporterImpl(
   Arinc665Utils::GetMediumPathHandler getMediumPathHandler):
   getMediumPathHandler( getMediumPathHandler)
 {
 }
 
-Media::MediaSetPtr Arinc665ImporterImpl::operator()( const string &mediaSetName)
+Media::MediaSetPtr MediaSetImporterImpl::operator()( const string &mediaSetName)
 {
   BOOST_LOG_FUNCTION();
 
@@ -88,7 +88,7 @@ Media::MediaSetPtr Arinc665ImporterImpl::operator()( const string &mediaSetName)
   return mediaSet;
 }
 
-void Arinc665ImporterImpl::addMedium(
+void MediaSetImporterImpl::addMedium(
   const uint8_t mediumIndex,
   const path &mediumPath)
 {
@@ -225,7 +225,7 @@ void Arinc665ImporterImpl::addMedium(
 #endif
 }
 
-void Arinc665ImporterImpl::loadFileListFile(
+void MediaSetImporterImpl::loadFileListFile(
   const uint8_t mediumIndex,
   const path &mediumPath)
 {
@@ -300,7 +300,7 @@ void Arinc665ImporterImpl::loadFileListFile(
   }
 }
 
-void Arinc665ImporterImpl::loadLoadListFile(
+void MediaSetImporterImpl::loadLoadListFile(
   const uint8_t mediumIndex,
   const path &mediumPath)
 {
@@ -367,7 +367,7 @@ void Arinc665ImporterImpl::loadLoadListFile(
   }
 }
 
-void Arinc665ImporterImpl::loadBatchListFile(
+void MediaSetImporterImpl::loadBatchListFile(
   const uint8_t mediumIndex,
   const path &mediumPath)
 {
@@ -453,7 +453,7 @@ void Arinc665ImporterImpl::loadBatchListFile(
   }
 }
 
-void Arinc665ImporterImpl::loadLoadHeaderFiles(
+void MediaSetImporterImpl::loadLoadHeaderFiles(
   const uint8_t mediumIndex,
   const path &mediumPath)
 {
@@ -505,7 +505,7 @@ void Arinc665ImporterImpl::loadLoadHeaderFiles(
   }
 }
 
-void Arinc665ImporterImpl::loadBatchFiles(
+void MediaSetImporterImpl::loadBatchFiles(
   const uint8_t mediumIndex,
   const path &mediumPath)
 {
@@ -543,7 +543,7 @@ void Arinc665ImporterImpl::loadBatchFiles(
   }
 }
 
-void Arinc665ImporterImpl::addFiles()
+void MediaSetImporterImpl::addFiles()
 {
   FileListFile::FileInfoMap loadHeaders;
   FileListFile::FileInfoMap batches;
@@ -593,7 +593,7 @@ void Arinc665ImporterImpl::addFiles()
   addBatches( batches);
 }
 
-void Arinc665ImporterImpl::addLoads( FileListFile::FileInfoMap &loadHeaders)
+void MediaSetImporterImpl::addLoads( FileListFile::FileInfoMap &loadHeaders)
 {
   for ( const auto &loadHeader : loadHeaders)
   {
@@ -631,7 +631,7 @@ void Arinc665ImporterImpl::addLoads( FileListFile::FileInfoMap &loadHeaders)
   }
 }
 
-void Arinc665ImporterImpl::addBatches( FileListFile::FileInfoMap &batches)
+void MediaSetImporterImpl::addBatches( FileListFile::FileInfoMap &batches)
 {
   for ( const auto &batch : batches)
   {
@@ -658,8 +658,8 @@ void Arinc665ImporterImpl::addBatches( FileListFile::FileInfoMap &batches)
   }
 }
 
-Arinc665ImporterImpl::ContainerEntityPtr
-Arinc665ImporterImpl::checkCreateDirectory(
+MediaSetImporterImpl::ContainerEntityPtr
+MediaSetImporterImpl::checkCreateDirectory(
   const uint8_t mediumIndex,
   const path &filePath)
 {
@@ -682,7 +682,7 @@ Arinc665ImporterImpl::checkCreateDirectory(
   return dir;
 }
 
-Arinc665::File::RawFile Arinc665ImporterImpl::loadFile( const path &filePath)
+Arinc665::File::RawFile MediaSetImporterImpl::loadFile( const path &filePath)
 {
   if (!boost::filesystem::is_regular( filePath))
   {

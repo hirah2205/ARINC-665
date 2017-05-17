@@ -92,11 +92,17 @@ add_library(
   utils/Arinc665Utils.cpp
   utils/Arinc665Xml.hpp
   utils/Arinc665Xml.cpp
+  utils/MediaSetConfiguration.hpp
+  utils/MediaSetConfiguration.cpp
+  utils/MediaSetManager.hpp
+  utils/MediaSetManager.cpp
   
-  utils/implementation/Arinc665ImporterImpl.hpp
-  utils/implementation/Arinc665ImporterImpl.cpp
   utils/implementation/Arinc665XmlPugiXmlImpl.hpp
   utils/implementation/Arinc665XmlPugiXmlImpl.cpp
+  utils/implementation/MediaSetImporterImpl.hpp
+  utils/implementation/MediaSetImporterImpl.cpp
+  utils/implementation/MediaSetManagerImpl.hpp
+  utils/implementation/MediaSetManagerImpl.cpp
   )
 
 target_include_directories( arinc665 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>)

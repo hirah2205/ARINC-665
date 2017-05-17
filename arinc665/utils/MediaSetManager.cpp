@@ -1,0 +1,33 @@
+/*
+ * $Date$
+ * $Revision$
+ */
+/**
+ * @file
+ * @copyright
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ *
+ * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ *
+ * @brief Definition of class Arinc665::Utils::MediaSetManager.
+ **/
+
+#include "MediaSetManager.hpp"
+
+#include <arinc665/utils/implementation/MediaSetManagerImpl.hpp>
+
+namespace Arinc665 {
+namespace Utils {
+
+MediaSetManagerPtr MediaSetManager::createInstance(
+  const boost::property_tree::ptree &config,
+  const path &mediaSetBase)
+{
+  return std::make_shared< MediaSetManagerImpl>( config, mediaSetBase);
+}
+
+}
+}

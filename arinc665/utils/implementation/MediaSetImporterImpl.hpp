@@ -11,11 +11,11 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class Arinc665::Utils::Arinc665ImporterImpl.
+ * @brief Declaration of class Arinc665::Utils::MediaSetImporterImpl.
  **/
 
-#ifndef ARINC665_UTILS_ARINC665IMPORTERIMPL_HPP
-#define ARINC665_UTILS_ARINC665IMPORTERIMPL_HPP
+#ifndef ARINC665_UTILS_MEDIASETIMPORTERIMPL_HPP
+#define ARINC665_UTILS_MEDIASETIMPORTERIMPL_HPP
 
 #include <arinc665/utils/Arinc665Utils.hpp>
 
@@ -36,7 +36,7 @@
 namespace Arinc665 {
 namespace Utils {
 
-class Arinc665ImporterImpl
+class MediaSetImporterImpl
 {
   public:
     using path = Arinc665Utils::path;
@@ -49,7 +49,7 @@ class Arinc665ImporterImpl
      * @param[in] getMediumPathHandler
      *   The handler which is called to obtain the path of a medium.
      **/
-    Arinc665ImporterImpl(
+    MediaSetImporterImpl(
       Arinc665Utils::GetMediumPathHandler getMediumPathHandler);
 
     /**

@@ -14,8 +14,8 @@
 * @brief Declaration of class Arinc665::Utils::Arinc665XmlPugiXmlImpl.
  **/
 
-#ifndef ARINC665_XML_ARINC665XMLPUGIXMLIMPL_HPP
-#define ARINC665_XML_ARINC665XMLPUGIXMLIMPL_HPP
+#ifndef ARINC665_UTILS_ARINC665XMLPUGIXMLIMPL_HPP
+#define ARINC665_UTILS_ARINC665XMLPUGIXMLIMPL_HPP
 
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
