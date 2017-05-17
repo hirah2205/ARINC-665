@@ -19,6 +19,7 @@
 
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/MediaSetManager.hpp>
+#include <arinc665/utils/MediaSetConfiguration.hpp>
 
 namespace Arinc665 {
 namespace Utils {
@@ -30,9 +31,7 @@ class MediaSetManagerImpl : public MediaSetManager
      *
      * @param config
      **/
-    MediaSetManagerImpl(
-      const boost::property_tree::ptree &config,
-      const path &mediaSetBase);
+    MediaSetManagerImpl( const MediaSetConfiguration &config);
 
     //! @copydoc MediaSetManager::getMediaSet
     virtual Media::MediaSetPtr getMediaSet( const string &partNumber) override final;
@@ -53,6 +52,7 @@ class MediaSetManagerImpl : public MediaSetManager
     using MediaPaths =
       std::map< Media::ConstMediumPtr, path>;
 
+    MediaSetConfiguration config;
     MediaSetList mediaSets;
     MediaPaths mediaPaths;
 };

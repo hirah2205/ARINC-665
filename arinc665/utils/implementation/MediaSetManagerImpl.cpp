@@ -20,33 +20,22 @@
 
 #include <arinc665/utils/Arinc665Utils.hpp>
 
-#include <boost/property_tree/ptree.hpp>
-
 namespace Arinc665 {
 namespace Utils {
 
 MediaSetManagerImpl::MediaSetManagerImpl(
-  const boost::property_tree::ptree &config,
-  const path &mediaSetBase)
+  const MediaSetConfiguration &config):
+  config( config)
 {
   BOOST_LOG_FUNCTION();
 
-  // iterate over media sets
-  for ( auto &mediaSetConfig : config.get_child( "media_set"))
+  for ( auto const &mediaSetConfig : config.mediaSets)
   {
-    std::vector< path> mediaPaths;
-
-    // iterate over media
-    for ( auto &mediumConfig : mediaSetConfig.second.get_child( "medium"))
-    {
-      mediaPaths.push_back( mediumConfig.second.get_value< path>());
-    }
-
     // import media set
     auto importer( Arinc665Utils::createArinc665Importer(
-      [&mediaPaths,&mediaSetBase]( const uint8_t mediumNumber)
+      [&mediaSetConfig,&config]( const uint8_t mediumNumber)
       {
-        if (mediumNumber > mediaPaths.size())
+        if (mediumNumber > mediaSetConfig.second.size())
         {
           BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning) <<
             "More media then stored requested";
@@ -54,18 +43,14 @@ MediaSetManagerImpl::MediaSetManagerImpl(
           return path();
         }
 
-        const auto &mediumPath( mediaPaths[ mediumNumber-1]);
-
-        if (mediumPath.is_absolute())
-        {
-          return mediumPath;
-        }
-
-        return mediaSetBase / mediumPath;
+        return
+          config.mediaSetBase /
+          mediaSetConfig.first /
+          mediaSetConfig.second[ mediumNumber-1];
       }));
 
     // execute importer
-    auto mediaSet( importer( mediaSetConfig.second.get< string>( "name", {})));
+    auto mediaSet( importer( mediaSetConfig.first));
 
     // add media set
     mediaSets.push_back( mediaSet);
@@ -75,7 +60,9 @@ MediaSetManagerImpl::MediaSetManagerImpl(
     {
       // add path mapping
       this->mediaPaths.insert(
-        { medium, mediaPaths[ medium->getMediumNumber() - 1]});
+        { medium,
+          mediaSetConfig.first /
+          mediaSetConfig.second[ medium->getMediumNumber() - 1]});
     }
   }
 }
@@ -127,7 +114,7 @@ MediaSetManagerImpl::path MediaSetManagerImpl::getFilePath(
     return {};
   }
 
-  return mediumIt->second / file->getPathname().relative_path();
+  return config.mediaSetBase / mediumIt->second / file->getPathname().relative_path();
 }
 
 }

@@ -23,10 +23,9 @@ namespace Arinc665 {
 namespace Utils {
 
 MediaSetManagerPtr MediaSetManager::createInstance(
-  const boost::property_tree::ptree &config,
-  const path &mediaSetBase)
+  const MediaSetConfiguration &config)
 {
-  return std::make_shared< MediaSetManagerImpl>( config, mediaSetBase);
+  return std::make_shared< MediaSetManagerImpl>( config);
 }
 
 }

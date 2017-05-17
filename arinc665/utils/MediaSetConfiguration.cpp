@@ -23,10 +23,11 @@
 namespace Arinc665 {
 namespace Utils {
 
-MediaSetConfiguration::MediaSetConfiguration(
-  const boost::property_tree::ptree &config)
+MediaSetConfiguration::MediaSetConfiguration( const ptree &config)
 {
   BOOST_LOG_FUNCTION();
+
+  mediaSetBase = config.get< string>( "media_set_base");
 
   // iterate over media sets
   for ( auto &mediaSetConfig : config.get_child( "media_sets"))

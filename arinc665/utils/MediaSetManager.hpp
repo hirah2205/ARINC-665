@@ -23,7 +23,6 @@
 #include <arinc665/media/MediaSet.hpp>
 
 #include <boost/filesystem/path.hpp>
-#include <boost/property_tree/ptree_fwd.hpp>
 
 #include <list>
 #include <string>
@@ -57,8 +56,7 @@ class MediaSetManager
      * @return The media set manager instance.
      **/
     static MediaSetManagerPtr createInstance(
-      const boost::property_tree::ptree &config,
-      const path &mediaSetBase = {});
+      const MediaSetConfiguration &config);
 
     /**
      * @brief Returns the media set with the given part number.

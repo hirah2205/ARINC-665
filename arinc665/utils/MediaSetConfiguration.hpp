@@ -28,18 +28,41 @@
 namespace Arinc665 {
 namespace Utils {
 
+/**
+ * @brief Media Set storage configuration.
+ **/
 class MediaSetConfiguration
 {
   public:
+    using ptree = boost::property_tree::ptree;
     using path = boost::filesystem::path;
     using string = std::string;
 
     using MediaPaths = std::vector< path>;
     using MediaSets = std::map< string, MediaPaths>;
 
-    MediaSetConfiguration( const boost::property_tree::ptree &config);
+    //! Initialises the configuration with default values.
+    MediaSetConfiguration();
 
+    /**
+     * @brief Loads the configuration via a boost::property_tree::ptree.
+     *
+     * @param[in] properties
+     *   The stored properties.
+     **/
+    MediaSetConfiguration( const ptree &properties);
+
+    /**
+     * @brief Converts the configuration values to a
+     *   boost::property_tree::ptree.
+     *
+     * @return The boost::property_tree::ptree.
+     **/
+    ptree toProperties() const;
+
+    //! Base directory for all media sets stored.
     path mediaSetBase;
+    //! The list of media sets (name-path-mapping)
     MediaSets mediaSets;
 };
 
