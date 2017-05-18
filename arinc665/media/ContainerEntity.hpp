@@ -95,7 +95,7 @@ class ContainerEntity :
      **/
     ConstDirectoryPtr getSubDirectory( const string &name) const;
 
-    //! @copydoc getSubDirectory() const
+    //! @copydoc getSubDirectory(const string&) const
     DirectoryPtr getSubDirectory( const string &name);
 
     /**
@@ -148,7 +148,7 @@ class ContainerEntity :
      **/
     ConstFiles getFiles( bool recursive = false) const;
 
-    //! @copydoc getFiles() const
+    //! @copydoc getFiles(bool) const
     Files getFiles( bool recursive = false);
 
     /**
@@ -172,7 +172,7 @@ class ContainerEntity :
      **/
     ConstFilePtr getFile( const string &filename, bool recursive = false) const;
 
-    //! @copydoc getFile() const
+    //! @copydoc getFile(const string&,bool) const
     FilePtr getFile( const string &filename, bool recursive = false);
 
     /**

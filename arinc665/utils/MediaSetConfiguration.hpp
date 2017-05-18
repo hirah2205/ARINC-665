@@ -38,6 +38,7 @@ class MediaSetConfiguration
     using path = boost::filesystem::path;
     using string = std::string;
 
+    //! media-to-path mapping
     using MediaPaths = std::vector< path>;
     using MediaSets = std::map< string, MediaPaths>;
 

@@ -34,43 +34,46 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
    //! Default constructor
     Arinc665XmlPugiXmlImpl() = default;
 
-   //! Default descructor
-   virtual ~Arinc665XmlPugiXmlImpl() = default;
+    //! Default descructor
+    virtual ~Arinc665XmlPugiXmlImpl() = default;
 
-   /**
-    * @brief Loads the Media Set information from the given XML file.
-    *
-    * @param[in] xmlFile
-    *   The ARINC 665 XML file.
-    *
-    * @return The loaded Media Set information.
-    **/
-   virtual LoadXmlResult loadFromXml( const path &xmlFile) override final;
+    /**
+     * @brief Loads the Media Set information from the given XML file.
+     *
+     * @param[in] xmlFile
+     *   The ARINC 665 XML file.
+     *
+     * @return The loaded Media Set information.
+     **/
+    virtual LoadXmlResult loadFromXml( const path &xmlFile) override final;
 
-   /**
-    * @brief Saves the given Media Set information to the given XML file.
-    *
-    * @param[in] mediaSet
-    *   The Media Set information.
-    * @param[in] xmlFile
-    *   The ARINC 665 XML file.
-    */
-   virtual void saveToXml(
-     Media::ConstMediaSetPtr mediaSet,
-     const FilePathMapping &filePathMapping,
-     const path &xmlFile) override final;
+    /**
+     * @brief Saves the given Media Set information to the given XML file.
+     *
+     * @param[in] mediaSet
+     *   The Media Set information.
+     * @param[in] filePathMapping
+     *   The file path mapping
+     *   (used to insert the correct source path attribute.)
+     * @param[in] xmlFile
+     *   The ARINC 665 XML file.
+     */
+    virtual void saveToXml(
+      Media::ConstMediaSetPtr mediaSet,
+      const FilePathMapping &filePathMapping,
+      const path &xmlFile) override final;
 
   private:
-   /**
-    * @brief Loads the media set section.
-    *
-    * @todo Add Loads, and Batches handling.
-    *
-    * @param filePathMapping
-    * @param mediaSetNode
-    *
-    * @return
-    **/
+    /**
+     * @brief Loads the media set section.
+     *
+     * @todo Add Loads, and Batches handling.
+     *
+     * @param filePathMapping
+     * @param mediaSetNode
+     *
+     * @return
+     **/
     Media::MediaSetPtr loadMediaSet(
       FilePathMapping &filePathMapping,
       const pugi::xml_node &mediaSetNode);
@@ -161,10 +164,20 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
       const FilePathMapping &filePathMapping,
       pugi::xml_node &currentNode);
 
-    void loadLoad(
-      Media::MediaSetPtr mediaSet,
-      const pugi::xml_node &loadNode);
+    /**
+     * @brief Loads the given load-node.
+     *
+     * @param[in,out] mediaSet
+     * @param[in] loadNode
+     **/
+    void loadLoad( Media::MediaSetPtr mediaSet, const pugi::xml_node &loadNode);
 
+    /**
+     * @brief Stores the given load-node.
+     *
+     * @param[in] load
+     * @param[in] loadNode
+     **/
     void saveLoad(
       Media::ConstLoadPtr load,
       pugi::xml_node &loadNode);

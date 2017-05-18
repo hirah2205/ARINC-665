@@ -45,7 +45,7 @@ class MediaSetManagerImpl : public MediaSetManager
     //! @copydoc MediaSetManager::getLoads() const
     virtual Media::ConstLoads getLoads() const override final;
 
-    //! @copydoc MediaSetManager::getFilePath() const
+    //! @copydoc MediaSetManager::getFilePath
     virtual path getFilePath( Media::ConstBaseFilePtr file) const override final;
 
   private:

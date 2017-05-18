@@ -36,12 +36,12 @@ class FileTypeDescription : public Description<
 };
 
 /**
- * @brief Streaming operator to output file type as string
+ * @brief Streaming operator to output ARINC 665 file type as string
  *
  * @param[in,out] stream
  *   The output stream
- * @param[in] operation
- *   The operation
+ * @param[in] fileType
+ *   The ARINC 665 file type.
  *
  * @return The stream for chaining.
  **/

@@ -19,3 +19,4 @@ add_subdirectory( arinc665_ls)
 add_subdirectory( arinc665_unit_test)
 
 add_subdirectory( arinc665_print_media_set)
+add_subdirectory( arinc665_test_media_set_manager)

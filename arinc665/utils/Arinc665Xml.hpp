@@ -60,6 +60,9 @@ class Arinc665Xml
      *
      * @param[in] mediaSet
      *   The Media Set information.
+     * @param[in] filePathMapping
+     *   The file path mapping
+     *   (used to insert the correct source path attribute.)
      * @param[in] xmlFile
      *   The ARINC 665 XML file.
      */

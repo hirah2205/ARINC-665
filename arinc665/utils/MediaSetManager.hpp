@@ -32,6 +32,13 @@ namespace Utils {
 
 /**
  * @brief This class manages the locally held media sets.
+ *
+ * @par Organisation of Media Set Manager data.
+ * * Media sets are stored beneath the [mediaSetBasePath] directory.
+ * * Within this directory the media sets each are stored within a directory
+ *   named [mediaSetName].
+ * * Within the media set directory the media are stored with the corresponding
+ *   medium-path mapping.
  **/
 class MediaSetManager
 {
@@ -51,8 +58,7 @@ class MediaSetManager
      *
      * @param[in] config
      *   The media set manager configuration.
-     * @param[in] mediaSetBase
-     *   If media paths are relative, use this as base.
+     *
      * @return The media set manager instance.
      **/
     static MediaSetManagerPtr createInstance(
