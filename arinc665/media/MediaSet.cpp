@@ -317,7 +317,7 @@ ConstBatches MediaSet::getBatches() const
   for (const auto & medium : media)
   {
     auto mediaBatches(
-      static_cast< const Medium&>(*medium).getBatches( true));
+      std::const_pointer_cast< const Medium>(medium)->getBatches( true));
     batches.insert( batches.end(), mediaBatches.begin(), mediaBatches.end());
   }
 
@@ -330,7 +330,7 @@ Batches MediaSet::getBatches()
 
   for (const auto & medium : media)
   {
-    Batches mediaBatches = medium->getBatches( true);
+    auto mediaBatches( medium->getBatches( true));
     batches.insert( batches.end(), mediaBatches.begin(), mediaBatches.end());
   }
 

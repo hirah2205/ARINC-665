@@ -12,7 +12,7 @@ cmake_minimum_required( VERSION 3.8)
 add_executable( 
   arinc665_test_media_set_manager
   
-  arinc615_test_media_set_manager.cpp
+  arinc665_test_media_set_manager.cpp
 )
 
 target_link_libraries(

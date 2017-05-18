@@ -100,13 +100,12 @@ int main( int argc, char ** argv)
           std::cout << "      " << supportFile.lock()->getName() << " " << supportFile.lock()->getPartNumber() << " " << mediaSetManager->getFilePath( supportFile.lock()) << "\n";
         }
       }
-#if 0
+
       std::cout << "  Batches:\n";
       for ( auto batch : medium->getBatches())
       {
         std::cout << "    " << batch->getName() << " " << batch->getPartNumber() << " " << mediaSetManager->getFilePath( batch) << "\n";
       }
-#endif
     }
   }
   catch ( boost::program_options::error &e)

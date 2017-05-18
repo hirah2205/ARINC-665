@@ -464,7 +464,9 @@ ConstBatches ContainerEntity::getBatches( const bool recursive) const
   // add batch files to list
   for ( auto &batchFile : batchFiles)
   {
-    batches.push_back( std::dynamic_pointer_cast< const Batch>( batchFile));
+    auto realBatchFile( std::dynamic_pointer_cast< const Batch>( batchFile));
+    assert( realBatchFile);
+    batches.push_back( realBatchFile);
   }
 
   // iterate over sub-directories
@@ -485,14 +487,16 @@ ConstBatches ContainerEntity::getBatches( const bool recursive) const
 
 Batches ContainerEntity::getBatches( const bool recursive)
 {
-  auto batchFiles( getFiles( BaseFile::FileType::LoadFile));
+  auto batchFiles( getFiles( BaseFile::FileType::BatchFile));
 
   Batches batches;
 
   // add batch files to list
   for ( auto &batchFile : batchFiles)
   {
-    batches.push_back( std::dynamic_pointer_cast< Batch>( batchFile));
+    auto realBatchFile( std::dynamic_pointer_cast< Batch>( batchFile));
+    assert( realBatchFile);
+    batches.push_back( realBatchFile);
   }
 
   // iterate over sub-directories
