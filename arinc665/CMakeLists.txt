@@ -99,6 +99,8 @@ add_library(
   
   utils/implementation/Arinc665XmlPugiXmlImpl.hpp
   utils/implementation/Arinc665XmlPugiXmlImpl.cpp
+  utils/implementation/MediaSetExporterImpl.hpp
+  utils/implementation/MediaSetExporterImpl.cpp
   utils/implementation/MediaSetImporterImpl.hpp
   utils/implementation/MediaSetImporterImpl.cpp
   utils/implementation/MediaSetManagerImpl.hpp

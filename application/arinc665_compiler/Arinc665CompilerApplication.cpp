@@ -18,6 +18,9 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <arinc665/utils/Arinc665Utils.hpp>
+#include <arinc665/utils/Arinc665Xml.hpp>
+
 #include <helper/Logger.hpp>
 
 #include <boost/program_options.hpp>
@@ -65,7 +68,33 @@ int Arinc665CompilerApplication::operator()()
       return EXIT_FAILURE;
     }
 
+    // load XML file
+    auto xml( Arinc665::Utils::Arinc665Xml::createInstance());
 
+    auto result( xml->loadFromXml( mediaSetXmlFile));
+
+    auto exporter( Arinc665::Utils::Arinc665Utils::createArinc665Exporter(
+      std::get< 0>( result),
+      [this](const uint8_t mediumNumber)
+      {
+        return mediaSetDestinationDirectory / ("MEDIA_" + std::to_string( mediumNumber));
+      },
+      [result,this](Arinc665::Media::ConstFilePtr file, const boost::filesystem::path &destination)
+      {
+        auto fileIt( std::get< 1>( result).find( file));
+
+        if (fileIt == std::get< 1>( result).end())
+        {
+          BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+            AdditionalInfo( "file mapping not found"));
+        }
+
+        boost::filesystem::copy(
+          mediaSetSourceDirectory / fileIt->second,
+          destination);
+      }));
+
+    exporter();
   }
   catch ( Arinc665::Arinc665Exception &e)
   {

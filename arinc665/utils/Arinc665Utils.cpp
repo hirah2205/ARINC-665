@@ -17,6 +17,7 @@
 #include "Arinc665Utils.hpp"
 
 #include <arinc665/utils/implementation/MediaSetImporterImpl.hpp>
+#include <arinc665/utils/implementation/MediaSetExporterImpl.hpp>
 
 namespace Arinc665 {
 namespace Utils {
@@ -24,12 +25,27 @@ namespace Utils {
 Arinc665Utils::Arinc665Importer Arinc665Utils::createArinc665Importer(
   GetMediumPathHandler getMediumPathHandler)
 {
-  Arinc665Importer importer( std::bind(
+  return std::bind(
     &MediaSetImporterImpl::operator(),
     std::make_shared< MediaSetImporterImpl>( getMediumPathHandler),
-    std::placeholders::_1));
+    std::placeholders::_1);
+}
 
-  return importer;
+Arinc665Utils::Arinc665Exporter Arinc665Utils::createArinc665Exporter(
+  Media::ConstMediaSetPtr mediaSet,
+  GetMediumPathHandler getMediumPathHandler,
+  CopyFileHandler copyFileHandler,
+  bool createBatchFiles,
+  bool createLoadHeaderFiles)
+{
+  return std::bind(
+    &MediaSetExporterImpl::operator(),
+    std::make_shared< MediaSetExporterImpl>(
+      mediaSet,
+      getMediumPathHandler,
+      copyFileHandler,
+      createBatchFiles,
+      createLoadHeaderFiles));
 }
 
 }

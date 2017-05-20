@@ -119,7 +119,7 @@ BaseFile::BaseFile( ContainerEntityPtr parent, const string &name) :
 {
   if (!parent)
   {
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
       AdditionalInfo( "parent must be valid"));
   }
 }
@@ -128,7 +128,7 @@ void BaseFile::setParent( ContainerEntityPtr parent)
 {
   if (!parent)
   {
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
       AdditionalInfo( "parent must be valid"));
   }
 

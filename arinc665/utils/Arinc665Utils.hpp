@@ -41,7 +41,7 @@ class Arinc665Utils
 
     //! Handler, which is called to generate the given file at the requested position.
     using CopyFileHandler =
-      std::function< path( Media::ConstFilePtr file, const path &destination)>;
+      std::function< void( Media::ConstFilePtr file, const path &destination)>;
 
     /**
      * The ARINC 665 Media Set importer.

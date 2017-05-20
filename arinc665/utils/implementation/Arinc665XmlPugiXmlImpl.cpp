@@ -33,8 +33,10 @@ Arinc665XmlPugiXmlImpl::LoadXmlResult Arinc665XmlPugiXmlImpl::loadFromXml(
 {
   BOOST_LOG_FUNCTION();
 
-  if (boost::filesystem::is_regular( xmlFile))
+  if (!boost::filesystem::is_regular( xmlFile))
   {
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning) <<
+      "File " << xmlFile << " does not exist";
     return {};
   }
 

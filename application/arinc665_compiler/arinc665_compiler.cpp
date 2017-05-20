@@ -37,7 +37,7 @@ int main( int argc, char ** argv);
 
 int main( int argc, char ** argv)
 {
-  initLogging();
+  initLogging( severity_level::info);
 
   boost::application::context context;
 
