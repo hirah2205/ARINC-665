@@ -89,8 +89,8 @@ class Arinc665Utils
       Media::ConstMediaSetPtr mediaSet,
       GetMediumPathHandler getMediumPathHandler,
       CopyFileHandler copyFileHandler,
-      bool createBatchFiles = true,
-      bool createLoadHeaderFiles = true);
+      bool createBatchFiles = false,
+      bool createLoadHeaderFiles = false);
 };
 
 }
