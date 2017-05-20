@@ -99,7 +99,7 @@ bool Arinc665CompilerApplication::handleCommandLine()
   try
   {
     std::shared_ptr< boost::application::args> args =
-    	context.find< boost::application::args>();
+      context.find< boost::application::args>();
 
     boost::program_options::variables_map options;
     boost::program_options::store(
