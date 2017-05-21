@@ -64,7 +64,7 @@ class Medium : public ContainerEntity
      *
      * @return The part number of the owning media set.
      **/
-    virtual const string& getPartNumber() const override final;
+    virtual string getPartNumber() const override final;
 
     //! @copydoc ContainerEntity::getPath() const
     virtual path getPath() const override final;

@@ -82,7 +82,7 @@ class Base
     *
     * @return The part number of the entity
     **/
-   virtual const string& getPartNumber() const = 0;
+   virtual string getPartNumber() const = 0;
 };
 
 }

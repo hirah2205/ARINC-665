@@ -17,6 +17,11 @@
 #ifndef ARINC665COMPILERAPPLICATION_HPP
 #define ARINC665COMPILERAPPLICATION_HPP
 
+#include <arinc665/media/Media.hpp>
+#include <arinc665/file/File.hpp>
+#include <arinc665/utils/Utils.hpp>
+#include <arinc665/utils/Arinc665Xml.hpp>
+
 #include <boost/program_options.hpp>
 #include <boost/application.hpp>
 #include <boost/filesystem/path.hpp>
@@ -44,6 +49,8 @@ class Arinc665CompilerApplication
     int operator()();
 
   private:
+    using path = boost::filesystem::path;
+
     /**
      * @brief Parsed the command line and assigns parameter.
      *
@@ -51,17 +58,28 @@ class Arinc665CompilerApplication
      **/
     bool handleCommandLine();
 
+    void createFile(
+      const Arinc665::Utils::Arinc665Xml::LoadXmlResult &mediaSetInfo,
+      Arinc665::Media::ConstFilePtr file);
+
+    void writeFile(
+      uint8_t mediumNumber,
+      const path &path,
+      Arinc665::File::RawFile file);
+
     //! The application context
     boost::application::context& context;
     //! Program Options description
     boost::program_options::options_description optionsDescription;
 
     //! Media Set XML file
-    boost::filesystem::path mediaSetXmlFile;
+    path mediaSetXmlFile;
     //! Media Set source directory
-    boost::filesystem::path mediaSetSourceDirectory;
+    path mediaSetSourceDirectory;
     //! Media Set destination directory
-    boost::filesystem::path mediaSetDestinationDirectory;
+    path mediaSetDestinationDirectory;
+
+    Arinc665::Utils::Arinc665XmlPtr xml;
 };
 
 #endif

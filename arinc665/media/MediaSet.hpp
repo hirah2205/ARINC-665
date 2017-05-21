@@ -70,7 +70,7 @@ class MediaSet:
     void setName( const string& name);
 
     //! @copydoc Base::getPartNumber
-    virtual const string& getPartNumber() const override final;
+    virtual string getPartNumber() const override final;
 
     /**
      * @brief Set the part number of the entity.

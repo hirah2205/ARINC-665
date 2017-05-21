@@ -107,7 +107,7 @@ void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory)
 void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
 {
   BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Export file to " << file->getPathname();
+    "Export file to " << file->getPath();
 
   switch (file->getFileType())
   {

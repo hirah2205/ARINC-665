@@ -178,14 +178,31 @@ class ContainerEntity :
     /**
      * @brief Adds a file into this directory.
      *
-     * @param filename
+     * @param[in] filename
+     *   The filename of the file to be created.
      *
      * @return The created file.
      **/
     FilePtr addFile( const string &filename);
 
+    /**
+     * @brief Removes the file with the given name.
+     *
+     * A non-existing file is handled as failure.
+     *
+     * @param[in] filename
+     *   The filename of the file to be deleted.
+     **/
     void removeFile( const string &filename);
 
+    /**
+     * @brief Removes the given file.
+     *
+     * A non-existing file (in this directory) is handled as failure.
+     *
+     * @param[in] file
+     *   The file to be deleted.
+     **/
     void removeFile( ConstFilePtr file);
 
 

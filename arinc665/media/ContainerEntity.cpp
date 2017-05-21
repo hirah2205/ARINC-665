@@ -644,7 +644,8 @@ ContainerEntity::ContainerEntity( ContainerEntityPtr parent):
 {
   if (!parent)
   {
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+    //! @throw Arinc665::Arinc665Exception when parent is not valid
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
       AdditionalInfo( "parent must be valid"));
   }
 }

@@ -58,7 +58,7 @@ void MediaSet::setName( const string& name)
   this->name = name;
 }
 
-const MediaSet::string& MediaSet::getPartNumber() const
+MediaSet::string MediaSet::getPartNumber() const
 {
   return partNumber;
 }

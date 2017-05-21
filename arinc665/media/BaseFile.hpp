@@ -61,7 +61,7 @@ class BaseFile: public Base
    //void setName( void);
 
     //! @copydoc Base::getPartNumber
-    virtual const string& getPartNumber() const override final;
+    virtual string getPartNumber() const override final;
 
     /**
      *
@@ -104,13 +104,13 @@ class BaseFile: public Base
      * @brief Returns the file path up to the medium root.
      *
      * This also contains the filename.
-     * The pathname is an absolute path originate in the medium root directory.
+     * The path is an absolute path originate in the medium root directory.
      *
-     * @return The pathname up to the medium root.
+     * @return The path up to the medium root.
      * @retval {}
      *   If parent is not available. (Should never happen)
      **/
-    path getPathname() const;
+    path getPath() const;
 
   protected:
     BaseFile( ContainerEntityPtr parent, const string &name);

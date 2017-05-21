@@ -32,12 +32,26 @@ Directory::Directory( ContainerEntityPtr parent, const string &name):
 
 ConstMediaSetPtr Directory::getMediaSet() const
 {
-  return getParent()->getMediaSet();
+  auto parentPtr( getParent());
+
+  if ( parentPtr)
+  {
+    return parentPtr->getMediaSet();
+  }
+
+  return {};
 }
 
 MediaSetPtr Directory::getMediaSet()
 {
-  return getParent()->getMediaSet();
+  auto parentPtr( getParent());
+
+  if ( parentPtr)
+  {
+    return parentPtr->getMediaSet();
+  }
+
+  return {};
 }
 
 Directory::Type Directory::getType() const
@@ -50,14 +64,28 @@ const Directory::string& Directory::getName() const
   return name;
 }
 
-const Directory::string& Directory::getPartNumber() const
+Directory::string Directory::getPartNumber() const
 {
-  return getParent()->getPartNumber();
+  auto parentPtr( getParent());
+
+  if ( parentPtr)
+  {
+    return parentPtr->getPartNumber();
+  }
+
+  return {};
 }
 
 Directory::path Directory::getPath() const
 {
-  return getParent()->getPath() / name;
+  auto parentPtr( getParent());
+
+  if ( parentPtr)
+  {
+    return parentPtr->getPath() / name;
+  }
+
+  return {};
 }
 
 }

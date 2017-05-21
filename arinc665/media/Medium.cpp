@@ -51,7 +51,7 @@ const Medium::string& Medium::getName() const
   return mediaSet.lock()->getName();
 }
 
-const Medium::string& Medium::getPartNumber() const
+Medium::string Medium::getPartNumber() const
 {
   return mediaSet.lock()->getPartNumber();
 }

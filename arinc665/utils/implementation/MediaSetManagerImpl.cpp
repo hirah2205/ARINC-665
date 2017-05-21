@@ -137,7 +137,7 @@ MediaSetManagerImpl::path MediaSetManagerImpl::getFilePath(
     return {};
   }
 
-  return config.mediaSetBase / mediumIt->second / file->getPathname().relative_path();
+  return config.mediaSetBase / mediumIt->second / file->getPath().relative_path();
 }
 
 }

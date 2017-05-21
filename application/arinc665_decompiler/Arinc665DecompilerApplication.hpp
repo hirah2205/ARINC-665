@@ -17,6 +17,8 @@
 #ifndef ARINC665DECOMPILERAPPLICATION_HPP
 #define ARINC665DECOMPILERAPPLICATION_HPP
 
+#include <arinc665/file/File.hpp>
+
 #include <boost/program_options.hpp>
 #include <boost/application.hpp>
 #include <boost/filesystem/path.hpp>
@@ -46,6 +48,8 @@ class Arinc665DecompilerApplication
     int operator()();
 
   private:
+    using path = boost::filesystem::path;
+
     /**
      * @brief Parsed the command line and assigns parameter.
      *
@@ -53,15 +57,17 @@ class Arinc665DecompilerApplication
      **/
     bool handleCommandLine();
 
+    Arinc665::File::RawFile readFile( uint8_t mediumNumber, const path &path);
+
     //! The application context
     boost::application::context& context;
     //! Program Options description
     boost::program_options::options_description optionsDescription;
 
     //! Media Set media source directories
-    std::vector< boost::filesystem::path> mediaSourceDirectories;
+    std::vector< path> mediaSourceDirectories;
     //! Media Set destination directory
-    boost::filesystem::path mediaSetDestinationDirectory;
+    path mediaSetDestinationDirectory;
     //! name of the media set
     std::string mediaSetName;
 };

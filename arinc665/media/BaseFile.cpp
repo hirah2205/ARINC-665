@@ -57,7 +57,7 @@ const BaseFile::string& BaseFile::getName() const
   return name;
 }
 
-const BaseFile::string& BaseFile::getPartNumber() const
+BaseFile::string BaseFile::getPartNumber() const
 {
   return partNumber;
 }
@@ -101,7 +101,7 @@ MediumPtr BaseFile::getMedium()
   return parent->getMedium();
 }
 
-BaseFile::path BaseFile::getPathname() const
+BaseFile::path BaseFile::getPath() const
 {
   auto parentPtr( parent.lock());
 

@@ -45,7 +45,7 @@ class Directory : public ContainerEntity
     // void rename( const string& name);
 
     //! @copydoc ContainerEntity::getPartNumber
-    virtual const string& getPartNumber() const override final;
+    string getPartNumber() const override final;
 
     //! @copydoc ContainerEntity::getPath() const
     virtual path getPath() const override final;

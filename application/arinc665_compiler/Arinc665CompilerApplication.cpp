@@ -32,11 +32,13 @@
 
 #include <cstdlib>
 #include <memory>
+#include <fstream>
 
 Arinc665CompilerApplication::Arinc665CompilerApplication(
   boost::application::context &context) :
   context( context),
-  optionsDescription( "ARINC 665 Media Set Compiler Options")
+  optionsDescription( "ARINC 665 Media Set Compiler Options"),
+  xml( Arinc665::Utils::Arinc665Xml::createInstance())
 {
   optionsDescription.add_options()
     (
@@ -72,31 +74,21 @@ int Arinc665CompilerApplication::operator()()
     }
 
     // load XML file
-    auto xml( Arinc665::Utils::Arinc665Xml::createInstance());
-
     auto result( xml->loadFromXml( mediaSetXmlFile));
 
     auto exporter( Arinc665::Utils::Arinc665Utils::createArinc665Exporter(
       std::get< 0>( result),
-      [result,this](Arinc665::Media::ConstFilePtr file)
-      {
-        auto fileIt( std::get< 1>( result).find( file));
-
-        if (fileIt == std::get< 1>( result).end())
-        {
-          BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-            AdditionalInfo( "file mapping not found"));
-        }
-
-        boost::filesystem::copy(
-          mediaSetSourceDirectory / fileIt->second,
-          (mediaSetDestinationDirectory /
-            ("MEDIA_" + std::to_string( file->getMedium()->getMediumNumber())) /
-            file->getPathname()));
-      },
-      [](const uint8_t mediumNumber, const boost::filesystem::path &path, Arinc665::File::RawFile file)
-      {
-      }));
+      std::bind(
+        &Arinc665CompilerApplication::createFile,
+        this,
+        result,
+        std::placeholders::_1),
+      std::bind(
+        &Arinc665CompilerApplication::writeFile,
+        this,
+        std::placeholders::_1,
+        std::placeholders::_2,
+        std::placeholders::_3)));
 
     exporter();
   }
@@ -157,3 +149,70 @@ bool Arinc665CompilerApplication::handleCommandLine()
 
   return true;
 }
+
+void Arinc665CompilerApplication::createFile(
+  const Arinc665::Utils::Arinc665Xml::LoadXmlResult &mediaSetInfo,
+  Arinc665::Media::ConstFilePtr file)
+{
+  // search for file
+  auto fileIt( std::get< 1>( mediaSetInfo).find( file));
+
+  if (fileIt == std::get< 1>( mediaSetInfo).end())
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+      AdditionalInfo( "file mapping not found"));
+  }
+
+  auto filePath(
+    (mediaSetDestinationDirectory /
+    ("MEDIA_" + std::to_string( file->getMedium()->getMediumNumber())) /
+    file->getPath()));
+
+  // create directories (if necessary)
+  boost::filesystem::create_directories( filePath.parent_path());
+
+  // copy file
+  boost::filesystem::copy(
+    mediaSetSourceDirectory / fileIt->second,
+    filePath);
+}
+
+void Arinc665CompilerApplication::writeFile(
+  uint8_t mediumNumber,
+  const path &path,
+  Arinc665::File::RawFile file)
+{
+  auto filePath(
+    mediaSetDestinationDirectory /
+    ("MEDIA_" + std::to_string( mediumNumber)) /
+    path.relative_path());
+
+  // check existence of file
+  if (boost::filesystem::exists( filePath))
+  {
+    //! @throw Arinc665Exception
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception() <<
+        boost::errinfo_file_name( filePath.string()) <<
+        AdditionalInfo( "File already exists"));
+  }
+
+  // create directories (if necessary)
+  boost::filesystem::create_directories( filePath.remove_filename());
+
+  // save file
+  std::ofstream fileStream(
+    filePath.string(),
+    std::ifstream::binary | std::ifstream::out);
+
+  if ( !fileStream.is_open())
+  {
+    //! @throw Arinc665Exception
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception() << AdditionalInfo( "Error opening files"));
+  }
+
+  // write the data to the buffer
+  fileStream.write( (char*) &file.at( 0), file.size());
+}
+

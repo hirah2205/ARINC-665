@@ -38,6 +38,7 @@ class Arinc665Xml
       std::map< Media::ConstBaseFilePtr, path>;
 
     using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping>;
+
     /**
      * @brief Creates an ARINC 665 XML handler instance.
      *
