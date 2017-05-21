@@ -24,34 +24,26 @@
 namespace Arinc665 {
 namespace File {
 
-LoadListFile::LoadListFile():
+LoadListFile::LoadListFile( Arinc665Version version):
+  ListFile( FileType::LoadList, version),
   mediaSequenceNumber( 0),
   numberOfMediaSetMembers( 0)
 {
 }
 
-LoadListFile::LoadListFile( const RawFile &file)
+LoadListFile::LoadListFile( const RawFile &file):
+  ListFile( FileType::LoadList, file)
 {
   decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
-  decodeData( file);
+  decodeBody( file);
 }
 
 LoadListFile& LoadListFile::operator=( const RawFile &file)
 {
   decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
-  decodeData( file);
+  decodeBody( file);
 
   return *this;
-}
-
-LoadListFile::operator RawFile() const
-{
-  return {};
-}
-
-Arinc665::Arinc665Version LoadListFile::getArincVersion() const
-{
-  return Arinc665Version::ARINC_665_2;
 }
 
 LoadListFile::string LoadListFile::getMediaSetPn() const
@@ -135,7 +127,17 @@ bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
     (userDefinedData == other.getUserDefinedData());
 }
 
-void LoadListFile::decodeData( const RawFile &file)
+RawFile LoadListFile::encode() const
+{
+  RawFile file( BaseHeaderOffset + 3 * sizeof( uint32_t));
+
+  // set header and crc
+  insertHeader( file);
+
+  return file;
+}
+
+void LoadListFile::decodeBody( const RawFile &file)
 {
   // set processing start to position after spare
   RawFile::const_iterator it = file.begin() + BaseHeaderOffset;

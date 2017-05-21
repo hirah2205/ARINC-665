@@ -37,11 +37,13 @@ class BatchFile: public Arinc665File
     using string = std::string;
 
     explicit BatchFile(
+      Arinc665Version version,
       const string &partNumber = {},
       const string &comment = {},
       const BatchTargetsInfo &targets = {});
 
     explicit BatchFile(
+      Arinc665Version version,
       string &&partNumber = {},
       string &&comment = {},
       BatchTargetsInfo &&targets = {});
@@ -50,11 +52,6 @@ class BatchFile: public Arinc665File
 
     //! @copydoc Arinc665File::operator=
     virtual BatchFile& operator=( const RawFile &file) override;
-
-    //! @copydoc Arinc665File::operator RawFile
-    virtual operator RawFile() const override;
-
-    virtual Arinc665Version getArincVersion() const override;
 
     string getPartNumber() const;
 
@@ -69,7 +66,10 @@ class BatchFile: public Arinc665File
     BatchTargetsInfo& getTargetHardwares();
 
   private:
-    void decodeData( const RawFile &file);
+    //! @copydoc ListFile::encodeData
+    virtual RawFile encode() const override final;
+
+    void decodeBody( const RawFile &file);
 
     string partNumber;
     string comment;

@@ -25,34 +25,26 @@
 namespace Arinc665 {
 namespace File {
 
-FileListFile::FileListFile():
+FileListFile::FileListFile( Arinc665Version version):
+  ListFile( FileType::FileList, version),
   mediaSequenceNumber( 0),
   numberOfMediaSetMembers( 0)
 {
 }
 
-FileListFile::FileListFile( const RawFile &file)
+FileListFile::FileListFile( const RawFile &file):
+  ListFile( FileType::FileList, file)
 {
   decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
-  decodeData( file);
+  decodeBody( file);
 }
 
 FileListFile& FileListFile::operator=( const RawFile &file)
 {
   decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
-  decodeData( file);
+  decodeBody( file);
 
   return *this;
-}
-
-FileListFile::operator RawFile() const
-{
-  return {};
-}
-
-Arinc665::Arinc665Version FileListFile::getArincVersion() const
-{
-  return Arinc665Version::ARINC_665_2;
 }
 
 FileListFile::string FileListFile::getMediaSetPn() const
@@ -194,7 +186,17 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
   return true;
 }
 
-void FileListFile::decodeData( const RawFile &file)
+RawFile FileListFile::encode() const
+{
+  RawFile file( BaseHeaderOffset + 3 * sizeof( uint32_t));
+
+  // set header and crc
+  insertHeader( file);
+
+  return file;
+}
+
+void FileListFile::decodeBody( const RawFile &file)
 {
   // set processing start to position after spare
   RawFile::const_iterator it = file.begin() + BaseHeaderOffset;

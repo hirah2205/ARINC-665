@@ -44,18 +44,12 @@ class FileListFile: public ListFile
     using FileInfoPathMap= std::map< std::pair< uint8_t, path>, FileInfo>;
     using UserDefinedData = std::vector< uint8_t>;
 
-    FileListFile();
+    FileListFile( Arinc665Version version);
 
     FileListFile( const RawFile &file);
 
     //! @copydoc ListFile::operator=
     virtual FileListFile& operator=( const RawFile &file) override;
-
-    //! @copydoc ListFile::operator RawFile
-    virtual operator RawFile() const override;
-
-    //! @copydoc ListFile::getArincVersion
-    virtual Arinc665Version getArincVersion() const override;
 
     //! @copydoc ListFile::getMediaSetPn
     virtual string getMediaSetPn() const override;
@@ -117,7 +111,10 @@ class FileListFile: public ListFile
     bool belongsToSameMediaSet( const FileListFile &other) const;
 
   private:
-    void decodeData( const RawFile &file);
+    //! @copydoc ListFile::encodeData
+    virtual RawFile encode() const override final;
+
+    void decodeBody( const RawFile &file);
 
     FileInfoList decodeFileInfo( const RawFile &file, std::size_t offset);
 

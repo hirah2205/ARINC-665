@@ -75,11 +75,12 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   }
 
   // export list of loads
+#if 0
   Arinc665::File::LoadListFile loadListFile;
   loadListFile.setMediaSequenceNumber( medium->getMediumNumber());
   loadListFile.setMediaSetPn( medium->getPartNumber());
   loadListFile.setNumberOfMediaSetMembers(  medium->getMediaSet()->getNumberOfMedia());
-
+#endif
   // export list of batches
 
   // export medium info

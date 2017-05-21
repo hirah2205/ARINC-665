@@ -24,34 +24,26 @@
 namespace Arinc665 {
 namespace File {
 
-BatchListFile::BatchListFile():
+BatchListFile::BatchListFile( Arinc665Version version):
+  ListFile( FileType::BatchList, version),
   mediaSequenceNumber( 0),
   numberOfMediaSetMembers( 0)
 {
 }
 
-BatchListFile::BatchListFile( const RawFile &file)
+BatchListFile::BatchListFile( const RawFile &file):
+  ListFile( FileType::BatchList, file)
 {
   decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
-  decodeData( file);
+  decodeBody( file);
 }
 
 BatchListFile& BatchListFile::operator=( const RawFile &file)
 {
-  decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
-  decodeData( file);
+  Arinc665File::operator =( file);
+  decodeBody( file);
 
   return *this;
-}
-
-BatchListFile::operator RawFile() const
-{
-  return {};
-}
-
-Arinc665Version BatchListFile::getArincVersion() const
-{
-  return Arinc665Version::ARINC_665_2;
 }
 
 BatchListFile::string BatchListFile::getMediaSetPn() const
@@ -135,7 +127,33 @@ bool BatchListFile::belongsToSameMediaSet( const BatchListFile &other) const
     (batchInfoList == other.getBatchInfos());
 }
 
-void BatchListFile::decodeData( const RawFile &file)
+RawFile BatchListFile::encode() const
+{
+  RawFile file( BaseHeaderOffset + 3 * sizeof( uint32_t));
+
+  // media information ptr
+
+  // batch list ptr
+
+  // user defined data ptr
+
+  // media set part number
+
+  // media sequence number
+
+  // number of media set members
+
+  // batch list
+
+  // user defined data
+
+  // set header and crc
+  insertHeader( file);
+
+  return file;
+}
+
+void BatchListFile::decodeBody( const RawFile &file)
 {
   // set processing start to position after spare
   RawFile::const_iterator it = file.begin() + BaseHeaderOffset;

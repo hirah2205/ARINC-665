@@ -39,18 +39,12 @@ class BatchListFile: public ListFile
     using BatchInfoMap = std::map< std::pair< uint8_t, string>, BatchInfo>;
     using UserDefinedData = std::vector< uint8_t>;
 
-    BatchListFile();
+    BatchListFile( Arinc665Version version);
 
     BatchListFile( const RawFile &file);
 
     //! @copydoc ListFile::operator=
     virtual BatchListFile& operator=( const RawFile &file) override;
-
-    //! @copydoc ListFile::operator RawFile
-    virtual operator RawFile() const override;
-
-    //! @copydoc ListFile::getArincVersion
-    virtual Arinc665Version getArincVersion() const override;
 
     //! @copydoc ListFile::getMediaSetPn
     virtual string getMediaSetPn() const override;
@@ -97,7 +91,10 @@ class BatchListFile: public ListFile
     bool belongsToSameMediaSet( const BatchListFile &other) const;
 
   private:
-    void decodeData( const RawFile &file);
+    //! @copydoc ListFile::encodeData
+    virtual RawFile encode() const override final;
+
+    void decodeBody( const RawFile &file);
 
     string mediaSetPn;
     uint8_t mediaSequenceNumber;

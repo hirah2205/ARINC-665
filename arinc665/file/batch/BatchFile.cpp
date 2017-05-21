@@ -23,28 +23,19 @@
 namespace Arinc665 {
 namespace File {
 
-BatchFile::BatchFile( const RawFile &file)
+BatchFile::BatchFile( const RawFile &file):
+  Arinc665File( FileType::BatchFile, file)
 {
   decodeHeader( file, Arinc665FileFormatVersion::LOAD_FILE_VERSION_2);
-  decodeData( file);
+  decodeBody( file);
 }
 
 BatchFile& BatchFile::operator=( const RawFile &file)
 {
   decodeHeader( file, Arinc665FileFormatVersion::LOAD_FILE_VERSION_2);
-  decodeData( file);
+  decodeBody( file);
 
   return *this;
-}
-
-BatchFile::operator RawFile() const
-{
-  return {};
-}
-
-Arinc665Version BatchFile::getArincVersion() const
-{
-  return Arinc665Version::ARINC_665_2;
 }
 
 BatchFile::string BatchFile::getPartNumber() const
@@ -77,7 +68,17 @@ BatchTargetsInfo& BatchFile::getTargetHardwares()
   return targetHardwares;
 }
 
-void BatchFile::decodeData( const RawFile &file)
+RawFile BatchFile::encode() const
+{
+  RawFile file( BaseHeaderOffset + 3 * sizeof( uint32_t));
+
+  // set header and crc
+  insertHeader( file);
+
+  return file;
+}
+
+void BatchFile::decodeBody( const RawFile &file)
 {
   // set processing start to position after spare
   RawFile::const_iterator it = file.begin() + BaseHeaderOffset;

@@ -24,35 +24,25 @@
 namespace Arinc665 {
 namespace File {
 
-LoadHeaderFile::LoadHeaderFile() :
-  Arinc665File( 6U),
+LoadHeaderFile::LoadHeaderFile( Arinc665Version version) :
+  Arinc665File( FileType::LoadUploadHeader, version, 6U),
   loadCrc( 0)
 {
 }
 
 LoadHeaderFile::LoadHeaderFile( const RawFile &file):
-  Arinc665File( 6U)
+  Arinc665File( FileType::LoadUploadHeader, file, 6U)
 {
   decodeHeader( file, Arinc665FileFormatVersion::LOAD_FILE_VERSION_2);
-  decodeData( file);
+  decodeBody( file);
 }
 
 LoadHeaderFile& LoadHeaderFile::operator=( const RawFile &file)
 {
   decodeHeader( file, Arinc665FileFormatVersion::LOAD_FILE_VERSION_2);
-  decodeData( file);
+  decodeBody( file);
 
   return *this;
-}
-
-LoadHeaderFile::operator RawFile() const
-{
-  return{};
-}
-
-Arinc665::Arinc665Version LoadHeaderFile::getArincVersion() const
-{
-  return Arinc665Version::ARINC_665_2;
 }
 
 LoadHeaderFile::string LoadHeaderFile::getPartNumber() const
@@ -115,7 +105,17 @@ void LoadHeaderFile::setLoadCrc( const uint32_t loadCrc)
   this->loadCrc = loadCrc;
 }
 
-void LoadHeaderFile::decodeData( const RawFile &file)
+RawFile LoadHeaderFile::encode() const
+{
+  RawFile file( BaseHeaderOffset + 3 * sizeof( uint32_t));
+
+  // set header and crc
+  insertHeader( file);
+
+  return file;
+}
+
+void LoadHeaderFile::decodeBody( const RawFile &file)
 {
   // set processing start to position after spare
   RawFile::const_iterator it = file.begin() + BaseHeaderOffset;

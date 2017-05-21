@@ -78,21 +78,30 @@ class Arinc665File
      *
      * @return *this
      **/
-    virtual Arinc665File& operator=( const RawFile &file) = 0;
+    virtual Arinc665File& operator=( const RawFile &file);
 
     /**
      * @brief Returns the ARINC 665 file as raw data.
      *
      * @return the protocol file as raw data.
      **/
-    virtual operator RawFile() const = 0;
+    operator RawFile() const;
+
+    /**
+     * @brief Returns the ARINC 665 file type.
+     *
+     * @return The ARINC 665 file type.
+     **/
+    FileType getFileType() const;
 
     /**
      * @brief Returns the ARINC 665 version of this file.
      *
      * @return The ARINC 665 version of this file.
      **/
-    virtual Arinc665Version getArincVersion() const = 0;
+    Arinc665Version getArincVersion() const;
+
+    void setArincVersion( Arinc665Version version);
 
     /**
      * @brief Returns the CRC of this file.
@@ -117,12 +126,21 @@ class Arinc665File
     void calculateCrc();
 
   protected:
-    /**
-     * @brief Default constructor
-     **/
-    explicit Arinc665File( std::size_t checksumPosition = 2U) noexcept;
+    Arinc665File(
+      FileType fileType,
+      Arinc665Version version,
+      std::size_t checksumPosition = 2U) noexcept;
+
+    Arinc665File(
+      FileType fileType,
+      const RawFile &file,
+      std::size_t checksumPosition = 2U);
 
     Arinc665File& operator=( const Arinc665File &file);
+
+    virtual RawFile encode() const = 0;
+
+    void insertHeader( RawFile &file) const;
 
     /**
      * @brief Initialises class with the given raw data.
@@ -136,7 +154,10 @@ class Arinc665File
       Arinc665FileFormatVersion expectedFormatVersion = Arinc665FileFormatVersion::Invalid);
 
   private:
+    const FileType fileType;
     const std::size_t checksumPosition;
+    //! ARINC 665 Version
+    Arinc665Version arinc665Version;
     //! Stored CRC value
     uint16_t crc;
 };

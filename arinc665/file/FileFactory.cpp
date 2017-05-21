@@ -28,15 +28,15 @@ Arinc665::FileClassType FileFactory::getArincFileType( const RawFile &file)
   switch (formatVersion)
   {
     case static_cast< uint16_t>( LoadFileFormatVersion::Version2):
-    case static_cast< uint16_t>( LoadFileFormatVersion::Version3):
+    case static_cast< uint16_t>( LoadFileFormatVersion::Version34):
       return FileClassType::LoadFile;
 
     case static_cast< uint16_t>( BatchFileFormatVersion::Version2):
-    case static_cast< uint16_t>( BatchFileFormatVersion::Version3):
+    case static_cast< uint16_t>( BatchFileFormatVersion::Version34):
       return FileClassType::BatchFile;
 
     case static_cast< uint16_t>( MediaFileFormatVersion::Version2):
-    case static_cast< uint16_t>( MediaFileFormatVersion::Version3):
+    case static_cast< uint16_t>( MediaFileFormatVersion::Version34):
       return FileClassType::MediaFile;
 
     default:
@@ -52,7 +52,7 @@ Arinc665::LoadFileFormatVersion FileFactory::getLoadFileFormatVersion(
   switch (formatVersion)
   {
     case static_cast< uint16_t>( LoadFileFormatVersion::Version2):
-    case static_cast< uint16_t>( LoadFileFormatVersion::Version3):
+    case static_cast< uint16_t>( LoadFileFormatVersion::Version34):
       break;
 
     default:
@@ -70,7 +70,7 @@ Arinc665::BatchFileFormatVersion FileFactory::getBatchFileFormatVersion(
   switch (formatVersion)
   {
     case static_cast< uint16_t>( BatchFileFormatVersion::Version2):
-    case static_cast< uint16_t>( BatchFileFormatVersion::Version3):
+    case static_cast< uint16_t>( BatchFileFormatVersion::Version34):
       break;
 
     default:
@@ -88,7 +88,7 @@ Arinc665::MediaFileFormatVersion FileFactory::getMediaFileFormatVersion(
   switch (formatVersion)
   {
     case static_cast< uint16_t>( MediaFileFormatVersion::Version2):
-    case static_cast< uint16_t>( MediaFileFormatVersion::Version3):
+    case static_cast< uint16_t>( MediaFileFormatVersion::Version34):
       break;
 
     default:

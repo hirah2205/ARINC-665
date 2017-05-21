@@ -75,6 +75,32 @@ uint16_t Arinc665File::calculateChecksum(
   return arincCrc16.checksum();
 }
 
+Arinc665File& Arinc665File::operator=( const RawFile &file)
+{
+  decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
+  return *this;
+}
+
+Arinc665File::operator RawFile() const
+{
+  return encode();
+}
+
+FileType Arinc665File::getFileType() const
+{
+  return fileType;
+}
+
+Arinc665Version Arinc665File::getArincVersion() const
+{
+  return arinc665Version;
+}
+
+void Arinc665File::setArincVersion( Arinc665Version version)
+{
+  this->arinc665Version = version;
+}
+
 uint16_t Arinc665File::getCrc() const noexcept
 {
   return crc;
@@ -85,14 +111,23 @@ void Arinc665File::setCrc( const uint16_t crc) noexcept
   this->crc = crc;
 }
 
-Arinc665File::operator RawFile() const
+Arinc665File::Arinc665File(
+  const FileType fileType,
+  Arinc665Version version,
+  const std::size_t checksumPosition) noexcept :
+  fileType( fileType),
+  checksumPosition( checksumPosition),
+  arinc665Version( version),
+  crc( 0)
 {
-  return RawFile();
 }
 
-Arinc665File::Arinc665File( const std::size_t checksumPosition) noexcept :
-  checksumPosition( checksumPosition),
-  crc( 0)
+Arinc665File::Arinc665File(
+  FileType fileType,
+  const RawFile &file,
+  std::size_t checksumPosition) :
+  fileType( fileType),
+  checksumPosition( checksumPosition)
 {
 }
 
@@ -108,6 +143,39 @@ Arinc665File& Arinc665File::operator=( const Arinc665File &file)
   crc = file.crc;
 
   return *this;
+}
+void Arinc665File::insertHeader( RawFile &file) const
+{
+  // Check file size
+  if ( file.size() <= BaseHeaderOffset)
+  {
+    //! @throw InvalidArinc665File When file is to small
+    BOOST_THROW_EXCEPTION(
+      InvalidArinc665File() << AdditionalInfo( "File to small"));
+  }
+
+  // Check file size
+  if ( file.size() % 2 != 0)
+  {
+    //! @throw InvalidArinc665File When file size is invalid
+    BOOST_THROW_EXCEPTION(
+      InvalidArinc665File() << AdditionalInfo( "Invalid size"));
+  }
+
+  auto it( file.begin());
+
+  // file size
+  it = setInt< uint32_t>( it, file.size());
+
+  // format version
+  it = setInt< uint16_t>( it, static_cast< uint16_t>( 0));
+
+  // spare
+  it = setInt< uint16_t>( it, 0U);
+
+
+  // crc
+  setInt< uint16_t>( file.end() - checksumPosition, crc);
 }
 
 void Arinc665File::decodeHeader(

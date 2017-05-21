@@ -39,18 +39,12 @@ class LoadListFile: public ListFile
     using LoadInfoMap = std::map< std::pair< uint8_t, string>, LoadInfo>;
     using UserDefinedData = std::vector< uint8_t>;
 
-    LoadListFile();
+    LoadListFile( Arinc665Version version);
 
     LoadListFile( const RawFile &file);
 
     //! @copydoc ListFile::operator=
     virtual LoadListFile& operator=( const RawFile &file) override;
-
-    //! @copydoc ListFile::operator RawFile
-    virtual operator RawFile() const override;
-
-    //! @copydoc ListFile::getArincVersion
-    virtual Arinc665Version getArincVersion() const override;
 
     //! @copydoc ListFile::getMediaSetPn
     virtual string getMediaSetPn() const override;
@@ -131,8 +125,10 @@ class LoadListFile: public ListFile
     bool belongsToSameMediaSet( const LoadListFile &other) const;
 
   private:
+    //! @copydoc ListFile::encodeData
+    virtual RawFile encode() const override final;
 
-    void decodeData( const RawFile &file);
+    void decodeBody( const RawFile &file);
 
     //! Media set part number
     string mediaSetPn;

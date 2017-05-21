@@ -50,7 +50,9 @@ enum class Arinc665Version
   //! ARINC 665 Supplement 3
   ARINC_665_3,
   //! ARINC 665 Supplement 4
-  ARINC_665_4
+  ARINC_665_4,
+
+  Invalid
 };
 
 //! Enumeration of file types.
@@ -74,10 +76,12 @@ enum class FileClassType
  **/
 enum class LoadFileFormatVersion : uint16_t
 {
+  //! ARINC 665-1 version of load file
+  Version1 = 0x8002U,
   //! ARINC 665-2 version of load file
-  Version2 = 0x8003,
+  Version2 = 0x8003U,
   //! ARINC 665-3 version of load file
-  Version3 = 0x8004,
+  Version34 = 0x8004U,
 
   //! invalid value
   Invalid  = 0xFFFFU
@@ -90,10 +94,12 @@ enum class LoadFileFormatVersion : uint16_t
  **/
 enum class BatchFileFormatVersion : uint16_t
 {
+  //! ARINC 665-1 version of batch file
+  Version1 = 0x8002U,
   //! ARINC 665-2 version of batch file
-  Version2 = 0x9003,
+  Version2 = 0x9003U,
   //! ARINC 665-3 version of batch file
-  Version3 = 0x9004,
+  Version34 = 0x9004U,
 
   //! invalid value
   Invalid  = 0xFFFFU
@@ -109,10 +115,12 @@ enum class BatchFileFormatVersion : uint16_t
  **/
 enum class MediaFileFormatVersion : uint16_t
 {
+  //! ARINC 665-1 version of media file
+  Version1 = 0x8002U,
   //! ARINC 665-2 version of media file
-  Version2 = 0xA003,
+  Version2 = 0xA003U,
   //! ARINC 665-3 version of media file
-  Version3 = 0xA004,
+  Version34 = 0xA004U,
 
   //! invalid value
   Invalid  = 0xFFFFU
@@ -122,13 +130,13 @@ enum class MediaFileFormatVersion : uint16_t
 enum class Arinc665FileFormatVersion : uint16_t
 {
   LOAD_FILE_VERSION_2 = static_cast< uint16_t>( LoadFileFormatVersion::Version2),
-  LOAD_FILE_VERSION_3 = static_cast< uint16_t>( LoadFileFormatVersion::Version3),
+  LOAD_FILE_VERSION_34 = static_cast< uint16_t>( LoadFileFormatVersion::Version34),
 
   BATCH_FILE_VERSION_2 = static_cast< uint16_t>( BatchFileFormatVersion::Version2),
-  BATCH_FILE_VERSION_3 = static_cast< uint16_t>( BatchFileFormatVersion::Version3),
+  BATCH_FILE_VERSION_34 = static_cast< uint16_t>( BatchFileFormatVersion::Version34),
 
   MEDIA_FILE_VERSION_2 = static_cast< uint16_t>( MediaFileFormatVersion::Version2),
-  MEDIA_FILE_VERSION_3 = static_cast< uint16_t>( MediaFileFormatVersion::Version3),
+  MEDIA_FILE_VERSION_34 = static_cast< uint16_t>( MediaFileFormatVersion::Version34),
 
   Invalid = 0xFFFFU  //!< invalid value
 };

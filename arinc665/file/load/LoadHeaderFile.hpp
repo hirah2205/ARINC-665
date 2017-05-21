@@ -40,18 +40,12 @@ class LoadHeaderFile: public Arinc665File
     using TargetHardwareIdList = std::list< string>;
     using UserDefinedData = std::vector< uint8_t>;
 
-    LoadHeaderFile();
+    LoadHeaderFile( Arinc665Version version);
 
     LoadHeaderFile( const RawFile &file);
 
     //! @copydoc Arinc665File::operator=
     virtual LoadHeaderFile& operator=( const RawFile &file) override;
-
-    //! @copydoc Arinc665File::operator RawFile
-    virtual operator RawFile() const override;
-
-    //! @copydoc Arinc665File::getArincVersion
-    virtual Arinc665Version getArincVersion() const override;
 
     string getPartNumber() const;
 
@@ -78,8 +72,10 @@ class LoadHeaderFile: public Arinc665File
     void setLoadCrc( uint32_t loadCrc);
 
   private:
+    //! @copydoc ListFile::encodeData
+    virtual RawFile encode() const override final;
 
-    void decodeData( const RawFile &file);
+    void decodeBody( const RawFile &file);
 
     LoadFileInfoList decodeFileList( const RawFile &file, std::size_t offset);
 
