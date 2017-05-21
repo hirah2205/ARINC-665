@@ -37,7 +37,6 @@ namespace File {
 class FileListFile: public ListFile
 {
   public:
-    using FileInfoList = FileInfo::FileInfoList;
     using path = boost::filesystem::path;
     //! Maps media <sequence number, file name> to File Info
     using FileInfoMap = std::map< std::pair< uint8_t, string>, FileInfo>;
@@ -45,11 +44,17 @@ class FileListFile: public ListFile
     using FileInfoPathMap= std::map< std::pair< uint8_t, path>, FileInfo>;
     using UserDefinedData = std::vector< uint8_t>;
 
-    FileListFile( void);
+    FileListFile();
 
     FileListFile( const RawFile &file);
 
-    //! @copydoc Arinc665File::getArincVersion
+    //! @copydoc ListFile::operator=
+    virtual FileListFile& operator=( const RawFile &file) override;
+
+    //! @copydoc ListFile::operator RawFile
+    virtual operator RawFile() const override;
+
+    //! @copydoc ListFile::getArincVersion
     virtual Arinc665Version getArincVersion() const override;
 
     //! @copydoc ListFile::getMediaSetPn
@@ -112,6 +117,10 @@ class FileListFile: public ListFile
     bool belongsToSameMediaSet( const FileListFile &other) const;
 
   private:
+    void decodeData( const RawFile &file);
+
+    FileInfoList decodeFileInfo( const RawFile &file, std::size_t offset);
+
     string mediaSetPn;
     uint8_t mediaSequenceNumber;
     uint8_t numberOfMediaSetMembers;

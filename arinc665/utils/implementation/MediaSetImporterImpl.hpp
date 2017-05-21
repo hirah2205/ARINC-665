@@ -46,11 +46,11 @@ class MediaSetImporterImpl
     /**
      * @brief Initialises the ARINC 665 media set importer
      *
-     * @param[in] getMediumPathHandler
-     *   The handler which is called to obtain the path of a medium.
+     * @param[in] readFileHandler
+     *   Handler which is called to obtain the requested file from the medium.
      **/
     MediaSetImporterImpl(
-      Arinc665Utils::GetMediumPathHandler getMediumPathHandler);
+      Arinc665Utils::ReadFileHandler readFileHandler);
 
     /**
      * @brief Entry-point of the ARINC 665 media set importer.
@@ -60,14 +60,8 @@ class MediaSetImporterImpl
     Media::MediaSetPtr operator()( const string &mediaSetName);
 
   private:
-    using RawFile = Arinc665::File::RawFile;
-    using FileListFile = Arinc665::File::FileListFile;
-    using LoadListFile = Arinc665::File::LoadListFile;
-    using BatchListFile = Arinc665::File::BatchListFile;
-    using LoadHeaderFile = Arinc665::File::LoadHeaderFile;
-    using BatchFile = Arinc665::File::BatchFile;
-    using LoadHeaderFiles = std::map< std::string, LoadHeaderFile>;
-    using BatchFiles = std::map< std::string, BatchFile>;
+    using LoadHeaderFiles = std::map< std::string, File::LoadHeaderFile>;
+    using BatchFiles = std::map< std::string, File::BatchFile>;
     using ContainerEntityPtr = std::shared_ptr< Media::ContainerEntity>;
 
     /**
@@ -75,52 +69,43 @@ class MediaSetImporterImpl
      *
      * @param[in] mediumIndex
      *   The medium index.
-     * @param mediumPath
-     *   The medium path.
      **/
-    void addMedium( uint8_t mediumIndex, const path &mediumPath);
+    void addMedium( uint8_t mediumIndex);
 
-    void loadFileListFile( uint8_t mediumIndex, const path &mediumPath);
+    void loadFileListFile( uint8_t mediumIndex);
 
-    void loadLoadListFile( uint8_t mediumIndex, const path &mediumPath);
+    void loadLoadListFile( uint8_t mediumIndex);
 
-    void loadBatchListFile( uint8_t mediumIndex, const path &mediumPath);
+    void loadBatchListFile( uint8_t mediumIndex);
 
-    void loadLoadHeaderFiles( uint8_t mediumIndex, const path &mediumPath);
+    void loadLoadHeaderFiles( uint8_t mediumIndex);
 
-    void loadBatchFiles( uint8_t mediumIndex, const path &mediumPath);
+    void loadBatchFiles( uint8_t mediumIndex);
 
     void addFiles();
 
-    void addLoads( FileListFile::FileInfoMap &loadHeaders);
+    void addLoads( File::FileListFile::FileInfoMap &loadHeaders);
 
-    void addBatches( FileListFile::FileInfoMap &batches);
+    void addBatches( File::FileListFile::FileInfoMap &batches);
 
-    ContainerEntityPtr checkCreateDirectory( uint8_t mediumIndex, const path &filePath);
+    ContainerEntityPtr checkCreateDirectory(
+      uint8_t mediumIndex,
+      const path &filePath);
 
-    /**
-     * @brief loads the file.
-     *
-     * @param filePath
-     *
-     * @return
-     **/
-    RawFile loadFile( const path &filePath);
-
-    Arinc665Utils::GetMediumPathHandler getMediumPathHandler;
+    Arinc665Utils::ReadFileHandler readFileHandler;
 
     //! The Media Set
     Media::MediaSetPtr mediaSet;
 
-    boost::optional < FileListFile> fileListFile;
-    boost::optional < LoadListFile> loadListFile;
-    boost::optional < BatchListFile> batchListFile;
+    boost::optional < File::FileListFile> fileListFile;
+    boost::optional < File::LoadListFile> loadListFile;
+    boost::optional < File::BatchListFile> batchListFile;
     LoadHeaderFiles loadHeaderFiles;
     BatchFiles batchFiles;
 
-    FileListFile::FileInfoMap fileInfos;
-    LoadListFile::LoadInfoMap loadInfos;
-    BatchListFile::BatchInfoMap batchInfos;
+    File::FileListFile::FileInfoMap fileInfos;
+    File::LoadListFile::LoadInfoMap loadInfos;
+    File::BatchListFile::BatchInfoMap batchInfos;
 };
 
 }

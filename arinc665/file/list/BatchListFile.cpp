@@ -30,43 +30,23 @@ BatchListFile::BatchListFile():
 {
 }
 
-BatchListFile::BatchListFile( const RawFile &file):
-  ListFile( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2)
+BatchListFile::BatchListFile( const RawFile &file)
 {
-  // set processing start to position after spare
-  RawFile::const_iterator it = file.begin() + BaseHeaderOffset;
+  decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
+  decodeData( file);
+}
 
-  uint32_t mediaInformationPtr;
-  it = getInt< uint32_t>( it, mediaInformationPtr);
+BatchListFile& BatchListFile::operator=( const RawFile &file)
+{
+  decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
+  decodeData( file);
 
-  uint32_t batchListPtr;
-  it = getInt< uint32_t>( it, batchListPtr);
+  return *this;
+}
 
-  uint32_t userDefinedDataPtr;
-  it = getInt< uint32_t>( it, userDefinedDataPtr);
-
-  // media set part number
-  it = file.begin() + mediaInformationPtr * 2;
-  it = getString( it, mediaSetPn);
-
-  // media sequence number
-  it = getInt< uint8_t>( it, mediaSequenceNumber);
-
-  // number of media set members
-  it = getInt< uint8_t>( it, numberOfMediaSetMembers);
-
-  // batch list
-  it = file.begin() + 2 * batchListPtr;
-  batchInfoList = BatchInfo::getBatchInfos( it);
-
-  // user defined data
-  if ( 0 != userDefinedDataPtr)
-  {
-    it = file.begin() + userDefinedDataPtr * 2;
-    userDefinedData.assign( it, file.end() - 2);
-  }
-
-  // file crc decoded and checked within base class
+BatchListFile::operator RawFile() const
+{
+  return {};
 }
 
 Arinc665Version BatchListFile::getArincVersion() const
@@ -153,6 +133,44 @@ bool BatchListFile::belongsToSameMediaSet( const BatchListFile &other) const
     (mediaSetPn == other.getMediaSetPn()) &&
     (numberOfMediaSetMembers == other.getNumberOfMediaSetMembers()) &&
     (batchInfoList == other.getBatchInfos());
+}
+
+void BatchListFile::decodeData( const RawFile &file)
+{
+  // set processing start to position after spare
+  RawFile::const_iterator it = file.begin() + BaseHeaderOffset;
+
+  uint32_t mediaInformationPtr;
+  it = getInt< uint32_t>( it, mediaInformationPtr);
+
+  uint32_t batchListPtr;
+  it = getInt< uint32_t>( it, batchListPtr);
+
+  uint32_t userDefinedDataPtr;
+  it = getInt< uint32_t>( it, userDefinedDataPtr);
+
+  // media set part number
+  it = file.begin() + mediaInformationPtr * 2;
+  it = getString( it, mediaSetPn);
+
+  // media sequence number
+  it = getInt< uint8_t>( it, mediaSequenceNumber);
+
+  // number of media set members
+  it = getInt< uint8_t>( it, numberOfMediaSetMembers);
+
+  // batch list
+  it = file.begin() + 2 * batchListPtr;
+  batchInfoList = BatchInfo::getBatchInfos( it);
+
+  // user defined data
+  if ( 0 != userDefinedDataPtr)
+  {
+    it = file.begin() + userDefinedDataPtr * 2;
+    userDefinedData.assign( it, file.end() - 2);
+  }
+
+  // file crc decoded and checked within base class
 }
 
 }

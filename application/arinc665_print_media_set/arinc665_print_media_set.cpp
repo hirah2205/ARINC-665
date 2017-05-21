@@ -80,12 +80,39 @@ int main( int argc, char* argv[])
 
 static MediaSetPtr loadMediaSet( const path &mediaSetDirectory)
 {
-  Arinc665::Utils::Arinc665Utils::Arinc665Importer importer(
-    Arinc665::Utils::Arinc665Utils::createArinc665Importer(
-      [&mediaSetDirectory]( uint8_t)
+  auto importer( Arinc665::Utils::Arinc665Utils::createArinc665Importer(
+    [&mediaSetDirectory]( const uint8_t mediumNumber, const boost::filesystem::path &path)->Arinc665::File::RawFile
+    {
+      auto filePath( mediaSetDirectory / path.relative_path());
+
+      if (!boost::filesystem::is_regular( filePath))
       {
-        return mediaSetDirectory;
-      }));
+        //! @throw Arinc665Exception
+        BOOST_THROW_EXCEPTION(
+          Arinc665::Arinc665Exception() <<
+            boost::errinfo_file_name( filePath.string()) <<
+            AdditionalInfo( "File not found"));
+      }
+
+      Arinc665::File::RawFile data( boost::filesystem::file_size( filePath));
+
+      std::ifstream file(
+        filePath.string().c_str(),
+        std::ifstream::binary | std::ifstream::in);
+
+      if ( !file.is_open())
+      {
+        //! @throw Arinc665Exception
+        BOOST_THROW_EXCEPTION(
+          Arinc665::Arinc665Exception() << AdditionalInfo( "Error opening files"));
+      }
+
+      // read the data to the buffer
+      file.read( (char*) &data.at( 0), data.size());
+
+      // return the buffer
+      return data;
+    }));
 
   MediaSetPtr mediaSet( importer( ""));
 

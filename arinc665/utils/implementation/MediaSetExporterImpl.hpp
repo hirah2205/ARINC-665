@@ -32,15 +32,23 @@ class MediaSetExporterImpl
     /**
      * @brief Initialises the ARINC 665 media set importer
      *
-     * @param[in] getMediumPathHandler
-     *   The handler which is called to obtain the path of a medium.
+     * @param[in] mediaSet
+     *   The media set, which shall be exported.
+     * @param[in] createFileHandler
+     *   When a file needs to be generated, this handler is called.
+     * @param[in] writeFileHandler
+     *   When a file needs to be generated, this handler is called with data.
+     * @param[in] createBatchFiles
+     *   If set to true, Batch Files are created by exporter.
+     * @param[in] createLoadHeaderFiles
+     *   If set to true, Load Header Files are created by exporter.
      **/
     MediaSetExporterImpl(
       Media::ConstMediaSetPtr mediaSet,
-      Arinc665Utils::GetMediumPathHandler getMediumPathHandler,
-      Arinc665Utils::CopyFileHandler copyFileHandler,
-      bool createBatchFiles = false,
-      bool createLoadHeaderFiles = false);
+      Arinc665Utils::CreateFileHandler createFileHandler,
+      Arinc665Utils::WriteFileHandler writeFileHandler,
+      bool createBatchFiles,
+      bool createLoadHeaderFiles);
 
     /**
      * @brief Entry-point of the ARINC 665 media set exporter.
@@ -52,15 +60,15 @@ class MediaSetExporterImpl
   private:
     void exportMedium( Media::ConstMediumPtr medium);
 
-    void exportDirectory(  const path &base, Media::ConstDirectoryPtr directory);
+    void exportDirectory( Media::ConstDirectoryPtr directory);
 
-    void exportFile(  const path &base, Media::ConstFilePtr file);
+    void exportFile( Media::ConstFilePtr file);
 
     //! The Media Set
     Media::ConstMediaSetPtr mediaSet;
     //! Medium path handler
-    Arinc665Utils::GetMediumPathHandler getMediumPathHandler;
-    Arinc665Utils::CopyFileHandler copyFileHandler;
+    Arinc665Utils::CreateFileHandler createFileHandler;
+    Arinc665Utils::WriteFileHandler writeFileHandler;
     const bool createBatchFiles;
     const bool createLoadHeaderFiles;
 };

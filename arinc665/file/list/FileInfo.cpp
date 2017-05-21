@@ -26,52 +26,22 @@
 namespace Arinc665 {
 namespace File {
 
-FileInfo::FileInfoList FileInfo::getFileInfos(
-  RawFile::const_iterator &it)
-{
-  //! @todo pass iterator by value
-  FileInfoList fileList;
-
-  // number of files
-  uint16_t numberOfFiles;
-  it = getInt< uint16_t>( it, numberOfFiles);
-
-  for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex)
-  {
-    fileList.push_back( FileInfo( it));
-  }
-
-  return fileList;
-}
-
 FileInfo::FileInfo():
   memberSequenceNumber( 0),
   crc( 0)
 {
 }
 
-FileInfo::FileInfo( RawFile::const_iterator &it)
+FileInfo::FileInfo(
+  const string &filename,
+  const string &pathName,
+  uint16_t memberSequenceNumber,
+  uint16_t crc):
+  filename( filename),
+  pathName( pathName),
+  memberSequenceNumber( memberSequenceNumber),
+  crc( crc)
 {
-  RawFile::const_iterator workIt = it;
-
-  // next file pointer
-  uint16_t filePointer;
-  workIt = getInt< uint16_t>( workIt, filePointer);
-
-  // filename
-  workIt = getString( workIt, filename);
-
-  // path name
-  workIt = getString( workIt, pathName);
-
-  // member sequence number
-  workIt = getInt< uint16_t>( workIt, memberSequenceNumber);
-
-  // crc
-  workIt = getInt< uint16_t>( workIt, crc);
-
-  // set it to begin of next file
-  it += filePointer * 2;
 }
 
 FileInfo::string FileInfo::getFilename() const

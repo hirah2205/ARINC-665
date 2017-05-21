@@ -35,15 +35,15 @@ class FileInfo
 {
   public:
     using string = std::string;
-    using FileInfoList = std::vector< FileInfo>;
     using path = boost::filesystem::path;
-
-    static FileInfoList getFileInfos(
-      RawFile::const_iterator &it);
 
     FileInfo();
 
-    FileInfo( RawFile::const_iterator &it);
+    FileInfo(
+      const string &filename,
+      const string &pathName,
+      uint16_t memberSequenceNumber,
+      uint16_t crc);
 
     string getFilename() const;
 

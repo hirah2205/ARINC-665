@@ -30,7 +30,7 @@ namespace File {
 class Arinc665File
 {
   public:
-    static constexpr unsigned int BaseHeaderOffset = 8;
+    static constexpr size_t BaseHeaderOffset = 8U;
 
     /**
      * @brief Decode the file length information from the given file.
@@ -65,10 +65,27 @@ class Arinc665File
      **/
     static uint16_t calculateChecksum(
       const RawFile &file,
-      unsigned int skipLastBytes = 2);
+      std::size_t skipLastBytes = 2U);
 
     //! Default destructor
     virtual ~Arinc665File() noexcept = default;
+
+    /**
+     * @brief Assigns raw data to the file.
+     *
+     * @param[in] file
+     *   File raw data
+     *
+     * @return *this
+     **/
+    virtual Arinc665File& operator=( const RawFile &file) = 0;
+
+    /**
+     * @brief Returns the ARINC 665 file as raw data.
+     *
+     * @return the protocol file as raw data.
+     **/
+    virtual operator RawFile() const = 0;
 
     /**
      * @brief Returns the ARINC 665 version of this file.
@@ -82,7 +99,7 @@ class Arinc665File
      *
      * @return The CRC of this file.
      **/
-    uint16_t getCrc() const;
+    uint16_t getCrc() const noexcept;
 
     /**
      * @brief Updates the CRC of this file.
@@ -90,17 +107,22 @@ class Arinc665File
      * @param[in] crc
      *   The new CRC of this file
      **/
-    void setCrc( uint16_t crc);
+    void setCrc( uint16_t crc)  noexcept;
 
-    // virtual void decode( const RawFile &data);
-
-    // virtual RawFile encode( void) const = 0;
+    /**
+     * @brief Calculates the CRC.
+     *
+     * Calculates the CRC and stores the value.
+     **/
+    void calculateCrc();
 
   protected:
     /**
      * @brief Default constructor
      **/
-    Arinc665File();
+    explicit Arinc665File( std::size_t checksumPosition = 2U) noexcept;
+
+    Arinc665File& operator=( const Arinc665File &file);
 
     /**
      * @brief Initialises class with the given raw data.
@@ -109,12 +131,13 @@ class Arinc665File
      * @param[in] expectedFormatVersion
      * @param[in] checksumPosition
      **/
-    Arinc665File(
+    void decodeHeader(
       const RawFile &file,
-      Arinc665FileFormatVersion expectedFormatVersion,
-      unsigned int checksumPosition = 2U);
+      Arinc665FileFormatVersion expectedFormatVersion = Arinc665FileFormatVersion::Invalid);
 
   private:
+    const std::size_t checksumPosition;
+    //! Stored CRC value
     uint16_t crc;
 };
 

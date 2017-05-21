@@ -25,61 +25,29 @@ namespace Arinc665 {
 namespace File {
 
 LoadHeaderFile::LoadHeaderFile() :
+  Arinc665File( 6U),
   loadCrc( 0)
 {
 }
 
-LoadHeaderFile::LoadHeaderFile( const RawFile &file) :
-  Arinc665File( file, Arinc665FileFormatVersion::LOAD_FILE_VERSION_2, 6)
+LoadHeaderFile::LoadHeaderFile( const RawFile &file):
+  Arinc665File( 6U)
 {
-  // set processing start to position after spare
-  RawFile::const_iterator it = file.begin() + BaseHeaderOffset;
+  decodeHeader( file, Arinc665FileFormatVersion::LOAD_FILE_VERSION_2);
+  decodeData( file);
+}
 
-  uint32_t loadPartNumberPtr;
-  it = getInt< uint32_t>( it, loadPartNumberPtr);
+LoadHeaderFile& LoadHeaderFile::operator=( const RawFile &file)
+{
+  decodeHeader( file, Arinc665FileFormatVersion::LOAD_FILE_VERSION_2);
+  decodeData( file);
 
-  uint32_t targetHardwareIdListPtr;
-  it = getInt< uint32_t>( it, targetHardwareIdListPtr);
+  return *this;
+}
 
-  uint32_t dataFileListPtr;
-  it = getInt< uint32_t>( it, dataFileListPtr);
-
-  uint32_t supportFileListPtr;
-  it = getInt< uint32_t>( it, supportFileListPtr);
-
-  uint32_t userDefinedDataPtr;
-  it = getInt< uint32_t>( it, userDefinedDataPtr);
-
-  //! load part number
-  it = file.begin() + loadPartNumberPtr * 2;
-  it = getString( it, partNumber);
-
-  //! target hardware id list
-  it = file.begin() + targetHardwareIdListPtr * 2;
-  it = getStringList( it, targetHardwareIdList);
-
-  // data file list
-  it = file.begin() + dataFileListPtr * 2;
-  dataFileList = LoadFileInfo::getFileList( it);
-
-  // support file list
-  if ( 0 != supportFileListPtr)
-  {
-    it = file.begin() + supportFileListPtr * 2;
-    supportFileList = LoadFileInfo::getFileList( it);
-  }
-
-  // user defined data
-  if ( 0 != userDefinedDataPtr)
-  {
-    it = file.begin() + userDefinedDataPtr * 2;
-    userDefinedData.assign( it, file.end() - 6);
-  }
-
-  // file crc decoded and checked within base class
-
-  // load crc
-  getInt< uint32_t>( it, loadCrc);
+LoadHeaderFile::operator RawFile() const
+{
+  return{};
 }
 
 Arinc665::Arinc665Version LoadHeaderFile::getArincVersion() const
@@ -145,6 +113,102 @@ uint32_t LoadHeaderFile::getLoadCrc() const
 void LoadHeaderFile::setLoadCrc( const uint32_t loadCrc)
 {
   this->loadCrc = loadCrc;
+}
+
+void LoadHeaderFile::decodeData( const RawFile &file)
+{
+  // set processing start to position after spare
+  RawFile::const_iterator it = file.begin() + BaseHeaderOffset;
+
+  uint32_t loadPartNumberPtr;
+  it = getInt< uint32_t>( it, loadPartNumberPtr);
+
+  uint32_t targetHardwareIdListPtr;
+  it = getInt< uint32_t>( it, targetHardwareIdListPtr);
+
+  uint32_t dataFileListPtr;
+  it = getInt< uint32_t>( it, dataFileListPtr);
+
+  uint32_t supportFileListPtr;
+  it = getInt< uint32_t>( it, supportFileListPtr);
+
+  uint32_t userDefinedDataPtr;
+  it = getInt< uint32_t>( it, userDefinedDataPtr);
+
+  // load part number
+  it = file.begin() + loadPartNumberPtr * 2;
+  it = getString( it, partNumber);
+
+  // target hardware id list
+  it = file.begin() + targetHardwareIdListPtr * 2;
+  it = getStringList( it, targetHardwareIdList);
+
+  // data file list
+  dataFileList = decodeFileList( file, dataFileListPtr * 2);
+
+  // support file list
+  if ( 0 != supportFileListPtr)
+  {
+    supportFileList = decodeFileList( file, supportFileListPtr * 2);
+  }
+
+  // user defined data
+  if ( 0 != userDefinedDataPtr)
+  {
+    it = file.begin() + userDefinedDataPtr * 2;
+    userDefinedData.assign( it, file.end() - 6U);
+  }
+
+  // file crc decoded and checked within base class
+
+  // load crc
+  getInt< uint32_t>( file.end() - 4U, loadCrc);
+}
+
+LoadHeaderFile::LoadFileInfoList LoadHeaderFile::decodeFileList(
+  const RawFile &file,
+  const std::size_t offset)
+{
+  RawFile::const_iterator it( file.begin() + offset);
+
+  LoadFileInfoList files;
+
+  // number of data files
+  uint16_t numberOfFiles;
+  it = getInt< uint16_t>( it, numberOfFiles);
+
+  for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex)
+  {
+    auto listIt( it);
+
+    // next file pointer
+    uint16_t filePointer;
+    listIt = getInt< uint16_t>( listIt, filePointer);
+
+    // filename
+    string name;
+    listIt = getString( listIt, name);
+
+    // part number
+    string partNumber;
+    listIt = getString( listIt, partNumber);
+
+    // file length
+    uint32_t length;
+    listIt = getInt< uint32_t>( listIt, length);
+
+    // CRC
+    uint16_t crc;
+    listIt = getInt< uint16_t>( listIt, crc);
+
+    // set it to begin of next file
+    it += filePointer * 2;
+
+    // file info
+    files.emplace_back( name, partNumber, length, crc);
+  }
+
+  return files;
 }
 
 }

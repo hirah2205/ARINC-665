@@ -24,18 +24,22 @@
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/File.hpp>
 
+#include <arinc665/file/list/LoadListFile.hpp>
+#include <arinc665/file/list/BatchListFile.hpp>
+#include <arinc665/file/list/FileListFile.hpp>
+
 namespace Arinc665 {
 namespace Utils {
 
 MediaSetExporterImpl::MediaSetExporterImpl(
   Media::ConstMediaSetPtr mediaSet,
-  Arinc665Utils::GetMediumPathHandler getMediumPathHandler,
-  Arinc665Utils::CopyFileHandler copyFileHandler,
+  Arinc665Utils::CreateFileHandler createFileHandler,
+  Arinc665Utils::WriteFileHandler writeFileHandler,
   bool createBatchFiles,
   bool createLoadHeaderFiles):
   mediaSet( mediaSet),
-  getMediumPathHandler( getMediumPathHandler),
-  copyFileHandler( copyFileHandler),
+  createFileHandler( createFileHandler),
+  writeFileHandler( writeFileHandler),
   createBatchFiles( createBatchFiles),
   createLoadHeaderFiles( createLoadHeaderFiles)
 {
@@ -58,36 +62,23 @@ void MediaSetExporterImpl::operator()()
 
 void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 {
-  auto mediumPath( getMediumPathHandler( medium->getMediumNumber()));
-
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Export Medium to" << mediumPath;
-
-  if (boost::filesystem::exists( mediumPath))
-  {
-   BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-     AdditionalInfo( "Medium directory must no exist"));
-  }
-
-  if (!boost::filesystem::create_directories( mediumPath))
-  {
-   BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-     AdditionalInfo( "Cannot create directory"));
-  }
-
   // export sub-directories
   for ( auto directory : medium->getSubDirectories())
   {
-    exportDirectory( mediumPath, directory);
+    exportDirectory( directory);
   }
 
   // export files
   for ( auto file : medium->getFiles())
   {
-    exportFile( mediumPath, file);
+    exportFile( file);
   }
 
   // export list of loads
+  Arinc665::File::LoadListFile loadListFile;
+  loadListFile.setMediaSequenceNumber( medium->getMediumNumber());
+  loadListFile.setMediaSetPn( medium->getPartNumber());
+  loadListFile.setNumberOfMediaSetMembers(  medium->getMediaSet()->getNumberOfMedia());
 
   // export list of batches
 
@@ -95,47 +86,33 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 
 }
 
-void MediaSetExporterImpl::exportDirectory(
-  const path &base,
-  Media::ConstDirectoryPtr directory)
+void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory)
 {
-  auto directoryPath( base / directory->getName());
-
-  if (!boost::filesystem::create_directory( directoryPath))
-  {
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "Cannot create directory"));
-  }
-
   BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Export directory to" << directoryPath;
+    "Export directory to " << directory->getPath();
 
   // export sub-directories
   for ( auto directory : directory->getSubDirectories())
   {
-    exportDirectory( directoryPath, directory);
+    exportDirectory( directory);
   }
 
   // export files
   for ( auto file : directory->getFiles())
   {
-    exportFile( directoryPath, file);
+    exportFile( file);
   }
 }
 
-void MediaSetExporterImpl::exportFile(
-  const path &base,
-  Media::ConstFilePtr file)
+void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
 {
-  auto filePath( base / file->getName());
-
   BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Export file to" << filePath;
+    "Export file to " << file->getPathname();
 
   switch (file->getFileType())
   {
     case Media::File::FileType::RegularFile:
-      copyFileHandler( file, filePath);
+      createFileHandler( file);
       break;
 
     case Media::File::FileType::LoadFile:
@@ -144,7 +121,7 @@ void MediaSetExporterImpl::exportFile(
         BOOST_THROW_EXCEPTION( Arinc665Exception() <<
           AdditionalInfo( "Not implemented"));
       }
-      copyFileHandler( file, filePath);
+      createFileHandler( file);
       break;
 
     case Media::File::FileType::BatchFile:
@@ -153,7 +130,7 @@ void MediaSetExporterImpl::exportFile(
         BOOST_THROW_EXCEPTION( Arinc665Exception() <<
           AdditionalInfo( "Not implemented"));
       }
-      copyFileHandler( file, filePath);
+      createFileHandler( file);
       break;
 
     default:

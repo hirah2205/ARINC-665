@@ -23,26 +23,23 @@
 namespace Arinc665 {
 namespace File {
 
-BatchFile::BatchFile( const RawFile &file):
-  Arinc665File( file, Arinc665FileFormatVersion::LOAD_FILE_VERSION_2)
+BatchFile::BatchFile( const RawFile &file)
 {
-  // set processing start to position after spare
-  RawFile::const_iterator it = file.begin() + BaseHeaderOffset;
+  decodeHeader( file, Arinc665FileFormatVersion::LOAD_FILE_VERSION_2);
+  decodeData( file);
+}
 
-  uint32_t batchPartNumberPtr;
-  it = getInt< uint32_t>( it, batchPartNumberPtr);
+BatchFile& BatchFile::operator=( const RawFile &file)
+{
+  decodeHeader( file, Arinc665FileFormatVersion::LOAD_FILE_VERSION_2);
+  decodeData( file);
 
-  uint32_t targetHardwareIdListPtr;
-  it = getInt< uint32_t>( it, targetHardwareIdListPtr);
+  return *this;
+}
 
-  // load part number
-  it = file.begin() + batchPartNumberPtr * 2;
-  it = getString( it, partNumber);
-
-  // target hardware id list
-  it = file.begin() + targetHardwareIdListPtr * 2;
-
-  // file crc decoded and checked within base class
+BatchFile::operator RawFile() const
+{
+  return {};
 }
 
 Arinc665Version BatchFile::getArincVersion() const
@@ -78,6 +75,27 @@ const BatchTargetsInfo& BatchFile::getTargetHardwares() const
 BatchTargetsInfo& BatchFile::getTargetHardwares()
 {
   return targetHardwares;
+}
+
+void BatchFile::decodeData( const RawFile &file)
+{
+  // set processing start to position after spare
+  RawFile::const_iterator it = file.begin() + BaseHeaderOffset;
+
+  uint32_t batchPartNumberPtr;
+  it = getInt< uint32_t>( it, batchPartNumberPtr);
+
+  uint32_t targetHardwareIdListPtr;
+  it = getInt< uint32_t>( it, targetHardwareIdListPtr);
+
+  // load part number
+  it = file.begin() + batchPartNumberPtr * 2;
+  it = getString( it, partNumber);
+
+  // target hardware id list
+  it = file.begin() + targetHardwareIdListPtr * 2;
+
+  // file crc decoded and checked within base class
 }
 
 }

@@ -16,9 +16,12 @@
 
 #include "MediaSetManagerImpl.hpp"
 
+#include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
 
 #include <arinc665/utils/Arinc665Utils.hpp>
+
+#include <fstream>
 
 namespace Arinc665 {
 namespace Utils {
@@ -33,20 +36,40 @@ MediaSetManagerImpl::MediaSetManagerImpl(
   {
     // import media set
     auto importer( Arinc665Utils::createArinc665Importer(
-      [&mediaSetConfig,&config]( const uint8_t mediumNumber)
+      [&mediaSetConfig,&config]( const uint8_t mediumNumber, const path &path)->File::RawFile
       {
         if (mediumNumber > mediaSetConfig.second.size())
         {
           BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning) <<
             "More media then stored requested";
 
-          return path();
+          return {};
         }
 
-        return
+        auto filePath(
           config.mediaSetBase /
           mediaSetConfig.first /
-          mediaSetConfig.second[ mediumNumber-1];
+          mediaSetConfig.second[ mediumNumber-1] /
+          path.relative_path());
+
+        File::RawFile data( boost::filesystem::file_size( filePath));
+
+        std::ifstream file(
+          filePath.string().c_str(),
+          std::ifstream::binary | std::ifstream::in);
+
+        if ( !file.is_open())
+        {
+          //! @throw Arinc665Exception
+          BOOST_THROW_EXCEPTION(
+            Arinc665Exception() << AdditionalInfo( "Error opening files"));
+        }
+
+        // read the data to the buffer
+        file.read( (char*) &data.at( 0), data.size());
+
+        // return the buffer
+        return data;
       }));
 
     // execute importer

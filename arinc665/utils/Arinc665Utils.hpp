@@ -21,6 +21,8 @@
 
 #include <arinc665/media/Media.hpp>
 
+#include <arinc665/file/File.hpp>
+
 #include <boost/filesystem.hpp>
 
 #include <functional>
@@ -36,12 +38,15 @@ class Arinc665Utils
 
     using string = std::string;
 
-    //! Handler, which is called to obtain the path to the next medium.
-    using GetMediumPathHandler = std::function< path( uint8_t mediumNumber)>;
+    //! Handler, which is called to read a file form a medium.
+    using ReadFileHandler = std::function< File::RawFile( uint8_t mediumNumber, const path &path)>;
 
     //! Handler, which is called to generate the given file at the requested position.
-    using CopyFileHandler =
-      std::function< void( Media::ConstFilePtr file, const path &destination)>;
+    using CreateFileHandler = std::function< void( Media::ConstFilePtr file)>;
+
+    //! Handler, which is called to write the given file at the requested position.
+    using WriteFileHandler =
+      std::function< void( uint8_t mediumNumber, const path &path, File::RawFile file)>;
 
     /**
      * The ARINC 665 Media Set importer.
@@ -59,25 +64,23 @@ class Arinc665Utils
     /**
      * @brief Create a ARINC 665 Media Set importer.
      *
-     * @param[in] getMediumPathHandler
-     *   Handler which is called to obtain the the current path of the selected
-     *   medium.
+     * @param[in] readFileHandler
+     *   Handler which is called to obtain the requested file from the medium.
      *
      * @return The ARINC 665 Media Set importer.
      **/
     static Arinc665Importer createArinc665Importer(
-      GetMediumPathHandler getMediumPathHandler);
+      ReadFileHandler readFileHandler);
 
     /**
      * @brief Creates a ARINC 665 Media Set exporter.
      *
      * @param[in] mediaSet
      *   The media set, which shall be exported.
-     * @param[in] getMediumPathHandler
-     *   Handler, which is called to obtain the path, where the requested medium
-     *   shall be exported to.
-     * @param[in] copyFileHandler
+     * @param[in] createFileHandler
      *   When a file needs to be generated, this handler is called.
+     * @param[in] writeFileHandler
+     *   When a file needs to be generated, this handler is called with data.
      * @param[in] createBatchFiles
      *   If set to true, Batch Files are created by exporter.
      * @param[in] createLoadHeaderFiles
@@ -87,8 +90,8 @@ class Arinc665Utils
      **/
     static Arinc665Exporter createArinc665Exporter(
       Media::ConstMediaSetPtr mediaSet,
-      GetMediumPathHandler getMediumPathHandler,
-      CopyFileHandler copyFileHandler,
+      CreateFileHandler createFileHandler,
+      WriteFileHandler writeFileHandler,
       bool createBatchFiles = false,
       bool createLoadHeaderFiles = false);
 };

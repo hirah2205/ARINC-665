@@ -21,6 +21,9 @@
 #include <arinc665/utils/Arinc665Utils.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
 
+#include <arinc665/media/Medium.hpp>
+#include <arinc665/media/File.hpp>
+
 #include <helper/Logger.hpp>
 
 #include <boost/program_options.hpp>
@@ -75,11 +78,7 @@ int Arinc665CompilerApplication::operator()()
 
     auto exporter( Arinc665::Utils::Arinc665Utils::createArinc665Exporter(
       std::get< 0>( result),
-      [this](const uint8_t mediumNumber)
-      {
-        return mediaSetDestinationDirectory / ("MEDIA_" + std::to_string( mediumNumber));
-      },
-      [result,this](Arinc665::Media::ConstFilePtr file, const boost::filesystem::path &destination)
+      [result,this](Arinc665::Media::ConstFilePtr file)
       {
         auto fileIt( std::get< 1>( result).find( file));
 
@@ -91,7 +90,12 @@ int Arinc665CompilerApplication::operator()()
 
         boost::filesystem::copy(
           mediaSetSourceDirectory / fileIt->second,
-          destination);
+          (mediaSetDestinationDirectory /
+            ("MEDIA_" + std::to_string( file->getMedium()->getMediumNumber())) /
+            file->getPathname()));
+      },
+      [](const uint8_t mediumNumber, const boost::filesystem::path &path, Arinc665::File::RawFile file)
+      {
       }));
 
     exporter();

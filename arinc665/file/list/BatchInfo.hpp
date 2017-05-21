@@ -33,7 +33,7 @@ class BatchInfo
     static BatchInfoList getBatchInfos(
       RawFile::const_iterator &it);
 
-    BatchInfo( void);
+    BatchInfo();
 
     BatchInfo( RawFile::const_iterator &it);
 

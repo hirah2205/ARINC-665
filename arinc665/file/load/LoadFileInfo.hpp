@@ -35,12 +35,6 @@ class LoadFileInfo
   public:
     using string = std::string;
 
-    //
-    using LoadFileInfoList = std::list< LoadFileInfo>;
-
-    static LoadFileInfoList getFileList(
-      RawFile::const_iterator &it);
-
     LoadFileInfo();
 
     LoadFileInfo(
@@ -48,8 +42,6 @@ class LoadFileInfo
       const string partNumber,
       uint32_t length,
       uint16_t crc);
-
-    LoadFileInfo( RawFile::const_iterator &it);
 
     string getName() const;
     void setName( const string &name);

@@ -130,7 +130,7 @@ enum class Arinc665FileFormatVersion : uint16_t
   MEDIA_FILE_VERSION_2 = static_cast< uint16_t>( MediaFileFormatVersion::Version2),
   MEDIA_FILE_VERSION_3 = static_cast< uint16_t>( MediaFileFormatVersion::Version3),
 
-  ARINC_665_FILE_INVALID   = 0xFFFF  //!< invalid value
+  Invalid = 0xFFFFU  //!< invalid value
 };
 
 //! @brief ARINC 665 file types

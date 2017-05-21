@@ -19,15 +19,8 @@
 namespace Arinc665 {
 namespace File {
 
-ListFile::ListFile()
-{
-}
-
-ListFile::ListFile(
-  const RawFile &file,
-  const Arinc665FileFormatVersion expectedFormatVersion,
-  const unsigned int skipLastBytes) :
-  Arinc665File( file, expectedFormatVersion, skipLastBytes)
+ListFile::ListFile( const std::size_t checksumPosition) :
+  Arinc665File( checksumPosition)
 {
 }
 

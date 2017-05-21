@@ -80,13 +80,9 @@ class ListFile: public Arinc665File
       uint8_t numberOfMediaSetMembers) = 0;
 
   protected:
-    ListFile();
-
-    ListFile(
-      const RawFile &file,
-      Arinc665FileFormatVersion expectedFormatVersion,
-      unsigned int skipLastBytes = 2);
+    ListFile( std::size_t checksumPosition = 2U);
 };
+
 }
 }
 

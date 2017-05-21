@@ -23,27 +23,27 @@ namespace Arinc665 {
 namespace Utils {
 
 Arinc665Utils::Arinc665Importer Arinc665Utils::createArinc665Importer(
-  GetMediumPathHandler getMediumPathHandler)
+  ReadFileHandler readFileHandler)
 {
   return std::bind(
     &MediaSetImporterImpl::operator(),
-    std::make_shared< MediaSetImporterImpl>( getMediumPathHandler),
+    std::make_shared< MediaSetImporterImpl>( readFileHandler),
     std::placeholders::_1);
 }
 
 Arinc665Utils::Arinc665Exporter Arinc665Utils::createArinc665Exporter(
   Media::ConstMediaSetPtr mediaSet,
-  GetMediumPathHandler getMediumPathHandler,
-  CopyFileHandler copyFileHandler,
-  bool createBatchFiles,
-  bool createLoadHeaderFiles)
+  CreateFileHandler createFileHandler,
+  WriteFileHandler writeFileHandler,
+  const bool createBatchFiles,
+  const bool createLoadHeaderFiles)
 {
   return std::bind(
     &MediaSetExporterImpl::operator(),
     std::make_shared< MediaSetExporterImpl>(
       mediaSet,
-      getMediumPathHandler,
-      copyFileHandler,
+      createFileHandler,
+      writeFileHandler,
       createBatchFiles,
       createLoadHeaderFiles));
 }

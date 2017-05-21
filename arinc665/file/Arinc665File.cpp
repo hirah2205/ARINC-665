@@ -29,7 +29,7 @@ namespace File {
 uint32_t Arinc665File::getFileLength( const RawFile &file)
 {
   // check file size
-  if ( file.size() < 8)
+  if ( file.size() < BaseHeaderOffset)
   {
     //! @throw InvalidArinc665File
     //!   If the file size is to small to represent an valid ARINC 665 file.
@@ -47,7 +47,7 @@ uint32_t Arinc665File::getFileLength( const RawFile &file)
 uint16_t Arinc665File::getFormatVersion( const RawFile &file)
 {
   // check file size
-  if ( file.size() < 8)
+  if ( file.size() < BaseHeaderOffset)
   {
     //! @throw InvalidArinc665File
     //!   If the file size is to small to represent an valid ARINC 665 file.
@@ -64,7 +64,7 @@ uint16_t Arinc665File::getFormatVersion( const RawFile &file)
 
 uint16_t Arinc665File::calculateChecksum(
   const RawFile &file,
-  const unsigned int skipLastBytes)
+  const std::size_t skipLastBytes)
 {
   Arinc665Crc16 arincCrc16;
 
@@ -75,25 +75,44 @@ uint16_t Arinc665File::calculateChecksum(
   return arincCrc16.checksum();
 }
 
-uint16_t Arinc665File::getCrc() const
+uint16_t Arinc665File::getCrc() const noexcept
 {
   return crc;
 }
 
-void Arinc665File::setCrc( const uint16_t crc)
+void Arinc665File::setCrc( const uint16_t crc) noexcept
 {
   this->crc = crc;
 }
 
-Arinc665File::Arinc665File():
+Arinc665File::operator RawFile() const
+{
+  return RawFile();
+}
+
+Arinc665File::Arinc665File( const std::size_t checksumPosition) noexcept :
+  checksumPosition( checksumPosition),
   crc( 0)
 {
 }
 
-Arinc665File::Arinc665File(
+Arinc665File& Arinc665File::operator=( const Arinc665File &file)
+{
+  assert( this->checksumPosition == file.checksumPosition);
+
+  if ( this == &file)
+  {
+    return *this;
+  }
+
+  crc = file.crc;
+
+  return *this;
+}
+
+void Arinc665File::decodeHeader(
   const RawFile &file,
-  const Arinc665FileFormatVersion expectedFormatVersion,
-  const unsigned int checksumPosition)
+  const Arinc665FileFormatVersion expectedFormatVersion)
 {
   // Check file size
   if ( file.size() <= BaseHeaderOffset)
@@ -112,12 +131,15 @@ Arinc665File::Arinc665File(
   }
 
   // check format field
-  if ( getFormatVersion( file)
-    != static_cast< uint16_t>( expectedFormatVersion))
+  if (expectedFormatVersion != Arinc665FileFormatVersion::Invalid)
   {
-    //! @throw InvalidArinc665File When file format is wrong
-    BOOST_THROW_EXCEPTION(
-      InvalidArinc665File() << AdditionalInfo( "wrong file format"));
+    if ( getFormatVersion( file) != static_cast< uint16_t>(
+      expectedFormatVersion))
+    {
+      //! @throw InvalidArinc665File When file format is wrong
+      BOOST_THROW_EXCEPTION(
+        InvalidArinc665File() << AdditionalInfo( "wrong file format"));
+    }
   }
 
   // Decode checksum field;

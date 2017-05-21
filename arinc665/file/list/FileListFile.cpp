@@ -25,49 +25,29 @@
 namespace Arinc665 {
 namespace File {
 
-FileListFile::FileListFile( void):
+FileListFile::FileListFile():
   mediaSequenceNumber( 0),
   numberOfMediaSetMembers( 0)
 {
 }
 
-FileListFile::FileListFile( const RawFile &file) :
-  ListFile( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2)
+FileListFile::FileListFile( const RawFile &file)
 {
-  // set processing start to position after spare
-  RawFile::const_iterator it = file.begin() + BaseHeaderOffset;
+  decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
+  decodeData( file);
+}
 
-  uint32_t mediaInformationPtr;
-  it = getInt< uint32_t>( it, mediaInformationPtr);
+FileListFile& FileListFile::operator=( const RawFile &file)
+{
+  decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
+  decodeData( file);
 
-  uint32_t fileListPtr;
-  it = getInt< uint32_t>( it, fileListPtr);
+  return *this;
+}
 
-  uint32_t userDefinedDataPtr;
-  it = getInt< uint32_t>( it, userDefinedDataPtr);
-
-  // media set part number
-  it = file.begin() + mediaInformationPtr * 2;
-  it = getString( it, mediaSetPn);
-
-  // media sequence number
-  it = getInt< uint8_t>( it, mediaSequenceNumber);
-
-  // number of media set members
-  it = getInt< uint8_t>( it, numberOfMediaSetMembers);
-
-  // file list
-  it = file.begin() + 2 * fileListPtr;
-  fileInfos = FileInfo::getFileInfos( it);
-
-  // user defined data
-  if ( 0 != userDefinedDataPtr)
-  {
-    it = file.begin() + userDefinedDataPtr * 2;
-    userDefinedData.assign( it, file.end() - 2);
-  }
-
-  // file crc decoded and checked within base class
+FileListFile::operator RawFile() const
+{
+  return {};
 }
 
 Arinc665::Arinc665Version FileListFile::getArincVersion() const
@@ -111,12 +91,12 @@ size_t FileListFile::getNumberOfFiles() const
   return fileInfos.size();
 }
 
-const FileListFile::FileInfoList& FileListFile::getFileInfos() const
+const FileInfoList& FileListFile::getFileInfos() const
 {
   return fileInfos;
 }
 
-FileListFile::FileInfoList& FileListFile::getFileInfos()
+FileInfoList& FileListFile::getFileInfos()
 {
   return fileInfos;
 }
@@ -212,6 +192,88 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
   }
 
   return true;
+}
+
+void FileListFile::decodeData( const RawFile &file)
+{
+  // set processing start to position after spare
+  RawFile::const_iterator it = file.begin() + BaseHeaderOffset;
+
+  uint32_t mediaInformationPtr;
+  it = getInt< uint32_t>( it, mediaInformationPtr);
+
+  uint32_t fileListPtr;
+  it = getInt< uint32_t>( it, fileListPtr);
+
+  uint32_t userDefinedDataPtr;
+  it = getInt< uint32_t>( it, userDefinedDataPtr);
+
+  // media set part number
+  it = file.begin() + mediaInformationPtr * 2;
+  it = getString( it, mediaSetPn);
+
+  // media sequence number
+  it = getInt< uint8_t>( it, mediaSequenceNumber);
+
+  // number of media set members
+  it = getInt< uint8_t>( it, numberOfMediaSetMembers);
+
+  // file list
+  fileInfos = decodeFileInfo( file, 2 * fileListPtr);
+
+  // user defined data
+  if ( 0 != userDefinedDataPtr)
+  {
+    it = file.begin() + userDefinedDataPtr * 2;
+    userDefinedData.assign( it, file.end() - 2);
+  }
+
+  // file crc decoded and checked within base class
+}
+
+FileInfoList FileListFile::decodeFileInfo(
+  const RawFile &file,
+  const std::size_t offset)
+{
+  auto it( file.begin() + offset);
+
+  FileInfoList fileList;
+
+  // number of files
+  uint16_t numberOfFiles;
+  it = getInt< uint16_t>( it, numberOfFiles);
+
+  for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex)
+  {
+    auto listIt( it);
+
+    // next file pointer
+    uint16_t filePointer;
+    listIt = getInt< uint16_t>( listIt, filePointer);
+
+    // filename
+    string filename;
+    listIt = getString( listIt, filename);
+
+    // path name
+    string pathName;
+    listIt = getString( listIt, pathName);
+
+    // member sequence number
+    uint16_t memberSequenceNumber;
+    listIt = getInt< uint16_t>( listIt, memberSequenceNumber);
+
+    // crc
+    uint16_t crc;
+    listIt = getInt< uint16_t>( listIt, crc);
+
+    // set it to begin of next file
+    it += filePointer * 2;
+
+    fileList.emplace_back( filename, pathName, memberSequenceNumber, crc);
+  }
+
+  return fileList;
 }
 
 }

@@ -52,6 +52,7 @@ class LoadInfo;
 class LoadListFile;
 
 class FileInfo;
+using FileInfoList = std::vector< FileInfo>;
 class FileListFile;
 
 }

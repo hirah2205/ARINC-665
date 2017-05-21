@@ -24,55 +24,22 @@
 namespace Arinc665 {
 namespace File {
 
-LoadFileInfo::LoadFileInfoList LoadFileInfo::getFileList(
-  RawFile::const_iterator &it)
-{
-  RawFile::const_iterator workIt = it;
-
-  std::list< LoadFileInfo> files;
-
-  // number of data files
-  uint16_t numberOfFiles;
-  workIt = getInt< uint16_t>( workIt, numberOfFiles);
-
-  for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex)
-  {
-    files.push_back( LoadFileInfo( workIt));
-  }
-
-  it = workIt;
-
-  return files;
-}
-
 LoadFileInfo::LoadFileInfo():
   length( 0),
   crc( 0)
 {
 }
 
-LoadFileInfo::LoadFileInfo( RawFile::const_iterator &it)
+LoadFileInfo::LoadFileInfo(
+  const string &name,
+  const string partNumber,
+  uint32_t length,
+  uint16_t crc):
+  name( name),
+  partNumber( partNumber),
+  length( length),
+  crc( crc)
 {
-  RawFile::const_iterator workIt = it;
-
-  // next file pointer
-  uint16_t filePointer;
-  workIt = getInt< uint16_t>( workIt, filePointer);
-
-  // filename
-  workIt = getString( workIt, name);
-
-  // part number
-  workIt = getString( workIt, partNumber);
-
-  // file length
-  workIt = getInt< uint32_t>( workIt, length);
-
-  // CRC
-  workIt = getInt< uint16_t>( workIt, crc);
-
-  // set it to begin of next file
-  it += filePointer * 2;
 }
 
 std::string LoadFileInfo::getName() const
