@@ -96,7 +96,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   fileListFile.setNumberOfMediaSetMembers(  medium->getMediaSet()->getNumberOfMedia());
   fileListFile.getFileInfos().push_back( {"FOO.BIN", "/", 1U, 0xDEADU});
   fileListFile.getFileInfos().push_back( {"BAR.BIN", "/", 1U, 0xBEEFU});
-  fileListFile.setCrc( 0xC00FU);
+  fileListFile.calculateCrc();
   writeFileHandler( medium->getMediumNumber(), "/" + ListOfFilesName, fileListFile);
 }
 

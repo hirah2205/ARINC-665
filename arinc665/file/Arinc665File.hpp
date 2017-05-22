@@ -181,6 +181,12 @@ class Arinc665File
      **/
     Arinc665Version getArincVersion() const;
 
+    /**
+     * @brief Updates the ARINC 665 version of this file.
+     *
+     * @param[in] version
+     *   The new ARINC 665 version.
+     **/
     void setArincVersion( Arinc665Version version);
 
     /**

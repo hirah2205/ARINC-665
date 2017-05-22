@@ -326,6 +326,15 @@ void Arinc665File::setCrc( const uint16_t crc) noexcept
   this->crc = crc;
 }
 
+void Arinc665File::calculateCrc()
+{
+  auto rawFile( encode());
+
+  const uint16_t calculatedCrc = calculateChecksum( rawFile, checksumPosition);
+
+  crc = calculatedCrc;
+}
+
 Arinc665File::Arinc665File(
   const FileType fileType,
   Arinc665Version version,
