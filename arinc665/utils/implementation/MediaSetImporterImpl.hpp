@@ -36,6 +36,9 @@
 namespace Arinc665 {
 namespace Utils {
 
+/**
+ * @brief Implementation of a ARINC 665 media set importer.
+ */
 class MediaSetImporterImpl
 {
   public:

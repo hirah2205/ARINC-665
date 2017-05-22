@@ -58,6 +58,8 @@ class Arinc665CompilerApplication
      **/
     bool handleCommandLine();
 
+    path getMediumPath( uint8_t mediumNumber) const;
+
     void createFile(
       const Arinc665::Utils::Arinc665Xml::LoadXmlResult &mediaSetInfo,
       Arinc665::Media::ConstFilePtr file);
@@ -65,7 +67,11 @@ class Arinc665CompilerApplication
     void writeFile(
       uint8_t mediumNumber,
       const path &path,
-      Arinc665::File::RawFile file);
+      const Arinc665::File::RawFile &file);
+
+    Arinc665::File::RawFile readFile(
+      uint8_t mediumNumber,
+      const path &path);
 
     //! The application context
     boost::application::context& context;

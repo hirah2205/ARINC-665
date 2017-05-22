@@ -108,6 +108,16 @@ FileListFile::FileInfoMap FileListFile::getFileInfosAsMap() const
   return fileMap;
 }
 
+void FileListFile::addFileInfo( const FileInfo &fileInfo)
+{
+  fileInfos.push_back( fileInfo);
+}
+
+void FileListFile::addFileInfo( FileInfo &&fileInfo)
+{
+  fileInfos.push_back( fileInfo);
+}
+
 FileListFile::FileInfoPathMap FileListFile::getFileInfosAsPathMap() const
 {
   FileInfoPathMap fileMap;

@@ -106,6 +106,15 @@ RawFile Arinc665File::encodeStringList( const std::list< std::string> &strList)
   return rawStringList;
 }
 
+Arinc665File::string Arinc665File::encodePath( const path &path)
+{
+  string convertedPath( path.string());
+
+  std::replace( convertedPath.begin(), convertedPath.end(), '/', '\\');
+
+  return convertedPath;
+}
+
 uint32_t Arinc665File::getFileLength( const RawFile &file)
 {
   // check file size

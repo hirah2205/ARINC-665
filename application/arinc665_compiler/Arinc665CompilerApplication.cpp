@@ -29,6 +29,7 @@
 #include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
 #include <boost/application.hpp>
+#include <boost/format.hpp>
 
 #include <cstdlib>
 #include <memory>
@@ -88,7 +89,12 @@ int Arinc665CompilerApplication::operator()()
         this,
         std::placeholders::_1,
         std::placeholders::_2,
-        std::placeholders::_3)));
+        std::placeholders::_3),
+      std::bind(
+        &Arinc665CompilerApplication::readFile,
+        this,
+        std::placeholders::_1,
+        std::placeholders::_2)));
 
     exporter();
   }
@@ -150,6 +156,13 @@ bool Arinc665CompilerApplication::handleCommandLine()
   return true;
 }
 
+Arinc665CompilerApplication::path Arinc665CompilerApplication::getMediumPath(
+  const uint8_t mediumNumber) const
+{
+  return mediaSetDestinationDirectory
+    / (boost::format("MEDIUM_%03u") % (unsigned int)mediumNumber).str();
+}
+
 void Arinc665CompilerApplication::createFile(
   const Arinc665::Utils::Arinc665Xml::LoadXmlResult &mediaSetInfo,
   Arinc665::Media::ConstFilePtr file)
@@ -164,9 +177,8 @@ void Arinc665CompilerApplication::createFile(
   }
 
   auto filePath(
-    (mediaSetDestinationDirectory /
-    ("MEDIA_" + std::to_string( file->getMedium()->getMediumNumber())) /
-    file->getPath()));
+    getMediumPath( file->getMedium()->getMediumNumber()) /
+    file->getPath());
 
   // create directories (if necessary)
   boost::filesystem::create_directories( filePath.parent_path());
@@ -178,14 +190,11 @@ void Arinc665CompilerApplication::createFile(
 }
 
 void Arinc665CompilerApplication::writeFile(
-  uint8_t mediumNumber,
+  const uint8_t mediumNumber,
   const path &path,
-  Arinc665::File::RawFile file)
+  const Arinc665::File::RawFile &file)
 {
-  auto filePath(
-    mediaSetDestinationDirectory /
-    ("MEDIA_" + std::to_string( mediumNumber)) /
-    path.relative_path());
+  auto filePath( getMediumPath( mediumNumber) / path.relative_path());
 
   BOOST_LOG_TRIVIAL( severity_level::info) << "Write file " << filePath;
 
@@ -216,5 +225,45 @@ void Arinc665CompilerApplication::writeFile(
 
   // write the data to the buffer
   fileStream.write( (char*) &file.at( 0), file.size());
+}
+
+Arinc665::File::RawFile Arinc665CompilerApplication::readFile(
+  const uint8_t mediumNumber,
+  const path &path)
+{
+  // check medium number
+  auto filePath( getMediumPath( mediumNumber) / path.relative_path());
+
+  BOOST_LOG_TRIVIAL( severity_level::info) << "Read file " << filePath;
+
+  // check existence of file
+  if (!boost::filesystem::is_regular( filePath))
+  {
+    //! @throw Arinc665Exception
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception() <<
+        boost::errinfo_file_name( filePath.string()) <<
+        AdditionalInfo( "File not found"));
+  }
+
+  Arinc665::File::RawFile data( boost::filesystem::file_size( filePath));
+
+  // load file
+  std::ifstream file(
+    filePath.string().c_str(),
+    std::ifstream::binary | std::ifstream::in);
+
+  if ( !file.is_open())
+  {
+    //! @throw Arinc665Exception
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception() << AdditionalInfo( "Error opening files"));
+  }
+
+  // read the data to the buffer
+  file.read( (char*) &data.at( 0), data.size());
+
+  // return the buffer
+  return data;
 }
 

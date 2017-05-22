@@ -97,6 +97,10 @@ class FileListFile: public ListFile
      **/
     FileInfoMap getFileInfosAsMap() const;
 
+    void addFileInfo( const FileInfo &fileInfo);
+
+    void addFileInfo( FileInfo &&fileInfo);
+
     /**
      * @brief Return the list of files as map ( media index and complete path as key).
      *

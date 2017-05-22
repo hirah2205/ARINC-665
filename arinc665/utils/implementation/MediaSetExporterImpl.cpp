@@ -35,13 +35,17 @@ MediaSetExporterImpl::MediaSetExporterImpl(
   Media::ConstMediaSetPtr mediaSet,
   Arinc665Utils::CreateFileHandler createFileHandler,
   Arinc665Utils::WriteFileHandler writeFileHandler,
+  Arinc665Utils::ReadFileHandler readFileHandler,
+  const Arinc665Version arinc665Version,
   bool createBatchFiles,
   bool createLoadHeaderFiles):
+  arinc665Version( arinc665Version),
+  createBatchFiles( createBatchFiles),
+  createLoadHeaderFiles( createLoadHeaderFiles),
   mediaSet( mediaSet),
   createFileHandler( createFileHandler),
   writeFileHandler( writeFileHandler),
-  createBatchFiles( createBatchFiles),
-  createLoadHeaderFiles( createLoadHeaderFiles)
+  readFileHandler( readFileHandler)
 {
 
 }
@@ -85,17 +89,38 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   loadListFile.setMediaSetPn( medium->getPartNumber());
   loadListFile.setNumberOfMediaSetMembers(  medium->getMediaSet()->getNumberOfMedia());
 #endif
-  // export list of batches
+  // export list of batches (if present)
+  if (medium->getMediaSet()->getNumberOfBatches() != 0)
+  {
+
+  }
 
   // export medium info
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) << "Medium Info";
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
+    "Export list of files";
 
-  Arinc665::File::FileListFile fileListFile( Arinc665Version::ARINC_665_2);
+  Arinc665::File::FileListFile fileListFile( arinc665Version);
   fileListFile.setMediaSequenceNumber( medium->getMediumNumber());
   fileListFile.setMediaSetPn( medium->getPartNumber());
   fileListFile.setNumberOfMediaSetMembers(  medium->getMediaSet()->getNumberOfMedia());
-  fileListFile.getFileInfos().push_back( {"FOO.BIN", "/", 1U, 0xDEADU});
-  fileListFile.getFileInfos().push_back( {"BAR.BIN", "/", 1U, 0xBEEFU});
+  /* add all files, load header files, and batch files to file list */
+  for ( auto &file : medium->getMediaSet()->getFiles())
+  {
+    auto rawFile( readFileHandler( medium->getMediumNumber(), file->getPath()));
+    uint16_t crc( File::Arinc665File::calculateChecksum( rawFile, 0));
+
+    fileListFile.addFileInfo({
+      file->getName(),
+      File::Arinc665File::encodePath( file->getPath().parent_path()),
+      file->getMedium()->getMediumNumber(),
+      crc});
+  }
+  /* add list of loads */
+  //! @todo
+
+  /* add list of batches - if present */
+  //! @todo
+
   fileListFile.calculateCrc();
   writeFileHandler( medium->getMediumNumber(), "/" + ListOfFilesName, fileListFile);
 }

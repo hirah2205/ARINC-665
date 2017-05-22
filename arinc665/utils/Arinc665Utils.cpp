@@ -35,6 +35,8 @@ Arinc665Utils::Arinc665Exporter Arinc665Utils::createArinc665Exporter(
   Media::ConstMediaSetPtr mediaSet,
   CreateFileHandler createFileHandler,
   WriteFileHandler writeFileHandler,
+  ReadFileHandler readFileHandler,
+  Arinc665Version arinc665Version,
   const bool createBatchFiles,
   const bool createLoadHeaderFiles)
 {
@@ -44,6 +46,8 @@ Arinc665Utils::Arinc665Exporter Arinc665Utils::createArinc665Exporter(
       mediaSet,
       createFileHandler,
       writeFileHandler,
+      readFileHandler,
+      arinc665Version,
       createBatchFiles,
       createLoadHeaderFiles));
 }

@@ -24,6 +24,7 @@
 #include <arinc665/media/Batch.hpp>
 
 #include <arinc665/Arinc665Logger.hpp>
+#include <arinc665/Arinc665Exception.hpp>
 
 namespace Arinc665 {
 namespace Utils {
@@ -35,9 +36,9 @@ Arinc665XmlPugiXmlImpl::LoadXmlResult Arinc665XmlPugiXmlImpl::loadFromXml(
 
   if (!boost::filesystem::is_regular( xmlFile))
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning) <<
-      "File " << xmlFile << " does not exist";
-    return {};
+    //! @throw Arinc665::Arinc665Exception when XML file does not exist.
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo( "XML File does not exist"));
   }
 
   pugi::xml_document xmlDoc;
@@ -170,8 +171,17 @@ void Arinc665XmlPugiXmlImpl::loadDirectory(
   FilePathMapping &filePathMapping,
   const pugi::xml_node &directoryNode)
 {
+  const std::string name( directoryNode.attribute( "Name").as_string());
+
+  if (name.empty())
+  {
+    //! @throw Arinc665::Arinc665Exception when Name Attribute is missing or empty.
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo( "Name attribute missing or empty"));
+  }
+
   auto directory(
-    parent->addSubDirectory( directoryNode.attribute( "Name").as_string()));
+    parent->addSubDirectory( name));
 
   loadEntries( directory, filePathMapping, directoryNode);
 }
@@ -211,6 +221,13 @@ void Arinc665XmlPugiXmlImpl::loadEntries(
     std::string filename( entryNode.attribute( "Name").as_string());
     std::string partNumber( entryNode.attribute( "PartNumber").as_string());
     std::string sourcePath( entryNode.attribute( "SourcePath").as_string());
+
+    if (filename.empty())
+    {
+      //! @throw Arinc665::Arinc665Exception when Name Attribute is missing or empty.
+      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+        AdditionalInfo( "Name attribute missing or empty"));
+    }
 
     // create the right file
     Media::BaseFilePtr file;
@@ -311,8 +328,21 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
   // name
   const std::string nameRef( loadNode.attribute( "NameRef").as_string());
 
+  if (nameRef.empty())
+  {
+    //! @throw Arinc665::Arinc665Exception when NameRef attribute is missing or empty.
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo( "NameRef attribute missing or empty"));
+  }
+
   auto load( mediaSet->getLoad( nameRef));
-  //! @todo error handling
+
+  if (!load)
+  {
+    //! @throw Arinc665::Arinc665Exception when NameRef attribute does not reference load.
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo( "NameRef attribute does not reference load"));
+  }
 
   Media::Load::ThwIdList thwIdList;
 
@@ -339,9 +369,21 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
   {
     std::string fileNameRef( dataFileNode.attribute( "NameRef").as_string());
 
+    if (fileNameRef.empty())
+    {
+      //! @throw Arinc665::Arinc665Exception when NameRef attribute is missing or empty.
+      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+        AdditionalInfo( "NameRef attribute missing or empty"));
+    }
+
     auto file( mediaSet->getFile( fileNameRef));
 
-    //! @todo error handling
+    if (!file)
+    {
+      //! @throw Arinc665::Arinc665Exception when NameRef attribute does not reference file.
+      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+        AdditionalInfo( "NameRef attribute does not reference file"));
+    }
 
     load->addDataFile( file);
   }
@@ -351,9 +393,21 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
   {
     std::string fileNameRef( dataFileNode.attribute( "NameRef").as_string());
 
+    if (fileNameRef.empty())
+    {
+      //! @throw Arinc665::Arinc665Exception when NameRef attribute is missing or empty.
+      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+        AdditionalInfo( "NameRef attribute missing or empty"));
+    }
+
     auto file( mediaSet->getFile( fileNameRef));
 
-    //! @todo error handling
+    if (!file)
+    {
+      //! @throw Arinc665::Arinc665Exception when NameRef attribute does not reference file.
+      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+        AdditionalInfo( "NameRef attribute does not reference file"));
+    }
 
     load->addSupportFile( file);
   }
@@ -398,8 +452,21 @@ void Arinc665XmlPugiXmlImpl::loadBatch(
   // name
   const std::string nameRef( batchNode.attribute( "NameRef").as_string());
 
+  if (nameRef.empty())
+  {
+    //! @throw Arinc665::Arinc665Exception when NameRef attribute is missing or empty.
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo( "NameRef attribute missing or empty"));
+  }
+
   auto batch( mediaSet->getBatch( nameRef));
-  //! @todo error handling
+
+  if (!batch)
+  {
+    //! @throw Arinc665::Arinc665Exception when NameRef attribute does not reference batch.
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo( "NameRef attribute does not reference batch"));
+  }
 
   // iterate over targets
   for ( pugi::xml_node targetNode : batchNode.children( "Target"))
@@ -413,9 +480,21 @@ void Arinc665XmlPugiXmlImpl::loadBatch(
     {
       const std::string loadNameRef( LoadNode.attribute( "NameRef").as_string());
 
+      if (loadNameRef.empty())
+      {
+        //! @throw Arinc665::Arinc665Exception when NameRef attribute is missing or empty.
+        BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+          AdditionalInfo( "NameRef attribute missing or empty"));
+      }
+
       auto load( mediaSet->getLoad( loadNameRef));
 
-      //! @todo error handling
+      if (!load)
+      {
+        //! @throw Arinc665::Arinc665Exception when NameRef attribute does not reference load.
+        BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+          AdditionalInfo( "NameRef attribute does not reference load"));
+      }
 
       loads.push_back( load);
     }

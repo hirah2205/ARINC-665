@@ -19,7 +19,10 @@
 
 #include <arinc665/file/File.hpp>
 
+#include <boost/filesystem/path.hpp>
+
 #include <cstdint>
+#include <string>
 
 namespace Arinc665 {
 namespace File {
@@ -30,6 +33,9 @@ namespace File {
 class Arinc665File
 {
   public:
+    using path = boost::filesystem::path;
+    using string = std::string;
+
     static constexpr size_t BaseHeaderOffset =
       sizeof( uint32_t) + // file length
       sizeof( uint32_t);  // ARINC Version
@@ -46,7 +52,7 @@ class Arinc665File
      **/
     static RawFile::const_iterator decodeString(
       RawFile::const_iterator it,
-      std::string &str);
+      string &str);
 
     /**
      * @brief Encodes the ARINC 665 string to the stream.
@@ -56,7 +62,7 @@ class Arinc665File
      *
      * @return The encoded raw string.
      **/
-    static RawFile encodeString( const std::string &str);
+    static RawFile encodeString( const string &str);
 
     /**
      * @brief Decodes the ARINC 665 string list from the stream.
@@ -69,7 +75,7 @@ class Arinc665File
      **/
     static  RawFile::const_iterator decodeStringList(
       RawFile::const_iterator it,
-      std::list< std::string> &strList);
+      std::list< string> &strList);
 
     /**
      * @brief Encodes the ARINC 665 string list to the stream.
@@ -78,7 +84,9 @@ class Arinc665File
      *
      * @return The encoded raw string list.
      **/
-    static RawFile encodeStringList( const std::list< std::string> &strList);
+    static RawFile encodeStringList( const std::list< string> &strList);
+
+    static string encodePath( const path &path);
 
     /**
      * @brief Decode the file length information from the given file.

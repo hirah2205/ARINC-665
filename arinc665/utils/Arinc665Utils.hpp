@@ -46,7 +46,7 @@ class Arinc665Utils
 
     //! Handler, which is called to write the given file at the requested position.
     using WriteFileHandler =
-      std::function< void( uint8_t mediumNumber, const path &path, File::RawFile file)>;
+      std::function< void( uint8_t mediumNumber, const path &path, const File::RawFile &file)>;
 
     /**
      * The ARINC 665 Media Set importer.
@@ -80,7 +80,12 @@ class Arinc665Utils
      * @param[in] createFileHandler
      *   When a file needs to be generated, this handler is called.
      * @param[in] writeFileHandler
-     *   When a file needs to be generated, this handler is called with data.
+     *   Writes a given file to the output media set.
+     * @param[in] readFileHandler
+     *   Reads a given file from the output media set.
+     *   Used for CRC calculation.
+     * @param[in] arinc665Version
+     *   The ARINC 665 version used for exporting
      * @param[in] createBatchFiles
      *   If set to true, Batch Files are created by exporter.
      * @param[in] createLoadHeaderFiles
@@ -92,6 +97,8 @@ class Arinc665Utils
       Media::ConstMediaSetPtr mediaSet,
       CreateFileHandler createFileHandler,
       WriteFileHandler writeFileHandler,
+      ReadFileHandler readFileHandler,
+      Arinc665Version arinc665Version = Arinc665Version::ARINC_665_2,
       bool createBatchFiles = false,
       bool createLoadHeaderFiles = false);
 };
