@@ -78,14 +78,14 @@ class FileListFile: public ListFile
      *
      * @return The list of files
      **/
-    const FileInfos& getFileInfos() const;
+    const FilesInfo& getFilesInfo() const;
 
     /**
      * @brief Return the list of files.
      *
      * @return The list of files
      **/
-    FileInfos& getFileInfos();
+    FilesInfo& getFilesInfo();
 
     /**
      * @brief Return the list of files as map ( media index and filename as key).
@@ -103,7 +103,7 @@ class FileListFile: public ListFile
      *
      * @return The list of files
      **/
-    FileInfoPathMap getFileInfosAsPathMap() const;
+    FileInfoPathMap getFilesInfoAsPathMap() const;
 
     const UserDefinedData& getUserDefinedData() const;
 
@@ -119,12 +119,12 @@ class FileListFile: public ListFile
 
     RawFile encodeFileInfo() const;
 
-    FileInfos decodeFileInfo( const RawFile &rawFile, std::size_t offset);
+    FilesInfo decodeFilesInfo( const RawFile &rawFile, std::size_t offset);
 
     string mediaSetPn;
     uint8_t mediaSequenceNumber;
     uint8_t numberOfMediaSetMembers;
-    FileInfos fileInfos;
+    FilesInfo filesInfo;
     UserDefinedData userDefinedData;
 };
 

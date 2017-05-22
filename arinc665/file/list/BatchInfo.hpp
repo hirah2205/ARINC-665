@@ -29,7 +29,7 @@ class BatchInfo
   public:
     using string = std::string;
 
-    static BatchInfos getBatchInfos(
+    static BatchesInfo getBatchesInfo(
       RawFile::const_iterator &it);
 
     BatchInfo();

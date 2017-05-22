@@ -25,11 +25,11 @@
 namespace Arinc665 {
 namespace File {
 
-LoadInfos LoadInfo::getLoadInfos( RawFile::const_iterator &it)
+LoadsInfo LoadInfo::getLoadsInfo( RawFile::const_iterator &it)
 {
   RawFile::const_iterator workIt = it;
 
-  LoadInfos loadList;
+  LoadsInfo loadList;
 
   // number of loads
   uint16_t numberOfLoads;

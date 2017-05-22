@@ -72,18 +72,18 @@ void list_luh( const boost::filesystem::path &luhFile)
     for ( auto const &dataFile : load.getDataFiles())
     {
       std::cout <<
-        "data file name: " << dataFile.getName() <<
-        "data file PN:   " << dataFile.getPartNumber() <<
-        "data file size: " << std::dec << dataFile.getLength() <<
+        "data file name: " << dataFile.getName() << "\n" <<
+        "data file PN:   " << dataFile.getPartNumber() << "\n" <<
+        "data file size: " << std::dec << dataFile.getLength() << "\n" <<
         "data file CRC:  " << std::hex << dataFile.getCrc() << std::endl << std::endl;
     }
 
     for ( auto const &supportFile : load.getSupportFiles())
     {
       std::cout <<
-        "support file name: " << supportFile.getName() <<
-        "support file PN:   " << supportFile.getPartNumber() <<
-        "support file size: " << std::dec << supportFile.getLength() <<
+        "support file name: " << supportFile.getName() << "\n" <<
+        "support file PN:   " << supportFile.getPartNumber() << "\n" <<
+        "support file size: " << std::dec << supportFile.getLength() << "\n" <<
         "support file CRC:  " << std::hex << supportFile.getCrc() << std::endl << std::endl;
     }
 
@@ -136,21 +136,16 @@ void list_loads_lum( const boost::filesystem::path &loadsLum)
 
     std::cout << "no of media set members: " << (int)loadList.getNumberOfMediaSetMembers() << std::endl;
 
-    for (
-      std::list< LoadInfo>::const_iterator it = loadList.getLoadInfos().begin();
-      it != loadList.getLoadInfos().end();
-      ++it)
+    for ( const auto & load : loadList.getLoadsInfo())
     {
-      std::cout << "load load pn: "                << it->getPartNumber() << std::endl;
-      std::cout << "load header file name: "       << it->getHeaderFilename() << std::endl;
-      std::cout << "load member sequence number: " << std::dec << it->getMemberSequenceNumber() << std::endl << std::endl;
+      std::cout <<
+        "load load pn: "                << load.getPartNumber() << "\n" <<
+        "load header file name: "       << load.getHeaderFilename() << "\n" <<
+        "load member sequence number: " << std::dec << load.getMemberSequenceNumber() << std::endl << std::endl;
 
-      for (
-        std::list< std::string>::const_iterator thwIt = it->getTargetHardwareIdList().begin();
-        thwIt != it->getTargetHardwareIdList().end();
-        ++thwIt)
+      for ( const auto & thw : load.getTargetHardwareIdList())
       {
-        std::cout << "target hardware id: " << *thwIt << std::endl << std::endl;
+        std::cout << "target hardware id: " << thw << std::endl << std::endl;
       }
     }
 
@@ -201,7 +196,7 @@ void list_files_lum( const boost::filesystem::path &filesLum)
 
     std::cout << "no of media set members: " << std::dec << (int)fileList.getNumberOfMediaSetMembers() << std::endl;
 
-    for ( const auto & file : fileList.getFileInfos())
+    for ( const auto & file : fileList.getFilesInfo())
     {
       std::cout << "file file name: " << file.getFilename() << "\n";
       std::cout << "file path name: " << file.getPathName() << "\n";

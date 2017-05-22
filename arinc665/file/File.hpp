@@ -37,7 +37,7 @@ class FileFactory;
 class Arinc665File;
 
 class LoadFileInfo;
-using LoadFileInfos = std::list< LoadFileInfo>;
+using LoadFilesInfo = std::list< LoadFileInfo>;
 class LoadHeaderFile;
 
 class BatchTargetInfo;
@@ -47,15 +47,15 @@ using BatchLoadsInfo = std::list< BatchLoadInfo>;
 class BatchFile;
 
 class BatchInfo;
-using BatchInfos = std::list< BatchInfo>;
+using BatchesInfo = std::list< BatchInfo>;
 class BatchListFile;
 
 class LoadInfo;
-using LoadInfos = std::list< LoadInfo>;
+using LoadsInfo = std::list< LoadInfo>;
 class LoadListFile;
 
 class FileInfo;
-using FileInfos = std::vector< FileInfo>;
+using FilesInfo = std::vector< FileInfo>;
 class FileListFile;
 
 }

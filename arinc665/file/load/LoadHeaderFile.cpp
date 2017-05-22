@@ -62,22 +62,22 @@ std::list< std::string>& LoadHeaderFile::getTargetHardwareIdList()
   return targetHardwareIdList;
 }
 
-const LoadFileInfos& LoadHeaderFile::getDataFiles() const
+const LoadFilesInfo& LoadHeaderFile::getDataFiles() const
 {
   return dataFilesInfo;
 }
 
-LoadFileInfos& LoadHeaderFile::getDataFiles()
+LoadFilesInfo& LoadHeaderFile::getDataFiles()
 {
   return dataFilesInfo;
 }
 
-const LoadFileInfos& LoadHeaderFile::getSupportFiles() const
+const LoadFilesInfo& LoadHeaderFile::getSupportFiles() const
 {
   return supportFilesInfo;
 }
 
-LoadFileInfos& LoadHeaderFile::getSupportFiles()
+LoadFilesInfo& LoadHeaderFile::getSupportFiles()
 {
   return supportFilesInfo;
 }
@@ -162,13 +162,13 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
   getInt< uint32_t>( rawFile.end() - 4U, loadCrc);
 }
 
-LoadFileInfos LoadHeaderFile::decodeFileList(
+LoadFilesInfo LoadHeaderFile::decodeFileList(
   const RawFile &rawFile,
   const std::size_t offset)
 {
   RawFile::const_iterator it( rawFile.begin() + offset);
 
-  LoadFileInfos files;
+  LoadFilesInfo files;
 
   // number of data files
   uint16_t numberOfFiles;

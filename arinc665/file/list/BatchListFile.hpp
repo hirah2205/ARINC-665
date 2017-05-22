@@ -66,11 +66,11 @@ class BatchListFile: public ListFile
 
     unsigned int getNumberOfBatches() const;
 
-    const BatchInfos& getBatchInfos() const;
+    const BatchesInfo& getBatchesInfo() const;
 
-    BatchInfos& getBatchInfos();
+    BatchesInfo& getBatchesInfo();
 
-    BatchInfoMap getBatchInfosAsMap() const;
+    BatchInfoMap getBatchesInfoAsMap() const;
 
     /**
      * @brief Returns the user defined data.
@@ -98,7 +98,7 @@ class BatchListFile: public ListFile
     string mediaSetPn;
     uint8_t mediaSequenceNumber;
     uint8_t numberOfMediaSetMembers;
-    BatchInfos batchInfos;
+    BatchesInfo batchesInfo;
     //! user defined data
     UserDefinedData userDefinedData;
 };

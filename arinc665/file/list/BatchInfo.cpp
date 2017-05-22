@@ -25,12 +25,12 @@
 namespace Arinc665 {
 namespace File {
 
-BatchInfos BatchInfo::getBatchInfos(
+BatchesInfo BatchInfo::getBatchesInfo(
   RawFile::const_iterator &it)
 {
   RawFile::const_iterator workIt = it;
 
-  BatchInfos batchInfos;
+  BatchesInfo batchesInfo;
 
   // number of batches
   uint16_t numberOfBatches;
@@ -38,12 +38,12 @@ BatchInfos BatchInfo::getBatchInfos(
 
   for ( unsigned int batchIndex = 0; batchIndex < numberOfBatches; ++batchIndex)
   {
-    batchInfos.push_back( BatchInfo( workIt));
+    batchesInfo.push_back( BatchInfo( workIt));
   }
 
   it = workIt;
 
-  return batchInfos;
+  return batchesInfo;
 }
 
 BatchInfo::BatchInfo():

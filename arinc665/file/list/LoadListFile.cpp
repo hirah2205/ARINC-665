@@ -77,24 +77,24 @@ void LoadListFile::setNumberOfMediaSetMembers(
 
 size_t LoadListFile::getNumberOfLoads() const
 {
-  return loadInfos.size();
+  return loadsInfo.size();
 }
 
-const LoadListFile::LoadInfoList& LoadListFile::getLoadInfos() const
+const LoadsInfo& LoadListFile::getLoadsInfo() const
 {
-  return loadInfos;
+  return loadsInfo;
 }
 
-LoadListFile::LoadInfoList& LoadListFile::getLoadInfos()
+LoadsInfo& LoadListFile::getLoadsInfo()
 {
-  return loadInfos;
+  return loadsInfo;
 }
 
-LoadListFile::LoadInfoMap LoadListFile::getLoadInfosAsMap() const
+LoadListFile::LoadsInfoMap LoadListFile::getLoadsInfoAsMap() const
 {
-  LoadInfoMap loads;
+  LoadsInfoMap loads;
 
-  for (const auto & loadInfo : loadInfos)
+  for (const auto & loadInfo : loadsInfo)
   {
     loads.insert( std::make_pair(
       std::make_pair(
@@ -131,7 +131,7 @@ bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
   return
     (mediaSetPn == other.getMediaSetPn()) &&
     (numberOfMediaSetMembers == other.getNumberOfMediaSetMembers()) &&
-    (loadInfos == other.getLoadInfos()) &&
+    (loadsInfo == other.getLoadsInfo()) &&
     (userDefinedData == other.getUserDefinedData());
 }
 
@@ -171,7 +171,7 @@ void LoadListFile::decodeBody( const RawFile &rawFile)
 
   // load list
   it = rawFile.begin() + 2 * loadListPtr;
-  loadInfos = LoadInfo::getLoadInfos( it);
+  loadsInfo = LoadInfo::getLoadsInfo( it);
 
   // user defined data
   if ( 0 != userDefinedDataPtr)

@@ -288,7 +288,7 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex)
   if (!this->loadListFile)
   {
     this->loadListFile = loadListFile;
-    loadInfos = loadListFile.getLoadInfosAsMap();
+    loadInfos = loadListFile.getLoadsInfoAsMap();
   }
   else
   {
@@ -359,7 +359,7 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
   if (!this->batchListFile)
   {
     this->batchListFile = batchListFile;
-    this->batchInfos = batchListFile.getBatchInfosAsMap();
+    this->batchInfos = batchListFile.getBatchesInfoAsMap();
   }
   else
   {

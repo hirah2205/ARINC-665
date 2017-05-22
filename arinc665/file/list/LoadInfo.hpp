@@ -36,7 +36,7 @@ class LoadInfo
     using string = std::string;
     using ThwIds = std::list< string>;
 
-    static LoadInfos getLoadInfos( RawFile::const_iterator &it);
+    static LoadsInfo getLoadsInfo( RawFile::const_iterator &it);
 
     LoadInfo();
 
