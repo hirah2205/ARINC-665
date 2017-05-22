@@ -81,7 +81,7 @@ int main( int argc, char* argv[])
 static MediaSetPtr loadMediaSet( const path &mediaSetDirectory)
 {
   auto importer( Arinc665::Utils::Arinc665Utils::createArinc665Importer(
-    [&mediaSetDirectory]( const uint8_t mediumNumber, const boost::filesystem::path &path)->Arinc665::File::RawFile
+    [&mediaSetDirectory]( const uint8_t /*mediumNumber*/, const boost::filesystem::path &path)->Arinc665::File::RawFile
     {
       auto filePath( mediaSetDirectory / path.relative_path());
 

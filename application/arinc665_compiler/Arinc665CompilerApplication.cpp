@@ -187,6 +187,8 @@ void Arinc665CompilerApplication::writeFile(
     ("MEDIA_" + std::to_string( mediumNumber)) /
     path.relative_path());
 
+  BOOST_LOG_TRIVIAL( severity_level::info) << "Write file " << filePath;
+
   // check existence of file
   if (boost::filesystem::exists( filePath))
   {
@@ -198,12 +200,12 @@ void Arinc665CompilerApplication::writeFile(
   }
 
   // create directories (if necessary)
-  boost::filesystem::create_directories( filePath.remove_filename());
+  boost::filesystem::create_directories( filePath.parent_path());
 
   // save file
   std::ofstream fileStream(
     filePath.string(),
-    std::ifstream::binary | std::ifstream::out);
+    std::ofstream::binary | std::ofstream::out | std::ofstream::trunc);
 
   if ( !fileStream.is_open())
   {

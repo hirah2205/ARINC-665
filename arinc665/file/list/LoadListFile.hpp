@@ -102,6 +102,8 @@ class LoadListFile: public ListFile
     /**
      * @brief Updates the user defined data.
      *
+     * @note The user defined data must be multiple of 2-bytes in size.
+     *
      * @param[in] userDefinedData
      *   The user defined data.
      **/

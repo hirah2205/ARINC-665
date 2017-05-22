@@ -116,6 +116,8 @@ class FileListFile: public ListFile
 
     void decodeBody( const RawFile &file);
 
+    RawFile encodeFileInfo() const;
+
     FileInfoList decodeFileInfo( const RawFile &file, std::size_t offset);
 
     string mediaSetPn;

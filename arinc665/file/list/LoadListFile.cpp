@@ -18,8 +18,9 @@
 
 #include <arinc665/file/StringHelper.hpp>
 
+#include <arinc665/Arinc665Logger.hpp>
+
 #include <helper/Endianess.hpp>
-#include <helper/Logger.hpp>
 
 namespace Arinc665 {
 namespace File {
@@ -115,7 +116,17 @@ const LoadListFile::UserDefinedData& LoadListFile::getUserDefinedData() const
 
 void LoadListFile::setUserDefinedData( const UserDefinedData &userDefinedData)
 {
+  BOOST_LOG_FUNCTION();
+
   this->userDefinedData = userDefinedData;
+
+  if (userDefinedData.size() % 2 != 0)
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning) <<
+      "User defined data must be 2-byte aligned. - extending range";
+
+    this->userDefinedData.push_back(0);
+  }
 }
 
 bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const

@@ -48,6 +48,8 @@ MediaSetExporterImpl::MediaSetExporterImpl(
 
 void MediaSetExporterImpl::operator()()
 {
+  BOOST_LOG_FUNCTION();
+
   BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) << "Media set " <<
     mediaSet->getName() << " - " << mediaSet->getPartNumber();
 
@@ -62,6 +64,8 @@ void MediaSetExporterImpl::operator()()
 
 void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 {
+  BOOST_LOG_FUNCTION();
+
   // export sub-directories
   for ( auto directory : medium->getSubDirectories())
   {
@@ -84,7 +88,16 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   // export list of batches
 
   // export medium info
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) << "Medium Info";
 
+  Arinc665::File::FileListFile fileListFile( Arinc665Version::ARINC_665_2);
+  fileListFile.setMediaSequenceNumber( medium->getMediumNumber());
+  fileListFile.setMediaSetPn( medium->getPartNumber());
+  fileListFile.setNumberOfMediaSetMembers(  medium->getMediaSet()->getNumberOfMedia());
+  fileListFile.getFileInfos().push_back( {"FOO.BIN", "/", 1U, 0xDEADU});
+  fileListFile.getFileInfos().push_back( {"BAR.BIN", "/", 1U, 0xBEEFU});
+  fileListFile.setCrc( 0xC00FU);
+  writeFileHandler( medium->getMediumNumber(), "/" + ListOfFilesName, fileListFile);
 }
 
 void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory)

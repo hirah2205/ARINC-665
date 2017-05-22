@@ -188,12 +188,60 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
 
 RawFile FileListFile::encode() const
 {
-  RawFile file( BaseHeaderOffset + 3 * sizeof( uint32_t));
+  RawFile rawFile(
+    BaseHeaderOffset +
+    3 * sizeof( uint32_t) + // mediaInformationPtr, fileListPtr, userDefinedDataPtr
+    2 * sizeof( uint8_t)  + // media sequence number, number of media set members
+    sizeof( uint16_t));     // crc
+
+  auto rawMediaSetPn( getRawString( getMediaSetPn()));
+  assert( rawMediaSetPn.size() % 2 == 0);
+  auto rawFilesInfo( encodeFileInfo());
+  assert( rawFilesInfo.size() % 2 == 0);
+
+  auto it( rawFile.begin() + BaseHeaderOffset);
+
+  // media information pointer
+  uint32_t mediaInformationPtr =
+    (BaseHeaderOffset + (3 * sizeof( uint32_t))) / 2;
+  it = setInt< uint32_t>( it, mediaInformationPtr);
+
+  // file list pointer
+  uint32_t fileListPtr =
+    mediaInformationPtr + (2 * sizeof( uint8_t)) / 2 + rawMediaSetPn.size() / 2;
+  it = setInt< uint32_t>( it, fileListPtr);
+
+  // user defined data pointer
+  uint32_t userDefinedDataPtr =
+    userDefinedData.empty() ? 0 : fileListPtr + rawFilesInfo.size() / 2;
+  it = setInt< uint32_t>( it, userDefinedDataPtr);
+
+  // media set part number
+  it = rawFile.insert( it, rawMediaSetPn.begin(), rawMediaSetPn.end());
+  it += rawMediaSetPn.size();
+
+  // media sequence number
+  it = setInt< uint8_t>( it, mediaSequenceNumber);
+
+  // number of media set members
+  it = setInt< uint8_t>( it, numberOfMediaSetMembers);
+
+  // file list
+  it = rawFile.insert( it, rawFilesInfo.begin(), rawFilesInfo.end());
+  it += rawFile.size();
+
+  if (!userDefinedData.empty())
+  {
+    assert( userDefinedData.size() % 2 == 0);
+    rawFile.insert( it, userDefinedData.begin(), userDefinedData.end());
+  }
+
+  //! @todo calculate CRC
 
   // set header and crc
-  insertHeader( file);
+  insertHeader( rawFile);
 
-  return file;
+  return rawFile;
 }
 
 void FileListFile::decodeBody( const RawFile &file)
@@ -201,12 +249,15 @@ void FileListFile::decodeBody( const RawFile &file)
   // set processing start to position after spare
   RawFile::const_iterator it = file.begin() + BaseHeaderOffset;
 
+  // media information pointer
   uint32_t mediaInformationPtr;
   it = getInt< uint32_t>( it, mediaInformationPtr);
 
+  // file list pointer
   uint32_t fileListPtr;
   it = getInt< uint32_t>( it, fileListPtr);
 
+  // user defined data pointer
   uint32_t userDefinedDataPtr;
   it = getInt< uint32_t>( it, userDefinedDataPtr);
 
@@ -231,6 +282,52 @@ void FileListFile::decodeBody( const RawFile &file)
   }
 
   // file crc decoded and checked within base class
+}
+
+RawFile FileListFile::encodeFileInfo() const
+{
+  RawFile rawFilesInfo( sizeof( uint16_t));
+
+  // number of files
+  setInt< uint16_t>( rawFilesInfo.begin(), getNumberOfFiles());
+
+  // iterate over files
+  for (auto const &fileInfo : getFileInfos())
+  {
+    auto const rawFilename( getRawString( fileInfo.getFilename()));
+    assert( rawFilename.size() % 2 == 0);
+    auto const rawPathname( getRawString( fileInfo.getPathName()));
+    assert( rawPathname.size() % 2 == 0);
+
+    RawFile rawFileInfo(
+      sizeof( uint16_t) + // next pointer
+      rawFilename.size() +
+      rawPathname.size() +
+      sizeof( uint16_t) + // member sequence number
+      sizeof( uint16_t)); // crc
+
+    auto fileInfoIt( rawFileInfo.begin());
+
+    // next file pointer
+    fileInfoIt = setInt< uint16_t>( fileInfoIt, rawFileInfo.size() / 2);
+
+    // filename
+    fileInfoIt = std::copy( rawFilename.begin(), rawFilename.end(), fileInfoIt);
+
+    // path name
+    fileInfoIt = std::copy( rawPathname.begin(), rawPathname.end(), fileInfoIt);
+
+    // member sequence number
+    fileInfoIt = setInt< uint16_t>( fileInfoIt, fileInfo.getMemberSequenceNumber());
+
+    // crc
+    fileInfoIt = setInt< uint16_t>( fileInfoIt, fileInfo.getCrc());
+
+    // add file info to files info
+    rawFilesInfo.insert( rawFilesInfo.end(), rawFileInfo.begin(), rawFileInfo.end());
+  }
+
+  return rawFilesInfo;
 }
 
 FileInfoList FileListFile::decodeFileInfo(

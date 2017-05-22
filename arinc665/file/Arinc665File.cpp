@@ -129,6 +129,7 @@ Arinc665File::Arinc665File(
   fileType( fileType),
   checksumPosition( checksumPosition)
 {
+  decodeHeader( file, Arinc665FileFormatVersion::Invalid);
 }
 
 Arinc665File& Arinc665File::operator=( const Arinc665File &file)
@@ -144,6 +145,7 @@ Arinc665File& Arinc665File::operator=( const Arinc665File &file)
 
   return *this;
 }
+
 void Arinc665File::insertHeader( RawFile &file) const
 {
   // Check file size

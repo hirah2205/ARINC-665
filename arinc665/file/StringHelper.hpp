@@ -54,6 +54,10 @@ RawFile::iterator setString(
   RawFile::iterator it,
   const std::string &str);
 
+std::size_t getRawStringLength( const std::string &str);
+
+RawFile getRawString( const std::string &str);
+
 /**
  * @brief Decodes the ARINC 665 string list from the stream.
  *
