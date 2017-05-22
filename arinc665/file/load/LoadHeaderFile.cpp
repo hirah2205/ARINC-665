@@ -31,14 +31,13 @@ LoadHeaderFile::LoadHeaderFile( Arinc665Version version) :
 LoadHeaderFile::LoadHeaderFile( const RawFile &file):
   Arinc665File( FileType::LoadUploadHeader, file, 6U)
 {
-  decodeHeader( file, Arinc665FileFormatVersion::LOAD_FILE_VERSION_2);
   decodeBody( file);
 }
 
-LoadHeaderFile& LoadHeaderFile::operator=( const RawFile &file)
+LoadHeaderFile& LoadHeaderFile::operator=( const RawFile &rawFile)
 {
-  decodeHeader( file, Arinc665FileFormatVersion::LOAD_FILE_VERSION_2);
-  decodeBody( file);
+  Arinc665File::operator =( rawFile);
+  decodeBody( rawFile);
 
   return *this;
 }
@@ -105,18 +104,18 @@ void LoadHeaderFile::setLoadCrc( const uint32_t loadCrc)
 
 RawFile LoadHeaderFile::encode() const
 {
-  RawFile file( BaseHeaderOffset + 3 * sizeof( uint32_t));
+  RawFile rawFile( BaseHeaderOffset + 3 * sizeof( uint32_t));
 
   // set header and crc
-  insertHeader( file);
+  insertHeader( rawFile);
 
-  return file;
+  return rawFile;
 }
 
-void LoadHeaderFile::decodeBody( const RawFile &file)
+void LoadHeaderFile::decodeBody( const RawFile &rawFile)
 {
   // set processing start to position after spare
-  RawFile::const_iterator it = file.begin() + BaseHeaderOffset;
+  RawFile::const_iterator it = rawFile.begin() + BaseHeaderOffset;
 
   uint32_t loadPartNumberPtr;
   it = getInt< uint32_t>( it, loadPartNumberPtr);
@@ -134,40 +133,40 @@ void LoadHeaderFile::decodeBody( const RawFile &file)
   it = getInt< uint32_t>( it, userDefinedDataPtr);
 
   // load part number
-  it = file.begin() + loadPartNumberPtr * 2;
+  it = rawFile.begin() + loadPartNumberPtr * 2;
   it = decodeString( it, partNumber);
 
   // target hardware id list
-  it = file.begin() + targetHardwareIdListPtr * 2;
+  it = rawFile.begin() + targetHardwareIdListPtr * 2;
   it = decodeStringList( it, targetHardwareIdList);
 
   // data file list
-  dataFileList = decodeFileList( file, dataFileListPtr * 2);
+  dataFileList = decodeFileList( rawFile, dataFileListPtr * 2);
 
   // support file list
   if ( 0 != supportFileListPtr)
   {
-    supportFileList = decodeFileList( file, supportFileListPtr * 2);
+    supportFileList = decodeFileList( rawFile, supportFileListPtr * 2);
   }
 
   // user defined data
   if ( 0 != userDefinedDataPtr)
   {
-    it = file.begin() + userDefinedDataPtr * 2;
-    userDefinedData.assign( it, file.end() - 6U);
+    it = rawFile.begin() + userDefinedDataPtr * 2;
+    userDefinedData.assign( it, rawFile.end() - 6U);
   }
 
   // file crc decoded and checked within base class
 
   // load crc
-  getInt< uint32_t>( file.end() - 4U, loadCrc);
+  getInt< uint32_t>( rawFile.end() - 4U, loadCrc);
 }
 
 LoadHeaderFile::LoadFileInfoList LoadHeaderFile::decodeFileList(
-  const RawFile &file,
+  const RawFile &rawFile,
   const std::size_t offset)
 {
-  RawFile::const_iterator it( file.begin() + offset);
+  RawFile::const_iterator it( rawFile.begin() + offset);
 
   LoadFileInfoList files;
 
@@ -175,6 +174,7 @@ LoadHeaderFile::LoadFileInfoList LoadHeaderFile::decodeFileList(
   uint16_t numberOfFiles;
   it = getInt< uint16_t>( it, numberOfFiles);
 
+  // iterate over file index
   for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex)
   {
     auto listIt( it);

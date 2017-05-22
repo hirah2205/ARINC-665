@@ -48,10 +48,10 @@ class BatchFile: public Arinc665File
       string &&comment = {},
       BatchTargetsInfo &&targets = {});
 
-    BatchFile( const RawFile &file);
+    BatchFile( const RawFile &rawFile);
 
     //! @copydoc Arinc665File::operator=
-    virtual BatchFile& operator=( const RawFile &file) override;
+    virtual BatchFile& operator=( const RawFile &rawFile) override;
 
     string getPartNumber() const;
 
@@ -66,10 +66,10 @@ class BatchFile: public Arinc665File
     BatchTargetsInfo& getTargetHardwares();
 
   private:
-    //! @copydoc ListFile::encodeData
+    //! @copydoc ListFile::encode
     virtual RawFile encode() const override final;
 
-    void decodeBody( const RawFile &file);
+    void decodeBody( const RawFile &rawFile);
 
     string partNumber;
     string comment;

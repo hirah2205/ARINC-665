@@ -98,8 +98,7 @@ Arinc665::MediaFileFormatVersion FileFactory::getMediaFileFormatVersion(
   return static_cast< MediaFileFormatVersion>( formatVersion);
 }
 
-Arinc665::FileType FileFactory::getFileType(
-  const boost::filesystem::path &filename)
+Arinc665::FileType FileFactory::getFileType( const path &filename)
 {
   std::string filenameN = filename.filename().string();
 
@@ -132,36 +131,6 @@ Arinc665::FileType FileFactory::getFileType(
 
   return FileType::Invalid;
 }
-
-FileListFile FileFactory::getFileListFile( const RawFile &file)
-{
-  return FileListFile( file);
-}
-
-LoadListFile FileFactory::getLoadListFile( const RawFile &file)
-{
-  return LoadListFile( file);
-}
-
-#if 0
-BatchListFile FileFactory::getBatchListFile(
-  const RawFile &file)
-{
-  return BatchListFile( file);
-}
-#endif
-
-LoadHeaderFile FileFactory::getLoadHeaderFile( const RawFile &file)
-{
-  return LoadHeaderFile( file);
-}
-
-#if 0
-BatchFile FileFactory::getBatchFile( const RawFile &file)
-{
-  return BatchFile( file);
-}
-#endif
 
 }
 }

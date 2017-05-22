@@ -155,9 +155,144 @@ uint16_t Arinc665File::calculateChecksum(
   return arincCrc16.checksum();
 }
 
-Arinc665File& Arinc665File::operator=( const RawFile &file)
+Arinc665Version Arinc665File::getArinc665Version(
+  const FileType fileType,
+  const uint16_t formatVersionField)
 {
-  decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
+  switch (fileType)
+  {
+    case FileType::BatchFile:
+      switch (static_cast< BatchFileFormatVersion>( formatVersionField))
+      {
+        case BatchFileFormatVersion::Version1:
+          return Arinc665Version::ARINC_665_1;
+
+        case BatchFileFormatVersion::Version2:
+          return Arinc665Version::ARINC_665_2;
+
+        case BatchFileFormatVersion::Version34:
+          return Arinc665Version::ARINC_665_4;
+
+        default:
+          break;
+      }
+      break;
+
+    case FileType::LoadUploadHeader:
+      switch (static_cast< LoadFileFormatVersion>( formatVersionField))
+      {
+        case LoadFileFormatVersion::Version1:
+          return Arinc665Version::ARINC_665_1;
+
+        case LoadFileFormatVersion::Version2:
+          return Arinc665Version::ARINC_665_2;
+
+        case LoadFileFormatVersion::Version34:
+          return Arinc665Version::ARINC_665_4;
+
+        default:
+          break;
+      }
+      break;
+
+    case FileType::LoadList:
+    case FileType::BatchList:
+    case FileType::FileList:
+      switch (static_cast< MediaFileFormatVersion>( formatVersionField))
+      {
+        case MediaFileFormatVersion::Version1:
+          return Arinc665Version::ARINC_665_1;
+
+        case MediaFileFormatVersion::Version2:
+          return Arinc665Version::ARINC_665_2;
+
+        case MediaFileFormatVersion::Version34:
+          return Arinc665Version::ARINC_665_4;
+
+        default:
+          break;
+      }
+      break;
+
+    default:
+      break;
+  }
+
+  return Arinc665Version::Invalid;
+}
+
+uint16_t Arinc665File::getFormatVersionField(
+  const FileType fileType,
+  const Arinc665Version arinc665Version)
+{
+  switch (fileType)
+  {
+    case FileType::BatchFile:
+      switch (arinc665Version)
+      {
+        case Arinc665Version::ARINC_665_1:
+          return static_cast< uint16_t>( BatchFileFormatVersion::Version1);
+
+        case Arinc665Version::ARINC_665_2:
+          return static_cast< uint16_t>( BatchFileFormatVersion::Version2);
+
+        case Arinc665Version::ARINC_665_3:
+        case Arinc665Version::ARINC_665_4:
+          return static_cast< uint16_t>( BatchFileFormatVersion::Version34);
+
+        default:
+          break;
+      }
+      break;
+
+    case FileType::LoadUploadHeader:
+      switch (arinc665Version)
+      {
+        case Arinc665Version::ARINC_665_1:
+          return static_cast< uint16_t>( LoadFileFormatVersion::Version1);
+
+        case Arinc665Version::ARINC_665_2:
+          return static_cast< uint16_t>( LoadFileFormatVersion::Version2);
+
+        case Arinc665Version::ARINC_665_3:
+        case Arinc665Version::ARINC_665_4:
+          return static_cast< uint16_t>( LoadFileFormatVersion::Version34);
+
+        default:
+          break;
+      }
+      break;
+
+    case FileType::LoadList:
+    case FileType::BatchList:
+    case FileType::FileList:
+      switch (arinc665Version)
+      {
+        case Arinc665Version::ARINC_665_1:
+          return static_cast< uint16_t>( MediaFileFormatVersion::Version1);
+
+        case Arinc665Version::ARINC_665_2:
+          return static_cast< uint16_t>( MediaFileFormatVersion::Version2);
+
+        case Arinc665Version::ARINC_665_3:
+        case Arinc665Version::ARINC_665_4:
+          return static_cast< uint16_t>( MediaFileFormatVersion::Version34);
+
+        default:
+          break;
+      }
+      break;
+
+    default:
+      break;
+  }
+
+  return 0xFFFFU;
+}
+
+Arinc665File& Arinc665File::operator=( const RawFile &rawFile)
+{
+  decodeHeader( rawFile);
   return *this;
 }
 
@@ -204,12 +339,12 @@ Arinc665File::Arinc665File(
 
 Arinc665File::Arinc665File(
   FileType fileType,
-  const RawFile &file,
+  const RawFile &rawFile,
   std::size_t checksumPosition) :
   fileType( fileType),
   checksumPosition( checksumPosition)
 {
-  decodeHeader( file, Arinc665FileFormatVersion::Invalid);
+  decodeHeader( rawFile);
 }
 
 Arinc665File& Arinc665File::operator=( const Arinc665File &file)
@@ -250,7 +385,9 @@ void Arinc665File::insertHeader( RawFile &file) const
   it = setInt< uint32_t>( it, file.size());
 
   // format version
-  it = setInt< uint16_t>( it, static_cast< uint16_t>( 0));
+  it = setInt< uint16_t>(
+    it,
+    static_cast< uint16_t>( getFormatVersionField( fileType, arinc665Version)));
 
   // spare
   it = setInt< uint16_t>( it, 0U);
@@ -260,45 +397,54 @@ void Arinc665File::insertHeader( RawFile &file) const
   setInt< uint16_t>( file.end() - checksumPosition, crc);
 }
 
-void Arinc665File::decodeHeader(
-  const RawFile &file,
-  const Arinc665FileFormatVersion expectedFormatVersion)
+void Arinc665File::decodeHeader( const RawFile &rawFile)
 {
   // Check file size
-  if ( file.size() <= BaseHeaderOffset)
+  if ( rawFile.size() <= BaseHeaderOffset)
   {
     //! @throw InvalidArinc665File When file is to small
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << AdditionalInfo( "File to small"));
   }
 
+  auto it( rawFile.begin());
+
   // check size field
-  if ( getFileLength( file) * 2 != file.size())
+  uint32_t fileLength;
+  it = getInt< uint32_t>( it, fileLength);
+
+  if ( fileLength * 2 != rawFile.size())
   {
     //! @throw InvalidArinc665File When file size field is invalid
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << AdditionalInfo( "file size invalid"));
   }
 
-  // check format field
-  if (expectedFormatVersion != Arinc665FileFormatVersion::Invalid)
+  // format version
+  uint16_t formatVersion;
+  it = getInt< uint16_t>( it, formatVersion);
+
+  arinc665Version = getArinc665Version( fileType, formatVersion);
+
+  // check format field version
+  if ( arinc665Version == Arinc665Version::Invalid)
   {
-    if ( getFormatVersion( file) != static_cast< uint16_t>(
-      expectedFormatVersion))
-    {
-      //! @throw InvalidArinc665File When file format is wrong
-      BOOST_THROW_EXCEPTION(
-        InvalidArinc665File() << AdditionalInfo( "wrong file format"));
-    }
+    //! @throw InvalidArinc665File When file format is wrong
+    BOOST_THROW_EXCEPTION(
+      InvalidArinc665File() << AdditionalInfo( "wrong file format"));
   }
+
+  // spare
+  uint16_t spare;
+  it = getInt< uint16_t>( it, spare);
 
   // Decode checksum field;
   uint16_t crc;
-  getInt< uint16_t>( file.end() - checksumPosition, crc);
+  getInt< uint16_t>( rawFile.end() - checksumPosition, crc);
   setCrc( crc);
 
   // calculate checksum and compare against stored
-  uint16_t calcCrc = calculateChecksum( file, checksumPosition);
+  uint16_t calcCrc = calculateChecksum( rawFile, checksumPosition);
   if ( crc != calcCrc)
   {
     //! @throw InvalidArinc665File When CRC is invalid

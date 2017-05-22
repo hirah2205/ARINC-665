@@ -41,10 +41,10 @@ class LoadListFile: public ListFile
 
     LoadListFile( Arinc665Version version);
 
-    LoadListFile( const RawFile &file);
+    LoadListFile( const RawFile &rawFile);
 
     //! @copydoc ListFile::operator=
-    virtual LoadListFile& operator=( const RawFile &file) override;
+    virtual LoadListFile& operator=( const RawFile &rawFile) override;
 
     //! @copydoc ListFile::getMediaSetPn
     virtual string getMediaSetPn() const override;
@@ -127,10 +127,10 @@ class LoadListFile: public ListFile
     bool belongsToSameMediaSet( const LoadListFile &other) const;
 
   private:
-    //! @copydoc ListFile::encodeData
+    //! @copydoc ListFile::encode
     virtual RawFile encode() const override final;
 
-    void decodeBody( const RawFile &file);
+    void decodeBody( const RawFile &rawFile);
 
     //! Media set part number
     string mediaSetPn;

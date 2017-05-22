@@ -41,10 +41,10 @@ class BatchListFile: public ListFile
 
     BatchListFile( Arinc665Version version);
 
-    BatchListFile( const RawFile &file);
+    BatchListFile( const RawFile &rawFile);
 
     //! @copydoc ListFile::operator=
-    virtual BatchListFile& operator=( const RawFile &file) override;
+    virtual BatchListFile& operator=( const RawFile &rawFile) override;
 
     //! @copydoc ListFile::getMediaSetPn
     virtual string getMediaSetPn() const override;
@@ -91,10 +91,10 @@ class BatchListFile: public ListFile
     bool belongsToSameMediaSet( const BatchListFile &other) const;
 
   private:
-    //! @copydoc ListFile::encodeData
+    //! @copydoc ListFile::encode
     virtual RawFile encode() const override final;
 
-    void decodeBody( const RawFile &file);
+    void decodeBody( const RawFile &rawFile);
 
     string mediaSetPn;
     uint8_t mediaSequenceNumber;

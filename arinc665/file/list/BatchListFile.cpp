@@ -29,17 +29,16 @@ BatchListFile::BatchListFile( Arinc665Version version):
 {
 }
 
-BatchListFile::BatchListFile( const RawFile &file):
-  ListFile( FileType::BatchList, file)
+BatchListFile::BatchListFile( const RawFile &rawFile):
+  ListFile( FileType::BatchList, rawFile)
 {
-  decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
-  decodeBody( file);
+  decodeBody( rawFile);
 }
 
-BatchListFile& BatchListFile::operator=( const RawFile &file)
+BatchListFile& BatchListFile::operator=( const RawFile &rawFile)
 {
-  Arinc665File::operator =( file);
-  decodeBody( file);
+  Arinc665File::operator =( rawFile);
+  decodeBody( rawFile);
 
   return *this;
 }
@@ -127,7 +126,7 @@ bool BatchListFile::belongsToSameMediaSet( const BatchListFile &other) const
 
 RawFile BatchListFile::encode() const
 {
-  RawFile file( BaseHeaderOffset + 3 * sizeof( uint32_t));
+  RawFile rawFile( BaseHeaderOffset + 3 * sizeof( uint32_t));
 
   // media information ptr
 
@@ -146,15 +145,15 @@ RawFile BatchListFile::encode() const
   // user defined data
 
   // set header and crc
-  insertHeader( file);
+  insertHeader( rawFile);
 
-  return file;
+  return rawFile;
 }
 
-void BatchListFile::decodeBody( const RawFile &file)
+void BatchListFile::decodeBody( const RawFile &rawFile)
 {
   // set processing start to position after spare
-  RawFile::const_iterator it = file.begin() + BaseHeaderOffset;
+  RawFile::const_iterator it = rawFile.begin() + BaseHeaderOffset;
 
   uint32_t mediaInformationPtr;
   it = getInt< uint32_t>( it, mediaInformationPtr);
@@ -166,7 +165,7 @@ void BatchListFile::decodeBody( const RawFile &file)
   it = getInt< uint32_t>( it, userDefinedDataPtr);
 
   // media set part number
-  it = file.begin() + mediaInformationPtr * 2;
+  it = rawFile.begin() + mediaInformationPtr * 2;
   it = decodeString( it, mediaSetPn);
 
   // media sequence number
@@ -176,14 +175,14 @@ void BatchListFile::decodeBody( const RawFile &file)
   it = getInt< uint8_t>( it, numberOfMediaSetMembers);
 
   // batch list
-  it = file.begin() + 2 * batchListPtr;
+  it = rawFile.begin() + 2 * batchListPtr;
   batchInfoList = BatchInfo::getBatchInfos( it);
 
   // user defined data
   if ( 0 != userDefinedDataPtr)
   {
-    it = file.begin() + userDefinedDataPtr * 2;
-    userDefinedData.assign( it, file.end() - 2);
+    it = rawFile.begin() + userDefinedDataPtr * 2;
+    userDefinedData.assign( it, rawFile.end() - 2);
   }
 
   // file crc decoded and checked within base class

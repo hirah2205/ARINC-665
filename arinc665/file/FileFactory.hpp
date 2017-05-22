@@ -36,6 +36,8 @@ namespace File {
 class FileFactory
 {
   public:
+    using path = boost::filesystem::path;
+
     /**
      * @brief
      * @param file
@@ -51,17 +53,7 @@ class FileFactory
     static MediaFileFormatVersion getMediaFileFormatVersion(
       const RawFile &file);
 
-    static FileType getFileType( const boost::filesystem::path &filename);
-
-    static FileListFile getFileListFile( const RawFile &file);
-
-    static LoadListFile getLoadListFile( const RawFile &file);
-
-    static BatchListFile getBatchListFile( const RawFile &file);
-
-    static LoadHeaderFile getLoadHeaderFile( const RawFile &file);
-
-    static BatchFile getBatchFile( const RawFile &file);
+    static FileType getFileType( const path &filename);
 
   private:
     FileFactory() = delete;

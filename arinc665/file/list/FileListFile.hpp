@@ -46,10 +46,10 @@ class FileListFile: public ListFile
 
     FileListFile( Arinc665Version version);
 
-    FileListFile( const RawFile &file);
+    FileListFile( const RawFile &rawFile);
 
     //! @copydoc ListFile::operator=
-    virtual FileListFile& operator=( const RawFile &file) override;
+    virtual FileListFile& operator=( const RawFile &rawFile) override;
 
     //! @copydoc ListFile::getMediaSetPn
     virtual string getMediaSetPn() const override;
@@ -111,14 +111,14 @@ class FileListFile: public ListFile
     bool belongsToSameMediaSet( const FileListFile &other) const;
 
   private:
-    //! @copydoc ListFile::encodeData
+    //! @copydoc ListFile::encode
     virtual RawFile encode() const override final;
 
-    void decodeBody( const RawFile &file);
+    void decodeBody( const RawFile &rawFile);
 
     RawFile encodeFileInfo() const;
 
-    FileInfoList decodeFileInfo( const RawFile &file, std::size_t offset);
+    FileInfoList decodeFileInfo( const RawFile &rawFile, std::size_t offset);
 
     string mediaSetPn;
     uint8_t mediaSequenceNumber;

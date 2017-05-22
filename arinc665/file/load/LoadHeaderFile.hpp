@@ -45,7 +45,7 @@ class LoadHeaderFile: public Arinc665File
     LoadHeaderFile( const RawFile &file);
 
     //! @copydoc Arinc665File::operator=
-    virtual LoadHeaderFile& operator=( const RawFile &file) override;
+    virtual LoadHeaderFile& operator=( const RawFile &rawFile) override;
 
     string getPartNumber() const;
 
@@ -72,12 +72,12 @@ class LoadHeaderFile: public Arinc665File
     void setLoadCrc( uint32_t loadCrc);
 
   private:
-    //! @copydoc ListFile::encodeData
+    //! @copydoc ListFile::encode
     virtual RawFile encode() const override final;
 
-    void decodeBody( const RawFile &file);
+    void decodeBody( const RawFile &rawFile);
 
-    LoadFileInfoList decodeFileList( const RawFile &file, std::size_t offset);
+    LoadFileInfoList decodeFileList( const RawFile &rawFile, std::size_t offset);
 
     //! Part number of the load
     string partNumber;

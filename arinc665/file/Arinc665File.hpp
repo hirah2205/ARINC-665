@@ -115,18 +115,50 @@ class Arinc665File
       const RawFile &file,
       std::size_t skipLastBytes = 2U);
 
+    /**
+     * @brief Returns the ARINC 665 version for the given [fileType] and
+     *   [formatVersionField].
+     *
+     * @param[in] fileType
+     *   File type.
+     * @param[in] formatVersionField
+     *   Format version field of file.
+     *
+     * @return The ARINC 665 version.
+     * @retval Invalid
+     *   If the given information are inconsistent
+     **/
+    static Arinc665Version getArinc665Version(
+      FileType fileType,
+      uint16_t formatVersionField);
+
+    /**
+     * @brief Returns the ARINC 665 version for the given [fileType] and
+     *   [arinc665Version].
+     *
+     * @param[in] fileType
+     *   File type.
+     * @param[in] arinc665Version
+     *   The ARINC 665 version.
+     *
+     * @return The format version field of file.
+     **/
+    static uint16_t getFormatVersionField(
+      FileType fileType,
+      Arinc665Version arinc665Version);
+
     //! Default destructor
     virtual ~Arinc665File() noexcept = default;
 
     /**
      * @brief Assigns raw data to the file.
      *
-     * @param[in] file
+     * @param[in] rawFile
      *   File raw data
      *
      * @return *this
      **/
-    virtual Arinc665File& operator=( const RawFile &file);
+    virtual Arinc665File& operator=( const RawFile &rawFile);
 
     /**
      * @brief Returns the ARINC 665 file as raw data.
@@ -174,34 +206,48 @@ class Arinc665File
     void calculateCrc();
 
   protected:
+    /**
+     *
+     * @param fileType
+     * @param version
+     * @param checksumPosition
+     **/
     Arinc665File(
       FileType fileType,
       Arinc665Version version,
       std::size_t checksumPosition = 2U) noexcept;
 
+    /**
+     *
+     * @param fileType
+     * @param rawFile
+     * @param checksumPosition
+     **/
     Arinc665File(
       FileType fileType,
-      const RawFile &file,
+      const RawFile &rawFile,
       std::size_t checksumPosition = 2U);
 
-    Arinc665File& operator=( const Arinc665File &file);
+    /**
+     *
+     * @param rawFile
+     *
+     * @return
+     **/
+    Arinc665File& operator=( const Arinc665File &rawFile);
 
     virtual RawFile encode() const = 0;
 
     void insertHeader( RawFile &file) const;
 
+  private:
     /**
      * @brief Initialises class with the given raw data.
      *
-     * @param[in] file
-     * @param[in] expectedFormatVersion
-     * @param[in] checksumPosition
+     * @param[in] rawFile
      **/
-    void decodeHeader(
-      const RawFile &file,
-      Arinc665FileFormatVersion expectedFormatVersion = Arinc665FileFormatVersion::Invalid);
+    void decodeHeader( const RawFile &rawFile);
 
-  private:
     const FileType fileType;
     const std::size_t checksumPosition;
     //! ARINC 665 Version

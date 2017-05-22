@@ -30,17 +30,16 @@ LoadListFile::LoadListFile( Arinc665Version version):
 {
 }
 
-LoadListFile::LoadListFile( const RawFile &file):
-  ListFile( FileType::LoadList, file)
+LoadListFile::LoadListFile( const RawFile &rawFile):
+  ListFile( FileType::LoadList, rawFile)
 {
-  decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
-  decodeBody( file);
+  decodeBody( rawFile);
 }
 
-LoadListFile& LoadListFile::operator=( const RawFile &file)
+LoadListFile& LoadListFile::operator=( const RawFile &rawFile)
 {
-  decodeHeader( file, Arinc665FileFormatVersion::MEDIA_FILE_VERSION_2);
-  decodeBody( file);
+  Arinc665File::operator =( rawFile);
+  decodeBody( rawFile);
 
   return *this;
 }
@@ -138,18 +137,18 @@ bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
 
 RawFile LoadListFile::encode() const
 {
-  RawFile file( BaseHeaderOffset + 3 * sizeof( uint32_t));
+  RawFile rawFile( BaseHeaderOffset + 3 * sizeof( uint32_t));
 
   // set header and crc
-  insertHeader( file);
+  insertHeader( rawFile);
 
-  return file;
+  return rawFile;
 }
 
-void LoadListFile::decodeBody( const RawFile &file)
+void LoadListFile::decodeBody( const RawFile &rawFile)
 {
   // set processing start to position after spare
-  RawFile::const_iterator it = file.begin() + BaseHeaderOffset;
+  RawFile::const_iterator it = rawFile.begin() + BaseHeaderOffset;
 
   uint32_t mediaInformationPtr;
   it = getInt< uint32_t>( it, mediaInformationPtr);
@@ -161,7 +160,7 @@ void LoadListFile::decodeBody( const RawFile &file)
   it = getInt< uint32_t>( it, userDefinedDataPtr);
 
   // media set part number
-  it = file.begin() + mediaInformationPtr * 2;
+  it = rawFile.begin() + mediaInformationPtr * 2;
   it = decodeString( it, mediaSetPn);
 
   // media sequence number
@@ -171,14 +170,14 @@ void LoadListFile::decodeBody( const RawFile &file)
   it = getInt< uint8_t>( it, numberOfMediaSetMembers);
 
   // load list
-  it = file.begin() + 2 * loadListPtr;
+  it = rawFile.begin() + 2 * loadListPtr;
   loadInfos = LoadInfo::getLoadInfos( it);
 
   // user defined data
   if ( 0 != userDefinedDataPtr)
   {
-    it = file.begin() + userDefinedDataPtr * 2;
-    userDefinedData.assign( it, file.end() - 2);
+    it = rawFile.begin() + userDefinedDataPtr * 2;
+    userDefinedData.assign( it, rawFile.end() - 2);
   }
 
   // file crc decoded and checked within base class
