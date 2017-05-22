@@ -16,8 +16,6 @@
 
 #include "LoadHeaderFile.hpp"
 
-#include <arinc665/file/StringHelper.hpp>
-
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
@@ -137,11 +135,11 @@ void LoadHeaderFile::decodeBody( const RawFile &file)
 
   // load part number
   it = file.begin() + loadPartNumberPtr * 2;
-  it = getString( it, partNumber);
+  it = decodeString( it, partNumber);
 
   // target hardware id list
   it = file.begin() + targetHardwareIdListPtr * 2;
-  it = getStringList( it, targetHardwareIdList);
+  it = decodeStringList( it, targetHardwareIdList);
 
   // data file list
   dataFileList = decodeFileList( file, dataFileListPtr * 2);
@@ -187,11 +185,11 @@ LoadHeaderFile::LoadFileInfoList LoadHeaderFile::decodeFileList(
 
     // filename
     string name;
-    listIt = getString( listIt, name);
+    listIt = decodeString( listIt, name);
 
     // part number
     string partNumber;
-    listIt = getString( listIt, partNumber);
+    listIt = decodeString( listIt, partNumber);
 
     // file length
     uint32_t length;

@@ -18,13 +18,93 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Crc.hpp>
-#include <arinc665/file/StringHelper.hpp>
 
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
 namespace Arinc665 {
 namespace File {
+
+RawFile::const_iterator Arinc665File::decodeString(
+  RawFile::const_iterator it,
+  std::string &str)
+{
+  // determine string length
+  uint16_t strLength;
+  it = getInt< uint16_t>( it, strLength);
+
+  // copy string
+  str.assign( it, it + strLength);
+  it += strLength;
+
+  if ( strLength % 2 == 1)
+  {
+    ++it;
+  }
+
+  return it;
+}
+
+RawFile Arinc665File::encodeString( const std::string &str)
+{
+  RawFile rawString( sizeof( uint16_t));
+
+  auto it( rawString.begin());
+
+  // set string length
+  it = setInt< uint16_t>( it, static_cast< uint16_t>( str.size()));
+
+  // copy string
+  rawString.insert( it, str.begin(), str.end());
+
+  // fill string if it is odd
+  if ( str.size() % 2 == 1)
+  {
+    rawString.push_back( 0U);
+  }
+
+  return rawString;
+}
+
+RawFile::const_iterator Arinc665File::decodeStringList(
+  RawFile::const_iterator it,
+  std::list< std::string> &strList)
+{
+  // number of strings
+  uint16_t numberOfEntries;
+  it = getInt< uint16_t>( it, numberOfEntries);
+
+  for ( unsigned int index = 0; index < numberOfEntries; ++index)
+  {
+    // string
+    std::string str;
+    it = decodeString( it, str);
+    strList.push_back( str);
+  }
+
+  return it;
+}
+
+RawFile Arinc665File::encodeStringList( const std::list< std::string> &strList)
+{
+  RawFile rawStringList( sizeof( uint16_t));
+
+  auto it( rawStringList.begin());
+
+  // set number of strings
+  it = setInt< uint16_t>( it, static_cast< uint16_t>( strList.size()));
+
+  for ( const auto & str : strList)
+  {
+    auto rawStr( encodeString( str));
+    assert( rawStr.size() % 2 == 0);
+
+    // append string
+    rawStringList.insert( rawStringList.end(), rawStr.begin(), rawStr.end());
+  }
+
+  return rawStringList;
+}
 
 uint32_t Arinc665File::getFileLength( const RawFile &file)
 {

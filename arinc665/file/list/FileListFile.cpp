@@ -16,7 +16,6 @@
 
 #include "FileListFile.hpp"
 
-#include <arinc665/file/StringHelper.hpp>
 #include <arinc665/file/FileFactory.hpp>
 
 #include <helper/Endianess.hpp>
@@ -194,7 +193,7 @@ RawFile FileListFile::encode() const
     2 * sizeof( uint8_t)  + // media sequence number, number of media set members
     sizeof( uint16_t));     // crc
 
-  auto rawMediaSetPn( getRawString( getMediaSetPn()));
+  auto rawMediaSetPn( encodeString( getMediaSetPn()));
   assert( rawMediaSetPn.size() % 2 == 0);
   auto rawFilesInfo( encodeFileInfo());
   assert( rawFilesInfo.size() % 2 == 0);
@@ -263,7 +262,7 @@ void FileListFile::decodeBody( const RawFile &file)
 
   // media set part number
   it = file.begin() + mediaInformationPtr * 2;
-  it = getString( it, mediaSetPn);
+  it = decodeString( it, mediaSetPn);
 
   // media sequence number
   it = getInt< uint8_t>( it, mediaSequenceNumber);
@@ -294,9 +293,9 @@ RawFile FileListFile::encodeFileInfo() const
   // iterate over files
   for (auto const &fileInfo : getFileInfos())
   {
-    auto const rawFilename( getRawString( fileInfo.getFilename()));
+    auto const rawFilename( encodeString( fileInfo.getFilename()));
     assert( rawFilename.size() % 2 == 0);
-    auto const rawPathname( getRawString( fileInfo.getPathName()));
+    auto const rawPathname( encodeString( fileInfo.getPathName()));
     assert( rawPathname.size() % 2 == 0);
 
     RawFile rawFileInfo(
@@ -352,11 +351,11 @@ FileInfoList FileListFile::decodeFileInfo(
 
     // filename
     string filename;
-    listIt = getString( listIt, filename);
+    listIt = decodeString( listIt, filename);
 
     // path name
     string pathName;
-    listIt = getString( listIt, pathName);
+    listIt = decodeString( listIt, pathName);
 
     // member sequence number
     uint16_t memberSequenceNumber;

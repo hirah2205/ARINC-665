@@ -41,8 +41,6 @@ add_library(
   file/Arinc665File.cpp
   file/FileFactory.hpp
   file/FileFactory.cpp
-  file/StringHelper.hpp
-  file/StringHelper.cpp
 
   file/list/ListFile.hpp
   file/list/ListFile.cpp

@@ -16,7 +16,7 @@
 
 #include "FileInfo.hpp"
 
-#include <arinc665/file/StringHelper.hpp>
+#include <arinc665/file/Arinc665File.hpp>
 
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>

@@ -16,8 +16,6 @@
 
 #include "BatchListFile.hpp"
 
-#include <arinc665/file/StringHelper.hpp>
-
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
@@ -169,7 +167,7 @@ void BatchListFile::decodeBody( const RawFile &file)
 
   // media set part number
   it = file.begin() + mediaInformationPtr * 2;
-  it = getString( it, mediaSetPn);
+  it = decodeString( it, mediaSetPn);
 
   // media sequence number
   it = getInt< uint8_t>( it, mediaSequenceNumber);

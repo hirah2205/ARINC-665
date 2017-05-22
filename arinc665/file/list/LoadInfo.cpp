@@ -16,12 +16,11 @@
 
 #include "LoadInfo.hpp"
 
-#include <arinc665/file/StringHelper.hpp>
+#include <arinc665/file/Arinc665File.hpp>
 #include <arinc665/file/list/FileInfo.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <helper/Endianess.hpp>
-#include <helper/Logger.hpp>
 
 namespace Arinc665 {
 namespace File {
@@ -60,10 +59,10 @@ LoadInfo::LoadInfo( RawFile::const_iterator &it)
   workIt = getInt< uint16_t>( workIt, loadPointer);
 
   // part number
-  workIt = getString( workIt, partNumber);
+  workIt = Arinc665File::decodeString( workIt, partNumber);
 
   // header filename
-  workIt = getString( workIt, headerFilename);
+  workIt = Arinc665File::decodeString( workIt, headerFilename);
 
   // member sequence number
   uint16_t fileMemberSequenceNumber;
@@ -75,7 +74,7 @@ LoadInfo::LoadInfo( RawFile::const_iterator &it)
   }
   memberSequenceNumber = static_cast< uint8_t>( fileMemberSequenceNumber);
 
-  workIt = getStringList( workIt, targetHardwareIds);
+  workIt = Arinc665File::decodeStringList( workIt, targetHardwareIds);
 
   // set it to begin of next load
   it += loadPointer * 2;

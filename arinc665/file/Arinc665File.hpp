@@ -30,7 +30,55 @@ namespace File {
 class Arinc665File
 {
   public:
-    static constexpr size_t BaseHeaderOffset = 8U;
+    static constexpr size_t BaseHeaderOffset =
+      sizeof( uint32_t) + // file length
+      sizeof( uint32_t);  // ARINC Version
+
+    /**
+     * @brief Decodes the ARINC 665 string from the stream.
+     *
+     * @param[in] it
+     *   current position, where the raw string start.
+     * @param[out] str
+     *   Will contain the decoded string.
+     *
+     * @return New iterator position.
+     **/
+    static RawFile::const_iterator decodeString(
+      RawFile::const_iterator it,
+      std::string &str);
+
+    /**
+     * @brief Encodes the ARINC 665 string to the stream.
+     *
+     * @param[in] str
+     *  The string to encode.
+     *
+     * @return The encoded raw string.
+     **/
+    static RawFile encodeString( const std::string &str);
+
+    /**
+     * @brief Decodes the ARINC 665 string list from the stream.
+     *
+     * @param[in] it
+     * @param[out] strList
+     *
+     *
+     * @return New iterator position.
+     **/
+    static  RawFile::const_iterator decodeStringList(
+      RawFile::const_iterator it,
+      std::list< std::string> &strList);
+
+    /**
+     * @brief Encodes the ARINC 665 string list to the stream.
+     *
+     * @param[in] strList
+     *
+     * @return The encoded raw string list.
+     **/
+    static RawFile encodeStringList( const std::list< std::string> &strList);
 
     /**
      * @brief Decode the file length information from the given file.

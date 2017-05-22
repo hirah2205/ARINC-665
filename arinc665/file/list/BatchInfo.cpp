@@ -17,7 +17,7 @@
 #include "BatchInfo.hpp"
 
 #include <arinc665/file/list/FileInfo.hpp>
-#include <arinc665/file/StringHelper.hpp>
+#include <arinc665/file/Arinc665File.hpp>
 
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
@@ -60,10 +60,10 @@ BatchInfo::BatchInfo( RawFile::const_iterator &it)
   workIt = getInt< uint16_t>( workIt, batchPointer);
 
   // part number
-  workIt = getString( workIt, partNumber);
+  workIt = Arinc665File::decodeString( workIt, partNumber);
 
   // batch filename
-  workIt = getString( workIt, filename);
+  workIt = Arinc665File::decodeString( workIt, filename);
 
   // member sequence number
   workIt = getInt< uint16_t>( workIt, memberSequenceNumber);

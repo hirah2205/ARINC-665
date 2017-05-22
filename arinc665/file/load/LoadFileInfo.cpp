@@ -16,8 +16,6 @@
 
 #include "LoadFileInfo.hpp"
 
-#include <arinc665/file/StringHelper.hpp>
-
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
@@ -42,7 +40,7 @@ LoadFileInfo::LoadFileInfo(
 {
 }
 
-std::string LoadFileInfo::getName() const
+LoadFileInfo::string LoadFileInfo::getName() const
 {
   return name;
 }

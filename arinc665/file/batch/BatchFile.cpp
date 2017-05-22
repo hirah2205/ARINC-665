@@ -16,8 +16,6 @@
 
 #include "BatchFile.hpp"
 
-#include <arinc665/file/StringHelper.hpp>
-
 #include <helper/Endianess.hpp>
 
 namespace Arinc665 {
@@ -91,7 +89,7 @@ void BatchFile::decodeBody( const RawFile &file)
 
   // load part number
   it = file.begin() + batchPartNumberPtr * 2;
-  it = getString( it, partNumber);
+  it = decodeString( it, partNumber);
 
   // target hardware id list
   it = file.begin() + targetHardwareIdListPtr * 2;
