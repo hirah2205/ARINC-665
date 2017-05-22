@@ -400,7 +400,7 @@ void Arinc665File::insertHeader( RawFile &file) const
   auto it( file.begin());
 
   // file size
-  it = setInt< uint32_t>( it, file.size());
+  it = setInt< uint32_t>( it, file.size() / 2);
 
   // format version
   it = setInt< uint16_t>(

@@ -117,7 +117,7 @@ class FileListFile: public ListFile
 
     void decodeBody( const RawFile &rawFile);
 
-    RawFile encodeFileInfo() const;
+    RawFile encodeFilesInfo() const;
 
     FilesInfo decodeFilesInfo( const RawFile &rawFile, std::size_t offset);
 

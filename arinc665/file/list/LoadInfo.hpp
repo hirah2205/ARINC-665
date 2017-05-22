@@ -36,11 +36,17 @@ class LoadInfo
     using string = std::string;
     using ThwIds = std::list< string>;
 
-    static LoadsInfo getLoadsInfo( RawFile::const_iterator &it);
+    LoadInfo(
+      const string &partNumber,
+      const string &headerFilename,
+      uint8_t memberSequenceNumber,
+      const ThwIds &targetHardwareIds);
 
-    LoadInfo();
-
-    LoadInfo( RawFile::const_iterator &it);
+    LoadInfo(
+      string &&partNumber,
+      string &&headerFilename,
+      uint8_t memberSequenceNumber,
+      ThwIds &&targetHardwareIds);
 
     string getPartNumber() const;
 

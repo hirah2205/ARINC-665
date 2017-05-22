@@ -83,12 +83,25 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   }
 
   // export list of loads
-#if 0
-  Arinc665::File::LoadListFile loadListFile;
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
+    "Export list of loads";
+  Arinc665::File::LoadListFile loadListFile( arinc665Version);
   loadListFile.setMediaSequenceNumber( medium->getMediumNumber());
   loadListFile.setMediaSetPn( medium->getPartNumber());
   loadListFile.setNumberOfMediaSetMembers(  medium->getMediaSet()->getNumberOfMedia());
-#endif
+  /* add all load to loads list */
+  for ( auto &load : medium->getMediaSet()->getLoads())
+  {
+    loadListFile.addLoadInfo({
+      load->getPartNumber(),
+      load->getName(),
+      load->getMedium()->getMediumNumber(),
+      load->getTargetHardwareIdList()});
+  }
+
+  loadListFile.calculateCrc();
+  writeFileHandler( medium->getMediumNumber(), "/" + ListOfLoadsName, loadListFile);
+
   // export list of batches (if present)
   if (medium->getMediaSet()->getNumberOfBatches() != 0)
   {

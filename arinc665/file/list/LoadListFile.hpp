@@ -91,6 +91,10 @@ class LoadListFile: public ListFile
      */
     LoadsInfoMap getLoadsInfoAsMap() const;
 
+    void addLoadInfo( const LoadInfo &loadInfo);
+
+    void addLoadInfo( LoadInfo &&loadInfo);
+
     /**
      * @brief Returns the user defined data.
      *
@@ -130,6 +134,10 @@ class LoadListFile: public ListFile
     virtual RawFile encode() const override final;
 
     void decodeBody( const RawFile &rawFile);
+
+    RawFile encodeLoadsInfo() const;
+
+    LoadsInfo decodeLoadsInfo( const RawFile &rawFile, std::size_t offset);
 
     //! Media set part number
     string mediaSetPn;

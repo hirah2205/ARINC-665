@@ -16,68 +16,33 @@
 
 #include "LoadInfo.hpp"
 
-#include <arinc665/file/Arinc665File.hpp>
 #include <arinc665/file/list/FileInfo.hpp>
-#include <arinc665/Arinc665Exception.hpp>
-
-#include <helper/Endianess.hpp>
 
 namespace Arinc665 {
 namespace File {
 
-LoadsInfo LoadInfo::getLoadsInfo( RawFile::const_iterator &it)
-{
-  RawFile::const_iterator workIt = it;
-
-  LoadsInfo loadList;
-
-  // number of loads
-  uint16_t numberOfLoads;
-  workIt = getInt< uint16_t>( workIt, numberOfLoads);
-
-  for ( unsigned int loadIndex = 0; loadIndex < numberOfLoads; ++loadIndex)
-  {
-    loadList.push_back( LoadInfo( workIt));
-  }
-
-  it = workIt;
-
-  return loadList;
-}
-
-LoadInfo::LoadInfo():
-  memberSequenceNumber( 0)
+LoadInfo::LoadInfo(
+  const string &partNumber,
+  const string &headerFilename,
+  const uint8_t memberSequenceNumber,
+  const ThwIds &targetHardwareIds):
+  partNumber( partNumber),
+  headerFilename( headerFilename),
+  memberSequenceNumber( memberSequenceNumber),
+  targetHardwareIds( targetHardwareIds)
 {
 }
 
-LoadInfo::LoadInfo( RawFile::const_iterator &it)
+LoadInfo::LoadInfo(
+  string &&partNumber,
+  string &&headerFilename,
+  const uint8_t memberSequenceNumber,
+  ThwIds &&targetHardwareIds):
+  partNumber( partNumber),
+  headerFilename( headerFilename),
+  memberSequenceNumber( memberSequenceNumber),
+  targetHardwareIds( targetHardwareIds)
 {
-  RawFile::const_iterator workIt = it;
-
-  // next load pointer
-  uint16_t loadPointer;
-  workIt = getInt< uint16_t>( workIt, loadPointer);
-
-  // part number
-  workIt = Arinc665File::decodeString( workIt, partNumber);
-
-  // header filename
-  workIt = Arinc665File::decodeString( workIt, headerFilename);
-
-  // member sequence number
-  uint16_t fileMemberSequenceNumber;
-  workIt = getInt< uint16_t>( workIt, fileMemberSequenceNumber);
-  if (( fileMemberSequenceNumber < 1 ) || (fileMemberSequenceNumber > 255))
-  {
-    //! @throw XXX
-    BOOST_THROW_EXCEPTION( InvalidArinc665File());
-  }
-  memberSequenceNumber = static_cast< uint8_t>( fileMemberSequenceNumber);
-
-  workIt = Arinc665File::decodeStringList( workIt, targetHardwareIds);
-
-  // set it to begin of next load
-  it += loadPointer * 2;
 }
 
 LoadInfo::string LoadInfo::getPartNumber() const

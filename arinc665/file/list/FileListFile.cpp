@@ -198,13 +198,13 @@ RawFile FileListFile::encode() const
 {
   RawFile rawFile(
     BaseHeaderOffset +
-    3 * sizeof( uint32_t) + // mediaInformationPtr, fileListPtr, userDefinedDataPtr
+    3 * sizeof( uint32_t) + // mediaInformationPtr, filesListPtr, userDefinedDataPtr
     2 * sizeof( uint8_t)  + // media sequence number, number of media set members
     sizeof( uint16_t));     // crc
 
   auto rawMediaSetPn( encodeString( getMediaSetPn()));
   assert( rawMediaSetPn.size() % 2 == 0);
-  auto rawFilesInfo( encodeFileInfo());
+  auto rawFilesInfo( encodeFilesInfo());
   assert( rawFilesInfo.size() % 2 == 0);
 
   auto it( rawFile.begin() + BaseHeaderOffset);
@@ -214,7 +214,7 @@ RawFile FileListFile::encode() const
     (BaseHeaderOffset + (3 * sizeof( uint32_t))) / 2;
   it = setInt< uint32_t>( it, mediaInformationPtr);
 
-  // file list pointer
+  // files list pointer
   uint32_t fileListPtr =
     mediaInformationPtr + (2 * sizeof( uint8_t)) / 2 + rawMediaSetPn.size() / 2;
   it = setInt< uint32_t>( it, fileListPtr);
@@ -243,8 +243,6 @@ RawFile FileListFile::encode() const
     assert( userDefinedData.size() % 2 == 0);
     rawFile.insert( it, userDefinedData.begin(), userDefinedData.end());
   }
-
-  //! @todo calculate CRC
 
   // set header and crc
   insertHeader( rawFile);
@@ -292,7 +290,7 @@ void FileListFile::decodeBody( const RawFile &rawFile)
   // file crc decoded and checked within base class
 }
 
-RawFile FileListFile::encodeFileInfo() const
+RawFile FileListFile::encodeFilesInfo() const
 {
   RawFile rawFilesInfo( sizeof( uint16_t));
 
