@@ -28,9 +28,8 @@ class BatchInfo
 {
   public:
     using string = std::string;
-    using BatchInfoList = std::vector< BatchInfo>;
 
-    static BatchInfoList getBatchInfos(
+    static BatchInfos getBatchInfos(
       RawFile::const_iterator &it);
 
     BatchInfo();

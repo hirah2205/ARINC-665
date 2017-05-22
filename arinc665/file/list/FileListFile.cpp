@@ -81,12 +81,12 @@ size_t FileListFile::getNumberOfFiles() const
   return fileInfos.size();
 }
 
-const FileInfoList& FileListFile::getFileInfos() const
+const FileInfos& FileListFile::getFileInfos() const
 {
   return fileInfos;
 }
 
-FileInfoList& FileListFile::getFileInfos()
+FileInfos& FileListFile::getFileInfos()
 {
   return fileInfos;
 }
@@ -156,7 +156,7 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
     return false;
   }
 
-  FileInfoList otherFileList( other.getFileInfos());
+  FileInfos otherFileList( other.getFileInfos());
 
   if (fileInfos.size() != otherFileList.size())
   {
@@ -338,13 +338,13 @@ RawFile FileListFile::encodeFileInfo() const
   return rawFilesInfo;
 }
 
-FileInfoList FileListFile::decodeFileInfo(
+FileInfos FileListFile::decodeFileInfo(
   const RawFile &rawFile,
   const std::size_t offset)
 {
   auto it( rawFile.begin() + offset);
 
-  FileInfoList fileList;
+  FileInfos fileList;
 
   // number of files
   uint16_t numberOfFiles;

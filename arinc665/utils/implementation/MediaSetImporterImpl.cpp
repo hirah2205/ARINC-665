@@ -563,7 +563,7 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
     loadPtr->setTargetHardwareIdList( load->second.getTargetHardwareIdList());
 
     // iterate over data files
-    for ( const auto &dataFile : loadHeaderFile->second.getDataFileList())
+    for ( const auto &dataFile : loadHeaderFile->second.getDataFiles())
     {
       Arinc665::Media::FilePtr dataFilePtr = mediaSet->getFile( dataFile.getName());
 
@@ -573,7 +573,7 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
     }
 
     // iterate over support files
-    for ( const auto &supportFile : loadHeaderFile->second.getSupportFileList())
+    for ( const auto &supportFile : loadHeaderFile->second.getSupportFiles())
     {
       Arinc665::Media::FilePtr supportFilePtr = mediaSet->getFile( supportFile.getName());
 

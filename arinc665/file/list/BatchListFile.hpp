@@ -35,7 +35,6 @@ namespace File {
 class BatchListFile: public ListFile
 {
   public:
-    using BatchInfoList = BatchInfo::BatchInfoList;
     using BatchInfoMap = std::map< std::pair< uint8_t, string>, BatchInfo>;
     using UserDefinedData = std::vector< uint8_t>;
 
@@ -67,9 +66,9 @@ class BatchListFile: public ListFile
 
     unsigned int getNumberOfBatches() const;
 
-    const BatchInfoList& getBatchInfos() const;
+    const BatchInfos& getBatchInfos() const;
 
-    BatchInfoList& getBatchInfos();
+    BatchInfos& getBatchInfos();
 
     BatchInfoMap getBatchInfosAsMap() const;
 
@@ -99,7 +98,7 @@ class BatchListFile: public ListFile
     string mediaSetPn;
     uint8_t mediaSequenceNumber;
     uint8_t numberOfMediaSetMembers;
-    BatchInfoList batchInfoList;
+    BatchInfos batchInfos;
     //! user defined data
     UserDefinedData userDefinedData;
 };

@@ -21,7 +21,6 @@
 #include <arinc665/file/Arinc665File.hpp>
 #include <arinc665/file/load/LoadFileInfo.hpp>
 
-#include <string>
 #include <list>
 #include <vector>
 #include <cstdint>
@@ -35,8 +34,6 @@ namespace File {
 class LoadHeaderFile: public Arinc665File
 {
   public:
-    using string = std::string;
-    using LoadFileInfoList = std::list< LoadFileInfo>;
     using TargetHardwareIdList = std::list< string>;
     using UserDefinedData = std::vector< uint8_t>;
 
@@ -55,13 +52,13 @@ class LoadHeaderFile: public Arinc665File
 
     TargetHardwareIdList& getTargetHardwareIdList();
 
-    const LoadFileInfoList& getDataFileList() const;
+    const LoadFileInfos& getDataFiles() const;
 
-    LoadFileInfoList& getDataFileList();
+    LoadFileInfos& getDataFiles();
 
-    const LoadFileInfoList& getSupportFileList() const;
+    const LoadFileInfos& getSupportFiles() const;
 
-    LoadFileInfoList& getSupportFileList();
+    LoadFileInfos& getSupportFiles();
 
     const UserDefinedData& getUserDefinedData() const;
 
@@ -77,16 +74,16 @@ class LoadHeaderFile: public Arinc665File
 
     void decodeBody( const RawFile &rawFile);
 
-    LoadFileInfoList decodeFileList( const RawFile &rawFile, std::size_t offset);
+    LoadFileInfos decodeFileList( const RawFile &rawFile, std::size_t offset);
 
     //! Part number of the load
     string partNumber;
     //! List of compatible target hardware IDs
     TargetHardwareIdList targetHardwareIdList;
     //! List of data files
-    LoadFileInfoList dataFileList;
+    LoadFileInfos dataFilesInfo;
     //! List of Support files
-    LoadFileInfoList supportFileList;
+    LoadFileInfos supportFilesInfo;
     //! User defined data
     UserDefinedData userDefinedData;
     //! CRC of the complete load

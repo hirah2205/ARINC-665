@@ -62,24 +62,24 @@ std::list< std::string>& LoadHeaderFile::getTargetHardwareIdList()
   return targetHardwareIdList;
 }
 
-const LoadHeaderFile::LoadFileInfoList& LoadHeaderFile::getDataFileList() const
+const LoadFileInfos& LoadHeaderFile::getDataFiles() const
 {
-  return dataFileList;
+  return dataFilesInfo;
 }
 
-LoadHeaderFile::LoadFileInfoList& LoadHeaderFile::getDataFileList()
+LoadFileInfos& LoadHeaderFile::getDataFiles()
 {
-  return dataFileList;
+  return dataFilesInfo;
 }
 
-const LoadHeaderFile::LoadFileInfoList& LoadHeaderFile::getSupportFileList() const
+const LoadFileInfos& LoadHeaderFile::getSupportFiles() const
 {
-  return supportFileList;
+  return supportFilesInfo;
 }
 
-LoadHeaderFile::LoadFileInfoList& LoadHeaderFile::getSupportFileList()
+LoadFileInfos& LoadHeaderFile::getSupportFiles()
 {
-  return supportFileList;
+  return supportFilesInfo;
 }
 
 const LoadHeaderFile::UserDefinedData& LoadHeaderFile::getUserDefinedData() const
@@ -141,12 +141,12 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
   it = decodeStringList( it, targetHardwareIdList);
 
   // data file list
-  dataFileList = decodeFileList( rawFile, dataFileListPtr * 2);
+  dataFilesInfo = decodeFileList( rawFile, dataFileListPtr * 2);
 
   // support file list
   if ( 0 != supportFileListPtr)
   {
-    supportFileList = decodeFileList( rawFile, supportFileListPtr * 2);
+    supportFilesInfo = decodeFileList( rawFile, supportFileListPtr * 2);
   }
 
   // user defined data
@@ -162,13 +162,13 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
   getInt< uint32_t>( rawFile.end() - 4U, loadCrc);
 }
 
-LoadHeaderFile::LoadFileInfoList LoadHeaderFile::decodeFileList(
+LoadFileInfos LoadHeaderFile::decodeFileList(
   const RawFile &rawFile,
   const std::size_t offset)
 {
   RawFile::const_iterator it( rawFile.begin() + offset);
 
-  LoadFileInfoList files;
+  LoadFileInfos files;
 
   // number of data files
   uint16_t numberOfFiles;

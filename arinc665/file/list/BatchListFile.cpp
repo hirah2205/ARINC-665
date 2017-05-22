@@ -76,24 +76,24 @@ void BatchListFile::setNumberOfMediaSetMembers(
 
 unsigned int BatchListFile::getNumberOfBatches() const
 {
-  return batchInfoList.size();
+  return batchInfos.size();
 }
 
-const BatchListFile::BatchInfoList& BatchListFile::getBatchInfos() const
+const BatchInfos& BatchListFile::getBatchInfos() const
 {
-  return batchInfoList;
+  return batchInfos;
 }
 
-BatchListFile::BatchInfoList& BatchListFile::getBatchInfos()
+BatchInfos& BatchListFile::getBatchInfos()
 {
-  return batchInfoList;
+  return batchInfos;
 }
 
 BatchListFile::BatchInfoMap BatchListFile::getBatchInfosAsMap() const
 {
   BatchInfoMap batches;
 
-  for (const auto & batch : batchInfoList)
+  for (const auto & batch : batchInfos)
   {
     batches.insert(
       std::make_pair(
@@ -121,7 +121,7 @@ bool BatchListFile::belongsToSameMediaSet( const BatchListFile &other) const
   return
     (mediaSetPn == other.getMediaSetPn()) &&
     (numberOfMediaSetMembers == other.getNumberOfMediaSetMembers()) &&
-    (batchInfoList == other.getBatchInfos());
+    (batchInfos == other.getBatchInfos());
 }
 
 RawFile BatchListFile::encode() const
@@ -176,7 +176,7 @@ void BatchListFile::decodeBody( const RawFile &rawFile)
 
   // batch list
   it = rawFile.begin() + 2 * batchListPtr;
-  batchInfoList = BatchInfo::getBatchInfos( it);
+  batchInfos = BatchInfo::getBatchInfos( it);
 
   // user defined data
   if ( 0 != userDefinedDataPtr)

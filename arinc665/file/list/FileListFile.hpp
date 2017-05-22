@@ -21,8 +21,6 @@
 #include <arinc665/file/list/ListFile.hpp>
 #include <arinc665/file/list/FileInfo.hpp>
 
-#include <boost/filesystem.hpp>
-
 #include <vector>
 #include <map>
 #include <cstdint>
@@ -37,7 +35,6 @@ namespace File {
 class FileListFile: public ListFile
 {
   public:
-    using path = boost::filesystem::path;
     //! Maps media <sequence number, file name> to File Info
     using FileInfoMap = std::map< std::pair< uint8_t, string>, FileInfo>;
     //! Maps media <sequence number, file path> to File Info
@@ -81,14 +78,14 @@ class FileListFile: public ListFile
      *
      * @return The list of files
      **/
-    const FileInfoList& getFileInfos() const;
+    const FileInfos& getFileInfos() const;
 
     /**
      * @brief Return the list of files.
      *
      * @return The list of files
      **/
-    FileInfoList& getFileInfos();
+    FileInfos& getFileInfos();
 
     /**
      * @brief Return the list of files as map ( media index and filename as key).
@@ -122,12 +119,12 @@ class FileListFile: public ListFile
 
     RawFile encodeFileInfo() const;
 
-    FileInfoList decodeFileInfo( const RawFile &rawFile, std::size_t offset);
+    FileInfos decodeFileInfo( const RawFile &rawFile, std::size_t offset);
 
     string mediaSetPn;
     uint8_t mediaSequenceNumber;
     uint8_t numberOfMediaSetMembers;
-    FileInfoList fileInfos;
+    FileInfos fileInfos;
     UserDefinedData userDefinedData;
 };
 

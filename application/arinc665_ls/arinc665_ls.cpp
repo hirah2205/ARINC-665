@@ -69,26 +69,22 @@ void list_luh( const boost::filesystem::path &luhFile)
       std::cout << "target hw id: " << *it << std::endl;
     }
 
-    for (
-      std::list< LoadFileInfo>::const_iterator it = load.getDataFileList().begin();
-      it != load.getDataFileList().end();
-      ++it)
+    for ( auto const &dataFile : load.getDataFiles())
     {
-      std::cout << "data file name: " << it->getName() << std::endl;
-      std::cout << "data file PN: "   << it->getPartNumber() << std::endl;
-      std::cout << "data file size: " << std::dec << it->getLength() << std::endl;
-      std::cout << "data file crc: "  << std::hex << it->getCrc() << std::endl << std::endl;
+      std::cout <<
+        "data file name: " << dataFile.getName() <<
+        "data file PN:   " << dataFile.getPartNumber() <<
+        "data file size: " << std::dec << dataFile.getLength() <<
+        "data file CRC:  " << std::hex << dataFile.getCrc() << std::endl << std::endl;
     }
 
-    for (
-      std::list< LoadFileInfo>::const_iterator it = load.getSupportFileList().begin();
-      it != load.getSupportFileList().end();
-      ++it)
+    for ( auto const &supportFile : load.getSupportFiles())
     {
-      std::cout << "support file name: " << it->getName() << std::endl;
-      std::cout << "support file PN: "   << it->getPartNumber() << std::endl;
-      std::cout << "support file size: " << std::dec << it->getLength() << std::endl;
-      std::cout << "support file crc: "  << std::hex << it->getCrc() << std::endl << std::endl;
+      std::cout <<
+        "support file name: " << supportFile.getName() <<
+        "support file PN:   " << supportFile.getPartNumber() <<
+        "support file size: " << std::dec << supportFile.getLength() <<
+        "support file CRC:  " << std::hex << supportFile.getCrc() << std::endl << std::endl;
     }
 
     std::cout << "load crc " << std::hex << load.getLoadCrc() << std::endl;
