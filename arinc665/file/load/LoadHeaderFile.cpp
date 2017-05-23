@@ -311,6 +311,8 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
     listIt = decodeString( listIt, partNumber);
 
     // file length
+    //! @todo Attention ! data and support files differs in interpretation!
+    //! data files -> number of 16bit words vs. support files -> number of 8bit words.
     uint32_t length;
     listIt = getInt< uint32_t>( listIt, length);
 
