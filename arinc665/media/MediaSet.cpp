@@ -203,7 +203,7 @@ ConstFilePtr MediaSet::getFile( const string &filename) const
 {
   for ( auto const &medium : media)
   {
-    ConstFilePtr file( medium->getFile( filename));
+    ConstFilePtr file( medium->getFile( filename, true));
 
     if ( file)
     {
@@ -218,7 +218,7 @@ FilePtr MediaSet::getFile( const string &filename)
 {
   for ( auto &medium : media)
   {
-    FilePtr file( medium->getFile( filename));
+    FilePtr file( medium->getFile( filename, true));
 
     if ( file)
     {
@@ -247,8 +247,8 @@ ConstLoads MediaSet::getLoads() const
 
   for (const auto & medium : media)
   {
-    ConstLoads mediaLoads =
-      static_cast< const Medium&>(*medium).getLoads( true);
+    ConstLoads mediaLoads(
+      static_cast< const Medium&>(*medium).getLoads( true));
     loads.insert( loads.end(), mediaLoads.begin(), mediaLoads.end());
   }
 

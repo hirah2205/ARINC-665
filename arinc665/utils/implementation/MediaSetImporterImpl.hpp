@@ -93,7 +93,7 @@ class MediaSetImporterImpl
 
     ContainerEntityPtr checkCreateDirectory(
       uint8_t mediumIndex,
-      const path &filePath);
+      const path &directoryPath);
 
     Arinc665Utils::ReadFileHandler readFileHandler;
 

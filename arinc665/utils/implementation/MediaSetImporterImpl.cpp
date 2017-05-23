@@ -531,8 +531,9 @@ void MediaSetImporterImpl::addFiles()
     }
 
     // get directory, where file will be placed into.
-    ContainerEntityPtr container(
-      checkCreateDirectory( fileInfo.first.first, fileInfo.second.getPath()));
+    ContainerEntityPtr container( checkCreateDirectory(
+      fileInfo.first.first,
+      fileInfo.second.getPath().parent_path()));
 
     // place file
     Arinc665::Media::FilePtr filePtr = container->addFile(
@@ -553,8 +554,9 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
     auto load( loadInfos.find( loadHeader.first));
     auto loadHeaderFile( loadHeaderFiles.find( loadHeader.first.second));
 
-    ContainerEntityPtr container(
-      checkCreateDirectory( loadHeader.first.first, loadHeader.second.getPath()));
+    ContainerEntityPtr container( checkCreateDirectory(
+      loadHeader.first.first,
+      loadHeader.second.getPath().parent_path()));
 
     Arinc665::Media::LoadPtr loadPtr(
       container->addLoad( loadHeader.second.getFilename()));
@@ -592,8 +594,9 @@ void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
     // get the batch file
     auto batchFile( batchFiles.find( batch.first.second));
 
-    ContainerEntityPtr container(
-      checkCreateDirectory( batch.first.first, batch.second.getPath()));
+    ContainerEntityPtr container( checkCreateDirectory(
+      batch.first.first,
+      batch.second.getPath().parent_path()));
 
     auto batchPtr( container->addBatch( batch.second.getFilename()));
 
@@ -611,22 +614,38 @@ void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
 MediaSetImporterImpl::ContainerEntityPtr
 MediaSetImporterImpl::checkCreateDirectory(
   const uint8_t mediumIndex,
-  const path &filePath)
+  const path &directoryPath)
 {
-  path dirPath( filePath.parent_path());
+  // make path relative (remove leading slash)
+  path dirPath( directoryPath.relative_path());
 
   auto medium( mediaSet->getMedium( mediumIndex));
 
-  if ( dirPath == "/")
+  // we are in root-directory
+  if ( dirPath.empty())
   {
     return medium;
   }
 
   ContainerEntityPtr dir = medium;
 
-  for ( path::iterator it = ++dirPath.begin(); it != dirPath.end(); ++it)
+  for ( auto &subPath : dirPath)
   {
-    dir = dir->getSubDirectory( it->string());
+    auto subDir( dir->getSubDirectory( subPath.string()));
+
+    if (!subDir)
+    {
+      subDir = dir->addSubDirectory( subPath.string());
+
+      if (!subDir)
+      {
+        //! @throw Arinc665Exception When sub-directory cannot be created
+        BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+          AdditionalInfo( "Cannot create sub-directory"));
+      }
+    }
+
+    dir = subDir;
   }
 
   return dir;

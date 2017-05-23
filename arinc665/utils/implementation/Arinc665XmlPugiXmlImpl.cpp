@@ -273,8 +273,7 @@ void Arinc665XmlPugiXmlImpl::saveEntries(
   // iterate over sub-directories within container
   for (auto dirEntry : current->getSubDirectories())
   {
-    pugi::xml_node directoryNode(
-      currentNode.append_child( dirEntry->getName().c_str()));
+    auto directoryNode( currentNode.append_child( "Directory"));
 
     saveDirectory( dirEntry, filePathMapping, directoryNode);
   }

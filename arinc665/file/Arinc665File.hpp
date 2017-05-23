@@ -35,10 +35,19 @@ class Arinc665File
   public:
     using path = boost::filesystem::path;
     using string = std::string;
+    using StringList = std::list< string>;
 
     static constexpr size_t BaseHeaderOffset =
       sizeof( uint32_t) + // file length
-      sizeof( uint32_t);  // ARINC Version
+      sizeof( uint32_t);  // ARINC Version + Spare
+
+    //! unused at the moment
+    static constexpr size_t BaseHeaderSize =
+      sizeof( uint32_t) + // file length
+      sizeof( uint16_t);  // ARINC Version
+
+    //! The default checksum position
+    static constexpr std::size_t DefaultChecksumPosition = 2U;
 
     /**
      * @brief Decodes the ARINC 665 string from the stream.
@@ -75,7 +84,7 @@ class Arinc665File
      **/
     static  RawFile::const_iterator decodeStringList(
       RawFile::const_iterator it,
-      std::list< string> &strList);
+      StringList &strList);
 
     /**
      * @brief Encodes the ARINC 665 string list to the stream.
@@ -84,8 +93,20 @@ class Arinc665File
      *
      * @return The encoded raw string list.
      **/
-    static RawFile encodeStringList( const std::list< string> &strList);
+    static RawFile encodeStringList( const StringList &strList);
 
+    /**
+     * @brief Encodes the given path for storage within ARINC 665 media set
+     *   files.
+     *
+     * The main purpose is to replace all forward slashes '/' by
+     * back-slashes '\'.
+     *
+     * @param[in] path
+     *   The path, which should be converted.
+     *
+     * @return The converted path.
+     **/
     static string encodePath( const path &path);
 
     /**
@@ -221,15 +242,19 @@ class Arinc665File
 
   protected:
     /**
+     * @brief Initialises the ARINC 665 file.
      *
-     * @param fileType
-     * @param version
-     * @param checksumPosition
+     * @param[in] fileType
+     *   File type.
+     * @param[in] version
+     *   ARINC 665 version.
+     * @param[in] checksumPosition
+     *   Checksum position.
      **/
     Arinc665File(
       FileType fileType,
       Arinc665Version version,
-      std::size_t checksumPosition = 2U) noexcept;
+      std::size_t checksumPosition = DefaultChecksumPosition) noexcept;
 
     /**
      *
@@ -240,7 +265,7 @@ class Arinc665File
     Arinc665File(
       FileType fileType,
       const RawFile &rawFile,
-      std::size_t checksumPosition = 2U);
+      std::size_t checksumPosition = DefaultChecksumPosition);
 
     /**
      *
@@ -262,7 +287,9 @@ class Arinc665File
      **/
     void decodeHeader( const RawFile &rawFile);
 
+    //! File type
     const FileType fileType;
+    //! checksum position
     const std::size_t checksumPosition;
     //! ARINC 665 Version
     Arinc665Version arinc665Version;

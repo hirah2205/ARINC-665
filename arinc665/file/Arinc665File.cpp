@@ -68,7 +68,7 @@ RawFile Arinc665File::encodeString( const std::string &str)
 
 RawFile::const_iterator Arinc665File::decodeStringList(
   RawFile::const_iterator it,
-  std::list< std::string> &strList)
+  StringList &strList)
 {
   // number of strings
   uint16_t numberOfEntries;
@@ -77,7 +77,7 @@ RawFile::const_iterator Arinc665File::decodeStringList(
   for ( unsigned int index = 0; index < numberOfEntries; ++index)
   {
     // string
-    std::string str;
+    string str;
     it = decodeString( it, str);
     strList.push_back( str);
   }
@@ -85,7 +85,7 @@ RawFile::const_iterator Arinc665File::decodeStringList(
   return it;
 }
 
-RawFile Arinc665File::encodeStringList( const std::list< std::string> &strList)
+RawFile Arinc665File::encodeStringList( const StringList &strList)
 {
   RawFile rawStringList( sizeof( uint16_t));
 
@@ -409,7 +409,6 @@ void Arinc665File::insertHeader( RawFile &file) const
 
   // spare
   it = setInt< uint16_t>( it, 0U);
-
 
   // crc
   setInt< uint16_t>( file.end() - checksumPosition, crc);

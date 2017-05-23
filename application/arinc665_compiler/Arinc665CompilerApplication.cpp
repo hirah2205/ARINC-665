@@ -100,20 +100,19 @@ int Arinc665CompilerApplication::operator()()
   }
   catch ( Arinc665::Arinc665Exception &e)
   {
-    std::string const * info = boost::get_error_info< AdditionalInfo>( e);
-
-    std::cerr <<
-      "compiler failed: " <<
-//    	typid( e).name() << " - " <<
-      ((nullptr==info) ? "Unknown" : *info) <<
-      std::endl;
-
+    std::cerr << "Arinc665Exception in compiler: " << boost::diagnostic_information( e)
+      << std::endl;
     return EXIT_FAILURE;
   }
   catch ( boost::exception &e)
   {
-    std::cerr << "Error in compiler: " << boost::diagnostic_information( e)
+    std::cerr << "BOOST Error in compiler: " << boost::diagnostic_information( e)
       << std::endl;
+    return EXIT_FAILURE;
+  }
+  catch ( std::exception &e)
+  {
+    std::cerr << "std Error in compiler: " << e.what() << std::endl;
     return EXIT_FAILURE;
   }
   catch ( ...)
