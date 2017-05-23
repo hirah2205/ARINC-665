@@ -60,6 +60,10 @@ class Arinc665CompilerApplication
 
     path getMediumPath( uint8_t mediumNumber) const;
 
+    void createMedium( Arinc665::Media::ConstMediumPtr medium);
+
+    void createDirectory( Arinc665::Media::ConstDirectoryPtr directory);
+
     void createFile(
       const Arinc665::Utils::Arinc665Xml::LoadXmlResult &mediaSetInfo,
       Arinc665::Media::ConstFilePtr file);

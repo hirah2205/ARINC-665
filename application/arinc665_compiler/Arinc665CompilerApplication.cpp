@@ -22,6 +22,7 @@
 #include <arinc665/utils/Arinc665Xml.hpp>
 
 #include <arinc665/media/Medium.hpp>
+#include <arinc665/media/Directory.hpp>
 #include <arinc665/media/File.hpp>
 
 #include <helper/Logger.hpp>
@@ -89,8 +90,19 @@ int Arinc665CompilerApplication::operator()()
     // load XML file
     auto result( xml->loadFromXml( mediaSetXmlFile));
 
+    // create media set directory
+    boost::filesystem::create_directory( mediaSetDestinationDirectory);
+
     auto exporter( Arinc665::Utils::Arinc665Utils::createArinc665Exporter(
       std::get< 0>( result),
+      std::bind(
+        &Arinc665CompilerApplication::createMedium,
+        this,
+        std::placeholders::_1),
+      std::bind(
+        &Arinc665CompilerApplication::createDirectory,
+        this,
+        std::placeholders::_1),
       std::bind(
         &Arinc665CompilerApplication::createFile,
         this,
@@ -177,10 +189,40 @@ Arinc665CompilerApplication::path Arinc665CompilerApplication::getMediumPath(
     / (boost::format("MEDIUM_%03u") % (unsigned int)mediumNumber).str();
 }
 
+void Arinc665CompilerApplication::createMedium(
+  Arinc665::Media::ConstMediumPtr medium)
+{
+  BOOST_LOG_FUNCTION();
+
+  auto mediumPath( getMediumPath( medium->getMediumNumber()));
+
+  BOOST_LOG_TRIVIAL( severity_level::info) << "Create medium directory " <<
+    mediumPath;
+
+  boost::filesystem::create_directory( mediumPath);
+}
+
+void Arinc665CompilerApplication::createDirectory(
+  Arinc665::Media::ConstDirectoryPtr directory)
+{
+  BOOST_LOG_FUNCTION();
+
+  auto directoryPath(
+    getMediumPath( directory->getMedium()->getMediumNumber()) /
+    directory->getPath());
+
+  BOOST_LOG_TRIVIAL( severity_level::info) << "Create directory " <<
+    directoryPath;
+
+  boost::filesystem::create_directory( directoryPath);
+}
+
 void Arinc665CompilerApplication::createFile(
   const Arinc665::Utils::Arinc665Xml::LoadXmlResult &mediaSetInfo,
   Arinc665::Media::ConstFilePtr file)
 {
+  BOOST_LOG_FUNCTION();
+
   // search for file
   auto fileIt( std::get< 1>( mediaSetInfo).find( file));
 
@@ -193,9 +235,6 @@ void Arinc665CompilerApplication::createFile(
   auto filePath(
     getMediumPath( file->getMedium()->getMediumNumber()) /
     file->getPath());
-
-  // create directories (if necessary)
-  boost::filesystem::create_directories( filePath.parent_path());
 
   BOOST_LOG_TRIVIAL( severity_level::info) << "Copy file " << filePath;
 
@@ -210,6 +249,8 @@ void Arinc665CompilerApplication::writeFile(
   const path &path,
   const Arinc665::File::RawFile &file)
 {
+  BOOST_LOG_FUNCTION();
+
   auto filePath( getMediumPath( mediumNumber) / path.relative_path());
 
   BOOST_LOG_TRIVIAL( severity_level::info) << "Write file " << filePath;
@@ -223,9 +264,6 @@ void Arinc665CompilerApplication::writeFile(
         boost::errinfo_file_name( filePath.string()) <<
         AdditionalInfo( "File already exists"));
   }
-
-  // create directories (if necessary)
-  boost::filesystem::create_directories( filePath.parent_path());
 
   // save file
   std::ofstream fileStream(
@@ -247,6 +285,8 @@ Arinc665::File::RawFile Arinc665CompilerApplication::readFile(
   const uint8_t mediumNumber,
   const path &path)
 {
+  BOOST_LOG_FUNCTION();
+
   // check medium number
   auto filePath( getMediumPath( mediumNumber) / path.relative_path());
 

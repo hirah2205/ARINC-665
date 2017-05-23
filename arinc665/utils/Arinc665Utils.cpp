@@ -33,6 +33,8 @@ Arinc665Utils::Arinc665Importer Arinc665Utils::createArinc665Importer(
 
 Arinc665Utils::Arinc665Exporter Arinc665Utils::createArinc665Exporter(
   Media::ConstMediaSetPtr mediaSet,
+  CreateMediumHandler createMediumHandler,
+  CreateDirectoryHandler createDirectoryHandler,
   CreateFileHandler createFileHandler,
   WriteFileHandler writeFileHandler,
   ReadFileHandler readFileHandler,
@@ -44,6 +46,8 @@ Arinc665Utils::Arinc665Exporter Arinc665Utils::createArinc665Exporter(
     &MediaSetExporterImpl::operator(),
     std::make_shared< MediaSetExporterImpl>(
       mediaSet,
+      createMediumHandler,
+      createDirectoryHandler,
       createFileHandler,
       writeFileHandler,
       readFileHandler,

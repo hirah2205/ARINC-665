@@ -53,6 +53,8 @@ class MediaSetExporterImpl
      **/
     MediaSetExporterImpl(
       Media::ConstMediaSetPtr mediaSet,
+      Arinc665Utils::CreateMediumHandler createMediumHandler,
+      Arinc665Utils::CreateDirectoryHandler createDirectoryHandler,
       Arinc665Utils::CreateFileHandler createFileHandler,
       Arinc665Utils::WriteFileHandler writeFileHandler,
       Arinc665Utils::ReadFileHandler readFileHandler,
@@ -99,6 +101,10 @@ class MediaSetExporterImpl
 
     //! The Media Set
     Media::ConstMediaSetPtr mediaSet;
+    //! Create medium handler
+    Arinc665Utils::CreateMediumHandler createMediumHandler;
+    //! Create directory handler
+    Arinc665Utils::CreateDirectoryHandler createDirectoryHandler;
     //! Create file handler
     Arinc665Utils::CreateFileHandler createFileHandler;
     //! Write file handler

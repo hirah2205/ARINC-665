@@ -37,6 +37,8 @@ namespace Utils {
 
 MediaSetExporterImpl::MediaSetExporterImpl(
   Media::ConstMediaSetPtr mediaSet,
+  Arinc665Utils::CreateMediumHandler createMediumHandler,
+  Arinc665Utils::CreateDirectoryHandler createDirectoryHandler,
   Arinc665Utils::CreateFileHandler createFileHandler,
   Arinc665Utils::WriteFileHandler writeFileHandler,
   Arinc665Utils::ReadFileHandler readFileHandler,
@@ -47,6 +49,8 @@ MediaSetExporterImpl::MediaSetExporterImpl(
   createBatchFiles( createBatchFiles),
   createLoadHeaderFiles( createLoadHeaderFiles),
   mediaSet( mediaSet),
+  createMediumHandler( createMediumHandler),
+  createDirectoryHandler( createDirectoryHandler),
   createFileHandler( createFileHandler),
   writeFileHandler( writeFileHandler),
   readFileHandler( readFileHandler)
@@ -73,6 +77,11 @@ void MediaSetExporterImpl::operator()()
 void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 {
   BOOST_LOG_FUNCTION();
+
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
+    "Export medium " << (unsigned int)medium->getMediumNumber();
+
+  createMediumHandler( medium);
 
   // export sub-directories
   for ( auto directory : medium->getSubDirectories())
@@ -181,7 +190,12 @@ void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory)
   BOOST_LOG_FUNCTION();
 
   BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Export directory to " << directory->getPath();
+    "Export directory to [" <<
+    (unsigned int)directory->getMedium()->getMediumNumber() <<
+    "]:" <<
+    directory->getPath();
+
+  createDirectoryHandler( directory);
 
   // export sub-directories
   for ( auto directory : directory->getSubDirectories())
@@ -201,7 +215,10 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
   BOOST_LOG_FUNCTION();
 
   BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Export file to " << file->getPath();
+    "Export file to [" <<
+    (unsigned int)file->getMedium()->getMediumNumber() <<
+    "]:" <<
+    file->getPath();
 
   switch (file->getFileType())
   {
