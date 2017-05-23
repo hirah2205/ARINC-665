@@ -119,7 +119,7 @@ class FileListFile: public ListFile
 
     RawFile encodeFilesInfo() const;
 
-    FilesInfo decodeFilesInfo( const RawFile &rawFile, std::size_t offset);
+    void decodeFilesInfo( const RawFile &rawFile, std::size_t offset);
 
     string mediaSetPn;
     uint8_t mediaSequenceNumber;

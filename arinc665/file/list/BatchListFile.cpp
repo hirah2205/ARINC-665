@@ -215,7 +215,7 @@ void BatchListFile::decodeBody( const RawFile &rawFile)
   it = getInt< uint8_t>( it, numberOfMediaSetMembers);
 
   // batch list
-  batchesInfo = decodeBatchesInfo( rawFile, 2 * batchListPtr);
+  decodeBatchesInfo( rawFile, 2 * batchListPtr);
 
   // user defined data
   if ( 0 != userDefinedDataPtr)
@@ -224,7 +224,7 @@ void BatchListFile::decodeBody( const RawFile &rawFile)
     userDefinedData.assign( it, rawFile.end() - 2);
   }
 
-  // file crc decoded and checked within base class
+  // file CRC decoded and checked within base class
 }
 
 RawFile BatchListFile::encodeBatchesInfo() const
@@ -260,33 +260,41 @@ RawFile BatchListFile::encodeBatchesInfo() const
         (rawBatchInfo.size() / 2));
 
     // part number
-    batchInfoIt = std::copy( rawPartNumber.begin(), rawPartNumber.end(), batchInfoIt);
+    batchInfoIt =
+      std::copy( rawPartNumber.begin(), rawPartNumber.end(), batchInfoIt);
 
     // filename
-    batchInfoIt = std::copy( rawFilename.begin(), rawFilename.end(), batchInfoIt);
+    batchInfoIt =
+      std::copy( rawFilename.begin(), rawFilename.end(), batchInfoIt);
 
     // member sequence number
-    batchInfoIt = setInt< uint16_t>( batchInfoIt, batchInfo.getMemberSequenceNumber());
+    batchInfoIt =
+      setInt< uint16_t>( batchInfoIt, batchInfo.getMemberSequenceNumber());
 
     // add file info to files info
-    rawBatchesInfo.insert( rawBatchesInfo.end(), rawBatchInfo.begin(), rawBatchInfo.end());
+    rawBatchesInfo.insert(
+      rawBatchesInfo.end(),
+      rawBatchInfo.begin(),
+      rawBatchInfo.end());
   }
 
   return rawBatchesInfo;
 }
 
-BatchesInfo BatchListFile::decodeBatchesInfo(
+void BatchListFile::decodeBatchesInfo(
   const RawFile &rawFile,
   const std::size_t offset)
 {
   auto it( rawFile.begin() + offset);
 
-  BatchesInfo batchesInfo;
+  // clear eventually stored infos
+  batchesInfo.clear();
 
   // number of batches
   uint16_t numberOfBatches;
   it = getInt< uint16_t>( it, numberOfBatches);
 
+  // iterate over batch indexes
   for ( unsigned int batchIndex = 0; batchIndex < numberOfBatches; ++batchIndex)
   {
     auto listIt( it);
@@ -314,8 +322,6 @@ BatchesInfo BatchListFile::decodeBatchesInfo(
 
     batchesInfo.emplace_back( partNumber, filename, memberSequenceNumber);
   }
-
-  return batchesInfo;
 }
 
 }

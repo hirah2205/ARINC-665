@@ -324,7 +324,6 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
   Media::MediaSetPtr mediaSet,
   const pugi::xml_node &loadNode)
 {
-  // name
   const std::string nameRef( loadNode.attribute( "NameRef").as_string());
 
   if (nameRef.empty())
@@ -448,8 +447,8 @@ void Arinc665XmlPugiXmlImpl::loadBatch(
   Media::MediaSetPtr mediaSet,
   const pugi::xml_node &batchNode)
 {
-  // name
   const std::string nameRef( batchNode.attribute( "NameRef").as_string());
+  const std::string comment( batchNode.attribute( "Comment").as_string());
 
   if (nameRef.empty())
   {
@@ -466,6 +465,8 @@ void Arinc665XmlPugiXmlImpl::loadBatch(
     BOOST_THROW_EXCEPTION( Arinc665Exception() <<
       AdditionalInfo( "NameRef attribute does not reference batch"));
   }
+
+  batch->setComment( comment);
 
   // iterate over targets
   for ( pugi::xml_node targetNode : batchNode.children( "Target"))

@@ -281,55 +281,6 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
   getInt< uint32_t>( rawFile.end() - 4U, loadCrc);
 }
 
-LoadFilesInfo LoadHeaderFile::decodeFileList(
-  const RawFile &rawFile,
-  const std::size_t offset)
-{
-  RawFile::const_iterator it( rawFile.begin() + offset);
-
-  LoadFilesInfo files;
-
-  // number of data files
-  uint16_t numberOfFiles;
-  it = getInt< uint16_t>( it, numberOfFiles);
-
-  // iterate over file index
-  for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex)
-  {
-    auto listIt( it);
-
-    // next file pointer
-    uint16_t filePointer;
-    listIt = getInt< uint16_t>( listIt, filePointer);
-
-    // filename
-    string name;
-    listIt = decodeString( listIt, name);
-
-    // part number
-    string partNumber;
-    listIt = decodeString( listIt, partNumber);
-
-    // file length
-    //! @todo Attention ! data and support files differs in interpretation!
-    //! data files -> number of 16bit words vs. support files -> number of 8bit words.
-    uint32_t length;
-    listIt = getInt< uint32_t>( listIt, length);
-
-    // CRC
-    uint16_t crc;
-    listIt = getInt< uint16_t>( listIt, crc);
-
-    // set it to begin of next file
-    it += filePointer * 2;
-
-    // file info
-    files.emplace_back( name, partNumber, length, crc);
-  }
-
-  return files;
-}
-
 RawFile LoadHeaderFile::encodeFileList( const LoadFilesInfo &loadFilesInfo) const
 {
   RawFile rawFileList( sizeof( uint16_t));
@@ -380,6 +331,55 @@ RawFile LoadHeaderFile::encodeFileList( const LoadFilesInfo &loadFilesInfo) cons
   }
 
   return rawFileList;
+}
+
+LoadFilesInfo LoadHeaderFile::decodeFileList(
+  const RawFile &rawFile,
+  const std::size_t offset)
+{
+  RawFile::const_iterator it( rawFile.begin() + offset);
+
+  LoadFilesInfo files;
+
+  // number of data files
+  uint16_t numberOfFiles;
+  it = getInt< uint16_t>( it, numberOfFiles);
+
+  // iterate over file index
+  for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex)
+  {
+    auto listIt( it);
+
+    // next file pointer
+    uint16_t filePointer;
+    listIt = getInt< uint16_t>( listIt, filePointer);
+
+    // filename
+    string name;
+    listIt = decodeString( listIt, name);
+
+    // part number
+    string partNumber;
+    listIt = decodeString( listIt, partNumber);
+
+    // file length
+    //! @todo Attention ! data and support files differs in interpretation!
+    //! data files -> number of 16bit words vs. support files -> number of 8bit words.
+    uint32_t length;
+    listIt = getInt< uint32_t>( listIt, length);
+
+    // CRC
+    uint16_t crc;
+    listIt = getInt< uint16_t>( listIt, crc);
+
+    // set it to begin of next file
+    it += filePointer * 2;
+
+    // file info
+    files.emplace_back( name, partNumber, length, crc);
+  }
+
+  return files;
 }
 
 }

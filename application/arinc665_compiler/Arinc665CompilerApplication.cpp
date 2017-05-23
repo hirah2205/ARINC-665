@@ -39,6 +39,8 @@ Arinc665CompilerApplication::Arinc665CompilerApplication(
   boost::application::context &context) :
   context( context),
   optionsDescription( "ARINC 665 Media Set Compiler Options"),
+  createBatchFiles( false),
+  createLoadHeaderFiles( false),
   xml( Arinc665::Utils::Arinc665Xml::createInstance())
 {
   optionsDescription.add_options()
@@ -60,6 +62,16 @@ Arinc665CompilerApplication::Arinc665CompilerApplication(
       "destination-directory",
       boost::program_options::value( &mediaSetDestinationDirectory)->required(),
       "Output directory for ARINC 665 media set"
+    )
+    (
+      "create-batch-files",
+      boost::program_options::bool_switch( &createBatchFiles)->default_value( false),
+      "Create batch-files instead coping it."
+    )
+    (
+      "create-load-header-files",
+      boost::program_options::bool_switch( &createLoadHeaderFiles)->default_value( false),
+      "Create load-headers-files instead coping it."
     );
 }
 
@@ -96,8 +108,8 @@ int Arinc665CompilerApplication::operator()()
         std::placeholders::_1,
         std::placeholders::_2),
       Arinc665::Arinc665Version::ARINC_665_2,
-      false,
-      true));
+      createBatchFiles,
+      createLoadHeaderFiles));
 
     exporter();
   }

@@ -21,6 +21,11 @@
 namespace Arinc665 {
 namespace File {
 
+BatchFile::BatchFile( const Arinc665Version version):
+    Arinc665File( FileType::BatchFile, version)
+{
+}
+
 BatchFile::BatchFile( const RawFile &rawFile):
   Arinc665File( FileType::BatchFile, rawFile)
 {
@@ -65,9 +70,60 @@ BatchTargetsInfo& BatchFile::getTargetHardwares()
   return targetHardwares;
 }
 
+void BatchFile::addTargetHardware( const BatchTargetInfo &targetHardwareInfo)
+{
+  targetHardwares.push_back( targetHardwareInfo);
+}
+
+void BatchFile::addTargetHardware( BatchTargetInfo &&targetHardwareInfo)
+{
+  targetHardwares.push_back( targetHardwareInfo);
+}
+
 RawFile BatchFile::encode() const
 {
-  RawFile rawFile( BaseHeaderOffset + 3 * sizeof( uint32_t));
+  RawFile rawFile(
+    BaseHeaderOffset +
+    2 * sizeof( uint32_t) + // batchPartNumberPtr, targetHardwareIdListPtr
+    sizeof( uint16_t));     // CRC
+
+  auto rawBatchPn( encodeString( getPartNumber()));
+  assert( rawBatchPn.size() % 2 == 0);
+
+  auto rawComment( encodeString( getComment()));
+  assert( rawComment.size() % 2 == 0);
+
+  auto rawThwIdsList( encodeBatchTargetsInfo());
+  assert( rawThwIdsList.size() % 2 == 0);
+
+
+  auto it( rawFile.begin() + BaseHeaderOffset);
+
+  // batch part number information pointer
+  const uint32_t batchPartNumberPtr=
+    (BaseHeaderOffset + (2 * sizeof( uint32_t))) / 2;
+  it = setInt< uint32_t>( it, batchPartNumberPtr);
+
+  // THW ID list pointer
+  const uint32_t targetHardwareIdListPtr =
+    batchPartNumberPtr +
+    (rawBatchPn.size() / 2) +
+    (rawComment.size() / 2);
+  it = setInt< uint32_t>( it, targetHardwareIdListPtr);
+
+
+  // batch part number
+  it = rawFile.insert( it, rawBatchPn.begin(), rawBatchPn.end());
+  it += rawBatchPn.size();
+
+  // comment
+  it = rawFile.insert( it, rawComment.begin(), rawComment.end());
+  it += rawComment.size();
+
+  // THW ID load list
+  it = rawFile.insert( it, rawThwIdsList.begin(), rawThwIdsList.end());
+  it += rawThwIdsList.size();
+
 
   // set header and crc
   insertHeader( rawFile);
@@ -93,17 +149,86 @@ void BatchFile::decodeBody( const RawFile &rawFile)
   // comment
   it = decodeString( it, comment);
 
-  // target hardware id list
+  // target hardware ID load list
   decodeBatchTargetsInfo( rawFile, targetHardwareIdListPtr * 2);
 }
 
-BatchTargetsInfo BatchFile::decodeBatchTargetsInfo(
+RawFile BatchFile::encodeBatchTargetsInfo() const
+{
+  RawFile rawBatchTargetsInfo( sizeof(uint16_t)); // Number of THW IDs
+
+  // number of THW IDs
+  setInt< uint16_t>( rawBatchTargetsInfo.begin(), targetHardwares.size());
+
+  // iterate over target HWs
+  uint16_t thwCounter( 0);
+  for (auto const &targetHardwareInfo : targetHardwares)
+  {
+    ++thwCounter;
+
+    auto const rawThwId( encodeString( targetHardwareInfo.getTargetHardwareId()));
+    assert( rawThwId.size() % 2 == 0);
+
+    RawFile rawLoadsInfo;
+    /* iterate over loads */
+    for ( auto const loadInfo : targetHardwareInfo.getLoads())
+    {
+      auto const rawHeaderFilename( encodeString( loadInfo.getHeaderFilename()));
+      assert( rawHeaderFilename.size() % 2 == 0);
+
+      auto const rawPartNumber( encodeString( loadInfo.getPartNumber()));
+      assert( rawPartNumber.size() % 2 == 0);
+
+      rawLoadsInfo.insert( rawLoadsInfo.end(), rawHeaderFilename.begin(), rawHeaderFilename.end());
+      rawLoadsInfo.insert( rawLoadsInfo.end(), rawPartNumber.begin(), rawPartNumber.end());
+    }
+    assert( rawLoadsInfo.size() % 2 == 0);
+
+    RawFile rawBatchTargetInfo(
+      sizeof( uint16_t) + // next THW ID pointer
+      rawThwId.size() +
+      sizeof( uint16_t) + // number of loads
+      rawLoadsInfo.size());
+
+    auto batchTargetInfoIt( rawBatchTargetInfo.begin());
+
+    // next load pointer (is set to 0 for last load)
+    batchTargetInfoIt = setInt< uint16_t>(
+      batchTargetInfoIt,
+      (thwCounter == targetHardwares.size()) ?
+        (0U) :
+        (rawBatchTargetInfo.size() / 2));
+
+    // THW ID
+    batchTargetInfoIt =
+      std::copy( rawThwId.begin(), rawThwId.end(), batchTargetInfoIt);
+
+    // Number of Loads
+    batchTargetInfoIt =
+      setInt< uint16_t>( batchTargetInfoIt, targetHardwareInfo.getLoads().size());
+
+    // Loads list
+    batchTargetInfoIt =
+      std::copy( rawLoadsInfo.begin(), rawLoadsInfo.end(), batchTargetInfoIt);
+
+    // add THW info to files info
+    rawBatchTargetsInfo.insert(
+      rawBatchTargetsInfo.end(),
+      rawBatchTargetInfo.begin(),
+      rawBatchTargetInfo.end());
+  }
+
+  return rawBatchTargetsInfo;
+}
+
+void BatchFile::decodeBatchTargetsInfo(
   const RawFile &rawFile,
-  const std::size_t offset) const
+  const std::size_t offset)
 {
   RawFile::const_iterator it( rawFile.begin() + offset);
 
-  BatchTargetsInfo batchTargetsInfo;
+  // clear potently data
+  targetHardwares.clear();
 
   // number of target HW IDs
   uint16_t numberOfTargetHardwareIds;
@@ -148,10 +273,8 @@ BatchTargetsInfo BatchFile::decodeBatchTargetsInfo(
     it += thwIdPointer * 2;
 
     // THW ID info
-    batchTargetsInfo.emplace_back( std::move( thwId), std::move( batchLoadsInfo));
+    targetHardwares.emplace_back( std::move( thwId), std::move( batchLoadsInfo));
   }
-
-  return batchTargetsInfo;
 }
 
 }

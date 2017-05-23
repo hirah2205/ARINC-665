@@ -84,7 +84,9 @@ class Arinc665CompilerApplication
     path mediaSetSourceDirectory;
     //! Media Set destination directory
     path mediaSetDestinationDirectory;
-
+    //!
+    bool createBatchFiles;
+    bool createLoadHeaderFiles;
     Arinc665::Utils::Arinc665XmlPtr xml;
 };
 

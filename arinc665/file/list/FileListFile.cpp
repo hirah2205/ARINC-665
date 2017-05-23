@@ -278,7 +278,7 @@ void FileListFile::decodeBody( const RawFile &rawFile)
   it = getInt< uint8_t>( it, numberOfMediaSetMembers);
 
   // file list
-  filesInfo = decodeFilesInfo( rawFile, 2 * fileListPtr);
+  decodeFilesInfo( rawFile, 2 * fileListPtr);
 
   // user defined data
   if ( 0 != userDefinedDataPtr)
@@ -342,18 +342,20 @@ RawFile FileListFile::encodeFilesInfo() const
   return rawFilesInfo;
 }
 
-FilesInfo FileListFile::decodeFilesInfo(
+void FileListFile::decodeFilesInfo(
   const RawFile &rawFile,
   const std::size_t offset)
 {
   auto it( rawFile.begin() + offset);
 
-  FilesInfo fileList;
+  // clear potentially data
+  filesInfo.clear();
 
   // number of files
   uint16_t numberOfFiles;
   it = getInt< uint16_t>( it, numberOfFiles);
 
+  // iterate over index
   for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex)
   {
     auto listIt( it);
@@ -383,10 +385,8 @@ FilesInfo FileListFile::decodeFilesInfo(
     // set it to begin of next file
     it += filePointer * 2;
 
-    fileList.emplace_back( filename, pathName, memberSequenceNumber, crc);
+    filesInfo.emplace_back( filename, pathName, memberSequenceNumber, crc);
   }
-
-  return fileList;
 }
 
 }

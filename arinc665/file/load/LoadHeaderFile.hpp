@@ -90,9 +90,9 @@ class LoadHeaderFile: public Arinc665File
 
     void decodeBody( const RawFile &rawFile);
 
-    LoadFilesInfo decodeFileList( const RawFile &rawFile, std::size_t offset);
-
     RawFile encodeFileList( const LoadFilesInfo &loadFilesInfo) const;
+
+    LoadFilesInfo decodeFileList( const RawFile &rawFile, std::size_t offset);
 
     //! Part number of the load
     string partNumber;

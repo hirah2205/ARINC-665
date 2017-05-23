@@ -101,7 +101,7 @@ class BatchListFile: public ListFile
 
     RawFile encodeBatchesInfo() const;
 
-    BatchesInfo decodeBatchesInfo( const RawFile &rawFile, std::size_t offset);
+    void decodeBatchesInfo( const RawFile &rawFile, std::size_t offset);
 
     //! The media set part number
     string mediaSetPn;

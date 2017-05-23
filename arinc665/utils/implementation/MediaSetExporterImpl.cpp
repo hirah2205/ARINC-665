@@ -279,10 +279,37 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
     case Media::File::FileType::BatchFile:
       if (createBatchFiles)
       {
-        BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-          AdditionalInfo( "Not implemented"));
+        auto batch( std::dynamic_pointer_cast< const Media::Batch>( file));
+        if (!batch)
+        {
+          BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+            AdditionalInfo( "Cannot cast file to batch"));
+        }
+
+        File::BatchFile batchFile( Arinc665Version::ARINC_665_2);
+        batchFile.setPartNumber( batch->getPartNumber());
+        batchFile.setComment( batch->getComment());
+
+        for ( auto target : batch->getTargets())
+        {
+          File::BatchLoadsInfo batchLoadsInfo;
+          for (auto load : target.second)
+          {
+            auto loadPtr( load.lock());
+            batchLoadsInfo.emplace_back( loadPtr->getName(), loadPtr->getPartNumber());
+          }
+
+          batchFile.addTargetHardware(
+            File::BatchTargetInfo{target.first, batchLoadsInfo});
+        }
+
+        batchFile.calculateCrc();
+        writeFileHandler( batch->getMedium()->getMediumNumber(), batch->getPath(), batchFile);
       }
-      createFileHandler( file);
+      else
+      {
+        createFileHandler( file);
+      }
       break;
 
     default:
