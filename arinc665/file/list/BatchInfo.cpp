@@ -17,59 +17,28 @@
 #include "BatchInfo.hpp"
 
 #include <arinc665/file/list/FileInfo.hpp>
-#include <arinc665/file/Arinc665File.hpp>
-
-#include <helper/Endianess.hpp>
-#include <helper/Logger.hpp>
 
 namespace Arinc665 {
 namespace File {
 
-BatchesInfo BatchInfo::getBatchesInfo(
-  RawFile::const_iterator &it)
-{
-  RawFile::const_iterator workIt = it;
-
-  BatchesInfo batchesInfo;
-
-  // number of batches
-  uint16_t numberOfBatches;
-  workIt = getInt< uint16_t>( workIt, numberOfBatches);
-
-  for ( unsigned int batchIndex = 0; batchIndex < numberOfBatches; ++batchIndex)
-  {
-    batchesInfo.push_back( BatchInfo( workIt));
-  }
-
-  it = workIt;
-
-  return batchesInfo;
-}
-
-BatchInfo::BatchInfo():
-  memberSequenceNumber( 0)
+BatchInfo::BatchInfo(
+  const string &partNumber,
+  const string &filename,
+  uint16_t memberSequenceNumber):
+  partNumber( partNumber),
+  filename( filename),
+  memberSequenceNumber( memberSequenceNumber)
 {
 }
 
-BatchInfo::BatchInfo( RawFile::const_iterator &it)
+BatchInfo::BatchInfo(
+  string &&partNumber,
+  string &&filename,
+  uint16_t memberSequenceNumber):
+  partNumber( partNumber),
+  filename( filename),
+  memberSequenceNumber( memberSequenceNumber)
 {
-  RawFile::const_iterator workIt = it;
-
-  // next batch pointer
-  uint16_t batchPointer;
-  workIt = getInt< uint16_t>( workIt, batchPointer);
-
-  // part number
-  workIt = Arinc665File::decodeString( workIt, partNumber);
-
-  // batch filename
-  workIt = Arinc665File::decodeString( workIt, filename);
-
-  // member sequence number
-  workIt = getInt< uint16_t>( workIt, memberSequenceNumber);
-
-  // set it to begin of next batch
-  it += batchPointer * 2;
 }
 
 BatchInfo::string BatchInfo::getPartNumber() const

@@ -29,12 +29,15 @@ class BatchInfo
   public:
     using string = std::string;
 
-    static BatchesInfo getBatchesInfo(
-      RawFile::const_iterator &it);
+    BatchInfo(
+      const string &partNumber,
+      const string &filename,
+      uint16_t memberSequenceNumber);
 
-    BatchInfo();
-
-    BatchInfo( RawFile::const_iterator &it);
+    BatchInfo(
+      string &&partNumber,
+      string &&filename,
+      uint16_t memberSequenceNumber);
 
     string getPartNumber() const;
 

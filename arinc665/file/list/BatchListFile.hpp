@@ -72,6 +72,10 @@ class BatchListFile: public ListFile
 
     BatchInfoMap getBatchesInfoAsMap() const;
 
+    void addBatchInfo( const BatchInfo &batchInfo);
+
+    void addBatchInfo( BatchInfo &&batchInfo);
+
     /**
      * @brief Returns the user defined data.
      *
@@ -95,9 +99,17 @@ class BatchListFile: public ListFile
 
     void decodeBody( const RawFile &rawFile);
 
+    RawFile encodeBatchesInfo() const;
+
+    BatchesInfo decodeBatchesInfo( const RawFile &rawFile, std::size_t offset);
+
+    //! The media set part number
     string mediaSetPn;
+    //! The media sequence number
     uint8_t mediaSequenceNumber;
+    //! The number of media set members
     uint8_t numberOfMediaSetMembers;
+    //! The stored batches information
     BatchesInfo batchesInfo;
     //! user defined data
     UserDefinedData userDefinedData;

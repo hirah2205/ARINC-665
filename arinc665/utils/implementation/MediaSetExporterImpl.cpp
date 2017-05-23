@@ -114,14 +114,14 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
     /* add all batches to batches list */
     for ( auto &batch : medium->getMediaSet()->getBatches())
     {
-#if 0
-      batchListFile.add({
+      batchListFile.addBatchInfo({
         batch->getPartNumber(),
         batch->getName(),
-        batch->getMedium()->getMediumNumber(),
-        batch->getTargetHardwareIdList()});
-#endif
+        batch->getMedium()->getMediumNumber()});
     }
+
+    batchListFile.calculateCrc();
+    writeFileHandler( medium->getMediumNumber(), "/" + ListOfBatchesName, batchListFile);
   }
 
   // export medium info
@@ -145,7 +145,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
       crc});
   }
 
-  /* add list of loads */
+  // add list of loads
   auto rawListOfLoadsFile( readFileHandler( medium->getMediumNumber(), "/" + ListOfLoadsName));
   uint16_t listOfLoadsFileCrc( File::Arinc665File::calculateChecksum( rawListOfLoadsFile, 0));
 
@@ -155,7 +155,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
     medium->getMediumNumber(),
     listOfLoadsFileCrc});
 
-  /* add list of batches - if present */
+  // add list of batches - if present
   if (medium->getMediaSet()->getNumberOfBatches() != 0)
   {
     auto rawListOfBatchesFile( readFileHandler( medium->getMediumNumber(), "/" + ListOfBatchesName));

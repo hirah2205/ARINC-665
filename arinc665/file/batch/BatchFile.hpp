@@ -53,23 +53,55 @@ class BatchFile: public Arinc665File
     //! @copydoc Arinc665File::operator=
     virtual BatchFile& operator=( const RawFile &rawFile) override;
 
+    /**
+     * @brief Returns the part number of the batch file.
+     *
+     * @return The part number of the batch file.
+     **/
     string getPartNumber() const;
 
+    /**
+     * @brief Updates the part number of the batch file.
+     *
+     * @param[in] partNumber
+     *   The new part number.
+     **/
     void setPartNumber( const string &partNumber);
 
+    /**
+     * @brief Returns the comment text of the batch file.
+     *
+     * @return The comment text of the batch file.
+     **/
     string getComment() const;
 
+    /**
+     * @brief Updates the comment text of the batch file.
+     *
+     * @param[in] comment
+     *   The new comment text.
+     **/
     void setComment( const string &comment);
 
+    /**
+     * @brief Returns the target hardwares information.
+     *
+     * @return The target hardwares information.
+     **/
     const BatchTargetsInfo& getTargetHardwares() const;
 
+    //! @copydoc getTargetHardwares() const
     BatchTargetsInfo& getTargetHardwares();
 
   private:
-    //! @copydoc ListFile::encode
+    //! @copydoc Arinc665File::encode
     virtual RawFile encode() const override final;
 
     void decodeBody( const RawFile &rawFile);
+
+    BatchTargetsInfo decodeBatchTargetsInfo(
+      const RawFile &rawFile,
+      std::size_t offset) const;
 
     string partNumber;
     string comment;

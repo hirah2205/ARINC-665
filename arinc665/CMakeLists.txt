@@ -42,6 +42,13 @@ add_library(
   file/FileFactory.hpp
   file/FileFactory.cpp
 
+  file/batch/BatchFile.hpp
+  file/batch/BatchFile.cpp
+  file/batch/BatchLoadInfo.hpp
+  file/batch/BatchLoadInfo.cpp
+  file/batch/BatchTargetInfo.hpp
+  file/batch/BatchTargetInfo.cpp
+
   file/list/ListFile.hpp
   file/list/ListFile.cpp
   file/list/FileInfo.hpp
@@ -61,11 +68,6 @@ add_library(
   file/load/LoadHeaderFile.cpp
   file/load/LoadFileInfo.hpp
   file/load/LoadFileInfo.cpp
-
-  file/batch/BatchFile.hpp
-  file/batch/BatchFile.cpp
-  file/batch/BatchLoadInfo.hpp
-  file/batch/BatchTargetInfo.hpp
 
   media/Base.hpp
   media/MediaSet.hpp

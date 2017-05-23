@@ -69,7 +69,7 @@ class LoadHeaderFile: public Arinc665File
     void setLoadCrc( uint32_t loadCrc);
 
   private:
-    //! @copydoc ListFile::encode
+    //! @copydoc Arinc665File::encode
     virtual RawFile encode() const override final;
 
     void decodeBody( const RawFile &rawFile);

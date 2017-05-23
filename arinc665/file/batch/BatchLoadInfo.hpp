@@ -32,13 +32,15 @@ class BatchLoadInfo
   public:
     using string = std::string;
 
-    explicit BatchLoadInfo(
-      const string &headerFilename = {},
-      const string &partNumber = {});
+    BatchLoadInfo() = default;
 
-    explicit BatchLoadInfo(
-      string &&headerFilename = {},
-      string &&partNumber = {});
+    BatchLoadInfo(
+      const string &headerFilename,
+      const string &partNumber);
+
+    BatchLoadInfo(
+      string &&headerFilename,
+      string &&partNumber);
 
     string getHeaderFilename() const;
 
