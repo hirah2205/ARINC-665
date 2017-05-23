@@ -52,13 +52,29 @@ class LoadHeaderFile: public Arinc665File
 
     TargetHardwareIdList& getTargetHardwareIdList();
 
+    void setTargetHardwareIdList( const TargetHardwareIdList &targetHardwareIdList);
+
+    void setTargetHardwareIdList( TargetHardwareIdList &&targetHardwareIdList);
+
+    void addTargetHardwareId( const string &targetHardwareId);
+
+    void addTargetHardwareId( string targetHardwareId);
+
     const LoadFilesInfo& getDataFiles() const;
 
     LoadFilesInfo& getDataFiles();
 
+    void addDataFile( const LoadFileInfo &dataFileInfo);
+
+    void addDataFile( LoadFileInfo &&dataFileInfo);
+
     const LoadFilesInfo& getSupportFiles() const;
 
     LoadFilesInfo& getSupportFiles();
+
+    void addSupportFile( const LoadFileInfo &supportFileInfo);
+
+    void addSupportFile( LoadFileInfo &&supportFileInfo);
 
     const UserDefinedData& getUserDefinedData() const;
 
@@ -75,6 +91,8 @@ class LoadHeaderFile: public Arinc665File
     void decodeBody( const RawFile &rawFile);
 
     LoadFilesInfo decodeFileList( const RawFile &rawFile, std::size_t offset);
+
+    RawFile encodeFileList( const LoadFilesInfo &loadFilesInfo) const;
 
     //! Part number of the load
     string partNumber;

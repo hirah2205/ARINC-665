@@ -236,7 +236,7 @@ RawFile FileListFile::encode() const
 
   // file list
   it = rawFile.insert( it, rawFilesInfo.begin(), rawFilesInfo.end());
-  it += rawFile.size();
+  it += rawFilesInfo.size();
 
   if (!userDefinedData.empty())
   {

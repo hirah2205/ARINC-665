@@ -18,6 +18,7 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
+#include <arinc665/Arinc665Crc.hpp>
 
 #include <arinc665/file/FileFactory.hpp>
 
@@ -455,6 +456,8 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex)
         AdditionalInfo( "Medium is not consistent to media set"));
     }
 
+    //! @todo implement load CRC check.
+
     // add load header to global information
     loadHeaderFiles.insert(
       std::make_pair( loadHeaderFileIt->second.getFilename(), loadHeaderFile));
@@ -567,7 +570,7 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
     // iterate over data files
     for ( const auto &dataFile : loadHeaderFile->second.getDataFiles())
     {
-      Arinc665::Media::FilePtr dataFilePtr = mediaSet->getFile( dataFile.getName());
+      auto dataFilePtr( mediaSet->getFile( dataFile.getName()));
 
       dataFilePtr->setPartNumber( dataFile.getPartNumber());
 
@@ -577,7 +580,9 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
     // iterate over support files
     for ( const auto &supportFile : loadHeaderFile->second.getSupportFiles())
     {
-      Arinc665::Media::FilePtr supportFilePtr = mediaSet->getFile( supportFile.getName());
+      auto supportFilePtr( mediaSet->getFile( supportFile.getName()));
+
+      supportFilePtr->setPartNumber( supportFile.getPartNumber());
 
       loadPtr->addSupportFile( supportFilePtr);
     }

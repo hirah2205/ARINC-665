@@ -94,7 +94,10 @@ int Arinc665CompilerApplication::operator()()
         &Arinc665CompilerApplication::readFile,
         this,
         std::placeholders::_1,
-        std::placeholders::_2)));
+        std::placeholders::_2),
+      Arinc665::Arinc665Version::ARINC_665_2,
+      false,
+      true));
 
     exporter();
   }
@@ -181,6 +184,8 @@ void Arinc665CompilerApplication::createFile(
 
   // create directories (if necessary)
   boost::filesystem::create_directories( filePath.parent_path());
+
+  BOOST_LOG_TRIVIAL( severity_level::info) << "Copy file " << filePath;
 
   // copy file
   boost::filesystem::copy(

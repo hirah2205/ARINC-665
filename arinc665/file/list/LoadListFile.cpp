@@ -243,54 +243,54 @@ RawFile LoadListFile::encodeLoadsInfo() const
 {
   RawFile rawLoadsInfo( sizeof( uint16_t));
 
-   // number of loads
-   setInt< uint16_t>( rawLoadsInfo.begin(), getNumberOfLoads());
+  // number of loads
+  setInt< uint16_t>( rawLoadsInfo.begin(), getNumberOfLoads());
 
-   // iterate over files
-   uint16_t loadCounter( 0);
-   for (auto const &loadInfo : getLoadsInfo())
-   {
-     ++loadCounter;
-     auto const rawPartNumber( encodeString( loadInfo.getPartNumber()));
-     assert( rawPartNumber.size() % 2 == 0);
-     auto const rawHeaderFilename( encodeString( loadInfo.getHeaderFilename()));
-     assert( rawHeaderFilename.size() % 2 == 0);
-     auto const rawThwIds( encodeStringList( loadInfo.getTargetHardwareIdList()));
-     assert( rawThwIds.size() % 2 == 0);
+  // iterate over files
+  uint16_t loadCounter( 0);
+  for (auto const &loadInfo : getLoadsInfo())
+  {
+    ++loadCounter;
+    auto const rawPartNumber( encodeString( loadInfo.getPartNumber()));
+    assert( rawPartNumber.size() % 2 == 0);
+    auto const rawHeaderFilename( encodeString( loadInfo.getHeaderFilename()));
+    assert( rawHeaderFilename.size() % 2 == 0);
+    auto const rawThwIds( encodeStringList( loadInfo.getTargetHardwareIdList()));
+    assert( rawThwIds.size() % 2 == 0);
 
-     RawFile rawLoadInfo(
-       sizeof( uint16_t) + // next load pointer
-       rawPartNumber.size() +
-       rawHeaderFilename.size() +
-       sizeof( uint16_t) + // member sequence number
-       rawThwIds.size());
+    RawFile rawLoadInfo(
+      sizeof( uint16_t) + // next load pointer
+      rawPartNumber.size() +
+      rawHeaderFilename.size() +
+      sizeof( uint16_t) + // member sequence number
+      rawThwIds.size());
 
-     auto loadInfoIt( rawLoadInfo.begin());
+    auto loadInfoIt( rawLoadInfo.begin());
 
-     // next load pointer (is set to 0 for last load)
-     loadInfoIt = setInt< uint16_t>(
-       loadInfoIt,
-       (loadCounter == getNumberOfLoads()) ?
-         (0U) :
-         (rawLoadInfo.size() / 2));
+    // next load pointer (is set to 0 for last load)
+    loadInfoIt = setInt< uint16_t>(
+      loadInfoIt,
+      (loadCounter == getNumberOfLoads()) ?
+        (0U) :
+        (rawLoadInfo.size() / 2));
 
-     // part number
-     loadInfoIt = std::copy( rawPartNumber.begin(), rawPartNumber.end(), loadInfoIt);
+    // part number
+    loadInfoIt = std::copy( rawPartNumber.begin(), rawPartNumber.end(), loadInfoIt);
 
-     // header filename
-     loadInfoIt = std::copy( rawHeaderFilename.begin(), rawHeaderFilename.end(), loadInfoIt);
+    // header filename
+    loadInfoIt = std::copy( rawHeaderFilename.begin(), rawHeaderFilename.end(), loadInfoIt);
 
-     // member sequence number
-     loadInfoIt = setInt< uint16_t>( loadInfoIt, loadInfo.getMemberSequenceNumber());
+    // member sequence number
+    loadInfoIt = setInt< uint16_t>( loadInfoIt, loadInfo.getMemberSequenceNumber());
 
-     // THW IDs list
-     loadInfoIt = std::copy( rawThwIds.begin(), rawThwIds.end(), loadInfoIt);
+    // THW IDs list
+    loadInfoIt = std::copy( rawThwIds.begin(), rawThwIds.end(), loadInfoIt);
 
-     // add file info to files info
-     rawLoadsInfo.insert( rawLoadsInfo.end(), rawLoadInfo.begin(), rawLoadInfo.end());
-   }
+    // add file info to files info
+    rawLoadsInfo.insert( rawLoadsInfo.end(), rawLoadInfo.begin(), rawLoadInfo.end());
+  }
 
-   return rawLoadsInfo;
+  return rawLoadsInfo;
 }
 
 LoadsInfo LoadListFile::decodeLoadsInfo(

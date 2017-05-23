@@ -27,6 +27,10 @@
 #include <arinc665/file/list/LoadListFile.hpp>
 #include <arinc665/file/list/BatchListFile.hpp>
 #include <arinc665/file/list/FileListFile.hpp>
+#include <arinc665/file/load/LoadHeaderFile.hpp>
+#include <arinc665/file/batch/BatchFile.hpp>
+
+#include <arinc665/Arinc665Crc.hpp>
 
 namespace Arinc665 {
 namespace Utils {
@@ -174,6 +178,8 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 
 void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory)
 {
+  BOOST_LOG_FUNCTION();
+
   BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
     "Export directory to " << directory->getPath();
 
@@ -192,6 +198,8 @@ void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory)
 
 void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
 {
+  BOOST_LOG_FUNCTION();
+
   BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
     "Export file to " << file->getPath();
 
@@ -204,10 +212,68 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
     case Media::File::FileType::LoadFile:
       if (createLoadHeaderFiles)
       {
-        BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-          AdditionalInfo( "Not implemented"));
+        auto load( std::dynamic_pointer_cast< const Media::Load>( file));
+        if (!load)
+        {
+          BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+            AdditionalInfo( "Cannot cast file to load"));
+        }
+
+        File::LoadHeaderFile loadHeaderFile( Arinc665Version::ARINC_665_2);
+        loadHeaderFile.setPartNumber( load->getPartNumber());
+        loadHeaderFile.setTargetHardwareIdList( load->getTargetHardwareIdList());
+
+        Arinc665Crc32 loadCrc;
+
+        for ( auto dataFile : load->getDataFiles())
+        {
+          auto dataFilePtr( dataFile.lock());
+          auto rawDataFile( readFileHandler( dataFilePtr->getMedium()->getMediumNumber(), dataFilePtr->getPath()));
+          uint16_t dataFileCrc( File::Arinc665File::calculateChecksum( rawDataFile, 0));
+
+          loadHeaderFile.addDataFile( {
+            dataFilePtr->getName(),
+            dataFilePtr->getPartNumber(),
+            static_cast< uint32_t>( rawDataFile.size() / 2),
+            dataFileCrc});
+
+          loadCrc.process_block(
+            &(*rawDataFile.begin()),
+            &(*rawDataFile.begin()) + rawDataFile.size());
+        }
+
+        for ( auto supportFile : load->getSupportFiles())
+        {
+          auto supportFilePtr( supportFile.lock());
+          auto rawSupportFile( readFileHandler( supportFilePtr->getMedium()->getMediumNumber(), supportFilePtr->getPath()));
+          uint16_t supportFileCrc( File::Arinc665File::calculateChecksum( rawSupportFile, 0));
+
+          loadHeaderFile.addDataFile( {
+            supportFilePtr->getName(),
+            supportFilePtr->getPartNumber(),
+            static_cast< uint32_t>( rawSupportFile.size() / 2),
+            supportFileCrc});
+
+          loadCrc.process_block(
+            &(*rawSupportFile.begin()),
+            &(*rawSupportFile.begin()) + rawSupportFile.size());
+        }
+
+        loadHeaderFile.calculateCrc();
+
+        File::RawFile rawLoadHeader( loadHeaderFile);
+
+        loadCrc.process_block(
+          &(*rawLoadHeader.begin()),
+          &(*rawLoadHeader.begin()) + rawLoadHeader.size() - 4U);
+
+        loadHeaderFile.setLoadCrc( loadCrc.checksum());
+        writeFileHandler( load->getMedium()->getMediumNumber(), load->getPath(), loadHeaderFile);
       }
-      createFileHandler( file);
+      else
+      {
+        createFileHandler( file);
+      }
       break;
 
     case Media::File::FileType::BatchFile:
