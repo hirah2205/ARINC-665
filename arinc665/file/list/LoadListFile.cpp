@@ -247,8 +247,10 @@ RawFile LoadListFile::encodeLoadsInfo() const
    setInt< uint16_t>( rawLoadsInfo.begin(), getNumberOfLoads());
 
    // iterate over files
+   uint16_t loadCounter( 0);
    for (auto const &loadInfo : getLoadsInfo())
    {
+     ++loadCounter;
      auto const rawPartNumber( encodeString( loadInfo.getPartNumber()));
      assert( rawPartNumber.size() % 2 == 0);
      auto const rawHeaderFilename( encodeString( loadInfo.getHeaderFilename()));
@@ -265,8 +267,12 @@ RawFile LoadListFile::encodeLoadsInfo() const
 
      auto loadInfoIt( rawLoadInfo.begin());
 
-     // next load pointer
-     loadInfoIt = setInt< uint16_t>( loadInfoIt, rawLoadInfo.size() / 2);
+     // next load pointer (is set to 0 for last load)
+     loadInfoIt = setInt< uint16_t>(
+       loadInfoIt,
+       (loadCounter == getNumberOfLoads()) ?
+         (0U) :
+         (rawLoadInfo.size() / 2));
 
      // part number
      loadInfoIt = std::copy( rawPartNumber.begin(), rawPartNumber.end(), loadInfoIt);
@@ -307,6 +313,8 @@ LoadsInfo LoadListFile::decodeLoadsInfo(
     // next load pointer
     uint16_t loadPointer;
     listIt = getInt< uint16_t>( listIt, loadPointer);
+
+    //! @todo check pointer for != 0 (all except last ==> OK, last ==> error)
 
     // part number
     string partNumber;

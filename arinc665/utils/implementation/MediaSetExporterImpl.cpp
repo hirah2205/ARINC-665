@@ -105,7 +105,23 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   // export list of batches (if present)
   if (medium->getMediaSet()->getNumberOfBatches() != 0)
   {
-
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
+      "Export list of batches";
+    Arinc665::File::BatchListFile batchListFile( arinc665Version);
+    batchListFile.setMediaSequenceNumber( medium->getMediumNumber());
+    batchListFile.setMediaSetPn( medium->getPartNumber());
+    batchListFile.setNumberOfMediaSetMembers(  medium->getMediaSet()->getNumberOfMedia());
+    /* add all batches to batches list */
+    for ( auto &batch : medium->getMediaSet()->getBatches())
+    {
+#if 0
+      batchListFile.add({
+        batch->getPartNumber(),
+        batch->getName(),
+        batch->getMedium()->getMediumNumber(),
+        batch->getTargetHardwareIdList()});
+#endif
+    }
   }
 
   // export medium info
@@ -128,11 +144,29 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
       file->getMedium()->getMediumNumber(),
       crc});
   }
+
   /* add list of loads */
-  //! @todo
+  auto rawListOfLoadsFile( readFileHandler( medium->getMediumNumber(), "/" + ListOfLoadsName));
+  uint16_t listOfLoadsFileCrc( File::Arinc665File::calculateChecksum( rawListOfLoadsFile, 0));
+
+  fileListFile.addFileInfo({
+    ListOfLoadsName,
+    File::Arinc665File::encodePath( "/"),
+    medium->getMediumNumber(),
+    listOfLoadsFileCrc});
 
   /* add list of batches - if present */
-  //! @todo
+  if (medium->getMediaSet()->getNumberOfBatches() != 0)
+  {
+    auto rawListOfBatchesFile( readFileHandler( medium->getMediumNumber(), "/" + ListOfBatchesName));
+    uint16_t listOfBatchesFileCrc( File::Arinc665File::calculateChecksum( rawListOfBatchesFile, 0));
+
+    fileListFile.addFileInfo({
+      ListOfBatchesName,
+      File::Arinc665File::encodePath( "/"),
+      medium->getMediumNumber(),
+      listOfBatchesFileCrc});
+  }
 
   fileListFile.calculateCrc();
   writeFileHandler( medium->getMediumNumber(), "/" + ListOfFilesName, fileListFile);

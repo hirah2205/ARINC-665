@@ -298,8 +298,10 @@ RawFile FileListFile::encodeFilesInfo() const
   setInt< uint16_t>( rawFilesInfo.begin(), getNumberOfFiles());
 
   // iterate over files
+  uint16_t fileCounter( 0);
   for (auto const &fileInfo : getFilesInfo())
   {
+    ++fileCounter;
     auto const rawFilename( encodeString( fileInfo.getFilename()));
     assert( rawFilename.size() % 2 == 0);
     auto const rawPathname( encodeString( fileInfo.getPathName()));
@@ -314,8 +316,12 @@ RawFile FileListFile::encodeFilesInfo() const
 
     auto fileInfoIt( rawFileInfo.begin());
 
-    // next file pointer
-    fileInfoIt = setInt< uint16_t>( fileInfoIt, rawFileInfo.size() / 2);
+    // next file pointer (is set to 0 for last file)
+    fileInfoIt = setInt< uint16_t>(
+      fileInfoIt,
+      (fileCounter == getNumberOfFiles()) ?
+        (0U) :
+        (rawFileInfo.size() / 2));
 
     // filename
     fileInfoIt = std::copy( rawFilename.begin(), rawFilename.end(), fileInfoIt);
@@ -355,6 +361,8 @@ FilesInfo FileListFile::decodeFilesInfo(
     // next file pointer
     uint16_t filePointer;
     listIt = getInt< uint16_t>( listIt, filePointer);
+
+    //! @todo check pointer for != 0 (all except last ==> OK, last ==> error)
 
     // filename
     string filename;
