@@ -19,7 +19,7 @@
 
 #include <arinc665/file/File.hpp>
 #include <arinc665/file/Arinc665File.hpp>
-#include <arinc665/file/batch/BatchTargetInfo.hpp>
+#include <arinc665/file/BatchTargetInfo.hpp>
 
 #include <string>
 

@@ -18,7 +18,7 @@
 #define ARINC665_FILE_BATCHTARGETINFO_HPP
 
 #include <arinc665/file/File.hpp>
-#include <arinc665/file/batch/BatchLoadInfo.hpp>
+#include <arinc665/file/BatchLoadInfo.hpp>
 
 #include <string>
 
@@ -26,20 +26,20 @@ namespace Arinc665 {
 namespace File {
 
 /**
- * @brief The list of loads for the given target hardware
+ * @brief The target hardware information, which is part of the batch file.
  **/
 class BatchTargetInfo
 {
   public:
     using string = std::string;
 
-    explicit BatchTargetInfo(
+    BatchTargetInfo(
       const string &targetHardwareId,
-      const BatchLoadsInfo &loads = {});
+      const BatchLoadsInfo &loads);
 
-    explicit BatchTargetInfo(
+    BatchTargetInfo(
       string &&targetHardwareId,
-      BatchLoadsInfo &&loads = {});
+      BatchLoadsInfo &&loads);
 
     /**
      * @brief Returns the target hardware ID for this loads info.

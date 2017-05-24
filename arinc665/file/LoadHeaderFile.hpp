@@ -19,7 +19,7 @@
 
 #include <arinc665/file/File.hpp>
 #include <arinc665/file/Arinc665File.hpp>
-#include <arinc665/file/load/LoadFileInfo.hpp>
+#include <arinc665/file/LoadFileInfo.hpp>
 
 #include <list>
 #include <vector>

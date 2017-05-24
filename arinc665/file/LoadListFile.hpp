@@ -18,8 +18,8 @@
 #define ARINC665_LOADLISTFILE_HPP
 
 #include <arinc665/file/File.hpp>
-#include <arinc665/file/list/ListFile.hpp>
-#include <arinc665/file/list/LoadInfo.hpp>
+#include <arinc665/file/ListFile.hpp>
+#include <arinc665/file/LoadInfo.hpp>
 
 #include <vector>
 #include <map>

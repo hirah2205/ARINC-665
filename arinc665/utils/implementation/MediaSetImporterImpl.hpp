@@ -19,11 +19,11 @@
 
 #include <arinc665/utils/Arinc665Utils.hpp>
 
-#include <arinc665/file/list/FileListFile.hpp>
-#include <arinc665/file/list/LoadListFile.hpp>
-#include <arinc665/file/list/BatchListFile.hpp>
-#include <arinc665/file/load/LoadHeaderFile.hpp>
-#include <arinc665/file/batch/BatchFile.hpp>
+#include <arinc665/file/FileListFile.hpp>
+#include <arinc665/file/LoadListFile.hpp>
+#include <arinc665/file/BatchListFile.hpp>
+#include <arinc665/file/LoadHeaderFile.hpp>
+#include <arinc665/file/BatchFile.hpp>
 
 
 #include <arinc665/media/Media.hpp>

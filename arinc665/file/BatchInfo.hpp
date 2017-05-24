@@ -24,6 +24,9 @@
 namespace Arinc665 {
 namespace File {
 
+/**
+ * @brief Batch info, which is part of the list of batches file.
+ */
 class BatchInfo
 {
   public:

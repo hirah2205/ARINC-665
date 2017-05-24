@@ -19,12 +19,6 @@
 
 #include <arinc665/file/File.hpp>
 
-#include <arinc665/file/list/FileListFile.hpp>
-#include <arinc665/file/list/LoadListFile.hpp>
-#include <arinc665/file/list/BatchListFile.hpp>
-#include <arinc665/file/load/LoadHeaderFile.hpp>
-#include <arinc665/file/batch/BatchFile.hpp>
-
 #include <boost/filesystem.hpp>
 
 namespace Arinc665 {

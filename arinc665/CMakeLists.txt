@@ -39,35 +39,33 @@ add_library(
 
   file/Arinc665File.hpp
   file/Arinc665File.cpp
+  file/BatchFile.hpp
+  file/BatchFile.cpp
+  file/BatchInfo.hpp
+  file/BatchInfo.cpp
+  file/BatchListFile.hpp
+  file/BatchListFile.cpp
+  file/BatchLoadInfo.hpp
+  file/BatchLoadInfo.cpp
+  file/BatchTargetInfo.hpp
+  file/BatchTargetInfo.cpp
+  file/File.hpp
   file/FileFactory.hpp
   file/FileFactory.cpp
-
-  file/batch/BatchFile.hpp
-  file/batch/BatchFile.cpp
-  file/batch/BatchLoadInfo.hpp
-  file/batch/BatchLoadInfo.cpp
-  file/batch/BatchTargetInfo.hpp
-  file/batch/BatchTargetInfo.cpp
-
-  file/list/ListFile.hpp
-  file/list/ListFile.cpp
-  file/list/FileInfo.hpp
-  file/list/FileInfo.cpp
-  file/list/FileListFile.hpp
-  file/list/FileListFile.cpp
-  file/list/LoadInfo.hpp
-  file/list/LoadInfo.cpp
-  file/list/LoadListFile.hpp
-  file/list/LoadListFile.cpp
-  file/list/BatchInfo.hpp
-  file/list/BatchInfo.cpp
-  file/list/BatchListFile.hpp
-  file/list/BatchListFile.cpp
-
-  file/load/LoadHeaderFile.hpp
-  file/load/LoadHeaderFile.cpp
-  file/load/LoadFileInfo.hpp
-  file/load/LoadFileInfo.cpp
+  file/FileInfo.hpp
+  file/FileInfo.cpp
+  file/FileListFile.hpp
+  file/FileListFile.cpp
+  file/ListFile.hpp
+  file/ListFile.cpp
+  file/LoadFileInfo.hpp
+  file/LoadFileInfo.cpp
+  file/LoadHeaderFile.hpp
+  file/LoadHeaderFile.cpp
+  file/LoadInfo.hpp
+  file/LoadInfo.cpp
+  file/LoadListFile.hpp
+  file/LoadListFile.cpp
 
   media/Base.hpp
   media/MediaSet.hpp

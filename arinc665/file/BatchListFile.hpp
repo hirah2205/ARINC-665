@@ -18,8 +18,8 @@
 #define ARINC665_BATCHLISTFILE_HPP
 
 #include <arinc665/file/File.hpp>
-#include <arinc665/file/list/ListFile.hpp>
-#include <arinc665/file/list/BatchInfo.hpp>
+#include <arinc665/file/ListFile.hpp>
+#include <arinc665/file/BatchInfo.hpp>
 
 #include <list>
 #include <vector>

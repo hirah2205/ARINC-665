@@ -18,8 +18,8 @@
 #define ARINC665_FILE_FILELISTFILE_HPP
 
 #include <arinc665/file/File.hpp>
-#include <arinc665/file/list/ListFile.hpp>
-#include <arinc665/file/list/FileInfo.hpp>
+#include <arinc665/file/ListFile.hpp>
+#include <arinc665/file/FileInfo.hpp>
 
 #include <vector>
 #include <map>

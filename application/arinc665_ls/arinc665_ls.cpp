@@ -19,10 +19,10 @@
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <arinc665/file/FileFactory.hpp>
-#include <arinc665/file/list/FileListFile.hpp>
-#include <arinc665/file/list/LoadListFile.hpp>
-#include <arinc665/file/list/BatchListFile.hpp>
-#include <arinc665/file/load/LoadHeaderFile.hpp>
+#include <arinc665/file/FileListFile.hpp>
+#include <arinc665/file/LoadListFile.hpp>
+#include <arinc665/file/BatchListFile.hpp>
+#include <arinc665/file/LoadHeaderFile.hpp>
 
 #include <helper/Dump.hpp>
 #include <helper/Logger.hpp>

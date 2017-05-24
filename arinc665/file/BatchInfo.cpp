@@ -16,7 +16,7 @@
 
 #include "BatchInfo.hpp"
 
-#include <arinc665/file/list/FileInfo.hpp>
+#include <arinc665/file/FileInfo.hpp>
 
 namespace Arinc665 {
 namespace File {
