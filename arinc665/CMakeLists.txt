@@ -50,8 +50,6 @@ add_library(
   file/BatchTargetInfo.hpp
   file/BatchTargetInfo.cpp
   file/File.hpp
-  file/FileFactory.hpp
-  file/FileFactory.cpp
   file/FileInfo.hpp
   file/FileInfo.cpp
   file/FileListFile.hpp

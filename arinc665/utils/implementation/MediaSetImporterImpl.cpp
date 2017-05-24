@@ -20,8 +20,6 @@
 #include <arinc665/Arinc665Logger.hpp>
 #include <arinc665/Arinc665Crc.hpp>
 
-#include <arinc665/file/FileFactory.hpp>
-
 #include <arinc665/media/Directory.hpp>
 
 namespace Arinc665 {
@@ -509,7 +507,7 @@ void MediaSetImporterImpl::addFiles()
   {
     // get file type
     Arinc665::FileType fileType(
-      Arinc665::File::FileFactory::getFileType( fileInfo.first.second));
+      Arinc665::File::Arinc665File::getFileType( fileInfo.first.second));
 
     switch ( fileType)
     {

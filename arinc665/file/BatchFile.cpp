@@ -179,8 +179,14 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
       auto const rawPartNumber( encodeString( loadInfo.getPartNumber()));
       assert( rawPartNumber.size() % 2 == 0);
 
-      rawLoadsInfo.insert( rawLoadsInfo.end(), rawHeaderFilename.begin(), rawHeaderFilename.end());
-      rawLoadsInfo.insert( rawLoadsInfo.end(), rawPartNumber.begin(), rawPartNumber.end());
+      rawLoadsInfo.insert(
+        rawLoadsInfo.end(),
+        rawHeaderFilename.begin(),
+        rawHeaderFilename.end());
+      rawLoadsInfo.insert(
+        rawLoadsInfo.end(),
+        rawPartNumber.begin(),
+        rawPartNumber.end());
     }
     assert( rawLoadsInfo.size() % 2 == 0);
 

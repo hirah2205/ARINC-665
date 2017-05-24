@@ -18,7 +18,6 @@
 #include <arinc665/Arinc665.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 
-#include <arinc665/file/FileFactory.hpp>
 #include <arinc665/file/FileListFile.hpp>
 #include <arinc665/file/LoadListFile.hpp>
 #include <arinc665/file/BatchListFile.hpp>
@@ -239,7 +238,7 @@ static void list_files( const boost::filesystem::path &loadDir)
     {
       std::cout << " - ";
 
-      switch ( Arinc665::File::FileFactory::getFileType( itr->path().filename()))
+      switch ( Arinc665::File::Arinc665File::getFileType( itr->path().filename()))
       {
         case Arinc665::FileType::BatchFile:
           std::cout << "ARINC 665 BATCH file";
@@ -268,7 +267,7 @@ static void list_files( const boost::filesystem::path &loadDir)
 
       std::cout << std::endl;
 
-      switch ( Arinc665::File::FileFactory::getFileType( itr->path().filename()))
+      switch ( Arinc665::File::Arinc665File::getFileType( itr->path().filename()))
       {
         case Arinc665::FileType::BatchFile:
           break;

@@ -145,6 +145,25 @@ class Arinc665File
       std::size_t skipLastBytes = 2U);
 
     /**
+     * @brief Returns the ARINC 665 file class type.
+     *
+     * @param[in] rawFile
+     *   The raw file data.
+     *
+     * @return The ARINC 665 file class type.
+     **/
+    static FileClassType getArincFileType( const RawFile &rawFile);
+
+    static LoadFileFormatVersion getLoadFileFormatVersion(
+      const RawFile &rawFile);
+
+    static BatchFileFormatVersion getBatchFileFormatVersion(
+      const RawFile &rawFile);
+
+    static MediaFileFormatVersion getMediaFileFormatVersion(
+      const RawFile &rawFile);
+
+    /**
      * @brief Returns the ARINC 665 version for the given [fileType] and
      *   [formatVersionField].
      *
@@ -175,6 +194,8 @@ class Arinc665File
     static uint16_t getFormatVersionField(
       FileType fileType,
       Arinc665Version arinc665Version);
+
+    static FileType getFileType( const path &filename);
 
     //! Default destructor
     virtual ~Arinc665File() noexcept = default;

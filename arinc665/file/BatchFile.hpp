@@ -28,28 +28,51 @@ namespace File {
 
 /**
  * @brief A batch file represents a list of loads of target hardwares.
- *
- *
  **/
 class BatchFile: public Arinc665File
 {
   public:
     using string = std::string;
 
+    /**
+     * @brief Creates an empty batch file.
+     *
+     * @param[in] version
+     *   ARINC 665 version.
+     **/
     explicit BatchFile( Arinc665Version version);
 
+    /**
+     * @brief Creates batch file with the given data.
+     *
+     * @param[in] version
+     *   ARINC 665 version.
+     * @param[in] partNumber
+     *   The part number.
+     * @param[in] comment
+     *   Batch comment.
+     * @param[in] targets
+     *   List of target informations.
+     **/
     BatchFile(
       Arinc665Version version,
       const string &partNumber,
       const string &comment,
       const BatchTargetsInfo &targets);
 
+    //! @copydoc BatchFile::BatchFile(Arinc665Version,const string&,const string&,const BatchTargetsInfo)
     BatchFile(
       Arinc665Version version,
       string &&partNumber,
       string &&comment,
       BatchTargetsInfo &&targets);
 
+    /**
+     * @brief Creates a batch file from the given raw data.
+     *
+     * @param[in] rawFile
+     *   Raw data file representation.
+     **/
     BatchFile( const RawFile &rawFile);
 
     //! @copydoc Arinc665File::operator=
@@ -95,24 +118,53 @@ class BatchFile: public Arinc665File
     //! @copydoc getTargetHardwares() const
     BatchTargetsInfo& getTargetHardwares();
 
+    /**
+     * @brief Adds the given target hardware information to the batch file.
+     *
+     * @param[in] targetHardwareInfo
+     *   The target hardware information to add.
+     **/
     void addTargetHardware( const BatchTargetInfo &targetHardwareInfo);
 
+    //! @copydoc addTargetHardware(const BatchTargetInfo&)
     void addTargetHardware( BatchTargetInfo &&targetHardwareInfo);
 
   private:
     //! @copydoc Arinc665File::encode
     virtual RawFile encode() const override final;
 
+    /**
+     * @brief Decodes the body of the batch file.
+     *
+     * @param[in] rawFile
+     *   Raw batch file representation.
+     **/
     void decodeBody( const RawFile &rawFile);
 
+    /**
+     * @brief Encodes the target hardware information list.
+     *
+     * @return Raw representation of target hardware information list.
+     **/
     RawFile encodeBatchTargetsInfo() const;
 
+    /**
+     * @brief Decodes the target hardware information list from the raw data.
+     *
+     * @param[in] rawFile
+     *   Raw batch file representation.
+     * @param[in] offset
+     *   Offset of the target hardware information list.
+     **/
     void decodeBatchTargetsInfo(
       const RawFile &rawFile,
       std::size_t offset);
 
+    //! Part number
     string partNumber;
+    //! Comment
     string comment;
+    //! target hardware informations
     BatchTargetsInfo targetHardwares;
 };
 

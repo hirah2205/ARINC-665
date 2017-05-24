@@ -164,6 +164,81 @@ uint16_t Arinc665File::calculateChecksum(
   return arincCrc16.checksum();
 }
 
+Arinc665::FileClassType Arinc665File::getArincFileType( const RawFile &rawFile)
+{
+  switch (getFormatVersion( rawFile))
+  {
+    case static_cast< uint16_t>( LoadFileFormatVersion::Version2):
+    case static_cast< uint16_t>( LoadFileFormatVersion::Version34):
+      return FileClassType::LoadFile;
+
+    case static_cast< uint16_t>( BatchFileFormatVersion::Version2):
+    case static_cast< uint16_t>( BatchFileFormatVersion::Version34):
+      return FileClassType::BatchFile;
+
+    case static_cast< uint16_t>( MediaFileFormatVersion::Version2):
+    case static_cast< uint16_t>( MediaFileFormatVersion::Version34):
+      return FileClassType::MediaFile;
+
+    default:
+      return FileClassType::Invalid;
+  }
+}
+
+Arinc665::LoadFileFormatVersion Arinc665File::getLoadFileFormatVersion(
+  const RawFile &rawFile)
+{
+  const uint16_t formatVersion( Arinc665File::getFormatVersion( rawFile));
+
+  switch (formatVersion)
+  {
+    case static_cast< uint16_t>( LoadFileFormatVersion::Version2):
+    case static_cast< uint16_t>( LoadFileFormatVersion::Version34):
+      break;
+
+    default:
+      return LoadFileFormatVersion::Invalid;
+  }
+
+  return static_cast< LoadFileFormatVersion>( formatVersion);
+}
+
+Arinc665::BatchFileFormatVersion Arinc665File::getBatchFileFormatVersion(
+  const RawFile &rawFile)
+{
+  const uint16_t formatVersion( Arinc665File::getFormatVersion( rawFile));
+
+  switch (formatVersion)
+  {
+    case static_cast< uint16_t>( BatchFileFormatVersion::Version2):
+    case static_cast< uint16_t>( BatchFileFormatVersion::Version34):
+      break;
+
+    default:
+      return BatchFileFormatVersion::Invalid;
+  }
+
+  return static_cast< BatchFileFormatVersion>( formatVersion);
+}
+
+Arinc665::MediaFileFormatVersion Arinc665File::getMediaFileFormatVersion(
+  const RawFile &rawFile)
+{
+  const uint16_t formatVersion( Arinc665File::getFormatVersion( rawFile));
+
+  switch (formatVersion)
+  {
+    case static_cast< uint16_t>( MediaFileFormatVersion::Version2):
+    case static_cast< uint16_t>( MediaFileFormatVersion::Version34):
+      break;
+
+    default:
+      return MediaFileFormatVersion::Invalid;
+  }
+
+  return static_cast< MediaFileFormatVersion>( formatVersion);
+}
+
 Arinc665Version Arinc665File::getArinc665Version(
   const FileType fileType,
   const uint16_t formatVersionField)
@@ -297,6 +372,40 @@ uint16_t Arinc665File::getFormatVersionField(
   }
 
   return 0xFFFFU;
+}
+
+Arinc665::FileType Arinc665File::getFileType( const path &filename)
+{
+  std::string filenameN = filename.filename().string();
+
+  if ( filenameN == ListOfLoadsName)
+  {
+    return FileType::LoadList;
+  }
+
+  if ( filenameN == ListOfBatchesName)
+  {
+    return FileType::BatchList;
+  }
+
+  if ( filenameN == ListOfFilesName)
+  {
+    return FileType::FileList;
+  }
+
+  std::string extension = filename.extension().string();
+
+  if ( extension == LoadUploadHeaderExtension)
+  {
+    return FileType::LoadUploadHeader;
+  }
+
+  if ( extension == BatchFileExtension)
+  {
+    return FileType::BatchFile;
+  }
+
+  return FileType::Invalid;
 }
 
 Arinc665File& Arinc665File::operator=( const RawFile &rawFile)

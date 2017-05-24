@@ -58,10 +58,30 @@ class Arinc665CompilerApplication
      **/
     bool handleCommandLine();
 
+    /**
+     * @brief Returns the medium path.
+     *
+     * @param[in] mediumNumber
+     *   The medium number.
+     *
+     * @return The medium path.
+     **/
     path getMediumPath( uint8_t mediumNumber) const;
 
+    /**
+     * @brief Creates the directory for the given medium.
+     *
+     * @param[in] medium
+     *   The medium.
+     **/
     void createMedium( Arinc665::Media::ConstMediumPtr medium);
 
+    /**
+     * @brief Creates the directory for the given directory.
+     *
+     * @param[in] directory
+     *   The directory.
+     **/
     void createDirectory( Arinc665::Media::ConstDirectoryPtr directory);
 
     void createFile(

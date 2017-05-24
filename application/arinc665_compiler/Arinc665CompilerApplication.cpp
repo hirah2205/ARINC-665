@@ -155,23 +155,25 @@ bool Arinc665CompilerApplication::handleCommandLine()
 {
   try
   {
-    std::shared_ptr< boost::application::args> args =
-      context.find< boost::application::args>();
+    std::shared_ptr< boost::application::args> args(
+      context.find< boost::application::args>());
 
     boost::program_options::variables_map options;
+
     boost::program_options::store(
       boost::program_options::parse_command_line(
         args->argc(),
         args->argv(),
         optionsDescription),
       options);
-    boost::program_options::notify( options);
 
     if ( options.count( "help") != 0)
     {
       std::cout << optionsDescription << std::endl;
       return false;
     }
+
+    boost::program_options::notify( options);
   }
   catch ( boost::program_options::error &e)
   {
@@ -229,7 +231,8 @@ void Arinc665CompilerApplication::createFile(
   if (fileIt == std::get< 1>( mediaSetInfo).end())
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      AdditionalInfo( "file mapping not found"));
+      AdditionalInfo( "file mapping not found") <<
+      boost::errinfo_file_name( file->getName()));
   }
 
   auto filePath(
@@ -261,8 +264,8 @@ void Arinc665CompilerApplication::writeFile(
     //! @throw Arinc665Exception
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception() <<
-        boost::errinfo_file_name( filePath.string()) <<
-        AdditionalInfo( "File already exists"));
+        AdditionalInfo( "File already exists") <<
+        boost::errinfo_file_name( filePath.string()));
   }
 
   // save file
@@ -273,8 +276,9 @@ void Arinc665CompilerApplication::writeFile(
   if ( !fileStream.is_open())
   {
     //! @throw Arinc665Exception
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() << AdditionalInfo( "Error opening files"));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+      AdditionalInfo( "Error opening files") <<
+      boost::errinfo_file_name( filePath.string()));
   }
 
   // write the data to the buffer
@@ -296,10 +300,9 @@ Arinc665::File::RawFile Arinc665CompilerApplication::readFile(
   if (!boost::filesystem::is_regular( filePath))
   {
     //! @throw Arinc665Exception
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() <<
-        boost::errinfo_file_name( filePath.string()) <<
-        AdditionalInfo( "File not found"));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+      AdditionalInfo( "File not found") <<
+      boost::errinfo_file_name( filePath.string()));
   }
 
   Arinc665::File::RawFile data( boost::filesystem::file_size( filePath));
@@ -312,8 +315,9 @@ Arinc665::File::RawFile Arinc665CompilerApplication::readFile(
   if ( !file.is_open())
   {
     //! @throw Arinc665Exception
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() << AdditionalInfo( "Error opening files"));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
+      AdditionalInfo( "Error opening files") <<
+      boost::errinfo_file_name( filePath.string()));
   }
 
   // read the data to the buffer

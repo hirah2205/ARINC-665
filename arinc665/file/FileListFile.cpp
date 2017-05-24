@@ -16,8 +16,6 @@
 
 #include "FileListFile.hpp"
 
-#include <arinc665/file/FileFactory.hpp>
-
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
@@ -172,7 +170,7 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
       return false;
     }
 
-    switch ( FileFactory::getFileType( filesInfo[i].getFilename()))
+    switch ( getFileType( filesInfo[i].getFilename()))
     {
       case FileType::LoadList:
       case FileType::BatchList:

@@ -84,7 +84,9 @@ class Arinc665Utils
      * @param[in] mediaSet
      *   The media set, which shall be exported.
      * @param[in] createMediumHandler
+     *   Called to create the given medium.
      * @param[in] createDirectoryHandler
+     *   Called to create the given directory.
      * @param[in] createFileHandler
      *   When a file needs to be generated, this handler is called.
      * @param[in] writeFileHandler

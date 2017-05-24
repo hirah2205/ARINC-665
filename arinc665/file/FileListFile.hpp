@@ -94,8 +94,15 @@ class FileListFile: public ListFile
      **/
     FileInfoMap getFileInfosAsMap() const;
 
+    /**
+     * @brief Adds the given file information.
+     *
+     * @param[in] fileInfo
+     *   The file information.
+     **/
     void addFileInfo( const FileInfo &fileInfo);
 
+    //! @copydoc addFileInfo(const FileInfo&)
     void addFileInfo( FileInfo &&fileInfo);
 
     /**
