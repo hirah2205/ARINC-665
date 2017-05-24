@@ -16,17 +16,8 @@
 
 #include "LoadFileInfo.hpp"
 
-#include <helper/Endianess.hpp>
-#include <helper/Logger.hpp>
-
 namespace Arinc665 {
 namespace File {
-
-LoadFileInfo::LoadFileInfo():
-  length( 0),
-  crc( 0)
-{
-}
 
 LoadFileInfo::LoadFileInfo(
   const string &name,

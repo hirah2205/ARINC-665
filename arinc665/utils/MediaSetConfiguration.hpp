@@ -34,12 +34,16 @@ namespace Utils {
 class MediaSetConfiguration
 {
   public:
+    //! property tree type
     using ptree = boost::property_tree::ptree;
+    //! path type
     using path = boost::filesystem::path;
+    //! string type
     using string = std::string;
 
     //! media-to-path mapping
     using MediaPaths = std::vector< path>;
+    //! media sets type
     using MediaSets = std::map< string, MediaPaths>;
 
     //! Initialises the configuration with default values.

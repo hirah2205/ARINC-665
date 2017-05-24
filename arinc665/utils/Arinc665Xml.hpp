@@ -32,11 +32,12 @@ namespace Utils {
 class Arinc665Xml
 {
   public:
+    //! path types
     using path = boost::filesystem::path;
-
+    //! file path mapping type
     using FilePathMapping =
       std::map< Media::ConstBaseFilePtr, path>;
-
+    //! Load XML result type (Media Set Pointer and corresponding file path mapping)
     using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping>;
 
     /**

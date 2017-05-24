@@ -30,6 +30,7 @@ namespace Arinc665 {
 class CheckCode
 {
   public:
+    //! String type
     using string = std::string;
 
     //! The length of the check code when represented as string

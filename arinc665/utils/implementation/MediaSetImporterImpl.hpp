@@ -42,8 +42,9 @@ namespace Utils {
 class MediaSetImporterImpl
 {
   public:
+    //! Path type
     using path = Arinc665Utils::path;
-
+    //! string type
     using string = std::string;
 
     /**
@@ -63,8 +64,11 @@ class MediaSetImporterImpl
     Media::MediaSetPtr operator()( const string &mediaSetName);
 
   private:
+    //! Load header files type
     using LoadHeaderFiles = std::map< std::string, File::LoadHeaderFile>;
+    //! Batch files type
     using BatchFiles = std::map< std::string, File::BatchFile>;
+    //! Container Entity type
     using ContainerEntityPtr = std::shared_ptr< Media::ContainerEntity>;
 
     /**

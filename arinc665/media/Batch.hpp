@@ -26,7 +26,7 @@ namespace Arinc665 {
 namespace Media {
 
 /**
- * @brief File which represents a batch.
+ * @brief &Batch of loads.
  **/
 class Batch: public BaseFile
 {
@@ -88,15 +88,11 @@ class Batch: public BaseFile
     /**
      * @brief Return batches.
      *
-     * @return
+     * @return The batch target information.
      **/
     const BatchInfo& getTargets() const;
 
-    /**
-     * @brief Return batches.
-     *
-     * @return
-     **/
+    //! @copydoc getTargets() const
     BatchInfo& getTargets();
 
   private:

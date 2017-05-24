@@ -103,12 +103,12 @@ Media::MediaSetPtr MediaSetManagerImpl::getMediaSet(
   return {};
 }
 
-const MediaSetManagerImpl::MediaSetList& MediaSetManagerImpl::getMediaSets() const
+const MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::getMediaSets() const
 {
   return mediaSets;
 }
 
-MediaSetManagerImpl::MediaSetList& MediaSetManagerImpl::getMediaSets()
+MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::getMediaSets()
 {
   return mediaSets;
 }

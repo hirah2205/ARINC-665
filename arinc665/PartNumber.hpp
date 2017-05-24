@@ -48,6 +48,7 @@ namespace Arinc665 {
 class PartNumber
 {
   public:
+    //! Strng type
     using string = std::string;
 
     //! The length of an ARINC 665 part number

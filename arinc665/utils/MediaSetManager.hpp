@@ -43,11 +43,12 @@ namespace Utils {
 class MediaSetManager
 {
   public:
+    //! Path type
     using path = boost::filesystem::path;
-
+    //! String type
     using string = std::string;
-
-    using MediaSetList = std::list< Media::MediaSetPtr>;
+    //! Media sets type (list)
+    using MediaSets = std::list< Media::MediaSetPtr>;
 
     //! Default destructor
     virtual ~MediaSetManager() noexcept = default;
@@ -79,10 +80,10 @@ class MediaSetManager
      *
      * @return All media sets.
      **/
-    virtual const MediaSetList& getMediaSets() const = 0;
+    virtual const MediaSets& getMediaSets() const = 0;
 
     //! @copydoc MediaSetManager::getMediaSets() const
-    virtual MediaSetList& getMediaSets() = 0;
+    virtual MediaSets& getMediaSets() = 0;
 
     /**
      * @brief Get all available Loads.

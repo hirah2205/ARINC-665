@@ -31,8 +31,10 @@ namespace Media {
 class BaseFile: public Base
 {
   public:
+    //! Path type
     using path = boost::filesystem::path;
 
+    //! File type
     enum class FileType
     {
       RegularFile,
@@ -40,6 +42,7 @@ class BaseFile: public Base
       BatchFile
     };
 
+    //! Default destructor
     virtual ~BaseFile() = default;
 
     //! @copydoc Base::getMediaSet

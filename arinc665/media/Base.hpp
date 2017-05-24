@@ -25,13 +25,14 @@ namespace Arinc665 {
 namespace Media {
 
 /**
- * @brief Base class for media set elements.
+ * @brief %Base class for media set classes.
  *
  * Provides common attributes.
  */
 class Base
 {
   public:
+    //! String type
     using string = std::string;
 
     //! item type
@@ -53,11 +54,7 @@ class Base
      **/
     virtual ConstMediaSetPtr getMediaSet() const = 0;
 
-    /**
-     * @brief Returns the owning media set.
-     *
-     * @return The owning media set
-     **/
+    //! @copydoc getMediaSet() const
     virtual MediaSetPtr getMediaSet() = 0;
 
     /**

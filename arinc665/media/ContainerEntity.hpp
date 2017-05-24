@@ -27,8 +27,6 @@
 
 #include <boost/filesystem/path.hpp>
 
-#include <string>
-
 namespace Arinc665 {
 namespace Media {
 
@@ -45,11 +43,10 @@ class ContainerEntity :
   public std::enable_shared_from_this< ContainerEntity>
 {
   public:
+    //! Path type
     using path = boost::filesystem::path;
 
-    using string = std::string;
-
-    //! Default constructord
+    //! Default constructor
     ContainerEntity() = default;
 
     /**
@@ -133,6 +130,9 @@ class ContainerEntity :
     /**
      * @brief Returns the number of files within this directory and
      *   sub-directories.
+     *
+     * @param[in] recursive
+     *   If set to true includes files in sub-directories.
      *
      * @return The number of files within this directory.
      **/
@@ -239,9 +239,15 @@ class ContainerEntity :
 
     void removeBatch( ConstBatchPtr batch);
 
-    ContainerEntityPtr getParent();
-
+    /**
+     * @brief Returns the parent.
+     *
+     * @return The parent of this container.
+     **/
     ConstContainerEntityPtr getParent() const;
+
+    //! @copydoc getParent() const
+    ContainerEntityPtr getParent();
 
     /**
      * @brief Returns the medium where this container is located.
@@ -260,6 +266,7 @@ class ContainerEntity :
 
     ConstFiles getFiles( BaseFile::FileType fileType) const;
 
+    //! @copydoc getFiles( BaseFile::FileType) const
     Files getFiles( BaseFile::FileType fileType);
 
     void setParent( ContainerEntityPtr parent);

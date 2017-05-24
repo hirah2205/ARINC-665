@@ -16,21 +16,10 @@
 
 #include "FileInfo.hpp"
 
-#include <arinc665/file/Arinc665File.hpp>
-
-#include <helper/Endianess.hpp>
-#include <helper/Logger.hpp>
-
 #include <algorithm>
 
 namespace Arinc665 {
 namespace File {
-
-FileInfo::FileInfo():
-  memberSequenceNumber( 0),
-  crc( 0)
-{
-}
 
 FileInfo::FileInfo(
   const string &filename,

@@ -168,7 +168,9 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
      * @brief Loads the given load-node.
      *
      * @param[in,out] mediaSet
+     *   The media set where the load is stored into.
      * @param[in] loadNode
+     *   The XML-node, where the data is loaded from.
      **/
     void loadLoad( Media::MediaSetPtr mediaSet, const pugi::xml_node &loadNode);
 
@@ -176,18 +178,36 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
      * @brief Stores the given load-node.
      *
      * @param[in] load
-     * @param[in] loadNode
+     *   The load to store.
+     * @param[in,out] loadNode
+     *   The XML-node where the data is stored to.
      **/
     void saveLoad(
       Media::ConstLoadPtr load,
       pugi::xml_node &loadNode);
 
+    /**
+     * @brief Loads the given batch-node.
+     *
+     * @param[in,out] mediaSet
+     *   The media set where the load is stored into.
+     * @param[in] batchNode
+     *   The XML-node, where the data is loaded from.
+     **/
     void loadBatch(
       Media::MediaSetPtr mediaSet,
       const pugi::xml_node &batchNode);
 
+    /**
+     * @brief Stores the given batch-node.
+     *
+     * @param[in] batch
+     *   The batch to store.
+     * @param[in,out] batchNode
+     *   The XML-node where the data is stored to.
+     **/
     void saveBatch(
-      Media::ConstBatchPtr load,
+      Media::ConstBatchPtr batch,
       pugi::xml_node &batchNode);
 };
 

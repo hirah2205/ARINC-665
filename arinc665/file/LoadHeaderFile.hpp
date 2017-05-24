@@ -34,7 +34,9 @@ namespace File {
 class LoadHeaderFile: public Arinc665File
 {
   public:
-    using TargetHardwareIdList = std::list< string>;
+    //! Target Hardware ID list type
+    using TargetHardwareIdList = StringList;
+    //! User defined data type
     using UserDefinedData = std::vector< uint8_t>;
 
     LoadHeaderFile( Arinc665Version version);

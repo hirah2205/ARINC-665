@@ -35,7 +35,9 @@ namespace File {
 class BatchListFile: public ListFile
 {
   public:
+    //! Batch information map type
     using BatchInfoMap = std::map< std::pair< uint8_t, string>, BatchInfo>;
+    //! User defined data type.
     using UserDefinedData = std::vector< uint8_t>;
 
     BatchListFile( Arinc665Version version);
@@ -74,6 +76,7 @@ class BatchListFile: public ListFile
 
     void addBatchInfo( const BatchInfo &batchInfo);
 
+    //! @copydoc addBatchInfo(const BatchInfo&)
     void addBatchInfo( BatchInfo &&batchInfo);
 
     /**

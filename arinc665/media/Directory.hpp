@@ -28,6 +28,14 @@ namespace Media {
 class Directory : public ContainerEntity
 {
   public:
+    /**
+     * @brief Initialises the instance with the given data.
+     *
+     * @param[in] parent
+     *   Parent of this directory.
+     * @param[in] name
+     *   Name of the directory.
+     **/
     Directory( ContainerEntityPtr parent, const string &name);
 
     //! @copydoc ContainerEntity::getMediaSet

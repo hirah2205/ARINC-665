@@ -595,12 +595,12 @@ void ContainerEntity::removeBatch( ConstBatchPtr batch)
   removeFile( batch);
 }
 
-ContainerEntityPtr ContainerEntity::getParent()
+ConstContainerEntityPtr ContainerEntity::getParent() const
 {
   return parent.lock();
 }
 
-ConstContainerEntityPtr ContainerEntity::getParent() const
+ContainerEntityPtr ContainerEntity::getParent()
 {
   return parent.lock();
 }

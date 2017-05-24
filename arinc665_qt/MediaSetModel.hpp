@@ -33,10 +33,8 @@ class MediaSetModelModel: public QAbstractItemModel
   Q_OBJECT
 
   public:
-    using MediaSetPtr = Arinc665::Media::MediaSetPtr;
-
     MediaSetModelModel(
-      MediaSetPtr mediaSet = MediaSetPtr(),
+      Arinc665::Media::MediaSetPtr mediaSet = {},
       QObject * parent = nullptr);
 
     virtual ~MediaSetModelModel( void) = default;
@@ -62,10 +60,11 @@ class MediaSetModelModel: public QAbstractItemModel
       int role) const override;
 
   public slots:
-    void setMediaSet( MediaSetPtr mediaSet = MediaSetPtr());
+    void setMediaSet( Arinc665::Media::MediaSetPtr mediaSet = {});
 
   private:
-    MediaSetPtr mediaSet;
+    //! the media set
+    Arinc665::Media::MediaSetPtr mediaSet;
 };
 
 }

@@ -39,6 +39,7 @@ class FileListFile: public ListFile
     using FileInfoMap = std::map< std::pair< uint8_t, string>, FileInfo>;
     //! Maps media <sequence number, file path> to File Info
     using FileInfoPathMap= std::map< std::pair< uint8_t, path>, FileInfo>;
+    //! User defined data type
     using UserDefinedData = std::vector< uint8_t>;
 
     FileListFile( Arinc665Version version);
@@ -128,10 +129,15 @@ class FileListFile: public ListFile
 
     void decodeFilesInfo( const RawFile &rawFile, std::size_t offset);
 
+    //! The media set part number
     string mediaSetPn;
+    //! The media sequence number
     uint8_t mediaSequenceNumber;
+    //! The number of media set members.
     uint8_t numberOfMediaSetMembers;
+    //! Files information (list)
     FilesInfo filesInfo;
+    //! Use defined data.
     UserDefinedData userDefinedData;
 };
 

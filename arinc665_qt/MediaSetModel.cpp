@@ -29,7 +29,7 @@
 namespace Arinc665Qt {
 
 MediaSetModelModel::MediaSetModelModel(
-  MediaSetPtr mediaSet,
+  Arinc665::Media::MediaSetPtr mediaSet,
   QObject * parent) :
   QAbstractItemModel( parent),
   mediaSet( mediaSet)
@@ -379,7 +379,7 @@ QVariant MediaSetModelModel::headerData(
   }
 }
 
-void MediaSetModelModel::setMediaSet( MediaSetPtr mediaSet)
+void MediaSetModelModel::setMediaSet( Arinc665::Media::MediaSetPtr mediaSet)
 {
   if (this->mediaSet == mediaSet)
   {

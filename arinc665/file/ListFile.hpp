@@ -21,24 +21,20 @@
 #include <arinc665/file/File.hpp>
 #include <arinc665/file/Arinc665File.hpp>
 
-#include <string>
-
 namespace Arinc665 {
 namespace File {
 
 /**
  * @brief Base class for list files.
  *
- * Childs are:
- * # FileListFile
- * # LoadListFile
- * # BatchListFile
+ * Children are:
+ * * FileListFile
+ * * LoadListFile
+ * * BatchListFile
  **/
 class ListFile: public Arinc665File
 {
   public:
-    using string = std::string;
-
     /**
      * @brief Returns the Media Set Part Number, where the files belongs to.
      *

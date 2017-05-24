@@ -30,6 +30,7 @@ namespace File {
 class BatchInfo
 {
   public:
+    //! String type.
     using string = std::string;
 
     BatchInfo(

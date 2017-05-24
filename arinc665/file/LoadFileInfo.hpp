@@ -20,8 +20,6 @@
 #include <arinc665/file/File.hpp>
 
 #include <string>
-#include <vector>
-#include <list>
 #include <cstdint>
 
 namespace Arinc665 {
@@ -33,9 +31,8 @@ namespace File {
 class LoadFileInfo
 {
   public:
+    //! String type
     using string = std::string;
-
-    LoadFileInfo();
 
     LoadFileInfo(
       const string &name,

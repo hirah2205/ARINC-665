@@ -34,8 +34,9 @@ namespace File {
 class LoadListFile: public ListFile
 {
   public:
-    //! Type definition of LoadList
+    //! Loads information map
     using LoadsInfoMap = std::map< std::pair< uint8_t, string>, LoadInfo>;
+    //! User defined data type.
     using UserDefinedData = std::vector< uint8_t>;
 
     LoadListFile( Arinc665Version version);
@@ -91,8 +92,15 @@ class LoadListFile: public ListFile
      */
     LoadsInfoMap getLoadsInfoAsMap() const;
 
+    /**
+     * @brief Adds the given load information.
+     *
+     * @param[in] loadInfo
+     *   Load information.
+     **/
     void addLoadInfo( const LoadInfo &loadInfo);
 
+    //! @copydoc addLoadInfo(const LoadInfo&)
     void addLoadInfo( LoadInfo &&loadInfo);
 
     /**

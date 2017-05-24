@@ -33,8 +33,11 @@ namespace Media {
 class Base;
 
 class MediaSet;
+//! constant media set pointer
 using ConstMediaSetPtr = std::shared_ptr< const MediaSet>;
+//! media set pointer
 using MediaSetPtr = std::shared_ptr< MediaSet>;
+//! weak media set pointer
 using WeakMediaSetPtr = std::weak_ptr< MediaSet>;
 
 class ContainerEntity;

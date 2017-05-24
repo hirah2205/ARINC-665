@@ -25,11 +25,20 @@
 
 namespace Arinc665Qt {
 
+/**
+ * @brief QT model of list of loads.
+ **/
 class LoadsModel : public QAbstractTableModel
 {
     Q_OBJECT
 
   public:
+    /**
+     * @brief Initialises the loads model.
+     *
+     * @param[in] parent
+     *   The parent QObject.
+     **/
     LoadsModel( QObject * parent = nullptr);
 
     //! Default destructor
@@ -113,6 +122,7 @@ class LoadsModel : public QAbstractTableModel
     void setLoads( const Arinc665::Media::Loads &loads = {});
 
   private:
+    //! loads list
     Arinc665::Media::Loads loads;
 };
 

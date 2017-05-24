@@ -34,10 +34,10 @@ namespace File {
 class FileInfo
 {
   public:
-    using string = std::string;
+    //! Path type
     using path = boost::filesystem::path;
-
-    FileInfo();
+    //! String type
+    using string = std::string;
 
     FileInfo(
       const string &filename,
@@ -74,7 +74,7 @@ class FileInfo
     string pathName;
     //! member sequence number
     uint16_t memberSequenceNumber;
-    //! crc
+    //! CRC
     uint16_t crc;
 };
 

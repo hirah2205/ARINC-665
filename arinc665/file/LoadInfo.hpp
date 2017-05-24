@@ -33,7 +33,9 @@ namespace File {
 class LoadInfo
 {
   public:
+    //! String type
     using string = std::string;
+    //! Target Hardware IDs type.
     using ThwIds = std::list< string>;
 
     LoadInfo(
@@ -73,29 +75,37 @@ class LoadInfo
     bool operator !=( const FileInfo &other) const;
 
   private:
+    //! Load part number
     string partNumber;
+    //! Header filename
     string headerFilename;
+    //! Member sequence number
     uint8_t memberSequenceNumber;
+    //! Target Hardware IDs (list)
     ThwIds targetHardwareIds;
 };
 
 /**
  * @brief Compares FileInfo against LoadInfo
  *
- * @param fileInfo
- * @param loadInfo
+ * @param[in] fileInfo
+ *   The file information.
+ * @param[in] loadInfo
+ *   The load information.
  *
- * @return
+ * @return If file information is equal to the load information.
  **/
 bool operator ==( const FileInfo &fileInfo, const LoadInfo &loadInfo);
 
 /**
  * @brief Compares FileInfo against LoadInfo
  *
- * @param fileInfo
- * @param loadInfo
+ * @param[in] fileInfo
+ *   The file information.
+ * @param[in] loadInfo
+ *   The load information.
  *
- * @return
+ * @return If file information is not equal to the load information.
  **/
 bool operator !=( const FileInfo &fileInfo, const LoadInfo &loadInfo);
 

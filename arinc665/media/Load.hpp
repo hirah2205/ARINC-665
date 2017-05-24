@@ -31,13 +31,16 @@ namespace Media {
 using std::string;
 
 /**
- * @brief
+ * @brief Load within media set.
  **/
 class Load: public BaseFile
 {
   public:
+    //! File list
     using FileList = std::list< WeakFilePtr>;
+    //! Target hardware ID list
     using ThwIdList = std::list< string>;
+    //! User defined data type
     using UserDefinedData = std::vector< uint8_t>;
 
     /**

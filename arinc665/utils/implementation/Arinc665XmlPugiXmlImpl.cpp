@@ -510,7 +510,7 @@ void Arinc665XmlPugiXmlImpl::saveBatch(
 {
   batchNode.append_attribute( "NameRef") = batch->getName().c_str();
 
-  // Iterate over batch infos
+  // Iterate over batch information
   for ( auto target : batch->getTargets())
   {
     auto targetNode( batchNode.append_child( "Target"));

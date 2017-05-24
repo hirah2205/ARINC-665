@@ -488,10 +488,10 @@ Arinc665File& Arinc665File::operator=( const Arinc665File &file)
   return *this;
 }
 
-void Arinc665File::insertHeader( RawFile &file) const
+void Arinc665File::insertHeader( RawFile &rawFile) const
 {
   // Check file size
-  if ( file.size() <= BaseHeaderOffset)
+  if ( rawFile.size() <= BaseHeaderOffset)
   {
     //! @throw InvalidArinc665File When file is to small
     BOOST_THROW_EXCEPTION(
@@ -499,17 +499,17 @@ void Arinc665File::insertHeader( RawFile &file) const
   }
 
   // Check file size
-  if ( file.size() % 2 != 0)
+  if ( rawFile.size() % 2 != 0)
   {
     //! @throw InvalidArinc665File When file size is invalid
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << AdditionalInfo( "Invalid size"));
   }
 
-  auto it( file.begin());
+  auto it( rawFile.begin());
 
   // file size
-  it = setInt< uint32_t>( it, file.size() / 2);
+  it = setInt< uint32_t>( it, rawFile.size() / 2);
 
   // format version
   it = setInt< uint16_t>(
@@ -520,7 +520,7 @@ void Arinc665File::insertHeader( RawFile &file) const
   it = setInt< uint16_t>( it, 0U);
 
   // crc
-  setInt< uint16_t>( file.end() - checksumPosition, crc);
+  setInt< uint16_t>( rawFile.end() - checksumPosition, crc);
 }
 
 void Arinc665File::decodeHeader( const RawFile &rawFile)

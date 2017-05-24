@@ -28,8 +28,9 @@ namespace Utils {
 class MediaSetExporterImpl
 {
   public:
+    //! Path type
     using path = Arinc665Utils::path;
-
+    //! String type
     using string = std::string;
 
     /**

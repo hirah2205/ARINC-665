@@ -66,22 +66,23 @@ add_library(
   file/LoadListFile.cpp
 
   media/Base.hpp
-  media/MediaSet.hpp
-  media/MediaSet.cpp
-  media/ContainerEntity.hpp
-  media/ContainerEntity.cpp
-  media/Medium.hpp
-  media/Medium.cpp
-  media/Directory.hpp
-  media/Directory.cpp
   media/BaseFile.hpp
   media/BaseFile.cpp
+  media/Batch.hpp
+  media/Batch.cpp
+  media/ContainerEntity.hpp
+  media/ContainerEntity.cpp
+  media/Directory.hpp
+  media/Directory.cpp
   media/File.hpp
   media/File.cpp
   media/Load.hpp
   media/Load.cpp
-  media/Batch.hpp
-  media/Batch.cpp
+  media/Media.hpp
+  media/MediaSet.hpp
+  media/MediaSet.cpp
+  media/Medium.hpp
+  media/Medium.cpp
 
   utils/Utils.hpp
   utils/Arinc665Utils.hpp

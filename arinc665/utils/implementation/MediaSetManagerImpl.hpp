@@ -24,12 +24,15 @@
 namespace Arinc665 {
 namespace Utils {
 
+//! Implementation of MediaSetManager
 class MediaSetManagerImpl : public MediaSetManager
 {
   public:
     /**
+     * @brief Initialises the media set manager.
      *
-     * @param config
+     * @param[in] config
+     *   Media set configuration.
      **/
     MediaSetManagerImpl( const MediaSetConfiguration &config);
 
@@ -37,10 +40,10 @@ class MediaSetManagerImpl : public MediaSetManager
     virtual Media::MediaSetPtr getMediaSet( const string &partNumber) override final;
 
     //! @copydoc MediaSetManager::getMediaSets() const
-    virtual const MediaSetList& getMediaSets() const  override final;
+    virtual const MediaSets& getMediaSets() const  override final;
 
     //! @copydoc MediaSetManager::getMediaSets()
-    virtual MediaSetList& getMediaSets() override final;
+    virtual MediaSets& getMediaSets() override final;
 
     //! @copydoc MediaSetManager::getLoads() const
     virtual Media::ConstLoads getLoads() const override final;
@@ -49,11 +52,14 @@ class MediaSetManagerImpl : public MediaSetManager
     virtual path getFilePath( Media::ConstBaseFilePtr file) const override final;
 
   private:
-    using MediaPaths =
-      std::map< Media::ConstMediumPtr, path>;
+    //! media path map
+    using MediaPaths = std::map< Media::ConstMediumPtr, path>;
 
-    MediaSetConfiguration config;
-    MediaSetList mediaSets;
+    //! media set configuration
+    const MediaSetConfiguration config;
+    //! media sets
+    MediaSets mediaSets;
+    //! media paths
     MediaPaths mediaPaths;
 };
 

@@ -28,6 +28,7 @@ namespace Arinc665 {
 class TargetHardwareId
 {
   public:
+    //! String type
     using string = std::string;
 
     /**

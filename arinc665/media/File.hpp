@@ -27,7 +27,7 @@ namespace Arinc665 {
 namespace Media {
 
 /**
- * @brief
+ * @brief Data file within media set.
  **/
 class File: public BaseFile
 {

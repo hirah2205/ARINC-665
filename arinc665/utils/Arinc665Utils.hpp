@@ -31,11 +31,20 @@
 namespace Arinc665 {
 namespace Utils {
 
+/**
+ * @brief ARINC 665 Utilities.
+ *
+ * This class provides an interface ARINC 665 Utilities like:
+ * * Media set importer, and
+ * * Media set exporter
+ **/
 class Arinc665Utils
 {
   public:
+    //! Path type
     using path = boost::filesystem::path;
 
+    //! String type
     using string = std::string;
 
     //! Handler, which is called to generate the given medium.

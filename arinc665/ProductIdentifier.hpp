@@ -28,6 +28,7 @@ namespace Arinc665 {
 class ProductIdentifier
 {
   public:
+    //! String type
     using string = std::string;
 
     //! Length of product identifier

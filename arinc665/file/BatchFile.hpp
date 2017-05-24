@@ -21,8 +21,6 @@
 #include <arinc665/file/Arinc665File.hpp>
 #include <arinc665/file/BatchTargetInfo.hpp>
 
-#include <string>
-
 namespace Arinc665 {
 namespace File {
 
@@ -32,8 +30,6 @@ namespace File {
 class BatchFile: public Arinc665File
 {
   public:
-    using string = std::string;
-
     /**
      * @brief Creates an empty batch file.
      *
@@ -60,7 +56,7 @@ class BatchFile: public Arinc665File
       const string &comment,
       const BatchTargetsInfo &targets);
 
-    //! @copydoc BatchFile::BatchFile(Arinc665Version,const string&,const string&,const BatchTargetsInfo)
+    //! @copydoc BatchFile::BatchFile(Arinc665Version,const string&,const string&,const BatchTargetsInfo&)
     BatchFile(
       Arinc665Version version,
       string &&partNumber,

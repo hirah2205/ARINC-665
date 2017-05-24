@@ -33,10 +33,15 @@ namespace File {
 class Arinc665File
 {
   public:
+    //! Path type
     using path = boost::filesystem::path;
+    //! String type
     using string = std::string;
+    //! String list type
     using StringList = std::list< string>;
 
+    //! Base Header Offset
+    //! @deprecated
     static constexpr size_t BaseHeaderOffset =
       sizeof( uint32_t) + // file length
       sizeof( uint32_t);  // ARINC Version + Spare
@@ -154,12 +159,42 @@ class Arinc665File
      **/
     static FileClassType getArincFileType( const RawFile &rawFile);
 
+    /**
+     * @brief Returns the load header file version for [rawFile]
+     *
+     * @param[in] rawFile
+     *   The raw file data.
+     *
+     * @return The load header file version for [rawFile].
+     * @retval LoadFileFormatVersion::Invalid
+     *   When [rawFile] is nor a load header file
+     **/
     static LoadFileFormatVersion getLoadFileFormatVersion(
       const RawFile &rawFile);
 
+    /**
+     * @brief Returns the batch file version for [rawFile]
+     *
+     * @param[in] rawFile
+     *   The raw file data.
+     *
+     * @return The batch file version for [rawFile].
+     * @retval BatchFileFormatVersion::Invalid
+     *   When [rawFile] is nor a batch file
+     **/
     static BatchFileFormatVersion getBatchFileFormatVersion(
       const RawFile &rawFile);
 
+    /**
+     * @brief Returns the media file version for [rawFile]
+     *
+     * @param[in] rawFile
+     *   The raw file data.
+     *
+     * @return The media file version for [rawFile].
+     * @retval MediaFileFormatVersion::Invalid
+     *   When [rawFile] is nor a media file
+     **/
     static MediaFileFormatVersion getMediaFileFormatVersion(
       const RawFile &rawFile);
 
@@ -195,6 +230,16 @@ class Arinc665File
       FileType fileType,
       Arinc665Version arinc665Version);
 
+    /**
+     * @brief Detects the file type for the given filename.
+     *
+     * @param[in] filename
+     *   The filename.
+     *
+     * @return The file type.
+     * @retval FileType::Invalid
+     *   If [filename] is not a ARINC 665 file type.
+     **/
     static FileType getFileType( const path &filename);
 
     //! Default destructor
@@ -296,9 +341,20 @@ class Arinc665File
      **/
     Arinc665File& operator=( const Arinc665File &rawFile);
 
+    /**
+     * @brief Encodes the ARINC 665 file as raw data.
+     *
+     * @return The  ARINC 665 file as raw data.
+     **/
     virtual RawFile encode() const = 0;
 
-    void insertHeader( RawFile &file) const;
+    /**
+     * @brief Inserts the header data into [rawFile].
+     *
+     * @param[in,out] rawFile
+     *   The raw file, where the header is encoded.
+     **/
+    void insertHeader( RawFile &rawFile) const;
 
   private:
     /**

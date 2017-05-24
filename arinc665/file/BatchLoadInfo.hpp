@@ -30,28 +30,60 @@ namespace File {
 class BatchLoadInfo
 {
   public:
+    //! String type
     using string = std::string;
 
-    BatchLoadInfo() = default;
-
+    /**
+     * @brief Initialises the batch load information with the given data.
+     *
+     * @param[in] headerFilename
+     *   Load header filename.
+     * @param[in] partNumber
+     *   Load part number.
+     **/
     BatchLoadInfo(
       const string &headerFilename,
       const string &partNumber);
 
+    //! @copydoc BatchLoadInfo::BatchLoadInfo(const string&,const string&)
     BatchLoadInfo(
       string &&headerFilename,
       string &&partNumber);
 
+    /**
+     * @brief Returns the load header filename.
+     *
+     * @return The load header filename.
+     **/
     string getHeaderFilename() const;
 
+    /**
+     * @brief Sets the load header filename.
+     *
+     * @param[in] headerFilename
+     *   The load header filename.
+     **/
     void setHeaderFilename( const string &headerFilename);
 
+    /**
+     * @brief Returns the load part number.
+     *
+     * @return The load part number.
+     **/
     string getPartNumber() const;
 
+    /**
+     * @brief Updates the load part number.
+     *
+     * @param[in] partNumber
+     *   The load part number.
+     **/
     void setPartNumber( const string &partNumber);
 
   private:
+    //! The load header filename.
     string headerFilename;
+    //! The load part number.
     string partNumber;
 };
 

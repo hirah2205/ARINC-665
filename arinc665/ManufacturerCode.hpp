@@ -28,10 +28,11 @@ namespace Arinc665 {
 class ManufacturerCode
 {
   public:
+    //! String type
     using string = std::string;
 
     //! Length of manufacturer code
-    static constexpr size_t Length = 3;
+    static constexpr size_t Length = 3U;
 
     /**
      * @brief Constructs a manufacturer code.

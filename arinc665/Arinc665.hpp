@@ -30,7 +30,7 @@
  * - ARINC Report 665-1: Loadable Software Standards; 2001-01-12
  * - ARINC Report 665-2: Loadable Software Standards; 2002-08-30
  * - ARINC Report 665-3: Loadable Software Standards; 2005-08-12
- * - ARINC Report 665-4: Loadable Software Standards; 2005-08-12
+ * - ARINC Report 665-4: Loadable Software Standards; 2016-07-14
  **/
 
 /**
@@ -168,30 +168,50 @@ extern const std::string LoadUploadHeaderExtension;
 //! The default extension of a batch file: ".LUB"
 extern const std::string BatchFileExtension;
 
+//! CRC 8bit polynom
 constexpr uint8_t Crc8Polynom = 0x80U;
+//! CRC 8bit initialisation value
 constexpr uint8_t Crc8Init = 0x00U;
+//! CRC 8bit final XOR value
 constexpr uint8_t Crc8FinalXor = 0x00U;
-constexpr bool    Crc8ReflectIn = false;
-constexpr bool    Crc8ReflectOut = false;
+//! CRC 8bit reflect in
+constexpr bool Crc8ReflectIn = false;
+//! CRC 8bit reflect out
+constexpr bool Crc8ReflectOut = false;
 
+//! CRC 16bit polynom
 constexpr uint16_t Crc16Polynom = 0x1021U;
+//! CRC 16bit initialisation value
 constexpr uint16_t Crc16Init = 0xFFFFU;
+//! CRC 16bit final XOR value
 constexpr uint16_t Crc16FinalXor = 0x0000U;
-constexpr bool     Crc16ReflectIn = false;
-constexpr bool     Crc16ReflectOut = false;
+//! CRC 16bit reflect in
+constexpr bool Crc16ReflectIn = false;
+//! CRC 16bit reflect out
+constexpr bool Crc16ReflectOut = false;
 
+//! CRC 32bit polynom
 constexpr uint32_t Crc32Polynom = 0x04C11DB7UL;
+//! CRC 32bit initialisation value
 constexpr uint32_t Crc32Init = 0xFFFFFFFFUL;
+//! CRC 32bit final XOR value
 constexpr uint32_t Crc32FinalXor = 0xFFFFFFFFUL;
-constexpr bool     Crc32ReflectIn = false;
-constexpr bool     Crc32ReflectOut = false;
+//! CRC 32bit reflect in
+constexpr bool Crc32ReflectIn = false;
+//! CRC 32bit reflect out
+constexpr bool Crc32ReflectOut = false;
 
+//! CRC 64bit polynom
 constexpr uint64_t Crc64Polynom = 0x42F0E1EBA9EA3693ULL;
+//! CRC 64bit initialisation value
 constexpr uint64_t Crc64Init = 0xFFFFFFFFFFFFFFFFULL;
+//! CRC 64bit final XOR value
 constexpr uint64_t Crc64FinalXor = 0xFFFFFFFFFFFFFFFFULL;
+//! CRC 64bit reflect in
 //! @todo According to ARINC 665-4 Reflect In/Out should be set to true - but then the tests fail!
-constexpr bool     Crc64ReflectIn = false;
-constexpr bool     Crc64ReflectOut = false;
+constexpr bool Crc64ReflectIn = false;
+//! CRC 64bit reflect out
+constexpr bool Crc64ReflectOut = false;
 
 class CheckCode;
 class ManufacturerCode;

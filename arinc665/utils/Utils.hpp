@@ -29,10 +29,12 @@ namespace Arinc665 {
 namespace Utils {
 
 class Arinc665Xml;
+//! ARINC 665 XML instance pointer.
 using Arinc665XmlPtr = std::unique_ptr< Arinc665Xml>;
 
 class MediaSetConfiguration;
 class MediaSetManager;
+//! ARINC 665 media set manager instance pointer.
 using MediaSetManagerPtr = std::shared_ptr< MediaSetManager>;
 
 }
