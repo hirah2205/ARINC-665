@@ -18,16 +18,21 @@
 
 #include <arinc665/Arinc665Logger.hpp>
 
+#include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 
 namespace Arinc665 {
 namespace Utils {
 
-MediaSetConfiguration::MediaSetConfiguration( const ptree &config)
+MediaSetConfiguration::MediaSetConfiguration():
+  mediaSetBase( boost::filesystem::current_path())
+{
+}
+
+MediaSetConfiguration::MediaSetConfiguration( const ptree &config):
+  mediaSetBase( config.get< path>( "media_set_base",  boost::filesystem::current_path()))
 {
   BOOST_LOG_FUNCTION();
-
-  mediaSetBase = config.get< string>( "media_set_base");
 
   // iterate over media sets
   for ( auto &mediaSetConfig : config.get_child( "media_sets"))
@@ -42,7 +47,7 @@ MediaSetConfiguration::MediaSetConfiguration( const ptree &config)
       mediaPaths.push_back( mediumConfig.second.get_value< path>());
     }
 
-    // insert media set config
+    // insert media set configuration
     mediaSets.insert( { std::move( mediaSetName), std::move( mediaPaths)});
   }
 }
