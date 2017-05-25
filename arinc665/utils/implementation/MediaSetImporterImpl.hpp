@@ -110,8 +110,11 @@ class MediaSetImporterImpl
     LoadHeaderFiles loadHeaderFiles;
     BatchFiles batchFiles;
 
+    //! file informations from list of files
     File::FileListFile::FileInfoMap fileInfos;
+    //! load information from list of loads
     File::LoadListFile::LoadsInfoMap loadInfos;
+    //! batch information from list of batches
     File::BatchListFile::BatchInfoMap batchInfos;
 };
 

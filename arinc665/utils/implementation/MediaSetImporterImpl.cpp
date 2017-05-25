@@ -550,6 +550,7 @@ void MediaSetImporterImpl::addFiles()
 
 void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeaders)
 {
+  // iterate over load headers
   for ( const auto &loadHeader : loadHeaders)
   {
     auto load( loadInfos.find( loadHeader.first));
@@ -559,11 +560,11 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
       loadHeader.first.first,
       loadHeader.second.getPath().parent_path()));
 
-    Arinc665::Media::LoadPtr loadPtr(
-      container->addLoad( loadHeader.second.getFilename()));
+    // create load
+    auto loadPtr( container->addLoad( loadHeader.second.getFilename()));
 
-    loadPtr->setPartNumber( load->second.getPartNumber());
-    loadPtr->setTargetHardwareIds( load->second.getTargetHardwareIds());
+    loadPtr->setPartNumber( loadHeaderFile->second.getPartNumber());
+    loadPtr->setTargetHardwareIds( loadHeaderFile->second.getTargetHardwareIds());
 
     // iterate over data files
     for ( const auto &dataFile : loadHeaderFile->second.getDataFiles())
@@ -589,6 +590,7 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
 
 void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
 {
+  // iterate over batches
   for ( const auto &batch : batches)
   {
     // get batch info for batch file
@@ -601,16 +603,26 @@ void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
       batch.first.first,
       batch.second.getPath().parent_path()));
 
+    // create batch
     auto batchPtr( container->addBatch( batch.second.getFilename()));
 
-    batchPtr->setPartNumber( batchInfo->second.getPartNumber());
+    batchPtr->setPartNumber( batchFile->second.getPartNumber());
+    batchPtr->setComment( batchFile->second.getComment());
 
-    // iterate over loads
-#if 0
-    for ( const auto &load : batchFile->second.getTargetHardwareLoadList())
+    // iterate over target hardware
+    for ( const auto &targetHardware : batchFile->second.getTargetHardwares())
     {
+      Media::WeakLoads loads;
+
+      // iterate over loads
+      for ( const auto& load : targetHardware.getLoads())
+      {
+        loads.push_back( mediaSet->getLoad( load.getHeaderFilename()));
+      }
+
+      // add target hardware
+      batchPtr->addTarget( targetHardware.getTargetHardwareId(), loads);
     }
-#endif
   }
 }
 

@@ -77,11 +77,16 @@ QModelIndex MediaSetModelModel::index(
 
       if (static_cast< size_t>( row) < parentContainer->getNumberOfSubDirectories())
       {
-        return createIndex( row, column, parentContainer->getSubDirectories().at( row).get());
+        auto dirIt( std::next( parentContainer->getSubDirectories().begin(), row));
+
+        return createIndex( row, column, dirIt->get());
       }
 
-      return createIndex( row, column, parentContainer->getFiles( false).at(
-        row - parentContainer->getNumberOfSubDirectories()).get());
+      auto fileIt( std::next(
+        parentContainer->getFiles( false).begin(),
+        row - parentContainer->getNumberOfSubDirectories()));
+
+      return createIndex( row, column, fileIt->get());
     }
 
     case Arinc665::Media::Base::Type::File:

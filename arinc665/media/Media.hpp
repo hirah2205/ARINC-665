@@ -21,6 +21,7 @@
 
 #include <map>
 #include <vector>
+#include <list>
 #include <memory>
 
 namespace Arinc665 {
@@ -41,23 +42,34 @@ using MediaSetPtr = std::shared_ptr< MediaSet>;
 using WeakMediaSetPtr = std::weak_ptr< MediaSet>;
 
 class ContainerEntity;
+//! constant container entity pointer
 using ConstContainerEntityPtr = std::shared_ptr< const ContainerEntity>;
+//! container entity pointer
 using ContainerEntityPtr = std::shared_ptr< ContainerEntity>;
+//! Weak container entity pointer
 using WeakContainerEntityPtr = std::weak_ptr< ContainerEntity>;
 
 class Medium;
+//! constant medium pointer
 using ConstMediumPtr = std::shared_ptr< const Medium>;
+//! medium pointer
 using MediumPtr = std::shared_ptr< Medium>;
+//! media list
 using Media = std::vector< MediumPtr>;
+//! const media list
 using ConstMedia = std::vector< ConstMediumPtr>;
 
 class Directory;
+//! constant directory pointer
 using ConstDirectoryPtr = std::shared_ptr< const Directory>;
+//! directory pointer
 using DirectoryPtr = std::shared_ptr< Directory>;
+//! weak directory pointer
 using WeakDirectoryPtr = std::weak_ptr< Directory>;
-
-using Directories = std::vector< DirectoryPtr>;
-using ConstDirectories = std::vector< ConstDirectoryPtr>;
+//! directories list
+using Directories = std::list< DirectoryPtr>;
+//! constant directories list
+using ConstDirectories = std::list< ConstDirectoryPtr>;
 
 class PartNumberEntity;
 class BaseFile;
@@ -68,27 +80,40 @@ class Batch;
 using ConstBaseFilePtr = std::shared_ptr< const BaseFile>;
 using BaseFilePtr = std::shared_ptr< BaseFile>;
 using WeakBaseFilePtr = std::weak_ptr< BaseFile>;
-
-using Files = std::vector< BaseFilePtr>;
-using ConstFiles = std::vector< ConstBaseFilePtr>;
+//! files list
+using Files = std::list< BaseFilePtr>;
+//! constant files list
+using ConstFiles = std::list< ConstBaseFilePtr>;
 
 using ConstFilePtr = std::shared_ptr< const BaseFile> ;
 using FilePtr = std::shared_ptr< BaseFile>;
 using WeakFilePtr = std::weak_ptr< BaseFile>;
 
+//! constant load pointer
 using ConstLoadPtr = std::shared_ptr< const Load>;
+//! load pointer
 using LoadPtr = std::shared_ptr< Load>;
+//! weak load pointer
 using WeakLoadPtr = std::weak_ptr< Load>;
+//! constant weak load pointer
 using ConstWeakLoadPtr = std::weak_ptr< const Load>;
-using Loads = std::vector< LoadPtr>;
-using ConstLoads = std::vector< ConstLoadPtr>;
-using WeakLoads = std::vector< WeakLoadPtr>;
-using ConstWeakLoads = std::vector< ConstWeakLoadPtr>;
+//! loads list
+using Loads = std::list< LoadPtr>;
+//! constant loads list
+using ConstLoads = std::list< ConstLoadPtr>;
+//! weak loads list
+using WeakLoads = std::list< WeakLoadPtr>;
+//! constant weak loads list
+using ConstWeakLoads = std::list< ConstWeakLoadPtr>;
 
+//! constant batch pointer
 using ConstBatchPtr = std::shared_ptr< const Batch> ;
+//! batch pointer
 using BatchPtr = std::shared_ptr< Batch> ;
-using Batches = std::vector< BatchPtr>;
-using ConstBatches = std::vector< ConstBatchPtr>;
+//! batches list
+using Batches = std::list< BatchPtr>;
+//! constant batches list
+using ConstBatches = std::list< ConstBatchPtr>;
 
 using ConstDirectoryFileTuple  = std::tuple< const Directory&, ConstFilePtr>;
 using DirectoryFileTuple = std::tuple< Directory&, FilePtr>;
