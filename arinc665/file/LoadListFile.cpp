@@ -156,6 +156,7 @@ RawFile LoadListFile::encode() const
 
   auto rawMediaSetPn( encodeString( getMediaSetPn()));
   assert( rawMediaSetPn.size() % 2 == 0);
+
   auto rawLoadsInfo( encodeLoadsInfo());
   assert( rawLoadsInfo.size() % 2 == 0);
 
@@ -190,13 +191,14 @@ RawFile LoadListFile::encode() const
   it = rawFile.insert( it, rawLoadsInfo.begin(), rawLoadsInfo.end());
   it += rawFile.size();
 
+  // user defined data
   if (!userDefinedData.empty())
   {
     assert( userDefinedData.size() % 2 == 0);
     rawFile.insert( it, userDefinedData.begin(), userDefinedData.end());
   }
 
-  // set header and crc
+  // set header and CRC
   insertHeader( rawFile);
 
   return rawFile;
@@ -227,7 +229,7 @@ void LoadListFile::decodeBody( const RawFile &rawFile)
   it = getInt< uint8_t>( it, numberOfMediaSetMembers);
 
   // load list
-  loadsInfo = decodeLoadsInfo( rawFile, 2 * loadListPtr);
+  decodeLoadsInfo( rawFile, 2 * loadListPtr);
 
   // user defined data
   if ( 0 != userDefinedDataPtr)
@@ -253,9 +255,11 @@ RawFile LoadListFile::encodeLoadsInfo() const
     ++loadCounter;
     auto const rawPartNumber( encodeString( loadInfo.getPartNumber()));
     assert( rawPartNumber.size() % 2 == 0);
+
     auto const rawHeaderFilename( encodeString( loadInfo.getHeaderFilename()));
     assert( rawHeaderFilename.size() % 2 == 0);
-    auto const rawThwIds( encodeStringList( loadInfo.getTargetHardwareIdList()));
+
+    auto const rawThwIds( encodeStringList( loadInfo.getTargetHardwareIds()));
     assert( rawThwIds.size() % 2 == 0);
 
     RawFile rawLoadInfo(
@@ -293,13 +297,11 @@ RawFile LoadListFile::encodeLoadsInfo() const
   return rawLoadsInfo;
 }
 
-LoadsInfo LoadListFile::decodeLoadsInfo(
+void LoadListFile::decodeLoadsInfo(
   const RawFile &rawFile,
   std::size_t offset)
 {
   auto it( rawFile.begin() + offset);
-
-  LoadsInfo loadsInfo;
 
   // number of loads
   uint16_t numberOfLoads;
@@ -346,8 +348,6 @@ LoadsInfo LoadListFile::decodeLoadsInfo(
     // set it to begin of next load
     it += loadPointer * 2;
   }
-
-  return loadsInfo;
 }
 
 }

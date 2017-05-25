@@ -145,7 +145,7 @@ static void printMediaSet( MediaSetPtr &mediaSet)
 
     std::cout << "     Compatible THW IDs" << std::endl;
     // iterate over THW ID list
-    for ( auto const & thwId : load->getTargetHardwareIdList())
+    for ( auto const & thwId : load->getTargetHardwareIds())
     {
       std::cout << "      * " << thwId << std::endl;
     }

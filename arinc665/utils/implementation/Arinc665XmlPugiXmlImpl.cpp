@@ -342,7 +342,7 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
       AdditionalInfo( "NameRef attribute does not reference load"));
   }
 
-  Media::Load::ThwIdList thwIdList;
+  Media::Load::TargetHardwareIds thwIds;
 
   // iterate over target hardware
   for ( pugi::xml_node targetHardwareNode : loadNode.children( "TargetHardware"))
@@ -357,10 +357,10 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
     }
     */
 
-    thwIdList.push_back( thwId);
+    thwIds.push_back( thwId);
   }
 
-  load->setTargetHardwareIdList( thwIdList);
+  load->setTargetHardwareIds( thwIds);
 
   // iterate over data files
   for ( pugi::xml_node dataFileNode : loadNode.children( "DataFile"))
@@ -419,7 +419,7 @@ void Arinc665XmlPugiXmlImpl::saveLoad(
 
 
   // iterate over target hardware id
-  for (auto targetHardware : load->getTargetHardwareIdList())
+  for (auto targetHardware : load->getTargetHardwareIds())
   {
     auto targetHardwareNode( loadNode.append_child( "TargetHardware"));
     targetHardwareNode.append_attribute( "ThwId") =

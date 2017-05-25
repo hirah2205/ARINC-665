@@ -60,12 +60,9 @@ void list_luh( const boost::filesystem::path &luhFile)
 
     std::cout << "part number: "<< load.getPartNumber() << std::endl;
 
-    for (
-      std::list< std::string>::const_iterator it = load.getTargetHardwareIdList().begin();
-      it != load.getTargetHardwareIdList().end();
-      ++it)
+    for ( auto const &targetHardwareId : load.getTargetHardwareIds())
     {
-      std::cout << "target hw id: " << *it << std::endl;
+      std::cout << "target HW id: " << targetHardwareId << std::endl;
     }
 
     for ( auto const &dataFile : load.getDataFiles())
@@ -142,7 +139,7 @@ void list_loads_lum( const boost::filesystem::path &loadsLum)
         "load header file name: "       << load.getHeaderFilename() << "\n" <<
         "load member sequence number: " << std::dec << load.getMemberSequenceNumber() << std::endl << std::endl;
 
-      for ( const auto & thw : load.getTargetHardwareIdList())
+      for ( const auto & thw : load.getTargetHardwareIds())
       {
         std::cout << "target hardware id: " << thw << std::endl << std::endl;
       }

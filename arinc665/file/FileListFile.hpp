@@ -29,8 +29,7 @@ namespace Arinc665 {
 namespace File {
 
 /**
- * @brief Represents the parsed file list, which is contained on each media
- *   of the media set.
+ * @brief ARINC 665 File List File.
  **/
 class FileListFile: public ListFile
 {
@@ -42,8 +41,39 @@ class FileListFile: public ListFile
     //! User defined data type
     using UserDefinedData = std::vector< uint8_t>;
 
+    /**
+     * @brief Creates an empty file list file.
+     *
+     * @param[in] version
+     *   ARINC 665 version.
+     **/
     FileListFile( Arinc665Version version);
 
+    /**
+     * @brief Creates file list file with the given data.
+     *
+     * @param[in] version
+     *   ARINC 665 version.
+     * @param mediaSetPn
+     * @param mediaSequenceNumber
+     * @param numberOfMediaSetMembers
+     * @param filesInfo
+     * @param userDefinedData
+     **/
+    FileListFile(
+      Arinc665Version version,
+      const string &mediaSetPn,
+      uint8_t mediaSequenceNumber,
+      uint8_t numberOfMediaSetMembers,
+      const FilesInfo &filesInfo,
+      const UserDefinedData &userDefinedData);
+
+    /**
+     * @brief Creates a file list file from the given raw data.
+     *
+     * @param[in] rawFile
+     *   Raw data file representation.
+     **/
     FileListFile( const RawFile &rawFile);
 
     //! @copydoc ListFile::operator=
@@ -113,20 +143,58 @@ class FileListFile: public ListFile
      **/
     FileInfoPathMap getFilesInfoAsPathMap() const;
 
+    /**
+     * @brief Returns the user defined data.
+     *
+     * @return The user defined data.
+     **/
     const UserDefinedData& getUserDefinedData() const;
 
+    /**
+     * @brief Updates the user defined data.
+     *
+     * @param[in] userDefinedData
+     *   The user defined data.
+     **/
     void setUserDefinedData( const UserDefinedData &userDefinedData);
 
+    /**
+     * @brief Returns if the given file list file belongs to the same media set.
+     *
+     * @param[in] other
+     *   The other file list file to compare to this.
+     *
+     * @return If the given file list file belongs to the same media set.
+     **/
     bool belongsToSameMediaSet( const FileListFile &other) const;
 
   private:
     //! @copydoc ListFile::encode
     virtual RawFile encode() const override final;
 
+    /**
+     * @brief Decodes the body of the file list file.
+     *
+     * @param[in] rawFile
+     *   Raw file list file representation.
+     **/
     void decodeBody( const RawFile &rawFile);
 
+    /**
+     * @brief Encodes the files information list.
+     *
+     * @return Raw representation of files information list.
+     **/
     RawFile encodeFilesInfo() const;
 
+    /**
+     * @brief Decodes the files information list from the raw data.
+     *
+     * @param[in] rawFile
+     *   Raw files list file representation.
+     * @param[in] offset
+     *   Offset of the files information list.
+     **/
     void decodeFilesInfo( const RawFile &rawFile, std::size_t offset);
 
     //! The media set part number

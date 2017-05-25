@@ -29,8 +29,7 @@ namespace Arinc665 {
 namespace File {
 
 /**
- * @brief The load list represents each BATCHES.LUM file on each media of
- *   the media set.
+ * @brief ARINC 665 Batch List File.
  **/
 class BatchListFile: public ListFile
 {
@@ -40,8 +39,39 @@ class BatchListFile: public ListFile
     //! User defined data type.
     using UserDefinedData = std::vector< uint8_t>;
 
+    /**
+     * @brief Creates an empty batch list file.
+     *
+     * @param[in] version
+     *   ARINC 665 version.
+     **/
     BatchListFile( Arinc665Version version);
 
+    /**
+     * @brief Creates batch list file with the given data.
+     *
+     * @param[in] version
+     *   ARINC 665 version.
+     * @param mediaSetPn
+     * @param mediaSequenceNumber
+     * @param numberOfMediaSetMembers
+     * @param batchesInfo
+     * @param userDefinedData
+     **/
+    BatchListFile(
+      Arinc665Version version,
+      const string &mediaSetPn,
+      uint8_t mediaSequenceNumber,
+      uint8_t numberOfMediaSetMembers,
+      const BatchesInfo &batchesInfo,
+      const UserDefinedData &userDefinedData);
+
+    /**
+     * @brief Creates a batch list file from the given raw data.
+     *
+     * @param[in] rawFile
+     *   Raw data file representation.
+     **/
     BatchListFile( const RawFile &rawFile);
 
     //! @copydoc ListFile::operator=
@@ -66,14 +96,36 @@ class BatchListFile: public ListFile
     virtual void setNumberOfMediaSetMembers(
       uint8_t numberOfMediaSetMembers) override;
 
-    unsigned int getNumberOfBatches() const;
+    /**
+     * @brief Return the number of batches.
+     *
+     * @return The number of batches.
+     **/
+    size_t getNumberOfBatches() const;
 
+    /**
+     * @brief Returns the batches information.
+     *
+     * @return The batches information.
+     **/
     const BatchesInfo& getBatchesInfo() const;
 
+    //! @copydoc getBatchesInfo() const
     BatchesInfo& getBatchesInfo();
 
+    /**
+     * @brief Returns the batches information as map.
+     *
+     * @return The batches information as map.
+     */
     BatchInfoMap getBatchesInfoAsMap() const;
 
+    /**
+     * @brief Adds the given batch information.
+     *
+     * @param[in] batchInfo
+     *   The batch information to add.
+     **/
     void addBatchInfo( const BatchInfo &batchInfo);
 
     //! @copydoc addBatchInfo(const BatchInfo&)
@@ -94,16 +146,43 @@ class BatchListFile: public ListFile
      **/
     void setUserDefinedData( const UserDefinedData &userDefinedData);
 
+    /**
+     * @brief Returns if the given batch list file belongs to the same media set.
+     *
+     * @param[in] other
+     *   The other batch list file to compare to this.
+     *
+     * @return If the given batch list file belongs to the same media set.
+     **/
     bool belongsToSameMediaSet( const BatchListFile &other) const;
 
   private:
     //! @copydoc ListFile::encode
     virtual RawFile encode() const override final;
 
+    /**
+     * @brief Decodes the body of the batch list file.
+     *
+     * @param[in] rawFile
+     *   Raw batch list file representation.
+     **/
     void decodeBody( const RawFile &rawFile);
 
+    /**
+     * @brief Encodes the batches information list.
+     *
+     * @return Raw representation of batches information list.
+     **/
     RawFile encodeBatchesInfo() const;
 
+    /**
+     * @brief Decodes the batches information list from the raw data.
+     *
+     * @param[in] rawFile
+     *   Raw batch list file representation.
+     * @param[in] offset
+     *   Offset of the batches information list.
+     **/
     void decodeBatchesInfo( const RawFile &rawFile, std::size_t offset);
 
     //! The media set part number

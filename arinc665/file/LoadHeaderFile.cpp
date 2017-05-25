@@ -28,10 +28,10 @@ LoadHeaderFile::LoadHeaderFile( Arinc665Version version) :
 {
 }
 
-LoadHeaderFile::LoadHeaderFile( const RawFile &file):
-  Arinc665File( FileType::LoadUploadHeader, file, 6U)
+LoadHeaderFile::LoadHeaderFile( const RawFile &rawFile):
+  Arinc665File( FileType::LoadUploadHeader, rawFile, 6U)
 {
-  decodeBody( file);
+  decodeBody( rawFile);
 }
 
 LoadHeaderFile& LoadHeaderFile::operator=( const RawFile &rawFile)
@@ -52,38 +52,38 @@ void LoadHeaderFile::setPartNumber( const string &partNumber)
   this->partNumber = partNumber;
 }
 
-const LoadHeaderFile::TargetHardwareIdList&
-LoadHeaderFile::getTargetHardwareIdList() const
+const LoadHeaderFile::TargetHardwareIds&
+LoadHeaderFile::getTargetHardwareIds() const
 {
-  return targetHardwareIdList;
+  return targetHardwareIds;
 }
 
-LoadHeaderFile::TargetHardwareIdList& LoadHeaderFile::getTargetHardwareIdList()
+LoadHeaderFile::TargetHardwareIds& LoadHeaderFile::getTargetHardwareIds()
 {
-  return targetHardwareIdList;
+  return targetHardwareIds;
 }
 
-void LoadHeaderFile::setTargetHardwareIdList(
-  const TargetHardwareIdList &targetHardwareIdList)
+void LoadHeaderFile::setTargetHardwareIds(
+  const TargetHardwareIds &targetHardwareIds)
 {
-  this->targetHardwareIdList = targetHardwareIdList;
+  this->targetHardwareIds = targetHardwareIds;
 }
 
-void LoadHeaderFile::setTargetHardwareIdList(
-  TargetHardwareIdList &&targetHardwareIdList)
+void LoadHeaderFile::setTargetHardwareIds(
+  TargetHardwareIds &&targetHardwareIds)
 {
-  this->targetHardwareIdList = targetHardwareIdList;
+  this->targetHardwareIds = targetHardwareIds;
 }
 
 void LoadHeaderFile::addTargetHardwareId(
   const LoadHeaderFile::string &targetHardwareId)
 {
-  targetHardwareIdList.push_back( targetHardwareId);
+  targetHardwareIds.push_back( targetHardwareId);
 }
 
 void LoadHeaderFile::addTargetHardwareId( string targetHardwareId)
 {
-  targetHardwareIdList.push_back( targetHardwareId);
+  targetHardwareIds.push_back( targetHardwareId);
 }
 
 const LoadFilesInfo& LoadHeaderFile::getDataFiles() const
@@ -158,7 +158,7 @@ RawFile LoadHeaderFile::encode() const
   auto rawLoadPn( encodeString( getPartNumber()));
   assert( rawLoadPn.size() % 2 == 0);
 
-  auto rawThwIdsList( encodeStringList( getTargetHardwareIdList()));
+  auto rawThwIdsList( encodeStringList( getTargetHardwareIds()));
   assert( rawThwIdsList.size() % 2 == 0);
 
   auto rawDataFiles( encodeFileList( getDataFiles()));
@@ -257,7 +257,7 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
 
   // target hardware id list
   it = rawFile.begin() + targetHardwareIdListPtr * 2;
-  it = decodeStringList( it, targetHardwareIdList);
+  it = decodeStringList( it, targetHardwareIds);
 
   // data file list
   dataFilesInfo = decodeFileList( rawFile, dataFileListPtr * 2);

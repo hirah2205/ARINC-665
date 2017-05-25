@@ -39,7 +39,7 @@ class Load: public BaseFile
     //! File list
     using FileList = std::list< WeakFilePtr>;
     //! Target hardware ID list
-    using ThwIdList = std::list< string>;
+    using TargetHardwareIds = std::list< string>;
     //! User defined data type
     using UserDefinedData = std::vector< uint8_t>;
 
@@ -65,22 +65,22 @@ class Load: public BaseFile
      *
      * @return The list of Target HW IDs.
      **/
-    const ThwIdList& getTargetHardwareIdList() const;
+    const TargetHardwareIds& getTargetHardwareIds() const;
 
     /**
      * @brief Returns the List of Target HW IDs.
      *
      * @return The list of Target HW IDs (modifiable).
      **/
-    ThwIdList& getTargetHardwareIdList();
+    TargetHardwareIds& getTargetHardwareIds();
 
     /**
      * @brief Updates the list of Target HW IDs.
      *
-     * @param[in] thwIdList
+     * @param[in] thwIds
      *   The list of Target HW IDs.
      **/
-    void setTargetHardwareIdList( const ThwIdList& thwIdList);
+    void setTargetHardwareIds( const TargetHardwareIds& thwIds);
 
     /**
      * @brief Returns the data files.
@@ -134,7 +134,7 @@ class Load: public BaseFile
     void setUserDefinedData( UserDefinedData &&userDefinedData);
 
   private:
-    ThwIdList targetHardwareIdList;
+    TargetHardwareIds targetHardwareIds;
     FileList dataFileList;
     FileList supportFileList;
     UserDefinedData userDefinedData;

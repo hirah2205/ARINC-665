@@ -28,8 +28,7 @@ namespace Arinc665 {
 namespace File {
 
 /**
- * @brief The load list represents each LOADS.LUM file on each media of the
- *   media set.
+ * @brief ARINC 665 Load List File..
  **/
 class LoadListFile: public ListFile
 {
@@ -39,8 +38,39 @@ class LoadListFile: public ListFile
     //! User defined data type.
     using UserDefinedData = std::vector< uint8_t>;
 
+    /**
+     * @brief Creates an empty load list file.
+     *
+     * @param[in] version
+     *   ARINC 665 version.
+     **/
     LoadListFile( Arinc665Version version);
 
+    /**
+     * @brief Creates load list file with the given data.
+     *
+     * @param[in] version
+     *   ARINC 665 version.
+     * @param mediaSetPn
+     * @param mediaSequenceNumber
+     * @param numberOfMediaSetMembers
+     * @param loadsInfo
+     * @param userDefinedData
+     */
+    LoadListFile(
+      Arinc665Version version,
+      const string &mediaSetPn,
+      uint8_t mediaSequenceNumber,
+      uint8_t numberOfMediaSetMembers,
+      const LoadsInfo &loadsInfo,
+      const UserDefinedData &userDefinedData);
+
+    /**
+     * @brief Creates a load list file from the given raw data.
+     *
+     * @param[in] rawFile
+     *   Raw data file representation.
+     **/
     LoadListFile( const RawFile &rawFile);
 
     //! @copydoc ListFile::operator=
@@ -141,11 +171,30 @@ class LoadListFile: public ListFile
     //! @copydoc ListFile::encode
     virtual RawFile encode() const override final;
 
+    /**
+     * @brief Decodes the body of the batch file.
+     *
+     * @param[in] rawFile
+     *   Raw load list file representation.
+     **/
     void decodeBody( const RawFile &rawFile);
 
+    /**
+     * @brief Encodes the batches information list.
+     *
+     * @return Raw representation of loads information list.
+     **/
     RawFile encodeLoadsInfo() const;
 
-    LoadsInfo decodeLoadsInfo( const RawFile &rawFile, std::size_t offset);
+    /**
+     * @brief Decodes the loads information list from the raw data.
+     *
+     * @param[in] rawFile
+     *   Raw load list file representation.
+     * @param[in] offset
+     *   Offset of the loads information list.
+     **/
+    void decodeLoadsInfo( const RawFile &rawFile, std::size_t offset);
 
     //! Media set part number
     string mediaSetPn;

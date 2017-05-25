@@ -447,7 +447,7 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex)
     }
 
     // validate load header target HW list info with the stored information in load list
-    if (loadHeaderFile.getTargetHardwareIdList() != loadInfo.second.getTargetHardwareIdList())
+    if (loadHeaderFile.getTargetHardwareIds() != loadInfo.second.getTargetHardwareIds())
     {
       //! @throw Arinc665Exception When load header THW info is inconsistent to list of loads information
       BOOST_THROW_EXCEPTION( Arinc665Exception() <<
@@ -563,7 +563,7 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
       container->addLoad( loadHeader.second.getFilename()));
 
     loadPtr->setPartNumber( load->second.getPartNumber());
-    loadPtr->setTargetHardwareIdList( load->second.getTargetHardwareIdList());
+    loadPtr->setTargetHardwareIds( load->second.getTargetHardwareIds());
 
     // iterate over data files
     for ( const auto &dataFile : loadHeaderFile->second.getDataFiles())

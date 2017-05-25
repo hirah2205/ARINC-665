@@ -38,22 +38,45 @@ class LoadInfo
     //! Target Hardware IDs type.
     using ThwIds = std::list< string>;
 
+    /**
+     * @brief Initialises the load information
+     *
+     * @param[in] partNumber
+     *   Load part number.
+     * @param[in] headerFilename
+     *   Load header filename
+     * @param[in] memberSequenceNumber
+     *   Member sequence number.
+     * @param[in] targetHardwareIds
+     *   Target Hardware IDs
+     **/
     LoadInfo(
       const string &partNumber,
       const string &headerFilename,
       uint8_t memberSequenceNumber,
       const ThwIds &targetHardwareIds);
 
+    //! @copydoc LoadInfo::LoadInfo(const string&,const string&,uint8_t,const ThwIds&)
     LoadInfo(
       string &&partNumber,
       string &&headerFilename,
       uint8_t memberSequenceNumber,
       ThwIds &&targetHardwareIds);
 
+    /**
+     * @brief Returns the load part number.
+     *
+     * @return The load part number
+     **/
     string getPartNumber() const;
 
     void setPartNumber( const string &partNumber);
 
+    /**
+     * @brief Returns the load header filename.
+     *
+     * @return The load header filename.
+     **/
     string getHeaderFilename() const;
 
     void setHeaderFilename( const string &headerFilename);
@@ -62,16 +85,52 @@ class LoadInfo
 
     void setMemberSequenceNumber( uint8_t memberSequenceNumber);
 
-    const ThwIds& getTargetHardwareIdList() const;
+    const ThwIds& getTargetHardwareIds() const;
 
-    ThwIds& getTargetHardwareIdList();
+    ThwIds& getTargetHardwareIds();
 
+    void addTargetHardwareId( const string &targetHardwareId);
+
+    void addTargetHardwareId( string &&targetHardwareId);
+
+    /**
+     * @brief Compares the other load information against this for equality.
+     *
+     * @param[in] other
+     *   Other load information
+     *
+     * @return if [this] and [other] are equal.
+     **/
     bool operator ==( const LoadInfo &other) const;
 
+    /**
+     * @brief Compares the other load information against this for inequality.
+     *
+     * @param[in] other
+     *   Other load information
+     *
+     * @return if [this] and [other] are unequal.
+     **/
     bool operator !=( const LoadInfo &other) const;
 
+    /**
+     * @brief Compares the other file information against this for equality.
+     *
+     * @param[in] other
+     *   Other file information
+     *
+     * @return if [this] and [other] are equal.
+     **/
     bool operator ==( const FileInfo &other) const;
 
+    /**
+     * @brief Compares the other file information against this for inequality.
+     *
+     * @param[in] other
+     *   Other file information
+     *
+     * @return if [this] and [other] are unequal.
+     **/
     bool operator !=( const FileInfo &other) const;
 
   private:

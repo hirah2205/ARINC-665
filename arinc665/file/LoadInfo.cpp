@@ -75,14 +75,24 @@ void LoadInfo::setMemberSequenceNumber( const uint8_t memberSequenceNumber)
   this->memberSequenceNumber = memberSequenceNumber;
 }
 
-const LoadInfo::ThwIds& LoadInfo::getTargetHardwareIdList() const
+const LoadInfo::ThwIds& LoadInfo::getTargetHardwareIds() const
 {
   return targetHardwareIds;
 }
 
-LoadInfo::ThwIds& LoadInfo::getTargetHardwareIdList()
+LoadInfo::ThwIds& LoadInfo::getTargetHardwareIds()
 {
   return targetHardwareIds;
+}
+
+void LoadInfo::addTargetHardwareId( const string &targetHardwareId)
+{
+  targetHardwareIds.push_back( targetHardwareId);
+}
+
+void LoadInfo::addTargetHardwareId( string &&targetHardwareId)
+{
+  targetHardwareIds.push_back( targetHardwareId);
 }
 
 bool LoadInfo::operator ==( const LoadInfo &other) const
@@ -91,7 +101,7 @@ bool LoadInfo::operator ==( const LoadInfo &other) const
     (partNumber == other.getPartNumber()) &&
     (headerFilename == other.getHeaderFilename()) &&
     (memberSequenceNumber == other.getMemberSequenceNumber()) &&
-    (targetHardwareIds == other.getTargetHardwareIdList());
+    (targetHardwareIds == other.getTargetHardwareIds());
 }
 
 bool LoadInfo::operator !=( const LoadInfo &other) const

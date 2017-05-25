@@ -110,7 +110,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
       load->getPartNumber(),
       load->getName(),
       load->getMedium()->getMediumNumber(),
-      load->getTargetHardwareIdList()});
+      load->getTargetHardwareIds()});
   }
 
   loadListFile.calculateCrc();
@@ -244,7 +244,7 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
 
         File::LoadHeaderFile loadHeaderFile( Arinc665Version::ARINC_665_2);
         loadHeaderFile.setPartNumber( load->getPartNumber());
-        loadHeaderFile.setTargetHardwareIdList( load->getTargetHardwareIdList());
+        loadHeaderFile.setTargetHardwareIds( load->getTargetHardwareIds());
 
         Arinc665Crc32 loadCrc;
 

@@ -25,7 +25,7 @@ namespace Arinc665 {
 namespace File {
 
 /**
- * @brief A batch file represents a list of loads of target hardwares.
+ * @brief ARINC 665 Batch File.
  **/
 class BatchFile: public Arinc665File
 {

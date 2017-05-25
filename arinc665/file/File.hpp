@@ -27,6 +27,13 @@ namespace Arinc665 {
 
 /**
  * @brief Namespace, which holds the decoding/ encoding of the ARINC 665 files.
+ *
+ * * List files:
+ *   * List of Files: FileListFile
+ *   * List of Loads: LoadListFile
+ *   * List of Batches: BatchListFile
+ * * Load Header File: LoadHeaderFile
+ * * Batch File: BatchFile
  **/
 namespace File {
 //! Raw file type definition.

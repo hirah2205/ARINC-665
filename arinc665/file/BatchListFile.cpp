@@ -74,7 +74,7 @@ void BatchListFile::setNumberOfMediaSetMembers(
   this->numberOfMediaSetMembers = numberOfMediaSetMembers;
 }
 
-unsigned int BatchListFile::getNumberOfBatches() const
+size_t BatchListFile::getNumberOfBatches() const
 {
   return batchesInfo.size();
 }

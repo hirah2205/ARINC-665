@@ -29,19 +29,19 @@ Load::FileType Load::getFileType( void) const
   return FileType::LoadFile;
 }
 
-const Load::ThwIdList& Load::getTargetHardwareIdList( void) const
+const Load::TargetHardwareIds& Load::getTargetHardwareIds() const
 {
-  return targetHardwareIdList;
+  return targetHardwareIds;
 }
 
-Load::ThwIdList& Load::getTargetHardwareIdList( void)
+Load::TargetHardwareIds& Load::getTargetHardwareIds()
 {
-  return targetHardwareIdList;
+  return targetHardwareIds;
 }
 
-void Load::setTargetHardwareIdList( const ThwIdList& thwIdList)
+void Load::setTargetHardwareIds( const TargetHardwareIds& thwIds)
 {
-  this->targetHardwareIdList = thwIdList;
+  this->targetHardwareIds = thwIds;
 }
 
 const Load::FileList& Load::getDataFiles( void) const
