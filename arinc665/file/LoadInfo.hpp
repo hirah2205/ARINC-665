@@ -28,7 +28,9 @@ namespace Arinc665 {
 namespace File {
 
 /**
- * @brief load information, which is part of a load list file.
+ * @brief Load information, which is part of a load list file.
+ *
+ * @sa LoadListFile
  **/
 class LoadInfo
 {

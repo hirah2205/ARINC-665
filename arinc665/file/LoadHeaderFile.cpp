@@ -293,7 +293,7 @@ RawFile LoadHeaderFile::encodeFileList( const LoadFilesInfo &loadFilesInfo) cons
   for (auto const &fileInfo : loadFilesInfo)
   {
     ++fileCounter;
-    auto const rawFilename( encodeString( fileInfo.getName()));
+    auto const rawFilename( encodeString( fileInfo.getFilename()));
     assert( rawFilename.size() % 2 == 0);
     auto const rawPartNumber( encodeString( fileInfo.getPartNumber()));
     assert( rawPartNumber.size() % 2 == 0);

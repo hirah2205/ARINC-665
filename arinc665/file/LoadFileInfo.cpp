@@ -20,25 +20,37 @@ namespace Arinc665 {
 namespace File {
 
 LoadFileInfo::LoadFileInfo(
-  const string &name,
-  const string partNumber,
+  const string &filename,
+  const string &partNumber,
   uint32_t length,
   uint16_t crc):
-  name( name),
+  filename( filename),
   partNumber( partNumber),
   length( length),
   crc( crc)
 {
 }
 
-LoadFileInfo::string LoadFileInfo::getName() const
+LoadFileInfo::LoadFileInfo(
+  string &&filename,
+  string &&partNumber,
+  uint32_t length,
+  uint16_t crc):
+  filename( std::move( filename)),
+  partNumber( std::move( partNumber)),
+  length( length),
+  crc( crc)
 {
-  return name;
 }
 
-void LoadFileInfo::setName( const string &name)
+LoadFileInfo::string LoadFileInfo::getFilename() const
 {
-  this->name = name;
+  return filename;
+}
+
+void LoadFileInfo::setFilename( const string &filename)
+{
+  this->filename = filename;
 }
 
 LoadFileInfo::string LoadFileInfo::getPartNumber() const

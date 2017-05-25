@@ -323,10 +323,14 @@ class Arinc665File
       std::size_t checksumPosition = DefaultChecksumPosition) noexcept;
 
     /**
+     * @brief Initialises the ARINC 665 file from the given raw data.
      *
-     * @param fileType
-     * @param rawFile
-     * @param checksumPosition
+     * @param[in] fileType
+     *   File type.
+     * @param[in] rawFile
+     *   The raw file.
+     * @param[in] checksumPosition
+     *   Checksum position.
      **/
     Arinc665File(
       FileType fileType,
@@ -334,10 +338,12 @@ class Arinc665File
       std::size_t checksumPosition = DefaultChecksumPosition);
 
     /**
+     * @brief Initialises the ARINC 665 file from the given raw data.
      *
-     * @param rawFile
+     * @param[in] rawFile
+     *   The raw file.
      *
-     * @return
+     * @return *this
      **/
     Arinc665File& operator=( const Arinc665File &rawFile);
 

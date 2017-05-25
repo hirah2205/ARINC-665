@@ -26,7 +26,9 @@ namespace File {
 
 /**
  * @brief Batch info, which is part of the list of batches file.
- */
+ *
+ * @sa BatchListFile
+ **/
 class BatchInfo
 {
   public:

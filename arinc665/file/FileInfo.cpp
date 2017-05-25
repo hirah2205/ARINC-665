@@ -33,6 +33,18 @@ FileInfo::FileInfo(
 {
 }
 
+FileInfo::FileInfo(
+  string &&filename,
+  string &&pathName,
+  uint16_t memberSequenceNumber,
+  uint16_t crc):
+  filename( std::move( filename)),
+  pathName( std::move( pathName)),
+  memberSequenceNumber( memberSequenceNumber),
+  crc( crc)
+{
+}
+
 FileInfo::string FileInfo::getFilename() const
 {
   return filename;

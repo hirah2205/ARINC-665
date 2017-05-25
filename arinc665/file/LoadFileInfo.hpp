@@ -27,6 +27,8 @@ namespace File {
 
 /**
  * @brief the File information within the file list of the load upload header.
+ *
+ * @sa LoadHeaderFile
  **/
 class LoadFileInfo
 {
@@ -34,27 +36,94 @@ class LoadFileInfo
     //! String type
     using string = std::string;
 
+    /**
+     * @brief Initialise the load file information with the given data.
+     *
+     * @param[in] name
+     *   filename
+     * @param partNumber
+     *   Part number
+     * @param length
+     *   File size
+     * @param crc
+     *   File CRC
+     **/
     LoadFileInfo(
       const string &name,
-      const string partNumber,
+      const string &partNumber,
       uint32_t length,
       uint16_t crc);
 
-    string getName() const;
-    void setName( const string &name);
+    //! @copydoc LoadFileInfo::LoadFileInfo(const string&,const string&,uint32_t,uint16_t)
+    LoadFileInfo(
+      string &&name,
+      string &&partNumber,
+      uint32_t length,
+      uint16_t crc);
 
+    /**
+     * @return The filename.
+     *
+     * @return The filename.
+     **/
+    string getFilename() const;
+
+    /**
+     * @brief Updates the filename.
+     *
+     * @param[in] filename
+     *   The filename.
+     **/
+    void setFilename( const string &filename);
+
+    /**
+     * @return Returns the part number.
+     *
+     * @return The part number.
+     **/
     string getPartNumber() const;
+
+    /**
+     * @brief Updates the file part number.
+     *
+     * @param[in] partNumber
+     *   The file part number.
+     **/
     void setPartNumber( const string &partNumber);
 
+    /**
+     * @return Returns the file size.
+     *
+     * @return The file size.
+     **/
     uint32_t getLength() const;
+
+    /**
+     * @brief Updates the file size.
+     *
+     * @param[in] length
+     *   The file size.
+     **/
     void setLength( uint32_t length);
 
+    /**
+     * @return Returns the file CRC.
+     *
+     * @return The file CRC.
+     **/
     uint16_t getCrc() const;
+
+    /**
+     * @brief Updates the file CRC.
+     *
+     * @param[in] crc
+     *   The file CRC.
+     **/
     void setCrc( uint16_t crc);
 
   private:
     //! Filename
-    string name;
+    string filename;
     //! File part number
     string partNumber;
     //! File length

@@ -569,7 +569,7 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
     // iterate over data files
     for ( const auto &dataFile : loadHeaderFile->second.getDataFiles())
     {
-      auto dataFilePtr( mediaSet->getFile( dataFile.getName()));
+      auto dataFilePtr( mediaSet->getFile( dataFile.getFilename()));
 
       dataFilePtr->setPartNumber( dataFile.getPartNumber());
 
@@ -579,7 +579,7 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
     // iterate over support files
     for ( const auto &supportFile : loadHeaderFile->second.getSupportFiles())
     {
-      auto supportFilePtr( mediaSet->getFile( supportFile.getName()));
+      auto supportFilePtr( mediaSet->getFile( supportFile.getFilename()));
 
       supportFilePtr->setPartNumber( supportFile.getPartNumber());
 

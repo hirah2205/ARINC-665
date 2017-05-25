@@ -122,6 +122,8 @@ add_library(
   ProductIdentifierTest.cpp
   TargetHardwareIdTest.cpp
   
+  file/LoadFileInfoTest.cpp
+  
   media/MediaSetTest.cpp
   )
 

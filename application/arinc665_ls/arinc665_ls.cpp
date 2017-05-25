@@ -68,7 +68,7 @@ void list_luh( const boost::filesystem::path &luhFile)
     for ( auto const &dataFile : load.getDataFiles())
     {
       std::cout <<
-        "data file name: " << dataFile.getName() << "\n" <<
+        "data file name: " << dataFile.getFilename() << "\n" <<
         "data file PN:   " << dataFile.getPartNumber() << "\n" <<
         "data file size: " << std::dec << dataFile.getLength() << "\n" <<
         "data file CRC:  " << std::hex << dataFile.getCrc() << std::endl << std::endl;
@@ -77,7 +77,7 @@ void list_luh( const boost::filesystem::path &luhFile)
     for ( auto const &supportFile : load.getSupportFiles())
     {
       std::cout <<
-        "support file name: " << supportFile.getName() << "\n" <<
+        "support file name: " << supportFile.getFilename() << "\n" <<
         "support file PN:   " << supportFile.getPartNumber() << "\n" <<
         "support file size: " << std::dec << supportFile.getLength() << "\n" <<
         "support file CRC:  " << std::hex << supportFile.getCrc() << std::endl << std::endl;

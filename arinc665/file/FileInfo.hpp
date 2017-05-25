@@ -45,6 +45,12 @@ class FileInfo
       uint16_t memberSequenceNumber,
       uint16_t crc);
 
+    FileInfo(
+      string &&filename,
+      string &&pathName,
+      uint16_t memberSequenceNumber,
+      uint16_t crc);
+
     string getFilename() const;
 
     void setFilename( const string &filename);
