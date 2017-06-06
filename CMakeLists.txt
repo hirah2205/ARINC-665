@@ -7,9 +7,9 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.7)
+cmake_minimum_required( VERSION 3.8)
 
-project( "ARINC 665")
+project( arinc665 VERSION 1.0.0.0)
 
 add_subdirectory( arinc665)
 add_subdirectory( arinc665_qt)

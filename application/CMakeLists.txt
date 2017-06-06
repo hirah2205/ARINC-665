@@ -7,9 +7,7 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.7)
-
-project ( "ARINC 665 applications")
+cmake_minimum_required( VERSION 3.8)
 
 add_subdirectory( arinc665_compiler)
 add_subdirectory( arinc665_decompiler)

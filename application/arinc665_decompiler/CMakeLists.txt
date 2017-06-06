@@ -7,9 +7,7 @@
 # 
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.5)
-
-project( "ARINC 665 decompiler")
+cmake_minimum_required( VERSION 3.8)
 
 add_executable( 
   arinc665_decompiler

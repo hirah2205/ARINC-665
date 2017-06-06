@@ -9,8 +9,6 @@
 
 cmake_minimum_required( VERSION 3.8)
 
-project ( "ARINC 665 Library" VERSION 1.0)
-
 find_package( 
   Boost
   REQUIRED
@@ -129,7 +127,7 @@ add_library(
 
 target_include_directories( arinc665_test PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES>)
 
-add_documentation( TARGET arinc665)
+add_documentation( TARGET arinc665 NAME "ARINC 665 Library")
 
 # INSTALL
 include( GNUInstallDirs)
