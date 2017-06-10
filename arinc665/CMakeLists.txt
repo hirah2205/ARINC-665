@@ -125,6 +125,8 @@ add_library(
   media/MediaSetTest.cpp
   )
 
+target_compile_features( arinc665_test PUBLIC cxx_std_14)
+
 target_include_directories( arinc665_test PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES>)
 
 add_documentation( TARGET arinc665 NAME "ARINC 665 Library")
