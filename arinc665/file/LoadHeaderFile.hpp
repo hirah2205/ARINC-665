@@ -107,7 +107,7 @@ class LoadHeaderFile: public Arinc665File
      **/
     const TargetHardwareIds& getTargetHardwareIds() const;
 
-    //! @copydoc getTargetHardwareIdList() const
+    //! @copydoc getTargetHardwareIds() const
     TargetHardwareIds& getTargetHardwareIds();
 
     /**
@@ -117,7 +117,7 @@ class LoadHeaderFile: public Arinc665File
      **/
     void setTargetHardwareIds( const TargetHardwareIds &targetHardwareIds);
 
-    //! @copydoc setTargetHardwareIdList( const TargetHardwareIdList&)
+    //! @copydoc setTargetHardwareIds(const TargetHardwareIds&)
     void setTargetHardwareIds( TargetHardwareIds &&targetHardwareIds);
 
     /**

@@ -44,24 +44,24 @@ void Load::setTargetHardwareIds( const TargetHardwareIds& thwIds)
   this->targetHardwareIds = thwIds;
 }
 
-const Load::FileList& Load::getDataFiles( void) const
+const Load::Files& Load::getDataFiles( void) const
 {
-  return dataFileList;
+  return dataFiles;
 }
 
 void Load::addDataFile( const WeakFilePtr dataFile)
 {
-  dataFileList.push_back( dataFile);
+  dataFiles.push_back( dataFile);
 }
 
-const Load::FileList& Load::getSupportFiles( void) const
+const Load::Files& Load::getSupportFiles( void) const
 {
-  return supportFileList;
+  return supportFiles;
 }
 
 void Load::addSupportFile( const WeakFilePtr supportFile)
 {
-  supportFileList.push_back( supportFile);
+  supportFiles.push_back( supportFile);
 }
 
 const std::vector< uint8_t>& Load::getUserDefinedData( void) const

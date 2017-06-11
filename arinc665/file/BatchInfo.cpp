@@ -41,7 +41,7 @@ BatchInfo::BatchInfo(
 {
 }
 
-BatchInfo::string BatchInfo::getPartNumber() const
+const BatchInfo::string& BatchInfo::getPartNumber() const
 {
   return partNumber;
 }
@@ -51,7 +51,12 @@ void BatchInfo::setPartNumber( const string &partNumber)
   this->partNumber = partNumber;
 }
 
-BatchInfo::string BatchInfo::getFilename() const
+void BatchInfo::setPartNumber( string &&partNumber)
+{
+  this->partNumber = std::move( partNumber);
+}
+
+const BatchInfo::string& BatchInfo::getFilename() const
 {
   return filename;
 }
@@ -59,6 +64,11 @@ BatchInfo::string BatchInfo::getFilename() const
 void BatchInfo::setFilename( const string &filename)
 {
   this->filename = filename;
+}
+
+void BatchInfo::setFilename( string &&filename)
+{
+  this->filename = std::move( filename);
 }
 
 uint16_t BatchInfo::getMemberSequenceNumber() const

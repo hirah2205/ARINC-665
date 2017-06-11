@@ -39,39 +39,123 @@ class FileInfo
     //! String type
     using string = std::string;
 
+    /**
+     * @brief Initialises the file information
+     *
+     * @param[in] filename
+     *   File filename
+     * @param[in] pathName
+     *   File path name
+     * @param[in] memberSequenceNumber
+     *   Member sequence number.
+     * @param[in] crc
+     *   File CRC
+     **/
     FileInfo(
       const string &filename,
       const string &pathName,
       uint16_t memberSequenceNumber,
       uint16_t crc);
 
+    //! @copydoc FileInfo::FileInfo(const string&,const string&,uint16_t,uint16_t)
     FileInfo(
       string &&filename,
       string &&pathName,
       uint16_t memberSequenceNumber,
       uint16_t crc);
 
-    string getFilename() const;
+    /**
+     * @brief Returns the filename.
+     *
+     * @return The filename
+     **/
+    const string& getFilename() const;
 
+    /**
+     * @brief Updates the filename.
+     *
+     * @param[in] filename
+     *   The filename.
+     **/
     void setFilename( const string &filename);
 
+    //! @copydoc setFilename(const string&)
+    void setFilename( string &&filename);
+
+    /**
+     * @brief Returns the path name.
+     *
+     * @return The path name
+     **/
     string getPathName() const;
 
+    /**
+     * @brief Updates the path name.
+     *
+     * @param[in] pathName
+     *   The path name.
+     **/
     void setPathName( const string &pathName);
 
+    //! @copydoc setPathName(const string&)
+    void setPathName( string &&pathName);
+
+    /**
+     * @brief Returns the path (path name / filename)
+     *
+     * @return path (incl. filename)
+     **/
     path getPath() const;
 
+    /**
+     * @brief Returns the member sequence number.
+     *
+     * @return The member sequence number
+     **/
     uint16_t getMemberSequenceNumber() const;
 
+    /**
+     * @brief Updates the  member sequence number.
+     *
+     * @param[in] memberSequenceNumber
+     *   The  member sequence number.
+     **/
     void setMemberSequenceNumber( uint16_t memberSequenceNumber);
 
+    /**
+     * @brief Returns the file CRC.
+     *
+     * @return The file CRC.
+     **/
     uint16_t getCrc() const;
 
+    /**
+     * @brief Updates the file CRC.
+     *
+     * @param[in] crc
+     *   File CRC.
+     **/
     void setCrc( uint16_t crc);
 
-    bool operator ==( const FileInfo &other) const;
+    /**
+     * @brief Compares the given file info against [this].
+     *
+     * @param[in] other
+     *  Other file info.
+     *
+     * @return if [this] is equal to [other].
+     **/
+    bool operator==( const FileInfo &other) const;
 
-    bool operator !=( const FileInfo &other) const;
+    /**
+     * @brief Compares the given file info against [this].
+     *
+     * @param[in] other
+     *  Other file info.
+     *
+     * @return if [this] is un-equal to [other].
+     **/
+    bool operator!=( const FileInfo &other) const;
 
   private:
     //! file name

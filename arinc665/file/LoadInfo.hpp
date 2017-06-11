@@ -72,7 +72,16 @@ class LoadInfo
      **/
     string getPartNumber() const;
 
+    /**
+     * @brief Updates the load part number.
+     *
+     * @param[in] partNumber
+     *   load part number.
+     **/
     void setPartNumber( const string &partNumber);
+
+    //! @copydoc setPartNumber(const string&)
+    void setPartNumber( string &&partNumber);
 
     /**
      * @brief Returns the load header filename.
@@ -81,18 +90,51 @@ class LoadInfo
      **/
     string getHeaderFilename() const;
 
+    /**
+     * @brief Updates the load header filename.
+     *
+     * @param[in] headerFilename
+     *   The load header filename.
+     **/
     void setHeaderFilename( const string &headerFilename);
 
+    //! @copydoc setHeaderFilename(const string&)
+    void setHeaderFilename( string &&headerFilename);
+
+    /**
+     * @brief Returns the member sequence number.
+     *
+     * @return The member sequence number
+     **/
     uint8_t getMemberSequenceNumber() const;
 
+    /**
+     * @brief Updates the  member sequence number.
+     *
+     * @param[in] memberSequenceNumber
+     *   The  member sequence number.
+     **/
     void setMemberSequenceNumber( uint8_t memberSequenceNumber);
 
+    /**
+     * @brief Returns the target hardware IDs.
+     *
+     * @return The target hardware IDs.
+     **/
     const ThwIds& getTargetHardwareIds() const;
 
+    //! @copydoc getTargetHardwareIds() const
     ThwIds& getTargetHardwareIds();
 
+    /**
+     * @brief Adds a target hardware ID.
+     *
+     * @param[in] targetHardwareId
+     *   target hardware ID.
+     **/
     void addTargetHardwareId( const string &targetHardwareId);
 
+    //! @copydoc addTargetHardwareId(const string&)
     void addTargetHardwareId( string &&targetHardwareId);
 
     /**

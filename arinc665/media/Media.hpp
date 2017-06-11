@@ -77,16 +77,22 @@ class File;
 class Load;
 class Batch;
 
+//! Pointer to const BaseFile
 using ConstBaseFilePtr = std::shared_ptr< const BaseFile>;
+//! Pointer to BaseFile
 using BaseFilePtr = std::shared_ptr< BaseFile>;
+//! Weak pointer to BaseFile
 using WeakBaseFilePtr = std::weak_ptr< BaseFile>;
 //! files list
 using Files = std::list< BaseFilePtr>;
 //! constant files list
 using ConstFiles = std::list< ConstBaseFilePtr>;
 
+//! Pointer to const BaseFile
 using ConstFilePtr = std::shared_ptr< const BaseFile> ;
+//! Pointer to BaseFile
 using FilePtr = std::shared_ptr< BaseFile>;
+//! Weak pointer to BaseFile
 using WeakFilePtr = std::weak_ptr< BaseFile>;
 
 //! constant load pointer
@@ -115,7 +121,9 @@ using Batches = std::list< BatchPtr>;
 //! constant batches list
 using ConstBatches = std::list< ConstBatchPtr>;
 
+//! Tuple of directory an const file
 using ConstDirectoryFileTuple  = std::tuple< const Directory&, ConstFilePtr>;
+//! Tuple of directory an file
 using DirectoryFileTuple = std::tuple< Directory&, FilePtr>;
 
 }

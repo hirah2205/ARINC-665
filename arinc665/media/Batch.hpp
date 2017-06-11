@@ -31,8 +31,17 @@ namespace Media {
 class Batch: public BaseFile
 {
   public:
+    //! Batch information type
     using BatchInfo = std::map< string, WeakLoads>;
 
+    /**
+     * @brief Initalises the batch with the given data.
+     *
+     * @param[in] parent
+     *   Parent element.
+     * @param[in] name
+     *   Name of the batch.
+     **/
     Batch( ContainerEntityPtr parent, const string &name);
 
     /**

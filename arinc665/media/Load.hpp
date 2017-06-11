@@ -28,7 +28,6 @@
 
 namespace Arinc665 {
 namespace Media {
-using std::string;
 
 /**
  * @brief Load within media set.
@@ -37,7 +36,7 @@ class Load: public BaseFile
 {
   public:
     //! File list
-    using FileList = std::list< WeakFilePtr>;
+    using Files = std::list< WeakFilePtr>;
     //! Target hardware ID list
     using TargetHardwareIds = std::list< string>;
     //! User defined data type
@@ -87,7 +86,7 @@ class Load: public BaseFile
      *
      * @return The data files.
      **/
-    const FileList& getDataFiles() const;
+    const Files& getDataFiles() const;
 
     /**
      * @brief Add the given file as data file.
@@ -102,7 +101,7 @@ class Load: public BaseFile
      *
      * @return The support files.
      **/
-    const FileList& getSupportFiles() const;
+    const Files& getSupportFiles() const;
 
     /**
      * @brief Add the given file as support file.
@@ -134,9 +133,13 @@ class Load: public BaseFile
     void setUserDefinedData( UserDefinedData &&userDefinedData);
 
   private:
+    //! target hardware IDs
     TargetHardwareIds targetHardwareIds;
-    FileList dataFileList;
-    FileList supportFileList;
+    //! Data files
+    Files dataFiles;
+    //! Support files
+    Files supportFiles;
+    //! user defined data
     UserDefinedData userDefinedData;
 };
 

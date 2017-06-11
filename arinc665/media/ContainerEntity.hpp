@@ -205,38 +205,137 @@ class ContainerEntity :
      **/
     void removeFile( ConstFilePtr file);
 
-
+    /**
+     * @brief Return the number of loads.
+     *
+     * @param[in] recursive
+     *   If set to true also iterates over sub-directories.
+     *
+     * @return The number of loads.
+     **/
     size_t getNumberOfLoads( bool recursive = false) const;
 
+    /**
+     * @brief Return loads.
+     *
+     * @param[in] recursive
+     *   If set to true also iterates over sub-directories.
+     *
+     * @return Loads contained within this container.
+     **/
     ConstLoads getLoads( bool recursive = false) const;
 
+    //! @copydoc getLoads(bool) const
     Loads getLoads( bool recursive = false);
 
+    /**
+     * @brief Returns the load with the given filename.
+     *
+     * @param[in] filename
+     *   Load filename
+     * @param[in] recursive
+     *   If set to true also iterates over sub-directories.
+     *
+     * @return The load with the given filename.
+     * @retval {}
+     *   If load does not exists.
+     **/
     ConstLoadPtr getLoad( const string &filename, bool recursive = false) const;
 
+    //! @copydoc getLoad(const string&,bool) const
     LoadPtr getLoad( const string &filename, bool recursive = false);
 
+    /**
+     * @brief Creates a load with the given filename.
+     *
+     * @param[in] filename
+     *   Load filename.
+     *
+     * @return Created load
+     **/
     LoadPtr addLoad( const string &filename);
 
+    /**
+     * @brief Removes the load with the given filename.
+     *
+     * @param[in] filename
+     *   Load filename.
+     **/
     void removeLoad( const string &filename);
 
+    /**
+     * @brief Removes the given load.
+     *
+     * @param[in] load
+     *   Load to be deleted.
+     **/
     void removeLoad( ConstLoadPtr load);
 
 
+    /**
+     * @brief Return the number of batches.
+     *
+     * @param[in] recursive
+     *   If set to true also iterates over sub-directories.
+     *
+     * @return The number of loads.
+     **/
     size_t getNumberOfBatches( bool recursive = false) const;
 
+    /**
+     * @brief Return batches.
+     *
+     * @param[in] recursive
+     *   If set to true also iterates over sub-directories.
+     *
+     * @return Batches contained within this container.
+     **/
     ConstBatches getBatches( bool recursive = false) const;
 
+    //! @copydoc getBatches(bool) const
     Batches getBatches( bool recursive = false);
 
+    /**
+     * @brief Returns the batch with the given filename.
+     *
+     * @param[in] filename
+     *   Batch filename
+     * @param[in] recursive
+     *   If set to true also iterates over sub-directories.
+     *
+     * @return The batch with the given filename.
+     * @retval {}
+     *   If batch does not exists.
+     **/
     ConstBatchPtr getBatch( const string &filename, bool recursive = false) const;
 
+    //! @copydoc getBatch(const string&,bool) const
     BatchPtr getBatch( const string &filename, bool recursive = false);
 
+    /**
+     * @brief Creates a batch with the given filename.
+     *
+     * @param[in] filename
+     *   Batch filename.
+     *
+     * @return Created batch.
+     **/
     BatchPtr addBatch( const string &filename);
 
+    /**
+     * @brief Removes the batch with the given filename.
+     *
+     * @param[in] filename
+     *   Batch filename.
+     **/
     void removeBatch( const string &filename);
 
+    /**
+     * @brief Removes the given batch.
+     *
+     * @param[in] batch
+     *   Batch to be deleted.
+     **/
     void removeBatch( ConstBatchPtr batch);
 
     /**
@@ -262,13 +361,34 @@ class ContainerEntity :
     MediumPtr getMedium();
 
   protected:
+    /**
+     * @brief Initialises the container with the given parameter.
+     *
+     * @param[in] parent
+     *   Parent of this container.
+     **/
     ContainerEntity( ContainerEntityPtr parent);
 
+    /**
+     * @brief Return the files (real file, load, batch) with the specified file
+     *   type.
+     *
+     * @param[in] fileType
+     *   File type to search for.
+     *
+     * @return The files (real file, load, batch) with the specified file.
+     **/
     ConstFiles getFiles( BaseFile::FileType fileType) const;
 
     //! @copydoc getFiles( BaseFile::FileType) const
     Files getFiles( BaseFile::FileType fileType);
 
+    /**
+     * @brief Updates the parent.
+     *
+     * @param[in] parent
+     *   New parent.
+     **/
     void setParent( ContainerEntityPtr parent);
 
   private:

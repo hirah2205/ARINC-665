@@ -45,7 +45,7 @@ FileInfo::FileInfo(
 {
 }
 
-FileInfo::string FileInfo::getFilename() const
+const FileInfo::string& FileInfo::getFilename() const
 {
   return filename;
 }

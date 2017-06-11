@@ -31,12 +31,22 @@ namespace File {
 class BatchTargetInfo
 {
   public:
+    //! string type
     using string = std::string;
 
+    /**
+     * @brief Initialises the batch target information.
+     *
+     * @param[in] targetHardwareId
+     *   Target hardware ID.
+     * @param[in] loads
+     *   Batch loads information.
+     **/
     BatchTargetInfo(
       const string &targetHardwareId,
       const BatchLoadsInfo &loads);
 
+    //! @copydoc BatchTargetInfo::BatchTargetInfo(const string&,const BatchLoadsInfo&)
     BatchTargetInfo(
       string &&targetHardwareId,
       BatchLoadsInfo &&loads);
@@ -70,12 +80,26 @@ class BatchTargetInfo
      **/
     BatchLoadsInfo& getLoads();
 
+    /**
+     * @brief Replaces the stored load information.
+     *
+     * @param[in] loads
+     *   Batch loads information.
+     **/
     void setLoads( const BatchLoadsInfo &loads);
 
+    //! @copydoc setLoads(const BatchLoadsInfo&)
     void setLoads( BatchLoadsInfo &&loads);
 
+    /**
+     * @brief Adds a load.
+     *
+     * @param[in] load
+     *   The load.
+     **/
     void addLoad( const BatchLoadInfo &load);
 
+    //! @copydoc  addLoad(const BatchLoadInfo&)
     void addLoad( BatchLoadInfo &&load);
 
   private:

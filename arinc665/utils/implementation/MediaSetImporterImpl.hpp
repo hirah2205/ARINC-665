@@ -59,7 +59,10 @@ class MediaSetImporterImpl
     /**
      * @brief Entry-point of the ARINC 665 media set importer.
      *
-     * @return
+     * @param[in] mediaSetName
+     *   name of the media set.
+     *
+     * @return The media set instance.
      **/
     Media::MediaSetPtr operator()( const string &mediaSetName);
 

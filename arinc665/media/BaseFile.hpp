@@ -116,8 +116,22 @@ class BaseFile: public Base
     path getPath() const;
 
   protected:
+    /**
+     * @brief Initialises the instance with the given data.
+     *
+     * @param[in] parent
+     *   Parent container.
+     * @param[in] name
+     *   Name of the element.
+     **/
     BaseFile( ContainerEntityPtr parent, const string &name);
 
+    /**
+     * @brief Sets the parent element.
+     *
+     * @param[in] parent
+     *   The parent element.
+     **/
     void setParent( ContainerEntityPtr parent);
 
   private:
