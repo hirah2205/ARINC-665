@@ -7,9 +7,7 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.7)
-
-project ( "BHM XML")
+cmake_minimum_required( VERSION 3.9)
 
 include( GNUInstallDirs)
 

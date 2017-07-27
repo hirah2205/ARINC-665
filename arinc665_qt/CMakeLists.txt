@@ -7,7 +7,7 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.8)
+cmake_minimum_required( VERSION 3.9)
 
 find_package( Qt5Widgets QUIET)
 
@@ -38,9 +38,5 @@ target_link_libraries(
   arinc665_qt 
   arinc665
   Qt5::Widgets)
-
-add_documentation( 
-  TARGET arinc665_qt
-  NAME "ARINC 665 QT Library")
 
 endif(Qt5Widgets_FOUND)

@@ -7,7 +7,7 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.8)
+cmake_minimum_required( VERSION 3.9)
 
 find_package( 
   Boost
@@ -129,8 +129,6 @@ target_compile_features( arinc665_test PUBLIC cxx_std_14)
 
 target_include_directories( arinc665_test PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES>)
 
-add_documentation( TARGET arinc665 NAME "ARINC 665 Library")
-
 # INSTALL
 include( GNUInstallDirs)
 
@@ -150,21 +148,6 @@ install(
     PATTERN "*.hpp"
     PATTERN "*Test.*" EXCLUDE
     PATTERN "implementation" EXCLUDE)
-
-install(
-  DIRECTORY $<TARGET_PROPERTY:arinc665_doc,DOCUMENTATION_OUTPUT_DIR>
-  COMPONENT documentation
-  DESTINATION ${CMAKE_INSTALL_DOCDIR})
-
-install(
-  FILES $<TARGET_PROPERTY:arinc665_doc,DOCUMENTATION_HTML_FILE>
-  COMPONENT documentation
-  DESTINATION ${CMAKE_INSTALL_DOCDIR})
-
-install(
-  FILES $<TARGET_PROPERTY:arinc665_doc,DOCUMENTATION_TAGFILE>
-  COMPONENT documentation
-  DESTINATION ${CMAKE_INSTALL_DOCDIR})
 
 install( 
   EXPORT arinc665-config 
