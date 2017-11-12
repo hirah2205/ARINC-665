@@ -1,5 +1,5 @@
-# $Date$
-# $Revision$
+# $Date: 2017-05-18 12:43:10 +0200 (Do, 18. Mai 2017) $
+# $Revision: 2022 $
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
