@@ -96,8 +96,19 @@ add_library(
   utils/implementation/MediaSetImporterImpl.hpp
   utils/implementation/MediaSetImporterImpl.cpp
   utils/implementation/MediaSetManagerImpl.hpp
-  utils/implementation/MediaSetManagerImpl.cpp
-  )
+  utils/implementation/MediaSetManagerImpl.cpp)
+
+target_compile_options( 
+  arinc665
+  
+  PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:-W4>
+    
+    $<$<CXX_COMPILER_ID:GNU>:-Wall>
+    $<$<CXX_COMPILER_ID:GNU>:-Wextra>
+    
+    $<$<CXX_COMPILER_ID:Clang>:-Wall>
+    $<$<CXX_COMPILER_ID:Clang>:-Wextra>)
 
 target_include_directories( arinc665 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>)
 
@@ -119,8 +130,19 @@ add_library(
   
   file/LoadFileInfoTest.cpp
   
-  media/MediaSetTest.cpp
-  )
+  media/MediaSetTest.cpp)
+
+target_compile_options( 
+  arinc665_test
+  
+  PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:-W4>
+    
+    $<$<CXX_COMPILER_ID:GNU>:-Wall>
+    $<$<CXX_COMPILER_ID:GNU>:-Wextra>
+    
+    $<$<CXX_COMPILER_ID:Clang>:-Wall>
+    $<$<CXX_COMPILER_ID:Clang>:-Wextra>)
 
 target_compile_features( arinc665_test PUBLIC cxx_std_14)
 
