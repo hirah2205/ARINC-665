@@ -24,6 +24,12 @@ namespace Utils {
 
 /**
  * @brief Handles the representation of Media Sets as XML file.
+ *
+ * The ARINC 665 XML is an XML-Schema, which can be used to describe ARINC 665
+ * Media Sets and loads in a human readable manner.
+ *
+ * Tools can use this representation to "decompile" binary media sets to this
+ * representation and "compile" the XML representation to an binary media set.
  **/
 class Arinc665Xml
 {
@@ -50,6 +56,9 @@ class Arinc665Xml
      *   The ARINC 665 XML file.
      *
      * @return The loaded Media Set information.
+     *
+     * @throw Arinc665Exception
+     *   If file cannot be loaded or is invalid.
      **/
     virtual LoadXmlResult loadFromXml( const path &xmlFile) = 0;
 

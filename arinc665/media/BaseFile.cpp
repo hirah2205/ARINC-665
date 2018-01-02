@@ -120,6 +120,17 @@ BaseFile::BaseFile( ContainerEntityPtr parent, const string &name) :
   }
 }
 
+BaseFile::BaseFile( ContainerEntityPtr parent, string &&name):
+  parent( parent),
+  name( std::move( name))
+{
+  if (!parent)
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo( "parent must be valid"));
+  }
+}
+
 void BaseFile::setParent( ContainerEntityPtr parent)
 {
   if (!parent)

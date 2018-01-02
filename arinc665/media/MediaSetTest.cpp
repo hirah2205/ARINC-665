@@ -24,7 +24,7 @@ namespace Media {
 
 BOOST_AUTO_TEST_SUITE( MediaSetTest)
 
-
+//! Constructor test
 BOOST_AUTO_TEST_CASE( constructor)
 {
   MediaSet mediaSet( "XXX");
@@ -46,6 +46,7 @@ BOOST_AUTO_TEST_CASE( constructor)
   BOOST_CHECK( mediaSet.getBatches().empty());
 }
 
+//! part number test
 BOOST_AUTO_TEST_CASE( partNumber)
 {
   MediaSet mediaSet( "XXX");
@@ -56,6 +57,7 @@ BOOST_AUTO_TEST_CASE( partNumber)
   BOOST_CHECK( mediaSet.getPartNumber() == "YYY");
 }
 
+//! name test
 BOOST_AUTO_TEST_CASE( name)
 {
   MediaSet mediaSet( "XXX");
@@ -66,6 +68,7 @@ BOOST_AUTO_TEST_CASE( name)
   BOOST_CHECK( mediaSet.getName() == "YYY");
 }
 
+//! medium test
 BOOST_AUTO_TEST_CASE( medium)
 {
   MediaSetPtr mediaSet = std::make_shared< MediaSet>( "XXX");

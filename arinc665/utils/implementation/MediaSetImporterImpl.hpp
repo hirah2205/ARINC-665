@@ -63,9 +63,9 @@ class MediaSetImporterImpl
     Media::MediaSetPtr operator()( const string &mediaSetName);
 
   private:
-    //! Load header files type
+    //! Load header files type (mapping filename -> load header file)
     using LoadHeaderFiles = std::map< std::string, File::LoadHeaderFile>;
-    //! Batch files type
+    //! Batch files type (mapping filename -> batch file)
     using BatchFiles = std::map< std::string, File::BatchFile>;
     //! Container Entity type
     using ContainerEntityPtr = std::shared_ptr< Media::ContainerEntity>;
@@ -78,35 +78,92 @@ class MediaSetImporterImpl
      **/
     void addMedium( uint8_t mediumIndex);
 
+    /**
+     * @brief Loads the file list file of the given medium.
+     *
+     * @param[in] mediumIndex
+     *   The medium index.
+     **/
     void loadFileListFile( uint8_t mediumIndex);
 
+    /**
+     * @brief Loads the load list file of the given medium.
+     *
+     * @param[in] mediumIndex
+     *   The medium index.
+     **/
     void loadLoadListFile( uint8_t mediumIndex);
 
+    /**
+     * @brief Loads the batch list file of the given medium.
+     *
+     * @param[in] mediumIndex
+     *   The medium index.
+     **/
     void loadBatchListFile( uint8_t mediumIndex);
 
+    /**
+     * @brief Loads the load header files of the given medium.
+     *
+     * @param[in] mediumIndex
+     *   The medium index.
+     **/
     void loadLoadHeaderFiles( uint8_t mediumIndex);
 
+    /**
+     * @brief Loads the batch files of the given medium.
+     *
+     * @param[in] mediumIndex
+     *   The medium index.
+     **/
     void loadBatchFiles( uint8_t mediumIndex);
 
+    /**
+     * @brief Adds all files to the media set representation
+     *
+     * Iterates over the file infos and creates the directories and files.
+     *
+     * @sa addLoads
+     * @sa addBatches
+     * @sa checkCreateDirectory
+     **/
     void addFiles();
 
+    /**
+     * @brief Adds the loads to the media set.
+     *
+     * @param[in] loadHeaders
+     *   The load header files
+     **/
     void addLoads( File::FileListFile::FileInfoMap &loadHeaders);
 
+    /**
+     * @brief Adds the batches to the media set.
+     *
+     * @param[in] batches
+     *   The batch files
+     **/
     void addBatches( File::FileListFile::FileInfoMap &batches);
 
     ContainerEntityPtr checkCreateDirectory(
       uint8_t mediumIndex,
       const path &directoryPath);
 
+    //! The read file handler
     Arinc665Utils::ReadFileHandler readFileHandler;
 
     //! The Media Set
     Media::MediaSetPtr mediaSet;
 
+    //! file list file
     boost::optional < File::FileListFile> fileListFile;
+    //! load list file
     boost::optional < File::LoadListFile> loadListFile;
+    //! batch list file
     boost::optional < File::BatchListFile> batchListFile;
+    //! load header files
     LoadHeaderFiles loadHeaderFiles;
+    //! batch files
     BatchFiles batchFiles;
 
     //! file informations from list of files

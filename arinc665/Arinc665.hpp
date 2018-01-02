@@ -17,7 +17,6 @@
 #include <cstdint>
 
 /**
- * @mainpage
  * @brief Implementation of the ARINC 665 specification.
  *
  * This library implements the ARINC 665 specification.
@@ -27,12 +26,6 @@
  * - ARINC Report 665-2: Loadable Software Standards; 2002-08-30
  * - ARINC Report 665-3: Loadable Software Standards; 2005-08-12
  * - ARINC Report 665-4: Loadable Software Standards; 2016-07-14
- **/
-
-/**
- * @brief Namespace of ARINC 665 implementation
- *
- * General definitions for the ARINC 665 implementation.
  **/
 namespace Arinc665 {
 

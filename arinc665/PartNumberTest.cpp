@@ -18,6 +18,7 @@ namespace Arinc665 {
 
 BOOST_AUTO_TEST_SUITE( PartNumberTest)
 
+//! part number test
 BOOST_AUTO_TEST_CASE( testPartNumber1)
 {
   //EBE3B549720000D
@@ -34,6 +35,7 @@ BOOST_AUTO_TEST_CASE( testPartNumber1)
     pn.getProductIdentifier().get());
 }
 
+//! part number test
 BOOST_AUTO_TEST_CASE( testPartNumber2)
 {
   PartNumber pn( "EBE4F54972000");

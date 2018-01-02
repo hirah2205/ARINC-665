@@ -408,6 +408,7 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
 
 void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex)
 {
+  // iterate over all load informations
   for ( const auto &loadInfo : loadInfos)
   {
     // skip load headers, which are not present on current medium
@@ -488,6 +489,7 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex)
         AdditionalInfo( "Medium is not consistent to media set"));
     }
 
+    // add batch file to to batch file list
     batchFiles.insert(
       std::make_pair( batchFileIt->second.getFilename(), batchFile));
   }
@@ -498,13 +500,14 @@ void MediaSetImporterImpl::addFiles()
   File::FileListFile::FileInfoMap loadHeaders;
   File::FileListFile::FileInfoMap batches;
 
-  // skip list files and handle load headers and batch files separate
+  // iterate over all files
   for ( const auto &fileInfo : fileInfos)
   {
     // get file type
-    Arinc665::FileType fileType(
+    auto fileType(
       Arinc665::File::Arinc665File::getFileType( fileInfo.first.second));
 
+    // skip list files and handle load headers and batch files separate
     switch ( fileType)
     {
       case Arinc665::FileType::FileList:
@@ -533,8 +536,7 @@ void MediaSetImporterImpl::addFiles()
       fileInfo.second.getPath().parent_path()));
 
     // place file
-    Arinc665::Media::FilePtr filePtr = container->addFile(
-      fileInfo.second.getFilename());
+    auto filePtr{ container->addFile( fileInfo.second.getFilename())};
   }
 
   // Loads

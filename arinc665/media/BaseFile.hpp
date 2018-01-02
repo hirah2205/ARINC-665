@@ -42,29 +42,31 @@ class BaseFile: public Base
     virtual ~BaseFile() = default;
 
     //! @copydoc Base::getMediaSet
-    virtual ConstMediaSetPtr getMediaSet() const override final;
+    ConstMediaSetPtr getMediaSet() const final;
 
     //! @copydoc Base::getMediaSet
-    virtual MediaSetPtr getMediaSet() override final;
+    MediaSetPtr getMediaSet() final;
 
     //! @copydoc Base::getType
-    virtual Type getType() const override final;
+    Type getType() const final;
 
     /**
      * @copydoc Base::getType
      *
      * @return The name of the file.
      **/
-    virtual const string& getName() const override;
+    const string& getName() const final;
 
    //void setName( void);
 
     //! @copydoc Base::getPartNumber
-    virtual string getPartNumber() const override final;
+    string getPartNumber() const final;
 
     /**
+     * @brief Updates the partnumber
      *
-     * @param partNumber
+     * @param[in] partNumber
+     *   New Partnumber
      **/
     void setPartNumber( const string &partNumber);
 
@@ -119,14 +121,23 @@ class BaseFile: public Base
      *   Parent container.
      * @param[in] name
      *   Name of the element.
+     *
+     * @throw Arinc665Exception
+     *   If parent is invalid
      **/
     BaseFile( ContainerEntityPtr parent, const string &name);
+
+    //! @copydoc BaseFile::BaseFile(ContainerEntityPtr,const string&)
+    BaseFile( ContainerEntityPtr parent, string &&name);
 
     /**
      * @brief Sets the parent element.
      *
      * @param[in] parent
      *   The parent element.
+     *
+     * @throw Arinc665Exception
+     *   If parent is invalid
      **/
     void setParent( ContainerEntityPtr parent);
 

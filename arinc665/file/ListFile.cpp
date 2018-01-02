@@ -25,9 +25,9 @@ ListFile::ListFile(
 ListFile::
 ListFile(
   FileType fileType,
-  const RawFile &file,
+  const RawFile &rawFile,
   std::size_t checksumPosition):
-  Arinc665File( fileType, file, checksumPosition)
+  Arinc665File( fileType, rawFile, checksumPosition)
 {
 }
 

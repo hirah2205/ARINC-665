@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
+
 <schema 
-  targetNamespace="http://www.thomas-vogt.de/Arinc665MediaSet" 
+  targetNamespace="http://www.thomas-vogt.de/Arinc665MediaSet"
   elementFormDefault="qualified"
-  xmlns="http://www.w3.org/2001/XMLSchema" 
-  xmlns:tns="http://www.thomas-vogt.de/Arinc665MediaSet">
+  xmlns="http://www.w3.org/2001/XMLSchema"
+  xmlns:tns="http://www.thomas-vogt.de/Arinc665MediaSet" >
   
   <element name="MediaSet" type="tns:MediaSetType" />
   
@@ -67,20 +68,20 @@
     </complexContent>
   </complexType>
   
-  <complexType name="DirectoryType">
+  <complexType name="DirectoryType" >
     <sequence>
-      <group ref="tns:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded"/> 
+      <group ref="tns:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded" /> 
     </sequence>
     <attribute name="Name" type="tns:NameType" use="required" />
   </complexType>
 
-  <complexType name="LoadsType">
+  <complexType name="LoadsType" >
     <sequence>
       <element ref="tns:Load" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
   </complexType>
 
-  <complexType name="LoadType">
+  <complexType name="LoadType" >
     <sequence>
       <element name="TargetHardware" type="tns:TargetHardwareType" minOccurs="1" maxOccurs="unbounded" />
       <element name="DataFile"       type="tns:FileRefernceType"   minOccurs="0" maxOccurs="unbounded" />
@@ -90,7 +91,7 @@
     <attribute name="Description" type="tns:StringType" use="optional" />
   </complexType>
 
-  <complexType name="TargetHardwareType">
+  <complexType name="TargetHardwareType" >
     <sequence>
       <element name="Position" type="tns:PositionType" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
@@ -164,6 +165,9 @@
   </simpleType>
 
   <group name="DirectoryFileGroup">
+    <annotation>
+      <documentation>Contents of medias and directories</documentation>
+    </annotation>
     <choice>
       <element name="Directory" type="tns:DirectoryType" />
       <element name="File"      type="tns:FileType" />

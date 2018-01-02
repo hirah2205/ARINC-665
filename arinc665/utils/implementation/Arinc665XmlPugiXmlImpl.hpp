@@ -41,7 +41,7 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
      *
      * @return The loaded Media Set information.
      **/
-    virtual LoadXmlResult loadFromXml( const path &xmlFile) override final;
+    LoadXmlResult loadFromXml( const path &xmlFile) final;
 
     /**
      * @brief Saves the given Media Set information to the given XML file.
@@ -54,10 +54,10 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
      * @param[in] xmlFile
      *   The ARINC 665 XML file.
      */
-    virtual void saveToXml(
+    void saveToXml(
       Media::ConstMediaSetPtr mediaSet,
       const FilePathMapping &filePathMapping,
-      const path &xmlFile) override final;
+      const path &xmlFile) final;
 
   private:
     /**

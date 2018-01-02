@@ -19,22 +19,24 @@ namespace File {
 
 BOOST_AUTO_TEST_SUITE( LoadFileInfoTest)
 
-  BOOST_AUTO_TEST_CASE( constructor1)
-  {
-    std::string name( "NAME");
-    std::string partNumber( "PART_NUMBER");
+//! Constructor test
+BOOST_AUTO_TEST_CASE( constructor1)
+{
+  std::string name( "NAME");
+  std::string partNumber( "PART_NUMBER");
 
-    LoadFileInfo loadFileInfo( name, partNumber, 0xDEADBEEFUL, 0xBABEU);
+  LoadFileInfo loadFileInfo( name, partNumber, 0xDEADBEEFUL, 0xBABEU);
 
-    BOOST_CHECK( name == "NAME");
-    BOOST_CHECK( partNumber == "PART_NUMBER");
+  BOOST_CHECK( name == "NAME");
+  BOOST_CHECK( partNumber == "PART_NUMBER");
 
-    BOOST_CHECK( loadFileInfo.getFilename() == "NAME");
-    BOOST_CHECK( loadFileInfo.getPartNumber() == "PART_NUMBER");
-    BOOST_CHECK( loadFileInfo.getLength() == 0xDEADBEEFUL);
-    BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
-  }
+  BOOST_CHECK( loadFileInfo.getFilename() == "NAME");
+  BOOST_CHECK( loadFileInfo.getPartNumber() == "PART_NUMBER");
+  BOOST_CHECK( loadFileInfo.getLength() == 0xDEADBEEFUL);
+  BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
+}
 
+//! Constructor test
 BOOST_AUTO_TEST_CASE( constructor2)
 {
   std::string name( "NAME");
@@ -52,6 +54,7 @@ BOOST_AUTO_TEST_CASE( constructor2)
   BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
 }
 
+//! get/set name test
 BOOST_AUTO_TEST_CASE( GetSetName)
 {
   LoadFileInfo loadFileInfo( "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU);
@@ -69,6 +72,7 @@ BOOST_AUTO_TEST_CASE( GetSetName)
   BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
 }
 
+//! get/set partnumber test
 BOOST_AUTO_TEST_CASE( GetSetPartNumber)
 {
   LoadFileInfo loadFileInfo( "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU);
@@ -86,6 +90,7 @@ BOOST_AUTO_TEST_CASE( GetSetPartNumber)
   BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
 }
 
+//! get/set length test
 BOOST_AUTO_TEST_CASE( GetSetLength)
 {
   LoadFileInfo loadFileInfo( "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU);
@@ -103,6 +108,7 @@ BOOST_AUTO_TEST_CASE( GetSetLength)
   BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
 }
 
+//! get/set crc test
 BOOST_AUTO_TEST_CASE( GetSetCrc)
 {
   LoadFileInfo loadFileInfo( "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU);

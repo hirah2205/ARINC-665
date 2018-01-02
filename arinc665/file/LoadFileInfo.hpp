@@ -45,14 +45,14 @@ class LoadFileInfo
      *   File CRC
      **/
     LoadFileInfo(
-      const string &name,
+      const string &filename,
       const string &partNumber,
       uint32_t length,
       uint16_t crc);
 
     //! @copydoc LoadFileInfo::LoadFileInfo(const string&,const string&,uint32_t,uint16_t)
     LoadFileInfo(
-      string &&name,
+      string &&filename,
       string &&partNumber,
       uint32_t length,
       uint16_t crc);
