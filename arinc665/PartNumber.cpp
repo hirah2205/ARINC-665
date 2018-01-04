@@ -11,6 +11,7 @@
  **/
 
 #include "PartNumber.hpp"
+
 #include <boost/format.hpp>
 
 namespace Arinc665 {
