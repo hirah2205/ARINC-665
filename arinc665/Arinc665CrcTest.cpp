@@ -21,6 +21,7 @@
 
 namespace Arinc665 {
 
+//! ARINC CRC data
 static struct ArincCrcData
 {
   std::vector< uint8_t> t02a;
@@ -44,6 +45,7 @@ static struct ArincCrcData
 
 BOOST_AUTO_TEST_SUITE( Arinc665CrcTest)
 
+//! CRC16 test
 BOOST_AUTO_TEST_CASE( crc16)
 {
   Arinc665Crc16 arincCrc16;
@@ -88,6 +90,7 @@ BOOST_AUTO_TEST_CASE( crc16)
 //  BOOST_CHECK( 0x3FBD == arincCrc16.checksum());
 }
 
+//! CRC32 test
 BOOST_AUTO_TEST_CASE( crc32)
 {
   Arinc665Crc32 arincCrc32;
@@ -132,6 +135,7 @@ BOOST_AUTO_TEST_CASE( crc32)
 //  BOOST_CHECK( 0x3FBD == arincCrc32.checksum());
 }
 
+//! CRC64 test
 BOOST_AUTO_TEST_CASE( crc64)
 {
   Arinc665Crc64 arincCrc64;

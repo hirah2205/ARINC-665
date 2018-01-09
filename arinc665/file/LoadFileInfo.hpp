@@ -35,7 +35,7 @@ class LoadFileInfo
     /**
      * @brief Initialise the load file information with the given data.
      *
-     * @param[in] name
+     * @param[in] filename
      *   filename
      * @param partNumber
      *   Part number
