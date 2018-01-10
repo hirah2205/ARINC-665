@@ -182,7 +182,7 @@ QModelIndex MediaSetModelModel::parent( const QModelIndex &index) const
   }
 }
 
-bool MediaSetModelModel::hasChildren( const QModelIndex & parent) const
+bool MediaSetModelModel::hasChildren( const QModelIndex &parent) const
 {
   // First level (media set)
   if (!parent.isValid())
@@ -227,7 +227,7 @@ bool MediaSetModelModel::hasChildren( const QModelIndex & parent) const
   }
 }
 
-int MediaSetModelModel::rowCount( const QModelIndex & parent) const
+int MediaSetModelModel::rowCount( const QModelIndex &parent) const
 {
   // First level (Message elements)
   if (!parent.isValid())

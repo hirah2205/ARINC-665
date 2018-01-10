@@ -19,6 +19,7 @@ namespace Arinc665 {
 
 BOOST_AUTO_TEST_SUITE( CheckCodeTest)
 
+  //! constructor test
 BOOST_AUTO_TEST_CASE( constructor)
 {
   BOOST_CHECK( CheckCode( "01").get() == 0x01);
@@ -27,6 +28,7 @@ BOOST_AUTO_TEST_CASE( constructor)
   BOOST_CHECK( CheckCode( 0xFF).get() == 0xFF);
 }
 
+//! set test
 BOOST_AUTO_TEST_CASE( set)
 {
   CheckCode checkCode( 0x00);
@@ -46,6 +48,7 @@ BOOST_AUTO_TEST_CASE( set)
   BOOST_CHECK( checkCode.get() == 0xFF);
 }
 
+//! Get string test
 BOOST_AUTO_TEST_CASE( getStr)
 {
   CheckCode checkCode( 0x00);
@@ -58,6 +61,7 @@ BOOST_AUTO_TEST_CASE( getStr)
   BOOST_CHECK( checkCode.getStr() == "FF");
 }
 
+//! Compare test
 BOOST_AUTO_TEST_CASE( compare)
 {
   BOOST_CHECK( CheckCode(0x00) == CheckCode(0x00));

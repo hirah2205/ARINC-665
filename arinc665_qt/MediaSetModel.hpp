@@ -29,33 +29,108 @@ class MediaSetModelModel: public QAbstractItemModel
   Q_OBJECT
 
   public:
+    /**
+     * @brief Initialises the model instance.
+     *
+     * @param[in] mediaSet
+     *   Associated media set.
+     * @param[in] parent
+     *   Parent object
+     **/
     MediaSetModelModel(
       Arinc665::Media::MediaSetPtr mediaSet = {},
       QObject * parent = nullptr);
 
-    virtual ~MediaSetModelModel( void) = default;
+    //! Default destructor
+    virtual ~MediaSetModelModel() = default;
 
+    /**
+     * @brief Creates the index for the child identified by its parent and its
+     *   row and column.
+     *
+     * @param[in] row
+     * @param[in] column
+     * @param[in] parent
+     *
+     * @return
+     **/
     virtual QModelIndex index(
       int row,
       int column,
       const QModelIndex &parent) const override;
 
+    /**
+     * @brief Return the parent of the given index.
+     *
+     * @param index
+     *
+     * @return
+     **/
     virtual QModelIndex parent( const QModelIndex &index) const override;
 
-    virtual bool hasChildren( const QModelIndex & parent) const override;
+    /**
+     * @brief Return if the given parent has children.
+     *
+     * @param parent
+     *
+     * @return
+     **/
+    virtual bool hasChildren( const QModelIndex &parent) const override;
 
+    /**
+     * @brief Returns the number of rows.
+     *
+     * @param[in] parent
+     *   The parent.
+     *
+     * @return
+     **/
     virtual int rowCount( const QModelIndex & parent) const override;
 
-    virtual int columnCount( const QModelIndex & parent) const override;
+    /**
+     * @brief Returns the number of columns.
+     *
+     * @param[in] parent
+     *   The parent.
+     *
+     * @return
+     **/
+    virtual int columnCount( const QModelIndex &parent) const override;
 
+    /**
+     * @brief Returns the data for the given index.
+     *
+     * @param index
+     * @param role
+     *
+     * @return
+     **/
     virtual QVariant data( const QModelIndex &index, int role) const override;
 
+    /**
+     * @brief Returns the header data.
+     *
+     * @param[in] section
+     *   Section
+     * @param[in] orientation
+     *   Orientation
+     * @param[in] role
+     *   Display role.
+     *
+     * @return The corresponding Header Data.
+     **/
     virtual QVariant headerData(
       int section,
       ::Qt::Orientation orientation,
       int role) const override;
 
   public slots:
+    /**
+     * @brief Updates the associated media set.
+     *
+     * @param[in] mediaSet
+     *   New associated media set
+     **/
     void setMediaSet( Arinc665::Media::MediaSetPtr mediaSet = {});
 
   private:
