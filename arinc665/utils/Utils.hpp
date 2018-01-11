@@ -20,7 +20,7 @@
 namespace Arinc665 {
 
 /**
- * @brief Namespace of the ARINC 665 utilities.
+ * @brief ARINC 665 utilities.
  **/
 namespace Utils {
 

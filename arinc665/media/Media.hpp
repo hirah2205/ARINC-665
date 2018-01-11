@@ -23,7 +23,7 @@
 namespace Arinc665 {
 
 /**
- * @brief Namespace, which holds the ARINC 665 media set representation.
+ * @brief ARINC 665 media (set) implementation.
  **/
 namespace Media {
 

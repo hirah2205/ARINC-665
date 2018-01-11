@@ -14,7 +14,7 @@
 #define ARINC665_QT_ARINC665QT_HPP
 
 /**
- * @brief Namespace of ARINC 665 QT implementation
+ * @brief ARINC 665 specification QT implementation.
  **/
 namespace Arinc665Qt {
 

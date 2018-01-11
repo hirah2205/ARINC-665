@@ -22,7 +22,7 @@
 namespace Arinc665 {
 
 /**
- * @brief Namespace, which holds the decoding/ encoding of the ARINC 665 files.
+ * @brief ARINC 665 file implementation.
  *
  * * List files:
  *   * List of Files: FileListFile

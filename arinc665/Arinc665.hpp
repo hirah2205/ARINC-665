@@ -17,7 +17,7 @@
 #include <cstdint>
 
 /**
- * @brief Implementation of the ARINC 665 specification.
+ * @brief ARINC 665 specification implementation.
  *
  * This library implements the ARINC 665 specification.
  *
