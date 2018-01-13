@@ -85,7 +85,7 @@ void list_luh( const boost::filesystem::path &luhFile)
 
     std::cout << "load crc " << std::hex << load.getLoadCrc() << std::endl;
 
-    std::cout << "header file crc " << std::hex << load.getCrc() << std::endl << std::endl;
+    std::cout << "header file crc " << std::hex << load.crc() << std::endl << std::endl;
   }
   catch (boost::exception &e)
   {
@@ -145,7 +145,7 @@ void list_loads_lum( const boost::filesystem::path &loadsLum)
       }
     }
 
-    std::cout << "load list crc: " << std::hex << (int)loadList.getCrc() << std::endl;
+    std::cout << "load list crc: " << std::hex << (int)loadList.crc() << std::endl;
   }
   catch (boost::exception &e)
   {
@@ -200,7 +200,7 @@ void list_files_lum( const boost::filesystem::path &filesLum)
       std::cout << "file crc: " << std::hex << file.getCrc() << "\n\n";
     }
 
-    std::cout << "file list crc: " << std::hex << (int)fileList.getCrc() << std::endl;
+    std::cout << "file list crc: " << std::hex << (int)fileList.crc() << std::endl;
 
 	}
   catch (boost::exception &e)

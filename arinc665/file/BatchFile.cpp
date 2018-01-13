@@ -36,44 +36,54 @@ BatchFile& BatchFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
-BatchFile::string BatchFile::getPartNumber() const
+BatchFile::string BatchFile::partNumber() const
 {
-  return partNumber;
+  return partNumberValue;
 }
 
-void BatchFile::setPartNumber( const string &partNumber)
+void BatchFile::partNumber( const string &partNumber)
 {
-  this->partNumber = partNumber;
+  partNumberValue = partNumber;
 }
 
-BatchFile::string BatchFile::getComment() const
+void BatchFile::partNumber( string &&partNumber)
 {
-  return comment;
+  partNumberValue = std::move( partNumber);
 }
 
-void BatchFile::setComment( const string &comment)
+BatchFile::string BatchFile::comment() const
 {
-  this->comment = comment;
+  return commentValue;
 }
 
-const BatchTargetsInfo& BatchFile::getTargetHardwares() const
+void BatchFile::comment( const string &comment)
 {
-  return targetHardwares;
+  commentValue = comment;
 }
 
-BatchTargetsInfo& BatchFile::getTargetHardwares()
+void BatchFile::comment( string &&comment)
 {
-  return targetHardwares;
+  commentValue = std::move( comment);
+}
+
+const BatchTargetsInfo& BatchFile::targetHardwares() const
+{
+  return targetHardwaresValue;
+}
+
+BatchTargetsInfo& BatchFile::targetHardwares()
+{
+  return targetHardwaresValue;
 }
 
 void BatchFile::addTargetHardware( const BatchTargetInfo &targetHardwareInfo)
 {
-  targetHardwares.push_back( targetHardwareInfo);
+  targetHardwaresValue.push_back( targetHardwareInfo);
 }
 
 void BatchFile::addTargetHardware( BatchTargetInfo &&targetHardwareInfo)
 {
-  targetHardwares.push_back( targetHardwareInfo);
+  targetHardwaresValue.push_back( targetHardwareInfo);
 }
 
 RawFile BatchFile::encode() const
@@ -83,10 +93,10 @@ RawFile BatchFile::encode() const
     2 * sizeof( uint32_t) + // batchPartNumberPtr, targetHardwareIdListPtr
     sizeof( uint16_t));     // CRC
 
-  auto rawBatchPn( encodeString( getPartNumber()));
+  auto rawBatchPn( encodeString( partNumberValue));
   assert( rawBatchPn.size() % 2 == 0);
 
-  auto rawComment( encodeString( getComment()));
+  auto rawComment( encodeString( commentValue));
   assert( rawComment.size() % 2 == 0);
 
   auto rawThwIdsList( encodeBatchTargetsInfo());
@@ -140,10 +150,10 @@ void BatchFile::decodeBody( const RawFile &rawFile)
 
   // batch part number
   it = rawFile.begin() + batchPartNumberPtr * 2;
-  it = decodeString( it, partNumber);
+  it = decodeString( it, partNumberValue);
 
   // comment
-  it = decodeString( it, comment);
+  it = decodeString( it, commentValue);
 
   // target hardware ID load list
   decodeBatchTargetsInfo( rawFile, targetHardwareIdListPtr * 2);
@@ -154,11 +164,11 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
   RawFile rawBatchTargetsInfo( sizeof(uint16_t)); // Number of THW IDs
 
   // number of THW IDs
-  setInt< uint16_t>( rawBatchTargetsInfo.begin(), targetHardwares.size());
+  setInt< uint16_t>( rawBatchTargetsInfo.begin(), targetHardwaresValue.size());
 
   // iterate over target HWs
   uint16_t thwCounter( 0);
-  for (auto const &targetHardwareInfo : targetHardwares)
+  for (auto const &targetHardwareInfo : targetHardwaresValue)
   {
     ++thwCounter;
 
@@ -197,7 +207,7 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
     // next load pointer (is set to 0 for last load)
     batchTargetInfoIt = setInt< uint16_t>(
       batchTargetInfoIt,
-      (thwCounter == targetHardwares.size()) ?
+      (thwCounter == targetHardwaresValue.size()) ?
         (0U) :
         (rawBatchTargetInfo.size() / 2));
 
@@ -230,7 +240,7 @@ void BatchFile::decodeBatchTargetsInfo(
   RawFile::const_iterator it( rawFile.begin() + offset);
 
   // clear potently data
-  targetHardwares.clear();
+  targetHardwaresValue.clear();
 
   // number of target HW IDs
   uint16_t numberOfTargetHardwareIds;
@@ -275,7 +285,7 @@ void BatchFile::decodeBatchTargetsInfo(
     it += thwIdPointer * 2;
 
     // THW ID info
-    targetHardwares.emplace_back( std::move( thwId), std::move( batchLoadsInfo));
+    targetHardwaresValue.emplace_back( std::move( thwId), std::move( batchLoadsInfo));
   }
 }
 

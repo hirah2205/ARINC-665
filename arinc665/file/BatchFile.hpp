@@ -75,7 +75,7 @@ class BatchFile: public Arinc665File
      *
      * @return The part number of the batch file.
      **/
-    string getPartNumber() const;
+    string partNumber() const;
 
     /**
      * @brief Updates the part number of the batch file.
@@ -83,14 +83,16 @@ class BatchFile: public Arinc665File
      * @param[in] partNumber
      *   The new part number.
      **/
-    void setPartNumber( const string &partNumber);
+    void partNumber( const string &partNumber);
+
+    void partNumber( string &&partNumber);
 
     /**
      * @brief Returns the comment text of the batch file.
      *
      * @return The comment text of the batch file.
      **/
-    string getComment() const;
+    string comment() const;
 
     /**
      * @brief Updates the comment text of the batch file.
@@ -98,17 +100,19 @@ class BatchFile: public Arinc665File
      * @param[in] comment
      *   The new comment text.
      **/
-    void setComment( const string &comment);
+    void comment( const string &comment);
+
+    void comment( string &&comment);
 
     /**
      * @brief Returns the target hardwares information.
      *
      * @return The target hardwares information.
      **/
-    const BatchTargetsInfo& getTargetHardwares() const;
+    const BatchTargetsInfo& targetHardwares() const;
 
     //! @copydoc getTargetHardwares() const
-    BatchTargetsInfo& getTargetHardwares();
+    BatchTargetsInfo& targetHardwares();
 
     /**
      * @brief Adds the given target hardware information to the batch file.
@@ -123,7 +127,7 @@ class BatchFile: public Arinc665File
 
   private:
     //! @copydoc Arinc665File::encode
-    virtual RawFile encode() const override final;
+    RawFile encode() const final;
 
     /**
      * @brief Decodes the body of the batch file.
@@ -153,11 +157,11 @@ class BatchFile: public Arinc665File
       std::size_t offset);
 
     //! Part number
-    string partNumber;
+    string partNumberValue;
     //! Comment
-    string comment;
+    string commentValue;
     //! target hardware informations
-    BatchTargetsInfo targetHardwares;
+    BatchTargetsInfo targetHardwaresValue;
 };
 
 }

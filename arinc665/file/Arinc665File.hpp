@@ -270,7 +270,7 @@ class Arinc665File
      *
      * @return The ARINC 665 version of this file.
      **/
-    Arinc665Version getArincVersion() const;
+    Arinc665Version arincVersion() const;
 
     /**
      * @brief Updates the ARINC 665 version of this file.
@@ -278,14 +278,14 @@ class Arinc665File
      * @param[in] version
      *   The new ARINC 665 version.
      **/
-    void setArincVersion( Arinc665Version version);
+    void arincVersion( Arinc665Version version);
 
     /**
      * @brief Returns the CRC of this file.
      *
      * @return The CRC of this file.
      **/
-    uint16_t getCrc() const noexcept;
+    uint16_t crc() const noexcept;
 
     /**
      * @brief Updates the CRC of this file.
@@ -293,7 +293,7 @@ class Arinc665File
      * @param[in] crc
      *   The new CRC of this file
      **/
-    void setCrc( uint16_t crc)  noexcept;
+    void crc( uint16_t crc)  noexcept;
 
     /**
      * @brief Calculates the CRC.
@@ -371,9 +371,9 @@ class Arinc665File
     //! checksum position
     const std::size_t checksumPosition;
     //! ARINC 665 Version
-    Arinc665Version arinc665Version;
+    Arinc665Version arinc665VersionValue;
     //! Stored CRC value
-    uint16_t crc;
+    uint16_t crcValue;
 };
 
 }

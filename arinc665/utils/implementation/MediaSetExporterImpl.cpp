@@ -313,8 +313,8 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
         }
 
         File::BatchFile batchFile( Arinc665Version::ARINC_665_2);
-        batchFile.setPartNumber( batch->getPartNumber());
-        batchFile.setComment( batch->getComment());
+        batchFile.partNumber( batch->getPartNumber());
+        batchFile.comment( batch->getComment());
 
         for ( auto target : batch->getTargets())
         {

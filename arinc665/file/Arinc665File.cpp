@@ -420,24 +420,24 @@ FileType Arinc665File::getFileType() const
   return fileType;
 }
 
-Arinc665Version Arinc665File::getArincVersion() const
+Arinc665Version Arinc665File::arincVersion() const
 {
-  return arinc665Version;
+  return arinc665VersionValue;
 }
 
-void Arinc665File::setArincVersion( Arinc665Version version)
+void Arinc665File::arincVersion( Arinc665Version version)
 {
-  this->arinc665Version = version;
+  arinc665VersionValue = version;
 }
 
-uint16_t Arinc665File::getCrc() const noexcept
+uint16_t Arinc665File::crc() const noexcept
 {
-  return crc;
+  return crcValue;
 }
 
-void Arinc665File::setCrc( const uint16_t crc) noexcept
+void Arinc665File::crc( const uint16_t crc) noexcept
 {
-  this->crc = crc;
+  crcValue = crc;
 }
 
 void Arinc665File::calculateCrc()
@@ -446,7 +446,7 @@ void Arinc665File::calculateCrc()
 
   const uint16_t calculatedCrc = calculateChecksum( rawFile, checksumPosition);
 
-  crc = calculatedCrc;
+  crcValue = calculatedCrc;
 }
 
 Arinc665File::Arinc665File(
@@ -455,8 +455,8 @@ Arinc665File::Arinc665File(
   const std::size_t checksumPosition) noexcept :
   fileType( fileType),
   checksumPosition( checksumPosition),
-  arinc665Version( version),
-  crc( 0)
+  arinc665VersionValue( version),
+  crcValue( 0)
 {
 }
 
@@ -479,7 +479,7 @@ Arinc665File& Arinc665File::operator=( const Arinc665File &rawFile)
     return *this;
   }
 
-  crc = rawFile.crc;
+  crcValue = rawFile.crcValue;
 
   return *this;
 }
@@ -510,13 +510,13 @@ void Arinc665File::insertHeader( RawFile &rawFile) const
   // format version
   it = setInt< uint16_t>(
     it,
-    static_cast< uint16_t>( getFormatVersionField( fileType, arinc665Version)));
+    static_cast< uint16_t>( getFormatVersionField( fileType, arinc665VersionValue)));
 
   // spare
   it = setInt< uint16_t>( it, 0U);
 
   // crc
-  setInt< uint16_t>( rawFile.end() - checksumPosition, crc);
+  setInt< uint16_t>( rawFile.end() - checksumPosition, crcValue);
 }
 
 void Arinc665File::decodeHeader( const RawFile &rawFile)
@@ -546,10 +546,10 @@ void Arinc665File::decodeHeader( const RawFile &rawFile)
   uint16_t formatVersion;
   it = getInt< uint16_t>( it, formatVersion);
 
-  arinc665Version = getArinc665Version( fileType, formatVersion);
+  arinc665VersionValue = getArinc665Version( fileType, formatVersion);
 
   // check format field version
-  if ( arinc665Version == Arinc665Version::Invalid)
+  if ( arinc665VersionValue == Arinc665Version::Invalid)
   {
     //! @throw InvalidArinc665File When file format is wrong
     BOOST_THROW_EXCEPTION(
@@ -563,7 +563,7 @@ void Arinc665File::decodeHeader( const RawFile &rawFile)
   // Decode checksum field;
   uint16_t crc;
   getInt< uint16_t>( rawFile.end() - checksumPosition, crc);
-  setCrc( crc);
+  crcValue= crc;
 
   // calculate checksum and compare against stored
   uint16_t calcCrc = calculateChecksum( rawFile, checksumPosition);

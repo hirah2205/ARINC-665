@@ -483,7 +483,7 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex)
     File::BatchFile batchFile(
       readFileHandler( mediumIndex, batchFileIt->second.getPath()));
 
-    if (batchFile.getPartNumber() != batchInfo.second.getPartNumber())
+    if (batchFile.partNumber() != batchInfo.second.getPartNumber())
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception() <<
         AdditionalInfo( "Medium is not consistent to media set"));
@@ -604,11 +604,11 @@ void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
     // create batch
     auto batchPtr( container->addBatch( batch.second.getFilename()));
 
-    batchPtr->setPartNumber( batchFile->second.getPartNumber());
-    batchPtr->setComment( batchFile->second.getComment());
+    batchPtr->setPartNumber( batchFile->second.partNumber());
+    batchPtr->setComment( batchFile->second.comment());
 
     // iterate over target hardware
-    for ( const auto &targetHardware : batchFile->second.getTargetHardwares())
+    for ( const auto &targetHardware : batchFile->second.targetHardwares())
     {
       Media::WeakLoads loads;
 
