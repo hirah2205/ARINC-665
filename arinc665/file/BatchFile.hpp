@@ -113,7 +113,7 @@ class BatchFile: public Arinc665File
      **/
     const BatchTargetsInfo& targetHardwares() const;
 
-    //! @copydoc getTargetHardwares() const
+    //! @copydoc targetHardwares() const
     BatchTargetsInfo& targetHardwares();
 
     /**

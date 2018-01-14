@@ -46,6 +46,7 @@ class MediaSet:
      **/
     MediaSet( const string &name);
 
+    //! @copydoc MediaSet()
     MediaSet( string &&name);
 
     //! @copydoc Base::mediaSet
@@ -67,6 +68,7 @@ class MediaSet:
      **/
     void name( const string &name);
 
+    //! @copydoc name(const string&)
     void name( string &&name);
 
     //! @copydoc Base::partNumber
@@ -80,6 +82,7 @@ class MediaSet:
      **/
     void partNumber( const string &partNumber);
 
+    //! @copydoc partNumber(const string&)
     void partNumber( string &&partNumber);
 
     /**
@@ -110,7 +113,7 @@ class MediaSet:
      **/
     ConstMedia media() const;
 
-    //! @copydoc MediaSet::getMedia() const
+    //! @copydoc MediaSet::media() const
     Media media();
 
     /**

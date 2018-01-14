@@ -75,7 +75,7 @@ class FileInfo
      **/
     void filename( const string &filename);
 
-    //! @copydoc setFilename(const string&)
+    //! @copydoc filename(const string&)
     void filename( string &&filename);
 
     /**
@@ -93,7 +93,7 @@ class FileInfo
      **/
     void pathName( const string &pathName);
 
-    //! @copydoc setPathName(const string&)
+    //! @copydoc pathName(const string&)
     void pathName( string &&pathName);
 
     /**

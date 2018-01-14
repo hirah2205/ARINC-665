@@ -645,7 +645,7 @@ ContainerEntity::ContainerEntity( ContainerEntityPtr parent):
   }
 }
 
-ConstFiles ContainerEntity::files( BaseFile::FileType fileType) const
+ConstFiles ContainerEntity::files( FileType fileType) const
 {
   ConstFiles result;
 
@@ -660,7 +660,7 @@ ConstFiles ContainerEntity::files( BaseFile::FileType fileType) const
   return result;
 }
 
-Files ContainerEntity::files( BaseFile::FileType fileType)
+Files ContainerEntity::files( FileType fileType)
 {
   Files result;
 

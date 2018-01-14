@@ -45,10 +45,11 @@ class File: public BaseFile
      **/
     File( ContainerEntityPtr parent, const string &name);
 
+    //! @copydoc File()
     File( ContainerEntityPtr parent, string &&name);
 
     /**
-     * @copydoc BaseFile::getFileType
+     * @copydoc BaseFile::fileType
      * @retval FileType::RegularFile
      *   Always
      **/

@@ -61,6 +61,7 @@ class BatchLoadInfo
      **/
     void headerFilename( const string &headerFilename);
 
+    //! @copydoc headerFilename(const string&)
     void headerFilename( string &&headerFilename);
 
     /**
@@ -78,6 +79,7 @@ class BatchLoadInfo
      **/
     void partNumber( const string &partNumber);
 
+    //! @copydoc partNumber(const string&)
     void partNumber( string &&partNumber);
 
   private:

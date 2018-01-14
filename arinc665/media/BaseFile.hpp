@@ -41,25 +41,21 @@ class BaseFile: public Base
     //! Default destructor
     virtual ~BaseFile() = default;
 
-    //! @copydoc Base::getMediaSet
+    //! @copydoc Base::mediaSet
     ConstMediaSetPtr mediaSet() const final;
 
-    //! @copydoc Base::getMediaSet
+    //! @copydoc Base::mediaSet
     MediaSetPtr mediaSet() final;
 
-    //! @copydoc Base::getType
+    //! @copydoc Base::type
     Type type() const final;
 
-    /**
-     * @copydoc Base::getType
-     *
-     * @return The name of the file.
-     **/
+    //! @copydoc Base::name
     const string& name() const final;
 
    //void setName( void);
 
-    //! @copydoc Base::getPartNumber
+    //! @copydoc Base::partNumber
     string partNumber() const final;
 
     /**
@@ -98,7 +94,7 @@ class BaseFile: public Base
      **/
     ConstMediumPtr medium() const;
 
-    //! @copydoc getMedium() const
+    //! @copydoc medium() const
     MediumPtr medium();
 
     /**

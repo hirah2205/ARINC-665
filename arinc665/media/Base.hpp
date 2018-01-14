@@ -50,7 +50,7 @@ class Base
      **/
     virtual ConstMediaSetPtr mediaSet() const = 0;
 
-    //! @copydoc getMediaSet() const
+    //! @copydoc mediaSet() const
     virtual MediaSetPtr mediaSet() = 0;
 
     /**

@@ -41,7 +41,7 @@ class Batch: public BaseFile
     Batch( ContainerEntityPtr parent, const string &name);
 
     /**
-     * @copydoc BaseFile::getFileType()
+     * @copydoc BaseFile::fileType()
      *
      * @return FileType::BatchFile always.
      **/
@@ -62,6 +62,7 @@ class Batch: public BaseFile
      **/
     void comment( const string &comment);
 
+    //! @copydoc comment(const string&)
     void comment( string &&comment);
 
     /**
@@ -71,7 +72,7 @@ class Batch: public BaseFile
      **/
     const BatchInfo& targets() const;
 
-    //! @copydoc getTargets() const
+    //! @copydoc targets() const
     BatchInfo& targets();
 
     /**
@@ -98,8 +99,10 @@ class Batch: public BaseFile
      * @brief Add  batch info for the given target hardware ID.
      *
      * @param[in] targetHardwareId
+     *   Target hardware IDs
      * @param[in] loads
-     */
+     *   Loads.
+     **/
     void addTarget( const string &targetHardwareId, WeakLoads loads);
 
   private:

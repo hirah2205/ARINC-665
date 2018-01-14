@@ -64,6 +64,7 @@ class FileListFile: public ListFile
       const FilesInfo &filesInfo,
       const UserDefinedData &userDefinedData);
 
+    //! @copydoc FileListFile(Arinc665Version,const string&,uint8_t,uint8_t,const FilesInfo&,const UserDefinedData&)
     FileListFile(
       Arinc665Version version,
       string &&mediaSetPn,
@@ -165,6 +166,7 @@ class FileListFile: public ListFile
      **/
     void userDefinedData( const UserDefinedData &userDefinedData);
 
+    //! @copydoc userDefinedData(const UserDefinedData&)
     void userDefinedData( UserDefinedData &&userDefinedData);
 
     /**

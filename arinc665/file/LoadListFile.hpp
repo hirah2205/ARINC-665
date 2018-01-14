@@ -47,11 +47,16 @@ class LoadListFile: public ListFile
      *
      * @param[in] version
      *   ARINC 665 version.
-     * @param mediaSetPn
-     * @param mediaSequenceNumber
-     * @param numberOfMediaSetMembers
-     * @param loadsInfo
-     * @param userDefinedData
+     * @param[in] mediaSetPn
+     *   Media set part number.
+     * @param[in] mediaSequenceNumber
+     *   Media sequence number
+     * @param[in] numberOfMediaSetMembers
+     *   Number of media set members
+     * @param[in] loadsInfo
+     *   Loads information
+     * @param[in] userDefinedData
+     *   User defined data.
      **/
     LoadListFile(
       Arinc665Version version,
@@ -61,6 +66,7 @@ class LoadListFile: public ListFile
       const LoadsInfo &loadsInfo,
       const UserDefinedData &userDefinedData);
 
+    //! @copydoc LoadListFile(Arinc665Version,const string&,uint8_t,uint8_t,const LoadsInfo&,const UserDefinedData&)
     LoadListFile(
       Arinc665Version version,
       string &&mediaSetPn,
@@ -80,25 +86,25 @@ class LoadListFile: public ListFile
     //! @copydoc ListFile::operator=
     LoadListFile& operator=( const RawFile &rawFile) final;
 
-    //! @copydoc ListFile::getMediaSetPn
+    //! @copydoc ListFile::mediaSetPn
     string mediaSetPn() const final;
 
-    //! @copydoc ListFile::setMediaSetPn
+    //! @copydoc ListFile::mediaSetPn
     void mediaSetPn( const string &mediaSetPn) final;
 
-    //! @copydoc ListFile::setMediaSetPn
+    //! @copydoc ListFile::mediaSetPn
     void mediaSetPn( string &&mediaSetPn) final;
 
-    //! @copydoc ListFile::getMediaSequenceNumber
+    //! @copydoc ListFile::mediaSequenceNumber
     uint8_t mediaSequenceNumber() const final;
 
-    //! @copydoc ListFile::setMediaSequenceNumber
+    //! @copydoc ListFile::mediaSequenceNumber
     void mediaSequenceNumber( uint8_t mediaSequenceNumber) final;
 
-    //! @copydoc ListFile::getNumberOfMediaSetMembers
+    //! @copydoc ListFile::numberOfMediaSetMembers
     uint8_t numberOfMediaSetMembers() const final;
 
-    //! @copydoc ListFile::setNumberOfMediaSetMembers
+    //! @copydoc ListFile::numberOfMediaSetMembers
     void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) final;
 
     /**
@@ -157,6 +163,7 @@ class LoadListFile: public ListFile
      **/
     void userDefinedData( const UserDefinedData &userDefinedData);
 
+    //! @copydoc userDefinedData(const UserDefinedData&)
     void userDefinedData( UserDefinedData &&userDefinedData);
 
     /**

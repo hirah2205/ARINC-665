@@ -62,6 +62,7 @@ class BatchListFile: public ListFile
       const BatchesInfo &batchesInfo,
       const UserDefinedData &userDefinedData);
 
+    //! @copydoc BatchListFile(Arinc665Version,const string&,uint8_t,uint8_t,const BatchesInfo&,const UserDefinedData&)
     BatchListFile(
       Arinc665Version version,
       string &&mediaSetPn,

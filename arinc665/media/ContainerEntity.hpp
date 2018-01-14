@@ -144,7 +144,7 @@ class ContainerEntity :
      **/
     ConstFiles files( bool recursive = false) const;
 
-    //! @copydoc getFiles(bool) const
+    //! @copydoc files(bool) const
     Files files( bool recursive = false);
 
     /**
@@ -168,7 +168,7 @@ class ContainerEntity :
      **/
     ConstFilePtr file( const string &filename, bool recursive = false) const;
 
-    //! @copydoc getFile(const string&,bool) const
+    //! @copydoc file(const string&,bool) const
     FilePtr file( const string &filename, bool recursive = false);
 
     /**
@@ -221,7 +221,7 @@ class ContainerEntity :
      **/
     ConstLoads loads( bool recursive = false) const;
 
-    //! @copydoc getLoads(bool) const
+    //! @copydoc loads(bool) const
     Loads loads( bool recursive = false);
 
     /**
@@ -238,7 +238,7 @@ class ContainerEntity :
      **/
     ConstLoadPtr load( const string &filename, bool recursive = false) const;
 
-    //! @copydoc getLoad(const string&,bool) const
+    //! @copydoc load(const string&,bool) const
     LoadPtr load( const string &filename, bool recursive = false);
 
     /**
@@ -288,7 +288,7 @@ class ContainerEntity :
      **/
     ConstBatches batches( bool recursive = false) const;
 
-    //! @copydoc getBatches(bool) const
+    //! @copydoc batches(bool) const
     Batches batches( bool recursive = false);
 
     /**
@@ -305,7 +305,7 @@ class ContainerEntity :
      **/
     ConstBatchPtr batch( const string &filename, bool recursive = false) const;
 
-    //! @copydoc getBatch(const string&,bool) const
+    //! @copydoc batch(const string&,bool) const
     BatchPtr batch( const string &filename, bool recursive = false);
 
     /**
@@ -341,7 +341,7 @@ class ContainerEntity :
      **/
     ConstContainerEntityPtr parent() const;
 
-    //! @copydoc getParent() const
+    //! @copydoc parent() const
     ContainerEntityPtr parent();
 
     /**
@@ -353,7 +353,7 @@ class ContainerEntity :
      **/
     ConstMediumPtr medium() const;
 
-    //! @copydoc getMedium() const
+    //! @copydoc medium() const
     MediumPtr medium();
 
   protected:
@@ -374,10 +374,10 @@ class ContainerEntity :
      *
      * @return The files (real file, load, batch) with the specified file.
      **/
-    ConstFiles files( BaseFile::FileType fileType) const;
+    ConstFiles files( FileType fileType) const;
 
-    //! @copydoc getFiles( BaseFile::FileType) const
-    Files files( BaseFile::FileType fileType);
+    //! @copydoc files(FileType) const
+    Files files( FileType fileType);
 
     /**
      * @brief Updates the parent.

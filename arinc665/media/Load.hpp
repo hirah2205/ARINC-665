@@ -48,10 +48,11 @@ class Load: public BaseFile
      **/
     Load( ContainerEntityPtr parent, const string &name);
 
+    //! @copydoc Load()
     Load( ContainerEntityPtr parent, string &&name);
 
     /**
-     * @copydoc BaseFile::getFileType()
+     * @copydoc BaseFile::fileType()
      *
      * @return FileType::LoadFile always.
      **/
@@ -79,6 +80,7 @@ class Load: public BaseFile
      **/
     void targetHardwareIds( const TargetHardwareIds &thwIds);
 
+    //! @copydoc targetHardwareIds(const TargetHardwareIds&)
     void targetHardwareIds( TargetHardwareIds &&thwIds);
 
     /**
@@ -118,7 +120,7 @@ class Load: public BaseFile
      **/
     const UserDefinedData& userDefinedData() const;
 
-    //! @copydoc Load::getUserDefinedData() const
+    //! @copydoc Load::userDefinedData() const
     UserDefinedData& userDefinedData();
 
     /**
@@ -129,7 +131,7 @@ class Load: public BaseFile
      **/
     void userDefinedData( const UserDefinedData &userDefinedData);
 
-    //! @copydoc Load::setUserDefinedData(const UserDefinedData&)
+    //! @copydoc Load::userDefinedData(const UserDefinedData&)
     void userDefinedData( UserDefinedData &&userDefinedData);
 
   private:

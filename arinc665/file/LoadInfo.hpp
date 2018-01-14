@@ -76,7 +76,7 @@ class LoadInfo
      **/
     void partNumber( const string &partNumber);
 
-    //! @copydoc setPartNumber(const string&)
+    //! @copydoc partNumber(const string&)
     void partNumber( string &&partNumber);
 
     /**
@@ -94,7 +94,7 @@ class LoadInfo
      **/
     void headerFilename( const string &headerFilename);
 
-    //! @copydoc setHeaderFilename(const string&)
+    //! @copydoc headerFilename(const string&)
     void headerFilename( string &&headerFilename);
 
     /**
@@ -119,7 +119,7 @@ class LoadInfo
      **/
     const ThwIds& targetHardwareIds() const;
 
-    //! @copydoc getTargetHardwareIds() const
+    //! @copydoc targetHardwareIds() const
     ThwIds& targetHardwareIds();
 
     /**

@@ -72,6 +72,7 @@ class LoadFileInfo
      **/
     void filename( const string &filename);
 
+    //! @copydoc filename(const string&)
     void filename( string &&filename);
 
     /**
@@ -89,6 +90,7 @@ class LoadFileInfo
      **/
     void partNumber( const string &partNumber);
 
+    //! @copydoc partNumber(const string&)
     void partNumber( string &&partNumber);
 
     /**

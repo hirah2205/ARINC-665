@@ -70,6 +70,7 @@ class LoadHeaderFile: public Arinc665File
       const UserDefinedData &userDefinedData,
       uint32_t loadCrc);
 
+    //! @copydoc LoadHeaderFile(Arinc665Version,const string&,const TargetHardwareIds&,const LoadFilesInfo&,const LoadFilesInfo&,const UserDefinedData&,uint32_t)
     LoadHeaderFile(
       Arinc665Version version,
       string &&partNumber,
@@ -105,6 +106,7 @@ class LoadHeaderFile: public Arinc665File
      **/
     void partNumber( const string &partNumber);
 
+    //! @copydoc partNumber(const string&)
     void partNumber( string &&partNumber);
 
     /**
@@ -114,7 +116,7 @@ class LoadHeaderFile: public Arinc665File
      **/
     const TargetHardwareIds& targetHardwareIds() const;
 
-    //! @copydoc getTargetHardwareIds() const
+    //! @copydoc targetHardwareIds() const
     TargetHardwareIds& targetHardwareIds();
 
     /**
@@ -124,7 +126,7 @@ class LoadHeaderFile: public Arinc665File
      **/
     void targetHardwareIds( const TargetHardwareIds &targetHardwareIds);
 
-    //! @copydoc setTargetHardwareIds(const TargetHardwareIds&)
+    //! @copydoc targetHardwareIds(const TargetHardwareIds&)
     void targetHardwareIds( TargetHardwareIds &&targetHardwareIds);
 
     /**
@@ -145,7 +147,7 @@ class LoadHeaderFile: public Arinc665File
      **/
     const LoadFilesInfo& dataFiles() const;
 
-    //! @copydoc getDataFiles() const
+    //! @copydoc dataFiles() const
     LoadFilesInfo& dataFiles();
 
     /**
@@ -166,7 +168,7 @@ class LoadHeaderFile: public Arinc665File
      **/
     const LoadFilesInfo& supportFiles() const;
 
-    //! @copydoc getDataFiles() const
+    //! @copydoc supportFiles() const
     LoadFilesInfo& supportFiles();
 
     /**
@@ -195,6 +197,7 @@ class LoadHeaderFile: public Arinc665File
      **/
     void userDefinedData( const UserDefinedData &userDefinedData);
 
+    //! @copydoc userDefinedData(const UserDefinedData&)
     void userDefinedData( UserDefinedData &&userDefinedData);
 
     /**

@@ -62,6 +62,7 @@ class BatchTargetInfo
      **/
     void targetHardwareId( const string &targetHardwareId);
 
+    //! @copydoc targetHardwareId(const string&)
     void targetHardwareId( string &&targetHardwareId);
 
     /**
@@ -86,7 +87,7 @@ class BatchTargetInfo
      **/
     void loads( const BatchLoadsInfo &loads);
 
-    //! @copydoc setLoads(const BatchLoadsInfo&)
+    //! @copydoc loads(const BatchLoadsInfo&)
     void loads( BatchLoadsInfo &&loads);
 
     /**
