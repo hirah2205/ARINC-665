@@ -20,59 +20,69 @@ Load::Load( ContainerEntityPtr parent, const string &name) :
 {
 }
 
-Load::FileType Load::getFileType( void) const
+Load::Load( ContainerEntityPtr parent, string &&name) :
+  BaseFile( parent, std::move( name))
+{
+}
+
+Load::FileType Load::fileType() const
 {
   return FileType::LoadFile;
 }
 
-const Load::TargetHardwareIds& Load::getTargetHardwareIds() const
+const Load::TargetHardwareIds& Load::targetHardwareIds() const
 {
-  return targetHardwareIds;
+  return targetHardwareIdsValue;
 }
 
-Load::TargetHardwareIds& Load::getTargetHardwareIds()
+Load::TargetHardwareIds& Load::targetHardwareIds()
 {
-  return targetHardwareIds;
+  return targetHardwareIdsValue;
 }
 
-void Load::setTargetHardwareIds( const TargetHardwareIds& thwIds)
+void Load::targetHardwareIds( const TargetHardwareIds &thwIds)
 {
-  this->targetHardwareIds = thwIds;
+  targetHardwareIdsValue = thwIds;
 }
 
-const Load::Files& Load::getDataFiles( void) const
+void Load::targetHardwareIds( TargetHardwareIds &&thwIds)
 {
-  return dataFiles;
+  targetHardwareIdsValue = std::move( thwIds);
+}
+
+const Load::Files& Load::dataFiles() const
+{
+  return dataFilesValue;
 }
 
 void Load::addDataFile( const WeakFilePtr dataFile)
 {
-  dataFiles.push_back( dataFile);
+  dataFilesValue.push_back( dataFile);
 }
 
-const Load::Files& Load::getSupportFiles( void) const
+const Load::Files& Load::supportFiles() const
 {
-  return supportFiles;
+  return supportFilesValue;
 }
 
 void Load::addSupportFile( const WeakFilePtr supportFile)
 {
-  supportFiles.push_back( supportFile);
+  supportFilesValue.push_back( supportFile);
 }
 
-const std::vector< uint8_t>& Load::getUserDefinedData( void) const
+const std::vector< uint8_t>& Load::userDefinedData() const
 {
-  return userDefinedData;
+  return userDefinedDataValue;
 }
 
-void Load::setUserDefinedData( const std::vector< uint8_t> &userDefinedData)
+void Load::userDefinedData( const std::vector< uint8_t> &userDefinedData)
 {
-  this->userDefinedData = userDefinedData;
+  userDefinedDataValue = userDefinedData;
 }
 
-void Load::setUserDefinedData( Load::UserDefinedData &&userDefinedData)
+void Load::userDefinedData( Load::UserDefinedData &&userDefinedData)
 {
-  this->userDefinedData= std::move( userDefinedData);
+  userDefinedDataValue= std::move( userDefinedData);
 }
 
 }

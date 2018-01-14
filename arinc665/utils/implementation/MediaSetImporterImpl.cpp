@@ -40,14 +40,14 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()( const string &mediaSetName)
 
   // create Media set
   mediaSet = std::make_shared< Media::MediaSet>( mediaSetName);
-  mediaSet->setPartNumber( fileListFile.getMediaSetPn());
-  mediaSet->setNumberOfMedia( fileListFile.getNumberOfMediaSetMembers());
+  mediaSet->partNumber( fileListFile.mediaSetPn());
+  mediaSet->numberOfMedia( fileListFile.numberOfMediaSetMembers());
 
   // Add content of medium to media set
   addMedium( 1);
 
   // iterate over additional media
-  for ( unsigned int mediaIndex = 2; mediaIndex <= mediaSet->getNumberOfMedia();
+  for ( unsigned int mediaIndex = 2; mediaIndex <= mediaSet->numberOfMedia();
     ++mediaIndex)
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
@@ -209,7 +209,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
   if (!this->fileListFile)
   {
     this->fileListFile = fileListFile;
-    fileInfos = fileListFile.getFileInfosAsMap();
+    fileInfos = fileListFile.filesInfoAsMap();
   }
   else
   {
@@ -225,18 +225,18 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
   }
 
   // check for consistency of current file list file to media set
-  if ((mediaSet->getPartNumber() != fileListFile.getMediaSetPn()) ||
-      (mediaSet->getNumberOfMedia() != fileListFile.getNumberOfMediaSetMembers()) ||
-      (mediumIndex != fileListFile.getMediaSequenceNumber()))
+  if ((mediaSet->partNumber() != fileListFile.mediaSetPn()) ||
+      (mediaSet->numberOfMedia() != fileListFile.numberOfMediaSetMembers()) ||
+      (mediumIndex != fileListFile.mediaSequenceNumber()))
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::error) <<
      "media set: " <<
-       mediaSet->getPartNumber() << " " <<
-       (unsigned int)mediaSet->getNumberOfMedia() << " " <<
+       mediaSet->partNumber() << " " <<
+       (unsigned int)mediaSet->numberOfMedia() << " " <<
        (unsigned int)mediumIndex << " // " <<
-       fileListFile.getMediaSetPn() << " " <<
-       (unsigned int)fileListFile.getNumberOfMediaSetMembers() << " " <<
-       (unsigned int)fileListFile.getMediaSequenceNumber();
+       fileListFile.mediaSetPn() << " " <<
+       (unsigned int)fileListFile.numberOfMediaSetMembers() << " " <<
+       (unsigned int)fileListFile.mediaSequenceNumber();
 
     //! @throw Arinc665Exception When FILES.LUM is inconsistent to media set
     BOOST_THROW_EXCEPTION( Arinc665Exception() <<
@@ -248,24 +248,24 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
   for ( auto &fileInfo : fileInfos)
   {
     // skip files, which are not part of the current medium
-    if (fileInfo.second.getMemberSequenceNumber() != mediumIndex)
+    if (fileInfo.second.memberSequenceNumber() != mediumIndex)
     {
       continue;
     }
 
     BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-      "Check file " << fileInfo.second.getPath();
+      "Check file " << fileInfo.second.path();
 
-    auto rawFile( readFileHandler( mediumIndex, fileInfo.second.getPath()));
+    auto rawFile( readFileHandler( mediumIndex, fileInfo.second.path()));
 
     uint16_t crc = File::Arinc665File::calculateChecksum( rawFile, 0);
 
     // compare checksums
-    if (crc != fileInfo.second.getCrc())
+    if (crc != fileInfo.second.crc())
     {
       //! @throw Arinc665Exception When file CRCs does not match
       BOOST_THROW_EXCEPTION( Arinc665Exception() << AdditionalInfo(
-        fileInfo.second.getPath().string() + ": CRC of file invalid"));
+        fileInfo.second.path().string() + ": CRC of file invalid"));
     }
   }
 }
@@ -283,7 +283,7 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex)
   if (!this->loadListFile)
   {
     this->loadListFile = loadListFile;
-    loadInfos = loadListFile.getLoadsInfoAsMap();
+    loadInfos = loadListFile.loadsInfoAsMap();
   }
   else
   {
@@ -298,9 +298,9 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex)
   }
 
   // check for consistency of current file list file to media set
-  if ((mediaSet->getPartNumber() != loadListFile.getMediaSetPn()) ||
-      (mediaSet->getNumberOfMedia() != loadListFile.getNumberOfMediaSetMembers()) ||
-      (loadListFile.getMediaSequenceNumber() != mediumIndex))
+  if ((mediaSet->partNumber() != loadListFile.mediaSetPn()) ||
+      (mediaSet->numberOfMedia() != loadListFile.numberOfMediaSetMembers()) ||
+      (loadListFile.mediaSequenceNumber() != mediumIndex))
   {
     //! @throw Arinc665Exception When LOADS:LUM is inconsistent to media set
     BOOST_THROW_EXCEPTION( Arinc665Exception() <<
@@ -354,7 +354,7 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
   if (!this->batchListFile)
   {
     this->batchListFile = batchListFile;
-    this->batchInfos = batchListFile.getBatchesInfoAsMap();
+    this->batchInfos = batchListFile.batchesInfoAsMap();
   }
   else
   {
@@ -369,9 +369,9 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
   }
 
   // check for consistency of current batch list file to media set
-  if ((mediaSet->getPartNumber() != batchListFile.getMediaSetPn()) ||
-      (mediaSet->getNumberOfMedia() != batchListFile.getNumberOfMediaSetMembers()) ||
-      (batchListFile.getMediaSequenceNumber() != mediumIndex))
+  if ((mediaSet->partNumber() != batchListFile.mediaSetPn()) ||
+      (mediaSet->numberOfMedia() != batchListFile.numberOfMediaSetMembers()) ||
+      (batchListFile.mediaSequenceNumber() != mediumIndex))
   {
     //! @throw Arinc665Exception When FILES.LUM is inconsistent to media set
     BOOST_THROW_EXCEPTION( Arinc665Exception() <<
@@ -429,14 +429,14 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex)
     }
 
     BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-      "Load Header File " << loadHeaderFileIt->second.getPath();
+      "Load Header File " << loadHeaderFileIt->second.path();
 
     // decode load header
     File::LoadHeaderFile loadHeaderFile(
-      readFileHandler( mediumIndex, loadHeaderFileIt->second.getPath()));
+      readFileHandler( mediumIndex, loadHeaderFileIt->second.path()));
 
     // validate load header part number info with the stored information in load list
-    if (loadHeaderFile.getPartNumber() != loadInfo.second.getPartNumber())
+    if (loadHeaderFile.partNumber() != loadInfo.second.partNumber())
     {
       //! @throw Arinc665Exception When load header PN info is inconsistent to list of loads information
       BOOST_THROW_EXCEPTION( Arinc665Exception() <<
@@ -444,7 +444,7 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex)
     }
 
     // validate load header target HW list info with the stored information in load list
-    if (loadHeaderFile.getTargetHardwareIds() != loadInfo.second.getTargetHardwareIds())
+    if (loadHeaderFile.targetHardwareIds() != loadInfo.second.targetHardwareIds())
     {
       //! @throw Arinc665Exception When load header THW info is inconsistent to list of loads information
       BOOST_THROW_EXCEPTION( Arinc665Exception() <<
@@ -455,7 +455,7 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex)
 
     // add load header to global information
     loadHeaderFiles.insert(
-      std::make_pair( loadHeaderFileIt->second.getFilename(), loadHeaderFile));
+      std::make_pair( loadHeaderFileIt->second.filename(), loadHeaderFile));
   }
 }
 
@@ -478,10 +478,10 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex)
     }
 
     BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-      "Load Batch File " << batchFileIt->second.getPath();
+      "Load Batch File " << batchFileIt->second.path();
 
     File::BatchFile batchFile(
-      readFileHandler( mediumIndex, batchFileIt->second.getPath()));
+      readFileHandler( mediumIndex, batchFileIt->second.path()));
 
     if (batchFile.partNumber() != batchInfo.second.getPartNumber())
     {
@@ -491,7 +491,7 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex)
 
     // add batch file to to batch file list
     batchFiles.insert(
-      std::make_pair( batchFileIt->second.getFilename(), batchFile));
+      std::make_pair( batchFileIt->second.filename(), batchFile));
   }
 }
 
@@ -533,10 +533,10 @@ void MediaSetImporterImpl::addFiles()
     // get directory, where file will be placed into.
     ContainerEntityPtr container( checkCreateDirectory(
       fileInfo.first.first,
-      fileInfo.second.getPath().parent_path()));
+      fileInfo.second.path().parent_path()));
 
     // place file
-    auto filePtr{ container->addFile( fileInfo.second.getFilename())};
+    auto filePtr{ container->addFile( fileInfo.second.filename())};
   }
 
   // Loads
@@ -556,30 +556,30 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
 
     ContainerEntityPtr container( checkCreateDirectory(
       loadHeader.first.first,
-      loadHeader.second.getPath().parent_path()));
+      loadHeader.second.path().parent_path()));
 
     // create load
-    auto loadPtr( container->addLoad( loadHeader.second.getFilename()));
+    auto loadPtr( container->addLoad( loadHeader.second.filename()));
 
-    loadPtr->setPartNumber( loadHeaderFile->second.getPartNumber());
-    loadPtr->setTargetHardwareIds( loadHeaderFile->second.getTargetHardwareIds());
+    loadPtr->partNumber( loadHeaderFile->second.partNumber());
+    loadPtr->targetHardwareIds( loadHeaderFile->second.targetHardwareIds());
 
     // iterate over data files
-    for ( const auto &dataFile : loadHeaderFile->second.getDataFiles())
+    for ( const auto &dataFile : loadHeaderFile->second.dataFiles())
     {
-      auto dataFilePtr( mediaSet->getFile( dataFile.getFilename()));
+      auto dataFilePtr( mediaSet->file( dataFile.filename()));
 
-      dataFilePtr->setPartNumber( dataFile.getPartNumber());
+      dataFilePtr->partNumber( dataFile.partNumber());
 
       loadPtr->addDataFile( dataFilePtr);
     }
 
     // iterate over support files
-    for ( const auto &supportFile : loadHeaderFile->second.getSupportFiles())
+    for ( const auto &supportFile : loadHeaderFile->second.supportFiles())
     {
-      auto supportFilePtr( mediaSet->getFile( supportFile.getFilename()));
+      auto supportFilePtr( mediaSet->file( supportFile.filename()));
 
-      supportFilePtr->setPartNumber( supportFile.getPartNumber());
+      supportFilePtr->partNumber( supportFile.partNumber());
 
       loadPtr->addSupportFile( supportFilePtr);
     }
@@ -599,13 +599,13 @@ void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
 
     ContainerEntityPtr container( checkCreateDirectory(
       batch.first.first,
-      batch.second.getPath().parent_path()));
+      batch.second.path().parent_path()));
 
     // create batch
-    auto batchPtr( container->addBatch( batch.second.getFilename()));
+    auto batchPtr( container->addBatch( batch.second.filename()));
 
-    batchPtr->setPartNumber( batchFile->second.partNumber());
-    batchPtr->setComment( batchFile->second.comment());
+    batchPtr->partNumber( batchFile->second.partNumber());
+    batchPtr->comment( batchFile->second.comment());
 
     // iterate over target hardware
     for ( const auto &targetHardware : batchFile->second.targetHardwares())
@@ -613,13 +613,13 @@ void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
       Media::WeakLoads loads;
 
       // iterate over loads
-      for ( const auto& load : targetHardware.getLoads())
+      for ( const auto& load : targetHardware.loads())
       {
-        loads.push_back( mediaSet->getLoad( load.getHeaderFilename()));
+        loads.push_back( mediaSet->load( load.headerFilename()));
       }
 
       // add target hardware
-      batchPtr->addTarget( targetHardware.getTargetHardwareId(), loads);
+      batchPtr->addTarget( targetHardware.targetHardwareId(), loads);
     }
   }
 }
@@ -632,7 +632,7 @@ MediaSetImporterImpl::checkCreateDirectory(
   // make path relative (remove leading slash)
   path dirPath( directoryPath.relative_path());
 
-  auto medium( mediaSet->getMedium( mediumIndex));
+  auto medium( mediaSet->medium( mediumIndex));
 
   // we are in root-directory
   if ( dirPath.empty())
@@ -644,7 +644,7 @@ MediaSetImporterImpl::checkCreateDirectory(
 
   for ( auto &subPath : dirPath)
   {
-    auto subDir( dir->getSubDirectory( subPath.string()));
+    auto subDir( dir->subDirectory( subPath.string()));
 
     if (!subDir)
     {

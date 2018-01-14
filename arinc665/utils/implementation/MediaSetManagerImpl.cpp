@@ -75,13 +75,13 @@ MediaSetManagerImpl::MediaSetManagerImpl(
     mediaSets.push_back( mediaSet);
 
     // iterate over media
-    for ( auto medium : mediaSet->getMedia())
+    for ( auto medium : mediaSet->media())
     {
       // add path mapping
       this->mediaPaths.insert(
         { medium,
           mediaSetConfig.first /
-          mediaSetConfig.second[ medium->getMediumNumber() - 1]});
+          mediaSetConfig.second[ medium->mediumNumber() - 1]});
     }
   }
 }
@@ -91,7 +91,7 @@ Media::MediaSetPtr MediaSetManagerImpl::getMediaSet(
 {
   for (const auto &mediaSet : mediaSets)
   {
-    if (mediaSet->getPartNumber() == partNumber)
+    if (mediaSet->partNumber() == partNumber)
     {
       return mediaSet;
     }
@@ -115,7 +115,7 @@ Media::ConstLoads MediaSetManagerImpl::getLoads() const
 
   for (const auto &mediaSet : mediaSets)
   {
-    auto mediaSetLoads( mediaSet->getLoads());
+    auto mediaSetLoads( mediaSet->loads());
 
     loads.insert( loads.end(), mediaSetLoads.begin(), mediaSetLoads.end());
   }
@@ -126,14 +126,14 @@ Media::ConstLoads MediaSetManagerImpl::getLoads() const
 MediaSetManagerImpl::path MediaSetManagerImpl::getFilePath(
   Media::ConstBaseFilePtr file) const
 {
-  auto mediumIt( mediaPaths.find( file->getParent()->getMedium()));
+  auto mediumIt( mediaPaths.find( file->parent()->medium()));
 
   if (mediumIt == mediaPaths.end())
   {
     return {};
   }
 
-  return config.mediaSetBase / mediumIt->second / file->getPath().relative_path();
+  return config.mediaSetBase / mediumIt->second / file->path().relative_path();
 }
 
 }

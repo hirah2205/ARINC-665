@@ -22,10 +22,10 @@ LoadInfo::LoadInfo(
   const string &headerFilename,
   const uint8_t memberSequenceNumber,
   const ThwIds &targetHardwareIds):
-  partNumber( partNumber),
-  headerFilename( headerFilename),
-  memberSequenceNumber( memberSequenceNumber),
-  targetHardwareIds( targetHardwareIds)
+  partNumberValue( partNumber),
+  headerFilenameValue( headerFilename),
+  memberSequenceNumberValue( memberSequenceNumber),
+  targetHardwareIdsValue( targetHardwareIds)
 {
 }
 
@@ -34,70 +34,70 @@ LoadInfo::LoadInfo(
   string &&headerFilename,
   const uint8_t memberSequenceNumber,
   ThwIds &&targetHardwareIds):
-  partNumber( partNumber),
-  headerFilename( headerFilename),
-  memberSequenceNumber( memberSequenceNumber),
-  targetHardwareIds( targetHardwareIds)
+  partNumberValue( partNumber),
+  headerFilenameValue( headerFilename),
+  memberSequenceNumberValue( memberSequenceNumber),
+  targetHardwareIdsValue( targetHardwareIds)
 {
 }
 
-LoadInfo::string LoadInfo::getPartNumber() const
+LoadInfo::string LoadInfo::partNumber() const
 {
-  return partNumber;
+  return partNumberValue;
 }
 
-void LoadInfo::setPartNumber( const string &partNumber)
+void LoadInfo::partNumber( const string &partNumber)
 {
-  this->partNumber = partNumber;
+  partNumberValue = partNumber;
 }
 
-LoadInfo::string LoadInfo::getHeaderFilename() const
+LoadInfo::string LoadInfo::headerFilename() const
 {
-  return headerFilename;
+  return headerFilenameValue;
 }
 
-void LoadInfo::setHeaderFilename( const string &headerFilename)
+void LoadInfo::headerFilename( const string &headerFilename)
 {
-  this->headerFilename = headerFilename;
+  headerFilenameValue = headerFilename;
 }
 
-uint8_t LoadInfo::getMemberSequenceNumber() const
+uint8_t LoadInfo::memberSequenceNumber() const
 {
-  return memberSequenceNumber;
+  return memberSequenceNumberValue;
 }
 
-void LoadInfo::setMemberSequenceNumber( const uint8_t memberSequenceNumber)
+void LoadInfo::memberSequenceNumber( const uint8_t memberSequenceNumber)
 {
-  this->memberSequenceNumber = memberSequenceNumber;
+  memberSequenceNumberValue = memberSequenceNumber;
 }
 
-const LoadInfo::ThwIds& LoadInfo::getTargetHardwareIds() const
+const LoadInfo::ThwIds& LoadInfo::targetHardwareIds() const
 {
-  return targetHardwareIds;
+  return targetHardwareIdsValue;
 }
 
-LoadInfo::ThwIds& LoadInfo::getTargetHardwareIds()
+LoadInfo::ThwIds& LoadInfo::targetHardwareIds()
 {
-  return targetHardwareIds;
+  return targetHardwareIdsValue;
 }
 
 void LoadInfo::addTargetHardwareId( const string &targetHardwareId)
 {
-  targetHardwareIds.push_back( targetHardwareId);
+  targetHardwareIdsValue.push_back( targetHardwareId);
 }
 
 void LoadInfo::addTargetHardwareId( string &&targetHardwareId)
 {
-  targetHardwareIds.push_back( targetHardwareId);
+  targetHardwareIdsValue.push_back( targetHardwareId);
 }
 
 bool LoadInfo::operator ==( const LoadInfo &other) const
 {
   return
-    (partNumber == other.getPartNumber()) &&
-    (headerFilename == other.getHeaderFilename()) &&
-    (memberSequenceNumber == other.getMemberSequenceNumber()) &&
-    (targetHardwareIds == other.getTargetHardwareIds());
+    (partNumberValue == other.partNumber()) &&
+    (headerFilenameValue == other.headerFilename()) &&
+    (memberSequenceNumberValue == other.memberSequenceNumber()) &&
+    (targetHardwareIdsValue == other.targetHardwareIds());
 }
 
 bool LoadInfo::operator !=( const LoadInfo &other) const
@@ -108,8 +108,8 @@ bool LoadInfo::operator !=( const LoadInfo &other) const
 bool LoadInfo::operator ==( const FileInfo &other) const
 {
   return
-    (headerFilename == other.getFilename()) &&
-    (memberSequenceNumber == other.getMemberSequenceNumber());
+    (headerFilenameValue == other.filename()) &&
+    (memberSequenceNumberValue == other.memberSequenceNumber());
 }
 
 bool LoadInfo::operator !=( const FileInfo &other) const

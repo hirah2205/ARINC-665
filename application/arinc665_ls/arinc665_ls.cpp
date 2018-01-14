@@ -58,32 +58,32 @@ void list_luh( const boost::filesystem::path &luhFile)
 
     LoadHeaderFile load( data);
 
-    std::cout << "part number: "<< load.getPartNumber() << std::endl;
+    std::cout << "part number: "<< load.partNumber() << std::endl;
 
-    for ( auto const &targetHardwareId : load.getTargetHardwareIds())
+    for ( auto const &targetHardwareId : load.targetHardwareIds())
     {
       std::cout << "target HW id: " << targetHardwareId << std::endl;
     }
 
-    for ( auto const &dataFile : load.getDataFiles())
+    for ( auto const &dataFile : load.dataFiles())
     {
       std::cout <<
-        "data file name: " << dataFile.getFilename() << "\n" <<
-        "data file PN:   " << dataFile.getPartNumber() << "\n" <<
-        "data file size: " << std::dec << dataFile.getLength() << "\n" <<
-        "data file CRC:  " << std::hex << dataFile.getCrc() << std::endl << std::endl;
+        "data file name: " << dataFile.filename() << "\n" <<
+        "data file PN:   " << dataFile.partNumber() << "\n" <<
+        "data file size: " << std::dec << dataFile.length() << "\n" <<
+        "data file CRC:  " << std::hex << dataFile.crc() << std::endl << std::endl;
     }
 
-    for ( auto const &supportFile : load.getSupportFiles())
+    for ( auto const &supportFile : load.supportFiles())
     {
       std::cout <<
-        "support file name: " << supportFile.getFilename() << "\n" <<
-        "support file PN:   " << supportFile.getPartNumber() << "\n" <<
-        "support file size: " << std::dec << supportFile.getLength() << "\n" <<
-        "support file CRC:  " << std::hex << supportFile.getCrc() << std::endl << std::endl;
+        "support file name: " << supportFile.filename() << "\n" <<
+        "support file PN:   " << supportFile.partNumber() << "\n" <<
+        "support file size: " << std::dec << supportFile.length() << "\n" <<
+        "support file CRC:  " << std::hex << supportFile.crc() << std::endl << std::endl;
     }
 
-    std::cout << "load crc " << std::hex << load.getLoadCrc() << std::endl;
+    std::cout << "load crc " << std::hex << load.loadCrc() << std::endl;
 
     std::cout << "header file crc " << std::hex << load.crc() << std::endl << std::endl;
   }
@@ -126,20 +126,20 @@ void list_loads_lum( const boost::filesystem::path &loadsLum)
 
     LoadListFile loadList( data);
 
-    std::cout << "media set pn: " << loadList.getMediaSetPn() << std::endl;
+    std::cout << "media set pn: " << loadList.mediaSetPn() << std::endl;
 
-    std::cout << "media seq no: " << std::dec << (int)loadList.getMediaSequenceNumber() << std::endl;
+    std::cout << "media seq no: " << std::dec << (int)loadList.mediaSequenceNumber() << std::endl;
 
-    std::cout << "no of media set members: " << (int)loadList.getNumberOfMediaSetMembers() << std::endl;
+    std::cout << "no of media set members: " << (int)loadList.numberOfMediaSetMembers() << std::endl;
 
-    for ( const auto & load : loadList.getLoadsInfo())
+    for ( const auto & load : loadList.loadsInfo())
     {
       std::cout <<
-        "load load pn: "                << load.getPartNumber() << "\n" <<
-        "load header file name: "       << load.getHeaderFilename() << "\n" <<
-        "load member sequence number: " << std::dec << load.getMemberSequenceNumber() << std::endl << std::endl;
+        "load load pn: "                << load.partNumber() << "\n" <<
+        "load header file name: "       << load.headerFilename() << "\n" <<
+        "load member sequence number: " << std::dec << load.memberSequenceNumber() << std::endl << std::endl;
 
-      for ( const auto & thw : load.getTargetHardwareIds())
+      for ( const auto & thw : load.targetHardwareIds())
       {
         std::cout << "target hardware id: " << thw << std::endl << std::endl;
       }
@@ -186,18 +186,18 @@ void list_files_lum( const boost::filesystem::path &filesLum)
 
     FileListFile fileList( data);
 
-    std::cout << "media set pn: " << fileList.getMediaSetPn() << std::endl;
+    std::cout << "media set pn: " << fileList.mediaSetPn() << std::endl;
 
-    std::cout << "media seq no: " << (int)fileList.getMediaSequenceNumber() << std::endl;
+    std::cout << "media seq no: " << (int)fileList.mediaSequenceNumber() << std::endl;
 
-    std::cout << "no of media set members: " << std::dec << (int)fileList.getNumberOfMediaSetMembers() << std::endl;
+    std::cout << "no of media set members: " << std::dec << (int)fileList.numberOfMediaSetMembers() << std::endl;
 
-    for ( const auto & file : fileList.getFilesInfo())
+    for ( const auto & file : fileList.filesInfo())
     {
-      std::cout << "file file name: " << file.getFilename() << "\n";
-      std::cout << "file path name: " << file.getPathName() << "\n";
-      std::cout << "file member sequence number: " << std::dec << file.getMemberSequenceNumber() << "\n";
-      std::cout << "file crc: " << std::hex << file.getCrc() << "\n\n";
+      std::cout << "file file name: " << file.filename() << "\n";
+      std::cout << "file path name: " << file.pathName() << "\n";
+      std::cout << "file member sequence number: " << std::dec << file.memberSequenceNumber() << "\n";
+      std::cout << "file crc: " << std::hex << file.crc() << "\n\n";
     }
 
     std::cout << "file list crc: " << std::hex << (int)fileList.crc() << std::endl;

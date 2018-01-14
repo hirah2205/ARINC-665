@@ -25,85 +25,129 @@ namespace Arinc665 {
 namespace Media {
 
 MediaSet::MediaSet( const string &name):
-  name( name)
+  nameValue( name)
 {
 }
 
-ConstMediaSetPtr MediaSet::getMediaSet() const
+MediaSet::MediaSet( string &&name):
+  nameValue( std::move( name))
+{
+}
+
+ConstMediaSetPtr MediaSet::mediaSet() const
 {
   return shared_from_this();
 }
 
-MediaSetPtr MediaSet::getMediaSet()
+MediaSetPtr MediaSet::mediaSet()
 {
   return shared_from_this();
 }
 
-MediaSet::Type MediaSet::getType() const
+MediaSet::Type MediaSet::type() const
 {
   return Type::MediaSet;
 }
 
-const MediaSet::string& MediaSet::getName() const
+const MediaSet::string& MediaSet::name() const
 {
-  return name;
+  return nameValue;
 }
 
-void MediaSet::setName( const string& name)
+void MediaSet::name( const string &name)
 {
-  this->name = name;
+  nameValue = name;
 }
 
-MediaSet::string MediaSet::getPartNumber() const
+void MediaSet::name( string &&name)
 {
-  return partNumber;
+  nameValue = std::move( name);
 }
 
-void MediaSet::setPartNumber( const string &partNumber)
+MediaSet::string MediaSet::partNumber() const
 {
-  this->partNumber = partNumber;
+  return partNumberValue;
 }
 
-uint8_t MediaSet::getNumberOfMedia() const
+void MediaSet::partNumber( const string &partNumber)
 {
-  assert( media.size() <= std::numeric_limits< uint8_t>::max());
-
-  return static_cast< uint8_t>( media.size());
+  partNumberValue = partNumber;
 }
 
-ConstMedia MediaSet::getMedia() const
+void MediaSet::partNumber( string &&partNumber)
 {
-  return ConstMedia( media.begin(), media.end());
+  partNumberValue = std::move( partNumber);
 }
 
-Media MediaSet::getMedia()
+uint8_t MediaSet::numberOfMedia() const
 {
-  return media;
+  assert( mediaValue.size() <= std::numeric_limits< uint8_t>::max());
+
+  return static_cast< uint8_t>( mediaValue.size());
 }
 
-ConstMediumPtr MediaSet::getMedium( const uint8_t index) const
+void MediaSet::numberOfMedia(
+  const uint8_t numberOfMedia,
+  const bool deleteFiles)
+{
+  if (numberOfMedia == mediaValue.size())
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
+      "No actions needed";
+    return;
+  }
+
+  if (numberOfMedia > mediaValue.size())
+  {
+    // Add media
+    while (numberOfMedia > mediaValue.size())
+    {
+      addMedium();
+    }
+  }
+  else
+  {
+    // remove media
+    while (numberOfMedia < mediaValue.size())
+    {
+      removeMedium( deleteFiles);
+    }
+  }
+}
+
+ConstMedia MediaSet::media() const
+{
+  return ConstMedia( mediaValue.begin(), mediaValue.end());
+}
+
+Media MediaSet::media()
+{
+  return mediaValue;
+}
+
+ConstMediumPtr MediaSet::medium( const uint8_t index) const
 {
   if (0 == index)
   {
     return {};
   }
 
-  return media.at( index - 1);
+  return mediaValue.at( index - 1);
 }
 
-MediumPtr MediaSet::getMedium( const uint8_t index)
+MediumPtr MediaSet::medium( const uint8_t index)
 {
   if (0 == index)
   {
     return {};
   }
 
-  return media.at( index - 1);
+  return mediaValue.at( index - 1);
 }
 
 MediumPtr MediaSet::addMedium()
 {
-  if (media.size() >= 255)
+  if (mediaValue.size() >= 255)
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning) <<
       "Maximum number of media reached";
@@ -112,9 +156,9 @@ MediumPtr MediaSet::addMedium()
 
   MediumPtr medium( std::make_shared< Medium>(
     shared_from_this(),
-    static_cast< uint8_t>( media.size() + 1)));
+    static_cast< uint8_t>( mediaValue.size() + 1)));
 
-  media.push_back( medium);
+  mediaValue.push_back( medium);
 
   return medium;
 }
@@ -125,81 +169,51 @@ void MediaSet::removeMedium( const bool deleteFiles [[gnu::unused]])
   BOOST_THROW_EXCEPTION( std::exception());
 }
 
-void MediaSet::setNumberOfMedia(
-  const uint8_t numberOfMedia,
-  const bool deleteFiles)
-{
-  if (numberOfMedia == media.size())
-  {
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-      "No actions needed";
-    return;
-  }
-
-  if (numberOfMedia > media.size())
-  {
-    // Add media
-    while (numberOfMedia > media.size())
-    {
-      addMedium();
-    }
-  }
-  else
-  {
-    // remove media
-    while (numberOfMedia < media.size())
-    {
-      removeMedium( deleteFiles);
-    }
-  }
-}
-
-size_t MediaSet::getNumberOfFiles() const
+size_t MediaSet::numberOfFiles() const
 {
   size_t numberOfFiles = 0;
 
-  for ( const auto &medium : media)
+  for ( const auto &medium : mediaValue)
   {
-    numberOfFiles += medium->getNumberOfFiles( true);
+    numberOfFiles += medium->numberOfFiles( true);
   }
 
   return numberOfFiles;
 }
 
-ConstFiles MediaSet::getFiles() const
+ConstFiles MediaSet::files() const
 {
   ConstFiles files;
 
   // Iterate over all medias and add their files to a complete list.
-  for ( const auto &medium : media)
+  for ( const auto &medium : mediaValue)
   {
-    ConstFiles mediaFiles =
-      static_cast< const Medium&>(*medium).getFiles( true);
+    auto mediaFiles{ static_cast< const Medium&>(*medium).files( true)};
     files.insert( files.end(), mediaFiles.begin(), mediaFiles.end());
   }
 
   return files;
 }
 
-Files MediaSet::getFiles()
+Files MediaSet::files()
 {
   Files files;
 
   // Iterate over all medias and add their files to a complete list.
-  for ( auto &medium : media)
+  for ( auto &medium : mediaValue)
   {
-    Files mediaFiles = medium->getFiles( true);
+    auto mediaFiles{ medium->files( true)};
     files.insert( files.end(), mediaFiles.begin(), mediaFiles.end());
   }
 
   return files;
 }
 
-ConstFilePtr MediaSet::getFile( const string &filename) const
+ConstFilePtr MediaSet::file( const string &filename) const
 {
-  for ( auto const &medium : media)
+  for ( auto const &medium : mediaValue)
   {
-    ConstFilePtr file( medium->getFile( filename, true));
+    ConstFilePtr file( medium->file( filename, true));
 
     if ( file)
     {
@@ -210,11 +224,11 @@ ConstFilePtr MediaSet::getFile( const string &filename) const
   return ConstFilePtr();
 }
 
-FilePtr MediaSet::getFile( const string &filename)
+FilePtr MediaSet::file( const string &filename)
 {
-  for ( auto &medium : media)
+  for ( auto &medium : mediaValue)
   {
-    FilePtr file( medium->getFile( filename, true));
+    FilePtr file( medium->file( filename, true));
 
     if ( file)
     {
@@ -225,50 +239,49 @@ FilePtr MediaSet::getFile( const string &filename)
   return FilePtr();
 }
 
-size_t MediaSet::getNumberOfLoads() const
+size_t MediaSet::numberOfLoads() const
 {
   size_t numberOfLoads = 0;
 
-  for ( const auto &medium : media)
+  for ( const auto &medium : mediaValue)
   {
-    numberOfLoads += medium->getNumberOfLoads( true);
+    numberOfLoads += medium->numberOfLoads( true);
   }
 
   return numberOfLoads;
 }
 
-ConstLoads MediaSet::getLoads() const
+ConstLoads MediaSet::loads() const
 {
   ConstLoads loads;
 
-  for (const auto & medium : media)
+  for (const auto & medium : mediaValue)
   {
-    ConstLoads mediaLoads(
-      static_cast< const Medium&>(*medium).getLoads( true));
+    ConstLoads mediaLoads( static_cast< const Medium&>(*medium).loads( true));
     loads.insert( loads.end(), mediaLoads.begin(), mediaLoads.end());
   }
 
   return loads;
 }
 
-Loads MediaSet::getLoads()
+Loads MediaSet::loads()
 {
   Loads loads;
 
-  for (const auto & medium : media)
+  for (const auto & medium : mediaValue)
   {
-    Loads mediaLoads =medium->getLoads( true);
+    Loads mediaLoads{ medium->loads( true)};
     loads.insert( loads.end(), mediaLoads.begin(), mediaLoads.end());
   }
 
   return loads;
 }
 
-ConstLoadPtr MediaSet::getLoad( const string &filename) const
+ConstLoadPtr MediaSet::load( const string &filename) const
 {
-  for (const auto & medium : media)
+  for (const auto & medium : mediaValue)
   {
-    auto load( medium->getLoad( filename, true));
+    auto load( medium->load( filename, true));
 
     if (load)
     {
@@ -279,11 +292,11 @@ ConstLoadPtr MediaSet::getLoad( const string &filename) const
   return {};
 }
 
-LoadPtr MediaSet::getLoad( const string &filename)
+LoadPtr MediaSet::load( const string &filename)
 {
-  for (const auto & medium : media)
+  for (const auto & medium : mediaValue)
   {
-    auto load( medium->getLoad( filename, true));
+    auto load( medium->load( filename, true));
 
     if (load)
     {
@@ -294,50 +307,50 @@ LoadPtr MediaSet::getLoad( const string &filename)
   return {};
 }
 
-size_t MediaSet::getNumberOfBatches() const
+size_t MediaSet::numberOfBatches() const
 {
   size_t numberOfBatches = 0;
 
-  for ( const auto &medium : media)
+  for ( const auto &medium : mediaValue)
   {
-    numberOfBatches += medium->getNumberOfBatches( true);
+    numberOfBatches += medium->numberOfBatches( true);
   }
 
   return numberOfBatches;
 }
 
-ConstBatches MediaSet::getBatches() const
+ConstBatches MediaSet::batches() const
 {
   ConstBatches batches;
 
-  for (const auto & medium : media)
+  for (const auto & medium : mediaValue)
   {
     auto mediaBatches(
-      std::const_pointer_cast< const Medium>(medium)->getBatches( true));
+      std::const_pointer_cast< const Medium>(medium)->batches( true));
     batches.insert( batches.end(), mediaBatches.begin(), mediaBatches.end());
   }
 
   return batches;
 }
 
-Batches MediaSet::getBatches()
+Batches MediaSet::batches()
 {
   Batches batches;
 
-  for (const auto & medium : media)
+  for (const auto & medium : mediaValue)
   {
-    auto mediaBatches( medium->getBatches( true));
+    auto mediaBatches( medium->batches( true));
     batches.insert( batches.end(), mediaBatches.begin(), mediaBatches.end());
   }
 
   return batches;
 }
 
-ConstBatchPtr MediaSet::getBatch( const string &filename) const
+ConstBatchPtr MediaSet::batch( const string &filename) const
 {
-  for (const auto & medium : media)
+  for (const auto & medium : mediaValue)
   {
-    auto batch( medium->getBatch( filename, true));
+    auto batch( medium->batch( filename, true));
 
     if (batch)
     {
@@ -348,11 +361,11 @@ ConstBatchPtr MediaSet::getBatch( const string &filename) const
   return {};
 }
 
-BatchPtr MediaSet::getBatch( const string &filename)
+BatchPtr MediaSet::batch( const string &filename)
 {
-  for (const auto & medium : media)
+  for (const auto & medium : mediaValue)
   {
-    auto batch( medium->getBatch( filename, true));
+    auto batch( medium->batch( filename, true));
 
     if (batch)
     {

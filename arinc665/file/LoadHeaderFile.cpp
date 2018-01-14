@@ -20,7 +20,7 @@ namespace File {
 
 LoadHeaderFile::LoadHeaderFile( Arinc665Version version) :
   Arinc665File( FileType::LoadUploadHeader, version, 6U),
-  loadCrc( 0)
+  loadCrcValue( 0)
 {
 }
 
@@ -38,108 +38,118 @@ LoadHeaderFile& LoadHeaderFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
-LoadHeaderFile::string LoadHeaderFile::getPartNumber() const
+LoadHeaderFile::string LoadHeaderFile::partNumber() const
 {
-  return partNumber;
+  return partNumberValue;
 }
 
-void LoadHeaderFile::setPartNumber( const string &partNumber)
+void LoadHeaderFile::partNumber( const string &partNumber)
 {
-  this->partNumber = partNumber;
+  partNumberValue = partNumber;
+}
+
+void LoadHeaderFile::partNumber( string &&partNumber)
+{
+  partNumberValue = std::move( partNumber);
 }
 
 const LoadHeaderFile::TargetHardwareIds&
-LoadHeaderFile::getTargetHardwareIds() const
+LoadHeaderFile::targetHardwareIds() const
 {
-  return targetHardwareIds;
+  return targetHardwareIdsValue;
 }
 
-LoadHeaderFile::TargetHardwareIds& LoadHeaderFile::getTargetHardwareIds()
+LoadHeaderFile::TargetHardwareIds& LoadHeaderFile::targetHardwareIds()
 {
-  return targetHardwareIds;
+  return targetHardwareIdsValue;
 }
 
-void LoadHeaderFile::setTargetHardwareIds(
+void LoadHeaderFile::targetHardwareIds(
   const TargetHardwareIds &targetHardwareIds)
 {
-  this->targetHardwareIds = targetHardwareIds;
+  targetHardwareIdsValue = targetHardwareIds;
 }
 
-void LoadHeaderFile::setTargetHardwareIds(
+void LoadHeaderFile::targetHardwareIds(
   TargetHardwareIds &&targetHardwareIds)
 {
-  this->targetHardwareIds = targetHardwareIds;
+  targetHardwareIdsValue = std::move( targetHardwareIds);
 }
 
 void LoadHeaderFile::addTargetHardwareId(
   const LoadHeaderFile::string &targetHardwareId)
 {
-  targetHardwareIds.push_back( targetHardwareId);
+  targetHardwareIdsValue.push_back( targetHardwareId);
 }
 
-void LoadHeaderFile::addTargetHardwareId( string targetHardwareId)
+void LoadHeaderFile::addTargetHardwareId( string &&targetHardwareId)
 {
-  targetHardwareIds.push_back( targetHardwareId);
+  targetHardwareIdsValue.push_back( std::move( targetHardwareId));
 }
 
-const LoadFilesInfo& LoadHeaderFile::getDataFiles() const
+const LoadFilesInfo& LoadHeaderFile::dataFiles() const
 {
-  return dataFilesInfo;
+  return dataFilesValue;
 }
 
-LoadFilesInfo& LoadHeaderFile::getDataFiles()
+LoadFilesInfo& LoadHeaderFile::dataFiles()
 {
-  return dataFilesInfo;
+  return dataFilesValue;
 }
 
 void LoadHeaderFile::addDataFile( const LoadFileInfo &dataFileInfo)
 {
-  dataFilesInfo.push_back( dataFileInfo);
+  dataFilesValue.push_back( dataFileInfo);
 }
 
 void LoadHeaderFile::addDataFile( LoadFileInfo &&dataFileInfo)
 {
-  dataFilesInfo.push_back( dataFileInfo);
+  dataFilesValue.push_back( std::move( dataFileInfo));
 }
 
-const LoadFilesInfo& LoadHeaderFile::getSupportFiles() const
+const LoadFilesInfo& LoadHeaderFile::supportFiles() const
 {
-  return supportFilesInfo;
+  return supportFilesValue;
 }
 
-LoadFilesInfo& LoadHeaderFile::getSupportFiles()
+LoadFilesInfo& LoadHeaderFile::supportFiles()
 {
-  return supportFilesInfo;
+  return supportFilesValue;
 }
 
 void LoadHeaderFile::addSupportFile( const LoadFileInfo &supportFileInfo)
 {
-  supportFilesInfo.push_back( supportFileInfo);
+  supportFilesValue.push_back( supportFileInfo);
 }
 
 void LoadHeaderFile::addSupportFile( LoadFileInfo &&supportFileInfo)
 {
-  supportFilesInfo.push_back( supportFileInfo);
+  supportFilesValue.push_back( std::move( supportFileInfo));
 }
 
-const LoadHeaderFile::UserDefinedData& LoadHeaderFile::getUserDefinedData() const
+const LoadHeaderFile::UserDefinedData& LoadHeaderFile::userDefinedData() const
 {
-  return userDefinedData;
+  return userDefinedDataValue;
 }
 
-void LoadHeaderFile::setUserDefinedData( const UserDefinedData &userDefinedData)
+void LoadHeaderFile::userDefinedData( const UserDefinedData &userDefinedData)
 {
-  this->userDefinedData = userDefinedData;
+  userDefinedDataValue = userDefinedData;
 }
 
-uint32_t LoadHeaderFile::getLoadCrc() const
+void LoadHeaderFile::userDefinedData( UserDefinedData &&userDefinedData)
 {
-  return loadCrc;
+  userDefinedDataValue = std::move( userDefinedData);
 }
 
-void LoadHeaderFile::setLoadCrc( const uint32_t loadCrc)
+uint32_t LoadHeaderFile::loadCrc() const
 {
-  this->loadCrc = loadCrc;
+  return loadCrcValue;
+}
+
+void LoadHeaderFile::loadCrc( const uint32_t loadCrc)
+{
+  loadCrcValue = loadCrc;
 }
 
 RawFile LoadHeaderFile::encode() const
@@ -151,16 +161,16 @@ RawFile LoadHeaderFile::encode() const
     sizeof( uint32_t));     // load CRC
 
 
-  auto rawLoadPn( encodeString( getPartNumber()));
+  auto rawLoadPn( encodeString( partNumber()));
   assert( rawLoadPn.size() % 2 == 0);
 
-  auto rawThwIdsList( encodeStringList( getTargetHardwareIds()));
+  auto rawThwIdsList( encodeStringList( targetHardwareIds()));
   assert( rawThwIdsList.size() % 2 == 0);
 
-  auto rawDataFiles( encodeFileList( getDataFiles()));
+  auto rawDataFiles( encodeFileList( dataFiles()));
   assert( rawDataFiles.size() % 2 == 0);
 
-  auto rawSupportFiles( encodeFileList( getSupportFiles()));
+  auto rawSupportFiles( encodeFileList( supportFiles()));
   assert( rawSupportFiles.size() % 2 == 0);
 
   auto it( rawFile.begin() + BaseHeaderOffset);
@@ -182,14 +192,14 @@ RawFile LoadHeaderFile::encode() const
 
   // support files list pointer (only if support files are present)
   uint32_t supportFileListPtr =
-    getSupportFiles().empty() ?
+    supportFiles().empty() ?
       (0) :
       (dataFileListPtr + (rawDataFiles.size() / 2));
   it = setInt< uint32_t>( it, supportFileListPtr);
 
   // user defined data pointer
   uint32_t userDefinedDataPtr =
-    userDefinedData.empty() ? 0 : supportFileListPtr + (rawSupportFiles.size() / 2);
+    userDefinedDataValue.empty() ? 0 : supportFileListPtr + (rawSupportFiles.size() / 2);
   it = setInt< uint32_t>( it, userDefinedDataPtr);
   //! @todo if support files is omitted completely (ARINC 6653-3) - pointer to
   //! user defined data calculation must be corrected.
@@ -212,17 +222,17 @@ RawFile LoadHeaderFile::encode() const
   it = rawFile.insert( it, rawSupportFiles.begin(), rawSupportFiles.end());
   it += rawSupportFiles.size();
 
-  if (!userDefinedData.empty())
+  if (!userDefinedDataValue.empty())
   {
-    assert( userDefinedData.size() % 2 == 0);
-    rawFile.insert( it, userDefinedData.begin(), userDefinedData.end());
+    assert( userDefinedDataValue.size() % 2 == 0);
+    rawFile.insert( it, userDefinedDataValue.begin(), userDefinedDataValue.end());
   }
 
   // set header and crc
   insertHeader( rawFile);
 
   // load CRC
-  setInt< uint32_t>( rawFile.end() - 4U, loadCrc);
+  setInt< uint32_t>( rawFile.end() - 4U, loadCrcValue);
 
   return rawFile;
 }
@@ -249,32 +259,32 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
 
   // load part number
   it = rawFile.begin() + loadPartNumberPtr * 2;
-  it = decodeString( it, partNumber);
+  it = decodeString( it, partNumberValue);
 
   // target hardware id list
   it = rawFile.begin() + targetHardwareIdListPtr * 2;
-  it = decodeStringList( it, targetHardwareIds);
+  it = decodeStringList( it, targetHardwareIdsValue);
 
   // data file list
-  dataFilesInfo = decodeFileList( rawFile, dataFileListPtr * 2);
+  dataFilesValue = decodeFileList( rawFile, dataFileListPtr * 2);
 
   // support file list
   if ( 0 != supportFileListPtr)
   {
-    supportFilesInfo = decodeFileList( rawFile, supportFileListPtr * 2);
+    supportFilesValue = decodeFileList( rawFile, supportFileListPtr * 2);
   }
 
   // user defined data
   if ( 0 != userDefinedDataPtr)
   {
     it = rawFile.begin() + userDefinedDataPtr * 2;
-    userDefinedData.assign( it, rawFile.end() - 6U);
+    userDefinedDataValue.assign( it, rawFile.end() - 6U);
   }
 
   // file crc decoded and checked within base class
 
   // load crc
-  getInt< uint32_t>( rawFile.end() - 4U, loadCrc);
+  getInt< uint32_t>( rawFile.end() - 4U, loadCrcValue);
 }
 
 RawFile LoadHeaderFile::encodeFileList( const LoadFilesInfo &loadFilesInfo) const
@@ -289,9 +299,9 @@ RawFile LoadHeaderFile::encodeFileList( const LoadFilesInfo &loadFilesInfo) cons
   for (auto const &fileInfo : loadFilesInfo)
   {
     ++fileCounter;
-    auto const rawFilename( encodeString( fileInfo.getFilename()));
+    auto const rawFilename( encodeString( fileInfo.filename()));
     assert( rawFilename.size() % 2 == 0);
-    auto const rawPartNumber( encodeString( fileInfo.getPartNumber()));
+    auto const rawPartNumber( encodeString( fileInfo.partNumber()));
     assert( rawPartNumber.size() % 2 == 0);
 
     RawFile rawFileInfo(
@@ -317,10 +327,10 @@ RawFile LoadHeaderFile::encodeFileList( const LoadFilesInfo &loadFilesInfo) cons
     fileInfoIt = std::copy( rawPartNumber.begin(), rawPartNumber.end(), fileInfoIt);
 
     // file length
-    fileInfoIt = setInt< uint32_t>( fileInfoIt, fileInfo.getLength());
+    fileInfoIt = setInt< uint32_t>( fileInfoIt, fileInfo.length());
 
     // CRC
-    fileInfoIt = setInt< uint16_t>( fileInfoIt, fileInfo.getCrc());
+    fileInfoIt = setInt< uint16_t>( fileInfoIt, fileInfo.crc());
 
     // add file info to files info
     rawFileList.insert( rawFileList.end(), rawFileInfo.begin(), rawFileInfo.end());

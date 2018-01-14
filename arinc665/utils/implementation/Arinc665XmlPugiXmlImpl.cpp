@@ -71,7 +71,7 @@ Media::MediaSetPtr Arinc665XmlPugiXmlImpl::loadMediaSet(
   std::string partNumber( mediaSetNode.attribute( "PartNumber").as_string());
 
   auto mediaSet( std::make_shared< Media::MediaSet>( name));
-  mediaSet->setPartNumber( partNumber);
+  mediaSet->partNumber( partNumber);
 
   // iterate over media
   for ( pugi::xml_node mediumNode : mediaSetNode.children( "Medium"))
@@ -105,16 +105,16 @@ void Arinc665XmlPugiXmlImpl::saveMediaSet(
   const FilePathMapping &filePathMapping,
   pugi::xml_node &mediaSetNode)
 {
-  mediaSetNode.append_attribute( "Name") = mediaSet->getName().c_str();
-  mediaSetNode.append_attribute( "PartNumber") = mediaSet->getPartNumber().c_str();
+  mediaSetNode.append_attribute( "Name") = mediaSet->name().c_str();
+  mediaSetNode.append_attribute( "PartNumber") = mediaSet->partNumber().c_str();
 
   // iterate over media
   for (
     unsigned int mediumNumber = 1;
-    mediumNumber <= mediaSet->getNumberOfMedia();
+    mediumNumber <= mediaSet->numberOfMedia();
     ++mediumNumber)
   {
-    Media::ConstMediumPtr medium( mediaSet->getMedium( mediumNumber));
+    Media::ConstMediumPtr medium( mediaSet->medium( mediumNumber));
 
     pugi::xml_node mediumNode( mediaSetNode.append_child( "Medium"));
 
@@ -125,7 +125,7 @@ void Arinc665XmlPugiXmlImpl::saveMediaSet(
   auto loadsNode( mediaSetNode.append_child( "Loads"));
 
   // iterate over loads
-  for ( auto load : mediaSet->getLoads())
+  for ( auto load : mediaSet->loads())
   {
     pugi::xml_node loadNode( loadsNode.append_child( "Load"));
 
@@ -136,7 +136,7 @@ void Arinc665XmlPugiXmlImpl::saveMediaSet(
   auto batchesNode( mediaSetNode.append_child( "Batches"));
 
   // iterate over batches
-  for ( auto batch : mediaSet->getBatches())
+  for ( auto batch : mediaSet->batches())
   {
     pugi::xml_node batchNode( batchesNode.append_child( "Batch"));
 
@@ -187,7 +187,7 @@ void Arinc665XmlPugiXmlImpl::saveDirectory(
   const FilePathMapping &filePathMapping,
   pugi::xml_node &directoryNode)
 {
-  directoryNode.append_attribute( "Name") = directory->getName().c_str();
+  directoryNode.append_attribute( "Name") = directory->name().c_str();
 
   saveEntries( directory, filePathMapping, directoryNode);
 }
@@ -250,7 +250,7 @@ void Arinc665XmlPugiXmlImpl::loadEntries(
     // set part number if attribute is present
     if (!partNumber.empty())
     {
-      file->setPartNumber( partNumber);
+      file->partNumber( partNumber);
     }
 
     // set source path if attribute is present
@@ -267,7 +267,7 @@ void Arinc665XmlPugiXmlImpl::saveEntries(
   pugi::xml_node &currentNode)
 {
   // iterate over sub-directories within container
-  for (auto dirEntry : current->getSubDirectories())
+  for (auto dirEntry : current->subDirectories())
   {
     auto directoryNode( currentNode.append_child( "Directory"));
 
@@ -275,12 +275,12 @@ void Arinc665XmlPugiXmlImpl::saveEntries(
   }
 
   // iterate over files within container
-  for (auto fileEntry : current->getFiles( false))
+  for (auto fileEntry : current->files( false))
   {
     pugi::xml_node fileNode( currentNode.append_child(
       pugi::xml_node_type::node_element));
 
-    switch (fileEntry->getFileType())
+    switch (fileEntry->fileType())
     {
       case Media::BaseFile::FileType::RegularFile:
         fileNode.set_name( "File");
@@ -299,12 +299,12 @@ void Arinc665XmlPugiXmlImpl::saveEntries(
     }
 
     // Add name attribute
-    fileNode.append_attribute( "Name") = fileEntry->getName().c_str();
+    fileNode.append_attribute( "Name") = fileEntry->name().c_str();
 
     // Add part number attribute (optional)
-    if (!fileEntry->getPartNumber().empty())
+    if (!fileEntry->partNumber().empty())
     {
-      fileNode.append_attribute( "PartNumber") = fileEntry->getPartNumber().c_str();
+      fileNode.append_attribute( "PartNumber") = fileEntry->partNumber().c_str();
     }
 
     // Add source path attribute (optional)
@@ -329,7 +329,7 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
       AdditionalInfo( "NameRef attribute missing or empty"));
   }
 
-  auto load( mediaSet->getLoad( nameRef));
+  auto load( mediaSet->load( nameRef));
 
   if (!load)
   {
@@ -356,7 +356,7 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
     thwIds.push_back( thwId);
   }
 
-  load->setTargetHardwareIds( thwIds);
+  load->targetHardwareIds( std::move( thwIds));
 
   // iterate over data files
   for ( pugi::xml_node dataFileNode : loadNode.children( "DataFile"))
@@ -370,7 +370,7 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
         AdditionalInfo( "NameRef attribute missing or empty"));
     }
 
-    auto file( mediaSet->getFile( fileNameRef));
+    auto file( mediaSet->file( fileNameRef));
 
     if (!file)
     {
@@ -394,7 +394,7 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
         AdditionalInfo( "NameRef attribute missing or empty"));
     }
 
-    auto file( mediaSet->getFile( fileNameRef));
+    auto file( mediaSet->file( fileNameRef));
 
     if (!file)
     {
@@ -411,11 +411,11 @@ void Arinc665XmlPugiXmlImpl::saveLoad(
   Media::ConstLoadPtr load,
   pugi::xml_node &loadNode)
 {
-  loadNode.append_attribute( "NameRef") = load->getName().c_str();
+  loadNode.append_attribute( "NameRef") = load->name().c_str();
 
 
   // iterate over target hardware id
-  for (auto targetHardware : load->getTargetHardwareIds())
+  for (auto targetHardware : load->targetHardwareIds())
   {
     auto targetHardwareNode( loadNode.append_child( "TargetHardware"));
     targetHardwareNode.append_attribute( "ThwId") =
@@ -423,19 +423,19 @@ void Arinc665XmlPugiXmlImpl::saveLoad(
   }
 
   // iterate over data files
-  for (auto dataFile : load->getDataFiles())
+  for (auto dataFile : load->dataFiles())
   {
     auto dataFileNode( loadNode.append_child( "DataFile"));
     dataFileNode.append_attribute( "NameRef") =
-      dataFile.lock()->getName().c_str();
+      dataFile.lock()->name().c_str();
   }
 
   // iterate over support files
-  for (auto supportFile : load->getSupportFiles())
+  for (auto supportFile : load->supportFiles())
   {
     auto supportFileNode( loadNode.append_child( "SupportFile"));
     supportFileNode.append_attribute( "NameRef") =
-      supportFile.lock()->getName().c_str();
+      supportFile.lock()->name().c_str();
   }
 }
 
@@ -453,7 +453,7 @@ void Arinc665XmlPugiXmlImpl::loadBatch(
       AdditionalInfo( "NameRef attribute missing or empty"));
   }
 
-  auto batch( mediaSet->getBatch( nameRef));
+  auto batch( mediaSet->batch( nameRef));
 
   if (!batch)
   {
@@ -462,7 +462,7 @@ void Arinc665XmlPugiXmlImpl::loadBatch(
       AdditionalInfo( "NameRef attribute does not reference batch"));
   }
 
-  batch->setComment( comment);
+  batch->comment( std::move( comment));
 
   // iterate over targets
   for ( pugi::xml_node targetNode : batchNode.children( "Target"))
@@ -483,7 +483,7 @@ void Arinc665XmlPugiXmlImpl::loadBatch(
           AdditionalInfo( "NameRef attribute missing or empty"));
       }
 
-      auto load( mediaSet->getLoad( loadNameRef));
+      auto load( mediaSet->load( loadNameRef));
 
       if (!load)
       {
@@ -504,10 +504,10 @@ void Arinc665XmlPugiXmlImpl::saveBatch(
   Media::ConstBatchPtr batch,
   pugi::xml_node &batchNode)
 {
-  batchNode.append_attribute( "NameRef") = batch->getName().c_str();
+  batchNode.append_attribute( "NameRef") = batch->name().c_str();
 
   // Iterate over batch information
-  for ( auto target : batch->getTargets())
+  for ( auto target : batch->targets())
   {
     auto targetNode( batchNode.append_child( "Target"));
 
@@ -518,7 +518,7 @@ void Arinc665XmlPugiXmlImpl::saveBatch(
     {
       auto loadNode( targetNode.append_child( "Load"));
 
-      loadNode.append_attribute( "NameRef")= load.lock()->getName().c_str();
+      loadNode.append_attribute( "NameRef")= load.lock()->name().c_str();
     }
   }
 }

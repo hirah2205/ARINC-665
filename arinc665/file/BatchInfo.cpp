@@ -93,8 +93,8 @@ bool BatchInfo::operator !=( const BatchInfo &other) const
 bool BatchInfo::operator ==( const FileInfo &other) const
 {
   return
-    (filename == other.getFilename()) &&
-    (memberSequenceNumber == other.getMemberSequenceNumber());
+    (filename == other.filename()) &&
+    (memberSequenceNumber == other.memberSequenceNumber());
 }
 
 bool BatchInfo::operator !=( const FileInfo &other) const

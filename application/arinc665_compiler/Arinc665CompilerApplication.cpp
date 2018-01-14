@@ -196,7 +196,7 @@ void Arinc665CompilerApplication::createMedium(
 {
   BOOST_LOG_FUNCTION();
 
-  auto mediumPath( getMediumPath( medium->getMediumNumber()));
+  auto mediumPath( getMediumPath( medium->mediumNumber()));
 
   BOOST_LOG_TRIVIAL( severity_level::info) << "Create medium directory " <<
     mediumPath;
@@ -210,8 +210,7 @@ void Arinc665CompilerApplication::createDirectory(
   BOOST_LOG_FUNCTION();
 
   auto directoryPath(
-    getMediumPath( directory->getMedium()->getMediumNumber()) /
-    directory->getPath());
+    getMediumPath( directory->medium()->mediumNumber()) / directory->path());
 
   BOOST_LOG_TRIVIAL( severity_level::info) << "Create directory " <<
     directoryPath;
@@ -232,12 +231,11 @@ void Arinc665CompilerApplication::createFile(
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
       AdditionalInfo( "file mapping not found") <<
-      boost::errinfo_file_name( file->getName()));
+      boost::errinfo_file_name( file->name()));
   }
 
   auto filePath(
-    getMediumPath( file->getMedium()->getMediumNumber()) /
-    file->getPath());
+    getMediumPath( file->medium()->mediumNumber()) / file->path());
 
   BOOST_LOG_TRIVIAL( severity_level::info) << "Copy file " << filePath;
 

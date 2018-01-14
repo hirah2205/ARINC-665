@@ -70,6 +70,15 @@ class LoadHeaderFile: public Arinc665File
       const UserDefinedData &userDefinedData,
       uint32_t loadCrc);
 
+    LoadHeaderFile(
+      Arinc665Version version,
+      string &&partNumber,
+      TargetHardwareIds &&targetHardwareIds,
+      LoadFilesInfo &&dataFilesInfo,
+      LoadFilesInfo &&supportFilesInfo,
+      UserDefinedData &&userDefinedData,
+      uint32_t loadCrc);
+
     /**
      * @brief Creates a load header file from the given raw data.
      *
@@ -79,14 +88,14 @@ class LoadHeaderFile: public Arinc665File
     LoadHeaderFile( const RawFile &rawFile);
 
     //! @copydoc Arinc665File::operator=
-    virtual LoadHeaderFile& operator=( const RawFile &rawFile) override;
+    virtual LoadHeaderFile& operator=( const RawFile &rawFile) final;
 
     /**
      * @brief Returns the part number of the load header file.
      *
      * @return The part number of the load header file.
      **/
-    string getPartNumber() const;
+    string partNumber() const;
 
     /**
      * @brief Updates the part number of the load header file.
@@ -94,27 +103,29 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] partNumber
      *   The new part number.
      **/
-    void setPartNumber( const string &partNumber);
+    void partNumber( const string &partNumber);
+
+    void partNumber( string &&partNumber);
 
     /**
      * @brief Returns the target hardware IDs.
      *
      * @return The target hardware IDs
      **/
-    const TargetHardwareIds& getTargetHardwareIds() const;
+    const TargetHardwareIds& targetHardwareIds() const;
 
     //! @copydoc getTargetHardwareIds() const
-    TargetHardwareIds& getTargetHardwareIds();
+    TargetHardwareIds& targetHardwareIds();
 
     /**
      * @brief Sets the target hardware IDs.
      *
      * @param[in] targetHardwareIds
      **/
-    void setTargetHardwareIds( const TargetHardwareIds &targetHardwareIds);
+    void targetHardwareIds( const TargetHardwareIds &targetHardwareIds);
 
     //! @copydoc setTargetHardwareIds(const TargetHardwareIds&)
-    void setTargetHardwareIds( TargetHardwareIds &&targetHardwareIds);
+    void targetHardwareIds( TargetHardwareIds &&targetHardwareIds);
 
     /**
      * @brief Add target hardware ID.
@@ -125,17 +136,17 @@ class LoadHeaderFile: public Arinc665File
     void addTargetHardwareId( const string &targetHardwareId);
 
     //! @copydoc addTargetHardwareId( const string&)
-    void addTargetHardwareId( string targetHardwareId);
+    void addTargetHardwareId( string &&targetHardwareId);
 
     /**
      * @brief Return the data files information.
      *
      * @return The data files information.
      **/
-    const LoadFilesInfo& getDataFiles() const;
+    const LoadFilesInfo& dataFiles() const;
 
     //! @copydoc getDataFiles() const
-    LoadFilesInfo& getDataFiles();
+    LoadFilesInfo& dataFiles();
 
     /**
      * @brief Add data file.
@@ -153,10 +164,10 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The support files information.
      **/
-    const LoadFilesInfo& getSupportFiles() const;
+    const LoadFilesInfo& supportFiles() const;
 
     //! @copydoc getDataFiles() const
-    LoadFilesInfo& getSupportFiles();
+    LoadFilesInfo& supportFiles();
 
     /**
      * @brief Add support file.
@@ -174,7 +185,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The user defined data.
      **/
-    const UserDefinedData& getUserDefinedData() const;
+    const UserDefinedData& userDefinedData() const;
 
     /**
      * @brief Updates the user defined data.
@@ -182,14 +193,16 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] userDefinedData
      *   The user defined data.
      **/
-    void setUserDefinedData( const UserDefinedData &userDefinedData);
+    void userDefinedData( const UserDefinedData &userDefinedData);
+
+    void userDefinedData( UserDefinedData &&userDefinedData);
 
     /**
      * @brief Returns the load CRC.
      *
      * @return The load CRC
      **/
-    uint32_t getLoadCrc() const;
+    uint32_t loadCrc() const;
 
     /**
      * @brief Updates the load CRC.
@@ -197,11 +210,11 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] loadCrc
      *   The load CRC
      **/
-    void setLoadCrc( uint32_t loadCrc);
+    void loadCrc( uint32_t loadCrc);
 
   private:
     //! @copydoc Arinc665File::encode
-    virtual RawFile encode() const override final;
+    RawFile encode() const final;
 
     /**
      * @brief Decodes the body of the load header file.
@@ -240,17 +253,17 @@ class LoadHeaderFile: public Arinc665File
     LoadFilesInfo decodeFileList( const RawFile &rawFile, std::size_t offset);
 
     //! Part number of the load
-    string partNumber;
+    string partNumberValue;
     //! List of compatible target hardware IDs
-    TargetHardwareIds targetHardwareIds;
+    TargetHardwareIds targetHardwareIdsValue;
     //! List of data files
-    LoadFilesInfo dataFilesInfo;
+    LoadFilesInfo dataFilesValue;
     //! List of Support files
-    LoadFilesInfo supportFilesInfo;
+    LoadFilesInfo supportFilesValue;
     //! User defined data
-    UserDefinedData userDefinedData;
+    UserDefinedData userDefinedDataValue;
     //! CRC of the complete load
-    uint32_t loadCrc;
+    uint32_t loadCrcValue;
 };
 
 }

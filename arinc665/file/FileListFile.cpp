@@ -20,8 +20,8 @@ namespace File {
 
 FileListFile::FileListFile( Arinc665Version version):
   ListFile( FileType::FileList, version),
-  mediaSequenceNumber( 0),
-  numberOfMediaSetMembers( 0)
+  mediaSequenceNumberValue( 0),
+  numberOfMediaSetMembersValue( 0)
 {
 }
 
@@ -39,63 +39,85 @@ FileListFile& FileListFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
-FileListFile::string FileListFile::getMediaSetPn() const
+FileListFile::string FileListFile::mediaSetPn() const
 {
-  return mediaSetPn;
+  return mediaSetPnValue;
 }
 
-void FileListFile::setMediaSetPn( const string &mediaSetPn)
+void FileListFile::mediaSetPn( const string &mediaSetPn)
 {
-  this->mediaSetPn = mediaSetPn;
+  mediaSetPnValue = mediaSetPn;
 }
 
-uint8_t FileListFile::getMediaSequenceNumber() const
+void FileListFile::mediaSetPn( string &&mediaSetPn)
 {
-  return mediaSequenceNumber;
+  mediaSetPnValue = std::move( mediaSetPn);
 }
 
-void FileListFile::setMediaSequenceNumber( const uint8_t mediaSequenceNumber)
+uint8_t FileListFile::mediaSequenceNumber() const
 {
-  this->mediaSequenceNumber = mediaSequenceNumber;
+  return mediaSequenceNumberValue;
 }
 
-uint8_t FileListFile::getNumberOfMediaSetMembers() const
+void FileListFile::mediaSequenceNumber( const uint8_t mediaSequenceNumber)
 {
-  return numberOfMediaSetMembers;
+  mediaSequenceNumberValue = mediaSequenceNumber;
 }
 
-void FileListFile::setNumberOfMediaSetMembers(
+uint8_t FileListFile::numberOfMediaSetMembers() const
+{
+  return numberOfMediaSetMembersValue;
+}
+
+void FileListFile::numberOfMediaSetMembers(
   const uint8_t numberOfMediaSetMembers)
 {
-  this->numberOfMediaSetMembers = numberOfMediaSetMembers;
+  numberOfMediaSetMembersValue = numberOfMediaSetMembers;
 }
 
-size_t FileListFile::getNumberOfFiles() const
+size_t FileListFile::numberOfFiles() const
 {
-  return filesInfo.size();
+  return filesInfoValue.size();
 }
 
-const FilesInfo& FileListFile::getFilesInfo() const
+const FilesInfo& FileListFile::filesInfo() const
 {
-  return filesInfo;
+  return filesInfoValue;
 }
 
-FilesInfo& FileListFile::getFilesInfo()
+FilesInfo& FileListFile::filesInfo()
 {
-  return filesInfo;
+  return filesInfoValue;
 }
 
-FileListFile::FileInfoMap FileListFile::getFileInfosAsMap() const
+FileListFile::FileInfoMap FileListFile::filesInfoAsMap() const
 {
   FileInfoMap fileMap;
 
-  for ( const auto &fileInfo : filesInfo)
+  for ( const auto &fileInfo : filesInfoValue)
   {
     fileMap.insert(
       std::make_pair(
         std::make_pair(
-          fileInfo.getMemberSequenceNumber(),
-          fileInfo.getFilename()),
+          fileInfo.memberSequenceNumber(),
+          fileInfo.filename()),
+        fileInfo));
+  }
+
+  return fileMap;
+}
+
+FileListFile::FileInfoPathMap FileListFile::filesInfoAsPathMap() const
+{
+  FileInfoPathMap fileMap;
+
+  for ( const auto &fileInfo : filesInfoValue)
+  {
+    fileMap.insert(
+      std::make_pair(
+        std::make_pair(
+          fileInfo.memberSequenceNumber(),
+          fileInfo.path()),
         fileInfo));
   }
 
@@ -104,69 +126,52 @@ FileListFile::FileInfoMap FileListFile::getFileInfosAsMap() const
 
 void FileListFile::addFileInfo( const FileInfo &fileInfo)
 {
-  filesInfo.push_back( fileInfo);
+  filesInfoValue.push_back( fileInfo);
 }
 
 void FileListFile::addFileInfo( FileInfo &&fileInfo)
 {
-  filesInfo.push_back( fileInfo);
+  filesInfoValue.push_back( fileInfo);
 }
 
-FileListFile::FileInfoPathMap FileListFile::getFilesInfoAsPathMap() const
+
+const FileListFile::UserDefinedData& FileListFile::userDefinedData() const
 {
-  FileInfoPathMap fileMap;
-
-  for ( const auto &fileInfo : filesInfo)
-  {
-    fileMap.insert(
-      std::make_pair(
-        std::make_pair(
-          fileInfo.getMemberSequenceNumber(),
-          path( fileInfo.getPathName()) / fileInfo.getFilename()),
-        fileInfo));
-  }
-
-  return fileMap;
+  return userDefinedDataValue;
 }
 
-const FileListFile::UserDefinedData& FileListFile::getUserDefinedData() const
+void FileListFile::userDefinedData( const UserDefinedData &userDefinedData)
 {
-  return userDefinedData;
-}
-
-void FileListFile::setUserDefinedData(
-  const UserDefinedData &userDefinedData)
-{
-  this->userDefinedData = userDefinedData;
+  userDefinedDataValue = userDefinedData;
 }
 
 bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
 {
   if (
-    (mediaSetPn != other.getMediaSetPn()) ||
-    (numberOfMediaSetMembers != other.getNumberOfMediaSetMembers()) ||
-    (userDefinedData != other.getUserDefinedData()))
+    (mediaSetPnValue != other.mediaSetPn()) ||
+    (numberOfMediaSetMembersValue != other.numberOfMediaSetMembers()) ||
+    (userDefinedDataValue != other.userDefinedData()))
   {
     return false;
   }
 
-  FilesInfo otherFileList( other.getFilesInfo());
+  const auto &otherFileList( other.filesInfo());
 
-  if (filesInfo.size() != otherFileList.size())
+  if (filesInfoValue.size() != otherFileList.size())
   {
     return false;
   }
 
-  for ( unsigned int i = 0; i < filesInfo.size(); ++i)
+  for ( unsigned int i = 0; i < filesInfoValue.size(); ++i)
   {
     if (
-      (filesInfo[i].getFilename() != otherFileList[i].getFilename()) ||
-      (filesInfo[i].getPathName() != otherFileList[i].getPathName()))
+      (filesInfoValue[i].filename() != otherFileList[i].filename()) ||
+      (filesInfoValue[i].pathName() != otherFileList[i].pathName()))
     {
       return false;
     }
 
-    switch ( getFileType( filesInfo[i].getFilename()))
+    switch ( getFileType( filesInfoValue[i].filename()))
     {
       case FileType::LoadList:
       case FileType::BatchList:
@@ -175,8 +180,8 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
 
       default:
         if (
-          (filesInfo[i].getCrc() != otherFileList[i].getCrc()) ||
-          (filesInfo[i].getMemberSequenceNumber() != otherFileList[i].getMemberSequenceNumber()))
+          (filesInfoValue[i].crc() != otherFileList[i].crc()) ||
+          (filesInfoValue[i].memberSequenceNumber() != otherFileList[i].memberSequenceNumber()))
         {
           return false;
         }
@@ -196,7 +201,7 @@ RawFile FileListFile::encode() const
     2 * sizeof( uint8_t)  + // media sequence number, number of media set members
     sizeof( uint16_t));     // crc
 
-  auto rawMediaSetPn( encodeString( getMediaSetPn()));
+  auto rawMediaSetPn( encodeString( mediaSetPn()));
   assert( rawMediaSetPn.size() % 2 == 0);
   auto rawFilesInfo( encodeFilesInfo());
   assert( rawFilesInfo.size() % 2 == 0);
@@ -215,7 +220,7 @@ RawFile FileListFile::encode() const
 
   // user defined data pointer
   uint32_t userDefinedDataPtr =
-    userDefinedData.empty() ? 0 : fileListPtr + rawFilesInfo.size() / 2;
+    userDefinedDataValue.empty() ? 0 : fileListPtr + rawFilesInfo.size() / 2;
   it = setInt< uint32_t>( it, userDefinedDataPtr);
 
   // media set part number
@@ -223,19 +228,22 @@ RawFile FileListFile::encode() const
   it += rawMediaSetPn.size();
 
   // media sequence number
-  it = setInt< uint8_t>( it, mediaSequenceNumber);
+  it = setInt< uint8_t>( it, mediaSequenceNumberValue);
 
   // number of media set members
-  it = setInt< uint8_t>( it, numberOfMediaSetMembers);
+  it = setInt< uint8_t>( it, numberOfMediaSetMembersValue);
 
   // file list
   it = rawFile.insert( it, rawFilesInfo.begin(), rawFilesInfo.end());
   it += rawFilesInfo.size();
 
-  if (!userDefinedData.empty())
+  if (!userDefinedDataValue.empty())
   {
-    assert( userDefinedData.size() % 2 == 0);
-    rawFile.insert( it, userDefinedData.begin(), userDefinedData.end());
+    assert( userDefinedDataValue.size() % 2 == 0);
+    rawFile.insert(
+      it,
+      userDefinedDataValue.begin(),
+      userDefinedDataValue.end());
   }
 
   // set header and crc
@@ -247,7 +255,7 @@ RawFile FileListFile::encode() const
 void FileListFile::decodeBody( const RawFile &rawFile)
 {
   // set processing start to position after spare
-  RawFile::const_iterator it = rawFile.begin() + BaseHeaderOffset;
+  auto it{ rawFile.begin() + BaseHeaderOffset};
 
   // media information pointer
   uint32_t mediaInformationPtr;
@@ -263,13 +271,13 @@ void FileListFile::decodeBody( const RawFile &rawFile)
 
   // media set part number
   it = rawFile.begin() + mediaInformationPtr * 2;
-  it = decodeString( it, mediaSetPn);
+  it = decodeString( it, mediaSetPnValue);
 
   // media sequence number
-  it = getInt< uint8_t>( it, mediaSequenceNumber);
+  it = getInt< uint8_t>( it, mediaSequenceNumberValue);
 
   // number of media set members
-  it = getInt< uint8_t>( it, numberOfMediaSetMembers);
+  it = getInt< uint8_t>( it, numberOfMediaSetMembersValue);
 
   // file list
   decodeFilesInfo( rawFile, 2 * fileListPtr);
@@ -278,7 +286,7 @@ void FileListFile::decodeBody( const RawFile &rawFile)
   if ( 0 != userDefinedDataPtr)
   {
     it = rawFile.begin() + userDefinedDataPtr * 2;
-    userDefinedData.assign( it, rawFile.end() - 2);
+    userDefinedDataValue.assign( it, rawFile.end() - 2);
   }
 
   // file crc decoded and checked within base class
@@ -289,16 +297,16 @@ RawFile FileListFile::encodeFilesInfo() const
   RawFile rawFilesInfo( sizeof( uint16_t));
 
   // number of files
-  setInt< uint16_t>( rawFilesInfo.begin(), getNumberOfFiles());
+  setInt< uint16_t>( rawFilesInfo.begin(), numberOfFiles());
 
   // iterate over files
   uint16_t fileCounter( 0);
-  for (auto const &fileInfo : getFilesInfo())
+  for (auto const &fileInfo : filesInfo())
   {
     ++fileCounter;
-    auto const rawFilename( encodeString( fileInfo.getFilename()));
+    auto const rawFilename( encodeString( fileInfo.filename()));
     assert( rawFilename.size() % 2 == 0);
-    auto const rawPathname( encodeString( fileInfo.getPathName()));
+    auto const rawPathname( encodeString( fileInfo.pathName()));
     assert( rawPathname.size() % 2 == 0);
 
     RawFile rawFileInfo(
@@ -313,7 +321,7 @@ RawFile FileListFile::encodeFilesInfo() const
     // next file pointer (is set to 0 for last file)
     fileInfoIt = setInt< uint16_t>(
       fileInfoIt,
-      (fileCounter == getNumberOfFiles()) ?
+      (fileCounter == numberOfFiles()) ?
         (0U) :
         (rawFileInfo.size() / 2));
 
@@ -324,10 +332,10 @@ RawFile FileListFile::encodeFilesInfo() const
     fileInfoIt = std::copy( rawPathname.begin(), rawPathname.end(), fileInfoIt);
 
     // member sequence number
-    fileInfoIt = setInt< uint16_t>( fileInfoIt, fileInfo.getMemberSequenceNumber());
+    fileInfoIt = setInt< uint16_t>( fileInfoIt, fileInfo.memberSequenceNumber());
 
     // crc
-    fileInfoIt = setInt< uint16_t>( fileInfoIt, fileInfo.getCrc());
+    fileInfoIt = setInt< uint16_t>( fileInfoIt, fileInfo.crc());
 
     // add file info to files info
     rawFilesInfo.insert( rawFilesInfo.end(), rawFileInfo.begin(), rawFileInfo.end());
@@ -343,7 +351,7 @@ void FileListFile::decodeFilesInfo(
   auto it( rawFile.begin() + offset);
 
   // clear potentially data
-  filesInfo.clear();
+  filesInfoValue.clear();
 
   // number of files
   uint16_t numberOfFiles;
@@ -379,7 +387,7 @@ void FileListFile::decodeFilesInfo(
     // set it to begin of next file
     it += filePointer * 2;
 
-    filesInfo.emplace_back( filename, pathName, memberSequenceNumber, crc);
+    filesInfoValue.emplace_back( filename, pathName, memberSequenceNumber, crc);
   }
 }
 

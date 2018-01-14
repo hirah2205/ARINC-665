@@ -172,17 +172,17 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
   {
     ++thwCounter;
 
-    auto const rawThwId( encodeString( targetHardwareInfo.getTargetHardwareId()));
+    auto const rawThwId( encodeString( targetHardwareInfo.targetHardwareId()));
     assert( rawThwId.size() % 2 == 0);
 
     RawFile rawLoadsInfo;
     /* iterate over loads */
-    for ( auto const loadInfo : targetHardwareInfo.getLoads())
+    for ( auto const loadInfo : targetHardwareInfo.loads())
     {
-      auto const rawHeaderFilename( encodeString( loadInfo.getHeaderFilename()));
+      auto const rawHeaderFilename( encodeString( loadInfo.headerFilename()));
       assert( rawHeaderFilename.size() % 2 == 0);
 
-      auto const rawPartNumber( encodeString( loadInfo.getPartNumber()));
+      auto const rawPartNumber( encodeString( loadInfo.partNumber()));
       assert( rawPartNumber.size() % 2 == 0);
 
       rawLoadsInfo.insert(
@@ -217,7 +217,7 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
 
     // Number of Loads
     batchTargetInfoIt =
-      setInt< uint16_t>( batchTargetInfoIt, targetHardwareInfo.getLoads().size());
+      setInt< uint16_t>( batchTargetInfoIt, targetHardwareInfo.loads().size());
 
     // Loads list
     batchTargetInfoIt =

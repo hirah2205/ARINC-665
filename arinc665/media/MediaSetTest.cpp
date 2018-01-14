@@ -29,59 +29,59 @@ BOOST_AUTO_TEST_CASE( constructor)
 {
   MediaSet mediaSet( "XXX");
 
-  BOOST_CHECK( mediaSet.getName() == "XXX");
-  BOOST_CHECK( mediaSet.getPartNumber() == "");
-  BOOST_CHECK( mediaSet.getNumberOfMedia() == 0);
-  BOOST_CHECK( mediaSet.getType() == MediaSet::Type::MediaSet);
+  BOOST_CHECK( mediaSet.name() == "XXX");
+  BOOST_CHECK( mediaSet.partNumber() == "");
+  BOOST_CHECK( mediaSet.numberOfMedia() == 0);
+  BOOST_CHECK( mediaSet.type() == MediaSet::Type::MediaSet);
 
   BOOST_CHECK_THROW( mediaSet.shared_from_this(), std::bad_weak_ptr);
 
-  BOOST_CHECK( mediaSet.getNumberOfFiles() == 0);
-  BOOST_CHECK( mediaSet.getFiles().empty());
+  BOOST_CHECK( mediaSet.numberOfFiles() == 0);
+  BOOST_CHECK( mediaSet.files().empty());
 
-  BOOST_CHECK( mediaSet.getNumberOfLoads() == 0);
-  BOOST_CHECK( mediaSet.getLoads().empty());
+  BOOST_CHECK( mediaSet.numberOfLoads() == 0);
+  BOOST_CHECK( mediaSet.loads().empty());
 
-  BOOST_CHECK( mediaSet.getNumberOfBatches() == 0);
-  BOOST_CHECK( mediaSet.getBatches().empty());
+  BOOST_CHECK( mediaSet.numberOfBatches() == 0);
+  BOOST_CHECK( mediaSet.batches().empty());
 }
 
 //! part number test
 BOOST_AUTO_TEST_CASE( partNumber)
 {
   MediaSet mediaSet( "XXX");
-  BOOST_CHECK( mediaSet.getPartNumber() == "");
+  BOOST_CHECK( mediaSet.partNumber() == "");
 
-  mediaSet.setPartNumber( "YYY");
+  mediaSet.partNumber( "YYY");
 
-  BOOST_CHECK( mediaSet.getPartNumber() == "YYY");
+  BOOST_CHECK( mediaSet.partNumber() == "YYY");
 }
 
 //! name test
 BOOST_AUTO_TEST_CASE( name)
 {
   MediaSet mediaSet( "XXX");
-  BOOST_CHECK( mediaSet.getName() == "XXX");
+  BOOST_CHECK( mediaSet.name() == "XXX");
 
-  mediaSet.setName( "YYY");
+  mediaSet.name( "YYY");
 
-  BOOST_CHECK( mediaSet.getName() == "YYY");
+  BOOST_CHECK( mediaSet.name() == "YYY");
 }
 
 //! medium test
 BOOST_AUTO_TEST_CASE( medium)
 {
   MediaSetPtr mediaSet = std::make_shared< MediaSet>( "XXX");
-  BOOST_CHECK( mediaSet->getNumberOfMedia() == 0);
+  BOOST_CHECK( mediaSet->numberOfMedia() == 0);
 
   BOOST_CHECK( mediaSet->addMedium());
-  BOOST_CHECK( mediaSet->getNumberOfMedia() == 1);
+  BOOST_CHECK( mediaSet->numberOfMedia() == 1);
 
   BOOST_CHECK( mediaSet->addMedium());
-  BOOST_CHECK( mediaSet->getNumberOfMedia() == 2);
+  BOOST_CHECK( mediaSet->numberOfMedia() == 2);
 
-  BOOST_CHECK_NO_THROW( mediaSet->setNumberOfMedia( 5, false));
-  BOOST_CHECK( mediaSet->getNumberOfMedia() == 5);
+  BOOST_CHECK_NO_THROW( mediaSet->numberOfMedia( 5, false));
+  BOOST_CHECK( mediaSet->numberOfMedia() == 5);
 
 #if 0
   BOOST_CHECK_NO_THROW( mediaSet->setNumberOfMedia( 1, false));

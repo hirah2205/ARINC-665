@@ -36,7 +36,7 @@ class ListFile: public Arinc665File
      *
      * @return The Media Set Part Number.
      **/
-    virtual string getMediaSetPn() const = 0;
+    virtual string mediaSetPn() const = 0;
 
     /**
      * @brief Sets the Media Part Number, where the files belongs to.
@@ -44,32 +44,40 @@ class ListFile: public Arinc665File
      * @param[in] mediaSetPn
      *   The Media Set part Number.
      **/
-    virtual void setMediaSetPn( const string &mediaSetPn) = 0;
+    virtual void mediaSetPn( const string &mediaSetPn) = 0;
+
+    //! @copydoc mediaSetPn(const string&)
+    virtual void mediaSetPn( string &&mediaSetPn) = 0;
 
     /**
+     * @brief Returns the media sequence number.
      *
-     * @return
+     * @return The media sequence number
      **/
-    virtual uint8_t getMediaSequenceNumber() const = 0;
+    virtual uint8_t mediaSequenceNumber() const = 0;
 
     /**
+     * @brief Updates the media sequence number
      *
-     * @param mediaSequenceNumber
+     * @param[in] mediaSequenceNumber
+     *   New media sequence number
      **/
-    virtual void setMediaSequenceNumber( uint8_t mediaSequenceNumber) = 0;
+    virtual void mediaSequenceNumber( uint8_t mediaSequenceNumber) = 0;
 
     /**
+     * @brief Returns the number of media set members.
      *
-     * @return
+     * @return The number of media set members.
      **/
-    virtual uint8_t getNumberOfMediaSetMembers() const = 0;
+    virtual uint8_t numberOfMediaSetMembers() const = 0;
 
     /**
+     * @brief Updates the number of media set members.
      *
-     * @param numberOfMediaSetMembers
+     * @param[in] numberOfMediaSetMembers
+     *   The new number of media set members
      **/
-    virtual void setNumberOfMediaSetMembers(
-      uint8_t numberOfMediaSetMembers) = 0;
+    virtual void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) = 0;
 
   protected:
     //! @copydoc Arinc665File::Arinc665File(FileType,Arinc665Version,std::size_t)

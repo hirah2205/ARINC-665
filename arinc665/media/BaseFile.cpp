@@ -19,99 +19,99 @@
 namespace Arinc665 {
 namespace Media {
 
-ConstMediaSetPtr BaseFile::getMediaSet() const
+ConstMediaSetPtr BaseFile::mediaSet() const
 {
-  auto parent( getParent());
+  auto parentPtr( parent());
 
-  if (!parent)
+  if (!parentPtr)
   {
     return {};
   }
 
-  return parent->getMediaSet();
+  return parentPtr->mediaSet();
 }
 
-MediaSetPtr BaseFile::getMediaSet()
+MediaSetPtr BaseFile::mediaSet()
 {
-  auto parent( getParent());
+  auto parentPtr( parent());
 
-  if (!parent)
+  if (!parentPtr)
   {
     return {};
   }
 
-  return parent->getMediaSet();
+  return parentPtr->mediaSet();
 }
 
-BaseFile::Type BaseFile::getType() const
+BaseFile::Type BaseFile::type() const
 {
   return Type::File;
 }
 
-const BaseFile::string& BaseFile::getName() const
+const BaseFile::string& BaseFile::name() const
 {
-  return name;
+  return nameValue;
 }
 
-BaseFile::string BaseFile::getPartNumber() const
+BaseFile::string BaseFile::partNumber() const
 {
-  return partNumber;
+  return partNumberValue;
 }
 
-void BaseFile::setPartNumber( const string &partNumber)
+void BaseFile::partNumber( const string &partNumber)
 {
-  this->partNumber = partNumber;
+  partNumberValue = partNumber;
 }
 
-ContainerEntityPtr BaseFile::getParent()
+ContainerEntityPtr BaseFile::parent()
 {
-  return parent.lock();
+  return parentValue.lock();
 }
 
-ConstContainerEntityPtr BaseFile::getParent() const
+ConstContainerEntityPtr BaseFile::parent() const
 {
-  return parent.lock();
+  return parentValue.lock();
 }
 
-ConstMediumPtr BaseFile::getMedium() const
+ConstMediumPtr BaseFile::medium() const
 {
-  auto parent( getParent());
+  auto parentPtr( parent());
 
-  if (!parent)
+  if (!parentPtr)
   {
     return {};
   }
 
-  return parent->getMedium();
+  return parentPtr->medium();
 }
 
-MediumPtr BaseFile::getMedium()
+MediumPtr BaseFile::medium()
 {
-  auto parent( getParent());
+  auto parentPtr( parent());
 
-  if (!parent)
+  if (!parentPtr)
   {
     return {};
   }
 
-  return parent->getMedium();
+  return parentPtr->medium();
 }
 
-BaseFile::path BaseFile::getPath() const
+BaseFile::fpath BaseFile::path() const
 {
-  auto parentPtr( parent.lock());
+  auto parentPtr( parent());
 
   if ( parentPtr)
   {
-    return parentPtr->getPath() / name;
+    return {};
   }
 
-  return {};
+  return parentPtr->path() / nameValue;
 }
 
 BaseFile::BaseFile( ContainerEntityPtr parent, const string &name) :
-  parent( parent),
-  name( name)
+  parentValue( parent),
+  nameValue( name)
 {
   if (!parent)
   {
@@ -121,8 +121,8 @@ BaseFile::BaseFile( ContainerEntityPtr parent, const string &name) :
 }
 
 BaseFile::BaseFile( ContainerEntityPtr parent, string &&name):
-  parent( parent),
-  name( std::move( name))
+  parentValue( parent),
+  nameValue( std::move( name))
 {
   if (!parent)
   {
@@ -131,7 +131,7 @@ BaseFile::BaseFile( ContainerEntityPtr parent, string &&name):
   }
 }
 
-void BaseFile::setParent( ContainerEntityPtr parent)
+void BaseFile::parent( ContainerEntityPtr parent)
 {
   if (!parent)
   {
@@ -139,12 +139,12 @@ void BaseFile::setParent( ContainerEntityPtr parent)
       AdditionalInfo( "parent must be valid"));
   }
 
-  if (this->parent.lock() == parent)
+  if (this->parentValue.lock() == parent)
   {
     return;
   }
 
-  this->parent = parent;
+  parentValue = parent;
 }
 
 }

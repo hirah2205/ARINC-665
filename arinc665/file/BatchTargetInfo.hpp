@@ -52,7 +52,7 @@ class BatchTargetInfo
      *
      * @return The target hardware id
      **/
-    string getTargetHardwareId() const;
+    string targetHardwareId() const;
 
     /**
      * @brief Updates the target hardware ID for this loads info.
@@ -60,21 +60,23 @@ class BatchTargetInfo
      * @param[in] targetHardwareId
      *   The target hardware ID (THW ID)
      **/
-    void setTargetHardwareId( const string &targetHardwareId);
+    void targetHardwareId( const string &targetHardwareId);
+
+    void targetHardwareId( string &&targetHardwareId);
 
     /**
      * @brief Returns the list of available loads for this target hardware.
      *
      * @return The list of loads (const version).
      **/
-    const BatchLoadsInfo& getLoads() const;
+    const BatchLoadsInfo& loads() const;
 
     /**
      * @brief Returns the list of available loads for this target hardware.
      *
      * @return The list of loads (modifiable version).
      **/
-    BatchLoadsInfo& getLoads();
+    BatchLoadsInfo& loads();
 
     /**
      * @brief Replaces the stored load information.
@@ -82,10 +84,10 @@ class BatchTargetInfo
      * @param[in] loads
      *   Batch loads information.
      **/
-    void setLoads( const BatchLoadsInfo &loads);
+    void loads( const BatchLoadsInfo &loads);
 
     //! @copydoc setLoads(const BatchLoadsInfo&)
-    void setLoads( BatchLoadsInfo &&loads);
+    void loads( BatchLoadsInfo &&loads);
 
     /**
      * @brief Adds a load.
@@ -100,9 +102,9 @@ class BatchTargetInfo
 
   private:
     //! The target hardware id
-    string targetHardwareId;
+    string targetHardwareIdValue;
     //! The list of loads
-    BatchLoadsInfo loads;
+    BatchLoadsInfo loadsValue;
 };
 
 }

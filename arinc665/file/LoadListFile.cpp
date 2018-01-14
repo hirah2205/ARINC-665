@@ -22,8 +22,8 @@ namespace File {
 
 LoadListFile::LoadListFile( Arinc665Version version):
   ListFile( FileType::LoadList, version),
-  mediaSequenceNumber( 0),
-  numberOfMediaSetMembers( 0)
+  mediaSequenceNumberValue( 0),
+  numberOfMediaSetMembersValue( 0)
 {
 }
 
@@ -41,62 +41,67 @@ LoadListFile& LoadListFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
-LoadListFile::string LoadListFile::getMediaSetPn() const
+LoadListFile::string LoadListFile::mediaSetPn() const
 {
-  return mediaSetPn;
+  return mediaSetPnValue;
 }
 
-void LoadListFile::setMediaSetPn( const string &mediaSetPn)
+void LoadListFile::mediaSetPn( const string &mediaSetPn)
 {
-  this->mediaSetPn = mediaSetPn;
+  mediaSetPnValue = mediaSetPn;
 }
 
-uint8_t LoadListFile::getMediaSequenceNumber() const
+void LoadListFile::mediaSetPn( string &&mediaSetPn)
 {
-  return mediaSequenceNumber;
+  mediaSetPnValue = std::move( mediaSetPn);
 }
 
-void LoadListFile::setMediaSequenceNumber( const uint8_t mediaSequenceNumber)
+uint8_t LoadListFile::mediaSequenceNumber() const
 {
-  this->mediaSequenceNumber = mediaSequenceNumber;
+  return mediaSequenceNumberValue;
 }
 
-uint8_t LoadListFile::getNumberOfMediaSetMembers() const
+void LoadListFile::mediaSequenceNumber( const uint8_t mediaSequenceNumber)
 {
-  return numberOfMediaSetMembers;
+  mediaSequenceNumberValue = mediaSequenceNumber;
 }
 
-void LoadListFile::setNumberOfMediaSetMembers(
+uint8_t LoadListFile::numberOfMediaSetMembers() const
+{
+  return numberOfMediaSetMembersValue;
+}
+
+void LoadListFile::numberOfMediaSetMembers(
   const uint8_t numberOfMediaSetMembers)
 {
-  this->numberOfMediaSetMembers = numberOfMediaSetMembers;
+  numberOfMediaSetMembersValue = numberOfMediaSetMembers;
 }
 
-size_t LoadListFile::getNumberOfLoads() const
+size_t LoadListFile::numberOfLoads() const
 {
-  return loadsInfo.size();
+  return loadsInfoValue.size();
 }
 
-const LoadsInfo& LoadListFile::getLoadsInfo() const
+const LoadsInfo& LoadListFile::loadsInfo() const
 {
-  return loadsInfo;
+  return loadsInfoValue;
 }
 
-LoadsInfo& LoadListFile::getLoadsInfo()
+LoadsInfo& LoadListFile::loadsInfo()
 {
-  return loadsInfo;
+  return loadsInfoValue;
 }
 
-LoadListFile::LoadsInfoMap LoadListFile::getLoadsInfoAsMap() const
+LoadListFile::LoadsInfoMap LoadListFile::loadsInfoAsMap() const
 {
   LoadsInfoMap loads;
 
-  for (const auto & loadInfo : loadsInfo)
+  for (const auto & loadInfo : loadsInfoValue)
   {
     loads.insert( std::make_pair(
       std::make_pair(
-        loadInfo.getMemberSequenceNumber(),
-        loadInfo.getHeaderFilename()),
+        loadInfo.memberSequenceNumber(),
+        loadInfo.headerFilename()),
       loadInfo));
   }
 
@@ -105,41 +110,41 @@ LoadListFile::LoadsInfoMap LoadListFile::getLoadsInfoAsMap() const
 
 void LoadListFile::addLoadInfo( const LoadInfo &loadInfo)
 {
-  loadsInfo.push_back( loadInfo);
+  loadsInfoValue.push_back( loadInfo);
 }
 
 void LoadListFile::addLoadInfo( LoadInfo &&loadInfo)
 {
-  loadsInfo.push_back( loadInfo);
+  loadsInfoValue.push_back( loadInfo);
 }
 
-const LoadListFile::UserDefinedData& LoadListFile::getUserDefinedData() const
+const LoadListFile::UserDefinedData& LoadListFile::userDefinedData() const
 {
-  return userDefinedData;
+  return userDefinedDataValue;
 }
 
-void LoadListFile::setUserDefinedData( const UserDefinedData &userDefinedData)
+void LoadListFile::userDefinedData( const UserDefinedData &userDefinedData)
 {
   BOOST_LOG_FUNCTION();
 
-  this->userDefinedData = userDefinedData;
+  userDefinedDataValue = userDefinedData;
 
   if (userDefinedData.size() % 2 != 0)
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning) <<
       "User defined data must be 2-byte aligned. - extending range";
 
-    this->userDefinedData.push_back(0);
+    userDefinedDataValue.push_back(0);
   }
 }
 
 bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
 {
   return
-    (mediaSetPn == other.getMediaSetPn()) &&
-    (numberOfMediaSetMembers == other.getNumberOfMediaSetMembers()) &&
-    (loadsInfo == other.getLoadsInfo()) &&
-    (userDefinedData == other.getUserDefinedData());
+    (mediaSetPnValue == other.mediaSetPn()) &&
+    (numberOfMediaSetMembersValue == other.numberOfMediaSetMembers()) &&
+    (loadsInfoValue == other.loadsInfo()) &&
+    (userDefinedDataValue == other.userDefinedData());
 }
 
 RawFile LoadListFile::encode() const
@@ -150,7 +155,7 @@ RawFile LoadListFile::encode() const
     2 * sizeof( uint8_t)  + // media sequence number, number of media set members
     sizeof( uint16_t));     // crc
 
-  auto rawMediaSetPn( encodeString( getMediaSetPn()));
+  auto rawMediaSetPn( encodeString( mediaSetPn()));
   assert( rawMediaSetPn.size() % 2 == 0);
 
   auto rawLoadsInfo( encodeLoadsInfo());
@@ -170,7 +175,7 @@ RawFile LoadListFile::encode() const
 
   // user defined data pointer
   uint32_t userDefinedDataPtr =
-    userDefinedData.empty() ? 0 : fileListPtr + rawLoadsInfo.size() / 2;
+    userDefinedDataValue.empty() ? 0 : fileListPtr + rawLoadsInfo.size() / 2;
   it = setInt< uint32_t>( it, userDefinedDataPtr);
 
   // media set part number
@@ -178,20 +183,23 @@ RawFile LoadListFile::encode() const
   it += rawMediaSetPn.size();
 
   // media sequence number
-  it = setInt< uint8_t>( it, mediaSequenceNumber);
+  it = setInt< uint8_t>( it, mediaSequenceNumberValue);
 
   // number of media set members
-  it = setInt< uint8_t>( it, numberOfMediaSetMembers);
+  it = setInt< uint8_t>( it, numberOfMediaSetMembersValue);
 
   // loads list
   it = rawFile.insert( it, rawLoadsInfo.begin(), rawLoadsInfo.end());
   it += rawFile.size();
 
   // user defined data
-  if (!userDefinedData.empty())
+  if (!userDefinedDataValue.empty())
   {
-    assert( userDefinedData.size() % 2 == 0);
-    rawFile.insert( it, userDefinedData.begin(), userDefinedData.end());
+    assert( userDefinedDataValue.size() % 2 == 0);
+    rawFile.insert(
+      it,
+      userDefinedDataValue.begin(),
+      userDefinedDataValue.end());
   }
 
   // set header and CRC
@@ -216,13 +224,13 @@ void LoadListFile::decodeBody( const RawFile &rawFile)
 
   // media set part number
   it = rawFile.begin() + mediaInformationPtr * 2;
-  it = decodeString( it, mediaSetPn);
+  it = decodeString( it, mediaSetPnValue);
 
   // media sequence number
-  it = getInt< uint8_t>( it, mediaSequenceNumber);
+  it = getInt< uint8_t>( it, mediaSequenceNumberValue);
 
   // number of media set members
-  it = getInt< uint8_t>( it, numberOfMediaSetMembers);
+  it = getInt< uint8_t>( it, numberOfMediaSetMembersValue);
 
   // load list
   decodeLoadsInfo( rawFile, 2 * loadListPtr);
@@ -231,7 +239,7 @@ void LoadListFile::decodeBody( const RawFile &rawFile)
   if ( 0 != userDefinedDataPtr)
   {
     it = rawFile.begin() + userDefinedDataPtr * 2;
-    userDefinedData.assign( it, rawFile.end() - 2);
+    userDefinedDataValue.assign( it, rawFile.end() - 2);
   }
 
   // file crc decoded and checked within base class
@@ -242,20 +250,20 @@ RawFile LoadListFile::encodeLoadsInfo() const
   RawFile rawLoadsInfo( sizeof( uint16_t));
 
   // number of loads
-  setInt< uint16_t>( rawLoadsInfo.begin(), getNumberOfLoads());
+  setInt< uint16_t>( rawLoadsInfo.begin(), numberOfLoads());
 
   // iterate over files
   uint16_t loadCounter( 0);
-  for (auto const &loadInfo : getLoadsInfo())
+  for (auto const &loadInfo : loadsInfo())
   {
     ++loadCounter;
-    auto const rawPartNumber( encodeString( loadInfo.getPartNumber()));
+    auto const rawPartNumber( encodeString( loadInfo.partNumber()));
     assert( rawPartNumber.size() % 2 == 0);
 
-    auto const rawHeaderFilename( encodeString( loadInfo.getHeaderFilename()));
+    auto const rawHeaderFilename( encodeString( loadInfo.headerFilename()));
     assert( rawHeaderFilename.size() % 2 == 0);
 
-    auto const rawThwIds( encodeStringList( loadInfo.getTargetHardwareIds()));
+    auto const rawThwIds( encodeStringList( loadInfo.targetHardwareIds()));
     assert( rawThwIds.size() % 2 == 0);
 
     RawFile rawLoadInfo(
@@ -270,7 +278,7 @@ RawFile LoadListFile::encodeLoadsInfo() const
     // next load pointer (is set to 0 for last load)
     loadInfoIt = setInt< uint16_t>(
       loadInfoIt,
-      (loadCounter == getNumberOfLoads()) ?
+      (loadCounter == numberOfLoads()) ?
         (0U) :
         (rawLoadInfo.size() / 2));
 
@@ -281,7 +289,7 @@ RawFile LoadListFile::encodeLoadsInfo() const
     loadInfoIt = std::copy( rawHeaderFilename.begin(), rawHeaderFilename.end(), loadInfoIt);
 
     // member sequence number
-    loadInfoIt = setInt< uint16_t>( loadInfoIt, loadInfo.getMemberSequenceNumber());
+    loadInfoIt = setInt< uint16_t>( loadInfoIt, loadInfo.memberSequenceNumber());
 
     // THW IDs list
     loadInfoIt = std::copy( rawThwIds.begin(), rawThwIds.end(), loadInfoIt);
@@ -335,7 +343,7 @@ void LoadListFile::decodeLoadsInfo(
     LoadInfo::ThwIds thwIds;
     listIt = Arinc665File::decodeStringList( listIt, thwIds);
 
-    loadsInfo.emplace_back(
+    loadsInfoValue.emplace_back(
       std::move( partNumber),
         std::move( headerFilename),
       static_cast< uint8_t>( fileMemberSequenceNumber),

@@ -59,11 +59,11 @@ QModelIndex MediaSetModelModel::index(
   Arinc665::Media::Base * parentBase(
     static_cast< Arinc665::Media::Base *>( parent.internalPointer()));
 
-  switch (parentBase->getType())
+  switch (parentBase->type())
   {
     case Arinc665::Media::Base::Type::MediaSet:
       // all children of media set are medias
-      return createIndex( row, column, mediaSet->getMedium( row).get());
+      return createIndex( row, column, mediaSet->medium( row).get());
 
     case Arinc665::Media::Base::Type::Medium:
     case Arinc665::Media::Base::Type::Directory:
@@ -71,16 +71,16 @@ QModelIndex MediaSetModelModel::index(
       Arinc665::Media::ContainerEntity * parentContainer(
         static_cast< Arinc665::Media::ContainerEntity*>( parent.internalPointer()));
 
-      if (static_cast< size_t>( row) < parentContainer->getNumberOfSubDirectories())
+      if (static_cast< size_t>( row) < parentContainer->numberOfSubDirectories())
       {
-        auto dirIt( std::next( parentContainer->getSubDirectories().begin(), row));
+        auto dirIt( std::next( parentContainer->subDirectories().begin(), row));
 
         return createIndex( row, column, dirIt->get());
       }
 
       auto fileIt( std::next(
-        parentContainer->getFiles( false).begin(),
-        row - parentContainer->getNumberOfSubDirectories()));
+        parentContainer->files( false).begin(),
+        row - parentContainer->numberOfSubDirectories()));
 
       return createIndex( row, column, fileIt->get());
     }
@@ -112,7 +112,7 @@ QModelIndex MediaSetModelModel::parent( const QModelIndex &index) const
   Arinc665::Media::Base * base(
     static_cast< Arinc665::Media::Base *>( index.internalPointer()));
 
-  switch (base->getType())
+  switch (base->type())
   {
     case Arinc665::Media::Base::Type::MediaSet:
       // The media set has no parent
@@ -120,33 +120,33 @@ QModelIndex MediaSetModelModel::parent( const QModelIndex &index) const
 
     case Arinc665::Media::Base::Type::Medium:
      // A medium has the single media set as parent.
-      return createIndex( 0, 0, base->getMediaSet().get());
+      return createIndex( 0, 0, base->mediaSet().get());
 
     case Arinc665::Media::Base::Type::Directory:
     {
       Arinc665::Media::ContainerEntity * dir(
         dynamic_cast< Arinc665::Media::ContainerEntity *>( base));
 
-      if (Arinc665::Media::Base::Type::Medium == dir->getParent()->getType())
+      if (Arinc665::Media::Base::Type::Medium == dir->parent()->type())
       {
         auto parent( std::dynamic_pointer_cast< Arinc665::Media::Medium>(
-          dir->getParent()));
+          dir->parent()));
 
         // the medium number is the row index
-        return createIndex( parent->getMediumNumber()-1, 0, parent.get());
+        return createIndex( parent->mediumNumber()-1, 0, parent.get());
       }
 
-      auto grandParent( dir->getParent()->getParent());
+      auto grandParent( dir->parent()->parent());
 
-      auto subDirs( grandParent->getSubDirectories());
+      auto subDirs( grandParent->subDirectories());
 
       // find index of parent in grand-parent list
-      auto pos( std::find( subDirs.begin(), subDirs.end(), dir->getParent()));
+      auto pos( std::find( subDirs.begin(), subDirs.end(), dir->parent()));
 
       return createIndex(
         std::distance( subDirs.begin(), pos),
         0,
-        dir->getParent().get());
+        dir->parent().get());
     }
 
     case Arinc665::Media::Base::Type::File:
@@ -154,26 +154,26 @@ QModelIndex MediaSetModelModel::parent( const QModelIndex &index) const
       Arinc665::Media::BaseFile * file(
         dynamic_cast< Arinc665::Media::BaseFile *>( base));
 
-      if (Arinc665::Media::Base::Type::Medium == file->getParent()->getType())
+      if (Arinc665::Media::Base::Type::Medium == file->parent()->type())
       {
         auto parent( std::dynamic_pointer_cast< Arinc665::Media::Medium>(
-          file->getParent()));
+          file->parent()));
 
         // the medium number is the row index
-         return createIndex( parent->getMediumNumber()-1, 0, parent.get());
+         return createIndex( parent->mediumNumber()-1, 0, parent.get());
       }
 
-      auto grandParent( file->getParent()->getParent());
+      auto grandParent( file->parent()->parent());
 
-      auto subDirs( grandParent->getSubDirectories());
+      auto subDirs( grandParent->subDirectories());
 
       // find index of parent in grand-parent list
-      auto pos( std::find( subDirs.begin(), subDirs.end(), file->getParent()));
+      auto pos( std::find( subDirs.begin(), subDirs.end(), file->parent()));
 
       return createIndex(
         std::distance( subDirs.begin(), pos),
         0,
-        file->getParent().get());
+        file->parent().get());
     }
 
     default:
@@ -199,14 +199,14 @@ bool MediaSetModelModel::hasChildren( const QModelIndex &parent) const
   Arinc665::Media::Base * base(
     static_cast< Arinc665::Media::Base *>( parent.internalPointer()));
 
-  switch (base->getType())
+  switch (base->type())
   {
     case Arinc665::Media::Base::Type::MediaSet:
     {
       // The media set has medias
       Arinc665::Media::MediaSet * mediaSet(
         dynamic_cast< Arinc665::Media::MediaSet *>( base));
-      return (mediaSet->getNumberOfMedia()!=0);
+      return (mediaSet->numberOfMedia()!=0);
     }
 
     case Arinc665::Media::Base::Type::Medium:
@@ -244,14 +244,14 @@ int MediaSetModelModel::rowCount( const QModelIndex &parent) const
   Arinc665::Media::Base * base(
     static_cast< Arinc665::Media::Base *>( parent.internalPointer()));
 
-  switch (base->getType())
+  switch (base->type())
   {
     case Arinc665::Media::Base::Type::MediaSet:
     {
       // The media set has medias
       Arinc665::Media::MediaSet * mediaSet(
         dynamic_cast< Arinc665::Media::MediaSet *>( base));
-      return mediaSet->getNumberOfMedia();
+      return mediaSet->numberOfMedia();
     }
 
     case Arinc665::Media::Base::Type::Medium:
@@ -259,8 +259,8 @@ int MediaSetModelModel::rowCount( const QModelIndex &parent) const
     {
       Arinc665::Media::ContainerEntity * container(
         dynamic_cast< Arinc665::Media::ContainerEntity *>( base));
-      return container->getNumberOfSubDirectories() +
-        container->getNumberOfFiles( false);
+      return container->numberOfSubDirectories() +
+        container->numberOfFiles( false);
     }
 
     case Arinc665::Media::Base::Type::File:
@@ -301,13 +301,13 @@ QVariant MediaSetModelModel::data( const QModelIndex & index, int role) const
   switch (index.column())
   {
     case 0:
-      return QString::fromStdString( base->getName());
+      return QString::fromStdString( base->name());
 
     case 1:
-      return QString::fromStdString( base->getPartNumber());
+      return QString::fromStdString( base->partNumber());
 
     case 2:
-      switch (base->getType())
+      switch (base->type())
       {
         case Arinc665::Media::Base::Type::MediaSet:
           return QString( "Media Set");
@@ -321,7 +321,7 @@ QVariant MediaSetModelModel::data( const QModelIndex & index, int role) const
         case Arinc665::Media::Base::Type::File:
         {
           Arinc665::Media::BaseFile * file = dynamic_cast< Arinc665::Media::BaseFile*>( base);
-          switch (file->getFileType())
+          switch (file->fileType())
           {
             case Arinc665::Media::BaseFile::FileType::RegularFile:
               return QString( "Regular File");

@@ -64,6 +64,14 @@ class FileListFile: public ListFile
       const FilesInfo &filesInfo,
       const UserDefinedData &userDefinedData);
 
+    FileListFile(
+      Arinc665Version version,
+      string &&mediaSetPn,
+      uint8_t mediaSequenceNumber,
+      uint8_t numberOfMediaSetMembers,
+      FilesInfo &&filesInfo,
+      UserDefinedData &&userDefinedData);
+
     /**
      * @brief Creates a file list file from the given raw data.
      *
@@ -73,53 +81,63 @@ class FileListFile: public ListFile
     FileListFile( const RawFile &rawFile);
 
     //! @copydoc ListFile::operator=
-    virtual FileListFile& operator=( const RawFile &rawFile) override;
+    FileListFile& operator=( const RawFile &rawFile) final;
 
-    //! @copydoc ListFile::getMediaSetPn
-    virtual string getMediaSetPn() const override;
+    //! @copydoc ListFile::mediaSetPn
+    string mediaSetPn() const final;
 
-    //! @copydoc ListFile::setMediaSetPn
-    virtual void setMediaSetPn( const string &mediaSetPn) override;
+    //! @copydoc ListFile::mediaSetPn
+    void mediaSetPn( const string &mediaSetPn) final;
 
-    //! @copydoc ListFile::getMediaSequenceNumber
-    virtual uint8_t getMediaSequenceNumber() const override;
+    //! @copydoc ListFile::mediaSetPn
+    void mediaSetPn( string &&mediaSetPn) final;
 
-    //! @copydoc ListFile::setMediaSequenceNumber
-    virtual void setMediaSequenceNumber( uint8_t mediaSequenceNumber) override;
+    //! @copydoc ListFile::mediaSequenceNumber
+    uint8_t mediaSequenceNumber() const final;
 
-    //! @copydoc ListFile::getNumberOfMediaSetMembers
-    virtual uint8_t getNumberOfMediaSetMembers() const override;
+    //! @copydoc ListFile::mediaSequenceNumber
+    void mediaSequenceNumber( uint8_t mediaSequenceNumber) final;
 
-    //! @copydoc ListFile::setNumberOfMediaSetMembers
-    virtual void setNumberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) override;
+    //! @copydoc ListFile::numberOfMediaSetMembers
+    uint8_t numberOfMediaSetMembers() const final;
+
+    //! @copydoc ListFile::numberOfMediaSetMembers
+    void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) final;
 
     /**
      * @brief Returns the number of files.
      *
      * @return The number of files.
      **/
-    size_t getNumberOfFiles() const;
+    size_t numberOfFiles() const;
 
     /**
      * @brief Return the list of files.
      *
      * @return The list of files
      **/
-    const FilesInfo& getFilesInfo() const;
+    const FilesInfo& filesInfo() const;
 
     /**
      * @brief Return the list of files.
      *
      * @return The list of files
      **/
-    FilesInfo& getFilesInfo();
+    FilesInfo& filesInfo();
 
     /**
      * @brief Return the list of files as map ( media index and filename as key).
      *
      * @return The list of files
      **/
-    FileInfoMap getFileInfosAsMap() const;
+    FileInfoMap filesInfoAsMap() const;
+
+    /**
+     * @brief Return the list of files as map ( media index and complete path as key).
+     *
+     * @return The list of files
+     **/
+    FileInfoPathMap filesInfoAsPathMap() const;
 
     /**
      * @brief Adds the given file information.
@@ -133,18 +151,11 @@ class FileListFile: public ListFile
     void addFileInfo( FileInfo &&fileInfo);
 
     /**
-     * @brief Return the list of files as map ( media index and complete path as key).
-     *
-     * @return The list of files
-     **/
-    FileInfoPathMap getFilesInfoAsPathMap() const;
-
-    /**
      * @brief Returns the user defined data.
      *
      * @return The user defined data.
      **/
-    const UserDefinedData& getUserDefinedData() const;
+    const UserDefinedData& userDefinedData() const;
 
     /**
      * @brief Updates the user defined data.
@@ -152,7 +163,9 @@ class FileListFile: public ListFile
      * @param[in] userDefinedData
      *   The user defined data.
      **/
-    void setUserDefinedData( const UserDefinedData &userDefinedData);
+    void userDefinedData( const UserDefinedData &userDefinedData);
+
+    void userDefinedData( UserDefinedData &&userDefinedData);
 
     /**
      * @brief Returns if the given file list file belongs to the same media set.
@@ -166,7 +179,7 @@ class FileListFile: public ListFile
 
   private:
     //! @copydoc ListFile::encode
-    virtual RawFile encode() const override final;
+    RawFile encode() const final;
 
     /**
      * @brief Decodes the body of the file list file.
@@ -194,15 +207,15 @@ class FileListFile: public ListFile
     void decodeFilesInfo( const RawFile &rawFile, std::size_t offset);
 
     //! The media set part number
-    string mediaSetPn;
+    string mediaSetPnValue;
     //! The media sequence number
-    uint8_t mediaSequenceNumber;
+    uint8_t mediaSequenceNumberValue;
     //! The number of media set members.
-    uint8_t numberOfMediaSetMembers;
+    uint8_t numberOfMediaSetMembersValue;
     //! Files information (list)
-    FilesInfo filesInfo;
+    FilesInfo filesInfoValue;
     //! Use defined data.
-    UserDefinedData userDefinedData;
+    UserDefinedData userDefinedDataValue;
 };
 
 }

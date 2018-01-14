@@ -40,7 +40,7 @@ class ContainerEntity :
 {
   public:
     //! Path type
-    using path = boost::filesystem::path;
+    using fpath = boost::filesystem::path;
 
     //! Default constructor
     ContainerEntity() = default;
@@ -50,7 +50,7 @@ class ContainerEntity :
      *
      * @return The path up to the medium root.
      **/
-    virtual path getPath() const = 0;
+    virtual fpath path() const = 0;
 
     /**
      * @brief Indicates, if the container has child elements.
@@ -64,17 +64,17 @@ class ContainerEntity :
      *
      * @return The number of sub-directories.
      **/
-    size_t getNumberOfSubDirectories() const;
+    size_t numberOfSubDirectories() const;
 
     /**
      * @brief Returns all sub-directories within the current container.
      *
      * @return All sub-directories contained in the current container.
      **/
-    ConstDirectories getSubDirectories() const;
+    ConstDirectories subDirectories() const;
 
-    //! @copydoc getSubDirectories() const
-    Directories getSubDirectories();
+    //! @copydoc subDirectories() const
+    Directories subDirectories();
 
     /**
      * @brief Returns the sub-directory with the given name.
@@ -86,10 +86,10 @@ class ContainerEntity :
      * @retval {}
      *   If no such sub-directory exists.
      **/
-    ConstDirectoryPtr getSubDirectory( const string &name) const;
+    ConstDirectoryPtr subDirectory( const string &name) const;
 
-    //! @copydoc getSubDirectory(const string&) const
-    DirectoryPtr getSubDirectory( const string &name);
+    //! @copydoc subDirectory(const string&) const
+    DirectoryPtr subDirectory( const string &name);
 
     /**
      * @brief Adds a sub-directory with the given name.
@@ -132,7 +132,7 @@ class ContainerEntity :
      *
      * @return The number of files within this directory.
      **/
-    size_t getNumberOfFiles( bool recursive = false) const;
+    size_t numberOfFiles( bool recursive = false) const;
 
     /**
      * @brief Returns all files present in the given container.
@@ -142,10 +142,10 @@ class ContainerEntity :
      *
      * @return All files of the current container.
      **/
-    ConstFiles getFiles( bool recursive = false) const;
+    ConstFiles files( bool recursive = false) const;
 
     //! @copydoc getFiles(bool) const
-    Files getFiles( bool recursive = false);
+    Files files( bool recursive = false);
 
     /**
      * @brief Returns the file with the given name.
@@ -166,10 +166,10 @@ class ContainerEntity :
      * @retval {}
      *   If no such file exists.
      **/
-    ConstFilePtr getFile( const string &filename, bool recursive = false) const;
+    ConstFilePtr file( const string &filename, bool recursive = false) const;
 
     //! @copydoc getFile(const string&,bool) const
-    FilePtr getFile( const string &filename, bool recursive = false);
+    FilePtr file( const string &filename, bool recursive = false);
 
     /**
      * @brief Adds a file into this directory.
@@ -209,7 +209,7 @@ class ContainerEntity :
      *
      * @return The number of loads.
      **/
-    size_t getNumberOfLoads( bool recursive = false) const;
+    size_t numberOfLoads( bool recursive = false) const;
 
     /**
      * @brief Return loads.
@@ -219,10 +219,10 @@ class ContainerEntity :
      *
      * @return Loads contained within this container.
      **/
-    ConstLoads getLoads( bool recursive = false) const;
+    ConstLoads loads( bool recursive = false) const;
 
     //! @copydoc getLoads(bool) const
-    Loads getLoads( bool recursive = false);
+    Loads loads( bool recursive = false);
 
     /**
      * @brief Returns the load with the given filename.
@@ -236,10 +236,10 @@ class ContainerEntity :
      * @retval {}
      *   If load does not exists.
      **/
-    ConstLoadPtr getLoad( const string &filename, bool recursive = false) const;
+    ConstLoadPtr load( const string &filename, bool recursive = false) const;
 
     //! @copydoc getLoad(const string&,bool) const
-    LoadPtr getLoad( const string &filename, bool recursive = false);
+    LoadPtr load( const string &filename, bool recursive = false);
 
     /**
      * @brief Creates a load with the given filename.
@@ -276,7 +276,7 @@ class ContainerEntity :
      *
      * @return The number of loads.
      **/
-    size_t getNumberOfBatches( bool recursive = false) const;
+    size_t numberOfBatches( bool recursive = false) const;
 
     /**
      * @brief Return batches.
@@ -286,10 +286,10 @@ class ContainerEntity :
      *
      * @return Batches contained within this container.
      **/
-    ConstBatches getBatches( bool recursive = false) const;
+    ConstBatches batches( bool recursive = false) const;
 
     //! @copydoc getBatches(bool) const
-    Batches getBatches( bool recursive = false);
+    Batches batches( bool recursive = false);
 
     /**
      * @brief Returns the batch with the given filename.
@@ -303,10 +303,10 @@ class ContainerEntity :
      * @retval {}
      *   If batch does not exists.
      **/
-    ConstBatchPtr getBatch( const string &filename, bool recursive = false) const;
+    ConstBatchPtr batch( const string &filename, bool recursive = false) const;
 
     //! @copydoc getBatch(const string&,bool) const
-    BatchPtr getBatch( const string &filename, bool recursive = false);
+    BatchPtr batch( const string &filename, bool recursive = false);
 
     /**
      * @brief Creates a batch with the given filename.
@@ -339,10 +339,10 @@ class ContainerEntity :
      *
      * @return The parent of this container.
      **/
-    ConstContainerEntityPtr getParent() const;
+    ConstContainerEntityPtr parent() const;
 
     //! @copydoc getParent() const
-    ContainerEntityPtr getParent();
+    ContainerEntityPtr parent();
 
     /**
      * @brief Returns the medium where this container is located.
@@ -351,10 +351,10 @@ class ContainerEntity :
      *
      * @return The medium where this container is located.
      **/
-    ConstMediumPtr getMedium() const;
+    ConstMediumPtr medium() const;
 
     //! @copydoc getMedium() const
-    MediumPtr getMedium();
+    MediumPtr medium();
 
   protected:
     /**
@@ -374,10 +374,10 @@ class ContainerEntity :
      *
      * @return The files (real file, load, batch) with the specified file.
      **/
-    ConstFiles getFiles( BaseFile::FileType fileType) const;
+    ConstFiles files( BaseFile::FileType fileType) const;
 
     //! @copydoc getFiles( BaseFile::FileType) const
-    Files getFiles( BaseFile::FileType fileType);
+    Files files( BaseFile::FileType fileType);
 
     /**
      * @brief Updates the parent.
@@ -385,15 +385,15 @@ class ContainerEntity :
      * @param[in] parent
      *   New parent.
      **/
-    void setParent( ContainerEntityPtr parent);
+    void parent( ContainerEntityPtr parent);
 
   private:
     //! sub-directories
-    Directories subDirectories;
+    Directories subDirectoriesValue;
     //! files
-    Files files;
+    Files filesValue;
     //! the parent
-    WeakContainerEntityPtr parent;
+    WeakContainerEntityPtr parentValue;
 };
 
 }

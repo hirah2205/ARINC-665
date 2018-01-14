@@ -51,7 +51,7 @@ class BatchLoadInfo
      *
      * @return The load header filename.
      **/
-    string getHeaderFilename() const;
+    string headerFilename() const;
 
     /**
      * @brief Sets the load header filename.
@@ -59,14 +59,16 @@ class BatchLoadInfo
      * @param[in] headerFilename
      *   The load header filename.
      **/
-    void setHeaderFilename( const string &headerFilename);
+    void headerFilename( const string &headerFilename);
+
+    void headerFilename( string &&headerFilename);
 
     /**
      * @brief Returns the load part number.
      *
      * @return The load part number.
      **/
-    string getPartNumber() const;
+    string partNumber() const;
 
     /**
      * @brief Updates the load part number.
@@ -74,13 +76,15 @@ class BatchLoadInfo
      * @param[in] partNumber
      *   The load part number.
      **/
-    void setPartNumber( const string &partNumber);
+    void partNumber( const string &partNumber);
+
+    void partNumber( string &&partNumber);
 
   private:
     //! The load header filename.
-    string headerFilename;
+    string headerFilenameValue;
     //! The load part number.
-    string partNumber;
+    string partNumberValue;
 };
 
 }

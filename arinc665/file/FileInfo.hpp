@@ -31,7 +31,7 @@ class FileInfo
 {
   public:
     //! Path type
-    using path = boost::filesystem::path;
+    using fpath = boost::filesystem::path;
     //! String type
     using string = std::string;
 
@@ -65,7 +65,7 @@ class FileInfo
      *
      * @return The filename
      **/
-    const string& getFilename() const;
+    const string& filename() const;
 
     /**
      * @brief Updates the filename.
@@ -73,17 +73,17 @@ class FileInfo
      * @param[in] filename
      *   The filename.
      **/
-    void setFilename( const string &filename);
+    void filename( const string &filename);
 
     //! @copydoc setFilename(const string&)
-    void setFilename( string &&filename);
+    void filename( string &&filename);
 
     /**
      * @brief Returns the path name.
      *
      * @return The path name
      **/
-    string getPathName() const;
+    string pathName() const;
 
     /**
      * @brief Updates the path name.
@@ -91,24 +91,24 @@ class FileInfo
      * @param[in] pathName
      *   The path name.
      **/
-    void setPathName( const string &pathName);
+    void pathName( const string &pathName);
 
     //! @copydoc setPathName(const string&)
-    void setPathName( string &&pathName);
+    void pathName( string &&pathName);
 
     /**
      * @brief Returns the path (path name / filename)
      *
      * @return path (incl. filename)
      **/
-    path getPath() const;
+    fpath path() const;
 
     /**
      * @brief Returns the member sequence number.
      *
      * @return The member sequence number
      **/
-    uint16_t getMemberSequenceNumber() const;
+    uint16_t memberSequenceNumber() const;
 
     /**
      * @brief Updates the  member sequence number.
@@ -116,14 +116,14 @@ class FileInfo
      * @param[in] memberSequenceNumber
      *   The  member sequence number.
      **/
-    void setMemberSequenceNumber( uint16_t memberSequenceNumber);
+    void memberSequenceNumber( uint16_t memberSequenceNumber);
 
     /**
      * @brief Returns the file CRC.
      *
      * @return The file CRC.
      **/
-    uint16_t getCrc() const;
+    uint16_t crc() const;
 
     /**
      * @brief Updates the file CRC.
@@ -131,7 +131,7 @@ class FileInfo
      * @param[in] crc
      *   File CRC.
      **/
-    void setCrc( uint16_t crc);
+    void crc( uint16_t crc);
 
     /**
      * @brief Compares the given file info against [this].
@@ -155,13 +155,13 @@ class FileInfo
 
   private:
     //! file name
-    string filename;
+    string filenameValue;
     //! path name
-    string pathName;
+    string pathNameValue;
     //! member sequence number
-    uint16_t memberSequenceNumber;
+    uint16_t memberSequenceNumberValue;
     //! CRC
-    uint16_t crc;
+    uint16_t crcValue;
 };
 
 }

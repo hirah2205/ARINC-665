@@ -62,6 +62,14 @@ class BatchListFile: public ListFile
       const BatchesInfo &batchesInfo,
       const UserDefinedData &userDefinedData);
 
+    BatchListFile(
+      Arinc665Version version,
+      string &&mediaSetPn,
+      uint8_t mediaSequenceNumber,
+      uint8_t numberOfMediaSetMembers,
+      BatchesInfo &&batchesInfo,
+      UserDefinedData &&userDefinedData);
+
     /**
      * @brief Creates a batch list file from the given raw data.
      *
@@ -71,50 +79,52 @@ class BatchListFile: public ListFile
     BatchListFile( const RawFile &rawFile);
 
     //! @copydoc ListFile::operator=
-    virtual BatchListFile& operator=( const RawFile &rawFile) override;
+    BatchListFile& operator=( const RawFile &rawFile) final;
 
-    //! @copydoc ListFile::getMediaSetPn
-    virtual string getMediaSetPn() const override;
+    //! @copydoc ListFile::mediaSetPn
+    string mediaSetPn() const final;
 
-    //! @copydoc ListFile::setMediaSetPn
-    virtual void setMediaSetPn( const string &mediaSetPn) override;
+    //! @copydoc ListFile::mediaSetPn
+    void mediaSetPn( const string &mediaSetPn) final;
 
-    //! @copydoc ListFile::getMediaSequenceNumber
-    virtual uint8_t getMediaSequenceNumber() const override;
+    //! @copydoc ListFile::mediaSetPn
+    void mediaSetPn( string &&mediaSetPn) final;
 
-    //! @copydoc ListFile::setMediaSequenceNumber
-    virtual void setMediaSequenceNumber( uint8_t mediaSequenceNumber) override;
+    //! @copydoc ListFile::mediaSequenceNumber
+    uint8_t mediaSequenceNumber() const final;
 
-    //! @copydoc ListFile::getNumberOfMediaSetMembers
-    virtual uint8_t getNumberOfMediaSetMembers() const override;
+    //! @copydoc ListFile::mediaSequenceNumber
+    void mediaSequenceNumber( uint8_t mediaSequenceNumber) final;
 
-    //! @copydoc ListFile::setNumberOfMediaSetMembers
-    virtual void setNumberOfMediaSetMembers(
-      uint8_t numberOfMediaSetMembers) override;
+    //! @copydoc ListFile::numberOfMediaSetMembers
+    uint8_t numberOfMediaSetMembers() const final;
+
+    //! @copydoc ListFile::numberOfMediaSetMembers
+    void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) final;
 
     /**
      * @brief Return the number of batches.
      *
      * @return The number of batches.
      **/
-    size_t getNumberOfBatches() const;
+    size_t numberOfBatches() const;
 
     /**
      * @brief Returns the batches information.
      *
      * @return The batches information.
      **/
-    const BatchesInfo& getBatchesInfo() const;
+    const BatchesInfo& batchesInfo() const;
 
-    //! @copydoc getBatchesInfo() const
-    BatchesInfo& getBatchesInfo();
+    //! @copydoc batchesInfo() const
+    BatchesInfo& batchesInfo();
 
     /**
      * @brief Returns the batches information as map.
      *
      * @return The batches information as map.
      */
-    BatchInfoMap getBatchesInfoAsMap() const;
+    BatchInfoMap batchesInfoAsMap() const;
 
     /**
      * @brief Adds the given batch information.
@@ -132,7 +142,7 @@ class BatchListFile: public ListFile
      *
      * @return The user defined data.
      **/
-    const UserDefinedData& getUserDefinedData() const;
+    const UserDefinedData& userDefinedData() const;
 
     /**
      * @brief Updates the user defined data.
@@ -140,7 +150,10 @@ class BatchListFile: public ListFile
      * @param[in] userDefinedData
      *   The user defined data.
      **/
-    void setUserDefinedData( const UserDefinedData &userDefinedData);
+    void userDefinedData( const UserDefinedData &userDefinedData);
+
+    //! @copydoc userDefinedData(const UserDefinedData&)
+    void userDefinedData( UserDefinedData &&userDefinedData);
 
     /**
      * @brief Returns if the given batch list file belongs to the same media set.
@@ -182,15 +195,15 @@ class BatchListFile: public ListFile
     void decodeBatchesInfo( const RawFile &rawFile, std::size_t offset);
 
     //! The media set part number
-    string mediaSetPn;
+    string mediaSetPnValue;
     //! The media sequence number
-    uint8_t mediaSequenceNumber;
+    uint8_t mediaSequenceNumberValue;
     //! The number of media set members
-    uint8_t numberOfMediaSetMembers;
+    uint8_t numberOfMediaSetMembersValue;
     //! The stored batches information
-    BatchesInfo batchesInfo;
+    BatchesInfo batchesInfoValue;
     //! user defined data
-    UserDefinedData userDefinedData;
+    UserDefinedData userDefinedDataValue;
 };
 
 }

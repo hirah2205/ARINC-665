@@ -116,54 +116,54 @@ static MediaSetPtr loadMediaSet( const path &mediaSetDirectory)
 
   MediaSetPtr mediaSet( importer( ""));
 
-  std::cout << "media set pn: " << mediaSet->getPartNumber() << std::endl;
+  std::cout << "media set pn: " << mediaSet->partNumber() << std::endl;
 
-  std::cout << "no of media set members: " << std::dec << (int)mediaSet->getNumberOfMedia() << std::endl;
+  std::cout << "no of media set members: " << std::dec << (int)mediaSet->numberOfMedia() << std::endl;
 
   return mediaSet;
 }
 
 static void printMediaSet( MediaSetPtr &mediaSet)
 {
-  std::cout << "Media Set " << mediaSet->getPartNumber() << std::endl;
+  std::cout << "Media Set " << mediaSet->partNumber() << std::endl;
 
   // iterate over files
   std::cout << " * Files " << "\n";
 
-  for ( auto const &file : mediaSet->getFiles())
+  for ( auto const &file : mediaSet->files())
   {
-    std::cout << "   * File " << file->getName() << "\n";
+    std::cout << "   * File " << file->name() << "\n";
   }
 
   // iterate over loads
   std::cout << " * Loads " << "\n";
 
-  for ( auto const &load : mediaSet->getLoads())
+  for ( auto const &load : mediaSet->loads())
   {
-    std::cout << "   * Load " << load->getName() << " " << load->getPartNumber()
+    std::cout << "   * Load " << load->name() << " " << load->partNumber()
       << std::endl;
 
     std::cout << "     Compatible THW IDs" << std::endl;
     // iterate over THW ID list
-    for ( auto const & thwId : load->getTargetHardwareIds())
+    for ( auto const & thwId : load->targetHardwareIds())
     {
       std::cout << "      * " << thwId << std::endl;
     }
 
     std::cout << "     Data Files" << std::endl;
     // iterate over Data Files
-    for ( const auto & dataFile : load->getDataFiles())
+    for ( const auto & dataFile : load->dataFiles())
     {
-      std::cout << "      * " << dataFile.lock()->getName() << " "
-        << dataFile.lock()->getPartNumber() << std::endl;
+      std::cout << "      * " << dataFile.lock()->name() << " "
+        << dataFile.lock()->partNumber() << std::endl;
     }
 
     std::cout << "     Support Files" << std::endl;
     // iterate over Data Files
-    for ( const auto & supportFile : load->getSupportFiles())
+    for ( const auto & supportFile : load->supportFiles())
     {
-      std::cout << "      * " << supportFile.lock()->getName() << " "
-        << supportFile.lock()->getPartNumber() << std::endl;
+      std::cout << "      * " << supportFile.lock()->name() << " "
+        << supportFile.lock()->partNumber() << std::endl;
     }
   }
 }

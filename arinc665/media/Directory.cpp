@@ -21,64 +21,64 @@ namespace Media {
 
 Directory::Directory( ContainerEntityPtr parent, const string &name):
   ContainerEntity( parent),
-  name( name)
+  nameValue( name)
 {
   assert( parent);
 }
 
-ConstMediaSetPtr Directory::getMediaSet() const
+ConstMediaSetPtr Directory::mediaSet() const
 {
-  auto parentPtr( getParent());
+  auto parentPtr( parent());
 
   if ( parentPtr)
   {
-    return parentPtr->getMediaSet();
+    return parentPtr->mediaSet();
   }
 
   return {};
 }
 
-MediaSetPtr Directory::getMediaSet()
+MediaSetPtr Directory::mediaSet()
 {
-  auto parentPtr( getParent());
+  auto parentPtr( parent());
 
   if ( parentPtr)
   {
-    return parentPtr->getMediaSet();
+    return parentPtr->mediaSet();
   }
 
   return {};
 }
 
-Directory::Type Directory::getType() const
+Directory::Type Directory::type() const
 {
   return Type::Directory;
 }
 
-const Directory::string& Directory::getName() const
+const Directory::string& Directory::name() const
 {
-  return name;
+  return nameValue;
 }
 
-Directory::string Directory::getPartNumber() const
+Directory::string Directory::partNumber() const
 {
-  auto parentPtr( getParent());
+  auto parentPtr( parent());
 
   if ( parentPtr)
   {
-    return parentPtr->getPartNumber();
+    return parentPtr->partNumber();
   }
 
   return {};
 }
 
-Directory::path Directory::getPath() const
+Directory::fpath Directory::path() const
 {
-  auto parentPtr( getParent());
+  auto parentPtr( parent());
 
   if ( parentPtr)
   {
-    return parentPtr->getPath() / name;
+    return parentPtr->path() / nameValue;
   }
 
   return {};

@@ -48,26 +48,28 @@ class Load: public BaseFile
      **/
     Load( ContainerEntityPtr parent, const string &name);
 
+    Load( ContainerEntityPtr parent, string &&name);
+
     /**
      * @copydoc BaseFile::getFileType()
      *
      * @return FileType::LoadFile always.
      **/
-    virtual FileType getFileType() const override final;
+    FileType fileType() const final;
 
     /**
      * @brief Returns the List of Target HW IDs.
      *
      * @return The list of Target HW IDs.
      **/
-    const TargetHardwareIds& getTargetHardwareIds() const;
+    const TargetHardwareIds& targetHardwareIds() const;
 
     /**
      * @brief Returns the List of Target HW IDs.
      *
      * @return The list of Target HW IDs (modifiable).
      **/
-    TargetHardwareIds& getTargetHardwareIds();
+    TargetHardwareIds& targetHardwareIds();
 
     /**
      * @brief Updates the list of Target HW IDs.
@@ -75,14 +77,16 @@ class Load: public BaseFile
      * @param[in] thwIds
      *   The list of Target HW IDs.
      **/
-    void setTargetHardwareIds( const TargetHardwareIds& thwIds);
+    void targetHardwareIds( const TargetHardwareIds &thwIds);
+
+    void targetHardwareIds( TargetHardwareIds &&thwIds);
 
     /**
      * @brief Returns the data files.
      *
      * @return The data files.
      **/
-    const Files& getDataFiles() const;
+    const Files& dataFiles() const;
 
     /**
      * @brief Add the given file as data file.
@@ -97,7 +101,7 @@ class Load: public BaseFile
      *
      * @return The support files.
      **/
-    const Files& getSupportFiles() const;
+    const Files& supportFiles() const;
 
     /**
      * @brief Add the given file as support file.
@@ -112,10 +116,10 @@ class Load: public BaseFile
      *
      * @return The user-defined data.
      **/
-    const UserDefinedData& getUserDefinedData() const;
+    const UserDefinedData& userDefinedData() const;
 
     //! @copydoc Load::getUserDefinedData() const
-    UserDefinedData& getUserDefinedData();
+    UserDefinedData& userDefinedData();
 
     /**
      * @brief Sets the user-defined data stored in the load header.
@@ -123,20 +127,20 @@ class Load: public BaseFile
      * @param[in] userDefinedData
      *   The updated user-defined data.
      **/
-    void setUserDefinedData( const UserDefinedData &userDefinedData);
+    void userDefinedData( const UserDefinedData &userDefinedData);
 
     //! @copydoc Load::setUserDefinedData(const UserDefinedData&)
-    void setUserDefinedData( UserDefinedData &&userDefinedData);
+    void userDefinedData( UserDefinedData &&userDefinedData);
 
   private:
     //! target hardware IDs
-    TargetHardwareIds targetHardwareIds;
+    TargetHardwareIds targetHardwareIdsValue;
     //! Data files
-    Files dataFiles;
+    Files dataFilesValue;
     //! Support files
-    Files supportFiles;
+    Files supportFilesValue;
     //! user defined data
-    UserDefinedData userDefinedData;
+    UserDefinedData userDefinedDataValue;
 };
 
 }

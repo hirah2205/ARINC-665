@@ -34,29 +34,29 @@ class Directory : public ContainerEntity
      **/
     Directory( ContainerEntityPtr parent, const string &name);
 
-    //! @copydoc ContainerEntity::getMediaSet
-    virtual ConstMediaSetPtr getMediaSet() const override final;
+    //! @copydoc ContainerEntity::mediaSet
+    ConstMediaSetPtr mediaSet() const final;
 
-    //! @copydoc ContainerEntity::getMediaSet
-    virtual MediaSetPtr getMediaSet() override final;
+    //! @copydoc ContainerEntity::mediaSet
+    MediaSetPtr mediaSet() final;
 
-    //! @copydoc ContainerEntity::getType
-    virtual Type getType() const override final;
+    //! @copydoc ContainerEntity::type
+    Type type() const final;
 
-    //! @copydoc ContainerEntity::getName
-    virtual const string& getName() const override final;
+    //! @copydoc ContainerEntity::name
+    const string& name() const final;
 
     // void rename( const string& name);
 
-    //! @copydoc ContainerEntity::getPartNumber
-    string getPartNumber() const override final;
+    //! @copydoc ContainerEntity::partNumber
+    string partNumber() const final;
 
-    //! @copydoc ContainerEntity::getPath() const
-    virtual path getPath() const override final;
+    //! @copydoc ContainerEntity::path() const
+    virtual fpath path() const final;
 
   private:
     //! Directory name
-    const string name;
+    const string nameValue;
 };
 
 }

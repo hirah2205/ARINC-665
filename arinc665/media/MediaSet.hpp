@@ -46,27 +46,31 @@ class MediaSet:
      **/
     MediaSet( const string &name);
 
-    //! @copydoc Base::getMediaSet
-    virtual ConstMediaSetPtr getMediaSet() const override final;
+    MediaSet( string &&name);
 
-    //! @copydoc Base::getType
-    virtual MediaSetPtr getMediaSet() override final;
+    //! @copydoc Base::mediaSet
+    ConstMediaSetPtr mediaSet() const final;
 
-    //! @copydoc Base::getType
-    virtual Type getType() const override final;
+    //! @copydoc Base::mediaSet
+    MediaSetPtr mediaSet() final;
 
-    //! @copydoc Base::getName
-    virtual const string& getName() const override final;
+    //! @copydoc Base::type
+    Type type() const final;
+
+    //! @copydoc Base::name
+    const string& name() const final;
 
     /**
      * @brief Sets the name of the media set.
      *
      * @param[in] name
      **/
-    void setName( const string& name);
+    void name( const string &name);
 
-    //! @copydoc Base::getPartNumber
-    virtual string getPartNumber() const override final;
+    void name( string &&name);
+
+    //! @copydoc Base::partNumber
+    string partNumber() const final;
 
     /**
      * @brief Set the part number of the entity.
@@ -74,24 +78,40 @@ class MediaSet:
      * @param[in] partNumber
      *   The part number
      **/
-    void setPartNumber( const string &partNumber);
+    void partNumber( const string &partNumber);
+
+    void partNumber( string &&partNumber);
 
     /**
      * @brief Get the number of medias within the media set
      *
      * @return The number of medias within the media set.
      **/
-    uint8_t getNumberOfMedia() const;
+    uint8_t numberOfMedia() const;
+
+    /**
+     * @brief Set the number of media.
+     *
+     * If there are fewer media than requested, the media are created empty,
+     * otherwise the media are deleted.
+     *
+     * @param[in] numberOfMedia
+     *   The new number of media. Must be bigger or equal to 1.
+     * @param[in] deleteFiles
+     *   Delete files, which are part of the not existing files.
+     *   Otherwise, they are moved to the first media.
+     **/
+    void numberOfMedia( uint8_t numberOfMedia, bool deleteFiles = false);
 
     /**
      * @brief Returns all media.
      *
      * @return All media of the media set.
      **/
-    ConstMedia getMedia() const;
+    ConstMedia media() const;
 
     //! @copydoc MediaSet::getMedia() const
-    Media getMedia();
+    Media media();
 
     /**
      * @brief Return the medium with the requested index.
@@ -101,7 +121,7 @@ class MediaSet:
      *
      * @return The medium with the requested index.
      **/
-    ConstMediumPtr getMedium( uint8_t index) const;
+    ConstMediumPtr medium( uint8_t index) const;
 
     /**
      * @brief Return the medium with the requested index.
@@ -111,7 +131,7 @@ class MediaSet:
      *
      * @return The medium with the requested index.
      **/
-    MediumPtr getMedium( uint8_t index);
+    MediumPtr medium( uint8_t index);
     
     /**
      * @brief Adds an medium to the media set and returns the media index.
@@ -130,39 +150,25 @@ class MediaSet:
     void removeMedium( bool deleteFiles = false);
 
     /**
-     * @brief Set the number of media.
-     *
-     * If there are fewer media than requested, the media are created empty,
-     * otherwise the media are deleted.
-     *
-     * @param[in] numberOfMedia
-     *   The new number of media. Must be bigger or equal to 1.
-     * @param[in] deleteFiles
-     *   Delete files, which are part of the not existing files.
-     *   Otherwise, they are moved to the first media.
-     **/
-    void setNumberOfMedia( uint8_t numberOfMedia, bool deleteFiles = false);
-
-    /**
      * @brief Return the total number of files within the media set.
      *
      * @return The number of files.
      **/
-    size_t getNumberOfFiles() const;
+    size_t numberOfFiles() const;
 
     /**
      * @brief Returns all files present on the media set.
      *
      * @return All files.
      **/
-    ConstFiles getFiles() const;
+    ConstFiles files() const;
 
     /**
      * @brief Returns all files present on the media set.
      *
      * @return All files.
      **/
-    Files getFiles();
+    Files files();
 
     /**
      * @brief Returns file with the given filename.
@@ -174,7 +180,7 @@ class MediaSet:
      * @retval ConstFilePtr()
      *   If file is not found.
      **/
-    ConstFilePtr getFile( const string &filename) const;
+    ConstFilePtr file( const string &filename) const;
 
     /**
      * @brief Returns file with the given filename.
@@ -186,28 +192,28 @@ class MediaSet:
      * @retval ConstFilePtr()
      *   If file is not found.
      **/
-    FilePtr getFile( const string &filename);
+    FilePtr file( const string &filename);
 
     /**
      * @brief Return the number of loads within the media set.
      *
      * @return The number of loads within the media set.
      **/
-    size_t getNumberOfLoads() const;
+    size_t numberOfLoads() const;
 
     /**
      * @brief Returns the loads within the media set.
      *
      * @return The loads within the media set.
      **/
-    ConstLoads getLoads() const;
+    ConstLoads loads() const;
 
     /**
      * @brief Returns the loads within the media set.
      *
      * @return The loads within the media set.
      **/
-    Loads getLoads();
+    Loads loads();
 
     /**
      * @brief return the load with the given filename.
@@ -217,7 +223,7 @@ class MediaSet:
      *
      * @return The load with the given filename.
      **/
-    ConstLoadPtr getLoad( const string &filename) const;
+    ConstLoadPtr load( const string &filename) const;
 
     /**
      * @brief return the load with the given filename.
@@ -227,7 +233,7 @@ class MediaSet:
      *
      * @return The load with the given filename.
      **/
-    LoadPtr getLoad( const string &filename);
+    LoadPtr load( const string &filename);
 
     /**
      * @brief Removes the load with the given filename.
@@ -250,21 +256,21 @@ class MediaSet:
      *
      * @return The number of batches within the media set.
      **/
-    size_t getNumberOfBatches() const;
+    size_t numberOfBatches() const;
 
     /**
      * @brief Returns the batches within the media set.
      *
      * @return The batches within the media set.
      **/
-    ConstBatches getBatches() const;
+    ConstBatches batches() const;
 
     /**
      * @brief Returns the batches within the media set.
      *
      * @return The batches within the media set.
      **/
-    Batches getBatches();
+    Batches batches();
 
     /**
      * @brief return the batch with the given filename.
@@ -274,7 +280,7 @@ class MediaSet:
      *
      * @return The batch with the given filename.
      **/
-    ConstBatchPtr getBatch( const string &filename) const;
+    ConstBatchPtr batch( const string &filename) const;
 
     /**
      * @brief return the batch with the given filename.
@@ -284,7 +290,7 @@ class MediaSet:
      *
      * @return The batch with the given filename.
      **/
-    BatchPtr getBatch( const string &filename);
+    BatchPtr batch( const string &filename);
 
     /**
      * @brief Removes the batch with the given filename.
@@ -304,11 +310,11 @@ class MediaSet:
 
   private:
     //! the media
-    Media media;
+    Media mediaValue;
     //! name
-    string name;
+    string nameValue;
     //! The part number
-    string partNumber;
+    string partNumberValue;
 };
 
 }

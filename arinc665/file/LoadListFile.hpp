@@ -52,7 +52,7 @@ class LoadListFile: public ListFile
      * @param numberOfMediaSetMembers
      * @param loadsInfo
      * @param userDefinedData
-     */
+     **/
     LoadListFile(
       Arinc665Version version,
       const string &mediaSetPn,
@@ -60,6 +60,14 @@ class LoadListFile: public ListFile
       uint8_t numberOfMediaSetMembers,
       const LoadsInfo &loadsInfo,
       const UserDefinedData &userDefinedData);
+
+    LoadListFile(
+      Arinc665Version version,
+      string &&mediaSetPn,
+      uint8_t mediaSequenceNumber,
+      uint8_t numberOfMediaSetMembers,
+      LoadsInfo &&loadsInfo,
+      UserDefinedData &&userDefinedData);
 
     /**
      * @brief Creates a load list file from the given raw data.
@@ -70,53 +78,56 @@ class LoadListFile: public ListFile
     LoadListFile( const RawFile &rawFile);
 
     //! @copydoc ListFile::operator=
-    virtual LoadListFile& operator=( const RawFile &rawFile) override;
+    LoadListFile& operator=( const RawFile &rawFile) final;
 
     //! @copydoc ListFile::getMediaSetPn
-    virtual string getMediaSetPn() const override;
+    string mediaSetPn() const final;
 
     //! @copydoc ListFile::setMediaSetPn
-    virtual void setMediaSetPn( const string &mediaSetPn) override;
+    void mediaSetPn( const string &mediaSetPn) final;
+
+    //! @copydoc ListFile::setMediaSetPn
+    void mediaSetPn( string &&mediaSetPn) final;
 
     //! @copydoc ListFile::getMediaSequenceNumber
-    virtual uint8_t getMediaSequenceNumber() const override;
+    uint8_t mediaSequenceNumber() const final;
 
     //! @copydoc ListFile::setMediaSequenceNumber
-    virtual void setMediaSequenceNumber( uint8_t mediaSequenceNumber) override;
+    void mediaSequenceNumber( uint8_t mediaSequenceNumber) final;
 
     //! @copydoc ListFile::getNumberOfMediaSetMembers
-    virtual uint8_t getNumberOfMediaSetMembers() const override;
+    uint8_t numberOfMediaSetMembers() const final;
 
     //! @copydoc ListFile::setNumberOfMediaSetMembers
-    virtual void setNumberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) override;
+    void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) final;
 
     /**
      * @brief Returns the number of loads.
      *
      * @return The number of loads.
      **/
-    size_t getNumberOfLoads() const;
+    size_t numberOfLoads() const;
 
     /**
      * @brief Returns the loads.
      *
      * @return The Loads.
      **/
-    const LoadsInfo& getLoadsInfo() const;
+    const LoadsInfo& loadsInfo() const;
 
     /**
      * @brief Returns the loads.
      *
      * @return The Loads.
      **/
-    LoadsInfo& getLoadsInfo();
+    LoadsInfo& loadsInfo();
 
     /**
      * @brief Returns the loads as map for easy access.
      *
      * @return The loads as map.
      */
-    LoadsInfoMap getLoadsInfoAsMap() const;
+    LoadsInfoMap loadsInfoAsMap() const;
 
     /**
      * @brief Adds the given load information.
@@ -134,7 +145,7 @@ class LoadListFile: public ListFile
      *
      * @return The user defined data.
      **/
-    const UserDefinedData& getUserDefinedData() const;
+    const UserDefinedData& userDefinedData() const;
 
     /**
      * @brief Updates the user defined data.
@@ -144,7 +155,9 @@ class LoadListFile: public ListFile
      * @param[in] userDefinedData
      *   The user defined data.
      **/
-    void setUserDefinedData( const UserDefinedData &userDefinedData);
+    void userDefinedData( const UserDefinedData &userDefinedData);
+
+    void userDefinedData( UserDefinedData &&userDefinedData);
 
     /**
      * @brief Returns if the given load list file belongs to the same media set.
@@ -165,7 +178,7 @@ class LoadListFile: public ListFile
 
   private:
     //! @copydoc ListFile::encode
-    virtual RawFile encode() const override final;
+    RawFile encode() const final;
 
     /**
      * @brief Decodes the body of the batch file.
@@ -193,15 +206,15 @@ class LoadListFile: public ListFile
     void decodeLoadsInfo( const RawFile &rawFile, std::size_t offset);
 
     //! Media set part number
-    string mediaSetPn;
+    string mediaSetPnValue;
     //! media sequence number
-    uint8_t mediaSequenceNumber;
+    uint8_t mediaSequenceNumberValue;
     //! number of media set members
-    uint8_t numberOfMediaSetMembers;
+    uint8_t numberOfMediaSetMembersValue;
     //! The load list
-    LoadsInfo loadsInfo;
+    LoadsInfo loadsInfoValue;
     //! user defined data
-    UserDefinedData userDefinedData;
+    UserDefinedData userDefinedDataValue;
 };
 
 }

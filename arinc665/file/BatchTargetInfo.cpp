@@ -18,57 +18,57 @@ namespace File {
 BatchTargetInfo::BatchTargetInfo(
   const string &targetHardwareId,
   const BatchLoadsInfo &loads):
-  targetHardwareId( targetHardwareId),
-  loads( loads)
+  targetHardwareIdValue( targetHardwareId),
+  loadsValue( loads)
 {
 }
 
 BatchTargetInfo::BatchTargetInfo(
   string &&targetHardwareId,
   BatchLoadsInfo &&loads):
-  targetHardwareId( targetHardwareId),
-  loads( loads)
+  targetHardwareIdValue( targetHardwareId),
+  loadsValue( loads)
 {
 }
 
-BatchTargetInfo::string BatchTargetInfo::getTargetHardwareId() const
+BatchTargetInfo::string BatchTargetInfo::targetHardwareId() const
 {
-  return targetHardwareId;
+  return targetHardwareIdValue;
 }
 
-void BatchTargetInfo::setTargetHardwareId( const string &targetHardwareId)
+void BatchTargetInfo::targetHardwareId( const string &targetHardwareId)
 {
-  this->targetHardwareId = targetHardwareId;
+  this->targetHardwareIdValue = targetHardwareId;
 }
 
-const BatchLoadsInfo& BatchTargetInfo::getLoads() const
+const BatchLoadsInfo& BatchTargetInfo::loads() const
 {
-  return loads;
+  return loadsValue;
 }
 
-BatchLoadsInfo& BatchTargetInfo::getLoads()
+BatchLoadsInfo& BatchTargetInfo::loads()
 {
-  return loads;
+  return loadsValue;
 }
 
-void BatchTargetInfo::setLoads( const BatchLoadsInfo &loads)
+void BatchTargetInfo::loads( const BatchLoadsInfo &loads)
 {
-  this->loads = loads;
+  loadsValue = loads;
 }
 
-void BatchTargetInfo::setLoads( BatchLoadsInfo &&loads)
+void BatchTargetInfo::loads( BatchLoadsInfo &&loads)
 {
-  this->loads = loads;
+  loadsValue = std::move( loads);
 }
 
 void BatchTargetInfo::addLoad( const BatchLoadInfo &load)
 {
-  loads.push_back( load);
+  loadsValue.push_back( load);
 }
 
 void BatchTargetInfo::addLoad( BatchLoadInfo &&load)
 {
-  loads.push_back( load);
+  loadsValue.push_back( load);
 }
 
 }

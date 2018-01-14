@@ -62,7 +62,7 @@ class LoadFileInfo
      *
      * @return The filename.
      **/
-    string getFilename() const;
+    string filename() const;
 
     /**
      * @brief Updates the filename.
@@ -70,14 +70,16 @@ class LoadFileInfo
      * @param[in] filename
      *   The filename.
      **/
-    void setFilename( const string &filename);
+    void filename( const string &filename);
+
+    void filename( string &&filename);
 
     /**
      * @return Returns the part number.
      *
      * @return The part number.
      **/
-    string getPartNumber() const;
+    string partNumber() const;
 
     /**
      * @brief Updates the file part number.
@@ -85,14 +87,16 @@ class LoadFileInfo
      * @param[in] partNumber
      *   The file part number.
      **/
-    void setPartNumber( const string &partNumber);
+    void partNumber( const string &partNumber);
+
+    void partNumber( string &&partNumber);
 
     /**
      * @return Returns the file size.
      *
      * @return The file size.
      **/
-    uint32_t getLength() const;
+    uint32_t length() const;
 
     /**
      * @brief Updates the file size.
@@ -100,14 +104,14 @@ class LoadFileInfo
      * @param[in] length
      *   The file size.
      **/
-    void setLength( uint32_t length);
+    void length( uint32_t length);
 
     /**
      * @return Returns the file CRC.
      *
      * @return The file CRC.
      **/
-    uint16_t getCrc() const;
+    uint16_t crc() const;
 
     /**
      * @brief Updates the file CRC.
@@ -115,17 +119,17 @@ class LoadFileInfo
      * @param[in] crc
      *   The file CRC.
      **/
-    void setCrc( uint16_t crc);
+    void crc( uint16_t crc);
 
   private:
     //! Filename
-    string filename;
+    string filenameValue;
     //! File part number
-    string partNumber;
+    string partNumberValue;
     //! File length
-    uint32_t length;
+    uint32_t lengthValue;
     //! File CRC
-    uint16_t crc;
+    uint16_t crcValue;
 };
 
 }

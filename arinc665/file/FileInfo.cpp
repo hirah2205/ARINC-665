@@ -22,10 +22,10 @@ FileInfo::FileInfo(
   const string &pathName,
   uint16_t memberSequenceNumber,
   uint16_t crc):
-  filename( filename),
-  pathName( pathName),
-  memberSequenceNumber( memberSequenceNumber),
-  crc( crc)
+  filenameValue( filename),
+  pathNameValue( pathName),
+  memberSequenceNumberValue( memberSequenceNumber),
+  crcValue( crc)
 {
 }
 
@@ -34,69 +34,69 @@ FileInfo::FileInfo(
   string &&pathName,
   uint16_t memberSequenceNumber,
   uint16_t crc):
-  filename( std::move( filename)),
-  pathName( std::move( pathName)),
-  memberSequenceNumber( memberSequenceNumber),
-  crc( crc)
+  filenameValue( std::move( filename)),
+  pathNameValue( std::move( pathName)),
+  memberSequenceNumberValue( memberSequenceNumber),
+  crcValue( crc)
 {
 }
 
-const FileInfo::string& FileInfo::getFilename() const
+const FileInfo::string& FileInfo::filename() const
 {
-  return filename;
+  return filenameValue;
 }
 
-void FileInfo::setFilename( const string &filename)
+void FileInfo::filename( const string &filename)
 {
-  this->filename = filename;
+  filenameValue = filename;
 }
 
-FileInfo::string FileInfo::getPathName() const
+FileInfo::string FileInfo::pathName() const
 {
-  return pathName;
+  return pathNameValue;
 }
 
-void FileInfo::setPathName( const string &pathName)
+void FileInfo::pathName( const string &pathName)
 {
-  this->pathName = pathName;
+  pathNameValue = pathName;
 }
 
-FileInfo::path FileInfo::getPath() const
+FileInfo::fpath FileInfo::path() const
 {
-  string newPathName( pathName);
+  string newPathName( pathNameValue);
 
   std::replace( newPathName.begin(), newPathName.end(), '\\', '/');
 
-  return path( newPathName) / filename;
+  return fpath( newPathName) / filenameValue;
 }
 
-uint16_t FileInfo::getMemberSequenceNumber() const
+uint16_t FileInfo::memberSequenceNumber() const
 {
-  return memberSequenceNumber;
+  return memberSequenceNumberValue;
 }
 
-void FileInfo::setMemberSequenceNumber( const uint16_t memberSequenceNumber)
+void FileInfo::memberSequenceNumber( const uint16_t memberSequenceNumber)
 {
-  this->memberSequenceNumber = memberSequenceNumber;
+  memberSequenceNumberValue = memberSequenceNumber;
 }
 
-uint16_t FileInfo::getCrc() const
+uint16_t FileInfo::crc() const
 {
-  return crc;
+  return crcValue;
 }
 
-void FileInfo::setCrc( const uint16_t crc)
+void FileInfo::crc( const uint16_t crc)
 {
-  this->crc = crc;
+  crcValue = crc;
 }
 
 bool FileInfo::operator ==( const FileInfo &other) const
 {
   return
-    (filename == other.getFilename()) &&
-    (pathName == other.getPathName()) &&
-    (memberSequenceNumber == other.getMemberSequenceNumber()) &&
-    (crc == other.getCrc());
+    (filenameValue == other.filename()) &&
+    (pathNameValue == other.pathName()) &&
+    (memberSequenceNumberValue == other.memberSequenceNumber()) &&
+    (crcValue == other.crc());
 }
 
 bool FileInfo::operator !=( const FileInfo &other) const

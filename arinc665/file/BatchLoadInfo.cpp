@@ -18,37 +18,37 @@ namespace File {
 BatchLoadInfo::BatchLoadInfo(
   const string &headerFilename,
   const string &partNumber):
-  headerFilename( headerFilename),
-  partNumber( partNumber)
+  headerFilenameValue( headerFilename),
+  partNumberValue( partNumber)
 {
 }
 
 BatchLoadInfo:: BatchLoadInfo(
   string &&headerFilename,
   string &&partNumber):
-  headerFilename( headerFilename),
-  partNumber( partNumber)
+  headerFilenameValue( headerFilename),
+  partNumberValue( partNumber)
 {
 }
 
-BatchLoadInfo::string BatchLoadInfo::getHeaderFilename() const
+BatchLoadInfo::string BatchLoadInfo::headerFilename() const
 {
-  return headerFilename;
+  return headerFilenameValue;
 }
 
-void BatchLoadInfo::setHeaderFilename( const string &headerFilename)
+void BatchLoadInfo::headerFilename( const string &headerFilename)
 {
-  this->headerFilename= headerFilename;
+  headerFilenameValue = headerFilename;
 }
 
-BatchLoadInfo::string BatchLoadInfo::getPartNumber() const
+BatchLoadInfo::string BatchLoadInfo::partNumber() const
 {
-  return partNumber;
+  return partNumberValue;
 }
 
-void BatchLoadInfo::setPartNumber( const string &partNumber)
+void BatchLoadInfo::partNumber( const string &partNumber)
 {
-  this->partNumber= partNumber;
+  partNumberValue = partNumber;
 }
 
 }

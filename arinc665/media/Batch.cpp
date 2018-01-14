@@ -20,26 +20,41 @@ Batch::Batch( ContainerEntityPtr parent, const string &name) :
 {
 }
 
-Batch::FileType Batch::getFileType() const
+Batch::FileType Batch::fileType() const
 {
   return FileType::BatchFile;
 }
 
-Batch::string Batch::getComment() const
+Batch::string Batch::comment() const
 {
-  return comment;
+  return commentValue;
 }
 
-void Batch::setComment( const string &comment)
+void Batch::comment( const string &comment)
 {
-  this->comment = comment;
+  commentValue = comment;
+}
+
+void Batch::comment( string &&comment)
+{
+  commentValue = std::move( comment);
+}
+
+const Batch::BatchInfo& Batch::targets() const
+{
+  return batchesValue;
+}
+
+Batch::BatchInfo& Batch::targets()
+{
+  return batchesValue;
 }
 
 const WeakLoads Batch::getTarget( const string &targetHardwareId) const
 {
-  auto it( batches.find( targetHardwareId));
+  auto it( batchesValue.find( targetHardwareId));
 
-  if (it == batches.end())
+  if (it == batchesValue.end())
   {
     return {};
   }
@@ -49,9 +64,9 @@ const WeakLoads Batch::getTarget( const string &targetHardwareId) const
 
 WeakLoads Batch::getTarget( const string &targetHardwareId)
 {
-  auto it( batches.find( targetHardwareId));
+  auto it( batchesValue.find( targetHardwareId));
 
-  if (it == batches.end())
+  if (it == batchesValue.end())
   {
     return {};
   }
@@ -61,17 +76,7 @@ WeakLoads Batch::getTarget( const string &targetHardwareId)
 
 void Batch::addTarget( const string &targetHardwareId, WeakLoads loads)
 {
-  batches.insert( {targetHardwareId, loads});
-}
-
-const Batch::BatchInfo& Batch::getTargets() const
-{
-  return batches;
-}
-
-Batch::BatchInfo& Batch::getTargets()
-{
-  return batches;
+  batchesValue.insert( {targetHardwareId, loads});
 }
 
 }

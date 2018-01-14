@@ -85,6 +85,7 @@ class BatchFile: public Arinc665File
      **/
     void partNumber( const string &partNumber);
 
+    //! @copydoc partNumber(const string&)
     void partNumber( string &&partNumber);
 
     /**
@@ -102,6 +103,7 @@ class BatchFile: public Arinc665File
      **/
     void comment( const string &comment);
 
+    //! @copydoc comment(const string&)
     void comment( string &&comment);
 
     /**

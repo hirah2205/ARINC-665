@@ -35,48 +35,48 @@ class Medium : public ContainerEntity
      **/
     Medium( MediaSetPtr mediaSet, uint8_t mediumNumber);
 
-    //! @copydoc ContainerEntity::getMediaSet
-    virtual ConstMediaSetPtr getMediaSet() const override final;
+    //! @copydoc ContainerEntity::mediaSet
+    ConstMediaSetPtr mediaSet() const final;
 
-    //! @copydoc ContainerEntity::getMediaSet
-    virtual MediaSetPtr getMediaSet() override final;
+    //! @copydoc ContainerEntity::mediaSet
+    MediaSetPtr mediaSet() final;
 
     /**
-     * @copydoc ContainerEntity::getType
+     * @copydoc ContainerEntity::type
      *
      * @retval Type::Medium
      *   Always
      **/
-    virtual Type getType() const override final;
+    Type type() const final;
 
     /**
-     * @copydoc ContainerEntity::getName
+     * @copydoc ContainerEntity::name
      * @return The name of the owning media set.
      **/
-    virtual const string& getName() const override final;
+    const string& name() const final;
 
     /**
-     * @copydoc ContainerEntity::getPartNumber
+     * @copydoc ContainerEntity::partNumber
      *
      * @return The part number of the owning media set.
      **/
-    virtual string getPartNumber() const override final;
+    string partNumber() const final;
 
-    //! @copydoc ContainerEntity::getPath() const
-    virtual path getPath() const override final;
+    //! @copydoc ContainerEntity::path() const
+    fpath path() const final;
 
     /**
      * @brief Returns the medium number.
      *
      * @return The medium number
      **/
-    uint8_t getMediumNumber() const;
+    uint8_t mediumNumber() const;
 
   private:
     //! Pointer to media set
-    WeakMediaSetPtr mediaSet;
+    WeakMediaSetPtr mediaSetValue;
     //! The medium number
-    const uint8_t mediumNumber;
+    const uint8_t mediumNumberValue;
 };
 
 }

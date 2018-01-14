@@ -27,7 +27,7 @@ namespace Media {
 class Batch: public BaseFile
 {
   public:
-    //! Batch information type
+    //! Batch information type (Target Hardware ID -> Loads)
     using BatchInfo = std::map< string, WeakLoads>;
 
     /**
@@ -45,14 +45,14 @@ class Batch: public BaseFile
      *
      * @return FileType::BatchFile always.
      **/
-    virtual FileType getFileType() const override final;
+    FileType fileType() const final;
 
     /**
      * @brief Get the comment, which describes the batch.
      *
      * @return The comment, which describes the batch.
      **/
-    string getComment() const;
+    string comment() const;
 
     /**
      * @brief Set the comment, which describes the batch.
@@ -60,7 +60,19 @@ class Batch: public BaseFile
      * @param[in] comment
      *   The comment, which describes the batch.
      **/
-    void setComment( const string &comment);
+    void comment( const string &comment);
+
+    void comment( string &&comment);
+
+    /**
+     * @brief Return batches.
+     *
+     * @return The batch target information.
+     **/
+    const BatchInfo& targets() const;
+
+    //! @copydoc getTargets() const
+    BatchInfo& targets();
 
     /**
      * @brief Return the batch info for the given target hardware ID
@@ -90,21 +102,11 @@ class Batch: public BaseFile
      */
     void addTarget( const string &targetHardwareId, WeakLoads loads);
 
-    /**
-     * @brief Return batches.
-     *
-     * @return The batch target information.
-     **/
-    const BatchInfo& getTargets() const;
-
-    //! @copydoc getTargets() const
-    BatchInfo& getTargets();
-
   private:
     //! Batch comment
-    string comment;
+    string commentValue;
     //! Batch informations
-    BatchInfo batches;
+    BatchInfo batchesValue;
 };
 
 }

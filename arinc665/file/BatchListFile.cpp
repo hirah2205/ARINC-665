@@ -20,8 +20,8 @@ namespace File {
 
 BatchListFile::BatchListFile( Arinc665Version version):
   ListFile( FileType::BatchList, version),
-  mediaSequenceNumber( 0),
-  numberOfMediaSetMembers( 0)
+  mediaSequenceNumberValue( 0),
+  numberOfMediaSetMembersValue( 0)
 {
 }
 
@@ -39,57 +39,62 @@ BatchListFile& BatchListFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
-BatchListFile::string BatchListFile::getMediaSetPn() const
+BatchListFile::string BatchListFile::mediaSetPn() const
 {
-  return mediaSetPn;
+  return mediaSetPnValue;
 }
 
-void BatchListFile::setMediaSetPn( const string &mediaSetPn)
+void BatchListFile::mediaSetPn( const string &mediaSetPn)
 {
-  this->mediaSetPn = mediaSetPn;
+  mediaSetPnValue = mediaSetPn;
 }
 
-uint8_t BatchListFile::getMediaSequenceNumber() const
+void BatchListFile::mediaSetPn( string &&mediaSetPn)
 {
-  return mediaSequenceNumber;
+  mediaSetPnValue = std::move( mediaSetPn);
 }
 
-void BatchListFile::setMediaSequenceNumber( const uint8_t mediaSequenceNumber)
+uint8_t BatchListFile::mediaSequenceNumber() const
 {
-  this->mediaSequenceNumber = mediaSequenceNumber;
+  return mediaSequenceNumberValue;
 }
 
-uint8_t BatchListFile::getNumberOfMediaSetMembers() const
+void BatchListFile::mediaSequenceNumber( const uint8_t mediaSequenceNumber)
 {
-  return numberOfMediaSetMembers;
+  mediaSequenceNumberValue = mediaSequenceNumber;
 }
 
-void BatchListFile::setNumberOfMediaSetMembers(
+uint8_t BatchListFile::numberOfMediaSetMembers() const
+{
+  return numberOfMediaSetMembersValue;
+}
+
+void BatchListFile::numberOfMediaSetMembers(
   const uint8_t numberOfMediaSetMembers)
 {
-  this->numberOfMediaSetMembers = numberOfMediaSetMembers;
+  numberOfMediaSetMembersValue = numberOfMediaSetMembers;
 }
 
-size_t BatchListFile::getNumberOfBatches() const
+size_t BatchListFile::numberOfBatches() const
 {
-  return batchesInfo.size();
+  return batchesInfoValue.size();
 }
 
-const BatchesInfo& BatchListFile::getBatchesInfo() const
+const BatchesInfo& BatchListFile::batchesInfo() const
 {
-  return batchesInfo;
+  return batchesInfoValue;
 }
 
-BatchesInfo& BatchListFile::getBatchesInfo()
+BatchesInfo& BatchListFile::batchesInfo()
 {
-  return batchesInfo;
+  return batchesInfoValue;
 }
 
-BatchListFile::BatchInfoMap BatchListFile::getBatchesInfoAsMap() const
+BatchListFile::BatchInfoMap BatchListFile::batchesInfoAsMap() const
 {
   BatchInfoMap batches;
 
-  for (const auto & batch : batchesInfo)
+  for (const auto & batch : batchesInfoValue)
   {
     batches.insert(
       std::make_pair(
@@ -104,30 +109,35 @@ BatchListFile::BatchInfoMap BatchListFile::getBatchesInfoAsMap() const
 
 void BatchListFile::addBatchInfo( const BatchInfo &batchInfo)
 {
-  batchesInfo.push_back( batchInfo);
+  batchesInfoValue.push_back( batchInfo);
 }
 
 void BatchListFile::addBatchInfo( BatchInfo &&batchInfo)
 {
-  batchesInfo.push_back( batchInfo);
+  batchesInfoValue.push_back( batchInfo);
 }
 
-const BatchListFile::UserDefinedData& BatchListFile::getUserDefinedData() const
+const BatchListFile::UserDefinedData& BatchListFile::userDefinedData() const
 {
-  return userDefinedData;
+  return userDefinedDataValue;
 }
 
-void BatchListFile::setUserDefinedData( const UserDefinedData &userDefinedData)
+void BatchListFile::userDefinedData( const UserDefinedData &userDefinedData)
 {
-  this->userDefinedData = userDefinedData;
+  userDefinedDataValue = userDefinedData;
+}
+
+void BatchListFile::userDefinedData( UserDefinedData &&userDefinedData)
+{
+  userDefinedDataValue = std::move( userDefinedData);
 }
 
 bool BatchListFile::belongsToSameMediaSet( const BatchListFile &other) const
 {
   return
-    (mediaSetPn == other.getMediaSetPn()) &&
-    (numberOfMediaSetMembers == other.getNumberOfMediaSetMembers()) &&
-    (batchesInfo == other.getBatchesInfo());
+    (mediaSetPnValue == other.mediaSetPn()) &&
+    (numberOfMediaSetMembersValue == other.numberOfMediaSetMembers()) &&
+    (batchesInfoValue == other.batchesInfo());
 }
 
 RawFile BatchListFile::encode() const
@@ -138,7 +148,7 @@ RawFile BatchListFile::encode() const
     2 * sizeof( uint8_t)  + // media sequence number, number of media set members
     sizeof( uint16_t));     // crc
 
-  auto rawMediaSetPn( encodeString( getMediaSetPn()));
+  auto rawMediaSetPn( encodeString( mediaSetPn()));
   assert( rawMediaSetPn.size() % 2 == 0);
   auto rawBatchesInfo( encodeBatchesInfo());
   assert( rawBatchesInfo.size() % 2 == 0);
@@ -157,7 +167,7 @@ RawFile BatchListFile::encode() const
 
   // user defined data pointer
   uint32_t userDefinedDataPtr =
-    userDefinedData.empty() ? 0 : batchesListPtr + rawBatchesInfo.size() / 2;
+    userDefinedDataValue.empty() ? 0 : batchesListPtr + rawBatchesInfo.size() / 2;
   it = setInt< uint32_t>( it, userDefinedDataPtr);
 
   // media set part number
@@ -165,19 +175,22 @@ RawFile BatchListFile::encode() const
   it += rawMediaSetPn.size();
 
   // media sequence number
-  it = setInt< uint8_t>( it, mediaSequenceNumber);
+  it = setInt< uint8_t>( it, mediaSequenceNumberValue);
 
   // number of media set members
-  it = setInt< uint8_t>( it, numberOfMediaSetMembers);
+  it = setInt< uint8_t>( it, numberOfMediaSetMembersValue);
 
   // loads list
   it = rawFile.insert( it, rawBatchesInfo.begin(), rawBatchesInfo.end());
   it += rawFile.size();
 
-  if (!userDefinedData.empty())
+  if (!userDefinedDataValue.empty())
   {
-    assert( userDefinedData.size() % 2 == 0);
-    rawFile.insert( it, userDefinedData.begin(), userDefinedData.end());
+    assert( userDefinedDataValue.size() % 2 == 0);
+    rawFile.insert(
+      it,
+      userDefinedDataValue.begin(),
+      userDefinedDataValue.end());
   }
 
   // set header and crc
@@ -202,13 +215,13 @@ void BatchListFile::decodeBody( const RawFile &rawFile)
 
   // media set part number
   it = rawFile.begin() + mediaInformationPtr * 2;
-  it = decodeString( it, mediaSetPn);
+  it = decodeString( it, mediaSetPnValue);
 
   // media sequence number
-  it = getInt< uint8_t>( it, mediaSequenceNumber);
+  it = getInt< uint8_t>( it, mediaSequenceNumberValue);
 
   // number of media set members
-  it = getInt< uint8_t>( it, numberOfMediaSetMembers);
+  it = getInt< uint8_t>( it, numberOfMediaSetMembersValue);
 
   // batch list
   decodeBatchesInfo( rawFile, 2 * batchListPtr);
@@ -217,7 +230,7 @@ void BatchListFile::decodeBody( const RawFile &rawFile)
   if ( 0 != userDefinedDataPtr)
   {
     it = rawFile.begin() + userDefinedDataPtr * 2;
-    userDefinedData.assign( it, rawFile.end() - 2);
+    userDefinedDataValue.assign( it, rawFile.end() - 2);
   }
 
   // file CRC decoded and checked within base class
@@ -228,11 +241,11 @@ RawFile BatchListFile::encodeBatchesInfo() const
   RawFile rawBatchesInfo( sizeof( uint16_t));
 
   // number of batches
-  setInt< uint16_t>( rawBatchesInfo.begin(), getNumberOfBatches());
+  setInt< uint16_t>( rawBatchesInfo.begin(), numberOfBatches());
 
   // iterate over batches
   uint16_t batchCounter( 0);
-  for (auto const &batchInfo : getBatchesInfo())
+  for (auto const &batchInfo : batchesInfoValue)
   {
     ++batchCounter;
     auto const rawPartNumber( encodeString( batchInfo.getPartNumber()));
@@ -251,7 +264,7 @@ RawFile BatchListFile::encodeBatchesInfo() const
     // next batch pointer (is set to 0 for last file)
     batchInfoIt = setInt< uint16_t>(
       batchInfoIt,
-      (batchCounter == getNumberOfBatches()) ?
+      (batchCounter == numberOfBatches()) ?
         (0U) :
         (rawBatchInfo.size() / 2));
 
@@ -284,7 +297,7 @@ void BatchListFile::decodeBatchesInfo(
   auto it( rawFile.begin() + offset);
 
   // clear eventually stored infos
-  batchesInfo.clear();
+  batchesInfoValue.clear();
 
   // number of batches
   uint16_t numberOfBatches;
@@ -316,7 +329,7 @@ void BatchListFile::decodeBatchesInfo(
     // set it to begin of next batch
     it += batchPointer * 2;
 
-    batchesInfo.emplace_back( partNumber, filename, memberSequenceNumber);
+    batchesInfoValue.emplace_back( partNumber, filename, memberSequenceNumber);
   }
 }
 

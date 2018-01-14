@@ -86,11 +86,11 @@ int Arinc665DecompilerApplication::operator()()
 
     Arinc665::Utils::Arinc665Xml::FilePathMapping fileMapping;
 
-    for (auto file : result->getFiles())
+    for (auto file : result->files())
     {
       boost::filesystem::path filePath(
-        mediaSourceDirectories[ file->getMedium()->getMediumNumber()-1] /
-        file->getPath().relative_path());
+        mediaSourceDirectories[ file->medium()->mediumNumber()-1] /
+        file->path().relative_path());
 
       fileMapping.insert( {file, filePath});
     }

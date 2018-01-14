@@ -20,10 +20,14 @@ namespace Media {
 File::File( ContainerEntityPtr parent, const string &name) :
   BaseFile( parent, name)
 {
-  assert( parent);
 }
 
-File::FileType File::getFileType() const
+File::File( ContainerEntityPtr parent, string &&name) :
+  BaseFile( parent, std::move( name))
+{
+}
+
+File::FileType File::fileType() const
 {
   return FileType::RegularFile;
 }

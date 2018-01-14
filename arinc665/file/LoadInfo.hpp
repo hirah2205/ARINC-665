@@ -66,7 +66,7 @@ class LoadInfo
      *
      * @return The load part number
      **/
-    string getPartNumber() const;
+    string partNumber() const;
 
     /**
      * @brief Updates the load part number.
@@ -74,17 +74,17 @@ class LoadInfo
      * @param[in] partNumber
      *   load part number.
      **/
-    void setPartNumber( const string &partNumber);
+    void partNumber( const string &partNumber);
 
     //! @copydoc setPartNumber(const string&)
-    void setPartNumber( string &&partNumber);
+    void partNumber( string &&partNumber);
 
     /**
      * @brief Returns the load header filename.
      *
      * @return The load header filename.
      **/
-    string getHeaderFilename() const;
+    string headerFilename() const;
 
     /**
      * @brief Updates the load header filename.
@@ -92,17 +92,17 @@ class LoadInfo
      * @param[in] headerFilename
      *   The load header filename.
      **/
-    void setHeaderFilename( const string &headerFilename);
+    void headerFilename( const string &headerFilename);
 
     //! @copydoc setHeaderFilename(const string&)
-    void setHeaderFilename( string &&headerFilename);
+    void headerFilename( string &&headerFilename);
 
     /**
      * @brief Returns the member sequence number.
      *
      * @return The member sequence number
      **/
-    uint8_t getMemberSequenceNumber() const;
+    uint8_t memberSequenceNumber() const;
 
     /**
      * @brief Updates the  member sequence number.
@@ -110,17 +110,17 @@ class LoadInfo
      * @param[in] memberSequenceNumber
      *   The  member sequence number.
      **/
-    void setMemberSequenceNumber( uint8_t memberSequenceNumber);
+    void memberSequenceNumber( uint8_t memberSequenceNumber);
 
     /**
      * @brief Returns the target hardware IDs.
      *
      * @return The target hardware IDs.
      **/
-    const ThwIds& getTargetHardwareIds() const;
+    const ThwIds& targetHardwareIds() const;
 
     //! @copydoc getTargetHardwareIds() const
-    ThwIds& getTargetHardwareIds();
+    ThwIds& targetHardwareIds();
 
     /**
      * @brief Adds a target hardware ID.
@@ -175,13 +175,13 @@ class LoadInfo
 
   private:
     //! Load part number
-    string partNumber;
+    string partNumberValue;
     //! Header filename
-    string headerFilename;
+    string headerFilenameValue;
     //! Member sequence number
-    uint8_t memberSequenceNumber;
+    uint8_t memberSequenceNumberValue;
     //! Target Hardware IDs (list)
-    ThwIds targetHardwareIds;
+    ThwIds targetHardwareIdsValue;
 };
 
 /**

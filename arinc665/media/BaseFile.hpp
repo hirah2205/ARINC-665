@@ -28,7 +28,7 @@ class BaseFile: public Base
 {
   public:
     //! Path type
-    using path = boost::filesystem::path;
+    using fpath = boost::filesystem::path;
 
     //! File type
     enum class FileType
@@ -42,64 +42,64 @@ class BaseFile: public Base
     virtual ~BaseFile() = default;
 
     //! @copydoc Base::getMediaSet
-    ConstMediaSetPtr getMediaSet() const final;
+    ConstMediaSetPtr mediaSet() const final;
 
     //! @copydoc Base::getMediaSet
-    MediaSetPtr getMediaSet() final;
+    MediaSetPtr mediaSet() final;
 
     //! @copydoc Base::getType
-    Type getType() const final;
+    Type type() const final;
 
     /**
      * @copydoc Base::getType
      *
      * @return The name of the file.
      **/
-    const string& getName() const final;
+    const string& name() const final;
 
    //void setName( void);
 
     //! @copydoc Base::getPartNumber
-    string getPartNumber() const final;
+    string partNumber() const final;
 
     /**
-     * @brief Updates the partnumber
+     * @brief Updates the part number
      *
      * @param[in] partNumber
-     *   New Partnumber
+     *   New Part number
      **/
-    void setPartNumber( const string &partNumber);
+    void partNumber( const string &partNumber);
 
     /**
      * @brief Returns the file type.
      *
      * @return The file type
      **/
-    virtual FileType getFileType() const = 0;
+    virtual FileType fileType() const = 0;
 
     /**
      * @brief Returns the container element.
      *
      * @return The parent container element
      **/
-    ContainerEntityPtr getParent();
+    ContainerEntityPtr parent();
 
     /**
      * @brief Returns the container element.
      *
      * @return The parent container element
      **/
-    ConstContainerEntityPtr getParent() const;
+    ConstContainerEntityPtr parent() const;
 
     /**
      * @brief Returns the medium where this file is located.
      *
      * @return The medium where this file is located.
      **/
-    ConstMediumPtr getMedium() const;
+    ConstMediumPtr medium() const;
 
     //! @copydoc getMedium() const
-    MediumPtr getMedium();
+    MediumPtr medium();
 
     /**
      * @brief Returns the file path up to the medium root.
@@ -111,7 +111,7 @@ class BaseFile: public Base
      * @retval {}
      *   If parent is not available. (Should never happen)
      **/
-    path getPath() const;
+    fpath path() const;
 
   protected:
     /**
@@ -139,15 +139,15 @@ class BaseFile: public Base
      * @throw Arinc665Exception
      *   If parent is invalid
      **/
-    void setParent( ContainerEntityPtr parent);
+    void parent( ContainerEntityPtr parent);
 
   private:
     //! The parent
-    WeakContainerEntityPtr parent;
+    WeakContainerEntityPtr parentValue;
     //! The file name
-    const string name;
+    const string nameValue;
     //! The part number
-    string partNumber;
+    string partNumberValue;
 };
 
 }

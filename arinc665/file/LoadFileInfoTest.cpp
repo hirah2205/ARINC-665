@@ -30,10 +30,10 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( name == "NAME");
   BOOST_CHECK( partNumber == "PART_NUMBER");
 
-  BOOST_CHECK( loadFileInfo.getFilename() == "NAME");
-  BOOST_CHECK( loadFileInfo.getPartNumber() == "PART_NUMBER");
-  BOOST_CHECK( loadFileInfo.getLength() == 0xDEADBEEFUL);
-  BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
+  BOOST_CHECK( loadFileInfo.filename() == "NAME");
+  BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");
+  BOOST_CHECK( loadFileInfo.length() == 0xDEADBEEFUL);
+  BOOST_CHECK( loadFileInfo.crc() == 0xBABEU);
 }
 
 //! Constructor test
@@ -48,10 +48,10 @@ BOOST_AUTO_TEST_CASE( constructor2)
     0xDEADBEEFUL,
     0xBABEU);
 
-  BOOST_CHECK( loadFileInfo.getFilename() == "NAME");
-  BOOST_CHECK( loadFileInfo.getPartNumber() == "PART_NUMBER");
-  BOOST_CHECK( loadFileInfo.getLength() == 0xDEADBEEFUL);
-  BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
+  BOOST_CHECK( loadFileInfo.filename() == "NAME");
+  BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");
+  BOOST_CHECK( loadFileInfo.length() == 0xDEADBEEFUL);
+  BOOST_CHECK( loadFileInfo.crc() == 0xBABEU);
 }
 
 //! get/set name test
@@ -59,17 +59,17 @@ BOOST_AUTO_TEST_CASE( GetSetName)
 {
   LoadFileInfo loadFileInfo( "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU);
 
-  BOOST_CHECK( loadFileInfo.getFilename() == "NAME");
-  BOOST_CHECK( loadFileInfo.getPartNumber() == "PART_NUMBER");
-  BOOST_CHECK( loadFileInfo.getLength() == 0xDEADBEEFUL);
-  BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
+  BOOST_CHECK( loadFileInfo.filename() == "NAME");
+  BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");
+  BOOST_CHECK( loadFileInfo.length() == 0xDEADBEEFUL);
+  BOOST_CHECK( loadFileInfo.crc() == 0xBABEU);
 
-  BOOST_CHECK_NO_THROW( loadFileInfo.setFilename( "NAME2"));
+  BOOST_CHECK_NO_THROW( loadFileInfo.filename( "NAME2"));
 
-  BOOST_CHECK( loadFileInfo.getFilename() == "NAME2");
-  BOOST_CHECK( loadFileInfo.getPartNumber() == "PART_NUMBER");
-  BOOST_CHECK( loadFileInfo.getLength() == 0xDEADBEEFUL);
-  BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
+  BOOST_CHECK( loadFileInfo.filename() == "NAME2");
+  BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");
+  BOOST_CHECK( loadFileInfo.length() == 0xDEADBEEFUL);
+  BOOST_CHECK( loadFileInfo.crc() == 0xBABEU);
 }
 
 //! get/set partnumber test
@@ -77,17 +77,17 @@ BOOST_AUTO_TEST_CASE( GetSetPartNumber)
 {
   LoadFileInfo loadFileInfo( "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU);
 
-  BOOST_CHECK( loadFileInfo.getFilename() == "NAME");
-  BOOST_CHECK( loadFileInfo.getPartNumber() == "PART_NUMBER");
-  BOOST_CHECK( loadFileInfo.getLength() == 0xDEADBEEFUL);
-  BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
+  BOOST_CHECK( loadFileInfo.filename() == "NAME");
+  BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");
+  BOOST_CHECK( loadFileInfo.length() == 0xDEADBEEFUL);
+  BOOST_CHECK( loadFileInfo.crc() == 0xBABEU);
 
-  BOOST_CHECK_NO_THROW( loadFileInfo.setPartNumber( "PART_NUMBER2"));
+  BOOST_CHECK_NO_THROW( loadFileInfo.partNumber( "PART_NUMBER2"));
 
-  BOOST_CHECK( loadFileInfo.getFilename() == "NAME");
-  BOOST_CHECK( loadFileInfo.getPartNumber() == "PART_NUMBER2");
-  BOOST_CHECK( loadFileInfo.getLength() == 0xDEADBEEFUL);
-  BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
+  BOOST_CHECK( loadFileInfo.filename() == "NAME");
+  BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER2");
+  BOOST_CHECK( loadFileInfo.length() == 0xDEADBEEFUL);
+  BOOST_CHECK( loadFileInfo.crc() == 0xBABEU);
 }
 
 //! get/set length test
@@ -95,17 +95,17 @@ BOOST_AUTO_TEST_CASE( GetSetLength)
 {
   LoadFileInfo loadFileInfo( "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU);
 
-  BOOST_CHECK( loadFileInfo.getFilename() == "NAME");
-  BOOST_CHECK( loadFileInfo.getPartNumber() == "PART_NUMBER");
-  BOOST_CHECK( loadFileInfo.getLength() == 0xDEADBEEFUL);
-  BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
+  BOOST_CHECK( loadFileInfo.filename() == "NAME");
+  BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");
+  BOOST_CHECK( loadFileInfo.length() == 0xDEADBEEFUL);
+  BOOST_CHECK( loadFileInfo.crc() == 0xBABEU);
 
-  BOOST_CHECK_NO_THROW( loadFileInfo.setLength( 0xAA55AA55UL));
+  BOOST_CHECK_NO_THROW( loadFileInfo.length( 0xAA55AA55UL));
 
-  BOOST_CHECK( loadFileInfo.getFilename() == "NAME");
-  BOOST_CHECK( loadFileInfo.getPartNumber() == "PART_NUMBER");
-  BOOST_CHECK( loadFileInfo.getLength() == 0xAA55AA55UL);
-  BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
+  BOOST_CHECK( loadFileInfo.filename() == "NAME");
+  BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");
+  BOOST_CHECK( loadFileInfo.length() == 0xAA55AA55UL);
+  BOOST_CHECK( loadFileInfo.crc() == 0xBABEU);
 }
 
 //! get/set crc test
@@ -113,17 +113,17 @@ BOOST_AUTO_TEST_CASE( GetSetCrc)
 {
   LoadFileInfo loadFileInfo( "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU);
 
-  BOOST_CHECK( loadFileInfo.getFilename() == "NAME");
-  BOOST_CHECK( loadFileInfo.getPartNumber() == "PART_NUMBER");
-  BOOST_CHECK( loadFileInfo.getLength() == 0xDEADBEEFUL);
-  BOOST_CHECK( loadFileInfo.getCrc() == 0xBABEU);
+  BOOST_CHECK( loadFileInfo.filename() == "NAME");
+  BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");
+  BOOST_CHECK( loadFileInfo.length() == 0xDEADBEEFUL);
+  BOOST_CHECK( loadFileInfo.crc() == 0xBABEU);
 
-  BOOST_CHECK_NO_THROW( loadFileInfo.setCrc( 0xAA55U));
+  BOOST_CHECK_NO_THROW( loadFileInfo.crc( 0xAA55U));
 
-  BOOST_CHECK( loadFileInfo.getFilename() == "NAME");
-  BOOST_CHECK( loadFileInfo.getPartNumber() == "PART_NUMBER");
-  BOOST_CHECK( loadFileInfo.getLength() == 0xDEADBEEFUL);
-  BOOST_CHECK( loadFileInfo.getCrc() == 0xAA55U);
+  BOOST_CHECK( loadFileInfo.filename() == "NAME");
+  BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");
+  BOOST_CHECK( loadFileInfo.length() == 0xDEADBEEFUL);
+  BOOST_CHECK( loadFileInfo.crc() == 0xAA55U);
 }
 BOOST_AUTO_TEST_SUITE_END()
 

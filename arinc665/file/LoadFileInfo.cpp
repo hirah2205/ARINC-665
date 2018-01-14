@@ -20,10 +20,10 @@ LoadFileInfo::LoadFileInfo(
   const string &partNumber,
   uint32_t length,
   uint16_t crc):
-  filename( filename),
-  partNumber( partNumber),
-  length( length),
-  crc( crc)
+  filenameValue( filename),
+  partNumberValue( partNumber),
+  lengthValue( length),
+  crcValue( crc)
 {
 }
 
@@ -32,51 +32,61 @@ LoadFileInfo::LoadFileInfo(
   string &&partNumber,
   uint32_t length,
   uint16_t crc):
-  filename( std::move( filename)),
-  partNumber( std::move( partNumber)),
-  length( length),
-  crc( crc)
+  filenameValue( std::move( filename)),
+  partNumberValue( std::move( partNumber)),
+  lengthValue( length),
+  crcValue( crc)
 {
 }
 
-LoadFileInfo::string LoadFileInfo::getFilename() const
+LoadFileInfo::string LoadFileInfo::filename() const
 {
-  return filename;
+  return filenameValue;
 }
 
-void LoadFileInfo::setFilename( const string &filename)
+void LoadFileInfo::filename( const string &filename)
 {
-  this->filename = filename;
+  filenameValue = filename;
 }
 
-LoadFileInfo::string LoadFileInfo::getPartNumber() const
+void LoadFileInfo::filename( string &&filename)
 {
-  return partNumber;
+  filenameValue = std::move( filename);
 }
 
-void LoadFileInfo::setPartNumber( const string &partNumber)
+LoadFileInfo::string LoadFileInfo::partNumber() const
 {
-  this->partNumber = partNumber;
+  return partNumberValue;
 }
 
-uint32_t LoadFileInfo::getLength() const
+void LoadFileInfo::partNumber( const string &partNumber)
 {
-  return length;
+  partNumberValue = partNumber;
 }
 
-void LoadFileInfo::setLength( const uint32_t length)
+void LoadFileInfo::partNumber( string &&partNumber)
 {
-  this->length = length;
+  partNumberValue = std::move( partNumber);
 }
 
-uint16_t LoadFileInfo::getCrc() const
+uint32_t LoadFileInfo::length() const
 {
-  return crc;
+  return lengthValue;
 }
 
-void LoadFileInfo::setCrc( const uint16_t crc)
+void LoadFileInfo::length( const uint32_t length)
 {
-  this->crc = crc;
+  lengthValue = length;
+}
+
+uint16_t LoadFileInfo::crc() const
+{
+  return crcValue;
+}
+
+void LoadFileInfo::crc( const uint16_t crc)
+{
+  crcValue = crc;
 }
 
 }
