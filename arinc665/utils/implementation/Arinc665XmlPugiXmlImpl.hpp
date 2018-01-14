@@ -40,6 +40,11 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
      *   The ARINC 665 XML file.
      *
      * @return The loaded Media Set information.
+     *
+     * @throw Arinc665::Arinc665Exception
+     *   When XML file does not exist.
+     * @throw Arinc665::Arinc665Exception
+     *   When Loading of XML fails.
      **/
     LoadXmlResult loadFromXml( const path &xmlFile) final;
 

@@ -4,45 +4,45 @@
   targetNamespace="http://www.thomas-vogt.de/Arinc665MediaSet"
   elementFormDefault="qualified"
   xmlns="http://www.w3.org/2001/XMLSchema"
-  xmlns:tns="http://www.thomas-vogt.de/Arinc665MediaSet" >
+  xmlns:ams="http://www.thomas-vogt.de/Arinc665MediaSet" >
   
-  <element name="MediaSet" type="tns:MediaSetType" />
+  <element name="MediaSet" type="ams:MediaSetType" />
   
-  <element name="Medium"   type="tns:MediumType" />
+  <element name="Medium"   type="ams:MediumType" />
   
-  <element name="Loads"    type="tns:LoadsType" />
-  <element name="Load"     type="tns:LoadType" />
+  <element name="Loads"    type="ams:LoadsType" />
+  <element name="Load"     type="ams:LoadType" />
   
-  <element name="Batches"  type="tns:BatchesType" />
-  <element name="Batch"    type="tns:BatchType" />
+  <element name="Batches"  type="ams:BatchesType" />
+  <element name="Batch"    type="ams:BatchType" />
   
   <complexType name="MediaSetType">
     <sequence>
-      <element ref="tns:Medium"  minOccurs="1" maxOccurs="unbounded" />
-      <element ref="tns:Loads"   minOccurs="1" maxOccurs="1" />
-      <element ref="tns:Batches" minOccurs="1" maxOccurs="1" />
+      <element ref="ams:Medium"  minOccurs="1" maxOccurs="unbounded" />
+      <element ref="ams:Loads"   minOccurs="1" maxOccurs="1" />
+      <element ref="ams:Batches" minOccurs="1" maxOccurs="1" />
     </sequence>
-    <attribute name="Name"       type="tns:NameType"       use="required" />
-    <attribute name="PartNumber" type="tns:PartNumberType" use="required" />
+    <attribute name="Name"       type="ams:NameType"       use="required" />
+    <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
   </complexType>
 
   <complexType name="MediumType">
     <sequence>
-      <group ref="tns:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded"/> 
+      <group ref="ams:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded"/> 
     </sequence>
   </complexType>
 
   <complexType name="BaseFileType">
-    <attribute name="Name"            type="tns:NameType"       use="required" />
-    <attribute name="PartNumber"      type="tns:PartNumberType" use="optional" />
+    <attribute name="Name"            type="ams:NameType"       use="required" />
+    <attribute name="PartNumber"      type="ams:PartNumberType" use="optional" />
     <attribute name="SourcePath"      type="string"             use="optional" />
   </complexType>
 
   <complexType name="FileType">
     <complexContent>
-      <restriction base="tns:BaseFileType">
-        <attribute name="Name"            type="tns:NameType"        use="required" />
-        <attribute name="PartNumber"      type="tns:PartNumberType"  use="optional" />
+      <restriction base="ams:BaseFileType">
+        <attribute name="Name"            type="ams:NameType"        use="required" />
+        <attribute name="PartNumber"      type="ams:PartNumberType"  use="optional" />
         <attribute name="SourcePath"      type="string"              use="optional" />
       </restriction>
     </complexContent>
@@ -50,9 +50,9 @@
 
   <complexType name="LoadFileType">
     <complexContent>
-      <restriction base="tns:BaseFileType">
-        <attribute name="Name"            type="tns:NameType"        use="required" />
-        <attribute name="PartNumber"      type="tns:PartNumberType"  use="required" />
+      <restriction base="ams:BaseFileType">
+        <attribute name="Name"            type="ams:NameType"        use="required" />
+        <attribute name="PartNumber"      type="ams:PartNumberType"  use="required" />
         <attribute name="SourcePath"      type="string"              use="optional" />
       </restriction>
     </complexContent>
@@ -60,9 +60,9 @@
   
   <complexType name="BatchFileType">
     <complexContent>
-      <restriction base="tns:BaseFileType">
-        <attribute name="Name"            type="tns:NameType"        use="required" />
-        <attribute name="PartNumber"      type="tns:PartNumberType"  use="required" />
+      <restriction base="ams:BaseFileType">
+        <attribute name="Name"            type="ams:NameType"        use="required" />
+        <attribute name="PartNumber"      type="ams:PartNumberType"  use="required" />
         <attribute name="SourcePath"      type="string"              use="optional" />
       </restriction>
     </complexContent>
@@ -70,36 +70,36 @@
   
   <complexType name="DirectoryType" >
     <sequence>
-      <group ref="tns:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded" /> 
+      <group ref="ams:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded" /> 
     </sequence>
-    <attribute name="Name" type="tns:NameType" use="required" />
+    <attribute name="Name" type="ams:NameType" use="required" />
   </complexType>
 
   <complexType name="LoadsType" >
     <sequence>
-      <element ref="tns:Load" minOccurs="0" maxOccurs="unbounded" />
+      <element ref="ams:Load" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
   </complexType>
 
   <complexType name="LoadType" >
     <sequence>
-      <element name="TargetHardware" type="tns:TargetHardwareType" minOccurs="1" maxOccurs="unbounded" />
-      <element name="DataFile"       type="tns:FileRefernceType"   minOccurs="0" maxOccurs="unbounded" />
-      <element name="SupportFile"    type="tns:FileRefernceType"   minOccurs="0" maxOccurs="unbounded" />
+      <element name="TargetHardware" type="ams:TargetHardwareType" minOccurs="1" maxOccurs="unbounded" />
+      <element name="DataFile"       type="ams:FileRefernceType"   minOccurs="0" maxOccurs="unbounded" />
+      <element name="SupportFile"    type="ams:FileRefernceType"   minOccurs="0" maxOccurs="unbounded" />
     </sequence>
     <attribute name="NameRef"     type="IDREF"          use="required" />
-    <attribute name="Description" type="tns:StringType" use="optional" />
+    <attribute name="Description" type="ams:StringType" use="optional" />
   </complexType>
 
   <complexType name="TargetHardwareType" >
     <sequence>
-      <element name="Position" type="tns:PositionType" minOccurs="0" maxOccurs="unbounded" />
+      <element name="Position" type="ams:PositionType" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
-    <attribute name="ThwId" type="tns:TargetHardwareIdType" use="required" />
+    <attribute name="ThwId" type="ams:TargetHardwareIdType" use="required" />
   </complexType>
 
   <complexType name="PositionType">
-    <attribute name="Pos" type="tns:PosType" use="required" />
+    <attribute name="Pos" type="ams:PosType" use="required" />
   </complexType>
 
   <complexType name="FileRefernceType">
@@ -109,23 +109,23 @@
 
   <complexType name="BatchesType">
     <sequence>
-      <element ref="tns:Batch" minOccurs="0" maxOccurs="unbounded" />
+      <element ref="ams:Batch" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
   </complexType>
 
   <complexType name="BatchType">
     <sequence>
-      <element name="Target" type="tns:BatchTargetType" minOccurs="1" maxOccurs="unbounded"/>
+      <element name="Target" type="ams:BatchTargetType" minOccurs="1" maxOccurs="unbounded"/>
     </sequence>
     <attribute name="NameRef" type="IDREF"          use="required" />
-    <attribute name="Comment" type="tns:StringType" use="optional" />
+    <attribute name="Comment" type="ams:StringType" use="optional" />
   </complexType>
 
   <complexType name="BatchTargetType">
       <sequence>
-      <element name="Load" type="tns:LoadRefernceType" minOccurs="1" maxOccurs="unbounded" />
+      <element name="Load" type="ams:LoadRefernceType" minOccurs="1" maxOccurs="unbounded" />
     </sequence>
-    <attribute name="ThwIdPos" type="tns:TargetHardwareIdPosType" use="required" />
+    <attribute name="ThwIdPos" type="ams:TargetHardwareIdPosType" use="required" />
   </complexType>
   
   <complexType name="LoadRefernceType">
@@ -169,10 +169,10 @@
       <documentation>Contents of medias and directories</documentation>
     </annotation>
     <choice>
-      <element name="Directory" type="tns:DirectoryType" />
-      <element name="File"      type="tns:FileType" />
-      <element name="LoadFile"  type="tns:LoadFileType" />
-      <element name="BatchFile" type="tns:BatchFileType" />
+      <element name="Directory" type="ams:DirectoryType" />
+      <element name="File"      type="ams:FileType" />
+      <element name="LoadFile"  type="ams:LoadFileType" />
+      <element name="BatchFile" type="ams:BatchFileType" />
     </choice>
   </group>
 </schema>

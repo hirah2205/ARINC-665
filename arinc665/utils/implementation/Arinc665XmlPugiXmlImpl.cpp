@@ -30,9 +30,9 @@ Arinc665XmlPugiXmlImpl::LoadXmlResult Arinc665XmlPugiXmlImpl::loadFromXml(
 {
   BOOST_LOG_FUNCTION();
 
+  // Check existance of file
   if (!boost::filesystem::is_regular( xmlFile))
   {
-    //! @throw Arinc665::Arinc665Exception when XML file does not exist.
     BOOST_THROW_EXCEPTION( Arinc665Exception() <<
       AdditionalInfo( "XML File does not exist"));
   }
@@ -67,8 +67,8 @@ Media::MediaSetPtr Arinc665XmlPugiXmlImpl::loadMediaSet(
   FilePathMapping &filePathMapping,
   const pugi::xml_node &mediaSetNode)
 {
-  std::string name( mediaSetNode.attribute( "Name").as_string());
-  std::string partNumber( mediaSetNode.attribute( "PartNumber").as_string());
+  const std::string name( mediaSetNode.attribute( "Name").as_string());
+  const std::string partNumber( mediaSetNode.attribute( "PartNumber").as_string());
 
   auto mediaSet( std::make_shared< Media::MediaSet>( name));
   mediaSet->partNumber( partNumber);
@@ -214,9 +214,9 @@ void Arinc665XmlPugiXmlImpl::loadEntries(
       continue;
     }
 
-    std::string filename( entryNode.attribute( "Name").as_string());
-    std::string partNumber( entryNode.attribute( "PartNumber").as_string());
-    std::string sourcePath( entryNode.attribute( "SourcePath").as_string());
+    const std::string filename( entryNode.attribute( "Name").as_string());
+    const std::string partNumber( entryNode.attribute( "PartNumber").as_string());
+    const std::string sourcePath( entryNode.attribute( "SourcePath").as_string());
 
     if (filename.empty())
     {
