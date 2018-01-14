@@ -32,20 +32,20 @@ class MediaSetManagerImpl : public MediaSetManager
      **/
     MediaSetManagerImpl( const MediaSetConfiguration &config);
 
-    //! @copydoc MediaSetManager::getMediaSet
-    virtual Media::MediaSetPtr getMediaSet( const string &partNumber) override final;
+    //! @copydoc MediaSetManager::mediaSet
+    Media::MediaSetPtr mediaSet( const string &partNumber) final;
 
-    //! @copydoc MediaSetManager::getMediaSets() const
-    virtual const MediaSets& getMediaSets() const  override final;
+    //! @copydoc MediaSetManager::mediaSets() const
+    const MediaSets& mediaSets() const  final;
 
-    //! @copydoc MediaSetManager::getMediaSets()
-    virtual MediaSets& getMediaSets() override final;
+    //! @copydoc MediaSetManager::mediaSets()
+    MediaSets& mediaSets() final;
 
-    //! @copydoc MediaSetManager::getLoads() const
-    virtual Media::ConstLoads getLoads() const override final;
+    //! @copydoc MediaSetManager::loads() const
+    Media::ConstLoads loads() const final;
 
-    //! @copydoc MediaSetManager::getFilePath
-    virtual path getFilePath( Media::ConstBaseFilePtr file) const override final;
+    //! @copydoc MediaSetManager::filePath
+    path filePath( Media::ConstBaseFilePtr file) const final;
 
   private:
     //! media path map
@@ -54,7 +54,7 @@ class MediaSetManagerImpl : public MediaSetManager
     //! media set configuration
     const MediaSetConfiguration config;
     //! media sets
-    MediaSets mediaSets;
+    MediaSets mediaSetsValue;
     //! media paths
     MediaPaths mediaPaths;
 };

@@ -357,6 +357,8 @@ class ContainerEntity :
     MediumPtr medium();
 
   protected:
+    using FileType = BaseFile::FileType;
+
     /**
      * @brief Initialises the container with the given parameter.
      *

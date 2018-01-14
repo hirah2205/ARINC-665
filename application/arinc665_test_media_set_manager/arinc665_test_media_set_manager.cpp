@@ -71,7 +71,7 @@ int main( int argc, char ** argv)
     auto mediaSetManager( Arinc665::Utils::MediaSetManager::createInstance(
       Arinc665::Utils::MediaSetConfiguration( config)));
 
-    for ( auto medium : mediaSetManager->getMediaSets())
+    for ( auto medium : mediaSetManager->mediaSets())
     {
       std::cout << medium->name() << " " << medium->partNumber() << "\n";
 
@@ -79,32 +79,32 @@ int main( int argc, char ** argv)
       // iterate over files
       for ( auto file : medium->files())
       {
-        std::cout << "    " << file->name() << " " << file->partNumber() << " " << mediaSetManager->getFilePath( file) << "\n";
+        std::cout << "    " << file->name() << " " << file->partNumber() << " " << mediaSetManager->filePath( file) << "\n";
       }
 
       std::cout << "  Loads:\n";
       // iterate over loads
       for ( auto load : medium->loads())
       {
-        std::cout << "    " << load->name() << " " << load->partNumber() << " " << mediaSetManager->getFilePath( load) << "\n";
+        std::cout << "    " << load->name() << " " << load->partNumber() << " " << mediaSetManager->filePath( load) << "\n";
 
         std::cout << "    Data Files:\n";
         for ( auto dataFile : load->dataFiles())
         {
-          std::cout << "      " << dataFile.lock()->name() << " " << dataFile.lock()->partNumber() << " " << mediaSetManager->getFilePath( dataFile.lock()) << "\n";
+          std::cout << "      " << dataFile.lock()->name() << " " << dataFile.lock()->partNumber() << " " << mediaSetManager->filePath( dataFile.lock()) << "\n";
         }
 
         std::cout << "    Support Files:\n";
         for ( auto supportFile : load->supportFiles())
         {
-          std::cout << "      " << supportFile.lock()->name() << " " << supportFile.lock()->partNumber() << " " << mediaSetManager->getFilePath( supportFile.lock()) << "\n";
+          std::cout << "      " << supportFile.lock()->name() << " " << supportFile.lock()->partNumber() << " " << mediaSetManager->filePath( supportFile.lock()) << "\n";
         }
       }
 
       std::cout << "  Batches:\n";
       for ( auto batch : medium->batches())
       {
-        std::cout << "    " << batch->name() << " " << batch->partNumber() << " " << mediaSetManager->getFilePath( batch) << "\n";
+        std::cout << "    " << batch->name() << " " << batch->partNumber() << " " << mediaSetManager->filePath( batch) << "\n";
       }
     }
   }

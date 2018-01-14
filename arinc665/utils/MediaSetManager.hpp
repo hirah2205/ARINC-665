@@ -69,24 +69,24 @@ class MediaSetManager
      *
      * @return The media set with the given part number.
      **/
-    virtual Media::MediaSetPtr getMediaSet( const string &partNumber) = 0;
+    virtual Media::MediaSetPtr mediaSet( const string &partNumber) = 0;
 
     /**
      * @brief Returns all registered media sets.
      *
      * @return All media sets.
      **/
-    virtual const MediaSets& getMediaSets() const = 0;
+    virtual const MediaSets& mediaSets() const = 0;
 
-    //! @copydoc MediaSetManager::getMediaSets() const
-    virtual MediaSets& getMediaSets() = 0;
+    //! @copydoc MediaSetManager::mediaSets() const
+    virtual MediaSets& mediaSets() = 0;
 
     /**
      * @brief Get all available Loads.
      *
      * @return All available loads.
      **/
-    virtual Media::ConstLoads getLoads() const = 0;
+    virtual Media::ConstLoads loads() const = 0;
 
     /**
      * @brief Returns the path to the given file.
@@ -96,7 +96,7 @@ class MediaSetManager
      *
      * @return The path to the given file.
      **/
-    virtual path getFilePath( Media::ConstBaseFilePtr file) const = 0;
+    virtual path filePath( Media::ConstBaseFilePtr file) const = 0;
 };
 
 }

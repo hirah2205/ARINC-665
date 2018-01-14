@@ -72,7 +72,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
     auto mediaSet( importer( mediaSetConfig.first));
 
     // add media set
-    mediaSets.push_back( mediaSet);
+    mediaSetsValue.push_back( mediaSet);
 
     // iterate over media
     for ( auto medium : mediaSet->media())
@@ -86,10 +86,10 @@ MediaSetManagerImpl::MediaSetManagerImpl(
   }
 }
 
-Media::MediaSetPtr MediaSetManagerImpl::getMediaSet(
+Media::MediaSetPtr MediaSetManagerImpl::mediaSet(
   const string &partNumber)
 {
-  for (const auto &mediaSet : mediaSets)
+  for (const auto &mediaSet : mediaSetsValue)
   {
     if (mediaSet->partNumber() == partNumber)
     {
@@ -99,21 +99,21 @@ Media::MediaSetPtr MediaSetManagerImpl::getMediaSet(
   return {};
 }
 
-const MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::getMediaSets() const
+const MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::mediaSets() const
 {
-  return mediaSets;
+  return mediaSetsValue;
 }
 
-MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::getMediaSets()
+MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::mediaSets()
 {
-  return mediaSets;
+  return mediaSetsValue;
 }
 
-Media::ConstLoads MediaSetManagerImpl::getLoads() const
+Media::ConstLoads MediaSetManagerImpl::loads() const
 {
   Media::ConstLoads loads;
 
-  for (const auto &mediaSet : mediaSets)
+  for (const auto &mediaSet : mediaSetsValue)
   {
     auto mediaSetLoads( mediaSet->loads());
 
@@ -123,7 +123,7 @@ Media::ConstLoads MediaSetManagerImpl::getLoads() const
   return loads;
 }
 
-MediaSetManagerImpl::path MediaSetManagerImpl::getFilePath(
+MediaSetManagerImpl::path MediaSetManagerImpl::filePath(
   Media::ConstBaseFilePtr file) const
 {
   auto mediumIt( mediaPaths.find( file->parent()->medium()));

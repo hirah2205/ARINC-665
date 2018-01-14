@@ -44,16 +44,19 @@ class Arinc665Utils
     using string = std::string;
 
     //! Handler, which is called to generate the given medium.
-    using CreateMediumHandler = std::function< void( Media::ConstMediumPtr medium)>;
+    using CreateMediumHandler =
+      std::function< void( Media::ConstMediumPtr medium)>;
 
     //! Handler, which is called to generate the given directory.
-    using CreateDirectoryHandler = std::function< void( Media::ConstDirectoryPtr directory)>;
+    using CreateDirectoryHandler =
+      std::function< void( Media::ConstDirectoryPtr directory)>;
 
     //! Handler, which is called to generate the given file at the requested position.
     using CreateFileHandler = std::function< void( Media::ConstFilePtr file)>;
 
     //! Handler, which is called to read a file form a medium.
-    using ReadFileHandler = std::function< File::RawFile( uint8_t mediumNumber, const path &path)>;
+    using ReadFileHandler =
+      std::function< File::RawFile( uint8_t mediumNumber, const path &path)>;
 
     //! Handler, which is called to write the given file at the requested position.
     using WriteFileHandler =
