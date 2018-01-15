@@ -29,8 +29,7 @@ FileTypeDescription::FileTypeDescription():
 
 std::ostream& operator<<( std::ostream &stream, const FileType fileType)
 {
-  return (stream << FileTypeDescription::getInstance().getDescription(
-    fileType).name);
+  return (stream << FileTypeDescription::instance().findName( fileType));
 }
 
 }
