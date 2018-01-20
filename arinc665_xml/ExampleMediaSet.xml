@@ -6,6 +6,7 @@
   
   Name="MediaSetX"
   PartNumber="CCC" >
+  
   <Medium>
     <File Name="File1" PartNumber="AABBCC1"/>
     <LoadFile Name="Load1" PartNumber="AABBCC" />
@@ -19,16 +20,17 @@
   
   <Loads>
     <Load NameRef="Load1" Description="Test Description">
-      <TargetHardware ThwId="AAA">
-        <Position Pos="sss"/>
+      <TargetHardware ThwId="123456789ABCDEF">
+        <Position Pos="LEFT"/>
+        <Position Pos="RIGHT"/>
       </TargetHardware>
       
       <DataFile    NameRef="File1" />
       <SupportFile NameRef="File2" />
     </Load>
     <Load NameRef="Load2">
-      <TargetHardware ThwId="AAA" />
-      <TargetHardware ThwId="BBB" />
+      <TargetHardware ThwId="123456789ABCDEF" />
+      <TargetHardware ThwId="GHIJKLMNOPQRSTU" />
 
       <DataFile    NameRef="File1" />
       <SupportFile NameRef="File2" />
@@ -37,7 +39,7 @@
   
   <Batches>
     <Batch NameRef="Batch1" Comment="Comment Text" >
-      <Target ThwIdPos="XXXYY_123">
+      <Target ThwIdPos="123456789ABCDEF_RIGHT">
         <Load NameRef="Load1" />
         <Load NameRef="Load2" />
       </Target>
