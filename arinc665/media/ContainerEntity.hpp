@@ -357,6 +357,7 @@ class ContainerEntity :
     MediumPtr medium();
 
   protected:
+    //! File type
     using FileType = BaseFile::FileType;
 
     /**
