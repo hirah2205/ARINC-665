@@ -640,12 +640,14 @@ MediaSetImporterImpl::checkCreateDirectory(
     return medium;
   }
 
-  ContainerEntityPtr dir = medium;
+  ContainerEntityPtr dir{ medium};
 
+  // iterate over path elements
   for ( auto &subPath : dirPath)
   {
-    auto subDir( dir->subDirectory( subPath.string()));
+    auto subDir{ dir->subDirectory( subPath.string())};
 
+    // if sub-directory does not exists - create it
     if (!subDir)
     {
       subDir = dir->addSubDirectory( subPath.string());
