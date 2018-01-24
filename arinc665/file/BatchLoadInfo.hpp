@@ -84,9 +84,9 @@ class BatchLoadInfo
 
   private:
     //! The load header filename.
-    string headerFilenameValue;
+    string headerFilenameV;
     //! The load part number.
-    string partNumberValue;
+    string partNumberV;
 };
 
 }

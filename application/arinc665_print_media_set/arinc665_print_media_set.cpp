@@ -81,13 +81,15 @@ int main( int argc, char* argv[])
 static MediaSetPtr loadMediaSet( const path &mediaSetDirectory)
 {
   auto importer( Arinc665::Utils::Arinc665Utils::createArinc665Importer(
-    [&mediaSetDirectory]( const uint8_t /*mediumNumber*/, const boost::filesystem::path &path)->Arinc665::File::RawFile
+    // read file handler
+    [&mediaSetDirectory](
+      const uint8_t /*mediumNumber*/,
+      const boost::filesystem::path &path)->Arinc665::File::RawFile
     {
       auto filePath( mediaSetDirectory / path.relative_path());
 
       if (!boost::filesystem::is_regular( filePath))
       {
-        //! @throw Arinc665Exception
         BOOST_THROW_EXCEPTION(
           Arinc665::Arinc665Exception() <<
             boost::errinfo_file_name( filePath.string()) <<
@@ -102,7 +104,6 @@ static MediaSetPtr loadMediaSet( const path &mediaSetDirectory)
 
       if ( !file.is_open())
       {
-        //! @throw Arinc665Exception
         BOOST_THROW_EXCEPTION(
           Arinc665::Arinc665Exception() << AdditionalInfo( "Error opening files"));
       }
@@ -114,7 +115,7 @@ static MediaSetPtr loadMediaSet( const path &mediaSetDirectory)
       return data;
     }));
 
-  MediaSetPtr mediaSet( importer( ""));
+  auto mediaSet{ importer()};
 
   std::cout << "media set pn: " << mediaSet->partNumber() << std::endl;
 

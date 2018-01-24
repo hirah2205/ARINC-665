@@ -58,15 +58,15 @@ void MediaSetExporterImpl::operator()()
 {
   BOOST_LOG_FUNCTION();
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) << "Media set " <<
-    mediaSet->name() << " - " << mediaSet->partNumber();
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
+    "Media set " << " - " << mediaSet->partNumber();
 
   for (auto medium : mediaSet->media())
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) << "Medium " <<
-      (unsigned int)medium->mediumNumber();
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
+      "Medium " << (unsigned int)medium.first;
 
-    exportMedium( medium);
+    exportMedium( medium.second);
   }
 }
 

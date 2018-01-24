@@ -32,6 +32,9 @@ class MediaSetManagerImpl : public MediaSetManager
      **/
     MediaSetManagerImpl( const MediaSetConfiguration &config);
 
+    //! @copydoc MediaSetManager::configuration
+    const MediaSetConfiguration& configuration() const final;
+
     //! @copydoc MediaSetManager::mediaSet
     Media::MediaSetPtr mediaSet( const string &partNumber) final;
 
@@ -40,6 +43,11 @@ class MediaSetManagerImpl : public MediaSetManager
 
     //! @copydoc MediaSetManager::mediaSets()
     MediaSets& mediaSets() final;
+
+    //! @copydoc MediaSetManager::add()
+    void add(
+      Media::ConstMediaSetPtr mediaSet,
+      MediumPathHandler mediumPathHandler) final;
 
     //! @copydoc MediaSetManager::loads() const
     Media::ConstLoads loads() const final;

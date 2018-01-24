@@ -13,6 +13,7 @@
 #include "BatchFile.hpp"
 
 #include <helper/Endianess.hpp>
+#include <helper/Logger.hpp>
 
 namespace Arinc665 {
 namespace File {
@@ -237,6 +238,8 @@ void BatchFile::decodeBatchTargetsInfo(
   const RawFile &rawFile,
   const std::size_t offset)
 {
+  //BOOST_LOG_FUNCTION();
+
   RawFile::const_iterator it( rawFile.begin() + offset);
 
   // clear potently data
@@ -271,14 +274,14 @@ void BatchFile::decodeBatchTargetsInfo(
     {
       // header filename
       string filename;
-      listIt = decodeString( it, filename);
+      listIt = decodeString( listIt, filename);
 
       // Load PN
       string partNumber;
-      listIt = decodeString( it, partNumber);
+      listIt = decodeString( listIt, partNumber);
 
       // Batch Load info
-      batchLoadsInfo.emplace_back( filename, partNumber);
+      batchLoadsInfo.emplace_back( std::move( filename), std::move( partNumber));
     }
 
     // set it to begin of next file

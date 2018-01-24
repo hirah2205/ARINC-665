@@ -153,6 +153,8 @@ int Arinc665CompilerApplication::operator()()
 
 bool Arinc665CompilerApplication::handleCommandLine()
 {
+  BOOST_LOG_FUNCTION();
+
   try
   {
     std::shared_ptr< boost::application::args> args(
@@ -259,7 +261,6 @@ void Arinc665CompilerApplication::writeFile(
   // check existence of file
   if (boost::filesystem::exists( filePath))
   {
-    //! @throw Arinc665Exception
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception() <<
         AdditionalInfo( "File already exists") <<

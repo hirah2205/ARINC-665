@@ -18,57 +18,57 @@ namespace File {
 BatchTargetInfo::BatchTargetInfo(
   const string &targetHardwareId,
   const BatchLoadsInfo &loads):
-  targetHardwareIdValue( targetHardwareId),
-  loadsValue( loads)
+  targetHardwareIdV( targetHardwareId),
+  loadsV( loads)
 {
 }
 
 BatchTargetInfo::BatchTargetInfo(
   string &&targetHardwareId,
   BatchLoadsInfo &&loads):
-  targetHardwareIdValue( targetHardwareId),
-  loadsValue( loads)
+  targetHardwareIdV( targetHardwareId),
+  loadsV( loads)
 {
 }
 
 BatchTargetInfo::string BatchTargetInfo::targetHardwareId() const
 {
-  return targetHardwareIdValue;
+  return targetHardwareIdV;
 }
 
 void BatchTargetInfo::targetHardwareId( const string &targetHardwareId)
 {
-  this->targetHardwareIdValue = targetHardwareId;
+  targetHardwareIdV = targetHardwareId;
 }
 
 const BatchLoadsInfo& BatchTargetInfo::loads() const
 {
-  return loadsValue;
+  return loadsV;
 }
 
 BatchLoadsInfo& BatchTargetInfo::loads()
 {
-  return loadsValue;
+  return loadsV;
 }
 
 void BatchTargetInfo::loads( const BatchLoadsInfo &loads)
 {
-  loadsValue = loads;
+  loadsV = loads;
 }
 
 void BatchTargetInfo::loads( BatchLoadsInfo &&loads)
 {
-  loadsValue = std::move( loads);
+  loadsV = std::move( loads);
 }
 
 void BatchTargetInfo::addLoad( const BatchLoadInfo &load)
 {
-  loadsValue.push_back( load);
+  loadsV.push_back( load);
 }
 
 void BatchTargetInfo::addLoad( BatchLoadInfo &&load)
 {
-  loadsValue.push_back( load);
+  loadsV.push_back( load);
 }
 
 }

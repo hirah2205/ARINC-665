@@ -44,7 +44,7 @@ class MediaSet:
      * @param[in] name
      *   name of the media set
      **/
-    MediaSet();
+    MediaSet() = default;
 
     //! @copydoc Base::mediaSet
     ConstMediaSetPtr mediaSet() const final;
@@ -297,9 +297,9 @@ class MediaSet:
 
   private:
     //! the media
-    Media mediaValue;
+    Media mediaV;
     //! The part number
-    string partNumberValue;
+    string partNumberV;
 };
 
 }

@@ -26,14 +26,15 @@ MediaSetConfiguration::MediaSetConfiguration():
 }
 
 MediaSetConfiguration::MediaSetConfiguration( const ptree &config):
-  mediaSetBase( config.get< path>( "media_set_base",  boost::filesystem::current_path()))
+  mediaSetBase( config.get< path>( "media_set_base", boost::filesystem::current_path()))
 {
   BOOST_LOG_FUNCTION();
 
   // iterate over media sets
   for ( auto &mediaSetConfig : config.get_child( "media_sets"))
   {
-    const auto mediaSetName{ mediaSetConfig.second.get< string>( "name")};
+    const auto mediaSetPartNumber{
+      mediaSetConfig.second.get< string>( "part_number")};
 
     MediaPaths mediaPaths;
 
@@ -48,7 +49,7 @@ MediaSetConfiguration::MediaSetConfiguration( const ptree &config):
     }
 
     // insert media set configuration
-    mediaSets.insert( { std::move( mediaSetName), std::move( mediaPaths)});
+    mediaSets.insert( { std::move( mediaSetPartNumber), std::move( mediaPaths)});
   }
 }
 

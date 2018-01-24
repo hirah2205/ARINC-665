@@ -50,12 +50,6 @@ class Medium : public ContainerEntity
     Type type() const final;
 
     /**
-     * @copydoc ContainerEntity::name
-     * @return The name of the owning media set.
-     **/
-    const string& name() const final;
-
-    /**
      * @copydoc ContainerEntity::partNumber
      *
      * @return The part number of the owning media set.
@@ -74,9 +68,9 @@ class Medium : public ContainerEntity
 
   private:
     //! Pointer to media set
-    WeakMediaSetPtr mediaSetValue;
+    WeakMediaSetPtr mediaSetV;
     //! The medium number
-    const uint8_t mediumNumberValue;
+    const uint8_t mediumNumberV;
 };
 
 }

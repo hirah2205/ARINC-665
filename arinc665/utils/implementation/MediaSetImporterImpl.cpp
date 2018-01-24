@@ -27,7 +27,7 @@ MediaSetImporterImpl::MediaSetImporterImpl(
 {
 }
 
-Media::MediaSetPtr MediaSetImporterImpl::operator()( const string &mediaSetName)
+Media::MediaSetPtr MediaSetImporterImpl::operator()()
 {
   BOOST_LOG_FUNCTION();
 
@@ -39,7 +39,7 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()( const string &mediaSetName)
     readFileHandler( 1, Arinc665::ListOfFilesName));
 
   // create Media set
-  mediaSet = std::make_shared< Media::MediaSet>( mediaSetName);
+  mediaSet = std::make_shared< Media::MediaSet>();
   mediaSet->partNumber( fileListFile.mediaSetPn());
   mediaSet->numberOfMedia( fileListFile.numberOfMediaSetMembers());
 
@@ -272,6 +272,8 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
 
 void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex)
 {
+  BOOST_LOG_FUNCTION();
+
   BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
     "Load Load List File " << Arinc665::ListOfLoadsName;
 
@@ -588,6 +590,8 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
 
 void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
 {
+  BOOST_LOG_FUNCTION();
+
   // iterate over batches
   for ( const auto &batch : batches)
   {
@@ -615,11 +619,14 @@ void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
       // iterate over loads
       for ( const auto& load : targetHardware.loads())
       {
-        loads.push_back( mediaSet->load( load.headerFilename()));
+        auto loadPtr{ mediaSet->load( load.headerFilename())};
+        assert( loadPtr);
+
+        loads.push_back( loadPtr);
       }
 
       // add target hardware
-      batchPtr->addTarget( targetHardware.targetHardwareId(), loads);
+      batchPtr->target( targetHardware.targetHardwareId(), loads);
     }
   }
 }

@@ -71,8 +71,7 @@ class Arinc665Utils
      * Takes the media set name as input.
      * Returns the MediaSet
      **/
-    using Arinc665Importer = std::function< Media::MediaSetPtr(
-      const string &mediaSetName)>;
+    using Arinc665Importer = std::function< Media::MediaSetPtr()>;
 
     /**
      * The ARINC 665 Media Set exporter.

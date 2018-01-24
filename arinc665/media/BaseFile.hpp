@@ -50,9 +50,6 @@ class BaseFile: public Base
     //! @copydoc Base::type
     Type type() const final;
 
-    //! @copydoc Base::name
-    const string& name() const final;
-
    //void setName( void);
 
     //! @copydoc Base::partNumber
@@ -65,6 +62,13 @@ class BaseFile: public Base
      *   New Part number
      **/
     void partNumber( const string &partNumber);
+
+    /**
+     * @brief Returns the name of the file.
+     *
+     * @return The name of the file.
+     **/
+    const string& name() const;
 
     /**
      * @brief Returns the file type.
@@ -141,7 +145,7 @@ class BaseFile: public Base
     //! The parent
     WeakContainerEntityPtr parentValue;
     //! The file name
-    const string nameValue;
+    const string nameV;
     //! The part number
     string partNumberValue;
 };

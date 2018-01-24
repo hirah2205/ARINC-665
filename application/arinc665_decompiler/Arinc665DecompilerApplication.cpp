@@ -54,11 +54,6 @@ Arinc665DecompilerApplication::Arinc665DecompilerApplication(
       "destination-directory",
       boost::program_options::value( &mediaSetDestinationDirectory)->required(),
       "Output directory for ARINC 665 media set"
-    )
-    (
-      "name",
-      boost::program_options::value( &mediaSetName)->required(),
-      "Name of ARINC 665 media set"
     );
 }
 
@@ -82,10 +77,11 @@ int Arinc665DecompilerApplication::operator()()
         std::placeholders::_2)));
 
     // perform import
-    auto result( importer( mediaSetName));
+    auto result( importer());
 
     Arinc665::Utils::Arinc665Xml::FilePathMapping fileMapping;
 
+    // iterate over files
     for (auto file : result->files())
     {
       boost::filesystem::path filePath(
@@ -101,7 +97,7 @@ int Arinc665DecompilerApplication::operator()()
     xml->saveToXml(
       result,
       fileMapping,
-      (mediaSetDestinationDirectory / mediaSetName) += ".xml");
+      (mediaSetDestinationDirectory / result->partNumber()) += ".xml");
   }
   catch ( Arinc665::Arinc665Exception &e)
   {

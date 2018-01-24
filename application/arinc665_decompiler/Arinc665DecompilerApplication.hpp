@@ -68,8 +68,6 @@ class Arinc665DecompilerApplication
     std::vector< path> mediaSourceDirectories;
     //! Media Set destination directory
     path mediaSetDestinationDirectory;
-    //! name of the media set
-    std::string mediaSetName;
 };
 
 #endif

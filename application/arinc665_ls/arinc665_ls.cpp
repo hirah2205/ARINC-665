@@ -137,7 +137,7 @@ void list_loads_lum( const boost::filesystem::path &loadsLum)
       std::cout <<
         "load load pn: "                << load.partNumber() << "\n" <<
         "load header file name: "       << load.headerFilename() << "\n" <<
-        "load member sequence number: " << std::dec << load.memberSequenceNumber() << std::endl << std::endl;
+        "load member sequence number: " << std::dec << (int)load.memberSequenceNumber() << std::endl << std::endl;
 
       for ( const auto & thw : load.targetHardwareIds())
       {

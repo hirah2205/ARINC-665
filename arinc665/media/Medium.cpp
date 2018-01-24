@@ -21,20 +21,20 @@ namespace Arinc665 {
 namespace Media {
 
 Medium::Medium( MediaSetPtr mediaSet, const uint8_t mediumNumber):
-  mediaSetValue( mediaSet),
-  mediumNumberValue( mediumNumber)
+  mediaSetV( mediaSet),
+  mediumNumberV( mediumNumber)
 {
   assert( mediaSet && (mediumNumber > 0));
 }
 
 ConstMediaSetPtr Medium::mediaSet() const
 {
-  return mediaSetValue.lock();
+  return mediaSetV.lock();
 }
 
 MediaSetPtr Medium::mediaSet()
 {
-  return mediaSetValue.lock();
+  return mediaSetV.lock();
 }
 
 Medium::Type Medium::type() const
@@ -42,14 +42,9 @@ Medium::Type Medium::type() const
   return Type::Medium;
 }
 
-const Medium::string& Medium::name() const
-{
-  return mediaSetValue.lock()->name();
-}
-
 Medium::string Medium::partNumber() const
 {
-  return mediaSetValue.lock()->partNumber();
+  return mediaSetV.lock()->partNumber();
 }
 
 Medium::fpath Medium::path() const
@@ -59,7 +54,7 @@ Medium::fpath Medium::path() const
 
 uint8_t Medium::mediumNumber() const
 {
-  return mediumNumberValue;
+  return mediumNumberV;
 }
 
 }

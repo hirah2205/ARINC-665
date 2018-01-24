@@ -50,7 +50,7 @@ Batch::BatchInfo& Batch::targets()
   return batchesValue;
 }
 
-const WeakLoads Batch::getTarget( const string &targetHardwareId) const
+const WeakLoads Batch::target( const string &targetHardwareId) const
 {
   auto it( batchesValue.find( targetHardwareId));
 
@@ -62,7 +62,7 @@ const WeakLoads Batch::getTarget( const string &targetHardwareId) const
   return it->second;
 }
 
-WeakLoads Batch::getTarget( const string &targetHardwareId)
+WeakLoads Batch::target( const string &targetHardwareId)
 {
   auto it( batchesValue.find( targetHardwareId));
 
@@ -74,10 +74,14 @@ WeakLoads Batch::getTarget( const string &targetHardwareId)
   return it->second;
 }
 
-void Batch::addTarget( const string &targetHardwareId, WeakLoads loads)
+void Batch::target( const string &targetHardwareId, WeakLoads loads)
 {
   batchesValue.insert( {targetHardwareId, loads});
 }
 
+void Batch::target( string &&targetHardwareId, WeakLoads loads)
+{
+  batchesValue.insert( {std::move( targetHardwareId), loads});
+}
 }
 }

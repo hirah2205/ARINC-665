@@ -23,8 +23,7 @@ Arinc665Utils::Arinc665Importer Arinc665Utils::createArinc665Importer(
 {
   return std::bind(
     &MediaSetImporterImpl::operator(),
-    std::make_shared< MediaSetImporterImpl>( readFileHandler),
-    std::placeholders::_1);
+    std::make_shared< MediaSetImporterImpl>( readFileHandler));
 }
 
 Arinc665Utils::Arinc665Exporter Arinc665Utils::createArinc665Exporter(

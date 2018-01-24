@@ -43,8 +43,13 @@ class Directory : public ContainerEntity
     //! @copydoc ContainerEntity::type
     Type type() const final;
 
-    //! @copydoc ContainerEntity::name
-    const string& name() const final;
+    /**
+     * @brief Returns the name of the directory.
+     *
+     * @return The name of the directory.
+     **/
+    const string& name() const;
+
 
     // void rename( const string& name);
 
@@ -56,7 +61,7 @@ class Directory : public ContainerEntity
 
   private:
     //! Directory name
-    const string nameValue;
+    const string nameV;
 };
 
 }

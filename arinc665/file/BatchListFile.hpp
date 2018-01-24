@@ -168,7 +168,7 @@ class BatchListFile: public ListFile
 
   private:
     //! @copydoc ListFile::encode
-    virtual RawFile encode() const override final;
+    RawFile encode() const final;
 
     /**
      * @brief Decodes the body of the batch list file.

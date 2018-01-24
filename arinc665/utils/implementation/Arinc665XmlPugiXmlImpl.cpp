@@ -69,7 +69,7 @@ Media::MediaSetPtr Arinc665XmlPugiXmlImpl::loadMediaSet(
 {
   const std::string partNumber( mediaSetNode.attribute( "PartNumber").as_string());
 
-  auto mediaSet( std::make_shared< Media::MediaSet>( name));
+  auto mediaSet{ std::make_shared< Media::MediaSet>()};
   mediaSet->partNumber( partNumber);
 
   // iterate over media
@@ -104,7 +104,6 @@ void Arinc665XmlPugiXmlImpl::saveMediaSet(
   const FilePathMapping &filePathMapping,
   pugi::xml_node &mediaSetNode)
 {
-  mediaSetNode.append_attribute( "Name") = mediaSet->name().c_str();
   mediaSetNode.append_attribute( "PartNumber") = mediaSet->partNumber().c_str();
 
   // iterate over media
@@ -495,7 +494,7 @@ void Arinc665XmlPugiXmlImpl::loadBatch(
     }
 
     // add load
-    batch->addTarget( thwIdPos, loads);
+    batch->target( thwIdPos, loads);
   }
 }
 

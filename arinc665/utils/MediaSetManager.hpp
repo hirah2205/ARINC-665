@@ -47,7 +47,7 @@ class MediaSetManager
     //! Media sets type (list)
     using MediaSets = std::list< Media::MediaSetPtr>;
     //! Handler which returns the path to the given medium number
-    using MediumPathHandler = std::function< path( Media::MediumPtr medium)>;
+    using MediumPathHandler = std::function< path( Media::ConstMediumPtr medium)>;
 
     //! Default destructor
     virtual ~MediaSetManager() noexcept = default;

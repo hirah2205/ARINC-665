@@ -73,7 +73,7 @@ int main( int argc, char ** argv)
 
     for ( auto medium : mediaSetManager->mediaSets())
     {
-      std::cout << medium->name() << " " << medium->partNumber() << "\n";
+      std::cout << medium->partNumber() << "\n";
 
       std::cout << "  Files:\n";
       // iterate over files
@@ -105,6 +105,24 @@ int main( int argc, char ** argv)
       for ( auto batch : medium->batches())
       {
         std::cout << "    " << batch->name() << " " << batch->partNumber() << " " << mediaSetManager->filePath( batch) << "\n";
+        std::cout << "      " << batch->comment() << "\n";
+        for ( auto targetHardware : batch->targets())
+        {
+          std::cout << "      " << targetHardware.first << "\n";
+
+          for ( auto load : targetHardware.second)
+          {
+            auto load2{ load.lock()};
+            if (load2)
+            {
+              std::cout << "        " << load2->name() << " - " << load2->partNumber() << std::endl;
+            }
+            else
+            {
+              std::cout << "        " << "invalid load" << std::endl;
+            }
+          }
+        }
       }
     }
   }

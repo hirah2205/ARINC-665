@@ -17,6 +17,8 @@
 
 #include <arinc665/utils/Arinc665Utils.hpp>
 
+#include <boost/format.hpp>
+
 #include <fstream>
 
 namespace Arinc665 {
@@ -32,6 +34,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
   {
     // import media set
     auto importer( Arinc665Utils::createArinc665Importer(
+      // the read file handler
       [&mediaSet,&config]( const uint8_t mediumNumber, const path &path)->File::RawFile
       {
         auto medium{ mediaSet.second.find( mediumNumber)};
@@ -73,8 +76,8 @@ MediaSetManagerImpl::MediaSetManagerImpl(
         return data;
       }));
 
-    // execute importer
-    auto impMediaSet( importer( mediaSet.first));
+    // import media set
+    auto impMediaSet( importer());
 
     // add media set
     mediaSetsValue.push_back( impMediaSet);
@@ -84,11 +87,16 @@ MediaSetManagerImpl::MediaSetManagerImpl(
     {
       // add path mapping
       this->mediaPaths.insert(
-        { medium,
+        { medium.second,
           mediaSet.first /
-          mediaSet.second.at( medium->mediumNumber())}); // should never fail
+          mediaSet.second.at( medium.first)}); // should never fail
     }
   }
+}
+
+const MediaSetConfiguration& MediaSetManagerImpl::configuration() const
+{
+  return config;
 }
 
 Media::MediaSetPtr MediaSetManagerImpl::mediaSet(
@@ -112,6 +120,26 @@ const MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::mediaSets() const
 MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::mediaSets()
 {
   return mediaSetsValue;
+}
+
+void MediaSetManagerImpl::add(
+  Media::ConstMediaSetPtr mediaSet,
+  MediumPathHandler mediumPathHandler)
+{
+  BOOST_LOG_FUNCTION();
+
+  assert( mediaSet && mediumPathHandler);
+
+  // iterate over media
+  for ( auto medium : mediaSet->media())
+  {
+    const auto sourcePath{ mediumPathHandler( medium.second)};
+    const path destinationPath{
+      config.mediaSetBase / mediaSet->partNumber() /
+        (boost::format( "MEDIUM_%03u") % (unsigned int)medium.first).str() };
+
+    boost::filesystem::copy_directory( sourcePath, destinationPath);
+  }
 }
 
 Media::ConstLoads MediaSetManagerImpl::loads() const

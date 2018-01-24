@@ -301,7 +301,8 @@ QVariant MediaSetModelModel::data( const QModelIndex & index, int role) const
   switch (index.column())
   {
     case 0:
-      return QString::fromStdString( base->name());
+      //return QString::fromStdString( base->name());
+      return {};
 
     case 1:
       return QString::fromStdString( base->partNumber());

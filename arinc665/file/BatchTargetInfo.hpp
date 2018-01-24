@@ -103,9 +103,9 @@ class BatchTargetInfo
 
   private:
     //! The target hardware id
-    string targetHardwareIdValue;
+    string targetHardwareIdV;
     //! The list of loads
-    BatchLoadsInfo loadsValue;
+    BatchLoadsInfo loadsV;
 };
 
 }

@@ -21,7 +21,7 @@ namespace Media {
 
 Directory::Directory( ContainerEntityPtr parent, const string &name):
   ContainerEntity( parent),
-  nameValue( name)
+  nameV( name)
 {
   assert( parent);
 }
@@ -30,24 +30,24 @@ ConstMediaSetPtr Directory::mediaSet() const
 {
   auto parentPtr( parent());
 
-  if ( parentPtr)
+  if ( !parentPtr)
   {
-    return parentPtr->mediaSet();
+    return {};
   }
 
-  return {};
+  return parentPtr->mediaSet();
 }
 
 MediaSetPtr Directory::mediaSet()
 {
   auto parentPtr( parent());
 
-  if ( parentPtr)
+  if ( !parentPtr)
   {
-    return parentPtr->mediaSet();
+    return {};
   }
 
-  return {};
+  return parentPtr->mediaSet();
 }
 
 Directory::Type Directory::type() const
@@ -57,31 +57,31 @@ Directory::Type Directory::type() const
 
 const Directory::string& Directory::name() const
 {
-  return nameValue;
+  return nameV;
 }
 
 Directory::string Directory::partNumber() const
 {
   auto parentPtr( parent());
 
-  if ( parentPtr)
+  if ( !parentPtr)
   {
-    return parentPtr->partNumber();
+    return {};
   }
 
-  return {};
+  return parentPtr->partNumber();
 }
 
 Directory::fpath Directory::path() const
 {
   auto parentPtr( parent());
 
-  if ( parentPtr)
+  if ( !parentPtr)
   {
-    return parentPtr->path() / nameValue;
+    return {};
   }
 
-  return {};
+  return parentPtr->path() / nameV;
 }
 
 }

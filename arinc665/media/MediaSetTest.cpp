@@ -27,9 +27,8 @@ BOOST_AUTO_TEST_SUITE( MediaSetTest)
 //! Constructor test
 BOOST_AUTO_TEST_CASE( constructor)
 {
-  MediaSet mediaSet( "XXX");
+  MediaSet mediaSet;
 
-  BOOST_CHECK( mediaSet.name() == "XXX");
   BOOST_CHECK( mediaSet.partNumber() == "");
   BOOST_CHECK( mediaSet.numberOfMedia() == 0);
   BOOST_CHECK( mediaSet.type() == MediaSet::Type::MediaSet);
@@ -49,7 +48,7 @@ BOOST_AUTO_TEST_CASE( constructor)
 //! part number test
 BOOST_AUTO_TEST_CASE( partNumber)
 {
-  MediaSet mediaSet( "XXX");
+  MediaSet mediaSet;
   BOOST_CHECK( mediaSet.partNumber() == "");
 
   mediaSet.partNumber( "YYY");
@@ -57,21 +56,10 @@ BOOST_AUTO_TEST_CASE( partNumber)
   BOOST_CHECK( mediaSet.partNumber() == "YYY");
 }
 
-//! name test
-BOOST_AUTO_TEST_CASE( name)
-{
-  MediaSet mediaSet( "XXX");
-  BOOST_CHECK( mediaSet.name() == "XXX");
-
-  mediaSet.name( "YYY");
-
-  BOOST_CHECK( mediaSet.name() == "YYY");
-}
-
 //! medium test
 BOOST_AUTO_TEST_CASE( medium)
 {
-  MediaSetPtr mediaSet = std::make_shared< MediaSet>( "XXX");
+  MediaSetPtr mediaSet = std::make_shared< MediaSet>();
   BOOST_CHECK( mediaSet->numberOfMedia() == 0);
 
   BOOST_CHECK( mediaSet->addMedium());

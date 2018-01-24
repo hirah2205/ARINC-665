@@ -41,7 +41,7 @@ class Base
     };
 
     //! Default destructor
-    virtual ~Base() noexcept =default;
+    virtual ~Base() noexcept = default;
 
     /**
      * @brief Returns the owning media set.
@@ -59,13 +59,6 @@ class Base
      * @return The item type
      **/
     virtual Type type() const = 0;
-
-    /**
-     * @brief Returns the name of the file.
-     *
-     * @return The name of the file.
-     **/
-    virtual const string& name() const = 0;
 
     /**
      * @brief Return the part number of the entity.

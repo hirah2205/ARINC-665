@@ -48,11 +48,6 @@ BaseFile::Type BaseFile::type() const
   return Type::File;
 }
 
-const BaseFile::string& BaseFile::name() const
-{
-  return nameValue;
-}
-
 BaseFile::string BaseFile::partNumber() const
 {
   return partNumberValue;
@@ -61,6 +56,11 @@ BaseFile::string BaseFile::partNumber() const
 void BaseFile::partNumber( const string &partNumber)
 {
   partNumberValue = partNumber;
+}
+
+const BaseFile::string& BaseFile::name() const
+{
+  return nameV;
 }
 
 ContainerEntityPtr BaseFile::parent()
@@ -101,17 +101,17 @@ BaseFile::fpath BaseFile::path() const
 {
   auto parentPtr( parent());
 
-  if ( parentPtr)
+  if ( !parentPtr)
   {
     return {};
   }
 
-  return parentPtr->path() / nameValue;
+  return parentPtr->path() / nameV;
 }
 
 BaseFile::BaseFile( ContainerEntityPtr parent, const string &name) :
   parentValue( parent),
-  nameValue( name)
+  nameV( name)
 {
   if (!parent)
   {
@@ -122,7 +122,7 @@ BaseFile::BaseFile( ContainerEntityPtr parent, const string &name) :
 
 BaseFile::BaseFile( ContainerEntityPtr parent, string &&name):
   parentValue( parent),
-  nameValue( std::move( name))
+  nameV( std::move( name))
 {
   if (!parent)
   {
