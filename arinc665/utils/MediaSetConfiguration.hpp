@@ -39,7 +39,7 @@ class MediaSetConfiguration
 
     //! media-to-path mapping
     using MediaPaths = std::vector< path>;
-    //! media sets type
+    //! Mapping of media sets (Media set name to media paths)
     using MediaSets = std::map< string, MediaPaths>;
 
     //! Initialises the configuration with default values.
