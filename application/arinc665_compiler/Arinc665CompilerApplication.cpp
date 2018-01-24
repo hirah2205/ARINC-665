@@ -297,7 +297,6 @@ Arinc665::File::RawFile Arinc665CompilerApplication::readFile(
   // check existence of file
   if (!boost::filesystem::is_regular( filePath))
   {
-    //! @throw Arinc665Exception
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
       AdditionalInfo( "File not found") <<
       boost::errinfo_file_name( filePath.string()));
@@ -312,7 +311,6 @@ Arinc665::File::RawFile Arinc665CompilerApplication::readFile(
 
   if ( !file.is_open())
   {
-    //! @throw Arinc665Exception
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
       AdditionalInfo( "Error opening files") <<
       boost::errinfo_file_name( filePath.string()));

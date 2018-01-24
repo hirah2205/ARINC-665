@@ -41,7 +41,7 @@ class Base
     };
 
     //! Default destructor
-    virtual ~Base() noexcept = default;
+    virtual ~Base() noexcept =default;
 
     /**
      * @brief Returns the owning media set.
@@ -61,21 +61,21 @@ class Base
     virtual Type type() const = 0;
 
     /**
-    * @brief Returns the name of the file.
-    *
-    * @return The name of the file.
-    **/
-   virtual const string& name() const = 0;
+     * @brief Returns the name of the file.
+     *
+     * @return The name of the file.
+     **/
+    virtual const string& name() const = 0;
 
-   /**
-    * @brief Return the part number of the entity.
-    *
-    * If the entity itself does not have an part number (e.i. media and
-    * directories) the parent part number is returned
-    *
-    * @return The part number of the entity
-    **/
-   virtual string partNumber() const = 0;
+    /**
+     * @brief Return the part number of the entity.
+     *
+     * If the entity itself does not have an part number (e.i. media and
+     * directories) the parent part number is returned
+     *
+     * @return The part number of the entity
+     **/
+    virtual string partNumber() const = 0;
 };
 
 }

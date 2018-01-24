@@ -28,25 +28,31 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 {
   BOOST_LOG_FUNCTION();
 
-  for ( auto const &mediaSetConfig : config.mediaSets)
+  for ( auto const &mediaSet : config.mediaSets)
   {
     // import media set
     auto importer( Arinc665Utils::createArinc665Importer(
-      [&mediaSetConfig,&config]( const uint8_t mediumNumber, const path &path)->File::RawFile
+      [&mediaSet,&config]( const uint8_t mediumNumber, const path &path)->File::RawFile
       {
-        if (mediumNumber > mediaSetConfig.second.size())
+        auto medium{ mediaSet.second.find( mediumNumber)};
+
+
+        if (mediaSet.second.end() == medium)
         {
           BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning) <<
-            "More media then stored requested";
+            "Medium not found";
 
           return {};
         }
 
+        // concatenate file path
         auto filePath(
           config.mediaSetBase /
-          mediaSetConfig.first /
-          mediaSetConfig.second[ mediumNumber-1] /
+          mediaSet.first /
+          medium->second /
           path.relative_path());
+
+        // read file
 
         File::RawFile data( boost::filesystem::file_size( filePath));
 
@@ -56,7 +62,6 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 
         if ( !file.is_open())
         {
-          //! @throw Arinc665Exception
           BOOST_THROW_EXCEPTION(
             Arinc665Exception() << AdditionalInfo( "Error opening files"));
         }
@@ -69,19 +74,19 @@ MediaSetManagerImpl::MediaSetManagerImpl(
       }));
 
     // execute importer
-    auto mediaSet( importer( mediaSetConfig.first));
+    auto impMediaSet( importer( mediaSet.first));
 
     // add media set
-    mediaSetsValue.push_back( mediaSet);
+    mediaSetsValue.push_back( impMediaSet);
 
     // iterate over media
-    for ( auto medium : mediaSet->media())
+    for ( auto medium : impMediaSet->media())
     {
       // add path mapping
       this->mediaPaths.insert(
         { medium,
-          mediaSetConfig.first /
-          mediaSetConfig.second[ medium->mediumNumber() - 1]});
+          mediaSet.first /
+          mediaSet.second.at( medium->mediumNumber())}); // should never fail
     }
   }
 }

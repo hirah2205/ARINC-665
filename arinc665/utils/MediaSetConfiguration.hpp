@@ -18,7 +18,6 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/property_tree/ptree_fwd.hpp>
 
-#include <vector>
 #include <map>
 
 namespace Arinc665 {
@@ -37,8 +36,8 @@ class MediaSetConfiguration
     //! string type
     using string = std::string;
 
-    //! media-to-path mapping
-    using MediaPaths = std::vector< path>;
+    //! media-to-path mapping (medium number -> path)
+    using MediaPaths = std::map< uint8_t, path>;
     //! Mapping of media sets (Media set name to media paths)
     using MediaSets = std::map< string, MediaPaths>;
 

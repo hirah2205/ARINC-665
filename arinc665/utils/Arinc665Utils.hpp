@@ -51,6 +51,10 @@ class Arinc665Utils
     using CreateDirectoryHandler =
       std::function< void( Media::ConstDirectoryPtr directory)>;
 
+    //! Handler, which checks the existence of a file within the source
+    using CheckFileExistenceHandler =
+      std::function< bool( Media::ConstFilePtr file)>;
+
     //! Handler, which is called to generate the given file at the requested position.
     using CreateFileHandler = std::function< void( Media::ConstFilePtr file)>;
 
@@ -74,6 +78,17 @@ class Arinc665Utils
      * The ARINC 665 Media Set exporter.
      **/
     using Arinc665Exporter = std::function< void()>;
+
+    //! File creation policy of the exporter for load headers/ batch file
+    enum class FileCreationPolicy
+    {
+      //! No file (load header/ batch file) is created by the exporter itself.
+      None,
+      //! Only non-existing files are created by the exporter itself.
+      NonExisting,
+      //! All files are created by the exporter itself - even if already existing in source.
+      All
+    };
 
     /**
      * @brief Create a ARINC 665 Media Set importer.
@@ -115,12 +130,13 @@ class Arinc665Utils
       Media::ConstMediaSetPtr mediaSet,
       CreateMediumHandler createMediumHandler,
       CreateDirectoryHandler createDirectoryHandler,
+      //! @todo add CheckFileExistenceHandler checkFileExistenceHandler
       CreateFileHandler createFileHandler,
       WriteFileHandler writeFileHandler,
       ReadFileHandler readFileHandler,
       Arinc665Version arinc665Version = Arinc665Version::ARINC_665_2,
-      bool createBatchFiles = false,
-      bool createLoadHeaderFiles = false);
+      bool createBatchFiles = false, //! @todo change to FileCreationPolicy
+      bool createLoadHeaderFiles = false); //! @todo change to FileCreationPolicy
 };
 
 }

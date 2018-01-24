@@ -50,10 +50,10 @@ class Medium;
 using ConstMediumPtr = std::shared_ptr< const Medium>;
 //! medium pointer
 using MediumPtr = std::shared_ptr< Medium>;
-//! media list
-using Media = std::vector< MediumPtr>;
-//! const media list
-using ConstMedia = std::vector< ConstMediumPtr>;
+//! media
+using Media = std::map< uint8_t, MediumPtr>;
+//! const media
+using ConstMedia = std::map< uint8_t, ConstMediumPtr>;
 
 class Directory;
 //! constant directory pointer

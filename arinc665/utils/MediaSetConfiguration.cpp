@@ -33,14 +33,18 @@ MediaSetConfiguration::MediaSetConfiguration( const ptree &config):
   // iterate over media sets
   for ( auto &mediaSetConfig : config.get_child( "media_sets"))
   {
-    auto mediaSetName( mediaSetConfig.second.get< string>( "name"));
+    const auto mediaSetName{ mediaSetConfig.second.get< string>( "name")};
 
     MediaPaths mediaPaths;
 
     // iterate over media
     for ( auto &mediumConfig : mediaSetConfig.second.get_child( "media"))
     {
-      mediaPaths.push_back( mediumConfig.second.get_value< path>());
+      const auto mediumNumber{ mediumConfig.second.get< unsigned int>( "number")};
+      const auto mediumPath{ mediumConfig.second.get< path>( "path")};
+
+      mediaPaths.insert(
+        { static_cast< uint8_t>( mediumNumber), mediumPath});
     }
 
     // insert media set configuration

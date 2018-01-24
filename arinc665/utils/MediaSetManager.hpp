@@ -22,6 +22,7 @@
 
 #include <list>
 #include <string>
+#include <functional>
 
 namespace Arinc665 {
 namespace Utils {
@@ -45,6 +46,8 @@ class MediaSetManager
     using string = std::string;
     //! Media sets type (list)
     using MediaSets = std::list< Media::MediaSetPtr>;
+    //! Handler which returns the path to the given medium number
+    using MediumPathHandler = std::function< path( Media::MediumPtr medium)>;
 
     //! Default destructor
     virtual ~MediaSetManager() noexcept = default;
@@ -60,6 +63,13 @@ class MediaSetManager
      **/
     static MediaSetManagerPtr createInstance(
       const MediaSetConfiguration &config);
+
+    /**
+     * @brief Returns the configuration for the media set manager.
+     *
+     * @return The media set manager configuration.
+     **/
+    virtual const MediaSetConfiguration& configuration() const = 0;
 
     /**
      * @brief Returns the media set with the given part number.
@@ -80,6 +90,26 @@ class MediaSetManager
 
     //! @copydoc MediaSetManager::mediaSets() const
     virtual MediaSets& mediaSets() = 0;
+
+    /**
+     * @brief Adds the given media set to the media set manager.
+     *
+     * Copies the media from the source path to its destination paths.
+     * The integrity of the media paths are not checked.
+     * To few files will be detected on trying to access them.
+     * To much files are not detected.
+     *
+     * @param[in] mediaSet
+     * @param[in] mediumPathHandler
+     *
+     * @throw Arinc665Exception
+     *   If media set with this name already exists.
+     * @throw Arinc665Exception
+     *   If media/ files cannot be created/ copied.
+     **/
+    virtual void add(
+      Media::ConstMediaSetPtr mediaSet,
+      MediumPathHandler mediumPathHandler) = 0;
 
     /**
      * @brief Get all available Loads.

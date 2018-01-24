@@ -67,7 +67,6 @@ Media::MediaSetPtr Arinc665XmlPugiXmlImpl::loadMediaSet(
   FilePathMapping &filePathMapping,
   const pugi::xml_node &mediaSetNode)
 {
-  const std::string name( mediaSetNode.attribute( "Name").as_string());
   const std::string partNumber( mediaSetNode.attribute( "PartNumber").as_string());
 
   auto mediaSet( std::make_shared< Media::MediaSet>( name));

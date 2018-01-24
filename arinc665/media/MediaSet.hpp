@@ -44,10 +44,7 @@ class MediaSet:
      * @param[in] name
      *   name of the media set
      **/
-    MediaSet( const string &name);
-
-    //! @copydoc MediaSet()
-    MediaSet( string &&name);
+    MediaSet();
 
     //! @copydoc Base::mediaSet
     ConstMediaSetPtr mediaSet() const final;
@@ -57,19 +54,6 @@ class MediaSet:
 
     //! @copydoc Base::type
     Type type() const final;
-
-    //! @copydoc Base::name
-    const string& name() const final;
-
-    /**
-     * @brief Sets the name of the media set.
-     *
-     * @param[in] name
-     **/
-    void name( const string &name);
-
-    //! @copydoc name(const string&)
-    void name( string &&name);
 
     //! @copydoc Base::partNumber
     string partNumber() const final;
@@ -314,8 +298,6 @@ class MediaSet:
   private:
     //! the media
     Media mediaValue;
-    //! name
-    string nameValue;
     //! The part number
     string partNumberValue;
 };

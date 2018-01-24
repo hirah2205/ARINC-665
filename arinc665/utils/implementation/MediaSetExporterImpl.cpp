@@ -77,6 +77,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
     "Export medium " << (unsigned int)medium->mediumNumber();
 
+  // create the medium (i.g. create directory)
   createMediumHandler( medium);
 
   // export sub-directories
@@ -231,7 +232,8 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
     case Media::File::FileType::LoadFile:
       if (createLoadHeaderFiles)
       {
-        auto load( std::dynamic_pointer_cast< const Media::Load>( file));
+        auto load{ std::dynamic_pointer_cast< const Media::Load>( file)};
+
         if (!load)
         {
           BOOST_THROW_EXCEPTION( Arinc665Exception() <<

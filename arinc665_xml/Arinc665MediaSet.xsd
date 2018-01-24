@@ -22,7 +22,6 @@
       <element ref="ams:Loads"   minOccurs="1" maxOccurs="1" />
       <element ref="ams:Batches" minOccurs="1" maxOccurs="1" />
     </sequence>
-    <attribute name="Name"       type="ams:NameType"       use="required" />
     <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
   </complexType>
 
