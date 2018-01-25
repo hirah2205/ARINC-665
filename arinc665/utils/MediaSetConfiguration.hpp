@@ -42,7 +42,7 @@ class MediaSetConfiguration
     using MediaSets = std::map< string, MediaPaths>;
 
     //! Initialises the configuration with default values.
-    MediaSetConfiguration();
+    MediaSetConfiguration() = default;
 
     /**
      * @brief Loads the configuration via a boost::property_tree::ptree.
@@ -51,6 +51,14 @@ class MediaSetConfiguration
      *   The stored configuration.
      **/
     MediaSetConfiguration( const ptree &config);
+
+    /**
+     * @brief Loads the media set configuration form the given property tree.
+     *
+     * @param[in] config
+     *   The ptree to load the config from
+     **/
+    void load( const ptree &config);
 
     /**
      * @brief Converts the configuration values to a

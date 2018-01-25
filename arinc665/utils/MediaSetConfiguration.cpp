@@ -20,15 +20,18 @@
 namespace Arinc665 {
 namespace Utils {
 
-MediaSetConfiguration::MediaSetConfiguration():
-  mediaSetBase( boost::filesystem::current_path())
+MediaSetConfiguration::MediaSetConfiguration( const ptree &config)
 {
+  load( config);
 }
 
-MediaSetConfiguration::MediaSetConfiguration( const ptree &config):
-  mediaSetBase( config.get< path>( "media_set_base", boost::filesystem::current_path()))
+void MediaSetConfiguration::load( const ptree &config)
 {
   BOOST_LOG_FUNCTION();
+
+  mediaSetBase = config.get< path>(
+    "media_set_base",
+    boost::filesystem::current_path());
 
   // iterate over media sets
   for ( auto &mediaSetConfig : config.get_child( "media_sets"))
