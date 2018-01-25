@@ -40,9 +40,6 @@ class MediaSet:
      *
      * An empty media is automatically created.
      * This media set contains no data files, no loads and no batches.
-     *
-     * @param[in] name
-     *   name of the media set
      **/
     MediaSet() = default;
 
