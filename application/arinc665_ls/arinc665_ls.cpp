@@ -29,15 +29,23 @@
 #include <boost/exception/all.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
+#include <boost/program_options.hpp>
 
 #include <fstream>
 #include <iostream>
 
-void list_luh( const boost::filesystem::path &luhFile)
-{
-  using Arinc665::File::LoadHeaderFile;
-  using Arinc665::File::LoadFileInfo;
+int main( int argc, char* argv[]);
 
+static void list_luh( const boost::filesystem::path &luhFile);
+
+static void list_loads_lum( const boost::filesystem::path &loadsLum);
+
+static void list_files_lum( const boost::filesystem::path &filesLum);
+
+static void list_files( const boost::filesystem::path &loadDir);
+
+static void list_luh( const boost::filesystem::path &luhFile)
+{
   try
   {
     std::cout << "File size is: " << std::dec << boost::filesystem::file_size( luhFile) << std::endl;
@@ -56,7 +64,7 @@ void list_luh( const boost::filesystem::path &luhFile)
 
     file.read( (char*)&data.at(0), data.size());
 
-    LoadHeaderFile load( data);
+    Arinc665::File::LoadHeaderFile load( data);
 
     std::cout << "part number: "<< load.partNumber() << std::endl;
 
@@ -101,11 +109,8 @@ void list_luh( const boost::filesystem::path &luhFile)
   }
 }
 
-void list_loads_lum( const boost::filesystem::path &loadsLum)
+static void list_loads_lum( const boost::filesystem::path &loadsLum)
 {
-  using Arinc665::File::LoadListFile;
-  using Arinc665::File::LoadInfo;
-
   try
   {
     std::cout << "File size is: " << std::dec << boost::filesystem::file_size( loadsLum) << std::endl;
@@ -124,7 +129,7 @@ void list_loads_lum( const boost::filesystem::path &loadsLum)
 
     file.read( (char*)&data.at(0), data.size());
 
-    LoadListFile loadList( data);
+    Arinc665::File::LoadListFile loadList( data);
 
     std::cout << "media set pn: " << loadList.mediaSetPn() << std::endl;
 
@@ -161,11 +166,8 @@ void list_loads_lum( const boost::filesystem::path &loadsLum)
   }
 }
 
-void list_files_lum( const boost::filesystem::path &filesLum)
+static void list_files_lum( const boost::filesystem::path &filesLum)
 {
-  using Arinc665::File::FileListFile;
-  using Arinc665::File::FileInfo;
-
   try
   {
     std::cout << "File size is: " << std::dec << boost::filesystem::file_size( filesLum) << std::endl;
@@ -184,7 +186,7 @@ void list_files_lum( const boost::filesystem::path &filesLum)
 
     file.read( (char*) &data.at( 0), data.size());
 
-    FileListFile fileList( data);
+    Arinc665::File::FileListFile fileList( data);
 
     std::cout << "media set pn: " << fileList.mediaSetPn() << std::endl;
 
@@ -217,76 +219,47 @@ void list_files_lum( const boost::filesystem::path &filesLum)
   }
 }
 
-void list_file( const boost::filesystem::path &filename)
-{
-  std::cout << filename << "\n";
-}
-
 static void list_files( const boost::filesystem::path &loadDir)
 {
-  std::cout << "directory: " << loadDir << std::endl;
-
   for ( boost::filesystem::directory_iterator itr( loadDir);
     itr != boost::filesystem::directory_iterator(); ++itr)
   {
-    std::cout << itr->path().filename() << std::endl;
+    std::cout << " * " << itr->path().filename() << " - ";
 
-    if ( is_regular_file( itr->status()))
+    if ( boost::filesystem::is_directory( itr->path()))
     {
-      std::cout << " - ";
-
+      std::cout << "Directory\n";
+      list_files( itr->path());
+    }
+    else if ( is_regular_file( itr->status()))
+    {
       switch ( Arinc665::File::Arinc665File::getFileType( itr->path().filename()))
       {
         case Arinc665::FileType::BatchFile:
-          std::cout << "ARINC 665 BATCH file";
+          std::cout << "ARINC 665 BATCH file\n";
           break;
 
         case Arinc665::FileType::LoadUploadHeader:
-          std::cout << "ARINC 665 LOAD UPLOAD HEADER file";
-          break;
-
-        case Arinc665::FileType::LoadList:
-          std::cout << "ARINC 665 LOAD LIST file";
-          break;
-
-        case Arinc665::FileType::BatchList:
-          std::cout << "ARINC 665 BATCH LIST file";
-          break;
-
-        case Arinc665::FileType::FileList:
-          std::cout << "ARINC 665 FILE LIST file";
-          break;
-
-        default:
-          std::cout << "No special ARINC 665 file";
-          break;
-      }
-
-      std::cout << std::endl;
-
-      switch ( Arinc665::File::Arinc665File::getFileType( itr->path().filename()))
-      {
-        case Arinc665::FileType::BatchFile:
-          break;
-
-        case Arinc665::FileType::LoadUploadHeader:
-          list_file( itr->path());
+          std::cout << "ARINC 665 LOAD UPLOAD HEADER file\n";
           list_luh( itr->path());
           break;
 
         case Arinc665::FileType::LoadList:
+          std::cout << "ARINC 665 LOAD LIST file\n";
           list_loads_lum( itr->path());
           break;
 
         case Arinc665::FileType::BatchList:
+          std::cout << "ARINC 665 BATCH LIST file\n";
           break;
 
         case Arinc665::FileType::FileList:
+          std::cout << "ARINC 665 FILE LIST file\n";
           list_files_lum( itr->path());
           break;
 
         default:
-          list_file( itr->path());
+          std::cout << "No special ARINC 665 file\n";
           break;
       }
     }
@@ -295,19 +268,41 @@ static void list_files( const boost::filesystem::path &loadDir)
 
 int main( int argc, char* argv[])
 {
-  if ( argc != 2)
-  {
-    std::cout << "enter load directory" << std::endl;
+  boost::program_options::options_description options( "ARINC 665 List options");
 
-    return EXIT_FAILURE;
-  }
+  bool help = false;
+  boost::filesystem::path directory;
+
+  options.add_options()
+  (
+    "help",
+    boost::program_options::bool_switch( &help)->default_value( false),
+    "Print Help"
+  )
+  (
+    "directory",
+    boost::program_options::value( &directory)->required(),
+    "start directory"
+  );
 
   try
   {
-    boost::filesystem::path loadDir( argv[1]);
+    boost::program_options::variables_map vm;
+    boost::program_options::store(
+      boost::program_options::command_line_parser( argc, argv).options(
+        options).run(),
+      vm);
+    boost::program_options::notify( vm);
+
+    if ( help)
+    {
+      std::cout << options << std::endl;
+
+      return EXIT_FAILURE;
+    }
 
     std::cout << "List files" << std::endl;
-    list_files( loadDir);
+    list_files( directory);
   }
   catch ( boost::exception &e)
   {
