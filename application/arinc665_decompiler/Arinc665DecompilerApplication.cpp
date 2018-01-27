@@ -1,7 +1,3 @@
-/*
- * $Date: 2017-05-21 19:56:17 +0200 (So, 21. Mai 2017) $
- * $Revision: 2038 $
- */
 /**
  * @file
  * @copyright
@@ -28,15 +24,13 @@
 
 #include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
-#include <boost/application.hpp>
 
 #include <cstdlib>
 #include <memory>
 #include <fstream>
+#include <iostream>
 
-Arinc665DecompilerApplication::Arinc665DecompilerApplication(
-  boost::application::context &context) :
-  context( context),
+Arinc665DecompilerApplication::Arinc665DecompilerApplication() :
   optionsDescription( "ARINC 665 Media Set Decompiler Options")
 {
   optionsDescription.add_options()
@@ -51,23 +45,38 @@ Arinc665DecompilerApplication::Arinc665DecompilerApplication(
       "ARINC 665 media source directories"
     )
     (
-      "destination-directory",
-      boost::program_options::value( &mediaSetDestinationDirectory)->required(),
-      "Output directory for ARINC 665 media set"
+      "xml-file",
+      boost::program_options::value( &mediaSetXmlFile)->required(),
+      "Output ARINC 665 media set description XML"
     );
 }
 
-int Arinc665DecompilerApplication::operator()()
+int Arinc665DecompilerApplication::operator()( int argc, char *argv[])
 {
   try
   {
     std::cout << "ARINC 665 Media Set Decompiler" << std::endl;
 
-    if ( !handleCommandLine())
+    boost::program_options::variables_map options;
+    boost::program_options::store(
+      boost::program_options::parse_command_line( argc, argv, optionsDescription),
+      options);
+    boost::program_options::notify( options);
+
+    if ( options.count( "help") != 0)
     {
+      std::cout << optionsDescription << std::endl;
       return EXIT_FAILURE;
     }
+  }
+  catch ( boost::program_options::error &e)
+  {
+    std::cout << e.what() << std::endl << optionsDescription << std::endl;
+    return EXIT_FAILURE;
+  }
 
+  try
+  {
     // create importer
     auto importer( Arinc665::Utils::Arinc665Utils::createArinc665Importer(
       std::bind(
@@ -94,10 +103,8 @@ int Arinc665DecompilerApplication::operator()()
     // XML exporter
     auto xml( Arinc665::Utils::Arinc665Xml::createInstance());
 
-    xml->saveToXml(
-      result,
-      fileMapping,
-      (mediaSetDestinationDirectory / result->partNumber()) += ".xml");
+    // export the XML file
+    xml->saveToXml( result, fileMapping, mediaSetXmlFile);
   }
   catch ( Arinc665::Arinc665Exception &e)
   {
@@ -105,7 +112,7 @@ int Arinc665DecompilerApplication::operator()()
 
     std::cerr <<
       "decompiler failed: " <<
-//    	typid( e).name() << " - " <<
+//      typid( e).name() << " - " <<
       ((nullptr==info) ? "Unknown" : *info) <<
       std::endl;
 
@@ -124,37 +131,6 @@ int Arinc665DecompilerApplication::operator()()
   }
 
   return EXIT_SUCCESS;
-}
-
-bool Arinc665DecompilerApplication::handleCommandLine()
-{
-  try
-  {
-    std::shared_ptr< boost::application::args> args =
-    	context.find< boost::application::args>();
-
-    boost::program_options::variables_map options;
-    boost::program_options::store(
-      boost::program_options::parse_command_line(
-        args->argc(),
-        args->argv(),
-        optionsDescription),
-      options);
-    boost::program_options::notify( options);
-
-    if ( options.count( "help") != 0)
-    {
-      std::cout << optionsDescription << std::endl;
-      return false;
-    }
-  }
-  catch ( boost::program_options::error &e)
-  {
-    std::cout << e.what() << std::endl << optionsDescription << std::endl;
-    return false;
-  }
-
-  return true;
 }
 
 Arinc665::File::RawFile Arinc665DecompilerApplication::readFile(

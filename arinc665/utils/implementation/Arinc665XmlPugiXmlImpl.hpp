@@ -58,7 +58,10 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
      *   (used to insert the correct source path attribute.)
      * @param[in] xmlFile
      *   The ARINC 665 XML file.
-     */
+     *
+     * @throw Arinc665Exception
+     *   When XML file cannot be written.
+     **/
     void saveToXml(
       Media::ConstMediaSetPtr mediaSet,
       const FilePathMapping &filePathMapping,
@@ -120,9 +123,15 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
     /**
      * @brief Loads a directory section.
      *
-     * @param parent
-     * @param filePathMapping
-     * @param directoryNode
+     * @param[in] parent
+     *   Parent Container
+     * @param[in] filePathMapping
+     *   The file path mapping
+     * @param[in] directoryNode
+     *   The XML node representing the directory.
+     *
+     * @throw Arinc665::Arinc665Exception
+     *   When Name Attribute is missing or empty.
      **/
     void loadDirectory(
       Media::ContainerEntityPtr parent,

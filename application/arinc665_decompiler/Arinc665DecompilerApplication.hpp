@@ -1,7 +1,3 @@
-/*
- * $Date: 2017-05-21 19:56:17 +0200 (So, 21. Mai 2017) $
- * $Revision: 2038 $
- */
 /**
  * @file
  * @copyright
@@ -20,21 +16,18 @@
 #include <arinc665/file/File.hpp>
 
 #include <boost/program_options.hpp>
-#include <boost/application.hpp>
 #include <boost/filesystem/path.hpp>
 
 #include <vector>
 
+//! ARINC 665 decompiler application
 class Arinc665DecompilerApplication
 {
   public:
     /**
-     * @brief Constructs the TFTP client application.
-     *
-     * @param[in] context
-     *   The application context.
+     * @brief Initialises the application.
      **/
-    Arinc665DecompilerApplication( boost::application::context &context);
+    Arinc665DecompilerApplication();
 
     /**
      * @brief Executes the FIND client.
@@ -45,7 +38,7 @@ class Arinc665DecompilerApplication
      * @retval EXIT_FAILURE
      *   If an error has occurred.
      **/
-    int operator()();
+    int operator()( int argc, char *argv[]);
 
   private:
     using path = boost::filesystem::path;
@@ -59,15 +52,13 @@ class Arinc665DecompilerApplication
 
     Arinc665::File::RawFile readFile( uint8_t mediumNumber, const path &path);
 
-    //! The application context
-    boost::application::context& context;
     //! Program Options description
     boost::program_options::options_description optionsDescription;
 
     //! Media Set media source directories
     std::vector< path> mediaSourceDirectories;
     //! Media Set destination directory
-    path mediaSetDestinationDirectory;
+    path mediaSetXmlFile;
 };
 
 #endif

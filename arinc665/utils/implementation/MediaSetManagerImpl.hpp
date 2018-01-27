@@ -36,10 +36,10 @@ class MediaSetManagerImpl : public MediaSetManager
     const MediaSetConfiguration& configuration() const final;
 
     //! @copydoc MediaSetManager::mediaSet
-    Media::MediaSetPtr mediaSet( const string &partNumber) final;
+    Media::MediaSetPtr mediaSet( const std::string &partNumber) final;
 
     //! @copydoc MediaSetManager::mediaSets() const
-    const MediaSets& mediaSets() const  final;
+    const MediaSets& mediaSets() const final;
 
     //! @copydoc MediaSetManager::mediaSets()
     MediaSets& mediaSets() final;
@@ -51,6 +51,9 @@ class MediaSetManagerImpl : public MediaSetManager
 
     //! @copydoc MediaSetManager::loads() const
     Media::ConstLoads loads() const final;
+
+    //! @copydoc MediaSetManager::load() const
+    Media::ConstLoads load( const std::string &filename) const final;
 
     //! @copydoc MediaSetManager::filePath
     path filePath( Media::ConstBaseFilePtr file) const final;

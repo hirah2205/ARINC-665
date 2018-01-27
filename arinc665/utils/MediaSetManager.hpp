@@ -42,8 +42,6 @@ class MediaSetManager
   public:
     //! Path type
     using path = boost::filesystem::path;
-    //! String type
-    using string = std::string;
     //! Media sets type (list)
     using MediaSets = std::list< Media::MediaSetPtr>;
     //! Handler which returns the path to the given medium number
@@ -79,7 +77,7 @@ class MediaSetManager
      *
      * @return The media set with the given part number.
      **/
-    virtual Media::MediaSetPtr mediaSet( const string &partNumber) = 0;
+    virtual Media::MediaSetPtr mediaSet( const std::string &partNumber) = 0;
 
     /**
      * @brief Returns all registered media sets.
@@ -117,6 +115,19 @@ class MediaSetManager
      * @return All available loads.
      **/
     virtual Media::ConstLoads loads() const = 0;
+
+    /**
+     * @brief Returns the loads with the given filename.
+     *
+     * THis operation returns a list of loads, because the specific load could
+     * be localised on more than one medium.
+     *
+     * @param[in] filename
+     *   The filename
+     *
+     * @return The loads with the given filename.
+     **/
+    virtual Media::ConstLoads load( const std::string &filename) const = 0;
 
     /**
      * @brief Returns the path to the given file.

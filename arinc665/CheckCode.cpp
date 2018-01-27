@@ -25,7 +25,7 @@ CheckCode::CheckCode( const uint8_t checkCode) :
 {
 }
 
-CheckCode::CheckCode( const string &checkCode)
+CheckCode::CheckCode( const std::string &checkCode)
 {
   set( checkCode);
 }
@@ -52,7 +52,7 @@ void CheckCode::set( const uint8_t checkCode)
   this->checkCode = checkCode;
 }
 
-void CheckCode::set( const string &checkCode)
+void CheckCode::set( const std::string &checkCode)
 {
   // check length of string
   if ( checkCode.size() != Length)

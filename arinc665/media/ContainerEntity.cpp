@@ -361,12 +361,12 @@ ConstLoadPtr ContainerEntity::load(
 
   if (!filePtr)
   {
-    return ConstLoadPtr();
+    return {};
   }
 
   if (filePtr->fileType() != BaseFile::FileType::LoadFile)
   {
-    return ConstLoadPtr();
+    return {};
   }
 
   return std::dynamic_pointer_cast< const Load>( filePtr);

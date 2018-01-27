@@ -1,7 +1,3 @@
-/*
- * $Date: 2017-05-21 18:23:14 +0200 (So, 21. Mai 2017) $
- * $Revision: 2037 $
- */
 /**
  * @file
  * @copyright
@@ -18,8 +14,6 @@
 
 #include <helper/Logger.hpp>
 
-#include <boost/application.hpp>
-
 #include <cstdlib>
 #include <memory>
 
@@ -33,20 +27,13 @@
  *
  * @return The success state of this operation.
  **/
-int main( int argc, char ** argv);
+int main( int argc, char * argv[]);
 
-int main( int argc, char ** argv)
+int main( int argc, char * argv[])
 {
   initLogging( severity_level::info);
 
-  boost::application::context context;
+  Arinc665DecompilerApplication app;
 
-  Arinc665DecompilerApplication app( context);
-
-  context.insert< boost::application::args>(
-    std::make_shared< boost::application::args >( argc, argv));
-
-  return boost::application::launch< boost::application::common>(
-    app,
-    context);
+  return app( argc, argv);
 }

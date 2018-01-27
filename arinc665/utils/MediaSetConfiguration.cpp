@@ -37,7 +37,7 @@ void MediaSetConfiguration::load( const ptree &config)
   for ( auto &mediaSetConfig : config.get_child( "media_sets"))
   {
     const auto mediaSetPartNumber{
-      mediaSetConfig.second.get< string>( "part_number")};
+      mediaSetConfig.second.get< std::string>( "part_number")};
 
     MediaPaths mediaPaths;
 

@@ -26,9 +26,6 @@ namespace Arinc665 {
 class CheckCode
 {
   public:
-    //! String type
-    using string = std::string;
-
     //! The length of the check code when represented as string
     static constexpr size_t Length = 2;
 
@@ -51,7 +48,7 @@ class CheckCode
      * @throw Arinc665Exception
      *   When checkCode is not a valid check code string.
      **/
-    explicit CheckCode( const string &checkCode);
+    explicit CheckCode( const std::string &checkCode);
 
     /**
      * @brief Calculates the checkcode from the given manufacturer code and
@@ -78,7 +75,7 @@ class CheckCode
      *
      * @return The check code as string
      **/
-    string getStr() const;
+    std::string getStr() const;
 
     /**
      * @brief Set the check code to the given value.
@@ -94,7 +91,7 @@ class CheckCode
      * @param[in] checkCode
      *   Check code represented as string
      **/
-    void set( const string &checkCode);
+    void set( const std::string &checkCode);
 
     /**
      * @brief Re-calculates the check code from the given input data.

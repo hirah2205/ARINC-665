@@ -39,7 +39,6 @@ MediaSetManagerImpl::MediaSetManagerImpl(
       {
         auto medium{ mediaSet.second.find( mediumNumber)};
 
-
         if (mediaSet.second.end() == medium)
         {
           BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning) <<
@@ -99,8 +98,7 @@ const MediaSetConfiguration& MediaSetManagerImpl::configuration() const
   return config;
 }
 
-Media::MediaSetPtr MediaSetManagerImpl::mediaSet(
-  const string &partNumber)
+Media::MediaSetPtr MediaSetManagerImpl::mediaSet( const std::string &partNumber)
 {
   for (const auto &mediaSet : mediaSetsValue)
   {
@@ -109,6 +107,7 @@ Media::MediaSetPtr MediaSetManagerImpl::mediaSet(
       return mediaSet;
     }
   }
+
   return {};
 }
 
@@ -151,6 +150,23 @@ Media::ConstLoads MediaSetManagerImpl::loads() const
     auto mediaSetLoads( mediaSet->loads());
 
     loads.insert( loads.end(), mediaSetLoads.begin(), mediaSetLoads.end());
+  }
+
+  return loads;
+}
+
+Media::ConstLoads MediaSetManagerImpl::load( const std::string &filename) const
+{
+  Media::ConstLoads loads;
+
+  for (const auto &mediaSet : mediaSetsValue)
+  {
+    auto mediaSetLoad{ mediaSet->load( filename)};
+
+    if (mediaSetLoad)
+    {
+      loads.push_back( mediaSetLoad);
+    }
   }
 
   return loads;

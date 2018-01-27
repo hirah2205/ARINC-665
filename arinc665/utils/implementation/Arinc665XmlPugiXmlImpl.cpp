@@ -30,7 +30,10 @@ Arinc665XmlPugiXmlImpl::LoadXmlResult Arinc665XmlPugiXmlImpl::loadFromXml(
 {
   BOOST_LOG_FUNCTION();
 
-  // Check existance of file
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
+    "Load Media Set from " << xmlFile << "\n";
+
+  // Check existence of file
   if (!boost::filesystem::is_regular( xmlFile))
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception() <<
@@ -55,12 +58,19 @@ void Arinc665XmlPugiXmlImpl::saveToXml(
 {
   BOOST_LOG_FUNCTION();
 
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
+    "Save Media Set " << mediaSet->partNumber() << " to " << xmlFile << "\n";
+
   pugi::xml_document xmlDoc;
   pugi::xml_node mediaSetNode( xmlDoc.root().append_child( "MediaSet"));
 
   saveMediaSet( mediaSet, filePathMapping, mediaSetNode);
 
-  xmlDoc.save_file( xmlFile.c_str());
+  if (!xmlDoc.save_file( xmlFile.c_str(), "  "))
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo( "Error writing XML file"));
+  }
 }
 
 Media::MediaSetPtr Arinc665XmlPugiXmlImpl::loadMediaSet(
@@ -169,7 +179,6 @@ void Arinc665XmlPugiXmlImpl::loadDirectory(
 
   if (name.empty())
   {
-    //! @throw Arinc665::Arinc665Exception when Name Attribute is missing or empty.
     BOOST_THROW_EXCEPTION( Arinc665Exception() <<
       AdditionalInfo( "Name attribute missing or empty"));
   }
@@ -212,9 +221,9 @@ void Arinc665XmlPugiXmlImpl::loadEntries(
       continue;
     }
 
-    const std::string filename( entryNode.attribute( "Name").as_string());
-    const std::string partNumber( entryNode.attribute( "PartNumber").as_string());
-    const std::string sourcePath( entryNode.attribute( "SourcePath").as_string());
+    const std::string filename{ entryNode.attribute( "Name").as_string()};
+    const std::string partNumber{ entryNode.attribute( "PartNumber").as_string()};
+    const std::string sourcePath{ entryNode.attribute( "SourcePath").as_string()};
 
     if (filename.empty())
     {

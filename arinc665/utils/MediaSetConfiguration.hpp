@@ -33,13 +33,11 @@ class MediaSetConfiguration
     using ptree = boost::property_tree::ptree;
     //! path type
     using path = boost::filesystem::path;
-    //! string type
-    using string = std::string;
 
     //! media-to-path mapping (medium number -> path)
     using MediaPaths = std::map< uint8_t, path>;
     //! Mapping of media sets (Media set part number -> media paths)
-    using MediaSets = std::map< string, MediaPaths>;
+    using MediaSets = std::map< std::string, MediaPaths>;
 
     //! Initialises the configuration with default values.
     MediaSetConfiguration() = default;

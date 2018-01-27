@@ -24,9 +24,6 @@ namespace Arinc665 {
 class ManufacturerCode
 {
   public:
-    //! String type
-    using string = std::string;
-
     //! Length of manufacturer code
     static constexpr size_t Length = 3U;
 
@@ -38,27 +35,38 @@ class ManufacturerCode
      *
      * @throw Arinc665Exception
      *   When the given string is not an valid manufacturer code.
+     *
+     * @sa set
      **/
-    ManufacturerCode( const string& manufacturerCode);
+    ManufacturerCode( const std::string &manufacturerCode);
+
+    //! @copydoc ManufacturerCode(const string&)
+    ManufacturerCode( std::string &&manufacturerCode);
 
     /**
      * @brief Returns the manufacturer code as string.
      *
      * @return The manufacturer code.
      **/
-    string get() const;
+    std::string get() const;
 
     /**
      * @brief Sets the manufacturer code to the given value.
      *
      * @param[in] manufacturerCode
      *   The manufacturer code.
+     *
+     * @throw Arinc665Exception
+     *   When the given string is not an valid manufacturer code.
      **/
-    void set( const string& manufacturerCode);
+    void set( const std::string &manufacturerCode);
+
+    //! @copydoc set(const string&)
+    void set( std::string &&manufacturerCode);
 
   private:
     //! The stored manufacturer code.
-    string manufacturerCode;
+    std::string manufacturerCode;
 };
 
 }

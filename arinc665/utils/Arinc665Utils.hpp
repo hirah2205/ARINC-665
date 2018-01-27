@@ -40,9 +40,6 @@ class Arinc665Utils
     //! Path type
     using path = boost::filesystem::path;
 
-    //! String type
-    using string = std::string;
-
     //! Handler, which is called to generate the given medium.
     using CreateMediumHandler =
       std::function< void( Media::ConstMediumPtr medium)>;
