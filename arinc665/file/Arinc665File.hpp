@@ -263,7 +263,7 @@ class Arinc665File
      *
      * @return The ARINC 665 file type.
      **/
-    FileType getFileType() const;
+    FileType fileType() const;
 
     /**
      * @brief Returns the ARINC 665 version of this file.
@@ -367,7 +367,7 @@ class Arinc665File
     void decodeHeader( const RawFile &rawFile);
 
     //! File type
-    const FileType fileType;
+    const FileType fileTypeV;
     //! checksum position
     const std::size_t checksumPosition;
     //! ARINC 665 Version

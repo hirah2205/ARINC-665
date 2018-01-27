@@ -244,8 +244,7 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
         loadHeaderFile.partNumber( load->partNumber());
         loadHeaderFile.targetHardwareIds( load->targetHardwareIds());
 
-        Arinc665Crc32 loadCrc;
-
+        // calculate data files CRC and set data.
         for ( auto dataFile : load->dataFiles())
         {
           auto dataFilePtr( dataFile.lock());
@@ -260,12 +259,9 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
             dataFilePtr->partNumber(),
             static_cast< uint32_t>( rawDataFile.size() / 2),
             dataFileCrc});
-
-          loadCrc.process_block(
-            &(*rawDataFile.begin()),
-            &(*rawDataFile.begin()) + rawDataFile.size());
         }
 
+        // calculate data files CRC and set data.
         for ( auto supportFile : load->supportFiles())
         {
           auto supportFilePtr( supportFile.lock());
@@ -280,21 +276,52 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
             supportFilePtr->partNumber(),
             static_cast< uint32_t>( rawSupportFile.size() / 2),
             supportFileCrc});
+        }
+
+        // calculate load header file CRC
+        loadHeaderFile.calculateCrc();
+
+        // calculate load CRC
+        Arinc665Crc32 loadCrc;
+
+        // load header load CRC calculation
+        {
+          File::RawFile rawLoadHeader( loadHeaderFile);
+
+          loadCrc.process_bytes(
+            &(*rawLoadHeader.begin()),
+            rawLoadHeader.size() - sizeof( uint32_t));
+        }
+
+        // load data files for load CRC.
+        for ( auto dataFile : load->dataFiles())
+        {
+          auto dataFilePtr( dataFile.lock());
+          auto rawDataFile( readFileHandler(
+            dataFilePtr->medium()->mediumNumber(),
+            dataFilePtr->path()));
+
+          loadCrc.process_block(
+            &(*rawDataFile.begin()),
+            &(*rawDataFile.begin()) + rawDataFile.size());
+        }
+
+        // load support files for load CRC.
+        for ( auto supportFile : load->supportFiles())
+        {
+          auto supportFilePtr( supportFile.lock());
+          auto rawSupportFile( readFileHandler(
+            supportFilePtr->medium()->mediumNumber(),
+            supportFilePtr->path()));
 
           loadCrc.process_block(
             &(*rawSupportFile.begin()),
             &(*rawSupportFile.begin()) + rawSupportFile.size());
         }
 
-        loadHeaderFile.calculateCrc();
-
-        File::RawFile rawLoadHeader( loadHeaderFile);
-
-        loadCrc.process_block(
-          &(*rawLoadHeader.begin()),
-          &(*rawLoadHeader.begin()) + rawLoadHeader.size() - 4U);
-
+        // set load CRC
         loadHeaderFile.loadCrc( loadCrc.checksum());
+
         writeFileHandler(
           load->medium()->mediumNumber(),
           load->path(),

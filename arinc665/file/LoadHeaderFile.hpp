@@ -63,17 +63,17 @@ class LoadHeaderFile: public Arinc665File
      **/
     LoadHeaderFile(
       Arinc665Version version,
-      const string &partNumber,
+      const std::string &partNumber,
       const TargetHardwareIds &targetHardwareIds,
       const LoadFilesInfo &dataFilesInfo,
       const LoadFilesInfo &supportFilesInfo,
       const UserDefinedData &userDefinedData,
       uint32_t loadCrc);
 
-    //! @copydoc LoadHeaderFile(Arinc665Version,const string&,const TargetHardwareIds&,const LoadFilesInfo&,const LoadFilesInfo&,const UserDefinedData&,uint32_t)
+    //! @copydoc LoadHeaderFile(Arinc665Version,const std::string&,const TargetHardwareIds&,const LoadFilesInfo&,const LoadFilesInfo&,const UserDefinedData&,uint32_t)
     LoadHeaderFile(
       Arinc665Version version,
-      string &&partNumber,
+      std::string &&partNumber,
       TargetHardwareIds &&targetHardwareIds,
       LoadFilesInfo &&dataFilesInfo,
       LoadFilesInfo &&supportFilesInfo,
@@ -96,7 +96,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The part number of the load header file.
      **/
-    string partNumber() const;
+    std::string partNumber() const;
 
     /**
      * @brief Updates the part number of the load header file.
@@ -104,10 +104,10 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] partNumber
      *   The new part number.
      **/
-    void partNumber( const string &partNumber);
+    void partNumber( const std::string &partNumber);
 
-    //! @copydoc partNumber(const string&)
-    void partNumber( string &&partNumber);
+    //! @copydoc partNumber(const std::string&)
+    void partNumber( std::string &&partNumber);
 
     /**
      * @brief Returns the target hardware IDs.
@@ -135,10 +135,10 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] targetHardwareId
      *   Target hardware ID.
      **/
-    void addTargetHardwareId( const string &targetHardwareId);
+    void addTargetHardwareId( const std::string &targetHardwareId);
 
-    //! @copydoc addTargetHardwareId( const string&)
-    void addTargetHardwareId( string &&targetHardwareId);
+    //! @copydoc addTargetHardwareId( const std::string&)
+    void addTargetHardwareId( std::string &&targetHardwareId);
 
     /**
      * @brief Return the data files information.
@@ -256,7 +256,7 @@ class LoadHeaderFile: public Arinc665File
     LoadFilesInfo decodeFileList( const RawFile &rawFile, std::size_t offset);
 
     //! Part number of the load
-    string partNumberValue;
+    std::string partNumberValue;
     //! List of compatible target hardware IDs
     TargetHardwareIds targetHardwareIdsValue;
     //! List of data files

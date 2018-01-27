@@ -56,6 +56,9 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()()
     addMedium( mediaIndex);
   }
 
+  // finally add all files (regular, load headers, batches) to the media set
+  addFiles();
+
   return mediaSet;
 }
 
@@ -66,132 +69,6 @@ void MediaSetImporterImpl::addMedium( const uint8_t mediumIndex)
   loadBatchListFile( mediumIndex);
   loadLoadHeaderFiles( mediumIndex);
   loadBatchFiles( mediumIndex);
-  addFiles();
-
-#if 0
-	const FileListFile::FileListType &files = fileListFile.getFiles();
-	FileListFile::ListType dataFiles;
-	FileListFile::ListType loadFiles;
-	FileListFile::ListType batchFiles;
-	FileInfo listOfLoadsFile;
-	FileInfo listOfBatchesFile;
-
-	// iterate over all files
-	for ( auto &file : files)
-	{
-	  using Arinc665::File::FileFactory;
-
-		switch (FileFactory::getFileType( file.getFilename()))
-		{
-			case FileType::ARINC_665_FILE_TYPE_BATCH_FILE:
-				batchFiles.push_back( file);
-				break;
-
-			case FileType::ARINC_665_FILE_TYPE_LOAD_UPLOAD_HEADER:
-				loadFiles.push_back( file);
-				break;
-
-			case FileType::ARINC_665_FILE_TYPE_LOAD_LIST:
-				listOfLoadsFile = file;
-				break;
-
-			case FileType::ARINC_665_FILE_TYPE_BATCH_LIST:
-				listOfBatchesFile = file;
-				break;
-
-			case FileType::ARINC_665_FILE_TYPE_FILE_LIST:
-				BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-					AdditionalInfo( "FILES.LUM not expected in FILES.LUM"));
-				break;
-
-			default:
-				// This is a data/ support file
-				dataFiles.push_back( file);
-				break;
-		}
-	}
-
-
-	// iterate over load files
-	for ( auto &loadHeaderFileIt : loadFiles)
-	{
-		path loadHeaderFilePath = mediumPath / loadHeaderFileIt.getFilename();
-
-		//! @todo handle path name
-		LoadHeaderFile loadHeaderFile( loadFile( loadHeaderFilePath));
-
-		//! compare checksums (within header file and files.lum)
-		if ( loadHeaderFile.getCrc() != loadHeaderFileIt.getCrc())
-		{
-			BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-				AdditionalInfo( "CRC of load header files invalid"));
-		}
-
-		//! add load
-		Media::LoadPtr load = mediaSet->addLoad(
-			loadHeaderFileIt.getMemberSequenceNumber(),
-			loadHeaderFile.getPartNumber(),
-			loadHeaderFileIt.getFilename(),
-			loadHeaderFileIt.getPathName());
-
-		load->setTargetHardwareIdList( loadHeaderFile.getTargetHardwareIdList());
-
-		//! iterate over data files
-		for ( auto &dataFile : loadHeaderFile.getDataFileList())
-		{
-			//! get file from global file list
-			Media::FilePtr file = mediaSet->getFile( dataFile.getName());
-			if (!file)
-			{
-				BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-					AdditionalInfo( "Data file not in file list"));
-			}
-
-			//! compare checksums
-			if (file->getCrc() != dataFile.getCrc())
-			{
-				BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-					AdditionalInfo( "CRC in FILES.LUM and load header differs"));
-			}
-
-			//! @todo check file lenghts
-
-			//! update part number of file
-			file->setPartNumber( dataFile.getPartNumber());
-			//! add file to load
-			load->addDataFile( file);
-		}
-
-		//! iterate over support files
-		for ( auto &supportFile : loadHeaderFile.getSupportFileList())
-		{
-			//! get file from global file list
-			Media::FilePtr file = mediaSet->getFile( supportFile.getName());
-			if (!file)
-			{
-				BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-					AdditionalInfo( "Support file not in file list"));
-			}
-
-			//! compare checksums
-			if (file->getCrc() != supportFile.getCrc())
-			{
-				BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-					AdditionalInfo( "CRC in FILES.LUM and load header differs"));
-			}
-
-			//! @todo check file lengths
-
-			//! update part number of file
-			file->setPartNumber( supportFile.getPartNumber());
-			//! add file to load
-			load->addSupportFile( file);
-		}
-
-		//! add user defined data part
-		load->setUserDefinedData( loadHeaderFile.getUserDefinedData());
-	}
-#endif
 }
 
 void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
@@ -548,13 +425,14 @@ void MediaSetImporterImpl::addFiles()
   addBatches( batches);
 }
 
-void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeaders)
+void MediaSetImporterImpl::addLoads(
+  File::FileListFile::FileInfoMap &loadHeaders)
 {
   // iterate over load headers
   for ( const auto &loadHeader : loadHeaders)
   {
-    auto load( loadInfos.find( loadHeader.first));
-    auto loadHeaderFile( loadHeaderFiles.find( loadHeader.first.second));
+    auto load{ loadInfos.find( loadHeader.first)};
+    auto loadHeaderFile{ loadHeaderFiles.find( loadHeader.first.second)};
 
     ContainerEntityPtr container( checkCreateDirectory(
       loadHeader.first.first,
@@ -566,6 +444,18 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
     loadPtr->partNumber( loadHeaderFile->second.partNumber());
     loadPtr->targetHardwareIds( loadHeaderFile->second.targetHardwareIds());
 
+    // The load CRC
+    Arinc665Crc32 loadCrc;
+
+    {
+      // load file for load checksum calculation
+      const auto file{ readFileHandler(
+        loadPtr->medium()->mediumNumber(),
+        loadPtr->path())};
+
+      loadCrc.process_bytes( &(*file.begin()), file.size() - sizeof(uint32_t));
+    }
+
     // iterate over data files
     for ( const auto &dataFile : loadHeaderFile->second.dataFiles())
     {
@@ -574,6 +464,13 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
       dataFilePtr->partNumber( dataFile.partNumber());
 
       loadPtr->addDataFile( dataFilePtr);
+
+      // load file for load checksum calculation
+      const auto file{ readFileHandler(
+        dataFilePtr->medium()->mediumNumber(),
+        dataFilePtr->path())};
+
+      loadCrc.process_block( &(*file.begin()), &(*file.begin()) + file.size());
     }
 
     // iterate over support files
@@ -584,6 +481,20 @@ void MediaSetImporterImpl::addLoads( File::FileListFile::FileInfoMap &loadHeader
       supportFilePtr->partNumber( supportFile.partNumber());
 
       loadPtr->addSupportFile( supportFilePtr);
+
+      // load file for load checksum calculation
+      const auto file{ readFileHandler(
+        supportFilePtr->medium()->mediumNumber(),
+        supportFilePtr->path())};
+
+      loadCrc.process_block( &(*file.begin()), &(*file.begin()) + file.size());
+    }
+
+    if (loadCrc.checksum() != loadHeaderFile->second.loadCrc())
+    {
+      BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::error) <<
+        "Load CRC differs " << std::hex << loadCrc.checksum() << " : " <<
+        loadHeaderFile->second.loadCrc();
     }
   }
 }

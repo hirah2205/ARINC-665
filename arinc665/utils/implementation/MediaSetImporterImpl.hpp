@@ -49,8 +49,7 @@ class MediaSetImporterImpl
      * @param[in] readFileHandler
      *   Handler which is called to obtain the requested file from the medium.
      **/
-    MediaSetImporterImpl(
-      Arinc665Utils::ReadFileHandler readFileHandler);
+    MediaSetImporterImpl( Arinc665Utils::ReadFileHandler readFileHandler);
 
     /**
      * @brief Entry-point of the ARINC 665 media set importer.
@@ -118,7 +117,7 @@ class MediaSetImporterImpl
     /**
      * @brief Adds all files to the media set representation
      *
-     * Iterates over the file infos and creates the directories and files.
+     * Iterates over the file informations and creates the directories and files.
      *
      * @sa addLoads
      * @sa addBatches
@@ -142,6 +141,17 @@ class MediaSetImporterImpl
      **/
     void addBatches( File::FileListFile::FileInfoMap &batches);
 
+    /**
+     * @brief Creates the logical directory entry if not already created and
+     *   return its representation.
+     *
+     * @param[in] mediumIndex
+     *   Medium index.
+     * @param[in] directoryPath
+     *   The directory path.
+     *
+     * @return The directory entry.
+     **/
     ContainerEntityPtr checkCreateDirectory(
       uint8_t mediumIndex,
       const path &directoryPath);

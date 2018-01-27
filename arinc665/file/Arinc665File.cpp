@@ -415,9 +415,9 @@ Arinc665File::operator RawFile() const
   return encode();
 }
 
-FileType Arinc665File::getFileType() const
+FileType Arinc665File::fileType() const
 {
-  return fileType;
+  return fileTypeV;
 }
 
 Arinc665Version Arinc665File::arincVersion() const
@@ -453,7 +453,7 @@ Arinc665File::Arinc665File(
   const FileType fileType,
   Arinc665Version version,
   const std::size_t checksumPosition) noexcept :
-  fileType( fileType),
+  fileTypeV( fileType),
   checksumPosition( checksumPosition),
   arinc665VersionValue( version),
   crcValue( 0)
@@ -464,7 +464,7 @@ Arinc665File::Arinc665File(
   FileType fileType,
   const RawFile &rawFile,
   std::size_t checksumPosition) :
-  fileType( fileType),
+  fileTypeV( fileType),
   checksumPosition( checksumPosition)
 {
   decodeHeader( rawFile);
@@ -510,7 +510,7 @@ void Arinc665File::insertHeader( RawFile &rawFile) const
   // format version
   it = setInt< uint16_t>(
     it,
-    static_cast< uint16_t>( getFormatVersionField( fileType, arinc665VersionValue)));
+    static_cast< uint16_t>( getFormatVersionField( fileTypeV, arinc665VersionValue)));
 
   // spare
   it = setInt< uint16_t>( it, 0U);
@@ -535,7 +535,7 @@ void Arinc665File::decodeHeader( const RawFile &rawFile)
   uint32_t fileLength;
   it = getInt< uint32_t>( it, fileLength);
 
-  if ( fileLength * 2 != rawFile.size())
+  if ( fileLength * 2U != rawFile.size())
   {
     //! @throw InvalidArinc665File When file size field is invalid
     BOOST_THROW_EXCEPTION(
@@ -546,7 +546,7 @@ void Arinc665File::decodeHeader( const RawFile &rawFile)
   uint16_t formatVersion;
   it = getInt< uint16_t>( it, formatVersion);
 
-  arinc665VersionValue = getArinc665Version( fileType, formatVersion);
+  arinc665VersionValue = getArinc665Version( fileTypeV, formatVersion);
 
   // check format field version
   if ( arinc665VersionValue == Arinc665Version::Invalid)
