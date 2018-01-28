@@ -24,6 +24,20 @@ namespace Arinc665 {
  **/
 namespace Utils {
 
+//! File creation policy of the exporter for load headers/ batch file
+enum class FileCreationPolicy
+{
+  //! No file (load header/ batch file) is created by the exporter itself.
+  None,
+  //! Only non-existing files are created by the exporter itself.
+  NoneExisting,
+  //! All files are created by the exporter itself - even if already existing in source.
+  All,
+  //! Invalid value
+  Invalid
+};
+
+
 class Arinc665Xml;
 //! ARINC 665 XML instance pointer.
 using Arinc665XmlPtr = std::unique_ptr< Arinc665Xml>;

@@ -35,18 +35,20 @@ MediaSetExporterImpl::MediaSetExporterImpl(
   Media::ConstMediaSetPtr mediaSet,
   Arinc665Utils::CreateMediumHandler createMediumHandler,
   Arinc665Utils::CreateDirectoryHandler createDirectoryHandler,
+  Arinc665Utils::CheckFileExistenceHandler checkFileExistenceHandler,
   Arinc665Utils::CreateFileHandler createFileHandler,
   Arinc665Utils::WriteFileHandler writeFileHandler,
   Arinc665Utils::ReadFileHandler readFileHandler,
   const Arinc665Version arinc665Version,
-  const bool createBatchFiles,
-  const bool createLoadHeaderFiles):
+  const FileCreationPolicy createBatchFiles,
+  const FileCreationPolicy createLoadHeaderFiles):
   arinc665Version( arinc665Version),
   createBatchFiles( createBatchFiles),
   createLoadHeaderFiles( createLoadHeaderFiles),
   mediaSet( mediaSet),
   createMediumHandler( createMediumHandler),
   createDirectoryHandler( createDirectoryHandler),
+  checkFileExistenceHandler( checkFileExistenceHandler),
   createFileHandler( createFileHandler),
   writeFileHandler( writeFileHandler),
   readFileHandler( readFileHandler)
@@ -230,145 +232,58 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
       break;
 
     case Media::File::FileType::LoadFile:
-      if (createLoadHeaderFiles)
+      switch (createLoadHeaderFiles)
       {
-        auto load{ std::dynamic_pointer_cast< const Media::Load>( file)};
+        case FileCreationPolicy::None:
+          createFileHandler( file);
+          break;
 
-        if (!load)
-        {
+        case FileCreationPolicy::NoneExisting:
+          if (checkFileExistenceHandler( file))
+          {
+            createFileHandler( file);
+          }
+          else
+          {
+            createLoadHeaderFile( file);
+          }
+          break;
+
+        case FileCreationPolicy::All:
+          createLoadHeaderFile( file);
+          break;
+
+        default:
           BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-            AdditionalInfo( "Cannot cast file to load"));
-        }
-
-        File::LoadHeaderFile loadHeaderFile( Arinc665Version::ARINC_665_2);
-        loadHeaderFile.partNumber( load->partNumber());
-        loadHeaderFile.targetHardwareIds( load->targetHardwareIds());
-
-        // calculate data files CRC and set data.
-        for ( auto dataFile : load->dataFiles())
-        {
-          auto dataFilePtr( dataFile.lock());
-          auto rawDataFile( readFileHandler(
-            dataFilePtr->medium()->mediumNumber(),
-            dataFilePtr->path()));
-          uint16_t dataFileCrc(
-            File::Arinc665File::calculateChecksum( rawDataFile, 0));
-
-          loadHeaderFile.addDataFile( {
-            dataFilePtr->name(),
-            dataFilePtr->partNumber(),
-            static_cast< uint32_t>( rawDataFile.size() / 2),
-            dataFileCrc});
-        }
-
-        // calculate data files CRC and set data.
-        for ( auto supportFile : load->supportFiles())
-        {
-          auto supportFilePtr( supportFile.lock());
-          auto rawSupportFile( readFileHandler(
-            supportFilePtr->medium()->mediumNumber(),
-            supportFilePtr->path()));
-          uint16_t supportFileCrc(
-            File::Arinc665File::calculateChecksum( rawSupportFile, 0));
-
-          loadHeaderFile.addDataFile( {
-            supportFilePtr->name(),
-            supportFilePtr->partNumber(),
-            static_cast< uint32_t>( rawSupportFile.size() / 2),
-            supportFileCrc});
-        }
-
-        // calculate load header file CRC
-        loadHeaderFile.calculateCrc();
-
-        // calculate load CRC
-        Arinc665Crc32 loadCrc;
-
-        // load header load CRC calculation
-        {
-          File::RawFile rawLoadHeader( loadHeaderFile);
-
-          loadCrc.process_bytes(
-            &(*rawLoadHeader.begin()),
-            rawLoadHeader.size() - sizeof( uint32_t));
-        }
-
-        // load data files for load CRC.
-        for ( auto dataFile : load->dataFiles())
-        {
-          auto dataFilePtr( dataFile.lock());
-          auto rawDataFile( readFileHandler(
-            dataFilePtr->medium()->mediumNumber(),
-            dataFilePtr->path()));
-
-          loadCrc.process_block(
-            &(*rawDataFile.begin()),
-            &(*rawDataFile.begin()) + rawDataFile.size());
-        }
-
-        // load support files for load CRC.
-        for ( auto supportFile : load->supportFiles())
-        {
-          auto supportFilePtr( supportFile.lock());
-          auto rawSupportFile( readFileHandler(
-            supportFilePtr->medium()->mediumNumber(),
-            supportFilePtr->path()));
-
-          loadCrc.process_block(
-            &(*rawSupportFile.begin()),
-            &(*rawSupportFile.begin()) + rawSupportFile.size());
-        }
-
-        // set load CRC
-        loadHeaderFile.loadCrc( loadCrc.checksum());
-
-        writeFileHandler(
-          load->medium()->mediumNumber(),
-          load->path(),
-          loadHeaderFile);
-      }
-      else
-      {
-        createFileHandler( file);
+            AdditionalInfo( "Invalid value of createLoadHeaderFiles"));
       }
       break;
 
     case Media::File::FileType::BatchFile:
-      if (createBatchFiles)
+      switch (createBatchFiles)
       {
-        auto batch( std::dynamic_pointer_cast< const Media::Batch>( file));
-        if (!batch)
-        {
-          BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-            AdditionalInfo( "Cannot cast file to batch"));
-        }
+        case FileCreationPolicy::None:
+          createFileHandler( file);
+          break;
 
-        File::BatchFile batchFile( Arinc665Version::ARINC_665_2);
-        batchFile.partNumber( batch->partNumber());
-        batchFile.comment( batch->comment());
-
-        for ( auto target : batch->targets())
-        {
-          File::BatchLoadsInfo batchLoadsInfo;
-          for (auto load : target.second)
+        case FileCreationPolicy::NoneExisting:
+          if (checkFileExistenceHandler( file))
           {
-            auto loadPtr( load.lock());
-            batchLoadsInfo.emplace_back(
-              loadPtr->name(),
-              loadPtr->partNumber());
+            createFileHandler( file);
           }
+          else
+          {
+            createBatchFile( file);
+          }
+          break;
 
-          batchFile.addTargetHardware(
-            File::BatchTargetInfo{ target.first, batchLoadsInfo});
-        }
+        case FileCreationPolicy::All:
+          createBatchFile( file);
+          break;
 
-        batchFile.calculateCrc();
-        writeFileHandler(
-          batch->medium()->mediumNumber(), batch->path(), batchFile);
-      }
-      else
-      {
-        createFileHandler( file);
+        default:
+          BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+            AdditionalInfo( "Invalid value of createBatchFiles"));
       }
       break;
 
@@ -377,6 +292,137 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
         AdditionalInfo( "Invalid file type"));
         /* no break: because THROW */
   }
+}
+
+void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
+{
+  auto load{ std::dynamic_pointer_cast< const Media::Load>( file)};
+
+  if (!load)
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo( "Cannot cast file to load"));
+  }
+
+  File::LoadHeaderFile loadHeaderFile( Arinc665Version::ARINC_665_2);
+  loadHeaderFile.partNumber( load->partNumber());
+  loadHeaderFile.targetHardwareIds( load->targetHardwareIds());
+
+  // calculate data files CRC and set data.
+  for ( auto dataFile : load->dataFiles())
+  {
+    auto dataFilePtr( dataFile.lock());
+    auto rawDataFile( readFileHandler(
+      dataFilePtr->medium()->mediumNumber(),
+      dataFilePtr->path()));
+    uint16_t dataFileCrc(
+      File::Arinc665File::calculateChecksum( rawDataFile, 0));
+
+    loadHeaderFile.addDataFile( {
+      dataFilePtr->name(),
+      dataFilePtr->partNumber(),
+      static_cast< uint32_t>( rawDataFile.size() / 2),
+      dataFileCrc});
+  }
+
+  // calculate data files CRC and set data.
+  for ( auto supportFile : load->supportFiles())
+  {
+    auto supportFilePtr( supportFile.lock());
+    auto rawSupportFile( readFileHandler(
+      supportFilePtr->medium()->mediumNumber(),
+      supportFilePtr->path()));
+    uint16_t supportFileCrc(
+      File::Arinc665File::calculateChecksum( rawSupportFile, 0));
+
+    loadHeaderFile.addDataFile( {
+      supportFilePtr->name(),
+      supportFilePtr->partNumber(),
+      static_cast< uint32_t>( rawSupportFile.size() / 2),
+      supportFileCrc});
+  }
+
+  // calculate load header file CRC
+  loadHeaderFile.calculateCrc();
+
+  // calculate load CRC
+  Arinc665Crc32 loadCrc;
+
+  // load header load CRC calculation
+  {
+    File::RawFile rawLoadHeader( loadHeaderFile);
+
+    loadCrc.process_bytes(
+      &(*rawLoadHeader.begin()),
+      rawLoadHeader.size() - sizeof( uint32_t));
+  }
+
+  // load data files for load CRC.
+  for ( auto dataFile : load->dataFiles())
+  {
+    auto dataFilePtr( dataFile.lock());
+    auto rawDataFile( readFileHandler(
+      dataFilePtr->medium()->mediumNumber(),
+      dataFilePtr->path()));
+
+    loadCrc.process_block(
+      &(*rawDataFile.begin()),
+      &(*rawDataFile.begin()) + rawDataFile.size());
+  }
+
+  // load support files for load CRC.
+  for ( auto supportFile : load->supportFiles())
+  {
+    auto supportFilePtr( supportFile.lock());
+    auto rawSupportFile( readFileHandler(
+      supportFilePtr->medium()->mediumNumber(),
+      supportFilePtr->path()));
+
+    loadCrc.process_block(
+      &(*rawSupportFile.begin()),
+      &(*rawSupportFile.begin()) + rawSupportFile.size());
+  }
+
+  // set load CRC
+  loadHeaderFile.loadCrc( loadCrc.checksum());
+
+  writeFileHandler(
+    load->medium()->mediumNumber(),
+    load->path(),
+    loadHeaderFile);
+}
+
+void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
+{
+  auto batch( std::dynamic_pointer_cast< const Media::Batch>( file));
+  if (!batch)
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
+      AdditionalInfo( "Cannot cast file to batch"));
+  }
+
+  File::BatchFile batchFile( Arinc665Version::ARINC_665_2);
+  batchFile.partNumber( batch->partNumber());
+  batchFile.comment( batch->comment());
+
+  for ( auto target : batch->targets())
+  {
+    File::BatchLoadsInfo batchLoadsInfo;
+    for (auto load : target.second)
+    {
+      auto loadPtr( load.lock());
+      batchLoadsInfo.emplace_back(
+        loadPtr->name(),
+        loadPtr->partNumber());
+    }
+
+    batchFile.addTargetHardware(
+      File::BatchTargetInfo{ target.first, batchLoadsInfo});
+  }
+
+  batchFile.calculateCrc();
+  writeFileHandler(
+    batch->medium()->mediumNumber(), batch->path(), batchFile);
 }
 
 }

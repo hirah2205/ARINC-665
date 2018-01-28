@@ -20,6 +20,7 @@
 
 #include <arinc665/utils/Arinc665Utils.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
+#include <arinc665/utils/FileCreationPolicyDescription.hpp>
 
 #include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
@@ -29,63 +30,83 @@
 
 #include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
-#include <boost/application.hpp>
 #include <boost/format.hpp>
 
 #include <cstdlib>
 #include <memory>
 #include <fstream>
+#include <iostream>
 
-Arinc665CompilerApplication::Arinc665CompilerApplication(
-  boost::application::context &context) :
-  context( context),
+Arinc665CompilerApplication::Arinc665CompilerApplication() :
   optionsDescription( "ARINC 665 Media Set Compiler Options"),
-  createBatchFiles( false),
-  createLoadHeaderFiles( false),
+  createBatchFiles( Arinc665::Utils::FileCreationPolicy::Invalid),
+  createLoadHeaderFiles( Arinc665::Utils::FileCreationPolicy::Invalid),
   xml( Arinc665::Utils::Arinc665Xml::createInstance())
 {
+  auto desc{ Arinc665::Utils::FileCreationPolicyDescription::instance()};
+
+  const std::string fileCreationPolicyValues{
+    "* '" + desc.findName( Arinc665::Utils::FileCreationPolicy::None) + "': Create never\n" +
+    "* '" + desc.findName( Arinc665::Utils::FileCreationPolicy::NoneExisting) + "': Create none-existing\n" +
+    "* '" + desc.findName( Arinc665::Utils::FileCreationPolicy::All) + "': Create all"};
+
   optionsDescription.add_options()
-    (
-      "help",
-      "print this help screen"
-    )
-    (
-      "xml-file",
-      boost::program_options::value( &mediaSetXmlFile)->required(),
-      "ARINC 665 media set description file"
-    )
-    (
-      "source-directory",
-      boost::program_options::value( &mediaSetSourceDirectory)->required(),
-      "ARINC 665 source directory"
-    )
-    (
-      "destination-directory",
-      boost::program_options::value( &mediaSetDestinationDirectory)->required(),
-      "Output directory for ARINC 665 media set"
-    )
-    (
-      "create-batch-files",
-      boost::program_options::bool_switch( &createBatchFiles)->default_value( false),
-      "Create batch-files instead coping it."
-    )
-    (
-      "create-load-header-files",
-      boost::program_options::bool_switch( &createLoadHeaderFiles)->default_value( false),
-      "Create load-headers-files instead coping it."
-    );
+  (
+    "help",
+    "print this help screen"
+  )
+  (
+    "xml-file",
+    boost::program_options::value( &mediaSetXmlFile)->required(),
+    "ARINC 665 media set description file"
+  )
+  (
+    "source-directory",
+    boost::program_options::value( &mediaSetSourceDirectory)->required(),
+    "ARINC 665 source directory"
+  )
+  (
+    "destination-directory",
+    boost::program_options::value( &mediaSetDestinationDirectory)->required(),
+    "Output directory for ARINC 665 media set"
+  )
+  (
+    "create-batch-files",
+    boost::program_options::value( &createBatchFiles)->default_value(
+      Arinc665::Utils::FileCreationPolicy::None),
+    (std::string( "batch-files creation policy:\n") + fileCreationPolicyValues).c_str()
+  )
+  (
+    "create-load-header-files",
+    boost::program_options::value( &createLoadHeaderFiles)->default_value(
+      Arinc665::Utils::FileCreationPolicy::None),
+    (std::string( "Load-headers-files creation policy:\n") + fileCreationPolicyValues).c_str()
+  );
 }
 
-int Arinc665CompilerApplication::operator()()
+int Arinc665CompilerApplication::operator()( int argc, char *argv[])
 {
+  BOOST_LOG_FUNCTION();
   try
   {
     std::cout << "ARINC 665 Media Set Compiler" << std::endl;
 
-    if ( !handleCommandLine())
+    boost::program_options::variables_map options;
+
+    boost::program_options::store(
+      boost::program_options::parse_command_line(
+        argc,
+        argv,
+        optionsDescription),
+      options);
+
+    if ( options.count( "help") != 0)
     {
+      std::cout << optionsDescription << std::endl;
       return EXIT_FAILURE;
     }
+
+    boost::program_options::notify( options);
 
     // load XML file
     auto result( xml->loadFromXml( mediaSetXmlFile));
@@ -102,6 +123,11 @@ int Arinc665CompilerApplication::operator()()
       std::bind(
         &Arinc665CompilerApplication::createDirectory,
         this,
+        std::placeholders::_1),
+      std::bind(
+        &Arinc665CompilerApplication::checkFileExistance,
+        this,
+        result,
         std::placeholders::_1),
       std::bind(
         &Arinc665CompilerApplication::createFile,
@@ -124,6 +150,11 @@ int Arinc665CompilerApplication::operator()()
       createLoadHeaderFiles));
 
     exporter();
+  }
+  catch ( boost::program_options::error &e)
+  {
+    std::cout << e.what() << std::endl;
+    return EXIT_FAILURE;
   }
   catch ( Arinc665::Arinc665Exception &e)
   {
@@ -149,41 +180,6 @@ int Arinc665CompilerApplication::operator()()
   }
 
   return EXIT_SUCCESS;
-}
-
-bool Arinc665CompilerApplication::handleCommandLine()
-{
-  BOOST_LOG_FUNCTION();
-
-  try
-  {
-    std::shared_ptr< boost::application::args> args(
-      context.find< boost::application::args>());
-
-    boost::program_options::variables_map options;
-
-    boost::program_options::store(
-      boost::program_options::parse_command_line(
-        args->argc(),
-        args->argv(),
-        optionsDescription),
-      options);
-
-    if ( options.count( "help") != 0)
-    {
-      std::cout << optionsDescription << std::endl;
-      return false;
-    }
-
-    boost::program_options::notify( options);
-  }
-  catch ( boost::program_options::error &e)
-  {
-    std::cout << e.what() << std::endl << optionsDescription << std::endl;
-    return false;
-  }
-
-  return true;
 }
 
 Arinc665CompilerApplication::path Arinc665CompilerApplication::getMediumPath(
@@ -218,6 +214,29 @@ void Arinc665CompilerApplication::createDirectory(
     directoryPath;
 
   boost::filesystem::create_directory( directoryPath);
+}
+
+bool Arinc665CompilerApplication::checkFileExistance(
+  const Arinc665::Utils::Arinc665Xml::LoadXmlResult &mediaSetInfo,
+  Arinc665::Media::ConstFilePtr file)
+{
+  BOOST_LOG_FUNCTION();
+
+  BOOST_LOG_TRIVIAL( severity_level::info) << "check existence of " <<
+    file->path();
+
+  // search for file
+  auto fileIt( std::get< 1>( mediaSetInfo).find( file));
+
+  if (fileIt == std::get< 1>( mediaSetInfo).end())
+  {
+    return false;
+  }
+
+  auto filePath(
+    getMediumPath( file->medium()->mediumNumber()) / file->path());
+
+  return boost::filesystem::is_regular_file( filePath);
 }
 
 void Arinc665CompilerApplication::createFile(

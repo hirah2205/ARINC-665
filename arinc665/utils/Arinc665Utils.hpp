@@ -75,17 +75,6 @@ class Arinc665Utils
      **/
     using Arinc665Exporter = std::function< void()>;
 
-    //! File creation policy of the exporter for load headers/ batch file
-    enum class FileCreationPolicy
-    {
-      //! No file (load header/ batch file) is created by the exporter itself.
-      None,
-      //! Only non-existing files are created by the exporter itself.
-      NonExisting,
-      //! All files are created by the exporter itself - even if already existing in source.
-      All
-    };
-
     /**
      * @brief Create a ARINC 665 Media Set importer.
      *
@@ -126,13 +115,13 @@ class Arinc665Utils
       Media::ConstMediaSetPtr mediaSet,
       CreateMediumHandler createMediumHandler,
       CreateDirectoryHandler createDirectoryHandler,
-      //! @todo add CheckFileExistenceHandler checkFileExistenceHandler
+      CheckFileExistenceHandler checkFileExistenceHandler,
       CreateFileHandler createFileHandler,
       WriteFileHandler writeFileHandler,
       ReadFileHandler readFileHandler,
       Arinc665Version arinc665Version = Arinc665Version::ARINC_665_2,
-      bool createBatchFiles = false, //! @todo change to FileCreationPolicy
-      bool createLoadHeaderFiles = false); //! @todo change to FileCreationPolicy
+      FileCreationPolicy createBatchFiles = FileCreationPolicy::None,
+      FileCreationPolicy createLoadHeaderFiles = FileCreationPolicy::None);
 };
 
 }

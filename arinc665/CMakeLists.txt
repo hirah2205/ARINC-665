@@ -84,6 +84,8 @@ add_library(
   utils/Arinc665Utils.cpp
   utils/Arinc665Xml.hpp
   utils/Arinc665Xml.cpp
+  utils/FileCreationPolicyDescription.hpp
+  utils/FileCreationPolicyDescription.cpp
   utils/MediaSetConfiguration.hpp
   utils/MediaSetConfiguration.cpp
   utils/MediaSetManager.hpp

@@ -44,6 +44,67 @@ static void list_files_lum( const boost::filesystem::path &filesLum);
 
 static void list_files( const boost::filesystem::path &loadDir);
 
+int main( int argc, char* argv[])
+{
+  boost::program_options::options_description options( "ARINC 665 List options");
+
+  boost::filesystem::path directory;
+
+  options.add_options()
+  (
+    "help",
+    "Print Help"
+  )
+  (
+    "directory",
+    boost::program_options::value( &directory)->required(),
+    "start directory"
+  );
+
+  try
+  {
+    boost::program_options::variables_map vm;
+    boost::program_options::store(
+      boost::program_options::parse_command_line( argc, argv, options),
+      vm);
+
+    if ( vm.count( "help") != 0)
+    {
+      std::cout <<
+        "Prints the ARINC 665 Media File informations located in the given directory\n" <<
+        options;
+      return EXIT_FAILURE;
+    }
+
+    boost::program_options::notify( vm);
+
+    std::cout << "List files" << std::endl;
+    list_files( directory);
+  }
+  catch ( boost::program_options::error &e)
+  {
+    std::cout << "Error parsing command line: " << e.what() << std::endl;
+    return EXIT_FAILURE;
+  }
+  catch ( boost::exception &e)
+  {
+    std::cout << "Error: " << boost::diagnostic_information( e) << std::endl;
+    return EXIT_FAILURE;
+  }
+  catch ( std::exception &e)
+  {
+    std::cout << "Error: " << e.what() << std::endl;
+    return EXIT_FAILURE;
+  }
+  catch ( ...)
+  {
+    std::cout << "unknown exception occurred" << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 static void list_luh( const boost::filesystem::path &luhFile)
 {
   try
@@ -264,63 +325,5 @@ static void list_files( const boost::filesystem::path &loadDir)
       }
     }
   }
-}
-
-int main( int argc, char* argv[])
-{
-  boost::program_options::options_description options( "ARINC 665 List options");
-
-  bool help = false;
-  boost::filesystem::path directory;
-
-  options.add_options()
-  (
-    "help",
-    boost::program_options::bool_switch( &help)->default_value( false),
-    "Print Help"
-  )
-  (
-    "directory",
-    boost::program_options::value( &directory)->required(),
-    "start directory"
-  );
-
-  try
-  {
-    boost::program_options::variables_map vm;
-    boost::program_options::store(
-      boost::program_options::command_line_parser( argc, argv).options(
-        options).run(),
-      vm);
-    boost::program_options::notify( vm);
-
-    if ( help)
-    {
-      std::cout << options << std::endl;
-
-      return EXIT_FAILURE;
-    }
-
-    std::cout << "List files" << std::endl;
-    list_files( directory);
-  }
-  catch ( boost::exception &e)
-  {
-    std::cout << "Boost exception: " << boost::diagnostic_information( e)
-      << std::endl;
-    return EXIT_FAILURE;
-  }
-  catch ( std::exception &e)
-  {
-    std::cout << "std exception: " << e.what() << std::endl;
-    return EXIT_FAILURE;
-  }
-  catch ( ...)
-  {
-    std::cout << "unknown exception occurred" << std::endl;
-    return EXIT_FAILURE;
-  }
-
-  return EXIT_SUCCESS;
 }
 

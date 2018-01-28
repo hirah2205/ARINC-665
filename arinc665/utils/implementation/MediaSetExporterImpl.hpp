@@ -26,8 +26,6 @@ class MediaSetExporterImpl
   public:
     //! Path type
     using path = Arinc665Utils::path;
-    //! String type
-    using string = std::string;
 
     /**
      * @brief Initialises the ARINC 665 media set importer
@@ -38,6 +36,8 @@ class MediaSetExporterImpl
      *   Called to create the given medium.
      * @param[in] createDirectoryHandler
      *   Called to create the given directory.
+     * @param[in] checkFileExistenceHandler
+     *   Called to check if desired file exists
      * @param[in] createFileHandler
      *   When a file needs to be generated, this handler is called.
      * @param[in] writeFileHandler
@@ -56,12 +56,13 @@ class MediaSetExporterImpl
       Media::ConstMediaSetPtr mediaSet,
       Arinc665Utils::CreateMediumHandler createMediumHandler,
       Arinc665Utils::CreateDirectoryHandler createDirectoryHandler,
+      Arinc665Utils::CheckFileExistenceHandler checkFileExistenceHandler,
       Arinc665Utils::CreateFileHandler createFileHandler,
       Arinc665Utils::WriteFileHandler writeFileHandler,
       Arinc665Utils::ReadFileHandler readFileHandler,
       Arinc665Version arinc665Version,
-      bool createBatchFiles,
-      bool createLoadHeaderFiles);
+      FileCreationPolicy createBatchFiles,
+      FileCreationPolicy createLoadHeaderFiles);
 
     /**
      * @brief Entry-point of the ARINC 665 media set exporter.
@@ -93,12 +94,16 @@ class MediaSetExporterImpl
      **/
     void exportFile( Media::ConstFilePtr file);
 
+    void createLoadHeaderFile( Media::ConstFilePtr file);
+
+    void createBatchFile( Media::ConstFilePtr file);
+
     //! The ARINC 665 version used for exporting
     const Arinc665Version arinc665Version;
     //! indicates if batch files shall be created by media set exporter
-    const bool createBatchFiles;
+    const FileCreationPolicy createBatchFiles;
     //! indicates if load header files shall be created by media set exporter
-    const bool createLoadHeaderFiles;
+    const FileCreationPolicy createLoadHeaderFiles;
 
     //! The Media Set
     Media::ConstMediaSetPtr mediaSet;
@@ -106,6 +111,8 @@ class MediaSetExporterImpl
     Arinc665Utils::CreateMediumHandler createMediumHandler;
     //! Create directory handler
     Arinc665Utils::CreateDirectoryHandler createDirectoryHandler;
+    //! Check file existence handler
+    Arinc665Utils::CheckFileExistenceHandler checkFileExistenceHandler;
     //! Create file handler
     Arinc665Utils::CreateFileHandler createFileHandler;
     //! Write file handler

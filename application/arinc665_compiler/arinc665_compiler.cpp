@@ -18,8 +18,6 @@
 
 #include <helper/Logger.hpp>
 
-#include <boost/application.hpp>
-
 #include <cstdlib>
 #include <memory>
 
@@ -39,14 +37,7 @@ int main( int argc, char ** argv)
 {
   initLogging( severity_level::info);
 
-  boost::application::context context;
+  Arinc665CompilerApplication app;
 
-  Arinc665CompilerApplication app( context);
-
-  context.insert< boost::application::args>(
-    std::make_shared< boost::application::args >( argc, argv));
-
-  return boost::application::launch< boost::application::common>(
-    app,
-    context);
+  return app( argc, argv);
 }

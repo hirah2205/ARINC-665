@@ -30,12 +30,13 @@ Arinc665Utils::Arinc665Exporter Arinc665Utils::createArinc665Exporter(
   Media::ConstMediaSetPtr mediaSet,
   CreateMediumHandler createMediumHandler,
   CreateDirectoryHandler createDirectoryHandler,
+  CheckFileExistenceHandler checkFileExistenceHandler,
   CreateFileHandler createFileHandler,
   WriteFileHandler writeFileHandler,
   ReadFileHandler readFileHandler,
   Arinc665Version arinc665Version,
-  const bool createBatchFiles,
-  const bool createLoadHeaderFiles)
+  const FileCreationPolicy createBatchFiles,
+  const FileCreationPolicy createLoadHeaderFiles)
 {
   return std::bind(
     &MediaSetExporterImpl::operator(),
@@ -43,6 +44,7 @@ Arinc665Utils::Arinc665Exporter Arinc665Utils::createArinc665Exporter(
       mediaSet,
       createMediumHandler,
       createDirectoryHandler,
+      checkFileExistenceHandler,
       createFileHandler,
       writeFileHandler,
       readFileHandler,

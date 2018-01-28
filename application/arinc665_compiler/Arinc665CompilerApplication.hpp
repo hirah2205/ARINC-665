@@ -23,7 +23,6 @@
 #include <arinc665/utils/Arinc665Xml.hpp>
 
 #include <boost/program_options.hpp>
-#include <boost/application.hpp>
 #include <boost/filesystem/path.hpp>
 
 class Arinc665CompilerApplication
@@ -35,10 +34,10 @@ class Arinc665CompilerApplication
      * @param[in] context
      *   The application context.
      **/
-    Arinc665CompilerApplication( boost::application::context &context);
+    Arinc665CompilerApplication();
 
     /**
-     * @brief Executes the FIND client.
+     * @brief Executes the application.
      *
      * @return The return code, which should be returned to the system.
      * @retval EXIT_SUCCESS
@@ -46,17 +45,10 @@ class Arinc665CompilerApplication
      * @retval EXIT_FAILURE
      *   If an error has occurred.
      **/
-    int operator()();
+    int operator()( int argc, char *argv[]);
 
   private:
     using path = boost::filesystem::path;
-
-    /**
-     * @brief Parsed the command line and assigns parameter.
-     *
-     * @return If parsing was successful
-     **/
-    bool handleCommandLine();
 
     /**
      * @brief Returns the medium path.
@@ -84,6 +76,10 @@ class Arinc665CompilerApplication
      **/
     void createDirectory( Arinc665::Media::ConstDirectoryPtr directory);
 
+    bool checkFileExistance(
+      const Arinc665::Utils::Arinc665Xml::LoadXmlResult &mediaSetInfo,
+      Arinc665::Media::ConstFilePtr file);
+
     void createFile(
       const Arinc665::Utils::Arinc665Xml::LoadXmlResult &mediaSetInfo,
       Arinc665::Media::ConstFilePtr file);
@@ -97,8 +93,6 @@ class Arinc665CompilerApplication
       uint8_t mediumNumber,
       const path &path);
 
-    //! The application context
-    boost::application::context& context;
     //! Program Options description
     boost::program_options::options_description optionsDescription;
 
@@ -109,8 +103,8 @@ class Arinc665CompilerApplication
     //! Media Set destination directory
     path mediaSetDestinationDirectory;
     //!
-    bool createBatchFiles;
-    bool createLoadHeaderFiles;
+    Arinc665::Utils::FileCreationPolicy createBatchFiles;
+    Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles;
     Arinc665::Utils::Arinc665XmlPtr xml;
 };
 
