@@ -52,7 +52,7 @@ class MediaSetManagerImpl : public MediaSetManager
     //! @copydoc MediaSetManager::loads() const
     Media::ConstLoads loads() const final;
 
-    //! @copydoc MediaSetManager::load() const
+    //! @copydoc MediaSetManager::load(const std::string&) const
     Media::ConstLoads load( const std::string &filename) const final;
 
     //! @copydoc MediaSetManager::filePath

@@ -37,7 +37,7 @@ class FileCreationPolicyDescription : public Description<
  *
  * @param[in,out] stream
  *   The output stream
- * @param[in] FileCreationPolicy
+ * @param[in] fileCreationPolicy
  *   The File Creation Policy.
  *
  * @return The stream for chaining.

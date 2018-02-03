@@ -95,6 +95,8 @@ class Arinc665Utils
      *   Called to create the given medium.
      * @param[in] createDirectoryHandler
      *   Called to create the given directory.
+     * @param[in] checkFileExistenceHandler
+     *   Called to check if file exists.
      * @param[in] createFileHandler
      *   When a file needs to be generated, this handler is called.
      * @param[in] writeFileHandler

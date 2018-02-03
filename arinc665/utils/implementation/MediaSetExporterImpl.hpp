@@ -94,8 +94,20 @@ class MediaSetExporterImpl
      **/
     void exportFile( Media::ConstFilePtr file);
 
+    /**
+     * @brief Creates the load header file.
+     *
+     * @param[in] file
+     *   The load header file.
+     **/
     void createLoadHeaderFile( Media::ConstFilePtr file);
 
+    /**
+     * @brief Creates the batch file.
+     *
+     * @param[in] file
+     *   The batch file.
+     **/
     void createBatchFile( Media::ConstFilePtr file);
 
     //! The ARINC 665 version used for exporting

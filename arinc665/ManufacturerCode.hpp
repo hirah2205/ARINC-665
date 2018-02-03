@@ -40,7 +40,7 @@ class ManufacturerCode
      **/
     ManufacturerCode( const std::string &manufacturerCode);
 
-    //! @copydoc ManufacturerCode(const string&)
+    //! @copydoc ManufacturerCode(const std::string&)
     ManufacturerCode( std::string &&manufacturerCode);
 
     /**
@@ -61,7 +61,7 @@ class ManufacturerCode
      **/
     void set( const std::string &manufacturerCode);
 
-    //! @copydoc set(const string&)
+    //! @copydoc set(const std::string&)
     void set( std::string &&manufacturerCode);
 
   private:
