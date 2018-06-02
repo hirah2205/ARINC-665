@@ -1,13 +1,10 @@
-# $Date: 2017-07-27 22:52:09 +0200 (Do, 27. Jul 2017) $
-# $Revision: 2190 $
-#
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.9)
+cmake_minimum_required( VERSION 3.11)
 
 add_subdirectory( arinc665_compiler)
 add_subdirectory( arinc665_decompiler)
