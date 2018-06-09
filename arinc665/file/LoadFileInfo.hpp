@@ -29,9 +29,6 @@ namespace File {
 class LoadFileInfo
 {
   public:
-    //! String type
-    using string = std::string;
-
     /**
      * @brief Initialise the load file information with the given data.
      *
@@ -45,15 +42,15 @@ class LoadFileInfo
      *   File CRC
      **/
     LoadFileInfo(
-      const string &filename,
-      const string &partNumber,
+      const std::string &filename,
+      const std::string &partNumber,
       uint32_t length,
       uint16_t crc);
 
-    //! @copydoc LoadFileInfo::LoadFileInfo(const string&,const string&,uint32_t,uint16_t)
+    //! @copydoc LoadFileInfo::LoadFileInfo(const std::string&,const std::string&,uint32_t,uint16_t)
     LoadFileInfo(
-      string &&filename,
-      string &&partNumber,
+      std::string &&filename,
+      std::string &&partNumber,
       uint32_t length,
       uint16_t crc);
 
@@ -62,7 +59,7 @@ class LoadFileInfo
      *
      * @return The filename.
      **/
-    string filename() const;
+    std::string filename() const;
 
     /**
      * @brief Updates the filename.
@@ -70,17 +67,17 @@ class LoadFileInfo
      * @param[in] filename
      *   The filename.
      **/
-    void filename( const string &filename);
+    void filename( const std::string &filename);
 
-    //! @copydoc filename(const string&)
-    void filename( string &&filename);
+    //! @copydoc filename(const std::string&)
+    void filename( std::string &&filename);
 
     /**
      * @return Returns the part number.
      *
      * @return The part number.
      **/
-    string partNumber() const;
+    std::string partNumber() const;
 
     /**
      * @brief Updates the file part number.
@@ -88,10 +85,10 @@ class LoadFileInfo
      * @param[in] partNumber
      *   The file part number.
      **/
-    void partNumber( const string &partNumber);
+    void partNumber( const std::string &partNumber);
 
-    //! @copydoc partNumber(const string&)
-    void partNumber( string &&partNumber);
+    //! @copydoc partNumber(const std::string&)
+    void partNumber( std::string &&partNumber);
 
     /**
      * @return Returns the file size.
@@ -125,9 +122,9 @@ class LoadFileInfo
 
   private:
     //! Filename
-    string filenameValue;
+    std::string filenameValue;
     //! File part number
-    string partNumberValue;
+    std::string partNumberValue;
     //! File length
     uint32_t lengthValue;
     //! File CRC

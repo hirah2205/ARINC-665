@@ -48,15 +48,15 @@ class BatchFile: public Arinc665File
      **/
     BatchFile(
       Arinc665Version version,
-      const string &partNumber,
-      const string &comment,
+      const std::string &partNumber,
+      const std::string &comment,
       const BatchTargetsInfo &targets);
 
     //! @copydoc BatchFile::BatchFile(Arinc665Version,const string&,const string&,const BatchTargetsInfo&)
     BatchFile(
       Arinc665Version version,
-      string &&partNumber,
-      string &&comment,
+      std::string &&partNumber,
+      std::string &&comment,
       BatchTargetsInfo &&targets);
 
     /**
@@ -75,7 +75,7 @@ class BatchFile: public Arinc665File
      *
      * @return The part number of the batch file.
      **/
-    string partNumber() const;
+    std::string partNumber() const;
 
     /**
      * @brief Updates the part number of the batch file.
@@ -83,17 +83,17 @@ class BatchFile: public Arinc665File
      * @param[in] partNumber
      *   The new part number.
      **/
-    void partNumber( const string &partNumber);
+    void partNumber( const std::string &partNumber);
 
-    //! @copydoc partNumber(const string&)
-    void partNumber( string &&partNumber);
+    //! @copydoc partNumber(const std::string&)
+    void partNumber( std::string &&partNumber);
 
     /**
      * @brief Returns the comment text of the batch file.
      *
      * @return The comment text of the batch file.
      **/
-    string comment() const;
+    std::string comment() const;
 
     /**
      * @brief Updates the comment text of the batch file.
@@ -101,10 +101,10 @@ class BatchFile: public Arinc665File
      * @param[in] comment
      *   The new comment text.
      **/
-    void comment( const string &comment);
+    void comment( const std::string &comment);
 
-    //! @copydoc comment(const string&)
-    void comment( string &&comment);
+    //! @copydoc comment(const std::string&)
+    void comment( std::string &&comment);
 
     /**
      * @brief Returns the target hardwares information.
@@ -122,10 +122,10 @@ class BatchFile: public Arinc665File
      * @param[in] targetHardwareInfo
      *   The target hardware information to add.
      **/
-    void addTargetHardware( const BatchTargetInfo &targetHardwareInfo);
+    void targetHardware( const BatchTargetInfo &targetHardwareInfo);
 
-    //! @copydoc addTargetHardware(const BatchTargetInfo&)
-    void addTargetHardware( BatchTargetInfo &&targetHardwareInfo);
+    //! @copydoc targetHardware(const BatchTargetInfo&)
+    void targetHardware( BatchTargetInfo &&targetHardwareInfo);
 
   private:
     //! @copydoc Arinc665File::encode
@@ -159,9 +159,9 @@ class BatchFile: public Arinc665File
       std::size_t offset);
 
     //! Part number
-    string partNumberValue;
+    std::string partNumberValue;
     //! Comment
-    string commentValue;
+    std::string commentValue;
     //! target hardware informations
     BatchTargetsInfo targetHardwaresValue;
 };

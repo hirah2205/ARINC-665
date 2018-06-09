@@ -39,17 +39,17 @@ FileListFile& FileListFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
-FileListFile::string FileListFile::mediaSetPn() const
+std::string FileListFile::mediaSetPn() const
 {
   return mediaSetPnValue;
 }
 
-void FileListFile::mediaSetPn( const string &mediaSetPn)
+void FileListFile::mediaSetPn( const std::string &mediaSetPn)
 {
   mediaSetPnValue = mediaSetPn;
 }
 
-void FileListFile::mediaSetPn( string &&mediaSetPn)
+void FileListFile::mediaSetPn( std::string &&mediaSetPn)
 {
   mediaSetPnValue = std::move( mediaSetPn);
 }
@@ -171,7 +171,7 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
       return false;
     }
 
-    switch ( getFileType( filesInfoValue[i].filename()))
+    switch ( fileType( filesInfoValue[i].filename()))
     {
       case FileType::LoadList:
       case FileType::BatchList:
@@ -369,11 +369,11 @@ void FileListFile::decodeFilesInfo(
     //! @todo check pointer for != 0 (all except last ==> OK, last ==> error)
 
     // filename
-    string filename;
+    std::string filename;
     listIt = decodeString( listIt, filename);
 
     // path name
-    string pathName;
+    std::string pathName;
     listIt = decodeString( listIt, pathName);
 
     // member sequence number

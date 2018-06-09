@@ -18,71 +18,71 @@ namespace Arinc665 {
 namespace File {
 
 BatchInfo::BatchInfo(
-  const string &partNumber,
-  const string &filename,
+  const std::string &partNumber,
+  const std::string &filename,
   uint16_t memberSequenceNumber):
-  partNumber( partNumber),
-  filename( filename),
-  memberSequenceNumber( memberSequenceNumber)
+  partNumberValue( partNumber),
+  filenameValue( filename),
+  memberSequenceNumberValue( memberSequenceNumber)
 {
 }
 
 BatchInfo::BatchInfo(
-  string &&partNumber,
-  string &&filename,
+  std::string &&partNumber,
+  std::string &&filename,
   uint16_t memberSequenceNumber):
-  partNumber( partNumber),
-  filename( filename),
-  memberSequenceNumber( memberSequenceNumber)
+  partNumberValue( partNumber),
+  filenameValue( filename),
+  memberSequenceNumberValue( memberSequenceNumber)
 {
 }
 
-const BatchInfo::string& BatchInfo::getPartNumber() const
+const std::string& BatchInfo::partNumber() const
 {
-  return partNumber;
+  return partNumberValue;
 }
 
-void BatchInfo::setPartNumber( const string &partNumber)
+void BatchInfo::partNumber( const std::string &partNumber)
 {
-  this->partNumber = partNumber;
+  partNumberValue = partNumber;
 }
 
-void BatchInfo::setPartNumber( string &&partNumber)
+void BatchInfo::partNumber( std::string &&partNumber)
 {
-  this->partNumber = std::move( partNumber);
+  partNumberValue = std::move( partNumber);
 }
 
-const BatchInfo::string& BatchInfo::getFilename() const
+const std::string& BatchInfo::filename() const
 {
-  return filename;
+  return filenameValue;
 }
 
-void BatchInfo::setFilename( const string &filename)
+void BatchInfo::filename( const std::string &filename)
 {
-  this->filename = filename;
+  filenameValue = filename;
 }
 
-void BatchInfo::setFilename( string &&filename)
+void BatchInfo::filename( std::string &&filename)
 {
-  this->filename = std::move( filename);
+  filenameValue = std::move( filename);
 }
 
-uint16_t BatchInfo::getMemberSequenceNumber() const
+uint16_t BatchInfo::memberSequenceNumber() const
 {
-  return memberSequenceNumber;
+  return memberSequenceNumberValue;
 }
 
-void BatchInfo::setMemberSequenceNumber( const uint16_t memberSequenceNumber)
+void BatchInfo::memberSequenceNumber( const uint16_t memberSequenceNumber)
 {
-  this->memberSequenceNumber = memberSequenceNumber;
+  memberSequenceNumberValue = memberSequenceNumber;
 }
 
 bool BatchInfo::operator ==( const BatchInfo &other) const
 {
   return
-    (partNumber == other.getPartNumber()) &&
-    (filename == other.getFilename()) &&
-    (memberSequenceNumber == other.getMemberSequenceNumber());
+    (partNumberValue == other.partNumber()) &&
+    (filenameValue == other.filename()) &&
+    (memberSequenceNumberValue == other.memberSequenceNumber());
 }
 
 bool BatchInfo::operator !=( const BatchInfo &other) const
@@ -93,8 +93,8 @@ bool BatchInfo::operator !=( const BatchInfo &other) const
 bool BatchInfo::operator ==( const FileInfo &other) const
 {
   return
-    (filename == other.filename()) &&
-    (memberSequenceNumber == other.memberSequenceNumber());
+    (filenameValue == other.filename()) &&
+    (memberSequenceNumberValue == other.memberSequenceNumber());
 }
 
 bool BatchInfo::operator !=( const FileInfo &other) const

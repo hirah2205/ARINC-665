@@ -41,17 +41,17 @@ LoadListFile& LoadListFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
-LoadListFile::string LoadListFile::mediaSetPn() const
+std::string LoadListFile::mediaSetPn() const
 {
   return mediaSetPnValue;
 }
 
-void LoadListFile::mediaSetPn( const string &mediaSetPn)
+void LoadListFile::mediaSetPn( const std::string &mediaSetPn)
 {
   mediaSetPnValue = mediaSetPn;
 }
 
-void LoadListFile::mediaSetPn( string &&mediaSetPn)
+void LoadListFile::mediaSetPn( std::string &&mediaSetPn)
 {
   mediaSetPnValue = std::move( mediaSetPn);
 }
@@ -323,11 +323,11 @@ void LoadListFile::decodeLoadsInfo(
     //! @todo check pointer for != 0 (all except last ==> OK, last ==> error)
 
     // part number
-    string partNumber;
+    std::string partNumber;
     listIt = Arinc665File::decodeString( listIt, partNumber);
 
     // header filename
-    string headerFilename;
+    std::string headerFilename;
     listIt = Arinc665File::decodeString( listIt, headerFilename);
 
     // member sequence number

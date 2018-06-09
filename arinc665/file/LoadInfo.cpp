@@ -18,8 +18,8 @@ namespace Arinc665 {
 namespace File {
 
 LoadInfo::LoadInfo(
-  const string &partNumber,
-  const string &headerFilename,
+  const std::string &partNumber,
+  const std::string &headerFilename,
   const uint8_t memberSequenceNumber,
   const ThwIds &targetHardwareIds):
   partNumberValue( partNumber),
@@ -30,8 +30,8 @@ LoadInfo::LoadInfo(
 }
 
 LoadInfo::LoadInfo(
-  string &&partNumber,
-  string &&headerFilename,
+  std::string &&partNumber,
+  std::string &&headerFilename,
   const uint8_t memberSequenceNumber,
   ThwIds &&targetHardwareIds):
   partNumberValue( partNumber),
@@ -41,22 +41,22 @@ LoadInfo::LoadInfo(
 {
 }
 
-LoadInfo::string LoadInfo::partNumber() const
+std::string LoadInfo::partNumber() const
 {
   return partNumberValue;
 }
 
-void LoadInfo::partNumber( const string &partNumber)
+void LoadInfo::partNumber( const std::string &partNumber)
 {
   partNumberValue = partNumber;
 }
 
-LoadInfo::string LoadInfo::headerFilename() const
+std::string LoadInfo::headerFilename() const
 {
   return headerFilenameValue;
 }
 
-void LoadInfo::headerFilename( const string &headerFilename)
+void LoadInfo::headerFilename( const std::string &headerFilename)
 {
   headerFilenameValue = headerFilename;
 }
@@ -81,12 +81,12 @@ LoadInfo::ThwIds& LoadInfo::targetHardwareIds()
   return targetHardwareIdsValue;
 }
 
-void LoadInfo::addTargetHardwareId( const string &targetHardwareId)
+void LoadInfo::addTargetHardwareId( const std::string &targetHardwareId)
 {
   targetHardwareIdsValue.push_back( targetHardwareId);
 }
 
-void LoadInfo::addTargetHardwareId( string &&targetHardwareId)
+void LoadInfo::addTargetHardwareId( std::string &&targetHardwareId)
 {
   targetHardwareIdsValue.push_back( targetHardwareId);
 }

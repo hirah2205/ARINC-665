@@ -38,17 +38,17 @@ LoadHeaderFile& LoadHeaderFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
-LoadHeaderFile::string LoadHeaderFile::partNumber() const
+std::string LoadHeaderFile::partNumber() const
 {
   return partNumberValue;
 }
 
-void LoadHeaderFile::partNumber( const string &partNumber)
+void LoadHeaderFile::partNumber( const std::string &partNumber)
 {
   partNumberValue = partNumber;
 }
 
-void LoadHeaderFile::partNumber( string &&partNumber)
+void LoadHeaderFile::partNumber( std::string &&partNumber)
 {
   partNumberValue = std::move( partNumber);
 }
@@ -76,13 +76,12 @@ void LoadHeaderFile::targetHardwareIds(
   targetHardwareIdsValue = std::move( targetHardwareIds);
 }
 
-void LoadHeaderFile::addTargetHardwareId(
-  const LoadHeaderFile::string &targetHardwareId)
+void LoadHeaderFile::addTargetHardwareId( const std::string &targetHardwareId)
 {
   targetHardwareIdsValue.push_back( targetHardwareId);
 }
 
-void LoadHeaderFile::addTargetHardwareId( string &&targetHardwareId)
+void LoadHeaderFile::addTargetHardwareId( std::string &&targetHardwareId)
 {
   targetHardwareIdsValue.push_back( std::move( targetHardwareId));
 }
@@ -361,11 +360,11 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
     listIt = getInt< uint16_t>( listIt, filePointer);
 
     // filename
-    string name;
+    std::string name;
     listIt = decodeString( listIt, name);
 
     // part number
-    string partNumber;
+    std::string partNumber;
     listIt = decodeString( listIt, partNumber);
 
     // file length

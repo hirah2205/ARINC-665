@@ -32,8 +32,6 @@ class FileInfo
   public:
     //! Path type
     using fpath = boost::filesystem::path;
-    //! String type
-    using string = std::string;
 
     /**
      * @brief Initialises the file information
@@ -48,15 +46,15 @@ class FileInfo
      *   File CRC
      **/
     FileInfo(
-      const string &filename,
-      const string &pathName,
+      const std::string &filename,
+      const std::string &pathName,
       uint16_t memberSequenceNumber,
       uint16_t crc);
 
-    //! @copydoc FileInfo::FileInfo(const string&,const string&,uint16_t,uint16_t)
+    //! @copydoc FileInfo::FileInfo(const std::string&,const std::string&,uint16_t,uint16_t)
     FileInfo(
-      string &&filename,
-      string &&pathName,
+      std::string &&filename,
+      std::string &&pathName,
       uint16_t memberSequenceNumber,
       uint16_t crc);
 
@@ -65,7 +63,7 @@ class FileInfo
      *
      * @return The filename
      **/
-    const string& filename() const;
+    const std::string& filename() const;
 
     /**
      * @brief Updates the filename.
@@ -73,17 +71,17 @@ class FileInfo
      * @param[in] filename
      *   The filename.
      **/
-    void filename( const string &filename);
+    void filename( const std::string &filename);
 
-    //! @copydoc filename(const string&)
-    void filename( string &&filename);
+    //! @copydoc filename(const std::string&)
+    void filename( std::string &&filename);
 
     /**
      * @brief Returns the path name.
      *
      * @return The path name
      **/
-    string pathName() const;
+    std::string pathName() const;
 
     /**
      * @brief Updates the path name.
@@ -91,10 +89,10 @@ class FileInfo
      * @param[in] pathName
      *   The path name.
      **/
-    void pathName( const string &pathName);
+    void pathName( const std::string &pathName);
 
-    //! @copydoc pathName(const string&)
-    void pathName( string &&pathName);
+    //! @copydoc pathName(const std::string&)
+    void pathName( std::string &&pathName);
 
     /**
      * @brief Returns the path (path name / filename)
@@ -155,9 +153,9 @@ class FileInfo
 
   private:
     //! file name
-    string filenameValue;
+    std::string filenameValue;
     //! path name
-    string pathNameValue;
+    std::string pathNameValue;
     //! member sequence number
     uint16_t memberSequenceNumberValue;
     //! CRC

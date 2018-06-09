@@ -362,7 +362,7 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex)
     File::BatchFile batchFile(
       readFileHandler( mediumIndex, batchFileIt->second.path()));
 
-    if (batchFile.partNumber() != batchInfo.second.getPartNumber())
+    if (batchFile.partNumber() != batchInfo.second.partNumber())
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception() <<
         AdditionalInfo( "Medium is not consistent to media set"));
@@ -384,7 +384,7 @@ void MediaSetImporterImpl::addFiles()
   {
     // get file type
     auto fileType(
-      Arinc665::File::Arinc665File::getFileType( fileInfo.first.second));
+      Arinc665::File::Arinc665File::fileType( fileInfo.first.second));
 
     // skip list files and handle load headers and batch files separate
     switch ( fileType)

@@ -27,9 +27,6 @@ namespace File {
 class BatchTargetInfo
 {
   public:
-    //! string type
-    using string = std::string;
-
     /**
      * @brief Initialises the batch target information.
      *
@@ -39,12 +36,12 @@ class BatchTargetInfo
      *   Batch loads information.
      **/
     BatchTargetInfo(
-      const string &targetHardwareId,
+      const std::string &targetHardwareId,
       const BatchLoadsInfo &loads);
 
-    //! @copydoc BatchTargetInfo::BatchTargetInfo(const string&,const BatchLoadsInfo&)
+    //! @copydoc BatchTargetInfo::BatchTargetInfo(const std::string&,const BatchLoadsInfo&)
     BatchTargetInfo(
-      string &&targetHardwareId,
+      std::string &&targetHardwareId,
       BatchLoadsInfo &&loads);
 
     /**
@@ -52,7 +49,7 @@ class BatchTargetInfo
      *
      * @return The target hardware id
      **/
-    string targetHardwareId() const;
+    std::string targetHardwareId() const;
 
     /**
      * @brief Updates the target hardware ID for this loads info.
@@ -60,10 +57,10 @@ class BatchTargetInfo
      * @param[in] targetHardwareId
      *   The target hardware ID (THW ID)
      **/
-    void targetHardwareId( const string &targetHardwareId);
+    void targetHardwareId( const std::string &targetHardwareId);
 
-    //! @copydoc targetHardwareId(const string&)
-    void targetHardwareId( string &&targetHardwareId);
+    //! @copydoc targetHardwareId(const std::string&)
+    void targetHardwareId( std::string &&targetHardwareId);
 
     /**
      * @brief Returns the list of available loads for this target hardware.
@@ -96,14 +93,14 @@ class BatchTargetInfo
      * @param[in] load
      *   The load.
      **/
-    void addLoad( const BatchLoadInfo &load);
+    void load( const BatchLoadInfo &load);
 
-    //! @copydoc  addLoad(const BatchLoadInfo&)
-    void addLoad( BatchLoadInfo &&load);
+    //! @copydoc load(const BatchLoadInfo&)
+    void load( BatchLoadInfo &&load);
 
   private:
     //! The target hardware id
-    string targetHardwareIdV;
+    std::string targetHardwareIdV;
     //! The list of loads
     BatchLoadsInfo loadsV;
 };

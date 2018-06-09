@@ -16,8 +16,8 @@ namespace Arinc665 {
 namespace File {
 
 LoadFileInfo::LoadFileInfo(
-  const string &filename,
-  const string &partNumber,
+  const std::string &filename,
+  const std::string &partNumber,
   uint32_t length,
   uint16_t crc):
   filenameValue( filename),
@@ -28,8 +28,8 @@ LoadFileInfo::LoadFileInfo(
 }
 
 LoadFileInfo::LoadFileInfo(
-  string &&filename,
-  string &&partNumber,
+  std::string &&filename,
+  std::string &&partNumber,
   uint32_t length,
   uint16_t crc):
   filenameValue( std::move( filename)),
@@ -39,32 +39,32 @@ LoadFileInfo::LoadFileInfo(
 {
 }
 
-LoadFileInfo::string LoadFileInfo::filename() const
+std::string LoadFileInfo::filename() const
 {
   return filenameValue;
 }
 
-void LoadFileInfo::filename( const string &filename)
+void LoadFileInfo::filename( const std::string &filename)
 {
   filenameValue = filename;
 }
 
-void LoadFileInfo::filename( string &&filename)
+void LoadFileInfo::filename( std::string &&filename)
 {
   filenameValue = std::move( filename);
 }
 
-LoadFileInfo::string LoadFileInfo::partNumber() const
+std::string LoadFileInfo::partNumber() const
 {
   return partNumberValue;
 }
 
-void LoadFileInfo::partNumber( const string &partNumber)
+void LoadFileInfo::partNumber( const std::string &partNumber)
 {
   partNumberValue = partNumber;
 }
 
-void LoadFileInfo::partNumber( string &&partNumber)
+void LoadFileInfo::partNumber( std::string &&partNumber)
 {
   partNumberValue = std::move( partNumber);
 }

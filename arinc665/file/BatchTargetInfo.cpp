@@ -16,7 +16,7 @@ namespace Arinc665 {
 namespace File {
 
 BatchTargetInfo::BatchTargetInfo(
-  const string &targetHardwareId,
+  const std::string &targetHardwareId,
   const BatchLoadsInfo &loads):
   targetHardwareIdV( targetHardwareId),
   loadsV( loads)
@@ -24,19 +24,19 @@ BatchTargetInfo::BatchTargetInfo(
 }
 
 BatchTargetInfo::BatchTargetInfo(
-  string &&targetHardwareId,
+  std::string &&targetHardwareId,
   BatchLoadsInfo &&loads):
   targetHardwareIdV( targetHardwareId),
   loadsV( loads)
 {
 }
 
-BatchTargetInfo::string BatchTargetInfo::targetHardwareId() const
+std::string BatchTargetInfo::targetHardwareId() const
 {
   return targetHardwareIdV;
 }
 
-void BatchTargetInfo::targetHardwareId( const string &targetHardwareId)
+void BatchTargetInfo::targetHardwareId( const std::string &targetHardwareId)
 {
   targetHardwareIdV = targetHardwareId;
 }
@@ -61,12 +61,12 @@ void BatchTargetInfo::loads( BatchLoadsInfo &&loads)
   loadsV = std::move( loads);
 }
 
-void BatchTargetInfo::addLoad( const BatchLoadInfo &load)
+void BatchTargetInfo::load( const BatchLoadInfo &load)
 {
   loadsV.push_back( load);
 }
 
-void BatchTargetInfo::addLoad( BatchLoadInfo &&load)
+void BatchTargetInfo::load( BatchLoadInfo &&load)
 {
   loadsV.push_back( load);
 }

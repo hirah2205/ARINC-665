@@ -6,12 +6,12 @@
 
 cmake_minimum_required( VERSION 3.11)
 
-find_package( 
+find_package(
   Boost
   REQUIRED
   filesystem)
 
-add_library( 
+add_library(
   arinc665
  
   Arinc665.hpp
@@ -100,7 +100,7 @@ add_library(
   utils/implementation/MediaSetManagerImpl.hpp
   utils/implementation/MediaSetManagerImpl.cpp)
 
-target_compile_options( 
+target_compile_options(
   arinc665
   
   PRIVATE
@@ -112,11 +112,13 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra>)
 
-target_include_directories( arinc665 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>)
+target_include_directories(
+  arinc665
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>)
 
 target_link_libraries( arinc665 helper pugixml Boost::filesystem)
 
-target_compile_features( arinc665 PUBLIC cxx_std_14)
+target_compile_features( arinc665 PUBLIC cxx_std_17)
 
 
 add_library( 
@@ -146,9 +148,11 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra>)
 
-target_compile_features( arinc665_test PUBLIC cxx_std_14)
+target_compile_features( arinc665_test PUBLIC cxx_std_17)
 
-target_include_directories( arinc665_test PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES>)
+target_include_directories(
+  arinc665_test
+  PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES>)
 
 # INSTALL
 include( GNUInstallDirs)

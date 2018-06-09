@@ -39,17 +39,17 @@ BatchListFile& BatchListFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
-BatchListFile::string BatchListFile::mediaSetPn() const
+std::string BatchListFile::mediaSetPn() const
 {
   return mediaSetPnValue;
 }
 
-void BatchListFile::mediaSetPn( const string &mediaSetPn)
+void BatchListFile::mediaSetPn( const std::string &mediaSetPn)
 {
   mediaSetPnValue = mediaSetPn;
 }
 
-void BatchListFile::mediaSetPn( string &&mediaSetPn)
+void BatchListFile::mediaSetPn( std::string &&mediaSetPn)
 {
   mediaSetPnValue = std::move( mediaSetPn);
 }
@@ -99,8 +99,8 @@ BatchListFile::BatchInfoMap BatchListFile::batchesInfoAsMap() const
     batches.insert(
       std::make_pair(
         std::make_pair(
-          batch.getMemberSequenceNumber(),
-          batch.getFilename()),
+          batch.memberSequenceNumber(),
+          batch.filename()),
         batch));
   }
 
@@ -248,9 +248,9 @@ RawFile BatchListFile::encodeBatchesInfo() const
   for (auto const &batchInfo : batchesInfoValue)
   {
     ++batchCounter;
-    auto const rawPartNumber( encodeString( batchInfo.getPartNumber()));
+    auto const rawPartNumber( encodeString( batchInfo.partNumber()));
     assert( rawPartNumber.size() % 2 == 0);
-    auto const rawFilename( encodeString( batchInfo.getFilename()));
+    auto const rawFilename( encodeString( batchInfo.filename()));
     assert( rawFilename.size() % 2 == 0);
 
     RawFile rawBatchInfo(
@@ -278,7 +278,7 @@ RawFile BatchListFile::encodeBatchesInfo() const
 
     // member sequence number
     batchInfoIt =
-      setInt< uint16_t>( batchInfoIt, batchInfo.getMemberSequenceNumber());
+      setInt< uint16_t>( batchInfoIt, batchInfo.memberSequenceNumber());
 
     // add file info to files info
     rawBatchesInfo.insert(
@@ -315,11 +315,11 @@ void BatchListFile::decodeBatchesInfo(
     //! @todo check pointer for != 0 (all except last ==> OK, last ==> error)
 
     // part number
-    string partNumber;
+    std::string partNumber;
     listIt = Arinc665File::decodeString( listIt, partNumber);
 
     // batch filename
-    string filename;
+    std::string filename;
     listIt = Arinc665File::decodeString( listIt, filename);
 
     // member sequence number

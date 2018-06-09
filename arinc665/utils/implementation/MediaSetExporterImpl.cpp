@@ -415,7 +415,7 @@ void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
         loadPtr->partNumber());
     }
 
-    batchFile.addTargetHardware(
+    batchFile.targetHardware(
       File::BatchTargetInfo{ target.first, batchLoadsInfo});
   }
 

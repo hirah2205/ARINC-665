@@ -46,9 +46,9 @@ Arinc665CompilerApplication::Arinc665CompilerApplication() :
   auto desc{ Arinc665::Utils::FileCreationPolicyDescription::instance()};
 
   const std::string fileCreationPolicyValues{
-    "* '" + desc.findName( Arinc665::Utils::FileCreationPolicy::None) + "': Create never\n" +
-    "* '" + desc.findName( Arinc665::Utils::FileCreationPolicy::NoneExisting) + "': Create none-existing\n" +
-    "* '" + desc.findName( Arinc665::Utils::FileCreationPolicy::All) + "': Create all"};
+    "* '" + desc.name( Arinc665::Utils::FileCreationPolicy::None) + "': Create never\n" +
+    "* '" + desc.name( Arinc665::Utils::FileCreationPolicy::NoneExisting) + "': Create none-existing\n" +
+    "* '" + desc.name( Arinc665::Utils::FileCreationPolicy::All) + "': Create all"};
 
   optionsDescription.add_options()
   (

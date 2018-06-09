@@ -294,7 +294,7 @@ static void list_files( const boost::filesystem::path &loadDir)
     }
     else if ( is_regular_file( itr->status()))
     {
-      switch ( Arinc665::File::Arinc665File::getFileType( itr->path().filename()))
+      switch ( Arinc665::File::Arinc665File::fileType( itr->path().filename()))
       {
         case Arinc665::FileType::BatchFile:
           std::cout << "ARINC 665 BATCH file\n";

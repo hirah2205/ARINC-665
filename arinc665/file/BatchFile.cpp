@@ -37,32 +37,32 @@ BatchFile& BatchFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
-BatchFile::string BatchFile::partNumber() const
+std::string BatchFile::partNumber() const
 {
   return partNumberValue;
 }
 
-void BatchFile::partNumber( const string &partNumber)
+void BatchFile::partNumber( const std::string &partNumber)
 {
   partNumberValue = partNumber;
 }
 
-void BatchFile::partNumber( string &&partNumber)
+void BatchFile::partNumber( std::string &&partNumber)
 {
   partNumberValue = std::move( partNumber);
 }
 
-BatchFile::string BatchFile::comment() const
+std::string BatchFile::comment() const
 {
   return commentValue;
 }
 
-void BatchFile::comment( const string &comment)
+void BatchFile::comment( const std::string &comment)
 {
   commentValue = comment;
 }
 
-void BatchFile::comment( string &&comment)
+void BatchFile::comment( std::string &&comment)
 {
   commentValue = std::move( comment);
 }
@@ -77,12 +77,12 @@ BatchTargetsInfo& BatchFile::targetHardwares()
   return targetHardwaresValue;
 }
 
-void BatchFile::addTargetHardware( const BatchTargetInfo &targetHardwareInfo)
+void BatchFile::targetHardware( const BatchTargetInfo &targetHardwareInfo)
 {
   targetHardwaresValue.push_back( targetHardwareInfo);
 }
 
-void BatchFile::addTargetHardware( BatchTargetInfo &&targetHardwareInfo)
+void BatchFile::targetHardware( BatchTargetInfo &&targetHardwareInfo)
 {
   targetHardwaresValue.push_back( targetHardwareInfo);
 }
@@ -259,7 +259,7 @@ void BatchFile::decodeBatchTargetsInfo(
     listIt = getInt< uint16_t>( listIt, thwIdPointer);
 
     // THW ID
-    string thwId;
+    std::string thwId;
     listIt = decodeString( listIt, thwId);
 
     // Loads list
@@ -273,11 +273,11 @@ void BatchFile::decodeBatchTargetsInfo(
     for ( unsigned int loadIndex = 0; loadIndex < numberOfLoads; ++loadIndex)
     {
       // header filename
-      string filename;
+      std::string filename;
       listIt = decodeString( listIt, filename);
 
       // Load PN
-      string partNumber;
+      std::string partNumber;
       listIt = decodeString( listIt, partNumber);
 
       // Batch Load info

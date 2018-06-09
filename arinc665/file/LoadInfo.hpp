@@ -31,10 +31,8 @@ namespace File {
 class LoadInfo
 {
   public:
-    //! String type
-    using string = std::string;
     //! Target Hardware IDs type.
-    using ThwIds = std::list< string>;
+    using ThwIds = std::list< std::string>;
 
     /**
      * @brief Initialises the load information
@@ -49,15 +47,15 @@ class LoadInfo
      *   Target Hardware IDs
      **/
     LoadInfo(
-      const string &partNumber,
-      const string &headerFilename,
+      const std::string &partNumber,
+      const std::string &headerFilename,
       uint8_t memberSequenceNumber,
       const ThwIds &targetHardwareIds);
 
-    //! @copydoc LoadInfo::LoadInfo(const string&,const string&,uint8_t,const ThwIds&)
+    //! @copydoc LoadInfo::LoadInfo(const std::string&,const std::string&,uint8_t,const ThwIds&)
     LoadInfo(
-      string &&partNumber,
-      string &&headerFilename,
+      std::string &&partNumber,
+      std::string &&headerFilename,
       uint8_t memberSequenceNumber,
       ThwIds &&targetHardwareIds);
 
@@ -66,7 +64,7 @@ class LoadInfo
      *
      * @return The load part number
      **/
-    string partNumber() const;
+    std::string partNumber() const;
 
     /**
      * @brief Updates the load part number.
@@ -74,17 +72,17 @@ class LoadInfo
      * @param[in] partNumber
      *   load part number.
      **/
-    void partNumber( const string &partNumber);
+    void partNumber( const std::string &partNumber);
 
-    //! @copydoc partNumber(const string&)
-    void partNumber( string &&partNumber);
+    //! @copydoc partNumber(const std::string&)
+    void partNumber( std::string &&partNumber);
 
     /**
      * @brief Returns the load header filename.
      *
      * @return The load header filename.
      **/
-    string headerFilename() const;
+    std::string headerFilename() const;
 
     /**
      * @brief Updates the load header filename.
@@ -92,10 +90,10 @@ class LoadInfo
      * @param[in] headerFilename
      *   The load header filename.
      **/
-    void headerFilename( const string &headerFilename);
+    void headerFilename( const std::string &headerFilename);
 
-    //! @copydoc headerFilename(const string&)
-    void headerFilename( string &&headerFilename);
+    //! @copydoc headerFilename(const std::string&)
+    void headerFilename( std::string &&headerFilename);
 
     /**
      * @brief Returns the member sequence number.
@@ -128,10 +126,10 @@ class LoadInfo
      * @param[in] targetHardwareId
      *   target hardware ID.
      **/
-    void addTargetHardwareId( const string &targetHardwareId);
+    void addTargetHardwareId( const std::string &targetHardwareId);
 
-    //! @copydoc addTargetHardwareId(const string&)
-    void addTargetHardwareId( string &&targetHardwareId);
+    //! @copydoc addTargetHardwareId(const std::string&)
+    void addTargetHardwareId( std::string &&targetHardwareId);
 
     /**
      * @brief Compares the other load information against this for equality.
@@ -175,9 +173,9 @@ class LoadInfo
 
   private:
     //! Load part number
-    string partNumberValue;
+    std::string partNumberValue;
     //! Header filename
-    string headerFilenameValue;
+    std::string headerFilenameValue;
     //! Member sequence number
     uint8_t memberSequenceNumberValue;
     //! Target Hardware IDs (list)

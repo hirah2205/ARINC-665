@@ -16,37 +16,37 @@ namespace Arinc665 {
 namespace File {
 
 BatchLoadInfo::BatchLoadInfo(
-  const string &headerFilename,
-  const string &partNumber):
+  const std::string &headerFilename,
+  const std::string &partNumber):
   headerFilenameV( headerFilename),
   partNumberV( partNumber)
 {
 }
 
 BatchLoadInfo:: BatchLoadInfo(
-  string &&headerFilename,
-  string &&partNumber):
+  std::string &&headerFilename,
+  std::string &&partNumber):
   headerFilenameV( std::move( headerFilename)),
   partNumberV( std::move( partNumber))
 {
 }
 
-BatchLoadInfo::string BatchLoadInfo::headerFilename() const
+std::string BatchLoadInfo::headerFilename() const
 {
   return headerFilenameV;
 }
 
-void BatchLoadInfo::headerFilename( const string &headerFilename)
+void BatchLoadInfo::headerFilename( const std::string &headerFilename)
 {
   headerFilenameV = headerFilename;
 }
 
-BatchLoadInfo::string BatchLoadInfo::partNumber() const
+std::string BatchLoadInfo::partNumber() const
 {
   return partNumberV;
 }
 
-void BatchLoadInfo::partNumber( const string &partNumber)
+void BatchLoadInfo::partNumber( const std::string &partNumber)
 {
   partNumberV = partNumber;
 }

@@ -31,7 +31,7 @@ class FileListFile: public ListFile
 {
   public:
     //! Maps media <sequence number, file name> to File Info
-    using FileInfoMap = std::map< std::pair< uint8_t, string>, FileInfo>;
+    using FileInfoMap = std::map< std::pair< uint8_t, std::string>, FileInfo>;
     //! Maps media <sequence number, file path> to File Info
     using FileInfoPathMap= std::map< std::pair< uint8_t, path>, FileInfo>;
     //! User defined data type
@@ -58,16 +58,16 @@ class FileListFile: public ListFile
      **/
     FileListFile(
       Arinc665Version version,
-      const string &mediaSetPn,
+      const std::string &mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       const FilesInfo &filesInfo,
       const UserDefinedData &userDefinedData);
 
-    //! @copydoc FileListFile(Arinc665Version,const string&,uint8_t,uint8_t,const FilesInfo&,const UserDefinedData&)
+    //! @copydoc FileListFile(Arinc665Version,const std::string&,uint8_t,uint8_t,const FilesInfo&,const UserDefinedData&)
     FileListFile(
       Arinc665Version version,
-      string &&mediaSetPn,
+      std::string &&mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       FilesInfo &&filesInfo,
@@ -85,13 +85,13 @@ class FileListFile: public ListFile
     FileListFile& operator=( const RawFile &rawFile) final;
 
     //! @copydoc ListFile::mediaSetPn
-    string mediaSetPn() const final;
+    std::string mediaSetPn() const final;
 
     //! @copydoc ListFile::mediaSetPn
-    void mediaSetPn( const string &mediaSetPn) final;
+    void mediaSetPn( const std::string &mediaSetPn) final;
 
     //! @copydoc ListFile::mediaSetPn
-    void mediaSetPn( string &&mediaSetPn) final;
+    void mediaSetPn( std::string &&mediaSetPn) final;
 
     //! @copydoc ListFile::mediaSequenceNumber
     uint8_t mediaSequenceNumber() const final;
@@ -209,7 +209,7 @@ class FileListFile: public ListFile
     void decodeFilesInfo( const RawFile &rawFile, std::size_t offset);
 
     //! The media set part number
-    string mediaSetPnValue;
+    std::string mediaSetPnValue;
     //! The media sequence number
     uint8_t mediaSequenceNumberValue;
     //! The number of media set members.

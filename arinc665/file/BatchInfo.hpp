@@ -28,9 +28,6 @@ namespace File {
 class BatchInfo
 {
   public:
-    //! String type.
-    using string = std::string;
-
     /**
      * @brief Initialises the batch information with te given data.
      *
@@ -42,14 +39,14 @@ class BatchInfo
      *   member sequence number
      **/
     BatchInfo(
-      const string &partNumber,
-      const string &filename,
+      const std::string &partNumber,
+      const std::string &filename,
       uint16_t memberSequenceNumber);
 
-    //! @copydoc BatchInfo::BatchInfo(const string&,const string&,uint16_t)
+    //! @copydoc BatchInfo::BatchInfo(const std::string&,const std::string&,uint16_t)
     BatchInfo(
-      string &&partNumber,
-      string &&filename,
+      std::string &&partNumber,
+      std::string &&filename,
       uint16_t memberSequenceNumber);
 
     /**
@@ -57,7 +54,7 @@ class BatchInfo
      *
      * @return The batch Batch part number
      **/
-    const string& getPartNumber() const;
+    const std::string& partNumber() const;
 
     /**
      * @brief Updates the Batch part number.
@@ -65,17 +62,17 @@ class BatchInfo
      * @param[in] partNumber
      *   Batch part number.
      **/
-    void setPartNumber( const string &partNumber);
+    void partNumber( const std::string &partNumber);
 
-    //! @copydoc setPartNumber(const string&)
-    void setPartNumber( string &&partNumber);
+    //! @copydoc partNumber(const std::string&)
+    void partNumber( std::string &&partNumber);
 
     /**
      * @brief Returns the batch filename.
      *
      * @return The batch filename
      **/
-    const string& getFilename() const;
+    const std::string& filename() const;
 
     /**
      * @brief Updates the batch filename.
@@ -83,17 +80,17 @@ class BatchInfo
      * @param[in] filename
      *   The batch filename.
      **/
-    void setFilename( const string &filename);
+    void filename( const std::string &filename);
 
-    //! @copydoc setFilename(const string&)
-    void setFilename( string &&filename);
+    //! @copydoc filename(const std::string&)
+    void filename( std::string &&filename);
 
     /**
      * @brief Returns the member sequence number.
      *
      * @return The member sequence number
      **/
-    uint16_t getMemberSequenceNumber() const;
+    uint16_t memberSequenceNumber() const;
 
     /**
      * @brief Updates the  member sequence number.
@@ -101,7 +98,7 @@ class BatchInfo
      * @param[in] memberSequenceNumber
      *   The  member sequence number.
      **/
-    void setMemberSequenceNumber( uint16_t memberSequenceNumber);
+    void memberSequenceNumber( uint16_t memberSequenceNumber);
 
     /**
      * @brief Compares batch info against each other
@@ -145,11 +142,11 @@ class BatchInfo
 
   private:
     //! part number
-    string partNumber;
+    std::string partNumberValue;
     //! file name
-    string filename;
+    std::string filenameValue;
     //! member sequence number
-    uint16_t memberSequenceNumber;
+    uint16_t memberSequenceNumberValue;
 };
 
 /**

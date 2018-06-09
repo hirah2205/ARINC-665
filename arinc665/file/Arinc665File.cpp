@@ -73,7 +73,7 @@ RawFile::const_iterator Arinc665File::decodeStringList(
   for ( unsigned int index = 0; index < numberOfEntries; ++index)
   {
     // string
-    string str;
+    std::string str;
     it = decodeString( it, str);
     strList.push_back( str);
   }
@@ -102,9 +102,9 @@ RawFile Arinc665File::encodeStringList( const StringList &strList)
   return rawStringList;
 }
 
-Arinc665File::string Arinc665File::encodePath( const path &path)
+std::string Arinc665File::encodePath( const path &path)
 {
-  string convertedPath( path.string());
+  std::string convertedPath( path.string());
 
   std::replace( convertedPath.begin(), convertedPath.end(), '/', '\\');
 
@@ -370,7 +370,7 @@ uint16_t Arinc665File::getFormatVersionField(
   return 0xFFFFU;
 }
 
-Arinc665::FileType Arinc665File::getFileType( const path &filename)
+Arinc665::FileType Arinc665File::fileType( const path &filename)
 {
   std::string filenameN = filename.filename().string();
 

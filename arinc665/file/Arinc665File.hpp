@@ -31,10 +31,8 @@ class Arinc665File
   public:
     //! Path type
     using path = boost::filesystem::path;
-    //! String type
-    using string = std::string;
     //! String list type
-    using StringList = std::list< string>;
+    using StringList = std::list< std::string>;
 
     //! Base Header Offset
     //! @deprecated
@@ -62,7 +60,7 @@ class Arinc665File
      **/
     static RawFile::const_iterator decodeString(
       RawFile::const_iterator it,
-      string &str);
+      std::string &str);
 
     /**
      * @brief Encodes the ARINC 665 string to the stream.
@@ -72,7 +70,7 @@ class Arinc665File
      *
      * @return The encoded raw string.
      **/
-    static RawFile encodeString( const string &str);
+    static RawFile encodeString( const std::string &str);
 
     /**
      * @brief Decodes the ARINC 665 string list from the stream.
@@ -108,7 +106,7 @@ class Arinc665File
      *
      * @return The converted path.
      **/
-    static string encodePath( const path &path);
+    static std::string encodePath( const path &path);
 
     /**
      * @brief Decode the file length information from the given file.
@@ -236,7 +234,7 @@ class Arinc665File
      * @retval FileType::Invalid
      *   If [filename] is not a ARINC 665 file type.
      **/
-    static FileType getFileType( const path &filename);
+    static FileType fileType( const path &filename);
 
     //! Default destructor
     virtual ~Arinc665File() noexcept = default;

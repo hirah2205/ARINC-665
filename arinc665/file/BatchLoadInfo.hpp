@@ -26,9 +26,6 @@ namespace File {
 class BatchLoadInfo
 {
   public:
-    //! String type
-    using string = std::string;
-
     /**
      * @brief Initialises the batch load information with the given data.
      *
@@ -38,20 +35,20 @@ class BatchLoadInfo
      *   Load part number.
      **/
     BatchLoadInfo(
-      const string &headerFilename,
-      const string &partNumber);
+      const std::string &headerFilename,
+      const std::string &partNumber);
 
-    //! @copydoc BatchLoadInfo::BatchLoadInfo(const string&,const string&)
+    //! @copydoc BatchLoadInfo::BatchLoadInfo(const std::string&,const std::string&)
     BatchLoadInfo(
-      string &&headerFilename,
-      string &&partNumber);
+      std::string &&headerFilename,
+      std::string &&partNumber);
 
     /**
      * @brief Returns the load header filename.
      *
      * @return The load header filename.
      **/
-    string headerFilename() const;
+    std::string headerFilename() const;
 
     /**
      * @brief Sets the load header filename.
@@ -59,17 +56,17 @@ class BatchLoadInfo
      * @param[in] headerFilename
      *   The load header filename.
      **/
-    void headerFilename( const string &headerFilename);
+    void headerFilename( const std::string &headerFilename);
 
-    //! @copydoc headerFilename(const string&)
-    void headerFilename( string &&headerFilename);
+    //! @copydoc headerFilename(const std::string&)
+    void headerFilename( std::string &&headerFilename);
 
     /**
      * @brief Returns the load part number.
      *
      * @return The load part number.
      **/
-    string partNumber() const;
+    std::string partNumber() const;
 
     /**
      * @brief Updates the load part number.
@@ -77,16 +74,16 @@ class BatchLoadInfo
      * @param[in] partNumber
      *   The load part number.
      **/
-    void partNumber( const string &partNumber);
+    void partNumber( const std::string &partNumber);
 
-    //! @copydoc partNumber(const string&)
-    void partNumber( string &&partNumber);
+    //! @copydoc partNumber(const std::string&)
+    void partNumber( std::string &&partNumber);
 
   private:
     //! The load header filename.
-    string headerFilenameV;
+    std::string headerFilenameV;
     //! The load part number.
-    string partNumberV;
+    std::string partNumberV;
 };
 
 }

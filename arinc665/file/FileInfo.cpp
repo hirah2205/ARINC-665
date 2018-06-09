@@ -18,8 +18,8 @@ namespace Arinc665 {
 namespace File {
 
 FileInfo::FileInfo(
-  const string &filename,
-  const string &pathName,
+  const std::string &filename,
+  const std::string &pathName,
   uint16_t memberSequenceNumber,
   uint16_t crc):
   filenameValue( filename),
@@ -30,8 +30,8 @@ FileInfo::FileInfo(
 }
 
 FileInfo::FileInfo(
-  string &&filename,
-  string &&pathName,
+  std::string &&filename,
+  std::string &&pathName,
   uint16_t memberSequenceNumber,
   uint16_t crc):
   filenameValue( std::move( filename)),
@@ -41,29 +41,29 @@ FileInfo::FileInfo(
 {
 }
 
-const FileInfo::string& FileInfo::filename() const
+const std::string& FileInfo::filename() const
 {
   return filenameValue;
 }
 
-void FileInfo::filename( const string &filename)
+void FileInfo::filename( const std::string &filename)
 {
   filenameValue = filename;
 }
 
-FileInfo::string FileInfo::pathName() const
+std::string FileInfo::pathName() const
 {
   return pathNameValue;
 }
 
-void FileInfo::pathName( const string &pathName)
+void FileInfo::pathName( const std::string &pathName)
 {
   pathNameValue = pathName;
 }
 
 FileInfo::fpath FileInfo::path() const
 {
-  string newPathName( pathNameValue);
+  std::string newPathName( pathNameValue);
 
   std::replace( newPathName.begin(), newPathName.end(), '\\', '/');
 

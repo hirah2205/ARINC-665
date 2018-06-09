@@ -31,7 +31,7 @@ class BatchListFile: public ListFile
 {
   public:
     //! Batch information map type
-    using BatchInfoMap = std::map< std::pair< uint8_t, string>, BatchInfo>;
+    using BatchInfoMap = std::map< std::pair< uint8_t, std::string>, BatchInfo>;
     //! User defined data type.
     using UserDefinedData = std::vector< uint8_t>;
 
@@ -56,16 +56,16 @@ class BatchListFile: public ListFile
      **/
     BatchListFile(
       Arinc665Version version,
-      const string &mediaSetPn,
+      const std::string &mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       const BatchesInfo &batchesInfo,
       const UserDefinedData &userDefinedData);
 
-    //! @copydoc BatchListFile(Arinc665Version,const string&,uint8_t,uint8_t,const BatchesInfo&,const UserDefinedData&)
+    //! @copydoc BatchListFile(Arinc665Version,const std::string&,uint8_t,uint8_t,const BatchesInfo&,const UserDefinedData&)
     BatchListFile(
       Arinc665Version version,
-      string &&mediaSetPn,
+      std::string &&mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       BatchesInfo &&batchesInfo,
@@ -83,13 +83,13 @@ class BatchListFile: public ListFile
     BatchListFile& operator=( const RawFile &rawFile) final;
 
     //! @copydoc ListFile::mediaSetPn
-    string mediaSetPn() const final;
+    std::string mediaSetPn() const final;
 
     //! @copydoc ListFile::mediaSetPn
-    void mediaSetPn( const string &mediaSetPn) final;
+    void mediaSetPn( const std::string &mediaSetPn) final;
 
     //! @copydoc ListFile::mediaSetPn
-    void mediaSetPn( string &&mediaSetPn) final;
+    void mediaSetPn( std::string &&mediaSetPn) final;
 
     //! @copydoc ListFile::mediaSequenceNumber
     uint8_t mediaSequenceNumber() const final;
@@ -196,7 +196,7 @@ class BatchListFile: public ListFile
     void decodeBatchesInfo( const RawFile &rawFile, std::size_t offset);
 
     //! The media set part number
-    string mediaSetPnValue;
+    std::string mediaSetPnValue;
     //! The media sequence number
     uint8_t mediaSequenceNumberValue;
     //! The number of media set members

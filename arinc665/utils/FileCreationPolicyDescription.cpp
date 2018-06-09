@@ -33,7 +33,7 @@ std::ostream& operator<<(
   std::ostream &stream,
   const FileCreationPolicy fileCreationPolicy)
 {
-  return (stream << FileCreationPolicyDescription::instance().findName(
+  return (stream << FileCreationPolicyDescription::instance().name(
     fileCreationPolicy));
 }
 
@@ -47,7 +47,7 @@ std::istream& operator>>(
   stream >> str;
 
   // Decode
-  fileCreationPolicy = FileCreationPolicyDescription::instance().findEnum( str);
+  fileCreationPolicy = FileCreationPolicyDescription::instance().enumeration( str);
 
   if ( FileCreationPolicy::Invalid == fileCreationPolicy)
   {
