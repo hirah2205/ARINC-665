@@ -1,2 +1,1 @@
-ARINC 665 C++ Library
-=====================
+# ARINC 665 C++ Library
