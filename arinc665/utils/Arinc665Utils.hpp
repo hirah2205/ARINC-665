@@ -24,8 +24,7 @@
 #include <functional>
 #include <string>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 /**
  * @brief ARINC 665 Utilities.
@@ -126,7 +125,6 @@ class Arinc665Utils
       FileCreationPolicy createLoadHeaderFiles = FileCreationPolicy::None);
 };
 
-}
 }
 
 #endif

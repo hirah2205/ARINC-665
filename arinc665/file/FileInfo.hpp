@@ -21,8 +21,7 @@
 #include <vector>
 #include <cstdint>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 /**
  * @brief The file information, which is part of the FileListFile.
@@ -162,7 +161,6 @@ class FileInfo
     uint16_t crcValue;
 };
 
-}
 }
 
 #endif

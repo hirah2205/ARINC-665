@@ -14,8 +14,7 @@
 
 #include <arinc665/file/FileInfo.hpp>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 LoadInfo::LoadInfo(
   const std::string &partNumber,
@@ -129,5 +128,4 @@ bool operator !=( const FileInfo &fileInfo, const LoadInfo &loadInfo)
   return loadInfo != fileInfo;
 }
 
-}
 }

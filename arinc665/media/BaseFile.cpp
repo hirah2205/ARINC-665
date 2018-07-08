@@ -16,8 +16,7 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
 ConstMediaSetPtr BaseFile::mediaSet() const
 {
@@ -48,17 +47,17 @@ BaseFile::Type BaseFile::type() const
   return Type::File;
 }
 
-BaseFile::string BaseFile::partNumber() const
+std::string BaseFile::partNumber() const
 {
   return partNumberValue;
 }
 
-void BaseFile::partNumber( const string &partNumber)
+void BaseFile::partNumber( const std::string &partNumber)
 {
   partNumberValue = partNumber;
 }
 
-const BaseFile::string& BaseFile::name() const
+const std::string& BaseFile::name() const
 {
   return nameV;
 }
@@ -109,7 +108,7 @@ BaseFile::fpath BaseFile::path() const
   return parentPtr->path() / nameV;
 }
 
-BaseFile::BaseFile( ContainerEntityPtr parent, const string &name) :
+BaseFile::BaseFile( ContainerEntityPtr parent, const std::string &name) :
   parentValue( parent),
   nameV( name)
 {
@@ -120,7 +119,7 @@ BaseFile::BaseFile( ContainerEntityPtr parent, const string &name) :
   }
 }
 
-BaseFile::BaseFile( ContainerEntityPtr parent, string &&name):
+BaseFile::BaseFile( ContainerEntityPtr parent, std::string &&name):
   parentValue( parent),
   nameV( std::move( name))
 {
@@ -147,5 +146,4 @@ void BaseFile::parent( ContainerEntityPtr parent)
   parentValue = parent;
 }
 
-}
 }

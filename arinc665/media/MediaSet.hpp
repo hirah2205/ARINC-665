@@ -19,8 +19,7 @@
 
 #include <memory>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
 /**
  * @brief ARINC 665 media set definition.
@@ -53,7 +52,7 @@ class MediaSet:
     Type type() const final;
 
     //! @copydoc Base::partNumber
-    string partNumber() const final;
+    std::string partNumber() const final;
 
     /**
      * @brief Set the part number of the entity.
@@ -61,10 +60,10 @@ class MediaSet:
      * @param[in] partNumber
      *   The part number
      **/
-    void partNumber( const string &partNumber);
+    void partNumber( const std::string &partNumber);
 
-    //! @copydoc partNumber(const string&)
-    void partNumber( string &&partNumber);
+    //! @copydoc partNumber(const std::string&)
+    void partNumber( std::string &&partNumber);
 
     /**
      * @brief Get the number of medias within the media set
@@ -164,7 +163,7 @@ class MediaSet:
      * @retval ConstFilePtr()
      *   If file is not found.
      **/
-    ConstFilePtr file( const string &filename) const;
+    ConstFilePtr file( const std::string &filename) const;
 
     /**
      * @brief Returns file with the given filename.
@@ -176,7 +175,7 @@ class MediaSet:
      * @retval ConstFilePtr()
      *   If file is not found.
      **/
-    FilePtr file( const string &filename);
+    FilePtr file( const std::string &filename);
 
     /**
      * @brief Return the number of loads within the media set.
@@ -207,7 +206,7 @@ class MediaSet:
      *
      * @return The load with the given filename.
      **/
-    ConstLoadPtr load( const string &filename) const;
+    ConstLoadPtr load( const std::string &filename) const;
 
     /**
      * @brief return the load with the given filename.
@@ -217,7 +216,7 @@ class MediaSet:
      *
      * @return The load with the given filename.
      **/
-    LoadPtr load( const string &filename);
+    LoadPtr load( const std::string &filename);
 
     /**
      * @brief Removes the load with the given filename.
@@ -225,7 +224,7 @@ class MediaSet:
      * @param[in] filename
      *   The filename of the load.
      **/
-    void removeLoad( const string &filename);
+    void removeLoad( const std::string &filename);
 
     /**
      * @brief Removes the given load from the media set.
@@ -264,7 +263,7 @@ class MediaSet:
      *
      * @return The batch with the given filename.
      **/
-    ConstBatchPtr batch( const string &filename) const;
+    ConstBatchPtr batch( const std::string &filename) const;
 
     /**
      * @brief return the batch with the given filename.
@@ -274,7 +273,7 @@ class MediaSet:
      *
      * @return The batch with the given filename.
      **/
-    BatchPtr batch( const string &filename);
+    BatchPtr batch( const std::string &filename);
 
     /**
      * @brief Removes the batch with the given filename.
@@ -282,7 +281,7 @@ class MediaSet:
      * @param[in] filename
      *   The filename of the batch.
      **/
-    void removeBatch( const string &filename);
+    void removeBatch( const std::string &filename);
 
     /**
      * @brief Removes the given batch from the media set.
@@ -296,10 +295,9 @@ class MediaSet:
     //! the media
     Media mediaV;
     //! The part number
-    string partNumberV;
+    std::string partNumberV;
 };
 
-}
 }
 
 #endif

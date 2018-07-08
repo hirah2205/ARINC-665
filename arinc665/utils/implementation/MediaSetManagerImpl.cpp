@@ -21,8 +21,7 @@
 
 #include <fstream>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 MediaSetManagerImpl::MediaSetManagerImpl(
   const MediaSetConfiguration &config):
@@ -185,5 +184,4 @@ MediaSetManagerImpl::path MediaSetManagerImpl::filePath(
   return config.mediaSetBase / mediumIt->second / file->path().relative_path();
 }
 
-}
 }

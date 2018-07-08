@@ -15,8 +15,7 @@
 #include <boost/exception/exception.hpp>
 #include <boost/program_options.hpp>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 FileCreationPolicyDescription::FileCreationPolicyDescription():
   Description{
@@ -58,5 +57,4 @@ std::istream& operator>>(
   return stream;
 }
 
-}
 }

@@ -23,8 +23,7 @@
 
 #include <boost/filesystem/path.hpp>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
 /**
  * @brief Container base class.
@@ -86,10 +85,10 @@ class ContainerEntity :
      * @retval {}
      *   If no such sub-directory exists.
      **/
-    ConstDirectoryPtr subDirectory( const string &name) const;
+    ConstDirectoryPtr subDirectory( const std::string &name) const;
 
-    //! @copydoc subDirectory(const string&) const
-    DirectoryPtr subDirectory( const string &name);
+    //! @copydoc subDirectory(const std::string&) const
+    DirectoryPtr subDirectory( const std::string &name);
 
     /**
      * @brief Adds a sub-directory with the given name.
@@ -101,7 +100,7 @@ class ContainerEntity :
      *
      * @return The created sub-directory.
      **/
-    DirectoryPtr addSubDirectory( const string &name);
+    DirectoryPtr addSubDirectory( const std::string &name);
 
     /**
      * @brief Removes the sub-directory with the given name.
@@ -111,7 +110,7 @@ class ContainerEntity :
      * @param[in] name
      *   The name of the requested sub-directory to be deleted.
      **/
-    void removeSubDirectory( const string &name);
+    void removeSubDirectory( const std::string &name);
 
     /**
      * @brief Removes the given sub-directory.
@@ -166,10 +165,10 @@ class ContainerEntity :
      * @retval {}
      *   If no such file exists.
      **/
-    ConstFilePtr file( const string &filename, bool recursive = false) const;
+    ConstFilePtr file( const std::string &filename, bool recursive = false) const;
 
-    //! @copydoc file(const string&,bool) const
-    FilePtr file( const string &filename, bool recursive = false);
+    //! @copydoc file(const std::string&,bool) const
+    FilePtr file( const std::string &filename, bool recursive = false);
 
     /**
      * @brief Adds a file into this directory.
@@ -179,7 +178,7 @@ class ContainerEntity :
      *
      * @return The created file.
      **/
-    FilePtr addFile( const string &filename);
+    FilePtr addFile( const std::string &filename);
 
     /**
      * @brief Removes the file with the given name.
@@ -189,7 +188,7 @@ class ContainerEntity :
      * @param[in] filename
      *   The filename of the file to be deleted.
      **/
-    void removeFile( const string &filename);
+    void removeFile( const std::string &filename);
 
     /**
      * @brief Removes the given file.
@@ -236,10 +235,10 @@ class ContainerEntity :
      * @retval {}
      *   If load does not exists.
      **/
-    ConstLoadPtr load( const string &filename, bool recursive = false) const;
+    ConstLoadPtr load( const std::string &filename, bool recursive = false) const;
 
-    //! @copydoc load(const string&,bool) const
-    LoadPtr load( const string &filename, bool recursive = false);
+    //! @copydoc load(const std::string&,bool) const
+    LoadPtr load( const std::string &filename, bool recursive = false);
 
     /**
      * @brief Creates a load with the given filename.
@@ -249,7 +248,7 @@ class ContainerEntity :
      *
      * @return Created load
      **/
-    LoadPtr addLoad( const string &filename);
+    LoadPtr addLoad( const std::string &filename);
 
     /**
      * @brief Removes the load with the given filename.
@@ -257,7 +256,7 @@ class ContainerEntity :
      * @param[in] filename
      *   Load filename.
      **/
-    void removeLoad( const string &filename);
+    void removeLoad( const std::string &filename);
 
     /**
      * @brief Removes the given load.
@@ -303,10 +302,10 @@ class ContainerEntity :
      * @retval {}
      *   If batch does not exists.
      **/
-    ConstBatchPtr batch( const string &filename, bool recursive = false) const;
+    ConstBatchPtr batch( const std::string &filename, bool recursive = false) const;
 
-    //! @copydoc batch(const string&,bool) const
-    BatchPtr batch( const string &filename, bool recursive = false);
+    //! @copydoc batch(const std::string&,bool) const
+    BatchPtr batch( const std::string &filename, bool recursive = false);
 
     /**
      * @brief Creates a batch with the given filename.
@@ -316,7 +315,7 @@ class ContainerEntity :
      *
      * @return Created batch.
      **/
-    BatchPtr addBatch( const string &filename);
+    BatchPtr addBatch( const std::string &filename);
 
     /**
      * @brief Removes the batch with the given filename.
@@ -324,7 +323,7 @@ class ContainerEntity :
      * @param[in] filename
      *   Batch filename.
      **/
-    void removeBatch( const string &filename);
+    void removeBatch( const std::string &filename);
 
     /**
      * @brief Removes the given batch.
@@ -399,7 +398,6 @@ class ContainerEntity :
     WeakContainerEntityPtr parentValue;
 };
 
-}
 }
 
 #endif

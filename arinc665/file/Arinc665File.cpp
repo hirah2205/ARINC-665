@@ -18,8 +18,7 @@
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 RawFile::const_iterator Arinc665File::decodeString(
   RawFile::const_iterator it,
@@ -510,7 +509,8 @@ void Arinc665File::insertHeader( RawFile &rawFile) const
   // format version
   it = setInt< uint16_t>(
     it,
-    static_cast< uint16_t>( getFormatVersionField( fileTypeV, arinc665VersionValue)));
+    static_cast< uint16_t>(
+      getFormatVersionField( fileTypeV, arinc665VersionValue)));
 
   // spare
   it = setInt< uint16_t>( it, 0U);
@@ -575,5 +575,4 @@ void Arinc665File::decodeHeader( const RawFile &rawFile)
   }
 }
 
-}
 }

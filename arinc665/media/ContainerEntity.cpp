@@ -17,8 +17,7 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
-namespace Arinc665{
-namespace Media {
+namespace Arinc665::Media {
 
 bool ContainerEntity::hasChildren() const
 {
@@ -40,7 +39,7 @@ Directories ContainerEntity::subDirectories()
   return subDirectoriesValue;
 }
 
-ConstDirectoryPtr ContainerEntity::subDirectory( const string &name) const
+ConstDirectoryPtr ContainerEntity::subDirectory( const std::string &name) const
 {
   for (const auto &subDirectory : subDirectoriesValue)
   {
@@ -53,7 +52,7 @@ ConstDirectoryPtr ContainerEntity::subDirectory( const string &name) const
   return ConstDirectoryPtr();
 }
 
-DirectoryPtr ContainerEntity::subDirectory( const string &name)
+DirectoryPtr ContainerEntity::subDirectory( const std::string &name)
 {
   for (const auto &subDirectory : subDirectoriesValue)
   {
@@ -66,7 +65,7 @@ DirectoryPtr ContainerEntity::subDirectory( const string &name)
   return DirectoryPtr();
 }
 
-DirectoryPtr ContainerEntity::addSubDirectory( const string &name)
+DirectoryPtr ContainerEntity::addSubDirectory( const std::string &name)
 {
   if ( subDirectory( name))
   {
@@ -87,7 +86,7 @@ DirectoryPtr ContainerEntity::addSubDirectory( const string &name)
   return subDirectory;
 }
 
-void ContainerEntity::removeSubDirectory( const string &name)
+void ContainerEntity::removeSubDirectory( const std::string &name)
 {
   Directories::iterator dir = std::find_if(
     subDirectoriesValue.begin(),
@@ -179,7 +178,7 @@ Files ContainerEntity::files( const bool recursive)
 }
 
 ConstFilePtr ContainerEntity::file(
-  const string &filename,
+  const std::string &filename,
   const bool recursive) const
 {
   for ( auto & file : filesValue)
@@ -207,7 +206,7 @@ ConstFilePtr ContainerEntity::file(
   return {};
 }
 
-FilePtr ContainerEntity::file( const string &filename, const bool recursive)
+FilePtr ContainerEntity::file( const std::string &filename, const bool recursive)
 {
   for ( auto & file : filesValue)
   {
@@ -234,7 +233,7 @@ FilePtr ContainerEntity::file( const string &filename, const bool recursive)
   return {};
 }
 
-FilePtr ContainerEntity::addFile( const string &filename)
+FilePtr ContainerEntity::addFile( const std::string &filename)
 {
   if ( file( filename))
   {
@@ -252,7 +251,7 @@ FilePtr ContainerEntity::addFile( const string &filename)
   return file;
 }
 
-void ContainerEntity::removeFile( const string &filename)
+void ContainerEntity::removeFile( const std::string &filename)
 {
   Files::iterator file = std::find_if(
     filesValue.begin(),
@@ -354,7 +353,7 @@ Loads ContainerEntity::loads( const bool recursive)
 }
 
 ConstLoadPtr ContainerEntity::load(
-  const string &filename,
+  const std::string &filename,
   const bool recursive) const
 {
   ConstFilePtr filePtr = file( filename, recursive);
@@ -372,7 +371,7 @@ ConstLoadPtr ContainerEntity::load(
   return std::dynamic_pointer_cast< const Load>( filePtr);
 }
 
-LoadPtr ContainerEntity::load( const string &filename, const bool recursive)
+LoadPtr ContainerEntity::load( const std::string &filename, const bool recursive)
 {
   FilePtr filePtr = file( filename, recursive);
 
@@ -389,7 +388,7 @@ LoadPtr ContainerEntity::load( const string &filename, const bool recursive)
   return std::dynamic_pointer_cast< Load>( filePtr);
 }
 
-LoadPtr ContainerEntity::addLoad( const string &filename)
+LoadPtr ContainerEntity::addLoad( const std::string &filename)
 {
   if ( file( filename))
   {
@@ -408,7 +407,7 @@ LoadPtr ContainerEntity::addLoad( const string &filename)
   return load;
 }
 
-void ContainerEntity::removeLoad( const string &filename)
+void ContainerEntity::removeLoad( const std::string &filename)
 {
   FilePtr loadFile = file( filename);
 
@@ -509,7 +508,7 @@ Batches ContainerEntity::batches( const bool recursive)
 }
 
 ConstBatchPtr ContainerEntity::batch(
-  const string &filename,
+  const std::string &filename,
   const bool recursive) const
 {
   auto filePtr( file( filename, recursive));
@@ -527,7 +526,7 @@ ConstBatchPtr ContainerEntity::batch(
   return std::dynamic_pointer_cast< const Batch>( filePtr);
 }
 
-BatchPtr ContainerEntity::batch( const string &filename, const bool recursive)
+BatchPtr ContainerEntity::batch( const std::string &filename, const bool recursive)
 {
   FilePtr filePtr = file( filename, recursive);
 
@@ -544,7 +543,7 @@ BatchPtr ContainerEntity::batch( const string &filename, const bool recursive)
   return std::dynamic_pointer_cast< Batch>( filePtr);
 }
 
-BatchPtr ContainerEntity::addBatch( const string &filename)
+BatchPtr ContainerEntity::addBatch( const std::string &filename)
 {
   if ( file( filename))
   {
@@ -564,7 +563,7 @@ BatchPtr ContainerEntity::addBatch( const string &filename)
   return batch;
 }
 
-void ContainerEntity::removeBatch( const string &filename)
+void ContainerEntity::removeBatch( const std::string &filename)
 {
   FilePtr batchFile = file( filename);
 
@@ -697,5 +696,4 @@ void ContainerEntity::parent( ContainerEntityPtr parent)
   this->parentValue = parent;
 }
 
-}
 }

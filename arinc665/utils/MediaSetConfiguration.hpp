@@ -20,8 +20,7 @@
 
 #include <map>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 /**
  * @brief Media Set storage configuration.
@@ -72,7 +71,6 @@ class MediaSetConfiguration
     MediaSets mediaSets;
 };
 
-}
 }
 
 #endif

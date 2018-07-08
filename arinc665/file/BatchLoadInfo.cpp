@@ -12,8 +12,7 @@
 
 #include "BatchLoadInfo.hpp"
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 BatchLoadInfo::BatchLoadInfo(
   const std::string &headerFilename,
@@ -51,5 +50,4 @@ void BatchLoadInfo::partNumber( const std::string &partNumber)
   partNumberV = partNumber;
 }
 
-}
 }

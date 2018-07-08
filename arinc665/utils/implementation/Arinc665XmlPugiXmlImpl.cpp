@@ -22,8 +22,7 @@
 #include <arinc665/Arinc665Logger.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 Arinc665XmlPugiXmlImpl::LoadXmlResult Arinc665XmlPugiXmlImpl::loadFromXml(
   const path &xmlFile)
@@ -530,5 +529,3 @@ void Arinc665XmlPugiXmlImpl::saveBatch(
 }
 
 }
-}
-

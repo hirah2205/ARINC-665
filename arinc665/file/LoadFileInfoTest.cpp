@@ -14,8 +14,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 BOOST_AUTO_TEST_SUITE( LoadFileInfoTest)
 
@@ -127,5 +126,4 @@ BOOST_AUTO_TEST_CASE( GetSetCrc)
 }
 BOOST_AUTO_TEST_SUITE_END()
 
-}
 }

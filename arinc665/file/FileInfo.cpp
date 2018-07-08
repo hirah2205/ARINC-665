@@ -14,8 +14,7 @@
 
 #include <algorithm>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 FileInfo::FileInfo(
   const std::string &filename,
@@ -104,5 +103,4 @@ bool FileInfo::operator !=( const FileInfo &other) const
   return !(*this == other);
 }
 
-}
 }

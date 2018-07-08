@@ -12,10 +12,9 @@
 
 #include "Batch.hpp"
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
-Batch::Batch( ContainerEntityPtr parent, const string &name) :
+Batch::Batch( ContainerEntityPtr parent, const std::string &name) :
   BaseFile( parent, name)
 {
 }
@@ -25,17 +24,17 @@ Batch::FileType Batch::fileType() const
   return FileType::BatchFile;
 }
 
-Batch::string Batch::comment() const
+std::string Batch::comment() const
 {
   return commentValue;
 }
 
-void Batch::comment( const string &comment)
+void Batch::comment( const std::string &comment)
 {
   commentValue = comment;
 }
 
-void Batch::comment( string &&comment)
+void Batch::comment( std::string &&comment)
 {
   commentValue = std::move( comment);
 }
@@ -50,7 +49,7 @@ Batch::BatchInfo& Batch::targets()
   return batchesValue;
 }
 
-const WeakLoads Batch::target( const string &targetHardwareId) const
+const WeakLoads Batch::target( const std::string &targetHardwareId) const
 {
   auto it( batchesValue.find( targetHardwareId));
 
@@ -62,7 +61,7 @@ const WeakLoads Batch::target( const string &targetHardwareId) const
   return it->second;
 }
 
-WeakLoads Batch::target( const string &targetHardwareId)
+WeakLoads Batch::target( const std::string &targetHardwareId)
 {
   auto it( batchesValue.find( targetHardwareId));
 
@@ -74,14 +73,14 @@ WeakLoads Batch::target( const string &targetHardwareId)
   return it->second;
 }
 
-void Batch::target( const string &targetHardwareId, WeakLoads loads)
+void Batch::target( const std::string &targetHardwareId, WeakLoads loads)
 {
   batchesValue.insert( {targetHardwareId, loads});
 }
 
-void Batch::target( string &&targetHardwareId, WeakLoads loads)
+void Batch::target( std::string &&targetHardwareId, WeakLoads loads)
 {
   batchesValue.insert( {std::move( targetHardwareId), loads});
 }
-}
+
 }

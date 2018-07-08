@@ -12,8 +12,7 @@
 
 #include "LoadFileInfo.hpp"
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 LoadFileInfo::LoadFileInfo(
   const std::string &filename,
@@ -89,5 +88,4 @@ void LoadFileInfo::crc( const uint16_t crc)
   crcValue = crc;
 }
 
-}
 }

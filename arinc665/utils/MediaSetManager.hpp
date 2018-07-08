@@ -24,8 +24,7 @@
 #include <string>
 #include <functional>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 /**
  * @brief This class manages the locally held media sets.
@@ -140,7 +139,6 @@ class MediaSetManager
     virtual path filePath( Media::ConstBaseFilePtr file) const = 0;
 };
 
-}
 }
 
 #endif

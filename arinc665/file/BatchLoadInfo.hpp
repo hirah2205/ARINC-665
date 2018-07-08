@@ -17,8 +17,7 @@
 
 #include <string>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 /**
  * @brief The load info the batch load entry.
@@ -86,7 +85,6 @@ class BatchLoadInfo
     std::string partNumberV;
 };
 
-}
 }
 
 #endif

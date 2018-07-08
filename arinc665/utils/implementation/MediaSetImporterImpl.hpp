@@ -29,8 +29,7 @@
 
 #include <map>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 /**
  * @brief Implementation of a ARINC 665 media set importer.
@@ -40,8 +39,6 @@ class MediaSetImporterImpl
   public:
     //! Path type
     using path = Arinc665Utils::path;
-    //! string type
-    using string = std::string;
 
     /**
      * @brief Initialises the ARINC 665 media set importer
@@ -181,7 +178,6 @@ class MediaSetImporterImpl
     File::BatchListFile::BatchInfoMap batchInfos;
 };
 
-}
 }
 
 #endif

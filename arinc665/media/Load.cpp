@@ -12,15 +12,14 @@
 
 #include "Load.hpp"
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
-Load::Load( ContainerEntityPtr parent, const string &name) :
+Load::Load( ContainerEntityPtr parent, const std::string &name) :
   BaseFile( parent, name)
 {
 }
 
-Load::Load( ContainerEntityPtr parent, string &&name) :
+Load::Load( ContainerEntityPtr parent, std::string &&name) :
   BaseFile( parent, std::move( name))
 {
 }
@@ -85,5 +84,4 @@ void Load::userDefinedData( Load::UserDefinedData &&userDefinedData)
   userDefinedDataValue= std::move( userDefinedData);
 }
 
-}
 }

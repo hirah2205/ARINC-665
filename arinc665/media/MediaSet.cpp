@@ -21,8 +21,7 @@
 
 #include <cassert>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
 ConstMediaSetPtr MediaSet::mediaSet() const
 {
@@ -39,17 +38,17 @@ MediaSet::Type MediaSet::type() const
   return Type::MediaSet;
 }
 
-MediaSet::string MediaSet::partNumber() const
+std::string MediaSet::partNumber() const
 {
   return partNumberV;
 }
 
-void MediaSet::partNumber( const string &partNumber)
+void MediaSet::partNumber( const std::string &partNumber)
 {
   partNumberV = partNumber;
 }
 
-void MediaSet::partNumber( string &&partNumber)
+void MediaSet::partNumber( std::string &&partNumber)
 {
   partNumberV = std::move( partNumber);
 }
@@ -190,7 +189,7 @@ Files MediaSet::files()
   return files;
 }
 
-ConstFilePtr MediaSet::file( const string &filename) const
+ConstFilePtr MediaSet::file( const std::string &filename) const
 {
   for ( auto const &medium : mediaV)
   {
@@ -205,7 +204,7 @@ ConstFilePtr MediaSet::file( const string &filename) const
   return ConstFilePtr();
 }
 
-FilePtr MediaSet::file( const string &filename)
+FilePtr MediaSet::file( const std::string &filename)
 {
   for ( auto &medium : mediaV)
   {
@@ -259,7 +258,7 @@ Loads MediaSet::loads()
   return loads;
 }
 
-ConstLoadPtr MediaSet::load( const string &filename) const
+ConstLoadPtr MediaSet::load( const std::string &filename) const
 {
   for (const auto & medium : mediaV)
   {
@@ -274,7 +273,7 @@ ConstLoadPtr MediaSet::load( const string &filename) const
   return {};
 }
 
-LoadPtr MediaSet::load( const string &filename)
+LoadPtr MediaSet::load( const std::string &filename)
 {
   for (const auto & medium : mediaV)
   {
@@ -328,7 +327,7 @@ Batches MediaSet::batches()
   return batches;
 }
 
-ConstBatchPtr MediaSet::batch( const string &filename) const
+ConstBatchPtr MediaSet::batch( const std::string &filename) const
 {
   for (const auto & medium : mediaV)
   {
@@ -343,7 +342,7 @@ ConstBatchPtr MediaSet::batch( const string &filename) const
   return {};
 }
 
-BatchPtr MediaSet::batch( const string &filename)
+BatchPtr MediaSet::batch( const std::string &filename)
 {
   for (const auto & medium : mediaV)
   {
@@ -358,5 +357,4 @@ BatchPtr MediaSet::batch( const string &filename)
   return {};
 }
 
-}
 }

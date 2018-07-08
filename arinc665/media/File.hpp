@@ -19,8 +19,7 @@
 #include <string>
 #include <cstdint>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
 /**
  * @brief Data file within media set.
@@ -43,10 +42,10 @@ class File: public BaseFile
      * @param[in] name
      *   Name of the file.
      **/
-    File( ContainerEntityPtr parent, const string &name);
+    File( ContainerEntityPtr parent, const std::string &name);
 
     //! @copydoc File()
-    File( ContainerEntityPtr parent, string &&name);
+    File( ContainerEntityPtr parent, std::string &&name);
 
     /**
      * @copydoc BaseFile::fileType
@@ -56,7 +55,6 @@ class File: public BaseFile
     FileType fileType() const final;
 };
 
-}
 }
 
 #endif

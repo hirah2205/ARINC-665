@@ -20,12 +20,10 @@
 #include <list>
 #include <memory>
 
-namespace Arinc665 {
-
 /**
  * @brief ARINC 665 media (set) implementation.
  **/
-namespace Media {
+namespace Arinc665::Media {
 
 class Base;
 
@@ -122,7 +120,6 @@ using ConstDirectoryFileTuple  = std::tuple< const Directory&, ConstFilePtr>;
 //! Tuple of directory an file
 using DirectoryFileTuple = std::tuple< Directory&, FilePtr>;
 
-}
 }
 
 #endif

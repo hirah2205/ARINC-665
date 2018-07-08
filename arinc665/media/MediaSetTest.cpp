@@ -19,8 +19,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
 BOOST_AUTO_TEST_SUITE( MediaSetTest)
 
@@ -79,5 +78,4 @@ BOOST_AUTO_TEST_CASE( medium)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}
 }

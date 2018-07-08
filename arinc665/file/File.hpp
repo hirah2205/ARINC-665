@@ -19,8 +19,6 @@
 #include <list>
 #include <cstdint>
 
-namespace Arinc665 {
-
 /**
  * @brief ARINC 665 file implementation.
  *
@@ -31,7 +29,8 @@ namespace Arinc665 {
  * * Load Header File: LoadHeaderFile
  * * Batch File: BatchFile
  **/
-namespace File {
+namespace Arinc665::File {
+
 //! Raw file type definition.
 using RawFile = std::vector< uint8_t>;
 
@@ -67,7 +66,6 @@ class FileInfo;
 using FilesInfo = std::vector< FileInfo>;
 class FileListFile;
 
-}
 }
 
 #endif

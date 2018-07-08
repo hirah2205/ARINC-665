@@ -28,8 +28,7 @@
 
 #include <arinc665/Arinc665Crc.hpp>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 MediaSetExporterImpl::MediaSetExporterImpl(
   Media::ConstMediaSetPtr mediaSet,
@@ -424,5 +423,4 @@ void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
     batch->medium()->mediumNumber(), batch->path(), batchFile);
 }
 
-}
 }

@@ -21,8 +21,7 @@
 #include <vector>
 #include <cstdint>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 /**
  * @brief ARINC 665 Load Header File.
@@ -269,7 +268,6 @@ class LoadHeaderFile: public Arinc665File
     uint32_t loadCrcValue;
 };
 
-}
 }
 
 #endif

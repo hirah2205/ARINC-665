@@ -19,8 +19,7 @@
 
 #include <iosfwd>
 
-namespace Arinc665{
-namespace Utils{
+namespace Arinc665::Utils {
 
 //! File creation policy description
 class FileCreationPolicyDescription : public Description<
@@ -60,6 +59,5 @@ std::istream& operator>>(
   std::istream& stream,
   FileCreationPolicy &fileCreationPolicy);
 
-}
 }
 #endif

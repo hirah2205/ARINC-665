@@ -17,8 +17,7 @@
 
 #include <cassert>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
 Medium::Medium( MediaSetPtr mediaSet, const uint8_t mediumNumber):
   mediaSetV( mediaSet),
@@ -42,7 +41,7 @@ Medium::Type Medium::type() const
   return Type::Medium;
 }
 
-Medium::string Medium::partNumber() const
+std::string Medium::partNumber() const
 {
   return mediaSetV.lock()->partNumber();
 }
@@ -57,5 +56,4 @@ uint8_t Medium::mediumNumber() const
   return mediumNumberV;
 }
 
-}
 }

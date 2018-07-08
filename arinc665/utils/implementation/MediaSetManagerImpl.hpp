@@ -17,8 +17,7 @@
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/MediaSetConfiguration.hpp>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 //! Implementation of MediaSetManager
 class MediaSetManagerImpl : public MediaSetManager
@@ -70,7 +69,6 @@ class MediaSetManagerImpl : public MediaSetManager
     MediaPaths mediaPaths;
 };
 
-}
 }
 
 #endif

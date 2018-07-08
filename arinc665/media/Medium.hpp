@@ -16,8 +16,7 @@
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/ContainerEntity.hpp>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
 /**
  * @brief Represents a media within an ARINC 665 media set
@@ -54,7 +53,7 @@ class Medium : public ContainerEntity
      *
      * @return The part number of the owning media set.
      **/
-    string partNumber() const final;
+    std::string partNumber() const final;
 
     //! @copydoc ContainerEntity::path() const
     fpath path() const final;
@@ -73,7 +72,6 @@ class Medium : public ContainerEntity
     const uint8_t mediumNumberV;
 };
 
-}
 }
 
 #endif

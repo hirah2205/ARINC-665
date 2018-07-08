@@ -18,8 +18,7 @@
 
 #include <string>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 /**
  * @brief The target hardware information, which is part of the batch file.
@@ -105,7 +104,6 @@ class BatchTargetInfo
     BatchLoadsInfo loadsV;
 };
 
-}
 }
 
 #endif

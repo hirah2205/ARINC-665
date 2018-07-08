@@ -15,8 +15,7 @@
 
 #include <arinc665/media/ContainerEntity.hpp>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
 /**
  * @brief Represents a directory within a medium.
@@ -32,7 +31,7 @@ class Directory : public ContainerEntity
      * @param[in] name
      *   Name of the directory.
      **/
-    Directory( ContainerEntityPtr parent, const string &name);
+    Directory( ContainerEntityPtr parent, const std::string &name);
 
     //! @copydoc ContainerEntity::mediaSet
     ConstMediaSetPtr mediaSet() const final;
@@ -48,23 +47,22 @@ class Directory : public ContainerEntity
      *
      * @return The name of the directory.
      **/
-    const string& name() const;
+    const std::string& name() const;
 
 
     // void rename( const string& name);
 
     //! @copydoc ContainerEntity::partNumber
-    string partNumber() const final;
+    std::string partNumber() const final;
 
     //! @copydoc ContainerEntity::path() const
     virtual fpath path() const final;
 
   private:
     //! Directory name
-    const string nameV;
+    const std::string nameV;
 };
 
-}
 }
 
 #endif

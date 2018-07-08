@@ -20,8 +20,7 @@
 #include <vector>
 #include <map>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 /**
  * @brief ARINC 665 Load List File..
@@ -224,7 +223,6 @@ class LoadListFile: public ListFile
     UserDefinedData userDefinedDataValue;
 };
 
-}
 }
 
 #endif

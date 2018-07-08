@@ -19,14 +19,14 @@ namespace Arinc665 {
 PartNumber::PartNumber(
   const ManufacturerCode &manufacturerCode,
   const ProductIdentifier& productIdentifier) :
-  manufacturerCode( manufacturerCode),
-  productIdentifier( productIdentifier)
+  manufacturerCodeValue( manufacturerCode),
+  productIdentifierValue( productIdentifier)
 {
 }
 
-PartNumber::PartNumber( const string& partNumber) :
-  manufacturerCode( partNumber.substr( 0, ManufacturerCode::Length)),
-  productIdentifier(
+PartNumber::PartNumber( const std::string& partNumber) :
+  manufacturerCodeValue( partNumber.substr( 0, ManufacturerCode::Length)),
+  productIdentifierValue(
     partNumber.substr(
       ManufacturerCode::Length + CheckCode::Length,
       ProductIdentifier::Length))
@@ -44,7 +44,7 @@ PartNumber::PartNumber( const string& partNumber) :
     partNumber.substr( ManufacturerCode::Length, CheckCode::Length));
 
   // compare check code with calculated one
-  if ( checkCodeDecoded != getCheckCode())
+  if ( checkCodeDecoded != checkCode())
   {
     //! @throw Arinc665Exception, when calculated check code differs from current
     BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -52,47 +52,46 @@ PartNumber::PartNumber( const string& partNumber) :
   }
 }
 
-ManufacturerCode PartNumber::getManufacturerCode() const
+ManufacturerCode PartNumber::manufacturerCode() const
 {
-  return manufacturerCode;
+  return manufacturerCodeValue;
 }
 
-ManufacturerCode& PartNumber::getManufacturerCode()
+ManufacturerCode& PartNumber::manufacturerCode()
 {
-  return manufacturerCode;
+  return manufacturerCodeValue;
 }
 
-void PartNumber::setManufacturerCode( const ManufacturerCode& manufacturerCode)
+void PartNumber::manufacturerCode( const ManufacturerCode& manufacturerCode)
 {
-  this->manufacturerCode = manufacturerCode;
+  manufacturerCodeValue = manufacturerCode;
 }
 
-ProductIdentifier PartNumber::getProductIdentifier() const
+ProductIdentifier PartNumber::productIdentifier() const
 {
-  return productIdentifier;
+  return productIdentifierValue;
 }
 
-ProductIdentifier& PartNumber::getProductIdentifier()
+ProductIdentifier& PartNumber::productIdentifier()
 {
-  return productIdentifier;
+  return productIdentifierValue;
 }
 
-void PartNumber::setProductIdentifier(
+void PartNumber::productIdentifier(
   const ProductIdentifier& productIdentifier)
 {
-  this->productIdentifier = productIdentifier;
+  productIdentifierValue = productIdentifier;
 }
 
-CheckCode PartNumber::getCheckCode() const
+CheckCode PartNumber::checkCode() const
 {
-  return CheckCode( manufacturerCode, productIdentifier);
+  return CheckCode( manufacturerCodeValue, productIdentifierValue);
 }
 
-PartNumber::string PartNumber::getPartNumber() const
+std::string PartNumber::partNumber() const
 {
-  return manufacturerCode.get() + getCheckCode().getStr()
-    + productIdentifier.get();
+  return manufacturerCodeValue.get() + checkCode().getStr()
+    + productIdentifierValue.get();
 }
 
 }
-

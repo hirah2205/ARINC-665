@@ -17,8 +17,7 @@
 
 #include <helper/Endianess.hpp>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 LoadListFile::LoadListFile( Arinc665Version version):
   ListFile( FileType::LoadList, version),
@@ -354,5 +353,4 @@ void LoadListFile::decodeLoadsInfo(
   }
 }
 
-}
 }

@@ -17,12 +17,10 @@
 
 #include <memory>
 
-namespace Arinc665 {
-
 /**
  * @brief ARINC 665 utilities.
  **/
-namespace Utils {
+namespace Arinc665::Utils {
 
 //! File creation policy of the exporter for load headers/ batch file
 enum class FileCreationPolicy
@@ -47,7 +45,6 @@ class MediaSetManager;
 //! ARINC 665 media set manager instance pointer.
 using MediaSetManagerPtr = std::shared_ptr< MediaSetManager>;
 
-}
 }
 
 #endif

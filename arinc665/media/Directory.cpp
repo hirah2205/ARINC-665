@@ -16,10 +16,9 @@
 
 #include <cassert>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
-Directory::Directory( ContainerEntityPtr parent, const string &name):
+Directory::Directory( ContainerEntityPtr parent, const std::string &name):
   ContainerEntity( parent),
   nameV( name)
 {
@@ -55,12 +54,12 @@ Directory::Type Directory::type() const
   return Type::Directory;
 }
 
-const Directory::string& Directory::name() const
+const std::string& Directory::name() const
 {
   return nameV;
 }
 
-Directory::string Directory::partNumber() const
+std::string Directory::partNumber() const
 {
   auto parentPtr( parent());
 
@@ -84,5 +83,4 @@ Directory::fpath Directory::path() const
   return parentPtr->path() / nameV;
 }
 
-}
 }

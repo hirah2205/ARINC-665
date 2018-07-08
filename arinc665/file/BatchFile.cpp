@@ -15,8 +15,7 @@
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 BatchFile::BatchFile( const Arinc665Version version):
     Arinc665File( FileType::BatchFile, version)
@@ -292,5 +291,4 @@ void BatchFile::decodeBatchTargetsInfo(
   }
 }
 
-}
 }

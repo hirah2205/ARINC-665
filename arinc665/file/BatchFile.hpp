@@ -17,8 +17,7 @@
 #include <arinc665/file/Arinc665File.hpp>
 #include <arinc665/file/BatchTargetInfo.hpp>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 /**
  * @brief ARINC 665 Batch File.
@@ -166,7 +165,6 @@ class BatchFile: public Arinc665File
     BatchTargetsInfo targetHardwaresValue;
 };
 
-}
 }
 
 #endif

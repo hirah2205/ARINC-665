@@ -17,8 +17,7 @@
 
 #include <vector>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 /**
  * @brief Batch info, which is part of the list of batches file.
@@ -173,7 +172,6 @@ bool operator==( const FileInfo &fileInfo, const BatchInfo &batchInfo);
  **/
 bool operator!=( const FileInfo &fileInfo, const BatchInfo &batchInfo);
 
-}
 }
 
 #endif

@@ -19,8 +19,8 @@
 #include <boost/filesystem.hpp>
 
 #include <map>
-namespace Arinc665 {
-namespace Utils {
+
+namespace Arinc665::Utils {
 
 /**
  * @brief Handles the representation of Media Sets as XML file.
@@ -86,7 +86,6 @@ class Arinc665Xml
     Arinc665Xml() = default;
 };
 
-}
 }
 
 #endif

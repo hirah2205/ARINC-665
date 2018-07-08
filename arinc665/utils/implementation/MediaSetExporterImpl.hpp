@@ -15,8 +15,7 @@
 
 #include <arinc665/utils/Arinc665Utils.hpp>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 /**
  * @brief Implementation of a media set exporter.
@@ -133,7 +132,6 @@ class MediaSetExporterImpl
     Arinc665Utils::ReadFileHandler readFileHandler;
 };
 
-}
 }
 
 #endif

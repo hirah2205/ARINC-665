@@ -14,8 +14,7 @@
 
 #include <arinc665/file/FileInfo.hpp>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 BatchInfo::BatchInfo(
   const std::string &partNumber,
@@ -112,5 +111,4 @@ bool operator !=( const FileInfo &fileInfo, const BatchInfo &batchInfo)
   return batchInfo != fileInfo;
 }
 
-}
 }

@@ -12,8 +12,7 @@
 
 #include "BatchTargetInfo.hpp"
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 BatchTargetInfo::BatchTargetInfo(
   const std::string &targetHardwareId,
@@ -71,5 +70,4 @@ void BatchTargetInfo::load( BatchLoadInfo &&load)
   loadsV.push_back( load);
 }
 
-}
 }

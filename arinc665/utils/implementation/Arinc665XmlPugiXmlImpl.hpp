@@ -18,8 +18,7 @@
 
 #include <pugixml.hpp>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 /**
 * @brief Handles the representation of Media Sets as XML file.
@@ -221,7 +220,6 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
       pugi::xml_node &batchNode);
 };
 
-}
 }
 
 #endif

@@ -17,8 +17,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 MediaSetConfiguration::MediaSetConfiguration( const ptree &config)
 {
@@ -56,5 +55,4 @@ void MediaSetConfiguration::load( const ptree &config)
   }
 }
 
-}
 }

@@ -15,8 +15,7 @@
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 LoadHeaderFile::LoadHeaderFile( Arinc665Version version) :
   Arinc665File( FileType::LoadUploadHeader, version, 6U),
@@ -387,5 +386,4 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
   return files;
 }
 
-}
 }

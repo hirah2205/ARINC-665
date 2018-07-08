@@ -12,8 +12,7 @@
 
 #include "ListFile.hpp"
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 ListFile::ListFile(
   const FileType fileType,
@@ -31,5 +30,4 @@ ListFile(
 {
 }
 
-}
 }

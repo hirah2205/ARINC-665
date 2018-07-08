@@ -22,8 +22,7 @@
 #include <vector>
 #include <cstdint>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
 /**
  * @brief Load within media set.
@@ -34,7 +33,7 @@ class Load: public BaseFile
     //! File list
     using Files = std::list< WeakFilePtr>;
     //! Target hardware ID list
-    using TargetHardwareIds = std::list< string>;
+    using TargetHardwareIds = std::list< std::string>;
     //! User defined data type
     using UserDefinedData = std::vector< uint8_t>;
 
@@ -46,10 +45,10 @@ class Load: public BaseFile
      * @param[in] name
      *   Name of the Load
      **/
-    Load( ContainerEntityPtr parent, const string &name);
+    Load( ContainerEntityPtr parent, const std::string &name);
 
     //! @copydoc Load()
-    Load( ContainerEntityPtr parent, string &&name);
+    Load( ContainerEntityPtr parent, std::string &&name);
 
     /**
      * @copydoc BaseFile::fileType()
@@ -145,7 +144,6 @@ class Load: public BaseFile
     UserDefinedData userDefinedDataValue;
 };
 
-}
 }
 
 #endif

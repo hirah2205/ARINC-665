@@ -18,8 +18,7 @@
 
 #include <boost/filesystem/path.hpp>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
 /**
  * @brief The base class of all files, presented within a media set.
@@ -53,7 +52,7 @@ class BaseFile: public Base
    //void setName( void);
 
     //! @copydoc Base::partNumber
-    string partNumber() const final;
+    std::string partNumber() const final;
 
     /**
      * @brief Updates the part number
@@ -61,14 +60,14 @@ class BaseFile: public Base
      * @param[in] partNumber
      *   New Part number
      **/
-    void partNumber( const string &partNumber);
+    void partNumber( const std::string &partNumber);
 
     /**
      * @brief Returns the name of the file.
      *
      * @return The name of the file.
      **/
-    const string& name() const;
+    const std::string& name() const;
 
     /**
      * @brief Returns the file type.
@@ -125,10 +124,10 @@ class BaseFile: public Base
      * @throw Arinc665Exception
      *   If parent is invalid
      **/
-    BaseFile( ContainerEntityPtr parent, const string &name);
+    BaseFile( ContainerEntityPtr parent, const std::string &name);
 
-    //! @copydoc BaseFile::BaseFile(ContainerEntityPtr,const string&)
-    BaseFile( ContainerEntityPtr parent, string &&name);
+    //! @copydoc BaseFile::BaseFile(ContainerEntityPtr,const std::string&)
+    BaseFile( ContainerEntityPtr parent, std::string &&name);
 
     /**
      * @brief Sets the parent element.
@@ -145,12 +144,11 @@ class BaseFile: public Base
     //! The parent
     WeakContainerEntityPtr parentValue;
     //! The file name
-    const string nameV;
+    const std::string nameV;
     //! The part number
-    string partNumberValue;
+    std::string partNumberValue;
 };
 
-}
 }
 
 #endif

@@ -26,13 +26,13 @@ BOOST_AUTO_TEST_CASE( testPartNumber1)
   ProductIdentifier pi( "54972000");
   PartNumber pn( mc, pi);
 
-  BOOST_CHECK( pn.getManufacturerCode().get()  == "EBE");
-  BOOST_CHECK( pn.getProductIdentifier().get() == "54972000");
+  BOOST_CHECK( pn.manufacturerCode().get()  == "EBE");
+  BOOST_CHECK( pn.productIdentifier().get() == "54972000");
 
-  BOOST_CHECK( pn.getPartNumber() ==
-    pn.getManufacturerCode().get() +
-    pn.getCheckCode().getStr() +
-    pn.getProductIdentifier().get());
+  BOOST_CHECK( pn.partNumber() ==
+    pn.manufacturerCode().get() +
+    pn.checkCode().getStr() +
+    pn.productIdentifier().get());
 }
 
 //! part number test
@@ -40,10 +40,10 @@ BOOST_AUTO_TEST_CASE( testPartNumber2)
 {
   PartNumber pn( "EBE4F54972000");
 
-  BOOST_CHECK( pn.getManufacturerCode().get() == "EBE");
-  BOOST_CHECK( pn.getProductIdentifier().get() == "54972000");
+  BOOST_CHECK( pn.manufacturerCode().get() == "EBE");
+  BOOST_CHECK( pn.productIdentifier().get() == "54972000");
 
-  BOOST_CHECK( pn.getPartNumber() == "EBE4F54972000");
+  BOOST_CHECK( pn.partNumber() == "EBE4F54972000");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

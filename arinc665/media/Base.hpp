@@ -17,8 +17,7 @@
 
 #include <string>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
 /**
  * @brief %Base class for media set classes.
@@ -28,9 +27,6 @@ namespace Media {
 class Base
 {
   public:
-    //! String type
-    using string = std::string;
-
     //! item type
     enum class Type
     {
@@ -68,10 +64,9 @@ class Base
      *
      * @return The part number of the entity
      **/
-    virtual string partNumber() const = 0;
+    virtual std::string partNumber() const = 0;
 };
 
-}
 }
 
 #endif

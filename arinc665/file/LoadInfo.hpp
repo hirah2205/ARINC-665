@@ -20,8 +20,7 @@
 #include <vector>
 #include <cstdint>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 /**
  * @brief Load information, which is part of a load list file.
@@ -206,7 +205,6 @@ bool operator ==( const FileInfo &fileInfo, const LoadInfo &loadInfo);
  **/
 bool operator !=( const FileInfo &fileInfo, const LoadInfo &loadInfo);
 
-}
 }
 
 #endif

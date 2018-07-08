@@ -44,9 +44,6 @@ namespace Arinc665 {
 class PartNumber
 {
   public:
-    //! Strng type
-    using string = std::string;
-
     //! The length of an ARINC 665 part number
     static constexpr size_t Length = ManufacturerCode::Length
       + CheckCode::Length + ProductIdentifier::Length;
@@ -71,21 +68,21 @@ class PartNumber
      * @param[in] partNumber
      *   The part number as string
      **/
-    PartNumber( const string& partNumber);
+    PartNumber( const std::string& partNumber);
 
     /**
      * @brief Returns the manufacturer code.
      *
      * @return The manufacturer code.
      **/
-    ManufacturerCode getManufacturerCode() const;
+    ManufacturerCode manufacturerCode() const;
 
     /**
      * @brief Returns the manufacturer code.
      *
      * @return The manufacturer code.
      **/
-    ManufacturerCode& getManufacturerCode();
+    ManufacturerCode& manufacturerCode();
 
     /**
      * @brief Sets the manufacturer code.
@@ -93,21 +90,21 @@ class PartNumber
      * @param[in] manufacturerCode
      *   The manufacturer code.
      **/
-    void setManufacturerCode( const ManufacturerCode& manufacturerCode);
+    void manufacturerCode( const ManufacturerCode& manufacturerCode);
 
     /**
      * @brief Returns the product identifier.
      *
      * @return The product identifier.
      **/
-    ProductIdentifier getProductIdentifier() const;
+    ProductIdentifier productIdentifier() const;
 
     /**
      * @brief Returns the product identifier.
      *
      * @return The product identifier.
      **/
-    ProductIdentifier& getProductIdentifier();
+    ProductIdentifier& productIdentifier();
 
     /**
      * @brief Sets the product identifier.
@@ -115,27 +112,27 @@ class PartNumber
      * @param[in] productIdentifier
      *   The product identifier.
      **/
-    void setProductIdentifier( const ProductIdentifier& productIdentifier);
+    void productIdentifier( const ProductIdentifier& productIdentifier);
 
     /**
      * @brief Calculates and return the check code
      *
      * @return The calculated check code
      **/
-    CheckCode getCheckCode() const;
+    CheckCode checkCode() const;
 
     /**
      * @brief Returns the part number as string
      *
      * @return The part number as string
      **/
-    string getPartNumber() const;
+    std::string partNumber() const;
 
   private:
     //! The manufacture code
-    ManufacturerCode manufacturerCode;
+    ManufacturerCode manufacturerCodeValue;
     //! the product identifier
-    ProductIdentifier productIdentifier;
+    ProductIdentifier productIdentifierValue;
 };
 
 }

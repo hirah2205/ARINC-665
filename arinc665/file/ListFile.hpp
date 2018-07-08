@@ -17,8 +17,7 @@
 #include <arinc665/file/File.hpp>
 #include <arinc665/file/Arinc665File.hpp>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 /**
  * @brief Base class for list files.
@@ -93,7 +92,6 @@ class ListFile: public Arinc665File
       std::size_t checksumPosition = 2U);
 };
 
-}
 }
 
 #endif

@@ -18,8 +18,7 @@
 
 #include <map>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
 /**
  * @brief &Batch of loads.
@@ -28,7 +27,7 @@ class Batch: public BaseFile
 {
   public:
     //! Batch information type (Target Hardware ID -> Loads)
-    using BatchInfo = std::map< string, WeakLoads>;
+    using BatchInfo = std::map< std::string, WeakLoads>;
 
     /**
      * @brief Initialises the batch with the given data.
@@ -38,7 +37,9 @@ class Batch: public BaseFile
      * @param[in] name
      *   Name of the batch.
      **/
-    Batch( ContainerEntityPtr parent, const string &name);
+    Batch( ContainerEntityPtr parent, const std::string &name);
+
+    Batch( ContainerEntityPtr parent, std::string &&name);
 
     /**
      * @copydoc BaseFile::fileType()
@@ -52,7 +53,7 @@ class Batch: public BaseFile
      *
      * @return The comment, which describes the batch.
      **/
-    string comment() const;
+    std::string comment() const;
 
     /**
      * @brief Set the comment, which describes the batch.
@@ -60,10 +61,10 @@ class Batch: public BaseFile
      * @param[in] comment
      *   The comment, which describes the batch.
      **/
-    void comment( const string &comment);
+    void comment( const std::string &comment);
 
-    //! @copydoc comment(const string&)
-    void comment( string &&comment);
+    //! @copydoc comment(const std::string&)
+    void comment( std::string &&comment);
 
     /**
      * @brief Return batches.
@@ -83,7 +84,7 @@ class Batch: public BaseFile
      *
      * @return The corresponding loads
      **/
-    const WeakLoads target( const string &targetHardwareId) const;
+    const WeakLoads target( const std::string &targetHardwareId) const;
 
     /**
      * @brief Return the batch info for the given target hardware ID
@@ -93,7 +94,7 @@ class Batch: public BaseFile
      *
      * @return The corresponding loads
      **/
-    WeakLoads target( const string &targetHardwareId);
+    WeakLoads target( const std::string &targetHardwareId);
 
     /**
      * @brief Add  batch info for the given target hardware ID.
@@ -103,19 +104,18 @@ class Batch: public BaseFile
      * @param[in] loads
      *   Loads.
      **/
-    void target( const string &targetHardwareId, WeakLoads loads);
+    void target( const std::string &targetHardwareId, WeakLoads loads);
 
-    //! @copydoc target(const string&,WeakLoads)
-    void target( string &&targetHardwareId, WeakLoads loads);
+    //! @copydoc target(const std::string&,WeakLoads)
+    void target( std::string &&targetHardwareId, WeakLoads loads);
 
   private:
     //! Batch comment
-    string commentValue;
+    std::string commentValue;
     //! Batch informations
     BatchInfo batchesValue;
 };
 
-}
 }
 
 #endif

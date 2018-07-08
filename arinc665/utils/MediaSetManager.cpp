@@ -15,8 +15,7 @@
 
 #include <arinc665/utils/implementation/MediaSetManagerImpl.hpp>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 MediaSetManagerPtr MediaSetManager::createInstance(
   const MediaSetConfiguration &config)
@@ -24,5 +23,4 @@ MediaSetManagerPtr MediaSetManager::createInstance(
   return std::make_shared< MediaSetManagerImpl>( config);
 }
 
-}
 }

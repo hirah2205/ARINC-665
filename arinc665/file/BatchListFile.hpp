@@ -21,8 +21,7 @@
 #include <vector>
 #include <map>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 /**
  * @brief ARINC 665 Batch List File.
@@ -207,7 +206,6 @@ class BatchListFile: public ListFile
     UserDefinedData userDefinedDataValue;
 };
 
-}
 }
 
 #endif

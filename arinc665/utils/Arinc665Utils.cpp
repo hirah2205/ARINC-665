@@ -15,8 +15,7 @@
 #include <arinc665/utils/implementation/MediaSetImporterImpl.hpp>
 #include <arinc665/utils/implementation/MediaSetExporterImpl.hpp>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 Arinc665Utils::Arinc665Importer Arinc665Utils::createArinc665Importer(
   ReadFileHandler readFileHandler)
@@ -53,5 +52,4 @@ Arinc665Utils::Arinc665Exporter Arinc665Utils::createArinc665Exporter(
       createLoadHeaderFiles));
 }
 
-}
 }

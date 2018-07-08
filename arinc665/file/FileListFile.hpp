@@ -21,8 +21,7 @@
 #include <map>
 #include <cstdint>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 /**
  * @brief ARINC 665 File List File.
@@ -220,7 +219,6 @@ class FileListFile: public ListFile
     UserDefinedData userDefinedDataValue;
 };
 
-}
 }
 
 #endif

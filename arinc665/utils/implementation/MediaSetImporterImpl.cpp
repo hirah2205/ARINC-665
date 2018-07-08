@@ -18,8 +18,7 @@
 
 #include <arinc665/media/Directory.hpp>
 
-namespace Arinc665 {
-namespace Utils {
+namespace Arinc665::Utils {
 
 MediaSetImporterImpl::MediaSetImporterImpl(
   Arinc665Utils::ReadFileHandler readFileHandler):
@@ -584,5 +583,4 @@ MediaSetImporterImpl::checkCreateDirectory(
   return dir;
 }
 
-}
 }

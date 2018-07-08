@@ -15,8 +15,7 @@
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 FileListFile::FileListFile( Arinc665Version version):
   ListFile( FileType::FileList, version),
@@ -391,5 +390,4 @@ void FileListFile::decodeFilesInfo(
   }
 }
 
-}
 }

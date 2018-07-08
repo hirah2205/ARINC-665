@@ -18,8 +18,7 @@
 #include <string>
 #include <cstdint>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 /**
  * @brief the File information within the file list of the load upload header.
@@ -131,7 +130,6 @@ class LoadFileInfo
     uint16_t crcValue;
 };
 
-}
 }
 
 #endif

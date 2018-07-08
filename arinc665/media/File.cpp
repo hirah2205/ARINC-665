@@ -14,15 +14,14 @@
 
 #include <cassert>
 
-namespace Arinc665 {
-namespace Media {
+namespace Arinc665::Media {
 
-File::File( ContainerEntityPtr parent, const string &name) :
+File::File( ContainerEntityPtr parent, const std::string &name) :
   BaseFile( parent, name)
 {
 }
 
-File::File( ContainerEntityPtr parent, string &&name) :
+File::File( ContainerEntityPtr parent, std::string &&name) :
   BaseFile( parent, std::move( name))
 {
 }
@@ -32,5 +31,4 @@ File::FileType File::fileType() const
   return FileType::RegularFile;
 }
 
-}
 }

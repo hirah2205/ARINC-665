@@ -20,8 +20,7 @@
 #include <cstdint>
 #include <string>
 
-namespace Arinc665 {
-namespace File {
+namespace Arinc665::File {
 
 /**
  * @brief Base class of ARIC 665 file
@@ -374,7 +373,6 @@ class Arinc665File
     uint16_t crcValue;
 };
 
-}
 }
 
 #endif
