@@ -96,7 +96,7 @@ MediumPtr BaseFile::medium()
   return parentPtr->medium();
 }
 
-BaseFile::fpath BaseFile::path() const
+std::filesystem::path BaseFile::path() const
 {
   auto parentPtr( parent());
 

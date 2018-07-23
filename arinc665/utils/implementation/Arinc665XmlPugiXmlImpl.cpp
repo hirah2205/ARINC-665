@@ -25,7 +25,7 @@
 namespace Arinc665::Utils {
 
 Arinc665XmlPugiXmlImpl::LoadXmlResult Arinc665XmlPugiXmlImpl::loadFromXml(
-  const path &xmlFile)
+  const std::filesystem::path &xmlFile)
 {
   BOOST_LOG_FUNCTION();
 
@@ -33,7 +33,7 @@ Arinc665XmlPugiXmlImpl::LoadXmlResult Arinc665XmlPugiXmlImpl::loadFromXml(
     "Load Media Set from " << xmlFile << "\n";
 
   // Check existence of file
-  if (!boost::filesystem::is_regular( xmlFile))
+  if (!std::filesystem::is_regular_file( xmlFile))
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception() <<
       AdditionalInfo( "XML File does not exist"));
@@ -53,7 +53,7 @@ Arinc665XmlPugiXmlImpl::LoadXmlResult Arinc665XmlPugiXmlImpl::loadFromXml(
 void Arinc665XmlPugiXmlImpl::saveToXml(
   Media::ConstMediaSetPtr mediaSet,
   const FilePathMapping &filePathMapping,
-  const path &xmlFile)
+  const std::filesystem::path &xmlFile)
 {
   BOOST_LOG_FUNCTION();
 

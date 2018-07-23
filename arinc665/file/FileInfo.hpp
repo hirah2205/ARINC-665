@@ -15,8 +15,7 @@
 
 #include <arinc665/file/File.hpp>
 
-#include <boost/filesystem/path.hpp>
-
+#include <filesystem>
 #include <string>
 #include <vector>
 #include <cstdint>
@@ -29,9 +28,6 @@ namespace Arinc665::File {
 class FileInfo
 {
   public:
-    //! Path type
-    using fpath = boost::filesystem::path;
-
     /**
      * @brief Initialises the file information
      *
@@ -98,7 +94,7 @@ class FileInfo
      *
      * @return path (incl. filename)
      **/
-    fpath path() const;
+    std::filesystem::path path() const;
 
     /**
      * @brief Returns the member sequence number.

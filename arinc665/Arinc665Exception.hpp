@@ -30,7 +30,7 @@ class Arinc665Exception: public virtual Exception
      * @brief Returns the exception description.
      * @return The exception description.
      **/
-    virtual const char* what() const noexcept override
+    const char* what() const noexcept override
     {
       return "ARINC 665 Exception";
     }
@@ -44,7 +44,7 @@ class InvalidArinc665File: public virtual Arinc665Exception
      * @brief Returns the exception description.
      * @return The exception description.
      **/
-    virtual const char* what() const noexcept override
+    const char* what() const noexcept override
     {
       return "Invalid ARINC 665 Exception";
     }

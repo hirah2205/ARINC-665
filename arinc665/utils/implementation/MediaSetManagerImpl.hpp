@@ -55,11 +55,11 @@ class MediaSetManagerImpl : public MediaSetManager
     Media::ConstLoads load( const std::string &filename) const final;
 
     //! @copydoc MediaSetManager::filePath
-    path filePath( Media::ConstBaseFilePtr file) const final;
+    std::filesystem::path filePath( Media::ConstBaseFilePtr file) const final;
 
   private:
     //! media path map
-    using MediaPaths = std::map< Media::ConstMediumPtr, path>;
+    using MediaPaths = std::map< Media::ConstMediumPtr, std::filesystem::path>;
 
     //! media set configuration
     const MediaSetConfiguration config;

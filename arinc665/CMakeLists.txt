@@ -6,10 +6,7 @@
 
 cmake_minimum_required( VERSION 3.11)
 
-find_package(
-  Boost
-  REQUIRED
-  filesystem)
+find_package( Boost REQUIRED)
 
 add_library(
   arinc665
@@ -116,7 +113,13 @@ target_include_directories(
   arinc665
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>)
 
-target_link_libraries( arinc665 helper pugixml Boost::filesystem)
+target_link_libraries(
+  arinc665
+  helper
+  pugixml
+  $<$<AND:$<CXX_COMPILER_ID:GNU>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,9.0>>:stdc++fs>
+  $<$<AND:$<CXX_COMPILER_ID:Clang>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,7.0>>:stdc++fs>
+  Boost::boost)
 
 target_compile_features( arinc665 PUBLIC cxx_std_17)
 
@@ -170,9 +173,9 @@ install(
   COMPONENT development
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   FILES_MATCHING
-    PATTERN "*.hpp"
-    PATTERN "*Test.*" EXCLUDE
-    PATTERN "implementation" EXCLUDE)
+  PATTERN "*.hpp"
+  PATTERN "*Test.*" EXCLUDE
+  PATTERN "implementation" EXCLUDE)
 
 install(
   EXPORT arinc665-config

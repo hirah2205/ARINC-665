@@ -544,10 +544,10 @@ void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
 MediaSetImporterImpl::ContainerEntityPtr
 MediaSetImporterImpl::checkCreateDirectory(
   const uint8_t mediumIndex,
-  const path &directoryPath)
+  const std::filesystem::path &directoryPath)
 {
   // make path relative (remove leading slash)
-  path dirPath( directoryPath.relative_path());
+  auto dirPath{ directoryPath.relative_path()};
 
   auto medium( mediaSet->medium( mediumIndex));
 

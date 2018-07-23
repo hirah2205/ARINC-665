@@ -56,7 +56,7 @@ class Medium : public ContainerEntity
     std::string partNumber() const final;
 
     //! @copydoc ContainerEntity::path() const
-    fpath path() const final;
+    std::filesystem::path path() const final;
 
     /**
      * @brief Returns the medium number.

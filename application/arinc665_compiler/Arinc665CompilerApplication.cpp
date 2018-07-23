@@ -112,7 +112,7 @@ int Arinc665CompilerApplication::operator()( int argc, char *argv[])
     auto result( xml->loadFromXml( mediaSetXmlFile));
 
     // create media set directory
-    boost::filesystem::create_directory( mediaSetDestinationDirectory);
+    std::filesystem::create_directory( mediaSetDestinationDirectory);
 
     auto exporter( Arinc665::Utils::Arinc665Utils::createArinc665Exporter(
       std::get< 0>( result),
@@ -182,7 +182,7 @@ int Arinc665CompilerApplication::operator()( int argc, char *argv[])
   return EXIT_SUCCESS;
 }
 
-Arinc665CompilerApplication::path Arinc665CompilerApplication::getMediumPath(
+std::filesystem::path Arinc665CompilerApplication::getMediumPath(
   const uint8_t mediumNumber) const
 {
   return mediaSetDestinationDirectory
@@ -199,7 +199,7 @@ void Arinc665CompilerApplication::createMedium(
   BOOST_LOG_TRIVIAL( severity_level::info) << "Create medium directory " <<
     mediumPath;
 
-  boost::filesystem::create_directory( mediumPath);
+  std::filesystem::create_directory( mediumPath);
 }
 
 void Arinc665CompilerApplication::createDirectory(
@@ -213,7 +213,7 @@ void Arinc665CompilerApplication::createDirectory(
   BOOST_LOG_TRIVIAL( severity_level::info) << "Create directory " <<
     directoryPath;
 
-  boost::filesystem::create_directory( directoryPath);
+  std::filesystem::create_directory( directoryPath);
 }
 
 bool Arinc665CompilerApplication::checkFileExistance(
@@ -236,7 +236,7 @@ bool Arinc665CompilerApplication::checkFileExistance(
   auto filePath(
     getMediumPath( file->medium()->mediumNumber()) / file->path());
 
-  return boost::filesystem::is_regular_file( filePath);
+  return std::filesystem::is_regular_file( filePath);
 }
 
 void Arinc665CompilerApplication::createFile(
@@ -261,14 +261,14 @@ void Arinc665CompilerApplication::createFile(
   BOOST_LOG_TRIVIAL( severity_level::info) << "Copy file " << filePath;
 
   // copy file
-  boost::filesystem::copy(
+  std::filesystem::copy(
     mediaSetSourceDirectory / fileIt->second,
     filePath);
 }
 
 void Arinc665CompilerApplication::writeFile(
   const uint8_t mediumNumber,
-  const path &path,
+  const std::filesystem::path &path,
   const Arinc665::File::RawFile &file)
 {
   BOOST_LOG_FUNCTION();
@@ -278,7 +278,7 @@ void Arinc665CompilerApplication::writeFile(
   BOOST_LOG_TRIVIAL( severity_level::info) << "Write file " << filePath;
 
   // check existence of file
-  if (boost::filesystem::exists( filePath))
+  if (std::filesystem::exists( filePath))
   {
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception() <<
@@ -305,7 +305,7 @@ void Arinc665CompilerApplication::writeFile(
 
 Arinc665::File::RawFile Arinc665CompilerApplication::readFile(
   const uint8_t mediumNumber,
-  const path &path)
+  const std::filesystem::path &path)
 {
   BOOST_LOG_FUNCTION();
 
@@ -315,14 +315,14 @@ Arinc665::File::RawFile Arinc665CompilerApplication::readFile(
   BOOST_LOG_TRIVIAL( severity_level::info) << "Read file " << filePath;
 
   // check existence of file
-  if (!boost::filesystem::is_regular( filePath))
+  if (!std::filesystem::is_regular_file( filePath))
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
       AdditionalInfo( "File not found") <<
       boost::errinfo_file_name( filePath.string()));
   }
 
-  Arinc665::File::RawFile data( boost::filesystem::file_size( filePath));
+  Arinc665::File::RawFile data( std::filesystem::file_size( filePath));
 
   // load file
   std::ifstream file(

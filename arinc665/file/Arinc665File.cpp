@@ -101,7 +101,7 @@ RawFile Arinc665File::encodeStringList( const StringList &strList)
   return rawStringList;
 }
 
-std::string Arinc665File::encodePath( const path &path)
+std::string Arinc665File::encodePath( const std::filesystem::path &path)
 {
   std::string convertedPath( path.string());
 
@@ -369,7 +369,7 @@ uint16_t Arinc665File::getFormatVersionField(
   return 0xFFFFU;
 }
 
-Arinc665::FileType Arinc665File::fileType( const path &filename)
+Arinc665::FileType Arinc665File::fileType( const std::filesystem::path &filename)
 {
   std::string filenameN = filename.filename().string();
 

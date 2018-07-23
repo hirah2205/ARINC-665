@@ -20,7 +20,16 @@ namespace Arinc665 {
 
 BOOST_AUTO_TEST_SUITE( TargetHardwareIdTest)
 
-BOOST_AUTO_TEST_CASE( constructor)
+BOOST_AUTO_TEST_CASE( constructor1)
+{
+  std::string thwIdStr{ "12345678"};
+
+  TargetHardwareId thwId( thwIdStr);
+
+  BOOST_CHECK( thwId.get() == "12345678");
+}
+
+BOOST_AUTO_TEST_CASE( constructor2)
 {
   TargetHardwareId thwId( "12345678");
 

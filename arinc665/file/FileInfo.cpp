@@ -60,13 +60,13 @@ void FileInfo::pathName( const std::string &pathName)
   pathNameValue = pathName;
 }
 
-FileInfo::fpath FileInfo::path() const
+std::filesystem::path FileInfo::path() const
 {
   std::string newPathName( pathNameValue);
 
   std::replace( newPathName.begin(), newPathName.end(), '\\', '/');
 
-  return fpath( newPathName) / filenameValue;
+  return std::filesystem::path{ newPathName} / filenameValue;
 }
 
 uint16_t FileInfo::memberSequenceNumber() const

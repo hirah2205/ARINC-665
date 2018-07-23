@@ -19,8 +19,7 @@
 
 #include <arinc665/file/File.hpp>
 
-#include <boost/filesystem.hpp>
-
+#include <filesystem>
 #include <functional>
 #include <string>
 
@@ -36,9 +35,6 @@ namespace Arinc665::Utils {
 class Arinc665Utils
 {
   public:
-    //! Path type
-    using path = boost::filesystem::path;
-
     //! Handler, which is called to generate the given medium.
     using CreateMediumHandler =
       std::function< void( Media::ConstMediumPtr medium)>;
@@ -56,11 +52,11 @@ class Arinc665Utils
 
     //! Handler, which is called to read a file form a medium.
     using ReadFileHandler =
-      std::function< File::RawFile( uint8_t mediumNumber, const path &path)>;
+      std::function< File::RawFile( uint8_t mediumNumber, const std::filesystem::path &path)>;
 
     //! Handler, which is called to write the given file at the requested position.
     using WriteFileHandler =
-      std::function< void( uint8_t mediumNumber, const path &path, const File::RawFile &file)>;
+      std::function< void( uint8_t mediumNumber, const std::filesystem::path &path, const File::RawFile &file)>;
 
     /**
      * The ARINC 665 Media Set importer.

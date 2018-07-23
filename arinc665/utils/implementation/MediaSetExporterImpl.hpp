@@ -23,9 +23,6 @@ namespace Arinc665::Utils {
 class MediaSetExporterImpl
 {
   public:
-    //! Path type
-    using path = Arinc665Utils::path;
-
     /**
      * @brief Initialises the ARINC 665 media set importer
      *

@@ -16,7 +16,7 @@
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/Base.hpp>
 
-#include <boost/filesystem/path.hpp>
+#include <filesystem>
 
 namespace Arinc665::Media {
 
@@ -26,9 +26,6 @@ namespace Arinc665::Media {
 class BaseFile: public Base
 {
   public:
-    //! Path type
-    using fpath = boost::filesystem::path;
-
     //! File type
     enum class FileType
     {
@@ -110,7 +107,7 @@ class BaseFile: public Base
      * @retval {}
      *   If parent is not available. (Should never happen)
      **/
-    fpath path() const;
+    std::filesystem::path path() const;
 
   protected:
     /**

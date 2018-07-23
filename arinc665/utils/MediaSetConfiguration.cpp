@@ -28,9 +28,9 @@ void MediaSetConfiguration::load( const ptree &config)
 {
   BOOST_LOG_FUNCTION();
 
-  mediaSetBase = config.get< path>(
+  mediaSetBase = config.get< std::filesystem::path>(
     "media_set_base",
-    boost::filesystem::current_path());
+    std::filesystem::current_path());
 
   // iterate over media sets
   for ( auto &mediaSetConfig : config.get_child( "media_sets"))
@@ -44,7 +44,7 @@ void MediaSetConfiguration::load( const ptree &config)
     for ( auto &mediumConfig : mediaSetConfig.second.get_child( "media"))
     {
       const auto mediumNumber{ mediumConfig.second.get< unsigned int>( "number")};
-      const auto mediumPath{ mediumConfig.second.get< path>( "path")};
+      const auto mediumPath{ mediumConfig.second.get< std::filesystem::path>( "path")};
 
       mediaPaths.insert(
         { static_cast< uint8_t>( mediumNumber), mediumPath});

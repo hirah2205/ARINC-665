@@ -23,7 +23,8 @@
 #include <arinc665/utils/Arinc665Xml.hpp>
 
 #include <boost/program_options.hpp>
-#include <boost/filesystem/path.hpp>
+
+#include <filesystem>
 
 class Arinc665CompilerApplication
 {
@@ -48,8 +49,6 @@ class Arinc665CompilerApplication
     int operator()( int argc, char *argv[]);
 
   private:
-    using path = boost::filesystem::path;
-
     /**
      * @brief Returns the medium path.
      *
@@ -58,7 +57,7 @@ class Arinc665CompilerApplication
      *
      * @return The medium path.
      **/
-    path getMediumPath( uint8_t mediumNumber) const;
+    std::filesystem::path getMediumPath( uint8_t mediumNumber) const;
 
     /**
      * @brief Creates the directory for the given medium.
@@ -86,22 +85,22 @@ class Arinc665CompilerApplication
 
     void writeFile(
       uint8_t mediumNumber,
-      const path &path,
+      const std::filesystem::path &path,
       const Arinc665::File::RawFile &file);
 
     Arinc665::File::RawFile readFile(
       uint8_t mediumNumber,
-      const path &path);
+      const std::filesystem::path &path);
 
     //! Program Options description
     boost::program_options::options_description optionsDescription;
 
     //! Media Set XML file
-    path mediaSetXmlFile;
+    std::filesystem::path mediaSetXmlFile;
     //! Media Set source directory
-    path mediaSetSourceDirectory;
+    std::filesystem::path mediaSetSourceDirectory;
     //! Media Set destination directory
-    path mediaSetDestinationDirectory;
+    std::filesystem::path mediaSetDestinationDirectory;
     //!
     Arinc665::Utils::FileCreationPolicy createBatchFiles;
     Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles;

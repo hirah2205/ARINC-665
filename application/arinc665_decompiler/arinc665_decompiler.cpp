@@ -23,9 +23,9 @@
 #include <helper/Logger.hpp>
 
 #include <boost/program_options.hpp>
-#include <boost/filesystem/path.hpp>
 #include <boost/exception/all.hpp>
 
+#include <filesystem>
 #include <vector>
 #include <cstdlib>
 #include <memory>
@@ -59,10 +59,10 @@ int main( int argc, char * argv[]);
  **/
 static Arinc665::File::RawFile readFile(
   uint8_t mediumNumber,
-  const boost::filesystem::path &path);
+  const std::filesystem::path &path);
 
-static std::vector< boost::filesystem::path> mediaSourceDirectories;
-static boost::filesystem::path mediaSetXmlFile;
+static std::vector< std::filesystem::path> mediaSourceDirectories;
+static std::filesystem::path mediaSetXmlFile;
 
 int main( int argc, char * argv[])
 {
@@ -121,7 +121,7 @@ int main( int argc, char * argv[])
     // iterate over files
     for ( auto file : result->files())
     {
-      boost::filesystem::path filePath(
+      std::filesystem::path filePath(
         mediaSourceDirectories[file->medium()->mediumNumber() - 1]
           / file->path().relative_path());
 
@@ -166,7 +166,7 @@ int main( int argc, char * argv[])
 
 static Arinc665::File::RawFile readFile(
   const uint8_t mediumNumber,
-  const boost::filesystem::path &path)
+  const std::filesystem::path &path)
 {
   // check medium number
   if (mediumNumber > mediaSourceDirectories.size())
@@ -177,7 +177,7 @@ static Arinc665::File::RawFile readFile(
   auto filePath{ mediaSourceDirectories[ mediumNumber-1] / path.relative_path()};
 
   // check existence of file
-  if (!boost::filesystem::is_regular( filePath))
+  if (!std::filesystem::is_regular_file( filePath))
   {
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception() <<
@@ -185,7 +185,7 @@ static Arinc665::File::RawFile readFile(
         AdditionalInfo( "File not found"));
   }
 
-  Arinc665::File::RawFile data( boost::filesystem::file_size( filePath));
+  Arinc665::File::RawFile data( std::filesystem::file_size( filePath));
 
   // load file
   std::ifstream file(

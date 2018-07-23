@@ -16,8 +16,7 @@
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/media/Media.hpp>
 
-#include <boost/filesystem.hpp>
-
+#include <filesystem>
 #include <map>
 
 namespace Arinc665::Utils {
@@ -34,11 +33,9 @@ namespace Arinc665::Utils {
 class Arinc665Xml
 {
   public:
-    //! path types
-    using path = boost::filesystem::path;
     //! file path mapping type
     using FilePathMapping =
-      std::map< Media::ConstBaseFilePtr, path>;
+      std::map< Media::ConstBaseFilePtr, std::filesystem::path>;
     //! Load XML result type (Media Set Pointer and corresponding file path mapping)
     using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping>;
 
@@ -60,7 +57,7 @@ class Arinc665Xml
      * @throw Arinc665Exception
      *   If file cannot be loaded or is invalid.
      **/
-    virtual LoadXmlResult loadFromXml( const path &xmlFile) = 0;
+    virtual LoadXmlResult loadFromXml( const std::filesystem::path &xmlFile) = 0;
 
     /**
      * @brief Saves the given Media Set information to the given XML file.
@@ -76,7 +73,7 @@ class Arinc665Xml
     virtual void saveToXml(
       Media::ConstMediaSetPtr mediaSet,
       const FilePathMapping &filePathMapping,
-      const path &xmlFile) = 0;
+      const std::filesystem::path &xmlFile) = 0;
 
     //! Default descructor
     virtual ~Arinc665Xml() = default;

@@ -37,9 +37,6 @@ namespace Arinc665::Utils {
 class MediaSetImporterImpl
 {
   public:
-    //! Path type
-    using path = Arinc665Utils::path;
-
     /**
      * @brief Initialises the ARINC 665 media set importer
      *
@@ -151,7 +148,7 @@ class MediaSetImporterImpl
      **/
     ContainerEntityPtr checkCreateDirectory(
       uint8_t mediumIndex,
-      const path &directoryPath);
+      const std::filesystem::path &directoryPath);
 
     //! The read file handler
     Arinc665Utils::ReadFileHandler readFileHandler;

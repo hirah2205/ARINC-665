@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<schema 
+<schema
   targetNamespace="http://www.thomas-vogt.de/Arinc665MediaSet"
   elementFormDefault="qualified"
   xmlns="http://www.w3.org/2001/XMLSchema"
@@ -16,7 +16,7 @@
   <element name="Batches"  type="ams:BatchesType" />
   <element name="Batch"    type="ams:BatchType" />
   
-  <complexType name="MediaSetType">
+  <complexType name="MediaSetType" >
     <sequence>
       <element ref="ams:Medium"  minOccurs="1" maxOccurs="unbounded" />
       <element ref="ams:Loads"   minOccurs="1" maxOccurs="1" />
@@ -25,19 +25,19 @@
     <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
   </complexType>
 
-  <complexType name="MediumType">
+  <complexType name="MediumType" >
     <sequence>
-      <group ref="ams:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded"/> 
+      <group ref="ams:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded" /> 
     </sequence>
   </complexType>
 
-  <complexType name="BaseFileType">
+  <complexType name="BaseFileType" >
     <attribute name="Name"            type="ams:NameType"       use="required" />
     <attribute name="PartNumber"      type="ams:PartNumberType" use="optional" />
     <attribute name="SourcePath"      type="string"             use="optional" />
   </complexType>
 
-  <complexType name="FileType">
+  <complexType name="FileType" >
     <complexContent>
       <restriction base="ams:BaseFileType">
         <attribute name="Name"            type="ams:NameType"        use="required" />
@@ -47,9 +47,9 @@
     </complexContent>
   </complexType>
 
-  <complexType name="LoadFileType">
+  <complexType name="LoadFileType" >
     <complexContent>
-      <restriction base="ams:BaseFileType">
+      <restriction base="ams:BaseFileType" >
         <attribute name="Name"            type="ams:NameType"        use="required" />
         <attribute name="PartNumber"      type="ams:PartNumberType"  use="required" />
         <attribute name="SourcePath"      type="string"              use="optional" />
@@ -57,9 +57,9 @@
     </complexContent>
   </complexType>
   
-  <complexType name="BatchFileType">
+  <complexType name="BatchFileType" >
     <complexContent>
-      <restriction base="ams:BaseFileType">
+      <restriction base="ams:BaseFileType" >
         <attribute name="Name"            type="ams:NameType"        use="required" />
         <attribute name="PartNumber"      type="ams:PartNumberType"  use="required" />
         <attribute name="SourcePath"      type="string"              use="optional" />
@@ -97,73 +97,73 @@
     <attribute name="ThwId" type="ams:TargetHardwareIdType" use="required" />
   </complexType>
 
-  <complexType name="PositionType">
+  <complexType name="PositionType" >
     <attribute name="Pos" type="ams:PosType" use="required" />
   </complexType>
 
-  <complexType name="FileRefernceType">
+  <complexType name="FileRefernceType" >
     <attribute name="NameRef" type="IDREF" use="required" />
   </complexType>
 
 
-  <complexType name="BatchesType">
+  <complexType name="BatchesType" >
     <sequence>
       <element ref="ams:Batch" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
   </complexType>
 
-  <complexType name="BatchType">
+  <complexType name="BatchType" >
     <sequence>
-      <element name="Target" type="ams:BatchTargetType" minOccurs="1" maxOccurs="unbounded"/>
+      <element name="Target" type="ams:BatchTargetType" minOccurs="1" maxOccurs="unbounded" />
     </sequence>
     <attribute name="NameRef" type="IDREF"          use="required" />
     <attribute name="Comment" type="ams:StringType" use="optional" />
   </complexType>
 
-  <complexType name="BatchTargetType">
+  <complexType name="BatchTargetType" >
       <sequence>
       <element name="Load" type="ams:LoadRefernceType" minOccurs="1" maxOccurs="unbounded" />
     </sequence>
     <attribute name="ThwIdPos" type="ams:TargetHardwareIdPosType" use="required" />
   </complexType>
   
-  <complexType name="LoadRefernceType">
+  <complexType name="LoadRefernceType" >
     <attribute name="NameRef" type="IDREF" use="required" />
   </complexType>
 
-  <simpleType name="PartNumberType">
+  <simpleType name="PartNumberType" >
     <restriction base="string"></restriction>
   </simpleType>
 
-  <simpleType name="StringType">
+  <simpleType name="StringType" >
     <restriction base="string"></restriction>
   </simpleType>
 
-  <simpleType name="NameType">
-    <restriction base="ID">
+  <simpleType name="NameType" >
+    <restriction base="ID" >
     </restriction>
   </simpleType>
 
-  <simpleType name="TargetHardwareIdType">
+  <simpleType name="TargetHardwareIdType" >
     <restriction base="string"></restriction>
   </simpleType>
 
-  <simpleType name="PosType">
+  <simpleType name="PosType" >
     <restriction base="string"></restriction>
   </simpleType>
 
-  <simpleType name="TargetHardwareIdPosType">
+  <simpleType name="TargetHardwareIdPosType" >
     <restriction base="string"></restriction>
   </simpleType>
 
-  <simpleType name="HexValueType">
-    <restriction base="string">
+  <simpleType name="HexValueType" >
+    <restriction base="string" >
       <minLength value="3"></minLength>
       <pattern value="0x([0-9a-fA-F])+"></pattern>
     </restriction>
   </simpleType>
 
-  <group name="DirectoryFileGroup">
+  <group name="DirectoryFileGroup" >
     <annotation>
       <documentation>Contents of medias and directories</documentation>
     </annotation>

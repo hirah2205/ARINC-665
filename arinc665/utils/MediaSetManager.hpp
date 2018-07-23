@@ -18,8 +18,7 @@
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/MediaSet.hpp>
 
-#include <boost/filesystem/path.hpp>
-
+#include <filesystem>
 #include <list>
 #include <string>
 #include <functional>
@@ -39,12 +38,11 @@ namespace Arinc665::Utils {
 class MediaSetManager
 {
   public:
-    //! Path type
-    using path = boost::filesystem::path;
     //! Media sets type (list)
     using MediaSets = std::list< Media::MediaSetPtr>;
     //! Handler which returns the path to the given medium number
-    using MediumPathHandler = std::function< path( Media::ConstMediumPtr medium)>;
+    using MediumPathHandler =
+      std::function< std::filesystem::path( Media::ConstMediumPtr medium)>;
 
     //! Default destructor
     virtual ~MediaSetManager() noexcept = default;
@@ -136,7 +134,7 @@ class MediaSetManager
      *
      * @return The path to the given file.
      **/
-    virtual path filePath( Media::ConstBaseFilePtr file) const = 0;
+    virtual std::filesystem::path filePath( Media::ConstBaseFilePtr file) const = 0;
 };
 
 }

@@ -21,7 +21,7 @@
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/Batch.hpp>
 
-#include <boost/filesystem/path.hpp>
+#include <filesystem>
 
 namespace Arinc665::Media {
 
@@ -38,9 +38,6 @@ class ContainerEntity :
   public std::enable_shared_from_this< ContainerEntity>
 {
   public:
-    //! Path type
-    using fpath = boost::filesystem::path;
-
     //! Default constructor
     ContainerEntity() = default;
 
@@ -49,7 +46,7 @@ class ContainerEntity :
      *
      * @return The path up to the medium root.
      **/
-    virtual fpath path() const = 0;
+    virtual std::filesystem::path path() const = 0;
 
     /**
      * @brief Indicates, if the container has child elements.

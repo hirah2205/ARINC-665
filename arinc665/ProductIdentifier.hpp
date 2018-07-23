@@ -24,9 +24,6 @@ namespace Arinc665 {
 class ProductIdentifier
 {
   public:
-    //! String type
-    using string = std::string;
-
     //! Length of product identifier
     static constexpr unsigned int Length = 8U;
 
@@ -39,14 +36,17 @@ class ProductIdentifier
      * @throw Arinc665Exception
      *   If the string does not represents an valid product identifier.
      **/
-    explicit ProductIdentifier( const string &productIdentifier);
+    explicit ProductIdentifier( const std::string &productIdentifier);
+
+    //! @copydoc ProductIdentifier(const std::string&)
+    explicit ProductIdentifier( std::string &&productIdentifier);
 
     /**
      * @brief Returns the product identifier as string.
      *
      * @return The product identifier
      **/
-    string get() const;
+    const std::string& get() const;
 
     /**
      * @brief Sets the product identifier.
@@ -54,11 +54,16 @@ class ProductIdentifier
      * @param[in] productIdentifier
      *   The product identifier.
      **/
-    void set( const string& productIdentifier);
+    void set( const std::string &productIdentifier);
+
+    //! @copydoc set(const std::string&)
+    void set( std::string &&productIdentifier);
 
   private:
+    void check( const std::string &productIdentifier) const;
+
     //! The product identifier.
-    string productIdentifier;
+    std::string productIdentifier;
 };
 
 }

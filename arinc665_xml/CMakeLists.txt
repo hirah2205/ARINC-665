@@ -8,10 +8,10 @@ cmake_minimum_required( VERSION 3.11)
 
 include( GNUInstallDirs)
 
-install( 
+install(
   FILES 
   BhmAsf.xsd
   DmgsAsf.xml
-  
+
   DESTINATION
-  ${CMAKE_INSTALL_DATADIR}/bhm_xml)
+    ${CMAKE_INSTALL_DATADIR}/bhm_xml)

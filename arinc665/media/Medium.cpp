@@ -46,7 +46,7 @@ std::string Medium::partNumber() const
   return mediaSetV.lock()->partNumber();
 }
 
-Medium::fpath Medium::path() const
+std::filesystem::path Medium::path() const
 {
   return "/";
 }

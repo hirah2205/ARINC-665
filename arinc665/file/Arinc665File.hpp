@@ -15,8 +15,7 @@
 
 #include <arinc665/file/File.hpp>
 
-#include <boost/filesystem/path.hpp>
-
+#include <filesystem>
 #include <cstdint>
 #include <string>
 
@@ -28,8 +27,6 @@ namespace Arinc665::File {
 class Arinc665File
 {
   public:
-    //! Path type
-    using path = boost::filesystem::path;
     //! String list type
     using StringList = std::list< std::string>;
 
@@ -105,7 +102,7 @@ class Arinc665File
      *
      * @return The converted path.
      **/
-    static std::string encodePath( const path &path);
+    static std::string encodePath( const std::filesystem::path &path);
 
     /**
      * @brief Decode the file length information from the given file.
@@ -233,7 +230,7 @@ class Arinc665File
      * @retval FileType::Invalid
      *   If [filename] is not a ARINC 665 file type.
      **/
-    static FileType fileType( const path &filename);
+    static FileType fileType( const std::filesystem::path &filename);
 
     //! Default destructor
     virtual ~Arinc665File() noexcept = default;

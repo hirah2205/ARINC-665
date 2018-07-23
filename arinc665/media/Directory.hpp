@@ -56,7 +56,7 @@ class Directory : public ContainerEntity
     std::string partNumber() const final;
 
     //! @copydoc ContainerEntity::path() const
-    virtual fpath path() const final;
+    virtual std::filesystem::path path() const final;
 
   private:
     //! Directory name

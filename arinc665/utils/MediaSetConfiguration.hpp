@@ -15,9 +15,9 @@
 
 #include <arinc665/utils/Utils.hpp>
 
-#include <boost/filesystem/path.hpp>
 #include <boost/property_tree/ptree_fwd.hpp>
 
+#include <filesystem>
 #include <map>
 
 namespace Arinc665::Utils {
@@ -30,11 +30,9 @@ class MediaSetConfiguration
   public:
     //! property tree type
     using ptree = boost::property_tree::ptree;
-    //! path type
-    using path = boost::filesystem::path;
 
     //! media-to-path mapping (medium number -> path)
-    using MediaPaths = std::map< uint8_t, path>;
+    using MediaPaths = std::map< uint8_t, std::filesystem::path>;
     //! Mapping of media sets (Media set part number -> media paths)
     using MediaSets = std::map< std::string, MediaPaths>;
 
@@ -66,7 +64,7 @@ class MediaSetConfiguration
     ptree toProperties() const;
 
     //! Base directory for all media sets stored.
-    path mediaSetBase;
+    std::filesystem::path mediaSetBase;
     //! The list of media sets (name-path-mapping)
     MediaSets mediaSets;
 };

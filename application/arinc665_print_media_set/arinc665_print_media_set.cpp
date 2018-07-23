@@ -25,17 +25,15 @@
 #include <helper/Logger.hpp>
 
 #include <boost/exception/all.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 
 using Arinc665::Media::MediaSetPtr;
 
-using boost::filesystem::path;
-
-static MediaSetPtr loadMediaSet( const boost::filesystem::path &mediaSetDirectory);
+static MediaSetPtr loadMediaSet( const std::filesystem::path &mediaSetDirectory);
 
 static void printMediaSet( MediaSetPtr &mediaSet);
 
@@ -50,7 +48,7 @@ int main( int argc, char* argv[])
 
   try
   {
-    boost::filesystem::path loadDir( argv[1]);
+    std::filesystem::path loadDir{ argv[1]};
 
     std::cout << std::endl << "Load Media Set " << std::endl;
     MediaSetPtr mediaSet( loadMediaSet( loadDir));
@@ -78,17 +76,17 @@ int main( int argc, char* argv[])
 }
 
 
-static MediaSetPtr loadMediaSet( const path &mediaSetDirectory)
+static MediaSetPtr loadMediaSet( const std::filesystem::path &mediaSetDirectory)
 {
   auto importer( Arinc665::Utils::Arinc665Utils::createArinc665Importer(
     // read file handler
     [&mediaSetDirectory](
       const uint8_t /*mediumNumber*/,
-      const boost::filesystem::path &path)->Arinc665::File::RawFile
+      const std::filesystem::path &path)->Arinc665::File::RawFile
     {
       auto filePath( mediaSetDirectory / path.relative_path());
 
-      if (!boost::filesystem::is_regular( filePath))
+      if (!std::filesystem::is_regular_file( filePath))
       {
         BOOST_THROW_EXCEPTION(
           Arinc665::Arinc665Exception() <<
@@ -96,7 +94,7 @@ static MediaSetPtr loadMediaSet( const path &mediaSetDirectory)
             AdditionalInfo( "File not found"));
       }
 
-      Arinc665::File::RawFile data( boost::filesystem::file_size( filePath));
+      Arinc665::File::RawFile data( std::filesystem::file_size( filePath));
 
       std::ifstream file(
         filePath.string().c_str(),

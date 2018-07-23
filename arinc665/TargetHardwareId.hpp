@@ -24,23 +24,23 @@ namespace Arinc665 {
 class TargetHardwareId
 {
   public:
-    //! String type
-    using string = std::string;
-
     /**
      * @brief Constructs a target hardware ID with the given string.
      *
      * @param[in] targetHardwareId
      *   The target hardware ID as string.
      **/
-    TargetHardwareId( const string &targetHardwareId);
+    TargetHardwareId( const std::string &targetHardwareId);
+
+    //! copydoc TargetHardwareId(const std::string&)
+    TargetHardwareId( std::string &&targetHardwareId);
 
     /**
      * @brief Returns the target hardware ID as string.
      *
      * @return The target hardware ID as string.
      **/
-    const string& get() const noexcept;
+    const std::string& get() const noexcept;
 
     /**
      * @brief Sets the target hardware ID to the given string.
@@ -48,11 +48,13 @@ class TargetHardwareId
      * @param[in] targetHardwareId
      *   The target hardware ID as string.
      **/
-    void set( const string &targetHardwareId);
+    void set( const std::string &targetHardwareId);
 
+    //! void set(const std::string&)
+    void set( std::string &&targetHardwareId);
   private:
     //! The target hardware ID
-    string targetHardwareId;
+    std::string targetHardwareId;
 };
 }
 

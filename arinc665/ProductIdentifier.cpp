@@ -16,19 +16,38 @@
 
 namespace Arinc665 {
 
-ProductIdentifier::ProductIdentifier( const string &productIdentifier)
+ProductIdentifier::ProductIdentifier( const std::string &productIdentifier)
 {
-  //! call set routine to perform automatic length check
-  //! @throw Arinc665Exception (@sa ProductIdentifier::set())
+  // call set routine to perform automatic length check
   set( productIdentifier);
 }
 
-ProductIdentifier::string ProductIdentifier::get() const
+ProductIdentifier::ProductIdentifier( std::string &&productIdentifier)
+{
+  // call set routine to perform automatic length check
+  set( std::move( productIdentifier));
+}
+
+const std::string& ProductIdentifier::get() const
 {
   return productIdentifier;
 }
 
-void ProductIdentifier::set( const string& productIdentifier)
+void ProductIdentifier::set( const std::string &productIdentifier)
+{
+  check( productIdentifier);
+
+  this->productIdentifier = productIdentifier;
+}
+
+void ProductIdentifier::set( std::string &&productIdentifier)
+{
+  check( productIdentifier);
+
+  this->productIdentifier = std::move( productIdentifier);
+}
+
+void ProductIdentifier::check( const std::string &productIdentifier) const
 {
   // check length of string
   if ( productIdentifier.size() != Length)
@@ -37,8 +56,6 @@ void ProductIdentifier::set( const string& productIdentifier)
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << AdditionalInfo( "length of product identifier string invalid"));
   }
-
-  this->productIdentifier = productIdentifier;
 }
 
 }

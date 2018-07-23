@@ -45,7 +45,7 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
      * @throw Arinc665::Arinc665Exception
      *   When Loading of XML fails.
      **/
-    LoadXmlResult loadFromXml( const path &xmlFile) final;
+    LoadXmlResult loadFromXml( const std::filesystem::path &xmlFile) final;
 
     /**
      * @brief Saves the given Media Set information to the given XML file.
@@ -64,7 +64,7 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
     void saveToXml(
       Media::ConstMediaSetPtr mediaSet,
       const FilePathMapping &filePathMapping,
-      const path &xmlFile) final;
+      const std::filesystem::path &xmlFile) final;
 
   private:
     /**

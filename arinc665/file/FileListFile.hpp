@@ -32,7 +32,8 @@ class FileListFile: public ListFile
     //! Maps media <sequence number, file name> to File Info
     using FileInfoMap = std::map< std::pair< uint8_t, std::string>, FileInfo>;
     //! Maps media <sequence number, file path> to File Info
-    using FileInfoPathMap= std::map< std::pair< uint8_t, path>, FileInfo>;
+    using FileInfoPathMap =
+      std::map< std::pair< uint8_t, std::filesystem::path>, FileInfo>;
     //! User defined data type
     using UserDefinedData = std::vector< uint8_t>;
 

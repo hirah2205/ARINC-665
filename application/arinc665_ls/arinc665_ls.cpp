@@ -27,28 +27,28 @@
 #include <helper/Logger.hpp>
 
 #include <boost/exception/all.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 #include <boost/program_options.hpp>
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 
 int main( int argc, char* argv[]);
 
-static void list_luh( const boost::filesystem::path &luhFile);
+static void list_luh( const std::filesystem::path &luhFile);
 
-static void list_loads_lum( const boost::filesystem::path &loadsLum);
+static void list_loads_lum( const std::filesystem::path &loadsLum);
 
-static void list_files_lum( const boost::filesystem::path &filesLum);
+static void list_files_lum( const std::filesystem::path &filesLum);
 
-static void list_files( const boost::filesystem::path &loadDir);
+static void list_files( const std::filesystem::path &loadDir);
 
 int main( int argc, char* argv[])
 {
   boost::program_options::options_description options( "ARINC 665 List options");
 
-  boost::filesystem::path directory;
+  std::filesystem::path directory;
 
   options.add_options()
   (
@@ -105,13 +105,13 @@ int main( int argc, char* argv[])
   return EXIT_SUCCESS;
 }
 
-static void list_luh( const boost::filesystem::path &luhFile)
+static void list_luh( const std::filesystem::path &luhFile)
 {
   try
   {
-    std::cout << "File size is: " << std::dec << boost::filesystem::file_size( luhFile) << std::endl;
+    std::cout << "File size is: " << std::dec << std::filesystem::file_size( luhFile) << std::endl;
 
-    std::vector< uint8_t> data( boost::filesystem::file_size( luhFile));
+    std::vector< uint8_t> data( std::filesystem::file_size( luhFile));
 
     std::ifstream file(
       luhFile.string().c_str(),
@@ -170,13 +170,13 @@ static void list_luh( const boost::filesystem::path &luhFile)
   }
 }
 
-static void list_loads_lum( const boost::filesystem::path &loadsLum)
+static void list_loads_lum( const std::filesystem::path &loadsLum)
 {
   try
   {
-    std::cout << "File size is: " << std::dec << boost::filesystem::file_size( loadsLum) << std::endl;
+    std::cout << "File size is: " << std::dec << std::filesystem::file_size( loadsLum) << std::endl;
 
-    std::vector< uint8_t> data( boost::filesystem::file_size( loadsLum));
+    std::vector< uint8_t> data( std::filesystem::file_size( loadsLum));
 
     std::ifstream file(
       loadsLum.string().c_str(),
@@ -227,13 +227,13 @@ static void list_loads_lum( const boost::filesystem::path &loadsLum)
   }
 }
 
-static void list_files_lum( const boost::filesystem::path &filesLum)
+static void list_files_lum( const std::filesystem::path &filesLum)
 {
   try
   {
-    std::cout << "File size is: " << std::dec << boost::filesystem::file_size( filesLum) << std::endl;
+    std::cout << "File size is: " << std::dec << std::filesystem::file_size( filesLum) << std::endl;
 
-    std::vector< uint8_t> data( boost::filesystem::file_size( filesLum));
+    std::vector< uint8_t> data( std::filesystem::file_size( filesLum));
 
     std::ifstream file(
       filesLum.string().c_str(),
@@ -280,14 +280,14 @@ static void list_files_lum( const boost::filesystem::path &filesLum)
   }
 }
 
-static void list_files( const boost::filesystem::path &loadDir)
+static void list_files( const std::filesystem::path &loadDir)
 {
-  for ( boost::filesystem::directory_iterator itr( loadDir);
-    itr != boost::filesystem::directory_iterator(); ++itr)
+  for ( std::filesystem::directory_iterator itr( loadDir);
+    itr != std::filesystem::directory_iterator(); ++itr)
   {
     std::cout << " * " << itr->path().filename() << " - ";
 
-    if ( boost::filesystem::is_directory( itr->path()))
+    if ( std::filesystem::is_directory( itr->path()))
     {
       std::cout << "Directory\n";
       list_files( itr->path());

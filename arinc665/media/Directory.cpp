@@ -71,7 +71,7 @@ std::string Directory::partNumber() const
   return parentPtr->partNumber();
 }
 
-Directory::fpath Directory::path() const
+std::filesystem::path Directory::path() const
 {
   auto parentPtr( parent());
 

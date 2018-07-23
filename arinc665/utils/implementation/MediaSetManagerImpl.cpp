@@ -34,7 +34,9 @@ MediaSetManagerImpl::MediaSetManagerImpl(
     // import media set
     auto importer( Arinc665Utils::createArinc665Importer(
       // the read file handler
-      [&mediaSet,&config]( const uint8_t mediumNumber, const path &path)->File::RawFile
+      [&mediaSet,&config](
+        const uint8_t mediumNumber,
+        const std::filesystem::path &path)->File::RawFile
       {
         auto medium{ mediaSet.second.find( mediumNumber)};
 
@@ -55,7 +57,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 
         // read file
 
-        File::RawFile data( boost::filesystem::file_size( filePath));
+        File::RawFile data( std::filesystem::file_size( filePath));
 
         std::ifstream file(
           filePath.string().c_str(),
@@ -132,11 +134,14 @@ void MediaSetManagerImpl::add(
   for ( auto medium : mediaSet->media())
   {
     const auto sourcePath{ mediumPathHandler( medium.second)};
-    const path destinationPath{
+    const auto destinationPath{
       config.mediaSetBase / mediaSet->partNumber() /
         (boost::format( "MEDIUM_%03u") % (unsigned int)medium.first).str() };
 
-    boost::filesystem::copy_directory( sourcePath, destinationPath);
+    std::filesystem::copy(
+      sourcePath,
+      destinationPath,
+      std::filesystem::copy_options::recursive);
   }
 }
 
@@ -171,7 +176,7 @@ Media::ConstLoads MediaSetManagerImpl::load( const std::string &filename) const
   return loads;
 }
 
-MediaSetManagerImpl::path MediaSetManagerImpl::filePath(
+std::filesystem::path MediaSetManagerImpl::filePath(
   Media::ConstBaseFilePtr file) const
 {
   auto mediumIt( mediaPaths.find( file->parent()->medium()));
