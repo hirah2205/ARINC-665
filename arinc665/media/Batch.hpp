@@ -39,6 +39,7 @@ class Batch: public BaseFile
      **/
     Batch( ContainerEntityPtr parent, const std::string &name);
 
+    //! @copydoc Batch(ContainerEntityPtr,const std::string&)
     Batch( ContainerEntityPtr parent, std::string &&name);
 
     /**

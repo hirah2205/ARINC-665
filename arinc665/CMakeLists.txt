@@ -13,7 +13,7 @@ find_package(
 
 add_library(
   arinc665
- 
+
   Arinc665.hpp
   Arinc665.cpp
   Arinc665Crc.hpp
@@ -90,7 +90,7 @@ add_library(
   utils/MediaSetConfiguration.cpp
   utils/MediaSetManager.hpp
   utils/MediaSetManager.cpp
-  
+
   utils/implementation/Arinc665XmlPugiXmlImpl.hpp
   utils/implementation/Arinc665XmlPugiXmlImpl.cpp
   utils/implementation/MediaSetExporterImpl.hpp
@@ -102,13 +102,13 @@ add_library(
 
 target_compile_options(
   arinc665
-  
+
   PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:-W4>
-    
+
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>
-    
+
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra>)
 
@@ -121,30 +121,30 @@ target_link_libraries( arinc665 helper pugixml Boost::filesystem)
 target_compile_features( arinc665 PUBLIC cxx_std_17)
 
 
-add_library( 
-  arinc665_test 
+add_library(
+  arinc665_test
   OBJECT
-  
+
   Arinc665CrcTest.cpp
   CheckCodeTest.cpp
   ManufacturerCodeTest.cpp
   PartNumberTest.cpp
   ProductIdentifierTest.cpp
   TargetHardwareIdTest.cpp
-  
+
   file/LoadFileInfoTest.cpp
-  
+
   media/MediaSetTest.cpp)
 
 target_compile_options( 
   arinc665_test
-  
+
   PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:-W4>
-    
+
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>
-    
+
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra>)
 
@@ -160,7 +160,7 @@ include( GNUInstallDirs)
 install(
   TARGETS arinc665
   COMPONENT runtime
-  EXPORT arinc665-config 
+  EXPORT arinc665-config
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
@@ -174,7 +174,7 @@ install(
     PATTERN "*Test.*" EXCLUDE
     PATTERN "implementation" EXCLUDE)
 
-install( 
-  EXPORT arinc665-config 
+install(
+  EXPORT arinc665-config
   COMPONENT development
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
