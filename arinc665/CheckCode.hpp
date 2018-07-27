@@ -51,7 +51,7 @@ class CheckCode
     explicit CheckCode( const std::string &checkCode);
 
     /**
-     * @brief Calculates the checkcode from the given manufacturer code and
+     * @brief Calculates the check code from the given manufacturer code and
      *   product identifier.
      *
      * @param[in] manufacturerCode
