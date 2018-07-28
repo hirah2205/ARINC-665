@@ -15,3 +15,4 @@ add_subdirectory( arinc665)
 add_subdirectory( arinc665_qt)
 
 add_subdirectory( application)
+add_subdirectory( test)

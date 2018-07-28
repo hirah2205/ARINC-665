@@ -28,9 +28,6 @@ namespace Arinc665::Utils {
 class MediaSetConfiguration
 {
   public:
-    //! property tree type
-    using ptree = boost::property_tree::ptree;
-
     //! media-to-path mapping (medium number -> path)
     using MediaPaths = std::map< uint8_t, std::filesystem::path>;
     //! Mapping of media sets (Media set part number -> media paths)
@@ -45,7 +42,7 @@ class MediaSetConfiguration
      * @param[in] config
      *   The stored configuration.
      **/
-    MediaSetConfiguration( const ptree &config);
+    MediaSetConfiguration( const boost::property_tree::ptree &config);
 
     /**
      * @brief Loads the media set configuration form the given property tree.
@@ -53,7 +50,7 @@ class MediaSetConfiguration
      * @param[in] config
      *   The ptree to load the config from
      **/
-    void load( const ptree &config);
+    void load( const boost::property_tree::ptree &config);
 
     /**
      * @brief Converts the configuration values to a
@@ -61,7 +58,7 @@ class MediaSetConfiguration
      *
      * @return The boost::property_tree::ptree.
      **/
-    ptree toProperties() const;
+    boost::property_tree::ptree toProperties() const;
 
     //! Base directory for all media sets stored.
     std::filesystem::path mediaSetBase;

@@ -22,6 +22,7 @@
 #include <arinc665/file/LoadListFile.hpp>
 #include <arinc665/file/BatchListFile.hpp>
 #include <arinc665/file/LoadHeaderFile.hpp>
+#include <arinc665/file/BatchFile.hpp>
 
 #include <helper/Dump.hpp>
 #include <helper/Logger.hpp>
@@ -34,14 +35,57 @@
 #include <fstream>
 #include <iostream>
 
+/**
+ * @brief Entry point of application.
+ *
+ * @param[in] argc
+ *   Argument count.
+ * @param[in] argv
+ *   Argument values.
+ *
+ * @return Application exit status.
+ **/
 int main( int argc, char* argv[]);
 
+/**
+ * @brief Loads the load upload header file and decodes its content.
+ *
+ * @param[in] luhFile
+ *   The load upload header.
+ **/
+static void list_lub( const std::filesystem::path &lubFile);
+
+/**
+ * @brief Loads the load upload header file and decodes its content.
+ *
+ * @param[in] luhFile
+ *   The load upload header.
+ **/
 static void list_luh( const std::filesystem::path &luhFile);
 
+/**
+ * @brief Loads the load list file and decodes its content.
+ *
+ * @param[in] loadsLum
+ *   The load list file.
+ **/
 static void list_loads_lum( const std::filesystem::path &loadsLum);
 
+/**
+ * @brief Loads the file list file and decodes its content.
+ *
+ * @param[in] filesLum
+ *   The file list file.
+ **/
 static void list_files_lum( const std::filesystem::path &filesLum);
 
+/**
+ * @brief Iterates over every file and sub-directory and tries to decodes its
+ *   content.
+ *
+ * @param[in] loadDir
+ *   The directory to decode.
+ **/
 static void list_files( const std::filesystem::path &loadDir);
 
 int main( int argc, char* argv[])
@@ -79,6 +123,7 @@ int main( int argc, char* argv[])
     boost::program_options::notify( vm);
 
     std::cout << "List files" << std::endl;
+
     list_files( directory);
   }
   catch ( boost::program_options::error &e)
@@ -105,11 +150,65 @@ int main( int argc, char* argv[])
   return EXIT_SUCCESS;
 }
 
+static void list_lub( const std::filesystem::path &lubFile)
+{
+  try
+  {
+    std::cout
+      << "File size is: "
+      << std::dec << std::filesystem::file_size( lubFile) << "\n";
+
+    std::vector< uint8_t> data( std::filesystem::file_size( lubFile));
+
+    std::ifstream file(
+      lubFile.string().c_str(),
+      std::ifstream::binary | std::ifstream::in);
+
+    if (!file.is_open())
+    {
+      std::cout << "Error opening file: " << lubFile.string() << "\n";
+      return;
+    }
+
+    file.read( (char*)&data.at(0), data.size());
+
+    Arinc665::File::BatchFile batch( data);
+
+    std::cout << "part number: "<< batch.partNumber() << "\n";
+    std::cout << "comment: "<< batch.comment() << "\n";
+
+    for ( auto const &targetHardware : batch.targetHardwares())
+    {
+      std::cout << "target HW: " << targetHardware.targetHardwareId() << "\n";
+      for (auto const &load : targetHardware.loads())
+      {
+        std::cout << "  load: " << load.headerFilename() << " - " << load.partNumber() << "\n";
+      }
+    }
+
+    std::cout << "batch file crc " << std::hex << batch.crc() << std::endl << std::endl;
+  }
+  catch (boost::exception &e)
+  {
+    std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
+  }
+  catch ( std::exception &e)
+  {
+    std::cout << "std exception: " << e.what() << std::endl;
+  }
+  catch (...)
+  {
+    std::cout << "unknown exception occurred" << std::endl;
+  }
+}
+
 static void list_luh( const std::filesystem::path &luhFile)
 {
   try
   {
-    std::cout << "File size is: " << std::dec << std::filesystem::file_size( luhFile) << std::endl;
+    std::cout
+      << "File size is: "
+      << std::dec << std::filesystem::file_size( luhFile) << std::endl;
 
     std::vector< uint8_t> data( std::filesystem::file_size( luhFile));
 
@@ -298,6 +397,7 @@ static void list_files( const std::filesystem::path &loadDir)
       {
         case Arinc665::FileType::BatchFile:
           std::cout << "ARINC 665 BATCH file\n";
+          list_lub( itr->path());
           break;
 
         case Arinc665::FileType::LoadUploadHeader:

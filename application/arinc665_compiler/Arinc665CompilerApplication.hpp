@@ -1,7 +1,3 @@
-/*
- * $Date: 2017-05-24 23:37:46 +0200 (Mi, 24. Mai 2017) $
- * $Revision: 2059 $
- */
 /**
  * @file
  * @copyright
@@ -57,7 +53,7 @@ class Arinc665CompilerApplication
      *
      * @return The medium path.
      **/
-    std::filesystem::path getMediumPath( uint8_t mediumNumber) const;
+    std::filesystem::path mediumPath( uint8_t mediumNumber) const;
 
     /**
      * @brief Creates the directory for the given medium.
@@ -101,10 +97,12 @@ class Arinc665CompilerApplication
     std::filesystem::path mediaSetSourceDirectory;
     //! Media Set destination directory
     std::filesystem::path mediaSetDestinationDirectory;
-    //!
+    //! Create batch file policy
     Arinc665::Utils::FileCreationPolicy createBatchFiles;
+    //! Create Load Header file policy
     Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles;
-    Arinc665::Utils::Arinc665XmlPtr xml;
+    //! The ARINC 665 XML instance.
+   Arinc665::Utils::Arinc665XmlPtr xml;
 };
 
 #endif

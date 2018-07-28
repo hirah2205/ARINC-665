@@ -1,7 +1,3 @@
-/*
- * $Date: 2017-05-24 23:37:46 +0200 (Mi, 24. Mai 2017) $
- * $Revision: 2059 $
- */
 /**
  * @file
  * @copyright
@@ -87,9 +83,10 @@ Arinc665CompilerApplication::Arinc665CompilerApplication() :
 int Arinc665CompilerApplication::operator()( int argc, char *argv[])
 {
   BOOST_LOG_FUNCTION();
+
   try
   {
-    std::cout << "ARINC 665 Media Set Compiler" << std::endl;
+    std::cout << "ARINC 665 Media Set Compiler\n";
 
     boost::program_options::variables_map options;
 
@@ -182,7 +179,7 @@ int Arinc665CompilerApplication::operator()( int argc, char *argv[])
   return EXIT_SUCCESS;
 }
 
-std::filesystem::path Arinc665CompilerApplication::getMediumPath(
+std::filesystem::path Arinc665CompilerApplication::mediumPath(
   const uint8_t mediumNumber) const
 {
   return mediaSetDestinationDirectory
@@ -194,12 +191,12 @@ void Arinc665CompilerApplication::createMedium(
 {
   BOOST_LOG_FUNCTION();
 
-  auto mediumPath( getMediumPath( medium->mediumNumber()));
+  auto mPath{ mediumPath( medium->mediumNumber())};
 
   BOOST_LOG_TRIVIAL( severity_level::info) << "Create medium directory " <<
-    mediumPath;
+    mPath;
 
-  std::filesystem::create_directory( mediumPath);
+  std::filesystem::create_directory( mPath);
 }
 
 void Arinc665CompilerApplication::createDirectory(
@@ -207,8 +204,9 @@ void Arinc665CompilerApplication::createDirectory(
 {
   BOOST_LOG_FUNCTION();
 
-  auto directoryPath(
-    getMediumPath( directory->medium()->mediumNumber()) / directory->path());
+  auto directoryPath{
+    mediumPath( directory->medium()->mediumNumber()) /
+      directory->path().relative_path()};
 
   BOOST_LOG_TRIVIAL( severity_level::info) << "Create directory " <<
     directoryPath;
@@ -233,8 +231,9 @@ bool Arinc665CompilerApplication::checkFileExistance(
     return false;
   }
 
-  auto filePath(
-    getMediumPath( file->medium()->mediumNumber()) / file->path());
+  auto filePath{
+    mediumPath( file->medium()->mediumNumber()) /
+      file->path().relative_path()};
 
   return std::filesystem::is_regular_file( filePath);
 }
@@ -255,8 +254,9 @@ void Arinc665CompilerApplication::createFile(
       boost::errinfo_file_name( file->name()));
   }
 
-  auto filePath(
-    getMediumPath( file->medium()->mediumNumber()) / file->path());
+  auto filePath{
+    mediumPath( file->medium()->mediumNumber()) /
+      file->path().relative_path()};
 
   BOOST_LOG_TRIVIAL( severity_level::info) << "Copy file " << filePath;
 
@@ -273,7 +273,7 @@ void Arinc665CompilerApplication::writeFile(
 {
   BOOST_LOG_FUNCTION();
 
-  auto filePath( getMediumPath( mediumNumber) / path.relative_path());
+  auto filePath{ mediumPath( mediumNumber) / path.relative_path()};
 
   BOOST_LOG_TRIVIAL( severity_level::info) << "Write file " << filePath;
 
@@ -310,7 +310,7 @@ Arinc665::File::RawFile Arinc665CompilerApplication::readFile(
   BOOST_LOG_FUNCTION();
 
   // check medium number
-  auto filePath( getMediumPath( mediumNumber) / path.relative_path());
+  auto filePath{ mediumPath( mediumNumber) / path.relative_path()};
 
   BOOST_LOG_TRIVIAL( severity_level::info) << "Read file " << filePath;
 

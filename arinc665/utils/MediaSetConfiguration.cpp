@@ -19,12 +19,13 @@
 
 namespace Arinc665::Utils {
 
-MediaSetConfiguration::MediaSetConfiguration( const ptree &config)
+MediaSetConfiguration::MediaSetConfiguration(
+  const boost::property_tree::ptree &config)
 {
   load( config);
 }
 
-void MediaSetConfiguration::load( const ptree &config)
+void MediaSetConfiguration::load( const boost::property_tree::ptree &config)
 {
   BOOST_LOG_FUNCTION();
 

@@ -122,7 +122,7 @@ int main( int argc, char * argv[])
     for ( auto file : result->files())
     {
       std::filesystem::path filePath(
-        mediaSourceDirectories[file->medium()->mediumNumber() - 1]
+        mediaSourceDirectories[ file->medium()->mediumNumber() - 1]
           / file->path().relative_path());
 
       fileMapping.insert( { file, filePath });

@@ -1,7 +1,3 @@
-/*
- * $Date: 2017-01-13 21:34:49 +0100 (Fr, 13. Jan 2017) $
- * $Revision: 1508 $
- */
 /**
  * @file
  * @copyright
@@ -14,5 +10,6 @@
  * @brief ARINC 665 unit tests execution.
  **/
 
+//! ARINC 665 Unit Test module
 #define BOOST_TEST_MODULE ARINC 665 Unit Tests
 #include <boost/test/included/unit_test.hpp>

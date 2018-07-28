@@ -5,17 +5,17 @@
   elementFormDefault="qualified"
   xmlns="http://www.w3.org/2001/XMLSchema"
   xmlns:ams="http://www.thomas-vogt.de/Arinc665MediaSet" >
-  
+
   <element name="MediaSet" type="ams:MediaSetType" />
-  
+
   <element name="Medium"   type="ams:MediumType" />
-  
+
   <element name="Loads"    type="ams:LoadsType" />
   <element name="Load"     type="ams:LoadType" />
-  
+
   <element name="Batches"  type="ams:BatchesType" />
   <element name="Batch"    type="ams:BatchType" />
-  
+
   <complexType name="MediaSetType" >
     <sequence>
       <element ref="ams:Medium"  minOccurs="1" maxOccurs="unbounded" />

@@ -1,24 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
+
 <MediaSet 
   xmlns="http://www.thomas-vogt.de/Arinc665MediaSet" 
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xsi:schemaLocation="http://www.thomas-vogt.de/Arinc665MediaSet Arinc665MediaSet.xsd"
+  xsi:schemaLocation="http://www.thomas-vogt.de/Arinc665MediaSet ../arinc665_xml/Arinc665MediaSet.xsd"
 
   PartNumber="CCC" >
 
   <Medium>
-    <File Name="File1" PartNumber="AABBCC1" />
-    <LoadFile Name="Load1" PartNumber="AABBCC" />
-    <LoadFile Name="Load2" PartNumber="AABBDD" />
+    <File Name="File1" PartNumber="AABBCC1" SourcePath="File1" />
+    <LoadFile Name="Load1.LUH" PartNumber="AABBCC" />
+    <LoadFile Name="Load2.LUH" PartNumber="AABBDD" />
     <Directory Name="Directory1" >
-      <File Name="File2"  PartNumber="AABBCC2" />
+      <File Name="File2" PartNumber="AABBCC2" SourcePath="File2" />
     </Directory>
-    <File Name="Readme.txt" />
-    <BatchFile Name="Batch1" PartNumber="AABBEE" />
+    <File Name="Readme.txt" SourcePath="Readme.txt" />
+    <BatchFile Name="Batch1.LUB" PartNumber="AABBEE" />
   </Medium>
 
   <Loads>
-    <Load NameRef="Load1" Description="Test Description" >
+    <Load NameRef="Load1.LUH" Description="Test Description" >
       <TargetHardware ThwId="123456789ABCDEF" >
         <Position Pos="LEFT" />
         <Position Pos="RIGHT" />
@@ -27,7 +28,7 @@
       <DataFile    NameRef="File1" />
       <SupportFile NameRef="File2" />
     </Load>
-    <Load NameRef="Load2" >
+    <Load NameRef="Load2.LUH" >
       <TargetHardware ThwId="123456789ABCDEF" />
       <TargetHardware ThwId="GHIJKLMNOPQRSTU" />
 
@@ -37,10 +38,10 @@
   </Loads>
 
   <Batches>
-    <Batch NameRef="Batch1" Comment="Comment Text" >
+    <Batch NameRef="Batch1.LUB" Comment="Comment Text" >
       <Target ThwIdPos="123456789ABCDEF_RIGHT" >
-        <Load NameRef="Load1" />
-        <Load NameRef="Load2" />
+        <Load NameRef="Load1.LUH" />
+        <Load NameRef="Load2.LUH" />
       </Target>
     </Batch>
   </Batches>
