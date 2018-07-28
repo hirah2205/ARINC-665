@@ -20,17 +20,17 @@
 
   <Loads>
     <Load NameRef="Load1.LUH" Description="Test Description" >
-      <TargetHardware ThwId="123456789ABCDEF" >
-        <Position Pos="LEFT" />
-        <Position Pos="RIGHT" />
+      <TargetHardware ThwId="ABCDEF" >
+        <Position Pos="123" />
+        <Position Pos="456" />
       </TargetHardware>
 
       <DataFile    NameRef="File1" />
       <SupportFile NameRef="File2" />
     </Load>
     <Load NameRef="Load2.LUH" >
-      <TargetHardware ThwId="123456789ABCDEF" />
-      <TargetHardware ThwId="GHIJKLMNOPQRSTU" />
+      <TargetHardware ThwId="ABCDEF" />
+      <TargetHardware ThwId="GHIJKL" />
 
       <DataFile    NameRef="File1" />
       <SupportFile NameRef="File2" />
@@ -39,7 +39,7 @@
 
   <Batches>
     <Batch NameRef="Batch1.LUB" Comment="Comment Text" >
-      <Target ThwIdPos="123456789ABCDEF_RIGHT" >
+      <Target ThwIdPos="ABCDEF_123" >
         <Load NameRef="Load1.LUH" />
         <Load NameRef="Load2.LUH" />
       </Target>
