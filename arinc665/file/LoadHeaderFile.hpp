@@ -134,10 +134,10 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] targetHardwareId
      *   Target hardware ID.
      **/
-    void addTargetHardwareId( const std::string &targetHardwareId);
+    void targetHardwareId( const std::string &targetHardwareId);
 
-    //! @copydoc addTargetHardwareId( const std::string&)
-    void addTargetHardwareId( std::string &&targetHardwareId);
+    //! @copydoc targetHardwareId( const std::string&)
+    void targetHardwareId( std::string &&targetHardwareId);
 
     /**
      * @brief Return the data files information.
@@ -155,10 +155,10 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] dataFileInfo
      *   The data file information.
      **/
-    void addDataFile( const LoadFileInfo &dataFileInfo);
+    void dataFile( const LoadFileInfo &dataFileInfo);
 
     //! @copydoc addDataFile(const LoadFileInfo&)
-    void addDataFile( LoadFileInfo &&dataFileInfo);
+    void dataFile( LoadFileInfo &&dataFileInfo);
 
     /**
      * @brief Return the support files information.
@@ -176,10 +176,10 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] supportFileInfo
      *   The support file information.
      **/
-    void addSupportFile( const LoadFileInfo &supportFileInfo);
+    void supportFile( const LoadFileInfo &supportFileInfo);
 
     //! @copydoc addSupportFile(const LoadFileInfo&)
-    void addSupportFile( LoadFileInfo &&supportFileInfo);
+    void supportFile( LoadFileInfo &&supportFileInfo);
 
     /**
      * @brief Returns the user defined data.

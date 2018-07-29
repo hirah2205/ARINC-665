@@ -30,7 +30,7 @@ Arinc665XmlPugiXmlImpl::LoadXmlResult Arinc665XmlPugiXmlImpl::loadFromXml(
   BOOST_LOG_FUNCTION();
 
   BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Load Media Set from " << xmlFile << "\n";
+    "Load Media Set from " << xmlFile;
 
   // Check existence of file
   if (!std::filesystem::is_regular_file( xmlFile))
@@ -58,7 +58,7 @@ void Arinc665XmlPugiXmlImpl::saveToXml(
   BOOST_LOG_FUNCTION();
 
   BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Save Media Set " << mediaSet->partNumber() << " to " << xmlFile << "\n";
+    "Save Media Set " << mediaSet->partNumber() << " to " << xmlFile;
 
   pugi::xml_document xmlDoc;
   pugi::xml_node mediaSetNode{ xmlDoc.root().append_child( "MediaSet")};
@@ -117,7 +117,7 @@ void Arinc665XmlPugiXmlImpl::saveMediaSet(
 
   // iterate over media
   for (
-    unsigned int mediumNumber = 1;
+    unsigned int mediumNumber = 1U;
     mediumNumber <= mediaSet->numberOfMedia();
     ++mediumNumber)
   {
@@ -510,6 +510,7 @@ void Arinc665XmlPugiXmlImpl::saveBatch(
   pugi::xml_node &batchNode)
 {
   batchNode.append_attribute( "NameRef") = batch->name().c_str();
+  batchNode.append_attribute( "Comment") = batch->comment().c_str();
 
   // Iterate over batch information
   for ( auto target : batch->targets())

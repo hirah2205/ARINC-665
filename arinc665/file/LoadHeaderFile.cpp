@@ -75,12 +75,12 @@ void LoadHeaderFile::targetHardwareIds(
   targetHardwareIdsValue = std::move( targetHardwareIds);
 }
 
-void LoadHeaderFile::addTargetHardwareId( const std::string &targetHardwareId)
+void LoadHeaderFile::targetHardwareId( const std::string &targetHardwareId)
 {
   targetHardwareIdsValue.push_back( targetHardwareId);
 }
 
-void LoadHeaderFile::addTargetHardwareId( std::string &&targetHardwareId)
+void LoadHeaderFile::targetHardwareId( std::string &&targetHardwareId)
 {
   targetHardwareIdsValue.push_back( std::move( targetHardwareId));
 }
@@ -95,12 +95,12 @@ LoadFilesInfo& LoadHeaderFile::dataFiles()
   return dataFilesValue;
 }
 
-void LoadHeaderFile::addDataFile( const LoadFileInfo &dataFileInfo)
+void LoadHeaderFile::dataFile( const LoadFileInfo &dataFileInfo)
 {
   dataFilesValue.push_back( dataFileInfo);
 }
 
-void LoadHeaderFile::addDataFile( LoadFileInfo &&dataFileInfo)
+void LoadHeaderFile::dataFile( LoadFileInfo &&dataFileInfo)
 {
   dataFilesValue.push_back( std::move( dataFileInfo));
 }
@@ -115,12 +115,12 @@ LoadFilesInfo& LoadHeaderFile::supportFiles()
   return supportFilesValue;
 }
 
-void LoadHeaderFile::addSupportFile( const LoadFileInfo &supportFileInfo)
+void LoadHeaderFile::supportFile( const LoadFileInfo &supportFileInfo)
 {
   supportFilesValue.push_back( supportFileInfo);
 }
 
-void LoadHeaderFile::addSupportFile( LoadFileInfo &&supportFileInfo)
+void LoadHeaderFile::supportFile( LoadFileInfo &&supportFileInfo)
 {
   supportFilesValue.push_back( std::move( supportFileInfo));
 }
@@ -199,7 +199,7 @@ RawFile LoadHeaderFile::encode() const
   uint32_t userDefinedDataPtr =
     userDefinedDataValue.empty() ? 0 : supportFileListPtr + (rawSupportFiles.size() / 2);
   it = setInt< uint32_t>( it, userDefinedDataPtr);
-  //! @todo if support files is omitted completely (ARINC 6653-3) - pointer to
+  //! @todo if support files is omitted completely (ARINC 665-3) - pointer to
   //! user defined data calculation must be corrected.
 
 
@@ -238,7 +238,7 @@ RawFile LoadHeaderFile::encode() const
 void LoadHeaderFile::decodeBody( const RawFile &rawFile)
 {
   // set processing start to position after spare
-  RawFile::const_iterator it = rawFile.begin() + BaseHeaderOffset;
+  auto it{ rawFile.begin() + BaseHeaderOffset};
 
   uint32_t loadPartNumberPtr;
   it = getInt< uint32_t>( it, loadPartNumberPtr);

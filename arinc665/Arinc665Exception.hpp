@@ -46,7 +46,7 @@ class InvalidArinc665File: public virtual Arinc665Exception
      **/
     const char* what() const noexcept override
     {
-      return "Invalid ARINC 665 Exception";
+      return "Invalid ARINC 665 File Exception";
     }
 };
 

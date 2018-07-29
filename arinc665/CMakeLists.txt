@@ -136,6 +136,7 @@ add_library(
   TargetHardwareIdTest.cpp
 
   file/LoadFileInfoTest.cpp
+  file/LoadHeaderFileTest.cpp
 
   media/MediaSetTest.cpp)
 

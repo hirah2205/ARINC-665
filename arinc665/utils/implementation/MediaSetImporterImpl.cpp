@@ -318,7 +318,7 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex)
     {
       //! @throw Arinc665Exception When load header PN info is inconsistent to list of loads information
       BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-        AdditionalInfo( "Medium is not consistent to media set"));
+        AdditionalInfo( "Load header is not consistent to load list"));
     }
 
     // validate load header target HW list info with the stored information in load list
@@ -326,7 +326,7 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex)
     {
       //! @throw Arinc665Exception When load header THW info is inconsistent to list of loads information
       BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-        AdditionalInfo( "Medium is not consistent to media set"));
+        AdditionalInfo( "Load header is not consistent to load list"));
     }
 
     //! @todo implement load CRC check.

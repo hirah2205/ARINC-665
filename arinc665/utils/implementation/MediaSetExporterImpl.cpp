@@ -319,14 +319,14 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
     uint16_t dataFileCrc{
       File::Arinc665File::calculateChecksum( rawDataFile, 0)};
 
-    loadHeaderFile.addDataFile( {
+    loadHeaderFile.dataFile( {
       dataFilePtr->name(),
       dataFilePtr->partNumber(),
       static_cast< uint32_t>( rawDataFile.size() / 2),
       dataFileCrc});
   }
 
-  // calculate data files CRC and set data.
+  // calculate support files CRC and set data.
   for ( auto supportFile : load->supportFiles())
   {
     auto supportFilePtr{ supportFile.lock()};
@@ -336,7 +336,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
     uint16_t supportFileCrc{
       File::Arinc665File::calculateChecksum( rawSupportFile, 0)};
 
-    loadHeaderFile.addDataFile( {
+    loadHeaderFile.supportFile( {
       supportFilePtr->name(),
       supportFilePtr->partNumber(),
       static_cast< uint32_t>( rawSupportFile.size() / 2),

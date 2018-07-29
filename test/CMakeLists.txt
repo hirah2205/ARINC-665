@@ -27,3 +27,10 @@ add_test(
     --destination-directory MediaSet
     --create-batch-files All
     --create-load-header-files All)
+
+add_test(
+  NAME arinc665_decompile_media_set
+  COMMAND
+    arinc665_decompiler
+    --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSet.xml
+    --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet/MEDIUM_001)
