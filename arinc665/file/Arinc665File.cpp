@@ -110,13 +110,11 @@ std::string Arinc665File::encodePath( const std::filesystem::path &path)
   return convertedPath;
 }
 
-uint32_t Arinc665File::getFileLength( const RawFile &file)
+uint32_t Arinc665File::fileLength( const RawFile &file)
 {
   // check file size
   if ( file.size() < BaseHeaderOffset)
   {
-    //! @throw InvalidArinc665File
-    //!   If the file size is to small to represent an valid ARINC 665 file.
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
         << AdditionalInfo( "length of check code string invalid"));
   }
@@ -128,7 +126,7 @@ uint32_t Arinc665File::getFileLength( const RawFile &file)
   return fileLength;
 }
 
-uint16_t Arinc665File::getFormatVersion( const RawFile &file)
+uint16_t Arinc665File::formatVersion( const RawFile &file)
 {
   // check file size
   if ( file.size() < BaseHeaderOffset)
@@ -159,9 +157,9 @@ uint16_t Arinc665File::calculateChecksum(
   return arincCrc16.checksum();
 }
 
-Arinc665::FileClassType Arinc665File::getArincFileType( const RawFile &rawFile)
+Arinc665::FileClassType Arinc665File::fileType( const RawFile &rawFile)
 {
-  switch (getFormatVersion( rawFile))
+  switch (formatVersion( rawFile))
   {
     case static_cast< uint16_t>( LoadFileFormatVersion::Version2):
     case static_cast< uint16_t>( LoadFileFormatVersion::Version34):
@@ -180,10 +178,10 @@ Arinc665::FileClassType Arinc665File::getArincFileType( const RawFile &rawFile)
   }
 }
 
-Arinc665::LoadFileFormatVersion Arinc665File::getLoadFileFormatVersion(
+Arinc665::LoadFileFormatVersion Arinc665File::loadFileFormatVersion(
   const RawFile &rawFile)
 {
-  const uint16_t formatVersion( Arinc665File::getFormatVersion( rawFile));
+  const uint16_t formatVersion( Arinc665File::formatVersion( rawFile));
 
   switch (formatVersion)
   {
@@ -198,10 +196,10 @@ Arinc665::LoadFileFormatVersion Arinc665File::getLoadFileFormatVersion(
   return static_cast< LoadFileFormatVersion>( formatVersion);
 }
 
-Arinc665::BatchFileFormatVersion Arinc665File::getBatchFileFormatVersion(
+Arinc665::BatchFileFormatVersion Arinc665File::batchFileFormatVersion(
   const RawFile &rawFile)
 {
-  const uint16_t formatVersion( Arinc665File::getFormatVersion( rawFile));
+  const uint16_t formatVersion( Arinc665File::formatVersion( rawFile));
 
   switch (formatVersion)
   {
@@ -216,10 +214,10 @@ Arinc665::BatchFileFormatVersion Arinc665File::getBatchFileFormatVersion(
   return static_cast< BatchFileFormatVersion>( formatVersion);
 }
 
-Arinc665::MediaFileFormatVersion Arinc665File::getMediaFileFormatVersion(
+Arinc665::MediaFileFormatVersion Arinc665File::mediaFileFormatVersion(
   const RawFile &rawFile)
 {
-  const uint16_t formatVersion( Arinc665File::getFormatVersion( rawFile));
+  const uint16_t formatVersion( Arinc665File::formatVersion( rawFile));
 
   switch (formatVersion)
   {
@@ -234,7 +232,7 @@ Arinc665::MediaFileFormatVersion Arinc665File::getMediaFileFormatVersion(
   return static_cast< MediaFileFormatVersion>( formatVersion);
 }
 
-Arinc665Version Arinc665File::getArinc665Version(
+Arinc665Version Arinc665File::arinc665Version(
   const FileType fileType,
   const uint16_t formatVersionField)
 {
@@ -300,7 +298,7 @@ Arinc665Version Arinc665File::getArinc665Version(
   return Arinc665Version::Invalid;
 }
 
-uint16_t Arinc665File::getFormatVersionField(
+uint16_t Arinc665File::formatVersionField(
   const FileType fileType,
   const Arinc665Version arinc665Version)
 {
@@ -510,7 +508,7 @@ void Arinc665File::insertHeader( RawFile &rawFile) const
   it = setInt< uint16_t>(
     it,
     static_cast< uint16_t>(
-      getFormatVersionField( fileTypeV, arinc665VersionValue)));
+      formatVersionField( fileTypeV, arinc665VersionValue)));
 
   // spare
   it = setInt< uint16_t>( it, 0U);
@@ -546,7 +544,7 @@ void Arinc665File::decodeHeader( const RawFile &rawFile)
   uint16_t formatVersion;
   it = getInt< uint16_t>( it, formatVersion);
 
-  arinc665VersionValue = getArinc665Version( fileTypeV, formatVersion);
+  arinc665VersionValue = arinc665Version( fileTypeV, formatVersion);
 
   // check format field version
   if ( arinc665VersionValue == Arinc665Version::Invalid)

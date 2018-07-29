@@ -111,8 +111,11 @@ class Arinc665File
      *   The raw ARINC 665 file.
      *
      * @return The encoded file length.
+     *
+     * @throw InvalidArinc665File
+     *   If the file size is to small to represent an valid ARINC 665 file.
      **/
-    static uint32_t getFileLength( const RawFile &file);
+    static uint32_t fileLength( const RawFile &file);
 
     /**
      * @brief Decode the format version information from the given file.
@@ -122,7 +125,7 @@ class Arinc665File
      *
      * @return The encoded format version.
      **/
-    static uint16_t getFormatVersion( const RawFile &file);
+    static uint16_t formatVersion( const RawFile &file);
 
     /**
      * @brief Calculates the checksum over the given file.
@@ -147,7 +150,7 @@ class Arinc665File
      *
      * @return The ARINC 665 file class type.
      **/
-    static FileClassType getArincFileType( const RawFile &rawFile);
+    static FileClassType fileType( const RawFile &rawFile);
 
     /**
      * @brief Returns the load header file version for [rawFile]
@@ -159,7 +162,7 @@ class Arinc665File
      * @retval LoadFileFormatVersion::Invalid
      *   When [rawFile] is nor a load header file
      **/
-    static LoadFileFormatVersion getLoadFileFormatVersion(
+    static LoadFileFormatVersion loadFileFormatVersion(
       const RawFile &rawFile);
 
     /**
@@ -172,7 +175,7 @@ class Arinc665File
      * @retval BatchFileFormatVersion::Invalid
      *   When [rawFile] is nor a batch file
      **/
-    static BatchFileFormatVersion getBatchFileFormatVersion(
+    static BatchFileFormatVersion batchFileFormatVersion(
       const RawFile &rawFile);
 
     /**
@@ -185,7 +188,7 @@ class Arinc665File
      * @retval MediaFileFormatVersion::Invalid
      *   When [rawFile] is nor a media file
      **/
-    static MediaFileFormatVersion getMediaFileFormatVersion(
+    static MediaFileFormatVersion mediaFileFormatVersion(
       const RawFile &rawFile);
 
     /**
@@ -201,7 +204,7 @@ class Arinc665File
      * @retval Invalid
      *   If the given information are inconsistent
      **/
-    static Arinc665Version getArinc665Version(
+    static Arinc665Version arinc665Version(
       FileType fileType,
       uint16_t formatVersionField);
 
@@ -216,7 +219,7 @@ class Arinc665File
      *
      * @return The format version field of file.
      **/
-    static uint16_t getFormatVersionField(
+    static uint16_t formatVersionField(
       FileType fileType,
       Arinc665Version arinc665Version);
 
