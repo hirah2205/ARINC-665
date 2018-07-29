@@ -6,12 +6,10 @@
 
 cmake_minimum_required( VERSION 3.11)
 
-add_executable( 
+add_executable(
   arinc665_compiler
 
-  arinc665_compiler.cpp
-  Arinc665CompilerApplication.hpp
-  Arinc665CompilerApplication.cpp)
+  arinc665_compiler.cpp)
 
 target_link_libraries(
   arinc665_compiler
