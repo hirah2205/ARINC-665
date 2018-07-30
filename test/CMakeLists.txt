@@ -10,7 +10,7 @@ string( RANDOM LENGTH 2048 FILE1_CONTENT)
 string( RANDOM LENGTH 4096 FILE2_CONTENT)
 
 file( GENERATE OUTPUT File1 CONTENT ${FILE1_CONTENT})
-file( GENERATE OUTPUT File2 CONTENT ${FILE1_CONTENT})
+file( GENERATE OUTPUT File2 CONTENT ${FILE2_CONTENT})
 file( GENERATE OUTPUT Readme.txt CONTENT "Readme Content")
 
 add_test(
@@ -24,7 +24,7 @@ add_test(
     arinc665_compiler
     --xml-file ${CMAKE_CURRENT_SOURCE_DIR}/ExampleMediaSet.xml
     --source-directory ${CMAKE_CURRENT_BINARY_DIR}
-    --destination-directory MediaSet
+    --destination-directory MediaSet/CCC
     --create-batch-files All
     --create-load-header-files All)
 

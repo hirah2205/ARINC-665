@@ -194,7 +194,7 @@ int main( int argc, char ** argv)
     auto result{ xml->loadFromXml( mediaSetXmlFile)};
 
     // create media set directory
-    std::filesystem::create_directory( mediaSetDestinationDirectory);
+    std::filesystem::create_directories( mediaSetDestinationDirectory);
 
     auto exporter( Arinc665::Utils::Arinc665Utils::createArinc665Exporter(
       std::get< 0>( result),
