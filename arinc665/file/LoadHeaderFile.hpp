@@ -88,7 +88,7 @@ class LoadHeaderFile: public Arinc665File
     LoadHeaderFile( const RawFile &rawFile);
 
     //! @copydoc Arinc665File::operator=
-    virtual LoadHeaderFile& operator=( const RawFile &rawFile) final;
+    LoadHeaderFile& operator=( const RawFile &rawFile) final;
 
     /**
      * @brief Returns the part number of the load header file.
@@ -157,7 +157,7 @@ class LoadHeaderFile: public Arinc665File
      **/
     void dataFile( const LoadFileInfo &dataFileInfo);
 
-    //! @copydoc addDataFile(const LoadFileInfo&)
+    //! @copydoc dataFile(const LoadFileInfo&)
     void dataFile( LoadFileInfo &&dataFileInfo);
 
     /**
@@ -178,7 +178,7 @@ class LoadHeaderFile: public Arinc665File
      **/
     void supportFile( const LoadFileInfo &supportFileInfo);
 
-    //! @copydoc addSupportFile(const LoadFileInfo&)
+    //! @copydoc supportFile(const LoadFileInfo&)
     void supportFile( LoadFileInfo &&supportFileInfo);
 
     /**
