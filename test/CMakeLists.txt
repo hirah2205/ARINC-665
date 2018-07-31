@@ -33,4 +33,4 @@ add_test(
   COMMAND
     arinc665_decompiler
     --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSet.xml
-    --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet/MEDIUM_001)
+    --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet/CCC/MEDIUM_001)
