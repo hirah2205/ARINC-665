@@ -162,11 +162,20 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra>)
 
+target_compile_definitions(
+  arinc665_test
+
+  PRIVATE
+    # Activate STL assertions
+    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS>
+    $<$<AND:$<CXX_COMPILER_ID:Clang>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS>)
+
 target_compile_features( arinc665_test PUBLIC cxx_std_17)
 
 target_include_directories(
   arinc665_test
   PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES>)
+
 
 # INSTALL
 include( GNUInstallDirs)
