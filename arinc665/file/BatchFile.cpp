@@ -212,15 +212,16 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
       batchTargetInfoIt,
       (thwCounter == targetHardwaresValue.size()) ?
         (0U) :
-        (rawBatchTargetInfo.size() / 2));
+        safeCast< uint16_t>( rawBatchTargetInfo.size() / 2));
 
     // THW ID
     batchTargetInfoIt =
       std::copy( rawThwId.begin(), rawThwId.end(), batchTargetInfoIt);
 
     // Number of Loads
-    batchTargetInfoIt =
-      setInt< uint16_t>( batchTargetInfoIt, targetHardwareInfo.loads().size());
+    batchTargetInfoIt = setInt< uint16_t>(
+      batchTargetInfoIt,
+      safeCast< uint16_t>( targetHardwareInfo.loads().size()));
 
     // Loads list
     batchTargetInfoIt =

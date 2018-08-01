@@ -13,6 +13,7 @@
 #include "BatchListFile.hpp"
 
 #include <helper/Endianess.hpp>
+#include <helper/SafeCast.hpp>
 #include <helper/Logger.hpp>
 
 namespace Arinc665::File {
@@ -161,12 +162,16 @@ RawFile BatchListFile::encode() const
 
   // batches list pointer
   uint32_t batchesListPtr =
-    mediaInformationPtr + (2 * sizeof( uint8_t)) / 2 + rawMediaSetPn.size() / 2;
+    mediaInformationPtr + 
+    (2 * sizeof( uint8_t)) / 2 + 
+    safeCast< uint32_t>( rawMediaSetPn.size() / 2);
   it = setInt< uint32_t>( it, batchesListPtr);
 
   // user defined data pointer
   uint32_t userDefinedDataPtr =
-    userDefinedDataValue.empty() ? 0 : batchesListPtr + rawBatchesInfo.size() / 2;
+    userDefinedDataValue.empty() ? 
+      0 : 
+      batchesListPtr + safeCast< uint32_t>( rawBatchesInfo.size() / 2);
   it = setInt< uint32_t>( it, userDefinedDataPtr);
 
   // media set part number
@@ -185,6 +190,7 @@ RawFile BatchListFile::encode() const
 
   if (!userDefinedDataValue.empty())
   {
+    //! TODO change to normal exception
     assert( userDefinedDataValue.size() % 2 == 0);
     rawFile.insert(
       it,

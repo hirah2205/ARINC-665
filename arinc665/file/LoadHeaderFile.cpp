@@ -13,6 +13,7 @@
 #include "LoadHeaderFile.hpp"
 
 #include <helper/Endianess.hpp>
+#include <helper/SafeCast.hpp>
 #include <helper/Logger.hpp>
 
 namespace Arinc665::File {
@@ -180,24 +181,29 @@ RawFile LoadHeaderFile::encode() const
 
   // THW ID list pointer
   uint32_t targetHardwareIdListPtr =
-    loadPartNumberPtr + (rawLoadPn.size() / 2);
+    loadPartNumberPtr + 
+    safeCast< uint32_t>( rawLoadPn.size() / 2);
   it = setInt< uint32_t>( it, targetHardwareIdListPtr);
 
   // data files list pointer
   uint32_t dataFileListPtr =
-    targetHardwareIdListPtr + (rawThwIdsList.size() / 2);
+    targetHardwareIdListPtr + 
+    safeCast< uint32_t>( rawThwIdsList.size() / 2);
   it = setInt< uint32_t>( it, dataFileListPtr);
 
   // support files list pointer (only if support files are present)
   uint32_t supportFileListPtr =
     supportFiles().empty() ?
       (0) :
-      (dataFileListPtr + (rawDataFiles.size() / 2));
+      (dataFileListPtr + 
+      safeCast< uint32_t>( rawDataFiles.size() / 2));
   it = setInt< uint32_t>( it, supportFileListPtr);
 
   // user defined data pointer
   uint32_t userDefinedDataPtr =
-    userDefinedDataValue.empty() ? 0 : supportFileListPtr + (rawSupportFiles.size() / 2);
+    userDefinedDataValue.empty() ? 
+      0 : 
+      supportFileListPtr + safeCast< uint32_t>( rawSupportFiles.size() / 2);
   it = setInt< uint32_t>( it, userDefinedDataPtr);
   //! @todo if support files is omitted completely (ARINC 665-3) - pointer to
   //! user defined data calculation must be corrected.
@@ -222,6 +228,7 @@ RawFile LoadHeaderFile::encode() const
 
   if (!userDefinedDataValue.empty())
   {
+    //! @todo convert to exception
     assert( userDefinedDataValue.size() % 2 == 0);
     rawFile.insert( it, userDefinedDataValue.begin(), userDefinedDataValue.end());
   }
@@ -290,7 +297,9 @@ RawFile LoadHeaderFile::encodeFileList( const LoadFilesInfo &loadFilesInfo) cons
   RawFile rawFileList( sizeof( uint16_t));
 
   // number of loads
-  setInt< uint16_t>( rawFileList.begin(), loadFilesInfo.size());
+  setInt< uint16_t>(
+    rawFileList.begin(),
+    safeCast< uint16_t>( loadFilesInfo.size()));
 
   // iterate over files
   uint16_t fileCounter( 0);
@@ -316,7 +325,7 @@ RawFile LoadHeaderFile::encodeFileList( const LoadFilesInfo &loadFilesInfo) cons
       fileInfoIt,
       (fileCounter == loadFilesInfo.size()) ?
         (0U) :
-        (rawFileInfo.size() / 2));
+        safeCast< uint16_t>( rawFileInfo.size() / 2));
 
     // filename
     fileInfoIt = std::copy( rawFilename.begin(), rawFilename.end(), fileInfoIt);
