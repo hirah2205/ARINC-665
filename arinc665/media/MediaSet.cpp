@@ -143,7 +143,7 @@ MediumPtr MediaSet::addMedium()
   return medium;
 }
 
-void MediaSet::removeMedium( const bool deleteFiles [[gnu::unused]])
+void MediaSet::removeMedium( const bool deleteFiles [[maybe_unused]])
 {
   //! @todo implement
   BOOST_THROW_EXCEPTION( std::exception());

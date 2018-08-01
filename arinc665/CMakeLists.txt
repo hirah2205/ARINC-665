@@ -113,8 +113,9 @@ target_compile_definitions(
   arinc665
 
   PRIVATE
-    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:D_GLIBCXX_DEBUG>
-    $<$<AND:$<CXX_COMPILER_ID:Clang>,$<CONFIG:Debug>>:D_GLIBCXX_DEBUG>)
+    # Activate STL assertions
+    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS>
+    $<$<AND:$<CXX_COMPILER_ID:Clang>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS>)
 
 target_include_directories(
   arinc665
@@ -122,11 +123,13 @@ target_include_directories(
 
 target_link_libraries(
   arinc665
-  helper
-  pugixml
-  $<$<AND:$<CXX_COMPILER_ID:GNU>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,9.0>>:stdc++fs>
-  $<$<AND:$<CXX_COMPILER_ID:Clang>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,7.0>>:stdc++fs>
-  Boost::boost)
+
+  PUBLIC
+    helper
+    pugixml
+    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,9.0>>:stdc++fs>
+    $<$<AND:$<CXX_COMPILER_ID:Clang>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,7.0>>:stdc++fs>
+    Boost::boost)
 
 target_compile_features( arinc665 PUBLIC cxx_std_17)
 

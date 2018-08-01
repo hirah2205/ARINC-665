@@ -10,7 +10,6 @@
  * @brief Definition of unit tests for class Arinc665::Media::MediaSet.
  **/
 
-
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/Medium.hpp>
@@ -32,7 +31,7 @@ BOOST_AUTO_TEST_CASE( constructor)
   BOOST_CHECK( mediaSet.numberOfMedia() == 0);
   BOOST_CHECK( mediaSet.type() == MediaSet::Type::MediaSet);
 
-  BOOST_CHECK_THROW( mediaSet.shared_from_this(), std::bad_weak_ptr);
+  BOOST_CHECK_THROW( auto ptr( mediaSet.shared_from_this()), std::bad_weak_ptr);
 
   BOOST_CHECK( mediaSet.numberOfFiles() == 0);
   BOOST_CHECK( mediaSet.files().empty());

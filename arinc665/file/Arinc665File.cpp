@@ -16,6 +16,7 @@
 #include <arinc665/Arinc665Crc.hpp>
 
 #include <helper/Endianess.hpp>
+#include <helper/SafeCast.hpp>
 #include <helper/Logger.hpp>
 
 namespace Arinc665::File {
@@ -502,7 +503,7 @@ void Arinc665File::insertHeader( RawFile &rawFile) const
   auto it( rawFile.begin());
 
   // file size
-  it = setInt< uint32_t>( it, rawFile.size() / 2);
+  it = setInt< uint32_t>( it, safeCast< uint32_t>( rawFile.size() / 2U));
 
   // format version
   it = setInt< uint16_t>(

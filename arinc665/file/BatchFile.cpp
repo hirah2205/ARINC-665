@@ -13,6 +13,7 @@
 #include "BatchFile.hpp"
 
 #include <helper/Endianess.hpp>
+#include <helper/SafeCast.hpp>
 #include <helper/Logger.hpp>
 
 namespace Arinc665::File {
@@ -113,8 +114,8 @@ RawFile BatchFile::encode() const
   // THW ID list pointer
   const uint32_t targetHardwareIdListPtr =
     batchPartNumberPtr +
-    (rawBatchPn.size() / 2) +
-    (rawComment.size() / 2);
+    safeCast< uint32_t>( rawBatchPn.size() / 2U) +
+    safeCast< uint32_t>( rawComment.size() / 2U);
   it = setInt< uint32_t>( it, targetHardwareIdListPtr);
 
 
@@ -163,8 +164,10 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
 {
   RawFile rawBatchTargetsInfo( sizeof(uint16_t)); // Number of THW IDs
 
-  // number of THW IDs
-  setInt< uint16_t>( rawBatchTargetsInfo.begin(), targetHardwaresValue.size());
+  // number of THW IDs TODO: Check for maximum number of entries.
+  setInt< uint16_t>(
+    rawBatchTargetsInfo.begin(),
+    safeCast< uint16_t>( targetHardwaresValue.size()));
 
   // iterate over target HWs
   uint16_t thwCounter( 0);
@@ -202,7 +205,7 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
       sizeof( uint16_t) + // number of loads
       rawLoadsInfo.size());
 
-    auto batchTargetInfoIt( rawBatchTargetInfo.begin());
+    auto batchTargetInfoIt{ rawBatchTargetInfo.begin()};
 
     // next load pointer (is set to 0 for last load)
     batchTargetInfoIt = setInt< uint16_t>(
