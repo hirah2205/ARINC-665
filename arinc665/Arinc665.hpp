@@ -180,7 +180,7 @@ constexpr bool Crc16ReflectIn = false;
 constexpr bool Crc16ReflectOut = false;
 
 //! CRC 32bit polynom
-constexpr uint32_t Crc32Polynom = 0x04C11DB7UL;
+constexpr uint32_t Crc32Polynom = 0x04C1'1DB7UL;
 //! CRC 32bit initialisation value
 constexpr uint32_t Crc32Init = 0xFFFFFFFFUL;
 //! CRC 32bit final XOR value
@@ -191,7 +191,7 @@ constexpr bool Crc32ReflectIn = false;
 constexpr bool Crc32ReflectOut = false;
 
 //! CRC 64bit polynom
-constexpr uint64_t Crc64Polynom = 0x42F0E1EBA9EA3693ULL;
+constexpr uint64_t Crc64Polynom = 0x42F0'E1EB'A9EA'3693ULL;
 //! CRC 64bit initialisation value
 constexpr uint64_t Crc64Init = 0xFFFFFFFFFFFFFFFFULL;
 //! CRC 64bit final XOR value

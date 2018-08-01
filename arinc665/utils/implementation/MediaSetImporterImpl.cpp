@@ -433,6 +433,7 @@ void MediaSetImporterImpl::addLoads(
     auto load{ loadInfos.find( loadHeader.first)};
     auto loadHeaderFile{ loadHeaderFiles.find( loadHeader.first.second)};
 
+    // obtain container (directory, medium), which will contain the load.
     ContainerEntityPtr container( checkCreateDirectory(
       loadHeader.first.first,
       loadHeader.second.path().parent_path()));
@@ -447,11 +448,12 @@ void MediaSetImporterImpl::addLoads(
     Arinc665Crc32 loadCrc;
 
     {
-      // load file for load checksum calculation
+      // load header file for load checksum calculation
       const auto file{ readFileHandler(
         loadPtr->medium()->mediumNumber(),
         loadPtr->path())};
 
+      // calculate CRC
       loadCrc.process_bytes( &(*file.begin()), file.size() - sizeof(uint32_t));
     }
 

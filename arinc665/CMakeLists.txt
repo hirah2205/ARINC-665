@@ -101,13 +101,20 @@ target_compile_options(
   arinc665
 
   PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:-W4>
+    $<$<CXX_COMPILER_ID:MSVC>:-W3>
 
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>
 
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra>)
+
+target_compile_definitions(
+  arinc665
+
+  PRIVATE
+    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:D_GLIBCXX_DEBUG>
+    $<$<AND:$<CXX_COMPILER_ID:Clang>,$<CONFIG:Debug>>:D_GLIBCXX_DEBUG>)
 
 target_include_directories(
   arinc665
@@ -144,7 +151,7 @@ target_compile_options(
   arinc665_test
 
   PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:-W4>
+    $<$<CXX_COMPILER_ID:MSVC>:-W3>
 
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>
