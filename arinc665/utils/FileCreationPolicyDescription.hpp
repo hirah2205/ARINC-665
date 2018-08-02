@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class Arinc665::FileCreationPolicyDescription.
+ * @brief Declaration of class Arinc665::Utils::FileCreationPolicyDescription.
  **/
 
 #ifndef ARINC665_UTILS_FILECREATIONPOLOCYDESCRIPTION_HPP

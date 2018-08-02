@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of class Arinc665::Media::Directory.
+ * @brief Definition of class Arinc665::Media::ContainerEntity.
  **/
 
 #include "ContainerEntity.hpp"
