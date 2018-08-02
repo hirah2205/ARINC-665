@@ -78,7 +78,7 @@ int main( int argc, char* argv[])
 
 static MediaSetPtr loadMediaSet( const std::filesystem::path &mediaSetDirectory)
 {
-  auto importer( Arinc665::Utils::Arinc665Utils::createArinc665Importer(
+  auto importer{ Arinc665::Utils::Arinc665Utils::arinc665Importer(
     // read file handler
     [&mediaSetDirectory](
       const uint8_t /*mediumNumber*/,
@@ -111,7 +111,7 @@ static MediaSetPtr loadMediaSet( const std::filesystem::path &mediaSetDirectory)
 
       // return the buffer
       return data;
-    }));
+    })};
 
   auto mediaSet{ importer()};
 

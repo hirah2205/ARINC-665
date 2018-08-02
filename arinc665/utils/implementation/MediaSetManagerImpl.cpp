@@ -32,7 +32,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
   for ( auto const &mediaSet : config.mediaSets)
   {
     // import media set
-    auto importer( Arinc665Utils::createArinc665Importer(
+    auto importer( Arinc665Utils::arinc665Importer(
       // the read file handler
       [&mediaSet,&config](
         const uint8_t mediumNumber,

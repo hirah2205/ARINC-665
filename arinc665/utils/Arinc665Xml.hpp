@@ -44,7 +44,7 @@ class Arinc665Xml
      *
      * @return The ARINC 665 XML handler instance.
      **/
-    static Arinc665XmlPtr createInstance();
+    static Arinc665XmlPtr instance();
 
     /**
      * @brief Loads the Media Set information from the given XML file.

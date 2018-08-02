@@ -187,8 +187,7 @@ int main( int argc, char ** argv)
     boost::program_options::notify( options);
 
     // ARINC 665 XML instance
-    Arinc665::Utils::Arinc665XmlPtr xml{
-      Arinc665::Utils::Arinc665Xml::createInstance()};
+    auto xml{ Arinc665::Utils::Arinc665Xml::instance()};
 
     // load XML file
     auto result{ xml->loadFromXml( mediaSetXmlFile)};
@@ -196,7 +195,7 @@ int main( int argc, char ** argv)
     // create media set directory
     std::filesystem::create_directories( mediaSetDestinationDirectory);
 
-    auto exporter( Arinc665::Utils::Arinc665Utils::createArinc665Exporter(
+    auto exporter{ Arinc665::Utils::Arinc665Utils::arinc665Exporter(
       std::get< 0>( result),
       std::bind(
         &createMedium,
@@ -230,7 +229,7 @@ int main( int argc, char ** argv)
         std::placeholders::_2),
       Arinc665::Arinc665Version::ARINC_665_2,
       createBatchFiles,
-      createLoadHeaderFiles));
+      createLoadHeaderFiles)};
 
     exporter();
   }

@@ -78,7 +78,7 @@ class Arinc665Utils
      *
      * @return The ARINC 665 Media Set importer.
      **/
-    static Arinc665Importer createArinc665Importer(
+    static Arinc665Importer arinc665Importer(
       ReadFileHandler readFileHandler);
 
     /**
@@ -108,7 +108,7 @@ class Arinc665Utils
      *
      * @return The ARINC 665 Media Set exporter.
      **/
-    static Arinc665Exporter createArinc665Exporter(
+    static Arinc665Exporter arinc665Exporter(
       Media::ConstMediaSetPtr mediaSet,
       CreateMediumHandler createMediumHandler,
       CreateDirectoryHandler createDirectoryHandler,

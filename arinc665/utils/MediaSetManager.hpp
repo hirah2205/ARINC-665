@@ -56,7 +56,7 @@ class MediaSetManager
      *
      * @return The media set manager instance.
      **/
-    static MediaSetManagerPtr createInstance(
+    static MediaSetManagerPtr instance(
       const MediaSetConfiguration &config);
 
     /**

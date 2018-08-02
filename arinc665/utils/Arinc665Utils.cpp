@@ -17,7 +17,7 @@
 
 namespace Arinc665::Utils {
 
-Arinc665Utils::Arinc665Importer Arinc665Utils::createArinc665Importer(
+Arinc665Utils::Arinc665Importer Arinc665Utils::arinc665Importer(
   ReadFileHandler readFileHandler)
 {
   return std::bind(
@@ -25,7 +25,7 @@ Arinc665Utils::Arinc665Importer Arinc665Utils::createArinc665Importer(
     std::make_shared< MediaSetImporterImpl>( readFileHandler));
 }
 
-Arinc665Utils::Arinc665Exporter Arinc665Utils::createArinc665Exporter(
+Arinc665Utils::Arinc665Exporter Arinc665Utils::arinc665Exporter(
   Media::ConstMediaSetPtr mediaSet,
   CreateMediumHandler createMediumHandler,
   CreateDirectoryHandler createDirectoryHandler,

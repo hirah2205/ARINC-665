@@ -17,7 +17,7 @@
 
 namespace Arinc665::Utils {
 
-MediaSetManagerPtr MediaSetManager::createInstance(
+MediaSetManagerPtr MediaSetManager::instance(
   const MediaSetConfiguration &config)
 {
   return std::make_shared< MediaSetManagerImpl>( config);

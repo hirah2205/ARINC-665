@@ -109,12 +109,12 @@ int main( int argc, char * argv[])
     boost::program_options::notify( options);
 
     // create importer
-    auto importer(
-      Arinc665::Utils::Arinc665Utils::createArinc665Importer(
-        std::bind( &readFile, std::placeholders::_1, std::placeholders::_2)));
+    auto importer{
+      Arinc665::Utils::Arinc665Utils::arinc665Importer(
+        std::bind( &readFile, std::placeholders::_1, std::placeholders::_2))};
 
     // perform import
-    auto result( importer());
+    auto result{ importer()};
 
     Arinc665::Utils::Arinc665Xml::FilePathMapping fileMapping;
 
@@ -129,7 +129,7 @@ int main( int argc, char * argv[])
     }
 
     // XML exporter
-    auto xml( Arinc665::Utils::Arinc665Xml::createInstance());
+    auto xml{ Arinc665::Utils::Arinc665Xml::instance()};
 
     // export the XML file
     xml->saveToXml( result, fileMapping, mediaSetXmlFile);

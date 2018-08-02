@@ -68,8 +68,8 @@ int main( int argc, char ** argv)
       mediaSetConfig.string(),
       config);
 
-    auto mediaSetManager( Arinc665::Utils::MediaSetManager::createInstance(
-      Arinc665::Utils::MediaSetConfiguration( config)));
+    auto mediaSetManager{ Arinc665::Utils::MediaSetManager::instance(
+      Arinc665::Utils::MediaSetConfiguration( config))};
 
     for ( auto medium : mediaSetManager->mediaSets())
     {
