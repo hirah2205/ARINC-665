@@ -150,19 +150,21 @@ RawFile LoadListFile::encode() const
 {
   RawFile rawFile(
     BaseHeaderOffset +
-    3 * sizeof( uint32_t) + // mediaInformationPtr, LoadsListPtr, userDefinedDataPtr
-    2 * sizeof( uint8_t)  + // media sequence number, number of media set members
-    sizeof( uint16_t));     // crc
+    3 * sizeof( uint32_t)); // mediaInformationPtr, LoadsListPtr, userDefinedDataPtr
 
-  auto rawMediaSetPn( encodeString( mediaSetPn()));
+
+  // Media Set PN info
+  auto rawMediaSetPn{ encodeString( mediaSetPn())};
   assert( rawMediaSetPn.size() % 2 == 0);
 
-  auto rawLoadsInfo( encodeLoadsInfo());
+  // Loads info
+  auto rawLoadsInfo{ encodeLoadsInfo()};
   assert( rawLoadsInfo.size() % 2 == 0);
 
-  auto it( rawFile.begin() + BaseHeaderOffset);
 
-  // media information pointer
+  auto it{ rawFile.begin() + BaseHeaderOffset};
+
+  // media information pointer (starts directly after pointers)
   uint32_t mediaInformationPtr =
     (BaseHeaderOffset + (3 * sizeof( uint32_t))) / 2;
   it = setInt< uint32_t>( it, mediaInformationPtr);
@@ -177,9 +179,13 @@ RawFile LoadListFile::encode() const
     userDefinedDataValue.empty() ? 0 : fileListPtr + rawLoadsInfo.size() / 2;
   it = setInt< uint32_t>( it, userDefinedDataPtr);
 
+
   // media set part number
-  it = rawFile.insert( it, rawMediaSetPn.begin(), rawMediaSetPn.end());
-  it += rawMediaSetPn.size();
+  rawFile.insert( it, rawMediaSetPn.begin(), rawMediaSetPn.end());
+
+  // media sequence number, number of media set members
+  rawFile.resize( rawFile.size() + 2 * sizeof( uint8_t));
+  it = rawFile.begin() + mediaInformationPtr * 2 + rawMediaSetPn.size();
 
   // media sequence number
   it = setInt< uint8_t>( it, mediaSequenceNumberValue);
@@ -187,19 +193,26 @@ RawFile LoadListFile::encode() const
   // number of media set members
   it = setInt< uint8_t>( it, numberOfMediaSetMembersValue);
 
+
   // loads list
   it = rawFile.insert( it, rawLoadsInfo.begin(), rawLoadsInfo.end());
-  it += rawFile.size();
+  it += rawLoadsInfo.size();
+
 
   // user defined data
   if (!userDefinedDataValue.empty())
   {
     assert( userDefinedDataValue.size() % 2 == 0);
-    rawFile.insert(
+
+    it = rawFile.insert(
       it,
       userDefinedDataValue.begin(),
       userDefinedDataValue.end());
   }
+
+
+  // crc
+  rawFile.resize( rawFile.size() + sizeof( uint16_t));
 
   // set header and CRC
   insertHeader( rawFile);

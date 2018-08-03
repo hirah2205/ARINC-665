@@ -147,6 +147,7 @@ add_library(
 
   file/LoadFileInfoTest.cpp
   file/LoadHeaderFileTest.cpp
+  file/LoadListFileTest.cpp
 
   media/MediaSetTest.cpp)
 

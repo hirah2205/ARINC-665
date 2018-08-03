@@ -468,16 +468,16 @@ Arinc665File::Arinc665File(
   decodeHeader( rawFile);
 }
 
-Arinc665File& Arinc665File::operator=( const Arinc665File &rawFile)
+Arinc665File& Arinc665File::operator=( const Arinc665File &other)
 {
-  assert( this->checksumPosition == rawFile.checksumPosition);
+  assert( this->checksumPosition == other.checksumPosition);
 
-  if ( this == &rawFile)
+  if ( this == &other)
   {
     return *this;
   }
 
-  crcValue = rawFile.crcValue;
+  crcValue = other.crcValue;
 
   return *this;
 }

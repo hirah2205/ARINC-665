@@ -331,14 +331,14 @@ class Arinc665File
       std::size_t checksumPosition = DefaultChecksumPosition);
 
     /**
-     * @brief Initialises the ARINC 665 file from the given raw data.
+     * @brief Assignment operator
      *
-     * @param[in] rawFile
-     *   The raw file.
+     * @param[in] other
+     *   The other file.
      *
      * @return *this
      **/
-    Arinc665File& operator=( const Arinc665File &rawFile);
+    Arinc665File& operator=( const Arinc665File &other);
 
     /**
      * @brief Encodes the ARINC 665 file as raw data.
