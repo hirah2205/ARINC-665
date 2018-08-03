@@ -181,7 +181,10 @@ RawFile LoadListFile::encode() const
 
 
   // media set part number
-  rawFile.insert( it, rawMediaSetPn.begin(), rawMediaSetPn.end());
+  rawFile.insert(
+    rawFile.begin() + mediaInformationPtr * 2,
+    rawMediaSetPn.begin(),
+    rawMediaSetPn.end());
 
   // media sequence number, number of media set members
   rawFile.resize( rawFile.size() + 2 * sizeof( uint8_t));
@@ -194,9 +197,8 @@ RawFile LoadListFile::encode() const
   it = setInt< uint8_t>( it, numberOfMediaSetMembersValue);
 
 
-  // loads list
-  it = rawFile.insert( it, rawLoadsInfo.begin(), rawLoadsInfo.end());
-  it += rawLoadsInfo.size();
+  // batches list
+  rawFile.insert( rawFile.end(), rawLoadsInfo.begin(), rawLoadsInfo.end());
 
 
   // user defined data
@@ -204,8 +206,8 @@ RawFile LoadListFile::encode() const
   {
     assert( userDefinedDataValue.size() % 2 == 0);
 
-    it = rawFile.insert(
-      it,
+    rawFile.insert(
+      rawFile.end(),
       userDefinedDataValue.begin(),
       userDefinedDataValue.end());
   }

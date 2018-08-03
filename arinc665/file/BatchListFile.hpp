@@ -132,10 +132,10 @@ class BatchListFile: public ListFile
      * @param[in] batchInfo
      *   The batch information to add.
      **/
-    void addBatchInfo( const BatchInfo &batchInfo);
+    void batchInfo( const BatchInfo &batchInfo);
 
-    //! @copydoc addBatchInfo(const BatchInfo&)
-    void addBatchInfo( BatchInfo &&batchInfo);
+    //! @copydoc batchInfo(const BatchInfo&)
+    void batchInfo( BatchInfo &&batchInfo);
 
     /**
      * @brief Returns the user defined data.

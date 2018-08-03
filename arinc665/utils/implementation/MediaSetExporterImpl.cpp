@@ -125,10 +125,11 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
     batchListFile.mediaSequenceNumber( medium->mediumNumber());
     batchListFile.mediaSetPn( medium->partNumber());
     batchListFile.numberOfMediaSetMembers(  medium->mediaSet()->numberOfMedia());
+
     /* add all batches to batches list */
     for ( auto &batch : medium->mediaSet()->batches())
     {
-      batchListFile.addBatchInfo({
+      batchListFile.batchInfo({
         batch->partNumber(),
         batch->name(),
         batch->medium()->mediumNumber()});
