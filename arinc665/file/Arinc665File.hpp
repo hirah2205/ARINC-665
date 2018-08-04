@@ -72,8 +72,9 @@ class Arinc665File
      * @brief Decodes the ARINC 665 string list from the stream.
      *
      * @param[in] it
+     *   current position, where the raw string list starts.
      * @param[out] strList
-     *
+     *   The decoded string list.
      *
      * @return New iterator position.
      **/

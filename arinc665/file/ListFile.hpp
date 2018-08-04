@@ -22,6 +22,8 @@ namespace Arinc665::File {
 /**
  * @brief Base class for list files.
  *
+ * This intermediate class is defined to add common methods for all List Files.
+ *
  * Children are:
  * * FileListFile
  * * LoadListFile

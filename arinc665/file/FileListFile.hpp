@@ -50,11 +50,17 @@ class FileListFile: public ListFile
      *
      * @param[in] version
      *   ARINC 665 version.
-     * @param mediaSetPn
-     * @param mediaSequenceNumber
+     * @param[in] mediaSetPn
+     *   The Media Set Part Number.
+     * @param[in] mediaSequenceNumber
+     *   The Media Sequence Number [1..255].
      * @param numberOfMediaSetMembers
-     * @param filesInfo
-     * @param userDefinedData
+     *   The Number of Media Set Members [1..255] & mediaSequenceNumber <=
+     *     [numberOfMediaSetMembers]
+     * @param[in] filesInfo
+     *   The files informations.
+     * @param[in] userDefinedData
+     *   Additional User Defined Data.
      **/
     FileListFile(
       Arinc665Version version,
@@ -70,8 +76,8 @@ class FileListFile: public ListFile
       std::string &&mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
-      FilesInfo &&filesInfo,
-      UserDefinedData &&userDefinedData);
+      FilesInfo &&filesInfo = {},
+      UserDefinedData &&userDefinedData = {});
 
     /**
      * @brief Creates a file list file from the given raw data.
@@ -146,10 +152,10 @@ class FileListFile: public ListFile
      * @param[in] fileInfo
      *   The file information.
      **/
-    void addFileInfo( const FileInfo &fileInfo);
+    void fileInfo( const FileInfo &fileInfo);
 
-    //! @copydoc addFileInfo(const FileInfo&)
-    void addFileInfo( FileInfo &&fileInfo);
+    //! @copydoc fileInfo(const FileInfo&)
+    void fileInfo( FileInfo &&fileInfo);
 
     /**
      * @brief Returns the user defined data.

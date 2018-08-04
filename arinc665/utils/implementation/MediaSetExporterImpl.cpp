@@ -154,7 +154,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
     auto rawFile( readFileHandler( medium->mediumNumber(), file->path()));
     uint16_t crc( File::Arinc665File::calculateChecksum( rawFile, 0));
 
-    fileListFile.addFileInfo({
+    fileListFile.fileInfo({
       file->name(),
       File::Arinc665File::encodePath( file->path().parent_path()),
       file->medium()->mediumNumber(),
@@ -167,7 +167,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   uint16_t listOfLoadsFileCrc(
     File::Arinc665File::calculateChecksum( rawListOfLoadsFile, 0));
 
-  fileListFile.addFileInfo({
+  fileListFile.fileInfo({
     ListOfLoadsName,
     File::Arinc665File::encodePath( "/"),
     medium->mediumNumber(),
@@ -181,7 +181,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
     uint16_t listOfBatchesFileCrc(
       File::Arinc665File::calculateChecksum( rawListOfBatchesFile, 0));
 
-    fileListFile.addFileInfo({
+    fileListFile.fileInfo({
       ListOfBatchesName,
       File::Arinc665File::encodePath( "/"),
       medium->mediumNumber(),

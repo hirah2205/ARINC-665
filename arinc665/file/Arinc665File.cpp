@@ -45,7 +45,7 @@ RawFile Arinc665File::encodeString( const std::string &str)
 {
   RawFile rawString( sizeof( uint16_t));
 
-  auto it( rawString.begin());
+  auto it{ rawString.begin()};
 
   // set string length
   it = setInt< uint16_t>( it, static_cast< uint16_t>( str.size()));
@@ -85,7 +85,7 @@ RawFile Arinc665File::encodeStringList( const StringList &strList)
 {
   RawFile rawStringList( sizeof( uint16_t));
 
-  auto it( rawStringList.begin());
+  auto it{ rawStringList.begin()};
 
   // set number of strings
   it = setInt< uint16_t>( it, static_cast< uint16_t>( strList.size()));

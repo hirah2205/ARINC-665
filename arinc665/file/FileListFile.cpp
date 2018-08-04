@@ -123,14 +123,14 @@ FileListFile::FileInfoPathMap FileListFile::filesInfoAsPathMap() const
   return fileMap;
 }
 
-void FileListFile::addFileInfo( const FileInfo &fileInfo)
+void FileListFile::fileInfo( const FileInfo &fileInfo)
 {
   filesInfoValue.push_back( fileInfo);
 }
 
-void FileListFile::addFileInfo( FileInfo &&fileInfo)
+void FileListFile::fileInfo( FileInfo &&fileInfo)
 {
-  filesInfoValue.push_back( fileInfo);
+  filesInfoValue.push_back( std::move( fileInfo));
 }
 
 
