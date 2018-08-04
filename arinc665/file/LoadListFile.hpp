@@ -33,6 +33,18 @@ class LoadListFile: public ListFile
     //! User defined data type.
     using UserDefinedData = std::vector< uint8_t>;
 
+    //! Offset of the Media Set Part Number Pointer Field
+    static constexpr std::size_t MediaSetPartNumberPointerFieldOffset = 8U;
+
+    //! Offset of the Loads Pointer Field
+    static constexpr std::size_t LoadFilesPointerFieldOffset = 12U;
+
+    //! Offset of the User Defined Data Pointer Field
+    static constexpr std::size_t UserDefinedDataPointerFieldOffset = 16U;
+
+    //! First Start of pointer data for ARINC 665 Load List Files.
+    static constexpr std::size_t FileHeaderSize = 20U;
+
     /**
      * @brief Creates an empty load list file.
      *
@@ -140,10 +152,10 @@ class LoadListFile: public ListFile
      * @param[in] loadInfo
      *   Load information.
      **/
-    void addLoadInfo( const LoadInfo &loadInfo);
+    void loadInfo( const LoadInfo &loadInfo);
 
-    //! @copydoc addLoadInfo(const LoadInfo&)
-    void addLoadInfo( LoadInfo &&loadInfo);
+    //! @copydoc loadInfo(const LoadInfo&)
+    void loadInfo( LoadInfo &&loadInfo);
 
     /**
      * @brief Returns the user defined data.

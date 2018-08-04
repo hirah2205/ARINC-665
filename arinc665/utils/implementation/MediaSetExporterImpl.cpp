@@ -105,7 +105,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   /* add all load to loads list */
   for ( auto &load : medium->mediaSet()->loads())
   {
-    loadListFile.addLoadInfo({
+    loadListFile.loadInfo({
       load->partNumber(),
       load->name(),
       load->medium()->mediumNumber(),

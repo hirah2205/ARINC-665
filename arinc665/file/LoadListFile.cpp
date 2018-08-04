@@ -107,14 +107,14 @@ LoadListFile::LoadsInfoMap LoadListFile::loadsInfoAsMap() const
   return loads;
 }
 
-void LoadListFile::addLoadInfo( const LoadInfo &loadInfo)
+void LoadListFile::loadInfo( const LoadInfo &loadInfo)
 {
   loadsInfoValue.push_back( loadInfo);
 }
 
-void LoadListFile::addLoadInfo( LoadInfo &&loadInfo)
+void LoadListFile::loadInfo( LoadInfo &&loadInfo)
 {
-  loadsInfoValue.push_back( loadInfo);
+  loadsInfoValue.push_back( std::move( loadInfo));
 }
 
 const LoadListFile::UserDefinedData& LoadListFile::userDefinedData() const
@@ -148,63 +148,61 @@ bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
 
 RawFile LoadListFile::encode() const
 {
-  RawFile rawFile(
-    BaseHeaderOffset +
-    3 * sizeof( uint32_t)); // mediaInformationPtr, LoadsListPtr, userDefinedDataPtr
+  RawFile rawFile( FileHeaderSize);
+
+  // Spare Field
+  setInt< uint16_t>( rawFile.begin() + SpareFieldOffset, 0U);
+
+  // Next free Offset (used for optional pointer calculation)
+  size_t nextFreeOffset{ rawFile.size()};
 
 
-  // Media Set PN info
-  auto rawMediaSetPn{ encodeString( mediaSetPn())};
+  // media set informations
+  const auto rawMediaSetPn{ encodeString( mediaSetPn())};
   assert( rawMediaSetPn.size() % 2 == 0);
 
-  // Loads info
-  auto rawLoadsInfo{ encodeLoadsInfo()};
-  assert( rawLoadsInfo.size() % 2 == 0);
-
-
-  auto it{ rawFile.begin() + BaseHeaderOffset};
-
-  // media information pointer (starts directly after pointers)
-  uint32_t mediaInformationPtr =
-    (BaseHeaderOffset + (3 * sizeof( uint32_t))) / 2;
-  it = setInt< uint32_t>( it, mediaInformationPtr);
-
-  // file list pointer
-  uint32_t fileListPtr =
-    mediaInformationPtr + (2 * sizeof( uint8_t)) / 2 + rawMediaSetPn.size() / 2;
-  it = setInt< uint32_t>( it, fileListPtr);
-
-  // user defined data pointer
-  uint32_t userDefinedDataPtr =
-    userDefinedDataValue.empty() ? 0 : fileListPtr + rawLoadsInfo.size() / 2;
-  it = setInt< uint32_t>( it, userDefinedDataPtr);
-
-
   // media set part number
-  rawFile.insert(
-    rawFile.begin() + mediaInformationPtr * 2,
-    rawMediaSetPn.begin(),
-    rawMediaSetPn.end());
+  rawFile.insert( rawFile.end(), rawMediaSetPn.begin(), rawMediaSetPn.end());
 
-  // media sequence number, number of media set members
   rawFile.resize( rawFile.size() + 2 * sizeof( uint8_t));
-  it = rawFile.begin() + mediaInformationPtr * 2 + rawMediaSetPn.size();
 
   // media sequence number
-  it = setInt< uint8_t>( it, mediaSequenceNumberValue);
+  setInt< uint8_t>(
+    rawFile.begin() + nextFreeOffset + rawMediaSetPn.size(),
+    mediaSequenceNumberValue);
 
   // number of media set members
-  it = setInt< uint8_t>( it, numberOfMediaSetMembersValue);
+  setInt< uint8_t>(
+    rawFile.begin() + nextFreeOffset + rawMediaSetPn.size() + sizeof( uint8_t),
+    numberOfMediaSetMembersValue);
+
+  setInt< uint32_t>(
+    rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
+    nextFreeOffset / 2);
+  nextFreeOffset += rawMediaSetPn.size() + 2 * sizeof( uint8_t);
 
 
-  // batches list
+  // Loads info
+  const auto rawLoadsInfo{ encodeLoadsInfo()};
+  assert( rawLoadsInfo.size() % 2 == 0);
+
+  // loads list pointer
+  setInt< uint32_t>(
+    rawFile.begin() + LoadFilesPointerFieldOffset,
+    nextFreeOffset / 2);
+  nextFreeOffset += rawLoadsInfo.size();
+
   rawFile.insert( rawFile.end(), rawLoadsInfo.begin(), rawLoadsInfo.end());
 
 
   // user defined data
+  assert( userDefinedDataValue.size() % 2 == 0);
+  uint32_t userDefinedDataPtr = 0;
+
   if (!userDefinedDataValue.empty())
   {
-    assert( userDefinedDataValue.size() % 2 == 0);
+    userDefinedDataPtr = nextFreeOffset / 2;
+    // nextFreeOffset += userDefinedDataValue.size();
 
     rawFile.insert(
       rawFile.end(),
@@ -212,9 +210,14 @@ RawFile LoadListFile::encode() const
       userDefinedDataValue.end());
   }
 
+  setInt< uint32_t>(
+    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    userDefinedDataPtr);
 
-  // crc
+
+  // Resize to final size ( File CRC)
   rawFile.resize( rawFile.size() + sizeof( uint16_t));
+
 
   // set header and CRC
   insertHeader( rawFile);
@@ -224,37 +227,60 @@ RawFile LoadListFile::encode() const
 
 void LoadListFile::decodeBody( const RawFile &rawFile)
 {
-  // set processing start to position after spare
-  RawFile::const_iterator it = rawFile.begin() + BaseHeaderOffset;
+  // Spare Field
+  uint32_t spare;
+  getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
 
+  if (0U != spare)
+  {
+    BOOST_THROW_EXCEPTION( InvalidArinc665File()
+      << AdditionalInfo( "Spare is not 0"));
+  }
+
+  // media information pointer
   uint32_t mediaInformationPtr;
-  it = getInt< uint32_t>( it, mediaInformationPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
+    mediaInformationPtr);
 
+  // Loads list pointer
   uint32_t loadListPtr;
-  it = getInt< uint32_t>( it, loadListPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + LoadFilesPointerFieldOffset,
+    loadListPtr);
 
+
+  // user defined data pointer
   uint32_t userDefinedDataPtr;
-  it = getInt< uint32_t>( it, userDefinedDataPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    userDefinedDataPtr);
+
 
   // media set part number
-  it = rawFile.begin() + mediaInformationPtr * 2;
-  it = decodeString( it, mediaSetPnValue);
+  auto it = decodeString(
+    rawFile.begin() + mediaInformationPtr * 2,
+    mediaSetPnValue);
 
   // media sequence number
   it = getInt< uint8_t>( it, mediaSequenceNumberValue);
 
   // number of media set members
-  it = getInt< uint8_t>( it, numberOfMediaSetMembersValue);
+  getInt< uint8_t>( it, numberOfMediaSetMembersValue);
 
-  // load list
+
+  // Loads list
   decodeLoadsInfo( rawFile, 2 * loadListPtr);
+
 
   // user defined data
   if ( 0 != userDefinedDataPtr)
   {
-    it = rawFile.begin() + userDefinedDataPtr * 2;
-    userDefinedDataValue.assign( it, rawFile.end() - 2);
+    userDefinedDataValue.assign(
+      rawFile.begin() + userDefinedDataPtr * 2,
+      rawFile.begin() + rawFile.size() - DefaultChecksumPosition);
   }
+
 
   // file crc decoded and checked within base class
 }
