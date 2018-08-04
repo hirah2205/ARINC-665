@@ -303,7 +303,38 @@ RawFile LoadHeaderFile::encode() const
   // THW ID + Positions (only in V3 mode)
   if (encodeV3Data)
   {
-    // TODO
+    unsigned int thwIdPosCount{0};
+    RawFile rawThwPos( sizeof( uint16_t));
+
+    for ( const auto &thwIdPosition : targetHardwareIdPositionsValue)
+    {
+      if (thwIdPosition.second.empty())
+      {
+        continue;
+      }
+
+      const auto rawPositions{ encodeStringList( thwIdPosition.second)};
+      ++thwIdPosCount;
+      rawThwPos.insert(
+        rawThwPos.end(),
+        rawPositions.begin(),
+        rawPositions.end());
+    }
+
+    setInt< uint16_t>( rawThwPos.begin(), thwIdPosCount);
+
+    uint32_t thwIdPosPtr = 0;
+
+    if (0 != thwIdPosCount)
+    {
+      thwIdPosPtr = nextFreeOffset / 2;
+      rawFile.insert( rawFile.end(), rawThwPos.begin(), rawThwPos.end());
+      nextFreeOffset += rawThwPos.size();
+    }
+
+    setInt< uint32_t>(
+      rawFile.begin() + ThwIdPositionsPointerFieldOffset,
+      thwIdPosPtr);
   }
 
 
