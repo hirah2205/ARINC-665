@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( file.mediaSequenceNumber() == 1);
   BOOST_CHECK( file.numberOfMediaSetMembers() == 1);
 
-  const auto& files{ file.filesInfo()};
+  const auto& files{ file.files()};
   BOOST_CHECK( files.size() == 2);
 
   auto fileI{ files.begin()};

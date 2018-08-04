@@ -186,8 +186,9 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
   {
     ++thwCounter;
 
-    auto const rawThwId{ encodeString( targetHardwareInfo.targetHardwareId())};
-    assert( rawThwId.size() % 2 == 0);
+    auto const rawThwIdPosition{
+      encodeString( targetHardwareInfo.targetHardwareIdPosition())};
+    assert( rawThwIdPosition.size() % 2 == 0);
 
     RawFile rawLoadsInfo;
     /* iterate over loads */
@@ -212,7 +213,7 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
 
     RawFile rawBatchTargetInfo(
       sizeof( uint16_t) + // next THW ID pointer
-      rawThwId.size() +
+      rawThwIdPosition.size() +
       sizeof( uint16_t) + // number of loads
       rawLoadsInfo.size());
 
@@ -226,8 +227,10 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
         safeCast< uint16_t>( rawBatchTargetInfo.size() / 2));
 
     // THW ID
-    batchTargetInfoIt =
-      std::copy( rawThwId.begin(), rawThwId.end(), batchTargetInfoIt);
+    batchTargetInfoIt = std::copy(
+      rawThwIdPosition.begin(),
+      rawThwIdPosition.end(),
+      batchTargetInfoIt);
 
     // Number of Loads
     batchTargetInfoIt = setInt< uint16_t>(

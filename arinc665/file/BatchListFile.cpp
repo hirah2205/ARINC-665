@@ -20,10 +20,40 @@
 
 namespace Arinc665::File {
 
-BatchListFile::BatchListFile( Arinc665Version version):
+BatchListFile::BatchListFile( const Arinc665Version version):
   ListFile( FileType::BatchList, version),
   mediaSequenceNumberValue( 0),
   numberOfMediaSetMembersValue( 0)
+{
+}
+
+BatchListFile::BatchListFile(
+  const Arinc665Version version,
+  const std::string &mediaSetPn,
+  const uint8_t mediaSequenceNumber,
+  const uint8_t numberOfMediaSetMembers,
+  const BatchesInfo &batches,
+  const UserDefinedData &userDefinedData):
+  ListFile( FileType::BatchList, version),
+  mediaSetPnValue( mediaSetPn),
+  mediaSequenceNumberValue( mediaSequenceNumber),
+  batchesValue( batches),
+  userDefinedDataValue( userDefinedData)
+{
+}
+
+BatchListFile::BatchListFile(
+  Arinc665Version version,
+  std::string &&mediaSetPn,
+  uint8_t mediaSequenceNumber,
+  uint8_t numberOfMediaSetMembers,
+  BatchesInfo &&batches,
+  UserDefinedData &&userDefinedData):
+  ListFile( FileType::BatchList, version),
+  mediaSetPnValue( std::move( mediaSetPn)),
+  mediaSequenceNumberValue( mediaSequenceNumber),
+  batchesValue( std::move( batches)),
+  userDefinedDataValue( std::move( userDefinedData))
 {
 }
 
@@ -79,24 +109,24 @@ void BatchListFile::numberOfMediaSetMembers(
 
 size_t BatchListFile::numberOfBatches() const
 {
-  return batchesInfoValue.size();
+  return batchesValue.size();
 }
 
-const BatchesInfo& BatchListFile::batchesInfo() const
+const BatchesInfo& BatchListFile::batches() const
 {
-  return batchesInfoValue;
+  return batchesValue;
 }
 
-BatchesInfo& BatchListFile::batchesInfo()
+BatchesInfo& BatchListFile::batches()
 {
-  return batchesInfoValue;
+  return batchesValue;
 }
 
-BatchListFile::BatchInfoMap BatchListFile::batchesInfoAsMap() const
+BatchListFile::BatchInfoMap BatchListFile::batchesAsMap() const
 {
   BatchInfoMap batches;
 
-  for (const auto & batch : batchesInfoValue)
+  for (const auto & batch : batchesValue)
   {
     batches.insert(
       std::make_pair(
@@ -109,14 +139,14 @@ BatchListFile::BatchInfoMap BatchListFile::batchesInfoAsMap() const
   return batches;
 }
 
-void BatchListFile::batchInfo( const BatchInfo &batchInfo)
+void BatchListFile::batch( const BatchInfo &batch)
 {
-  batchesInfoValue.push_back( batchInfo);
+  batchesValue.push_back( batch);
 }
 
-void BatchListFile::batchInfo( BatchInfo &&batchInfo)
+void BatchListFile::batch( BatchInfo &&batch)
 {
-  batchesInfoValue.push_back( batchInfo);
+  batchesValue.push_back( batch);
 }
 
 const BatchListFile::UserDefinedData& BatchListFile::userDefinedData() const
@@ -139,7 +169,7 @@ bool BatchListFile::belongsToSameMediaSet( const BatchListFile &other) const
   return
     (mediaSetPnValue == other.mediaSetPn()) &&
     (numberOfMediaSetMembersValue == other.numberOfMediaSetMembers()) &&
-    (batchesInfoValue == other.batchesInfo());
+    (batchesValue == other.batches());
 }
 
 RawFile BatchListFile::encode() const
@@ -290,7 +320,7 @@ RawFile BatchListFile::encodeBatchesInfo() const
 
   // iterate over batches
   uint16_t batchCounter( 0);
-  for (auto const &batchInfo : batchesInfoValue)
+  for (auto const &batchInfo : batchesValue)
   {
     ++batchCounter;
 
@@ -349,7 +379,7 @@ void BatchListFile::decodeBatchesInfo(
   auto it( rawFile.begin() + offset);
 
   // clear eventually stored infos
-  batchesInfoValue.clear();
+  batchesValue.clear();
 
   // number of batches
   uint16_t numberOfBatches;
@@ -381,7 +411,7 @@ void BatchListFile::decodeBatchesInfo(
     // set it to begin of next batch
     it += batchPointer * 2;
 
-    batchesInfoValue.emplace_back( partNumber, filename, memberSequenceNumber);
+    batchesValue.emplace_back( partNumber, filename, memberSequenceNumber);
   }
 }
 

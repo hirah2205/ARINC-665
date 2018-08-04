@@ -125,10 +125,10 @@ class LoadInfo
      * @param[in] targetHardwareId
      *   target hardware ID.
      **/
-    void addTargetHardwareId( const std::string &targetHardwareId);
+    void targetHardwareId( const std::string &targetHardwareId);
 
-    //! @copydoc addTargetHardwareId(const std::string&)
-    void addTargetHardwareId( std::string &&targetHardwareId);
+    //! @copydoc targetHardwareId(const std::string&)
+    void targetHardwareId( std::string &&targetHardwareId);
 
     /**
      * @brief Compares the other load information against this for equality.

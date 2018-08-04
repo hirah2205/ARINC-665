@@ -85,7 +85,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
   if (!this->fileListFile)
   {
     this->fileListFile = fileListFile;
-    fileInfos = fileListFile.filesInfoAsMap();
+    fileInfos = fileListFile.filesAsMap();
   }
   else
   {
@@ -161,7 +161,7 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex)
   if (!this->loadListFile)
   {
     this->loadListFile = loadListFile;
-    loadInfos = loadListFile.loadsInfoAsMap();
+    loadInfos = loadListFile.loadsAsMap();
   }
   else
   {
@@ -232,7 +232,7 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
   if (!this->batchListFile)
   {
     this->batchListFile = batchListFile;
-    this->batchInfos = batchListFile.batchesInfoAsMap();
+    this->batchInfos = batchListFile.batchesAsMap();
   }
   else
   {
@@ -537,8 +537,8 @@ void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
         loads.push_back( loadPtr);
       }
 
-      // add target hardware
-      batchPtr->target( targetHardware.targetHardwareId(), loads);
+      // add Target Hardware/ Position
+      batchPtr->target( targetHardware.targetHardwareIdPosition(), loads);
     }
   }
 }

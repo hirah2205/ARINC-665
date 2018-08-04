@@ -78,24 +78,24 @@ void LoadListFile::numberOfMediaSetMembers(
 
 size_t LoadListFile::numberOfLoads() const
 {
-  return loadsInfoValue.size();
+  return loadsValue.size();
 }
 
-const LoadsInfo& LoadListFile::loadsInfo() const
+const LoadsInfo& LoadListFile::loads() const
 {
-  return loadsInfoValue;
+  return loadsValue;
 }
 
-LoadsInfo& LoadListFile::loadsInfo()
+LoadsInfo& LoadListFile::loads()
 {
-  return loadsInfoValue;
+  return loadsValue;
 }
 
-LoadListFile::LoadsInfoMap LoadListFile::loadsInfoAsMap() const
+LoadListFile::LoadsInfoMap LoadListFile::loadsAsMap() const
 {
   LoadsInfoMap loads;
 
-  for (const auto & loadInfo : loadsInfoValue)
+  for (const auto & loadInfo : loadsValue)
   {
     loads.insert( std::make_pair(
       std::make_pair(
@@ -107,14 +107,14 @@ LoadListFile::LoadsInfoMap LoadListFile::loadsInfoAsMap() const
   return loads;
 }
 
-void LoadListFile::loadInfo( const LoadInfo &loadInfo)
+void LoadListFile::load( const LoadInfo &load)
 {
-  loadsInfoValue.push_back( loadInfo);
+  loadsValue.push_back( load);
 }
 
-void LoadListFile::loadInfo( LoadInfo &&loadInfo)
+void LoadListFile::load( LoadInfo &&load)
 {
-  loadsInfoValue.push_back( std::move( loadInfo));
+  loadsValue.push_back( std::move( load));
 }
 
 const LoadListFile::UserDefinedData& LoadListFile::userDefinedData() const
@@ -142,7 +142,7 @@ bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
   return
     (mediaSetPnValue == other.mediaSetPn()) &&
     (numberOfMediaSetMembersValue == other.numberOfMediaSetMembers()) &&
-    (loadsInfoValue == other.loadsInfo()) &&
+    (loadsValue == other.loads()) &&
     (userDefinedDataValue == other.userDefinedData());
 }
 
@@ -294,7 +294,7 @@ RawFile LoadListFile::encodeLoadsInfo() const
 
   // iterate over files
   uint16_t loadCounter( 0);
-  for (auto const &loadInfo : loadsInfo())
+  for (auto const &loadInfo : loadsValue)
   {
     ++loadCounter;
     auto const rawPartNumber( encodeString( loadInfo.partNumber()));
@@ -383,9 +383,9 @@ void LoadListFile::decodeLoadsInfo(
     LoadInfo::ThwIds thwIds;
     listIt = Arinc665File::decodeStringList( listIt, thwIds);
 
-    loadsInfoValue.emplace_back(
+    loadsValue.emplace_back(
       std::move( partNumber),
-        std::move( headerFilename),
+      std::move( headerFilename),
       static_cast< uint8_t>( fileMemberSequenceNumber),
       std::move( thwIds));
 

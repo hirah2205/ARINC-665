@@ -105,7 +105,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   /* add all load to loads list */
   for ( auto &load : medium->mediaSet()->loads())
   {
-    loadListFile.loadInfo({
+    loadListFile.load({
       load->partNumber(),
       load->name(),
       load->medium()->mediumNumber(),
@@ -128,7 +128,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
     /* add all batches to batches list */
     for ( auto &batch : medium->mediaSet()->batches())
     {
-      batchListFile.batchInfo({
+      batchListFile.batch({
         batch->partNumber(),
         batch->name(),
         batch->medium()->mediumNumber()});
@@ -152,7 +152,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
     auto rawFile( readFileHandler( medium->mediumNumber(), file->path()));
     uint16_t crc( File::Arinc665File::calculateChecksum( rawFile, 0));
 
-    fileListFile.fileInfo({
+    fileListFile.file({
       file->name(),
       File::Arinc665File::encodePath( file->path().parent_path()),
       file->medium()->mediumNumber(),
@@ -165,7 +165,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   uint16_t listOfLoadsFileCrc(
     File::Arinc665File::calculateChecksum( rawListOfLoadsFile, 0));
 
-  fileListFile.fileInfo({
+  fileListFile.file({
     ListOfLoadsName,
     File::Arinc665File::encodePath( "/"),
     medium->mediumNumber(),
@@ -179,7 +179,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
     uint16_t listOfBatchesFileCrc(
       File::Arinc665File::calculateChecksum( rawListOfBatchesFile, 0));
 
-    fileListFile.fileInfo({
+    fileListFile.file({
       ListOfBatchesName,
       File::Arinc665File::encodePath( "/"),
       medium->mediumNumber(),

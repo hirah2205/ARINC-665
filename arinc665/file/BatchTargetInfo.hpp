@@ -22,6 +22,9 @@ namespace Arinc665::File {
 
 /**
  * @brief The target hardware information, which is part of the batch file.
+ *
+ * Within ARINC 665-2 The Target Hardware ID Position Field is named
+ * Target HW ID.
  **/
 class BatchTargetInfo
 {
@@ -29,37 +32,38 @@ class BatchTargetInfo
     /**
      * @brief Initialises the batch target information.
      *
-     * @param[in] targetHardwareId
-     *   Target hardware ID.
+     * @param[in] targetHardwareIdPosition
+     *   The target hardware ID (THW ID)
      * @param[in] loads
      *   Batch loads information.
      **/
     BatchTargetInfo(
-      const std::string &targetHardwareId,
+      const std::string &targetHardwareIdPosition,
       const BatchLoadsInfo &loads);
 
     //! @copydoc BatchTargetInfo::BatchTargetInfo(const std::string&,const BatchLoadsInfo&)
     BatchTargetInfo(
-      std::string &&targetHardwareId,
+      std::string &&targetHardwareIdPosition,
       BatchLoadsInfo &&loads);
 
     /**
-     * @brief Returns the target hardware ID for this loads info.
+     * @brief Returns the Target Hardware ID + Position for this batch
+     *   information.
      *
-     * @return The target hardware id
+     * @return The Target Hardware ID + Position
      **/
-    std::string targetHardwareId() const;
+    std::string targetHardwareIdPosition() const;
 
     /**
      * @brief Updates the target hardware ID for this loads info.
      *
-     * @param[in] targetHardwareId
+     * @param[in] targetHardwareIdPosition
      *   The target hardware ID (THW ID)
      **/
-    void targetHardwareId( const std::string &targetHardwareId);
+    void targetHardwareIdPosition( const std::string &targetHardwareIdPosition);
 
-    //! @copydoc targetHardwareId(const std::string&)
-    void targetHardwareId( std::string &&targetHardwareId);
+    //! @copydoc targetHardwareIdPosition(const std::string&)
+    void targetHardwareIdPosition( std::string &&targetHardwareIdPosition);
 
     /**
      * @brief Returns the list of available loads for this target hardware.
@@ -99,7 +103,7 @@ class BatchTargetInfo
 
   private:
     //! The target hardware id
-    std::string targetHardwareIdV;
+    std::string targetHardwareIdPositionV;
     //! The list of loads
     BatchLoadsInfo loadsV;
 };

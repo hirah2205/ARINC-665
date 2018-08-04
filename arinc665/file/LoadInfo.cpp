@@ -80,12 +80,12 @@ LoadInfo::ThwIds& LoadInfo::targetHardwareIds()
   return targetHardwareIdsValue;
 }
 
-void LoadInfo::addTargetHardwareId( const std::string &targetHardwareId)
+void LoadInfo::targetHardwareId( const std::string &targetHardwareId)
 {
   targetHardwareIdsValue.push_back( targetHardwareId);
 }
 
-void LoadInfo::addTargetHardwareId( std::string &&targetHardwareId)
+void LoadInfo::targetHardwareId( std::string &&targetHardwareId)
 {
   targetHardwareIdsValue.push_back( targetHardwareId);
 }

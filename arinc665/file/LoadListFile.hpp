@@ -64,7 +64,7 @@ class LoadListFile: public ListFile
      *   Media sequence number
      * @param[in] numberOfMediaSetMembers
      *   Number of media set members
-     * @param[in] loadsInfo
+     * @param[in] loads
      *   Loads information
      * @param[in] userDefinedData
      *   User defined data.
@@ -74,7 +74,7 @@ class LoadListFile: public ListFile
       const std::string &mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
-      const LoadsInfo &loadsInfo,
+      const LoadsInfo &loads,
       const UserDefinedData &userDefinedData);
 
     //! @copydoc LoadListFile(Arinc665Version,const std::string&,uint8_t,uint8_t,const LoadsInfo&,const UserDefinedData&)
@@ -83,8 +83,8 @@ class LoadListFile: public ListFile
       std::string &&mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
-      LoadsInfo &&loadsInfo,
-      UserDefinedData &&userDefinedData);
+      LoadsInfo &&loads = {},
+      UserDefinedData &&userDefinedData = {});
 
     /**
      * @brief Creates a load list file from the given raw data.
@@ -130,21 +130,21 @@ class LoadListFile: public ListFile
      *
      * @return The Loads.
      **/
-    const LoadsInfo& loadsInfo() const;
+    const LoadsInfo& loads() const;
 
     /**
      * @brief Returns the loads.
      *
      * @return The Loads.
      **/
-    LoadsInfo& loadsInfo();
+    LoadsInfo& loads();
 
     /**
      * @brief Returns the loads as map for easy access.
      *
      * @return The loads as map.
      */
-    LoadsInfoMap loadsInfoAsMap() const;
+    LoadsInfoMap loadsAsMap() const;
 
     /**
      * @brief Adds the given load information.
@@ -152,10 +152,10 @@ class LoadListFile: public ListFile
      * @param[in] loadInfo
      *   Load information.
      **/
-    void loadInfo( const LoadInfo &loadInfo);
+    void load( const LoadInfo &loadInfo);
 
-    //! @copydoc loadInfo(const LoadInfo&)
-    void loadInfo( LoadInfo &&loadInfo);
+    //! @copydoc load(const LoadInfo&)
+    void load( LoadInfo &&load);
 
     /**
      * @brief Returns the user defined data.
@@ -230,7 +230,7 @@ class LoadListFile: public ListFile
     //! number of media set members
     uint8_t numberOfMediaSetMembersValue;
     //! The load list
-    LoadsInfo loadsInfoValue;
+    LoadsInfo loadsValue;
     //! user defined data
     UserDefinedData userDefinedDataValue;
 };

@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( file.mediaSequenceNumber() == 1);
   BOOST_CHECK( file.numberOfMediaSetMembers() == 1);
 
-  const auto& batches{ file.batchesInfo()};
+  const auto& batches{ file.batches()};
   BOOST_CHECK( batches.size() == 2);
 
   auto batch{ batches.begin()};

@@ -75,7 +75,7 @@ class FileListFile: public ListFile
      * @param numberOfMediaSetMembers
      *   The Number of Media Set Members [1..255] & mediaSequenceNumber <=
      *     [numberOfMediaSetMembers]
-     * @param[in] filesInfo
+     * @param[in] files
      *   The files informations.
      * @param[in] userDefinedData
      *   Additional User Defined Data.
@@ -85,7 +85,7 @@ class FileListFile: public ListFile
       const std::string &mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
-      const FilesInfo &filesInfo,
+      const FilesInfo &files,
       const UserDefinedData &userDefinedData);
 
     //! @copydoc FileListFile(Arinc665Version,const std::string&,uint8_t,uint8_t,const FilesInfo&,const UserDefinedData&)
@@ -94,7 +94,7 @@ class FileListFile: public ListFile
       std::string &&mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
-      FilesInfo &&filesInfo = {},
+      FilesInfo &&files = {},
       UserDefinedData &&userDefinedData = {});
 
     /**
@@ -141,39 +141,39 @@ class FileListFile: public ListFile
      *
      * @return The list of files
      **/
-    const FilesInfo& filesInfo() const;
+    const FilesInfo& files() const;
 
     /**
      * @brief Return the list of files.
      *
      * @return The list of files
      **/
-    FilesInfo& filesInfo();
+    FilesInfo& files();
 
     /**
      * @brief Return the list of files as map ( media index and filename as key).
      *
      * @return The list of files
      **/
-    FileInfoMap filesInfoAsMap() const;
+    FileInfoMap filesAsMap() const;
 
     /**
      * @brief Return the list of files as map ( media index and complete path as key).
      *
      * @return The list of files
      **/
-    FileInfoPathMap filesInfoAsPathMap() const;
+    FileInfoPathMap filesAsPathMap() const;
 
     /**
      * @brief Adds the given file information.
      *
-     * @param[in] fileInfo
+     * @param[in] file
      *   The file information.
      **/
-    void fileInfo( const FileInfo &fileInfo);
+    void file( const FileInfo &file);
 
     //! @copydoc fileInfo(const FileInfo&)
-    void fileInfo( FileInfo &&fileInfo);
+    void file( FileInfo &&file);
 
     /**
      * @brief Returns the user defined data.
@@ -239,7 +239,7 @@ class FileListFile: public ListFile
     //! The number of media set members.
     uint8_t numberOfMediaSetMembersValue;
     //! Files information (list)
-    FilesInfo filesInfoValue;
+    FilesInfo filesValue;
     //! Use defined data.
     UserDefinedData userDefinedDataValue;
 };

@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
 
   const auto &targetHardwareIds{ file.targetHardwares()};
   BOOST_CHECK( targetHardwareIds.size() == 1);
-  BOOST_CHECK( targetHardwareIds.begin()->targetHardwareId() == "THW0");
+  BOOST_CHECK( targetHardwareIds.begin()->targetHardwareIdPosition() == "THW0");
   const auto &loads{ targetHardwareIds.begin()->loads()};
   BOOST_CHECK( loads.size() == 1);
   BOOST_CHECK( loads.begin()->headerFilename() == "FN_001");

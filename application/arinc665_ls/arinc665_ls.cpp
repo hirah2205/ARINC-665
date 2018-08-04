@@ -179,10 +179,12 @@ static void list_lub( const std::filesystem::path &lubFile)
 
     for ( auto const &targetHardware : batch.targetHardwares())
     {
-      std::cout << "target HW: " << targetHardware.targetHardwareId() << "\n";
+      std::cout
+        << "target HW: " << targetHardware.targetHardwareIdPosition() << "\n";
       for (auto const &load : targetHardware.loads())
       {
-        std::cout << "  load: " << load.headerFilename() << " - " << load.partNumber() << "\n";
+        std::cout
+          << "  load: " << load.headerFilename() << " - " << load.partNumber() << "\n";
       }
     }
   }
@@ -293,7 +295,7 @@ static void list_loads_lum( const std::filesystem::path &loadsLum)
 
     std::cout << "no of media set members: " << (int)loadList.numberOfMediaSetMembers() << std::endl;
 
-    for ( const auto & load : loadList.loadsInfo())
+    for ( const auto & load : loadList.loads())
     {
       std::cout <<
         "load load pn: "                << load.partNumber() << "\n" <<
@@ -349,7 +351,7 @@ static void list_files_lum( const std::filesystem::path &filesLum)
 
     std::cout << "no of media set members: " << std::dec << (int)fileList.numberOfMediaSetMembers() << std::endl;
 
-    for ( const auto & file : fileList.filesInfo())
+    for ( const auto & file : fileList.files())
     {
       std::cout << "file file name: " << file.filename() << "\n";
       std::cout << "file path name: " << file.pathName() << "\n";

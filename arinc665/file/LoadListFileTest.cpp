@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( file.mediaSequenceNumber() == 1);
   BOOST_CHECK( file.numberOfMediaSetMembers() == 1);
 
-  const auto& loads{ file.loadsInfo()};
+  const auto& loads{ file.loads()};
   BOOST_CHECK( loads.size() == 2);
 
   auto load{ loads.begin()};

@@ -29,9 +29,9 @@ class BatchLoadInfo
      * @brief Initialises the batch load information with the given data.
      *
      * @param[in] headerFilename
-     *   Load header filename.
+     *   Load Header filename.
      * @param[in] partNumber
-     *   Load part number.
+     *   Load Part Number.
      **/
     BatchLoadInfo(
       const std::string &headerFilename,
@@ -45,7 +45,7 @@ class BatchLoadInfo
     /**
      * @brief Returns the load header filename.
      *
-     * @return The load header filename.
+     * @return The Load Header filename.
      **/
     std::string headerFilename() const;
 

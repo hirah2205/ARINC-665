@@ -78,24 +78,24 @@ void FileListFile::numberOfMediaSetMembers(
 
 size_t FileListFile::numberOfFiles() const
 {
-  return filesInfoValue.size();
+  return filesValue.size();
 }
 
-const FilesInfo& FileListFile::filesInfo() const
+const FilesInfo& FileListFile::files() const
 {
-  return filesInfoValue;
+  return filesValue;
 }
 
-FilesInfo& FileListFile::filesInfo()
+FilesInfo& FileListFile::files()
 {
-  return filesInfoValue;
+  return filesValue;
 }
 
-FileListFile::FileInfoMap FileListFile::filesInfoAsMap() const
+FileListFile::FileInfoMap FileListFile::filesAsMap() const
 {
   FileInfoMap fileMap;
 
-  for ( const auto &fileInfo : filesInfoValue)
+  for ( const auto &fileInfo : filesValue)
   {
     fileMap.insert(
       std::make_pair(
@@ -108,11 +108,11 @@ FileListFile::FileInfoMap FileListFile::filesInfoAsMap() const
   return fileMap;
 }
 
-FileListFile::FileInfoPathMap FileListFile::filesInfoAsPathMap() const
+FileListFile::FileInfoPathMap FileListFile::filesAsPathMap() const
 {
   FileInfoPathMap fileMap;
 
-  for ( const auto &fileInfo : filesInfoValue)
+  for ( const auto &fileInfo : filesValue)
   {
     fileMap.insert(
       std::make_pair(
@@ -125,14 +125,14 @@ FileListFile::FileInfoPathMap FileListFile::filesInfoAsPathMap() const
   return fileMap;
 }
 
-void FileListFile::fileInfo( const FileInfo &fileInfo)
+void FileListFile::file( const FileInfo &file)
 {
-  filesInfoValue.push_back( fileInfo);
+  filesValue.push_back( file);
 }
 
-void FileListFile::fileInfo( FileInfo &&fileInfo)
+void FileListFile::file( FileInfo &&file)
 {
-  filesInfoValue.push_back( std::move( fileInfo));
+  filesValue.push_back( std::move( file));
 }
 
 
@@ -156,23 +156,23 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
     return false;
   }
 
-  const auto &otherFileList( other.filesInfo());
+  const auto &otherFileList( other.files());
 
-  if (filesInfoValue.size() != otherFileList.size())
+  if (filesValue.size() != otherFileList.size())
   {
     return false;
   }
 
-  for ( unsigned int i = 0; i < filesInfoValue.size(); ++i)
+  for ( unsigned int i = 0; i < filesValue.size(); ++i)
   {
     if (
-      (filesInfoValue[i].filename() != otherFileList[i].filename()) ||
-      (filesInfoValue[i].pathName() != otherFileList[i].pathName()))
+      (filesValue[i].filename() != otherFileList[i].filename()) ||
+      (filesValue[i].pathName() != otherFileList[i].pathName()))
     {
       return false;
     }
 
-    switch ( fileType( filesInfoValue[i].filename()))
+    switch ( fileType( filesValue[i].filename()))
     {
       case FileType::LoadList:
       case FileType::BatchList:
@@ -181,8 +181,8 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
 
       default:
         if (
-          (filesInfoValue[i].crc() != otherFileList[i].crc()) ||
-          (filesInfoValue[i].memberSequenceNumber() != otherFileList[i].memberSequenceNumber()))
+          (filesValue[i].crc() != otherFileList[i].crc()) ||
+          (filesValue[i].memberSequenceNumber() != otherFileList[i].memberSequenceNumber()))
         {
           return false;
         }
@@ -340,7 +340,7 @@ RawFile FileListFile::encodeFilesInfo() const
 
   // iterate over files
   uint16_t fileCounter( 0);
-  for (auto const &fileInfo : filesInfo())
+  for (auto const &fileInfo : filesValue)
   {
     ++fileCounter;
     auto const rawFilename( encodeString( fileInfo.filename()));
@@ -387,10 +387,10 @@ void FileListFile::decodeFilesInfo(
   const RawFile &rawFile,
   const std::size_t offset)
 {
-  auto it( rawFile.begin() + offset);
+  auto it{ rawFile.begin() + offset};
 
   // clear potentially data
-  filesInfoValue.clear();
+  filesValue.clear();
 
   // number of files
   uint16_t numberOfFiles;
@@ -426,7 +426,7 @@ void FileListFile::decodeFilesInfo(
     // set it to begin of next file
     it += filePointer * 2;
 
-    filesInfoValue.emplace_back( filename, pathName, memberSequenceNumber, crc);
+    filesValue.emplace_back( filename, pathName, memberSequenceNumber, crc);
   }
 }
 

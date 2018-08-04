@@ -59,18 +59,23 @@ class BatchListFile: public ListFile
      *
      * @param[in] version
      *   ARINC 665 version.
-     * @param mediaSetPn
-     * @param mediaSequenceNumber
-     * @param numberOfMediaSetMembers
-     * @param batchesInfo
-     * @param userDefinedData
+     * @param[in] mediaSetPn
+     *   Media Set Part Number.
+     * @param[in] mediaSequenceNumber
+     *   Media Set sequnce number.
+     * @param[in] numberOfMediaSetMembers
+     *   Number of Media Set members.
+     * @param[in] batches
+     *   Batches information.
+     * @param[in] userDefinedData
+     *   Additional user defined data.
      **/
     BatchListFile(
       Arinc665Version version,
       const std::string &mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
-      const BatchesInfo &batchesInfo,
+      const BatchesInfo &batches,
       const UserDefinedData &userDefinedData);
 
     //! @copydoc BatchListFile(Arinc665Version,const std::string&,uint8_t,uint8_t,const BatchesInfo&,const UserDefinedData&)
@@ -79,7 +84,7 @@ class BatchListFile: public ListFile
       std::string &&mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
-      BatchesInfo &&batchesInfo,
+      BatchesInfo &&batches,
       UserDefinedData &&userDefinedData);
 
     /**
@@ -88,7 +93,7 @@ class BatchListFile: public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    BatchListFile( const RawFile &rawFile);
+    explicit BatchListFile( const RawFile &rawFile);
 
     //! @copydoc ListFile::operator=
     BatchListFile& operator=( const RawFile &rawFile) final;
@@ -126,28 +131,28 @@ class BatchListFile: public ListFile
      *
      * @return The batches information.
      **/
-    const BatchesInfo& batchesInfo() const;
+    const BatchesInfo& batches() const;
 
-    //! @copydoc batchesInfo() const
-    BatchesInfo& batchesInfo();
+    //! @copydoc batches() const
+    BatchesInfo& batches();
 
     /**
      * @brief Returns the batches information as map.
      *
      * @return The batches information as map.
      */
-    BatchInfoMap batchesInfoAsMap() const;
+    BatchInfoMap batchesAsMap() const;
 
     /**
      * @brief Adds the given batch information.
      *
-     * @param[in] batchInfo
+     * @param[in] batch
      *   The batch information to add.
      **/
-    void batchInfo( const BatchInfo &batchInfo);
+    void batch( const BatchInfo &batch);
 
     //! @copydoc batchInfo(const BatchInfo&)
-    void batchInfo( BatchInfo &&batchInfo);
+    void batch( BatchInfo &&batch);
 
     /**
      * @brief Returns the user defined data.
@@ -213,7 +218,7 @@ class BatchListFile: public ListFile
     //! The number of media set members
     uint8_t numberOfMediaSetMembersValue;
     //! The stored batches information
-    BatchesInfo batchesInfoValue;
+    BatchesInfo batchesValue;
     //! user defined data
     UserDefinedData userDefinedDataValue;
 };
