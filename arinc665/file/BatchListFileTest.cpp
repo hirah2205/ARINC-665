@@ -14,6 +14,8 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <helper/Dump.hpp>
+
 #include <boost/test/unit_test.hpp>
 
 #include <iostream>
@@ -122,6 +124,8 @@ BOOST_AUTO_TEST_CASE( constructor1)
     BatchListFile::UserDefinedData{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06}));
 
   const auto raw2{ static_cast< RawFile>( file)};
+
+  // std::cout << Dump( &(*(raw2.begin())), raw2.size());
 
   BOOST_CHECK( rawFile == raw2);
 }

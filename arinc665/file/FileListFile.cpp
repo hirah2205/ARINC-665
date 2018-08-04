@@ -272,6 +272,7 @@ RawFile FileListFile::encode() const
 
 void FileListFile::decodeBody( const RawFile &rawFile)
 {
+  // Spare Field
   uint32_t spare;
   getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
 
@@ -373,7 +374,7 @@ RawFile FileListFile::encodeFilesInfo() const
     fileInfoIt = setInt< uint16_t>( fileInfoIt, fileInfo.memberSequenceNumber());
 
     // crc
-    fileInfoIt = setInt< uint16_t>( fileInfoIt, fileInfo.crc());
+    setInt< uint16_t>( fileInfoIt, fileInfo.crc());
 
     // add file info to files info
     rawFilesInfo.insert( rawFilesInfo.end(), rawFileInfo.begin(), rawFileInfo.end());

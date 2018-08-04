@@ -34,6 +34,18 @@ class BatchListFile: public ListFile
     //! User defined data type.
     using UserDefinedData = std::vector< uint8_t>;
 
+    //! Offset of the Media Set Part Number Pointer Field
+    static constexpr std::size_t MediaSetPartNumberPointerFieldOffset = 8U;
+
+    //! Offset of the Batches Pointer Field
+    static constexpr std::size_t BatchFilesPointerFieldOffset = 12U;
+
+    //! Offset of the User Defined Data Pointer Field
+    static constexpr std::size_t UserDefinedDataPointerFieldOffset = 16U;
+
+    //! First Start of pointer data for ARINC 665 Batch List FIles.
+    static constexpr std::size_t FileHeaderSize = 20U;
+
     /**
      * @brief Creates an empty batch list file.
      *

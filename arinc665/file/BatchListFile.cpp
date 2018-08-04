@@ -12,6 +12,8 @@
 
 #include "BatchListFile.hpp"
 
+#include <arinc665/Arinc665Exception.hpp>
+
 #include <helper/Endianess.hpp>
 #include <helper/SafeCast.hpp>
 #include <helper/Logger.hpp>
@@ -142,69 +144,74 @@ bool BatchListFile::belongsToSameMediaSet( const BatchListFile &other) const
 
 RawFile BatchListFile::encode() const
 {
-  RawFile rawFile(
-    BaseHeaderOffset +
-    3 * sizeof( uint32_t)); // mediaInformationPtr, BatchesListPtr, userDefinedDataPtr
+  RawFile rawFile( FileHeaderSize);
 
+  // Spare Field
+  setInt< uint16_t>( rawFile.begin() + SpareFieldOffset, 0U);
+
+  // Next free Offset (used for optional pointer calculation)
+  size_t nextFreeOffset{ rawFile.size()};
+
+
+  // media set informations
   const auto rawMediaSetPn{ encodeString( mediaSetPn())};
   assert( rawMediaSetPn.size() % 2 == 0);
 
+  // media set part number
+  rawFile.insert( rawFile.end(), rawMediaSetPn.begin(), rawMediaSetPn.end());
+
+  rawFile.resize( rawFile.size() + 2 * sizeof( uint8_t));
+
+  // media sequence number
+  setInt< uint8_t>(
+    rawFile.begin() + nextFreeOffset + rawMediaSetPn.size(),
+    mediaSequenceNumberValue);
+
+  // number of media set members
+  setInt< uint8_t>(
+    rawFile.begin() + nextFreeOffset + rawMediaSetPn.size() + sizeof( uint8_t),
+    numberOfMediaSetMembersValue);
+
+  setInt< uint32_t>(
+    rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
+    nextFreeOffset / 2);
+  nextFreeOffset += rawMediaSetPn.size() + 2 * sizeof( uint8_t);
+
+
+  // Batch Informations
   const auto rawBatchesInfo{ encodeBatchesInfo()};
   assert( rawBatchesInfo.size() % 2 == 0);
 
-  auto it{ rawFile.begin() + BaseHeaderOffset};
-
-  // media information pointer
-  uint32_t mediaInformationPtr =
-    (BaseHeaderOffset + (3 * sizeof( uint32_t))) / 2;
-  it = setInt< uint32_t>( it, mediaInformationPtr);
-
   // batches list pointer
-  uint32_t batchesListPtr =
-    mediaInformationPtr + 
-    (2 * sizeof( uint8_t)) / 2 + 
-    safeCast< uint32_t>( rawMediaSetPn.size() / 2);
-  it = setInt< uint32_t>( it, batchesListPtr);
+  setInt< uint32_t>(
+    rawFile.begin() + BatchFilesPointerFieldOffset,
+    nextFreeOffset / 2);
+  nextFreeOffset += rawBatchesInfo.size();
 
-  // user defined data pointer
-  uint32_t userDefinedDataPtr =
-    userDefinedDataValue.empty() ? 
-      0U :
-      batchesListPtr + safeCast< uint32_t>( rawBatchesInfo.size() / 2);
-  it = setInt< uint32_t>( it, userDefinedDataPtr);
+  rawFile.insert( rawFile.end(), rawBatchesInfo.begin(), rawBatchesInfo.end());
 
-
-  // media set part number
-  it = rawFile.insert( it, rawMediaSetPn.begin(), rawMediaSetPn.end());
-
-  // media sequence number, number of media set members
-  auto oldSize{ rawFile.size()};
-  rawFile.resize( oldSize + 2 * sizeof( uint8_t) );
-  it = rawFile.begin() + oldSize;
-
-  // media sequence number
-  it = setInt< uint8_t>( it, mediaSequenceNumberValue);
-
-  // number of media set members
-  it = setInt< uint8_t>( it, numberOfMediaSetMembersValue);
-
-
-  // batches list
-  it = rawFile.insert( it, rawBatchesInfo.begin(), rawBatchesInfo.end());
-  it += rawFile.size();
 
   // user defined data
+  assert( userDefinedDataValue.size() % 2 == 0);
+  uint32_t userDefinedDataPtr = 0;
+
   if (!userDefinedDataValue.empty())
   {
-    //! TODO change to normal exception
-    assert( userDefinedDataValue.size() % 2 == 0);
+    userDefinedDataPtr = nextFreeOffset / 2;
+    // nextFreeOffset += userDefinedDataValue.size();
+
     rawFile.insert(
       rawFile.end(),
       userDefinedDataValue.begin(),
       userDefinedDataValue.end());
   }
 
-  // resize buffer for crc
+  setInt< uint32_t>(
+    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    userDefinedDataPtr);
+
+
+  // Resize to final size ( File CRC)
   rawFile.resize( rawFile.size() + sizeof( uint16_t));
 
   // set header and crc
@@ -215,21 +222,41 @@ RawFile BatchListFile::encode() const
 
 void BatchListFile::decodeBody( const RawFile &rawFile)
 {
-  // set processing start to position after spare
-  auto it{ rawFile.begin() + BaseHeaderOffset};
+  // Spare Field
+  uint32_t spare;
+  getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
 
+  if (0U != spare)
+  {
+    BOOST_THROW_EXCEPTION( InvalidArinc665File()
+      << AdditionalInfo( "Spare is not 0"));
+  }
+
+
+  // media information pointer
   uint32_t mediaInformationPtr;
-  it = getInt< uint32_t>( it, mediaInformationPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
+    mediaInformationPtr);
 
+  // Batch list pointer
   uint32_t batchListPtr;
-  it = getInt< uint32_t>( it, batchListPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + BatchFilesPointerFieldOffset,
+    batchListPtr);
 
+
+  // user defined data pointer
   uint32_t userDefinedDataPtr;
-  getInt< uint32_t>( it, userDefinedDataPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    userDefinedDataPtr);
+
 
   // media set part number
-  it = rawFile.begin() + mediaInformationPtr * 2;
-  it = decodeString( it, mediaSetPnValue);
+  auto it = decodeString(
+    rawFile.begin() + mediaInformationPtr * 2,
+    mediaSetPnValue);
 
   // media sequence number
   it = getInt< uint8_t>( it, mediaSequenceNumberValue);
@@ -237,17 +264,21 @@ void BatchListFile::decodeBody( const RawFile &rawFile)
   // number of media set members
   getInt< uint8_t>( it, numberOfMediaSetMembersValue);
 
+
   // batch list
   decodeBatchesInfo( rawFile, 2 * batchListPtr);
+
 
   // user defined data
   if ( 0 != userDefinedDataPtr)
   {
-    it = rawFile.begin() + userDefinedDataPtr * 2;
-    userDefinedDataValue.assign( it, rawFile.end() - 2);
+    userDefinedDataValue.assign(
+      rawFile.begin() + userDefinedDataPtr * 2,
+      rawFile.begin() + rawFile.size() - DefaultChecksumPosition);
   }
 
-  // file CRC decoded and checked within base class
+
+  // file crc decoded and checked within base class
 }
 
 RawFile BatchListFile::encodeBatchesInfo() const
