@@ -13,6 +13,7 @@ add_library(
 
   Arinc665.hpp
   Arinc665.cpp
+  Arinc665Crc.cpp
   Arinc665Crc.hpp
   Arinc665Exception.hpp
   Arinc665Logger.hpp

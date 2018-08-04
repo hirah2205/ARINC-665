@@ -121,16 +121,32 @@ enum class MediaFileFormatVersion : uint16_t
 //! All ARINC 665 file types combined
 enum class Arinc665FileFormatVersion : uint16_t
 {
-  LOAD_FILE_VERSION_2 = static_cast< uint16_t>( LoadFileFormatVersion::Version2),
-  LOAD_FILE_VERSION_34 = static_cast< uint16_t>( LoadFileFormatVersion::Version34),
+  LOAD_FILE_VERSION_2   = static_cast< uint16_t>( LoadFileFormatVersion::Version2),
+  LOAD_FILE_VERSION_34  = static_cast< uint16_t>( LoadFileFormatVersion::Version34),
 
-  BATCH_FILE_VERSION_2 = static_cast< uint16_t>( BatchFileFormatVersion::Version2),
+  BATCH_FILE_VERSION_2  = static_cast< uint16_t>( BatchFileFormatVersion::Version2),
   BATCH_FILE_VERSION_34 = static_cast< uint16_t>( BatchFileFormatVersion::Version34),
 
-  MEDIA_FILE_VERSION_2 = static_cast< uint16_t>( MediaFileFormatVersion::Version2),
+  MEDIA_FILE_VERSION_2  = static_cast< uint16_t>( MediaFileFormatVersion::Version2),
   MEDIA_FILE_VERSION_34 = static_cast< uint16_t>( MediaFileFormatVersion::Version34),
 
   Invalid = 0xFFFFU  //!< invalid value
+};
+
+//! Check Value enumeration
+enum class CheckValue : uint16_t
+{
+  NotUsed = 0,
+  Crc8    = 1,
+  Crc16   = 2,
+  Crc32   = 3,
+  Md5     = 4,
+  Sha1    = 5,
+  Sha256  = 6,
+  Sha512  = 7,
+  Crc64   = 6,
+
+  Invalid = 0xFFFFU
 };
 
 //! @brief ARINC 665 file types

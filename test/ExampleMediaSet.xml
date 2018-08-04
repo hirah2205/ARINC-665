@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<MediaSet 
-  xmlns="http://www.thomas-vogt.de/Arinc665MediaSet" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<MediaSet
+  xmlns="http://www.thomas-vogt.de/Arinc665MediaSet"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.thomas-vogt.de/Arinc665MediaSet ../arinc665_xml/Arinc665MediaSet.xsd"
 
   PartNumber="CCC" >

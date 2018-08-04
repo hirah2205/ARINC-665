@@ -468,9 +468,18 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
   decodeString( rawFile.begin() + loadPartNumberPtr * 2, partNumberValue);
 
 
-  if (decodeV3Data)
+  // Load Type Description Field (ARINC 665-3)
+  if (decodeV3Data && (0!=loadTypeDescriptionPtr))
   {
-    // TODO: add Load Type Description Field (ARINC 665-3)
+    std::string loadTypeDescription;
+    auto it{ decodeString(
+      rawFile.begin() + loadTypeDescriptionPtr * 2,
+      loadTypeDescription)};
+
+    uint16_t loadTypeValue;
+    getInt< uint16_t>( it, loadTypeValue);
+
+    loadType( {std::make_pair(std::move( loadTypeDescription), loadTypeValue)});
   }
 
 
@@ -483,9 +492,26 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
 
   targetHardwareIds( targetHardwareIdsValue);
 
-  if (decodeV3Data)
+  // THW IDs with Positions Field (ARINC 665-3)
+  if (decodeV3Data && (0!=thwIdsPositionPtr))
   {
-    // TODO: add THW IDs with Positions Field (ARINC 665-3)
+    uint16_t numberOfThwIdsWithPos;
+    auto it = getInt< uint16_t>(
+      rawFile.begin() + thwIdsPositionPtr * 2,
+      numberOfThwIdsWithPos);
+
+    for ( unsigned int thwIdIndex = 0; thwIdIndex < numberOfThwIdsWithPos; ++thwIdIndex)
+    {
+      std::string thwId;
+      it = decodeString( it, thwId);
+
+      StringList positions;
+      it = decodeStringList( it, positions);
+
+      targetHardwareIdPositionsValue.insert_or_assign(
+        std::move( thwId),
+        std::move( positions));
+    }
   }
 
 
@@ -503,10 +529,22 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
   // user defined data
   if ( 0U != userDefinedDataPtr)
   {
+    std::size_t endOfUserDefinedData{ rawFile.size() - FileCrcOffset};
+
+    if (loadCheckValuePtr != 0)
+    {
+      if (loadCheckValuePtr <= userDefinedDataPtr)
+      {
+        BOOST_THROW_EXCEPTION( InvalidArinc665File()
+          << AdditionalInfo( "Invalid Pointers"));
+      }
+
+      endOfUserDefinedData = loadCheckValuePtr * 2;
+    }
+
     userDefinedDataValue.assign(
       rawFile.begin() + userDefinedDataPtr * 2,
-      rawFile.begin() + rawFile.size() - FileCrcOffset);
-    //! @todo update End of user defined data calculation in conjunction with ARINC 665-3
+      rawFile.begin() + endOfUserDefinedData);
   }
 
   if (decodeV3Data)
@@ -579,7 +617,7 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
   const RawFile &rawFile,
   const std::size_t offset)
 {
-  RawFile::const_iterator it( rawFile.begin() + offset);
+  auto it{ rawFile.begin() + offset};
 
   LoadFilesInfo files;
 

@@ -103,12 +103,12 @@ class LoadHeaderFile: public Arinc665File
     //! Target Hardware ID / Positions list type
     using TargetHardwareIdPositions =
       std::map< std::string, StringList>;
-    ;
     //! User defined data type
     using UserDefinedData = std::vector< uint8_t>;
     //! Load Type (Description + ID)
     using LoadType =
       std::optional< std::pair< std::string, uint16_t>>;
+
     //! Offset of the Part Flags Field (ARINC 665-3) - Spare in older supplements
     static constexpr std::size_t PartFlagsFieldOffset = 6U;
 
@@ -127,13 +127,13 @@ class LoadHeaderFile: public Arinc665File
     //! Offset of the User Defined Data Pointer Field
     static constexpr std::size_t UserDefinedDataPointerFieldOffset = 24U;
 
-    //! Offset of the Load Type Description Pointer Field
+    //! Offset of the Load Type Description Pointer Field (ARINC 665-3)
     static constexpr std::size_t LoadTypeDescriptionPointerFieldOffset = 28U;
 
-    //! Offset of the THW IDs with Positions Pointer Field
+    //! Offset of the THW IDs with Positions Pointer Field (ARINC 665-3)
     static constexpr std::size_t ThwIdPositionsPointerFieldOffset = 32U;
 
-    //! Offset of the Load Check Value Pointer Field
+    //! Offset of the Load Check Value Pointer Field (ARINC 665-3)
     static constexpr std::size_t LoadCheckValuePointerFieldOffset = 36U;
 
     //! First Start of pointer data for ARINC 665-2 Load Headers.
@@ -165,15 +165,15 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] version
      *   ARINC 665 version.
      * @param[in] partNumber
-     *   Load part number
+     *   Load Part Number
      * @param[in] targetHardwareIdPositions
      *   Target Hardware ID / Positions
      * @param[in] dataFilesInfo
-     *   Data files
+     *   Data Files
      * @param[in] supportFilesInfo
-     *   Support files
+     *   Support Files
      * @param[in] userDefinedData
-     *   User defined data
+     *   User Defined Data
      * @param[in] loadCrc
      *   Load CRC
      **/
@@ -236,7 +236,7 @@ class LoadHeaderFile: public Arinc665File
      * @brief Updates the part number of the load header file.
      *
      * @param[in] partNumber
-     *   The new part number.
+     *   The new Part Number.
      **/
     void partNumber( const std::string &partNumber);
 
@@ -246,7 +246,7 @@ class LoadHeaderFile: public Arinc665File
     /**
      * @brief Returns the Target Hardware ID/ Positions.
      *
-     * @return The target hardware IDs
+     * @return The Target Hardware IDs
      **/
     const TargetHardwareIdPositions& targetHardwareIdPositions() const;
 
@@ -381,17 +381,17 @@ class LoadHeaderFile: public Arinc665File
     void userDefinedData( UserDefinedData &&userDefinedData);
 
     /**
-     * @brief Returns the load CRC.
+     * @brief Returns the Load CRC.
      *
-     * @return The load CRC
+     * @return The Load CRC
      **/
     uint32_t loadCrc() const;
 
     /**
-     * @brief Updates the load CRC.
+     * @brief Updates the Load CRC.
      *
      * @param[in] loadCrc
-     *   The load CRC
+     *   The Load CRC
      **/
     void loadCrc( uint32_t loadCrc);
 
@@ -403,7 +403,7 @@ class LoadHeaderFile: public Arinc665File
      * @brief Decodes the body of the load header file.
      *
      * @param[in] rawFile
-     *   Raw load header file representation.
+     *   Raw Load Header File representation.
      **/
     void decodeBody( const RawFile &rawFile);
 
@@ -427,7 +427,7 @@ class LoadHeaderFile: public Arinc665File
      * ARINC 665 supplements.
      *
      * @param[in] rawFile
-     *   Raw load header file representation.
+     *   Raw Load Header File representation.
      * @param[in] offset
      *   Offset of the files information list.
      *

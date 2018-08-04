@@ -14,6 +14,9 @@
 #define ARINC665_ARINC665CRC_HPP
 
 #include <arinc665/Arinc665.hpp>
+
+#include <map>
+
 #include <boost/crc.hpp>
 
 namespace Arinc665 {
@@ -29,6 +32,9 @@ using Arinc665Crc32 =
 //! ARINC 665 CRC 64 definition
 using Arinc665Crc64 =
   boost::crc_optimal< 64, Crc64Polynom, Crc64Init, Crc64FinalXor, Crc64ReflectIn, Crc64ReflectOut>;
+
+extern const std::map< CheckValue, uint16_t> CheckValueSize;
+
 }
 
 #endif

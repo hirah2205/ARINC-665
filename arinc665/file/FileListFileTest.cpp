@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief @todo Add brief description
+ * @brief Definition of unit tests for the class Arinc665::File::FileListFile.
  **/
 
 #include <arinc665/file/FileListFile.hpp>
