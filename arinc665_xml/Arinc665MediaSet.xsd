@@ -86,8 +86,9 @@
       <element name="DataFile"       type="ams:FileRefernceType"   minOccurs="0" maxOccurs="unbounded" />
       <element name="SupportFile"    type="ams:FileRefernceType"   minOccurs="0" maxOccurs="unbounded" />
     </sequence>
-    <attribute name="NameRef"     type="IDREF"          use="required" />
-    <attribute name="Description" type="ams:StringType" use="optional" />
+    <attribute name="NameRef"     type="IDREF"            use="required" />
+    <attribute name="Description" type="ams:StringType"   use="optional" />
+    <attribute name="Type"        type="ams:HexValueType" use="optional" default="0x0000"/>
   </complexType>
 
   <complexType name="TargetHardwareType" >

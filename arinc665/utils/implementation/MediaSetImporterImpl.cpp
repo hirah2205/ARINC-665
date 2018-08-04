@@ -464,7 +464,7 @@ void MediaSetImporterImpl::addLoads(
 
       dataFilePtr->partNumber( dataFile.partNumber());
 
-      loadPtr->addDataFile( dataFilePtr);
+      loadPtr->dataFile( dataFilePtr);
 
       // load file for load checksum calculation
       const auto file{ readFileHandler(
@@ -477,11 +477,11 @@ void MediaSetImporterImpl::addLoads(
     // iterate over support files
     for ( const auto &supportFile : loadHeaderFile->second.supportFiles())
     {
-      auto supportFilePtr( mediaSet->file( supportFile.filename()));
+      auto supportFilePtr{ mediaSet->file( supportFile.filename())};
 
       supportFilePtr->partNumber( supportFile.partNumber());
 
-      loadPtr->addSupportFile( supportFilePtr);
+      loadPtr->supportFile( supportFilePtr);
 
       // load file for load checksum calculation
       const auto file{ readFileHandler(
@@ -508,10 +508,10 @@ void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
   for ( const auto &batch : batches)
   {
     // get batch info for batch file
-    auto batchInfo( batchInfos.find( batch.first));
+    auto batchInfo{ batchInfos.find( batch.first)};
 
     // get the batch file
-    auto batchFile( batchFiles.find( batch.first.second));
+    auto batchFile{ batchFiles.find( batch.first.second)};
 
     ContainerEntityPtr container( checkCreateDirectory(
       batch.first.first,

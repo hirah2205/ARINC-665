@@ -19,7 +19,9 @@
 
 #include <string>
 #include <list>
+#include <map>
 #include <vector>
+#include <optional>
 #include <cstdint>
 
 namespace Arinc665::Media {
@@ -32,10 +34,17 @@ class Load: public BaseFile
   public:
     //! File list
     using Files = std::list< WeakFilePtr>;
-    //! Target hardware ID list
+    //! Target Hardware ID / Positions
+    using TargetHardwareIdPositions =
+      std::map< std::string, std::list< std::string>>;
+    //! Target Hardware ID list
     using TargetHardwareIds = std::list< std::string>;
+    //! Positions list
+    using Positions = std::list< std::string>;
     //! User defined data type
     using UserDefinedData = std::vector< uint8_t>;
+    //! Load Type (Description + ID)
+    using Type = std::optional< std::pair< std::string, uint16_t>>;
 
     /**
      * @brief
@@ -62,25 +71,46 @@ class Load: public BaseFile
      *
      * @return The list of Target HW IDs.
      **/
-    const TargetHardwareIds& targetHardwareIds() const;
+    const TargetHardwareIdPositions& targetHardwareIdPositions() const;
+
+    //! @copydoc targetHardwareIdPositions() const
+    TargetHardwareIdPositions& targetHardwareIdPositions();
 
     /**
-     * @brief Returns the List of Target HW IDs.
+     * @brief Updates the Target Hardware ID/ Position.
      *
-     * @return The list of Target HW IDs (modifiable).
+     * @param[in] targetHardwareIdPositions
+     *   Target Hardware ID/ Positions.
      **/
-    TargetHardwareIds& targetHardwareIds();
+    void targetHardwareIdPositions(
+      const TargetHardwareIdPositions &targetHardwareIdPositions);
+
+    //! @copydoc targetHardwareIdPositions(const TargetHardwareIdPositions&)
+    void targetHardwareIdPositions(
+      TargetHardwareIdPositions &&targetHardwareIdPositions);
 
     /**
-     * @brief Updates the list of Target HW IDs.
+     * @brief Returns the List of Target HW IDs without position information.
+     *
+     * @return The list of Target HW IDs.
+     **/
+    TargetHardwareIds targetHardwareIds() const;
+
+    /**
+     * @brief Adds a list of Target HW IDs without position information.
      *
      * @param[in] thwIds
      *   The list of Target HW IDs.
      **/
     void targetHardwareIds( const TargetHardwareIds &thwIds);
 
-    //! @copydoc targetHardwareIds(const TargetHardwareIds&)
-    void targetHardwareIds( TargetHardwareIds &&thwIds);
+     void targetHardwareId(
+      const std::string &targetHardwareId,
+      const Positions &positions = {});
+
+    void targetHardwareId(
+      std::string &&targetHardwareId,
+      Positions &&positions = {});
 
     /**
      * @brief Returns the data files.
@@ -95,7 +125,7 @@ class Load: public BaseFile
      * @param[in] dataFile
      *   The data file.
      **/
-    void addDataFile( const WeakFilePtr dataFile);
+    void dataFile( const WeakFilePtr dataFile);
 
     /**
      * @brief Returns the support files.
@@ -110,7 +140,7 @@ class Load: public BaseFile
      * @param[in] supportFile
      *   The support file.
      **/
-    void addSupportFile( const WeakFilePtr supportFile);
+    void supportFile( const WeakFilePtr supportFile);
 
     /**
      * @brief Returns the user-defined data stored in the load header.
@@ -133,15 +163,23 @@ class Load: public BaseFile
     //! @copydoc Load::userDefinedData(const UserDefinedData&)
     void userDefinedData( UserDefinedData &&userDefinedData);
 
+    const Type& loadType() const;
+
+    void loadType( const Type &type);
+
+    void loadType( Type &&type);
+
   private:
-    //! target hardware IDs
-    TargetHardwareIds targetHardwareIdsValue;
+    //! Target Hardware ID/ Positions
+    TargetHardwareIdPositions targetHardwareIdPositionsValue;
     //! Data files
     Files dataFilesValue;
     //! Support files
     Files supportFilesValue;
     //! user defined data
     UserDefinedData userDefinedDataValue;
+    //! Load Type
+    Type typeValue;
 };
 
 }

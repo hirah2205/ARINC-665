@@ -12,6 +12,8 @@
 
 #include "LoadHeaderFile.hpp"
 
+#include <arinc665/Arinc665Exception.hpp>
+
 #include <helper/Endianess.hpp>
 #include <helper/SafeCast.hpp>
 #include <helper/Logger.hpp>
@@ -20,6 +22,7 @@ namespace Arinc665::File {
 
 LoadHeaderFile::LoadHeaderFile( Arinc665Version version) :
   Arinc665File( FileType::LoadUploadHeader, version, FileCrcOffset),
+  partFlagsValue( 0),
   loadCrcValue( 0)
 {
 }
@@ -38,6 +41,16 @@ LoadHeaderFile& LoadHeaderFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
+uint16_t LoadHeaderFile::partFlags() const
+{
+  return partFlagsValue;
+}
+
+void LoadHeaderFile::partFlags( uint16_t partFlags)
+{
+  partFlagsValue= partFlags;
+}
+
 std::string LoadHeaderFile::partNumber() const
 {
   return partNumberValue;
@@ -53,37 +66,79 @@ void LoadHeaderFile::partNumber( std::string &&partNumber)
   partNumberValue = std::move( partNumber);
 }
 
-const LoadHeaderFile::TargetHardwareIds&
-LoadHeaderFile::targetHardwareIds() const
+const LoadHeaderFile::TargetHardwareIdPositions&
+LoadHeaderFile::targetHardwareIdPositions() const
 {
-  return targetHardwareIdsValue;
+  return targetHardwareIdPositionsValue;
 }
 
-LoadHeaderFile::TargetHardwareIds& LoadHeaderFile::targetHardwareIds()
+LoadHeaderFile::TargetHardwareIdPositions&
+LoadHeaderFile::targetHardwareIdPositions()
 {
-  return targetHardwareIdsValue;
+  return targetHardwareIdPositionsValue;
 }
 
-void LoadHeaderFile::targetHardwareIds(
-  const TargetHardwareIds &targetHardwareIds)
+void LoadHeaderFile::targetHardwareIdPositions(
+  const TargetHardwareIdPositions &targetHardwareIdPositions)
 {
-  targetHardwareIdsValue = targetHardwareIds;
+  targetHardwareIdPositionsValue = targetHardwareIdPositions;
 }
 
-void LoadHeaderFile::targetHardwareIds(
-  TargetHardwareIds &&targetHardwareIds)
+void LoadHeaderFile::targetHardwareIdPositions(
+  TargetHardwareIdPositions &&targetHardwareIdPositions)
 {
-  targetHardwareIdsValue = std::move( targetHardwareIds);
+  targetHardwareIdPositionsValue = std::move( targetHardwareIdPositions);
 }
 
-void LoadHeaderFile::targetHardwareId( const std::string &targetHardwareId)
+LoadHeaderFile::StringList LoadHeaderFile::targetHardwareIds() const
 {
-  targetHardwareIdsValue.push_back( targetHardwareId);
+  StringList targetHardwareIds;
+
+  for ( const auto &element : targetHardwareIdPositionsValue)
+  {
+    targetHardwareIds.push_back( element.first);
+  }
+
+  return targetHardwareIds;
 }
 
-void LoadHeaderFile::targetHardwareId( std::string &&targetHardwareId)
+void LoadHeaderFile::targetHardwareIds( const StringList &targetHardwareIds)
 {
-  targetHardwareIdsValue.push_back( std::move( targetHardwareId));
+  for ( const auto& thwId : targetHardwareIds)
+  {
+    targetHardwareId( thwId);
+  }
+}
+
+void LoadHeaderFile::targetHardwareId(
+  const std::string &targetHardwareId,
+  const StringList &positions)
+{
+  targetHardwareIdPositionsValue.insert(
+    std::make_pair( targetHardwareId, positions));
+}
+
+void LoadHeaderFile::targetHardwareId(
+  std::string &&targetHardwareId,
+  StringList &&positions)
+{
+  targetHardwareIdPositionsValue.emplace(
+    std::make_pair( std::move( targetHardwareId), std::move( positions)));
+}
+
+const LoadHeaderFile::LoadType& LoadHeaderFile::type() const
+{
+  return typeValue;
+}
+
+void LoadHeaderFile::loadType( const LoadType &type)
+{
+  typeValue = type;
+}
+
+void LoadHeaderFile::loadType( LoadType &&type)
+{
+  typeValue = std::move( type);
 }
 
 const LoadFilesInfo& LoadHeaderFile::dataFiles() const
@@ -153,13 +208,38 @@ void LoadHeaderFile::loadCrc( const uint32_t loadCrc)
 
 RawFile LoadHeaderFile::encode() const
 {
-  RawFile rawFile( LoadHeaderSizeV2);
+  bool encodeV3Data{ false};
+  std::size_t baseSize{ 0};
 
+  switch ( arincVersion())
+  {
+    case Arinc665Version::ARINC_665_1:
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << AdditionalInfo( "Unsupported ARINC 665 Version"));
 
-  // Part Flags (Spare in ARINC 665-2) TODO
+    case Arinc665Version::ARINC_665_2:
+      // Spare
+      baseSize = LoadHeaderSizeV2;
+      break;
+
+    case Arinc665Version::ARINC_665_3:
+    case Arinc665Version::ARINC_665_4:
+      // Part Flags
+      encodeV3Data = true;
+      baseSize = LoadHeaderSizeV3;
+      break;
+
+    default:
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << AdditionalInfo( "Unsupported ARINC 665 Version"));
+  }
+
+  RawFile rawFile( baseSize);
+
+  // Part Flags or Spare
   setInt< uint16_t>(
     rawFile.begin() + PartFlagsFieldOffset,
-    0U);
+    encodeV3Data ? partFlagsValue : 0U);
 
 
   // Next free Offset (used for optional pointer calculation)
@@ -177,6 +257,36 @@ RawFile LoadHeaderFile::encode() const
 
   rawFile.insert( rawFile.end(), rawLoadPn.begin(), rawLoadPn.end());
 
+  // Load Type (only in V3 mode)
+  if (encodeV3Data)
+  {
+    uint32_t loadTypePtr = 0;
+
+    // Encode lode type only if set.
+    if (typeValue)
+    {
+      loadTypePtr = nextFreeOffset / 2;
+
+      const auto rawTypeDescription{ encodeString( typeValue->first)};
+
+      // description
+      rawFile.insert(
+        rawFile.end(),
+        rawTypeDescription.begin(),
+        rawTypeDescription.end());
+
+      rawFile.resize( rawFile.size() + sizeof( uint16_t));
+      setInt< uint16_t>(
+        rawFile.begin() + rawTypeDescription.size(),
+        typeValue->second);
+
+      nextFreeOffset += rawTypeDescription.size() + sizeof( uint16_t);
+    }
+
+    setInt< uint32_t>(
+      rawFile.begin() + LoadTypeDescriptionPointerFieldOffset,
+      loadTypePtr);
+  }
 
   // THW ID list
   auto rawThwIdsList{ encodeStringList( targetHardwareIds())};
@@ -188,6 +298,13 @@ RawFile LoadHeaderFile::encode() const
   nextFreeOffset += rawThwIdsList.size();
 
   rawFile.insert( rawFile.end(), rawThwIdsList.begin(), rawThwIdsList.end());
+
+
+  // THW ID + Positions (only in V3 mode)
+  if (encodeV3Data)
+  {
+    // TODO
+  }
 
 
   // data files list pointer
@@ -244,7 +361,11 @@ RawFile LoadHeaderFile::encode() const
     userDefinedDataPtr);
 
 
-  //! @todo add Load Check Values.
+  // Load Check Value (only in V3 mode)
+  {
+    //! @todo add Load Check Values.
+  }
+
 
   // Resize to final size ( File CRC + Load CRC)
   rawFile.resize( rawFile.size() + sizeof( uint16_t) + sizeof( uint32_t));
@@ -263,6 +384,40 @@ RawFile LoadHeaderFile::encode() const
 
 void LoadHeaderFile::decodeBody( const RawFile &rawFile)
 {
+  bool decodeV3Data{ false};
+
+  uint32_t partFlags;
+  getInt< uint32_t>(
+    rawFile.begin() + PartFlagsFieldOffset,
+    partFlags);
+
+  switch ( arincVersion())
+  {
+    case Arinc665Version::ARINC_665_1:
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << AdditionalInfo( "Unsupported ARINC 665 Version"));
+
+    case Arinc665Version::ARINC_665_2:
+      // Spare
+      if (partFlags != 0U)
+      {
+        partFlagsValue = 0;
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << AdditionalInfo( "Spare not 0"));
+      }
+      break;
+
+    case Arinc665Version::ARINC_665_3:
+    case Arinc665Version::ARINC_665_4:
+      partFlagsValue = partFlags;
+      decodeV3Data = true;
+      break;
+
+    default:
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << AdditionalInfo( "Unsupported ARINC 665 Version"));
+  }
+
   uint32_t loadPartNumberPtr;
   getInt< uint32_t>(
     rawFile.begin() + LoadPartNumberPointerFieldOffset,
@@ -288,19 +443,50 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
     rawFile.begin() + UserDefinedDataPointerFieldOffset,
     userDefinedDataPtr);
 
-  // ToDO: add Load Type Description Field (ARINC 665-3)
-  // ToDO: add THW IDs with Positions Field (ARINC 665-3)
-  // ToDO: add Load Check Value Field (ARINC 665-3)
+  uint32_t loadTypeDescriptionPtr = 0;
+  uint32_t thwIdsPositionPtr = 0;
+  uint32_t loadCheckValuePtr = 0;
+
+  // only decode this pointers in V3 mode
+  if (decodeV3Data)
+  {
+    getInt< uint32_t>(
+      rawFile.begin() + LoadTypeDescriptionPointerFieldOffset,
+      loadTypeDescriptionPtr);
+
+    getInt< uint32_t>(
+      rawFile.begin() + ThwIdPositionsPointerFieldOffset,
+      thwIdsPositionPtr);
+
+    getInt< uint32_t>(
+      rawFile.begin() + LoadCheckValuePointerFieldOffset,
+      loadCheckValuePtr);
+  }
 
 
   // load part number
   decodeString( rawFile.begin() + loadPartNumberPtr * 2, partNumberValue);
 
 
+  if (decodeV3Data)
+  {
+    // TODO: add Load Type Description Field (ARINC 665-3)
+  }
+
+
   // target hardware id list
+  StringList targetHardwareIdsValue;
+
   decodeStringList(
     rawFile.begin() + targetHardwareIdListPtr * 2,
     targetHardwareIdsValue);
+
+  targetHardwareIds( targetHardwareIdsValue);
+
+  if (decodeV3Data)
+  {
+    // TODO: add THW IDs with Positions Field (ARINC 665-3)
+  }
 
 
   // data file list
@@ -308,20 +494,26 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
 
 
   // support file list
-  if ( 0 != supportFileListPtr)
+  if ( 0U != supportFileListPtr)
   {
     supportFilesValue = decodeFileList( rawFile, supportFileListPtr * 2);
   }
 
 
   // user defined data
-  if ( 0 != userDefinedDataPtr)
+  if ( 0U != userDefinedDataPtr)
   {
     userDefinedDataValue.assign(
       rawFile.begin() + userDefinedDataPtr * 2,
-      rawFile.end() - 6U);
+      rawFile.begin() + rawFile.size() - FileCrcOffset);
     //! @todo update End of user defined data calculation in conjunction with ARINC 665-3
   }
+
+  if (decodeV3Data)
+  {
+    // TODO: add Load Check Value Field (ARINC 665-3)
+  }
+
 
   // file crc decoded and checked within base class
 

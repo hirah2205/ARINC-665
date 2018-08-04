@@ -16,8 +16,9 @@
 #include <arinc665/file/File.hpp>
 
 #include <filesystem>
-#include <cstdint>
 #include <string>
+#include <list>
+#include <cstdint>
 
 namespace Arinc665::File {
 

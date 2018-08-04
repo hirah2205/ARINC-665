@@ -129,9 +129,9 @@ BOOST_AUTO_TEST_CASE( constructor1)
 
   BOOST_CHECK( file.partNumber() == "PN123");
 
-  const auto& targetHardwareIds{ file.targetHardwareIds()};
+  const auto& targetHardwareIds{ file.targetHardwareIdPositions()};
   BOOST_CHECK( targetHardwareIds.size() == 1);
-  BOOST_CHECK( *targetHardwareIds.begin() == "THW0");
+  BOOST_CHECK( targetHardwareIds.begin()->first == "THW0");
 
   const auto &dataFiles{ file.dataFiles()};
   BOOST_CHECK( dataFiles.size() == 1);

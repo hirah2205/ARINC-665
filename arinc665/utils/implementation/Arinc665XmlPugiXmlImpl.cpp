@@ -22,6 +22,8 @@
 #include <arinc665/Arinc665Logger.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <helper/SafeCast.hpp>
+
 namespace Arinc665::Utils {
 
 Arinc665XmlPugiXmlImpl::LoadXmlResult Arinc665XmlPugiXmlImpl::loadFromXml(
@@ -326,6 +328,8 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
   const pugi::xml_node &loadNode)
 {
   const std::string nameRef{ loadNode.attribute( "NameRef").as_string()};
+  const std::string description{ loadNode.attribute( "Description").as_string()};
+  const std::string type{ loadNode.attribute( "Type").as_string()};
 
   if (nameRef.empty())
   {
@@ -343,25 +347,35 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
       AdditionalInfo( "NameRef attribute does not reference load"));
   }
 
-  Media::Load::TargetHardwareIds thwIds;
+  // Load Type (Description + Type Value)
+  if (!description.empty())
+  {
+    uint16_t typeValue{ safeCast< uint16_t >( std::stoul( type, 0, 0))};
+
+    load->loadType( {std::make_pair( description, typeValue)});
+  }
+
+  Media::Load::TargetHardwareIdPositions thwIds;
 
   // iterate over target hardware
   for ( pugi::xml_node targetHardwareNode : loadNode.children( "TargetHardware"))
   {
     const std::string thwId{ targetHardwareNode.attribute( "ThwId").as_string()};
 
+    std::list< std::string> positions;
+
     // iterate over positions
-    /*
     for ( pugi::xml_node positionNode : targetHardwareNode.children( "Position"))
     {
-      const std::string position( targetHardwareNode.attribute( "Pos").as_string());
-    }
-    */
+      const std::string position{ positionNode.attribute( "Pos").as_string()};
 
-    thwIds.push_back( thwId);
+      positions.push_back( std::move( position));
+    }
+
+    thwIds.insert( std::make_pair( std::move( thwId), std::move( positions)));
   }
 
-  load->targetHardwareIds( std::move( thwIds));
+  load->targetHardwareIdPositions( std::move( thwIds));
 
   // iterate over data files
   for ( pugi::xml_node dataFileNode : loadNode.children( "DataFile"))
@@ -384,7 +398,7 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
         AdditionalInfo( "NameRef attribute does not reference file"));
     }
 
-    load->addDataFile( file);
+    load->dataFile( file);
   }
 
   // iterate over support files
@@ -408,7 +422,7 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
         AdditionalInfo( "NameRef attribute does not reference file"));
     }
 
-    load->addSupportFile( file);
+    load->supportFile( file);
   }
 }
 

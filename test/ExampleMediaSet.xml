@@ -19,7 +19,7 @@
   </Medium>
 
   <Loads>
-    <Load NameRef="Load1.LUH" Description="Test Description" >
+    <Load NameRef="Load1.LUH" Description="Test Load Description" Type="0x0501" >
       <TargetHardware ThwId="ABCDEF" >
         <Position Pos="123" />
         <Position Pos="456" />
