@@ -1,0 +1,110 @@
+/**
+ * @file
+ * @copyright
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * @author @todo Add author
+ *
+ * @brief @todo Add brief description
+ **/
+
+#include <arinc665/file/BatchFile.hpp>
+#include <arinc665/Arinc665Exception.hpp>
+
+#include <helper/Dump.hpp>
+
+#include <boost/test/unit_test.hpp>
+
+#include <iostream>
+
+namespace Arinc665::File {
+
+BOOST_AUTO_TEST_SUITE( BatchFileTest)
+
+
+BOOST_AUTO_TEST_CASE( constructor1)
+{
+  RawFile rawFile{
+    // header file length
+    0x00, 0x00, 0x00, 0x20,
+    // Format version
+    0x90, 0x03,
+    // spare
+    0x00, 0x00,
+    // Pointer to Batch Part Number
+    0x00, 0x00, 0x00, 0x08,
+    // Pointer to Target HW ID list
+    0x00, 0x00, 0x00, 0x11,
+    // Expansion Point No.1
+
+    /* 16 */
+    // Batch PN Length
+    0x00, 0x05,
+    // Load PN
+    'P', 'N', '1', '2', '3', 0x00,
+    // Comment Length
+    0x00, 0x07,
+    // Comment
+    'C', 'O', 'M', 'M', 'E', 'N', 'T', 0x00,
+
+    /* 34 */
+    // Number of Target HW IDs
+    0x00, 0x01,
+
+    // Pointer to Next THW ID
+    0x00, 0x00,
+    // Target HW ID POS Length
+    0x00, 0x04,
+    // Target HW ID POS
+    'T', 'H', 'W', '0',
+
+    // Number Of Loads
+    0x00, 0x01,
+
+    // Header File Name Length
+    0x00, 0x06,
+    // Header File Name
+    'F', 'N', '_', '0', '0', '1',
+    // Load PN Length
+    0x00, 0x06,
+    // Load PN
+    'P', 'N', '_', '0', '0', '1',
+    // Expansion Point No. 3
+
+
+    /* 62 */
+
+    // Batch File CRC
+    0x76, 0x48,
+    /* 64 */
+  };
+
+  // std::cout << std::hex << BatchFile::calculateChecksum( rawFile)<<"\n";
+
+  BatchFile file{ rawFile};
+
+  BOOST_CHECK( file.arincVersion() == Arinc665Version::ARINC_665_2);
+
+  BOOST_CHECK( file.partNumber() == "PN123");
+  BOOST_CHECK( file.comment() == "COMMENT");
+
+  const auto &targetHardwareIds{ file.targetHardwares()};
+  BOOST_CHECK( targetHardwareIds.size() == 1);
+  BOOST_CHECK( targetHardwareIds.begin()->targetHardwareId() == "THW0");
+  const auto &loads{ targetHardwareIds.begin()->loads()};
+  BOOST_CHECK( loads.size() == 1);
+  BOOST_CHECK( loads.begin()->headerFilename() == "FN_001");
+  BOOST_CHECK( loads.begin()->partNumber() == "PN_001");
+
+  const auto raw2{ static_cast< RawFile>( file)};
+
+  // std::cout << Dump( &(*(raw2.begin())), raw2.size());
+
+  BOOST_CHECK( rawFile == raw2);
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+}

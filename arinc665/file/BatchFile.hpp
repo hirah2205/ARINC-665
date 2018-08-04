@@ -21,10 +21,48 @@ namespace Arinc665::File {
 
 /**
  * @brief ARINC 665 Batch File.
+ *
+ * @par File Format
+ * Name of Field                                      | Field Size (bits)
+ * ---------------------------------------------------|:-----------------:
+ * Batch File Length                                  | 32
+ * Batch File Format Version                          | 16
+ * Spare                                              | 16
+ * Pointer to Batch File PN Length                    | 32
+ * Pointer to Number of Target HW ID Load-List Blocks | 32
+ * Expansion Point 1                                  |  0
+ * Batch File PN Length                               | 16
+ * Batch File PN                                      | 16
+ * Comment Length                                     | 16
+ * Comment                                            | 16
+ * Expansion Point 2                                  |  0
+ * Number of Target HW ID Load-List Blocks            | 16
+ * + Pointer to Next Target HW ID Load-List Block     | 16
+ * + Target HW ID POS Length                          | 16
+ * + Target HW ID POS                                 | 16
+ * + Number of Loads for Target HW ID POS             | 16
+ * +# Header File Name Length                         | 16
+ * +# Header File Name                                | 16
+ * +# Load PN Length                                  | 16
+ * +# Load PN                                         | 16
+ * Expansion Point 3                                  |  0
+ * Batch File CRC                                     | 16
  **/
 class BatchFile: public Arinc665File
 {
   public:
+    //! Offset of the Part Flags Field (ARINC 665-3) - Spare in older supplements
+    static constexpr std::size_t SpareFieldOffset = 6U;
+
+    //! Offset of the Batch Part Number Pointer Field
+    static constexpr std::size_t BatchPartNumberPointerFieldOffset = 8U;
+
+    //! Offset of the THW IDs Pointer Field
+    static constexpr std::size_t ThwIdsPointerFieldOffset = 12U;
+
+    //! First Start of pointer data for ARINC 665-2 Load Headers.
+    static constexpr std::size_t BatchFileHeaderSize = 16U;
+
     /**
      * @brief Creates an empty batch file.
      *

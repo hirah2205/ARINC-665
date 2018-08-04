@@ -12,6 +12,8 @@
 
 #include "BatchFile.hpp"
 
+#include <arinc665/Arinc665Exception.hpp>
+
 #include <helper/Endianess.hpp>
 #include <helper/SafeCast.hpp>
 #include <helper/Logger.hpp>
@@ -89,48 +91,45 @@ void BatchFile::targetHardware( BatchTargetInfo &&targetHardwareInfo)
 
 RawFile BatchFile::encode() const
 {
-  RawFile rawFile(
-    BaseHeaderOffset +
-    2 * sizeof( uint32_t) + // batchPartNumberPtr, targetHardwareIdListPtr
-    sizeof( uint16_t));     // CRC
+  RawFile rawFile( BatchFileHeaderSize);
 
-  auto rawBatchPn( encodeString( partNumberValue));
+  // spare field
+  setInt< uint32_t>( rawFile.begin() + SpareFieldOffset, 0U);
+
+
+  // Next free Offset (used for optional pointer calculation)
+  size_t nextFreeOffset{ BatchFileHeaderSize};
+
+
+  // batch part number + comment
+  auto rawBatchPn{ encodeString( partNumberValue)};
   assert( rawBatchPn.size() % 2 == 0);
-
-  auto rawComment( encodeString( commentValue));
+  auto rawComment{ encodeString( commentValue)};
   assert( rawComment.size() % 2 == 0);
 
-  auto rawThwIdsList( encodeBatchTargetsInfo());
-  assert( rawThwIdsList.size() % 2 == 0);
+  setInt< uint32_t>(
+    rawFile.begin() + BatchPartNumberPointerFieldOffset,
+    nextFreeOffset / 2);
+  nextFreeOffset += rawBatchPn.size() + rawComment.size();
 
+  rawFile.insert( rawFile.end(), rawBatchPn.begin(), rawBatchPn.end());
+  rawFile.insert( rawFile.end(), rawComment.begin(), rawComment.end());
 
-  auto it( rawFile.begin() + BaseHeaderOffset);
-
-  // batch part number information pointer
-  const uint32_t batchPartNumberPtr=
-    (BaseHeaderOffset + (2 * sizeof( uint32_t))) / 2;
-  it = setInt< uint32_t>( it, batchPartNumberPtr);
-
-  // THW ID list pointer
-  const uint32_t targetHardwareIdListPtr =
-    batchPartNumberPtr +
-    safeCast< uint32_t>( rawBatchPn.size() / 2U) +
-    safeCast< uint32_t>( rawComment.size() / 2U);
-  it = setInt< uint32_t>( it, targetHardwareIdListPtr);
-
-
-  // batch part number
-  it = rawFile.insert( it, rawBatchPn.begin(), rawBatchPn.end());
-  it += rawBatchPn.size();
-
-  // comment
-  it = rawFile.insert( it, rawComment.begin(), rawComment.end());
-  it += rawComment.size();
 
   // THW ID load list
-  it = rawFile.insert( it, rawThwIdsList.begin(), rawThwIdsList.end());
-  it += rawThwIdsList.size();
+  auto rawThwIdsList{ encodeBatchTargetsInfo()};
+  assert( rawThwIdsList.size() % 2 == 0);
 
+  setInt< uint32_t>(
+    rawFile.begin() + ThwIdsPointerFieldOffset,
+    nextFreeOffset / 2);
+  // nextFreeOffset += rawThwIdsList.size();
+
+  rawFile.insert( rawFile.end(), rawThwIdsList.begin(), rawThwIdsList.end());
+
+
+  // Resize file for file CRC
+  rawFile.resize( rawFile.size() + sizeof( uint16_t));
 
   // set header and crc
   insertHeader( rawFile);
@@ -140,21 +139,32 @@ RawFile BatchFile::encode() const
 
 void BatchFile::decodeBody( const RawFile &rawFile)
 {
-  // set processing start to position after spare
-  auto it( rawFile.begin() + BaseHeaderOffset);
+  uint32_t spare;
+  getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
+
+  if (0U != spare)
+  {
+    BOOST_THROW_EXCEPTION( InvalidArinc665File()
+      << AdditionalInfo( "Spare is not 0"));
+  }
 
   uint32_t batchPartNumberPtr;
-  it = getInt< uint32_t>( it, batchPartNumberPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + BatchPartNumberPointerFieldOffset,
+    batchPartNumberPtr);
 
   uint32_t targetHardwareIdListPtr;
-  it = getInt< uint32_t>( it, targetHardwareIdListPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + ThwIdsPointerFieldOffset,
+    targetHardwareIdListPtr);
 
   // batch part number
-  it = rawFile.begin() + batchPartNumberPtr * 2;
-  it = decodeString( it, partNumberValue);
+  auto it = decodeString(
+    rawFile.begin() + batchPartNumberPtr * 2,
+    partNumberValue);
 
   // comment
-  it = decodeString( it, commentValue);
+  decodeString( it, commentValue);
 
   // target hardware ID load list
   decodeBatchTargetsInfo( rawFile, targetHardwareIdListPtr * 2);
@@ -175,17 +185,17 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
   {
     ++thwCounter;
 
-    auto const rawThwId( encodeString( targetHardwareInfo.targetHardwareId()));
+    auto const rawThwId{ encodeString( targetHardwareInfo.targetHardwareId())};
     assert( rawThwId.size() % 2 == 0);
 
     RawFile rawLoadsInfo;
     /* iterate over loads */
     for ( auto const loadInfo : targetHardwareInfo.loads())
     {
-      auto const rawHeaderFilename( encodeString( loadInfo.headerFilename()));
+      auto const rawHeaderFilename{ encodeString( loadInfo.headerFilename())};
       assert( rawHeaderFilename.size() % 2 == 0);
 
-      auto const rawPartNumber( encodeString( loadInfo.partNumber()));
+      auto const rawPartNumber{ encodeString( loadInfo.partNumber())};
       assert( rawPartNumber.size() % 2 == 0);
 
       rawLoadsInfo.insert(

@@ -145,6 +145,7 @@ add_library(
   ProductIdentifierTest.cpp
   TargetHardwareIdTest.cpp
 
+  file/BatchFileTest.cpp
   file/BatchListFileTest.cpp
   file/LoadFileInfoTest.cpp
   file/LoadHeaderFileTest.cpp

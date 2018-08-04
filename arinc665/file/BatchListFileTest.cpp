@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
     0xE1, 0x18
   };
 
-  std::cout << std::hex << BatchListFile::calculateChecksum( rawFile) << std::endl;
+  // std::cout << std::hex << BatchListFile::calculateChecksum( rawFile) << std::endl;
 
   BatchListFile file{ rawFile};
 

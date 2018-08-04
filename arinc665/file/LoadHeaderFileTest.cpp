@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
 
   const auto raw2{ static_cast< RawFile>( file)};
 
-  std::cout << Dump( &(*(raw2.begin())), raw2.size());
+  // std::cout << Dump( &(*(raw2.begin())), raw2.size());
 
   BOOST_CHECK( rawFile == raw2);
 }

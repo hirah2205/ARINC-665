@@ -122,7 +122,7 @@ uint32_t Arinc665File::fileLength( const RawFile &file)
 
   // decode the file length
   uint32_t fileLength;
-  getInt< uint32_t>( file.begin(), fileLength);
+  getInt< uint32_t>( file.begin() + FileLengthFieldOffset, fileLength);
 
   return fileLength;
 }
@@ -140,7 +140,7 @@ uint16_t Arinc665File::formatVersion( const RawFile &file)
 
   // decode the format version
   uint16_t formatVersion;
-  getInt< uint16_t>( file.begin() + 4, formatVersion);
+  getInt< uint16_t>( file.begin() + FileFormatVersionFieldOffset, formatVersion);
 
   return formatVersion;
 }

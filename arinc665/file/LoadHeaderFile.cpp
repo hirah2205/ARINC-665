@@ -155,6 +155,13 @@ RawFile LoadHeaderFile::encode() const
 {
   RawFile rawFile( LoadHeaderSizeV2);
 
+
+  // Part Flags (Spare in ARINC 665-2) TODO
+  setInt< uint16_t>(
+    rawFile.begin() + PartFlagsFieldOffset,
+    0U);
+
+
   // Next free Offset (used for optional pointer calculation)
   size_t nextFreeOffset{ LoadHeaderSizeV2};
 
@@ -163,10 +170,9 @@ RawFile LoadHeaderFile::encode() const
   auto rawLoadPn{ encodeString( partNumber())};
   assert( rawLoadPn.size() % 2 == 0);
 
-  uint32_t loadPartNumberPtr = nextFreeOffset / 2;
   setInt< uint32_t>(
     rawFile.begin() + LoadPartNumberPointerFieldOffset,
-    loadPartNumberPtr);
+    nextFreeOffset / 2);
   nextFreeOffset += rawLoadPn.size();
 
   rawFile.insert( rawFile.end(), rawLoadPn.begin(), rawLoadPn.end());
@@ -176,10 +182,9 @@ RawFile LoadHeaderFile::encode() const
   auto rawThwIdsList{ encodeStringList( targetHardwareIds())};
   assert( rawThwIdsList.size() % 2 == 0);
 
-  uint32_t targetHardwareIdListPtr = nextFreeOffset / 2;
   setInt< uint32_t>(
     rawFile.begin() + ThwIdsPointerFieldOffset,
-    targetHardwareIdListPtr);
+    nextFreeOffset / 2);
   nextFreeOffset += rawThwIdsList.size();
 
   rawFile.insert( rawFile.end(), rawThwIdsList.begin(), rawThwIdsList.end());
@@ -189,10 +194,9 @@ RawFile LoadHeaderFile::encode() const
   auto rawDataFiles{ encodeFileList( dataFiles())};
   assert( rawDataFiles.size() % 2 == 0);
 
-  uint32_t dataFileListPtr = nextFreeOffset / 2;
   setInt< uint32_t>(
     rawFile.begin() + DataFilesPointerFieldOffset,
-    dataFileListPtr);
+    nextFreeOffset / 2);
   nextFreeOffset += rawDataFiles.size();
 
   rawFile.insert( rawFile.end(), rawDataFiles.begin(), rawDataFiles.end());

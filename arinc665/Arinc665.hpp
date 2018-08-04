@@ -20,6 +20,9 @@
  * @brief ARINC 665 specification implementation.
  *
  * This library implements the ARINC 665 specification.
+ * This library currently supports following supplements of ARINC 665:
+ * - Supplement 2 (Full)
+ * - Supplement 3/4 (Initially)
  *
  * @par Referenced Documents
  * - ARINC Report 665-1: Loadable Software Standards; 2001-01-12
