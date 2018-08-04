@@ -112,7 +112,6 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
       load->targetHardwareIds()});
   }
 
-  loadListFile.calculateCrc();
   writeFileHandler( medium->mediumNumber(), "/" + ListOfLoadsName, loadListFile);
 
   // export list of batches (if present)
@@ -135,7 +134,6 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
         batch->medium()->mediumNumber()});
     }
 
-    batchListFile.calculateCrc();
     writeFileHandler( medium->mediumNumber(), "/" + ListOfBatchesName, batchListFile);
   }
 
@@ -188,7 +186,6 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
       listOfBatchesFileCrc});
   }
 
-  fileListFile.calculateCrc();
   writeFileHandler( medium->mediumNumber(), "/" + ListOfFilesName, fileListFile);
 }
 
@@ -344,9 +341,6 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
       supportFileCrc});
   }
 
-  // calculate load header file CRC
-  loadHeaderFile.calculateCrc();
-
   // calculate load CRC
   Arinc665Crc32 loadCrc;
 
@@ -419,7 +413,6 @@ void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
       File::BatchTargetInfo{ target.first, batchLoadsInfo});
   }
 
-  batchFile.calculateCrc();
   writeFileHandler(
     batch->medium()->mediumNumber(), batch->path(), batchFile);
 }

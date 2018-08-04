@@ -185,8 +185,6 @@ static void list_lub( const std::filesystem::path &lubFile)
         std::cout << "  load: " << load.headerFilename() << " - " << load.partNumber() << "\n";
       }
     }
-
-    std::cout << "batch file crc " << std::hex << batch.crc() << std::endl << std::endl;
   }
   catch (boost::exception &e)
   {
@@ -252,8 +250,6 @@ static void list_luh( const std::filesystem::path &luhFile)
     }
 
     std::cout << "load crc " << std::hex << load.loadCrc() << std::endl;
-
-    std::cout << "header file crc " << std::hex << load.crc() << std::endl << std::endl;
   }
   catch (boost::exception &e)
   {
@@ -310,7 +306,6 @@ static void list_loads_lum( const std::filesystem::path &loadsLum)
       }
     }
 
-    std::cout << "load list crc: " << std::hex << (int)loadList.crc() << std::endl;
   }
   catch (boost::exception &e)
   {
@@ -362,9 +357,7 @@ static void list_files_lum( const std::filesystem::path &filesLum)
       std::cout << "file crc: " << std::hex << file.crc() << "\n\n";
     }
 
-    std::cout << "file list crc: " << std::hex << (int)fileList.crc() << std::endl;
-
-	}
+  }
   catch (boost::exception &e)
   {
     std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;

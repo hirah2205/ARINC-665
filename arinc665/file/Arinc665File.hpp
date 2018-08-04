@@ -44,6 +44,15 @@ class Arinc665File
     //! The default checksum position
     static constexpr std::size_t DefaultChecksumPosition = 2U;
 
+    //! Offset of the File Length Field
+    static constexpr std::size_t FileLengthFieldOffset = 0U;
+
+    //! Offset of the File Format Version Field
+    static constexpr std::size_t FileFormatVersionFieldOffset = 4U;
+
+    // IN ARINC 665-3 the Spare field for LUH files are used --> move to file specific part.
+    static constexpr std::size_t SpareFieldOffset = 6U;
+
     /**
      * @brief Decodes the ARINC 665 string from the stream.
      *
@@ -278,28 +287,6 @@ class Arinc665File
      **/
     void arincVersion( Arinc665Version version);
 
-    /**
-     * @brief Returns the CRC of this file.
-     *
-     * @return The CRC of this file.
-     **/
-    uint16_t crc() const noexcept;
-
-    /**
-     * @brief Updates the CRC of this file.
-     *
-     * @param[in] crc
-     *   The new CRC of this file
-     **/
-    void crc( uint16_t crc)  noexcept;
-
-    /**
-     * @brief Calculates the CRC.
-     *
-     * Calculates the CRC and stores the value.
-     **/
-    void calculateCrc();
-
   protected:
     /**
      * @brief Initialises the ARINC 665 file.
@@ -370,8 +357,6 @@ class Arinc665File
     const std::size_t checksumPosition;
     //! ARINC 665 Version
     Arinc665Version arinc665VersionValue;
-    //! Stored CRC value
-    uint16_t crcValue;
 };
 
 }

@@ -33,11 +33,11 @@ class LoadFileInfo
      *
      * @param[in] filename
      *   filename
-     * @param partNumber
+     * @param[in] partNumber
      *   Part number
-     * @param length
+     * @param[in] length
      *   File size
-     * @param crc
+     * @param[in] crc
      *   File CRC
      **/
     LoadFileInfo(

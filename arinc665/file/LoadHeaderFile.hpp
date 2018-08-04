@@ -34,6 +34,45 @@ class LoadHeaderFile: public Arinc665File
     //! User defined data type
     using UserDefinedData = std::vector< uint8_t>;
 
+    //! Offset of the Part Flags Field (ARINC 665-3) - Spare in older supplements
+    static constexpr std::size_t PartFlagsFieldOffset = 6U;
+
+    //! Offset of the Load Part Number Pointer Field
+    static constexpr std::size_t LoadPartNumberPointerFieldOffset = 8U;
+
+    //! Offset of the THW IDs Pointer Field
+    static constexpr std::size_t ThwIdsPointerFieldOffset = 12U;
+
+    //! Offset of the Data Files Pointer Field
+    static constexpr std::size_t DataFilesPointerFieldOffset = 16U;
+
+    //! Offset of the Support Files Pointer Field
+    static constexpr std::size_t SupportFilesPointerFieldOffset = 20U;
+
+    //! Offset of the User Defined Data Pointer Field
+    static constexpr std::size_t UserDefinedDataPointerFieldOffset = 24U;
+
+    //! Offset of the Load Type Description Pointer Field
+    static constexpr std::size_t LoadTypeDescriptionPointerFieldOffset = 28U;
+
+    //! Offset of the THW IDs with Positions Pointer Field
+    static constexpr std::size_t ThwIdPositionsPointerFieldOffset = 32U;
+
+    //! Offset of the Load Check Value Pointer Field
+    static constexpr std::size_t LoadCheckValuePointerFieldOffset = 36U;
+
+    //! First Start of pointer data for ARINC 665-2 Load Headers.
+    static constexpr std::size_t LoadHeaderSizeV2 = 28U;
+
+    //! First Start of pointer data for ARINC 665-3/4 Load Headers.
+    static constexpr std::size_t LoadHeaderSizeV3 = 40U;
+
+    //! Position of Load CRC from end of File
+    static constexpr std::size_t LoadCrcOffset = 4U;
+
+    //! Position of File CRC from end of File
+    static constexpr std::size_t FileCrcOffset = 6U;
+
     /**
      * @brief Creates an empty load header file.
      *
@@ -85,7 +124,7 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    LoadHeaderFile( const RawFile &rawFile);
+    explicit LoadHeaderFile( const RawFile &rawFile);
 
     //! @copydoc Arinc665File::operator=
     LoadHeaderFile& operator=( const RawFile &rawFile) final;

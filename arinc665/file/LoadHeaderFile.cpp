@@ -19,13 +19,13 @@
 namespace Arinc665::File {
 
 LoadHeaderFile::LoadHeaderFile( Arinc665Version version) :
-  Arinc665File( FileType::LoadUploadHeader, version, 6U),
+  Arinc665File( FileType::LoadUploadHeader, version, FileCrcOffset),
   loadCrcValue( 0)
 {
 }
 
 LoadHeaderFile::LoadHeaderFile( const RawFile &rawFile):
-  Arinc665File( FileType::LoadUploadHeader, rawFile, 6U)
+  Arinc665File( FileType::LoadUploadHeader, rawFile, FileCrcOffset)
 {
   decodeBody( rawFile);
 }
@@ -153,125 +153,155 @@ void LoadHeaderFile::loadCrc( const uint32_t loadCrc)
 
 RawFile LoadHeaderFile::encode() const
 {
-  RawFile rawFile(
-    BaseHeaderOffset +
-    5 * sizeof( uint32_t) + // loadPnPtr, thwIdListPtr, dataFileListPtr, supportFileListPtr, userDefinedDataPtr
-    sizeof( uint16_t) +     // CRC
-    sizeof( uint32_t));     // load CRC
+  RawFile rawFile( LoadHeaderSizeV2);
+
+  // Next free Offset (used for optional pointer calculation)
+  size_t nextFreeOffset{ LoadHeaderSizeV2};
 
 
-  auto rawLoadPn( encodeString( partNumber()));
+  // Load Part Number
+  auto rawLoadPn{ encodeString( partNumber())};
   assert( rawLoadPn.size() % 2 == 0);
 
-  auto rawThwIdsList( encodeStringList( targetHardwareIds()));
-  assert( rawThwIdsList.size() % 2 == 0);
+  uint32_t loadPartNumberPtr = nextFreeOffset / 2;
+  setInt< uint32_t>(
+    rawFile.begin() + LoadPartNumberPointerFieldOffset,
+    loadPartNumberPtr);
+  nextFreeOffset += rawLoadPn.size();
 
-  auto rawDataFiles( encodeFileList( dataFiles()));
-  assert( rawDataFiles.size() % 2 == 0);
+  rawFile.insert( rawFile.end(), rawLoadPn.begin(), rawLoadPn.end());
 
-  auto rawSupportFiles( encodeFileList( supportFiles()));
-  assert( rawSupportFiles.size() % 2 == 0);
-
-  auto it( rawFile.begin() + BaseHeaderOffset);
-
-  // load part number information pointer
-  uint32_t loadPartNumberPtr =
-    (BaseHeaderOffset + (5 * sizeof( uint32_t))) / 2;
-  it = setInt< uint32_t>( it, loadPartNumberPtr);
-
-  // THW ID list pointer
-  uint32_t targetHardwareIdListPtr =
-    loadPartNumberPtr + 
-    safeCast< uint32_t>( rawLoadPn.size() / 2);
-  it = setInt< uint32_t>( it, targetHardwareIdListPtr);
-
-  // data files list pointer
-  uint32_t dataFileListPtr =
-    targetHardwareIdListPtr + 
-    safeCast< uint32_t>( rawThwIdsList.size() / 2);
-  it = setInt< uint32_t>( it, dataFileListPtr);
-
-  // support files list pointer (only if support files are present)
-  uint32_t supportFileListPtr =
-    supportFiles().empty() ?
-      (0) :
-      (dataFileListPtr + 
-      safeCast< uint32_t>( rawDataFiles.size() / 2));
-  it = setInt< uint32_t>( it, supportFileListPtr);
-
-  // user defined data pointer
-  uint32_t userDefinedDataPtr =
-    userDefinedDataValue.empty() ? 
-      0 : 
-      supportFileListPtr + safeCast< uint32_t>( rawSupportFiles.size() / 2);
-  it = setInt< uint32_t>( it, userDefinedDataPtr);
-  //! @todo if support files is omitted completely (ARINC 665-3) - pointer to
-  //! user defined data calculation must be corrected.
-
-
-  // load part number
-  it = rawFile.insert( it, rawLoadPn.begin(), rawLoadPn.end());
-  it += rawLoadPn.size();
 
   // THW ID list
-  it = rawFile.insert( it, rawThwIdsList.begin(), rawThwIdsList.end());
-  it += rawThwIdsList.size();
+  auto rawThwIdsList{ encodeStringList( targetHardwareIds())};
+  assert( rawThwIdsList.size() % 2 == 0);
 
-  // Data file list
-  it = rawFile.insert( it, rawDataFiles.begin(), rawDataFiles.end());
-  it += rawDataFiles.size();
+  uint32_t targetHardwareIdListPtr = nextFreeOffset / 2;
+  setInt< uint32_t>(
+    rawFile.begin() + ThwIdsPointerFieldOffset,
+    targetHardwareIdListPtr);
+  nextFreeOffset += rawThwIdsList.size();
 
-  // Support file list (if empty, only count (0) is written)
-  //! @todo in ARINC 665-3 the number of support files field is also omitted
-  it = rawFile.insert( it, rawSupportFiles.begin(), rawSupportFiles.end());
-  it += rawSupportFiles.size();
+  rawFile.insert( rawFile.end(), rawThwIdsList.begin(), rawThwIdsList.end());
+
+
+  // data files list pointer
+  auto rawDataFiles{ encodeFileList( dataFiles())};
+  assert( rawDataFiles.size() % 2 == 0);
+
+  uint32_t dataFileListPtr = nextFreeOffset / 2;
+  setInt< uint32_t>(
+    rawFile.begin() + DataFilesPointerFieldOffset,
+    dataFileListPtr);
+  nextFreeOffset += rawDataFiles.size();
+
+  rawFile.insert( rawFile.end(), rawDataFiles.begin(), rawDataFiles.end());
+
+
+  // support files (only if support files are present)
+  auto rawSupportFiles{ encodeFileList( supportFiles())};
+  assert( rawSupportFiles.size() % 2 == 0);
+
+  uint32_t supportFileListPtr = 0;
+
+  if (!supportFiles().empty())
+  {
+    supportFileListPtr = nextFreeOffset / 2;
+    nextFreeOffset += rawSupportFiles.size();
+
+    rawFile.insert(
+      rawFile.end(),
+      rawSupportFiles.begin(),
+      rawSupportFiles.end());
+  }
+
+  setInt< uint32_t>(
+    rawFile.begin() + SupportFilesPointerFieldOffset,
+    supportFileListPtr);
+
+
+  // user defined data pointer
+  assert( userDefinedDataValue.size() % 2 == 0);
+  uint32_t userDefinedDataPtr = 0;
 
   if (!userDefinedDataValue.empty())
   {
-    //! @todo convert to exception
-    assert( userDefinedDataValue.size() % 2 == 0);
-    rawFile.insert( it, userDefinedDataValue.begin(), userDefinedDataValue.end());
+    userDefinedDataPtr = nextFreeOffset / 2;
+    // nextFreeOffset += userDefinedDataValue.size();
+
+    rawFile.insert(
+      rawFile.end(),
+      userDefinedDataValue.begin(),
+      userDefinedDataValue.end());
   }
+
+  setInt< uint32_t>(
+    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    userDefinedDataPtr);
+
+
+  //! @todo add Load Check Values.
+
+  // Resize to final size ( File CRC + Load CRC)
+  rawFile.resize( rawFile.size() + sizeof( uint16_t) + sizeof( uint32_t));
 
   // set header and crc
   insertHeader( rawFile);
 
   // load CRC
-  setInt< uint32_t>( rawFile.end() - 4U, loadCrcValue);
+
+  setInt< uint32_t>(
+    rawFile.begin() + (rawFile.size() - LoadCrcOffset),
+    loadCrcValue);
 
   return rawFile;
 }
 
 void LoadHeaderFile::decodeBody( const RawFile &rawFile)
 {
-  // set processing start to position after spare
-  auto it{ rawFile.begin() + BaseHeaderOffset};
-
   uint32_t loadPartNumberPtr;
-  it = getInt< uint32_t>( it, loadPartNumberPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + LoadPartNumberPointerFieldOffset,
+    loadPartNumberPtr);
 
   uint32_t targetHardwareIdListPtr;
-  it = getInt< uint32_t>( it, targetHardwareIdListPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + ThwIdsPointerFieldOffset,
+    targetHardwareIdListPtr);
 
   uint32_t dataFileListPtr;
-  it = getInt< uint32_t>( it, dataFileListPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + DataFilesPointerFieldOffset,
+    dataFileListPtr);
 
   uint32_t supportFileListPtr;
-  it = getInt< uint32_t>( it, supportFileListPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + SupportFilesPointerFieldOffset,
+    supportFileListPtr);
 
   uint32_t userDefinedDataPtr;
-  it = getInt< uint32_t>( it, userDefinedDataPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    userDefinedDataPtr);
+
+  // ToDO: add Load Type Description Field (ARINC 665-3)
+  // ToDO: add THW IDs with Positions Field (ARINC 665-3)
+  // ToDO: add Load Check Value Field (ARINC 665-3)
+
 
   // load part number
-  it = rawFile.begin() + loadPartNumberPtr * 2;
-  it = decodeString( it, partNumberValue);
+  decodeString( rawFile.begin() + loadPartNumberPtr * 2, partNumberValue);
+
 
   // target hardware id list
-  it = rawFile.begin() + targetHardwareIdListPtr * 2;
-  it = decodeStringList( it, targetHardwareIdsValue);
+  decodeStringList(
+    rawFile.begin() + targetHardwareIdListPtr * 2,
+    targetHardwareIdsValue);
+
 
   // data file list
   dataFilesValue = decodeFileList( rawFile, dataFileListPtr * 2);
+
 
   // support file list
   if ( 0 != supportFileListPtr)
@@ -279,17 +309,20 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
     supportFilesValue = decodeFileList( rawFile, supportFileListPtr * 2);
   }
 
+
   // user defined data
   if ( 0 != userDefinedDataPtr)
   {
-    it = rawFile.begin() + userDefinedDataPtr * 2;
-    userDefinedDataValue.assign( it, rawFile.end() - 6U);
+    userDefinedDataValue.assign(
+      rawFile.begin() + userDefinedDataPtr * 2,
+      rawFile.end() - 6U);
+    //! @todo update End of user defined data calculation in conjunction with ARINC 665-3
   }
 
   // file crc decoded and checked within base class
 
   // load crc
-  getInt< uint32_t>( rawFile.end() - 4U, loadCrcValue);
+  getInt< uint32_t>( rawFile.end() - LoadCrcOffset, loadCrcValue);
 }
 
 RawFile LoadHeaderFile::encodeFileList( const LoadFilesInfo &loadFilesInfo) const
