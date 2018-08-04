@@ -33,6 +33,9 @@ class LoadListFile: public ListFile
     //! User defined data type.
     using UserDefinedData = std::vector< uint8_t>;
 
+    //! Offset of the Spare field.
+    static constexpr std::size_t SpareFieldOffset = 6U;
+
     //! Offset of the Media Set Part Number Pointer Field
     static constexpr std::size_t MediaSetPartNumberPointerFieldOffset = 8U;
 
@@ -149,10 +152,10 @@ class LoadListFile: public ListFile
     /**
      * @brief Adds the given load information.
      *
-     * @param[in] loadInfo
+     * @param[in] load
      *   Load information.
      **/
-    void load( const LoadInfo &loadInfo);
+    void load( const LoadInfo &load);
 
     //! @copydoc load(const LoadInfo&)
     void load( LoadInfo &&load);

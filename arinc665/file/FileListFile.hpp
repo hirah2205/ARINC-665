@@ -37,6 +37,9 @@ class FileListFile: public ListFile
     //! User defined data type
     using UserDefinedData = std::vector< uint8_t>;
 
+    //! Offset of the Spare field.
+    static constexpr std::size_t SpareFieldOffset = 6U;
+
     //! Offset of the Media Set Part Number Pointer Field
     static constexpr std::size_t MediaSetPartNumberPointerFieldOffset = 8U;
 
@@ -172,7 +175,7 @@ class FileListFile: public ListFile
      **/
     void file( const FileInfo &file);
 
-    //! @copydoc fileInfo(const FileInfo&)
+    //! @copydoc file(const FileInfo&)
     void file( FileInfo &&file);
 
     /**

@@ -489,9 +489,6 @@ void Arinc665File::insertHeader( RawFile &rawFile) const
     static_cast< uint16_t>(
       formatVersionField( fileTypeV, arinc665VersionValue)));
 
-  //! @todo spare is not spare everywhere
-  setInt< uint16_t>( rawFile.begin() + SpareFieldOffset, 0U);
-
   // crc
   const uint16_t calculatedCrc{
     calculateChecksum( rawFile, checksumPosition)};

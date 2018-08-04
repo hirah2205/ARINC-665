@@ -50,9 +50,6 @@ class Arinc665File
     //! Offset of the File Format Version Field
     static constexpr std::size_t FileFormatVersionFieldOffset = 4U;
 
-    // IN ARINC 665-3 the Spare field for LUH files are used --> move to file specific part.
-    static constexpr std::size_t SpareFieldOffset = 6U;
-
     /**
      * @brief Decodes the ARINC 665 string from the stream.
      *

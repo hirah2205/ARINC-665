@@ -37,6 +37,7 @@ BatchListFile::BatchListFile(
   ListFile( FileType::BatchList, version),
   mediaSetPnValue( mediaSetPn),
   mediaSequenceNumberValue( mediaSequenceNumber),
+  numberOfMediaSetMembersValue( numberOfMediaSetMembers),
   batchesValue( batches),
   userDefinedDataValue( userDefinedData)
 {
@@ -52,6 +53,7 @@ BatchListFile::BatchListFile(
   ListFile( FileType::BatchList, version),
   mediaSetPnValue( std::move( mediaSetPn)),
   mediaSequenceNumberValue( mediaSequenceNumber),
+  numberOfMediaSetMembersValue( numberOfMediaSetMembers),
   batchesValue( std::move( batches)),
   userDefinedDataValue( std::move( userDefinedData))
 {
