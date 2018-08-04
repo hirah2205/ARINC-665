@@ -139,6 +139,7 @@ RawFile BatchFile::encode() const
 
 void BatchFile::decodeBody( const RawFile &rawFile)
 {
+  // Spare field
   uint32_t spare;
   getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
 

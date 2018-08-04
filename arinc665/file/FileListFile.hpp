@@ -37,6 +37,24 @@ class FileListFile: public ListFile
     //! User defined data type
     using UserDefinedData = std::vector< uint8_t>;
 
+    //! Offset of the Media Set Part Number Pointer Field
+    static constexpr std::size_t MediaSetPartNumberPointerFieldOffset = 8U;
+
+    //! Offset of the Media Set Files Pointer Field
+    static constexpr std::size_t MediaSetFilesPointerFieldOffset = 12U;
+
+    //! Offset of the User Defined Data Pointer Field
+    static constexpr std::size_t UserDefinedDataPointerFieldOffset = 16U;
+;
+    //! Offset of the Load Check Value Pointer Field (Only ARINC 665-3/4)
+    static constexpr std::size_t LoadCheckValuePointerFieldOffset = 20U;
+
+    //! First Start of pointer data for ARINC 665-2 Load Headers.
+    static constexpr std::size_t FileHeaderSizeV2 = 20U;
+
+    //! First Start of pointer data for ARINC 665-3/4 Load Headers.
+    static constexpr std::size_t FileHeaderSizeV3 = 24U;
+
     /**
      * @brief Creates an empty file list file.
      *

@@ -12,6 +12,8 @@
 
 #include "FileListFile.hpp"
 
+#include <arinc665/Arinc665Exception.hpp>
+
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
@@ -194,56 +196,73 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
 
 RawFile FileListFile::encode() const
 {
-  RawFile rawFile(
-    BaseHeaderOffset +
-    3 * sizeof( uint32_t) + // mediaInformationPtr, filesListPtr, userDefinedDataPtr
-    2 * sizeof( uint8_t)  + // media sequence number, number of media set members
-    sizeof( uint16_t));     // crc
+  RawFile rawFile( FileHeaderSizeV2);  // TODO
 
-  auto rawMediaSetPn( encodeString( mediaSetPn()));
-  assert( rawMediaSetPn.size() % 2 == 0);
-  auto rawFilesInfo( encodeFilesInfo());
-  assert( rawFilesInfo.size() % 2 == 0);
+  // spare field
+  setInt< uint32_t>( rawFile.begin() + SpareFieldOffset, 0U);
 
-  auto it( rawFile.begin() + BaseHeaderOffset);
+  // Next free Offset (used for optional pointer calculation)
+  size_t nextFreeOffset{ rawFile.size()};
 
-  // media information pointer
-  uint32_t mediaInformationPtr =
-    (BaseHeaderOffset + (3 * sizeof( uint32_t))) / 2;
-  it = setInt< uint32_t>( it, mediaInformationPtr);
-
-  // files list pointer
-  uint32_t fileListPtr =
-    mediaInformationPtr + (2 * sizeof( uint8_t)) / 2 + rawMediaSetPn.size() / 2;
-  it = setInt< uint32_t>( it, fileListPtr);
-
-  // user defined data pointer
-  uint32_t userDefinedDataPtr =
-    userDefinedDataValue.empty() ? 0 : fileListPtr + rawFilesInfo.size() / 2;
-  it = setInt< uint32_t>( it, userDefinedDataPtr);
 
   // media set part number
-  it = rawFile.insert( it, rawMediaSetPn.begin(), rawMediaSetPn.end());
-  it += rawMediaSetPn.size();
+  const auto rawMediaSetPn{ encodeString( mediaSetPn())};
+  assert( rawMediaSetPn.size() % 2 == 0);
+
+  rawFile.insert( rawFile.end(), rawMediaSetPn.begin(), rawMediaSetPn.end());
+
+  rawFile.resize( rawFile.size() + 2 * sizeof( uint8_t));
 
   // media sequence number
-  it = setInt< uint8_t>( it, mediaSequenceNumberValue);
+  setInt< uint8_t>(
+    rawFile.begin() + nextFreeOffset + rawMediaSetPn.size(),
+    mediaSequenceNumberValue);
 
   // number of media set members
-  it = setInt< uint8_t>( it, numberOfMediaSetMembersValue);
+  setInt< uint8_t>(
+    rawFile.begin() + nextFreeOffset + rawMediaSetPn.size() + sizeof( uint8_t),
+    numberOfMediaSetMembersValue);
 
-  // file list
-  it = rawFile.insert( it, rawFilesInfo.begin(), rawFilesInfo.end());
-  it += rawFilesInfo.size();
+  setInt< uint32_t>(
+    rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
+    nextFreeOffset / 2);
+  nextFreeOffset += rawMediaSetPn.size() + 2 * sizeof( uint8_t);
+
+
+  // media set files list
+  const auto rawFilesInfo{ encodeFilesInfo()};
+  assert( rawFilesInfo.size() % 2 == 0);
+
+  setInt< uint32_t>(
+    rawFile.begin() + MediaSetFilesPointerFieldOffset,
+    nextFreeOffset / 2);
+  nextFreeOffset += rawFilesInfo.size();
+
+  rawFile.insert( rawFile.end(), rawFilesInfo.begin(), rawFilesInfo.end());
+
+
+  // user defined data
+  assert( userDefinedDataValue.size() % 2 == 0);
+  uint32_t userDefinedDataPtr = 0;
 
   if (!userDefinedDataValue.empty())
   {
-    assert( userDefinedDataValue.size() % 2 == 0);
+    userDefinedDataPtr = nextFreeOffset / 2;
+    // nextFreeOffset += userDefinedDataValue.size();
+
     rawFile.insert(
-      it,
+      rawFile.end(),
       userDefinedDataValue.begin(),
       userDefinedDataValue.end());
   }
+
+  setInt< uint32_t>(
+    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    userDefinedDataPtr);
+
+
+  // Resize to final size ( File CRC)
+  rawFile.resize( rawFile.size() + sizeof( uint16_t));
 
   // set header and crc
   insertHeader( rawFile);
@@ -253,40 +272,60 @@ RawFile FileListFile::encode() const
 
 void FileListFile::decodeBody( const RawFile &rawFile)
 {
-  // set processing start to position after spare
-  auto it{ rawFile.begin() + BaseHeaderOffset};
+  uint32_t spare;
+  getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
+
+  if (0U != spare)
+  {
+    BOOST_THROW_EXCEPTION( InvalidArinc665File()
+      << AdditionalInfo( "Spare is not 0"));
+  }
+
 
   // media information pointer
   uint32_t mediaInformationPtr;
-  it = getInt< uint32_t>( it, mediaInformationPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
+    mediaInformationPtr);
 
   // file list pointer
   uint32_t fileListPtr;
-  it = getInt< uint32_t>( it, fileListPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + MediaSetFilesPointerFieldOffset,
+    fileListPtr);
+
 
   // user defined data pointer
   uint32_t userDefinedDataPtr;
-  it = getInt< uint32_t>( it, userDefinedDataPtr);
+  getInt< uint32_t>(
+    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    userDefinedDataPtr);
+
 
   // media set part number
-  it = rawFile.begin() + mediaInformationPtr * 2;
-  it = decodeString( it, mediaSetPnValue);
+  auto it = decodeString(
+    rawFile.begin() + mediaInformationPtr * 2,
+    mediaSetPnValue);
 
   // media sequence number
   it = getInt< uint8_t>( it, mediaSequenceNumberValue);
 
   // number of media set members
-  it = getInt< uint8_t>( it, numberOfMediaSetMembersValue);
+  getInt< uint8_t>( it, numberOfMediaSetMembersValue);
+
 
   // file list
   decodeFilesInfo( rawFile, 2 * fileListPtr);
 
+
   // user defined data
   if ( 0 != userDefinedDataPtr)
   {
-    it = rawFile.begin() + userDefinedDataPtr * 2;
-    userDefinedDataValue.assign( it, rawFile.end() - 2);
+    userDefinedDataValue.assign(
+      rawFile.begin() + userDefinedDataPtr * 2,
+      rawFile.begin() + rawFile.size() - DefaultChecksumPosition);
   }
+
 
   // file crc decoded and checked within base class
 }

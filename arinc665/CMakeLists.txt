@@ -147,6 +147,7 @@ add_library(
 
   file/BatchFileTest.cpp
   file/BatchListFileTest.cpp
+  file/FileListFileTest.cpp
   file/LoadFileInfoTest.cpp
   file/LoadHeaderFileTest.cpp
   file/LoadListFileTest.cpp
