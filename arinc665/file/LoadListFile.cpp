@@ -19,7 +19,7 @@
 
 namespace Arinc665::File {
 
-LoadListFile::LoadListFile( Arinc665Version version):
+LoadListFile::LoadListFile( SupportedArinc665Version version):
   ListFile( FileType::LoadList, version),
   mediaSequenceNumberValue( 0),
   numberOfMediaSetMembersValue( 0)

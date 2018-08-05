@@ -54,7 +54,7 @@ class LoadListFile: public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    LoadListFile( Arinc665Version version);
+    LoadListFile( SupportedArinc665Version version);
 
     /**
      * @brief Creates load list file with the given data.
@@ -73,16 +73,16 @@ class LoadListFile: public ListFile
      *   User defined data.
      **/
     LoadListFile(
-      Arinc665Version version,
+      SupportedArinc665Version version,
       const std::string &mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       const LoadsInfo &loads,
       const UserDefinedData &userDefinedData);
 
-    //! @copydoc LoadListFile(Arinc665Version,const std::string&,uint8_t,uint8_t,const LoadsInfo&,const UserDefinedData&)
+    //! @copydoc LoadListFile(SupportedArinc665Version,const std::string&,uint8_t,uint8_t,const LoadsInfo&,const UserDefinedData&)
     LoadListFile(
-      Arinc665Version version,
+      SupportedArinc665Version version,
       std::string &&mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,

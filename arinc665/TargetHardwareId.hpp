@@ -14,6 +14,7 @@
 #define ARINC665_TARGETHARDWAREWID_HPP
 
 #include <arinc665/Arinc665.hpp>
+
 #include <string>
 
 namespace Arinc665 {

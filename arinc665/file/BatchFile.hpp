@@ -69,7 +69,7 @@ class BatchFile: public Arinc665File
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit BatchFile( Arinc665Version version);
+    explicit BatchFile( SupportedArinc665Version version);
 
     /**
      * @brief Creates batch file with the given data.
@@ -84,14 +84,14 @@ class BatchFile: public Arinc665File
      *   List of target informations.
      **/
     BatchFile(
-      Arinc665Version version,
+      SupportedArinc665Version version,
       const std::string &partNumber,
       const std::string &comment,
       const BatchTargetsInfo &targets);
 
-    //! @copydoc BatchFile::BatchFile(Arinc665Version,const string&,const string&,const BatchTargetsInfo&)
+    //! @copydoc BatchFile::BatchFile(SupportedArinc665Version,const string&,const string&,const BatchTargetsInfo&)
     BatchFile(
-      Arinc665Version version,
+      SupportedArinc665Version version,
       std::string &&partNumber,
       std::string &&comment,
       BatchTargetsInfo &&targets);

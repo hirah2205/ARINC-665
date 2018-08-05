@@ -168,7 +168,7 @@ class Arinc665File
      *
      * @return The load header file version for [rawFile].
      * @retval LoadFileFormatVersion::Invalid
-     *   When [rawFile] is nor a load header file
+     *   When [rawFile] is not a load header file
      **/
     static LoadFileFormatVersion loadFileFormatVersion(
       const RawFile &rawFile);
@@ -181,7 +181,7 @@ class Arinc665File
      *
      * @return The batch file version for [rawFile].
      * @retval BatchFileFormatVersion::Invalid
-     *   When [rawFile] is nor a batch file
+     *   When [rawFile] is not a batch file
      **/
     static BatchFileFormatVersion batchFileFormatVersion(
       const RawFile &rawFile);
@@ -194,25 +194,26 @@ class Arinc665File
      *
      * @return The media file version for [rawFile].
      * @retval MediaFileFormatVersion::Invalid
-     *   When [rawFile] is nor a media file
+     *   When [rawFile] is not a media file
      **/
     static MediaFileFormatVersion mediaFileFormatVersion(
       const RawFile &rawFile);
 
     /**
-     * @brief Returns the ARINC 665 version for the given [fileType] and
-     *   [formatVersionField].
+     * @brief Returns the Supported ARINC 665 version for the given [fileType]
+     *   and [formatVersionField].
      *
      * @param[in] fileType
      *   File type.
      * @param[in] formatVersionField
      *   Format version field of file.
      *
-     * @return The ARINC 665 version.
+     * @return The Supported ARINC 665 version.
      * @retval Invalid
-     *   If the given information are inconsistent
+     *   If the given information are inconsistent or the Version is not
+     *   supported.
      **/
-    static Arinc665Version arinc665Version(
+    static SupportedArinc665Version arinc665Version(
       FileType fileType,
       uint16_t formatVersionField);
 
@@ -229,7 +230,7 @@ class Arinc665File
      **/
     static uint16_t formatVersionField(
       FileType fileType,
-      Arinc665Version arinc665Version);
+      SupportedArinc665Version arinc665Version);
 
     /**
      * @brief Detects the file type for the given filename.
@@ -275,7 +276,7 @@ class Arinc665File
      *
      * @return The ARINC 665 version of this file.
      **/
-    Arinc665Version arincVersion() const;
+    SupportedArinc665Version arincVersion() const;
 
     /**
      * @brief Updates the ARINC 665 version of this file.
@@ -283,7 +284,7 @@ class Arinc665File
      * @param[in] version
      *   The new ARINC 665 version.
      **/
-    void arincVersion( Arinc665Version version);
+    void arincVersion( SupportedArinc665Version version);
 
   protected:
     /**
@@ -298,7 +299,7 @@ class Arinc665File
      **/
     Arinc665File(
       FileType fileType,
-      Arinc665Version version,
+      SupportedArinc665Version version,
       std::size_t checksumPosition = DefaultChecksumPosition) noexcept;
 
     /**
@@ -354,7 +355,7 @@ class Arinc665File
     //! checksum position
     const std::size_t checksumPosition;
     //! ARINC 665 Version
-    Arinc665Version arinc665VersionValue;
+    SupportedArinc665Version arinc665VersionValue;
 };
 
 }

@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
 
   LoadListFile file{ rawFile};
 
-  BOOST_CHECK( file.arincVersion() == Arinc665Version::ARINC_665_2);
+  BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2);
 
   BOOST_CHECK( file.mediaSetPn() == "PN123");
   BOOST_CHECK( file.mediaSequenceNumber() == 1);

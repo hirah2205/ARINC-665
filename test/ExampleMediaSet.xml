@@ -24,6 +24,7 @@
         <Position Pos="123" />
         <Position Pos="456" />
       </TargetHardware>
+      <TargetHardware ThwId="GHIJKL" />
 
       <DataFile    NameRef="File1" />
       <SupportFile NameRef="File2" />

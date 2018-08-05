@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
 
   LoadHeaderFile file{ rawFile};
 
-  BOOST_CHECK( file.arincVersion() == Arinc665Version::ARINC_665_2);
+  BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2);
 
   BOOST_CHECK( file.partNumber() == "PN123");
 

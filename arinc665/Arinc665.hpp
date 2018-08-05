@@ -34,17 +34,28 @@
  **/
 namespace Arinc665 {
 
-//! Enumeration of ARINC 665 versions.
+//! Enumeration of all defined ARINC 665 versions.
 enum class Arinc665Version
 {
   //! ARINC 665 Supplement 1
-  ARINC_665_1,
+  Supplement1,
   //! ARINC 665 Supplement 2
-  ARINC_665_2,
+  Supplement2,
   //! ARINC 665 Supplement 3
-  ARINC_665_3,
+  Supplement3,
   //! ARINC 665 Supplement 4
-  ARINC_665_4,
+  Supplement4,
+
+  Invalid
+};
+
+//! Enumeration used for Feature Selection of this Library.
+enum class SupportedArinc665Version
+{
+  //! ARINC 665-2 Compatible
+  Supplement2,
+  //! ARINC 665-3/4 Compatible
+  Supplement34,
 
   Invalid
 };

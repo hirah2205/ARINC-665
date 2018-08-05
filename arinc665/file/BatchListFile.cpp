@@ -20,7 +20,7 @@
 
 namespace Arinc665::File {
 
-BatchListFile::BatchListFile( const Arinc665Version version):
+BatchListFile::BatchListFile( const SupportedArinc665Version version):
   ListFile( FileType::BatchList, version),
   mediaSequenceNumberValue( 0),
   numberOfMediaSetMembersValue( 0)
@@ -28,7 +28,7 @@ BatchListFile::BatchListFile( const Arinc665Version version):
 }
 
 BatchListFile::BatchListFile(
-  const Arinc665Version version,
+  const SupportedArinc665Version version,
   const std::string &mediaSetPn,
   const uint8_t mediaSequenceNumber,
   const uint8_t numberOfMediaSetMembers,
@@ -44,7 +44,7 @@ BatchListFile::BatchListFile(
 }
 
 BatchListFile::BatchListFile(
-  Arinc665Version version,
+  SupportedArinc665Version version,
   std::string &&mediaSetPn,
   uint8_t mediaSequenceNumber,
   uint8_t numberOfMediaSetMembers,

@@ -157,7 +157,7 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] version
      *   ARINC 665 version.
      **/
-    LoadHeaderFile( Arinc665Version version);
+    LoadHeaderFile( SupportedArinc665Version version);
 
     /**
      * @brief Creates load header file with the given data.
@@ -178,7 +178,7 @@ class LoadHeaderFile: public Arinc665File
      *   Load CRC
      **/
     LoadHeaderFile(
-      Arinc665Version version,
+      SupportedArinc665Version version,
       const std::string &partNumber,
       const TargetHardwareIdPositions &targetHardwareIdPositions,
       const LoadFilesInfo &dataFilesInfo,
@@ -186,9 +186,9 @@ class LoadHeaderFile: public Arinc665File
       const UserDefinedData &userDefinedData,
       uint32_t loadCrc);
 
-    //! @copydoc LoadHeaderFile(Arinc665Version,const std::string&,const TargetHardwareIdPositions&,const LoadFilesInfo&,const LoadFilesInfo&,const UserDefinedData&,uint32_t)
+    //! @copydoc LoadHeaderFile(SupportedArinc665Version,const std::string&,const TargetHardwareIdPositions&,const LoadFilesInfo&,const LoadFilesInfo&,const UserDefinedData&,uint32_t)
     LoadHeaderFile(
-      Arinc665Version version,
+      SupportedArinc665Version version,
       std::string &&partNumber,
       TargetHardwareIdPositions &&targetHardwareIdPositions,
       LoadFilesInfo &&dataFilesInfo,
@@ -305,7 +305,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The Load Type information.
      **/
-    const LoadType& type() const;
+    const LoadType& loadType() const;
 
     /**
      * @brief Updates the Load Type information.

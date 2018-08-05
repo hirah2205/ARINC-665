@@ -34,3 +34,22 @@ add_test(
     arinc665_decompiler
     --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSet.xml
     --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet/CCC/MEDIUM_001)
+
+
+add_test(
+  NAME arinc665_generate_media_set_v3
+  COMMAND
+  arinc665_compiler
+  --xml-file ${CMAKE_CURRENT_SOURCE_DIR}/ExampleMediaSet.xml
+  --source-directory ${CMAKE_CURRENT_BINARY_DIR}
+  --destination-directory MediaSet/CCC_V3
+  --create-batch-files All
+  --create-load-header-files All
+  --version Supplement34)
+
+add_test(
+  NAME arinc665_decompile_media_set_v3
+  COMMAND
+  arinc665_decompiler
+  --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSetV3.xml
+  --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet/CCC_V3/MEDIUM_001)

@@ -56,7 +56,7 @@ class MediaSetExporterImpl
       Arinc665Utils::CreateFileHandler createFileHandler,
       Arinc665Utils::WriteFileHandler writeFileHandler,
       Arinc665Utils::ReadFileHandler readFileHandler,
-      Arinc665Version arinc665Version,
+      SupportedArinc665Version arinc665Version,
       FileCreationPolicy createBatchFiles,
       FileCreationPolicy createLoadHeaderFiles);
 
@@ -107,7 +107,7 @@ class MediaSetExporterImpl
     void createBatchFile( Media::ConstFilePtr file);
 
     //! The ARINC 665 version used for exporting
-    const Arinc665Version arinc665Version;
+    const SupportedArinc665Version arinc665Version;
     //! indicates if batch files shall be created by media set exporter
     const FileCreationPolicy createBatchFiles;
     //! indicates if load header files shall be created by media set exporter

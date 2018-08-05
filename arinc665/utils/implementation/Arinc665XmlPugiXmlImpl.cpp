@@ -434,11 +434,18 @@ void Arinc665XmlPugiXmlImpl::saveLoad(
 
 
   // iterate over target hardware id
-  for (auto targetHardware : load->targetHardwareIds())
+  for (const auto &targetHardware : load->targetHardwareIdPositions())
   {
     auto targetHardwareNode{ loadNode.append_child( "TargetHardware")};
     targetHardwareNode.append_attribute( "ThwId") =
-      targetHardware.c_str();
+      targetHardware.first.c_str();
+
+    for( const auto &position : targetHardware.second)
+    {
+      auto positionNode{ targetHardwareNode.append_child( "Position")};
+      positionNode.append_attribute( "Pos") =
+        position.c_str();
+    }
   }
 
   // iterate over data files

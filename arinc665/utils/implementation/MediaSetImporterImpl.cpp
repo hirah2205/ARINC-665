@@ -310,26 +310,8 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex)
       "Load Header File " << loadHeaderFileIt->second.path();
 
     // decode load header
-    File::LoadHeaderFile loadHeaderFile(
-      readFileHandler( mediumIndex, loadHeaderFileIt->second.path()));
-
-    // validate load header part number info with the stored information in load list
-    if (loadHeaderFile.partNumber() != loadInfo.second.partNumber())
-    {
-      //! @throw Arinc665Exception When load header PN info is inconsistent to list of loads information
-      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-        AdditionalInfo( "Load header is not consistent to load list"));
-    }
-
-    // validate load header target HW list info with the stored information in load list
-    if (loadHeaderFile.targetHardwareIds() != loadInfo.second.targetHardwareIds())
-    {
-      //! @throw Arinc665Exception When load header THW info is inconsistent to list of loads information
-      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-        AdditionalInfo( "Load header is not consistent to load list"));
-    }
-
-    //! @todo implement load CRC check.
+    File::LoadHeaderFile loadHeaderFile{
+      readFileHandler( mediumIndex, loadHeaderFileIt->second.path())};
 
     // add load header to global information
     loadHeaderFiles.insert(
@@ -347,7 +329,7 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex)
       continue;
     }
 
-    auto batchFileIt( fileInfos.find( batchInfo.first));
+    auto batchFileIt{ fileInfos.find( batchInfo.first)};
 
     if (fileInfos.end() == batchFileIt)
     {
@@ -358,14 +340,8 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex)
     BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
       "Load Batch File " << batchFileIt->second.path();
 
-    File::BatchFile batchFile(
-      readFileHandler( mediumIndex, batchFileIt->second.path()));
-
-    if (batchFile.partNumber() != batchInfo.second.partNumber())
-    {
-      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-        AdditionalInfo( "Medium is not consistent to media set"));
-    }
+    File::BatchFile batchFile{
+      readFileHandler( mediumIndex, batchFileIt->second.path())};
 
     // add batch file to to batch file list
     batchFiles.insert(
@@ -409,9 +385,9 @@ void MediaSetImporterImpl::addFiles()
     }
 
     // get directory, where file will be placed into.
-    ContainerEntityPtr container( checkCreateDirectory(
+    ContainerEntityPtr container{ checkCreateDirectory(
       fileInfo.first.first,
-      fileInfo.second.path().parent_path()));
+      fileInfo.second.path().parent_path())};
 
     // place file
     auto filePtr{ container->addFile( fileInfo.second.filename())};
@@ -430,7 +406,6 @@ void MediaSetImporterImpl::addLoads(
   // iterate over load headers
   for ( const auto &loadHeader : loadHeaders)
   {
-    auto load{ loadInfos.find( loadHeader.first)};
     auto loadHeaderFile{ loadHeaderFiles.find( loadHeader.first.second)};
 
     // obtain container (directory, medium), which will contain the load.
@@ -439,39 +414,21 @@ void MediaSetImporterImpl::addLoads(
       loadHeader.second.path().parent_path()));
 
     // create load
-    auto loadPtr( container->addLoad( loadHeader.second.filename()));
+    auto loadPtr{ container->addLoad( loadHeader.second.filename())};
 
     loadPtr->partNumber( loadHeaderFile->second.partNumber());
-    loadPtr->targetHardwareIds( loadHeaderFile->second.targetHardwareIds());
-
-    // The load CRC
-    Arinc665Crc32 loadCrc;
-
-    {
-      // load header file for load checksum calculation
-      const auto file{ readFileHandler(
-        loadPtr->medium()->mediumNumber(),
-        loadPtr->path())};
-
-      // calculate CRC
-      loadCrc.process_bytes( &(*file.begin()), file.size() - sizeof(uint32_t));
-    }
+    loadPtr->loadType( loadHeaderFile->second.loadType());
+    loadPtr->targetHardwareIdPositions(
+      loadHeaderFile->second.targetHardwareIdPositions());
 
     // iterate over data files
     for ( const auto &dataFile : loadHeaderFile->second.dataFiles())
     {
-      auto dataFilePtr( mediaSet->file( dataFile.filename()));
+      auto dataFilePtr{ mediaSet->file( dataFile.filename())};
 
       dataFilePtr->partNumber( dataFile.partNumber());
 
       loadPtr->dataFile( dataFilePtr);
-
-      // load file for load checksum calculation
-      const auto file{ readFileHandler(
-        dataFilePtr->medium()->mediumNumber(),
-        dataFilePtr->path())};
-
-      loadCrc.process_block( &(*file.begin()), &(*file.begin()) + file.size());
     }
 
     // iterate over support files
@@ -482,20 +439,6 @@ void MediaSetImporterImpl::addLoads(
       supportFilePtr->partNumber( supportFile.partNumber());
 
       loadPtr->supportFile( supportFilePtr);
-
-      // load file for load checksum calculation
-      const auto file{ readFileHandler(
-        supportFilePtr->medium()->mediumNumber(),
-        supportFilePtr->path())};
-
-      loadCrc.process_block( &(*file.begin()), &(*file.begin()) + file.size());
-    }
-
-    if (loadCrc.checksum() != loadHeaderFile->second.loadCrc())
-    {
-      BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::error) <<
-        "Load CRC differs " << std::hex << loadCrc.checksum() << " : " <<
-        loadHeaderFile->second.loadCrc();
     }
   }
 }
@@ -507,9 +450,6 @@ void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
   // iterate over batches
   for ( const auto &batch : batches)
   {
-    // get batch info for batch file
-    auto batchInfo{ batchInfos.find( batch.first)};
-
     // get the batch file
     auto batchFile{ batchFiles.find( batch.first.second)};
 
@@ -518,7 +458,7 @@ void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
       batch.second.path().parent_path()));
 
     // create batch
-    auto batchPtr( container->addBatch( batch.second.filename()));
+    auto batchPtr{ container->addBatch( batch.second.filename())};
 
     batchPtr->partNumber( batchFile->second.partNumber());
     batchPtr->comment( batchFile->second.comment());

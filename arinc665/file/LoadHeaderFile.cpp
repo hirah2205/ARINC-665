@@ -22,7 +22,7 @@
 
 namespace Arinc665::File {
 
-LoadHeaderFile::LoadHeaderFile( Arinc665Version version) :
+LoadHeaderFile::LoadHeaderFile( SupportedArinc665Version version) :
   Arinc665File( FileType::LoadUploadHeader, version, FileCrcOffset),
   partFlagsValue( 0),
   loadCrcValue( 0)
@@ -128,7 +128,7 @@ void LoadHeaderFile::targetHardwareId(
     std::make_pair( std::move( targetHardwareId), std::move( positions)));
 }
 
-const LoadHeaderFile::LoadType& LoadHeaderFile::type() const
+const LoadHeaderFile::LoadType& LoadHeaderFile::loadType() const
 {
   return typeValue;
 }
@@ -230,17 +230,12 @@ RawFile LoadHeaderFile::encode() const
 
   switch ( arincVersion())
   {
-    case Arinc665Version::ARINC_665_1:
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << AdditionalInfo( "Unsupported ARINC 665 Version"));
-
-    case Arinc665Version::ARINC_665_2:
+    case SupportedArinc665Version::Supplement2:
       // Spare
       baseSize = LoadHeaderSizeV2;
       break;
 
-    case Arinc665Version::ARINC_665_3:
-    case Arinc665Version::ARINC_665_4:
+    case SupportedArinc665Version::Supplement34:
       // Part Flags
       encodeV3Data = true;
       baseSize = LoadHeaderSizeV3;
@@ -260,7 +255,7 @@ RawFile LoadHeaderFile::encode() const
 
 
   // Next free Offset (used for optional pointer calculation)
-  size_t nextFreeOffset{ LoadHeaderSizeV2};
+  size_t nextFreeOffset{ rawFile.size()};
 
 
   // Load Part Number
@@ -274,6 +269,7 @@ RawFile LoadHeaderFile::encode() const
 
   rawFile.insert( rawFile.end(), rawLoadPn.begin(), rawLoadPn.end());
 
+
   // Load Type (only in V3 mode)
   if (encodeV3Data)
   {
@@ -285,6 +281,7 @@ RawFile LoadHeaderFile::encode() const
       loadTypePtr = nextFreeOffset / 2;
 
       const auto rawTypeDescription{ encodeString( typeValue->first)};
+      assert( rawTypeDescription.size() % 2 == 0);
 
       // description
       rawFile.insert(
@@ -294,7 +291,7 @@ RawFile LoadHeaderFile::encode() const
 
       rawFile.resize( rawFile.size() + sizeof( uint16_t));
       setInt< uint16_t>(
-        rawFile.begin() + rawTypeDescription.size(),
+        rawFile.begin() + nextFreeOffset + rawTypeDescription.size(),
         typeValue->second);
 
       nextFreeOffset += rawTypeDescription.size() + sizeof( uint16_t);
@@ -330,12 +327,25 @@ RawFile LoadHeaderFile::encode() const
         continue;
       }
 
+      // THW ID
+      const auto rawThwId{ encodeString( thwIdPosition.first)};
+      assert( rawThwId.size() % 2 == 0);
+
+      rawThwPos.insert(
+        rawThwPos.end(),
+        rawThwId.begin(),
+        rawThwId.end());
+
+      // Positions
       const auto rawPositions{ encodeStringList( thwIdPosition.second)};
-      ++thwIdPosCount;
+      assert( rawThwId.size() % 2 == 0);
+
       rawThwPos.insert(
         rawThwPos.end(),
         rawPositions.begin(),
         rawPositions.end());
+
+      ++thwIdPosCount;
     }
 
     setInt< uint16_t>( rawThwPos.begin(), thwIdPosCount);
@@ -460,11 +470,7 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
 
   switch ( arincVersion())
   {
-    case Arinc665Version::ARINC_665_1:
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << AdditionalInfo( "Unsupported ARINC 665 Version"));
-
-    case Arinc665Version::ARINC_665_2:
+    case SupportedArinc665Version::Supplement2:
       // Spare
       if (partFlags != 0U)
       {
@@ -474,8 +480,7 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
       }
       break;
 
-    case Arinc665Version::ARINC_665_3:
-    case Arinc665Version::ARINC_665_4:
+    case SupportedArinc665Version::Supplement34:
       partFlagsValue = partFlags;
       decodeV3Data = true;
       break;

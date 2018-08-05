@@ -116,7 +116,7 @@ class Arinc665Utils
       CreateFileHandler createFileHandler,
       WriteFileHandler writeFileHandler,
       ReadFileHandler readFileHandler,
-      Arinc665Version arinc665Version = Arinc665Version::ARINC_665_2,
+      SupportedArinc665Version arinc665Version = SupportedArinc665Version::Supplement2,
       FileCreationPolicy createBatchFiles = FileCreationPolicy::None,
       FileCreationPolicy createLoadHeaderFiles = FileCreationPolicy::None);
 };

@@ -16,7 +16,7 @@ namespace Arinc665::File {
 
 ListFile::ListFile(
   const FileType fileType,
-  const Arinc665Version version,
+  const SupportedArinc665Version version,
   const std::size_t checksumPosition):
   Arinc665File( fileType, version, checksumPosition)
 {

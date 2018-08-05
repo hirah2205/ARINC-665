@@ -21,7 +21,7 @@
 
 namespace Arinc665::File {
 
-FileListFile::FileListFile( Arinc665Version version):
+FileListFile::FileListFile( SupportedArinc665Version version):
   ListFile( FileType::FileList, version),
   mediaSequenceNumberValue( 0),
   numberOfMediaSetMembersValue( 0)
@@ -224,16 +224,11 @@ RawFile FileListFile::encode() const
 
   switch ( arincVersion())
   {
-    case Arinc665Version::ARINC_665_1:
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << AdditionalInfo( "Unsupported ARINC 665 Version"));
-
-    case Arinc665Version::ARINC_665_2:
+    case SupportedArinc665Version::Supplement2:
       baseSize = FileHeaderSizeV2;
       break;
 
-    case Arinc665Version::ARINC_665_3:
-    case Arinc665Version::ARINC_665_4:
+    case SupportedArinc665Version::Supplement34:
       encodeV3Data = true;
       baseSize = FileHeaderSizeV3;
       break;
@@ -343,15 +338,10 @@ void FileListFile::decodeBody( const RawFile &rawFile)
 
   switch ( arincVersion())
   {
-    case Arinc665Version::ARINC_665_1:
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << AdditionalInfo( "Unsupported ARINC 665 Version"));
-
-    case Arinc665Version::ARINC_665_2:
+    case SupportedArinc665Version::Supplement2:
       break;
 
-    case Arinc665Version::ARINC_665_3:
-    case Arinc665Version::ARINC_665_4:
+    case SupportedArinc665Version::Supplement34:
       decodeV3Data = true;
       break;
 

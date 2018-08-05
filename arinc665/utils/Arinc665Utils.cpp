@@ -33,7 +33,7 @@ Arinc665Utils::Arinc665Exporter Arinc665Utils::arinc665Exporter(
   CreateFileHandler createFileHandler,
   WriteFileHandler writeFileHandler,
   ReadFileHandler readFileHandler,
-  Arinc665Version arinc665Version,
+  const SupportedArinc665Version arinc665Version,
   const FileCreationPolicy createBatchFiles,
   const FileCreationPolicy createLoadHeaderFiles)
 {

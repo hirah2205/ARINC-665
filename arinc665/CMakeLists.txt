@@ -27,6 +27,8 @@ add_library(
   PartNumber.cpp
   ProductIdentifier.hpp
   ProductIdentifier.cpp
+  SupportedArinc665VersionDescription.cpp
+  SupportedArinc665VersionDescription.hpp
   TargetHardwareId.hpp
   TargetHardwareId.cpp
 

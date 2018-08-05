@@ -55,7 +55,7 @@ class BatchListFile: public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    BatchListFile( Arinc665Version version);
+    BatchListFile( SupportedArinc665Version version);
 
     /**
      * @brief Creates batch list file with the given data.
@@ -74,16 +74,16 @@ class BatchListFile: public ListFile
      *   Additional user defined data.
      **/
     BatchListFile(
-      Arinc665Version version,
+      SupportedArinc665Version version,
       const std::string &mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       const BatchesInfo &batches,
       const UserDefinedData &userDefinedData);
 
-    //! @copydoc BatchListFile(Arinc665Version,const std::string&,uint8_t,uint8_t,const BatchesInfo&,const UserDefinedData&)
+    //! @copydoc BatchListFile(SupportedArinc665Version,const std::string&,uint8_t,uint8_t,const BatchesInfo&,const UserDefinedData&)
     BatchListFile(
-      Arinc665Version version,
+      SupportedArinc665Version version,
       std::string &&mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,

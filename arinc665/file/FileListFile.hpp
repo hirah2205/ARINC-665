@@ -25,6 +25,41 @@ namespace Arinc665::File {
 
 /**
  * @brief ARINC 665 File List File.
+ *
+ * @par File Format (ARINC 665-4)
+ *
+ * Name of Field                                | Field Size (bits)
+ * ---------------------------------------------|:----------------:
+ * FILES.LUM File Length                        | 32
+ * Media File Format Version                    | 16
+ * Spare                                        | 16
+ * Pointer to Media Set PN Length               | 32
+ * Pointer to Number of Media Set Files         | 32
+ * Pointer To User Defined Data                 | 32
+ * Pointer to FILES.LUM File Check Value Length | 32
+ * Expansion Point No. 1                        |  0
+ * Media Set PN Length                          | 16
+ * Media Set PN                                 | 16
+ * Media Sequence Number (X)                    |  8
+ * No. Of Media Set Members (Y)                 |  8
+ * Number of Media Set Files                    | 16
+ * # File Pointer                               | 16
+ * # File Name Length                           | 16
+ * # File Name                                  | 16
+ * # File Pathname Length                       | 16
+ * # File Pathname                              | 16
+ * # File Member Sequence No.                   | 16
+ * # File CRC                                   | 16
+ * # File Check Value Length                    | 16
+ * # File Check Value Type                      | 16
+ * # File Check Value                           | 16
+ * # Expansion Point No. 2                      |  0
+ * Expansion Point No. 3                        |  0
+ * User Defined Data                            | 16
+ * FILES.LUM File Check Value Length            | 16
+ * FILES.LUM File Check Value Type              | 16
+ * FILES.LUM File Check Value                   | 16
+ * FILES.LUM File CRC                           | 16
  **/
 class FileListFile: public ListFile
 {
@@ -48,7 +83,7 @@ class FileListFile: public ListFile
 
     //! Offset of the User Defined Data Pointer Field
     static constexpr std::size_t UserDefinedDataPointerFieldOffset = 16U;
-;
+
     //! Offset of the File Check Value Pointer Field (Only ARINC 665-3/4)
     static constexpr std::size_t FileCheckValuePointerFieldOffset = 20U;
 
@@ -64,7 +99,7 @@ class FileListFile: public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    FileListFile( Arinc665Version version);
+    FileListFile( SupportedArinc665Version version);
 
     /**
      * @brief Creates file list file with the given data.
@@ -84,16 +119,16 @@ class FileListFile: public ListFile
      *   Additional User Defined Data.
      **/
     FileListFile(
-      Arinc665Version version,
+      SupportedArinc665Version version,
       const std::string &mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       const FilesInfo &files,
       const UserDefinedData &userDefinedData);
 
-    //! @copydoc FileListFile(Arinc665Version,const std::string&,uint8_t,uint8_t,const FilesInfo&,const UserDefinedData&)
+    //! @copydoc FileListFile(SupportedArinc665Version,const std::string&,uint8_t,uint8_t,const FilesInfo&,const UserDefinedData&)
     FileListFile(
-      Arinc665Version version,
+      SupportedArinc665Version version,
       std::string &&mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,

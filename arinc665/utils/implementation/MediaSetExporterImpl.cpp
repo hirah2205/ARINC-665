@@ -38,7 +38,7 @@ MediaSetExporterImpl::MediaSetExporterImpl(
   Arinc665Utils::CreateFileHandler createFileHandler,
   Arinc665Utils::WriteFileHandler writeFileHandler,
   Arinc665Utils::ReadFileHandler readFileHandler,
-  const Arinc665Version arinc665Version,
+  const SupportedArinc665Version arinc665Version,
   const FileCreationPolicy createBatchFiles,
   const FileCreationPolicy createLoadHeaderFiles):
   arinc665Version( arinc665Version),
@@ -75,10 +75,10 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 {
   BOOST_LOG_FUNCTION();
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Export medium " << (unsigned int)medium->mediumNumber();
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    << "Export medium #" << (unsigned int)medium->mediumNumber();
 
-  // create the medium (i.g. create directory)
+  // create the medium (i.e. create directory)
   createMediumHandler( medium);
 
   // export sub-directories
@@ -120,7 +120,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
     BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
       "Export list of batches";
 
-    Arinc665::File::BatchListFile batchListFile( arinc665Version);
+    Arinc665::File::BatchListFile batchListFile{ arinc665Version};
     batchListFile.mediaSequenceNumber( medium->mediumNumber());
     batchListFile.mediaSetPn( medium->partNumber());
     batchListFile.numberOfMediaSetMembers(  medium->mediaSet()->numberOfMedia());
@@ -149,8 +149,8 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   /* add all files, load header files, and batch files to file list */
   for ( auto &file : medium->mediaSet()->files())
   {
-    auto rawFile( readFileHandler( medium->mediumNumber(), file->path()));
-    uint16_t crc( File::Arinc665File::calculateChecksum( rawFile, 0));
+    const auto rawFile{ readFileHandler( medium->mediumNumber(), file->path())};
+    const uint16_t crc{ File::Arinc665File::calculateChecksum( rawFile, 0)};
 
     fileListFile.file({
       file->name(),
@@ -160,10 +160,10 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   }
 
   // add list of loads
-  auto rawListOfLoadsFile(
-    readFileHandler( medium->mediumNumber(), "/" + ListOfLoadsName));
-  uint16_t listOfLoadsFileCrc(
-    File::Arinc665File::calculateChecksum( rawListOfLoadsFile, 0));
+  const auto rawListOfLoadsFile{
+    readFileHandler( medium->mediumNumber(), "/" + ListOfLoadsName)};
+  const uint16_t listOfLoadsFileCrc{
+    File::Arinc665File::calculateChecksum( rawListOfLoadsFile, 0)};
 
   fileListFile.file({
     ListOfLoadsName,
@@ -174,10 +174,10 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   // add list of batches - if present
   if (medium->mediaSet()->numberOfBatches() != 0)
   {
-    auto rawListOfBatchesFile(
-      readFileHandler( medium->mediumNumber(), "/" + ListOfBatchesName));
-    uint16_t listOfBatchesFileCrc(
-      File::Arinc665File::calculateChecksum( rawListOfBatchesFile, 0));
+    const auto rawListOfBatchesFile{
+      readFileHandler( medium->mediumNumber(), "/" + ListOfBatchesName)};
+    const uint16_t listOfBatchesFileCrc{
+      File::Arinc665File::calculateChecksum( rawListOfBatchesFile, 0)};
 
     fileListFile.file({
       ListOfBatchesName,
@@ -295,6 +295,7 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
 
 void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
 {
+  // up-cast load file
   auto load{ std::dynamic_pointer_cast< const Media::Load>( file)};
 
   if (!load)
@@ -303,9 +304,10 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
       AdditionalInfo( "Cannot cast file to load"));
   }
 
-  File::LoadHeaderFile loadHeaderFile( Arinc665Version::ARINC_665_2);
+  File::LoadHeaderFile loadHeaderFile{ arinc665Version};
   loadHeaderFile.partNumber( load->partNumber());
-  loadHeaderFile.targetHardwareIds( load->targetHardwareIds());
+  loadHeaderFile.targetHardwareIdPositions( load->targetHardwareIdPositions());
+  loadHeaderFile.loadType( load->loadType());
 
   // calculate data files CRC and set data.
   for ( auto dataFile : load->dataFiles())
@@ -386,6 +388,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
 
 void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
 {
+  // up-cast batch file
   auto batch{ std::dynamic_pointer_cast< const Media::Batch>( file)};
 
   if (!batch)
@@ -394,7 +397,7 @@ void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
       AdditionalInfo( "Cannot cast file to batch"));
   }
 
-  File::BatchFile batchFile{ Arinc665Version::ARINC_665_2};
+  File::BatchFile batchFile{ arinc665Version};
   batchFile.partNumber( batch->partNumber());
   batchFile.comment( batch->comment());
 
