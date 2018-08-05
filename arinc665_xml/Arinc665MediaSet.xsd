@@ -18,6 +18,10 @@
 
   <complexType name="MediaSetType" >
     <sequence>
+      <element name="FilesUserDefinedData"   type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
+      <element name="LoadsUserDefinedData"   type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
+      <element name="BatchesUserDefinedData" type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
+
       <element ref="ams:Medium"  minOccurs="1" maxOccurs="unbounded" />
       <element ref="ams:Loads"   minOccurs="1" maxOccurs="1" />
       <element ref="ams:Batches" minOccurs="1" maxOccurs="1" />
@@ -27,7 +31,7 @@
 
   <complexType name="MediumType" >
     <sequence>
-      <group ref="ams:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded" /> 
+      <group ref="ams:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
   </complexType>
 
@@ -81,10 +85,14 @@
   </complexType>
 
   <complexType name="LoadType" >
+    <annotation><documentation>
+      Load Definition
+    </documentation></annotation>
     <sequence>
-      <element name="TargetHardware" type="ams:TargetHardwareType" minOccurs="1" maxOccurs="unbounded" />
-      <element name="DataFile"       type="ams:FileRefernceType"   minOccurs="0" maxOccurs="unbounded" />
-      <element name="SupportFile"    type="ams:FileRefernceType"   minOccurs="0" maxOccurs="unbounded" />
+      <element name="TargetHardware"  type="ams:TargetHardwareType"  minOccurs="1" maxOccurs="unbounded" />
+      <element name="DataFile"        type="ams:FileRefernceType"    minOccurs="0" maxOccurs="unbounded" />
+      <element name="SupportFile"     type="ams:FileRefernceType"    minOccurs="0" maxOccurs="unbounded" />
+      <element name="UserDefinedData" type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
     </sequence>
     <attribute name="NameRef"     type="IDREF"            use="required" />
     <attribute name="Description" type="ams:StringType"   use="optional" />
@@ -114,6 +122,9 @@
   </complexType>
 
   <complexType name="BatchType" >
+    <annotation><documentation>
+      Batch Definition
+    </documentation></annotation>
     <sequence>
       <element name="Target" type="ams:BatchTargetType" minOccurs="1" maxOccurs="unbounded" />
     </sequence>
@@ -123,14 +134,22 @@
 
   <complexType name="BatchTargetType" >
       <sequence>
-      <element name="Load" type="ams:LoadRefernceType" minOccurs="1" maxOccurs="unbounded" />
+      <element name="Load" type="ams:LoadReferenceType" minOccurs="1" maxOccurs="unbounded" />
     </sequence>
     <attribute name="ThwIdPos" type="ams:TargetHardwareIdPosType" use="required" />
   </complexType>
   
-  <complexType name="LoadRefernceType" >
+  <complexType name="LoadReferenceType" >
     <attribute name="NameRef" type="IDREF" use="required" />
   </complexType>
+
+  <simpleType name="UserDefinedDataType" >
+    <annotation><documentation>
+      User Defined Data, which can be part of Load Files.
+      Additionally it can be added to File, Batches and Load Lists.
+    </documentation></annotation>
+    <restriction base="anyType" />
+  </simpleType>
 
   <simpleType name="PartNumberType" >
     <restriction base="string"></restriction>

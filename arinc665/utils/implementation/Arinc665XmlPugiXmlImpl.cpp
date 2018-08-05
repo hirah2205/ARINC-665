@@ -24,6 +24,8 @@
 
 #include <helper/SafeCast.hpp>
 
+#include <boost/format.hpp>
+
 namespace Arinc665::Utils {
 
 Arinc665XmlPugiXmlImpl::LoadXmlResult Arinc665XmlPugiXmlImpl::loadFromXml(
@@ -83,6 +85,36 @@ Media::MediaSetPtr Arinc665XmlPugiXmlImpl::loadMediaSet(
   auto mediaSet{ std::make_shared< Media::MediaSet>()};
   mediaSet->partNumber( partNumber);
 
+  const auto filesUserDefinedDataNode{ mediaSetNode.child( "FilesUserDefinedData")};
+  if ( filesUserDefinedDataNode)
+  {
+    const std::string userDefinedData{ filesUserDefinedDataNode.child_value()};
+    mediaSet->filesUserDefinedData(
+      Arinc665::Media::MediaSet::UserDefinedData{
+        userDefinedData.begin(),
+        userDefinedData.end()});
+  }
+
+  const auto loadsUserDefinedDataNode{ mediaSetNode.child( "LoadsUserDefinedData")};
+  if ( loadsUserDefinedDataNode)
+  {
+    const std::string userDefinedData{ loadsUserDefinedDataNode.child_value()};
+    mediaSet->loadsUserDefinedData(
+      Arinc665::Media::MediaSet::UserDefinedData{
+        userDefinedData.begin(),
+        userDefinedData.end()});
+  }
+
+  const auto batchesUserDefinedDataNode{ mediaSetNode.child( "BatchesUserDefinedData")};
+  if ( batchesUserDefinedDataNode)
+  {
+    const std::string userDefinedData{ batchesUserDefinedDataNode.child_value()};
+    mediaSet->batchesUserDefinedData(
+      Arinc665::Media::MediaSet::UserDefinedData{
+        userDefinedData.begin(),
+        userDefinedData.end()});
+  }
+
   // iterate over media
   for ( pugi::xml_node mediumNode : mediaSetNode.children( "Medium"))
   {
@@ -116,6 +148,30 @@ void Arinc665XmlPugiXmlImpl::saveMediaSet(
   pugi::xml_node &mediaSetNode)
 {
   mediaSetNode.append_attribute( "PartNumber") = mediaSet->partNumber().c_str();
+
+  const auto filesUserDefinedData{ mediaSet->filesUserDefinedData()};
+  if (!filesUserDefinedData.empty())
+  {
+    mediaSetNode.append_child( "FilesUserDefinedData").append_child(
+      pugi::node_pcdata).set_value(
+      std::string{ filesUserDefinedData.begin(), filesUserDefinedData.end()}.c_str());
+  }
+
+  const auto loadsUserDefinedData{ mediaSet->loadsUserDefinedData()};
+  if (!loadsUserDefinedData.empty())
+  {
+    mediaSetNode.append_child( "LoadsUserDefinedData").append_child(
+      pugi::node_pcdata).set_value(
+      std::string{ loadsUserDefinedData.begin(), loadsUserDefinedData.end()}.c_str());
+  }
+
+  const auto batchesUserDefinedData{ mediaSet->batchesUserDefinedData()};
+  if (!batchesUserDefinedData.empty())
+  {
+    mediaSetNode.append_child( "BatchesUserDefinedData").append_child(
+      pugi::node_pcdata).set_value(
+      std::string{ batchesUserDefinedData.begin(), batchesUserDefinedData.end()}.c_str());
+  }
 
   // iterate over media
   for (
@@ -424,6 +480,16 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
 
     load->supportFile( file);
   }
+
+  const auto userDefinedDataNode{ loadNode.child( "UserDefinedData")};
+  if ( userDefinedDataNode)
+  {
+     const std::string userDefinedData{ userDefinedDataNode.child_value()};
+    load->userDefinedData(
+      Arinc665::Media::Load::UserDefinedData{
+        userDefinedData.begin(),
+        userDefinedData.end()});
+  }
 }
 
 void Arinc665XmlPugiXmlImpl::saveLoad(
@@ -432,6 +498,15 @@ void Arinc665XmlPugiXmlImpl::saveLoad(
 {
   loadNode.append_attribute( "NameRef") = load->name().c_str();
 
+  // Load Type (Description + Type Value)
+  const auto &loadType{ load->loadType()};
+
+  if ( loadType)
+  {
+    loadNode.append_attribute( "Description") = std::get< 0>( *loadType).c_str();
+    loadNode.append_attribute( "Type") =
+      (boost::format( "0x%04X") % std::get< 1>( *loadType)).str().c_str();
+  }
 
   // iterate over target hardware id
   for (const auto &targetHardware : load->targetHardwareIdPositions())
@@ -462,6 +537,14 @@ void Arinc665XmlPugiXmlImpl::saveLoad(
     auto supportFileNode{ loadNode.append_child( "SupportFile")};
     supportFileNode.append_attribute( "NameRef") =
       supportFile.lock()->name().c_str();
+  }
+
+  const auto userDefinedData{ load->userDefinedData()};
+  if (!userDefinedData.empty())
+  {
+    loadNode.append_child( "UserDefinedData").append_child(
+      pugi::node_pcdata).set_value(
+        std::string{ userDefinedData.begin(), userDefinedData.end()}.c_str());
   }
 }
 

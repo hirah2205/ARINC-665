@@ -7,6 +7,10 @@
 
   PartNumber="CCC" >
 
+  <FilesUserDefinedData>File Data </FilesUserDefinedData>
+  <LoadsUserDefinedData>Loads Data</LoadsUserDefinedData>
+  <BatchesUserDefinedData>Batch Data</BatchesUserDefinedData>
+
   <Medium>
     <File Name="File1" PartNumber="AABBCC1" SourcePath="File1" />
     <LoadFile Name="Load1.LUH" PartNumber="AABBCC" />
@@ -28,6 +32,8 @@
 
       <DataFile    NameRef="File1" />
       <SupportFile NameRef="File2" />
+
+      <UserDefinedData >TEST</UserDefinedData >
     </Load>
     <Load NameRef="Load2.LUH" >
       <TargetHardware ThwId="ABCDEF" />

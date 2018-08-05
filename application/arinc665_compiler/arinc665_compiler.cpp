@@ -19,11 +19,12 @@
 #include <arinc665/utils/Arinc665Utils.hpp>
 #include <arinc665/utils/FileCreationPolicyDescription.hpp>
 
-#include <arinc665/Arinc665Exception.hpp>
-
 #include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/File.hpp>
+
+#include <arinc665/Arinc665Exception.hpp>
+#include <arinc665/SupportedArinc665VersionDescription.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -109,12 +110,18 @@ int main( int argc, char ** argv)
 
   initLogging( severity_level::info);
 
-  auto desc{ Arinc665::Utils::FileCreationPolicyDescription::instance()};
+  auto fileCreatPolDes{ Arinc665::Utils::FileCreationPolicyDescription::instance()};
 
   const std::string fileCreationPolicyValues{
-    "* '" + desc.name( Arinc665::Utils::FileCreationPolicy::None) + "': Create never\n" +
-    "* '" + desc.name( Arinc665::Utils::FileCreationPolicy::NoneExisting) + "': Create none-existing\n" +
-    "* '" + desc.name( Arinc665::Utils::FileCreationPolicy::All) + "': Create all"};
+    "* '" + fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::None) + "': Create never\n" +
+    "* '" + fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::NoneExisting) + "': Create none-existing\n" +
+    "* '" + fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::All) + "': Create all"};
+
+  auto versionDes{ Arinc665::SupportedArinc665VersionDescription::instance()};
+
+  const std::string versionValues{
+    "* '" + versionDes.name( Arinc665::SupportedArinc665Version::Supplement2) +   "': ARINC 665-2\n" +
+    "* '" + versionDes.name( Arinc665::SupportedArinc665Version::Supplement34) +  "': ARINC 665-3/4"};
 
   // Media Set XML file
   std::filesystem::path mediaSetXmlFile;
@@ -128,6 +135,9 @@ int main( int argc, char ** argv)
   // Create Load Header file policy
   Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles{
     Arinc665::Utils::FileCreationPolicy::Invalid};
+  // ARINC 665 Version
+  Arinc665::SupportedArinc665Version version{
+    Arinc665::SupportedArinc665Version::Invalid};
 
   boost::program_options::options_description optionsDescription(
     "ARINC 665 Media Set Compiler Options");
@@ -163,6 +173,12 @@ int main( int argc, char ** argv)
     boost::program_options::value( &createLoadHeaderFiles)->default_value(
       Arinc665::Utils::FileCreationPolicy::None),
     (std::string( "Load-headers-files creation policy:\n") + fileCreationPolicyValues).c_str()
+  )
+  (
+    "version",
+    boost::program_options::value( &version)->default_value(
+      Arinc665::SupportedArinc665Version::Supplement2),
+    (std::string( "ARINC 665 Version:\n") + versionValues).c_str()
   );
 
   try
@@ -227,7 +243,7 @@ int main( int argc, char ** argv)
         mediaSetDestinationDirectory,
         std::placeholders::_1,
         std::placeholders::_2),
-      Arinc665::Arinc665Version::ARINC_665_2,
+      version,
       createBatchFiles,
       createLoadHeaderFiles)};
 

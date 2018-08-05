@@ -34,6 +34,9 @@ class MediaSet:
   public std::enable_shared_from_this< MediaSet>
 {
   public:
+    //! User defined data type
+    using UserDefinedData = std::vector< uint8_t>;
+
     /**
      * @brief Creates a new media set.
      *
@@ -291,11 +294,43 @@ class MediaSet:
      **/
     void removeBatch( ConstBatchPtr batch);
 
+
+    const UserDefinedData& filesUserDefinedData() const;
+
+    UserDefinedData& filesUserDefinedData();
+
+    void filesUserDefinedData( const UserDefinedData &userDefinedData);
+
+    void filesUserDefinedData( UserDefinedData &&userDefinedData);
+
+    const UserDefinedData& loadsUserDefinedData() const;
+
+    UserDefinedData& loadsUserDefinedData();
+
+    void loadsUserDefinedData( const UserDefinedData &userDefinedData);
+
+    void loadsUserDefinedData( UserDefinedData &&userDefinedData);
+
+    const UserDefinedData& batchesUserDefinedData() const;
+
+    UserDefinedData& batchesUserDefinedData();
+
+    void batchesUserDefinedData( const UserDefinedData &userDefinedData);
+
+    void batchesUserDefinedData( UserDefinedData &&userDefinedData);
+
   private:
     //! the media
     Media mediaV;
     //! The part number
     std::string partNumberV;
+    //! User defined data for Files List Files
+    UserDefinedData filesUserDefinedDataV;
+    //! User defined data for Loads List Files
+    UserDefinedData loadsUserDefinedDataV;
+    //! User defined data for Batches List Files
+    UserDefinedData batchesUserDefinedDataV;
+
 };
 
 }

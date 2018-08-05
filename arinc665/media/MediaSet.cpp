@@ -357,4 +357,64 @@ BatchPtr MediaSet::batch( const std::string &filename)
   return {};
 }
 
+const MediaSet::UserDefinedData& MediaSet::filesUserDefinedData() const
+{
+  return filesUserDefinedDataV;
+}
+
+MediaSet::UserDefinedData& MediaSet::filesUserDefinedData()
+{
+  return filesUserDefinedDataV;
+}
+
+void MediaSet::filesUserDefinedData( const UserDefinedData &userDefinedData)
+{
+  filesUserDefinedDataV = userDefinedData;
+}
+
+void MediaSet::filesUserDefinedData( UserDefinedData &&userDefinedData)
+{
+  filesUserDefinedDataV = std::move( userDefinedData);
+}
+
+const MediaSet::UserDefinedData& MediaSet::loadsUserDefinedData() const
+{
+  return loadsUserDefinedDataV;
+}
+
+MediaSet::UserDefinedData& MediaSet::loadsUserDefinedData()
+{
+  return loadsUserDefinedDataV;
+}
+
+void MediaSet::loadsUserDefinedData( const UserDefinedData &userDefinedData)
+{
+  loadsUserDefinedDataV = userDefinedData;
+}
+
+void MediaSet::loadsUserDefinedData( UserDefinedData &&userDefinedData)
+{
+  loadsUserDefinedDataV = std::move( userDefinedData);
+}
+
+const MediaSet::UserDefinedData& MediaSet::batchesUserDefinedData() const
+{
+  return batchesUserDefinedDataV;
+}
+
+MediaSet::UserDefinedData& MediaSet::batchesUserDefinedData()
+{
+  return batchesUserDefinedDataV;
+}
+
+void MediaSet::batchesUserDefinedData( const UserDefinedData &userDefinedData)
+{
+  batchesUserDefinedDataV = userDefinedData;
+}
+
+void MediaSet::batchesUserDefinedData( UserDefinedData &&userDefinedData)
+{
+  batchesUserDefinedDataV = std::move( userDefinedData);
+}
+
 }
