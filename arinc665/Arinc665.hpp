@@ -14,6 +14,8 @@
 #define ARINC665_ARINC665_HPP
 
 #include <string>
+#include <tuple>
+#include <vector>
 #include <cstdint>
 
 /**
@@ -133,8 +135,8 @@ enum class Arinc665FileFormatVersion : uint16_t
   Invalid = 0xFFFFU  //!< invalid value
 };
 
-//! Check Value enumeration
-enum class CheckValue : uint16_t
+//! Check Value Type enumeration
+enum class CheckValueType : uint16_t
 {
   NotUsed = 0,
   Crc8    = 1,
@@ -148,6 +150,9 @@ enum class CheckValue : uint16_t
 
   Invalid = 0xFFFFU
 };
+
+//! Check Value Type
+using CheckValue = std::tuple< CheckValueType, std::vector< uint8_t>>;
 
 //! @brief ARINC 665 file types
 enum class FileType

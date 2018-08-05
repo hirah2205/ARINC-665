@@ -14,6 +14,8 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <arinc665/file/CheckValueUtils.hpp>
+
 #include <helper/Endianess.hpp>
 #include <helper/Logger.hpp>
 
@@ -146,6 +148,26 @@ void FileListFile::userDefinedData( const UserDefinedData &userDefinedData)
   userDefinedDataValue = userDefinedData;
 }
 
+void FileListFile::userDefinedData( UserDefinedData &&userDefinedData)
+{
+  userDefinedDataValue = std::move( userDefinedData);
+}
+
+const std::optional< CheckValue>& FileListFile::checkValue() const
+{
+  return checkValueValue;
+}
+
+void FileListFile::checkValue( const std::optional< CheckValue> &value)
+{
+  checkValueValue = value;
+}
+
+void FileListFile::checkValue( std::optional< CheckValue> &&value)
+{
+  checkValueValue = std::move( value);
+}
+
 bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
 {
   if (
@@ -182,6 +204,7 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
       default:
         if (
           (filesValue[i].crc() != otherFileList[i].crc()) ||
+          (filesValue[i].checkValue() != otherFileList[i].checkValue()) ||
           (filesValue[i].memberSequenceNumber() != otherFileList[i].memberSequenceNumber()))
         {
           return false;
@@ -196,7 +219,32 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
 
 RawFile FileListFile::encode() const
 {
-  RawFile rawFile( FileHeaderSizeV2);  // TODO
+  bool encodeV3Data{ false};
+  std::size_t baseSize{ 0};
+
+  switch ( arincVersion())
+  {
+    case Arinc665Version::ARINC_665_1:
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << AdditionalInfo( "Unsupported ARINC 665 Version"));
+
+    case Arinc665Version::ARINC_665_2:
+      baseSize = FileHeaderSizeV2;
+      break;
+
+    case Arinc665Version::ARINC_665_3:
+    case Arinc665Version::ARINC_665_4:
+      encodeV3Data = true;
+      baseSize = FileHeaderSizeV3;
+      break;
+
+    default:
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << AdditionalInfo( "Unsupported ARINC 665 Version"));
+  }
+
+  RawFile rawFile( baseSize);
+
 
   // spare field
   setInt< uint32_t>( rawFile.begin() + SpareFieldOffset, 0U);
@@ -230,7 +278,7 @@ RawFile FileListFile::encode() const
 
 
   // media set files list
-  const auto rawFilesInfo{ encodeFilesInfo()};
+  const auto rawFilesInfo{ encodeFilesInfo( encodeV3Data)};
   assert( rawFilesInfo.size() % 2 == 0);
 
   setInt< uint32_t>(
@@ -248,7 +296,7 @@ RawFile FileListFile::encode() const
   if (!userDefinedDataValue.empty())
   {
     userDefinedDataPtr = nextFreeOffset / 2;
-    // nextFreeOffset += userDefinedDataValue.size();
+    nextFreeOffset += userDefinedDataValue.size();
 
     rawFile.insert(
       rawFile.end(),
@@ -259,6 +307,25 @@ RawFile FileListFile::encode() const
   setInt< uint32_t>(
     rawFile.begin() + UserDefinedDataPointerFieldOffset,
     userDefinedDataPtr);
+
+
+  // Load Check Value (only in V3 mode)
+  if (encodeV3Data)
+  {
+    // Alternative implementation set File Check Pointer to zero
+
+    const auto rawCheckValue{ CheckValueUtils_encode( checkValueValue)};
+    assert( rawCheckValue.size() % 2 == 0);
+
+    setInt< uint32_t>(
+      rawFile.begin() + FileCheckValuePointerFieldOffset,
+      nextFreeOffset / 2);
+
+    rawFile.insert(
+      rawFile.end(),
+      rawCheckValue.begin(),
+      rawCheckValue.end());
+  }
 
 
   // Resize to final size ( File CRC)
@@ -272,6 +339,28 @@ RawFile FileListFile::encode() const
 
 void FileListFile::decodeBody( const RawFile &rawFile)
 {
+  bool decodeV3Data{ false};
+
+  switch ( arincVersion())
+  {
+    case Arinc665Version::ARINC_665_1:
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << AdditionalInfo( "Unsupported ARINC 665 Version"));
+
+    case Arinc665Version::ARINC_665_2:
+      break;
+
+    case Arinc665Version::ARINC_665_3:
+    case Arinc665Version::ARINC_665_4:
+      decodeV3Data = true;
+      break;
+
+    default:
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << AdditionalInfo( "Unsupported ARINC 665 Version"));
+  }
+
+
   // Spare Field
   uint32_t spare;
   getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
@@ -289,6 +378,7 @@ void FileListFile::decodeBody( const RawFile &rawFile)
     rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
     mediaInformationPtr);
 
+
   // file list pointer
   uint32_t fileListPtr;
   getInt< uint32_t>(
@@ -302,6 +392,15 @@ void FileListFile::decodeBody( const RawFile &rawFile)
     rawFile.begin() + UserDefinedDataPointerFieldOffset,
     userDefinedDataPtr);
 
+  uint32_t fileCheckValuePtr = 0;
+
+  // only decode this pointers in V3 mode
+  if (decodeV3Data)
+  {
+    getInt< uint32_t>(
+      rawFile.begin() + FileCheckValuePointerFieldOffset,
+      fileCheckValuePtr);
+  }
 
   // media set part number
   auto it = decodeString(
@@ -316,22 +415,43 @@ void FileListFile::decodeBody( const RawFile &rawFile)
 
 
   // file list
-  decodeFilesInfo( rawFile, 2 * fileListPtr);
+  decodeFilesInfo( rawFile, 2 * fileListPtr, decodeV3Data);
 
 
   // user defined data
   if ( 0 != userDefinedDataPtr)
   {
+    std::size_t endOfUserDefinedData{ rawFile.size() - DefaultChecksumPosition};
+
+    if (fileCheckValuePtr != 0)
+    {
+      if (fileCheckValuePtr <= userDefinedDataPtr)
+      {
+        BOOST_THROW_EXCEPTION( InvalidArinc665File()
+          << AdditionalInfo( "Invalid Pointers"));
+      }
+
+      endOfUserDefinedData = fileCheckValuePtr * 2;
+    }
+
     userDefinedDataValue.assign(
       rawFile.begin() + userDefinedDataPtr * 2,
-      rawFile.begin() + rawFile.size() - DefaultChecksumPosition);
+      rawFile.begin() + endOfUserDefinedData);
+  }
+
+
+  // File Check Value Field (ARINC 665-3)
+  checkValueValue.reset();
+  if (decodeV3Data && (0U!=fileCheckValuePtr))
+  {
+    checkValueValue = CheckValueUtils_decode( rawFile, 2U * fileCheckValuePtr);
   }
 
 
   // file crc decoded and checked within base class
 }
 
-RawFile FileListFile::encodeFilesInfo() const
+RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data) const
 {
   RawFile rawFilesInfo( sizeof( uint16_t));
 
@@ -343,38 +463,53 @@ RawFile FileListFile::encodeFilesInfo() const
   for (auto const &fileInfo : filesValue)
   {
     ++fileCounter;
-    auto const rawFilename( encodeString( fileInfo.filename()));
-    assert( rawFilename.size() % 2 == 0);
-    auto const rawPathname( encodeString( fileInfo.pathName()));
-    assert( rawPathname.size() % 2 == 0);
 
-    RawFile rawFileInfo(
-      sizeof( uint16_t) + // next pointer
-      rawFilename.size() +
-      rawPathname.size() +
-      sizeof( uint16_t) + // member sequence number
-      sizeof( uint16_t)); // crc
-
-    auto fileInfoIt( rawFileInfo.begin());
-
-    // next file pointer (is set to 0 for last file)
-    fileInfoIt = setInt< uint16_t>(
-      fileInfoIt,
-      (fileCounter == numberOfFiles()) ?
-        (0U) :
-        (rawFileInfo.size() / 2));
+    RawFile rawFileInfo( sizeof( uint16_t));
 
     // filename
-    fileInfoIt = std::copy( rawFilename.begin(), rawFilename.end(), fileInfoIt);
+    auto const rawFilename{ encodeString( fileInfo.filename())};
+    assert( rawFilename.size() % 2 == 0);
+    rawFileInfo.insert(
+      rawFileInfo.end(),
+      rawFilename.begin(),
+      rawFilename.end());
 
     // path name
-    fileInfoIt = std::copy( rawPathname.begin(), rawPathname.end(), fileInfoIt);
+    auto const rawPathname{ encodeString( fileInfo.pathName())};
+    assert( rawPathname.size() % 2 == 0);
+    rawFileInfo.insert(
+      rawFileInfo.end(),
+      rawPathname.begin(),
+      rawPathname.end());
+
+    rawFileInfo.resize( rawFileInfo.size() + 2 * sizeof( uint16_t));
 
     // member sequence number
-    fileInfoIt = setInt< uint16_t>( fileInfoIt, fileInfo.memberSequenceNumber());
+    auto fileInfoIt = setInt< uint16_t>(
+      rawFileInfo.begin() + rawFileInfo.size() - ( 2 * sizeof( uint16_t)),
+      fileInfo.memberSequenceNumber());
 
     // crc
     setInt< uint16_t>( fileInfoIt, fileInfo.crc());
+
+    // following fields are available in ARINC 665-3 ff
+    if (encodeV3Data)
+    {
+      // check Value
+      const auto rawCheckValue{ CheckValueUtils_encode( fileInfo.checkValue())};
+      assert( rawCheckValue.size() % 2 == 0);
+      rawFileInfo.insert(
+        rawFileInfo.end(),
+        rawCheckValue.begin(),
+        rawCheckValue.end());
+    }
+
+    // next file pointer (is set to 0 for last file)
+    setInt< uint16_t>(
+      rawFileInfo.begin(),
+      (fileCounter == numberOfFiles()) ?
+      (0U) :
+      (rawFileInfo.size() / 2));
 
     // add file info to files info
     rawFilesInfo.insert( rawFilesInfo.end(), rawFileInfo.begin(), rawFileInfo.end());
@@ -385,7 +520,8 @@ RawFile FileListFile::encodeFilesInfo() const
 
 void FileListFile::decodeFilesInfo(
   const RawFile &rawFile,
-  const std::size_t offset)
+  const std::size_t offset,
+  const bool decodeV3Data)
 {
   auto it{ rawFile.begin() + offset};
 
@@ -423,10 +559,28 @@ void FileListFile::decodeFilesInfo(
     uint16_t crc;
     listIt = getInt< uint16_t>( listIt, crc);
 
+    // CheckValue (keep default initialised if not V3 File Info
+    std::optional< CheckValue> checkValue;
+
+    // following fields are available in ARINC 665-3 ff
+    if (decodeV3Data)
+    {
+      // check Value
+      checkValue = CheckValueUtils_decode(
+        rawFile,
+        std::distance( rawFile.begin(), listIt));
+    }
+
+
     // set it to begin of next file
     it += filePointer * 2;
 
-    filesValue.emplace_back( filename, pathName, memberSequenceNumber, crc);
+    filesValue.emplace_back(
+      filename,
+      pathName,
+      memberSequenceNumber,
+      crc,
+      checkValue);
   }
 }
 

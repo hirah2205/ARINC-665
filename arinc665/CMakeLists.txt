@@ -42,6 +42,8 @@ add_library(
   file/BatchLoadInfo.cpp
   file/BatchTargetInfo.hpp
   file/BatchTargetInfo.cpp
+  file/CheckValueUtils.cpp
+  file/CheckValueUtils.hpp
   file/File.hpp
   file/FileInfo.hpp
   file/FileInfo.cpp
@@ -148,6 +150,7 @@ add_library(
 
   file/BatchFileTest.cpp
   file/BatchListFileTest.cpp
+  file/CheckValueUtilsTest.cpp
   file/FileListFileTest.cpp
   file/LoadFileInfoTest.cpp
   file/LoadHeaderFileTest.cpp

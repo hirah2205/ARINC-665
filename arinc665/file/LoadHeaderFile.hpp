@@ -395,7 +395,31 @@ class LoadHeaderFile: public Arinc665File
      **/
     void loadCrc( uint32_t loadCrc);
 
+    /**
+     * @brief Returns the Load Check Value.
+     *
+     * @return The Load Check Value.
+     **/
+    const std::optional< CheckValue>& loadCheckValue() const;
+
+    /**
+     * @brief Updates the Load Check Value
+     *
+     * @param[in] value
+     *   Load Check Value.
+     **/
+    void loadCheckValue( const std::optional< CheckValue> &value);
+
+    //! @copydoc loadCheckValue(const std::optional<CheckValue>&)
+    void loadCheckValue( std::optional< CheckValue> &&value);
+
   private:
+    enum class FileListType
+    {
+      Data,
+      Support
+    };
+
     //! @copydoc Arinc665File::encode
     RawFile encode() const final;
 
@@ -415,10 +439,17 @@ class LoadHeaderFile: public Arinc665File
      *
      * @param[in] loadFilesInfo
      *   The load files information to encode.
+     * @param[in] type
+     *   The file list type (data or support files)
+     * @param[in] encodeV3Data
+     *   If set to true, additional data as stated in ARINC 665-3 is encoded.
      *
      * @return Raw representation of files information list.
      **/
-    RawFile encodeFileList( const LoadFilesInfo &loadFilesInfo) const;
+    RawFile encodeFileList(
+      const LoadFilesInfo &loadFilesInfo,
+      FileListType type,
+      bool encodeV3Data) const;
 
     /**
      * @brief Decodes the files information list from the raw data.
@@ -430,10 +461,18 @@ class LoadHeaderFile: public Arinc665File
      *   Raw Load Header File representation.
      * @param[in] offset
      *   Offset of the files information list.
+     * @param[in] type
+     *   The file list type (data or support files)
+     * @param[in] decodeV3Data
+     *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      *
      * @return The decoded load files information.
      **/
-    LoadFilesInfo decodeFileList( const RawFile &rawFile, std::size_t offset);
+    LoadFilesInfo decodeFileList(
+      const RawFile &rawFile,
+      std::size_t offset,
+      FileListType type,
+      bool decodeV3Data);
 
     //! Part Flags
     uint16_t partFlagsValue;
@@ -451,6 +490,8 @@ class LoadHeaderFile: public Arinc665File
     UserDefinedData userDefinedDataValue;
     //! CRC of the complete load
     uint32_t loadCrcValue;
+    //! The Load Check Value (since ARINC 665-3)
+    std::optional< CheckValue> loadCheckValueValue;
 };
 
 }

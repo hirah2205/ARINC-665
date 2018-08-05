@@ -19,12 +19,14 @@ namespace Arinc665::File {
 FileInfo::FileInfo(
   const std::string &filename,
   const std::string &pathName,
-  uint16_t memberSequenceNumber,
-  uint16_t crc):
+  const uint16_t memberSequenceNumber,
+  const uint16_t crc,
+  const std::optional< CheckValue> &checkValue):
   filenameValue( filename),
   pathNameValue( pathName),
   memberSequenceNumberValue( memberSequenceNumber),
-  crcValue( crc)
+  crcValue( crc),
+  checkValueValue( checkValue)
 {
 }
 
@@ -32,11 +34,13 @@ FileInfo::FileInfo(
   std::string &&filename,
   std::string &&pathName,
   uint16_t memberSequenceNumber,
-  uint16_t crc):
+  uint16_t crc,
+  std::optional< CheckValue> &&checkValue):
   filenameValue( std::move( filename)),
   pathNameValue( std::move( pathName)),
   memberSequenceNumberValue( memberSequenceNumber),
-  crcValue( crc)
+  crcValue( crc),
+  checkValueValue( std::move( checkValue))
 {
 }
 
@@ -89,13 +93,29 @@ void FileInfo::crc( const uint16_t crc)
   crcValue = crc;
 }
 
+const std::optional< CheckValue>& FileInfo::checkValue() const
+{
+  return checkValueValue;
+}
+
+void FileInfo::checkValue( const std::optional< CheckValue> &checkValue)
+{
+  checkValueValue = checkValue;
+}
+
+void FileInfo::checkValue( std::optional< CheckValue> &&checkValue)
+{
+  checkValueValue = std::move( checkValue);
+}
+
 bool FileInfo::operator ==( const FileInfo &other) const
 {
   return
     (filenameValue == other.filename()) &&
     (pathNameValue == other.pathName()) &&
     (memberSequenceNumberValue == other.memberSequenceNumber()) &&
-    (crcValue == other.crc());
+    (crcValue == other.crc()) &&
+    (checkValueValue == other.checkValue());
 }
 
 bool FileInfo::operator !=( const FileInfo &other) const

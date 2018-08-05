@@ -17,24 +17,28 @@ namespace Arinc665::File {
 LoadFileInfo::LoadFileInfo(
   const std::string &filename,
   const std::string &partNumber,
-  uint32_t length,
-  uint16_t crc):
+  const uint64_t length,
+  const uint16_t crc,
+  const std::optional< CheckValue> &checkValue):
   filenameValue( filename),
   partNumberValue( partNumber),
   lengthValue( length),
-  crcValue( crc)
+  crcValue( crc),
+  checkValueValue( checkValue)
 {
 }
 
 LoadFileInfo::LoadFileInfo(
   std::string &&filename,
   std::string &&partNumber,
-  uint32_t length,
-  uint16_t crc):
+  const uint64_t length,
+  const uint16_t crc,
+  std::optional< CheckValue> &&checkValue):
   filenameValue( std::move( filename)),
   partNumberValue( std::move( partNumber)),
   lengthValue( length),
-  crcValue( crc)
+  crcValue( crc),
+  checkValueValue( std::move( checkValue))
 {
 }
 
@@ -68,12 +72,12 @@ void LoadFileInfo::partNumber( std::string &&partNumber)
   partNumberValue = std::move( partNumber);
 }
 
-uint32_t LoadFileInfo::length() const
+uint64_t LoadFileInfo::length() const
 {
   return lengthValue;
 }
 
-void LoadFileInfo::length( const uint32_t length)
+void LoadFileInfo::length( const uint64_t length)
 {
   lengthValue = length;
 }
@@ -86,6 +90,21 @@ uint16_t LoadFileInfo::crc() const
 void LoadFileInfo::crc( const uint16_t crc)
 {
   crcValue = crc;
+}
+
+const std::optional< CheckValue>& LoadFileInfo::checkValue() const
+{
+  return checkValueValue;
+}
+
+void LoadFileInfo::checkValue( const std::optional< CheckValue> &checkValue)
+{
+  checkValueValue = checkValue;
+}
+
+void LoadFileInfo::checkValue( std::optional< CheckValue> &&checkValue)
+{
+  checkValueValue = std::move( checkValue);
 }
 
 }

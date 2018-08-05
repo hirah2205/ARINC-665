@@ -137,8 +137,9 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( dataFiles.size() == 1);
   BOOST_CHECK( dataFiles.begin()->filename() == "FILE1");
   BOOST_CHECK( dataFiles.begin()->partNumber() == "PN0001");
-  BOOST_CHECK( dataFiles.begin()->length() == 16);
+  BOOST_CHECK( dataFiles.begin()->length() == 32);
   BOOST_CHECK( dataFiles.begin()->crc() == 0xABCD);
+  BOOST_CHECK( !dataFiles.begin()->checkValue());
 
   const auto &supportFiles{ file.supportFiles()};
   BOOST_CHECK( supportFiles.size() == 1);
@@ -146,6 +147,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( supportFiles.begin()->partNumber() == "PN0002");
   BOOST_CHECK( supportFiles.begin()->length() == 16);
   BOOST_CHECK( supportFiles.begin()->crc() == 0xABCD);
+  BOOST_CHECK( !supportFiles.begin()->checkValue());
 
   BOOST_CHECK(
     (file.userDefinedData() == LoadHeaderFile::UserDefinedData{ 0x12, 0x34, 0x56, 0x78}));

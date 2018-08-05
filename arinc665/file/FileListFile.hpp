@@ -49,8 +49,8 @@ class FileListFile: public ListFile
     //! Offset of the User Defined Data Pointer Field
     static constexpr std::size_t UserDefinedDataPointerFieldOffset = 16U;
 ;
-    //! Offset of the Load Check Value Pointer Field (Only ARINC 665-3/4)
-    static constexpr std::size_t LoadCheckValuePointerFieldOffset = 20U;
+    //! Offset of the File Check Value Pointer Field (Only ARINC 665-3/4)
+    static constexpr std::size_t FileCheckValuePointerFieldOffset = 20U;
 
     //! First Start of pointer data for ARINC 665-2 Load Headers.
     static constexpr std::size_t FileHeaderSizeV2 = 20U;
@@ -197,6 +197,24 @@ class FileListFile: public ListFile
     void userDefinedData( UserDefinedData &&userDefinedData);
 
     /**
+     * @brief Returns the Check Value.
+     *
+     * @return The Check Value.
+     **/
+    const std::optional< CheckValue>& checkValue() const;
+
+    /**
+     * @brief Updates the Check Value
+     *
+     * @param[in] value
+     *   Check Value.
+     **/
+    void checkValue( const std::optional< CheckValue> &value);
+
+    //! @copydoc checkValue(const std::optional<CheckValue>&)
+    void checkValue( std::optional< CheckValue> &&value);
+
+    /**
      * @brief Returns if the given file list file belongs to the same media set.
      *
      * @param[in] other
@@ -221,9 +239,12 @@ class FileListFile: public ListFile
     /**
      * @brief Encodes the files information list.
      *
+     * @param[in] encodeV3Data
+     *   If set to true, additional data as stated in ARINC 665-3 is encoded.
+     *
      * @return Raw representation of files information list.
      **/
-    RawFile encodeFilesInfo() const;
+    RawFile encodeFilesInfo( bool encodeV3Data) const;
 
     /**
      * @brief Decodes the files information list from the raw data.
@@ -232,8 +253,13 @@ class FileListFile: public ListFile
      *   Raw files list file representation.
      * @param[in] offset
      *   Offset of the files information list.
+     * @param[in] decodeV3Data
+     *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      **/
-    void decodeFilesInfo( const RawFile &rawFile, std::size_t offset);
+    void decodeFilesInfo(
+      const RawFile &rawFile,
+      std::size_t offset,
+      bool decodeV3Data);
 
     //! The media set part number
     std::string mediaSetPnValue;
@@ -245,6 +271,8 @@ class FileListFile: public ListFile
     FilesInfo filesValue;
     //! Use defined data.
     UserDefinedData userDefinedDataValue;
+    //! The Load Check Value (since ARINC 665-3)
+    std::optional< CheckValue> checkValueValue;
 };
 
 }

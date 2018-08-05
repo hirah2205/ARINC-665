@@ -18,6 +18,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <optional>
 #include <cstdint>
 
 namespace Arinc665::File {
@@ -39,19 +40,23 @@ class FileInfo
      *   Member sequence number.
      * @param[in] crc
      *   File CRC
+     * @param[in] checkValue
+     *   Check Value.
      **/
     FileInfo(
       const std::string &filename,
       const std::string &pathName,
       uint16_t memberSequenceNumber,
-      uint16_t crc);
+      uint16_t crc,
+      const std::optional< CheckValue> &checkValue = {});
 
-    //! @copydoc FileInfo::FileInfo(const std::string&,const std::string&,uint16_t,uint16_t)
+    //! @copydoc FileInfo::FileInfo(const std::string&,const std::string&,uint16_t,uint16_t, const std::optional<CheckValue>&)
     FileInfo(
       std::string &&filename,
       std::string &&pathName,
       uint16_t memberSequenceNumber,
-      uint16_t crc);
+      uint16_t crc,
+      std::optional< CheckValue> &&checkValue = {});
 
     /**
      * @brief Returns the filename.
@@ -127,6 +132,24 @@ class FileInfo
     void crc( uint16_t crc);
 
     /**
+     * @brief Returns the Check Value.
+     *
+     * @return The Check Value.
+     **/
+    const std::optional< CheckValue>& checkValue() const;
+
+    /**
+     * @brief Updates the Check Value
+     *
+     * @param[in] value
+     *   Check Value.
+     **/
+    void checkValue( const std::optional< CheckValue> &checkValue);
+
+    //! @copydoc checkValue(const std::optional<CheckValue>&)
+    void checkValue( std::optional< CheckValue> &&checkValue);
+
+    /**
      * @brief Compares the given file info against [this].
      *
      * @param[in] other
@@ -155,6 +178,8 @@ class FileInfo
     uint16_t memberSequenceNumberValue;
     //! CRC
     uint16_t crcValue;
+    //! Check Value (since ARINC 665-3)
+    std::optional< CheckValue> checkValueValue;
 };
 
 }

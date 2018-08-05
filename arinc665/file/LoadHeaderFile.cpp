@@ -14,6 +14,8 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <arinc665/file/CheckValueUtils.hpp>
+
 #include <helper/Endianess.hpp>
 #include <helper/SafeCast.hpp>
 #include <helper/Logger.hpp>
@@ -206,6 +208,21 @@ void LoadHeaderFile::loadCrc( const uint32_t loadCrc)
   loadCrcValue = loadCrc;
 }
 
+const std::optional< CheckValue>& LoadHeaderFile::loadCheckValue() const
+{
+  return loadCheckValueValue;
+}
+
+void LoadHeaderFile::loadCheckValue( const std::optional< CheckValue> &value)
+{
+  loadCheckValueValue = value;
+}
+
+void LoadHeaderFile::loadCheckValue( std::optional< CheckValue> &&value)
+{
+  loadCheckValueValue = std::move( value);
+}
+
 RawFile LoadHeaderFile::encode() const
 {
   bool encodeV3Data{ false};
@@ -339,7 +356,10 @@ RawFile LoadHeaderFile::encode() const
 
 
   // data files list pointer
-  auto rawDataFiles{ encodeFileList( dataFiles())};
+  auto rawDataFiles{ encodeFileList(
+    dataFiles(),
+    FileListType::Data,
+    encodeV3Data)};
   assert( rawDataFiles.size() % 2 == 0);
 
   setInt< uint32_t>(
@@ -351,7 +371,10 @@ RawFile LoadHeaderFile::encode() const
 
 
   // support files (only if support files are present)
-  auto rawSupportFiles{ encodeFileList( supportFiles())};
+  auto rawSupportFiles{ encodeFileList(
+    supportFiles(),
+    FileListType::Support,
+    encodeV3Data)};
   assert( rawSupportFiles.size() % 2 == 0);
 
   uint32_t supportFileListPtr = 0;
@@ -379,7 +402,7 @@ RawFile LoadHeaderFile::encode() const
   if (!userDefinedDataValue.empty())
   {
     userDefinedDataPtr = nextFreeOffset / 2;
-    // nextFreeOffset += userDefinedDataValue.size();
+    nextFreeOffset += userDefinedDataValue.size();
 
     rawFile.insert(
       rawFile.end(),
@@ -393,8 +416,21 @@ RawFile LoadHeaderFile::encode() const
 
 
   // Load Check Value (only in V3 mode)
+  if (encodeV3Data)
   {
-    //! @todo add Load Check Values.
+    // Alternative implementation set Load Check Pointer to zero
+
+    const auto rawCheckValue{ CheckValueUtils_encode( loadCheckValueValue)};
+    assert( rawCheckValue.size() % 2 == 0);
+
+    setInt< uint32_t>(
+      rawFile.begin() + LoadCheckValuePointerFieldOffset,
+      nextFreeOffset / 2);
+
+    rawFile.insert(
+      rawFile.end(),
+      rawCheckValue.begin(),
+      rawCheckValue.end());
   }
 
 
@@ -547,13 +583,21 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
 
 
   // data file list
-  dataFilesValue = decodeFileList( rawFile, dataFileListPtr * 2);
+  dataFilesValue = decodeFileList(
+    rawFile,
+    dataFileListPtr * 2,
+    FileListType::Data,
+    decodeV3Data);
 
 
   // support file list
   if ( 0U != supportFileListPtr)
   {
-    supportFilesValue = decodeFileList( rawFile, supportFileListPtr * 2);
+    supportFilesValue = decodeFileList(
+      rawFile,
+      supportFileListPtr * 2,
+      FileListType::Support,
+      decodeV3Data);
   }
 
 
@@ -578,9 +622,12 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
       rawFile.begin() + endOfUserDefinedData);
   }
 
-  if (decodeV3Data)
+  // Load Check Value Field (ARINC 665-3)
+  loadCheckValueValue.reset();
+  if (decodeV3Data && (0U!=loadCheckValuePtr))
   {
-    // TODO: add Load Check Value Field (ARINC 665-3)
+    loadCheckValueValue =
+      CheckValueUtils_decode( rawFile, 2 * loadCheckValuePtr);
   }
 
 
@@ -590,7 +637,10 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
   getInt< uint32_t>( rawFile.end() - LoadCrcOffset, loadCrcValue);
 }
 
-RawFile LoadHeaderFile::encodeFileList( const LoadFilesInfo &loadFilesInfo) const
+RawFile LoadHeaderFile::encodeFileList(
+  const LoadFilesInfo &loadFilesInfo,
+  const FileListType type,
+  const bool encodeV3Data) const
 {
   RawFile rawFileList( sizeof( uint16_t));
 
@@ -604,38 +654,85 @@ RawFile LoadHeaderFile::encodeFileList( const LoadFilesInfo &loadFilesInfo) cons
   for (auto const &fileInfo : loadFilesInfo)
   {
     ++fileCounter;
-    auto const rawFilename( encodeString( fileInfo.filename()));
-    assert( rawFilename.size() % 2 == 0);
-    auto const rawPartNumber( encodeString( fileInfo.partNumber()));
-    assert( rawPartNumber.size() % 2 == 0);
 
-    RawFile rawFileInfo(
-      sizeof( uint16_t) + // next load pointer
-      rawFilename.size() +
-      rawPartNumber.size() +
-      sizeof( uint32_t) + // file length
-      sizeof( uint16_t)); // crc
-
-    auto fileInfoIt( rawFileInfo.begin());
-
-    // next load pointer (is set to 0 for last load)
-    fileInfoIt = setInt< uint16_t>(
-      fileInfoIt,
-      (fileCounter == loadFilesInfo.size()) ?
-        (0U) :
-        safeCast< uint16_t>( rawFileInfo.size() / 2));
+    RawFile rawFileInfo( sizeof( uint16_t));
 
     // filename
-    fileInfoIt = std::copy( rawFilename.begin(), rawFilename.end(), fileInfoIt);
+    auto const rawFilename{ encodeString( fileInfo.filename())};
+    assert( rawFilename.size() % 2 == 0);
+    rawFileInfo.insert(
+      rawFileInfo.end(),
+      rawFilename.begin(),
+      rawFilename.end());
 
     // part number
-    fileInfoIt = std::copy( rawPartNumber.begin(), rawPartNumber.end(), fileInfoIt);
+    auto const rawPartNumber{ encodeString( fileInfo.partNumber())};
+    assert( rawPartNumber.size() % 2 == 0);
+    rawFileInfo.insert(
+      rawFileInfo.end(),
+      rawPartNumber.begin(),
+      rawPartNumber.end());
+
+    rawFileInfo.resize(
+      rawFileInfo.size() + sizeof( uint32_t) + sizeof( uint16_t));
 
     // file length
-    fileInfoIt = setInt< uint32_t>( fileInfoIt, fileInfo.length());
+    uint32_t fileLength{0};
+
+    switch (type)
+    {
+      case FileListType::Data:
+        // rounded number of 16-bit words
+        fileLength = safeCast< uint32_t>( (fileInfo.length() + 1) / 2);
+        break;
+
+      case FileListType::Support:
+        // number of bytes
+        fileLength = fileInfo.length();
+        break;
+
+      default:
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << AdditionalInfo( "Invalid List Type"));
+    }
+
+    setInt< uint32_t>(
+      rawFileInfo.begin() + rawFileInfo.size() - (sizeof( uint32_t) + sizeof( uint16_t)),
+      fileLength);
 
     // CRC
-    fileInfoIt = setInt< uint16_t>( fileInfoIt, fileInfo.crc());
+    setInt< uint16_t>(
+      rawFileInfo.begin() + rawFileInfo.size() - sizeof( uint16_t),
+      fileInfo.crc());
+
+    // following fields are available in ARINC 665-3 ff
+    if (encodeV3Data)
+    {
+      // length in bytes (Data File List)
+      if (type == FileListType::Data)
+      {
+        rawFileInfo.resize( rawFileInfo.size() + sizeof( uint64_t));
+        setInt<uint64_t>(
+          rawFileInfo.begin() + rawFileInfo.size() - sizeof( uint64_t),
+          fileInfo.length());
+      }
+
+      // check Value
+      const auto rawCheckValue{ CheckValueUtils_encode( fileInfo.checkValue())};
+      assert( rawCheckValue.size() % 2 == 0);
+      rawFileInfo.insert(
+        rawFileInfo.end(),
+        rawCheckValue.begin(),
+        rawCheckValue.end());
+    }
+
+    // next load pointer (is set to 0 for last load)
+    setInt< uint16_t>(
+      rawFileInfo.begin(),
+      (fileCounter == loadFilesInfo.size()) ?
+      (0U) :
+      safeCast< uint16_t>( rawFileInfo.size() / 2));
+
 
     // add file info to files info
     rawFileList.insert( rawFileList.end(), rawFileInfo.begin(), rawFileInfo.end());
@@ -646,7 +743,9 @@ RawFile LoadHeaderFile::encodeFileList( const LoadFilesInfo &loadFilesInfo) cons
 
 LoadFilesInfo LoadHeaderFile::decodeFileList(
   const RawFile &rawFile,
-  const std::size_t offset)
+  const std::size_t offset,
+  const FileListType type,
+  const bool decodeV3Data)
 {
   auto it{ rawFile.begin() + offset};
 
@@ -674,20 +773,57 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
     listIt = decodeString( listIt, partNumber);
 
     // file length
-    //! @todo Attention ! data and support files differs in interpretation!
-    //! data files -> number of 16bit words vs. support files -> number of 8bit words.
     uint32_t length;
     listIt = getInt< uint32_t>( listIt, length);
+
+    uint64_t realLength{ 0};
+
+    switch (type)
+    {
+      case FileListType::Data:
+        // rounded number of 16-bit words
+        realLength = length * 2;
+        break;
+
+      case FileListType::Support:
+        // number of bytes
+        realLength = length;
+        break;
+
+      default:
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << AdditionalInfo( "Invalid List Type"));
+    }
 
     // CRC
     uint16_t crc;
     listIt = getInt< uint16_t>( listIt, crc);
 
+    // CheckValue (keep default initialised if not V3 File Info
+    std::optional< CheckValue> checkValue;
+
+    // following fields are available in ARINC 665-3 ff
+    if (decodeV3Data)
+    {
+      // length in bytes (Data File List)
+      if (type == FileListType::Data)
+      {
+        uint64_t fileLengthInBytes;
+        listIt = getInt< uint64_t>( listIt, fileLengthInBytes);
+        realLength = fileLengthInBytes;
+      }
+
+      // check Value
+      checkValue = CheckValueUtils_decode(
+        rawFile,
+        std::distance( rawFile.begin(), listIt));
+    }
+
     // set it to begin of next file
     it += filePointer * 2;
 
     // file info
-    files.emplace_back( name, partNumber, length, crc);
+    files.emplace_back( name, partNumber, realLength, crc, checkValue);
   }
 
   return files;
