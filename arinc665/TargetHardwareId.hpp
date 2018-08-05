@@ -20,7 +20,7 @@
 namespace Arinc665 {
 
 /**
- * @brief Represents a ARINC 665 target hardware ID (THW ID).
+ * @brief Represents a ARINC 665 Target Hardware ID (THW ID).
  **/
 class TargetHardwareId
 {
@@ -33,7 +33,7 @@ class TargetHardwareId
      **/
     TargetHardwareId( const std::string &targetHardwareId);
 
-    //! copydoc TargetHardwareId(const std::string&)
+    //! @copydoc TargetHardwareId(const std::string&)
     TargetHardwareId( std::string &&targetHardwareId);
 
     /**
@@ -57,6 +57,7 @@ class TargetHardwareId
     //! The target hardware ID
     std::string targetHardwareId;
 };
+
 }
 
 #endif

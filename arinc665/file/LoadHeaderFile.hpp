@@ -26,10 +26,9 @@
 namespace Arinc665::File {
 
 /**
- * @brief ARINC 665 Load Header File.
+ * @brief ARINC 665 Load Header File (*.LUH).
  *
- * @par File Format (ARINC 665-3/4)
- *
+ * @par File Format (ARINC 665-4)
  * Name of Field                                    | Field Size (bits)
  * -------------------------------------------------|:----------------:
  * Header File Length                               | 32

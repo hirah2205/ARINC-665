@@ -20,9 +20,9 @@
 namespace Arinc665::File {
 
 /**
- * @brief ARINC 665 Batch File.
+ * @brief ARINC 665 Batch File (*.LUB).
  *
- * @par File Format
+ * @par File Format (ARINC 665-4)
  * Name of Field                                      | Field Size (bits)
  * ---------------------------------------------------|:-----------------:
  * Batch File Length                                  | 32

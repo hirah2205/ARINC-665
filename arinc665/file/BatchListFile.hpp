@@ -24,7 +24,33 @@
 namespace Arinc665::File {
 
 /**
- * @brief ARINC 665 Batch List File.
+ * @brief ARINC 665 Batch List File (BATCHES.LUM).
+ *
+ * @par File Format (ARINC 665-4)
+ * Name of Field                   | Field Size (bits)
+ * --------------------------------|:----------------:
+ * BATCHES.LUM File Length         | 32
+ * Media File Format Version       | 16
+ * Spare                           | 16
+ * Pointer to Media Set PN Length  | 32
+ * Pointer to Number of Batches    | 32
+ * Pointer to User Defined Data    | 32
+ * Expansion Point No. 1           |  0
+ * Media Set PN Length             | 16
+ * Media Set PN                    | 16
+ * Media Sequence Number (X)       |  8
+ * Number of Media Set Members (Y) |  8
+ * Number of Batches               | 16
+ * + Batch Pointer                 | 16
+ * + Batch PN Length               | 16
+ * + Batch PN                      | 16
+ * + Batch File Name Length        | 16
+ * + Batch File Name               | 16
+ * + Member Sequence Number        | 16
+ * + Expansion Point No. 2         |  0
+ * Expansion Point No. 3           |  0
+ * User Defined Data               | 16
+ * BATCHES.LUM File CRC            | 16
  **/
 class BatchListFile: public ListFile
 {

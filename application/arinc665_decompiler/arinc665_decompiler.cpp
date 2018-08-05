@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief ARINC 665 decompiler.
+ * @brief ARINC 665 Decompiler.
  **/
 
 #include <arinc665/file/File.hpp>

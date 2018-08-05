@@ -294,29 +294,67 @@ class MediaSet:
      **/
     void removeBatch( ConstBatchPtr batch);
 
-
+    /**
+     * @brief Returns the user defined data for file list files.
+     *
+     * @return The user defined data for file list files.
+     **/
     const UserDefinedData& filesUserDefinedData() const;
 
+    //! @copydoc filesUserDefinedData() const
     UserDefinedData& filesUserDefinedData();
 
+    /**
+     * @brief Updates the user defined data for file list files.
+     *
+     * @param[in] userDefinedData
+     *   The user defined data.
+     **/
     void filesUserDefinedData( const UserDefinedData &userDefinedData);
 
+    //! @copydoc filesUserDefinedData(const UserDefinedData&)
     void filesUserDefinedData( UserDefinedData &&userDefinedData);
 
+    /**
+     * @brief Returns the user defined data for loads list files.
+     *
+     * @return The user defined data for loads list files.
+     **/
     const UserDefinedData& loadsUserDefinedData() const;
 
+    //! @copydoc loadsUserDefinedData() const
     UserDefinedData& loadsUserDefinedData();
 
+    /**
+     * @brief Updates the user defined data for load list files.
+     *
+     * @param[in] userDefinedData
+     *   The user defined data.
+     **/
     void loadsUserDefinedData( const UserDefinedData &userDefinedData);
 
+    //! @copydoc loadsUserDefinedData(const UserDefinedData&)
     void loadsUserDefinedData( UserDefinedData &&userDefinedData);
 
+    /**
+     * @brief Returns the user defined data for batch list files.
+     *
+     * @return The user defined data for batch list files.
+     **/
     const UserDefinedData& batchesUserDefinedData() const;
 
+    //! @copydoc batchesUserDefinedData() const
     UserDefinedData& batchesUserDefinedData();
 
+    /**
+     * @brief Updates the user defined data for batch list files.
+     *
+     * @param[in] userDefinedData
+     *   The user defined data.
+     **/
     void batchesUserDefinedData( const UserDefinedData &userDefinedData);
 
+    //! @copydoc batchesUserDefinedData(const UserDefinedData&)
     void batchesUserDefinedData( UserDefinedData &&userDefinedData);
 
   private:
@@ -330,7 +368,6 @@ class MediaSet:
     UserDefinedData loadsUserDefinedDataV;
     //! User defined data for Batches List Files
     UserDefinedData batchesUserDefinedDataV;
-
 };
 
 }

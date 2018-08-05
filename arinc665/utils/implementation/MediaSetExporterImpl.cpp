@@ -98,6 +98,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
     "Export list of loads";
 
   Arinc665::File::LoadListFile loadListFile{ arinc665Version};
+
   loadListFile.mediaSequenceNumber( medium->mediumNumber());
   loadListFile.mediaSetPn( medium->partNumber());
   loadListFile.numberOfMediaSetMembers(  medium->mediaSet()->numberOfMedia());

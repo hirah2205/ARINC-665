@@ -39,4 +39,3 @@ extern const std::map< CheckValueType, uint16_t> CheckValueSize;
 }
 
 #endif
-

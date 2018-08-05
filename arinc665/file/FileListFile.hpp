@@ -24,10 +24,9 @@
 namespace Arinc665::File {
 
 /**
- * @brief ARINC 665 File List File.
+ * @brief ARINC 665 File List File (FILES.LUM).
  *
  * @par File Format (ARINC 665-4)
- *
  * Name of Field                                | Field Size (bits)
  * ---------------------------------------------|:----------------:
  * FILES.LUM File Length                        | 32

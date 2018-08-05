@@ -23,7 +23,36 @@
 namespace Arinc665::File {
 
 /**
- * @brief ARINC 665 Load List File..
+ * @brief ARINC 665 Load List File (LOADS.LUM).
+ *
+ * @par File Format (ARINC 665-4)
+ * Name of Field                   | Field Size (bits)
+ * --------------------------------|:----------------:
+ * LOADS.LUM File Length           | 32
+ * Media File Format Version       | 16
+ * Spare                           | 16
+ * Pointer to Media Set PN Length  | 32
+ * Pointer to Number of Loads      | 32
+ * Pointer to User Defined Data    | 32
+ * Expansion Point No. 1           |  0
+ * Media Set PN Length             | 16
+ * Media Set PN                    | 16
+ * Media Sequence Number (X)       |  8
+ * Number Of Media Set Members (Y) |  8
+ * Number of Loads                 | 16
+ * + Load Pointer                  | 16
+ * + Load PN Length                | 16
+ * + Load PN                       | 16
+ * + Header File Name Length       | 16
+ * + Header File Name              | 16
+ * + Member Sequence Number        | 16
+ * + Number of Target HW IDs       | 16
+ * +* Target HW ID Length          | 16
+ * +* Target HW ID                 | 16
+ * + Expansion Point No. 2         |  0
+ * Expansion Point No. 3           |  0
+ * User Defined Data               | 16
+ * LOADS.LUM File CRC              | 16
  **/
 class LoadListFile: public ListFile
 {

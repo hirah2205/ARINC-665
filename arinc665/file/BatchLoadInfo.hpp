@@ -20,7 +20,10 @@
 namespace Arinc665::File {
 
 /**
- * @brief The load info the batch load entry.
+ * @brief Load Information stored within the taraget list of the ARINC 665
+ *   Batch File.
+ *
+ * @sa BatchFile
  **/
 class BatchLoadInfo
 {
