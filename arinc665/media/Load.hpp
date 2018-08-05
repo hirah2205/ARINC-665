@@ -104,10 +104,19 @@ class Load: public BaseFile
      **/
     void targetHardwareIds( const TargetHardwareIds &thwIds);
 
-     void targetHardwareId(
+    /**
+     * @brief Adds a Target Hardware ID to the List of THW IDs.
+     *
+     * @param[in] targetHardwareId
+     *   New Target Hardware ID.
+     * @param[in] positions
+     *   Optional additional Position specification.
+     **/
+    void targetHardwareId(
       const std::string &targetHardwareId,
       const Positions &positions = {});
 
+    //! @copydoc targetHardwareId(const std::string&,const Positions&)
     void targetHardwareId(
       std::string &&targetHardwareId,
       Positions &&positions = {});
@@ -163,10 +172,22 @@ class Load: public BaseFile
     //! @copydoc Load::userDefinedData(const UserDefinedData&)
     void userDefinedData( UserDefinedData &&userDefinedData);
 
+    /**
+     * @brief Returns the Load Type.
+     *
+     * @return The Load Type.
+     **/
     const Type& loadType() const;
 
+    /**
+     * @brief Updates the Load Type.
+     *
+     * @param[in] type
+     *   The new Load Type.
+     **/
     void loadType( const Type &type);
 
+    //! @copydoc loadType(const Type&)
     void loadType( Type &&type);
 
   private:

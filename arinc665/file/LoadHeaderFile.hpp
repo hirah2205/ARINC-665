@@ -414,6 +414,7 @@ class LoadHeaderFile: public Arinc665File
     void loadCheckValue( std::optional< CheckValue> &&value);
 
   private:
+    //! File List Type
     enum class FileListType
     {
       Data,

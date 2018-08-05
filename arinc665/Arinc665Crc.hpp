@@ -33,6 +33,7 @@ using Arinc665Crc32 =
 using Arinc665Crc64 =
   boost::crc_optimal< 64, Crc64Polynom, Crc64Init, Crc64FinalXor, Crc64ReflectIn, Crc64ReflectOut>;
 
+//! Check Value sizes definition.
 extern const std::map< CheckValueType, uint16_t> CheckValueSize;
 
 }

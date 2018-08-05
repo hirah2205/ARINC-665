@@ -52,7 +52,7 @@ class LoadFileInfo
       uint16_t crc,
       const std::optional< CheckValue> &checkValue = {});
 
-    //! @copydoc LoadFileInfo::LoadFileInfo(const std::string&,const std::string&,uint32_t,uint16_t,const std::optional<CheckValue>&)
+    //! @copydoc LoadFileInfo::LoadFileInfo(const std::string&,const std::string&,uint64_t,uint16_t,const std::optional<CheckValue>&)
     LoadFileInfo(
       std::string &&filename,
       std::string &&partNumber,
@@ -136,7 +136,7 @@ class LoadFileInfo
     /**
      * @brief Updates the Check Value
      *
-     * @param[in] value
+     * @param[in] checkValue
      *   Check Value.
      **/
     void checkValue( const std::optional< CheckValue> &checkValue);
