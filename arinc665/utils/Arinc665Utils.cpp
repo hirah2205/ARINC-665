@@ -14,6 +14,7 @@
 
 #include <arinc665/utils/implementation/MediaSetImporterImpl.hpp>
 #include <arinc665/utils/implementation/MediaSetExporterImpl.hpp>
+#include <arinc665/utils/implementation/MediaSetValidatorImpl.hpp>
 
 namespace Arinc665::Utils {
 
@@ -23,6 +24,17 @@ Arinc665Utils::Arinc665Importer Arinc665Utils::arinc665Importer(
   return std::bind(
     &MediaSetImporterImpl::operator(),
     std::make_shared< MediaSetImporterImpl>( readFileHandler));
+}
+
+Arinc665Utils::Arinc665Validator Arinc665Utils::arinc665Validator(
+  ReadFileHandler readFileHandler,
+  ValidatorInformationHandler informationHandler)
+{
+  return std::bind(
+    &MediaSetValidatorImpl::operator(),
+    std::make_shared< MediaSetValidatorImpl>(
+      readFileHandler,
+      informationHandler));
 }
 
 Arinc665Utils::Arinc665Exporter Arinc665Utils::arinc665Exporter(

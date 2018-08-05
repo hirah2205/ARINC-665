@@ -100,7 +100,9 @@ add_library(
   utils/implementation/MediaSetImporterImpl.hpp
   utils/implementation/MediaSetImporterImpl.cpp
   utils/implementation/MediaSetManagerImpl.hpp
-  utils/implementation/MediaSetManagerImpl.cpp)
+  utils/implementation/MediaSetManagerImpl.cpp
+  utils/implementation/MediaSetValidatorImpl.cpp
+  utils/implementation/MediaSetValidatorImpl.hpp)
 
 target_compile_options(
   arinc665

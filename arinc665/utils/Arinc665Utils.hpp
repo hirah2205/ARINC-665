@@ -58,12 +58,21 @@ class Arinc665Utils
     using WriteFileHandler =
       std::function< void( uint8_t mediumNumber, const std::filesystem::path &path, const File::RawFile &file)>;
 
+    //! Handler which is called for Validation Information.
+    using ValidatorInformationHandler =
+      std::function< void( const std::string &information)>;
+
     /**
-     * The ARINC 665 Media Set importer.
-     * Takes the media set name as input.
+     * @brief The ARINC 665 Media Set Importer.
      * Returns the MediaSet
      **/
     using Arinc665Importer = std::function< Media::MediaSetPtr()>;
+
+    /**
+     * @brief ARINC 665 Media Set Validator
+     * Validates the integrity and consistency of a ARINC 665 Media Set
+     **/
+    using Arinc665Validator = std::function< bool()>;
 
     /**
      * The ARINC 665 Media Set exporter.
@@ -80,6 +89,20 @@ class Arinc665Utils
      **/
     static Arinc665Importer arinc665Importer(
       ReadFileHandler readFileHandler);
+
+    /**
+     * @brief Creates a ARINC 665 Validator instance.
+     *
+     * @param[in] readFileHandler
+     *   Handler for reading files.
+     * @param[in] informationHandler
+     *   Handler for validation information.
+     *
+     * @return The ARINC 665 Validator.
+     **/
+    static Arinc665Validator arinc665Validator(
+      ReadFileHandler readFileHandler,
+      ValidatorInformationHandler informationHandler);
 
     /**
      * @brief Creates a ARINC 665 Media Set exporter.
@@ -100,7 +123,7 @@ class Arinc665Utils
      *   Reads a given file from the output media set.
      *   Used for CRC calculation.
      * @param[in] arinc665Version
-     *   The ARINC 665 version used for exporting
+     *   The ARINC 665 version used for exporting.
      * @param[in] createBatchFiles
      *   If set to true, Batch Files are created by exporter.
      * @param[in] createLoadHeaderFiles

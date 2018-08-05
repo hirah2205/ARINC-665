@@ -5,3 +5,13 @@
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
 cmake_minimum_required( VERSION 3.11)
+
+add_executable(
+  arinc665_check
+
+  arinc665_check.cpp)
+
+target_link_libraries(
+  arinc665_check
+
+  arinc665)
