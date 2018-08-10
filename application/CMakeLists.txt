@@ -4,7 +4,7 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.11)
+cmake_minimum_required( VERSION 3.12)
 
 add_subdirectory( arinc665_compiler)
 add_subdirectory( arinc665_decompiler)

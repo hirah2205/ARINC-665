@@ -4,7 +4,7 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.11)
+cmake_minimum_required( VERSION 3.12)
 
 add_executable(
   arinc665_print_media_set 
