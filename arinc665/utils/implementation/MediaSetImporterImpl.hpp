@@ -25,8 +25,7 @@
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/MediaSet.hpp>
 
-#include <boost/optional.hpp>
-
+#include <optional>
 #include <map>
 
 namespace Arinc665::Utils {
@@ -157,11 +156,11 @@ class MediaSetImporterImpl
     Media::MediaSetPtr mediaSet;
 
     //! file list file
-    boost::optional < File::FileListFile> fileListFile;
+    std::optional < File::FileListFile> fileListFile;
     //! load list file
-    boost::optional < File::LoadListFile> loadListFile;
+    std::optional < File::LoadListFile> loadListFile;
     //! batch list file
-    boost::optional < File::BatchListFile> batchListFile;
+    std::optional < File::BatchListFile> batchListFile;
     //! load header files
     LoadHeaderFiles loadHeaderFiles;
     //! batch files

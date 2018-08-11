@@ -8,7 +8,6 @@ cmake_minimum_required( VERSION 3.12)
 
 add_executable(
   arinc665_print_media_set 
-  arinc665_print_media_set.cpp
-)
+  arinc665_print_media_set.cpp)
 
 target_link_libraries( arinc665_print_media_set arinc665)

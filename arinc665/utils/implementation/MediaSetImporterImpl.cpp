@@ -90,7 +90,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
   else
   {
     // otherwise compare current list of files to first one
-    if (!this->fileListFile.get().belongsToSameMediaSet( fileListFile))
+    if (!this->fileListFile->belongsToSameMediaSet( fileListFile))
     {
       //! @throw Arinc665Exception When FILES.LUM is inconsistent to other media
       BOOST_THROW_EXCEPTION( Arinc665Exception() <<
@@ -166,7 +166,7 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex)
   else
   {
     // otherwise check against stored version
-    if (!this->loadListFile.get().belongsToSameMediaSet( loadListFile))
+    if (!this->loadListFile->belongsToSameMediaSet( loadListFile))
     {
       //! @throw Arinc665Exception When LOADS.LUM is inconsistent to other media
       BOOST_THROW_EXCEPTION( Arinc665Exception() <<
@@ -237,7 +237,7 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
   else
   {
     // otherwise check against stored version
-    if (!this->batchListFile.get().belongsToSameMediaSet( batchListFile))
+    if (!this->batchListFile->belongsToSameMediaSet( batchListFile))
     {
       //! @throw Arinc665Exception When BATCHES.LUM is inconsistent to other media
      BOOST_THROW_EXCEPTION( Arinc665Exception() <<

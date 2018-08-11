@@ -41,7 +41,7 @@
  *
  * @return Application exit status.
  **/
-int main( int argc, char* argv[]);
+int main( int argc, char const * argv[]);
 
 /**
  * @brief Loads the load upload header file and decodes its content.
@@ -84,10 +84,14 @@ static void list_files_lum( const std::filesystem::path &filesLum);
  **/
 static void list_files( const std::filesystem::path &loadDir);
 
-int main( int argc, char* argv[])
+int main( int argc, char const * argv[])
 {
-  boost::program_options::options_description options( "ARINC 665 List options");
+  std::cout
+    << "ARINC 665 list\n";
 
+  boost::program_options::options_description options{ "ARINC 665 List options"};
+
+  // directory to list
   std::filesystem::path directory;
 
   options.add_options()
@@ -118,13 +122,15 @@ int main( int argc, char* argv[])
 
     boost::program_options::notify( vm);
 
-    std::cout << "List files" << std::endl;
+    std::cout << "List files in " << directory << "\n";
 
     list_files( directory);
   }
   catch ( boost::program_options::error &e)
   {
-    std::cout << "Error parsing command line: " << e.what() << std::endl;
+    std::cout
+      << "Error parsing command line: " << e.what() << "\n"
+      << "Enter " << argv[0] << " --help for command line description" << std::endl;
     return EXIT_FAILURE;
   }
   catch ( boost::exception &e)
@@ -267,7 +273,8 @@ static void list_loads_lum( const std::filesystem::path &loadsLum)
 {
   try
   {
-    std::cout << "File size is: " << std::dec << std::filesystem::file_size( loadsLum) << std::endl;
+    std::cout
+      << "File size is: " << std::dec << std::filesystem::file_size( loadsLum) << "\n";
 
     std::vector< uint8_t> data( std::filesystem::file_size( loadsLum));
 
@@ -277,7 +284,7 @@ static void list_loads_lum( const std::filesystem::path &loadsLum)
 
     if (!file.is_open())
     {
-      std::cout << "Error opening file: " << loadsLum.string() << std::endl;
+      std::cout << "Error opening file: " << loadsLum.string() << "\n";
       return;
     }
 
@@ -285,11 +292,14 @@ static void list_loads_lum( const std::filesystem::path &loadsLum)
 
     Arinc665::File::LoadListFile loadList( data);
 
-    std::cout << "media set pn: " << loadList.mediaSetPn() << std::endl;
+    std::cout
+      << "media set pn: " << loadList.mediaSetPn() << "\n";
 
-    std::cout << "media seq no: " << std::dec << (int)loadList.mediaSequenceNumber() << std::endl;
+    std::cout
+      << "media seq no: " << std::dec << (int)loadList.mediaSequenceNumber() << "\n";
 
-    std::cout << "no of media set members: " << (int)loadList.numberOfMediaSetMembers() << std::endl;
+    std::cout
+      << "no of media set members: " << (int)loadList.numberOfMediaSetMembers() << "\n";
 
     for ( const auto & load : loadList.loads())
     {
@@ -323,17 +333,18 @@ static void list_files_lum( const std::filesystem::path &filesLum)
 {
   try
   {
-    std::cout << "File size is: " << std::dec << std::filesystem::file_size( filesLum) << std::endl;
+    std::cout
+      << "File size is: " << std::dec << std::filesystem::file_size( filesLum) << "\n";
 
     std::vector< uint8_t> data( std::filesystem::file_size( filesLum));
 
-    std::ifstream file(
+    std::ifstream file{
       filesLum.string().c_str(),
-      std::ifstream::binary | std::ifstream::in);
+      std::ifstream::binary | std::ifstream::in};
 
     if ( !file.is_open())
     {
-      std::cout << "Error opening file: " << filesLum.string() << std::endl;
+      std::cout << "Error opening file: " << filesLum.string() << "\n";
       return;
     }
 
@@ -341,11 +352,14 @@ static void list_files_lum( const std::filesystem::path &filesLum)
 
     Arinc665::File::FileListFile fileList( data);
 
-    std::cout << "media set pn: " << fileList.mediaSetPn() << std::endl;
+    std::cout
+      << "media set pn: " << fileList.mediaSetPn() << "\n";
 
-    std::cout << "media seq no: " << (int)fileList.mediaSequenceNumber() << std::endl;
+    std::cout
+      << "media seq no: " << (int)fileList.mediaSequenceNumber() << "\n";
 
-    std::cout << "no of media set members: " << std::dec << (int)fileList.numberOfMediaSetMembers() << std::endl;
+    std::cout
+      << "no of media set members: " << std::dec << (int)fileList.numberOfMediaSetMembers() << "\n";
 
     for ( const auto & file : fileList.files())
     {
@@ -417,4 +431,3 @@ static void list_files( const std::filesystem::path &loadDir)
     }
   }
 }
-

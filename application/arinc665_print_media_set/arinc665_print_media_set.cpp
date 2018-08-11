@@ -20,6 +20,7 @@
 #include <helper/Dump.hpp>
 #include <helper/Logger.hpp>
 
+#include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
 #include <boost/format.hpp>
 
@@ -27,30 +28,88 @@
 #include <fstream>
 #include <iostream>
 
-using Arinc665::Media::MediaSetPtr;
+/**
+ * @brief Entry point of application.
+ *
+ * @param[in] argc
+ *   Argument count.
+ * @param[in] argv
+ *   Argument values.
+ *
+ * @return Application exit status.
+ **/
+int main( int argc, char const * argv[]);
 
-static MediaSetPtr loadMediaSet( const std::filesystem::path &mediaSetDirectory);
+/**
+ * @brief Loads the media set from the given directory.
+ *
+ * @param[in] mediaSetDirectory
+ *   Media Set directory
+ *
+ * @return The loaded media set.
+ **/
+static Arinc665::Media::MediaSetPtr loadMediaSet(
+  const std::filesystem::path &mediaSetDirectory);
 
-static void printMediaSet( MediaSetPtr &mediaSet);
+/**
+ * @brief Decodes an prints the content of the Media Set.
+ *
+ * @param[in] mediaSet
+ *   The media set to print.
+ **/
+static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet);
 
-int main( int argc, char* argv[])
+
+int main( int argc, char const * argv[])
 {
-  if ( argc != 2)
-  {
-    std::cout << "enter load directory" << std::endl;
+  std::cout
+    << "ARINC 665 Media Set Printer\n";
 
-    return EXIT_FAILURE;
-  }
+  boost::program_options::options_description options{ "ARINC 665 Media Set Printer options"};
+
+  // directory which contains the medium 1 of the media set
+  std::filesystem::path directory;
+
+  options.add_options()
+  (
+    "help",
+    "Print Help"
+  )
+  (
+    "directory",
+    boost::program_options::value( &directory)->required(),
+    "start directory"
+  );
 
   try
   {
-    std::filesystem::path loadDir{ argv[1]};
+    boost::program_options::variables_map vm;
+    boost::program_options::store(
+      boost::program_options::parse_command_line( argc, argv, options),
+      vm);
+
+    if ( vm.count( "help") != 0)
+    {
+      std::cout
+        << "Prints the ARINC 665 Media Set located in the given directory\n"
+        << options;
+      return EXIT_FAILURE;
+    }
+
+    boost::program_options::notify( vm);
 
     std::cout << std::endl << "Load Media Set " << std::endl;
-    MediaSetPtr mediaSet( loadMediaSet( loadDir));
+    auto mediaSet{ loadMediaSet( directory)};
 
     std::cout << std::endl << "Print Media Set " << std::endl;
     printMediaSet( mediaSet);
+  }
+  catch ( boost::program_options::error &e)
+  {
+    std::cout
+      << "Error parsing command line: " << e.what() << "\n"
+      << "Enter " << argv[0] << " --help for command line description" << std::endl;
+    return EXIT_FAILURE;
   }
   catch ( boost::exception &e)
   {
@@ -72,7 +131,8 @@ int main( int argc, char* argv[])
 }
 
 
-static MediaSetPtr loadMediaSet( const std::filesystem::path &mediaSetDirectory)
+static Arinc665::Media::MediaSetPtr loadMediaSet(
+  const std::filesystem::path &mediaSetDirectory)
 {
   auto importer{ Arinc665::Utils::Arinc665Utils::arinc665Importer(
     // read file handler
@@ -111,14 +171,17 @@ static MediaSetPtr loadMediaSet( const std::filesystem::path &mediaSetDirectory)
 
   auto mediaSet{ importer()};
 
-  std::cout << "media set pn: " << mediaSet->partNumber() << std::endl;
+  std::cout
+    << "media set pn: " << mediaSet->partNumber() << "\n";
 
-  std::cout << "no of media set members: " << std::dec << (int)mediaSet->numberOfMedia() << std::endl;
+  std::cout
+    << "no of media set members: "
+    << std::dec << (int)mediaSet->numberOfMedia() << "\n";
 
   return mediaSet;
 }
 
-static void printMediaSet( MediaSetPtr &mediaSet)
+static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet)
 {
   std::cout << "Media Set " << mediaSet->partNumber() << std::endl;
 

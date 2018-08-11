@@ -52,20 +52,22 @@ static void listBatch( Arinc665::Media::BatchPtr batch);
 
 int main( int argc, char* argv[])
 {
-  boost::program_options::options_description options( "ARINC 665 List options");
+  std::cout << "ARINC 665 Media Set XML Printer" << "\n";
+
+  boost::program_options::options_description options{ "ARINC 665 List options"};
 
   std::filesystem::path xmlPath;
 
   options.add_options()
-    (
-      "help",
-      "Print Help"
-    )
-    (
-      "xml",
-      boost::program_options::value( &xmlPath)->required(),
-      "XML File"
-    );
+  (
+    "help",
+    "Print Help"
+  )
+  (
+    "xml",
+    boost::program_options::value( &xmlPath)->required(),
+    "XML File"
+  );
 
   try
   {
@@ -77,14 +79,14 @@ int main( int argc, char* argv[])
     if ( vm.count( "help") != 0)
     {
       std::cout
-        << "Prints the ARINC 665 Media File informations located in the given directory\n"
+        << "Prints the ARINC 665 Media Set XML.\n"
         << options;
       return EXIT_FAILURE;
     }
 
     boost::program_options::notify( vm);
 
-    std::cout << "List XML" << std::endl;
+    std::cout << "List XML" << "\n";
 
     listXml( xmlPath);
   }
@@ -126,13 +128,14 @@ static void listXml( std::filesystem::path &xmlPath)
     << "  PN: " << mediaSet->partNumber() << "\n"
     << "  # Media: " << mediaSet->numberOfMedia() << "\n";
 
-  for ( auto const &medium : mediaSet->media())
+  for ( auto const &[mediumNumber, medium] : mediaSet->media())
   {
-    std::cout << "Medium: #" << (unsigned int)medium.first << "\n";
+    std::cout << "Medium: #" << (unsigned int)mediumNumber << "\n";
 
-    for ( const auto &file : medium.second->files( true))
+    for ( const auto &file : medium->files( true))
     {
       std::cout << file->path() << "/" << "\n";
+
       switch ( file->fileType())
       {
         case Arinc665::Media::BaseFile::FileType::RegularFile:
@@ -158,13 +161,13 @@ static void listLoad( Arinc665::Media::LoadPtr load)
   std::cout << "Load: " << "\n"
     << "PN: " << load->partNumber() << "\n";
 
-  for ( const auto &thwIdPos : load->targetHardwareIdPositions())
+  for ( const auto &[thwId, positions] : load->targetHardwareIdPositions())
   {
-    std::cout << "THW ID: " << thwIdPos.first << "\n";
+    std::cout << "THW ID: " << thwId << "\n";
 
-    for (const auto &pos : thwIdPos.second)
+    for (const auto &position : positions)
     {
-      std::cout << "  Pos: " << pos << "\n";
+      std::cout << "  Position: " << position << "\n";
     }
   }
 
@@ -179,14 +182,15 @@ static void listLoad( Arinc665::Media::LoadPtr load)
 
 static void listBatch( Arinc665::Media::BatchPtr batch)
 {
-  std::cout << "Batch: " << "\n"
-            << "PN: " << batch->partNumber() << "\n";
+  std::cout
+    << "Batch: " << "\n"
+    << "PN: " << batch->partNumber() << "\n";
 
-  for ( const auto &target : batch->targets())
+  for ( const auto &[target, loads] : batch->targets())
   {
-    std::cout << "Target: " << target.first << "\n";
+    std::cout << "Target: " << target << "\n";
 
-    for (const auto &load : target.second)
+    for (const auto &load : loads)
     {
       std::cout << "  Load: " << load.lock()->path() << "\n";
     }

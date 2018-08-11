@@ -42,7 +42,7 @@
  *
  * @return The success state of this operation.
  **/
-int main( int argc, char * argv[]);
+int main( int argc, char const * argv[]);
 
 /**
  * @brief Reads the give file and returns the data.
@@ -61,13 +61,18 @@ static Arinc665::File::RawFile readFile(
   uint8_t mediumNumber,
   const std::filesystem::path &path);
 
+//! Media source directories
 static std::vector< std::filesystem::path> mediaSourceDirectories;
+
+//! Media Set XML file
 static std::filesystem::path mediaSetXmlFile;
 
-int main( int argc, char * argv[])
+int main( int argc, char const * argv[])
 {
-  boost::program_options::options_description optionsDescription(
-    "ARINC 665 Media Set Decompiler Options");
+  std::cout << "ARINC 665 Media Set Decompiler" << "\n";
+
+  boost::program_options::options_description optionsDescription{
+    "ARINC 665 Media Set Decompiler Options"};
 
   optionsDescription.add_options()
   (
@@ -90,8 +95,6 @@ int main( int argc, char * argv[])
 
   try
   {
-    std::cout << "ARINC 665 Media Set Decompiler" << std::endl;
-
     boost::program_options::variables_map options;
     boost::program_options::store(
       boost::program_options::parse_command_line(
@@ -136,7 +139,8 @@ int main( int argc, char * argv[])
   }
   catch ( boost::program_options::error &e)
   {
-    std::cout << e.what() << std::endl;
+    std::cout << "Error parsing command line: " << e.what() << "\n"
+      << "Enter " << argv[0] << " --help for command line description" << std::endl;;
     return EXIT_FAILURE;
   }
   catch ( Arinc665::Arinc665Exception &e)
@@ -171,7 +175,8 @@ static Arinc665::File::RawFile readFile(
   // check medium number
   if (mediumNumber > mediaSourceDirectories.size())
   {
-    return {};
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception() << AdditionalInfo( "Medium number unknown"));
   }
 
   auto filePath{ mediaSourceDirectories[ mediumNumber-1] / path.relative_path()};
