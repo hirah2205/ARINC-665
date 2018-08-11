@@ -498,7 +498,7 @@ void Arinc665XmlPugiXmlImpl::saveLoad(
 {
   loadNode.append_attribute( "NameRef") = load->name().c_str();
 
-  // Load Type (Description + Type Value)
+  // Optional Load Type (Description + Type Value)
   const auto &loadType{ load->loadType()};
 
   if ( loadType)
@@ -508,14 +508,14 @@ void Arinc665XmlPugiXmlImpl::saveLoad(
       (boost::format( "0x%04X") % std::get< 1>( *loadType)).str().c_str();
   }
 
-  // iterate over target hardware id
-  for (const auto &targetHardware : load->targetHardwareIdPositions())
+  // iterate over target hardware
+  for (const auto &[targetHardwareId, positions] : load->targetHardwareIdPositions())
   {
     auto targetHardwareNode{ loadNode.append_child( "TargetHardware")};
     targetHardwareNode.append_attribute( "ThwId") =
-      targetHardware.first.c_str();
+      targetHardwareId.c_str();
 
-    for( const auto &position : targetHardware.second)
+    for( const auto &position : positions)
     {
       auto positionNode{ targetHardwareNode.append_child( "Position")};
       positionNode.append_attribute( "Pos") =

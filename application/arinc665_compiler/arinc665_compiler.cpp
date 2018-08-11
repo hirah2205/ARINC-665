@@ -84,13 +84,13 @@ static void createDirectory(
 
 static bool checkFileExistance(
   const std::filesystem::path &mediaSetBase,
-  const Arinc665::Utils::Arinc665Xml::LoadXmlResult &mediaSetInfo,
+  const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
   Arinc665::Media::ConstFilePtr file);
 
 static void createFile(
   const std::filesystem::path &sourceBase,
   const std::filesystem::path &mediaSetBase,
-  const Arinc665::Utils::Arinc665Xml::LoadXmlResult &mediaSetInfo,
+  const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
   Arinc665::Media::ConstFilePtr file);
 
 static void writeFile(
@@ -206,13 +206,13 @@ int main( int argc, char ** argv)
     auto xml{ Arinc665::Utils::Arinc665Xml::instance()};
 
     // load XML file
-    auto result{ xml->loadFromXml( mediaSetXmlFile)};
+    auto [mediaSet, fileMapping] = xml->loadFromXml( mediaSetXmlFile);
 
     // create media set directory
     std::filesystem::create_directories( mediaSetDestinationDirectory);
 
     auto exporter{ Arinc665::Utils::Arinc665Utils::arinc665Exporter(
-      std::get< 0>( result),
+      mediaSet,
       std::bind(
         &createMedium,
         mediaSetDestinationDirectory,
@@ -224,13 +224,13 @@ int main( int argc, char ** argv)
       std::bind(
         &checkFileExistance,
         mediaSetDestinationDirectory,
-        result,
+        fileMapping,
         std::placeholders::_1),
       std::bind(
         &createFile,
         mediaSetSourceDirectory,
         mediaSetDestinationDirectory,
-        result,
+        fileMapping,
         std::placeholders::_1),
       std::bind(
         &writeFile,
@@ -320,7 +320,7 @@ static void createDirectory(
 
 static bool checkFileExistance(
   const std::filesystem::path &mediaSetBase,
-  const Arinc665::Utils::Arinc665Xml::LoadXmlResult &mediaSetInfo,
+  const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
   Arinc665::Media::ConstFilePtr file)
 {
   BOOST_LOG_FUNCTION();
@@ -329,9 +329,9 @@ static bool checkFileExistance(
     file->path();
 
   // search for file
-  auto fileIt( std::get< 1>( mediaSetInfo).find( file));
+  auto fileIt{ filePathMapping.find( file)};
 
-  if (fileIt == std::get< 1>( mediaSetInfo).end())
+  if (fileIt == filePathMapping.end())
   {
     return false;
   }
@@ -346,15 +346,15 @@ static bool checkFileExistance(
 static void createFile(
   const std::filesystem::path &sourceBase,
   const std::filesystem::path &mediaSetBase,
-  const Arinc665::Utils::Arinc665Xml::LoadXmlResult &mediaSetInfo,
+  const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
   Arinc665::Media::ConstFilePtr file)
 {
   BOOST_LOG_FUNCTION();
 
   // search for file
-  auto fileIt( std::get< 1>( mediaSetInfo).find( file));
+  auto fileIt{ filePathMapping.find( file)};
 
-  if (fileIt == std::get< 1>( mediaSetInfo).end())
+  if (fileIt == filePathMapping.end())
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
       AdditionalInfo( "file mapping not found") <<
