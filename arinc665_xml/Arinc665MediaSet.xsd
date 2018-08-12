@@ -90,8 +90,8 @@
     </documentation></annotation>
     <sequence>
       <element name="TargetHardware"  type="ams:TargetHardwareType"  minOccurs="1" maxOccurs="unbounded" />
-      <element name="DataFile"        type="ams:FileRefernceType"    minOccurs="0" maxOccurs="unbounded" />
-      <element name="SupportFile"     type="ams:FileRefernceType"    minOccurs="0" maxOccurs="unbounded" />
+      <element name="DataFile"        type="ams:FileReferenceType"   minOccurs="0" maxOccurs="unbounded" />
+      <element name="SupportFile"     type="ams:FileReferenceType"   minOccurs="0" maxOccurs="unbounded" />
       <element name="UserDefinedData" type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
     </sequence>
     <attribute name="NameRef"     type="IDREF"            use="required" />
@@ -110,7 +110,7 @@
     <attribute name="Pos" type="ams:PosType" use="required" />
   </complexType>
 
-  <complexType name="FileRefernceType" >
+  <complexType name="FileReferenceType" >
     <attribute name="NameRef" type="IDREF" use="required" />
   </complexType>
 

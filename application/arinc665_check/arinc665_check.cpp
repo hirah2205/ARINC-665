@@ -45,7 +45,7 @@ int main( int argc, char * argv[]);
  *
  * @return THe read file data.
  *
- * @throw Arind665Exception
+ * @throw Arinc665Exception
  *   If file does not exist or cannot be read.
  **/
 static Arinc665::File::RawFile readFile(
