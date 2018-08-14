@@ -141,7 +141,7 @@ class BaseFile: public Base
     //! The parent
     WeakContainerEntityPtr parentValue;
     //! The file name
-    const std::string nameV;
+    const std::string nameValue;
     //! The part number
     std::string partNumberValue;
 };

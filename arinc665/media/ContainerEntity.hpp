@@ -362,7 +362,7 @@ class ContainerEntity :
      * @param[in] parent
      *   Parent of this container.
      **/
-    ContainerEntity( ContainerEntityPtr parent);
+    explicit ContainerEntity( ContainerEntityPtr parent);
 
     /**
      * @brief Return the files (real file, load, batch) with the specified file

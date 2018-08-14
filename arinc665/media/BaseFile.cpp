@@ -20,7 +20,7 @@ namespace Arinc665::Media {
 
 ConstMediaSetPtr BaseFile::mediaSet() const
 {
-  auto parentPtr( parent());
+  auto parentPtr{ parent()};
 
   if (!parentPtr)
   {
@@ -32,7 +32,7 @@ ConstMediaSetPtr BaseFile::mediaSet() const
 
 MediaSetPtr BaseFile::mediaSet()
 {
-  auto parentPtr( parent());
+  auto parentPtr{ parent()};
 
   if (!parentPtr)
   {
@@ -59,7 +59,7 @@ void BaseFile::partNumber( const std::string &partNumber)
 
 const std::string& BaseFile::name() const
 {
-  return nameV;
+  return nameValue;
 }
 
 ContainerEntityPtr BaseFile::parent()
@@ -74,7 +74,7 @@ ConstContainerEntityPtr BaseFile::parent() const
 
 ConstMediumPtr BaseFile::medium() const
 {
-  auto parentPtr( parent());
+  auto parentPtr{ parent()};
 
   if (!parentPtr)
   {
@@ -86,7 +86,7 @@ ConstMediumPtr BaseFile::medium() const
 
 MediumPtr BaseFile::medium()
 {
-  auto parentPtr( parent());
+  auto parentPtr{ parent()};
 
   if (!parentPtr)
   {
@@ -98,19 +98,19 @@ MediumPtr BaseFile::medium()
 
 std::filesystem::path BaseFile::path() const
 {
-  auto parentPtr( parent());
+  auto parentPtr{ parent()};
 
   if ( !parentPtr)
   {
     return {};
   }
 
-  return parentPtr->path() / nameV;
+  return parentPtr->path() / nameValue;
 }
 
-BaseFile::BaseFile( ContainerEntityPtr parent, const std::string &name) :
+BaseFile::BaseFile( ContainerEntityPtr parent, const std::string &name):
   parentValue( parent),
-  nameV( name)
+  nameValue( name)
 {
   if (!parent)
   {
@@ -121,7 +121,7 @@ BaseFile::BaseFile( ContainerEntityPtr parent, const std::string &name) :
 
 BaseFile::BaseFile( ContainerEntityPtr parent, std::string &&name):
   parentValue( parent),
-  nameV( std::move( name))
+  nameValue( std::move( name))
 {
   if (!parent)
   {

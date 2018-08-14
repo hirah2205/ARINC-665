@@ -75,9 +75,9 @@ DirectoryPtr ContainerEntity::addSubDirectory( const std::string &name)
   }
 
   // create new sub-directory
-  DirectoryPtr subDirectory( std::make_shared< Directory>(
+  auto subDirectory{ std::make_shared< Directory>(
     shared_from_this(),
-    name));
+    name)};
 
   // insert into map
   subDirectoriesValue.push_back( subDirectory);
@@ -88,12 +88,12 @@ DirectoryPtr ContainerEntity::addSubDirectory( const std::string &name)
 
 void ContainerEntity::removeSubDirectory( const std::string &name)
 {
-  Directories::iterator dir = std::find_if(
+  auto dir{ std::find_if(
     subDirectoriesValue.begin(),
     subDirectoriesValue.end(),
     [&name]( const DirectoryPtr &dirEnt){
       return (name == dirEnt->name());
-    });
+    })};
 
   if (subDirectoriesValue.end() == dir)
   {
@@ -107,10 +107,10 @@ void ContainerEntity::removeSubDirectory( const std::string &name)
 
 void ContainerEntity::removeSubDirectory( DirectoryPtr subDirectory)
 {
-  Directories::iterator dir = std::find(
+  auto dir{ std::find(
     subDirectoriesValue.begin(),
     subDirectoriesValue.end(),
-    subDirectory);
+    subDirectory)};
 
   if (subDirectoriesValue.end() == dir)
    {
@@ -124,7 +124,7 @@ void ContainerEntity::removeSubDirectory( DirectoryPtr subDirectory)
 
 size_t ContainerEntity::numberOfFiles( const bool recursive) const
 {
-  size_t fileSize( filesValue.size());
+  auto fileSize{ filesValue.size()};
 
   // descent to sub directories if requested
   if ( recursive)
@@ -145,7 +145,7 @@ ConstFiles ContainerEntity::files( const bool recursive) const
     return ConstFiles( filesValue.begin(), filesValue.end());
   }
 
-  ConstFiles allfiles( filesValue.begin(), filesValue.end());
+  ConstFiles allfiles{ filesValue.begin(), filesValue.end()};
 
   for (const auto &subDirectory : subDirectoriesValue)
   {
@@ -253,12 +253,12 @@ FilePtr ContainerEntity::addFile( const std::string &filename)
 
 void ContainerEntity::removeFile( const std::string &filename)
 {
-  Files::iterator file = std::find_if(
+  auto file{ std::find_if(
     filesValue.begin(),
     filesValue.end(),
     [&filename]( const FilePtr &dirEnt){
       return (filename == dirEnt->name());
-    });
+    })};
 
   if (filesValue.end() == file)
   {
@@ -272,10 +272,10 @@ void ContainerEntity::removeFile( const std::string &filename)
 
 void ContainerEntity::removeFile( ConstFilePtr file)
 {
-  Files::iterator fileIt = std::find(
+  auto fileIt{ std::find(
     filesValue.begin(),
     filesValue.end(),
-    file);
+    file)};
 
   if (filesValue.end() == fileIt)
   {
@@ -289,7 +289,7 @@ void ContainerEntity::removeFile( ConstFilePtr file)
 
 size_t ContainerEntity::numberOfLoads( const bool recursive) const
 {
-  size_t numberOfLoads( files( BaseFile::FileType::LoadFile).size());
+  auto numberOfLoads{ files( BaseFile::FileType::LoadFile).size()};
 
   // descent to sub directories if requested
   if (recursive)
@@ -305,7 +305,7 @@ size_t ContainerEntity::numberOfLoads( const bool recursive) const
 
 ConstLoads ContainerEntity::loads( const bool recursive) const
 {
-  ConstFiles loadFiles = files( BaseFile::FileType::LoadFile);
+  auto loadFiles{ files( BaseFile::FileType::LoadFile)};
 
   ConstLoads loads;
 
@@ -318,8 +318,8 @@ ConstLoads ContainerEntity::loads( const bool recursive) const
   {
     for (const auto &subDirectory : subDirectoriesValue)
     {
-      ConstLoads subLoads(
-        static_cast< const Directory&>(*subDirectory).loads( true));
+      auto subLoads{
+        static_cast< const Directory&>(*subDirectory).loads( true)};
 
       loads.insert( loads.end(), subLoads.begin(), subLoads.end());
     }
@@ -330,7 +330,7 @@ ConstLoads ContainerEntity::loads( const bool recursive) const
 
 Loads ContainerEntity::loads( const bool recursive)
 {
-  Files loadFiles = files( BaseFile::FileType::LoadFile);
+  auto loadFiles{ files( BaseFile::FileType::LoadFile)};
 
   Loads loads;
 
@@ -343,7 +343,7 @@ Loads ContainerEntity::loads( const bool recursive)
   {
     for (const auto &subDirectory : subDirectoriesValue)
     {
-      Loads subLoads( subDirectory->loads( true));
+      auto subLoads{ subDirectory->loads( true)};
 
       loads.insert( loads.end(), subLoads.begin(), subLoads.end());
     }
@@ -356,7 +356,7 @@ ConstLoadPtr ContainerEntity::load(
   const std::string &filename,
   const bool recursive) const
 {
-  ConstFilePtr filePtr = file( filename, recursive);
+  auto filePtr{ file( filename, recursive)};
 
   if (!filePtr)
   {
@@ -373,7 +373,7 @@ ConstLoadPtr ContainerEntity::load(
 
 LoadPtr ContainerEntity::load( const std::string &filename, const bool recursive)
 {
-  FilePtr filePtr = file( filename, recursive);
+  auto filePtr{ file( filename, recursive)};
 
   if (!filePtr)
   {
@@ -382,7 +382,7 @@ LoadPtr ContainerEntity::load( const std::string &filename, const bool recursive
 
   if (filePtr->fileType() != BaseFile::FileType::LoadFile)
   {
-    return LoadPtr();
+    return {};
   }
 
   return std::dynamic_pointer_cast< Load>( filePtr);
@@ -409,7 +409,7 @@ LoadPtr ContainerEntity::addLoad( const std::string &filename)
 
 void ContainerEntity::removeLoad( const std::string &filename)
 {
-  FilePtr loadFile = file( filename);
+  auto loadFile{ file( filename)};
 
   if ( !loadFile)
   {

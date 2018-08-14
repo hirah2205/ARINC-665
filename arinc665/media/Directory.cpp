@@ -27,7 +27,7 @@ Directory::Directory( ContainerEntityPtr parent, const std::string &name):
 
 ConstMediaSetPtr Directory::mediaSet() const
 {
-  auto parentPtr( parent());
+  auto parentPtr{ parent()};
 
   if ( !parentPtr)
   {
@@ -39,7 +39,7 @@ ConstMediaSetPtr Directory::mediaSet() const
 
 MediaSetPtr Directory::mediaSet()
 {
-  auto parentPtr( parent());
+  auto parentPtr{ parent()};
 
   if ( !parentPtr)
   {
@@ -61,7 +61,7 @@ const std::string& Directory::name() const
 
 std::string Directory::partNumber() const
 {
-  auto parentPtr( parent());
+  auto parentPtr{ parent()};
 
   if ( !parentPtr)
   {
@@ -73,7 +73,7 @@ std::string Directory::partNumber() const
 
 std::filesystem::path Directory::path() const
 {
-  auto parentPtr( parent());
+  auto parentPtr{ parent()};
 
   if ( !parentPtr)
   {

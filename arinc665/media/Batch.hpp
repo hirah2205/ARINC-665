@@ -113,7 +113,7 @@ class Batch: public BaseFile
   private:
     //! Batch comment
     std::string commentValue;
-    //! Batch informations
+    //! Batch information
     BatchInfo batchesValue;
 };
 

@@ -51,7 +51,7 @@ Batch::BatchInfo& Batch::targets()
 
 const WeakLoads Batch::target( const std::string &targetHardwareId) const
 {
-  auto it( batchesValue.find( targetHardwareId));
+  auto it{ batchesValue.find( targetHardwareId)};
 
   if (it == batchesValue.end())
   {
@@ -63,7 +63,7 @@ const WeakLoads Batch::target( const std::string &targetHardwareId) const
 
 WeakLoads Batch::target( const std::string &targetHardwareId)
 {
-  auto it( batchesValue.find( targetHardwareId));
+  auto it{ batchesValue.find( targetHardwareId)};
 
   if (it == batchesValue.end())
   {
