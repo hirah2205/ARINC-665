@@ -28,6 +28,7 @@ class FileCreationPolicyDescription : public Description<
   FileCreationPolicy::Invalid>
 {
   public:
+    //! Constructs and adds the entries
     FileCreationPolicyDescription();
 };
 

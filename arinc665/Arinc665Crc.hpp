@@ -23,15 +23,33 @@ namespace Arinc665 {
 
 //! ARINC 665 CRC 16 definition
 using Arinc665Crc16 =
-  boost::crc_optimal< 16, Crc16Polynom, Crc16Init, Crc16FinalXor, Crc16ReflectIn, Crc16ReflectOut>;
+  boost::crc_optimal<
+    16u,
+    Crc16Polynom,
+    Crc16Init,
+    Crc16FinalXor,
+    Crc16ReflectIn,
+    Crc16ReflectOut>;
 
 //! ARINC 665 CRC 32 definition
 using Arinc665Crc32 =
-  boost::crc_optimal< 32, Crc32Polynom, Crc32Init, Crc32FinalXor, Crc32ReflectIn, Crc32ReflectOut>;
+  boost::crc_optimal<
+    32u,
+    Crc32Polynom,
+    Crc32Init,
+    Crc32FinalXor,
+    Crc32ReflectIn,
+    Crc32ReflectOut>;
 
 //! ARINC 665 CRC 64 definition
 using Arinc665Crc64 =
-  boost::crc_optimal< 64, Crc64Polynom, Crc64Init, Crc64FinalXor, Crc64ReflectIn, Crc64ReflectOut>;
+  boost::crc_optimal<
+    64u,
+    Crc64Polynom,
+    Crc64Init,
+    Crc64FinalXor,
+    Crc64ReflectIn,
+    Crc64ReflectOut>;
 
 //! Check Value sizes definition.
 extern const std::map< CheckValueType, uint16_t> CheckValueSize;
