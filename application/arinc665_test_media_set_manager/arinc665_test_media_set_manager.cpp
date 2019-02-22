@@ -1,7 +1,3 @@
-/*
- * $Date: 2017-05-18 12:43:10 +0200 (Do, 18. Mai 2017) $
- * $Revision: 2022 $
- */
 /**
  * @file
  * @copyright
@@ -9,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief .
+ * @brief Media Set Manager Test Application.
  **/
 
 #include <arinc665/utils/MediaSetManager.hpp>
