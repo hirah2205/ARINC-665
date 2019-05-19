@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665::Utils::MediaSetConfiguration.
+ * @brief Definition of Class Arinc665::Utils::MediaSetConfiguration.
  **/
 
 #include "MediaSetConfiguration.hpp"
@@ -27,7 +27,7 @@ MediaSetConfiguration::MediaSetConfiguration(
 
 void MediaSetConfiguration::load( const boost::property_tree::ptree &config)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
   mediaSetBase = config.get< std::filesystem::path>(
     "media_set_base",
@@ -36,7 +36,7 @@ void MediaSetConfiguration::load( const boost::property_tree::ptree &config)
   // iterate over media sets
   for ( auto &mediaSetConfig : config.get_child( "media_sets"))
   {
-    const auto mediaSetPartNumber{
+    auto mediaSetPartNumber{
       mediaSetConfig.second.get< std::string>( "part_number")};
 
     MediaPaths mediaPaths;
@@ -44,15 +44,16 @@ void MediaSetConfiguration::load( const boost::property_tree::ptree &config)
     // iterate over media
     for ( auto &mediumConfig : mediaSetConfig.second.get_child( "media"))
     {
-      const auto mediumNumber{ mediumConfig.second.get< unsigned int>( "number")};
-      const auto mediumPath{ mediumConfig.second.get< std::filesystem::path>( "path")};
+      auto mediumNumber{ mediumConfig.second.get< unsigned int>( "number")};
+      auto mediumPath{ mediumConfig.second.get< std::filesystem::path>( "path")};
 
-      mediaPaths.insert(
-        { static_cast< uint8_t>( mediumNumber), mediumPath});
+      mediaPaths.emplace(
+        static_cast< uint8_t>( mediumNumber),
+        std::move( mediumPath));
     }
 
     // insert media set configuration
-    mediaSets.insert( { std::move( mediaSetPartNumber), std::move( mediaPaths)});
+    mediaSets.emplace( std::move( mediaSetPartNumber), std::move( mediaPaths));
   }
 }
 

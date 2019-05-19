@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of class Arinc665::Utils::MediaSetConfiguration.
+ * @brief Declaration of Class Arinc665::Utils::MediaSetConfiguration.
  **/
 
 #ifndef ARINC665_UTILS_MEDIASETCONFIGURATION_HPP
@@ -42,7 +42,7 @@ class MediaSetConfiguration
      * @param[in] config
      *   The stored configuration.
      **/
-    MediaSetConfiguration( const boost::property_tree::ptree &config);
+    explicit MediaSetConfiguration( const boost::property_tree::ptree &config);
 
     /**
      * @brief Loads the media set configuration form the given property tree.
