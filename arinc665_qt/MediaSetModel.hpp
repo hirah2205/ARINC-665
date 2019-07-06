@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class Arinc665Qt::MediaSetModelModel.
+ * @brief Declaration of Class Arinc665Qt::MediaSetModelModel.
  **/
 
 #ifndef ARINC665_QT_MEDIASETMODEL_HPP

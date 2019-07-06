@@ -6,34 +6,34 @@
 
 cmake_minimum_required( VERSION 3.12)
 
-find_package( Qt5Widgets QUIET)
+find_package( Qt5 COMPONENTS Widgets QUIET)
 
-if(Qt5Widgets_FOUND)
+if( TARGET Qt5::Widgets)
 
-#QT5_WRAP_UI(
-#  bhm_qt_ui
-#  
-#  bhm_qt/AsfMessagesDialog.ui
-#  )
+  #QT5_WRAP_UI(
+  #  bhm_qt_ui
+  #
+  #  bhm_qt/AsfMessagesDialog.ui
+  #  )
 
-set( CMAKE_AUTOMOC ON)
+  set( CMAKE_AUTOMOC ON)
 
-add_library(
-  arinc665_qt
-  
-  Arinc665Qt.hpp
-  LoadsModel.hpp
-  MediaSetModel.hpp
-  MediaSetModel.cpp
-#  ${bhm_qt_ui}
-  )
+  add_library(
+    arinc665_qt
 
-target_include_directories( arinc665_qt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
-target_include_directories( arinc665_qt PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+    Arinc665Qt.hpp
+    LoadsModel.hpp
+    MediaSetModel.hpp
+    MediaSetModel.cpp
+  #  ${bhm_qt_ui}
+    )
 
-target_link_libraries( 
-  arinc665_qt 
-  arinc665
-  Qt5::Widgets)
+  target_include_directories( arinc665_qt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
+  target_include_directories( arinc665_qt PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
-endif(Qt5Widgets_FOUND)
+  target_link_libraries(
+    arinc665_qt
+    arinc665
+    Qt5::Widgets)
+
+endif( TARGET Qt5::Widgets)

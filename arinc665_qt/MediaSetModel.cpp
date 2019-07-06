@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of class Arinc665Qt::MediaSetModelModel.
+ * @brief Definition of Class Arinc665Qt::MediaSetModelModel.
  **/
 
 #include "MediaSetModel.hpp"

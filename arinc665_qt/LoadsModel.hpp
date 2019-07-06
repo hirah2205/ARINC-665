@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of class Arinc665Qt::LoadsModel.
+ * @brief Declaration of Class Arinc665Qt::LoadsModel.
  **/
 
 #ifndef ARINC665_QT_LOADSMODEL_HPP

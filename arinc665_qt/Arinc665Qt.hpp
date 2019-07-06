@@ -7,14 +7,14 @@
  *
  * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Declaration of namespace Arinc665Qt.
+ * @brief Declaration of Namespace Arinc665Qt.
  **/
 
 #ifndef ARINC665_QT_ARINC665QT_HPP
 #define ARINC665_QT_ARINC665QT_HPP
 
 /**
- * @brief ARINC 665 specification QT implementation.
+ * @brief ARINC 665 Specification QT Implementation.
  **/
 namespace Arinc665Qt {
 
