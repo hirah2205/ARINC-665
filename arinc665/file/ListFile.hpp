@@ -37,7 +37,7 @@ class ListFile: public Arinc665File
      *
      * @return The Media Set Part Number.
      **/
-    virtual std::string mediaSetPn() const = 0;
+    [[nodiscard]] virtual std::string mediaSetPn() const = 0;
 
     /**
      * @brief Sets the Media Part Number, where the files belongs to.
@@ -55,7 +55,7 @@ class ListFile: public Arinc665File
      *
      * @return The media sequence number
      **/
-    virtual uint8_t mediaSequenceNumber() const = 0;
+    [[nodiscard]] virtual uint8_t mediaSequenceNumber() const = 0;
 
     /**
      * @brief Updates the media sequence number
@@ -70,7 +70,7 @@ class ListFile: public Arinc665File
      *
      * @return The number of media set members.
      **/
-    virtual uint8_t numberOfMediaSetMembers() const = 0;
+    [[nodiscard]] virtual uint8_t numberOfMediaSetMembers() const = 0;
 
     /**
      * @brief Updates the number of media set members.
