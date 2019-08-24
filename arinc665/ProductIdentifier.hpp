@@ -14,7 +14,9 @@
 #define ARINC665_PRODUCTIDENTIFIER_HPP
 
 #include <arinc665/Arinc665.hpp>
+
 #include <string>
+#include <string_view>
 
 namespace Arinc665 {
 
@@ -36,9 +38,9 @@ class ProductIdentifier
      * @throw Arinc665Exception
      *   If the string does not represents an valid product identifier.
      **/
-    explicit ProductIdentifier( const std::string &productIdentifier);
+    explicit ProductIdentifier( std::string_view productIdentifier);
 
-    //! @copydoc ProductIdentifier(const std::string&)
+    //! @copydoc ProductIdentifier(std::string_view)
     explicit ProductIdentifier( std::string &&productIdentifier);
 
     /**
@@ -46,7 +48,7 @@ class ProductIdentifier
      *
      * @return The product identifier
      **/
-    const std::string& get() const;
+    std::string_view get() const;
 
     /**
      * @brief Sets the product identifier.
@@ -54,15 +56,15 @@ class ProductIdentifier
      * @param[in] productIdentifier
      *   The product identifier.
      **/
-    void set( const std::string &productIdentifier);
+    void set( std::string_view productIdentifier);
 
-    //! @copydoc set(const std::string&)
+    //! @copydoc set(std::string_view)
     void set( std::string &&productIdentifier);
 
   private:
-    void check( const std::string &productIdentifier) const;
+    void check( std::string_view productIdentifier) const;
 
-    //! The product identifier.
+    //! Product identifier.
     std::string productIdentifier;
 };
 

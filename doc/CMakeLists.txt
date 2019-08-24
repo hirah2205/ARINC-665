@@ -10,7 +10,9 @@ cmake_minimum_required( VERSION 3.13)
 
 find_package( Doxygen)
 
-#add_custom_target( doc ALL)
+if ( NOT TARGET doc)
+  add_custom_target( doc COMMENT "Generate Documentation")
+endif()
 
 if (DOXYGEN_FOUND)
   set( DOXYGEN_PROJECT_NAME "ARINC 665 Tool Suite")
@@ -48,7 +50,7 @@ if (DOXYGEN_FOUND)
     ${CMAKE_SOURCE_DIR}/application/arinc665_unit_test
     ${CMAKE_SOURCE_DIR}/application/arinc665_xml_print)
 
-  #add_dependencies( doc api_doc)
+  add_dependencies( doc arinc665_api_doc)
 
   # add index.html redirection
   configure_file(

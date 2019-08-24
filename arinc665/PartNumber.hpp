@@ -21,6 +21,7 @@
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <string>
+#include <string_view>
 #include <cstdint>
 
 namespace Arinc665 {
@@ -68,14 +69,14 @@ class PartNumber
      * @param[in] partNumber
      *   The part number as string
      **/
-    PartNumber( const std::string& partNumber);
+    PartNumber( std::string_view partNumber);
 
     /**
      * @brief Returns the manufacturer code.
      *
      * @return The manufacturer code.
      **/
-    ManufacturerCode manufacturerCode() const;
+    [[nodiscard]] ManufacturerCode manufacturerCode() const;
 
     /**
      * @brief Returns the manufacturer code.
@@ -97,7 +98,7 @@ class PartNumber
      *
      * @return The product identifier.
      **/
-    ProductIdentifier productIdentifier() const;
+    [[nodiscard]] ProductIdentifier productIdentifier() const;
 
     /**
      * @brief Returns the product identifier.
@@ -119,14 +120,14 @@ class PartNumber
      *
      * @return The calculated check code
      **/
-    CheckCode checkCode() const;
+    [[nodiscard]] CheckCode checkCode() const;
 
     /**
      * @brief Returns the part number as string
      *
      * @return The part number as string
      **/
-    std::string partNumber() const;
+    [[nodiscard]] std::string partNumber() const;
 
   private:
     //! The manufacture code

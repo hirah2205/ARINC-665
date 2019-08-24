@@ -24,7 +24,7 @@ PartNumber::PartNumber(
 {
 }
 
-PartNumber::PartNumber( const std::string& partNumber) :
+PartNumber::PartNumber( std::string_view partNumber) :
   manufacturerCodeValue( partNumber.substr( 0, ManufacturerCode::Length)),
   productIdentifierValue(
     partNumber.substr(
@@ -90,8 +90,10 @@ CheckCode PartNumber::checkCode() const
 
 std::string PartNumber::partNumber() const
 {
-  return manufacturerCodeValue.get() + checkCode().getStr()
-    + productIdentifierValue.get();
+  return
+    std::string{ manufacturerCodeValue.get()}
+    + std::string{ checkCode().getStr()}
+    + std::string{ productIdentifierValue.get()};
 }
 
 }

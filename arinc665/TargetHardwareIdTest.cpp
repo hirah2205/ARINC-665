@@ -16,6 +16,8 @@
 
 #include <boost/test/unit_test.hpp>
 
+using namespace std::string_view_literals;
+
 namespace Arinc665 {
 
 BOOST_AUTO_TEST_SUITE( TargetHardwareIdTest)
@@ -31,20 +33,20 @@ BOOST_AUTO_TEST_CASE( constructor1)
 
 BOOST_AUTO_TEST_CASE( constructor2)
 {
-  TargetHardwareId thwId( "12345678");
+  TargetHardwareId thwId( "12345678"sv);
 
   BOOST_CHECK( thwId.get() == "12345678");
 }
 
 BOOST_AUTO_TEST_CASE( set)
 {
-  TargetHardwareId thwId( "12345678");
+  TargetHardwareId thwId( "12345678"sv);
   BOOST_CHECK( thwId.get() == "12345678");
 
-  BOOST_CHECK_NO_THROW( thwId.set( ""));
+  BOOST_CHECK_NO_THROW( thwId.set( ""sv));
   BOOST_CHECK( thwId.get() == "");
 
-  BOOST_CHECK_NO_THROW( thwId.set( "1"));
+  BOOST_CHECK_NO_THROW( thwId.set( "1"sv));
   BOOST_CHECK( thwId.get() == "1");
 }
 

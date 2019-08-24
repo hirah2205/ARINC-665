@@ -16,40 +16,42 @@
 
 #include <boost/test/unit_test.hpp>
 
+using namespace std::string_view_literals;
+
 namespace Arinc665 {
 
 BOOST_AUTO_TEST_SUITE( ManufacturerCodeTest)
 
 BOOST_AUTO_TEST_CASE( constructor)
 {
-  ManufacturerCode manufacturerCode( "AAA");
+  ManufacturerCode manufacturerCode( "AAA"sv);
 
   BOOST_CHECK( manufacturerCode.get() == "AAA");
 
-  BOOST_CHECK_THROW( ManufacturerCode( ""), Arinc665Exception);
-  BOOST_CHECK_THROW( ManufacturerCode( "A"), Arinc665Exception);
-  BOOST_CHECK_THROW( ManufacturerCode( "AA"), Arinc665Exception);
-  BOOST_CHECK_THROW( ManufacturerCode( "AAAA"), Arinc665Exception);
+  BOOST_CHECK_THROW( ManufacturerCode( ""sv), Arinc665Exception);
+  BOOST_CHECK_THROW( ManufacturerCode( "A"sv), Arinc665Exception);
+  BOOST_CHECK_THROW( ManufacturerCode( "AA"sv), Arinc665Exception);
+  BOOST_CHECK_THROW( ManufacturerCode( "AAAA"sv), Arinc665Exception);
 }
 
 BOOST_AUTO_TEST_CASE( set)
 {
-  ManufacturerCode manufacturerCode( "AAA");
+  ManufacturerCode manufacturerCode( "AAA"sv);
   BOOST_CHECK( manufacturerCode.get() == "AAA");
 
-  BOOST_CHECK_THROW( manufacturerCode.set( ""), Arinc665Exception);
+  BOOST_CHECK_THROW( manufacturerCode.set( ""sv), Arinc665Exception);
   BOOST_CHECK( manufacturerCode.get() == "AAA");
 
-  BOOST_CHECK_THROW( manufacturerCode.set( "B"), Arinc665Exception);
+  BOOST_CHECK_THROW( manufacturerCode.set( "B"sv), Arinc665Exception);
   BOOST_CHECK( manufacturerCode.get() == "AAA");
 
-  BOOST_CHECK_THROW( manufacturerCode.set( "BB"), Arinc665Exception);
+  BOOST_CHECK_THROW( manufacturerCode.set( "BB"sv), Arinc665Exception);
   BOOST_CHECK( manufacturerCode.get() == "AAA");
 
-  BOOST_CHECK_NO_THROW( manufacturerCode.set( "BBB"));
+  BOOST_CHECK_NO_THROW( manufacturerCode.set( "BBB"sv));
   BOOST_CHECK( manufacturerCode.get() == "BBB");
 
-  BOOST_CHECK_THROW( manufacturerCode.set( "CCCC"), Arinc665Exception);
+  BOOST_CHECK_THROW( manufacturerCode.set( "CCCC"sv), Arinc665Exception);
   BOOST_CHECK( manufacturerCode.get() == "BBB");
 }
 

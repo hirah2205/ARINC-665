@@ -28,6 +28,7 @@ class FileTypeDescription : public Description<
   FileType::Invalid>
 {
   public:
+    //! Initialises Description
     FileTypeDescription();
 };
 

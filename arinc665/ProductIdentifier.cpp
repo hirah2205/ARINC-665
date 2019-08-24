@@ -16,7 +16,7 @@
 
 namespace Arinc665 {
 
-ProductIdentifier::ProductIdentifier( const std::string &productIdentifier)
+ProductIdentifier::ProductIdentifier( std::string_view productIdentifier)
 {
   // call set routine to perform automatic length check
   set( productIdentifier);
@@ -28,12 +28,12 @@ ProductIdentifier::ProductIdentifier( std::string &&productIdentifier)
   set( std::move( productIdentifier));
 }
 
-const std::string& ProductIdentifier::get() const
+std::string_view ProductIdentifier::get() const
 {
   return productIdentifier;
 }
 
-void ProductIdentifier::set( const std::string &productIdentifier)
+void ProductIdentifier::set( std::string_view productIdentifier)
 {
   check( productIdentifier);
 
@@ -47,7 +47,7 @@ void ProductIdentifier::set( std::string &&productIdentifier)
   this->productIdentifier = std::move( productIdentifier);
 }
 
-void ProductIdentifier::check( const std::string &productIdentifier) const
+void ProductIdentifier::check( std::string_view productIdentifier) const
 {
   // check length of string
   if ( productIdentifier.size() != Length)

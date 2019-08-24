@@ -16,57 +16,59 @@
 
 #include <boost/test/unit_test.hpp>
 
+using namespace std::string_view_literals;
+
 namespace Arinc665 {
 
 BOOST_AUTO_TEST_SUITE( ProductIdentifierTest)
 
 BOOST_AUTO_TEST_CASE( constructor)
 {
-  ProductIdentifier productIdentifier( "12345678");
+  ProductIdentifier productIdentifier( "12345678"sv);
 
   BOOST_CHECK( productIdentifier.get() == "12345678");
 
-  BOOST_CHECK_THROW( ProductIdentifier( ""), Arinc665Exception);
-  BOOST_CHECK_THROW( ProductIdentifier( "1"), Arinc665Exception);
-  BOOST_CHECK_THROW( ProductIdentifier( "12"), Arinc665Exception);
-  BOOST_CHECK_THROW( ProductIdentifier( "123"), Arinc665Exception);
-  BOOST_CHECK_THROW( ProductIdentifier( "1234"), Arinc665Exception);
-  BOOST_CHECK_THROW( ProductIdentifier( "12345"), Arinc665Exception);
-  BOOST_CHECK_THROW( ProductIdentifier( "123456"), Arinc665Exception);
-  BOOST_CHECK_THROW( ProductIdentifier( "1234567"), Arinc665Exception);
-  BOOST_CHECK_THROW( ProductIdentifier( "123456789"), Arinc665Exception);
+  BOOST_CHECK_THROW( ProductIdentifier( ""sv), Arinc665Exception);
+  BOOST_CHECK_THROW( ProductIdentifier( "1"sv), Arinc665Exception);
+  BOOST_CHECK_THROW( ProductIdentifier( "12"sv), Arinc665Exception);
+  BOOST_CHECK_THROW( ProductIdentifier( "123"sv), Arinc665Exception);
+  BOOST_CHECK_THROW( ProductIdentifier( "1234"sv), Arinc665Exception);
+  BOOST_CHECK_THROW( ProductIdentifier( "12345"sv), Arinc665Exception);
+  BOOST_CHECK_THROW( ProductIdentifier( "123456"sv), Arinc665Exception);
+  BOOST_CHECK_THROW( ProductIdentifier( "1234567"sv), Arinc665Exception);
+  BOOST_CHECK_THROW( ProductIdentifier( "123456789"sv), Arinc665Exception);
 }
 
 BOOST_AUTO_TEST_CASE( set)
 {
-  ProductIdentifier productIdentifier( "12345678");
+  ProductIdentifier productIdentifier( "12345678"sv);
   BOOST_CHECK( productIdentifier.get() == "12345678");
 
-  BOOST_CHECK_THROW( productIdentifier.set( ""), Arinc665Exception);
+  BOOST_CHECK_THROW( productIdentifier.set( ""sv), Arinc665Exception);
   BOOST_CHECK( productIdentifier.get() == "12345678");
 
-  BOOST_CHECK_THROW( productIdentifier.set( "1"), Arinc665Exception);
+  BOOST_CHECK_THROW( productIdentifier.set( "1"sv), Arinc665Exception);
   BOOST_CHECK( productIdentifier.get() == "12345678");
 
-  BOOST_CHECK_THROW( productIdentifier.set( "12"), Arinc665Exception);
+  BOOST_CHECK_THROW( productIdentifier.set( "12"sv), Arinc665Exception);
   BOOST_CHECK( productIdentifier.get() == "12345678");
 
-  BOOST_CHECK_THROW( productIdentifier.set( "123"), Arinc665Exception);
+  BOOST_CHECK_THROW( productIdentifier.set( "123"sv), Arinc665Exception);
   BOOST_CHECK( productIdentifier.get() == "12345678");
 
-  BOOST_CHECK_THROW( productIdentifier.set( "12345"), Arinc665Exception);
+  BOOST_CHECK_THROW( productIdentifier.set( "12345"sv), Arinc665Exception);
   BOOST_CHECK( productIdentifier.get() == "12345678");
 
-  BOOST_CHECK_THROW( productIdentifier.set( "123456"), Arinc665Exception);
+  BOOST_CHECK_THROW( productIdentifier.set( "123456"sv), Arinc665Exception);
   BOOST_CHECK( productIdentifier.get() == "12345678");
 
-  BOOST_CHECK_THROW( productIdentifier.set( "1234567"), Arinc665Exception);
+  BOOST_CHECK_THROW( productIdentifier.set( "1234567"sv), Arinc665Exception);
   BOOST_CHECK( productIdentifier.get() == "12345678");
 
-  BOOST_CHECK_NO_THROW( productIdentifier.set( "1234567A"));
+  BOOST_CHECK_NO_THROW( productIdentifier.set( "1234567A"sv));
   BOOST_CHECK( productIdentifier.get() == "1234567A");
 
-  BOOST_CHECK_THROW( productIdentifier.set( "123456789"), Arinc665Exception);
+  BOOST_CHECK_THROW( productIdentifier.set( "123456789"sv), Arinc665Exception);
   BOOST_CHECK( productIdentifier.get() == "1234567A");
 }
 

@@ -14,7 +14,9 @@
 #define ARINC665_MANUFACTURERCODE_HPP
 
 #include <arinc665/Arinc665.hpp>
+
 #include <string>
+#include <string_view>
 
 namespace Arinc665 {
 
@@ -38,9 +40,9 @@ class ManufacturerCode
      *
      * @sa set
      **/
-    ManufacturerCode( const std::string &manufacturerCode);
+    ManufacturerCode( std::string_view manufacturerCode);
 
-    //! @copydoc ManufacturerCode(const std::string&)
+    //! @copydoc ManufacturerCode(std::string_view)
     ManufacturerCode( std::string &&manufacturerCode);
 
     /**
@@ -48,7 +50,7 @@ class ManufacturerCode
      *
      * @return The manufacturer code.
      **/
-    std::string get() const;
+    std::string_view get() const;
 
     /**
      * @brief Sets the manufacturer code to the given value.
@@ -59,13 +61,13 @@ class ManufacturerCode
      * @throw Arinc665Exception
      *   When the given string is not an valid manufacturer code.
      **/
-    void set( const std::string &manufacturerCode);
+    void set( std::string_view manufacturerCode);
 
-    //! @copydoc set(const std::string&)
+    //! @copydoc set(std::string_view)
     void set( std::string &&manufacturerCode);
 
   private:
-    //! The stored manufacturer code.
+    //! Manufacturer code.
     std::string manufacturerCode;
 };
 

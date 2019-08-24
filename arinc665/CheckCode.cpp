@@ -25,7 +25,7 @@ CheckCode::CheckCode( const uint8_t checkCode) :
 {
 }
 
-CheckCode::CheckCode( const std::string &checkCode)
+CheckCode::CheckCode( std::string_view checkCode)
 {
   set( checkCode);
 }
@@ -52,7 +52,7 @@ void CheckCode::set( const uint8_t checkCode)
   this->checkCode = checkCode;
 }
 
-void CheckCode::set( const std::string &checkCode)
+void CheckCode::set( std::string_view checkCode)
 {
   // check length of string
   if ( checkCode.size() != Length)
@@ -65,7 +65,7 @@ void CheckCode::set( const std::string &checkCode)
 
   // decode string to integer
   //! @throw std::invalid_argument When invalid string is supplied
-  unsigned long parsedCheckCode = std::stoul( checkCode, 0, 16);
+  unsigned long parsedCheckCode{ std::stoul( std::string{ checkCode}, 0, 16)}; //! @todo check implementation of explicit cast
 
   assert( parsedCheckCode <= 255U);
 

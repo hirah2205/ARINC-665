@@ -14,6 +14,8 @@
 
 #include <boost/test/unit_test.hpp>
 
+using namespace std::string_view_literals;
+
 namespace Arinc665 {
 
 BOOST_AUTO_TEST_SUITE( PartNumberTest)
@@ -21,24 +23,23 @@ BOOST_AUTO_TEST_SUITE( PartNumberTest)
 //! part number test
 BOOST_AUTO_TEST_CASE( testPartNumber1)
 {
-  //EBE3B549720000D
-  ManufacturerCode mc( "EBE");
-  ProductIdentifier pi( "54972000");
+  ManufacturerCode mc( "EBE"sv);
+  ProductIdentifier pi( "54972000"sv);
   PartNumber pn( mc, pi);
 
   BOOST_CHECK( pn.manufacturerCode().get()  == "EBE");
   BOOST_CHECK( pn.productIdentifier().get() == "54972000");
 
   BOOST_CHECK( pn.partNumber() ==
-    pn.manufacturerCode().get() +
-    pn.checkCode().getStr() +
-    pn.productIdentifier().get());
+    std::string{ pn.manufacturerCode().get()} +
+    std::string{ pn.checkCode().getStr()} +
+    std::string{ pn.productIdentifier().get()});
 }
 
 //! part number test
 BOOST_AUTO_TEST_CASE( testPartNumber2)
 {
-  PartNumber pn( "EBE4F54972000");
+  PartNumber pn{ "EBE4F54972000"};
 
   BOOST_CHECK( pn.manufacturerCode().get() == "EBE");
   BOOST_CHECK( pn.productIdentifier().get() == "54972000");

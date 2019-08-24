@@ -16,7 +16,7 @@
 
 namespace Arinc665 {
 
-ManufacturerCode::ManufacturerCode( const std::string &manufacturerCode)
+ManufacturerCode::ManufacturerCode( std::string_view manufacturerCode)
 {
   // call set routine to perform automatic length check
   set( manufacturerCode);
@@ -28,18 +28,18 @@ ManufacturerCode::ManufacturerCode( std::string &&manufacturerCode)
   set( std::move( manufacturerCode));
 }
 
-std::string ManufacturerCode::get() const
+std::string_view ManufacturerCode::get() const
 {
   return manufacturerCode;
 }
 
-void ManufacturerCode::set( const std::string &manufacturerCode)
+void ManufacturerCode::set( std::string_view manufacturerCode)
 {
   // check string length
   if (manufacturerCode.size()!= Length)
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "length of manufacturer code string invalid"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "length of manufacturer code string invalid"));
   }
 
   this->manufacturerCode = manufacturerCode;
@@ -50,8 +50,8 @@ void ManufacturerCode::set( std::string &&manufacturerCode)
   // check string length
   if (manufacturerCode.size()!= Length)
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "length of manufacturer code string invalid"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "length of manufacturer code string invalid"));
   }
 
   this->manufacturerCode = std::move( manufacturerCode);

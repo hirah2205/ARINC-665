@@ -14,8 +14,8 @@
 
 namespace Arinc665 {
 
-TargetHardwareId::TargetHardwareId( const std::string &targetHardwareId) :
-  targetHardwareId( targetHardwareId)
+TargetHardwareId::TargetHardwareId( std::string_view targetHardwareId) :
+  targetHardwareId{ targetHardwareId}
 {
 }
 
@@ -24,12 +24,12 @@ TargetHardwareId::TargetHardwareId( std::string &&targetHardwareId) :
 {
 }
 
-const std::string& TargetHardwareId::get() const noexcept
+std::string_view TargetHardwareId::get() const noexcept
 {
   return targetHardwareId;
 }
 
-void TargetHardwareId::set( const std::string &targetHardwareId)
+void TargetHardwareId::set( std::string_view targetHardwareId)
 {
   this->targetHardwareId = targetHardwareId;
 }

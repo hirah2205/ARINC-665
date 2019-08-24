@@ -16,6 +16,7 @@
 #include <arinc665/Arinc665.hpp>
 
 #include <string>
+#include <string_view>
 #include <cstdint>
 
 namespace Arinc665 {
@@ -48,7 +49,7 @@ class CheckCode
      * @throw Arinc665Exception
      *   When checkCode is not a valid check code string.
      **/
-    explicit CheckCode( const std::string &checkCode);
+    explicit CheckCode( std::string_view checkCode);
 
     /**
      * @brief Calculates the check code from the given manufacturer code and
@@ -68,14 +69,14 @@ class CheckCode
      *
      * @return The check code.
      **/
-    uint8_t get() const noexcept;
+    [[nodiscard]] uint8_t get() const noexcept;
 
     /**
      * @brief Returns the check code as string.
      *
      * @return The check code as string
      **/
-    std::string getStr() const;
+    [[nodiscard]] std::string getStr() const;
 
     /**
      * @brief Set the check code to the given value.
@@ -91,7 +92,7 @@ class CheckCode
      * @param[in] checkCode
      *   Check code represented as string
      **/
-    void set( const std::string &checkCode);
+    void set( std::string_view checkCode);
 
     /**
      * @brief Re-calculates the check code from the given input data.
@@ -126,7 +127,7 @@ class CheckCode
     bool operator !=( const CheckCode &rhs) const;
 
   private:
-    //! The check code value
+    //! Check code value
     uint8_t checkCode;
 };
 

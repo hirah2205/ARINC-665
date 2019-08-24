@@ -16,6 +16,7 @@
 #include <arinc665/Arinc665.hpp>
 
 #include <string>
+#include <string_view>
 
 namespace Arinc665 {
 
@@ -31,9 +32,9 @@ class TargetHardwareId
      * @param[in] targetHardwareId
      *   The target hardware ID as string.
      **/
-    TargetHardwareId( const std::string &targetHardwareId);
+    TargetHardwareId( std::string_view targetHardwareId);
 
-    //! @copydoc TargetHardwareId(const std::string&)
+    //! @copydoc TargetHardwareId(std::string_view)
     TargetHardwareId( std::string &&targetHardwareId);
 
     /**
@@ -41,7 +42,7 @@ class TargetHardwareId
      *
      * @return The target hardware ID as string.
      **/
-    const std::string& get() const noexcept;
+    std::string_view get() const noexcept;
 
     /**
      * @brief Sets the target hardware ID to the given string.
@@ -49,12 +50,13 @@ class TargetHardwareId
      * @param[in] targetHardwareId
      *   The target hardware ID as string.
      **/
-    void set( const std::string &targetHardwareId);
+    void set( std::string_view targetHardwareId);
 
-    //! void set(const std::string&)
+    //! void set(std::string_view)
     void set( std::string &&targetHardwareId);
+
   private:
-    //! The target hardware ID
+    //! Target Hardware ID
     std::string targetHardwareId;
 };
 
