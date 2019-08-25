@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665::PartNumber.
+ * @brief Definition of Class Arinc665::PartNumber.
  **/
 
 #include "PartNumber.hpp"
@@ -17,19 +17,22 @@
 namespace Arinc665 {
 
 PartNumber::PartNumber(
-  const ManufacturerCode &manufacturerCode,
-  const ProductIdentifier& productIdentifier) :
-  manufacturerCodeValue( manufacturerCode),
-  productIdentifierValue( productIdentifier)
+  std::string_view manufacturerCode,
+  std::string_view productIdentifier) :
+  manufacturerCodeValue{ manufacturerCode},
+  productIdentifierValue{ productIdentifier}
 {
+  checkManufacturerCode( manufacturerCode);
+  checkProductIdentifier( productIdentifier);
 }
 
-PartNumber::PartNumber( std::string_view partNumber) :
-  manufacturerCodeValue( partNumber.substr( 0, ManufacturerCode::Length)),
-  productIdentifierValue(
+PartNumber::PartNumber( std::string_view partNumber)
+try :
+  manufacturerCodeValue{ partNumber.substr( 0, ManufacturerCodeLength)},
+  productIdentifierValue{
     partNumber.substr(
-      ManufacturerCode::Length + CheckCode::Length,
-      ProductIdentifier::Length))
+      ManufacturerCodeLength + CheckCodeLength,
+      ProductIdentifierLength)}
 {
   // check size of part number
   if ( partNumber.size() != Length)
@@ -40,8 +43,8 @@ PartNumber::PartNumber( std::string_view partNumber) :
   }
 
   // decode check code
-  CheckCode checkCodeDecoded(
-    partNumber.substr( ManufacturerCode::Length, CheckCode::Length));
+  auto checkCodeDecoded{
+    partNumber.substr( ManufacturerCodeLength, CheckCodeLength)};
 
   // compare check code with calculated one
   if ( checkCodeDecoded != checkCode())
@@ -51,49 +54,98 @@ PartNumber::PartNumber( std::string_view partNumber) :
       << AdditionalInfo( "calculated and given check code differs"));
   }
 }
+catch( std::out_of_range &e)
+{
+  BOOST_THROW_EXCEPTION( Arinc665Exception()
+    << AdditionalInfo( e.what()));
+}
 
-ManufacturerCode PartNumber::manufacturerCode() const
+std::string_view PartNumber::manufacturerCode() const
 {
   return manufacturerCodeValue;
 }
 
-ManufacturerCode& PartNumber::manufacturerCode()
+void PartNumber::manufacturerCode( std::string_view manufacturerCode)
 {
-  return manufacturerCodeValue;
-}
+  checkManufacturerCode( manufacturerCode);
 
-void PartNumber::manufacturerCode( const ManufacturerCode& manufacturerCode)
-{
   manufacturerCodeValue = manufacturerCode;
 }
 
-ProductIdentifier PartNumber::productIdentifier() const
+std::string_view PartNumber::productIdentifier() const
 {
   return productIdentifierValue;
 }
 
-ProductIdentifier& PartNumber::productIdentifier()
+void PartNumber::productIdentifier( std::string_view productIdentifier)
 {
-  return productIdentifierValue;
-}
+  checkProductIdentifier( productIdentifier);
 
-void PartNumber::productIdentifier(
-  const ProductIdentifier& productIdentifier)
-{
   productIdentifierValue = productIdentifier;
 }
 
-CheckCode PartNumber::checkCode() const
+std::string PartNumber::checkCode() const
 {
-  return CheckCode( manufacturerCodeValue, productIdentifierValue);
+  uint8_t checkCode{ 0U};
+
+  for ( const auto &character : manufacturerCodeValue)
+  {
+    checkCode ^= static_cast< uint8_t >( character);
+  }
+
+  for ( const auto &character : productIdentifierValue)
+  {
+    checkCode ^= static_cast< uint8_t >( character);
+  }
+
+  return (boost::format( "%02X") % (unsigned int) checkCode).str();
 }
 
 std::string PartNumber::partNumber() const
 {
   return
-    std::string{ manufacturerCodeValue.get()}
-    + std::string{ checkCode().getStr()}
-    + std::string{ productIdentifierValue.get()};
+    manufacturerCodeValue
+    + checkCode()
+    + productIdentifierValue;
+}
+
+void PartNumber::checkManufacturerCode( std::string_view manufacturerCode) const
+{
+  // check string length
+  if (manufacturerCode.size()!= ManufacturerCodeLength)
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "length of manufacturer code string invalid"));
+  }
+}
+
+void PartNumber::checkProductIdentifier( std::string_view productIdentifier) const
+{
+  // check length of string
+  if ( productIdentifier.size() != ProductIdentifierLength)
+  {
+    //! @throw Arinc665Exception if length is invalid.
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "length of product identifier string invalid"));
+  }
+}
+
+void PartNumber::checkCheckCode( std::string_view checkCode) const
+{
+  // check length of string
+  if ( checkCode.size() != CheckCodeLength)
+  {
+    //! @throw Arinc665Exception if length of checkCode is invalid.
+    BOOST_THROW_EXCEPTION(Arinc665Exception()
+      << AdditionalInfo( "length of check code string invalid"));
+  }
+
+  // decode string to integer
+  //! @throw std::invalid_argument When invalid string is supplied
+  unsigned long parsedCheckCode{
+    std::stoul( std::string{ checkCode}, 0, 16)}; //! @todo check implementation of explicit cast
+
+  assert( parsedCheckCode <= 255U);
 }
 
 }

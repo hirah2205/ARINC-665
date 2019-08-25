@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665::Utils::MediaSetExporterImpl.
+ * @brief Definition of Class Arinc665::Utils::MediaSetExporterImpl.
  **/
 
 #include "MediaSetExporterImpl.hpp"
@@ -57,15 +57,15 @@ MediaSetExporterImpl::MediaSetExporterImpl(
 
 void MediaSetExporterImpl::operator()()
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Media set " << " - " << mediaSet->partNumber();
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    << "Media set " << " - " << mediaSet->partNumber();
 
   for (auto medium : mediaSet->media())
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-      "Medium " << (unsigned int)medium.first;
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+      << "Medium " << (unsigned int)medium.first;
 
     exportMedium( medium.second);
   }
@@ -73,7 +73,7 @@ void MediaSetExporterImpl::operator()()
 
 void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
   BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
     << "Export medium #" << (unsigned int)medium->mediumNumber();
@@ -115,7 +115,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 
   loadListFile.userDefinedData( mediaSet->loadsUserDefinedData());
 
-  writeFileHandler( medium->mediumNumber(), "/" + ListOfLoadsName, loadListFile);
+  writeFileHandler( medium->mediumNumber(), "/" + std::string{ ListOfLoadsName}, loadListFile);
 
   // export list of batches (if present)
   if (medium->mediaSet()->numberOfBatches() != 0)
@@ -139,7 +139,10 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 
     batchListFile.userDefinedData( mediaSet->batchesUserDefinedData());
 
-    writeFileHandler( medium->mediumNumber(), "/" + ListOfBatchesName, batchListFile);
+    writeFileHandler(
+      medium->mediumNumber(),
+      "/" + std::string{ ListOfBatchesName},
+      batchListFile);
   }
 
   // export medium info
@@ -166,7 +169,9 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 
   // add list of loads
   const auto rawListOfLoadsFile{
-    readFileHandler( medium->mediumNumber(), "/" + ListOfLoadsName)};
+    readFileHandler(
+      medium->mediumNumber(),
+      "/" + std::string{ ListOfLoadsName})};
   const uint16_t listOfLoadsFileCrc{
     File::Arinc665File::calculateChecksum( rawListOfLoadsFile, 0)};
 
@@ -180,7 +185,9 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   if (medium->mediaSet()->numberOfBatches() != 0)
   {
     const auto rawListOfBatchesFile{
-      readFileHandler( medium->mediumNumber(), "/" + ListOfBatchesName)};
+      readFileHandler(
+        medium->mediumNumber(),
+        "/" + std::string{ ListOfBatchesName})};
     const uint16_t listOfBatchesFileCrc{
       File::Arinc665File::calculateChecksum( rawListOfBatchesFile, 0)};
 
@@ -193,25 +200,28 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 
   fileListFile.userDefinedData( mediaSet->filesUserDefinedData());
 
-  writeFileHandler( medium->mediumNumber(), "/" + ListOfFilesName, fileListFile);
+  writeFileHandler(
+    medium->mediumNumber(),
+    "/" + std::string{ ListOfFilesName},
+    fileListFile);
 }
 
 void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Export directory to [" <<
-    (unsigned int)directory->medium()->mediumNumber() <<
-    "]:" <<
-    directory->path();
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    << "Export directory to ["
+    << (unsigned int)directory->medium()->mediumNumber()
+    << "]:"
+    << directory->path();
 
   createDirectoryHandler( directory);
 
   // export sub-directories
-  for ( auto directory : directory->subDirectories())
+  for ( auto subDirectory : directory->subDirectories())
   {
-    exportDirectory( directory);
+    exportDirectory( subDirectory);
   }
 
   // export files
@@ -223,13 +233,13 @@ void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory)
 
 void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Export file to [" <<
-    (unsigned int)file->medium()->mediumNumber() <<
-    "]:" <<
-    file->path();
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    << "Export file to ["
+    << (unsigned int)file->medium()->mediumNumber()
+    << "]:"
+    << file->path();
 
   switch (file->fileType())
   {

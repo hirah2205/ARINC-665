@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of class Arinc665::Media::BaseFile.
+ * @brief Declaration of Class Arinc665::Media::BaseFile.
  **/
 
 #ifndef ARINC665_MEDIA_BASEFILE_HPP
@@ -121,9 +121,9 @@ class BaseFile: public Base
      * @throw Arinc665Exception
      *   If parent is invalid
      **/
-    BaseFile( ContainerEntityPtr parent, const std::string &name);
+    BaseFile( ContainerEntityPtr parent, std::string_view name);
 
-    //! @copydoc BaseFile::BaseFile(ContainerEntityPtr,const std::string&)
+    //! @copydoc BaseFile::BaseFile(ContainerEntityPtr,std::string_view)
     BaseFile( ContainerEntityPtr parent, std::string &&name);
 
     /**

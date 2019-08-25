@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of class Arinc665::Media::Batch
+ * @brief Declaration of Class Arinc665::Media::Batch
  **/
 
 #ifndef ARINC665_MEDIA_BATCH_HPP
@@ -37,9 +37,9 @@ class Batch: public BaseFile
      * @param[in] name
      *   Name of the batch.
      **/
-    Batch( ContainerEntityPtr parent, const std::string &name);
+    Batch( ContainerEntityPtr parent, std::string_view name);
 
-    //! @copydoc Batch(ContainerEntityPtr,const std::string&)
+    //! @copydoc Batch(ContainerEntityPtr,std::string_view)
     Batch( ContainerEntityPtr parent, std::string &&name);
 
     /**
@@ -62,9 +62,9 @@ class Batch: public BaseFile
      * @param[in] comment
      *   The comment, which describes the batch.
      **/
-    void comment( const std::string &comment);
+    void comment( std::string_view comment);
 
-    //! @copydoc comment(const std::string&)
+    //! @copydoc comment(std::string_view)
     void comment( std::string &&comment);
 
     /**
@@ -98,7 +98,7 @@ class Batch: public BaseFile
     WeakLoads target( const std::string &targetHardwareId);
 
     /**
-     * @brief Add  batch info for the given target hardware ID.
+     * @brief Add batch info for the given target hardware ID.
      *
      * @param[in] targetHardwareId
      *   Target hardware IDs

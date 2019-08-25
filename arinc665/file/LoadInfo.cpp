@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665::File::LoadInfo.
+ * @brief Definition of Class Arinc665::File::LoadInfo.
  **/
 
 #include "LoadInfo.hpp"

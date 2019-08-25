@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of class Arinc665::File::FileInfo.
+ * @brief Declaration of Class Arinc665::File::FileInfo.
  **/
 
 #ifndef ARINC665_FILEINFO_HPP
@@ -17,6 +17,7 @@
 
 #include <filesystem>
 #include <string>
+#include <string_view>
 #include <vector>
 #include <optional>
 #include <cstdint>
@@ -47,13 +48,13 @@ class FileInfo
      *   Check Value.
      **/
     FileInfo(
-      const std::string &filename,
-      const std::string &pathName,
+      std::string_view filename,
+      std::string_view pathName,
       uint16_t memberSequenceNumber,
       uint16_t crc,
       const std::optional< CheckValue> &checkValue = {});
 
-    //! @copydoc FileInfo::FileInfo(const std::string&,const std::string&,uint16_t,uint16_t, const std::optional<CheckValue>&)
+    //! @copydoc FileInfo::FileInfo(std::string_view,std::string_view,uint16_t,uint16_t,const std::optional<CheckValue>&)
     FileInfo(
       std::string &&filename,
       std::string &&pathName,
@@ -66,7 +67,7 @@ class FileInfo
      *
      * @return The filename
      **/
-    const std::string& filename() const;
+    std::string_view filename() const;
 
     /**
      * @brief Updates the filename.
@@ -74,9 +75,9 @@ class FileInfo
      * @param[in] filename
      *   The filename.
      **/
-    void filename( const std::string &filename);
+    void filename( std::string_view filename);
 
-    //! @copydoc filename(const std::string&)
+    //! @copydoc filename(std::string_view)
     void filename( std::string &&filename);
 
     /**
@@ -84,7 +85,7 @@ class FileInfo
      *
      * @return The path name
      **/
-    std::string pathName() const;
+    std::string_view pathName() const;
 
     /**
      * @brief Updates the path name.
@@ -92,9 +93,9 @@ class FileInfo
      * @param[in] pathName
      *   The path name.
      **/
-    void pathName( const std::string &pathName);
+    void pathName( std::string_view pathName);
 
-    //! @copydoc pathName(const std::string&)
+    //! @copydoc pathName(std::string_view)
     void pathName( std::string &&pathName);
 
     /**
@@ -109,7 +110,7 @@ class FileInfo
      *
      * @return The member sequence number
      **/
-    uint16_t memberSequenceNumber() const;
+    [[nodiscard]] uint16_t memberSequenceNumber() const;
 
     /**
      * @brief Updates the  member sequence number.
@@ -124,7 +125,7 @@ class FileInfo
      *
      * @return The file CRC.
      **/
-    uint16_t crc() const;
+    [[nodiscard]] uint16_t crc() const;
 
     /**
      * @brief Updates the file CRC.
@@ -139,7 +140,7 @@ class FileInfo
      *
      * @return The Check Value.
      **/
-    const std::optional< CheckValue>& checkValue() const;
+    [[nodiscard]] const std::optional< CheckValue>& checkValue() const;
 
     /**
      * @brief Updates the Check Value

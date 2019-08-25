@@ -2,9 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Thomas Vogt, Thomas@Thomas-Vogt.de
+# Thomas Vogt, thomas@thomas-vogt.de
 
-cmake_minimum_required( VERSION 3.12)
+cmake_minimum_required( VERSION 3.13)
 
 find_package( Boost REQUIRED)
 
@@ -17,16 +17,10 @@ add_library(
   Arinc665Crc.hpp
   Arinc665Exception.hpp
   Arinc665Logger.hpp
-  CheckCode.hpp
-  CheckCode.cpp
   FileTypeDescription.hpp
   FileTypeDescription.cpp
-  ManufacturerCode.hpp
-  ManufacturerCode.cpp
   PartNumber.hpp
   PartNumber.cpp
-  ProductIdentifier.hpp
-  ProductIdentifier.cpp
   SupportedArinc665VersionDescription.cpp
   SupportedArinc665VersionDescription.hpp
   TargetHardwareId.hpp
@@ -146,10 +140,7 @@ add_library(
   OBJECT
 
   Arinc665CrcTest.cpp
-  CheckCodeTest.cpp
-  ManufacturerCodeTest.cpp
   PartNumberTest.cpp
-  ProductIdentifierTest.cpp
   TargetHardwareIdTest.cpp
 
   file/BatchFileTest.cpp
@@ -162,7 +153,7 @@ add_library(
 
   media/MediaSetTest.cpp)
 
-target_compile_options( 
+target_compile_options(
   arinc665_test
 
   PRIVATE

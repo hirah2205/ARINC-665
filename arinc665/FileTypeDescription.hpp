@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of class Arinc665::FileTypeDescription.
+ * @brief Declaration of Class Arinc665::FileTypeDescription.
  **/
 
 #ifndef ARINC665_FILETYPEDESCRIPTION_HPP
@@ -21,7 +21,7 @@
 
 namespace Arinc665{
 
-//! ARINC 615A operation description
+//! ARINC 665 File Type Description
 class FileTypeDescription : public Description<
   FileTypeDescription,
   FileType,

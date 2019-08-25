@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
  * @brief Declaration of namespace Arinc665.
  **/
@@ -13,7 +13,7 @@
 #ifndef ARINC665_ARINC665_HPP
 #define ARINC665_ARINC665_HPP
 
-#include <string>
+#include <string_view>
 #include <tuple>
 #include <vector>
 #include <cstdint>
@@ -165,7 +165,7 @@ enum class CheckValueType : uint16_t
 //! Check Value Type
 using CheckValue = std::tuple< CheckValueType, std::vector< uint8_t>>;
 
-//! @brief ARINC 665 file types
+//! @brief ARINC 665 File Types
 enum class FileType
 {
   BatchFile,        //!< ARINC 665 batch file
@@ -177,20 +177,20 @@ enum class FileType
   Invalid           //!< invalid value
 };
 
-//! The default filename of the list of files: "FILES.LUM"
-extern const std::string ListOfFilesName;
+//! Default filename of the list of files: "FILES.LUM"
+extern const std::string_view ListOfFilesName;
 
-//! The default filename of the list of loads: "LOADS.LUM"
-extern const std::string ListOfLoadsName;
+//! Default filename of the list of loads: "LOADS.LUM"
+extern const std::string_view ListOfLoadsName;
 
-//! The default filename of the list of batches: "BATCHES.LUM"
-extern const std::string ListOfBatchesName;
+//! Default filename of the list of batches: "BATCHES.LUM"
+extern const std::string_view ListOfBatchesName;
 
-//! The default extension of a load upload header: ".LUH"
-extern const std::string LoadUploadHeaderExtension;
+//! Default extension of a load upload header: ".LUH"
+extern const std::string_view LoadUploadHeaderExtension;
 
-//! The default extension of a batch file: ".LUB"
-extern const std::string BatchFileExtension;
+//! Default extension of a batch file: ".LUB"
+extern const std::string_view BatchFileExtension;
 
 //! CRC 8bit polynom
 constexpr uint8_t Crc8Polynom = 0x80U;

@@ -6,9 +6,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665::Utils::MediaSetManager.
+ * @brief Definition of Class Arinc665::Utils::MediaSetManager.
  **/
 
 #include "MediaSetManager.hpp"

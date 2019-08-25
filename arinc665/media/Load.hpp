@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief  Declaration of class Arinc665::Media::Load.
+ * @brief Declaration of Class Arinc665::Media::Load.
  **/
 
 #ifndef ARINC665_MEDIA_LOAD_HPP
@@ -54,7 +54,7 @@ class Load: public BaseFile
      * @param[in] name
      *   Name of the Load
      **/
-    Load( ContainerEntityPtr parent, const std::string &name);
+    Load( ContainerEntityPtr parent, std::string_view name);
 
     //! @copydoc Load()
     Load( ContainerEntityPtr parent, std::string &&name);
@@ -113,10 +113,10 @@ class Load: public BaseFile
      *   Optional additional Position specification.
      **/
     void targetHardwareId(
-      const std::string &targetHardwareId,
+      std::string_view targetHardwareId,
       const Positions &positions = {});
 
-    //! @copydoc targetHardwareId(const std::string&,const Positions&)
+    //! @copydoc targetHardwareId(std::string_view,const Positions&)
     void targetHardwareId(
       std::string &&targetHardwareId,
       Positions &&positions = {});
@@ -134,7 +134,7 @@ class Load: public BaseFile
      * @param[in] dataFile
      *   The data file.
      **/
-    void dataFile( const WeakFilePtr dataFile);
+    void dataFile( const WeakFilePtr& dataFile);
 
     /**
      * @brief Returns the support files.
@@ -149,7 +149,7 @@ class Load: public BaseFile
      * @param[in] supportFile
      *   The support file.
      **/
-    void supportFile( const WeakFilePtr supportFile);
+    void supportFile( const WeakFilePtr& supportFile);
 
     /**
      * @brief Returns the user-defined data stored in the load header.

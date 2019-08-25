@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of class Arinc665::File::Arinc665File.
+ * @brief Declaration of Class Arinc665::File::Arinc665File.
  **/
 
 #ifndef ARINC665_ARINC665FILE_HPP
@@ -17,6 +17,7 @@
 
 #include <filesystem>
 #include <string>
+#include <string_view>
 #include <list>
 #include <cstdint>
 
@@ -73,7 +74,7 @@ class Arinc665File
      *
      * @return The encoded raw string.
      **/
-    static RawFile encodeString( const std::string &str);
+    static RawFile encodeString( std::string_view str);
 
     /**
      * @brief Decodes the ARINC 665 string list from the stream.
@@ -85,7 +86,7 @@ class Arinc665File
      *
      * @return New iterator position.
      **/
-    static  RawFile::const_iterator decodeStringList(
+    static RawFile::const_iterator decodeStringList(
       RawFile::const_iterator it,
       StringList &strList);
 
@@ -269,14 +270,14 @@ class Arinc665File
      *
      * @return The ARINC 665 file type.
      **/
-    FileType fileType() const;
+    [[nodiscard]] FileType fileType() const;
 
     /**
      * @brief Returns the ARINC 665 version of this file.
      *
      * @return The ARINC 665 version of this file.
      **/
-    SupportedArinc665Version arincVersion() const;
+    [[nodiscard]] SupportedArinc665Version arincVersion() const;
 
     /**
      * @brief Updates the ARINC 665 version of this file.
@@ -332,7 +333,7 @@ class Arinc665File
      *
      * @return The  ARINC 665 file as raw data.
      **/
-    virtual RawFile encode() const = 0;
+    [[nodiscard]] virtual RawFile encode() const = 0;
 
     /**
      * @brief Inserts the header data into [rawFile].

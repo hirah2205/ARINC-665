@@ -5,22 +5,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665::Media::Load.
+ * @brief Definition of Class Arinc665::Media::Load.
  **/
 
 #include "Load.hpp"
 
+#include <utility>
+
 namespace Arinc665::Media {
 
-Load::Load( ContainerEntityPtr parent, const std::string &name) :
-  BaseFile( parent, name)
+Load::Load( ContainerEntityPtr parent, std::string_view name) :
+  BaseFile( std::move(parent), name)
 {
 }
 
 Load::Load( ContainerEntityPtr parent, std::string &&name) :
-  BaseFile( parent, std::move( name))
+  BaseFile( std::move(parent), std::move( name))
 {
 }
 
@@ -77,7 +79,7 @@ const Load::Files& Load::dataFiles() const
   return dataFilesValue;
 }
 
-void Load::dataFile( const WeakFilePtr dataFile)
+void Load::dataFile( const WeakFilePtr& dataFile)
 {
   dataFilesValue.push_back( dataFile);
 }
@@ -87,7 +89,7 @@ const Load::Files& Load::supportFiles() const
   return supportFilesValue;
 }
 
-void Load::supportFile( const WeakFilePtr supportFile)
+void Load::supportFile( const WeakFilePtr& supportFile)
 {
   supportFilesValue.push_back( supportFile);
 }

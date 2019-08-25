@@ -5,19 +5,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of class Arinc665::PartNumber.
+ * @brief Declaration of Class Arinc665::PartNumber.
  **/
 
 #ifndef ARINC665_PARTNUMBER_HPP
 #define ARINC665_PARTNUMBER_HPP
 
 #include <arinc665/Arinc665.hpp>
-#include <arinc665/ManufacturerCode.hpp>
-#include <arinc665/ProductIdentifier.hpp>
-#include <arinc665/CheckCode.hpp>
-
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <string>
@@ -45,9 +41,18 @@ namespace Arinc665 {
 class PartNumber
 {
   public:
+    //! Length of Manufacturer Code
+    static constexpr size_t ManufacturerCodeLength = 3U;
+
+    //! Length of Product Identifier
+    static constexpr size_t ProductIdentifierLength = 8U;
+
+    //! The length of the check code when represented as string
+    static constexpr size_t CheckCodeLength = 2U;
+
     //! The length of an ARINC 665 part number
-    static constexpr size_t Length = ManufacturerCode::Length
-      + CheckCode::Length + ProductIdentifier::Length;
+    static constexpr size_t Length = ManufacturerCodeLength
+      + CheckCodeLength + ProductIdentifierLength;
 
     /**
      * @brief Constructs an ARINC 665 part number based on manufacturer code
@@ -59,8 +64,8 @@ class PartNumber
      *   Product identifier
      **/
     PartNumber(
-      const ManufacturerCode &manufacturerCode,
-      const ProductIdentifier &productIdentifier);
+      std::string_view manufacturerCode,
+      std::string_view productIdentifier);
 
     /**
      * @brief Constructs an ARINC 665 part number based on a part number
@@ -76,14 +81,7 @@ class PartNumber
      *
      * @return The manufacturer code.
      **/
-    [[nodiscard]] ManufacturerCode manufacturerCode() const;
-
-    /**
-     * @brief Returns the manufacturer code.
-     *
-     * @return The manufacturer code.
-     **/
-    ManufacturerCode& manufacturerCode();
+    [[nodiscard]] std::string_view manufacturerCode() const;
 
     /**
      * @brief Sets the manufacturer code.
@@ -91,21 +89,14 @@ class PartNumber
      * @param[in] manufacturerCode
      *   The manufacturer code.
      **/
-    void manufacturerCode( const ManufacturerCode& manufacturerCode);
+    void manufacturerCode( std::string_view manufacturerCode);
 
     /**
      * @brief Returns the product identifier.
      *
      * @return The product identifier.
      **/
-    [[nodiscard]] ProductIdentifier productIdentifier() const;
-
-    /**
-     * @brief Returns the product identifier.
-     *
-     * @return The product identifier.
-     **/
-    ProductIdentifier& productIdentifier();
+    [[nodiscard]] std::string_view productIdentifier() const;
 
     /**
      * @brief Sets the product identifier.
@@ -113,14 +104,14 @@ class PartNumber
      * @param[in] productIdentifier
      *   The product identifier.
      **/
-    void productIdentifier( const ProductIdentifier& productIdentifier);
+    void productIdentifier( std::string_view productIdentifier);
 
     /**
      * @brief Calculates and return the check code
      *
      * @return The calculated check code
      **/
-    [[nodiscard]] CheckCode checkCode() const;
+    [[nodiscard]] std::string checkCode() const;
 
     /**
      * @brief Returns the part number as string
@@ -130,10 +121,34 @@ class PartNumber
     [[nodiscard]] std::string partNumber() const;
 
   private:
-    //! The manufacture code
-    ManufacturerCode manufacturerCodeValue;
-    //! the product identifier
-    ProductIdentifier productIdentifierValue;
+    /**
+     * @brief Checks the Manufacturer Code.
+     *
+     * @param[in] manufacturerCode
+     *   Manufacturer Code to check
+     **/
+    void checkManufacturerCode( std::string_view manufacturerCode) const;
+
+    /**
+     * @brief Checks the Product Identifier.
+     *
+     * @param[in] productIdentifier
+     *   Product Identifier to check
+     **/
+    void checkProductIdentifier( std::string_view productIdentifier) const;
+
+    /**
+     * @brief Checks the ManuCheckfacturer Code.
+     *
+     * @param[in] checkCode
+     *   Check  Code to check
+     **/
+    void checkCheckCode( std::string_view checkCode) const;
+
+    //! Manufacture Code
+    std::string manufacturerCodeValue;
+    //! Product Identifier
+    std::string productIdentifierValue;
 };
 
 }

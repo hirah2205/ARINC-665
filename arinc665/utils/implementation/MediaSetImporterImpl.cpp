@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665::Utils::MediaSetImporterImpl.
+ * @brief Definition of Class Arinc665::Utils::MediaSetImporterImpl.
  **/
 
 #include "MediaSetImporterImpl.hpp"
@@ -72,10 +72,10 @@ void MediaSetImporterImpl::addMedium( const uint8_t mediumIndex)
 
 void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Load File List File " << Arinc665::ListOfFilesName;
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    << "Load File List File " << Arinc665::ListOfFilesName;
 
   // Load list of files file
   File::FileListFile fileListFile(
@@ -95,7 +95,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
       //! @throw Arinc665Exception When FILES.LUM is inconsistent to other media
       BOOST_THROW_EXCEPTION( Arinc665Exception() <<
         AdditionalInfo(
-          Arinc665::ListOfFilesName +
+          std::string{ Arinc665::ListOfFilesName} +
           " is not consistent to other file list"));
     }
   }
@@ -115,9 +115,10 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
        (unsigned int)fileListFile.mediaSequenceNumber();
 
     //! @throw Arinc665Exception When FILES.LUM is inconsistent to media set
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo(
-        Arinc665::ListOfFilesName + " is not consistent to media set"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo(
+        std::string{ Arinc665::ListOfFilesName}
+          + " is not consistent to media set"));
   }
 
   // iterate over files
@@ -148,10 +149,10 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
 
 void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Load Load List File " << Arinc665::ListOfLoadsName;
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    << "Load Load List File " << Arinc665::ListOfLoadsName;
 
   // Load list of loads file
   File::LoadListFile loadListFile(
@@ -169,9 +170,10 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex)
     if (!this->loadListFile->belongsToSameMediaSet( loadListFile))
     {
       //! @throw Arinc665Exception When LOADS.LUM is inconsistent to other media
-      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-        AdditionalInfo(
-          Arinc665::ListOfLoadsName + " is not consistent to other loads list"));
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << AdditionalInfo(
+          std::string{ Arinc665::ListOfLoadsName}
+          + " is not consistent to other loads list"));
     }
   }
 
@@ -181,9 +183,9 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex)
       (loadListFile.mediaSequenceNumber() != mediumIndex))
   {
     //! @throw Arinc665Exception When LOADS:LUM is inconsistent to media set
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo(
-        Arinc665::ListOfLoadsName + " is not consistent to media set"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo(
+        std::string{ Arinc665::ListOfLoadsName} + " is not consistent to media set"));
   }
 
   // only the load list of the first media must be checked in detail
@@ -217,13 +219,13 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex)
 void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
 {
   // Check for optional batch list file
-  if (fileInfos.find( {mediumIndex, ListOfBatchesName}) == fileInfos.end())
+  if (fileInfos.find( {mediumIndex, std::string{ ListOfBatchesName}}) == fileInfos.end())
   {
     return;
   }
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Load Batch List File " << Arinc665::ListOfBatchesName;
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    << "Load Batch List File " << Arinc665::ListOfBatchesName;
 
   // Load list of batches file
   File::BatchListFile batchListFile(
@@ -240,9 +242,10 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
     if (!this->batchListFile->belongsToSameMediaSet( batchListFile))
     {
       //! @throw Arinc665Exception When BATCHES.LUM is inconsistent to other media
-     BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-        AdditionalInfo(
-          Arinc665::ListOfBatchesName + " is not consistent to other batches list"));
+     BOOST_THROW_EXCEPTION( Arinc665Exception()
+       << AdditionalInfo(
+         std::string{ Arinc665::ListOfBatchesName}
+           + " is not consistent to other batches list"));
     }
   }
 
@@ -252,9 +255,10 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
       (batchListFile.mediaSequenceNumber() != mediumIndex))
   {
     //! @throw Arinc665Exception When FILES.LUM is inconsistent to media set
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-       AdditionalInfo(
-         Arinc665::ListOfBatchesName + " is not consistent to media set"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo(
+        std::string{ Arinc665::ListOfBatchesName}
+        + " is not consistent to media set"));
   }
 
 

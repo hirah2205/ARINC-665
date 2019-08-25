@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665::File::Arinc665File.
+ * @brief Definition of Class Arinc665::File::Arinc665File.
  **/
 
 #include "Arinc665File.hpp"
@@ -41,7 +41,7 @@ RawFile::const_iterator Arinc665File::decodeString(
   return it;
 }
 
-RawFile Arinc665File::encodeString( const std::string &str)
+RawFile Arinc665File::encodeString( std::string_view str)
 {
   RawFile rawString( sizeof( uint16_t));
 

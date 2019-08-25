@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665::Media::ContainerEntity.
+ * @brief Definition of Class Arinc665::Media::ContainerEntity.
  **/
 
 #include "ContainerEntity.hpp"
@@ -178,7 +178,7 @@ Files ContainerEntity::files( const bool recursive)
 }
 
 ConstFilePtr ContainerEntity::file(
-  const std::string &filename,
+  std::string_view filename,
   const bool recursive) const
 {
   for ( auto & file : filesValue)
@@ -206,7 +206,7 @@ ConstFilePtr ContainerEntity::file(
   return {};
 }
 
-FilePtr ContainerEntity::file( const std::string &filename, const bool recursive)
+FilePtr ContainerEntity::file( std::string_view filename, const bool recursive)
 {
   for ( auto & file : filesValue)
   {
@@ -233,12 +233,12 @@ FilePtr ContainerEntity::file( const std::string &filename, const bool recursive
   return {};
 }
 
-FilePtr ContainerEntity::addFile( const std::string &filename)
+FilePtr ContainerEntity::addFile( std::string_view filename)
 {
   if ( file( filename))
   {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() << AdditionalInfo( "File already exists"));
+    BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
+      << AdditionalInfo( "File already exists"));
   }
 
   // create file
@@ -251,7 +251,7 @@ FilePtr ContainerEntity::addFile( const std::string &filename)
   return file;
 }
 
-void ContainerEntity::removeFile( const std::string &filename)
+void ContainerEntity::removeFile( std::string_view filename)
 {
   auto file{ std::find_if(
     filesValue.begin(),
@@ -263,14 +263,14 @@ void ContainerEntity::removeFile( const std::string &filename)
   if (filesValue.end() == file)
   {
     //! @throw Arinc665Exception() if file does not exists.
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      AdditionalInfo( "File not found"));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << AdditionalInfo( "File not found"));
   }
 
   filesValue.erase( file);
 }
 
-void ContainerEntity::removeFile( ConstFilePtr file)
+void ContainerEntity::removeFile( const ConstFilePtr& file)
 {
   auto fileIt{ std::find(
     filesValue.begin(),
@@ -353,7 +353,7 @@ Loads ContainerEntity::loads( const bool recursive)
 }
 
 ConstLoadPtr ContainerEntity::load(
-  const std::string &filename,
+  std::string_view filename,
   const bool recursive) const
 {
   auto filePtr{ file( filename, recursive)};
@@ -371,7 +371,7 @@ ConstLoadPtr ContainerEntity::load(
   return std::dynamic_pointer_cast< const Load>( filePtr);
 }
 
-LoadPtr ContainerEntity::load( const std::string &filename, const bool recursive)
+LoadPtr ContainerEntity::load( std::string_view filename, const bool recursive)
 {
   auto filePtr{ file( filename, recursive)};
 
@@ -388,7 +388,7 @@ LoadPtr ContainerEntity::load( const std::string &filename, const bool recursive
   return std::dynamic_pointer_cast< Load>( filePtr);
 }
 
-LoadPtr ContainerEntity::addLoad( const std::string &filename)
+LoadPtr ContainerEntity::addLoad( std::string_view filename)
 {
   if ( file( filename))
   {
@@ -407,7 +407,7 @@ LoadPtr ContainerEntity::addLoad( const std::string &filename)
   return load;
 }
 
-void ContainerEntity::removeLoad( const std::string &filename)
+void ContainerEntity::removeLoad( std::string_view filename)
 {
   auto loadFile{ file( filename)};
 
@@ -508,7 +508,7 @@ Batches ContainerEntity::batches( const bool recursive)
 }
 
 ConstBatchPtr ContainerEntity::batch(
-  const std::string &filename,
+  std::string_view filename,
   const bool recursive) const
 {
   auto filePtr( file( filename, recursive));
@@ -526,7 +526,9 @@ ConstBatchPtr ContainerEntity::batch(
   return std::dynamic_pointer_cast< const Batch>( filePtr);
 }
 
-BatchPtr ContainerEntity::batch( const std::string &filename, const bool recursive)
+BatchPtr ContainerEntity::batch(
+  std::string_view filename,
+  const bool recursive)
 {
   FilePtr filePtr = file( filename, recursive);
 
@@ -543,7 +545,7 @@ BatchPtr ContainerEntity::batch( const std::string &filename, const bool recursi
   return std::dynamic_pointer_cast< Batch>( filePtr);
 }
 
-BatchPtr ContainerEntity::addBatch( const std::string &filename)
+BatchPtr ContainerEntity::addBatch( std::string_view filename)
 {
   if ( file( filename))
   {
@@ -563,7 +565,7 @@ BatchPtr ContainerEntity::addBatch( const std::string &filename)
   return batch;
 }
 
-void ContainerEntity::removeBatch( const std::string &filename)
+void ContainerEntity::removeBatch( std::string_view filename)
 {
   FilePtr batchFile = file( filename);
 
@@ -633,7 +635,7 @@ MediumPtr ContainerEntity::medium()
   return parentPtr->medium();
 }
 
-ContainerEntity::ContainerEntity( ContainerEntityPtr parent):
+ContainerEntity::ContainerEntity( const ContainerEntityPtr& parent):
   parentValue( parent)
 {
   if (!parent)
@@ -674,7 +676,7 @@ Files ContainerEntity::files( FileType fileType)
   return result;
 }
 
-void ContainerEntity::parent( ContainerEntityPtr parent)
+void ContainerEntity::parent( const ContainerEntityPtr& parent)
 {
   if (!parent)
   {

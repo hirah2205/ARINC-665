@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
-* @author Thomas Vogt, Thomas@Thomas-Vogt.de
-*
-* @brief Declaration of class Arinc665::Utils::Arinc665XmlPugiXmlImpl.
+ * @author Thomas Vogt, thomas@thomas-vogt.de
+ *
+ * @brief Declaration of Class Arinc665::Utils::Arinc665XmlPugiXmlImpl.
  **/
 
 #ifndef ARINC665_UTILS_ARINC665XMLPUGIXMLIMPL_HPP

@@ -4,10 +4,10 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
  *
- * @brief Definition of namespace Arinc665::Media.
+ * @author Thomas Vogt, thomas@thomas-vogt.de
+ *
+ * @brief Definition of Namespace Arinc665::Media.
  **/
 
 #ifndef ARINC665_MEDIA_MEDIA_HPP

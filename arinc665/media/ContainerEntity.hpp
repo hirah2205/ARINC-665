@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of class Arinc665::Media::ContainerEntity.
+ * @brief Declaration of Class Arinc665::Media::ContainerEntity.
  **/
 
 #ifndef ARINC665_MEDIA_CONTAINERENTITY_HPP
@@ -38,7 +38,7 @@ class ContainerEntity :
   public std::enable_shared_from_this< ContainerEntity>
 {
   public:
-    //! Default constructor
+    //! Constructor
     ContainerEntity() = default;
 
     /**
@@ -162,10 +162,10 @@ class ContainerEntity :
      * @retval {}
      *   If no such file exists.
      **/
-    ConstFilePtr file( const std::string &filename, bool recursive = false) const;
+    ConstFilePtr file( std::string_view filename, bool recursive = false) const;
 
-    //! @copydoc file(const std::string&,bool) const
-    FilePtr file( const std::string &filename, bool recursive = false);
+    //! @copydoc file(const std::string_view,bool) const
+    FilePtr file(std::string_view filename, bool recursive = false);
 
     /**
      * @brief Adds a file into this directory.
@@ -175,7 +175,7 @@ class ContainerEntity :
      *
      * @return The created file.
      **/
-    FilePtr addFile( const std::string &filename);
+    FilePtr addFile( std::string_view filename);
 
     /**
      * @brief Removes the file with the given name.
@@ -185,7 +185,7 @@ class ContainerEntity :
      * @param[in] filename
      *   The filename of the file to be deleted.
      **/
-    void removeFile( const std::string &filename);
+    void removeFile( std::string_view filename);
 
     /**
      * @brief Removes the given file.
@@ -195,7 +195,7 @@ class ContainerEntity :
      * @param[in] file
      *   The file to be deleted.
      **/
-    void removeFile( ConstFilePtr file);
+    void removeFile( const ConstFilePtr& file);
 
     /**
      * @brief Return the number of loads.
@@ -232,10 +232,10 @@ class ContainerEntity :
      * @retval {}
      *   If load does not exists.
      **/
-    ConstLoadPtr load( const std::string &filename, bool recursive = false) const;
+    ConstLoadPtr load( std::string_view filename, bool recursive = false) const;
 
-    //! @copydoc load(const std::string&,bool) const
-    LoadPtr load( const std::string &filename, bool recursive = false);
+    //! @copydoc load(std::string_view,bool) const
+    LoadPtr load( std::string_view filename, bool recursive = false);
 
     /**
      * @brief Creates a load with the given filename.
@@ -245,7 +245,7 @@ class ContainerEntity :
      *
      * @return Created load
      **/
-    LoadPtr addLoad( const std::string &filename);
+    LoadPtr addLoad( std::string_view filename);
 
     /**
      * @brief Removes the load with the given filename.
@@ -253,7 +253,7 @@ class ContainerEntity :
      * @param[in] filename
      *   Load filename.
      **/
-    void removeLoad( const std::string &filename);
+    void removeLoad( std::string_view filename);
 
     /**
      * @brief Removes the given load.
@@ -299,10 +299,10 @@ class ContainerEntity :
      * @retval {}
      *   If batch does not exists.
      **/
-    ConstBatchPtr batch( const std::string &filename, bool recursive = false) const;
+    ConstBatchPtr batch( std::string_view filename, bool recursive = false) const;
 
-    //! @copydoc batch(const std::string&,bool) const
-    BatchPtr batch( const std::string &filename, bool recursive = false);
+    //! @copydoc batch(std::string_view,bool) const
+    BatchPtr batch( std::string_view filename, bool recursive = false);
 
     /**
      * @brief Creates a batch with the given filename.
@@ -312,7 +312,7 @@ class ContainerEntity :
      *
      * @return Created batch.
      **/
-    BatchPtr addBatch( const std::string &filename);
+    BatchPtr addBatch( std::string_view filename);
 
     /**
      * @brief Removes the batch with the given filename.
@@ -320,7 +320,7 @@ class ContainerEntity :
      * @param[in] filename
      *   Batch filename.
      **/
-    void removeBatch( const std::string &filename);
+    void removeBatch( std::string_view filename);
 
     /**
      * @brief Removes the given batch.
@@ -362,7 +362,7 @@ class ContainerEntity :
      * @param[in] parent
      *   Parent of this container.
      **/
-    explicit ContainerEntity( ContainerEntityPtr parent);
+    explicit ContainerEntity( const ContainerEntityPtr& parent);
 
     /**
      * @brief Return the files (real file, load, batch) with the specified file
@@ -384,7 +384,7 @@ class ContainerEntity :
      * @param[in] parent
      *   New parent.
      **/
-    void parent( ContainerEntityPtr parent);
+    void parent( const ContainerEntityPtr& parent);
 
   private:
     //! sub-directories

@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of class Arinc665::File::FileListFile.
+ * @brief Declaration of Class Arinc665::File::FileListFile.
  **/
 
 #ifndef ARINC665_FILE_FILELISTFILE_HPP
@@ -68,7 +68,7 @@ class FileListFile: public ListFile
     //! Maps media <sequence number, file path> to File Info
     using FileInfoPathMap =
       std::map< std::pair< uint8_t, std::filesystem::path>, FileInfo>;
-    //! User defined data type
+    //! User Defined Data Type
     using UserDefinedData = std::vector< uint8_t>;
 
     //! Offset of the Spare field.

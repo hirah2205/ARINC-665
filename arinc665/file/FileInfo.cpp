@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665::File::FileInfo.
+ * @brief Definition of Class Arinc665::File::FileInfo.
  **/
 
 #include "FileInfo.hpp"
@@ -17,8 +17,8 @@
 namespace Arinc665::File {
 
 FileInfo::FileInfo(
-  const std::string &filename,
-  const std::string &pathName,
+  std::string_view filename,
+  std::string_view pathName,
   const uint16_t memberSequenceNumber,
   const uint16_t crc,
   const std::optional< CheckValue> &checkValue):
@@ -44,22 +44,22 @@ FileInfo::FileInfo(
 {
 }
 
-const std::string& FileInfo::filename() const
+std::string_view FileInfo::filename() const
 {
   return filenameValue;
 }
 
-void FileInfo::filename( const std::string &filename)
+void FileInfo::filename( std::string_view filename)
 {
   filenameValue = filename;
 }
 
-std::string FileInfo::pathName() const
+std::string_view FileInfo::pathName() const
 {
   return pathNameValue;
 }
 
-void FileInfo::pathName( const std::string &pathName)
+void FileInfo::pathName( std::string_view pathName)
 {
   pathNameValue = pathName;
 }
