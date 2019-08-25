@@ -29,7 +29,7 @@ namespace Arinc665::File {
 class Arinc665File
 {
   public:
-    //! String list type
+    //! String List Type
     using StringList = std::list< std::string>;
 
     //! Base Header Offset
@@ -43,7 +43,7 @@ class Arinc665File
       sizeof( uint32_t) + // file length
       sizeof( uint16_t);  // ARINC Version
 
-    //! The default checksum position
+    //! Default checksum position
     static constexpr std::size_t DefaultChecksumPosition = 2U;
 
     //! Offset of the File Length Field
@@ -245,7 +245,7 @@ class Arinc665File
      **/
     static FileType fileType( const std::filesystem::path &filename);
 
-    //! Default destructor
+    //! Destructor
     virtual ~Arinc665File() noexcept = default;
 
     /**

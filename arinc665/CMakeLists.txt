@@ -23,8 +23,6 @@ add_library(
   PartNumber.cpp
   SupportedArinc665VersionDescription.cpp
   SupportedArinc665VersionDescription.hpp
-  TargetHardwareId.hpp
-  TargetHardwareId.cpp
 
   file/Arinc665File.hpp
   file/Arinc665File.cpp
@@ -141,7 +139,6 @@ add_library(
 
   Arinc665CrcTest.cpp
   PartNumberTest.cpp
-  TargetHardwareIdTest.cpp
 
   file/BatchFileTest.cpp
   file/BatchListFileTest.cpp

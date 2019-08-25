@@ -237,11 +237,7 @@ constexpr bool Crc64ReflectIn = false;
 //! CRC 64bit reflect out
 constexpr bool Crc64ReflectOut = false;
 
-class CheckCode;
-class ManufacturerCode;
 class PartNumber;
-class ProductIdentifier;
-class TargetHardwareId;
 
 }
 
