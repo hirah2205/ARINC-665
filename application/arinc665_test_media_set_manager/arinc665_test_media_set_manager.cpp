@@ -18,7 +18,6 @@
 #include <boost/program_options.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/property_tree/json_parser.hpp>
-#include <boost/property_tree/ptree.hpp>
 
 #include <iostream>
 
@@ -67,46 +66,46 @@ int main( int argc, char ** argv)
     auto mediaSetManager{ Arinc665::Utils::MediaSetManager::instance(
       Arinc665::Utils::MediaSetConfiguration( config))};
 
-    for ( auto medium : mediaSetManager->mediaSets())
+    for ( const auto &medium : mediaSetManager->mediaSets())
     {
       std::cout << medium->partNumber() << "\n";
 
       std::cout << "  Files:\n";
       // iterate over files
-      for ( auto file : medium->files())
+      for ( const auto &file : medium->files())
       {
         std::cout << "    " << file->name() << " " << file->partNumber() << " " << mediaSetManager->filePath( file) << "\n";
       }
 
       std::cout << "  Loads:\n";
       // iterate over loads
-      for ( auto load : medium->loads())
+      for ( const auto &load : medium->loads())
       {
         std::cout << "    " << load->name() << " " << load->partNumber() << " " << mediaSetManager->filePath( load) << "\n";
 
         std::cout << "    Data Files:\n";
-        for ( auto dataFile : load->dataFiles())
+        for ( const auto &dataFile : load->dataFiles())
         {
           std::cout << "      " << dataFile.lock()->name() << " " << dataFile.lock()->partNumber() << " " << mediaSetManager->filePath( dataFile.lock()) << "\n";
         }
 
         std::cout << "    Support Files:\n";
-        for ( auto supportFile : load->supportFiles())
+        for ( const auto &supportFile : load->supportFiles())
         {
           std::cout << "      " << supportFile.lock()->name() << " " << supportFile.lock()->partNumber() << " " << mediaSetManager->filePath( supportFile.lock()) << "\n";
         }
       }
 
       std::cout << "  Batches:\n";
-      for ( auto batch : medium->batches())
+      for ( const auto &batch : medium->batches())
       {
         std::cout << "    " << batch->name() << " " << batch->partNumber() << " " << mediaSetManager->filePath( batch) << "\n";
         std::cout << "      " << batch->comment() << "\n";
-        for ( auto targetHardware : batch->targets())
+        for ( const auto &targetHardware : batch->targets())
         {
           std::cout << "      " << targetHardware.first << "\n";
 
-          for ( auto load : targetHardware.second)
+          for ( const auto &load : targetHardware.second)
           {
             auto load2{ load.lock()};
             if (load2)

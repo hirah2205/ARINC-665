@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
  * @brief ARINC 665 Decompiler.
  **/
@@ -122,7 +122,7 @@ int main( int argc, char const * argv[])
     Arinc665::Utils::Arinc665Xml::FilePathMapping fileMapping;
 
     // iterate over files
-    for ( auto file : result->files())
+    for ( const auto &file : result->files())
     {
       std::filesystem::path filePath(
         mediaSourceDirectories[ file->medium()->mediumNumber() - 1]
@@ -139,8 +139,9 @@ int main( int argc, char const * argv[])
   }
   catch ( boost::program_options::error &e)
   {
-    std::cout << "Error parsing command line: " << e.what() << "\n"
-      << "Enter " << argv[0] << " --help for command line description" << std::endl;;
+    std::cout
+      << "Error parsing command line: " << e.what() << "\n"
+      << "Enter " << argv[0] << " --help for command line description\n";
     return EXIT_FAILURE;
   }
   catch ( Arinc665::Arinc665Exception &e)
@@ -175,8 +176,8 @@ static Arinc665::File::RawFile readFile(
   // check medium number
   if (mediumNumber > mediaSourceDirectories.size())
   {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() << AdditionalInfo( "Medium number unknown"));
+    BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
+      << AdditionalInfo( "Medium number unknown"));
   }
 
   auto filePath{ mediaSourceDirectories[ mediumNumber-1] / path.relative_path()};
@@ -184,10 +185,9 @@ static Arinc665::File::RawFile readFile(
   // check existence of file
   if (!std::filesystem::is_regular_file( filePath))
   {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() <<
-        boost::errinfo_file_name( filePath.string()) <<
-        AdditionalInfo( "File not found"));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << boost::errinfo_file_name( filePath.string())
+      << AdditionalInfo( "File not found"));
   }
 
   Arinc665::File::RawFile data( std::filesystem::file_size( filePath));
@@ -199,8 +199,8 @@ static Arinc665::File::RawFile readFile(
 
   if ( !file.is_open())
   {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() << AdditionalInfo( "Error opening files"));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << AdditionalInfo( "Error opening files"));
   }
 
   // read the data to the buffer

@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
  * @brief ARINC 665 Media Set Validator.
  **/
@@ -132,9 +132,10 @@ int main( int argc, char * argv[])
   {
     std::string const * info = boost::get_error_info< AdditionalInfo>( e);
 
-    std::cerr << "Validation failed: " <<
-              //      typid( e).name() << " - " <<
-              ((nullptr == info) ? "Unknown" : *info) << std::endl;
+    std::cerr
+      << "Validation failed: "
+      // << typid( e).name() << " - "
+      << ((nullptr == info) ? "Unknown" : *info) << std::endl;
 
     return EXIT_FAILURE;
   }

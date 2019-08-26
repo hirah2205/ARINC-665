@@ -123,7 +123,7 @@ class BaseFile: public Base
      **/
     BaseFile( const ContainerEntityPtr& parent, std::string_view name);
 
-    //! @copydoc BaseFile::BaseFile(ContainerEntityPtr,std::string_view)
+    //! @copydoc BaseFile::BaseFile(const ContainerEntityPtr&,std::string_view)
     BaseFile( const ContainerEntityPtr& parent, std::string &&name);
 
     /**
@@ -142,7 +142,7 @@ class BaseFile: public Base
     WeakContainerEntityPtr parentValue;
     //! File name
     const std::string nameValue;
-    //! Part number
+    //! Part Number
     std::string partNumberValue;
 };
 

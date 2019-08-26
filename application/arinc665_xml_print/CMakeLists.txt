@@ -2,13 +2,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Thomas Vogt, Thomas@Thomas-Vogt.de
+# Thomas Vogt, thomas@thomas-vogt.de
 
-cmake_minimum_required( VERSION 3.12)
+cmake_minimum_required( VERSION 3.13)
 
 add_executable(
   arinc665_xml_print
-  arinc665_xml_print.cpp
-)
+  arinc665_xml_print.cpp)
 
 target_link_libraries( arinc665_xml_print arinc665)

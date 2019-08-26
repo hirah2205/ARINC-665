@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
  * @brief ARINC 665 compiler.
  **/
@@ -35,7 +35,6 @@
 #include <fstream>
 #include <iostream>
 #include <filesystem>
-#include <memory>
 #include <cstdlib>
 
 /**
@@ -106,7 +105,7 @@ static Arinc665::File::RawFile readFile(
 
 int main( int argc, char ** argv)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
   initLogging( severity_level::info);
 
@@ -292,12 +291,12 @@ static void createMedium(
   const std::filesystem::path &base,
   Arinc665::Media::ConstMediumPtr medium)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
   auto mPath{ mediumPath( base, medium->mediumNumber())};
 
-  BOOST_LOG_TRIVIAL( severity_level::info) << "Create medium directory " <<
-    mPath;
+  BOOST_LOG_TRIVIAL( severity_level::info)
+    << "Create medium directory " << mPath;
 
   std::filesystem::create_directory( mPath);
 }
@@ -306,14 +305,14 @@ static void createDirectory(
   const std::filesystem::path &mediaSetBase,
   Arinc665::Media::ConstDirectoryPtr directory)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
   auto directoryPath{
     mediumPath( mediaSetBase, directory->medium()->mediumNumber())
       / directory->path().relative_path()};
 
-  BOOST_LOG_TRIVIAL( severity_level::info) << "Create directory " <<
-    directoryPath;
+  BOOST_LOG_TRIVIAL( severity_level::info)
+    << "Create directory " << directoryPath;
 
   std::filesystem::create_directory( directoryPath);
 }
@@ -323,10 +322,10 @@ static bool checkFileExistance(
   const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
   Arinc665::Media::ConstFilePtr file)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_TRIVIAL( severity_level::info) << "check existence of " <<
-    file->path();
+  BOOST_LOG_TRIVIAL( severity_level::info)
+    << "check existence of " << file->path();
 
   // search for file
   auto fileIt{ filePathMapping.find( file)};
@@ -442,9 +441,9 @@ static Arinc665::File::RawFile readFile(
 
   if ( !file.is_open())
   {
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      AdditionalInfo( "Error opening files") <<
-      boost::errinfo_file_name( filePath.string()));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << AdditionalInfo( "Error opening files")
+      << boost::errinfo_file_name( filePath.string()));
   }
 
   // read the data to the buffer

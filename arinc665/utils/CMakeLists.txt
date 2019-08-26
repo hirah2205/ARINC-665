@@ -1,0 +1,39 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Thomas Vogt, thomas@thomas-vogt.de
+
+cmake_minimum_required( VERSION 3.13)
+
+target_sources(
+  arinc665
+
+  PRIVATE
+    Utils.hpp
+    Arinc665Utils.hpp
+    Arinc665Utils.cpp
+    Arinc665Xml.hpp
+    Arinc665Xml.cpp
+    FileCreationPolicyDescription.hpp
+    FileCreationPolicyDescription.cpp
+    MediaSetConfiguration.hpp
+    MediaSetConfiguration.cpp
+    MediaSetManager.hpp
+    MediaSetManager.cpp
+
+    implementation/Arinc665XmlPugiXmlImpl.hpp
+    implementation/Arinc665XmlPugiXmlImpl.cpp
+    implementation/MediaSetExporterImpl.hpp
+    implementation/MediaSetExporterImpl.cpp
+    implementation/MediaSetImporterImpl.hpp
+    implementation/MediaSetImporterImpl.cpp
+    implementation/MediaSetManagerImpl.hpp
+    implementation/MediaSetManagerImpl.cpp
+    implementation/MediaSetValidatorImpl.cpp
+    implementation/MediaSetValidatorImpl.hpp)
+
+#target_sources(
+#  arinc665_test
+#
+#  PRIVATE)

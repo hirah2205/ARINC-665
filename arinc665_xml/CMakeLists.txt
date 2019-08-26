@@ -4,12 +4,12 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.12)
+cmake_minimum_required( VERSION 3.13)
 
 include( GNUInstallDirs)
 
 install(
-  FILES 
+  FILES
   BhmAsf.xsd
   DmgsAsf.xml
 

@@ -41,7 +41,7 @@ class Batch: public BaseFile
      **/
     Batch( const ContainerEntityPtr& parent, std::string_view name);
 
-    //! @copydoc Batch(ContainerEntityPtr,std::string_view)
+    //! @copydoc Batch(const ContainerEntityPtr&,std::string_view)
     Batch( const ContainerEntityPtr& parent, std::string &&name);
 
     /**
@@ -109,7 +109,7 @@ class Batch: public BaseFile
      **/
     void target( std::string_view targetHardwareId, const WeakLoads &loads);
 
-    //! @copydoc target(std::string_view,WeakLoads)
+    //! @copydoc target(std::string_view,const WeakLoads&)
     void target( std::string &&targetHardwareId, WeakLoads &&loads);
 
   private:

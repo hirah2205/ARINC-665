@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
  * @brief Utility to scan directories/ files for ARINC 665 content ad decodes
  *   them.
@@ -86,10 +86,10 @@ static void list_files( const std::filesystem::path &loadDir);
 
 int main( int argc, char const * argv[])
 {
-  std::cout
-    << "ARINC 665 list\n";
+  std::cout << "ARINC 665 list\n";
 
-  boost::program_options::options_description options{ "ARINC 665 List options"};
+  boost::program_options::options_description options{
+    "ARINC 665 List options"};
 
   // directory to list
   std::filesystem::path directory;

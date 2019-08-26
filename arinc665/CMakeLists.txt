@@ -8,93 +8,24 @@ cmake_minimum_required( VERSION 3.13)
 
 find_package( Boost REQUIRED)
 
-add_library(
+add_library( arinc665)
+
+target_sources(
   arinc665
 
-  Arinc665.hpp
-  Arinc665.cpp
-  Arinc665Crc.cpp
-  Arinc665Crc.hpp
-  Arinc665Exception.hpp
-  Arinc665Logger.hpp
-  FileTypeDescription.hpp
-  FileTypeDescription.cpp
-  PartNumber.hpp
-  PartNumber.cpp
-  SupportedArinc665VersionDescription.cpp
-  SupportedArinc665VersionDescription.hpp
-
-  file/Arinc665File.hpp
-  file/Arinc665File.cpp
-  file/BatchFile.hpp
-  file/BatchFile.cpp
-  file/BatchInfo.hpp
-  file/BatchInfo.cpp
-  file/BatchListFile.hpp
-  file/BatchListFile.cpp
-  file/BatchLoadInfo.hpp
-  file/BatchLoadInfo.cpp
-  file/BatchTargetInfo.hpp
-  file/BatchTargetInfo.cpp
-  file/CheckValueUtils.cpp
-  file/CheckValueUtils.hpp
-  file/File.hpp
-  file/FileInfo.hpp
-  file/FileInfo.cpp
-  file/FileListFile.hpp
-  file/FileListFile.cpp
-  file/ListFile.hpp
-  file/ListFile.cpp
-  file/LoadFileInfo.hpp
-  file/LoadFileInfo.cpp
-  file/LoadHeaderFile.hpp
-  file/LoadHeaderFile.cpp
-  file/LoadInfo.hpp
-  file/LoadInfo.cpp
-  file/LoadListFile.hpp
-  file/LoadListFile.cpp
-
-  media/Base.hpp
-  media/BaseFile.hpp
-  media/BaseFile.cpp
-  media/Batch.hpp
-  media/Batch.cpp
-  media/ContainerEntity.hpp
-  media/ContainerEntity.cpp
-  media/Directory.hpp
-  media/Directory.cpp
-  media/File.hpp
-  media/File.cpp
-  media/Load.hpp
-  media/Load.cpp
-  media/Media.hpp
-  media/MediaSet.hpp
-  media/MediaSet.cpp
-  media/Medium.hpp
-  media/Medium.cpp
-
-  utils/Utils.hpp
-  utils/Arinc665Utils.hpp
-  utils/Arinc665Utils.cpp
-  utils/Arinc665Xml.hpp
-  utils/Arinc665Xml.cpp
-  utils/FileCreationPolicyDescription.hpp
-  utils/FileCreationPolicyDescription.cpp
-  utils/MediaSetConfiguration.hpp
-  utils/MediaSetConfiguration.cpp
-  utils/MediaSetManager.hpp
-  utils/MediaSetManager.cpp
-
-  utils/implementation/Arinc665XmlPugiXmlImpl.hpp
-  utils/implementation/Arinc665XmlPugiXmlImpl.cpp
-  utils/implementation/MediaSetExporterImpl.hpp
-  utils/implementation/MediaSetExporterImpl.cpp
-  utils/implementation/MediaSetImporterImpl.hpp
-  utils/implementation/MediaSetImporterImpl.cpp
-  utils/implementation/MediaSetManagerImpl.hpp
-  utils/implementation/MediaSetManagerImpl.cpp
-  utils/implementation/MediaSetValidatorImpl.cpp
-  utils/implementation/MediaSetValidatorImpl.hpp)
+  PRIVATE
+    Arinc665.hpp
+    Arinc665.cpp
+    Arinc665Crc.cpp
+    Arinc665Crc.hpp
+    Arinc665Exception.hpp
+    Arinc665Logger.hpp
+    FileTypeDescription.hpp
+    FileTypeDescription.cpp
+    PartNumber.hpp
+    PartNumber.cpp
+    SupportedArinc665VersionDescription.cpp
+    SupportedArinc665VersionDescription.hpp)
 
 target_compile_options(
   arinc665
@@ -133,22 +64,14 @@ target_link_libraries(
 target_compile_features( arinc665 PUBLIC cxx_std_17)
 
 
-add_library(
+add_library( arinc665_test OBJECT)
+
+target_sources(
   arinc665_test
-  OBJECT
 
-  Arinc665CrcTest.cpp
-  PartNumberTest.cpp
-
-  file/BatchFileTest.cpp
-  file/BatchListFileTest.cpp
-  file/CheckValueUtilsTest.cpp
-  file/FileListFileTest.cpp
-  file/LoadFileInfoTest.cpp
-  file/LoadHeaderFileTest.cpp
-  file/LoadListFileTest.cpp
-
-  media/MediaSetTest.cpp)
+  PRIVATE
+    Arinc665CrcTest.cpp
+    PartNumberTest.cpp)
 
 target_compile_options(
   arinc665_test
@@ -176,6 +99,9 @@ target_include_directories(
   arinc665_test
   PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES>)
 
+add_subdirectory( file)
+add_subdirectory( media)
+add_subdirectory( utils)
 
 # INSTALL
 include( GNUInstallDirs)
