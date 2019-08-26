@@ -67,7 +67,7 @@ class FileInfo
      *
      * @return The filename
      **/
-    std::string_view filename() const;
+    [[nodiscard]] std::string_view filename() const;
 
     /**
      * @brief Updates the filename.
@@ -85,7 +85,7 @@ class FileInfo
      *
      * @return The path name
      **/
-    std::string_view pathName() const;
+    [[nodiscard]] std::string_view pathName() const;
 
     /**
      * @brief Updates the path name.
@@ -103,7 +103,7 @@ class FileInfo
      *
      * @return path (incl. filename)
      **/
-    std::filesystem::path path() const;
+    [[nodiscard]] std::filesystem::path path() const;
 
     /**
      * @brief Returns the member sequence number.

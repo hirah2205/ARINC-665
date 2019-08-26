@@ -21,7 +21,31 @@
 namespace Arinc665::File {
 
 BatchFile::BatchFile( const SupportedArinc665Version version):
-    Arinc665File( FileType::BatchFile, version)
+  Arinc665File{ FileType::BatchFile, version}
+{
+}
+
+BatchFile::BatchFile(
+  SupportedArinc665Version version,
+  const std::string &partNumber,
+  const std::string &comment,
+  const BatchTargetsInfo &targets):
+  Arinc665File{ FileType::BatchFile, version},
+  partNumberValue{ partNumber},
+  commentValue{ comment},
+  targetHardwaresValue{ targets}
+{
+}
+
+BatchFile::BatchFile(
+  SupportedArinc665Version version,
+  std::string &&partNumber,
+  std::string &&comment,
+  BatchTargetsInfo &&targets):
+  Arinc665File{ FileType::BatchFile, version},
+  partNumberValue{ std::move( partNumber)},
+  commentValue{ std::move( comment)},
+  targetHardwaresValue{ std::move( targets)}
 {
 }
 
@@ -39,12 +63,12 @@ BatchFile& BatchFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
-std::string BatchFile::partNumber() const
+std::string_view BatchFile::partNumber() const
 {
   return partNumberValue;
 }
 
-void BatchFile::partNumber( const std::string &partNumber)
+void BatchFile::partNumber( std::string_view partNumber)
 {
   partNumberValue = partNumber;
 }

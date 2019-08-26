@@ -16,6 +16,7 @@
 #include <arinc665/file/File.hpp>
 
 #include <string>
+#include <string_view>
 
 namespace Arinc665::File {
 
@@ -37,10 +38,10 @@ class BatchLoadInfo
      *   Load Part Number.
      **/
     BatchLoadInfo(
-      const std::string &headerFilename,
-      const std::string &partNumber);
+      std::string_view headerFilename,
+      std::string_view partNumber);
 
-    //! @copydoc BatchLoadInfo::BatchLoadInfo(const std::string&,const std::string&)
+    //! @copydoc BatchLoadInfo::BatchLoadInfo(std::string_view,std::string_view)
     BatchLoadInfo(
       std::string &&headerFilename,
       std::string &&partNumber);
@@ -50,7 +51,7 @@ class BatchLoadInfo
      *
      * @return The Load Header filename.
      **/
-    std::string headerFilename() const;
+    [[nodiscard]] std::string_view headerFilename() const;
 
     /**
      * @brief Sets the load header filename.
@@ -58,9 +59,9 @@ class BatchLoadInfo
      * @param[in] headerFilename
      *   The load header filename.
      **/
-    void headerFilename( const std::string &headerFilename);
+    void headerFilename( std::string_view headerFilename);
 
-    //! @copydoc headerFilename(const std::string&)
+    //! @copydoc headerFilename(std::string_view)
     void headerFilename( std::string &&headerFilename);
 
     /**
@@ -68,7 +69,7 @@ class BatchLoadInfo
      *
      * @return The load part number.
      **/
-    std::string partNumber() const;
+    [[nodiscard]] std::string_view partNumber() const;
 
     /**
      * @brief Updates the load part number.
@@ -76,9 +77,9 @@ class BatchLoadInfo
      * @param[in] partNumber
      *   The load part number.
      **/
-    void partNumber( const std::string &partNumber);
+    void partNumber( std::string_view partNumber);
 
-    //! @copydoc partNumber(const std::string&)
+    //! @copydoc partNumber(std::string_view)
     void partNumber( std::string &&partNumber);
 
   private:

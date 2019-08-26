@@ -17,14 +17,14 @@
 namespace Arinc665::File {
 
 LoadInfo::LoadInfo(
-  const std::string &partNumber,
-  const std::string &headerFilename,
+  std::string_view partNumber,
+  std::string_view headerFilename,
   const uint8_t memberSequenceNumber,
   const ThwIds &targetHardwareIds):
-  partNumberValue( partNumber),
-  headerFilenameValue( headerFilename),
-  memberSequenceNumberValue( memberSequenceNumber),
-  targetHardwareIdsValue( targetHardwareIds)
+  partNumberValue{ partNumber},
+  headerFilenameValue{ headerFilename},
+  memberSequenceNumberValue{ memberSequenceNumber},
+  targetHardwareIdsValue{ targetHardwareIds}
 {
 }
 
@@ -33,29 +33,34 @@ LoadInfo::LoadInfo(
   std::string &&headerFilename,
   const uint8_t memberSequenceNumber,
   ThwIds &&targetHardwareIds):
-  partNumberValue( partNumber),
-  headerFilenameValue( headerFilename),
-  memberSequenceNumberValue( memberSequenceNumber),
-  targetHardwareIdsValue( targetHardwareIds)
+  partNumberValue{ partNumber},
+  headerFilenameValue{ headerFilename},
+  memberSequenceNumberValue{ memberSequenceNumber},
+  targetHardwareIdsValue{ targetHardwareIds}
 {
 }
 
-std::string LoadInfo::partNumber() const
+std::string_view LoadInfo::partNumber() const
 {
   return partNumberValue;
 }
 
-void LoadInfo::partNumber( const std::string &partNumber)
+void LoadInfo::partNumber( std::string_view partNumber)
 {
   partNumberValue = partNumber;
 }
 
-std::string LoadInfo::headerFilename() const
+void LoadInfo::partNumber( std::string &&partNumber)
+{
+  partNumberValue = std::move( partNumber);
+}
+
+std::string_view LoadInfo::headerFilename() const
 {
   return headerFilenameValue;
 }
 
-void LoadInfo::headerFilename( const std::string &headerFilename)
+void LoadInfo::headerFilename( std::string_view headerFilename)
 {
   headerFilenameValue = headerFilename;
 }
@@ -80,9 +85,9 @@ LoadInfo::ThwIds& LoadInfo::targetHardwareIds()
   return targetHardwareIdsValue;
 }
 
-void LoadInfo::targetHardwareId( const std::string &targetHardwareId)
+void LoadInfo::targetHardwareId( std::string_view targetHardwareId)
 {
-  targetHardwareIdsValue.push_back( targetHardwareId);
+  targetHardwareIdsValue.emplace_back( targetHardwareId);
 }
 
 void LoadInfo::targetHardwareId( std::string &&targetHardwareId)

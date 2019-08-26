@@ -17,6 +17,7 @@
 #include <arinc665/file/BatchLoadInfo.hpp>
 
 #include <string>
+#include <string_view>
 
 namespace Arinc665::File {
 
@@ -38,10 +39,10 @@ class BatchTargetInfo
      *   Batch loads information.
      **/
     BatchTargetInfo(
-      const std::string &targetHardwareIdPosition,
+      std::string_view targetHardwareIdPosition,
       const BatchLoadsInfo &loads);
 
-    //! @copydoc BatchTargetInfo::BatchTargetInfo(const std::string&,const BatchLoadsInfo&)
+    //! @copydoc BatchTargetInfo::BatchTargetInfo(std::string_view,const BatchLoadsInfo&)
     BatchTargetInfo(
       std::string &&targetHardwareIdPosition,
       BatchLoadsInfo &&loads);
@@ -52,7 +53,7 @@ class BatchTargetInfo
      *
      * @return The Target Hardware ID + Position
      **/
-    std::string targetHardwareIdPosition() const;
+    [[nodiscard]] std::string_view targetHardwareIdPosition() const;
 
     /**
      * @brief Updates the target hardware ID for this loads info.
@@ -60,9 +61,9 @@ class BatchTargetInfo
      * @param[in] targetHardwareIdPosition
      *   The target hardware ID (THW ID)
      **/
-    void targetHardwareIdPosition( const std::string &targetHardwareIdPosition);
+    void targetHardwareIdPosition( std::string_view targetHardwareIdPosition);
 
-    //! @copydoc targetHardwareIdPosition(const std::string&)
+    //! @copydoc targetHardwareIdPosition(std::string_view)
     void targetHardwareIdPosition( std::string &&targetHardwareIdPosition);
 
     /**
@@ -70,7 +71,7 @@ class BatchTargetInfo
      *
      * @return The list of loads (const version).
      **/
-    const BatchLoadsInfo& loads() const;
+    [[nodiscard]] const BatchLoadsInfo& loads() const;
 
     /**
      * @brief Returns the list of available loads for this target hardware.
@@ -102,9 +103,9 @@ class BatchTargetInfo
     void load( BatchLoadInfo &&load);
 
   private:
-    //! The target hardware id
+    //! Target hardware id
     std::string targetHardwareIdPositionV;
-    //! The list of loads
+    //! List of loads
     BatchLoadsInfo loadsV;
 };
 

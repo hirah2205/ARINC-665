@@ -18,6 +18,8 @@
 
 #include <boost/test/unit_test.hpp>
 
+using namespace std::string_view_literals;
+
 namespace Arinc665::Media {
 
 BOOST_AUTO_TEST_SUITE( MediaSetTest)
@@ -49,7 +51,7 @@ BOOST_AUTO_TEST_CASE( partNumber)
   MediaSet mediaSet;
   BOOST_CHECK( mediaSet.partNumber() == "");
 
-  mediaSet.partNumber( "YYY");
+  mediaSet.partNumber( "YYY"sv);
 
   BOOST_CHECK( mediaSet.partNumber() == "YYY");
 }

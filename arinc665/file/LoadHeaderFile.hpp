@@ -17,6 +17,7 @@
 #include <arinc665/file/Arinc665File.hpp>
 #include <arinc665/file/LoadFileInfo.hpp>
 
+#include <string_view>
 #include <map>
 #include <list>
 #include <vector>
@@ -156,7 +157,7 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] version
      *   ARINC 665 version.
      **/
-    LoadHeaderFile( SupportedArinc665Version version);
+    explicit LoadHeaderFile( SupportedArinc665Version version);
 
     /**
      * @brief Creates load header file with the given data.
@@ -178,14 +179,14 @@ class LoadHeaderFile: public Arinc665File
      **/
     LoadHeaderFile(
       SupportedArinc665Version version,
-      const std::string &partNumber,
+      std::string_view partNumber,
       const TargetHardwareIdPositions &targetHardwareIdPositions,
       const LoadFilesInfo &dataFilesInfo,
       const LoadFilesInfo &supportFilesInfo,
       const UserDefinedData &userDefinedData,
       uint32_t loadCrc);
 
-    //! @copydoc LoadHeaderFile(SupportedArinc665Version,const std::string&,const TargetHardwareIdPositions&,const LoadFilesInfo&,const LoadFilesInfo&,const UserDefinedData&,uint32_t)
+    //! @copydoc LoadHeaderFile(SupportedArinc665Version,std::string_view,const TargetHardwareIdPositions&,const LoadFilesInfo&,const LoadFilesInfo&,const UserDefinedData&,uint32_t)
     LoadHeaderFile(
       SupportedArinc665Version version,
       std::string &&partNumber,
@@ -214,7 +215,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The part flags.
      **/
-    uint16_t partFlags() const;
+    [[nodiscard]] uint16_t partFlags() const;
 
     /**
      * @brief Updates the part flags.
@@ -229,7 +230,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The part number of the load header file.
      **/
-    std::string partNumber() const;
+    [[nodiscard]] std::string_view partNumber() const;
 
     /**
      * @brief Updates the part number of the load header file.
@@ -237,9 +238,9 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] partNumber
      *   The new Part Number.
      **/
-    void partNumber( const std::string &partNumber);
+    void partNumber( std::string_view partNumber);
 
-    //! @copydoc partNumber(const std::string&)
+    //! @copydoc partNumber(std::string_view)
     void partNumber( std::string &&partNumber);
 
     /**
@@ -247,7 +248,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The Target Hardware IDs
      **/
-    const TargetHardwareIdPositions& targetHardwareIdPositions() const;
+    [[nodiscard]] const TargetHardwareIdPositions& targetHardwareIdPositions() const;
 
     //! @copydoc targetHardwareIdPositions() const
     TargetHardwareIdPositions& targetHardwareIdPositions();
@@ -270,7 +271,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The Target Hardware IDs.
      **/
-    StringList targetHardwareIds() const;
+    [[nodiscard]] StringList targetHardwareIds() const;
 
     /**
      * @brief Add Target Hardware IDs without position information.
@@ -289,10 +290,10 @@ class LoadHeaderFile: public Arinc665File
      *   Positions (can be empty)
      **/
     void targetHardwareId(
-      const std::string &targetHardwareId,
+      std::string_view targetHardwareId,
       const StringList &positions = {});
 
-    //! @copydoc targetHardwareId(const std::string&,const StringList&)
+    //! @copydoc targetHardwareId(std::string_view,const StringList&)
     void targetHardwareId(
       std::string &&targetHardwareId,
       StringList &&positions = {});
@@ -304,7 +305,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The Load Type information.
      **/
-    const LoadType& loadType() const;
+    [[nodiscard]] const LoadType& loadType() const;
 
     /**
      * @brief Updates the Load Type information.
@@ -324,7 +325,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The data files information.
      **/
-    const LoadFilesInfo& dataFiles() const;
+    [[nodiscard]] const LoadFilesInfo& dataFiles() const;
 
     //! @copydoc dataFiles() const
     LoadFilesInfo& dataFiles();
@@ -345,7 +346,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The support files information.
      **/
-    const LoadFilesInfo& supportFiles() const;
+    [[nodiscard]] const LoadFilesInfo& supportFiles() const;
 
     //! @copydoc supportFiles() const
     LoadFilesInfo& supportFiles();
@@ -366,7 +367,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The user defined data.
      **/
-    const UserDefinedData& userDefinedData() const;
+    [[nodiscard]] const UserDefinedData& userDefinedData() const;
 
     /**
      * @brief Updates the user defined data.
@@ -384,7 +385,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The Load CRC
      **/
-    uint32_t loadCrc() const;
+    [[nodiscard]] uint32_t loadCrc() const;
 
     /**
      * @brief Updates the Load CRC.
@@ -399,7 +400,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The Load Check Value.
      **/
-    const std::optional< CheckValue>& loadCheckValue() const;
+    [[nodiscard]] const std::optional< CheckValue>& loadCheckValue() const;
 
     /**
      * @brief Updates the Load Check Value
@@ -421,7 +422,7 @@ class LoadHeaderFile: public Arinc665File
     };
 
     //! @copydoc Arinc665File::encode
-    RawFile encode() const final;
+    [[nodiscard]] RawFile encode() const final;
 
     /**
      * @brief Decodes the body of the load header file.
@@ -446,7 +447,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return Raw representation of files information list.
      **/
-    RawFile encodeFileList(
+    [[nodiscard]] RawFile encodeFileList(
       const LoadFilesInfo &loadFilesInfo,
       FileListType type,
       bool encodeV3Data) const;

@@ -29,17 +29,17 @@ BatchListFile::BatchListFile( const SupportedArinc665Version version):
 
 BatchListFile::BatchListFile(
   const SupportedArinc665Version version,
-  const std::string &mediaSetPn,
+  std::string_view mediaSetPn,
   const uint8_t mediaSequenceNumber,
   const uint8_t numberOfMediaSetMembers,
   const BatchesInfo &batches,
   const UserDefinedData &userDefinedData):
-  ListFile( FileType::BatchList, version),
-  mediaSetPnValue( mediaSetPn),
-  mediaSequenceNumberValue( mediaSequenceNumber),
-  numberOfMediaSetMembersValue( numberOfMediaSetMembers),
-  batchesValue( batches),
-  userDefinedDataValue( userDefinedData)
+  ListFile{ FileType::BatchList, version},
+  mediaSetPnValue{ mediaSetPn},
+  mediaSequenceNumberValue{ mediaSequenceNumber},
+  numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
+  batchesValue{ batches},
+  userDefinedDataValue{ userDefinedData}
 {
 }
 
@@ -50,17 +50,17 @@ BatchListFile::BatchListFile(
   uint8_t numberOfMediaSetMembers,
   BatchesInfo &&batches,
   UserDefinedData &&userDefinedData):
-  ListFile( FileType::BatchList, version),
-  mediaSetPnValue( std::move( mediaSetPn)),
-  mediaSequenceNumberValue( mediaSequenceNumber),
-  numberOfMediaSetMembersValue( numberOfMediaSetMembers),
-  batchesValue( std::move( batches)),
-  userDefinedDataValue( std::move( userDefinedData))
+  ListFile{ FileType::BatchList, version},
+  mediaSetPnValue{ std::move( mediaSetPn)},
+  mediaSequenceNumberValue{ mediaSequenceNumber},
+  numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
+  batchesValue{ std::move( batches)},
+  userDefinedDataValue{ std::move( userDefinedData)}
 {
 }
 
 BatchListFile::BatchListFile( const RawFile &rawFile):
-  ListFile( FileType::BatchList, rawFile)
+  ListFile{ FileType::BatchList, rawFile}
 {
   decodeBody( rawFile);
 }
@@ -73,12 +73,12 @@ BatchListFile& BatchListFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
-std::string BatchListFile::mediaSetPn() const
+std::string_view BatchListFile::mediaSetPn() const
 {
   return mediaSetPnValue;
 }
 
-void BatchListFile::mediaSetPn( const std::string &mediaSetPn)
+void BatchListFile::mediaSetPn( std::string_view mediaSetPn)
 {
   mediaSetPnValue = mediaSetPn;
 }
@@ -378,7 +378,7 @@ void BatchListFile::decodeBatchesInfo(
   const RawFile &rawFile,
   const std::size_t offset)
 {
-  auto it( rawFile.begin() + offset);
+  auto it{ rawFile.begin() + offset};
 
   // clear eventually stored infos
   batchesValue.clear();
@@ -390,24 +390,24 @@ void BatchListFile::decodeBatchesInfo(
   // iterate over batch indexes
   for ( unsigned int batchIndex = 0; batchIndex < numberOfBatches; ++batchIndex)
   {
-    auto listIt( it);
+    auto listIt{ it};
 
     // next batch pointer
-    uint16_t batchPointer;
+    uint16_t batchPointer{};
     listIt = getInt< uint16_t>( listIt, batchPointer);
 
     //! @todo check pointer for != 0 (all except last ==> OK, last ==> error)
 
     // part number
-    std::string partNumber;
+    std::string partNumber{};
     listIt = Arinc665File::decodeString( listIt, partNumber);
 
     // batch filename
-    std::string filename;
+    std::string filename{};
     listIt = Arinc665File::decodeString( listIt, filename);
 
     // member sequence number
-    uint16_t memberSequenceNumber;
+    uint16_t memberSequenceNumber{};
     listIt = getInt< uint16_t>( listIt, memberSequenceNumber);
 
     // set it to begin of next batch

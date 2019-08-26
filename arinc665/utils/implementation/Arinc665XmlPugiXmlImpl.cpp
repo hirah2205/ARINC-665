@@ -147,7 +147,7 @@ void Arinc665XmlPugiXmlImpl::saveMediaSet(
   const FilePathMapping &filePathMapping,
   pugi::xml_node &mediaSetNode)
 {
-  mediaSetNode.append_attribute( "PartNumber") = mediaSet->partNumber().c_str();
+  mediaSetNode.append_attribute( "PartNumber") = mediaSet->partNumber().data();
 
   const auto filesUserDefinedData{ mediaSet->filesUserDefinedData()};
   if (!filesUserDefinedData.empty())
@@ -367,7 +367,7 @@ void Arinc665XmlPugiXmlImpl::saveEntries(
     // Add part number attribute (optional)
     if (!fileEntry->partNumber().empty())
     {
-      fileNode.append_attribute( "PartNumber") = fileEntry->partNumber().c_str();
+      fileNode.append_attribute( "PartNumber") = fileEntry->partNumber().data();
     }
 
     // Add source path attribute (optional)

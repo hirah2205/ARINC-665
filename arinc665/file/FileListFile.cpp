@@ -22,14 +22,48 @@
 namespace Arinc665::File {
 
 FileListFile::FileListFile( SupportedArinc665Version version):
-  ListFile( FileType::FileList, version),
-  mediaSequenceNumberValue( 0),
-  numberOfMediaSetMembersValue( 0)
+  ListFile{ FileType::FileList, version},
+  mediaSequenceNumberValue{ 0},
+  numberOfMediaSetMembersValue{ 0}
+{
+}
+
+FileListFile::FileListFile(
+  SupportedArinc665Version version,
+  std::string_view mediaSetPn,
+  uint8_t mediaSequenceNumber,
+  uint8_t numberOfMediaSetMembers,
+  const FilesInfo &files,
+  const UserDefinedData &userDefinedData):
+  ListFile{ FileType::FileList, version},
+  mediaSetPnValue{ mediaSetPn},
+  mediaSequenceNumberValue{ mediaSequenceNumber},
+  numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
+  filesValue{ files},
+  userDefinedDataValue{ userDefinedData}
+{
+}
+
+FileListFile::FileListFile(
+  SupportedArinc665Version version,
+  std::string &&mediaSetPn,
+  uint8_t mediaSequenceNumber,
+  uint8_t numberOfMediaSetMembers,
+  FilesInfo &&files,
+  UserDefinedData &&userDefinedData):
+  ListFile{ FileType::FileList, version},
+  mediaSetPnValue{ std::move( mediaSetPn)},
+  mediaSequenceNumberValue{ mediaSequenceNumber},
+  numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
+  filesValue{ std::move( files)},
+  userDefinedDataValue{ std::move( userDefinedData)}
 {
 }
 
 FileListFile::FileListFile( const RawFile &rawFile):
-  ListFile( FileType::FileList, rawFile)
+  ListFile( FileType::FileList, rawFile),
+  mediaSequenceNumberValue{ 0},
+  numberOfMediaSetMembersValue{ 0}
 {
   decodeBody( rawFile);
 }
@@ -42,12 +76,12 @@ FileListFile& FileListFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
-std::string FileListFile::mediaSetPn() const
+std::string_view FileListFile::mediaSetPn() const
 {
   return mediaSetPnValue;
 }
 
-void FileListFile::mediaSetPn( const std::string &mediaSetPn)
+void FileListFile::mediaSetPn( std::string_view mediaSetPn)
 {
   mediaSetPnValue = mediaSetPn;
 }
@@ -185,7 +219,7 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
     return false;
   }
 
-  for ( unsigned int i = 0; i < filesValue.size(); ++i)
+  for (size_t i = 0; i < filesValue.size(); ++i)
   {
     if (
       (filesValue[i].filename() != otherFileList[i].filename()) ||
@@ -528,25 +562,25 @@ void FileListFile::decodeFilesInfo(
     auto listIt( it);
 
     // next file pointer
-    uint16_t filePointer;
+    uint16_t filePointer{};
     listIt = getInt< uint16_t>( listIt, filePointer);
 
     //! @todo check pointer for != 0 (all except last ==> OK, last ==> error)
 
     // filename
-    std::string filename;
+    std::string filename{};
     listIt = decodeString( listIt, filename);
 
     // path name
-    std::string pathName;
+    std::string pathName{};
     listIt = decodeString( listIt, pathName);
 
     // member sequence number
-    uint16_t memberSequenceNumber;
+    uint16_t memberSequenceNumber{};
     listIt = getInt< uint16_t>( listIt, memberSequenceNumber);
 
     // crc
-    uint16_t crc;
+    uint16_t crc{};
     listIt = getInt< uint16_t>( listIt, crc);
 
     // CheckValue (keep default initialised if not V3 File Info

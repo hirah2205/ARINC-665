@@ -47,12 +47,12 @@ BaseFile::Type BaseFile::type() const
   return Type::File;
 }
 
-std::string BaseFile::partNumber() const
+std::string_view BaseFile::partNumber() const
 {
   return partNumberValue;
 }
 
-void BaseFile::partNumber( const std::string &partNumber)
+void BaseFile::partNumber( std::string_view partNumber)
 {
   partNumberValue = partNumber;
 }

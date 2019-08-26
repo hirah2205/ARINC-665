@@ -15,28 +15,28 @@
 namespace Arinc665::File {
 
 BatchTargetInfo::BatchTargetInfo(
-  const std::string &targetHardwareIdPosition,
+  std::string_view targetHardwareIdPosition,
   const BatchLoadsInfo &loads):
-  targetHardwareIdPositionV( targetHardwareIdPosition),
-  loadsV( loads)
+  targetHardwareIdPositionV{ targetHardwareIdPosition},
+  loadsV{ loads}
 {
 }
 
 BatchTargetInfo::BatchTargetInfo(
   std::string &&targetHardwareIdPosition,
   BatchLoadsInfo &&loads):
-  targetHardwareIdPositionV( std::move( targetHardwareIdPosition)),
-  loadsV( loads)
+  targetHardwareIdPositionV{ std::move( targetHardwareIdPosition)},
+  loadsV{ std::move( loads)}
 {
 }
 
-std::string BatchTargetInfo::targetHardwareIdPosition() const
+std::string_view BatchTargetInfo::targetHardwareIdPosition() const
 {
   return targetHardwareIdPositionV;
 }
 
 void BatchTargetInfo::targetHardwareIdPosition(
-  const std::string &targetHardwareIdPosition)
+  std::string_view targetHardwareIdPosition)
 {
   targetHardwareIdPositionV = targetHardwareIdPosition;
 }

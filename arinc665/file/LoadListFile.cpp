@@ -20,11 +20,44 @@
 namespace Arinc665::File {
 
 LoadListFile::LoadListFile( SupportedArinc665Version version):
-  ListFile( FileType::LoadList, version),
-  mediaSequenceNumberValue( 0),
-  numberOfMediaSetMembersValue( 0)
+  ListFile{ FileType::LoadList, version},
+  mediaSequenceNumberValue{ 0},
+  numberOfMediaSetMembersValue{ 0}
 {
 }
+
+LoadListFile::LoadListFile(
+  SupportedArinc665Version version,
+  std::string_view mediaSetPn,
+  uint8_t mediaSequenceNumber,
+  uint8_t numberOfMediaSetMembers,
+  const LoadsInfo &loads,
+  const UserDefinedData &userDefinedData):
+  ListFile{ FileType::LoadList, version},
+  mediaSetPnValue{ mediaSetPn},
+  mediaSequenceNumberValue{ mediaSequenceNumber},
+  numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
+  loadsValue{ loads},
+  userDefinedDataValue{ userDefinedData}
+{
+}
+
+LoadListFile::LoadListFile(
+  SupportedArinc665Version version,
+  std::string &&mediaSetPn,
+  uint8_t mediaSequenceNumber,
+  uint8_t numberOfMediaSetMembers,
+  LoadsInfo &&loads,
+  UserDefinedData &&userDefinedData):
+  ListFile{ FileType::LoadList, version},
+  mediaSetPnValue{ std::move( mediaSetPn)},
+  mediaSequenceNumberValue{ mediaSequenceNumber},
+  numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
+  loadsValue{ std::move( loads)},
+  userDefinedDataValue{ std::move( userDefinedData)}
+{
+}
+
 
 LoadListFile::LoadListFile( const RawFile &rawFile):
   ListFile( FileType::LoadList, rawFile)
@@ -40,12 +73,12 @@ LoadListFile& LoadListFile::operator=( const RawFile &rawFile)
   return *this;
 }
 
-std::string LoadListFile::mediaSetPn() const
+std::string_view LoadListFile::mediaSetPn() const
 {
   return mediaSetPnValue;
 }
 
-void LoadListFile::mediaSetPn( const std::string &mediaSetPn)
+void LoadListFile::mediaSetPn( std::string_view mediaSetPn)
 {
   mediaSetPnValue = mediaSetPn;
 }

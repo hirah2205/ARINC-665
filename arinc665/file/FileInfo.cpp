@@ -54,6 +54,11 @@ void FileInfo::filename( std::string_view filename)
   filenameValue = filename;
 }
 
+void FileInfo::filename( std::string &&filename)
+{
+  filenameValue = std::move( filename);
+}
+
 std::string_view FileInfo::pathName() const
 {
   return pathNameValue;
@@ -62,6 +67,11 @@ std::string_view FileInfo::pathName() const
 void FileInfo::pathName( std::string_view pathName)
 {
   pathNameValue = pathName;
+}
+
+void FileInfo::pathName( std::string &&pathName)
+{
+  pathNameValue = std::move( pathName);
 }
 
 std::filesystem::path FileInfo::path() const

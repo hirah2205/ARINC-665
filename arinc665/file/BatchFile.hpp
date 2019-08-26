@@ -112,7 +112,7 @@ class BatchFile: public Arinc665File
      *
      * @return The part number of the batch file.
      **/
-    std::string partNumber() const;
+    std::string_view partNumber() const;
 
     /**
      * @brief Updates the part number of the batch file.
@@ -120,9 +120,9 @@ class BatchFile: public Arinc665File
      * @param[in] partNumber
      *   The new part number.
      **/
-    void partNumber( const std::string &partNumber);
+    void partNumber( std::string_view partNumber);
 
-    //! @copydoc partNumber(const std::string&)
+    //! @copydoc partNumber(std::string_view)
     void partNumber( std::string &&partNumber);
 
     /**

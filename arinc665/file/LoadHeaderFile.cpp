@@ -23,14 +23,55 @@
 namespace Arinc665::File {
 
 LoadHeaderFile::LoadHeaderFile( SupportedArinc665Version version) :
-  Arinc665File( FileType::LoadUploadHeader, version, FileCrcOffset),
-  partFlagsValue( 0),
-  loadCrcValue( 0)
+  Arinc665File{ FileType::LoadUploadHeader, version, FileCrcOffset},
+  partFlagsValue{ 0},
+  loadCrcValue{ 0}
 {
 }
 
+LoadHeaderFile::LoadHeaderFile(
+  SupportedArinc665Version version,
+  std::string_view partNumber,
+  const TargetHardwareIdPositions &targetHardwareIdPositions,
+  const LoadFilesInfo &dataFilesInfo,
+  const LoadFilesInfo &supportFilesInfo,
+  const UserDefinedData &userDefinedData,
+  uint32_t loadCrc):
+  Arinc665File{ FileType::LoadUploadHeader, version, FileCrcOffset},
+  partFlagsValue{ 0}, //! @todo add
+  partNumberValue{ partNumber},
+  targetHardwareIdPositionsValue{ targetHardwareIdPositions},
+  dataFilesValue{ dataFilesInfo},
+  supportFilesValue{ supportFilesInfo},
+  userDefinedDataValue{ userDefinedData},
+  loadCrcValue{ loadCrc}
+{
+}
+
+LoadHeaderFile::LoadHeaderFile(
+  SupportedArinc665Version version,
+  std::string &&partNumber,
+  TargetHardwareIdPositions &&targetHardwareIdPositions,
+  LoadFilesInfo &&dataFilesInfo,
+  LoadFilesInfo &&supportFilesInfo,
+  UserDefinedData &&userDefinedData,
+  uint32_t loadCrc):
+  Arinc665File{ FileType::LoadUploadHeader, version, FileCrcOffset},
+  partFlagsValue{ 0}, //! @todo add
+  partNumberValue{ std::move( partNumber)},
+  targetHardwareIdPositionsValue{ std::move( targetHardwareIdPositions)},
+  dataFilesValue{ std::move( dataFilesInfo)},
+  supportFilesValue{ std::move( supportFilesInfo)},
+  userDefinedDataValue{ std::move( userDefinedData)},
+  loadCrcValue{ loadCrc}
+{
+}
+
+
 LoadHeaderFile::LoadHeaderFile( const RawFile &rawFile):
-  Arinc665File( FileType::LoadUploadHeader, rawFile, FileCrcOffset)
+  Arinc665File{ FileType::LoadUploadHeader, rawFile, FileCrcOffset},
+  partFlagsValue{ 0},
+  loadCrcValue{ 0}
 {
   decodeBody( rawFile);
 }
@@ -53,12 +94,12 @@ void LoadHeaderFile::partFlags( uint16_t partFlags)
   partFlagsValue= partFlags;
 }
 
-std::string LoadHeaderFile::partNumber() const
+std::string_view LoadHeaderFile::partNumber() const
 {
   return partNumberValue;
 }
 
-void LoadHeaderFile::partNumber( const std::string &partNumber)
+void LoadHeaderFile::partNumber( std::string_view partNumber)
 {
   partNumberValue = partNumber;
 }
@@ -113,7 +154,7 @@ void LoadHeaderFile::targetHardwareIds( const StringList &targetHardwareIds)
 }
 
 void LoadHeaderFile::targetHardwareId(
-  const std::string &targetHardwareId,
+  std::string_view targetHardwareId,
   const StringList &positions)
 {
   targetHardwareIdPositionsValue.insert(
@@ -757,7 +798,7 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
   LoadFilesInfo files;
 
   // number of data files
-  uint16_t numberOfFiles;
+  uint16_t numberOfFiles{};
   it = getInt< uint16_t>( it, numberOfFiles);
 
   // iterate over file index
@@ -766,19 +807,19 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
     auto listIt( it);
 
     // next file pointer
-    uint16_t filePointer;
+    uint16_t filePointer{};
     listIt = getInt< uint16_t>( listIt, filePointer);
 
     // filename
-    std::string name;
+    std::string name{};
     listIt = decodeString( listIt, name);
 
     // part number
-    std::string partNumber;
+    std::string partNumber{};
     listIt = decodeString( listIt, partNumber);
 
     // file length
-    uint32_t length;
+    uint32_t length{};
     listIt = getInt< uint32_t>( listIt, length);
 
     uint64_t realLength{ 0};
@@ -801,7 +842,7 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
     }
 
     // CRC
-    uint16_t crc;
+    uint16_t crc{};
     listIt = getInt< uint16_t>( listIt, crc);
 
     // CheckValue (keep default initialised if not V3 File Info
@@ -813,7 +854,7 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
       // length in bytes (Data File List)
       if (type == FileListType::Data)
       {
-        uint64_t fileLengthInBytes;
+        uint64_t fileLengthInBytes{};
         listIt = getInt< uint64_t>( listIt, fileLengthInBytes);
         realLength = fileLengthInBytes;
       }

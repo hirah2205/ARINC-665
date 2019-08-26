@@ -41,7 +41,7 @@ Medium::Type Medium::type() const
   return Type::Medium;
 }
 
-std::string Medium::partNumber() const
+std::string_view Medium::partNumber() const
 {
   return mediaSetV.lock()->partNumber();
 }

@@ -305,7 +305,7 @@ QVariant MediaSetModelModel::data( const QModelIndex & index, int role) const
       return {};
 
     case 1:
-      return QString::fromStdString( base->partNumber());
+      return QString::fromUtf8( base->partNumber().data(), base->partNumber().size());
 
     case 2:
       switch (base->type())
@@ -321,7 +321,7 @@ QVariant MediaSetModelModel::data( const QModelIndex & index, int role) const
 
         case Arinc665::Media::Base::Type::File:
         {
-          Arinc665::Media::BaseFile * file = dynamic_cast< Arinc665::Media::BaseFile*>( base);
+          auto * file = dynamic_cast< Arinc665::Media::BaseFile*>( base);
           switch (file->fileType())
           {
             case Arinc665::Media::BaseFile::FileType::RegularFile:
@@ -394,4 +394,5 @@ void MediaSetModelModel::setMediaSet( Arinc665::Media::MediaSetPtr mediaSet)
 
   endResetModel();
 }
+
 }

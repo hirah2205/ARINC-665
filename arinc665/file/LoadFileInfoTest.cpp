@@ -14,6 +14,8 @@
 
 #include <boost/test/unit_test.hpp>
 
+using namespace std::string_view_literals;
+
 namespace Arinc665::File {
 
 BOOST_AUTO_TEST_SUITE( LoadFileInfoTest)
@@ -58,7 +60,7 @@ BOOST_AUTO_TEST_CASE( constructor2)
 //! get/set name test
 BOOST_AUTO_TEST_CASE( GetSetName)
 {
-  LoadFileInfo loadFileInfo( "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU);
+  LoadFileInfo loadFileInfo( "NAME"sv, "PART_NUMBER"sv, 0xDEADBEEFUL, 0xBABEU);
 
   BOOST_CHECK( loadFileInfo.filename() == "NAME");
   BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");
@@ -66,7 +68,7 @@ BOOST_AUTO_TEST_CASE( GetSetName)
   BOOST_CHECK( loadFileInfo.crc() == 0xBABEU);
   BOOST_CHECK( !loadFileInfo.checkValue());
 
-  BOOST_CHECK_NO_THROW( loadFileInfo.filename( "NAME2"));
+  BOOST_CHECK_NO_THROW( loadFileInfo.filename( "NAME2"sv));
 
   BOOST_CHECK( loadFileInfo.filename() == "NAME2");
   BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");
@@ -78,7 +80,7 @@ BOOST_AUTO_TEST_CASE( GetSetName)
 //! get/set partnumber test
 BOOST_AUTO_TEST_CASE( GetSetPartNumber)
 {
-  LoadFileInfo loadFileInfo( "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU);
+  LoadFileInfo loadFileInfo( "NAME"sv, "PART_NUMBER"sv, 0xDEADBEEFUL, 0xBABEU);
 
   BOOST_CHECK( loadFileInfo.filename() == "NAME");
   BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");
@@ -86,7 +88,7 @@ BOOST_AUTO_TEST_CASE( GetSetPartNumber)
   BOOST_CHECK( loadFileInfo.crc() == 0xBABEU);
   BOOST_CHECK( !loadFileInfo.checkValue());
 
-  BOOST_CHECK_NO_THROW( loadFileInfo.partNumber( "PART_NUMBER2"));
+  BOOST_CHECK_NO_THROW( loadFileInfo.partNumber( "PART_NUMBER2"sv));
 
   BOOST_CHECK( loadFileInfo.filename() == "NAME");
   BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER2");
@@ -98,7 +100,7 @@ BOOST_AUTO_TEST_CASE( GetSetPartNumber)
 //! get/set length test
 BOOST_AUTO_TEST_CASE( GetSetLength)
 {
-  LoadFileInfo loadFileInfo( "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU);
+  LoadFileInfo loadFileInfo( "NAME"sv, "PART_NUMBER"sv, 0xDEADBEEFUL, 0xBABEU);
 
   BOOST_CHECK( loadFileInfo.filename() == "NAME");
   BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");
@@ -118,7 +120,7 @@ BOOST_AUTO_TEST_CASE( GetSetLength)
 //! get/set crc test
 BOOST_AUTO_TEST_CASE( GetSetCrc)
 {
-  LoadFileInfo loadFileInfo( "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU);
+  LoadFileInfo loadFileInfo( "NAME"sv, "PART_NUMBER"sv, 0xDEADBEEFUL, 0xBABEU);
 
   BOOST_CHECK( loadFileInfo.filename() == "NAME");
   BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");
@@ -138,7 +140,7 @@ BOOST_AUTO_TEST_CASE( GetSetCrc)
 //! get/set check value test
 BOOST_AUTO_TEST_CASE( GetSetCheckValue)
 {
-  LoadFileInfo loadFileInfo( "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU);
+  LoadFileInfo loadFileInfo( "NAME"sv, "PART_NUMBER"sv, 0xDEADBEEFUL, 0xBABEU);
 
   BOOST_CHECK( loadFileInfo.filename() == "NAME");
   BOOST_CHECK( loadFileInfo.partNumber() == "PART_NUMBER");

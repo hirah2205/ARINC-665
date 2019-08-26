@@ -27,7 +27,7 @@ class Batch: public BaseFile
 {
   public:
     //! Batch information type (Target Hardware ID -> Loads)
-    using BatchInfo = std::map< std::string, WeakLoads>;
+    using BatchInfo = std::map< std::string, WeakLoads, std::less<>>;
 
     /**
      * @brief Initialises the batch with the given data.
@@ -85,7 +85,7 @@ class Batch: public BaseFile
      *
      * @return The corresponding loads
      **/
-    const WeakLoads target( const std::string &targetHardwareId) const;
+    const WeakLoads target( std::string_view targetHardwareId) const;
 
     /**
      * @brief Return the batch info for the given target hardware ID
@@ -95,7 +95,7 @@ class Batch: public BaseFile
      *
      * @return The corresponding loads
      **/
-    WeakLoads target( const std::string &targetHardwareId);
+    WeakLoads target( std::string_view targetHardwareId);
 
     /**
      * @brief Add batch info for the given target hardware ID.
@@ -105,9 +105,9 @@ class Batch: public BaseFile
      * @param[in] loads
      *   Loads.
      **/
-    void target( const std::string &targetHardwareId, WeakLoads loads);
+    void target( std::string_view targetHardwareId, WeakLoads loads);
 
-    //! @copydoc target(const std::string&,WeakLoads)
+    //! @copydoc target(std::string_view,WeakLoads)
     void target( std::string &&targetHardwareId, WeakLoads loads);
 
   private:

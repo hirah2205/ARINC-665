@@ -18,6 +18,7 @@
 #include <arinc665/media/Medium.hpp>
 
 #include <memory>
+#include <string_view>
 
 namespace Arinc665::Media {
 
@@ -55,7 +56,7 @@ class MediaSet:
     Type type() const final;
 
     //! @copydoc Base::partNumber
-    std::string partNumber() const final;
+    std::string_view partNumber() const final;
 
     /**
      * @brief Set the part number of the entity.
@@ -63,9 +64,9 @@ class MediaSet:
      * @param[in] partNumber
      *   The part number
      **/
-    void partNumber( const std::string &partNumber);
+    void partNumber( std::string_view partNumber);
 
-    //! @copydoc partNumber(const std::string&)
+    //! @copydoc partNumber(std::string_view)
     void partNumber( std::string &&partNumber);
 
     /**
@@ -166,7 +167,7 @@ class MediaSet:
      * @retval ConstFilePtr()
      *   If file is not found.
      **/
-    ConstFilePtr file( const std::string &filename) const;
+    ConstFilePtr file( std::string_view filename) const;
 
     /**
      * @brief Returns file with the given filename.
@@ -178,7 +179,7 @@ class MediaSet:
      * @retval ConstFilePtr()
      *   If file is not found.
      **/
-    FilePtr file( const std::string &filename);
+    FilePtr file( std::string_view filename);
 
     /**
      * @brief Return the number of loads within the media set.
@@ -209,7 +210,7 @@ class MediaSet:
      *
      * @return The load with the given filename.
      **/
-    ConstLoadPtr load( const std::string &filename) const;
+    ConstLoadPtr load( std::string_view filename) const;
 
     /**
      * @brief return the load with the given filename.
@@ -219,7 +220,7 @@ class MediaSet:
      *
      * @return The load with the given filename.
      **/
-    LoadPtr load( const std::string &filename);
+    LoadPtr load( std::string_view filename);
 
     /**
      * @brief Removes the load with the given filename.
@@ -227,7 +228,7 @@ class MediaSet:
      * @param[in] filename
      *   The filename of the load.
      **/
-    void removeLoad( const std::string &filename);
+    void removeLoad( std::string_view filename);
 
     /**
      * @brief Removes the given load from the media set.

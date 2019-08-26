@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of unit tests for the class Arinc665::File::FileListFile.
+ * @brief Definition of Unit Tests for Class Arinc665::File::FileListFile.
  **/
 
 #include <arinc665/file/FileListFile.hpp>
@@ -18,12 +18,9 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <iostream>
-
 namespace Arinc665::File {
 
 BOOST_AUTO_TEST_SUITE( FileListFileTest)
-
 
 BOOST_AUTO_TEST_CASE( constructor1)
 {

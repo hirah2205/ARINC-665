@@ -39,11 +39,11 @@ class BatchInfo
      *   member sequence number
      **/
     BatchInfo(
-      const std::string &partNumber,
-      const std::string &filename,
+      std::string_view partNumber,
+      std::string_view filename,
       uint16_t memberSequenceNumber);
 
-    //! @copydoc BatchInfo::BatchInfo(const std::string&,const std::string&,uint16_t)
+    //! @copydoc BatchInfo::BatchInfo(std::string_view,std::string_view,uint16_t)
     BatchInfo(
       std::string &&partNumber,
       std::string &&filename,
@@ -54,7 +54,7 @@ class BatchInfo
      *
      * @return The batch Batch part number
      **/
-    const std::string& partNumber() const;
+    std::string_view partNumber() const;
 
     /**
      * @brief Updates the Batch part number.
@@ -62,9 +62,9 @@ class BatchInfo
      * @param[in] partNumber
      *   Batch part number.
      **/
-    void partNumber( const std::string &partNumber);
+    void partNumber( std::string_view partNumber);
 
-    //! @copydoc partNumber(const std::string&)
+    //! @copydoc partNumber(std::string_view)
     void partNumber( std::string &&partNumber);
 
     /**
@@ -72,7 +72,7 @@ class BatchInfo
      *
      * @return The batch filename
      **/
-    const std::string& filename() const;
+    std::string_view filename() const;
 
     /**
      * @brief Updates the batch filename.
@@ -80,9 +80,9 @@ class BatchInfo
      * @param[in] filename
      *   The batch filename.
      **/
-    void filename( const std::string &filename);
+    void filename( std::string_view filename);
 
-    //! @copydoc filename(const std::string&)
+    //! @copydoc filename(std::string_view)
     void filename( std::string &&filename);
 
     /**
@@ -90,7 +90,7 @@ class BatchInfo
      *
      * @return The member sequence number
      **/
-    uint16_t memberSequenceNumber() const;
+    [[nodiscard]] uint16_t memberSequenceNumber() const;
 
     /**
      * @brief Updates the  member sequence number.

@@ -49,7 +49,7 @@ class BaseFile: public Base
    //void setName( void);
 
     //! @copydoc Base::partNumber
-    std::string partNumber() const final;
+    [[nodiscard]] std::string_view partNumber() const final;
 
     /**
      * @brief Updates the part number
@@ -57,7 +57,7 @@ class BaseFile: public Base
      * @param[in] partNumber
      *   New Part number
      **/
-    void partNumber( const std::string &partNumber);
+    void partNumber( std::string_view partNumber);
 
     /**
      * @brief Returns the name of the file.

@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of the namespace Arinc665::File.
+ * @brief Declaration of Namespace Arinc665::File.
  **/
 
 #ifndef ARINC665_FILE_FILE_HPP
@@ -42,35 +42,33 @@ namespace Arinc665::File {
 //! Raw file type definition.
 using RawFile = std::vector< uint8_t>;
 
-class FileFactory;
-
 class Arinc665File;
 
 class LoadFileInfo;
-//! Load files information (list).
+//! Load Files Information (list).
 using LoadFilesInfo = std::list< LoadFileInfo>;
 class LoadHeaderFile;
 
 class BatchTargetInfo;
-//! Batch targets information (list).
+//! Batch Targets Information (list).
 using BatchTargetsInfo = std::list< BatchTargetInfo>;
 class BatchLoadInfo;
-//! Batch loads information (list).
+//! Batch Loads Information (list).
 using BatchLoadsInfo = std::list< BatchLoadInfo>;
 class BatchFile;
 
 class BatchInfo;
-//! Batches information (list).
+//! Batches Information (list).
 using BatchesInfo = std::list< BatchInfo>;
 class BatchListFile;
 
 class LoadInfo;
-//! Loads information (list).
+//! Loads Information (list).
 using LoadsInfo = std::list< LoadInfo>;
 class LoadListFile;
 
 class FileInfo;
-//! Files information (list).
+//! Files Information (list).
 using FilesInfo = std::vector< FileInfo>;
 class FileListFile;
 

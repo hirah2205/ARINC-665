@@ -47,12 +47,12 @@ class LoadInfo
      *   Target Hardware IDs
      **/
     LoadInfo(
-      const std::string &partNumber,
-      const std::string &headerFilename,
+      std::string_view partNumber,
+      std::string_view headerFilename,
       uint8_t memberSequenceNumber,
       const ThwIds &targetHardwareIds);
 
-    //! @copydoc LoadInfo::LoadInfo(const std::string&,const std::string&,uint8_t,const ThwIds&)
+    //! @copydoc LoadInfo::LoadInfo(std::string_view,std::string_view,uint8_t,const ThwIds&)
     LoadInfo(
       std::string &&partNumber,
       std::string &&headerFilename,
@@ -64,7 +64,7 @@ class LoadInfo
      *
      * @return The load part number
      **/
-    std::string partNumber() const;
+    [[nodiscard]] std::string_view partNumber() const;
 
     /**
      * @brief Updates the load part number.
@@ -72,9 +72,9 @@ class LoadInfo
      * @param[in] partNumber
      *   load part number.
      **/
-    void partNumber( const std::string &partNumber);
+    void partNumber( std::string_view partNumber);
 
-    //! @copydoc partNumber(const std::string&)
+    //! @copydoc partNumber(std::string_view)
     void partNumber( std::string &&partNumber);
 
     /**
@@ -82,7 +82,7 @@ class LoadInfo
      *
      * @return The load header filename.
      **/
-    std::string headerFilename() const;
+    std::string_view  headerFilename() const;
 
     /**
      * @brief Updates the load header filename.
@@ -90,9 +90,9 @@ class LoadInfo
      * @param[in] headerFilename
      *   The load header filename.
      **/
-    void headerFilename( const std::string &headerFilename);
+    void headerFilename( std::string_view headerFilename);
 
-    //! @copydoc headerFilename(const std::string&)
+    //! @copydoc headerFilename(std::string_view)
     void headerFilename( std::string &&headerFilename);
 
     /**
@@ -100,7 +100,7 @@ class LoadInfo
      *
      * @return The member sequence number
      **/
-    uint8_t memberSequenceNumber() const;
+    [[nodiscard]] uint8_t memberSequenceNumber() const;
 
     /**
      * @brief Updates the  member sequence number.
@@ -115,7 +115,7 @@ class LoadInfo
      *
      * @return The target hardware IDs.
      **/
-    const ThwIds& targetHardwareIds() const;
+    [[nodiscard]] const ThwIds& targetHardwareIds() const;
 
     //! @copydoc targetHardwareIds() const
     ThwIds& targetHardwareIds();
@@ -126,9 +126,9 @@ class LoadInfo
      * @param[in] targetHardwareId
      *   target hardware ID.
      **/
-    void targetHardwareId( const std::string &targetHardwareId);
+    void targetHardwareId( std::string_view targetHardwareId);
 
-    //! @copydoc targetHardwareId(const std::string&)
+    //! @copydoc targetHardwareId(std::string_view)
     void targetHardwareId( std::string &&targetHardwareId);
 
     /**

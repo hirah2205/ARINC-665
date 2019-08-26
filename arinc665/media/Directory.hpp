@@ -53,7 +53,7 @@ class Directory : public ContainerEntity
     // void rename( const string& name);
 
     //! @copydoc ContainerEntity::partNumber
-    std::string partNumber() const final;
+    std::string_view partNumber() const final;
 
     //! @copydoc ContainerEntity::path() const
     virtual std::filesystem::path path() const final;

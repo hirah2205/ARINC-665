@@ -55,9 +55,9 @@ namespace Arinc665::File {
 class BatchListFile: public ListFile
 {
   public:
-    //! Batch information map type
+    //! Batch Information Map
     using BatchInfoMap = std::map< std::pair< uint8_t, std::string>, BatchInfo>;
-    //! User defined data type.
+    //! User Defined Data.
     using UserDefinedData = std::vector< uint8_t>;
 
     //! Offset of the Spare field.
@@ -81,7 +81,7 @@ class BatchListFile: public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    BatchListFile( SupportedArinc665Version version);
+    explicit BatchListFile( SupportedArinc665Version version);
 
     /**
      * @brief Creates batch list file with the given data.
@@ -101,13 +101,13 @@ class BatchListFile: public ListFile
      **/
     BatchListFile(
       SupportedArinc665Version version,
-      const std::string &mediaSetPn,
+      std::string_view mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       const BatchesInfo &batches,
       const UserDefinedData &userDefinedData);
 
-    //! @copydoc BatchListFile(SupportedArinc665Version,const std::string&,uint8_t,uint8_t,const BatchesInfo&,const UserDefinedData&)
+    //! @copydoc BatchListFile(SupportedArinc665Version,std::string_view,uint8_t,uint8_t,const BatchesInfo&,const UserDefinedData&)
     BatchListFile(
       SupportedArinc665Version version,
       std::string &&mediaSetPn,
@@ -128,22 +128,22 @@ class BatchListFile: public ListFile
     BatchListFile& operator=( const RawFile &rawFile) final;
 
     //! @copydoc ListFile::mediaSetPn
-    std::string mediaSetPn() const final;
+    [[nodiscard]] std::string_view mediaSetPn() const final;
 
     //! @copydoc ListFile::mediaSetPn
-    void mediaSetPn( const std::string &mediaSetPn) final;
+    void mediaSetPn( std::string_view mediaSetPn) final;
 
     //! @copydoc ListFile::mediaSetPn
     void mediaSetPn( std::string &&mediaSetPn) final;
 
     //! @copydoc ListFile::mediaSequenceNumber
-    uint8_t mediaSequenceNumber() const final;
+    [[nodiscard]] uint8_t mediaSequenceNumber() const final;
 
     //! @copydoc ListFile::mediaSequenceNumber
     void mediaSequenceNumber( uint8_t mediaSequenceNumber) final;
 
     //! @copydoc ListFile::numberOfMediaSetMembers
-    uint8_t numberOfMediaSetMembers() const final;
+    [[nodiscard]] uint8_t numberOfMediaSetMembers() const final;
 
     //! @copydoc ListFile::numberOfMediaSetMembers
     void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) final;
@@ -153,14 +153,14 @@ class BatchListFile: public ListFile
      *
      * @return The number of batches.
      **/
-    size_t numberOfBatches() const;
+    [[nodiscard]] size_t numberOfBatches() const;
 
     /**
      * @brief Returns the batches information.
      *
      * @return The batches information.
      **/
-    const BatchesInfo& batches() const;
+    [[nodiscard]] const BatchesInfo& batches() const;
 
     //! @copydoc batches() const
     BatchesInfo& batches();
@@ -170,7 +170,7 @@ class BatchListFile: public ListFile
      *
      * @return The batches information as map.
      */
-    BatchInfoMap batchesAsMap() const;
+    [[nodiscard]] BatchInfoMap batchesAsMap() const;
 
     /**
      * @brief Adds the given batch information.
@@ -188,7 +188,7 @@ class BatchListFile: public ListFile
      *
      * @return The user defined data.
      **/
-    const UserDefinedData& userDefinedData() const;
+    [[nodiscard]] const UserDefinedData& userDefinedData() const;
 
     /**
      * @brief Updates the user defined data.

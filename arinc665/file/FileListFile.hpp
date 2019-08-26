@@ -17,6 +17,8 @@
 #include <arinc665/file/ListFile.hpp>
 #include <arinc665/file/FileInfo.hpp>
 
+#include <string_view>
+#include <string>
 #include <vector>
 #include <map>
 #include <cstdint>
@@ -98,7 +100,7 @@ class FileListFile: public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    FileListFile( SupportedArinc665Version version);
+    explicit FileListFile( SupportedArinc665Version version);
 
     /**
      * @brief Creates file list file with the given data.
@@ -113,19 +115,19 @@ class FileListFile: public ListFile
      *   The Number of Media Set Members [1..255] & mediaSequenceNumber <=
      *     [numberOfMediaSetMembers]
      * @param[in] files
-     *   The files informations.
+     *   Files information.
      * @param[in] userDefinedData
      *   Additional User Defined Data.
      **/
     FileListFile(
       SupportedArinc665Version version,
-      const std::string &mediaSetPn,
+      std::string_view mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       const FilesInfo &files,
       const UserDefinedData &userDefinedData);
 
-    //! @copydoc FileListFile(SupportedArinc665Version,const std::string&,uint8_t,uint8_t,const FilesInfo&,const UserDefinedData&)
+    //! @copydoc FileListFile(SupportedArinc665Version,std::string_view,uint8_t,uint8_t,const FilesInfo&,const UserDefinedData&)
     FileListFile(
       SupportedArinc665Version version,
       std::string &&mediaSetPn,
@@ -146,22 +148,22 @@ class FileListFile: public ListFile
     FileListFile& operator=( const RawFile &rawFile) final;
 
     //! @copydoc ListFile::mediaSetPn
-    std::string mediaSetPn() const final;
+    [[nodiscard]] std::string_view mediaSetPn() const final;
 
     //! @copydoc ListFile::mediaSetPn
-    void mediaSetPn( const std::string &mediaSetPn) final;
+    void mediaSetPn( std::string_view mediaSetPn) final;
 
     //! @copydoc ListFile::mediaSetPn
     void mediaSetPn( std::string &&mediaSetPn) final;
 
     //! @copydoc ListFile::mediaSequenceNumber
-    uint8_t mediaSequenceNumber() const final;
+    [[nodiscard]] uint8_t mediaSequenceNumber() const final;
 
     //! @copydoc ListFile::mediaSequenceNumber
     void mediaSequenceNumber( uint8_t mediaSequenceNumber) final;
 
     //! @copydoc ListFile::numberOfMediaSetMembers
-    uint8_t numberOfMediaSetMembers() const final;
+    [[nodiscard]] uint8_t numberOfMediaSetMembers() const final;
 
     //! @copydoc ListFile::numberOfMediaSetMembers
     void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) final;
@@ -171,14 +173,14 @@ class FileListFile: public ListFile
      *
      * @return The number of files.
      **/
-    size_t numberOfFiles() const;
+    [[nodiscard]] size_t numberOfFiles() const;
 
     /**
      * @brief Return the list of files.
      *
      * @return The list of files
      **/
-    const FilesInfo& files() const;
+    [[nodiscard]] const FilesInfo& files() const;
 
     /**
      * @brief Return the list of files.
@@ -192,14 +194,14 @@ class FileListFile: public ListFile
      *
      * @return The list of files
      **/
-    FileInfoMap filesAsMap() const;
+    [[nodiscard]] FileInfoMap filesAsMap() const;
 
     /**
      * @brief Return the list of files as map ( media index and complete path as key).
      *
      * @return The list of files
      **/
-    FileInfoPathMap filesAsPathMap() const;
+    [[nodiscard]] FileInfoPathMap filesAsPathMap() const;
 
     /**
      * @brief Adds the given file information.
@@ -217,7 +219,7 @@ class FileListFile: public ListFile
      *
      * @return The user defined data.
      **/
-    const UserDefinedData& userDefinedData() const;
+    [[nodiscard]] const UserDefinedData& userDefinedData() const;
 
     /**
      * @brief Updates the user defined data.
@@ -235,7 +237,7 @@ class FileListFile: public ListFile
      *
      * @return The Check Value.
      **/
-    const std::optional< CheckValue>& checkValue() const;
+    [[nodiscard]] const std::optional< CheckValue>& checkValue() const;
 
     /**
      * @brief Updates the Check Value
@@ -256,11 +258,11 @@ class FileListFile: public ListFile
      *
      * @return If the given file list file belongs to the same media set.
      **/
-    bool belongsToSameMediaSet( const FileListFile &other) const;
+    [[nodiscard]] bool belongsToSameMediaSet( const FileListFile &other) const;
 
   private:
     //! @copydoc ListFile::encode
-    RawFile encode() const final;
+    [[nodiscard]] RawFile encode() const final;
 
     /**
      * @brief Decodes the body of the file list file.
@@ -278,7 +280,7 @@ class FileListFile: public ListFile
      *
      * @return Raw representation of files information list.
      **/
-    RawFile encodeFilesInfo( bool encodeV3Data) const;
+    [[nodiscard]] RawFile encodeFilesInfo( bool encodeV3Data) const;
 
     /**
      * @brief Decodes the files information list from the raw data.

@@ -15,39 +15,49 @@
 namespace Arinc665::File {
 
 BatchLoadInfo::BatchLoadInfo(
-  const std::string &headerFilename,
-  const std::string &partNumber):
-  headerFilenameV( headerFilename),
-  partNumberV( partNumber)
+  std::string_view headerFilename,
+  std::string_view partNumber):
+  headerFilenameV{ headerFilename},
+  partNumberV{ partNumber}
 {
 }
 
 BatchLoadInfo:: BatchLoadInfo(
   std::string &&headerFilename,
   std::string &&partNumber):
-  headerFilenameV( std::move( headerFilename)),
-  partNumberV( std::move( partNumber))
+  headerFilenameV{ std::move( headerFilename)},
+  partNumberV{ std::move( partNumber)}
 {
 }
 
-std::string BatchLoadInfo::headerFilename() const
+std::string_view BatchLoadInfo::headerFilename() const
 {
   return headerFilenameV;
 }
 
-void BatchLoadInfo::headerFilename( const std::string &headerFilename)
+void BatchLoadInfo::headerFilename( std::string_view headerFilename)
 {
   headerFilenameV = headerFilename;
 }
 
-std::string BatchLoadInfo::partNumber() const
+void BatchLoadInfo::headerFilename( std::string &&headerFilename)
+{
+  headerFilenameV = std::move( headerFilename);
+}
+
+std::string_view BatchLoadInfo::partNumber() const
 {
   return partNumberV;
 }
 
-void BatchLoadInfo::partNumber( const std::string &partNumber)
+void BatchLoadInfo::partNumber( std::string_view partNumber)
 {
   partNumberV = partNumber;
+}
+
+void BatchLoadInfo::partNumber( std::string &&partNumber)
+{
+  partNumberV = std::move( partNumber);
 }
 
 }

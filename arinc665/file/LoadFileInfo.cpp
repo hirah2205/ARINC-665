@@ -15,16 +15,16 @@
 namespace Arinc665::File {
 
 LoadFileInfo::LoadFileInfo(
-  const std::string &filename,
-  const std::string &partNumber,
+  std::string_view filename,
+  std::string_view partNumber,
   const uint64_t length,
   const uint16_t crc,
   const std::optional< CheckValue> &checkValue):
-  filenameValue( filename),
-  partNumberValue( partNumber),
-  lengthValue( length),
-  crcValue( crc),
-  checkValueValue( checkValue)
+  filenameValue{ filename},
+  partNumberValue{ partNumber},
+  lengthValue{ length},
+  crcValue{ crc},
+  checkValueValue{ checkValue}
 {
 }
 
@@ -34,20 +34,20 @@ LoadFileInfo::LoadFileInfo(
   const uint64_t length,
   const uint16_t crc,
   std::optional< CheckValue> &&checkValue):
-  filenameValue( std::move( filename)),
-  partNumberValue( std::move( partNumber)),
-  lengthValue( length),
-  crcValue( crc),
-  checkValueValue( std::move( checkValue))
+  filenameValue{( std::move( filename))},
+  partNumberValue{( std::move( partNumber))},
+  lengthValue{ length},
+  crcValue{ crc},
+  checkValueValue{( std::move( checkValue))}
 {
 }
 
-std::string LoadFileInfo::filename() const
+std::string_view LoadFileInfo::filename() const
 {
   return filenameValue;
 }
 
-void LoadFileInfo::filename( const std::string &filename)
+void LoadFileInfo::filename( std::string_view filename)
 {
   filenameValue = filename;
 }
@@ -57,12 +57,12 @@ void LoadFileInfo::filename( std::string &&filename)
   filenameValue = std::move( filename);
 }
 
-std::string LoadFileInfo::partNumber() const
+std::string_view LoadFileInfo::partNumber() const
 {
   return partNumberValue;
 }
 
-void LoadFileInfo::partNumber( const std::string &partNumber)
+void LoadFileInfo::partNumber( std::string_view partNumber)
 {
   partNumberValue = partNumber;
 }

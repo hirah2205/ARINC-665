@@ -38,12 +38,12 @@ MediaSet::Type MediaSet::type() const
   return Type::MediaSet;
 }
 
-std::string MediaSet::partNumber() const
+std::string_view MediaSet::partNumber() const
 {
   return partNumberV;
 }
 
-void MediaSet::partNumber( const std::string &partNumber)
+void MediaSet::partNumber( std::string_view partNumber)
 {
   partNumberV = partNumber;
 }
@@ -189,7 +189,7 @@ Files MediaSet::files()
   return files;
 }
 
-ConstFilePtr MediaSet::file( const std::string &filename) const
+ConstFilePtr MediaSet::file( std::string_view filename) const
 {
   for ( auto const &medium : mediaV)
   {
@@ -204,7 +204,7 @@ ConstFilePtr MediaSet::file( const std::string &filename) const
   return ConstFilePtr();
 }
 
-FilePtr MediaSet::file( const std::string &filename)
+FilePtr MediaSet::file( std::string_view filename)
 {
   for ( auto &medium : mediaV)
   {
@@ -258,7 +258,7 @@ Loads MediaSet::loads()
   return loads;
 }
 
-ConstLoadPtr MediaSet::load( const std::string &filename) const
+ConstLoadPtr MediaSet::load( std::string_view filename) const
 {
   for (const auto & medium : mediaV)
   {
@@ -273,7 +273,7 @@ ConstLoadPtr MediaSet::load( const std::string &filename) const
   return {};
 }
 
-LoadPtr MediaSet::load( const std::string &filename)
+LoadPtr MediaSet::load( std::string_view filename)
 {
   for (const auto & medium : mediaV)
   {

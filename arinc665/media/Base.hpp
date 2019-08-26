@@ -16,6 +16,7 @@
 #include <arinc665/media/Media.hpp>
 
 #include <string>
+#include <string_view>
 
 namespace Arinc665::Media {
 
@@ -44,7 +45,7 @@ class Base
      *
      * @return The owning media set
      **/
-    virtual ConstMediaSetPtr mediaSet() const = 0;
+    [[nodiscard]] virtual ConstMediaSetPtr mediaSet() const = 0;
 
     //! @copydoc mediaSet() const
     virtual MediaSetPtr mediaSet() = 0;
@@ -54,7 +55,7 @@ class Base
      *
      * @return The item type
      **/
-    virtual Type type() const = 0;
+    [[nodiscard]] virtual Type type() const = 0;
 
     /**
      * @brief Return the part number of the entity.
@@ -64,7 +65,7 @@ class Base
      *
      * @return The part number of the entity
      **/
-    virtual std::string partNumber() const = 0;
+    [[nodiscard]] virtual std::string_view partNumber() const = 0;
 };
 
 }

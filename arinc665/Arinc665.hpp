@@ -149,15 +149,15 @@ enum class Arinc665FileFormatVersion : uint16_t
 //! Check Value Type enumeration
 enum class CheckValueType : uint16_t
 {
-  NotUsed = 0,
-  Crc8    = 1,
-  Crc16   = 2,
-  Crc32   = 3,
-  Md5     = 4,
-  Sha1    = 5,
-  Sha256  = 6,
-  Sha512  = 7,
-  Crc64   = 6,
+  NotUsed = 0u,
+  Crc8    = 1u,
+  Crc16   = 2u,
+  Crc32   = 3u,
+  Md5     = 4u,
+  Sha1    = 5u,
+  Sha256  = 6u,
+  Sha512  = 7u,
+  Crc64   = 6u,
 
   Invalid = 0xFFFFU
 };

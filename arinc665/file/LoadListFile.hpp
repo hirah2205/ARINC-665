@@ -17,6 +17,7 @@
 #include <arinc665/file/ListFile.hpp>
 #include <arinc665/file/LoadInfo.hpp>
 
+#include <string_view>
 #include <vector>
 #include <map>
 
@@ -83,7 +84,7 @@ class LoadListFile: public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    LoadListFile( SupportedArinc665Version version);
+    explicit LoadListFile( SupportedArinc665Version version);
 
     /**
      * @brief Creates load list file with the given data.
@@ -103,13 +104,13 @@ class LoadListFile: public ListFile
      **/
     LoadListFile(
       SupportedArinc665Version version,
-      const std::string &mediaSetPn,
+      std::string_view mediaSetPn,
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       const LoadsInfo &loads,
       const UserDefinedData &userDefinedData);
 
-    //! @copydoc LoadListFile(SupportedArinc665Version,const std::string&,uint8_t,uint8_t,const LoadsInfo&,const UserDefinedData&)
+    //! @copydoc LoadListFile(SupportedArinc665Version,std::string_view,uint8_t,uint8_t,const LoadsInfo&,const UserDefinedData&)
     LoadListFile(
       SupportedArinc665Version version,
       std::string &&mediaSetPn,
@@ -130,10 +131,10 @@ class LoadListFile: public ListFile
     LoadListFile& operator=( const RawFile &rawFile) final;
 
     //! @copydoc ListFile::mediaSetPn
-    std::string mediaSetPn() const final;
+    std::string_view mediaSetPn() const final;
 
     //! @copydoc ListFile::mediaSetPn
-    void mediaSetPn( const std::string &mediaSetPn) final;
+    void mediaSetPn( std::string_view mediaSetPn) final;
 
     //! @copydoc ListFile::mediaSetPn
     void mediaSetPn( std::string &&mediaSetPn) final;

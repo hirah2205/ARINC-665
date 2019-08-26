@@ -17,12 +17,12 @@
 namespace Arinc665::File {
 
 BatchInfo::BatchInfo(
-  const std::string &partNumber,
-  const std::string &filename,
+  std::string_view partNumber,
+  std::string_view filename,
   uint16_t memberSequenceNumber):
-  partNumberValue( partNumber),
-  filenameValue( filename),
-  memberSequenceNumberValue( memberSequenceNumber)
+  partNumberValue{ partNumber},
+  filenameValue{ filename},
+  memberSequenceNumberValue{ memberSequenceNumber}
 {
 }
 
@@ -30,18 +30,18 @@ BatchInfo::BatchInfo(
   std::string &&partNumber,
   std::string &&filename,
   uint16_t memberSequenceNumber):
-  partNumberValue( partNumber),
-  filenameValue( filename),
-  memberSequenceNumberValue( memberSequenceNumber)
+  partNumberValue{ partNumber},
+  filenameValue{ filename},
+  memberSequenceNumberValue{ memberSequenceNumber}
 {
 }
 
-const std::string& BatchInfo::partNumber() const
+std::string_view BatchInfo::partNumber() const
 {
   return partNumberValue;
 }
 
-void BatchInfo::partNumber( const std::string &partNumber)
+void BatchInfo::partNumber( std::string_view partNumber)
 {
   partNumberValue = partNumber;
 }
@@ -51,12 +51,12 @@ void BatchInfo::partNumber( std::string &&partNumber)
   partNumberValue = std::move( partNumber);
 }
 
-const std::string& BatchInfo::filename() const
+std::string_view BatchInfo::filename() const
 {
   return filenameValue;
 }
 
-void BatchInfo::filename( const std::string &filename)
+void BatchInfo::filename( std::string_view filename)
 {
   filenameValue = filename;
 }

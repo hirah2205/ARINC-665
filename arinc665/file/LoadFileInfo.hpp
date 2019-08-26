@@ -16,6 +16,7 @@
 #include <arinc665/file/File.hpp>
 
 #include <string>
+#include <string_view>
 #include <optional>
 #include <cstdint>
 
@@ -47,13 +48,13 @@ class LoadFileInfo
      *   Check Value.
      **/
     LoadFileInfo(
-      const std::string &filename,
-      const std::string &partNumber,
+      std::string_view filename,
+      std::string_view partNumber,
       uint64_t length,
       uint16_t crc,
       const std::optional< CheckValue> &checkValue = {});
 
-    //! @copydoc LoadFileInfo::LoadFileInfo(const std::string&,const std::string&,uint64_t,uint16_t,const std::optional<CheckValue>&)
+    //! @copydoc LoadFileInfo::LoadFileInfo(std::string_view,std::string_view,uint64_t,uint16_t,const std::optional<CheckValue>&)
     LoadFileInfo(
       std::string &&filename,
       std::string &&partNumber,
@@ -66,7 +67,7 @@ class LoadFileInfo
      *
      * @return The filename.
      **/
-    std::string filename() const;
+    [[nodiscard]] std::string_view filename() const;
 
     /**
      * @brief Updates the filename.
@@ -74,9 +75,9 @@ class LoadFileInfo
      * @param[in] filename
      *   The filename.
      **/
-    void filename( const std::string &filename);
+    void filename( std::string_view filename);
 
-    //! @copydoc filename(const std::string&)
+    //! @copydoc filename(std::string_view)
     void filename( std::string &&filename);
 
     /**
@@ -84,7 +85,7 @@ class LoadFileInfo
      *
      * @return The part number.
      **/
-    std::string partNumber() const;
+    [[nodiscard]] std::string_view partNumber() const;
 
     /**
      * @brief Updates the file part number.
@@ -92,9 +93,9 @@ class LoadFileInfo
      * @param[in] partNumber
      *   The file part number.
      **/
-    void partNumber( const std::string &partNumber);
+    void partNumber( std::string_view partNumber);
 
-    //! @copydoc partNumber(const std::string&)
+    //! @copydoc partNumber(std::string_view)
     void partNumber( std::string &&partNumber);
 
     /**
@@ -102,7 +103,7 @@ class LoadFileInfo
      *
      * @return The file size.
      **/
-    uint64_t length() const;
+    [[nodiscard]] uint64_t length() const;
 
     /**
      * @brief Updates the file size.
@@ -117,7 +118,7 @@ class LoadFileInfo
      *
      * @return The file CRC.
      **/
-    uint16_t crc() const;
+    [[nodiscard]] uint16_t crc() const;
 
     /**
      * @brief Updates the file CRC.
@@ -132,7 +133,7 @@ class LoadFileInfo
      *
      * @return The Check Value.
      **/
-    const std::optional< CheckValue>& checkValue() const;
+    [[nodiscard]] const std::optional< CheckValue>& checkValue() const;
 
     /**
      * @brief Updates the Check Value

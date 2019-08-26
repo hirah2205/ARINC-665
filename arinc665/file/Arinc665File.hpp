@@ -237,7 +237,7 @@ class Arinc665File
      * @brief Detects the file type for the given filename.
      *
      * @param[in] filename
-     *   The filename.
+     *   filename.
      *
      * @return The file type.
      * @retval FileType::Invalid

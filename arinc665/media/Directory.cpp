@@ -59,7 +59,7 @@ const std::string& Directory::name() const
   return nameV;
 }
 
-std::string Directory::partNumber() const
+std::string_view Directory::partNumber() const
 {
   auto parentPtr{ parent()};
 
