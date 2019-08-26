@@ -44,7 +44,7 @@ class MediaSetManager
     using MediumPathHandler =
       std::function< std::filesystem::path( Media::ConstMediumPtr medium)>;
 
-    //! Default destructor
+    //! Destructor
     virtual ~MediaSetManager() noexcept = default;
 
     /**
@@ -74,14 +74,14 @@ class MediaSetManager
      *
      * @return The media set with the given part number.
      **/
-    virtual Media::MediaSetPtr mediaSet( const std::string &partNumber) = 0;
+    virtual Media::MediaSetPtr mediaSet( std::string_view partNumber) = 0;
 
     /**
      * @brief Returns all registered media sets.
      *
      * @return All media sets.
      **/
-    virtual const MediaSets& mediaSets() const = 0;
+    [[nodiscard]] virtual const MediaSets& mediaSets() const = 0;
 
     //! @copydoc MediaSetManager::mediaSets() const
     virtual MediaSets& mediaSets() = 0;
@@ -111,7 +111,7 @@ class MediaSetManager
      *
      * @return All available loads.
      **/
-    virtual Media::ConstLoads loads() const = 0;
+    [[nodiscard]] virtual Media::ConstLoads loads() const = 0;
 
     /**
      * @brief Returns the loads with the given filename.
@@ -124,7 +124,8 @@ class MediaSetManager
      *
      * @return The loads with the given filename.
      **/
-    virtual Media::ConstLoads load( const std::string &filename) const = 0;
+    [[nodiscard]] virtual Media::ConstLoads load(
+      std::string_view filename) const = 0;
 
     /**
      * @brief Returns the path to the given file.
@@ -134,7 +135,8 @@ class MediaSetManager
      *
      * @return The path to the given file.
      **/
-    virtual std::filesystem::path filePath( Media::ConstBaseFilePtr file) const = 0;
+    [[nodiscard]] virtual std::filesystem::path filePath(
+      Media::ConstBaseFilePtr file) const = 0;
 };
 
 }

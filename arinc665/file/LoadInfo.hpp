@@ -82,7 +82,7 @@ class LoadInfo
      *
      * @return The load header filename.
      **/
-    std::string_view  headerFilename() const;
+    [[nodiscard]] std::string_view  headerFilename() const;
 
     /**
      * @brief Updates the load header filename.
@@ -118,7 +118,7 @@ class LoadInfo
     [[nodiscard]] const ThwIds& targetHardwareIds() const;
 
     //! @copydoc targetHardwareIds() const
-    ThwIds& targetHardwareIds();
+    [[nodiscard]] ThwIds& targetHardwareIds();
 
     /**
      * @brief Adds a target hardware ID.

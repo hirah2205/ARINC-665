@@ -35,7 +35,7 @@ class MediaSet:
   public std::enable_shared_from_this< MediaSet>
 {
   public:
-    //! User defined data type
+    //! User Defined Data
     using UserDefinedData = std::vector< uint8_t>;
 
     /**
@@ -285,7 +285,7 @@ class MediaSet:
      * @param[in] filename
      *   The filename of the batch.
      **/
-    void removeBatch( const std::string &filename);
+    void removeBatch( std::string_view filename);
 
     /**
      * @brief Removes the given batch from the media set.

@@ -17,6 +17,8 @@
 #include <arinc665/media/BaseFile.hpp>
 
 #include <map>
+#include <string>
+#include <string_view>
 
 namespace Arinc665::Media {
 
@@ -26,7 +28,7 @@ namespace Arinc665::Media {
 class Batch: public BaseFile
 {
   public:
-    //! Batch information type (Target Hardware ID -> Loads)
+    //! Batch Information (Target Hardware ID -> Loads)
     using BatchInfo = std::map< std::string, WeakLoads, std::less<>>;
 
     /**
@@ -37,24 +39,24 @@ class Batch: public BaseFile
      * @param[in] name
      *   Name of the batch.
      **/
-    Batch( ContainerEntityPtr parent, std::string_view name);
+    Batch( const ContainerEntityPtr& parent, std::string_view name);
 
     //! @copydoc Batch(ContainerEntityPtr,std::string_view)
-    Batch( ContainerEntityPtr parent, std::string &&name);
+    Batch( const ContainerEntityPtr& parent, std::string &&name);
 
     /**
      * @copydoc BaseFile::fileType()
      *
      * @return FileType::BatchFile always.
      **/
-    FileType fileType() const final;
+    [[nodiscard]] FileType fileType() const final;
 
     /**
      * @brief Get the comment, which describes the batch.
      *
      * @return The comment, which describes the batch.
      **/
-    std::string comment() const;
+    [[nodiscard]] std::string_view comment() const;
 
     /**
      * @brief Set the comment, which describes the batch.
@@ -72,7 +74,7 @@ class Batch: public BaseFile
      *
      * @return The batch target information.
      **/
-    const BatchInfo& targets() const;
+    [[nodiscard]] const BatchInfo& targets() const;
 
     //! @copydoc targets() const
     BatchInfo& targets();
@@ -85,7 +87,7 @@ class Batch: public BaseFile
      *
      * @return The corresponding loads
      **/
-    const WeakLoads target( std::string_view targetHardwareId) const;
+    [[nodiscard]] WeakLoads target( std::string_view targetHardwareId) const;
 
     /**
      * @brief Return the batch info for the given target hardware ID
@@ -105,10 +107,10 @@ class Batch: public BaseFile
      * @param[in] loads
      *   Loads.
      **/
-    void target( std::string_view targetHardwareId, WeakLoads loads);
+    void target( std::string_view targetHardwareId, const WeakLoads &loads);
 
     //! @copydoc target(std::string_view,WeakLoads)
-    void target( std::string &&targetHardwareId, WeakLoads loads);
+    void target( std::string &&targetHardwareId, WeakLoads &&loads);
 
   private:
     //! Batch comment

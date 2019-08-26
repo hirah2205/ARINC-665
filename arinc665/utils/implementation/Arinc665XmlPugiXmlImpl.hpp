@@ -26,11 +26,11 @@ namespace Arinc665::Utils {
 class Arinc665XmlPugiXmlImpl : public Arinc665Xml
 {
   public:
-   //! Default constructor
+   //! Constructor
     Arinc665XmlPugiXmlImpl() = default;
 
-    //! Default descructor
-    virtual ~Arinc665XmlPugiXmlImpl() = default;
+    //! Destructor
+    ~Arinc665XmlPugiXmlImpl() override = default;
 
     /**
      * @brief Loads the Media Set information from the given XML file.

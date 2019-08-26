@@ -34,17 +34,17 @@ class BaseFile: public Base
       BatchFile
     };
 
-    //! Default destructor
-    virtual ~BaseFile() = default;
+    //! Destructor
+    ~BaseFile() override = default;
 
     //! @copydoc Base::mediaSet
-    ConstMediaSetPtr mediaSet() const final;
+    [[nodiscard]] ConstMediaSetPtr mediaSet() const final;
 
     //! @copydoc Base::mediaSet
     MediaSetPtr mediaSet() final;
 
     //! @copydoc Base::type
-    Type type() const final;
+    [[nodiscard]] Type type() const final;
 
    //void setName( void);
 
@@ -64,14 +64,14 @@ class BaseFile: public Base
      *
      * @return The name of the file.
      **/
-    const std::string& name() const;
+    std::string_view name() const;
 
     /**
      * @brief Returns the file type.
      *
      * @return The file type
      **/
-    virtual FileType fileType() const = 0;
+    [[nodiscard]] virtual FileType fileType() const = 0;
 
     /**
      * @brief Returns the container element.
@@ -85,14 +85,14 @@ class BaseFile: public Base
      *
      * @return The parent container element
      **/
-    ConstContainerEntityPtr parent() const;
+    [[nodiscard]] ConstContainerEntityPtr parent() const;
 
     /**
      * @brief Returns the medium where this file is located.
      *
      * @return The medium where this file is located.
      **/
-    ConstMediumPtr medium() const;
+    [[nodiscard]] ConstMediumPtr medium() const;
 
     //! @copydoc medium() const
     MediumPtr medium();
@@ -107,7 +107,7 @@ class BaseFile: public Base
      * @retval {}
      *   If parent is not available. (Should never happen)
      **/
-    std::filesystem::path path() const;
+    [[nodiscard]] std::filesystem::path path() const;
 
   protected:
     /**
@@ -121,10 +121,10 @@ class BaseFile: public Base
      * @throw Arinc665Exception
      *   If parent is invalid
      **/
-    BaseFile( ContainerEntityPtr parent, std::string_view name);
+    BaseFile( const ContainerEntityPtr& parent, std::string_view name);
 
     //! @copydoc BaseFile::BaseFile(ContainerEntityPtr,std::string_view)
-    BaseFile( ContainerEntityPtr parent, std::string &&name);
+    BaseFile( const ContainerEntityPtr& parent, std::string &&name);
 
     /**
      * @brief Sets the parent element.
@@ -135,14 +135,14 @@ class BaseFile: public Base
      * @throw Arinc665Exception
      *   If parent is invalid
      **/
-    void parent( ContainerEntityPtr parent);
+    void parent( const ContainerEntityPtr& parent);
 
   private:
-    //! The parent
+    //! Parent
     WeakContainerEntityPtr parentValue;
-    //! The file name
+    //! File name
     const std::string nameValue;
-    //! The part number
+    //! Part number
     std::string partNumberValue;
 };
 

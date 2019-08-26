@@ -27,7 +27,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
   const MediaSetConfiguration &config):
   config( config)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
   for ( auto const &mediaSet : config.mediaSets)
   {
@@ -99,7 +99,7 @@ const MediaSetConfiguration& MediaSetManagerImpl::configuration() const
   return config;
 }
 
-Media::MediaSetPtr MediaSetManagerImpl::mediaSet( const std::string &partNumber)
+Media::MediaSetPtr MediaSetManagerImpl::mediaSet( std::string_view partNumber)
 {
   for (const auto &mediaSet : mediaSetsValue)
   {
@@ -126,7 +126,7 @@ void MediaSetManagerImpl::add(
   Media::ConstMediaSetPtr mediaSet,
   MediumPathHandler mediumPathHandler)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
   assert( mediaSet && mediumPathHandler);
 
@@ -159,7 +159,7 @@ Media::ConstLoads MediaSetManagerImpl::loads() const
   return loads;
 }
 
-Media::ConstLoads MediaSetManagerImpl::load( const std::string &filename) const
+Media::ConstLoads MediaSetManagerImpl::load( std::string_view filename) const
 {
   Media::ConstLoads loads;
 

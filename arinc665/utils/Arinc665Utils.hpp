@@ -22,6 +22,7 @@
 #include <filesystem>
 #include <functional>
 #include <string>
+#include <string_view>
 
 namespace Arinc665::Utils {
 
@@ -60,7 +61,7 @@ class Arinc665Utils
 
     //! Handler which is called for Validation Information.
     using ValidatorInformationHandler =
-      std::function< void( const std::string &information)>;
+      std::function< void( std::string_view information)>;
 
     /**
      * @brief The ARINC 665 Media Set Importer.

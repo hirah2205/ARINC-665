@@ -14,13 +14,13 @@
 
 namespace Arinc665::Media {
 
-Batch::Batch( ContainerEntityPtr parent, std::string_view name) :
+Batch::Batch( const ContainerEntityPtr& parent, std::string_view name) :
   BaseFile{ parent, name}
 {
 }
 
-Batch::Batch( ContainerEntityPtr parent, std::string &&name):
-  BaseFile{ std::move( parent), std::move( name)}
+Batch::Batch( const ContainerEntityPtr& parent, std::string &&name):
+  BaseFile{ parent, std::move( name)}
 {
 }
 
@@ -29,7 +29,7 @@ Batch::FileType Batch::fileType() const
   return FileType::BatchFile;
 }
 
-std::string Batch::comment() const
+std::string_view Batch::comment() const
 {
   return commentValue;
 }
@@ -54,7 +54,7 @@ Batch::BatchInfo& Batch::targets()
   return batchesValue;
 }
 
-const WeakLoads Batch::target( std::string_view targetHardwareId) const
+WeakLoads Batch::target( std::string_view targetHardwareId) const
 {
   auto it{ batchesValue.find( targetHardwareId)};
 
@@ -78,14 +78,14 @@ WeakLoads Batch::target( std::string_view targetHardwareId)
   return it->second;
 }
 
-void Batch::target( std::string_view targetHardwareId, WeakLoads loads)
+void Batch::target( std::string_view targetHardwareId, const WeakLoads &loads)
 {
   batchesValue.insert( {std::string{ targetHardwareId}, loads});
 }
 
-void Batch::target( std::string &&targetHardwareId, WeakLoads loads)
+void Batch::target( std::string &&targetHardwareId, WeakLoads &&loads)
 {
-  batchesValue.insert( {std::move( targetHardwareId), loads});
+  batchesValue.insert( {std::move( targetHardwareId), std::move( loads)});
 }
 
 }

@@ -27,8 +27,8 @@ BatchFile::BatchFile( const SupportedArinc665Version version):
 
 BatchFile::BatchFile(
   SupportedArinc665Version version,
-  const std::string &partNumber,
-  const std::string &comment,
+  std::string_view partNumber,
+  std::string_view comment,
   const BatchTargetsInfo &targets):
   Arinc665File{ FileType::BatchFile, version},
   partNumberValue{ partNumber},
@@ -50,7 +50,7 @@ BatchFile::BatchFile(
 }
 
 BatchFile::BatchFile( const RawFile &rawFile):
-  Arinc665File( FileType::BatchFile, rawFile)
+  Arinc665File{ FileType::BatchFile, rawFile}
 {
   decodeBody( rawFile);
 }
@@ -78,12 +78,12 @@ void BatchFile::partNumber( std::string &&partNumber)
   partNumberValue = std::move( partNumber);
 }
 
-std::string BatchFile::comment() const
+std::string_view BatchFile::comment() const
 {
   return commentValue;
 }
 
-void BatchFile::comment( const std::string &comment)
+void BatchFile::comment( std::string_view comment)
 {
   commentValue = comment;
 }
@@ -216,7 +216,7 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
 
     RawFile rawLoadsInfo;
     /* iterate over loads */
-    for ( auto const loadInfo : targetHardwareInfo.loads())
+    for ( auto const &loadInfo : targetHardwareInfo.loads())
     {
       auto const rawHeaderFilename{ encodeString( loadInfo.headerFilename())};
       assert( rawHeaderFilename.size() % 2 == 0);
@@ -262,8 +262,7 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
       safeCast< uint16_t>( targetHardwareInfo.loads().size()));
 
     // Loads list
-    batchTargetInfoIt =
-      std::copy( rawLoadsInfo.begin(), rawLoadsInfo.end(), batchTargetInfoIt);
+    std::copy( rawLoadsInfo.begin(), rawLoadsInfo.end(), batchTargetInfoIt);
 
     // add THW info to files info
     rawBatchTargetsInfo.insert(
@@ -281,13 +280,13 @@ void BatchFile::decodeBatchTargetsInfo(
 {
   //BOOST_LOG_FUNCTION();
 
-  RawFile::const_iterator it( rawFile.begin() + offset);
+  auto it{ rawFile.begin() + offset};
 
   // clear potently data
   targetHardwaresValue.clear();
 
   // number of target HW IDs
-  uint16_t numberOfTargetHardwareIds;
+  uint16_t numberOfTargetHardwareIds{};
   it = getInt< uint16_t>( it, numberOfTargetHardwareIds);
 
   // iterate over THW ID index
@@ -296,18 +295,18 @@ void BatchFile::decodeBatchTargetsInfo(
     auto listIt( it);
 
     // next THW ID pointer
-    uint16_t thwIdPointer;
+    uint16_t thwIdPointer{};
     listIt = getInt< uint16_t>( listIt, thwIdPointer);
 
     // THW ID
-    std::string thwId;
+    std::string thwId{};
     listIt = decodeString( listIt, thwId);
 
     // Loads list
-    BatchLoadsInfo batchLoadsInfo;
+    BatchLoadsInfo batchLoadsInfo{};
 
     // number of loads
-    uint16_t numberOfLoads;
+    uint16_t numberOfLoads{};
     listIt = getInt< uint16_t>( listIt, numberOfLoads);
 
     // iterate over load index

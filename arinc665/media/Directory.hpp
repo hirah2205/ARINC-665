@@ -15,6 +15,8 @@
 
 #include <arinc665/media/ContainerEntity.hpp>
 
+#include <string_view>
+
 namespace Arinc665::Media {
 
 /**
@@ -31,7 +33,7 @@ class Directory : public ContainerEntity
      * @param[in] name
      *   Name of the directory.
      **/
-    Directory( ContainerEntityPtr parent, const std::string &name);
+    Directory( ContainerEntityPtr parent, std::string_view name);
 
     //! @copydoc ContainerEntity::mediaSet
     ConstMediaSetPtr mediaSet() const final;
@@ -47,7 +49,7 @@ class Directory : public ContainerEntity
      *
      * @return The name of the directory.
      **/
-    const std::string& name() const;
+    std::string_view name() const;
 
 
     // void rename( const string& name);

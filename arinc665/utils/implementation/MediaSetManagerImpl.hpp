@@ -29,16 +29,16 @@ class MediaSetManagerImpl : public MediaSetManager
      * @param[in] config
      *   Media set configuration.
      **/
-    MediaSetManagerImpl( const MediaSetConfiguration &config);
+    explicit MediaSetManagerImpl( const MediaSetConfiguration &config);
 
     //! @copydoc MediaSetManager::configuration
-    const MediaSetConfiguration& configuration() const final;
+    [[nodiscard]] const MediaSetConfiguration& configuration() const final;
 
     //! @copydoc MediaSetManager::mediaSet
-    Media::MediaSetPtr mediaSet( const std::string &partNumber) final;
+    Media::MediaSetPtr mediaSet( std::string_view partNumber) final;
 
     //! @copydoc MediaSetManager::mediaSets() const
-    const MediaSets& mediaSets() const final;
+    [[nodiscard]] const MediaSets& mediaSets() const final;
 
     //! @copydoc MediaSetManager::mediaSets()
     MediaSets& mediaSets() final;
@@ -49,13 +49,14 @@ class MediaSetManagerImpl : public MediaSetManager
       MediumPathHandler mediumPathHandler) final;
 
     //! @copydoc MediaSetManager::loads() const
-    Media::ConstLoads loads() const final;
+    [[nodiscard]] Media::ConstLoads loads() const final;
 
     //! @copydoc MediaSetManager::load(const std::string&) const
-    Media::ConstLoads load( const std::string &filename) const final;
+    [[nodiscard]] Media::ConstLoads load( std::string_view filename) const final;
 
     //! @copydoc MediaSetManager::filePath
-    std::filesystem::path filePath( Media::ConstBaseFilePtr file) const final;
+    [[nodiscard]] std::filesystem::path filePath(
+      Media::ConstBaseFilePtr file) const final;
 
   private:
     //! media path map

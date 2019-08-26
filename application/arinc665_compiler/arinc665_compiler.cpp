@@ -349,7 +349,7 @@ static void createFile(
   const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
   Arinc665::Media::ConstFilePtr file)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
   // search for file
   auto fileIt{ filePathMapping.find( file)};
@@ -357,8 +357,8 @@ static void createFile(
   if (fileIt == filePathMapping.end())
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      AdditionalInfo( "file mapping not found") <<
-      boost::errinfo_file_name( file->name()));
+      AdditionalInfo( "file mapping not found")
+      << boost::errinfo_file_name( std::string{ file->name()}));
   }
 
   auto filePath{
@@ -379,7 +379,7 @@ static void writeFile(
   const std::filesystem::path &path,
   const Arinc665::File::RawFile &file)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
   auto filePath{
     mediumPath( mediaSetBase, mediumNumber) / path.relative_path()};
@@ -403,9 +403,9 @@ static void writeFile(
   if ( !fileStream.is_open())
   {
     //! @throw Arinc665Exception
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      AdditionalInfo( "Error opening files") <<
-      boost::errinfo_file_name( filePath.string()));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << AdditionalInfo( "Error opening files")
+      << boost::errinfo_file_name( filePath.string()));
   }
 
   // write the data to the buffer
@@ -417,7 +417,7 @@ static Arinc665::File::RawFile readFile(
   const uint8_t mediumNumber,
   const std::filesystem::path &path)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
   // check medium number
   auto filePath{
@@ -428,9 +428,9 @@ static Arinc665::File::RawFile readFile(
   // check existence of file
   if (!std::filesystem::is_regular_file( filePath))
   {
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      AdditionalInfo( "File not found") <<
-      boost::errinfo_file_name( filePath.string()));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << AdditionalInfo( "File not found")
+      << boost::errinfo_file_name( filePath.string()));
   }
 
   Arinc665::File::RawFile data( std::filesystem::file_size( filePath));

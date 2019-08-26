@@ -52,7 +52,7 @@ class File: public BaseFile
      * @retval FileType::RegularFile
      *   Always
      **/
-    FileType fileType() const final;
+    [[nodiscard]] FileType fileType() const final;
 };
 
 }

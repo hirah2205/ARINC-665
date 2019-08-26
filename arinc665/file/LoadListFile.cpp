@@ -157,16 +157,31 @@ const LoadListFile::UserDefinedData& LoadListFile::userDefinedData() const
 
 void LoadListFile::userDefinedData( const UserDefinedData &userDefinedData)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
   userDefinedDataValue = userDefinedData;
 
   if (userDefinedData.size() % 2 != 0)
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning) <<
-      "User defined data must be 2-byte aligned. - extending range";
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning)
+      << "User defined data must be 2-byte aligned. - extending range";
 
     userDefinedDataValue.push_back(0);
+  }
+}
+
+void LoadListFile::userDefinedData( UserDefinedData &&userDefinedData)
+{
+  BOOST_LOG_FUNCTION()
+
+  userDefinedDataValue = std::move( userDefinedData);
+
+  if (userDefinedData.size() % 2U != 0U)
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning)
+      << "User defined data must be 2-byte aligned. - extending range";
+
+    userDefinedDataValue.push_back(0U);
   }
 }
 
@@ -190,7 +205,7 @@ RawFile LoadListFile::encode() const
   size_t nextFreeOffset{ rawFile.size()};
 
 
-  // media set informations
+  // media set information
   const auto rawMediaSetPn{ encodeString( mediaSetPn())};
   assert( rawMediaSetPn.size() % 2 == 0);
 
@@ -390,30 +405,30 @@ void LoadListFile::decodeLoadsInfo(
     auto listIt( it);
 
     // next load pointer
-    uint16_t loadPointer;
+    uint16_t loadPointer{};
     listIt = getInt< uint16_t>( listIt, loadPointer);
 
     //! @todo check pointer for != 0 (all except last ==> OK, last ==> error)
 
     // part number
-    std::string partNumber;
+    std::string partNumber{};
     listIt = Arinc665File::decodeString( listIt, partNumber);
 
     // header filename
-    std::string headerFilename;
+    std::string headerFilename{};
     listIt = Arinc665File::decodeString( listIt, headerFilename);
 
     // member sequence number
-    uint16_t fileMemberSequenceNumber;
+    uint16_t fileMemberSequenceNumber{};
     listIt = getInt< uint16_t>( listIt, fileMemberSequenceNumber);
     if (( fileMemberSequenceNumber < 1 ) || (fileMemberSequenceNumber > 255))
     {
       //! @throw InvalidArinc665File When member sequence number is out of range
-      BOOST_THROW_EXCEPTION( InvalidArinc665File() <<
-        AdditionalInfo( "member sequence number out of range"));
+      BOOST_THROW_EXCEPTION( InvalidArinc665File()
+        << AdditionalInfo( "member sequence number out of range"));
     }
 
-    LoadInfo::ThwIds thwIds;
+    LoadInfo::ThwIds thwIds{};
     listIt = Arinc665File::decodeStringList( listIt, thwIds);
 
     loadsValue.emplace_back(

@@ -52,7 +52,7 @@ static Arinc665::File::RawFile readFile(
   uint8_t mediumNumber,
   const std::filesystem::path &path);
 
-static void printInformation( const std::string &information);
+static void printInformation( std::string_view information);
 
 //! Media Directories
 static std::vector< std::filesystem::path> mediaDirectories;
@@ -195,7 +195,7 @@ static Arinc665::File::RawFile readFile(
   return data;
 }
 
-static void printInformation( const std::string &information)
+static void printInformation( std::string_view information)
 {
   std::cout << "Validation: " << information << std::endl;
 }

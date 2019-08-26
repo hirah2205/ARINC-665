@@ -85,11 +85,11 @@ class BatchFile: public Arinc665File
      **/
     BatchFile(
       SupportedArinc665Version version,
-      const std::string &partNumber,
-      const std::string &comment,
+      std::string_view partNumber,
+      std::string_view comment,
       const BatchTargetsInfo &targets);
 
-    //! @copydoc BatchFile::BatchFile(SupportedArinc665Version,const string&,const string&,const BatchTargetsInfo&)
+    //! @copydoc BatchFile::BatchFile(SupportedArinc665Version,std::string_view,std::string_view,const BatchTargetsInfo&)
     BatchFile(
       SupportedArinc665Version version,
       std::string &&partNumber,
@@ -112,7 +112,7 @@ class BatchFile: public Arinc665File
      *
      * @return The part number of the batch file.
      **/
-    std::string_view partNumber() const;
+    [[nodiscard]] std::string_view partNumber() const;
 
     /**
      * @brief Updates the part number of the batch file.
@@ -130,7 +130,7 @@ class BatchFile: public Arinc665File
      *
      * @return The comment text of the batch file.
      **/
-    std::string comment() const;
+    [[nodiscard]] std::string_view comment() const;
 
     /**
      * @brief Updates the comment text of the batch file.
@@ -138,9 +138,9 @@ class BatchFile: public Arinc665File
      * @param[in] comment
      *   The new comment text.
      **/
-    void comment( const std::string &comment);
+    void comment( std::string_view comment);
 
-    //! @copydoc comment(const std::string&)
+    //! @copydoc comment(std::string_view)
     void comment( std::string &&comment);
 
     /**
@@ -148,7 +148,7 @@ class BatchFile: public Arinc665File
      *
      * @return The target hardwares information.
      **/
-    const BatchTargetsInfo& targetHardwares() const;
+    [[nodiscard]] const BatchTargetsInfo& targetHardwares() const;
 
     //! @copydoc targetHardwares() const
     BatchTargetsInfo& targetHardwares();
@@ -166,7 +166,7 @@ class BatchFile: public Arinc665File
 
   private:
     //! @copydoc Arinc665File::encode
-    RawFile encode() const final;
+    [[nodiscard]] RawFile encode() const final;
 
     /**
      * @brief Decodes the body of the batch file.
@@ -181,7 +181,7 @@ class BatchFile: public Arinc665File
      *
      * @return Raw representation of target hardware information list.
      **/
-    RawFile encodeBatchTargetsInfo() const;
+    [[nodiscard]] RawFile encodeBatchTargetsInfo() const;
 
     /**
      * @brief Decodes the target hardware information list from the raw data.

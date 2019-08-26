@@ -131,7 +131,7 @@ class LoadListFile: public ListFile
     LoadListFile& operator=( const RawFile &rawFile) final;
 
     //! @copydoc ListFile::mediaSetPn
-    std::string_view mediaSetPn() const final;
+    [[nodiscard]] std::string_view mediaSetPn() const final;
 
     //! @copydoc ListFile::mediaSetPn
     void mediaSetPn( std::string_view mediaSetPn) final;
@@ -140,13 +140,13 @@ class LoadListFile: public ListFile
     void mediaSetPn( std::string &&mediaSetPn) final;
 
     //! @copydoc ListFile::mediaSequenceNumber
-    uint8_t mediaSequenceNumber() const final;
+    [[nodiscard]] uint8_t mediaSequenceNumber() const final;
 
     //! @copydoc ListFile::mediaSequenceNumber
     void mediaSequenceNumber( uint8_t mediaSequenceNumber) final;
 
     //! @copydoc ListFile::numberOfMediaSetMembers
-    uint8_t numberOfMediaSetMembers() const final;
+    [[nodiscard]] uint8_t numberOfMediaSetMembers() const final;
 
     //! @copydoc ListFile::numberOfMediaSetMembers
     void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) final;
@@ -156,28 +156,28 @@ class LoadListFile: public ListFile
      *
      * @return The number of loads.
      **/
-    size_t numberOfLoads() const;
+    [[nodiscard]] size_t numberOfLoads() const;
 
     /**
      * @brief Returns the loads.
      *
      * @return The Loads.
      **/
-    const LoadsInfo& loads() const;
+    [[nodiscard]] const LoadsInfo& loads() const;
 
     /**
      * @brief Returns the loads.
      *
      * @return The Loads.
      **/
-    LoadsInfo& loads();
+    [[nodiscard]] LoadsInfo& loads();
 
     /**
      * @brief Returns the loads as map for easy access.
      *
      * @return The loads as map.
      */
-    LoadsInfoMap loadsAsMap() const;
+    [[nodiscard]] LoadsInfoMap loadsAsMap() const;
 
     /**
      * @brief Adds the given load information.
@@ -195,7 +195,7 @@ class LoadListFile: public ListFile
      *
      * @return The user defined data.
      **/
-    const UserDefinedData& userDefinedData() const;
+    [[nodiscard]] const UserDefinedData& userDefinedData() const;
 
     /**
      * @brief Updates the user defined data.

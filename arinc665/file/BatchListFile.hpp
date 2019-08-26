@@ -209,7 +209,7 @@ class BatchListFile: public ListFile
      *
      * @return If the given batch list file belongs to the same media set.
      **/
-    bool belongsToSameMediaSet( const BatchListFile &other) const;
+    [[nodiscard]] bool belongsToSameMediaSet( const BatchListFile &other) const;
 
   private:
     //! @copydoc ListFile::encode
@@ -228,7 +228,7 @@ class BatchListFile: public ListFile
      *
      * @return Raw representation of batches information list.
      **/
-    RawFile encodeBatchesInfo() const;
+    [[nodiscard]] RawFile encodeBatchesInfo() const;
 
     /**
      * @brief Decodes the batches information list from the raw data.

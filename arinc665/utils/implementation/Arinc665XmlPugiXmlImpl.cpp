@@ -236,8 +236,8 @@ void Arinc665XmlPugiXmlImpl::loadDirectory(
 
   if (name.empty())
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "Name attribute missing or empty"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "Name attribute missing or empty"));
   }
 
   auto directory{ parent->addSubDirectory( name) };
@@ -250,7 +250,7 @@ void Arinc665XmlPugiXmlImpl::saveDirectory(
   const FilePathMapping &filePathMapping,
   pugi::xml_node &directoryNode)
 {
-  directoryNode.append_attribute( "Name") = directory->name().c_str();
+  directoryNode.append_attribute( "Name") = directory->name().data();
 
   saveEntries( directory, filePathMapping, directoryNode);
 }
@@ -362,7 +362,7 @@ void Arinc665XmlPugiXmlImpl::saveEntries(
     }
 
     // Add name attribute
-    fileNode.append_attribute( "Name") = fileEntry->name().c_str();
+    fileNode.append_attribute( "Name") = fileEntry->name().data();
 
     // Add part number attribute (optional)
     if (!fileEntry->partNumber().empty())
@@ -496,7 +496,7 @@ void Arinc665XmlPugiXmlImpl::saveLoad(
   Media::ConstLoadPtr load,
   pugi::xml_node &loadNode)
 {
-  loadNode.append_attribute( "NameRef") = load->name().c_str();
+  loadNode.append_attribute( "NameRef") = load->name().data();
 
   // Optional Load Type (Description + Type Value)
   const auto &loadType{ load->loadType()};
@@ -528,7 +528,7 @@ void Arinc665XmlPugiXmlImpl::saveLoad(
   {
     auto dataFileNode{ loadNode.append_child( "DataFile")};
     dataFileNode.append_attribute( "NameRef") =
-      dataFile.lock()->name().c_str();
+      dataFile.lock()->name().data();
   }
 
   // iterate over support files
@@ -536,7 +536,7 @@ void Arinc665XmlPugiXmlImpl::saveLoad(
   {
     auto supportFileNode{ loadNode.append_child( "SupportFile")};
     supportFileNode.append_attribute( "NameRef") =
-      supportFile.lock()->name().c_str();
+      supportFile.lock()->name().data();
   }
 
   const auto userDefinedData{ load->userDefinedData()};
@@ -613,11 +613,11 @@ void Arinc665XmlPugiXmlImpl::saveBatch(
   Media::ConstBatchPtr batch,
   pugi::xml_node &batchNode)
 {
-  batchNode.append_attribute( "NameRef") = batch->name().c_str();
-  batchNode.append_attribute( "Comment") = batch->comment().c_str();
+  batchNode.append_attribute( "NameRef") = batch->name().data();
+  batchNode.append_attribute( "Comment") = batch->comment().data();
 
   // Iterate over batch information
-  for ( auto target : batch->targets())
+  for ( const auto &target : batch->targets())
   {
     auto targetNode{ batchNode.append_child( "Target")};
 
@@ -628,7 +628,7 @@ void Arinc665XmlPugiXmlImpl::saveBatch(
     {
       auto loadNode{ targetNode.append_child( "Load")};
 
-      loadNode.append_attribute( "NameRef") = load.lock()->name().c_str();
+      loadNode.append_attribute( "NameRef") = load.lock()->name().data();
     }
   }
 }

@@ -54,7 +54,7 @@ class BatchInfo
      *
      * @return The batch Batch part number
      **/
-    std::string_view partNumber() const;
+    [[nodiscard]] std::string_view partNumber() const;
 
     /**
      * @brief Updates the Batch part number.
@@ -72,7 +72,7 @@ class BatchInfo
      *
      * @return The batch filename
      **/
-    std::string_view filename() const;
+    [[nodiscard]] std::string_view filename() const;
 
     /**
      * @brief Updates the batch filename.

@@ -64,14 +64,14 @@ class Load: public BaseFile
      *
      * @return FileType::LoadFile always.
      **/
-    FileType fileType() const final;
+    [[nodiscard]] FileType fileType() const final;
 
     /**
      * @brief Returns the List of Target HW IDs.
      *
      * @return The list of Target HW IDs.
      **/
-    const TargetHardwareIdPositions& targetHardwareIdPositions() const;
+    [[nodiscard]] const TargetHardwareIdPositions& targetHardwareIdPositions() const;
 
     //! @copydoc targetHardwareIdPositions() const
     TargetHardwareIdPositions& targetHardwareIdPositions();
@@ -94,7 +94,7 @@ class Load: public BaseFile
      *
      * @return The list of Target HW IDs.
      **/
-    TargetHardwareIds targetHardwareIds() const;
+    [[nodiscard]] TargetHardwareIds targetHardwareIds() const;
 
     /**
      * @brief Adds a list of Target HW IDs without position information.
@@ -126,7 +126,7 @@ class Load: public BaseFile
      *
      * @return The data files.
      **/
-    const Files& dataFiles() const;
+    [[nodiscard]] const Files& dataFiles() const;
 
     /**
      * @brief Add the given file as data file.
@@ -141,7 +141,7 @@ class Load: public BaseFile
      *
      * @return The support files.
      **/
-    const Files& supportFiles() const;
+    [[nodiscard]] const Files& supportFiles() const;
 
     /**
      * @brief Add the given file as support file.
@@ -156,10 +156,10 @@ class Load: public BaseFile
      *
      * @return The user-defined data.
      **/
-    const UserDefinedData& userDefinedData() const;
+    [[nodiscard]] const UserDefinedData& userDefinedData() const;
 
     //! @copydoc Load::userDefinedData() const
-    UserDefinedData& userDefinedData();
+    [[nodiscard]] UserDefinedData& userDefinedData();
 
     /**
      * @brief Sets the user-defined data stored in the load header.
@@ -177,7 +177,7 @@ class Load: public BaseFile
      *
      * @return The Load Type.
      **/
-    const Type& loadType() const;
+    [[nodiscard]] const Type& loadType() const;
 
     /**
      * @brief Updates the Load Type.

@@ -28,6 +28,7 @@ class SupportedArinc665VersionDescription : public Description<
   SupportedArinc665Version::Invalid>
 {
   public:
+    //! Initialises Description Values
     SupportedArinc665VersionDescription();
 };
 

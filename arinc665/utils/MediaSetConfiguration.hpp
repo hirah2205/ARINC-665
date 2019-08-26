@@ -58,7 +58,7 @@ class MediaSetConfiguration
      *
      * @return The boost::property_tree::ptree.
      **/
-    boost::property_tree::ptree toProperties() const;
+    [[nodiscard]] boost::property_tree::ptree toProperties() const;
 
     //! Base directory for all media sets stored.
     std::filesystem::path mediaSetBase;

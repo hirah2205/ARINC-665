@@ -57,7 +57,7 @@ void BaseFile::partNumber( std::string_view partNumber)
   partNumberValue = partNumber;
 }
 
-const std::string& BaseFile::name() const
+std::string_view BaseFile::name() const
 {
   return nameValue;
 }
@@ -108,34 +108,34 @@ std::filesystem::path BaseFile::path() const
   return parentPtr->path() / nameValue;
 }
 
-BaseFile::BaseFile( ContainerEntityPtr parent, std::string_view name):
-  parentValue( parent),
-  nameValue( name)
+BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string_view name):
+  parentValue{ parent},
+  nameValue{ name}
 {
   if (!parent)
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "parent must be valid"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "parent must be valid"));
   }
 }
 
-BaseFile::BaseFile( ContainerEntityPtr parent, std::string &&name):
-  parentValue( parent),
-  nameValue( std::move( name))
+BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string &&name):
+  parentValue{ parent},
+  nameValue{ std::move( name)}
 {
   if (!parent)
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "parent must be valid"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "parent must be valid"));
   }
 }
 
-void BaseFile::parent( ContainerEntityPtr parent)
+void BaseFile::parent( const ContainerEntityPtr& parent)
 {
   if (!parent)
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "parent must be valid"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "parent must be valid"));
   }
 
   if (this->parentValue.lock() == parent)

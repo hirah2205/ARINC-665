@@ -18,9 +18,9 @@
 
 namespace Arinc665::Media {
 
-Directory::Directory( ContainerEntityPtr parent, const std::string &name):
-  ContainerEntity( parent),
-  nameV( name)
+Directory::Directory( ContainerEntityPtr parent, std::string_view name):
+  ContainerEntity{ parent},
+  nameV{ name}
 {
   assert( parent);
 }
@@ -54,7 +54,7 @@ Directory::Type Directory::type() const
   return Type::Directory;
 }
 
-const std::string& Directory::name() const
+std::string_view Directory::name() const
 {
   return nameV;
 }

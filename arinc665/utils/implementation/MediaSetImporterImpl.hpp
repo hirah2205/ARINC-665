@@ -42,7 +42,8 @@ class MediaSetImporterImpl
      * @param[in] readFileHandler
      *   Handler which is called to obtain the requested file from the medium.
      **/
-    MediaSetImporterImpl( Arinc665Utils::ReadFileHandler readFileHandler);
+    explicit MediaSetImporterImpl(
+      Arinc665Utils::ReadFileHandler readFileHandler);
 
     /**
      * @brief Entry-point of the ARINC 665 media set importer.

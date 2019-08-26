@@ -37,7 +37,7 @@ class Base
       File
     };
 
-    //! Default destructor
+    //! Destructor
     virtual ~Base() noexcept = default;
 
     /**

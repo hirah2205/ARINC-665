@@ -22,6 +22,8 @@
 #include <arinc665/media/Batch.hpp>
 
 #include <filesystem>
+#include <string>
+#include <string_view>
 
 namespace Arinc665::Media {
 
@@ -82,10 +84,10 @@ class ContainerEntity :
      * @retval {}
      *   If no such sub-directory exists.
      **/
-    ConstDirectoryPtr subDirectory( const std::string &name) const;
+    ConstDirectoryPtr subDirectory( std::string_view name) const;
 
-    //! @copydoc subDirectory(const std::string&) const
-    DirectoryPtr subDirectory( const std::string &name);
+    //! @copydoc subDirectory(std::string_view) const
+    DirectoryPtr subDirectory( std::string_view name);
 
     /**
      * @brief Adds a sub-directory with the given name.
@@ -97,7 +99,7 @@ class ContainerEntity :
      *
      * @return The created sub-directory.
      **/
-    DirectoryPtr addSubDirectory( const std::string &name);
+    DirectoryPtr addSubDirectory( std::string_view name);
 
     /**
      * @brief Removes the sub-directory with the given name.
@@ -107,7 +109,7 @@ class ContainerEntity :
      * @param[in] name
      *   The name of the requested sub-directory to be deleted.
      **/
-    void removeSubDirectory( const std::string &name);
+    void removeSubDirectory( std::string_view name);
 
     /**
      * @brief Removes the given sub-directory.
@@ -117,7 +119,7 @@ class ContainerEntity :
      * @param[in] subDirectory
      *   The sub-directory to be deleted,
      **/
-    void removeSubDirectory( DirectoryPtr subDirectory);
+    void removeSubDirectory( const DirectoryPtr& subDirectory);
 
     /**
      * @brief Returns the number of files within this directory and
@@ -165,7 +167,7 @@ class ContainerEntity :
     ConstFilePtr file( std::string_view filename, bool recursive = false) const;
 
     //! @copydoc file(const std::string_view,bool) const
-    FilePtr file(std::string_view filename, bool recursive = false);
+    FilePtr file( std::string_view filename, bool recursive = false);
 
     /**
      * @brief Adds a file into this directory.

@@ -75,11 +75,11 @@ class Arinc665Xml
       const FilePathMapping &filePathMapping,
       const std::filesystem::path &xmlFile) = 0;
 
-    //! Default descructor
+    //! Destructor
     virtual ~Arinc665Xml() = default;
 
   protected:
-    //! Default constructor
+    //! Constructor
     Arinc665Xml() = default;
 };
 

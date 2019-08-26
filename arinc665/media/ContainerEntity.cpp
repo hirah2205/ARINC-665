@@ -39,7 +39,7 @@ Directories ContainerEntity::subDirectories()
   return subDirectoriesValue;
 }
 
-ConstDirectoryPtr ContainerEntity::subDirectory( const std::string &name) const
+ConstDirectoryPtr ContainerEntity::subDirectory( std::string_view name) const
 {
   for (const auto &subDirectory : subDirectoriesValue)
   {
@@ -52,7 +52,7 @@ ConstDirectoryPtr ContainerEntity::subDirectory( const std::string &name) const
   return ConstDirectoryPtr();
 }
 
-DirectoryPtr ContainerEntity::subDirectory( const std::string &name)
+DirectoryPtr ContainerEntity::subDirectory( std::string_view name)
 {
   for (const auto &subDirectory : subDirectoriesValue)
   {
@@ -65,7 +65,7 @@ DirectoryPtr ContainerEntity::subDirectory( const std::string &name)
   return DirectoryPtr();
 }
 
-DirectoryPtr ContainerEntity::addSubDirectory( const std::string &name)
+DirectoryPtr ContainerEntity::addSubDirectory( std::string_view name)
 {
   if ( subDirectory( name))
   {
@@ -86,7 +86,7 @@ DirectoryPtr ContainerEntity::addSubDirectory( const std::string &name)
   return subDirectory;
 }
 
-void ContainerEntity::removeSubDirectory( const std::string &name)
+void ContainerEntity::removeSubDirectory( std::string_view name)
 {
   auto dir{ std::find_if(
     subDirectoriesValue.begin(),
@@ -98,14 +98,14 @@ void ContainerEntity::removeSubDirectory( const std::string &name)
   if (subDirectoriesValue.end() == dir)
   {
     //! @throw Arinc665Exception() if directory does not exists.
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "sub-directory does not exists"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "sub-directory does not exists"));
   }
 
   subDirectoriesValue.erase( dir);
 }
 
-void ContainerEntity::removeSubDirectory( DirectoryPtr subDirectory)
+void ContainerEntity::removeSubDirectory( const DirectoryPtr& subDirectory)
 {
   auto dir{ std::find(
     subDirectoriesValue.begin(),
@@ -115,8 +115,8 @@ void ContainerEntity::removeSubDirectory( DirectoryPtr subDirectory)
   if (subDirectoriesValue.end() == dir)
    {
      //! @throw Arinc665Exception() if directory does not exists.
-     BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-       AdditionalInfo( "sub-directory does not exists"));
+     BOOST_THROW_EXCEPTION( Arinc665Exception()
+       << AdditionalInfo( "sub-directory does not exists"));
    }
 
   subDirectoriesValue.erase( dir);

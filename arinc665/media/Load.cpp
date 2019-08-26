@@ -94,7 +94,12 @@ void Load::supportFile( const WeakFilePtr& supportFile)
   supportFilesValue.push_back( supportFile);
 }
 
-const std::vector< uint8_t>& Load::userDefinedData() const
+const Load::UserDefinedData& Load::userDefinedData() const
+{
+  return userDefinedDataValue;
+}
+
+Load::UserDefinedData& Load::userDefinedData()
 {
   return userDefinedDataValue;
 }
