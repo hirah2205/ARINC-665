@@ -7,7 +7,12 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of namespace Arinc665.
+ * @brief Declaration of Namespace Arinc665.
+ **/
+
+/**
+ * @dir
+ * @brief Declaration of Namespace Arinc665.
  **/
 
 #ifndef ARINC665_ARINC665_HPP
@@ -19,7 +24,7 @@
 #include <cstdint>
 
 /**
- * @brief ARINC 665 specification implementation.
+ * @brief ARINC 665 Specification Implementation.
  *
  * This library implements the ARINC 665 specification.
  * This library currently supports following supplements of ARINC 665:
@@ -34,7 +39,7 @@
  **/
 namespace Arinc665 {
 
-//! Enumeration of all defined ARINC 665 versions.
+//! Enumeration of all Defined ARINC 665 Versions.
 enum class Arinc665Version
 {
   //! ARINC 665 Supplement 1
@@ -120,11 +125,11 @@ enum class BatchFileFormatVersion : uint16_t
  **/
 enum class MediaFileFormatVersion : uint16_t
 {
-  //! ARINC 665-1 version of media file
+  //! ARINC 665-1 Version of Media File
   Version1 = 0x8002U,
-  //! ARINC 665-2 version of media file
+  //! ARINC 665-2 Version of Media File
   Version2 = 0xA003U,
-  //! ARINC 665-3 version of media file
+  //! ARINC 665-3 Version of Media File
   Version34 = 0xA004U,
 
   //! invalid value
@@ -134,14 +139,14 @@ enum class MediaFileFormatVersion : uint16_t
 //! All ARINC 665 file types combined
 enum class Arinc665FileFormatVersion : uint16_t
 {
-  LOAD_FILE_VERSION_2   = static_cast< uint16_t>( LoadFileFormatVersion::Version2),
-  LOAD_FILE_VERSION_34  = static_cast< uint16_t>( LoadFileFormatVersion::Version34),
+  LoadFileVersion2   = static_cast< uint16_t>( LoadFileFormatVersion::Version2),
+  LoadFileVersion34  = static_cast< uint16_t>( LoadFileFormatVersion::Version34),
 
-  BATCH_FILE_VERSION_2  = static_cast< uint16_t>( BatchFileFormatVersion::Version2),
-  BATCH_FILE_VERSION_34 = static_cast< uint16_t>( BatchFileFormatVersion::Version34),
+  BatchFileVersion2  = static_cast< uint16_t>( BatchFileFormatVersion::Version2),
+  BatchFileVersion34 = static_cast< uint16_t>( BatchFileFormatVersion::Version34),
 
-  MEDIA_FILE_VERSION_2  = static_cast< uint16_t>( MediaFileFormatVersion::Version2),
-  MEDIA_FILE_VERSION_34 = static_cast< uint16_t>( MediaFileFormatVersion::Version34),
+  MediaFileVersion2  = static_cast< uint16_t>( MediaFileFormatVersion::Version2),
+  MediaFileVersion34 = static_cast< uint16_t>( MediaFileFormatVersion::Version34),
 
   Invalid = 0xFFFFU  //!< invalid value
 };
@@ -149,15 +154,24 @@ enum class Arinc665FileFormatVersion : uint16_t
 //! Check Value Type enumeration
 enum class CheckValueType : uint16_t
 {
+  //! Not to be used
   NotUsed = 0u,
-  Crc8    = 1u,
-  Crc16   = 2u,
-  Crc32   = 3u,
-  Md5     = 4u,
-  Sha1    = 5u,
-  Sha256  = 6u,
-  Sha512  = 7u,
-  Crc64   = 6u,
+  //! 8-bit CRC (deprecated)
+  Crc8 = 1u,
+  //! 16-bit CRC (deprecated)
+  Crc16 = 2u,
+  //! 32-bit CRC
+  Crc32 = 3u,
+  //! MD5
+  Md5 = 4u,
+  //! SHA1
+  Sha1 = 5u,
+  //! SHA-256
+  Sha256 = 6u,
+  //! SHA-512
+  Sha512 = 7u,
+  //! 64-bit CRC
+  Crc64 = 6u,
 
   Invalid = 0xFFFFU
 };
