@@ -130,25 +130,25 @@ class BatchListFile: public ListFile
     //! @copydoc ListFile::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept override;
 
-    //! @copydoc ListFile::mediaSetPn
+    //! @copydoc ListFile::mediaSetPn() const
     [[nodiscard]] std::string_view mediaSetPn() const final;
 
-    //! @copydoc ListFile::mediaSetPn
+    //! @copydoc ListFile::mediaSetPn(std::string_view)
     void mediaSetPn( std::string_view mediaSetPn) final;
 
-    //! @copydoc ListFile::mediaSetPn
+    //! @copydoc ListFile::mediaSetPn(std::string&&)
     void mediaSetPn( std::string &&mediaSetPn) final;
 
-    //! @copydoc ListFile::mediaSequenceNumber
+    //! @copydoc ListFile::mediaSequenceNumber() const
     [[nodiscard]] uint8_t mediaSequenceNumber() const final;
 
-    //! @copydoc ListFile::mediaSequenceNumber
+    //! @copydoc ListFile::mediaSequenceNumber(uint8_t)
     void mediaSequenceNumber( uint8_t mediaSequenceNumber) final;
 
-    //! @copydoc ListFile::numberOfMediaSetMembers
+    //! @copydoc ListFile::numberOfMediaSetMembers() const
     [[nodiscard]] uint8_t numberOfMediaSetMembers() const final;
 
-    //! @copydoc ListFile::numberOfMediaSetMembers
+    //! @copydoc ListFile::numberOfMediaSetMembers(uint8_t)
     void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) final;
 
     /**
@@ -216,7 +216,7 @@ class BatchListFile: public ListFile
 
   private:
     //! @copydoc ListFile::encode
-    RawFile encode() const final;
+    [[nodiscard]] RawFile encode() const final;
 
     /**
      * @brief Decodes the body of the batch list file.

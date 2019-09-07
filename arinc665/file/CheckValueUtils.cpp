@@ -58,7 +58,7 @@ std::optional< CheckValue> CheckValueUtils_decode(
 {
   auto it{ rawFile.begin() + offset};
 
-  uint16_t checkValueLength;
+  uint16_t checkValueLength{};
   it = getInt< uint16_t>( it, checkValueLength);
 
   if (0U == checkValueLength)
@@ -67,20 +67,20 @@ std::optional< CheckValue> CheckValueUtils_decode(
     return {};
   }
 
-  if ( checkValueLength <= ( 2* sizeof( uint16_t)))
+  if ( checkValueLength <= ( 2U * sizeof( uint16_t)))
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << AdditionalInfo( "Invalid length field of check value"));
   }
 
-  uint16_t checkValueType;
+  uint16_t checkValueType{};
   it = getInt< uint16_t>( it, checkValueType);
 
   return { std::make_tuple(
     static_cast< CheckValueType >( checkValueType),
     std::vector< uint8_t>{
       it,
-      it + checkValueLength - ( 2 * sizeof( uint16_t))})};
+      it + checkValueLength - ( 2U * sizeof( uint16_t))})};
 }
 
 }

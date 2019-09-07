@@ -22,6 +22,8 @@ namespace Arinc665::File {
 /**
  * @brief Encodes the given Check Value.
  *
+ * @param[in] checkValue
+ *   Check Value to encode.
  * @return The Check Value as raw data.
  **/
 RawFile CheckValueUtils_encode( const std::optional< CheckValue> &checkValue);
