@@ -151,7 +151,7 @@ enum class Arinc665FileFormatVersion : uint16_t
   Invalid = 0xFFFFU  //!< invalid value
 };
 
-//! Check Value Type enumeration
+//! Check Value Type Enumeration
 enum class CheckValueType : uint16_t
 {
   //! Not to be used
@@ -171,12 +171,12 @@ enum class CheckValueType : uint16_t
   //! SHA-512
   Sha512 = 7u,
   //! 64-bit CRC
-  Crc64 = 6u,
+  Crc64 = 8u,
 
   Invalid = 0xFFFFU
 };
 
-//! Check Value Type
+//! Check Value
 using CheckValue = std::tuple< CheckValueType, std::vector< uint8_t>>;
 
 //! @brief ARINC 665 File Types

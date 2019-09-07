@@ -176,7 +176,7 @@ void LoadListFile::userDefinedData( UserDefinedData &&userDefinedData)
 
   userDefinedDataValue = std::move( userDefinedData);
 
-  if (userDefinedData.size() % 2U != 0U)
+  if (userDefinedDataValue.size() % 2U != 0U)
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning)
       << "User defined data must be 2-byte aligned. - extending range";
