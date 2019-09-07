@@ -2,9 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Thomas Vogt, Thomas@Thomas-Vogt.de
-#
-# CMAKE configuration
+# Thomas Vogt, thomas@thomas-vogt.de
 
 cmake_minimum_required( VERSION 3.13)
 
@@ -15,24 +13,21 @@ if ( NOT TARGET doc)
 endif()
 
 if (DOXYGEN_FOUND)
-  set( DOXYGEN_PROJECT_NAME "ARINC 665 Tool Suite")
+  set( DOXYGEN_PROJECT_NAME "ARINC 665 Library and Tool Suite")
   set( DOXYGEN_BUILTIN_STL_SUPPORT YES)
   set( DOXYGEN_EXTRACT_PRIVATE YES)
   set( DOXYGEN_EXTRACT_PACKAGE YES)
   set( DOXYGEN_QUIET YES)
 #  set( DOXYGEN_WARN_NO_PARAMDOC YES)
   set( DOXYGEN_HTML_DYNAMIC_SECTIONS YES)
-  set( DOXYGEN_OUTPUT_DIRECTORY api_doc)
-  set( DOXYGEN_GENERATE_DOCBOOK YES)
+  set( DOXYGEN_OUTPUT_DIRECTORY arinc_615a_api_doc)
+  set( DOXYGEN_EXCLUDE_PATTERNS *Test.*)
+  #set( DOXYGEN_GENERATE_DOCBOOK YES)
 
-# Add own CMake scripts to mod
   set( DOXYGEN_STRIP_FROM_PATH
     ${helper_SOURCE_DIR}/
     ${arinc665_SOURCE_DIR}/
     ${arinc665_SOURCE_DIR}/application)
-
-  set( DOXYGEN_EXCLUDE_PATTERNS
-    "*Test.*")
 
   doxygen_add_docs(
     arinc665_api_doc
@@ -64,19 +59,19 @@ if (DOXYGEN_FOUND)
     DESTINATION doc
     OPTIONAL)
 
-  file(
-    GENERATE
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/CMakeGraphVizOptions.cmake
-    CONTENT "\
-cmake_minimum_required( VERSION 3.13)
-set( GRAPHVIZ_EXTERNAL_LIBS FALSE)
-set( GRAPHVIZ_GENERATE_PER_TARGET FALSE)
-set( GRAPHVIZ_GENERATE_DEPENDERS FALSE)")
+#  file(
+#    GENERATE
+#    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/CMakeGraphVizOptions.cmake
+#    CONTENT "\
+#cmake_minimum_required( VERSION 3.13)
+#set( GRAPHVIZ_EXTERNAL_LIBS FALSE)
+#set( GRAPHVIZ_GENERATE_PER_TARGET FALSE)
+#set( GRAPHVIZ_GENERATE_DEPENDERS FALSE)")
 
-  add_custom_target(
-    doc_dep
-    ${CMAKE_COMMAND} --graphviz=${CMAKE_CURRENT_BINARY_DIR}/doc_dep.dot ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMAND ${DOXYGEN_DOT_EXECUTABLE} -Tpdf -O ${CMAKE_CURRENT_BINARY_DIR}/doc_dep.dot)
+#  add_custom_target(
+#    doc_dep
+#    ${CMAKE_COMMAND} --graphviz=${CMAKE_CURRENT_BINARY_DIR}/doc_dep.dot ${CMAKE_CURRENT_SOURCE_DIR}
+#    COMMAND ${DOXYGEN_DOT_EXECUTABLE} -Tpdf -O ${CMAKE_CURRENT_BINARY_DIR}/doc_dep.dot)
 
   #add_dependencies( doc doc_dep)
 endif()
