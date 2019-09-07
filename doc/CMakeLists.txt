@@ -28,8 +28,8 @@ if (DOXYGEN_FOUND)
 # Add own CMake scripts to mod
   set( DOXYGEN_STRIP_FROM_PATH
     ${helper_SOURCE_DIR}/
-    ${CMAKE_SOURCE_DIR}/
-    ${CMAKE_SOURCE_DIR}/application)
+    ${arinc665_SOURCE_DIR}/
+    ${arinc665_SOURCE_DIR}/application)
 
   set( DOXYGEN_EXCLUDE_PATTERNS
     "*Test.*")
@@ -39,16 +39,16 @@ if (DOXYGEN_FOUND)
 
     Mainpage.md
     ${helper_SOURCE_DIR}/helper
-    ${CMAKE_SOURCE_DIR}/arinc665
-    ${CMAKE_SOURCE_DIR}/arinc665_qt
-    ${CMAKE_SOURCE_DIR}/application/arinc665_check
-    ${CMAKE_SOURCE_DIR}/application/arinc665_compiler
-    ${CMAKE_SOURCE_DIR}/application/arinc665_decompiler
-    ${CMAKE_SOURCE_DIR}/application/arinc665_ls
-    ${CMAKE_SOURCE_DIR}/application/arinc665_print_media_set
-    ${CMAKE_SOURCE_DIR}/application/arinc665_test_media_set_manager
-    ${CMAKE_SOURCE_DIR}/application/arinc665_unit_test
-    ${CMAKE_SOURCE_DIR}/application/arinc665_xml_print)
+    ${arinc665_SOURCE_DIR}/arinc665
+    ${arinc665_SOURCE_DIR}/arinc665_qt
+    ${arinc665_SOURCE_DIR}/application/arinc665_check
+    ${arinc665_SOURCE_DIR}/application/arinc665_compiler
+    ${arinc665_SOURCE_DIR}/application/arinc665_decompiler
+    ${arinc665_SOURCE_DIR}/application/arinc665_ls
+    ${arinc665_SOURCE_DIR}/application/arinc665_print_media_set
+    ${arinc665_SOURCE_DIR}/application/arinc665_test_media_set_manager
+    ${arinc665_SOURCE_DIR}/application/arinc665_unit_test
+    ${arinc665_SOURCE_DIR}/application/arinc665_xml_print)
 
   add_dependencies( doc arinc665_api_doc)
 
@@ -59,14 +59,14 @@ if (DOXYGEN_FOUND)
     @ONLY)
 
   install(
-    DIRECTORY ${CMAKE_BINARY_DIR}/doc/${DOXYGEN_OUTPUT_DIRECTORY}
+    DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${DOXYGEN_OUTPUT_DIRECTORY}
     COMPONENT documentation
     DESTINATION doc
     OPTIONAL)
 
   file(
     GENERATE
-    OUTPUT ${CMAKE_BINARY_DIR}/CMakeGraphVizOptions.cmake
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/CMakeGraphVizOptions.cmake
     CONTENT "\
 cmake_minimum_required( VERSION 3.13)
 set( GRAPHVIZ_EXTERNAL_LIBS FALSE)
@@ -75,7 +75,7 @@ set( GRAPHVIZ_GENERATE_DEPENDERS FALSE)")
 
   add_custom_target(
     doc_dep
-    ${CMAKE_COMMAND} --graphviz=${CMAKE_CURRENT_BINARY_DIR}/doc_dep.dot ${CMAKE_SOURCE_DIR}
+    ${CMAKE_COMMAND} --graphviz=${CMAKE_CURRENT_BINARY_DIR}/doc_dep.dot ${CMAKE_CURRENT_SOURCE_DIR}
     COMMAND ${DOXYGEN_DOT_EXECUTABLE} -Tpdf -O ${CMAKE_CURRENT_BINARY_DIR}/doc_dep.dot)
 
   #add_dependencies( doc doc_dep)

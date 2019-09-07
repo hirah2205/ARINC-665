@@ -144,8 +144,11 @@ class FileListFile: public ListFile
      **/
     FileListFile( const RawFile &rawFile);
 
-    //! @copydoc ListFile::operator=
+    //! @copydoc ListFile::operator=(const RawFile&)
     FileListFile& operator=( const RawFile &rawFile) final;
+
+    //! @copydoc ListFile::fileType() const noexcept
+    [[nodiscard]] FileType fileType() const noexcept final;
 
     //! @copydoc ListFile::mediaSetPn
     [[nodiscard]] std::string_view mediaSetPn() const final;

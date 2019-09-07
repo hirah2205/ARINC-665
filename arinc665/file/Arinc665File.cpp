@@ -26,13 +26,14 @@ RawFile::const_iterator Arinc665File::decodeString(
   std::string &str)
 {
   // determine string length
-  uint16_t strLength;
+  uint16_t strLength{};
   it = getInt< uint16_t>( it, strLength);
 
   // copy string
   str.assign( it, it + strLength);
   it += strLength;
 
+  // if string is odd skipp filled 0-character
   if ( strLength % 2 == 1)
   {
     ++it;
@@ -48,7 +49,7 @@ RawFile Arinc665File::encodeString( std::string_view str)
   auto it{ rawString.begin()};
 
   // set string length
-  it = setInt< uint16_t>( it, static_cast< uint16_t>( str.size()));
+  it = setInt< uint16_t>( it, safeCast< uint16_t>( str.size()));
 
   // copy string
   rawString.insert( it, str.begin(), str.end());
@@ -64,42 +65,42 @@ RawFile Arinc665File::encodeString( std::string_view str)
 
 RawFile::const_iterator Arinc665File::decodeStringList(
   RawFile::const_iterator it,
-  StringList &strList)
+  StringList &strings)
 {
   // number of strings
-  uint16_t numberOfEntries;
+  uint16_t numberOfEntries{};
   it = getInt< uint16_t>( it, numberOfEntries);
 
-  for ( unsigned int index = 0; index < numberOfEntries; ++index)
+  for ( unsigned int index = 0U; index < numberOfEntries; ++index)
   {
     // string
-    std::string str;
+    std::string str{};
     it = decodeString( it, str);
-    strList.push_back( str);
+    strings.push_back( std::move( str));
   }
 
   return it;
 }
 
-RawFile Arinc665File::encodeStringList( const StringList &strList)
+RawFile Arinc665File::encodeStringList( const StringList &strings)
 {
-  RawFile rawStringList( sizeof( uint16_t));
+  RawFile rawStrings( sizeof( uint16_t));
 
-  auto it{ rawStringList.begin()};
+  auto it{ rawStrings.begin()};
 
   // set number of strings
-  it = setInt< uint16_t>( it, static_cast< uint16_t>( strList.size()));
+  it = setInt< uint16_t>( it, static_cast< uint16_t>( strings.size()));
 
-  for ( const auto & str : strList)
+  for ( const auto &str : strings)
   {
-    auto rawStr( encodeString( str));
+    auto rawStr{ encodeString( str)};
     assert( rawStr.size() % 2 == 0);
 
     // append string
-    rawStringList.insert( rawStringList.end(), rawStr.begin(), rawStr.end());
+    rawStrings.insert( rawStrings.end(), rawStr.begin(), rawStr.end());
   }
 
-  return rawStringList;
+  return rawStrings;
 }
 
 std::string Arinc665File::encodePath( const std::filesystem::path &path)
@@ -384,18 +385,13 @@ Arinc665::FileType Arinc665File::fileType(
 
 Arinc665File& Arinc665File::operator=( const RawFile &rawFile)
 {
-  decodeHeader( rawFile);
+  decodeHeader( rawFile, fileType());
   return *this;
 }
 
 Arinc665File::operator RawFile() const
 {
   return encode();
-}
-
-FileType Arinc665File::fileType() const
-{
-  return fileTypeV;
 }
 
 SupportedArinc665Version Arinc665File::arincVersion() const
@@ -409,34 +405,44 @@ void Arinc665File::arincVersion( SupportedArinc665Version version)
 }
 
 Arinc665File::Arinc665File(
-  const FileType fileType,
   const SupportedArinc665Version version,
   const std::size_t checksumPosition) noexcept :
-  fileTypeV( fileType),
-  checksumPosition( checksumPosition),
-  arinc665VersionValue( version)
+  checksumPosition{ checksumPosition},
+  arinc665VersionValue{ version}
 {
 }
 
 Arinc665File::Arinc665File(
-  FileType fileType,
   const RawFile &rawFile,
+  const FileType expectedFileType,
   std::size_t checksumPosition) :
-  fileTypeV( fileType),
-  checksumPosition( checksumPosition)
+  checksumPosition{ checksumPosition},
+  arinc665VersionValue{ Arinc665Version::Invalid}
 {
-  decodeHeader( rawFile);
+  decodeHeader( rawFile, expectedFileType);
 }
 
-Arinc665File& Arinc665File::operator=( const Arinc665File &other)
+Arinc665File& Arinc665File::operator=( const Arinc665File &other) noexcept
 {
-  assert( this->checksumPosition == other.checksumPosition);
-
   if ( this == &other)
   {
     return *this;
   }
 
+  assert( this->checksumPosition == other.checksumPosition);
+  arinc665VersionValue = other.arinc665VersionValue;
+  return *this;
+}
+
+Arinc665File& Arinc665File::operator=( Arinc665File &&other) noexcept
+{
+  if ( this == &other)
+  {
+    return *this;
+  }
+
+  assert( this->checksumPosition == other.checksumPosition);
+  arinc665VersionValue = other.arinc665VersionValue;
   return *this;
 }
 
@@ -467,7 +473,7 @@ void Arinc665File::insertHeader( RawFile &rawFile) const
   setInt< uint16_t>(
     rawFile.begin() + FileFormatVersionFieldOffset,
     static_cast< uint16_t>(
-      formatVersionField( fileTypeV, arinc665VersionValue)));
+      formatVersionField( fileType(), arinc665VersionValue)));
 
   // crc
   const uint16_t calculatedCrc{
@@ -476,7 +482,9 @@ void Arinc665File::insertHeader( RawFile &rawFile) const
   setInt< uint16_t>( rawFile.begin() + rawFile.size() - checksumPosition, calculatedCrc);
 }
 
-void Arinc665File::decodeHeader( const RawFile &rawFile)
+void Arinc665File::decodeHeader(
+  const RawFile &rawFile,
+  const FileType expectedFileType)
 {
   // Check file size
   if ( rawFile.size() <= BaseHeaderOffset)
@@ -489,7 +497,7 @@ void Arinc665File::decodeHeader( const RawFile &rawFile)
   auto it{ rawFile.begin()};
 
   // check size field
-  uint32_t fileLength;
+  uint32_t fileLength{};
   getInt< uint32_t>( rawFile.begin() + FileLengthFieldOffset, fileLength);
 
   if ( fileLength * 2U != rawFile.size())
@@ -500,12 +508,12 @@ void Arinc665File::decodeHeader( const RawFile &rawFile)
   }
 
   // format version
-  uint16_t formatVersion;
+  uint16_t formatVersion{};
   it = getInt< uint16_t>(
     rawFile.begin() + FileFormatVersionFieldOffset,
     formatVersion);
 
-  arinc665VersionValue = arinc665Version( fileTypeV, formatVersion);
+  arinc665VersionValue = arinc665Version( expectedFileType, formatVersion);
 
   // check format field version
   if ( arinc665VersionValue == SupportedArinc665Version::Invalid)
@@ -516,11 +524,11 @@ void Arinc665File::decodeHeader( const RawFile &rawFile)
   }
 
   // spare
-  uint16_t spare;
+  uint16_t spare{};
   getInt< uint16_t>( it, spare);
 
   // Decode checksum field;
-  uint16_t crc;
+  uint16_t crc{};
   getInt< uint16_t>( rawFile.begin() + (rawFile.size() - checksumPosition), crc);
 
 

@@ -20,10 +20,10 @@
 
 namespace Arinc665::File {
 
-BatchListFile::BatchListFile( const SupportedArinc665Version version):
-  ListFile( FileType::BatchList, version),
-  mediaSequenceNumberValue( 0),
-  numberOfMediaSetMembersValue( 0)
+BatchListFile::BatchListFile( const SupportedArinc665Version version) noexcept:
+  ListFile{ version},
+  mediaSequenceNumberValue{ 0},
+  numberOfMediaSetMembersValue{ 0}
 {
 }
 
@@ -34,7 +34,7 @@ BatchListFile::BatchListFile(
   const uint8_t numberOfMediaSetMembers,
   const BatchesInfo &batches,
   const UserDefinedData &userDefinedData):
-  ListFile{ FileType::BatchList, version},
+  ListFile{ version},
   mediaSetPnValue{ mediaSetPn},
   mediaSequenceNumberValue{ mediaSequenceNumber},
   numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
@@ -50,7 +50,7 @@ BatchListFile::BatchListFile(
   uint8_t numberOfMediaSetMembers,
   BatchesInfo &&batches,
   UserDefinedData &&userDefinedData):
-  ListFile{ FileType::BatchList, version},
+  ListFile{ version},
   mediaSetPnValue{ std::move( mediaSetPn)},
   mediaSequenceNumberValue{ mediaSequenceNumber},
   numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
@@ -60,7 +60,7 @@ BatchListFile::BatchListFile(
 }
 
 BatchListFile::BatchListFile( const RawFile &rawFile):
-  ListFile{ FileType::BatchList, rawFile}
+  ListFile{ rawFile, FileType::BatchList}
 {
   decodeBody( rawFile);
 }
@@ -71,6 +71,11 @@ BatchListFile& BatchListFile::operator=( const RawFile &rawFile)
   decodeBody( rawFile);
 
   return *this;
+}
+
+FileType BatchListFile::fileType() const noexcept
+{
+  return FileType::BatchList;
 }
 
 std::string_view BatchListFile::mediaSetPn() const
@@ -408,10 +413,10 @@ void BatchListFile::decodeBatchesInfo(
 
     // member sequence number
     uint16_t memberSequenceNumber{};
-    listIt = getInt< uint16_t>( listIt, memberSequenceNumber);
+    getInt< uint16_t>( listIt, memberSequenceNumber);
 
     // set it to begin of next batch
-    it += batchPointer * 2;
+    it += batchPointer * 2U;
 
     batchesValue.emplace_back( partNumber, filename, memberSequenceNumber);
   }

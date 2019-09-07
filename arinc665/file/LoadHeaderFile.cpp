@@ -23,7 +23,7 @@
 namespace Arinc665::File {
 
 LoadHeaderFile::LoadHeaderFile( SupportedArinc665Version version) :
-  Arinc665File{ FileType::LoadUploadHeader, version, FileCrcOffset},
+  Arinc665File{ version, FileCrcOffset},
   partFlagsValue{ 0},
   loadCrcValue{ 0}
 {
@@ -37,7 +37,7 @@ LoadHeaderFile::LoadHeaderFile(
   const LoadFilesInfo &supportFilesInfo,
   const UserDefinedData &userDefinedData,
   uint32_t loadCrc):
-  Arinc665File{ FileType::LoadUploadHeader, version, FileCrcOffset},
+  Arinc665File{ version, FileCrcOffset},
   partFlagsValue{ 0}, //! @todo add
   partNumberValue{ partNumber},
   targetHardwareIdPositionsValue{ targetHardwareIdPositions},
@@ -56,7 +56,7 @@ LoadHeaderFile::LoadHeaderFile(
   LoadFilesInfo &&supportFilesInfo,
   UserDefinedData &&userDefinedData,
   uint32_t loadCrc):
-  Arinc665File{ FileType::LoadUploadHeader, version, FileCrcOffset},
+  Arinc665File{ version, FileCrcOffset},
   partFlagsValue{ 0}, //! @todo add
   partNumberValue{ std::move( partNumber)},
   targetHardwareIdPositionsValue{ std::move( targetHardwareIdPositions)},
@@ -67,9 +67,8 @@ LoadHeaderFile::LoadHeaderFile(
 {
 }
 
-
 LoadHeaderFile::LoadHeaderFile( const RawFile &rawFile):
-  Arinc665File{ FileType::LoadUploadHeader, rawFile, FileCrcOffset},
+  Arinc665File{ rawFile, FileType::LoadUploadHeader, FileCrcOffset},
   partFlagsValue{ 0},
   loadCrcValue{ 0}
 {
@@ -82,6 +81,11 @@ LoadHeaderFile& LoadHeaderFile::operator=( const RawFile &rawFile)
   decodeBody( rawFile);
 
   return *this;
+}
+
+FileType LoadHeaderFile::fileType() const noexcept
+{
+  return FileType::LoadUploadHeader;
 }
 
 uint16_t LoadHeaderFile::partFlags() const
@@ -804,7 +808,7 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
   // iterate over file index
   for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex)
   {
-    auto listIt( it);
+    auto listIt{ it};
 
     // next file pointer
     uint16_t filePointer{};
@@ -866,7 +870,7 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
     }
 
     // set it to begin of next file
-    it += filePointer * 2;
+    it += filePointer * 2U;
 
     // file info
     files.emplace_back( name, partNumber, realLength, crc, checkValue);

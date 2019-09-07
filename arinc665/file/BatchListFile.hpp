@@ -81,7 +81,7 @@ class BatchListFile: public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit BatchListFile( SupportedArinc665Version version);
+    explicit BatchListFile( SupportedArinc665Version version) noexcept;
 
     /**
      * @brief Creates batch list file with the given data.
@@ -124,8 +124,11 @@ class BatchListFile: public ListFile
      **/
     explicit BatchListFile( const RawFile &rawFile);
 
-    //! @copydoc ListFile::operator=
+    //! @copydoc ListFile::operator=(const RawFile&)
     BatchListFile& operator=( const RawFile &rawFile) final;
+
+    //! @copydoc ListFile::fileType() const noexcept
+    [[nodiscard]] FileType fileType() const noexcept override;
 
     //! @copydoc ListFile::mediaSetPn
     [[nodiscard]] std::string_view mediaSetPn() const final;

@@ -20,7 +20,7 @@
 namespace Arinc665::File {
 
 LoadListFile::LoadListFile( SupportedArinc665Version version):
-  ListFile{ FileType::LoadList, version},
+  ListFile{ version},
   mediaSequenceNumberValue{ 0},
   numberOfMediaSetMembersValue{ 0}
 {
@@ -33,7 +33,7 @@ LoadListFile::LoadListFile(
   uint8_t numberOfMediaSetMembers,
   const LoadsInfo &loads,
   const UserDefinedData &userDefinedData):
-  ListFile{ FileType::LoadList, version},
+  ListFile{ version},
   mediaSetPnValue{ mediaSetPn},
   mediaSequenceNumberValue{ mediaSequenceNumber},
   numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
@@ -49,7 +49,7 @@ LoadListFile::LoadListFile(
   uint8_t numberOfMediaSetMembers,
   LoadsInfo &&loads,
   UserDefinedData &&userDefinedData):
-  ListFile{ FileType::LoadList, version},
+  ListFile{ version},
   mediaSetPnValue{ std::move( mediaSetPn)},
   mediaSequenceNumberValue{ mediaSequenceNumber},
   numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
@@ -58,9 +58,8 @@ LoadListFile::LoadListFile(
 {
 }
 
-
 LoadListFile::LoadListFile( const RawFile &rawFile):
-  ListFile( FileType::LoadList, rawFile)
+  ListFile{ rawFile, FileType::LoadList}
 {
   decodeBody( rawFile);
 }
@@ -71,6 +70,11 @@ LoadListFile& LoadListFile::operator=( const RawFile &rawFile)
   decodeBody( rawFile);
 
   return *this;
+}
+
+FileType LoadListFile::fileType() const noexcept
+{
+  return FileType::LoadList;
 }
 
 std::string_view LoadListFile::mediaSetPn() const

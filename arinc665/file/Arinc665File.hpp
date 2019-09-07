@@ -43,7 +43,7 @@ class Arinc665File
       sizeof( uint32_t) + // file length
       sizeof( uint16_t);  // ARINC Version
 
-    //! Default checksum position
+    //! Default Checksum Position
     static constexpr std::size_t DefaultChecksumPosition = 2U;
 
     //! Offset of the File Length Field
@@ -81,23 +81,23 @@ class Arinc665File
      *
      * @param[in] it
      *   current position, where the raw string list starts.
-     * @param[out] strList
+     * @param[out] strings
      *   The decoded string list.
      *
      * @return New iterator position.
      **/
     static RawFile::const_iterator decodeStringList(
       RawFile::const_iterator it,
-      StringList &strList);
+      StringList &strings);
 
     /**
      * @brief Encodes the ARINC 665 string list to the stream.
      *
-     * @param[in] strList
+     * @param[in] strings
      *
      * @return The encoded raw string list.
      **/
-    static RawFile encodeStringList( const StringList &strList);
+    static RawFile encodeStringList( const StringList &strings);
 
     /**
      * @brief Encodes the given path for storage within ARINC 665 media set
@@ -201,16 +201,16 @@ class Arinc665File
       const RawFile &rawFile);
 
     /**
-     * @brief Returns the Supported ARINC 665 version for the given [fileType]
+     * @brief Returns the Supported ARINC 665 Version for the given @p fileType.
      *   and [formatVersionField].
      *
      * @param[in] fileType
-     *   File type.
+     *   File Type.
      * @param[in] formatVersionField
      *   Format version field of file.
      *
      * @return The Supported ARINC 665 version.
-     * @retval Invalid
+     * @retval SupportedArinc665Version::Invalid
      *   If the given information are inconsistent or the Version is not
      *   supported.
      **/
@@ -270,7 +270,7 @@ class Arinc665File
      *
      * @return The ARINC 665 file type.
      **/
-    [[nodiscard]] FileType fileType() const;
+    [[nodiscard]] virtual FileType fileType() const noexcept = 0;
 
     /**
      * @brief Returns the ARINC 665 version of this file.
@@ -291,32 +291,39 @@ class Arinc665File
     /**
      * @brief Initialises the ARINC 665 file.
      *
-     * @param[in] fileType
-     *   File type.
      * @param[in] version
      *   ARINC 665 version.
      * @param[in] checksumPosition
      *   Checksum position.
      **/
-    Arinc665File(
-      FileType fileType,
+    explicit Arinc665File(
       SupportedArinc665Version version,
       std::size_t checksumPosition = DefaultChecksumPosition) noexcept;
 
     /**
      * @brief Initialises the ARINC 665 file from the given raw data.
      *
-     * @param[in] fileType
-     *   File type.
      * @param[in] rawFile
-     *   The raw file.
+     *   Raw File.
+     * @param[in] expectedFileType
+     *   Expected file type.
      * @param[in] checksumPosition
      *   Checksum position.
      **/
-    Arinc665File(
-      FileType fileType,
+    explicit Arinc665File(
       const RawFile &rawFile,
+      FileType expectedFileType,
       std::size_t checksumPosition = DefaultChecksumPosition);
+
+    /**
+     * @brief Copy Constructor
+     *
+     * @param[in] other
+     **/
+    Arinc665File( const Arinc665File &other) noexcept = default;
+
+    //! @copydoc Arinc665File(const Arinc665File&)
+    Arinc665File( Arinc665File &&other) noexcept = default;
 
     /**
      * @brief Assignment operator
@@ -326,7 +333,10 @@ class Arinc665File
      *
      * @return *this
      **/
-    Arinc665File& operator=( const Arinc665File &other);
+    Arinc665File& operator=( const Arinc665File &other) noexcept;
+
+    //! @copydoc operator=(const Arinc665File&)
+    Arinc665File& operator=( Arinc665File &&other) noexcept;
 
     /**
      * @brief Encodes the ARINC 665 file as raw data.
@@ -347,12 +357,13 @@ class Arinc665File
     /**
      * @brief Initialises class with the given raw data.
      *
-     * @param[in] rawFile
+    * @param[in] rawFile
+     *   Raw File.
+     * @param[in] expectedFileType
+     *   Expected file type.
      **/
-    void decodeHeader( const RawFile &rawFile);
+    void decodeHeader( const RawFile &rawFile, const FileType expectedFileType);
 
-    //! File type
-    const FileType fileTypeV;
     //! checksum position
     const std::size_t checksumPosition;
     //! ARINC 665 Version

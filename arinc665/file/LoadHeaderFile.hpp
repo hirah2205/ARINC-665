@@ -207,6 +207,9 @@ class LoadHeaderFile: public Arinc665File
     //! @copydoc Arinc665File::operator=
     LoadHeaderFile& operator=( const RawFile &rawFile) final;
 
+    //! @copydoc Arinc665File::fileType() const noexcept
+    [[nodiscard]] FileType fileType() const noexcept final;
+
     /**
      * @brief Returns the part flags.
      *

@@ -78,8 +78,8 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
     << "Load File List File " << Arinc665::ListOfFilesName;
 
   // Load list of files file
-  File::FileListFile fileListFile(
-    readFileHandler( mediumIndex, Arinc665::ListOfFilesName));
+  File::FileListFile fileListFile{
+    readFileHandler( mediumIndex, Arinc665::ListOfFilesName)};
 
   // store first list of files for further tests
   if (!this->fileListFile)
@@ -93,10 +93,10 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
     if (!this->fileListFile->belongsToSameMediaSet( fileListFile))
     {
       //! @throw Arinc665Exception When FILES.LUM is inconsistent to other media
-      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-        AdditionalInfo(
-          std::string{ Arinc665::ListOfFilesName} +
-          " is not consistent to other file list"));
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << AdditionalInfo(
+          std::string{ Arinc665::ListOfFilesName}
+          + " is not consistent to other file list"));
     }
   }
 

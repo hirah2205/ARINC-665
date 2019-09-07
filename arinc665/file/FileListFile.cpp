@@ -22,7 +22,7 @@
 namespace Arinc665::File {
 
 FileListFile::FileListFile( SupportedArinc665Version version):
-  ListFile{ FileType::FileList, version},
+  ListFile{ version},
   mediaSequenceNumberValue{ 0},
   numberOfMediaSetMembersValue{ 0}
 {
@@ -35,7 +35,7 @@ FileListFile::FileListFile(
   uint8_t numberOfMediaSetMembers,
   const FilesInfo &files,
   const UserDefinedData &userDefinedData):
-  ListFile{ FileType::FileList, version},
+  ListFile{ version},
   mediaSetPnValue{ mediaSetPn},
   mediaSequenceNumberValue{ mediaSequenceNumber},
   numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
@@ -51,7 +51,7 @@ FileListFile::FileListFile(
   uint8_t numberOfMediaSetMembers,
   FilesInfo &&files,
   UserDefinedData &&userDefinedData):
-  ListFile{ FileType::FileList, version},
+  ListFile{ version},
   mediaSetPnValue{ std::move( mediaSetPn)},
   mediaSequenceNumberValue{ mediaSequenceNumber},
   numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
@@ -61,7 +61,7 @@ FileListFile::FileListFile(
 }
 
 FileListFile::FileListFile( const RawFile &rawFile):
-  ListFile( FileType::FileList, rawFile),
+  ListFile{ rawFile, FileType::FileList},
   mediaSequenceNumberValue{ 0},
   numberOfMediaSetMembersValue{ 0}
 {
@@ -74,6 +74,11 @@ FileListFile& FileListFile::operator=( const RawFile &rawFile)
   decodeBody( rawFile);
 
   return *this;
+}
+
+FileType FileListFile::fileType() const noexcept
+{
+  return FileType::FileList;
 }
 
 std::string_view FileListFile::mediaSetPn() const
@@ -129,7 +134,7 @@ FilesInfo& FileListFile::files()
 
 FileListFile::FileInfoMap FileListFile::filesAsMap() const
 {
-  FileInfoMap fileMap;
+  FileInfoMap fileMap{};
 
   for ( const auto &fileInfo : filesValue)
   {
@@ -146,7 +151,7 @@ FileListFile::FileInfoMap FileListFile::filesAsMap() const
 
 FileListFile::FileInfoPathMap FileListFile::filesAsPathMap() const
 {
-  FileInfoPathMap fileMap;
+  FileInfoPathMap fileMap{};
 
   for ( const auto &fileInfo : filesValue)
   {
@@ -228,7 +233,7 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
       return false;
     }
 
-    switch ( fileType( filesValue[i].filename()))
+    switch ( Arinc665File::fileType( filesValue[i].filename()))
     {
       case FileType::LoadList:
       case FileType::BatchList:

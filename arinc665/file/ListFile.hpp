@@ -81,17 +81,40 @@ class ListFile: public Arinc665File
     virtual void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) = 0;
 
   protected:
-    //! @copydoc Arinc665File::Arinc665File(FileType,SupportedArinc665Version,std::size_t)
+    //! @copydoc Arinc665File::Arinc665File(SupportedArinc665Version,std::size_t)
     ListFile(
-      FileType fileType,
       SupportedArinc665Version version,
+      std::size_t checksumPosition = 2U) noexcept;
+
+    //! @copydoc Arinc665File::Arinc665File(const RawFile&,FileType,std::size_t)
+    ListFile(
+      const RawFile &rawFile,
+      FileType expectedFileType,
       std::size_t checksumPosition = 2U);
 
-    //! @copydoc Arinc665File::Arinc665File(FileType,const RawFile&,std::size_t)
-    ListFile(
-      FileType fileType,
-      const RawFile &rawFile,
-      std::size_t checksumPosition = 2U);
+    /**
+     * @brief Copy Constructor
+     *
+     * @param[in] other
+     **/
+    ListFile( const ListFile &other) = default;
+
+    //! @copydoc ListFile(const ListFile&)
+    ListFile( ListFile &&other) = default;
+
+    /**
+     * @brief Assignment operator
+     *
+     * @param[in] other
+     *   The other file.
+     *
+     * @return *this
+     **/
+    ListFile& operator=( const ListFile &other) = default;
+
+    //! @copydoc operator=(const Arinc665File&)
+    ListFile& operator=( ListFile &&other) = default;
+
 };
 
 }

@@ -15,18 +15,16 @@
 namespace Arinc665::File {
 
 ListFile::ListFile(
-  const FileType fileType,
   const SupportedArinc665Version version,
-  const std::size_t checksumPosition):
-  Arinc665File( fileType, version, checksumPosition)
+  const std::size_t checksumPosition) noexcept:
+  Arinc665File{ version, checksumPosition}
 {
 }
-ListFile::
-ListFile(
-  FileType fileType,
+ListFile::ListFile(
   const RawFile &rawFile,
+  FileType expectedFileType,
   std::size_t checksumPosition):
-  Arinc665File( fileType, rawFile, checksumPosition)
+  Arinc665File{ rawFile, expectedFileType, checksumPosition}
 {
 }
 

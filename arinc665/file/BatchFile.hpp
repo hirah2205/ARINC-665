@@ -105,7 +105,10 @@ class BatchFile: public Arinc665File
     BatchFile( const RawFile &rawFile);
 
     //! @copydoc Arinc665File::operator=
-    virtual BatchFile& operator=( const RawFile &rawFile) override;
+    virtual BatchFile& operator=( const RawFile &rawFile) final;
+
+    //! @copydoc Arinc665File::fileType() const noexcept
+    [[nodiscard]] FileType fileType() const noexcept final;
 
     /**
      * @brief Returns the part number of the batch file.
