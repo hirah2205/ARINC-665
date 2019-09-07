@@ -22,20 +22,20 @@ namespace Arinc665::Utils {
 
 MediaSetImporterImpl::MediaSetImporterImpl(
   Arinc665Utils::ReadFileHandler readFileHandler):
-  readFileHandler( readFileHandler)
+  readFileHandler{ readFileHandler}
 {
 }
 
 Media::MediaSetPtr MediaSetImporterImpl::operator()()
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Medium 1: ";
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    << "Medium 1: ";
 
   // Load list of files file
-  File::FileListFile fileListFile(
-    readFileHandler( 1, Arinc665::ListOfFilesName));
+  File::FileListFile fileListFile{
+    readFileHandler( 1, Arinc665::ListOfFilesName)};
 
   // create Media set
   mediaSet = std::make_shared< Media::MediaSet>();
@@ -49,8 +49,8 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()()
   for ( unsigned int mediaIndex = 2; mediaIndex <= mediaSet->numberOfMedia();
     ++mediaIndex)
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-      "Medium " << mediaIndex;
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+      << "Medium " << mediaIndex;
 
     addMedium( mediaIndex);
   }
@@ -105,9 +105,9 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
       (mediaSet->numberOfMedia() != fileListFile.numberOfMediaSetMembers()) ||
       (mediumIndex != fileListFile.mediaSequenceNumber()))
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::error) <<
-     "media set: " <<
-       mediaSet->partNumber() << " " <<
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::error)
+      << "media set: "
+      << mediaSet->partNumber() << " " <<
        (unsigned int)mediaSet->numberOfMedia() << " " <<
        (unsigned int)mediumIndex << " // " <<
        fileListFile.mediaSetPn() << " " <<
@@ -130,8 +130,8 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
       continue;
     }
 
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-      "Check file " << fileInfo.second.path();
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+      << "Check file " << fileInfo.second.path();
 
     auto rawFile( readFileHandler( mediumIndex, fileInfo.second.path()));
 

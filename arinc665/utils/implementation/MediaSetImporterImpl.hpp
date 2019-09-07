@@ -167,7 +167,7 @@ class MediaSetImporterImpl
     //! batch files
     BatchFiles batchFiles;
 
-    //! file informations from list of files
+    //! file information from list of files
     File::FileListFile::FileInfoMap fileInfos;
     //! load information from list of loads
     File::LoadListFile::LoadsInfoMap loadInfos;

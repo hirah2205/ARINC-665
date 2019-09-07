@@ -191,22 +191,22 @@ enum class FileType
   Invalid           //!< invalid value
 };
 
-//! Default filename of the list of files: "FILES.LUM"
+//! Default Filename of the List of Files: "FILES.LUM"
 extern const std::string_view ListOfFilesName;
 
-//! Default filename of the list of loads: "LOADS.LUM"
+//! Default Filename of the List of Loads: "LOADS.LUM"
 extern const std::string_view ListOfLoadsName;
 
-//! Default filename of the list of batches: "BATCHES.LUM"
+//! Default Filename of the List of Batches: "BATCHES.LUM"
 extern const std::string_view ListOfBatchesName;
 
-//! Default extension of a load upload header: ".LUH"
+//! Default Extension of a Load Upload Header: ".LUH"
 extern const std::string_view LoadUploadHeaderExtension;
 
-//! Default extension of a batch file: ".LUB"
+//! Default Extension of a Batch File: ".LUB"
 extern const std::string_view BatchFileExtension;
 
-//! CRC 8bit polynom
+//! CRC 8bit Polynom
 constexpr uint8_t Crc8Polynom = 0x80U;
 //! CRC 8bit initialisation value
 constexpr uint8_t Crc8Init = 0x00U;
@@ -217,7 +217,7 @@ constexpr bool Crc8ReflectIn = false;
 //! CRC 8bit reflect out
 constexpr bool Crc8ReflectOut = false;
 
-//! CRC 16bit polynom
+//! CRC 16bit Polynom
 constexpr uint16_t Crc16Polynom = 0x1021U;
 //! CRC 16bit initialisation value
 constexpr uint16_t Crc16Init = 0xFFFFU;
@@ -228,7 +228,7 @@ constexpr bool Crc16ReflectIn = false;
 //! CRC 16bit reflect out
 constexpr bool Crc16ReflectOut = false;
 
-//! CRC 32bit polynom
+//! CRC 32bit Polynom
 constexpr uint32_t Crc32Polynom = 0x04C1'1DB7UL;
 //! CRC 32bit initialisation value
 constexpr uint32_t Crc32Init = 0xFFFFFFFFUL;
@@ -239,7 +239,7 @@ constexpr bool Crc32ReflectIn = false;
 //! CRC 32bit reflect out
 constexpr bool Crc32ReflectOut = false;
 
-//! CRC 64bit polynom
+//! CRC 64bit Polynom
 constexpr uint64_t Crc64Polynom = 0x42F0'E1EB'A9EA'3693ULL;
 //! CRC 64bit initialisation value
 constexpr uint64_t Crc64Init = 0xFFFFFFFFFFFFFFFFULL;

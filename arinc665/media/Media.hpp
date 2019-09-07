@@ -44,13 +44,13 @@ using ContainerEntityPtr = std::shared_ptr< ContainerEntity>;
 using WeakContainerEntityPtr = std::weak_ptr< ContainerEntity>;
 
 class Medium;
-//! constant medium pointer
+//! Constant Medium Pointer
 using ConstMediumPtr = std::shared_ptr< const Medium>;
-//! medium pointer
+//! Medium Pointer
 using MediumPtr = std::shared_ptr< Medium>;
-//! media
+//! Media
 using Media = std::map< uint8_t, MediumPtr>;
-//! const media
+//! Const Media
 using ConstMedia = std::map< uint8_t, ConstMediumPtr>;
 
 class Directory;

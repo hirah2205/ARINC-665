@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration/ definition of class Arinc665::Arinc665Exception.
+ * @brief Declaration/ Definition of Class Arinc665::Arinc665Exception.
  **/
 
 #ifndef ARINC665_ARINC665EXCEPTION_HPP

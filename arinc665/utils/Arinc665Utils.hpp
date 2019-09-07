@@ -92,7 +92,7 @@ class Arinc665Utils
       ReadFileHandler readFileHandler);
 
     /**
-     * @brief Creates a ARINC 665 Validator instance.
+     * @brief Creates a ARINC 665 Validator Instance.
      *
      * @param[in] readFileHandler
      *   Handler for reading files.

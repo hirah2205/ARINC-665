@@ -128,7 +128,7 @@ void MediaSetManagerImpl::add(
 {
   BOOST_LOG_FUNCTION()
 
-  assert( mediaSet && mediumPathHandler);
+  assert( mediaSet && mediumPathHandler); //! @todo change to exception --> no terminate
 
   // iterate over media
   for ( auto medium : mediaSet->media())
@@ -149,9 +149,9 @@ Media::ConstLoads MediaSetManagerImpl::loads() const
 {
   Media::ConstLoads loads;
 
-  for (const auto &mediaSet : mediaSetsValue)
+  for ( const auto &mediaSet : mediaSetsValue)
   {
-    auto mediaSetLoads( mediaSet->loads());
+    auto mediaSetLoads{ mediaSet->loads()};
 
     loads.insert( loads.end(), mediaSetLoads.begin(), mediaSetLoads.end());
   }
@@ -161,9 +161,9 @@ Media::ConstLoads MediaSetManagerImpl::loads() const
 
 Media::ConstLoads MediaSetManagerImpl::load( std::string_view filename) const
 {
-  Media::ConstLoads loads;
+  Media::ConstLoads loads{};
 
-  for (const auto &mediaSet : mediaSetsValue)
+  for ( const auto &mediaSet : mediaSetsValue)
   {
     auto mediaSetLoad{ mediaSet->load( filename)};
 
@@ -179,7 +179,7 @@ Media::ConstLoads MediaSetManagerImpl::load( std::string_view filename) const
 std::filesystem::path MediaSetManagerImpl::filePath(
   Media::ConstBaseFilePtr file) const
 {
-  auto mediumIt( mediaPaths.find( file->parent()->medium()));
+  auto mediumIt{ mediaPaths.find( file->parent()->medium())};
 
   if (mediumIt == mediaPaths.end())
   {

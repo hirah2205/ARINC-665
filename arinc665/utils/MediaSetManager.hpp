@@ -70,7 +70,7 @@ class MediaSetManager
      * @brief Returns the media set with the given part number.
      *
      * @param[in] partNumber
-     *   The media set part number.
+     *   Media Set Part Number.
      *
      * @return The media set with the given part number.
      **/
@@ -84,14 +84,14 @@ class MediaSetManager
     [[nodiscard]] virtual const MediaSets& mediaSets() const = 0;
 
     //! @copydoc MediaSetManager::mediaSets() const
-    virtual MediaSets& mediaSets() = 0;
+    [[nodiscard]] virtual MediaSets& mediaSets() = 0;
 
     /**
      * @brief Adds the given media set to the media set manager.
      *
      * Copies the media from the source path to its destination paths.
      * The integrity of the media paths are not checked.
-     * To few files will be detected on trying to access them.
+     * Missing files will be detected on trying to access them.
      * To much files are not detected.
      *
      * @param[in] mediaSet
@@ -116,11 +116,11 @@ class MediaSetManager
     /**
      * @brief Returns the loads with the given filename.
      *
-     * THis operation returns a list of loads, because the specific load could
+     * This operation returns a list of loads, because the specific load could
      * be localised on more than one medium.
      *
      * @param[in] filename
-     *   The filename
+     *   Load Filename
      *
      * @return The loads with the given filename.
      **/

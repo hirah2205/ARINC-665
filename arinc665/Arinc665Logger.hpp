@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of logger Arinc665::Arinc665Logger.
+ * @brief Declaration of Logger Arinc665::Arinc665Logger.
  **/
 
 #ifndef ARINC665_ARINC665LOGGER_HPP

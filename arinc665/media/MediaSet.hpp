@@ -46,16 +46,16 @@ class MediaSet:
      **/
     MediaSet() = default;
 
-    //! @copydoc Base::mediaSet
+    //! @copydoc Base::mediaSet() const
     ConstMediaSetPtr mediaSet() const final;
 
-    //! @copydoc Base::mediaSet
+    //! @copydoc Base::mediaSet()
     MediaSetPtr mediaSet() final;
 
-    //! @copydoc Base::type
+    //! @copydoc Base::type() const
     Type type() const final;
 
-    //! @copydoc Base::partNumber
+    //! @copydoc Base::partNumber() const
     std::string_view partNumber() const final;
 
     /**

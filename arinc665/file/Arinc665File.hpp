@@ -29,7 +29,7 @@ namespace Arinc665::File {
 class Arinc665File
 {
   public:
-    //! String List Type
+    //! String List
     using StringList = std::list< std::string>;
 
     //! Base Header Offset

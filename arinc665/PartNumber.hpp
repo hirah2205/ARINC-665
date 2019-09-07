@@ -23,20 +23,20 @@
 namespace Arinc665 {
 
 /**
- * @brief Represents a ARINC665 Part Number.
+ * @brief ARINC 665 Part Number.
  *
  * An ARINC 665 part number is as follows:
  *
  * MMMCC-SSSS-SSSS
  *
  * whereby:
- * @li MMM is a unique, upper-case alphanumeric identifier that is assigned to
- * each software supplier
- * @li CC is a two "check characters" generated from the other characters in
- * the part number
- * @li SSSSSSSS is a software supplier defined unique product identifier
- * consisting of upper-case alphanumeric characters except for alpha characters
- * "I", "O", "Q" and "Z".
+ *  - `MMM` is a unique, upper-case alphanumeric identifier that is assigned to
+ *    each software supplier
+ *  - `CC` is a two "check characters" generated from the other characters in
+ *    the part number
+ *  - `SSSSSSSS` is a software supplier defined unique product identifier
+ *    consisting of upper-case alphanumeric characters except for alpha
+ *    characters "I", "O", "Q" and "Z".
  **/
 class PartNumber
 {
@@ -47,10 +47,10 @@ class PartNumber
     //! Length of Product Identifier
     static constexpr size_t ProductIdentifierLength = 8U;
 
-    //! The length of the check code when represented as string
+    //! Length of the Check Code when represented as string
     static constexpr size_t CheckCodeLength = 2U;
 
-    //! The length of an ARINC 665 part number
+    //! Length of an ARINC 665 Part Number
     static constexpr size_t Length = ManufacturerCodeLength
       + CheckCodeLength + ProductIdentifierLength;
 
