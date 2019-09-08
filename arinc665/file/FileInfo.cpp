@@ -22,11 +22,11 @@ FileInfo::FileInfo(
   const uint16_t memberSequenceNumber,
   const uint16_t crc,
   const std::optional< CheckValue> &checkValue):
-  filenameValue( filename),
-  pathNameValue( pathName),
-  memberSequenceNumberValue( memberSequenceNumber),
-  crcValue( crc),
-  checkValueValue( checkValue)
+  filenameValue{ filename},
+  pathNameValue{ pathName},
+  memberSequenceNumberValue{ memberSequenceNumber},
+  crcValue{ crc},
+  checkValueValue{ checkValue}
 {
 }
 
@@ -36,11 +36,11 @@ FileInfo::FileInfo(
   uint16_t memberSequenceNumber,
   uint16_t crc,
   std::optional< CheckValue> &&checkValue):
-  filenameValue( std::move( filename)),
-  pathNameValue( std::move( pathName)),
-  memberSequenceNumberValue( memberSequenceNumber),
-  crcValue( crc),
-  checkValueValue( std::move( checkValue))
+  filenameValue{ std::move( filename)},
+  pathNameValue{ std::move( pathName)},
+  memberSequenceNumberValue{ memberSequenceNumber},
+  crcValue{ crc},
+  checkValueValue{ std::move( checkValue)}
 {
 }
 
@@ -76,7 +76,7 @@ void FileInfo::pathName( std::string &&pathName)
 
 std::filesystem::path FileInfo::path() const
 {
-  std::string newPathName( pathNameValue);
+  std::string newPathName{ pathNameValue};
 
   std::replace( newPathName.begin(), newPathName.end(), '\\', '/');
 

@@ -243,15 +243,15 @@ class BatchListFile: public ListFile
      **/
     void decodeBatchesInfo( const RawFile &rawFile, std::size_t offset);
 
-    //! The media set part number
+    //! Media Set Part Number
     std::string mediaSetPnValue;
-    //! The media sequence number
+    //! Media Sequence Number
     uint8_t mediaSequenceNumberValue;
-    //! The number of media set members
+    //! Number of Media Set Members
     uint8_t numberOfMediaSetMembersValue;
-    //! The stored batches information
+    //! Batches Information
     BatchesInfo batchesValue;
-    //! user defined data
+    //! User Defined Data
     UserDefinedData userDefinedDataValue;
 };
 

@@ -23,7 +23,7 @@ RawFile CheckValueUtils_encode( const std::optional< CheckValue> &checkValue)
 {
   RawFile rawCheckValue( sizeof( uint16_t));
 
-  if (!checkValue)
+  if ( !checkValue)
   {
     setInt< uint16_t>( rawCheckValue.begin(), 0U);
     return rawCheckValue;

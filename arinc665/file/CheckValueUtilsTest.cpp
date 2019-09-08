@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE( CheckValueUtils_encode1)
 
 BOOST_AUTO_TEST_CASE( CheckValueUtils_decode1)
 {
-  BOOST_CHECK( CheckValueUtils_decode( RawFile({0x00, 0x00}), 0) == std::optional< CheckValue>());
+  BOOST_CHECK( CheckValueUtils_decode( RawFile({ 0x00, 0x00}), 0) == std::optional< CheckValue>());
   BOOST_CHECK( CheckValueUtils_decode( RawFile({ 0x00, 0x06, 0x00, 0x01, 0x12, 0x34}),0) ==
     std::make_tuple(
       CheckValueType::Crc8,

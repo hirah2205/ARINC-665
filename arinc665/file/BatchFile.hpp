@@ -81,7 +81,7 @@ class BatchFile: public Arinc665File
      * @param[in] comment
      *   Batch comment.
      * @param[in] targets
-     *   List of target informations.
+     *   List of target information.
      **/
     BatchFile(
       SupportedArinc665Version version,
@@ -102,7 +102,7 @@ class BatchFile: public Arinc665File
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    BatchFile( const RawFile &rawFile);
+    explicit BatchFile( const RawFile &rawFile);
 
     //! @copydoc Arinc665File::operator=
     virtual BatchFile& operator=( const RawFile &rawFile) final;
@@ -154,7 +154,7 @@ class BatchFile: public Arinc665File
     [[nodiscard]] const BatchTargetsInfo& targetHardwares() const;
 
     //! @copydoc targetHardwares() const
-    BatchTargetsInfo& targetHardwares();
+    [[nodiscard]] BatchTargetsInfo& targetHardwares();
 
     /**
      * @brief Adds the given target hardware information to the batch file.
@@ -202,7 +202,7 @@ class BatchFile: public Arinc665File
     std::string partNumberValue;
     //! Comment
     std::string commentValue;
-    //! target hardware informations
+    //! Target Hardwares Information
     BatchTargetsInfo targetHardwaresValue;
 };
 

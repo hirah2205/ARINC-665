@@ -5,9 +5,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author @todo Add author
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief @todo Add brief description
+ * @brief ARINC 665 Media Set XML Printer Application.
+ **/
+
+/**
+ * @dir
+ * @brief ARINC 665 Media Set XML Printer Application.
  **/
 
 #include <arinc665/Arinc665.hpp>

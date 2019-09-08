@@ -6,10 +6,9 @@
 
 cmake_minimum_required( VERSION 3.13)
 
-add_executable(
-  arinc665_decompiler
+add_executable( arinc665_decompiler)
 
-  arinc665_decompiler.cpp)
+target_sources( arinc665_decompiler PRIVATE arinc665_decompiler.cpp)
 
 target_link_libraries(
   arinc665_decompiler

@@ -10,6 +10,11 @@
  * @brief Declaration of namespace Arinc665::Utils.
  **/
 
+/**
+ * @dir
+ * @brief Declaration/ Definition of Namespace Arinc665::Utils.
+ **/
+
 #ifndef ARINC665_UTILS_UTILS_HPP
 #define ARINC665_UTILS_UTILS_HPP
 
@@ -18,7 +23,12 @@
 #include <memory>
 
 /**
- * @brief ARINC 665 utilities.
+ * @brief ARINC 665 Utilities.
+ *
+ * This namespace provides utilities for handling ARINC 665 Media Sets:
+ *  - Importing and Exporting Media Sets
+ *  - XML Handling
+ *  - Media Set Manager
  **/
 namespace Arinc665::Utils {
 

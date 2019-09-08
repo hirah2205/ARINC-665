@@ -169,7 +169,7 @@ RawFile BatchFile::encode() const
 void BatchFile::decodeBody( const RawFile &rawFile)
 {
   // Spare field
-  uint32_t spare;
+  uint32_t spare{};
   getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
 
   if (0U != spare)
@@ -178,20 +178,20 @@ void BatchFile::decodeBody( const RawFile &rawFile)
       << AdditionalInfo( "Spare is not 0"));
   }
 
-  uint32_t batchPartNumberPtr;
+  uint32_t batchPartNumberPtr{};
   getInt< uint32_t>(
     rawFile.begin() + BatchPartNumberPointerFieldOffset,
     batchPartNumberPtr);
 
-  uint32_t targetHardwareIdListPtr;
+  uint32_t targetHardwareIdListPtr{};
   getInt< uint32_t>(
     rawFile.begin() + ThwIdsPointerFieldOffset,
     targetHardwareIdListPtr);
 
   // batch part number
-  auto it = decodeString(
+  auto it{ decodeString(
     rawFile.begin() + batchPartNumberPtr * 2,
-    partNumberValue);
+    partNumberValue)};
 
   // comment
   decodeString( it, commentValue);
@@ -210,8 +210,8 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
     safeCast< uint16_t>( targetHardwaresValue.size()));
 
   // iterate over target HWs
-  uint16_t thwCounter( 0);
-  for (auto const &targetHardwareInfo : targetHardwaresValue)
+  uint16_t thwCounter{ 0};
+  for ( auto const &targetHardwareInfo : targetHardwaresValue)
   {
     ++thwCounter;
 
@@ -219,7 +219,7 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
       encodeString( targetHardwareInfo.targetHardwareIdPosition())};
     assert( rawThwIdPosition.size() % 2 == 0);
 
-    RawFile rawLoadsInfo;
+    RawFile rawLoadsInfo{};
     /* iterate over loads */
     for ( auto const &loadInfo : targetHardwareInfo.loads())
     {
@@ -295,9 +295,12 @@ void BatchFile::decodeBatchTargetsInfo(
   it = getInt< uint16_t>( it, numberOfTargetHardwareIds);
 
   // iterate over THW ID index
-  for ( unsigned int thwIdIndex = 0; thwIdIndex < numberOfTargetHardwareIds; ++thwIdIndex)
+  for (
+    unsigned int thwIdIndex = 0U;
+    thwIdIndex < numberOfTargetHardwareIds;
+    ++thwIdIndex)
   {
-    auto listIt( it);
+    auto listIt{ it};
 
     // next THW ID pointer
     uint16_t thwIdPointer{};
@@ -315,14 +318,14 @@ void BatchFile::decodeBatchTargetsInfo(
     listIt = getInt< uint16_t>( listIt, numberOfLoads);
 
     // iterate over load index
-    for ( unsigned int loadIndex = 0; loadIndex < numberOfLoads; ++loadIndex)
+    for ( unsigned int loadIndex = 0U; loadIndex < numberOfLoads; ++loadIndex)
     {
       // header filename
-      std::string filename;
+      std::string filename{};
       listIt = decodeString( listIt, filename);
 
       // Load PN
-      std::string partNumber;
+      std::string partNumber{};
       listIt = decodeString( listIt, partNumber);
 
       // Batch Load info
@@ -330,10 +333,12 @@ void BatchFile::decodeBatchTargetsInfo(
     }
 
     // set it to begin of next file
-    it += thwIdPointer * 2;
+    it += thwIdPointer * 2U;
 
     // THW ID info
-    targetHardwaresValue.emplace_back( std::move( thwId), std::move( batchLoadsInfo));
+    targetHardwaresValue.emplace_back(
+      std::move( thwId),
+      std::move( batchLoadsInfo));
   }
 }
 

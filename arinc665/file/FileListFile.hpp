@@ -142,7 +142,7 @@ class FileListFile: public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    FileListFile( const RawFile &rawFile);
+    explicit FileListFile( const RawFile &rawFile);
 
     //! @copydoc ListFile::operator=(const RawFile&)
     FileListFile& operator=( const RawFile &rawFile) final;

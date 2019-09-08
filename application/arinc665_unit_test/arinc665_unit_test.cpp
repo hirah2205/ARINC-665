@@ -7,7 +7,12 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief ARINC 665 unit tests execution.
+ * @brief ARINC 665 Unit Tests Application.
+ **/
+
+/**
+ * @dir
+ * @brief ARINC 665 Unit Tests Application.
  **/
 
 //! ARINC 665 Unit Test module

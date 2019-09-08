@@ -12,7 +12,7 @@
 
 /**
  * @dir
- * @brief Declaration of Namespace Arinc665.
+ * @brief Declaration/ Definition of Namespace Arinc665.
  **/
 
 #ifndef ARINC665_ARINC665_HPP
@@ -24,7 +24,7 @@
 #include <cstdint>
 
 /**
- * @brief ARINC 665 Specification Implementation.
+ * @brief ARINC 665 Specification.
  *
  * This library implements the ARINC 665 specification.
  * This library currently supports following supplements of ARINC 665:

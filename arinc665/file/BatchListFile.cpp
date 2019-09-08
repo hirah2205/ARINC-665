@@ -131,7 +131,7 @@ BatchesInfo& BatchListFile::batches()
 
 BatchListFile::BatchInfoMap BatchListFile::batchesAsMap() const
 {
-  BatchInfoMap batches;
+  BatchInfoMap batches{};
 
   for (const auto & batch : batchesValue)
   {
@@ -190,7 +190,7 @@ RawFile BatchListFile::encode() const
   size_t nextFreeOffset{ rawFile.size()};
 
 
-  // media set informations
+  // media set information
   const auto rawMediaSetPn{ encodeString( mediaSetPn())};
   assert( rawMediaSetPn.size() % 2 == 0);
 
@@ -215,7 +215,7 @@ RawFile BatchListFile::encode() const
   nextFreeOffset += rawMediaSetPn.size() + 2 * sizeof( uint8_t);
 
 
-  // Batch Informations
+  // Batch Information
   const auto rawBatchesInfo{ encodeBatchesInfo()};
   assert( rawBatchesInfo.size() % 2 == 0);
 
@@ -260,7 +260,7 @@ RawFile BatchListFile::encode() const
 void BatchListFile::decodeBody( const RawFile &rawFile)
 {
   // Spare Field
-  uint32_t spare;
+  uint32_t spare{};
   getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
 
   if (0U != spare)
@@ -291,9 +291,9 @@ void BatchListFile::decodeBody( const RawFile &rawFile)
 
 
   // media set part number
-  auto it = decodeString(
+  auto it{ decodeString(
     rawFile.begin() + mediaInformationPtr * 2,
-    mediaSetPnValue);
+    mediaSetPnValue)};
 
   // media sequence number
   it = getInt< uint8_t>( it, mediaSequenceNumberValue);
@@ -326,8 +326,8 @@ RawFile BatchListFile::encodeBatchesInfo() const
   setInt< uint16_t>( rawBatchesInfo.begin(), numberOfBatches());
 
   // iterate over batches
-  uint16_t batchCounter( 0);
-  for (auto const &batchInfo : batchesValue)
+  uint16_t batchCounter{ 0};
+  for ( auto const &batchInfo : batchesValue)
   {
     ++batchCounter;
 

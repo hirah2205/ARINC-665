@@ -10,6 +10,11 @@
  * @brief ARINC 665 Media Set Validator.
  **/
 
+/**
+ * @dir
+ * @brief ARINC 665 Media Set Validator Application.
+ **/
+
 #include <arinc665/utils/Arinc665Utils.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 

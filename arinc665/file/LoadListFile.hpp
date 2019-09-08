@@ -125,7 +125,7 @@ class LoadListFile: public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    LoadListFile( const RawFile &rawFile);
+    explicit LoadListFile( const RawFile &rawFile);
 
     //! @copydoc ListFile::operator=(const RawFile&)
     LoadListFile& operator=( const RawFile &rawFile) final;
@@ -228,11 +228,11 @@ class LoadListFile: public ListFile
      *
      * @return If the given load list files belongs to the same media set
      **/
-    bool belongsToSameMediaSet( const LoadListFile &other) const;
+    [[nodiscard]] bool belongsToSameMediaSet( const LoadListFile &other) const;
 
   private:
     //! @copydoc ListFile::encode
-    RawFile encode() const final;
+    [[nodiscard]] RawFile encode() const final;
 
     /**
      * @brief Decodes the body of the batch file.
@@ -247,7 +247,7 @@ class LoadListFile: public ListFile
      *
      * @return Raw representation of loads information list.
      **/
-    RawFile encodeLoadsInfo() const;
+    [[nodiscard]] RawFile encodeLoadsInfo() const;
 
     /**
      * @brief Decodes the loads information list from the raw data.

@@ -7,7 +7,12 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief ARINC 665 Decompiler.
+ * @brief ARINC 665 Media Set Decompiler Application.
+ **/
+
+/**
+ * @dir
+ * @brief ARINC 665 Media Set Decompiler Application.
  **/
 
 #include <arinc665/file/File.hpp>
@@ -38,7 +43,7 @@
  * @param[in] argc
  *   Number of arguments.
  * @param[in] argv
- *   The arguments
+ *   Arguments
  *
  * @return The success state of this operation.
  **/

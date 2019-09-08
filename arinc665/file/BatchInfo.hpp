@@ -32,11 +32,11 @@ class BatchInfo
      * @brief Initialises the batch information with te given data.
      *
      * @param[in] partNumber
-     *   Part number
+     *   Part Number
      * @param[in] filename
-     *   filename
+     *   Filename
      * @param[in] memberSequenceNumber
-     *   member sequence number
+     *   Member Sequence Number
      **/
     BatchInfo(
       std::string_view partNumber,
@@ -50,17 +50,17 @@ class BatchInfo
       uint16_t memberSequenceNumber);
 
     /**
-     * @brief Returns the Batch part number.
+     * @brief Returns the Batch Part Number.
      *
      * @return The batch Batch part number
      **/
     [[nodiscard]] std::string_view partNumber() const;
 
     /**
-     * @brief Updates the Batch part number.
+     * @brief Updates the Batch Part Number.
      *
      * @param[in] partNumber
-     *   Batch part number.
+     *   Batch Part Number.
      **/
     void partNumber( std::string_view partNumber);
 
@@ -68,17 +68,17 @@ class BatchInfo
     void partNumber( std::string &&partNumber);
 
     /**
-     * @brief Returns the batch filename.
+     * @brief Returns the Batch Filename.
      *
-     * @return The batch filename
+     * @return Batch Filename
      **/
     [[nodiscard]] std::string_view filename() const;
 
     /**
-     * @brief Updates the batch filename.
+     * @brief Updates the Batch Filename.
      *
      * @param[in] filename
-     *   The batch filename.
+     *   Btch Filename.
      **/
     void filename( std::string_view filename);
 
@@ -86,17 +86,17 @@ class BatchInfo
     void filename( std::string &&filename);
 
     /**
-     * @brief Returns the member sequence number.
+     * @brief Returns the Member Sequence Number.
      *
-     * @return The member sequence number
+     * @return Member sequence number
      **/
     [[nodiscard]] uint16_t memberSequenceNumber() const;
 
     /**
-     * @brief Updates the  member sequence number.
+     * @brief Updates the Member Sequence Number.
      *
      * @param[in] memberSequenceNumber
-     *   The  member sequence number.
+     *   Member sequence number.
      **/
     void memberSequenceNumber( uint16_t memberSequenceNumber);
 
@@ -141,11 +141,11 @@ class BatchInfo
     bool operator !=( const FileInfo &other) const;
 
   private:
-    //! part number
+    //! Part Number
     std::string partNumberValue;
-    //! file name
+    //! Filename
     std::string filenameValue;
-    //! member sequence number
+    //! Member Sequence Number
     uint16_t memberSequenceNumberValue;
 };
 

@@ -6,8 +6,8 @@
 
 cmake_minimum_required( VERSION 3.13)
 
-add_executable(
-  arinc665_xml_print
-  arinc665_xml_print.cpp)
+add_executable( arinc665_xml_print)
+
+target_sources( arinc665_xml_print PRIVATE arinc665_xml_print.cpp)
 
 target_link_libraries( arinc665_xml_print arinc665)

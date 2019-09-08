@@ -10,6 +10,11 @@
  * @brief Definition of Namespace Arinc665::Media.
  **/
 
+/**
+ * @dir
+ * @brief Declaration/ Definition of Namespace Arinc665::Media.
+ **/
+
 #ifndef ARINC665_MEDIA_MEDIA_HPP
 #define ARINC665_MEDIA_MEDIA_HPP
 
@@ -21,7 +26,10 @@
 #include <memory>
 
 /**
- * @brief ARINC 665 media (set) implementation.
+ * @brief ARINC 665 %Media (Set).
+ *
+ * This namespace provides classes to represent a ARINC 665 Media Set and their
+ * parts like Loads, Batches nad Management Files.
  **/
 namespace Arinc665::Media {
 

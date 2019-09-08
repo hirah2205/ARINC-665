@@ -7,7 +7,12 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Media Set Manager Test Application.
+ * @brief ARIN 665 Media Set Manager Application.
+ **/
+
+/**
+ * @dir
+ * @brief ARINC 665 Media Set Manager Application.
  **/
 
 #include <arinc665/utils/MediaSetManager.hpp>

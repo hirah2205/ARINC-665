@@ -14,6 +14,18 @@ project(
 
 set( PROJECT_VERSION_ADDITION "dev")
 
+find_package( Git)
+
+if( GIT_FOUND)
+  execute_process(
+    COMMAND ${GIT_EXECUTABLE} rev-parse --verify --short HEAD
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_HASH
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+  set( PROJECT_VERSION_ADDITION "${PROJECT_VERSION_ADDITION}-${GIT_HASH}")
+endif()
+
 
 set( CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -34,36 +46,23 @@ endif()
 enable_testing()
 
 
-find_package( Git)
-
-if (GIT_FOUND)
-  execute_process(
-    COMMAND ${GIT_EXECUTABLE} rev-parse --verify --short HEAD
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_HASH
-    OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-  set( PROJECT_VERSION_ADDITION "${PROJECT_VERSION_ADDITION}-${GIT_HASH}")
-endif()
-
-
 include( FetchContent)
 
 # get dependencies
 FetchContent_Declare(
   cmake_common
   GIT_REPOSITORY https://git.thomas-vogt.de/Thomas-Vogt/cmake_common.git
-  GIT_TAG        master)
+  GIT_TAG master)
 
 FetchContent_Declare(
   helper
   GIT_REPOSITORY https://git.thomas-vogt.de/Thomas-Vogt/helper.git
-  GIT_TAG        master)
+  GIT_TAG master)
 
 FetchContent_Declare(
   pugixml
   GIT_REPOSITORY https://github.com/zeux/pugixml.git
-  GIT_TAG        v1.9)
+  GIT_TAG v1.9)
 
 
 FetchContent_GetProperties( cmake_common)

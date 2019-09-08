@@ -63,9 +63,9 @@ class LoadFileInfo
       std::optional< CheckValue> &&checkValue = {});
 
     /**
-     * @return The filename.
+     * @brief Returns the Filename.
      *
-     * @return The filename.
+     * @return Filename.
      **/
     [[nodiscard]] std::string_view filename() const;
 
@@ -73,7 +73,7 @@ class LoadFileInfo
      * @brief Updates the filename.
      *
      * @param[in] filename
-     *   The filename.
+     *   Filename.
      **/
     void filename( std::string_view filename);
 
@@ -81,9 +81,9 @@ class LoadFileInfo
     void filename( std::string &&filename);
 
     /**
-     * @return Returns the part number.
+     * @return Returns the File Part Number.
      *
-     * @return The part number.
+     * @return File Part Number.
      **/
     [[nodiscard]] std::string_view partNumber() const;
 
@@ -91,7 +91,7 @@ class LoadFileInfo
      * @brief Updates the file part number.
      *
      * @param[in] partNumber
-     *   The file part number.
+     *   File Part Number.
      **/
     void partNumber( std::string_view partNumber);
 
@@ -101,7 +101,7 @@ class LoadFileInfo
     /**
      * @return Returns the file size.
      *
-     * @return The file size.
+     * @return File size.
      **/
     [[nodiscard]] uint64_t length() const;
 

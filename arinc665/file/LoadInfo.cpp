@@ -65,6 +65,11 @@ void LoadInfo::headerFilename( std::string_view headerFilename)
   headerFilenameValue = headerFilename;
 }
 
+void LoadInfo::headerFilename( std::string &&headerFilename)
+{
+  headerFilenameValue = std::move( headerFilename);
+}
+
 uint8_t LoadInfo::memberSequenceNumber() const
 {
   return memberSequenceNumberValue;

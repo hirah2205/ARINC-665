@@ -10,21 +10,18 @@ target_sources(
   arinc665
 
   PRIVATE
-    Utils.hpp
-    Arinc665Utils.hpp
-    Arinc665Utils.cpp
-    Arinc665Xml.hpp
-    Arinc665Xml.cpp
-    FileCreationPolicyDescription.hpp
-    FileCreationPolicyDescription.cpp
-    MediaSetConfiguration.hpp
-    MediaSetConfiguration.cpp
-    MediaSetManager.hpp
-    MediaSetManager.cpp)
+    Arinc665XmlPugiXmlImpl.hpp
+    Arinc665XmlPugiXmlImpl.cpp
+    MediaSetExporterImpl.hpp
+    MediaSetExporterImpl.cpp
+    MediaSetImporterImpl.hpp
+    MediaSetImporterImpl.cpp
+    MediaSetManagerImpl.hpp
+    MediaSetManagerImpl.cpp
+    MediaSetValidatorImpl.cpp
+    MediaSetValidatorImpl.hpp)
 
 #target_sources(
 #  arinc665_test
 #
 #  PRIVATE)
-
-add_subdirectory( implementation)

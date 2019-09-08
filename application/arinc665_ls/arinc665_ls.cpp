@@ -11,6 +11,11 @@
  *   them.
  **/
 
+/**
+ * @dir
+ * @brief ARINC 665 List Application.
+ **/
+
 #include <arinc665/Arinc665.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 

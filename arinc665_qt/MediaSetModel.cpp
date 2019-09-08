@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author Thomas Vogt, Thomas@Thomas-Vogt.de
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
  * @brief Definition of Class Arinc665Qt::MediaSetModelModel.
  **/
@@ -27,8 +27,8 @@ namespace Arinc665Qt {
 MediaSetModelModel::MediaSetModelModel(
   Arinc665::Media::MediaSetPtr mediaSet,
   QObject * parent) :
-  QAbstractItemModel( parent),
-  mediaSet( mediaSet)
+  QAbstractItemModel{ parent},
+  mediaSet{ mediaSet}
 {
 }
 

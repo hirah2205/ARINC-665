@@ -174,11 +174,11 @@ class FileInfo
     bool operator!=( const FileInfo &other) const;
 
   private:
-    //! file name
+    //! Filename
     std::string filenameValue;
-    //! path name
+    //! Path Name
     std::string pathNameValue;
-    //! member sequence number
+    //! Member Sequence Number
     uint16_t memberSequenceNumberValue;
     //! CRC
     uint16_t crcValue;

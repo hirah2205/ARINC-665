@@ -10,6 +10,11 @@
  * @brief Declaration of Namespace Arinc665::File.
  **/
 
+/**
+ * @dir
+ * @brief Declaration/ Definition of Namespace Arinc665::File.
+ **/
+
 #ifndef ARINC665_FILE_FILE_HPP
 #define ARINC665_FILE_FILE_HPP
 
@@ -20,9 +25,9 @@
 #include <cstdint>
 
 /**
- * @brief ARINC 665 File Implementation.
+ * @brief ARINC 665 Files.
  *
- * This namespace contains the implementation of the following ARINC 664
+ * This namespace contains the implementation of the following ARINC 665
  * protocol files:
  * * List files:
  *   * List of Files: FileListFile
@@ -31,7 +36,7 @@
  * * Load Header File: LoadHeaderFile
  * * Batch File: BatchFile
  *
- * The implementation supports the file formats of the following ARINC 664
+ * The implementation supports the file formats of the following ARINC 665
  * supplements:
  * * Supplement 2
  * * Supplement 3
@@ -39,7 +44,7 @@
  **/
 namespace Arinc665::File {
 
-//! Raw file type definition.
+//! Raw File
 using RawFile = std::vector< uint8_t>;
 
 class Arinc665File;

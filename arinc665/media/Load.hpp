@@ -32,22 +32,22 @@ namespace Arinc665::Media {
 class Load: public BaseFile
 {
   public:
-    //! File list
+    //! File List
     using Files = std::list< WeakFilePtr>;
     //! Target Hardware ID / Positions
     using TargetHardwareIdPositions =
       std::map< std::string, std::list< std::string>>;
-    //! Target Hardware ID list
+    //! Target Hardware ID List
     using TargetHardwareIds = std::list< std::string>;
-    //! Positions list
+    //! Positions List
     using Positions = std::list< std::string>;
-    //! User defined data type
+    //! User Defined Data Type
     using UserDefinedData = std::vector< uint8_t>;
     //! Load Type (Description + ID)
     using Type = std::optional< std::pair< std::string, uint16_t>>;
 
     /**
-     * @brief
+     * @brief Initialises a ARINC 665 Load
      *
      * @param[in] parent
      *   The parent of this load.
@@ -183,7 +183,7 @@ class Load: public BaseFile
      * @brief Updates the Load Type.
      *
      * @param[in] type
-     *   The new Load Type.
+     *   New Load Type.
      **/
     void loadType( const Type &type);
 
@@ -193,11 +193,11 @@ class Load: public BaseFile
   private:
     //! Target Hardware ID/ Positions
     TargetHardwareIdPositions targetHardwareIdPositionsValue;
-    //! Data files
+    //! Data Files
     Files dataFilesValue;
-    //! Support files
+    //! Support Files
     Files supportFilesValue;
-    //! user defined data
+    //! User Defined Data
     UserDefinedData userDefinedDataValue;
     //! Load Type
     Type typeValue;

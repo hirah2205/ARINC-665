@@ -391,7 +391,7 @@ void FileListFile::decodeBody( const RawFile &rawFile)
 
 
   // Spare Field
-  uint32_t spare;
+  uint32_t spare{};
   getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
 
   if (0U != spare)
@@ -402,21 +402,21 @@ void FileListFile::decodeBody( const RawFile &rawFile)
 
 
   // media information pointer
-  uint32_t mediaInformationPtr;
+  uint32_t mediaInformationPtr{};
   getInt< uint32_t>(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
     mediaInformationPtr);
 
 
   // file list pointer
-  uint32_t fileListPtr;
+  uint32_t fileListPtr{};
   getInt< uint32_t>(
     rawFile.begin() + MediaSetFilesPointerFieldOffset,
     fileListPtr);
 
 
   // user defined data pointer
-  uint32_t userDefinedDataPtr;
+  uint32_t userDefinedDataPtr{};
   getInt< uint32_t>(
     rawFile.begin() + UserDefinedDataPointerFieldOffset,
     userDefinedDataPtr);
@@ -432,9 +432,9 @@ void FileListFile::decodeBody( const RawFile &rawFile)
   }
 
   // media set part number
-  auto it = decodeString(
-    rawFile.begin() + mediaInformationPtr * 2,
-    mediaSetPnValue);
+  auto it{ decodeString(
+    rawFile.begin() + mediaInformationPtr * 2U,
+    mediaSetPnValue)};
 
   // media sequence number
   it = getInt< uint8_t>( it, mediaSequenceNumberValue);
@@ -514,15 +514,15 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data) const
     rawFileInfo.resize( rawFileInfo.size() + 2 * sizeof( uint16_t));
 
     // member sequence number
-    auto fileInfoIt = setInt< uint16_t>(
+    auto fileInfoIt{ setInt< uint16_t>(
       rawFileInfo.begin() + rawFileInfo.size() - ( 2 * sizeof( uint16_t)),
-      fileInfo.memberSequenceNumber());
+      fileInfo.memberSequenceNumber())};
 
     // crc
     setInt< uint16_t>( fileInfoIt, fileInfo.crc());
 
     // following fields are available in ARINC 665-3 ff
-    if (encodeV3Data)
+    if ( encodeV3Data)
     {
       // check Value
       const auto rawCheckValue{ CheckValueUtils_encode( fileInfo.checkValue())};
@@ -558,13 +558,13 @@ void FileListFile::decodeFilesInfo(
   filesValue.clear();
 
   // number of files
-  uint16_t numberOfFiles;
+  uint16_t numberOfFiles{};
   it = getInt< uint16_t>( it, numberOfFiles);
 
   // iterate over index
-  for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex)
+  for ( unsigned int fileIndex = 0U; fileIndex < numberOfFiles; ++fileIndex)
   {
-    auto listIt( it);
+    auto listIt{ it};
 
     // next file pointer
     uint16_t filePointer{};
@@ -589,10 +589,10 @@ void FileListFile::decodeFilesInfo(
     listIt = getInt< uint16_t>( listIt, crc);
 
     // CheckValue (keep default initialised if not V3 File Info
-    std::optional< CheckValue> checkValue;
+    std::optional< CheckValue> checkValue{};
 
     // following fields are available in ARINC 665-3 ff
-    if (decodeV3Data)
+    if ( decodeV3Data)
     {
       // check Value
       checkValue = CheckValueUtils_decode(

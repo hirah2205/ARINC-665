@@ -6,10 +6,9 @@
 
 cmake_minimum_required( VERSION 3.13)
 
-add_executable(
-  arinc665_compiler
+add_executable( arinc665_compiler)
 
-  arinc665_compiler.cpp)
+target_sources( arinc665_compiler PRIVATE arinc665_compiler.cpp)
 
 target_link_libraries(
   arinc665_compiler

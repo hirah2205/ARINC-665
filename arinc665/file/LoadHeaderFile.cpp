@@ -139,7 +139,7 @@ void LoadHeaderFile::targetHardwareIdPositions(
 
 LoadHeaderFile::StringList LoadHeaderFile::targetHardwareIds() const
 {
-  StringList targetHardwareIds;
+  StringList targetHardwareIds{};
 
   for ( const auto &element : targetHardwareIdPositionsValue)
   {
@@ -151,7 +151,7 @@ LoadHeaderFile::StringList LoadHeaderFile::targetHardwareIds() const
 
 void LoadHeaderFile::targetHardwareIds( const StringList &targetHardwareIds)
 {
-  for ( const auto& thwId : targetHardwareIds)
+  for ( const auto &thwId : targetHardwareIds)
   {
     targetHardwareId( thwId);
   }
@@ -318,7 +318,7 @@ RawFile LoadHeaderFile::encode() const
   // Load Type (only in V3 mode)
   if (encodeV3Data)
   {
-    uint32_t loadTypePtr = 0;
+    uint32_t loadTypePtr{ 0};
 
     // Encode lode type only if set.
     if (typeValue)
@@ -362,7 +362,7 @@ RawFile LoadHeaderFile::encode() const
   // THW ID + Positions (only in V3 mode)
   if (encodeV3Data)
   {
-    unsigned int thwIdPosCount{0};
+    unsigned int thwIdPosCount{ 0};
     RawFile rawThwPos( sizeof( uint16_t));
 
     for ( const auto &thwIdPosition : targetHardwareIdPositionsValue)
@@ -395,7 +395,7 @@ RawFile LoadHeaderFile::encode() const
 
     setInt< uint16_t>( rawThwPos.begin(), thwIdPosCount);
 
-    uint32_t thwIdPosPtr = 0;
+    uint32_t thwIdPosPtr{ 0};
 
     if (0 != thwIdPosCount)
     {
@@ -432,7 +432,7 @@ RawFile LoadHeaderFile::encode() const
     encodeV3Data)};
   assert( rawSupportFiles.size() % 2 == 0);
 
-  uint32_t supportFileListPtr = 0;
+  uint32_t supportFileListPtr{ 0};
 
   if (!supportFiles().empty())
   {
@@ -452,7 +452,7 @@ RawFile LoadHeaderFile::encode() const
 
   // user defined data pointer
   assert( userDefinedDataValue.size() % 2 == 0);
-  uint32_t userDefinedDataPtr = 0;
+  uint32_t userDefinedDataPtr{ 0};
 
   if (!userDefinedDataValue.empty())
   {
@@ -471,7 +471,7 @@ RawFile LoadHeaderFile::encode() const
 
 
   // Load Check Value (only in V3 mode)
-  if (encodeV3Data)
+  if ( encodeV3Data)
   {
     // Alternative implementation set Load Check Pointer to zero
 
@@ -508,7 +508,7 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
 {
   bool decodeV3Data{ false};
 
-  uint32_t partFlags;
+  uint32_t partFlags{};
   getInt< uint32_t>(
     rawFile.begin() + PartFlagsFieldOffset,
     partFlags);
@@ -535,27 +535,27 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
         << AdditionalInfo( "Unsupported ARINC 665 Version"));
   }
 
-  uint32_t loadPartNumberPtr;
+  uint32_t loadPartNumberPtr{};
   getInt< uint32_t>(
     rawFile.begin() + LoadPartNumberPointerFieldOffset,
     loadPartNumberPtr);
 
-  uint32_t targetHardwareIdListPtr;
+  uint32_t targetHardwareIdListPtr{};
   getInt< uint32_t>(
     rawFile.begin() + ThwIdsPointerFieldOffset,
     targetHardwareIdListPtr);
 
-  uint32_t dataFileListPtr;
+  uint32_t dataFileListPtr{};
   getInt< uint32_t>(
     rawFile.begin() + DataFilesPointerFieldOffset,
     dataFileListPtr);
 
-  uint32_t supportFileListPtr;
+  uint32_t supportFileListPtr{};
   getInt< uint32_t>(
     rawFile.begin() + SupportFilesPointerFieldOffset,
     supportFileListPtr);
 
-  uint32_t userDefinedDataPtr;
+  uint32_t userDefinedDataPtr{};
   getInt< uint32_t>(
     rawFile.begin() + UserDefinedDataPointerFieldOffset,
     userDefinedDataPtr);
@@ -588,12 +588,12 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
   // Load Type Description Field (ARINC 665-3)
   if (decodeV3Data && (0!=loadTypeDescriptionPtr))
   {
-    std::string loadTypeDescription;
+    std::string loadTypeDescription{};
     auto it{ decodeString(
       rawFile.begin() + loadTypeDescriptionPtr * 2,
       loadTypeDescription)};
 
-    uint16_t loadTypeValue;
+    uint16_t loadTypeValue{};
     getInt< uint16_t>( it, loadTypeValue);
 
     loadType( {std::make_pair(std::move( loadTypeDescription), loadTypeValue)});
@@ -601,7 +601,7 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
 
 
   // target hardware id list
-  StringList targetHardwareIdsValue;
+  StringList targetHardwareIdsValue{};
 
   decodeStringList(
     rawFile.begin() + targetHardwareIdListPtr * 2,
@@ -612,10 +612,10 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
   // THW IDs with Positions Field (ARINC 665-3)
   if (decodeV3Data && (0!=thwIdsPositionPtr))
   {
-    uint16_t numberOfThwIdsWithPos;
-    auto it = getInt< uint16_t>(
+    uint16_t numberOfThwIdsWithPos{};
+    auto it{ getInt< uint16_t>(
       rawFile.begin() + thwIdsPositionPtr * 2,
-      numberOfThwIdsWithPos);
+      numberOfThwIdsWithPos)};
 
     for ( unsigned int thwIdIndex = 0; thwIdIndex < numberOfThwIdsWithPos; ++thwIdIndex)
     {
@@ -700,7 +700,7 @@ RawFile LoadHeaderFile::encodeFileList(
     safeCast< uint16_t>( loadFilesInfo.size()));
 
   // iterate over files
-  uint16_t fileCounter( 0);
+  uint16_t fileCounter{ 0};
   for (auto const &fileInfo : loadFilesInfo)
   {
     ++fileCounter;
@@ -727,7 +727,7 @@ RawFile LoadHeaderFile::encodeFileList(
       rawFileInfo.size() + sizeof( uint32_t) + sizeof( uint16_t));
 
     // file length
-    uint32_t fileLength{0};
+    uint32_t fileLength{ 0};
 
     switch (type)
     {
@@ -799,7 +799,7 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
 {
   auto it{ rawFile.begin() + offset};
 
-  LoadFilesInfo files;
+  LoadFilesInfo files{};
 
   // number of data files
   uint16_t numberOfFiles{};

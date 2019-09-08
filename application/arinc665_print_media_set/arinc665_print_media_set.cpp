@@ -7,7 +7,12 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief TODO Enter Brief description
+ * @brief ARINC 665 Media Set Print Application.
+ **/
+
+/**
+ * @dir
+ * @brief ARINC 665 Media Set Print Application.
  **/
 
 #include <arinc665/Arinc665.hpp>

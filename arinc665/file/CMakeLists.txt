@@ -46,6 +46,7 @@ target_sources(
   PRIVATE
     BatchFileTest.cpp
     BatchListFileTest.cpp
+    BatchLoadInfoTest.cpp
     CheckValueUtilsTest.cpp
     FileListFileTest.cpp
     LoadFileInfoTest.cpp

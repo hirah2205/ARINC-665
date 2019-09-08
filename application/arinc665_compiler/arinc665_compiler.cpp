@@ -7,7 +7,12 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief ARINC 665 compiler.
+ * @brief ARINC 665 Media Set Compiler Application.
+ **/
+
+/**
+ * @dir
+ * @brief ARINC 665 Media Set Compiler Application.
  **/
 
 #include <arinc665/media/Media.hpp>
@@ -25,6 +30,7 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/SupportedArinc665VersionDescription.hpp>
+#include <arinc665/Version.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -182,7 +188,9 @@ int main( int argc, char ** argv)
 
   try
   {
-    std::cout << "ARINC 665 Media Set Compiler\n";
+    std::cout
+      << "ARINC 665 Media Set Compiler - "
+      << Arinc665::Version::version() << "\n";
 
     boost::program_options::variables_map options;
 

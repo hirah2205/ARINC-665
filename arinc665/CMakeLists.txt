@@ -8,6 +8,11 @@ cmake_minimum_required( VERSION 3.13)
 
 find_package( Boost REQUIRED)
 
+# prepare Version.cpp
+configure_file(
+  Version.cpp.in
+  Version.cpp)
+
 add_library( arinc665)
 
 target_sources(
@@ -25,7 +30,9 @@ target_sources(
     PartNumber.hpp
     PartNumber.cpp
     SupportedArinc665VersionDescription.cpp
-    SupportedArinc665VersionDescription.hpp)
+    SupportedArinc665VersionDescription.hpp
+    Version.hpp
+    ${CMAKE_CURRENT_BINARY_DIR}/Version.cpp)
 
 target_compile_options(
   arinc665
@@ -71,7 +78,8 @@ target_sources(
 
   PRIVATE
     Arinc665CrcTest.cpp
-    PartNumberTest.cpp)
+    PartNumberTest.cpp
+    VersionTest.cpp)
 
 target_compile_options(
   arinc665_test
@@ -81,9 +89,11 @@ target_compile_options(
 
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>
+    $<$<CXX_COMPILER_ID:GNU>:-Werror>
 
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
-    $<$<CXX_COMPILER_ID:Clang>:-Wextra>)
+    $<$<CXX_COMPILER_ID:Clang>:-Wextra>
+    $<$<CXX_COMPILER_ID:Clang>:-Werror>)
 
 target_compile_definitions(
   arinc665_test
@@ -98,6 +108,10 @@ target_compile_features( arinc665_test PUBLIC cxx_std_17)
 target_include_directories(
   arinc665_test
   PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES>)
+
+target_link_libraries(
+  arinc665_test
+  PUBLIC arinc665)
 
 add_subdirectory( file)
 add_subdirectory( media)

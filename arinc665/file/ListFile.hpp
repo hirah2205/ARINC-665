@@ -82,7 +82,7 @@ class ListFile: public Arinc665File
 
   protected:
     //! @copydoc Arinc665File::Arinc665File(SupportedArinc665Version,std::size_t)
-    ListFile(
+    explicit ListFile(
       SupportedArinc665Version version,
       std::size_t checksumPosition = 2U) noexcept;
 

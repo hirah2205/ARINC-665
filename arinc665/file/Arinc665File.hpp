@@ -32,13 +32,7 @@ class Arinc665File
     //! String List
     using StringList = std::list< std::string>;
 
-    //! Base Header Offset
-    //! @deprecated
-    static constexpr size_t BaseHeaderOffset =
-      sizeof( uint32_t) + // file length
-      sizeof( uint32_t);  // ARINC Version + Spare
-
-    //! unused at the moment
+    //! Base Header Size
     static constexpr size_t BaseHeaderSize =
       sizeof( uint32_t) + // file length
       sizeof( uint16_t);  // ARINC Version

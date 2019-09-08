@@ -29,6 +29,8 @@ namespace Arinc665::File {
 class BatchLoadInfo
 {
   public:
+    BatchLoadInfo() noexcept = default;
+
     /**
      * @brief Initialises the batch load information with the given data.
      *

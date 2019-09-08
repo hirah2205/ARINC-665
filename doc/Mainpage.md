@@ -6,5 +6,4 @@ This tool suite contains the components:
 
 Dependencies are:
  * helper,
- * Tftp,
  * pugixml
