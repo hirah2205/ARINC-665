@@ -39,7 +39,7 @@ void MediaSetConfiguration::load( const boost::property_tree::ptree &config)
     auto mediaSetPartNumber{
       mediaSetConfig.second.get< std::string>( "part_number")};
 
-    MediaPaths mediaPaths;
+    MediaPaths mediaPaths{};
 
     // iterate over media
     for ( auto &mediumConfig : mediaSetConfig.second.get_child( "media"))
@@ -55,6 +55,42 @@ void MediaSetConfiguration::load( const boost::property_tree::ptree &config)
     // insert media set configuration
     mediaSets.emplace( std::move( mediaSetPartNumber), std::move( mediaPaths));
   }
+}
+
+boost::property_tree::ptree MediaSetConfiguration::toProperties() const
+{
+  boost::property_tree::ptree ptree{};
+
+  ptree.add( "media_set_base", mediaSetBase);
+
+  boost::property_tree::ptree mediaSetsConfig{};
+
+  for ( const auto &[ mediaSetPartNumber, mediaPaths] : mediaSets)
+  {
+    boost::property_tree::ptree mediaSetConfig{};
+
+    mediaSetConfig.add( "part_number", mediaSetPartNumber);
+
+    boost::property_tree::ptree mediaConfig{};
+
+    for ( const auto &[ mediumNumber, mediumPath] : mediaPaths)
+    {
+      boost::property_tree::ptree mediumConfig{};
+
+      mediumConfig.add( "number", mediumNumber);
+      mediumConfig.add( "path", mediumPath);
+
+      mediaConfig.add_child( "", mediumConfig);
+    }
+
+    mediaSetConfig.add_child( "media", mediaConfig);
+
+    mediaSetsConfig.add_child( "", mediaSetConfig);
+  }
+
+  ptree.add_child( "media_sets", mediaSetsConfig);
+
+  return ptree;
 }
 
 }
