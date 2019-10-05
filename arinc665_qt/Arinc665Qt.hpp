@@ -23,11 +23,15 @@
  **/
 namespace Arinc665Qt {
 
-class MediaSetModelModel;
+class MediaSetController;
+
+class MediaSetModel;
 class LoadModel;
 class BatchModel;
 
 class LoadsModel;
+
+class MediaSetDialog;
 
 }
 

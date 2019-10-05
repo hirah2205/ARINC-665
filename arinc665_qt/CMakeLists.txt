@@ -10,30 +10,33 @@ find_package( Qt5 COMPONENTS Widgets QUIET)
 
 if( TARGET Qt5::Widgets)
 
-  #QT5_WRAP_UI(
-  #  bhm_qt_ui
-  #
-  #  bhm_qt/AsfMessagesDialog.ui
-  #  )
-
   set( CMAKE_AUTOMOC ON)
+  set( CMAKE_AUTOUIC ON)
 
-  add_library(
+  add_library( arinc665_qt)
+
+  target_sources(
     arinc665_qt
 
-    Arinc665Qt.hpp
-    LoadsModel.hpp
-    MediaSetModel.hpp
-    MediaSetModel.cpp
-  #  ${bhm_qt_ui}
-    )
+    PRIVATE
+      Arinc665Qt.hpp
+      Arinc665QtLogger.hpp
+      #LoadsModel.hpp
+      MediaSetController.hpp
+      MediaSetController.cpp
+      MediaSetDialog.hpp
+      MediaSetDialog.cpp
+      MediaSetDialog.ui
+      MediaSetModel.hpp
+      MediaSetModel.cpp)
 
   target_include_directories( arinc665_qt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
-  target_include_directories( arinc665_qt PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
   target_link_libraries(
     arinc665_qt
-    arinc665
-    Qt5::Widgets)
+
+    PUBLIC
+      arinc665
+      Qt5::Widgets)
 
 endif( TARGET Qt5::Widgets)

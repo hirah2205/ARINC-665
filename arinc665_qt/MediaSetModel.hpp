@@ -24,11 +24,20 @@ namespace Arinc665Qt {
 /**
  * @brief QT Adaption of ARINC 665 Media Set.
  **/
-class MediaSetModelModel: public QAbstractItemModel
+class MediaSetModel: public QAbstractItemModel
 {
   Q_OBJECT
 
   public:
+    enum class Columns
+    {
+        Name,
+        PartNumber,
+        Type,
+
+        Last
+    };
+
     /**
      * @brief Initialises the model instance.
      *
@@ -37,12 +46,12 @@ class MediaSetModelModel: public QAbstractItemModel
      * @param[in] parent
      *   Parent object
      **/
-    MediaSetModelModel(
-      Arinc665::Media::MediaSetPtr mediaSet = {},
-      QObject * parent = nullptr);
+    explicit MediaSetModel(
+      QObject * parent = nullptr,
+      Arinc665::Media::MediaSetPtr mediaSet = {});
 
-    //! Default destructor
-    virtual ~MediaSetModelModel() = default;
+    //! Destructor
+    ~MediaSetModel() override = default;
 
     /**
      * @brief Creates the index for the child identified by its parent and its
@@ -54,7 +63,7 @@ class MediaSetModelModel: public QAbstractItemModel
      *
      * @return
      **/
-    virtual QModelIndex index(
+    [[nodiscard]] QModelIndex index(
       int row,
       int column,
       const QModelIndex &parent) const override;
@@ -66,7 +75,7 @@ class MediaSetModelModel: public QAbstractItemModel
      *
      * @return
      **/
-    virtual QModelIndex parent( const QModelIndex &index) const override;
+    [[nodiscard]] QModelIndex parent( const QModelIndex &index) const override;
 
     /**
      * @brief Return if the given parent has children.
@@ -75,7 +84,7 @@ class MediaSetModelModel: public QAbstractItemModel
      *
      * @return
      **/
-    virtual bool hasChildren( const QModelIndex &parent) const override;
+    [[nodiscard]] bool hasChildren( const QModelIndex &parent) const override;
 
     /**
      * @brief Returns the number of rows.
@@ -85,7 +94,7 @@ class MediaSetModelModel: public QAbstractItemModel
      *
      * @return
      **/
-    virtual int rowCount( const QModelIndex & parent) const override;
+    [[nodiscard]] int rowCount( const QModelIndex & parent) const override;
 
     /**
      * @brief Returns the number of columns.
@@ -95,7 +104,7 @@ class MediaSetModelModel: public QAbstractItemModel
      *
      * @return
      **/
-    virtual int columnCount( const QModelIndex &parent) const override;
+    [[nodiscard]] int columnCount( const QModelIndex &parent) const override;
 
     /**
      * @brief Returns the data for the given index.
@@ -105,7 +114,7 @@ class MediaSetModelModel: public QAbstractItemModel
      *
      * @return
      **/
-    virtual QVariant data( const QModelIndex &index, int role) const override;
+    [[nodiscard]] QVariant data( const QModelIndex &index, int role) const override;
 
     /**
      * @brief Returns the header data.
@@ -119,7 +128,7 @@ class MediaSetModelModel: public QAbstractItemModel
      *
      * @return The corresponding Header Data.
      **/
-    virtual QVariant headerData(
+    [[nodiscard]] QVariant headerData(
       int section,
       ::Qt::Orientation orientation,
       int role) const override;
@@ -134,8 +143,8 @@ class MediaSetModelModel: public QAbstractItemModel
     void setMediaSet( Arinc665::Media::MediaSetPtr mediaSet = {});
 
   private:
-    //! the media set
-    Arinc665::Media::MediaSetPtr mediaSet;
+    //! Media Set
+    Arinc665::Media::MediaSetPtr mediaSetV;
 };
 
 }
