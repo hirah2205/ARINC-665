@@ -58,10 +58,10 @@ class Directory : public ContainerEntity
     std::string_view partNumber() const final;
 
     //! @copydoc ContainerEntity::path() const
-    virtual std::filesystem::path path() const final;
+    std::filesystem::path path() const final;
 
   private:
-    //! Directory name
+    //! Directory Name
     const std::string nameV;
 };
 

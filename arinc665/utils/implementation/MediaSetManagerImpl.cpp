@@ -42,8 +42,8 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 
         if (mediaSet.second.end() == medium)
         {
-          BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning) <<
-            "Medium not found";
+          BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning)
+            << "Medium not found";
 
           return {};
         }
@@ -83,7 +83,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
     mediaSetsValue.push_back( impMediaSet);
 
     // iterate over media
-    for ( auto medium : impMediaSet->media())
+    for ( auto &medium : impMediaSet->media())
     {
       // add path mapping
       this->mediaPaths.insert(
@@ -131,7 +131,7 @@ void MediaSetManagerImpl::add(
   assert( mediaSet && mediumPathHandler); //! @todo change to exception --> no terminate
 
   // iterate over media
-  for ( auto medium : mediaSet->media())
+  for ( auto &medium : mediaSet->media())
   {
     const auto sourcePath{ mediumPathHandler( medium.second)};
     const auto destinationPath{

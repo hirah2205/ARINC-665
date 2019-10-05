@@ -397,8 +397,8 @@ LoadPtr ContainerEntity::addLoad( std::string_view filename)
   }
 
   // create file
-  LoadPtr load(
-    std::make_shared< Load>( shared_from_this(), filename));
+  LoadPtr load{
+    std::make_shared< Load>( shared_from_this(), filename)};
 
   // insert into map
   filesValue.push_back( load);

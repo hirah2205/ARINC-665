@@ -155,8 +155,8 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex)
     << "Load Load List File " << Arinc665::ListOfLoadsName;
 
   // Load list of loads file
-  File::LoadListFile loadListFile(
-    readFileHandler( mediumIndex, Arinc665::ListOfLoadsName));
+  File::LoadListFile loadListFile{
+    readFileHandler( mediumIndex, Arinc665::ListOfLoadsName)};
 
   // store first list of loads for further tests
   if (!this->loadListFile)
@@ -228,8 +228,8 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
     << "Load Batch List File " << Arinc665::ListOfBatchesName;
 
   // Load list of batches file
-  File::BatchListFile batchListFile(
-    readFileHandler( mediumIndex, Arinc665::ListOfBatchesName));
+  File::BatchListFile batchListFile{
+    readFileHandler( mediumIndex, Arinc665::ListOfBatchesName)};
 
   if (!this->batchListFile)
   {
@@ -310,8 +310,8 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex)
         AdditionalInfo( "Load header file not found in file list"));
     }
 
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-      "Load Header File " << loadHeaderFileIt->second.path();
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+      << "Load Header File " << loadHeaderFileIt->second.path();
 
     // decode load header
     File::LoadHeaderFile loadHeaderFile{
@@ -341,8 +341,8 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex)
         AdditionalInfo( "Medium is not consistent to media set"));
     }
 
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-      "Load Batch File " << batchFileIt->second.path();
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+      << "Load Batch File " << batchFileIt->second.path();
 
     File::BatchFile batchFile{
       readFileHandler( mediumIndex, batchFileIt->second.path())};
@@ -449,7 +449,7 @@ void MediaSetImporterImpl::addLoads(
 
 void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
   // iterate over batches
   for ( const auto &batch : batches)

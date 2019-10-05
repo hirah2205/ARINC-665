@@ -13,4 +13,5 @@ target_sources( arinc665_compiler PRIVATE arinc665_compiler.cpp)
 target_link_libraries(
   arinc665_compiler
 
-  arinc665)
+  PRIVATE
+    arinc665)

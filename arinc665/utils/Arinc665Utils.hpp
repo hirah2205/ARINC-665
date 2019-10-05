@@ -51,7 +51,16 @@ class Arinc665Utils
     //! Handler, which is called to generate the given file at the requested position.
     using CreateFileHandler = std::function< void( Media::ConstFilePtr file)>;
 
-    //! Handler, which is called to read a file form a medium.
+    /**
+     * @brief Handler, which is called to read a file form a medium.
+     *
+     * @param[in] mediumNumber
+     *   Medium Number
+     * @param[in] path
+     *   Relative Path on Medium.
+     *
+     * @return File Data (Read as binary).
+     **/
     using ReadFileHandler =
       std::function< File::RawFile( uint8_t mediumNumber, const std::filesystem::path &path)>;
 

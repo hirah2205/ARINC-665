@@ -64,7 +64,7 @@ class BaseFile: public Base
      *
      * @return The name of the file.
      **/
-    std::string_view name() const;
+    [[nodiscard]] std::string_view name() const;
 
     /**
      * @brief Returns the file type.

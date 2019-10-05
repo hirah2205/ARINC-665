@@ -31,16 +31,16 @@ namespace Arinc665::Utils {
 Arinc665XmlPugiXmlImpl::LoadXmlResult Arinc665XmlPugiXmlImpl::loadFromXml(
   const std::filesystem::path &xmlFile)
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Load Media Set from " << xmlFile;
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    << "Load Media Set from " << xmlFile;
 
   // Check existence of file
   if (!std::filesystem::is_regular_file( xmlFile))
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "XML File does not exist"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "XML File does not exist"));
   }
 
   pugi::xml_document xmlDoc;
@@ -61,8 +61,8 @@ void Arinc665XmlPugiXmlImpl::saveToXml(
 {
   BOOST_LOG_FUNCTION();
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Save Media Set " << mediaSet->partNumber() << " to " << xmlFile;
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    << "Save Media Set " << mediaSet->partNumber() << " to " << xmlFile;
 
   pugi::xml_document xmlDoc;
   pugi::xml_node mediaSetNode{ xmlDoc.root().append_child( "MediaSet")};
@@ -80,7 +80,7 @@ Media::MediaSetPtr Arinc665XmlPugiXmlImpl::loadMediaSet(
   FilePathMapping &filePathMapping,
   const pugi::xml_node &mediaSetNode)
 {
-  const std::string partNumber( mediaSetNode.attribute( "PartNumber").as_string());
+  const std::string partNumber{ mediaSetNode.attribute( "PartNumber").as_string()};
 
   auto mediaSet{ std::make_shared< Media::MediaSet>()};
   mediaSet->partNumber( partNumber);
@@ -305,8 +305,8 @@ void Arinc665XmlPugiXmlImpl::loadEntries(
     }
     else
     {
-      BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning) <<
-        "Ignore element " << entryNode.name();
+      BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning)
+        << "Ignore element " << entryNode.name();
       continue;
     }
 
@@ -390,28 +390,34 @@ void Arinc665XmlPugiXmlImpl::loadLoad(
   if (nameRef.empty())
   {
     //! @throw Arinc665::Arinc665Exception when NameRef attribute is missing or empty.
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "NameRef attribute missing or empty"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "NameRef attribute missing or empty"));
   }
 
   auto load{ mediaSet->load( nameRef)};
 
-  if (!load)
+  if ( !load)
   {
     //! @throw Arinc665::Arinc665Exception when NameRef attribute does not reference load.
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "NameRef attribute does not reference load"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "NameRef attribute does not reference load"));
   }
 
   // Load Type (Description + Type Value)
-  if (!description.empty())
-  {
-    uint16_t typeValue{ safeCast< uint16_t >( std::stoul( type, 0, 0))};
 
+  // try decode type value if present
+  uint16_t typeValue{0U};
+  if ( !type.empty())
+  {
+    typeValue= safeCast< uint16_t >( std::stoul( type, 0, 0));
+  }
+
+  if ( !description.empty())
+  {
     load->loadType( {std::make_pair( description, typeValue)});
   }
 
-  Media::Load::TargetHardwareIdPositions thwIds;
+  Media::Load::TargetHardwareIdPositions thwIds{};
 
   // iterate over target hardware
   for ( pugi::xml_node targetHardwareNode : loadNode.children( "TargetHardware"))
@@ -558,8 +564,8 @@ void Arinc665XmlPugiXmlImpl::loadBatch(
   if (nameRef.empty())
   {
     //! @throw Arinc665::Arinc665Exception when NameRef attribute is missing or empty.
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "NameRef attribute missing or empty"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "NameRef attribute missing or empty"));
   }
 
   auto batch{ mediaSet->batch( nameRef)};
@@ -567,8 +573,8 @@ void Arinc665XmlPugiXmlImpl::loadBatch(
   if (!batch)
   {
     //! @throw Arinc665::Arinc665Exception when NameRef attribute does not reference batch.
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "NameRef attribute does not reference batch"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "NameRef attribute does not reference batch"));
   }
 
   batch->comment( std::move( comment));

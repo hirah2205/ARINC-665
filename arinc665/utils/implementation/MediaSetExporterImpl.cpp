@@ -94,8 +94,8 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   }
 
   // export list of loads
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Export list of loads";
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    << "Export list of loads";
 
   Arinc665::File::LoadListFile loadListFile{ arinc665Version};
 
@@ -120,8 +120,8 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   // export list of batches (if present)
   if (medium->mediaSet()->numberOfBatches() != 0)
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-      "Export list of batches";
+    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+      << "Export list of batches";
 
     Arinc665::File::BatchListFile batchListFile{ arinc665Version};
     batchListFile.mediaSequenceNumber( medium->mediumNumber());
@@ -146,8 +146,8 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   }
 
   // export medium info
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info) <<
-    "Export list of files";
+  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    << "Export list of files";
 
   Arinc665::File::FileListFile fileListFile{ arinc665Version};
   fileListFile.mediaSequenceNumber( medium->mediumNumber());
