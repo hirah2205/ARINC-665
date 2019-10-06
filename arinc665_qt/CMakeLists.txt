@@ -21,14 +21,35 @@ if( TARGET Qt5::Widgets)
     PRIVATE
       Arinc665Qt.hpp
       Arinc665QtLogger.hpp
+      BatchWidget.hpp
+      BatchWidget.cpp
+     BatchWidget.ui
+      DirectoryWidget.hpp
+      DirectoryWidget.cpp
+      DirectoryWidget.ui
+      FileWidget.hpp
+      FileWidget.cpp
+      FileWidget.ui
       #LoadsModel.hpp
+      LoadWidget.hpp
+      LoadWidget.cpp
+      LoadWidget.ui
       MediaSetController.hpp
       MediaSetController.cpp
       MediaSetDialog.hpp
       MediaSetDialog.cpp
       MediaSetDialog.ui
       MediaSetModel.hpp
-      MediaSetModel.cpp)
+      MediaSetModel.cpp
+      MediaSetWidget.hpp
+      MediaSetWidget.cpp
+      MediaSetWidget.ui
+      MediumWidget.hpp
+      MediumWidget.cpp
+      MediumWidget.ui
+      RegularFileWidget.hpp
+      RegularFileWidget.cpp
+      RegularFileWidget.ui)
 
   target_include_directories( arinc665_qt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
 

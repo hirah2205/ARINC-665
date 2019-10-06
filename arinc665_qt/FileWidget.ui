@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Arinc665Qt::FileWidget</class>
+ <widget class="QWidget" name="Arinc665Qt::FileWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="fileGroupBox">
+     <property name="title">
+      <string>File</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="nameLabel">
+        <property name="text">
+         <string>Name</string>
+        </property>
+        <property name="buddy">
+         <cstring>nameLineEdit</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="nameLineEdit"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="partNumberLabel">
+        <property name="text">
+         <string>Part Number</string>
+        </property>
+        <property name="buddy">
+         <cstring>partNumberLineEdit</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="partNumberLineEdit"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QStackedWidget" name="detailsStackedWidget">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="Arinc665Qt::RegularFileWidget" name="regularFilePage"/>
+     <widget class="Arinc665Qt::LoadWidget" name="loadPage"/>
+     <widget class="Arinc665Qt::BatchWidget" name="batchPage"/>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Arinc665Qt::RegularFileWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">arinc665_qt/RegularFileWidget.hpp</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Arinc665Qt::LoadWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">arinc665_qt/LoadWidget.hpp</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Arinc665Qt::BatchWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">arinc665_qt/BatchWidget.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>nameLineEdit</tabstop>
+  <tabstop>partNumberLineEdit</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

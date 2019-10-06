@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author @todo Add author
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief @todo Add brief description
+ * @brief Declaration of Class Arinc665Qt::MediaSetDialog.
  **/
 
 #ifndef ARINC665_QT_MEDIASETDIALOG_HPP
@@ -25,13 +25,14 @@ namespace Ui{
 class MediaSetDialog;
 }
 
+//! Media Set Dialog
 class MediaSetDialog : public QDialog
 {
   Q_OBJECT
 
   public:
     /**
-     * @brief Initialises the ASF Messages dialog.
+     * @brief Initialises the Media Set Dialog.
      *
      * @param[in] parent
      *   Widget parent.
@@ -50,6 +51,13 @@ class MediaSetDialog : public QDialog
     void model( MediaSetModel * mediaSetModel);
 
   private slots:
+    /**
+     * @brief Called when a selection has been made within tree-view.
+     *
+     * @param[in] index
+     *   Index of selected element.
+     **/
+    void itemSelected( const QModelIndex &index);
 
   private:
     //! UI (designer)

@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class BhmQt::BhmAnalyseController.
+ * @brief Definition of class Arinc665Qt::MediaSetController.
  **/
 
 #include "MediaSetController.hpp"
@@ -18,8 +18,6 @@
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/utils/Arinc665Utils.hpp>
 #include <arinc665/media/MediaSet.hpp>
-
-#include <helper/Logger.hpp>
 
 #include <QMessageBox>
 
@@ -34,7 +32,7 @@ MediaSetController::MediaSetController( QWidget * const parent):
   mediaSetModel{ new MediaSetModel( parent)},
   selectDirectoryDialog{ new QFileDialog(
     parent,
-    tr( "Select Select Medium"))},
+    tr( "Select ARINC 665 Medium"))},
   mediaSetDialog{ new MediaSetDialog( parent)}
 {
   selectDirectoryDialog->setFileMode( QFileDialog::Directory);

@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Qt::MediaSetModelModel.
+ * @brief Definition of Class Arinc665Qt::MediaSetModel.
  **/
 
 #include "MediaSetModel.hpp"
@@ -17,12 +17,9 @@
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
-#include <arinc665/media/File.hpp>
-#include <arinc665/media/Load.hpp>
-#include <arinc665/media/Batch.hpp>
+#include <arinc665/media/BaseFile.hpp>
 
 #include <iterator>
-#include <cassert>
 
 namespace Arinc665Qt {
 
@@ -412,6 +409,22 @@ QVariant MediaSetModel::headerData(
     default:
       return QVariant();
   }
+}
+
+Arinc665::Media::BasePtr MediaSetModel::element( const QModelIndex &index)
+{
+  if (!index.isValid())
+  {
+    return {};
+  }
+
+  if ( nullptr == index.internalPointer())
+  {
+    return {};
+  }
+
+  return static_cast< Arinc665::Media::Base *>(
+    index.internalPointer())->shared_from_this();
 }
 
 void MediaSetModel::setMediaSet( Arinc665::Media::MediaSetPtr mediaSet)

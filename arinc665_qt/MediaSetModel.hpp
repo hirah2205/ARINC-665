@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::MediaSetModelModel.
+ * @brief Declaration of Class Arinc665Qt::MediaSetModel.
  **/
 
 #ifndef ARINC665_QT_MEDIASETMODEL_HPP
@@ -29,13 +29,14 @@ class MediaSetModel: public QAbstractItemModel
   Q_OBJECT
 
   public:
+    //! Displayed Columns
     enum class Columns
     {
-        Name,
-        PartNumber,
-        Type,
+      Name,
+      PartNumber,
+      Type,
 
-        Last
+      Last
     };
 
     /**
@@ -132,6 +133,18 @@ class MediaSetModel: public QAbstractItemModel
       int section,
       ::Qt::Orientation orientation,
       int role) const override;
+
+    /**
+     * @brief Returns the Media Set Element for the given @p index.
+     *
+     * @param[in] index
+     *   Index of requested element.
+     *
+     * @return The corresponding Media Set Element.
+     * @retval Arinc665::Media::BasePtr{}
+     *   If index is invalid or no model stored.
+     **/
+    Arinc665::Media::BasePtr element( const QModelIndex &index);
 
   public slots:
     /**

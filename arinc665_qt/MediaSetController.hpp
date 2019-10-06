@@ -65,7 +65,21 @@ class MediaSetController: public QObject
     void directorySelected();
 
   private:
-    Arinc665::File::RawFile loadFile( uint8_t mediumNumber, const std::filesystem::path &path);
+    /**
+     * @brief Loads the requested file.
+     *
+     * Is a callback od the media set importer.
+     *
+     * @param[in] mediumNumber
+     *   Medium Number.
+     * @param[in] path
+     *   Path of file.
+     *
+     * @return The loaded file data.
+     **/
+    Arinc665::File::RawFile loadFile(
+      uint8_t mediumNumber,
+      const std::filesystem::path &path);
 
     //! Media Set Model Model
     MediaSetModel * mediaSetModel;
