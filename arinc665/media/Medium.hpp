@@ -59,6 +59,24 @@ class Medium : public ContainerEntity
     std::filesystem::path path() const final;
 
     /**
+     * @copydoc ContainerEntity::parent() const
+     * @retval ConstContainerEntityPtr{} always.
+     **/
+    ConstContainerEntityPtr parent() const final;
+
+    /**
+     * @copydoc ContainerEntity::parent()
+     * @retval ConstContainerEntityPtr{} always.
+     **/
+    ContainerEntityPtr parent() final;
+
+    //! @copydoc ContainerEntity::medium() const
+    ConstMediumPtr medium() const final;
+
+    //! @copydoc ContainerEntity::medium()
+    MediumPtr medium() final;
+
+    /**
      * @brief Returns the medium number.
      *
      * @return The medium number

@@ -35,9 +35,7 @@ namespace Arinc665::Media {
  * @li Media, and
  * @li Directory
  **/
-class ContainerEntity :
-  public Base,
-  public std::enable_shared_from_this< ContainerEntity>
+class ContainerEntity : public Base
 {
   public:
     //! Constructor
@@ -263,7 +261,7 @@ class ContainerEntity :
      * @param[in] load
      *   Load to be deleted.
      **/
-    void removeLoad( ConstLoadPtr load);
+    void removeLoad( const ConstLoadPtr& load);
 
 
     /**
@@ -330,17 +328,17 @@ class ContainerEntity :
      * @param[in] batch
      *   Batch to be deleted.
      **/
-    void removeBatch( ConstBatchPtr batch);
+    void removeBatch( const ConstBatchPtr& batch);
 
     /**
      * @brief Returns the parent.
      *
      * @return The parent of this container.
      **/
-    ConstContainerEntityPtr parent() const;
+    virtual ConstContainerEntityPtr parent() const = 0;
 
     //! @copydoc parent() const
-    ContainerEntityPtr parent();
+    virtual ContainerEntityPtr parent() = 0;
 
     /**
      * @brief Returns the medium where this container is located.
@@ -349,22 +347,14 @@ class ContainerEntity :
      *
      * @return The medium where this container is located.
      **/
-    ConstMediumPtr medium() const;
+    virtual ConstMediumPtr medium() const = 0;
 
     //! @copydoc medium() const
-    MediumPtr medium();
+    virtual MediumPtr medium() = 0;
 
   protected:
     //! File type
     using FileType = BaseFile::FileType;
-
-    /**
-     * @brief Initialises the container with the given parameter.
-     *
-     * @param[in] parent
-     *   Parent of this container.
-     **/
-    explicit ContainerEntity( const ContainerEntityPtr& parent);
 
     /**
      * @brief Return the files (real file, load, batch) with the specified file
@@ -380,21 +370,11 @@ class ContainerEntity :
     //! @copydoc files(FileType) const
     Files files( FileType fileType);
 
-    /**
-     * @brief Updates the parent.
-     *
-     * @param[in] parent
-     *   New parent.
-     **/
-    void parent( const ContainerEntityPtr& parent);
-
   private:
     //! sub-directories
     Directories subDirectoriesValue;
-    //! files
+    //! Files
     Files filesValue;
-    //! the parent
-    WeakContainerEntityPtr parentValue;
 };
 
 }

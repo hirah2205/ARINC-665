@@ -25,10 +25,10 @@ namespace Arinc665::Media {
  *
  * Provides common attributes.
  */
-class Base
+class Base : public std::enable_shared_from_this< Base>
 {
   public:
-    //! item type
+    //! Item Type
     enum class Type
     {
       MediaSet,

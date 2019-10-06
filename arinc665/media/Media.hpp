@@ -34,21 +34,25 @@
 namespace Arinc665::Media {
 
 class Base;
+//! Constant Base Pointer
+using ConstBasePtr = std::shared_ptr< const Base>;
+//! Base Pointer
+using BasePtr = std::shared_ptr< Base>;
 
 class MediaSet;
-//! constant media set pointer
+//! Constant media set Pointer
 using ConstMediaSetPtr = std::shared_ptr< const MediaSet>;
-//! media set pointer
+//! Media set Pointer
 using MediaSetPtr = std::shared_ptr< MediaSet>;
-//! weak media set pointer
+//! Weak Media Set Pointer
 using WeakMediaSetPtr = std::weak_ptr< MediaSet>;
 
 class ContainerEntity;
-//! constant container entity pointer
+//! constant container entity Pointer
 using ConstContainerEntityPtr = std::shared_ptr< const ContainerEntity>;
-//! container entity pointer
+//! container entity Pointer
 using ContainerEntityPtr = std::shared_ptr< ContainerEntity>;
-//! Weak container entity pointer
+//! Weak container entity Pointer
 using WeakContainerEntityPtr = std::weak_ptr< ContainerEntity>;
 
 class Medium;
@@ -62,11 +66,11 @@ using Media = std::map< uint8_t, MediumPtr>;
 using ConstMedia = std::map< uint8_t, ConstMediumPtr>;
 
 class Directory;
-//! constant directory pointer
+//! constant directory Pointer
 using ConstDirectoryPtr = std::shared_ptr< const Directory>;
-//! directory pointer
+//! directory Pointer
 using DirectoryPtr = std::shared_ptr< Directory>;
-//! weak directory pointer
+//! weak directory Pointer
 using WeakDirectoryPtr = std::weak_ptr< Directory>;
 //! directories list
 using Directories = std::list< DirectoryPtr>;
@@ -97,13 +101,13 @@ using FilePtr = std::shared_ptr< BaseFile>;
 //! Weak pointer to BaseFile
 using WeakFilePtr = std::weak_ptr< BaseFile>;
 
-//! constant load pointer
+//! constant load Pointer
 using ConstLoadPtr = std::shared_ptr< const Load>;
 //! load pointer
 using LoadPtr = std::shared_ptr< Load>;
-//! weak load pointer
+//! weak load Pointer
 using WeakLoadPtr = std::weak_ptr< Load>;
-//! constant weak load pointer
+//! constant weak load Pointer
 using ConstWeakLoadPtr = std::weak_ptr< const Load>;
 //! loads list
 using Loads = std::list< LoadPtr>;
@@ -114,7 +118,7 @@ using WeakLoads = std::list< WeakLoadPtr>;
 //! constant weak loads list
 using ConstWeakLoads = std::list< ConstWeakLoadPtr>;
 
-//! constant batch pointer
+//! constant batch Pointer
 using ConstBatchPtr = std::shared_ptr< const Batch> ;
 //! batch pointer
 using BatchPtr = std::shared_ptr< Batch> ;

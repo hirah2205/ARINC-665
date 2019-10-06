@@ -19,10 +19,15 @@
 namespace Arinc665::Media {
 
 Directory::Directory( ContainerEntityPtr parent, std::string_view name):
-  ContainerEntity{ parent},
-  nameV{ name}
+  nameV{ name},
+  parentV{ std::move( parent)}
 {
-  assert( parent);
+  if ( !parent)
+  {
+    //! @throw Arinc665::Arinc665Exception when parent is not valid
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << AdditionalInfo( "parent must be valid"));
+  }
 }
 
 ConstMediaSetPtr Directory::mediaSet() const
@@ -81,6 +86,62 @@ std::filesystem::path Directory::path() const
   }
 
   return parentPtr->path() / nameV;
+}
+
+ConstContainerEntityPtr Directory::parent() const
+{
+  return parentV.lock();
+}
+
+ContainerEntityPtr Directory::parent()
+{
+  return parentV.lock();
+}
+
+ConstMediumPtr Directory::medium() const
+{
+  auto parentPtr{ parent()};
+
+  if ( !parentPtr)
+  {
+    return {};
+  }
+
+  return parentPtr->medium();
+}
+
+MediumPtr Directory::medium()
+{
+  auto parentPtr( parent());
+
+  if (!parentPtr)
+  {
+    return {};
+  }
+
+  return parentPtr->medium();
+}
+
+void Directory::parent( const ContainerEntityPtr& parent)
+{
+  if ( !parent)
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << AdditionalInfo( "parent must be valid"));
+  }
+
+  if ( shared_from_this() == parent)
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << AdditionalInfo( "Recursion not allowed"));
+  }
+
+  if ( this->parent() == parent)
+  {
+    return;
+  }
+
+  parentV = parent;
 }
 
 }

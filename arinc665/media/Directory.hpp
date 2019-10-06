@@ -60,9 +60,32 @@ class Directory : public ContainerEntity
     //! @copydoc ContainerEntity::path() const
     std::filesystem::path path() const final;
 
+    //! @copydoc ContainerEntity::parent() const
+    ConstContainerEntityPtr parent() const final;
+
+    ///! @copydoc ContainerEntity::parent()
+    ContainerEntityPtr parent() final;
+
+    //! @copydoc ContainerEntity::medium() const
+    ConstMediumPtr medium() const final;
+
+    //! @copydoc ContainerEntity::medium()
+    MediumPtr medium() final;
+
+  protected:
+    /**
+     * @brief Updates the parent.
+     *
+     * @param[in] parent
+     *   New parent.
+     **/
+    void parent( const ContainerEntityPtr& parent);
+
   private:
     //! Directory Name
     const std::string nameV;
+    //! Parent
+    WeakContainerEntityPtr parentV;
 };
 
 }

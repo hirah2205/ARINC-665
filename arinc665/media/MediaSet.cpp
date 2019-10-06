@@ -25,12 +25,12 @@ namespace Arinc665::Media {
 
 ConstMediaSetPtr MediaSet::mediaSet() const
 {
-  return shared_from_this();
+  return std::dynamic_pointer_cast< const MediaSet>( shared_from_this());
 }
 
 MediaSetPtr MediaSet::mediaSet()
 {
-  return shared_from_this();
+  return std::dynamic_pointer_cast< MediaSet>( shared_from_this());
 }
 
 MediaSet::Type MediaSet::type() const
@@ -132,10 +132,10 @@ MediumPtr MediaSet::addMedium()
     return {};
   }
 
-  const uint8_t newIndex{ static_cast< uint8_t>( mediaV.size() + 1U)};
+  const auto newIndex{ static_cast< uint8_t>( mediaV.size() + 1U)};
 
   MediumPtr medium( std::make_shared< Medium>(
-    shared_from_this(),
+    std::dynamic_pointer_cast< MediaSet>( shared_from_this()),
     newIndex));
 
   mediaV.insert( {newIndex, medium});

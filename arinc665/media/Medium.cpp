@@ -20,8 +20,8 @@
 namespace Arinc665::Media {
 
 Medium::Medium( MediaSetPtr mediaSet, const uint8_t mediumNumber):
-  mediaSetV( mediaSet),
-  mediumNumberV( mediumNumber)
+  mediaSetV{ mediaSet},
+  mediumNumberV{ mediumNumber}
 {
   assert( mediaSet && (mediumNumber > 0));
 }
@@ -49,6 +49,26 @@ std::string_view Medium::partNumber() const
 std::filesystem::path Medium::path() const
 {
   return "/";
+}
+
+ConstContainerEntityPtr Medium::parent() const
+{
+  return {};
+}
+
+ContainerEntityPtr Medium::parent()
+{
+  return {};
+}
+
+ConstMediumPtr Medium::medium() const
+{
+  return std::dynamic_pointer_cast< const Medium>( shared_from_this());
+}
+
+MediumPtr Medium::medium()
+{
+  return std::dynamic_pointer_cast< Medium>( shared_from_this());
 }
 
 uint8_t Medium::mediumNumber() const

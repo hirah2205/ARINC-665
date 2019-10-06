@@ -17,7 +17,6 @@
 #include <arinc665/media/Base.hpp>
 #include <arinc665/media/Medium.hpp>
 
-#include <memory>
 #include <string_view>
 
 namespace Arinc665::Media {
@@ -30,9 +29,7 @@ namespace Arinc665::Media {
  * Each media consists of one or more files.
  *
  **/
-class MediaSet:
-  public Base,
-  public std::enable_shared_from_this< MediaSet>
+class MediaSet: public Base
 {
   public:
     //! User Defined Data
