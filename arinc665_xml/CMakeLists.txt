@@ -4,7 +4,7 @@
 #
 # Thomas Vogt, Thomas@Thomas-Vogt.de
 
-cmake_minimum_required( VERSION 3.13)
+cmake_minimum_required( VERSION 3.15)
 
 include( GNUInstallDirs)
 
