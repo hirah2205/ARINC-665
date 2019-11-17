@@ -17,13 +17,13 @@
 
 namespace Arinc665::Utils {
 
+using namespace std::literals;
+
 FileCreationPolicyDescription::FileCreationPolicyDescription():
   Description{
-    { "None",         FileCreationPolicy::None},
-    { "NoneExisting", FileCreationPolicy::NoneExisting},
-    { "All",          FileCreationPolicy::All},
-
-    { "Invalid",      FileCreationPolicy::Invalid}
+    { "None"sv,         FileCreationPolicy::None},
+    { "NoneExisting"sv, FileCreationPolicy::NoneExisting},
+    { "All"sv,          FileCreationPolicy::All}
   }
 {
 }
@@ -40,13 +40,14 @@ std::istream& operator>>(
   std::istream& stream,
   FileCreationPolicy &fileCreationPolicy)
 {
-  std::string str;
+  std::string str{};
 
   // extract string from stream
   stream >> str;
 
   // Decode
-  fileCreationPolicy = FileCreationPolicyDescription::instance().enumeration( str);
+  fileCreationPolicy =
+    FileCreationPolicyDescription::instance().enumeration( str);
 
   if ( FileCreationPolicy::Invalid == fileCreationPolicy)
   {

@@ -118,15 +118,15 @@ int main( int argc, char ** argv)
   auto fileCreatPolDes{ Arinc665::Utils::FileCreationPolicyDescription::instance()};
 
   const std::string fileCreationPolicyValues{
-    "* '" + fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::None) + "': Create never\n" +
-    "* '" + fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::NoneExisting) + "': Create none-existing\n" +
-    "* '" + fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::All) + "': Create all"};
+    "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::None)} + "': Create never\n" +
+    "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::NoneExisting)} + "': Create none-existing\n" +
+    "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::All)} + "': Create all"};
 
   auto versionDes{ Arinc665::SupportedArinc665VersionDescription::instance()};
 
   const std::string versionValues{
-    "* '" + versionDes.name( Arinc665::SupportedArinc665Version::Supplement2) +   "': ARINC 665-2\n" +
-    "* '" + versionDes.name( Arinc665::SupportedArinc665Version::Supplement34) +  "': ARINC 665-3/4"};
+    "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement2)} +   "': ARINC 665-2\n" +
+    "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement34)} +  "': ARINC 665-3/4"};
 
   // Media Set XML file
   std::filesystem::path mediaSetXmlFile;

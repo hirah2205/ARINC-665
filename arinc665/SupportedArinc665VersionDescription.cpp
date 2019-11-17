@@ -17,12 +17,12 @@
 
 namespace Arinc665 {
 
+using namespace std::literals;
+
 SupportedArinc665VersionDescription::SupportedArinc665VersionDescription():
   Description{
-    { "Supplement2",  SupportedArinc665Version::Supplement2},
-    { "Supplement34", SupportedArinc665Version::Supplement34},
-
-    { "Invalid",      SupportedArinc665Version::Invalid}
+    { "Supplement2"sv,  SupportedArinc665Version::Supplement2},
+    { "Supplement34"sv, SupportedArinc665Version::Supplement34}
   }
 {
 }
@@ -39,7 +39,7 @@ std::istream& operator>>(
   std::istream& stream,
   SupportedArinc665Version &version)
 {
-  std::string versionStr;
+  std::string versionStr{};
 
   // extract string from stream
   stream >> versionStr;
