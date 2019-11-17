@@ -39,7 +39,7 @@ class FileWidget: public QWidget
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit FileWidget( QWidget *parent = nullptr);
+    explicit FileWidget( QWidget * parent = nullptr);
 
     //! Destructor
     ~FileWidget() override;

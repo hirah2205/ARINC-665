@@ -40,7 +40,7 @@ MediaSetDialog::MediaSetDialog( QWidget * const parent):
 
 MediaSetDialog::~MediaSetDialog() = default;
 
-void MediaSetDialog::model( MediaSetModel * mediaSetModel)
+void MediaSetDialog::model( MediaSetModel * const mediaSetModel)
 {
   if ( mediaSetModelV != nullptr)
   {

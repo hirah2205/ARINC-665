@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665Qt::BatchWidget.
+ * @brief Definition of Class Arinc665Qt::BatchWidget.
  **/
 
 #include "BatchWidget.hpp"
@@ -16,7 +16,7 @@
 
 namespace Arinc665Qt {
 
-BatchWidget::BatchWidget( QWidget *parent):
+BatchWidget::BatchWidget( QWidget * const parent):
   QWidget{ parent},
   ui{ std::make_unique< Ui::BatchWidget>()},
   modelV{ nullptr}
@@ -27,7 +27,7 @@ BatchWidget::BatchWidget( QWidget *parent):
 BatchWidget::~BatchWidget() = default;
 
 void BatchWidget::selectedBatch(
-  MediaSetModel * model,
+  MediaSetModel * const model,
   Arinc665::Media::BatchPtr batch)
 {
   modelV = model;

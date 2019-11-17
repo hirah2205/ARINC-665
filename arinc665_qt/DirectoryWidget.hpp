@@ -53,7 +53,9 @@ class DirectoryWidget : public QWidget
      * @param[in] directory
      *   Selected Directory
      **/
-    void selectedDirectory( MediaSetModel * model, Arinc665::Media::DirectoryPtr directory);
+    void selectedDirectory(
+      MediaSetModel * model,
+      Arinc665::Media::DirectoryPtr directory);
 
   private:
     //! UI (designer)

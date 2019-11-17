@@ -39,7 +39,7 @@ class BatchWidget : public QWidget
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit BatchWidget( QWidget *parent = nullptr);
+    explicit BatchWidget( QWidget * parent = nullptr);
 
     //! Destructor
     ~BatchWidget() override;
