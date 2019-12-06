@@ -22,8 +22,8 @@
 
 namespace Arinc665::File {
 
+BOOST_AUTO_TEST_SUITE( Arinc665Test)
 BOOST_AUTO_TEST_SUITE( BatchListFileTest)
-
 
 BOOST_AUTO_TEST_CASE( constructor1)
 {
@@ -130,6 +130,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( rawFile == raw2);
 }
 
+BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
 
 }

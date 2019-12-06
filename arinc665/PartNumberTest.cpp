@@ -19,6 +19,7 @@ using namespace std::string_view_literals;
 
 namespace Arinc665 {
 
+BOOST_AUTO_TEST_SUITE( Arinc665Test)
 BOOST_AUTO_TEST_SUITE( PartNumberTest)
 
 //! part number test
@@ -136,4 +137,6 @@ BOOST_AUTO_TEST_CASE( productIdentifierTest)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END()
+
 }

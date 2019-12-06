@@ -20,8 +20,8 @@
 
 namespace Arinc665::File {
 
+BOOST_AUTO_TEST_SUITE( Arinc665Test)
 BOOST_AUTO_TEST_SUITE( CheckValueUtilsTest)
-
 
 BOOST_AUTO_TEST_CASE( CheckValueUtils_encode1)
 {
@@ -41,6 +41,7 @@ BOOST_AUTO_TEST_CASE( CheckValueUtils_decode1)
       RawFile({ 0x12, 0x34})));
 }
 
+BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
 
 }

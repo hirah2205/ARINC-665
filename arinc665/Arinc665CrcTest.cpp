@@ -21,6 +21,9 @@
 
 namespace Arinc665 {
 
+BOOST_AUTO_TEST_SUITE( Arinc665Test)
+BOOST_AUTO_TEST_SUITE( Arinc665CrcTest)
+
 //! ARINC CRC data
 static struct ArincCrcData
 {
@@ -42,8 +45,6 @@ static struct ArincCrcData
     std::iota( t11a.begin(), t11a.end(), 0);
   }
 } const arincCrcData;
-
-BOOST_AUTO_TEST_SUITE( Arinc665CrcTest)
 
 //! CRC16 test
 BOOST_AUTO_TEST_CASE( crc16)
@@ -180,6 +181,7 @@ BOOST_AUTO_TEST_CASE( crc64)
 //  BOOST_CHECK( 0x59C3325B2927A19AULL == arincCrc64.checksum());
 }
 
+BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
 
 }

@@ -22,6 +22,7 @@ using namespace std::string_view_literals;
 
 namespace Arinc665::Media {
 
+BOOST_AUTO_TEST_SUITE( Arinc665Test)
 BOOST_AUTO_TEST_SUITE( MediaSetTest)
 
 //! Constructor test
@@ -77,6 +78,7 @@ BOOST_AUTO_TEST_CASE( medium)
 #endif
 }
 
+BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
 
 }

@@ -18,6 +18,7 @@ using namespace std::string_view_literals;
 
 namespace Arinc665::File {
 
+BOOST_AUTO_TEST_SUITE( Arinc665Test)
 BOOST_AUTO_TEST_SUITE( LoadFileInfoTest)
 
 //! Constructor test
@@ -163,6 +164,7 @@ BOOST_AUTO_TEST_CASE( GetSetCheckValue)
   BOOST_CHECK( std::get< 1>( *loadFileInfo.checkValue()) == std::vector< uint8_t>({ 0x12, 0x34}));
 }
 
+BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
 
 }
