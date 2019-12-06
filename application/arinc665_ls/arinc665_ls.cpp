@@ -184,7 +184,7 @@ static void list_lub( const std::filesystem::path &lubFile)
     std::cout << "part number: "<< batch.partNumber() << "\n";
     std::cout << "comment: "<< batch.comment() << "\n";
 
-    for ( auto const &targetHardware : batch.targetHardwares())
+    for ( auto const &targetHardware : batch.targetsHardware())
     {
       std::cout
         << "target HW: " << targetHardware.targetHardwareIdPosition() << "\n";

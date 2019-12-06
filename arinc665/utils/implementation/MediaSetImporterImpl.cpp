@@ -468,7 +468,7 @@ void MediaSetImporterImpl::addBatches( File::FileListFile::FileInfoMap &batches)
     batchPtr->comment( batchFile->second.comment());
 
     // iterate over target hardware
-    for ( const auto &targetHardware : batchFile->second.targetHardwares())
+    for ( const auto &targetHardware : batchFile->second.targetsHardware())
     {
       Media::WeakLoads loads;
 

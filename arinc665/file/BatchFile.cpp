@@ -33,7 +33,7 @@ BatchFile::BatchFile(
   Arinc665File{ version},
   partNumberValue{ partNumber},
   commentValue{ comment},
-  targetHardwaresValue{ targets}
+  targetsHardwareV{ targets}
 {
 }
 
@@ -45,7 +45,7 @@ BatchFile::BatchFile(
   Arinc665File{ version},
   partNumberValue{ std::move( partNumber)},
   commentValue{ std::move( comment)},
-  targetHardwaresValue{ std::move( targets)}
+  targetsHardwareV{ std::move( targets)}
 {
 }
 
@@ -98,24 +98,24 @@ void BatchFile::comment( std::string &&comment)
   commentValue = std::move( comment);
 }
 
-const BatchTargetsInfo& BatchFile::targetHardwares() const
+const BatchTargetsInfo& BatchFile::targetsHardware() const
 {
-  return targetHardwaresValue;
+  return targetsHardwareV;
 }
 
-BatchTargetsInfo& BatchFile::targetHardwares()
+BatchTargetsInfo& BatchFile::targetsHardware()
 {
-  return targetHardwaresValue;
+  return targetsHardwareV;
 }
 
 void BatchFile::targetHardware( const BatchTargetInfo &targetHardwareInfo)
 {
-  targetHardwaresValue.push_back( targetHardwareInfo);
+  targetsHardwareV.push_back( targetHardwareInfo);
 }
 
 void BatchFile::targetHardware( BatchTargetInfo &&targetHardwareInfo)
 {
-  targetHardwaresValue.push_back( targetHardwareInfo);
+  targetsHardwareV.push_back( targetHardwareInfo);
 }
 
 RawFile BatchFile::encode() const
@@ -207,11 +207,11 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
   // number of THW IDs TODO: Check for maximum number of entries.
   setInt< uint16_t>(
     rawBatchTargetsInfo.begin(),
-    safeCast< uint16_t>( targetHardwaresValue.size()));
+    safeCast< uint16_t>( targetsHardwareV.size()));
 
   // iterate over target HWs
   uint16_t thwCounter{ 0};
-  for ( auto const &targetHardwareInfo : targetHardwaresValue)
+  for ( auto const &targetHardwareInfo : targetsHardwareV)
   {
     ++thwCounter;
 
@@ -251,7 +251,7 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
     // next load pointer (is set to 0 for last load)
     batchTargetInfoIt = setInt< uint16_t>(
       batchTargetInfoIt,
-      (thwCounter == targetHardwaresValue.size()) ?
+      (thwCounter == targetsHardwareV.size()) ?
         (0U) :
         safeCast< uint16_t>( rawBatchTargetInfo.size() / 2));
 
@@ -288,7 +288,7 @@ void BatchFile::decodeBatchTargetsInfo(
   auto it{ rawFile.begin() + offset};
 
   // clear potently data
-  targetHardwaresValue.clear();
+  targetsHardwareV.clear();
 
   // number of target HW IDs
   uint16_t numberOfTargetHardwareIds{};
@@ -336,7 +336,7 @@ void BatchFile::decodeBatchTargetsInfo(
     it += thwIdPointer * 2U;
 
     // THW ID info
-    targetHardwaresValue.emplace_back(
+    targetsHardwareV.emplace_back(
       std::move( thwId),
       std::move( batchLoadsInfo));
   }

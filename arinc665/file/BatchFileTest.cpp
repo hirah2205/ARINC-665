@@ -23,8 +23,19 @@ namespace Arinc665::File {
 
 BOOST_AUTO_TEST_SUITE( BatchFileTest)
 
-
 BOOST_AUTO_TEST_CASE( constructor1)
+{
+  BatchFile file{ SupportedArinc665Version::Supplement2};
+
+  BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2);
+
+  BOOST_CHECK( file.partNumber().empty());
+  BOOST_CHECK( file.comment().empty());
+
+  BOOST_CHECK( file.targetsHardware().empty());
+}
+
+BOOST_AUTO_TEST_CASE( constructor2)
 {
   RawFile rawFile{
     // header file length
@@ -90,7 +101,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( file.partNumber() == "PN123");
   BOOST_CHECK( file.comment() == "COMMENT");
 
-  const auto &targetHardwareIds{ file.targetHardwares()};
+  const auto &targetHardwareIds{ file.targetsHardware()};
   BOOST_CHECK( targetHardwareIds.size() == 1);
   BOOST_CHECK( targetHardwareIds.begin()->targetHardwareIdPosition() == "THW0");
   const auto &loads{ targetHardwareIds.begin()->loads()};
