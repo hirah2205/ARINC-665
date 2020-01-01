@@ -39,7 +39,7 @@ int main( int argc, char * argv[])
 {
   try
   {
-    initLogging( severity_level::info);
+    Helper::initLogging( Helper::Severity::info);
 
     QApplication application( argc, argv);
     application.setApplicationName( "ARINC 665 Media Set Viewer");

@@ -37,9 +37,8 @@ try :
   // check size of part number
   if ( partNumber.size() != Length)
   {
-    /** @throw Arinc665Exception If string size is invalid **/
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << AdditionalInfo( "Invalid size of part number string"));
+      << Helper::AdditionalInfo( "Invalid size of part number string"));
   }
 
   // decode check code
@@ -49,15 +48,14 @@ try :
   // compare check code with calculated one
   if ( checkCodeDecoded != checkCode())
   {
-    //! @throw Arinc665Exception, when calculated check code differs from current
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << AdditionalInfo( "calculated and given check code differs"));
+      << Helper::AdditionalInfo( "calculated and given check code differs"));
   }
 }
 catch( std::out_of_range &e)
 {
   BOOST_THROW_EXCEPTION( Arinc665Exception()
-    << AdditionalInfo( e.what()));
+    << Helper::AdditionalInfo( e.what()));
 }
 
 std::string_view PartNumber::manufacturerCode() const
@@ -115,7 +113,7 @@ void PartNumber::checkManufacturerCode( std::string_view manufacturerCode) const
   if (manufacturerCode.size()!= ManufacturerCodeLength)
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << AdditionalInfo( "length of manufacturer code string invalid"));
+      << Helper::AdditionalInfo( "length of manufacturer code string invalid"));
   }
 }
 
@@ -124,9 +122,8 @@ void PartNumber::checkProductIdentifier( std::string_view productIdentifier) con
   // check length of string
   if ( productIdentifier.size() != ProductIdentifierLength)
   {
-    //! @throw Arinc665Exception if length is invalid.
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << AdditionalInfo( "length of product identifier string invalid"));
+      << Helper::AdditionalInfo( "length of product identifier string invalid"));
   }
 }
 
@@ -135,13 +132,11 @@ void PartNumber::checkCheckCode( std::string_view checkCode) const
   // check length of string
   if ( checkCode.size() != CheckCodeLength)
   {
-    //! @throw Arinc665Exception if length of checkCode is invalid.
     BOOST_THROW_EXCEPTION(Arinc665Exception()
-      << AdditionalInfo( "length of check code string invalid"));
+      << Helper::AdditionalInfo( "length of check code string invalid"));
   }
 
   // decode string to integer
-  //! @throw std::invalid_argument When invalid string is supplied
   unsigned long parsedCheckCode{
     std::stoul( std::string{ checkCode}, 0, 16)}; //! @todo check implementation of explicit cast
 

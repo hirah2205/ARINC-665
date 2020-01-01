@@ -167,7 +167,7 @@ void LoadListFile::userDefinedData( const UserDefinedData &userDefinedData)
 
   if (userDefinedData.size() % 2 != 0)
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning)
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
       << "User defined data must be 2-byte aligned. - extending range";
 
     userDefinedDataValue.push_back(0);
@@ -182,7 +182,7 @@ void LoadListFile::userDefinedData( UserDefinedData &&userDefinedData)
 
   if (userDefinedDataValue.size() % 2U != 0U)
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning)
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
       << "User defined data must be 2-byte aligned. - extending range";
 
     userDefinedDataValue.push_back(0U);
@@ -203,7 +203,7 @@ RawFile LoadListFile::encode() const
   RawFile rawFile( FileHeaderSize);
 
   // Spare Field
-  setInt< uint16_t>( rawFile.begin() + SpareFieldOffset, 0U);
+  Helper::setInt< uint16_t>( rawFile.begin() + SpareFieldOffset, 0U);
 
   // Next free Offset (used for optional pointer calculation)
   size_t nextFreeOffset{ rawFile.size()};
@@ -219,16 +219,16 @@ RawFile LoadListFile::encode() const
   rawFile.resize( rawFile.size() + 2 * sizeof( uint8_t));
 
   // media sequence number
-  setInt< uint8_t>(
+  Helper::setInt< uint8_t>(
     rawFile.begin() + nextFreeOffset + rawMediaSetPn.size(),
     mediaSequenceNumberValue);
 
   // number of media set members
-  setInt< uint8_t>(
+  Helper::setInt< uint8_t>(
     rawFile.begin() + nextFreeOffset + rawMediaSetPn.size() + sizeof( uint8_t),
     numberOfMediaSetMembersValue);
 
-  setInt< uint32_t>(
+  Helper::setInt< uint32_t>(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
     nextFreeOffset / 2);
   nextFreeOffset += rawMediaSetPn.size() + 2 * sizeof( uint8_t);
@@ -239,7 +239,7 @@ RawFile LoadListFile::encode() const
   assert( rawLoadsInfo.size() % 2 == 0);
 
   // loads list pointer
-  setInt< uint32_t>(
+  Helper::setInt< uint32_t>(
     rawFile.begin() + LoadFilesPointerFieldOffset,
     nextFreeOffset / 2);
   nextFreeOffset += rawLoadsInfo.size();
@@ -262,7 +262,7 @@ RawFile LoadListFile::encode() const
       userDefinedDataValue.end());
   }
 
-  setInt< uint32_t>(
+  Helper::setInt< uint32_t>(
     rawFile.begin() + UserDefinedDataPointerFieldOffset,
     userDefinedDataPtr);
 
@@ -281,30 +281,30 @@ void LoadListFile::decodeBody( const RawFile &rawFile)
 {
   // Spare Field
   uint32_t spare;
-  getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
+  Helper::getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
 
   if (0U != spare)
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << AdditionalInfo( "Spare is not 0"));
+      << Helper::AdditionalInfo( "Spare is not 0"));
   }
 
   // media information pointer
   uint32_t mediaInformationPtr;
-  getInt< uint32_t>(
+  Helper::getInt< uint32_t>(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
     mediaInformationPtr);
 
   // Loads list pointer
   uint32_t loadListPtr;
-  getInt< uint32_t>(
+  Helper::getInt< uint32_t>(
     rawFile.begin() + LoadFilesPointerFieldOffset,
     loadListPtr);
 
 
   // user defined data pointer
   uint32_t userDefinedDataPtr;
-  getInt< uint32_t>(
+  Helper::getInt< uint32_t>(
     rawFile.begin() + UserDefinedDataPointerFieldOffset,
     userDefinedDataPtr);
 
@@ -315,10 +315,10 @@ void LoadListFile::decodeBody( const RawFile &rawFile)
     mediaSetPnValue);
 
   // media sequence number
-  it = getInt< uint8_t>( it, mediaSequenceNumberValue);
+  it = Helper::getInt< uint8_t>( it, mediaSequenceNumberValue);
 
   // number of media set members
-  getInt< uint8_t>( it, numberOfMediaSetMembersValue);
+  Helper::getInt< uint8_t>( it, numberOfMediaSetMembersValue);
 
 
   // Loads list
@@ -342,7 +342,7 @@ RawFile LoadListFile::encodeLoadsInfo() const
   RawFile rawLoadsInfo( sizeof( uint16_t));
 
   // number of loads
-  setInt< uint16_t>( rawLoadsInfo.begin(), numberOfLoads());
+  Helper::setInt< uint16_t>( rawLoadsInfo.begin(), numberOfLoads());
 
   // iterate over files
   uint16_t loadCounter( 0);
@@ -368,7 +368,7 @@ RawFile LoadListFile::encodeLoadsInfo() const
     auto loadInfoIt( rawLoadInfo.begin());
 
     // next load pointer (is set to 0 for last load)
-    loadInfoIt = setInt< uint16_t>(
+    loadInfoIt = Helper::setInt< uint16_t>(
       loadInfoIt,
       (loadCounter == numberOfLoads()) ?
         (0U) :
@@ -381,7 +381,7 @@ RawFile LoadListFile::encodeLoadsInfo() const
     loadInfoIt = std::copy( rawHeaderFilename.begin(), rawHeaderFilename.end(), loadInfoIt);
 
     // member sequence number
-    loadInfoIt = setInt< uint16_t>( loadInfoIt, loadInfo.memberSequenceNumber());
+    loadInfoIt = Helper::setInt< uint16_t>( loadInfoIt, loadInfo.memberSequenceNumber());
 
     // THW IDs list
     loadInfoIt = std::copy( rawThwIds.begin(), rawThwIds.end(), loadInfoIt);
@@ -401,7 +401,7 @@ void LoadListFile::decodeLoadsInfo(
 
   // number of loads
   uint16_t numberOfLoads;
-  it = getInt< uint16_t>( it, numberOfLoads);
+  it = Helper::getInt< uint16_t>( it, numberOfLoads);
 
   // iterate of load counter
   for ( unsigned int loadIndex = 0; loadIndex < numberOfLoads; ++loadIndex)
@@ -410,7 +410,7 @@ void LoadListFile::decodeLoadsInfo(
 
     // next load pointer
     uint16_t loadPointer{};
-    listIt = getInt< uint16_t>( listIt, loadPointer);
+    listIt = Helper::getInt< uint16_t>( listIt, loadPointer);
 
     //! @todo check pointer for != 0 (all except last ==> OK, last ==> error)
 
@@ -424,12 +424,12 @@ void LoadListFile::decodeLoadsInfo(
 
     // member sequence number
     uint16_t fileMemberSequenceNumber{};
-    listIt = getInt< uint16_t>( listIt, fileMemberSequenceNumber);
+    listIt = Helper::getInt< uint16_t>( listIt, fileMemberSequenceNumber);
     if (( fileMemberSequenceNumber < 1 ) || (fileMemberSequenceNumber > 255))
     {
       //! @throw InvalidArinc665File When member sequence number is out of range
       BOOST_THROW_EXCEPTION( InvalidArinc665File()
-        << AdditionalInfo( "member sequence number out of range"));
+        << Helper::AdditionalInfo( "member sequence number out of range"));
     }
 
     LoadInfo::ThwIds thwIds{};

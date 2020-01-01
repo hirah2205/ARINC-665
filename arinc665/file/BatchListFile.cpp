@@ -184,7 +184,7 @@ RawFile BatchListFile::encode() const
   RawFile rawFile( FileHeaderSize);
 
   // Spare Field
-  setInt< uint16_t>( rawFile.begin() + SpareFieldOffset, 0U);
+  Helper::setInt< uint16_t>( rawFile.begin() + SpareFieldOffset, 0U);
 
   // Next free Offset (used for optional pointer calculation)
   size_t nextFreeOffset{ rawFile.size()};
@@ -200,16 +200,16 @@ RawFile BatchListFile::encode() const
   rawFile.resize( rawFile.size() + 2 * sizeof( uint8_t));
 
   // media sequence number
-  setInt< uint8_t>(
+  Helper::setInt< uint8_t>(
     rawFile.begin() + nextFreeOffset + rawMediaSetPn.size(),
     mediaSequenceNumberValue);
 
   // number of media set members
-  setInt< uint8_t>(
+  Helper::setInt< uint8_t>(
     rawFile.begin() + nextFreeOffset + rawMediaSetPn.size() + sizeof( uint8_t),
     numberOfMediaSetMembersValue);
 
-  setInt< uint32_t>(
+  Helper::setInt< uint32_t>(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
     nextFreeOffset / 2);
   nextFreeOffset += rawMediaSetPn.size() + 2 * sizeof( uint8_t);
@@ -220,7 +220,7 @@ RawFile BatchListFile::encode() const
   assert( rawBatchesInfo.size() % 2 == 0);
 
   // batches list pointer
-  setInt< uint32_t>(
+  Helper::setInt< uint32_t>(
     rawFile.begin() + BatchFilesPointerFieldOffset,
     nextFreeOffset / 2);
   nextFreeOffset += rawBatchesInfo.size();
@@ -243,7 +243,7 @@ RawFile BatchListFile::encode() const
       userDefinedDataValue.end());
   }
 
-  setInt< uint32_t>(
+  Helper::setInt< uint32_t>(
     rawFile.begin() + UserDefinedDataPointerFieldOffset,
     userDefinedDataPtr);
 
@@ -261,31 +261,31 @@ void BatchListFile::decodeBody( const RawFile &rawFile)
 {
   // Spare Field
   uint32_t spare{};
-  getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
+  Helper::getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
 
   if (0U != spare)
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << AdditionalInfo( "Spare is not 0"));
+      << Helper::AdditionalInfo( "Spare is not 0"));
   }
 
 
   // media information pointer
   uint32_t mediaInformationPtr;
-  getInt< uint32_t>(
+  Helper::getInt< uint32_t>(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
     mediaInformationPtr);
 
   // Batch list pointer
   uint32_t batchListPtr;
-  getInt< uint32_t>(
+  Helper::getInt< uint32_t>(
     rawFile.begin() + BatchFilesPointerFieldOffset,
     batchListPtr);
 
 
   // user defined data pointer
   uint32_t userDefinedDataPtr;
-  getInt< uint32_t>(
+  Helper::getInt< uint32_t>(
     rawFile.begin() + UserDefinedDataPointerFieldOffset,
     userDefinedDataPtr);
 
@@ -296,10 +296,10 @@ void BatchListFile::decodeBody( const RawFile &rawFile)
     mediaSetPnValue)};
 
   // media sequence number
-  it = getInt< uint8_t>( it, mediaSequenceNumberValue);
+  it = Helper::getInt< uint8_t>( it, mediaSequenceNumberValue);
 
   // number of media set members
-  getInt< uint8_t>( it, numberOfMediaSetMembersValue);
+  Helper::getInt< uint8_t>( it, numberOfMediaSetMembersValue);
 
 
   // batch list
@@ -323,7 +323,7 @@ RawFile BatchListFile::encodeBatchesInfo() const
   RawFile rawBatchesInfo( sizeof( uint16_t));
 
   // number of batches
-  setInt< uint16_t>( rawBatchesInfo.begin(), numberOfBatches());
+  Helper::setInt< uint16_t>( rawBatchesInfo.begin(), numberOfBatches());
 
   // iterate over batches
   uint16_t batchCounter{ 0};
@@ -340,7 +340,7 @@ RawFile BatchListFile::encodeBatchesInfo() const
     assert( rawFilename.size() % 2 == 0);
 
     // next pointer
-    setInt< uint16_t>(
+    Helper::setInt< uint16_t>(
       rawBatchInfo.begin(),
       (batchCounter == numberOfBatches()) ?
       (0U) :
@@ -365,7 +365,7 @@ RawFile BatchListFile::encodeBatchesInfo() const
     auto oldSize{ rawBatchInfo.size()};
     rawBatchInfo.resize( oldSize + sizeof( uint16_t) );
 
-    setInt< uint16_t>(
+    Helper::setInt< uint16_t>(
       rawBatchInfo.begin() + oldSize,
       batchInfo.memberSequenceNumber());
 
@@ -390,7 +390,7 @@ void BatchListFile::decodeBatchesInfo(
 
   // number of batches
   uint16_t numberOfBatches;
-  it = getInt< uint16_t>( it, numberOfBatches);
+  it = Helper::getInt< uint16_t>( it, numberOfBatches);
 
   // iterate over batch indexes
   for ( unsigned int batchIndex = 0; batchIndex < numberOfBatches; ++batchIndex)
@@ -399,7 +399,7 @@ void BatchListFile::decodeBatchesInfo(
 
     // next batch pointer
     uint16_t batchPointer{};
-    listIt = getInt< uint16_t>( listIt, batchPointer);
+    listIt = Helper::getInt< uint16_t>( listIt, batchPointer);
 
     //! @todo check pointer for != 0 (all except last ==> OK, last ==> error)
 
@@ -413,7 +413,7 @@ void BatchListFile::decodeBatchesInfo(
 
     // member sequence number
     uint16_t memberSequenceNumber{};
-    getInt< uint16_t>( listIt, memberSequenceNumber);
+    Helper::getInt< uint16_t>( listIt, memberSequenceNumber);
 
     // set it to begin of next batch
     it += batchPointer * 2U;

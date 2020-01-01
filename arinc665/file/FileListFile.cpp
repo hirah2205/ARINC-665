@@ -274,14 +274,14 @@ RawFile FileListFile::encode() const
 
     default:
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << AdditionalInfo( "Unsupported ARINC 665 Version"));
+        << Helper::AdditionalInfo( "Unsupported ARINC 665 Version"));
   }
 
   RawFile rawFile( baseSize);
 
 
   // spare field
-  setInt< uint32_t>( rawFile.begin() + SpareFieldOffset, 0U);
+  Helper::setInt< uint32_t>( rawFile.begin() + SpareFieldOffset, 0U);
 
   // Next free Offset (used for optional pointer calculation)
   size_t nextFreeOffset{ rawFile.size()};
@@ -296,16 +296,16 @@ RawFile FileListFile::encode() const
   rawFile.resize( rawFile.size() + 2 * sizeof( uint8_t));
 
   // media sequence number
-  setInt< uint8_t>(
+  Helper::setInt< uint8_t>(
     rawFile.begin() + nextFreeOffset + rawMediaSetPn.size(),
     mediaSequenceNumberValue);
 
   // number of media set members
-  setInt< uint8_t>(
+  Helper::setInt< uint8_t>(
     rawFile.begin() + nextFreeOffset + rawMediaSetPn.size() + sizeof( uint8_t),
     numberOfMediaSetMembersValue);
 
-  setInt< uint32_t>(
+  Helper::setInt< uint32_t>(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
     nextFreeOffset / 2);
   nextFreeOffset += rawMediaSetPn.size() + 2 * sizeof( uint8_t);
@@ -315,7 +315,7 @@ RawFile FileListFile::encode() const
   const auto rawFilesInfo{ encodeFilesInfo( encodeV3Data)};
   assert( rawFilesInfo.size() % 2 == 0);
 
-  setInt< uint32_t>(
+  Helper::setInt< uint32_t>(
     rawFile.begin() + MediaSetFilesPointerFieldOffset,
     nextFreeOffset / 2);
   nextFreeOffset += rawFilesInfo.size();
@@ -338,7 +338,7 @@ RawFile FileListFile::encode() const
       userDefinedDataValue.end());
   }
 
-  setInt< uint32_t>(
+  Helper::setInt< uint32_t>(
     rawFile.begin() + UserDefinedDataPointerFieldOffset,
     userDefinedDataPtr);
 
@@ -351,7 +351,7 @@ RawFile FileListFile::encode() const
     const auto rawCheckValue{ CheckValueUtils_encode( checkValueValue)};
     assert( rawCheckValue.size() % 2 == 0);
 
-    setInt< uint32_t>(
+    Helper::setInt< uint32_t>(
       rawFile.begin() + FileCheckValuePointerFieldOffset,
       nextFreeOffset / 2);
 
@@ -386,38 +386,38 @@ void FileListFile::decodeBody( const RawFile &rawFile)
 
     default:
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << AdditionalInfo( "Unsupported ARINC 665 Version"));
+        << Helper::AdditionalInfo( "Unsupported ARINC 665 Version"));
   }
 
 
   // Spare Field
   uint32_t spare{};
-  getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
+  Helper::getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
 
   if (0U != spare)
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << AdditionalInfo( "Spare is not 0"));
+      << Helper::AdditionalInfo( "Spare is not 0"));
   }
 
 
   // media information pointer
   uint32_t mediaInformationPtr{};
-  getInt< uint32_t>(
+  Helper::getInt< uint32_t>(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
     mediaInformationPtr);
 
 
   // file list pointer
   uint32_t fileListPtr{};
-  getInt< uint32_t>(
+  Helper::getInt< uint32_t>(
     rawFile.begin() + MediaSetFilesPointerFieldOffset,
     fileListPtr);
 
 
   // user defined data pointer
   uint32_t userDefinedDataPtr{};
-  getInt< uint32_t>(
+  Helper::getInt< uint32_t>(
     rawFile.begin() + UserDefinedDataPointerFieldOffset,
     userDefinedDataPtr);
 
@@ -426,7 +426,7 @@ void FileListFile::decodeBody( const RawFile &rawFile)
   // only decode this pointers in V3 mode
   if (decodeV3Data)
   {
-    getInt< uint32_t>(
+    Helper::getInt< uint32_t>(
       rawFile.begin() + FileCheckValuePointerFieldOffset,
       fileCheckValuePtr);
   }
@@ -437,10 +437,10 @@ void FileListFile::decodeBody( const RawFile &rawFile)
     mediaSetPnValue)};
 
   // media sequence number
-  it = getInt< uint8_t>( it, mediaSequenceNumberValue);
+  it = Helper::getInt< uint8_t>( it, mediaSequenceNumberValue);
 
   // number of media set members
-  getInt< uint8_t>( it, numberOfMediaSetMembersValue);
+  Helper::getInt< uint8_t>( it, numberOfMediaSetMembersValue);
 
 
   // file list
@@ -457,7 +457,7 @@ void FileListFile::decodeBody( const RawFile &rawFile)
       if (fileCheckValuePtr <= userDefinedDataPtr)
       {
         BOOST_THROW_EXCEPTION( InvalidArinc665File()
-          << AdditionalInfo( "Invalid Pointers"));
+          << Helper::AdditionalInfo( "Invalid Pointers"));
       }
 
       endOfUserDefinedData = fileCheckValuePtr * 2;
@@ -485,7 +485,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data) const
   RawFile rawFilesInfo( sizeof( uint16_t));
 
   // number of files
-  setInt< uint16_t>( rawFilesInfo.begin(), numberOfFiles());
+  Helper::setInt< uint16_t>( rawFilesInfo.begin(), numberOfFiles());
 
   // iterate over files
   uint16_t fileCounter( 0);
@@ -514,12 +514,12 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data) const
     rawFileInfo.resize( rawFileInfo.size() + 2 * sizeof( uint16_t));
 
     // member sequence number
-    auto fileInfoIt{ setInt< uint16_t>(
+    auto fileInfoIt{ Helper::setInt< uint16_t>(
       rawFileInfo.begin() + rawFileInfo.size() - ( 2 * sizeof( uint16_t)),
       fileInfo.memberSequenceNumber())};
 
     // crc
-    setInt< uint16_t>( fileInfoIt, fileInfo.crc());
+    Helper::setInt< uint16_t>( fileInfoIt, fileInfo.crc());
 
     // following fields are available in ARINC 665-3 ff
     if ( encodeV3Data)
@@ -534,7 +534,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data) const
     }
 
     // next file pointer (is set to 0 for last file)
-    setInt< uint16_t>(
+    Helper::setInt< uint16_t>(
       rawFileInfo.begin(),
       (fileCounter == numberOfFiles()) ?
       (0U) :
@@ -559,7 +559,7 @@ void FileListFile::decodeFilesInfo(
 
   // number of files
   uint16_t numberOfFiles{};
-  it = getInt< uint16_t>( it, numberOfFiles);
+  it = Helper::getInt< uint16_t>( it, numberOfFiles);
 
   // iterate over index
   for ( unsigned int fileIndex = 0U; fileIndex < numberOfFiles; ++fileIndex)
@@ -568,7 +568,7 @@ void FileListFile::decodeFilesInfo(
 
     // next file pointer
     uint16_t filePointer{};
-    listIt = getInt< uint16_t>( listIt, filePointer);
+    listIt = Helper::getInt< uint16_t>( listIt, filePointer);
 
     //! @todo check pointer for != 0 (all except last ==> OK, last ==> error)
 
@@ -582,11 +582,11 @@ void FileListFile::decodeFilesInfo(
 
     // member sequence number
     uint16_t memberSequenceNumber{};
-    listIt = getInt< uint16_t>( listIt, memberSequenceNumber);
+    listIt = Helper::getInt< uint16_t>( listIt, memberSequenceNumber);
 
     // crc
     uint16_t crc{};
-    listIt = getInt< uint16_t>( listIt, crc);
+    listIt = Helper::getInt< uint16_t>( listIt, crc);
 
     // CheckValue (keep default initialised if not V3 File Info
     std::optional< CheckValue> checkValue{};

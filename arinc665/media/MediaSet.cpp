@@ -66,7 +66,7 @@ void MediaSet::numberOfMedia(
 {
   if (numberOfMedia == mediaV.size())
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
       << "No actions needed";
     return;
   }
@@ -127,7 +127,7 @@ MediumPtr MediaSet::addMedium()
 {
   if (mediaV.size() >= 255)
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning)
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
       << "Maximum number of media reached";
     return {};
   }

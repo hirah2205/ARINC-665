@@ -22,8 +22,8 @@
 
 namespace Arinc665 {
 
-//! Base class for ARINC 665 exceptions
-class Arinc665Exception: public virtual Exception
+//! Base Class for ARINC 665 Exceptions
+class Arinc665Exception: public virtual Helper::Exception
 {
   public:
     /**

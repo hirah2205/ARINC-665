@@ -90,7 +90,7 @@ int main( int argc, char * argv[])
       "For more media, repeat this parameter."
     );
 
-  initLogging( severity_level::info);
+  Helper::initLogging( Helper::Severity::info);
 
   try
   {
@@ -135,7 +135,7 @@ int main( int argc, char * argv[])
   }
   catch ( Arinc665::Arinc665Exception &e)
   {
-    std::string const * info = boost::get_error_info< AdditionalInfo>( e);
+    std::string const * info = boost::get_error_info< Helper::AdditionalInfo>( e);
 
     std::cerr
       << "Validation failed: "
@@ -178,7 +178,7 @@ static Arinc665::File::RawFile readFile(
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception()
         << boost::errinfo_file_name( filePath.string())
-        << AdditionalInfo( "File not found"));
+        << Helper::AdditionalInfo( "File not found"));
   }
 
   Arinc665::File::RawFile data( std::filesystem::file_size( filePath));
@@ -190,8 +190,8 @@ static Arinc665::File::RawFile readFile(
 
   if ( !file.is_open())
   {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() << AdditionalInfo( "Error opening files"));
+    BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo( "Error opening files"));
   }
 
   // read the data to the buffer

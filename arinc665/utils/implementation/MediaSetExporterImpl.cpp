@@ -59,12 +59,12 @@ void MediaSetExporterImpl::operator()()
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
     << "Media set " << " - " << mediaSet->partNumber();
 
   for (auto medium : mediaSet->media())
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
       << "Medium " << (unsigned int)medium.first;
 
     exportMedium( medium.second);
@@ -75,7 +75,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
     << "Export medium #" << (unsigned int)medium->mediumNumber();
 
   // create the medium (i.e. create directory)
@@ -94,7 +94,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   }
 
   // export list of loads
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
     << "Export list of loads";
 
   Arinc665::File::LoadListFile loadListFile{ arinc665Version};
@@ -120,7 +120,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   // export list of batches (if present)
   if (medium->mediaSet()->numberOfBatches() != 0)
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
       << "Export list of batches";
 
     Arinc665::File::BatchListFile batchListFile{ arinc665Version};
@@ -146,7 +146,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   }
 
   // export medium info
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
     << "Export list of files";
 
   Arinc665::File::FileListFile fileListFile{ arinc665Version};
@@ -210,7 +210,7 @@ void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory)
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
     << "Export directory to ["
     << (unsigned int)directory->medium()->mediumNumber()
     << "]:"
@@ -235,7 +235,7 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::info)
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
     << "Export file to ["
     << (unsigned int)file->medium()->mediumNumber()
     << "]:"
@@ -270,8 +270,8 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
           break;
 
         default:
-          BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-            AdditionalInfo( "Invalid value of createLoadHeaderFiles"));
+          BOOST_THROW_EXCEPTION( Arinc665Exception()
+            << Helper::AdditionalInfo( "Invalid value of createLoadHeaderFiles"));
       }
       break;
 
@@ -298,14 +298,14 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
           break;
 
         default:
-          BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-            AdditionalInfo( "Invalid value of createBatchFiles"));
+          BOOST_THROW_EXCEPTION( Arinc665Exception()
+            << Helper::AdditionalInfo( "Invalid value of createBatchFiles"));
       }
       break;
 
     default:
-      BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-        AdditionalInfo( "Invalid file type"));
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo( "Invalid file type"));
         /* no break: because THROW */
   }
 }
@@ -317,8 +317,8 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
 
   if (!load)
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "Cannot cast file to load"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo( "Cannot cast file to load"));
   }
 
   File::LoadHeaderFile loadHeaderFile{ arinc665Version};
@@ -413,8 +413,8 @@ void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
 
   if (!batch)
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception() <<
-      AdditionalInfo( "Cannot cast file to batch"));
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo( "Cannot cast file to batch"));
   }
 
   File::BatchFile batchFile{ arinc665Version};

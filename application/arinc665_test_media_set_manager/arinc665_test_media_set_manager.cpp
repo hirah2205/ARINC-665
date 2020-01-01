@@ -40,7 +40,7 @@ int main( int argc, char ** argv);
 
 int main( int argc, char ** argv)
 {
-  initLogging( severity_level::info);
+  Helper::initLogging( Helper::Severity::info);
 
   boost::program_options::options_description optionsDescription;
   boost::filesystem::path mediaSetConfig;

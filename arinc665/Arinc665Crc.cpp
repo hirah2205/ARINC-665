@@ -15,18 +15,18 @@
 namespace Arinc665 {
 
 const std::map< CheckValueType, uint16_t> CheckValueSize{
-  { CheckValueType::NotUsed, 0},
+  { CheckValueType::NotUsed, 0U},
 
-  { CheckValueType::Crc8,    2},
-  { CheckValueType::Crc16,   2},
-  { CheckValueType::Crc32,   4},
-  { CheckValueType::Md5,    16},
-  { CheckValueType::Sha1,   20},
-  { CheckValueType::Sha256, 32},
-  { CheckValueType::Sha512, 64},
-  { CheckValueType::Crc64,   8},
+  { CheckValueType::Crc8,    2U},
+  { CheckValueType::Crc16,   2U},
+  { CheckValueType::Crc32,   4U},
+  { CheckValueType::Md5,    16U},
+  { CheckValueType::Sha1,   20U},
+  { CheckValueType::Sha256, 32U},
+  { CheckValueType::Sha512, 64U},
+  { CheckValueType::Crc64,   8U},
 
-  { CheckValueType::Invalid, 0}
+  { CheckValueType::Invalid, 0U}
 };
 
 }

@@ -113,7 +113,7 @@ int main( int argc, char ** argv)
 {
   BOOST_LOG_FUNCTION()
 
-  initLogging( severity_level::info);
+  Helper::initLogging( Helper::Severity::info);
 
   auto fileCreatPolDes{ Arinc665::Utils::FileCreationPolicyDescription::instance()};
 
@@ -363,8 +363,8 @@ static void createFile(
 
   if (fileIt == filePathMapping.end())
   {
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      AdditionalInfo( "file mapping not found")
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo( "file mapping not found")
       << boost::errinfo_file_name( std::string{ file->name()}));
   }
 
@@ -396,10 +396,9 @@ static void writeFile(
   // check existence of file
   if (std::filesystem::exists( filePath))
   {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() <<
-        AdditionalInfo( "File already exists") <<
-        boost::errinfo_file_name( filePath.string()));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo( "File already exists")
+      << boost::errinfo_file_name( filePath.string()));
   }
 
   // save file
@@ -411,7 +410,7 @@ static void writeFile(
   {
     //! @throw Arinc665Exception
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << AdditionalInfo( "Error opening files")
+      << Helper::AdditionalInfo( "Error opening files")
       << boost::errinfo_file_name( filePath.string()));
   }
 
@@ -436,7 +435,7 @@ static Arinc665::File::RawFile readFile(
   if (!std::filesystem::is_regular_file( filePath))
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << AdditionalInfo( "File not found")
+      << Helper::AdditionalInfo( "File not found")
       << boost::errinfo_file_name( filePath.string()));
   }
 
@@ -450,7 +449,7 @@ static Arinc665::File::RawFile readFile(
   if ( !file.is_open())
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << AdditionalInfo( "Error opening files")
+      << Helper::AdditionalInfo( "Error opening files")
       << boost::errinfo_file_name( filePath.string()));
   }
 

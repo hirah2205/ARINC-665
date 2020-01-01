@@ -42,7 +42,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 
         if (mediaSet.second.end() == medium)
         {
-          BOOST_LOG_SEV( Arinc665Logger::get(), severity_level::warning)
+          BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
             << "Medium not found";
 
           return {};
@@ -65,8 +65,8 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 
         if ( !file.is_open())
         {
-          BOOST_THROW_EXCEPTION(
-            Arinc665Exception() << AdditionalInfo( "Error opening files"));
+          BOOST_THROW_EXCEPTION(Arinc665Exception()
+            << Helper::AdditionalInfo( "Error opening files"));
         }
 
         // read the data to the buffer

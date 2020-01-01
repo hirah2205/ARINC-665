@@ -70,8 +70,8 @@ DirectoryPtr ContainerEntity::addSubDirectory( std::string_view name)
   if ( subDirectory( name))
   {
     //! @throw Arinc665Exception() if directory already exists.
-    BOOST_THROW_EXCEPTION(
-      Arinc665Exception() << AdditionalInfo( "sub-directory already exists"));
+    BOOST_THROW_EXCEPTION(Arinc665Exception()
+      << Helper::AdditionalInfo( "sub-directory already exists"));
   }
 
   // create new sub-directory
@@ -99,7 +99,7 @@ void ContainerEntity::removeSubDirectory( std::string_view name)
   {
     //! @throw Arinc665Exception() if directory does not exists.
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << AdditionalInfo( "sub-directory does not exists"));
+      << Helper::AdditionalInfo( "sub-directory does not exists"));
   }
 
   subDirectoriesValue.erase( dir);
@@ -116,7 +116,7 @@ void ContainerEntity::removeSubDirectory( const DirectoryPtr& subDirectory)
    {
      //! @throw Arinc665Exception() if directory does not exists.
      BOOST_THROW_EXCEPTION( Arinc665Exception()
-       << AdditionalInfo( "sub-directory does not exists"));
+       << Helper::AdditionalInfo( "sub-directory does not exists"));
    }
 
   subDirectoriesValue.erase( dir);
@@ -238,7 +238,7 @@ FilePtr ContainerEntity::addFile( std::string_view filename)
   if ( file( filename))
   {
     BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
-      << AdditionalInfo( "File already exists"));
+      << Helper::AdditionalInfo( "File already exists"));
   }
 
   // create file
@@ -266,7 +266,7 @@ void ContainerEntity::removeFile( std::string_view filename)
   {
     //! @throw Arinc665Exception() if file does not exists.
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << AdditionalInfo( "File not found"));
+      << Helper::AdditionalInfo( "File not found"));
   }
 
   filesValue.erase( file);
@@ -283,7 +283,7 @@ void ContainerEntity::removeFile( const ConstFilePtr& file)
   {
     //! @throw Arinc665Exception() if file does not exists.
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      AdditionalInfo( "File not found"));
+      Helper::AdditionalInfo( "File not found"));
   }
 
   filesValue.erase( fileIt);
@@ -395,7 +395,7 @@ LoadPtr ContainerEntity::addLoad( std::string_view filename)
   if ( file( filename))
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      AdditionalInfo( "File with this name already exists"));
+      Helper::AdditionalInfo( "File with this name already exists"));
   }
 
   // create file
@@ -417,16 +417,15 @@ void ContainerEntity::removeLoad( std::string_view filename)
   if ( !loadFile)
   {
     //! @throw Arinc665Exception() if load does not exists.
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() << AdditionalInfo( "Load does not exists"));
+    BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo( "Load does not exists"));
   }
 
   if ( BaseFile::FileType::LoadFile != loadFile->fileType())
   {
     //! @throw Arinc665Exception() if filename does not address a load.
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception()
-        << AdditionalInfo( "File does not name a load"));
+    BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
+        << Helper::AdditionalInfo( "File does not name a load"));
   }
 
   removeFile( loadFile);
@@ -554,7 +553,7 @@ BatchPtr ContainerEntity::addBatch( std::string_view filename)
   {
     //! @throw Arinc665Exception() if batch already exists.
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << AdditionalInfo( "File with this name already exists"));
+      << Helper::AdditionalInfo( "File with this name already exists"));
   }
 
   // create file
@@ -577,14 +576,14 @@ void ContainerEntity::removeBatch( std::string_view filename)
   {
     //! @throw Arinc665Exception() if load does not exists.
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      AdditionalInfo( "Batch does not exists"));
+      Helper::AdditionalInfo( "Batch does not exists"));
   }
 
   if (BaseFile::FileType::BatchFile != batchFile->fileType())
   {
     //! @throw Arinc665Exception() if filename does not address a batch
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      AdditionalInfo( "File does not name a batch"));
+      Helper::AdditionalInfo( "File does not name a batch"));
   }
 
   removeFile( batchFile);

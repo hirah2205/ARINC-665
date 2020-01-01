@@ -73,6 +73,11 @@ class PartNumber
      *
      * @param[in] partNumber
      *   The part number as string
+     *
+     * @throw Arinc665Exception
+     *   If string size is invalid
+     * @throw Arinc665Exception
+     *   when calculated check code differs from current
      **/
     PartNumber( std::string_view partNumber);
 
@@ -134,6 +139,9 @@ class PartNumber
      *
      * @param[in] productIdentifier
      *   Product Identifier to check
+     *
+     * @throw Arinc665Exception
+     *   if length is invalid.
      **/
     void checkProductIdentifier( std::string_view productIdentifier) const;
 
@@ -142,6 +150,11 @@ class PartNumber
      *
      * @param[in] checkCode
      *   Check  Code to check
+     *
+     * @throw Arinc665Exception
+     *   if length of checkCode is invalid.
+     * @throw std::invalid_argument
+     *   When invalid string is supplied
      **/
     void checkCheckCode( std::string_view checkCode) const;
 

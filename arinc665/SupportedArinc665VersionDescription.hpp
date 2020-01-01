@@ -22,7 +22,7 @@
 namespace Arinc665 {
 
 //! Description for SupportedArinc665Version enumeration.
-class SupportedArinc665VersionDescription : public Description<
+class SupportedArinc665VersionDescription : public Helper::Description<
   SupportedArinc665VersionDescription,
   SupportedArinc665Version,
   SupportedArinc665Version::Invalid>

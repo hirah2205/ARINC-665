@@ -115,7 +115,7 @@ BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string_view name):
   if (!parent)
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << AdditionalInfo( "parent must be valid"));
+      << Helper::AdditionalInfo( "parent must be valid"));
   }
 }
 
@@ -126,7 +126,7 @@ BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string &&name):
   if (!parent)
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << AdditionalInfo( "parent must be valid"));
+      << Helper::AdditionalInfo( "parent must be valid"));
   }
 }
 
@@ -135,7 +135,7 @@ void BaseFile::parent( const ContainerEntityPtr& parent)
   if (!parent)
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << AdditionalInfo( "parent must be valid"));
+      << Helper::AdditionalInfo( "parent must be valid"));
   }
 
   if (this->parentValue.lock() == parent)

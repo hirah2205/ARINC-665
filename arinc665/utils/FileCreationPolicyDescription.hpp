@@ -22,7 +22,7 @@
 namespace Arinc665::Utils {
 
 //! File creation policy description
-class FileCreationPolicyDescription : public Description<
+class FileCreationPolicyDescription : public Helper::Description<
   FileCreationPolicyDescription,
   FileCreationPolicy,
   FileCreationPolicy::Invalid>

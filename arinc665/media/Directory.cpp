@@ -26,7 +26,7 @@ Directory::Directory( ContainerEntityPtr parent, std::string_view name):
   {
     //! @throw Arinc665::Arinc665Exception when parent is not valid
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << AdditionalInfo( "parent must be valid"));
+      << Helper::AdditionalInfo( "parent must be valid"));
   }
 }
 
@@ -127,13 +127,13 @@ void Directory::parent( const ContainerEntityPtr& parent)
   if ( !parent)
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << AdditionalInfo( "parent must be valid"));
+      << Helper::AdditionalInfo( "parent must be valid"));
   }
 
   if ( shared_from_this() == parent)
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << AdditionalInfo( "Recursion not allowed"));
+      << Helper::AdditionalInfo( "Recursion not allowed"));
   }
 
   if ( this->parent() == parent)

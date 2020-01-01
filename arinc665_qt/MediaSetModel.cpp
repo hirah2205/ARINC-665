@@ -51,7 +51,7 @@ QModelIndex MediaSetModel::index(
   if ( parent.internalPointer() == nullptr)
   {
     // Should not happen
-    BOOST_LOG_SEV( Arinc665QtLogger::get(), severity_level::error)
+    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error)
       << "Invalid Model Index";
 
     // invalid model index
@@ -178,7 +178,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index) const
 
     default:
       // Should not happen
-      BOOST_LOG_SEV( Arinc665QtLogger::get(), severity_level::error)
+      BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error)
         << "Invalid Container Type";
       return QModelIndex();
   }
@@ -223,7 +223,7 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent) const
 
     default:
       // Should not happen
-      BOOST_LOG_SEV( Arinc665QtLogger::get(), severity_level::error)
+      BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error)
         << "Invalid Container Type";
       return false;
   }
@@ -274,7 +274,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent) const
 
     default:
       // Should not happen
-      BOOST_LOG_SEV( Arinc665QtLogger::get(), severity_level::error)
+      BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error)
         << "Invalid Container Type";
       return 0;
   }

@@ -123,7 +123,7 @@ RawFile BatchFile::encode() const
   RawFile rawFile( BatchFileHeaderSize);
 
   // spare field
-  setInt< uint32_t>( rawFile.begin() + SpareFieldOffset, 0U);
+  Helper::setInt< uint32_t>( rawFile.begin() + SpareFieldOffset, 0U);
 
 
   // Next free Offset (used for optional pointer calculation)
@@ -136,7 +136,7 @@ RawFile BatchFile::encode() const
   auto rawComment{ encodeString( commentValue)};
   assert( rawComment.size() % 2 == 0);
 
-  setInt< uint32_t>(
+  Helper::setInt< uint32_t>(
     rawFile.begin() + BatchPartNumberPointerFieldOffset,
     nextFreeOffset / 2);
   nextFreeOffset += rawBatchPn.size() + rawComment.size();
@@ -149,7 +149,7 @@ RawFile BatchFile::encode() const
   auto rawThwIdsList{ encodeBatchTargetsInfo()};
   assert( rawThwIdsList.size() % 2 == 0);
 
-  setInt< uint32_t>(
+  Helper::setInt< uint32_t>(
     rawFile.begin() + ThwIdsPointerFieldOffset,
     nextFreeOffset / 2);
   // nextFreeOffset += rawThwIdsList.size();
@@ -170,21 +170,21 @@ void BatchFile::decodeBody( const RawFile &rawFile)
 {
   // Spare field
   uint32_t spare{};
-  getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
+  Helper::getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
 
   if (0U != spare)
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << AdditionalInfo( "Spare is not 0"));
+      << Helper::AdditionalInfo( "Spare is not 0"));
   }
 
   uint32_t batchPartNumberPtr{};
-  getInt< uint32_t>(
+  Helper::getInt< uint32_t>(
     rawFile.begin() + BatchPartNumberPointerFieldOffset,
     batchPartNumberPtr);
 
   uint32_t targetHardwareIdListPtr{};
-  getInt< uint32_t>(
+  Helper::getInt< uint32_t>(
     rawFile.begin() + ThwIdsPointerFieldOffset,
     targetHardwareIdListPtr);
 
@@ -205,9 +205,9 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
   RawFile rawBatchTargetsInfo( sizeof(uint16_t)); // Number of THW IDs
 
   // number of THW IDs TODO: Check for maximum number of entries.
-  setInt< uint16_t>(
+  Helper::setInt< uint16_t>(
     rawBatchTargetsInfo.begin(),
-    safeCast< uint16_t>( targetsHardwareV.size()));
+    Helper::safeCast< uint16_t>( targetsHardwareV.size()));
 
   // iterate over target HWs
   uint16_t thwCounter{ 0};
@@ -249,11 +249,11 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
     auto batchTargetInfoIt{ rawBatchTargetInfo.begin()};
 
     // next load pointer (is set to 0 for last load)
-    batchTargetInfoIt = setInt< uint16_t>(
+    batchTargetInfoIt = Helper::setInt< uint16_t>(
       batchTargetInfoIt,
       (thwCounter == targetsHardwareV.size()) ?
         (0U) :
-        safeCast< uint16_t>( rawBatchTargetInfo.size() / 2));
+        Helper::safeCast< uint16_t>( rawBatchTargetInfo.size() / 2));
 
     // THW ID
     batchTargetInfoIt = std::copy(
@@ -262,9 +262,9 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
       batchTargetInfoIt);
 
     // Number of Loads
-    batchTargetInfoIt = setInt< uint16_t>(
+    batchTargetInfoIt = Helper::setInt< uint16_t>(
       batchTargetInfoIt,
-      safeCast< uint16_t>( targetHardwareInfo.loads().size()));
+      Helper::safeCast< uint16_t>( targetHardwareInfo.loads().size()));
 
     // Loads list
     std::copy( rawLoadsInfo.begin(), rawLoadsInfo.end(), batchTargetInfoIt);
@@ -292,7 +292,7 @@ void BatchFile::decodeBatchTargetsInfo(
 
   // number of target HW IDs
   uint16_t numberOfTargetHardwareIds{};
-  it = getInt< uint16_t>( it, numberOfTargetHardwareIds);
+  it = Helper::getInt< uint16_t>( it, numberOfTargetHardwareIds);
 
   // iterate over THW ID index
   for (
@@ -304,7 +304,7 @@ void BatchFile::decodeBatchTargetsInfo(
 
     // next THW ID pointer
     uint16_t thwIdPointer{};
-    listIt = getInt< uint16_t>( listIt, thwIdPointer);
+    listIt = Helper::getInt< uint16_t>( listIt, thwIdPointer);
 
     // THW ID
     std::string thwId{};
@@ -315,7 +315,7 @@ void BatchFile::decodeBatchTargetsInfo(
 
     // number of loads
     uint16_t numberOfLoads{};
-    listIt = getInt< uint16_t>( listIt, numberOfLoads);
+    listIt = Helper::getInt< uint16_t>( listIt, numberOfLoads);
 
     // iterate over load index
     for ( unsigned int loadIndex = 0U; loadIndex < numberOfLoads; ++loadIndex)

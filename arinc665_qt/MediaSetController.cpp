@@ -83,7 +83,7 @@ void MediaSetController::directorySelected()
   }
   catch (Arinc665::Arinc665Exception &e)
   {
-    std::string const * info = boost::get_error_info< AdditionalInfo>( e);
+    std::string const * info = boost::get_error_info< Helper::AdditionalInfo>( e);
 
     QString description{};
 
@@ -117,7 +117,7 @@ Arinc665::File::RawFile MediaSetController::loadFile(
   if (1U != mediumNumber)
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << AdditionalInfo( "Multi Medium Media Sets not supported"));
+      << Helper::AdditionalInfo( "Multi Medium Media Sets not supported"));
   }
 
   auto filePath{
@@ -128,7 +128,7 @@ Arinc665::File::RawFile MediaSetController::loadFile(
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception()
         << boost::errinfo_file_name( filePath.string())
-        << AdditionalInfo( "File not found"));
+        << Helper::AdditionalInfo( "File not found"));
   }
 
   Arinc665::File::RawFile data( std::filesystem::file_size( filePath));
@@ -139,8 +139,8 @@ Arinc665::File::RawFile MediaSetController::loadFile(
 
   if ( !file.is_open())
   {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() << AdditionalInfo( "Error opening files"));
+    BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo( "Error opening files"));
   }
 
   // read the data to the buffer

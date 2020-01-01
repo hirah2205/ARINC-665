@@ -96,7 +96,7 @@ int main( int argc, char const * argv[])
     "Output ARINC 665 media set description XML"
   );
 
-  initLogging( severity_level::info);
+  Helper::initLogging( Helper::Severity::info);
 
   try
   {
@@ -151,7 +151,7 @@ int main( int argc, char const * argv[])
   }
   catch ( Arinc665::Arinc665Exception &e)
   {
-    std::string const * info = boost::get_error_info< AdditionalInfo>( e);
+    std::string const * info = boost::get_error_info< Helper::AdditionalInfo>( e);
 
     std::cerr << "decompiler failed: " <<
     //      typid( e).name() << " - " <<
@@ -182,7 +182,7 @@ static Arinc665::File::RawFile readFile(
   if (mediumNumber > mediaSourceDirectories.size())
   {
     BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
-      << AdditionalInfo( "Medium number unknown"));
+      << Helper::AdditionalInfo( "Medium number unknown"));
   }
 
   auto filePath{ mediaSourceDirectories[ mediumNumber-1] / path.relative_path()};
@@ -192,7 +192,7 @@ static Arinc665::File::RawFile readFile(
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << boost::errinfo_file_name( filePath.string())
-      << AdditionalInfo( "File not found"));
+      << Helper::AdditionalInfo( "File not found"));
   }
 
   Arinc665::File::RawFile data( std::filesystem::file_size( filePath));
@@ -205,7 +205,7 @@ static Arinc665::File::RawFile readFile(
   if ( !file.is_open())
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << AdditionalInfo( "Error opening files"));
+      << Helper::AdditionalInfo( "Error opening files"));
   }
 
   // read the data to the buffer
