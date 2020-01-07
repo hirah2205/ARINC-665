@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Thomas Vogt, Thomas@Thomas-Vogt.de
+# Thomas Vogt, thomas@thomas-vogt.de
 
 cmake_minimum_required( VERSION 3.15)
 
@@ -61,7 +61,7 @@ FetchContent_Declare(
 FetchContent_Declare(
   pugixml
   GIT_REPOSITORY https://github.com/zeux/pugixml.git
-  GIT_TAG v1.9)
+  GIT_TAG v1.10)
 
 
 FetchContent_GetProperties( cmake_common)
@@ -81,6 +81,8 @@ FetchContent_GetProperties( pugixml)
 if( NOT pugixml_POPULATED)
   FetchContent_Populate( pugixml)
   add_subdirectory( ${pugixml_SOURCE_DIR} ${pugixml_BINARY_DIR})
+  # Disable CLANG Tidy Checks on pugixml
+  set_property( TARGET pugixml PROPERTY CXX_CLANG_TIDY)
 endif()
 
 
