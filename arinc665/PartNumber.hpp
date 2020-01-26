@@ -42,17 +42,17 @@ class PartNumber
 {
   public:
     //! Length of Manufacturer Code
-    static constexpr size_t ManufacturerCodeLength = 3U;
+    static constexpr size_t ManufacturerCodeLength{ 3U};
 
     //! Length of Product Identifier
-    static constexpr size_t ProductIdentifierLength = 8U;
+    static constexpr size_t ProductIdentifierLength{ 8U};
 
     //! Length of the Check Code when represented as string
-    static constexpr size_t CheckCodeLength = 2U;
+    static constexpr size_t CheckCodeLength{ 2U};
 
     //! Length of an ARINC 665 Part Number
-    static constexpr size_t Length = ManufacturerCodeLength
-      + CheckCodeLength + ProductIdentifierLength;
+    static constexpr size_t Length{ ManufacturerCodeLength
+      + CheckCodeLength + ProductIdentifierLength};
 
     /**
      * @brief Constructs an ARINC 665 part number based on manufacturer code
