@@ -16,6 +16,8 @@
 #include <arinc665/file/File.hpp>
 
 #include <vector>
+#include <string>
+#include <string_view>
 
 namespace Arinc665::File {
 
