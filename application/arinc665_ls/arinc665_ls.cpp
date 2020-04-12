@@ -119,9 +119,9 @@ int main( int argc, char const * argv[])
 
     if ( vm.count( "help") != 0)
     {
-      std::cout <<
-        "Prints the ARINC 665 Media File informations located in the given directory\n" <<
-        options;
+      std::cout
+        << "Prints the ARINC 665 Media File information located in the given directory\n"
+        << options;
       return EXIT_FAILURE;
     }
 
@@ -167,11 +167,11 @@ static void list_lub( const std::filesystem::path &lubFile)
 
     std::vector< uint8_t> data( std::filesystem::file_size( lubFile));
 
-    std::ifstream file(
+    std::ifstream file{
       lubFile.string().c_str(),
-      std::ifstream::binary | std::ifstream::in);
+      std::ifstream::binary | std::ifstream::in };
 
-    if (!file.is_open())
+    if ( !file.is_open())
     {
       std::cout << "Error opening file: " << lubFile.string() << "\n";
       return;
@@ -188,22 +188,24 @@ static void list_lub( const std::filesystem::path &lubFile)
     {
       std::cout
         << "target HW: " << targetHardware.targetHardwareIdPosition() << "\n";
-      for (auto const &load : targetHardware.loads())
+      for ( auto const &load : targetHardware.loads())
       {
         std::cout
-          << "  load: " << load.headerFilename() << " - " << load.partNumber() << "\n";
+          << "  load: " << load.headerFilename()
+          << " - " << load.partNumber() << "\n";
       }
     }
   }
-  catch (boost::exception &e)
+  catch ( boost::exception &e)
   {
-    std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
+    std::cout
+      << "Boost exception: " << boost::diagnostic_information(e) << "\n";
   }
   catch ( std::exception &e)
   {
     std::cout << "std exception: " << e.what() << std::endl;
   }
-  catch (...)
+  catch ( ...)
   {
     std::cout << "unknown exception occurred" << std::endl;
   }
@@ -215,58 +217,59 @@ static void list_luh( const std::filesystem::path &luhFile)
   {
     std::cout
       << "File size is: "
-      << std::dec << std::filesystem::file_size( luhFile) << std::endl;
+      << std::dec << std::filesystem::file_size( luhFile) << "\n";
 
     std::vector< uint8_t> data( std::filesystem::file_size( luhFile));
 
-    std::ifstream file(
+    std::ifstream file{
       luhFile.string().c_str(),
-      std::ifstream::binary | std::ifstream::in);
+      std::ifstream::binary | std::ifstream::in };
 
-    if (!file.is_open())
+    if ( !file.is_open())
     {
-      std::cout << "Error opening file: " << luhFile.string() << std::endl;
+      std::cout << "Error opening file: " << luhFile.string() << "\n";
       return;
     }
 
     file.read( (char*)&data.at(0), data.size());
 
-    Arinc665::File::LoadHeaderFile load( data);
+    Arinc665::File::LoadHeaderFile load{ data };
 
-    std::cout << "part number: "<< load.partNumber() << std::endl;
+    std::cout << "part number: "<< load.partNumber() << "\n";
 
     for ( auto const &targetHardwareId : load.targetHardwareIds())
     {
-      std::cout << "target HW id: " << targetHardwareId << std::endl;
+      std::cout << "target HW id: " << targetHardwareId << "\n";
     }
 
     for ( auto const &dataFile : load.dataFiles())
     {
-      std::cout <<
-        "data file name: " << dataFile.filename() << "\n" <<
-        "data file PN:   " << dataFile.partNumber() << "\n" <<
-        "data file size: " << std::dec << dataFile.length() << "\n" <<
-        "data file CRC:  " << std::hex << dataFile.crc() << std::endl << std::endl;
+      std::cout
+        << "data file name: " << dataFile.filename() << "\n"
+        << "data file PN:   " << dataFile.partNumber() << "\n"
+        << "data file size: " << std::dec << dataFile.length() << "\n"
+        << "data file CRC:  " << std::hex << dataFile.crc() << "\n\n";
     }
 
     for ( auto const &supportFile : load.supportFiles())
     {
-      std::cout <<
-        "support file name: " << supportFile.filename() << "\n" <<
-        "support file PN:   " << supportFile.partNumber() << "\n" <<
-        "support file size: " << std::dec << supportFile.length() << "\n" <<
-        "support file CRC:  " << std::hex << supportFile.crc() << std::endl << std::endl;
+      std::cout
+        << "support file name: " << supportFile.filename() << "\n"
+        << "support file PN:   " << supportFile.partNumber() << "\n"
+        << "support file size: " << std::dec << supportFile.length() << "\n"
+        << "support file CRC:  " << std::hex << supportFile.crc() << "\n\n";
     }
 
-    std::cout << "load crc " << std::hex << load.loadCrc() << std::endl;
+    std::cout << "load crc " << std::hex << load.loadCrc() << "\n";
   }
-  catch (boost::exception &e)
+  catch ( boost::exception &e)
   {
-    std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
+    std::cout
+      << "Boost exception: " << boost::diagnostic_information(e) << "\n";
   }
   catch ( std::exception &e)
   {
-    std::cout << "std exception: " << e.what() << std::endl;
+    std::cout << "std exception: " << e.what() << "\n";
   }
   catch (...)
   {
@@ -301,21 +304,24 @@ static void list_loads_lum( const std::filesystem::path &loadsLum)
       << "media set pn: " << loadList.mediaSetPn() << "\n";
 
     std::cout
-      << "media seq no: " << std::dec << (int)loadList.mediaSequenceNumber() << "\n";
+      << "media seq no: "
+      << std::dec << (int)loadList.mediaSequenceNumber() << "\n";
 
     std::cout
-      << "no of media set members: " << (int)loadList.numberOfMediaSetMembers() << "\n";
+      << "no of media set members: "
+      << (int)loadList.numberOfMediaSetMembers() << "\n";
 
     for ( const auto & load : loadList.loads())
     {
-      std::cout <<
-        "load load pn: "                << load.partNumber() << "\n" <<
-        "load header file name: "       << load.headerFilename() << "\n" <<
-        "load member sequence number: " << std::dec << (int)load.memberSequenceNumber() << std::endl << std::endl;
+      std::cout
+        << "load load pn: "                << load.partNumber() << "\n"
+        << "load header file name: "       << load.headerFilename() << "\n"
+        << "load member sequence number: "
+          << std::dec << (int)load.memberSequenceNumber() << "\n\n";
 
       for ( const auto & thw : load.targetHardwareIds())
       {
-        std::cout << "target hardware id: " << thw << std::endl << std::endl;
+        std::cout << "target hardware id: " << thw << "\n\n";
       }
     }
 

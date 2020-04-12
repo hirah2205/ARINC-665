@@ -31,7 +31,7 @@
  * @param[in] argv
  *   Arguments
  *
- * @return The success state of this operation.
+ * @return Success state of this operation.
  **/
 int main( int argc, char * argv[]);
 
@@ -47,7 +47,11 @@ int main( int argc, char * argv[])
 
     Arinc665Qt::MediaSetController mediaSetController{};
 
-    QObject::connect( &mediaSetController, SIGNAL( finished()), &application, SLOT( quit()));
+    QObject::connect(
+      &mediaSetController,
+      SIGNAL( finished()),
+      &application,
+      SLOT( quit()));
 
     emit mediaSetController.start();
 
