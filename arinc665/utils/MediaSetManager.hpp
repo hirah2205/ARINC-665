@@ -57,12 +57,12 @@ class MediaSetManager
      * @return The media set manager instance.
      **/
     static MediaSetManagerPtr instance(
-      const MediaSetConfiguration &config);
+      const MediaSetConfiguration &config );
 
     /**
      * @brief Returns the configuration for the media set manager.
      *
-     * @return The media set manager configuration.
+     * @return Media Set Manager Configuration.
      **/
     virtual const MediaSetConfiguration& configuration() const = 0;
 
@@ -74,12 +74,18 @@ class MediaSetManager
      *
      * @return The media set with the given part number.
      **/
+    virtual Media::ConstMediaSetPtr mediaSet(
+      std::string_view partNumber) const = 0;
+
+    //! @copydoc mediaSet(std::string_view) const;
     virtual Media::MediaSetPtr mediaSet( std::string_view partNumber) = 0;
 
     /**
      * @brief Returns all registered media sets.
      *
      * @return All media sets.
+     *
+     * //! @todo wrong return type
      **/
     [[nodiscard]] virtual const MediaSets& mediaSets() const = 0;
 
@@ -95,7 +101,9 @@ class MediaSetManager
      * To much files are not detected.
      *
      * @param[in] mediaSet
+     *   Media Set to add.
      * @param[in] mediumPathHandler
+     *   Medium Path Handler for Import.
      *
      * @throw Arinc665Exception
      *   If media set with this name already exists.
@@ -104,7 +112,7 @@ class MediaSetManager
      **/
     virtual void add(
       Media::ConstMediaSetPtr mediaSet,
-      MediumPathHandler mediumPathHandler) = 0;
+      MediumPathHandler mediumPathHandler ) = 0;
 
     /**
      * @brief Get all available Loads.
@@ -125,7 +133,21 @@ class MediaSetManager
      * @return The loads with the given filename.
      **/
     [[nodiscard]] virtual Media::ConstLoads load(
-      std::string_view filename) const = 0;
+      std::string_view filename ) const = 0;
+
+    /**
+     * @brief Returns the loads with the given filename from the given Media Set.
+     *
+     * @param[in] partNumber
+     *   Media Set Part Number.
+     * @param[in] filename
+     *   Load Filename
+     *
+     * @return The loads with the given filename.
+     **/
+    [[nodiscard]] virtual Media::ConstLoadPtr load(
+      std::string_view partNumber,
+      std::string_view filename ) const = 0;
 
     /**
      * @brief Returns the path to the given file.
@@ -136,7 +158,7 @@ class MediaSetManager
      * @return The path to the given file.
      **/
     [[nodiscard]] virtual std::filesystem::path filePath(
-      Media::ConstBaseFilePtr file) const = 0;
+      Media::ConstBaseFilePtr file ) const = 0;
 };
 
 }

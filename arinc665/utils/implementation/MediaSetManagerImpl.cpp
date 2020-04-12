@@ -25,7 +25,7 @@ namespace Arinc665::Utils {
 
 MediaSetManagerImpl::MediaSetManagerImpl(
   const MediaSetConfiguration &config):
-  config( config)
+  config{ config }
 {
   BOOST_LOG_FUNCTION()
 
@@ -59,13 +59,13 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 
         File::RawFile data( std::filesystem::file_size( filePath));
 
-        std::ifstream file(
+        std::ifstream file{
           filePath.string().c_str(),
-          std::ifstream::binary | std::ifstream::in);
+          std::ifstream::binary | std::ifstream::in };
 
         if ( !file.is_open())
         {
-          BOOST_THROW_EXCEPTION(Arinc665Exception()
+          BOOST_THROW_EXCEPTION( Arinc665Exception()
             << Helper::AdditionalInfo( "Error opening files"));
         }
 
@@ -97,6 +97,20 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 const MediaSetConfiguration& MediaSetManagerImpl::configuration() const
 {
   return config;
+}
+
+Media::ConstMediaSetPtr MediaSetManagerImpl::mediaSet(
+  std::string_view partNumber) const
+{
+  for ( const auto &mediaSet : mediaSetsValue )
+  {
+    if ( mediaSet->partNumber() == partNumber )
+    {
+      return mediaSet;
+    }
+  }
+
+  return {};
 }
 
 Media::MediaSetPtr MediaSetManagerImpl::mediaSet( std::string_view partNumber)
@@ -141,13 +155,13 @@ void MediaSetManagerImpl::add(
     std::filesystem::copy(
       sourcePath,
       destinationPath,
-      std::filesystem::copy_options::recursive);
+      std::filesystem::copy_options::recursive );
   }
 }
 
 Media::ConstLoads MediaSetManagerImpl::loads() const
 {
-  Media::ConstLoads loads;
+  Media::ConstLoads loads{};
 
   for ( const auto &mediaSet : mediaSetsValue)
   {
@@ -176,12 +190,26 @@ Media::ConstLoads MediaSetManagerImpl::load( std::string_view filename) const
   return loads;
 }
 
+Media::ConstLoadPtr MediaSetManagerImpl::load(
+  std::string_view partNumber,
+  std::string_view filename) const
+{
+  const auto mediaSetFound{ mediaSet( partNumber)};
+
+  if ( !mediaSetFound)
+  {
+    return {};
+  }
+
+  return mediaSetFound->load( filename);
+}
+
 std::filesystem::path MediaSetManagerImpl::filePath(
   Media::ConstBaseFilePtr file) const
 {
   auto mediumIt{ mediaPaths.find( file->parent()->medium())};
 
-  if (mediumIt == mediaPaths.end())
+  if ( mediumIt == mediaPaths.end())
   {
     return {};
   }

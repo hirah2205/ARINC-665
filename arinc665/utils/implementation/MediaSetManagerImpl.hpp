@@ -34,7 +34,11 @@ class MediaSetManagerImpl : public MediaSetManager
     //! @copydoc MediaSetManager::configuration
     [[nodiscard]] const MediaSetConfiguration& configuration() const final;
 
-    //! @copydoc MediaSetManager::mediaSet
+    //! @copydoc MediaSetManager::mediaSet(std::string_view) const
+    Media::ConstMediaSetPtr mediaSet(
+      std::string_view partNumber) const final;
+
+    //! @copydoc MediaSetManager::mediaSet(std::string_view)
     Media::MediaSetPtr mediaSet( std::string_view partNumber) final;
 
     //! @copydoc MediaSetManager::mediaSets() const
@@ -53,6 +57,11 @@ class MediaSetManagerImpl : public MediaSetManager
 
     //! @copydoc MediaSetManager::load(std::string_view) const
     [[nodiscard]] Media::ConstLoads load( std::string_view filename) const final;
+
+  //! @copydoc MediaSetManager::load(std::string_view,std::string_view) const
+  [[nodiscard]] Media::ConstLoadPtr load(
+    std::string_view partNumber,
+    std::string_view filename) const final;
 
     //! @copydoc MediaSetManager::filePath
     [[nodiscard]] std::filesystem::path filePath(
