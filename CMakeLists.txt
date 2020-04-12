@@ -4,15 +4,15 @@
 #
 # Thomas Vogt, thomas@thomas-vogt.de
 
-cmake_minimum_required( VERSION 3.15)
+cmake_minimum_required( VERSION 3.16)
 
 project(
   arinc665
   VERSION 0.0.0.0
   DESCRIPTION "ARINC 665"
-  HOMEPAGE_URL "https://git.thomas-vogt.de/Thomas-Vogt/arinc665")
+  HOMEPAGE_URL "https://git.thomas-vogt.de/Thomas-Vogt/arinc665" )
 
-set( PROJECT_VERSION_ADDITION "dev")
+set( PROJECT_VERSION_ADDITION "dev" )
 
 find_package( Git)
 
@@ -23,7 +23,7 @@ if( GIT_FOUND)
     OUTPUT_VARIABLE GIT_HASH
     OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-  set( PROJECT_VERSION_ADDITION "${PROJECT_VERSION_ADDITION}-${GIT_HASH}")
+  set( PROJECT_VERSION_ADDITION "${PROJECT_VERSION_ADDITION}-${GIT_HASH}" )
 endif()
 
 
@@ -33,9 +33,9 @@ set( CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_program(
   CLANG_TIDY_EXE
   NAMES
+  clang-tidy-10
   clang-tidy-9
-  clang-tidy-8
-  clang-tidy)
+  clang-tidy )
 
 if( CLANG_TIDY_EXE)
   set( CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE})
