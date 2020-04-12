@@ -7,14 +7,14 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665Qt::LoadWidget.
+ * @brief Definition of Class Arinc665Qt::Media::LoadWidget.
  **/
 
 #include "LoadWidget.hpp"
 
 #include "ui_LoadWidget.h"
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::Media {
 
 LoadWidget::LoadWidget( QWidget *parent):
   QWidget{ parent},

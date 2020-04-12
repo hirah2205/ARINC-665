@@ -7,14 +7,14 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Qt::BatchWidget.
+ * @brief Definition of Class Arinc665Qt::Media::BatchWidget.
  **/
 
 #include "BatchWidget.hpp"
 
 #include "ui_BatchWidget.h"
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::Media {
 
 BatchWidget::BatchWidget( QWidget * const parent):
   QWidget{ parent},

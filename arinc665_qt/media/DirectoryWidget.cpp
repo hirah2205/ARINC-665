@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665Qt::DirectoryWidget.
+ * @brief Definition of class Arinc665Qt::Media::DirectoryWidget.
  **/
 
 #include "DirectoryWidget.hpp"
@@ -16,11 +16,12 @@
 
 #include "ui_DirectoryWidget.h"
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::Media {
 
 DirectoryWidget::DirectoryWidget( QWidget * const parent):
   QWidget{ parent},
-  ui{ std::make_unique< Ui::DirectoryWidget>()}
+  ui{ std::make_unique< Ui::DirectoryWidget>()},
+  modelV{ nullptr}
 {
   ui->setupUi( this);
 }

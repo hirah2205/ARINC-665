@@ -14,6 +14,7 @@
 #define ARINC665_QT_MEDIASETDIALOG_HPP
 
 #include <arinc665_qt/Arinc665Qt.hpp>
+#include <arinc665_qt/media/Media.hpp>
 
 #include <QDialog>
 
@@ -48,7 +49,7 @@ class MediaSetDialog : public QDialog
      * @param[in] mediaSetModel
      *   The Media Set Model.
      **/
-    void model( MediaSetModel * mediaSetModel);
+    void model( Media::MediaSetModel * mediaSetModel);
 
   private slots:
     /**
@@ -63,7 +64,7 @@ class MediaSetDialog : public QDialog
     //! UI (designer)
     std::unique_ptr< Ui::MediaSetDialog> ui;
     //! Media Set Model
-    MediaSetModel * mediaSetModelV;
+    Media::MediaSetModel * mediaSetModelV;
 };
 
 }

@@ -14,6 +14,7 @@
 #define ARINC665_QT_MEDIASETCONTROLLER_HPP
 
 #include <arinc665_qt/Arinc665Qt.hpp>
+#include <arinc665_qt/media/Media.hpp>
 
 #include <arinc665/media/Media.hpp>
 #include <arinc665/file/File.hpp>
@@ -40,7 +41,7 @@ class MediaSetController: public QObject
      * @param[in] parent
      *   Parent Widget.
      **/
-    explicit MediaSetController( QWidget * parent = nullptr);
+    explicit MediaSetController( QWidget * parent = nullptr );
 
     //! Destructor
     ~MediaSetController() override;
@@ -79,10 +80,10 @@ class MediaSetController: public QObject
      **/
     Arinc665::File::RawFile loadFile(
       uint8_t mediumNumber,
-      const std::filesystem::path &path);
+      const std::filesystem::path &path );
 
     //! Media Set Model Model
-    MediaSetModel * mediaSetModel;
+    Media::MediaSetModel * mediaSetModel;
     //! Select BHM database directory dialog
     QFileDialog * selectDirectoryDialog;
     //! BHM analyse dialog

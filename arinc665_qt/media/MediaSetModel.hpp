@@ -7,19 +7,19 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::MediaSetModel.
+ * @brief Declaration of Class Arinc665Qt::Media::MediaSetModel.
  **/
 
-#ifndef ARINC665_QT_MEDIASETMODEL_HPP
-#define ARINC665_QT_MEDIASETMODEL_HPP
+#ifndef ARINC665_QT_MEDIA_MEDIASETMODEL_HPP
+#define ARINC665_QT_MEDIA_MEDIASETMODEL_HPP
 
-#include <arinc665_qt/Arinc665Qt.hpp>
+#include <arinc665_qt/media/Media.hpp>
 
 #include <arinc665/media/Media.hpp>
 
 #include <QAbstractItemModel>
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::Media {
 
 /**
  * @brief QT Adaption of ARINC 665 Media Set.

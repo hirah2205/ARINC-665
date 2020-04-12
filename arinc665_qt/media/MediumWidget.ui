@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Arinc665Qt::DirectoryWidget</class>
- <widget class="QWidget" name="Arinc665Qt::DirectoryWidget">
+ <class>Arinc665Qt::Media::MediumWidget</class>
+ <widget class="QWidget" name="Arinc665Qt::Media::MediumWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,36 +15,29 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="directoryGroupBox">
+    <widget class="QGroupBox" name="mediumGroupBox">
      <property name="title">
-      <string>Directory</string>
+      <string>Medium</string>
      </property>
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
-       <widget class="QLabel" name="nameLabel">
+       <widget class="QLabel" name="numberLabel">
         <property name="text">
-         <string>Name</string>
+         <string>Number</string>
         </property>
         <property name="buddy">
-         <cstring>nameLineEdit</cstring>
+         <cstring>numberSpinBox</cstring>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="nameLineEdit"/>
+       <widget class="QSpinBox" name="numberSpinBox"/>
       </item>
      </layout>
     </widget>
    </item>
-   <item>
-    <widget class="QListView" name="listView"/>
-   </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>nameLineEdit</tabstop>
-  <tabstop>listView</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>

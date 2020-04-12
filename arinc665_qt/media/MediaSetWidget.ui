@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Arinc665Qt::FileWidget</class>
- <widget class="QWidget" name="Arinc665Qt::FileWidget">
+ <class>Arinc665Qt::Media::MediaSetWidget</class>
+ <widget class="QWidget" name="Arinc665Qt::Media::MediaSetWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,9 +15,9 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="fileGroupBox">
+    <widget class="QGroupBox" name="mediaSetGroupBox">
      <property name="title">
-      <string>File</string>
+      <string>Media Set</string>
      </property>
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
@@ -50,40 +50,14 @@
     </widget>
    </item>
    <item>
-    <widget class="QStackedWidget" name="detailsStackedWidget">
-     <property name="currentIndex">
-      <number>1</number>
-     </property>
-     <widget class="Arinc665Qt::RegularFileWidget" name="regularFilePage"/>
-     <widget class="Arinc665Qt::LoadWidget" name="loadPage"/>
-     <widget class="Arinc665Qt::BatchWidget" name="batchPage"/>
-    </widget>
+    <widget class="QListView" name="listView"/>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>Arinc665Qt::RegularFileWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">arinc665_qt/RegularFileWidget.hpp</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Arinc665Qt::LoadWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">arinc665_qt/LoadWidget.hpp</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Arinc665Qt::BatchWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">arinc665_qt/BatchWidget.hpp</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <tabstops>
   <tabstop>nameLineEdit</tabstop>
   <tabstop>partNumberLineEdit</tabstop>
+  <tabstop>listView</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665Qt::MediumWidget.
+ * @brief Definition of class Arinc665Qt::Media::MediumWidget.
  **/
 
 #include "MediumWidget.hpp"
@@ -16,7 +16,7 @@
 
 #include "ui_MediumWidget.h"
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::Media {
 
 MediumWidget::MediumWidget( QWidget * const parent):
   QWidget{ parent},

@@ -7,19 +7,19 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::LoadsModel.
+ * @brief Declaration of Class Arinc665Qt::Media::LoadsModel.
  **/
 
-#ifndef ARINC665_QT_LOADSMODEL_HPP
-#define ARINC665_QT_LOADSMODEL_HPP
+#ifndef ARINC665_QT_MEDIA_LOADSMODEL_HPP
+#define ARINC665_QT_MEDIA_LOADSMODEL_HPP
 
-#include <arinc665_qt/Arinc665Qt.hpp>
+#include <arinc665_qt/media/Media.hpp>
 
 #include <arinc665/media/Media.hpp>
 
 #include <QAbstractTableModel>
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::Media {
 
 /**
  * @brief QT model of list of loads.

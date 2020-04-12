@@ -7,13 +7,13 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::BatchWidget.
+ * @brief Declaration of Class Arinc665Qt::Media::BatchWidget.
  **/
 
-#ifndef ARINC665_QT_BATCHWIDGET_HPP
-#define ARINC665_QT_BATCHWIDGET_HPP
+#ifndef ARINC665_QT_MEDIA_BATCHWIDGET_HPP
+#define ARINC665_QT_MEDIA_BATCHWIDGET_HPP
 
-#include <arinc665_qt/Arinc665Qt.hpp>
+#include <arinc665_qt/media/Media.hpp>
 
 #include <arinc665/media/Media.hpp>
 
@@ -21,7 +21,7 @@
 
 #include <memory>
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::Media {
 
 namespace Ui {
 class BatchWidget;

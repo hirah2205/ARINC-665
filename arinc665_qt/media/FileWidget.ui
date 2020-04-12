@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Arinc665Qt::MediaSetWidget</class>
- <widget class="QWidget" name="Arinc665Qt::MediaSetWidget">
+ <class>Arinc665Qt::Media::FileWidget</class>
+ <widget class="QWidget" name="Arinc665Qt::Media::FileWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,9 +15,9 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="mediaSetGroupBox">
+    <widget class="QGroupBox" name="fileGroupBox">
      <property name="title">
-      <string>Media Set</string>
+      <string>File</string>
      </property>
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
@@ -50,14 +50,40 @@
     </widget>
    </item>
    <item>
-    <widget class="QListView" name="listView"/>
+    <widget class="QStackedWidget" name="detailsStackedWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="Arinc665Qt::Media::RegularFileWidget" name="regularFilePage"/>
+     <widget class="Arinc665Qt::Media::LoadWidget" name="loadPage"/>
+     <widget class="Arinc665Qt::Media::BatchWidget" name="batchPage"/>
+    </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Arinc665Qt::Media::RegularFileWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">arinc665_qt/media/RegularFileWidget.hpp</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Arinc665Qt::Media::LoadWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">arinc665_qt/media/LoadWidget.hpp</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Arinc665Qt::Media::BatchWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">arinc665_qt/media/BatchWidget.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>nameLineEdit</tabstop>
   <tabstop>partNumberLineEdit</tabstop>
-  <tabstop>listView</tabstop>
  </tabstops>
  <resources/>
  <connections/>

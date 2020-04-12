@@ -7,14 +7,14 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665Qt::RegularFileWidget.
+ * @brief Definition of class Arinc665Qt::Media::RegularFileWidget.
  **/
 
 #include "RegularFileWidget.hpp"
 
 #include "ui_RegularFileWidget.h"
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::Media {
 
 RegularFileWidget::RegularFileWidget( QWidget *parent):
   QWidget{ parent},

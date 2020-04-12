@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Arinc665Qt::BatchWidget</class>
- <widget class="QWidget" name="Arinc665Qt::BatchWidget">
+ <class>Arinc665Qt::Media::BatchWidget</class>
+ <widget class="QWidget" name="Arinc665Qt::Media::BatchWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

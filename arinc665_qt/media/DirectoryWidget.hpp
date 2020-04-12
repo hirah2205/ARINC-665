@@ -7,13 +7,13 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::Directory Widget.
+ * @brief Declaration of Class Arinc665Qt::Media::Directory Widget.
  **/
 
-#ifndef ARINC665_QT_DIRECTORYWIDGET_HPP
-#define ARINC665_QT_DIRECTORYWIDGET_HPP
+#ifndef ARINC665_QT_MEDIA_DIRECTORYWIDGET_HPP
+#define ARINC665_QT_MEDIA_DIRECTORYWIDGET_HPP
 
-#include <arinc665_qt/Arinc665Qt.hpp>
+#include <arinc665_qt/media/Media.hpp>
 
 #include <arinc665/media/Media.hpp>
 
@@ -21,7 +21,7 @@
 
 #include <memory>
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::Media {
 
 namespace Ui {
 class DirectoryWidget;
@@ -39,7 +39,7 @@ class DirectoryWidget : public QWidget
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit DirectoryWidget( QWidget *parent = nullptr);
+    explicit DirectoryWidget( QWidget * parent = nullptr);
 
     //! Destructor
     ~DirectoryWidget() override;

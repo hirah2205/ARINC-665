@@ -7,13 +7,13 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::FileWidget.
+ * @brief Declaration of Class Arinc665Qt::Media::RegularFileWidget.
  **/
 
-#ifndef ARINC665_QT_FILEWIDGET_HPP
-#define ARINC665_QT_FILEWIDGET_HPP
+#ifndef ARINC665_QT_MEDIA_REGULARFILEWIDGET_HPP
+#define ARINC665_QT_MEDIA_REGULARFILEWIDGET_HPP
 
-#include <arinc665_qt/Arinc665Qt.hpp>
+#include <arinc665_qt/media/Media.hpp>
 
 #include <arinc665/media/Media.hpp>
 
@@ -21,47 +21,47 @@
 
 #include <memory>
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::Media {
 
 namespace Ui {
-class FileWidget;
+class RegularFileWidget;
 }
 
-//! Widget for Basic File Presentation
-class FileWidget: public QWidget
+//! Widget for Regular File Presentation
+class RegularFileWidget : public QWidget
 {
   Q_OBJECT
 
   public:
     /**
-     * @brief Initialises the File Widget.
+     * @brief Initialises the Regular File Widget.
      *
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit FileWidget( QWidget * parent = nullptr);
+    explicit RegularFileWidget( QWidget *parent = nullptr);
 
     //! Destructor
-    ~FileWidget() override;
+    ~RegularFileWidget() override;
 
   public slots:
     /**
-     * @brief Called when a file has been selected.
+     * @brief Called when a File has been selected.
      *
      * @param[in] model
      *   Model owning @p file
      * @param[in] file
      *   Selected File
      **/
-    void selectedFile( MediaSetModel * model, Arinc665::Media::BaseFilePtr file);
+    void selectedFile( MediaSetModel * model, Arinc665::Media::FilePtr file);
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::FileWidget> ui;
+    std::unique_ptr< Ui::RegularFileWidget> ui;
     //! Media Set Model
     MediaSetModel * modelV;
     //! File
-    Arinc665::Media::BaseFilePtr fileV;
+    Arinc665::Media::FilePtr fileV;
 };
 
 }

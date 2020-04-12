@@ -7,12 +7,12 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665Qt::MediaSetDialog.
+ * @brief Definition of Class Arinc665Qt::MediaSetDialog.
  **/
 
 #include "MediaSetDialog.hpp"
 
-#include <arinc665_qt/MediaSetModel.hpp>
+#include <arinc665_qt/media/MediaSetModel.hpp>
 
 #include <arinc665/media/Base.hpp>
 #include <arinc665/media/MediaSet.hpp>
@@ -40,7 +40,7 @@ MediaSetDialog::MediaSetDialog( QWidget * const parent):
 
 MediaSetDialog::~MediaSetDialog() = default;
 
-void MediaSetDialog::model( MediaSetModel * const mediaSetModel)
+void MediaSetDialog::model( Media::MediaSetModel * const mediaSetModel)
 {
   if ( mediaSetModelV != nullptr)
   {

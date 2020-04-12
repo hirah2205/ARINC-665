@@ -13,7 +13,7 @@
 #include "MediaSetController.hpp"
 
 #include <arinc665_qt/MediaSetDialog.hpp>
-#include <arinc665_qt/MediaSetModel.hpp>
+#include <arinc665_qt/media/MediaSetModel.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/utils/Arinc665Utils.hpp>
@@ -29,7 +29,7 @@ namespace Arinc665Qt {
 
 MediaSetController::MediaSetController( QWidget * const parent):
   QObject{ parent},
-  mediaSetModel{ new MediaSetModel( parent)},
+  mediaSetModel{ new Media::MediaSetModel( parent)},
   selectDirectoryDialog{ new QFileDialog(
     parent,
     tr( "Select ARINC 665 Medium"))},

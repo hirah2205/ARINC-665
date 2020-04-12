@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665Qt::MediaSetWidget.
+ * @brief Definition of class Arinc665Qt::Media::MediaSetWidget.
  **/
 
 #include "MediaSetWidget.hpp"
@@ -16,7 +16,7 @@
 
 #include "ui_MediaSetWidget.h"
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::Media {
 
 MediaSetWidget::MediaSetWidget( QWidget * const parent):
   QWidget{ parent},

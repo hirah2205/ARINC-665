@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665Qt::FileWidget.
+ * @brief Definition of class Arinc665Qt::Media::FileWidget.
  **/
 
 #include "FileWidget.hpp"
@@ -19,7 +19,7 @@
 
 #include "ui_FileWidget.h"
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::Media {
 
 FileWidget::FileWidget( QWidget * const parent):
   QWidget{ parent},

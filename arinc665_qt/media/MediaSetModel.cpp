@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Qt::MediaSetModel.
+ * @brief Definition of Class Arinc665Qt::Media::MediaSetModel.
  **/
 
 #include "MediaSetModel.hpp"
@@ -21,7 +21,7 @@
 
 #include <iterator>
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::Media {
 
 MediaSetModel::MediaSetModel(
   QObject * const parent,

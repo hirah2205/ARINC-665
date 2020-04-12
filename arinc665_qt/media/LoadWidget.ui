@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Arinc665Qt::LoadWidget</class>
- <widget class="QWidget" name="Arinc665Qt::LoadWidget">
+ <class>Arinc665Qt::Media::LoadWidget</class>
+ <widget class="QWidget" name="Arinc665Qt::Media::LoadWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
