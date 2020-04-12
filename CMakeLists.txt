@@ -27,19 +27,19 @@ if( GIT_FOUND)
 endif()
 
 
-set( CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
 
 # find clang-tidy and add options to execute
 find_program(
   CLANG_TIDY_EXE
   NAMES
-  clang-tidy-10
-  clang-tidy-9
-  clang-tidy )
+    clang-tidy-10
+    clang-tidy-9
+    clang-tidy )
 
-if( CLANG_TIDY_EXE)
-  set( CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE})
-endif()
+if( CLANG_TIDY_EXE )
+  set( CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE} )
+endif( CLANG_TIDY_EXE )
 
 # enable testing
 enable_testing()
@@ -51,38 +51,38 @@ include( FetchContent)
 FetchContent_Declare(
   cmake_common
   GIT_REPOSITORY https://git.thomas-vogt.de/Thomas-Vogt/cmake_common.git
-  GIT_TAG master)
+  GIT_TAG master )
 
 FetchContent_Declare(
   helper
   GIT_REPOSITORY https://git.thomas-vogt.de/Thomas-Vogt/helper.git
-  GIT_TAG master)
+  GIT_TAG master )
 
 FetchContent_Declare(
   pugixml
   GIT_REPOSITORY https://github.com/zeux/pugixml.git
-  GIT_TAG v1.10)
+  GIT_TAG v1.10 )
 
 
 FetchContent_GetProperties( cmake_common)
 if( NOT cmake_common_POPULATED)
   FetchContent_Populate( cmake_common)
   # Add own CMake scripts to module path
-  list( APPEND CMAKE_MODULE_PATH "${cmake_common_SOURCE_DIR}")
+  list( APPEND CMAKE_MODULE_PATH "${cmake_common_SOURCE_DIR}" )
 endif()
 
 FetchContent_GetProperties( helper)
 if( NOT helper_POPULATED)
   FetchContent_Populate( helper)
-  add_subdirectory( ${helper_SOURCE_DIR} ${helper_BINARY_DIR})
+  add_subdirectory( ${helper_SOURCE_DIR} ${helper_BINARY_DIR} )
 endif()
 
 FetchContent_GetProperties( pugixml)
 if( NOT pugixml_POPULATED)
   FetchContent_Populate( pugixml)
-  add_subdirectory( ${pugixml_SOURCE_DIR} ${pugixml_BINARY_DIR})
+  add_subdirectory( ${pugixml_SOURCE_DIR} ${pugixml_BINARY_DIR} )
   # Disable CLANG Tidy Checks on pugixml
-  set_property( TARGET pugixml PROPERTY CXX_CLANG_TIDY)
+  set_property( TARGET pugixml PROPERTY CXX_CLANG_TIDY )
 endif()
 
 
