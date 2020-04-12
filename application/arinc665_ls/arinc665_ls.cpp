@@ -7,8 +7,9 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Utility to scan directories/ files for ARINC 665 content ad decodes
- *   them.
+ * @brief ARINC 665 List Application
+ *
+ * Utility to Scan Directories/ Files for ARINC 665 Content and Decodes them.
  **/
 
 /**
@@ -135,22 +136,22 @@ int main( int argc, char const * argv[])
   {
     std::cout
       << "Error parsing command line: " << e.what() << "\n"
-      << "Enter " << argv[0] << " --help for command line description" << std::endl;
+      << "Enter " << argv[0] << " --help for command line description\n";
     return EXIT_FAILURE;
   }
   catch ( boost::exception &e)
   {
-    std::cout << "Error: " << boost::diagnostic_information( e) << std::endl;
+    std::cout << "Error: " << boost::diagnostic_information( e) << "\n";
     return EXIT_FAILURE;
   }
   catch ( std::exception &e)
   {
-    std::cout << "Error: " << e.what() << std::endl;
+    std::cout << "Error: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( ...)
   {
-    std::cout << "unknown exception occurred" << std::endl;
+    std::cout << "unknown exception occurred" << "\n";
     return EXIT_FAILURE;
   }
 
@@ -203,11 +204,11 @@ static void list_lub( const std::filesystem::path &lubFile)
   }
   catch ( std::exception &e)
   {
-    std::cout << "std exception: " << e.what() << std::endl;
+    std::cout << "std exception: " << e.what() << "\n";
   }
   catch ( ...)
   {
-    std::cout << "unknown exception occurred" << std::endl;
+    std::cout << "unknown exception occurred\n";
   }
 }
 
@@ -273,7 +274,7 @@ static void list_luh( const std::filesystem::path &luhFile)
   }
   catch (...)
   {
-    std::cout << "unknown exception occurred" << std::endl;
+    std::cout << "unknown exception occurred\n";
   }
 }
 
@@ -282,7 +283,8 @@ static void list_loads_lum( const std::filesystem::path &loadsLum)
   try
   {
     std::cout
-      << "File size is: " << std::dec << std::filesystem::file_size( loadsLum) << "\n";
+      << "File size is: "
+      << std::dec << std::filesystem::file_size( loadsLum) << "\n";
 
     std::vector< uint8_t> data( std::filesystem::file_size( loadsLum));
 
@@ -290,7 +292,7 @@ static void list_loads_lum( const std::filesystem::path &loadsLum)
       loadsLum.string().c_str(),
       std::ifstream::binary | std::ifstream::in);
 
-    if (!file.is_open())
+    if ( !file.is_open())
     {
       std::cout << "Error opening file: " << loadsLum.string() << "\n";
       return;
@@ -328,15 +330,16 @@ static void list_loads_lum( const std::filesystem::path &loadsLum)
   }
   catch (boost::exception &e)
   {
-    std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
+    std::cout
+      << "Boost exception: " << boost::diagnostic_information(e) << "\n";
   }
   catch ( std::exception &e)
   {
-    std::cout << "std exception: " << e.what() << std::endl;
+    std::cout << "std exception: " << e.what() << "\n";
   }
   catch (...)
   {
-    std::cout << "unknown exception occurred" << std::endl;
+    std::cout << "unknown exception occurred\n";
   }
 }
 
@@ -345,7 +348,8 @@ static void list_files_lum( const std::filesystem::path &filesLum)
   try
   {
     std::cout
-      << "File size is: " << std::dec << std::filesystem::file_size( filesLum) << "\n";
+      << "File size is: "
+      << std::dec << std::filesystem::file_size( filesLum) << "\n";
 
     std::vector< uint8_t> data( std::filesystem::file_size( filesLum));
 
@@ -370,28 +374,32 @@ static void list_files_lum( const std::filesystem::path &filesLum)
       << "media seq no: " << (int)fileList.mediaSequenceNumber() << "\n";
 
     std::cout
-      << "no of media set members: " << std::dec << (int)fileList.numberOfMediaSetMembers() << "\n";
+      << "no of media set members: "
+      << std::dec << (int)fileList.numberOfMediaSetMembers() << "\n";
 
     for ( const auto & file : fileList.files())
     {
       std::cout << "file file name: " << file.filename() << "\n";
       std::cout << "file path name: " << file.pathName() << "\n";
-      std::cout << "file member sequence number: " << std::dec << file.memberSequenceNumber() << "\n";
+      std::cout
+        << "file member sequence number: "
+        << std::dec << file.memberSequenceNumber() << "\n";
       std::cout << "file crc: " << std::hex << file.crc() << "\n\n";
     }
 
   }
   catch (boost::exception &e)
   {
-    std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
+    std::cout
+      << "Boost exception: " << boost::diagnostic_information(e) << "\n";
   }
   catch ( std::exception &e)
   {
-    std::cout << "std::exception: " << e.what() << std::endl;
+    std::cout << "std::exception: " << e.what() << "\n";
   }
   catch ( ...)
   {
-    std::cout << "unknown exception occurred" << std::endl;
+    std::cout << "unknown exception occurred\n";
   }
 }
 

@@ -79,32 +79,48 @@ int main( int argc, char ** argv)
       // iterate over files
       for ( const auto &file : medium->files())
       {
-        std::cout << "    " << file->name() << " " << file->partNumber() << " " << mediaSetManager->filePath( file) << "\n";
+        std::cout
+          << "    " << file->name() << " " << file->partNumber() << " "
+          << mediaSetManager->filePath( file) << "\n";
       }
 
       std::cout << "  Loads:\n";
       // iterate over loads
       for ( const auto &load : medium->loads())
       {
-        std::cout << "    " << load->name() << " " << load->partNumber() << " " << mediaSetManager->filePath( load) << "\n";
+        std::cout
+          << "    " << load->name() << " " << load->partNumber() << " "
+          << mediaSetManager->filePath( load) << "\n";
 
         std::cout << "    Data Files:\n";
         for ( const auto &dataFile : load->dataFiles())
         {
-          std::cout << "      " << dataFile.lock()->name() << " " << dataFile.lock()->partNumber() << " " << mediaSetManager->filePath( dataFile.lock()) << "\n";
+          std::cout
+            << "      "
+            << dataFile.lock()->name() << " "
+            << dataFile.lock()->partNumber() << " "
+            << mediaSetManager->filePath( dataFile.lock()) << "\n";
         }
 
         std::cout << "    Support Files:\n";
         for ( const auto &supportFile : load->supportFiles())
         {
-          std::cout << "      " << supportFile.lock()->name() << " " << supportFile.lock()->partNumber() << " " << mediaSetManager->filePath( supportFile.lock()) << "\n";
+          std::cout
+            << "      "
+            << supportFile.lock()->name() << " "
+            << supportFile.lock()->partNumber() << " "
+            << mediaSetManager->filePath( supportFile.lock()) << "\n";
         }
       }
 
       std::cout << "  Batches:\n";
       for ( const auto &batch : medium->batches())
       {
-        std::cout << "    " << batch->name() << " " << batch->partNumber() << " " << mediaSetManager->filePath( batch) << "\n";
+        std::cout
+          << "    "
+          << batch->name() << " "
+          << batch->partNumber() << " "
+          << mediaSetManager->filePath( batch) << "\n";
         std::cout << "      " << batch->comment() << "\n";
         for ( const auto &targetHardware : batch->targets())
         {
@@ -115,11 +131,14 @@ int main( int argc, char ** argv)
             auto load2{ load.lock()};
             if (load2)
             {
-              std::cout << "        " << load2->name() << " - " << load2->partNumber() << std::endl;
+              std::cout
+                << "        "
+                << load2->name() << " - "
+                << load2->partNumber() << "\n";
             }
             else
             {
-              std::cout << "        " << "invalid load" << std::endl;
+              std::cout << "        " << "invalid load\n";
             }
           }
         }
@@ -133,18 +152,18 @@ int main( int argc, char ** argv)
   }
   catch ( boost::exception &e)
   {
-    std::cerr << "Operation failed: " << boost::diagnostic_information( e)
-      << std::endl;
+    std::cerr
+      << "Operation failed: " << boost::diagnostic_information( e) << "\n";
     return EXIT_FAILURE;
   }
   catch ( std::exception &e)
   {
-    std::cerr << "Operation failed: " << e.what() << std::endl;
+    std::cerr << "Operation failed: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( ...)
   {
-    std::cerr << "Operation failed: UNKNOWN EXCEPTION" << std::endl;
+    std::cerr << "Operation failed: UNKNOWN EXCEPTION\n";
     return EXIT_FAILURE;
   }
 

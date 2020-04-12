@@ -41,7 +41,7 @@ int main( int argc, char * argv[])
   {
     Helper::initLogging( Helper::Severity::info);
 
-    QApplication application( argc, argv);
+    QApplication application{ argc, argv };
     application.setApplicationName( "ARINC 665 Media Set Viewer");
     application.setApplicationDisplayName( "ARINC 665 Media Set Viewer");
 

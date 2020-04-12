@@ -59,7 +59,8 @@ int main( int argc, char* argv[])
 {
   std::cout << "ARINC 665 Media Set XML Printer" << "\n";
 
-  boost::program_options::options_description options{ "ARINC 665 List options"};
+  boost::program_options::options_description options{
+    "ARINC 665 List options"};
 
   std::filesystem::path xmlPath;
 
@@ -76,7 +77,7 @@ int main( int argc, char* argv[])
 
   try
   {
-    boost::program_options::variables_map vm;
+    boost::program_options::variables_map vm{};
     boost::program_options::store(
       boost::program_options::parse_command_line( argc, argv, options),
       vm);
@@ -97,22 +98,22 @@ int main( int argc, char* argv[])
   }
   catch ( boost::program_options::error &e)
   {
-    std::cout << "Error parsing command line: " << e.what() << std::endl;
+    std::cout << "Error parsing command line: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( boost::exception &e)
   {
-    std::cout << "Error: " << boost::diagnostic_information( e) << std::endl;
+    std::cout << "Error: " << boost::diagnostic_information( e) << "\n";
     return EXIT_FAILURE;
   }
   catch ( std::exception &e)
   {
-    std::cout << "Error: " << e.what() << std::endl;
+    std::cout << "Error: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( ...)
   {
-    std::cout << "unknown exception occurred" << std::endl;
+    std::cout << "unknown exception occurred\n";
     return EXIT_FAILURE;
   }
 
@@ -163,8 +164,8 @@ static void listXml( std::filesystem::path &xmlPath)
 
 static void listLoad( Arinc665::Media::LoadPtr load)
 {
-  std::cout << "Load: " << "\n"
-    << "PN: " << load->partNumber() << "\n";
+  std::cout
+    << "Load: " << "\n" << "PN: " << load->partNumber() << "\n";
 
   for ( const auto &[thwId, positions] : load->targetHardwareIdPositions())
   {
@@ -180,8 +181,9 @@ static void listLoad( Arinc665::Media::LoadPtr load)
 
   if (type)
   {
-    std::cout << "Load Type: '" << type->first << "' 0x"
-      << std::hex << type->second << std::dec << "\n";
+    std::cout
+      << "Load Type: '" << type->first
+      << "' 0x" << std::hex << type->second << std::dec << "\n";
   }
 }
 
@@ -195,7 +197,7 @@ static void listBatch( Arinc665::Media::BatchPtr batch)
   {
     std::cout << "Target: " << target << "\n";
 
-    for (const auto &load : loads)
+    for ( const auto &load : loads)
     {
       std::cout << "  Load: " << load.lock()->path() << "\n";
     }

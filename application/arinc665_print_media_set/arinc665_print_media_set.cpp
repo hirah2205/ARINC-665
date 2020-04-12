@@ -70,7 +70,8 @@ int main( int argc, char const * argv[])
   std::cout
     << "ARINC 665 Media Set Printer\n";
 
-  boost::program_options::options_description options{ "ARINC 665 Media Set Printer options"};
+  boost::program_options::options_description options{
+    "ARINC 665 Media Set Printer options"};
 
   // directory which contains the medium 1 of the media set
   std::filesystem::path directory;
@@ -103,32 +104,33 @@ int main( int argc, char const * argv[])
 
     boost::program_options::notify( vm);
 
-    std::cout << std::endl << "Load Media Set " << std::endl;
+    std::cout << std::endl << "Load Media Set\n";
     auto mediaSet{ loadMediaSet( directory)};
 
-    std::cout << std::endl << "Print Media Set " << std::endl;
+    std::cout << std::endl << "Print Media Set\n";
     printMediaSet( mediaSet);
   }
   catch ( boost::program_options::error &e)
   {
     std::cout
       << "Error parsing command line: " << e.what() << "\n"
-      << "Enter " << argv[0] << " --help for command line description" << std::endl;
+      << "Enter " << argv[0] << " --help for command line description\n";
     return EXIT_FAILURE;
   }
   catch ( boost::exception &e)
   {
-    std::cout << "Boost exception: " << boost::diagnostic_information(e) << std::endl;
+    std::cout
+      << "Boost exception: " << boost::diagnostic_information(e) << "\n";
     return EXIT_FAILURE;
   }
   catch ( std::exception &e)
   {
-    std::cout << "std exception: " << e.what() << std::endl;
+    std::cout << "std exception: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( ...)
   {
-    std::cout << "unknown exception occurred" << std::endl;
+    std::cout << "unknown exception occurred\n";
     return EXIT_FAILURE;
   }
 
@@ -187,7 +189,7 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
 
 static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet)
 {
-  std::cout << "Media Set " << mediaSet->partNumber() << std::endl;
+  std::cout << "Media Set " << mediaSet->partNumber() << "\n";
 
   // iterate over files
   std::cout << " * Files " << "\n";
@@ -202,30 +204,34 @@ static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet)
 
   for ( auto const &load : mediaSet->loads())
   {
-    std::cout << "   * Load " << load->name() << " " << load->partNumber()
-      << std::endl;
+    std::cout
+      << "   * Load " << load->name() << " " << load->partNumber() << "\n";
 
-    std::cout << "     Compatible THW IDs" << std::endl;
+    std::cout << "     Compatible THW IDs\n";
     // iterate over THW ID list
     for ( auto const & thwId : load->targetHardwareIds())
     {
-      std::cout << "      * " << thwId << std::endl;
+      std::cout << "      * " << thwId << "\n";
     }
 
-    std::cout << "     Data Files" << std::endl;
+    std::cout << "     Data Files\n";
     // iterate over Data Files
     for ( const auto & dataFile : load->dataFiles())
     {
-      std::cout << "      * " << dataFile.lock()->name() << " "
-        << dataFile.lock()->partNumber() << std::endl;
+      std::cout
+        << "      * "
+        << dataFile.lock()->name() << " "
+        << dataFile.lock()->partNumber() << "\n";
     }
 
-    std::cout << "     Support Files" << std::endl;
+    std::cout << "     Support Files\n";
     // iterate over Data Files
     for ( const auto & supportFile : load->supportFiles())
     {
-      std::cout << "      * " << supportFile.lock()->name() << " "
-        << supportFile.lock()->partNumber() << std::endl;
+      std::cout
+        << "      * "
+        << supportFile.lock()->name() << " "
+        << supportFile.lock()->partNumber() << "\n";
     }
   }
 }

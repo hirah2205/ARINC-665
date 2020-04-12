@@ -110,7 +110,7 @@ int main( int argc, char const * argv[])
 
     if ( options.count( "help") != 0)
     {
-      std::cout << optionsDescription << std::endl;
+      std::cout << optionsDescription << "\n";
       return EXIT_FAILURE;
     }
 
@@ -151,23 +151,24 @@ int main( int argc, char const * argv[])
   }
   catch ( Arinc665::Arinc665Exception &e)
   {
-    std::string const * info = boost::get_error_info< Helper::AdditionalInfo>( e);
+    std::string const * const info =
+      boost::get_error_info< Helper::AdditionalInfo>( e);
 
-    std::cerr << "decompiler failed: " <<
-    //      typid( e).name() << " - " <<
-      ((nullptr == info) ? "Unknown" : *info) << std::endl;
+    std::cerr << "decompiler failed: "
+      //<< typid( e).name() << " - "
+      << ((nullptr == info) ? "Unknown" : *info) << "\n";
 
     return EXIT_FAILURE;
   }
   catch ( boost::exception &e)
   {
-    std::cerr << "Error in decompiler: " << boost::diagnostic_information( e)
-      << std::endl;
+    std::cerr
+      << "Error in decompiler: " << boost::diagnostic_information( e) << "\n";
     return EXIT_FAILURE;
   }
   catch ( ...)
   {
-    std::cerr << "Error in decompiler: UNKNOWN EXCEPTION" << std::endl;
+    std::cerr << "Error in decompiler: UNKNOWN EXCEPTION\n";
     return EXIT_FAILURE;
   }
 
@@ -179,16 +180,16 @@ static Arinc665::File::RawFile readFile(
   const std::filesystem::path &path)
 {
   // check medium number
-  if (mediumNumber > mediaSourceDirectories.size())
+  if ( mediumNumber > mediaSourceDirectories.size())
   {
-    BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo( "Medium number unknown"));
   }
 
   auto filePath{ mediaSourceDirectories[ mediumNumber-1] / path.relative_path()};
 
   // check existence of file
-  if (!std::filesystem::is_regular_file( filePath))
+  if ( !std::filesystem::is_regular_file( filePath))
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << boost::errinfo_file_name( filePath.string())
@@ -198,9 +199,9 @@ static Arinc665::File::RawFile readFile(
   Arinc665::File::RawFile data( std::filesystem::file_size( filePath));
 
   // load file
-  std::ifstream file(
+  std::ifstream file{
     filePath.string().c_str(),
-    std::ifstream::binary | std::ifstream::in);
+    std::ifstream::binary | std::ifstream::in };
 
   if ( !file.is_open())
   {

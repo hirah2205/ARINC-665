@@ -85,29 +85,29 @@ static void createMedium(
  **/
 static void createDirectory(
   const std::filesystem::path &mediaSetBase,
-  Arinc665::Media::ConstDirectoryPtr directory);
+  Arinc665::Media::ConstDirectoryPtr directory );
 
 static bool checkFileExistance(
   const std::filesystem::path &mediaSetBase,
   const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
-  Arinc665::Media::ConstFilePtr file);
+  Arinc665::Media::ConstFilePtr file );
 
 static void createFile(
   const std::filesystem::path &sourceBase,
   const std::filesystem::path &mediaSetBase,
   const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
-  Arinc665::Media::ConstFilePtr file);
+  Arinc665::Media::ConstFilePtr file );
 
 static void writeFile(
   const std::filesystem::path &mediaSetBase,
   uint8_t mediumNumber,
   const std::filesystem::path &path,
-  const Arinc665::File::RawFile &file);
+  const Arinc665::File::RawFile &file );
 
 static Arinc665::File::RawFile readFile(
   const std::filesystem::path &mediaSetBase,
   uint8_t mediumNumber,
-  const std::filesystem::path &path);
+  const std::filesystem::path &path );
 
 int main( int argc, char ** argv)
 {
@@ -115,7 +115,8 @@ int main( int argc, char ** argv)
 
   Helper::initLogging( Helper::Severity::info);
 
-  auto fileCreatPolDes{ Arinc665::Utils::FileCreationPolicyDescription::instance()};
+  auto fileCreatPolDes{
+    Arinc665::Utils::FileCreationPolicyDescription::instance() };
 
   const std::string fileCreationPolicyValues{
     "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::None)} + "': Create never\n" +
@@ -144,8 +145,8 @@ int main( int argc, char ** argv)
   Arinc665::SupportedArinc665Version version{
     Arinc665::SupportedArinc665Version::Invalid};
 
-  boost::program_options::options_description optionsDescription(
-    "ARINC 665 Media Set Compiler Options");
+  boost::program_options::options_description optionsDescription{
+    "ARINC 665 Media Set Compiler Options" };
 
   optionsDescription.add_options()
   (
@@ -169,8 +170,8 @@ int main( int argc, char ** argv)
   )
   (
     "create-batch-files",
-    boost::program_options::value( &createBatchFiles)->default_value(
-      Arinc665::Utils::FileCreationPolicy::None),
+    boost::program_options::value(
+      &createBatchFiles)->default_value( Arinc665::Utils::FileCreationPolicy::None),
     (std::string( "batch-files creation policy:\n") + fileCreationPolicyValues).c_str()
   )
   (
@@ -192,7 +193,7 @@ int main( int argc, char ** argv)
       << "ARINC 665 Media Set Compiler - "
       << Arinc665::Version::version() << "\n";
 
-    boost::program_options::variables_map options;
+    boost::program_options::variables_map options{};
 
     boost::program_options::store(
       boost::program_options::parse_command_line(
@@ -258,29 +259,31 @@ int main( int argc, char ** argv)
   }
   catch ( boost::program_options::error &e)
   {
-    std::cout << e.what() << std::endl;
+    std::cout << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( Arinc665::Arinc665Exception &e)
   {
-    std::cerr << "Arinc665Exception in compiler: " << boost::diagnostic_information( e)
-      << std::endl;
+    std::cerr
+      << "Arinc665Exception in compiler: "
+      << boost::diagnostic_information( e) << "\n";
     return EXIT_FAILURE;
   }
   catch ( boost::exception &e)
   {
-    std::cerr << "BOOST Error in compiler: " << boost::diagnostic_information( e)
-      << std::endl;
+    std::cerr
+      << "BOOST Error in compiler: "
+      << boost::diagnostic_information( e) << "\n";
     return EXIT_FAILURE;
   }
   catch ( std::exception &e)
   {
-    std::cerr << "std Error in compiler: " << e.what() << std::endl;
+    std::cerr << "std Error in compiler: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( ...)
   {
-    std::cerr << "Error in compiler: UNKNOWN EXCEPTION" << std::endl;
+    std::cerr << "Error in compiler: UNKNOWN EXCEPTION\n";
     return EXIT_FAILURE;
   }
 
@@ -408,7 +411,6 @@ static void writeFile(
 
   if ( !fileStream.is_open())
   {
-    //! @throw Arinc665Exception
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo( "Error opening files")
       << boost::errinfo_file_name( filePath.string()));
