@@ -147,7 +147,7 @@ int main( int argc, char ** argv)
   }
   catch ( boost::program_options::error &e)
   {
-    std::cout << e.what() << std::endl << optionsDescription << std::endl;
+    std::cout << e.what() << "\n" << optionsDescription << "\n";
     return EXIT_FAILURE;
   }
   catch ( boost::exception &e)
