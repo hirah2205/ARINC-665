@@ -4,7 +4,7 @@
 #
 # Thomas Vogt, thomas@thomas-vogt.de
 
-cmake_minimum_required( VERSION 3.16)
+cmake_minimum_required( VERSION 3.16 )
 
 target_sources(
   arinc665
@@ -38,7 +38,7 @@ target_sources(
     LoadInfo.hpp
     LoadInfo.cpp
     LoadListFile.hpp
-    LoadListFile.cpp)
+    LoadListFile.cpp )
 
 target_sources(
   arinc665_test
@@ -51,4 +51,4 @@ target_sources(
     FileListFileTest.cpp
     LoadFileInfoTest.cpp
     LoadHeaderFileTest.cpp
-    LoadListFileTest.cpp)
+    LoadListFileTest.cpp )

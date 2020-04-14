@@ -4,7 +4,7 @@
 #
 # Thomas Vogt, thomas@thomas-vogt.de
 
-cmake_minimum_required( VERSION 3.16)
+cmake_minimum_required( VERSION 3.16 )
 
 target_sources(
   arinc665
@@ -27,10 +27,10 @@ target_sources(
     MediaSet.hpp
     MediaSet.cpp
     Medium.hpp
-    Medium.cpp)
+    Medium.cpp )
 
 target_sources(
   arinc665_test
 
   PRIVATE
-    MediaSetTest.cpp)
+    MediaSetTest.cpp )

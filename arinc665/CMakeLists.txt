@@ -4,16 +4,16 @@
 #
 # Thomas Vogt, thomas@thomas-vogt.de
 
-cmake_minimum_required( VERSION 3.16)
+cmake_minimum_required( VERSION 3.16 )
 
-find_package( Boost REQUIRED)
+find_package( Boost REQUIRED )
 
 # prepare Version.cpp
 configure_file(
   Version.cpp.in
-  Version.cpp)
+  Version.cpp )
 
-add_library( arinc665)
+add_library( arinc665 )
 
 target_sources(
   arinc665
@@ -32,7 +32,7 @@ target_sources(
     SupportedArinc665VersionDescription.cpp
     SupportedArinc665VersionDescription.hpp
     Version.hpp
-    ${CMAKE_CURRENT_BINARY_DIR}/Version.cpp)
+    ${CMAKE_CURRENT_BINARY_DIR}/Version.cpp )
 
 target_compile_options(
   arinc665
@@ -44,7 +44,7 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>
 
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
-    $<$<CXX_COMPILER_ID:Clang>:-Wextra>)
+    $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
 
 target_compile_definitions(
   arinc665
@@ -52,11 +52,11 @@ target_compile_definitions(
   PRIVATE
     # Activate STL assertions
     $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS>
-    $<$<AND:$<CXX_COMPILER_ID:Clang>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS>)
+    $<$<AND:$<CXX_COMPILER_ID:Clang>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS> )
 
 target_include_directories(
   arinc665
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>)
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> )
 
 target_link_libraries(
   arinc665
@@ -64,11 +64,9 @@ target_link_libraries(
   PUBLIC
     helper
     pugixml
-    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,9.0>>:stdc++fs>
-    $<$<AND:$<CXX_COMPILER_ID:Clang>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,7.0>>:stdc++fs>
-    Boost::boost)
+    Boost::boost )
 
-target_compile_features( arinc665 PUBLIC cxx_std_17)
+target_compile_features( arinc665 PUBLIC cxx_std_17 )
 
 
 add_library( arinc665_test OBJECT)
@@ -79,7 +77,7 @@ target_sources(
   PRIVATE
     Arinc665CrcTest.cpp
     PartNumberTest.cpp
-    VersionTest.cpp)
+    VersionTest.cpp )
 
 target_compile_options(
   arinc665_test
@@ -93,7 +91,7 @@ target_compile_options(
 
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra>
-    $<$<CXX_COMPILER_ID:Clang>:-Werror>)
+    $<$<CXX_COMPILER_ID:Clang>:-Werror> )
 
 target_compile_definitions(
   arinc665_test
@@ -101,24 +99,24 @@ target_compile_definitions(
   PRIVATE
     # Activate STL assertions
     $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS>
-    $<$<AND:$<CXX_COMPILER_ID:Clang>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS>)
+    $<$<AND:$<CXX_COMPILER_ID:Clang>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS> )
 
-target_compile_features( arinc665_test PUBLIC cxx_std_17)
+target_compile_features( arinc665_test PUBLIC cxx_std_17 )
 
 target_include_directories(
   arinc665_test
-  PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES>)
+  PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES> )
 
 target_link_libraries(
   arinc665_test
-  PUBLIC arinc665)
+  PUBLIC arinc665 )
 
-add_subdirectory( file)
-add_subdirectory( media)
-add_subdirectory( utils)
+add_subdirectory( file )
+add_subdirectory( media )
+add_subdirectory( utils )
 
 # INSTALL
-include( GNUInstallDirs)
+include( GNUInstallDirs )
 
 install(
   TARGETS arinc665
@@ -126,7 +124,7 @@ install(
   EXPORT arinc665-config
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )
 
 install(
   DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
@@ -135,9 +133,9 @@ install(
   FILES_MATCHING
   PATTERN "*.hpp"
   PATTERN "*Test.*" EXCLUDE
-  PATTERN "implementation" EXCLUDE)
+  PATTERN "implementation" EXCLUDE )
 
 install(
   EXPORT arinc665-config
   COMPONENT development
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake )
