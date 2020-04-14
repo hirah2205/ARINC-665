@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665Qt::Media::DirectoryWidget.
+ * @brief Definition of Class Arinc665Qt::Media::DirectoryWidget.
  **/
 
 #include "DirectoryWidget.hpp"

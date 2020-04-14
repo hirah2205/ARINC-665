@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of class Arinc665Qt::MediaSetController.
+ * @brief Definition of Class Arinc665Qt::MediaSetController.
  **/
 
 #include "MediaSetController.hpp"
