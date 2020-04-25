@@ -53,12 +53,16 @@ class MediaSetManager
      *   configuration.
      *
      * @param[in] config
-     *   The media set manager configuration.
+     *   Media Set Manager Configuration.
+     * @param[in] basePath
+     *   Base Path to use, when configured paths are relative, i.e. base of
+     *   configuration file.
      *
      * @return The media set manager instance.
      **/
     static MediaSetManagerPtr instance(
-      const MediaSetConfiguration &config );
+      const MediaSetConfiguration &config,
+      const std::filesystem::path &basePath );
 
     /**
      * @brief Returns the configuration for the media set manager.

@@ -1,5 +1,5 @@
 {
-  "media_set_base" : "./arinc665/test/MediaSet",
+  "media_set_base" : "./MediaSet",
   "media_sets" : [
     {
       "part_number" : "CCC",

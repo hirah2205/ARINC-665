@@ -23,14 +23,14 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief Media Set storage configuration.
+ * @brief Media Set Storage Configuration.
  **/
 class MediaSetConfiguration
 {
   public:
-    //! media-to-path mapping (medium number -> path)
+    //! media-to-path mapping (Medium Number -> Path)
     using MediaPaths = std::map< uint8_t, std::filesystem::path>;
-    //! Mapping of media sets (Media set part number -> media paths)
+    //! Mapping of media sets (Media Set Part Number -> Media Paths)
     using MediaSets = std::map< std::string, MediaPaths>;
 
     //! Initialises the configuration with default values.
@@ -42,7 +42,8 @@ class MediaSetConfiguration
      * @param[in] config
      *   The stored configuration.
      **/
-    explicit MediaSetConfiguration( const boost::property_tree::ptree &config);
+    explicit MediaSetConfiguration(
+      const boost::property_tree::ptree &config );
 
     /**
      * @brief Loads the media set configuration form the given property tree.

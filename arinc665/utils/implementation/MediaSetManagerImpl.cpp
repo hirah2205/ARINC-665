@@ -24,8 +24,10 @@
 namespace Arinc665::Utils {
 
 MediaSetManagerImpl::MediaSetManagerImpl(
-  const MediaSetConfiguration &config):
-  config{ config }
+  const MediaSetConfiguration &config,
+  const std::filesystem::path &basePath ):
+  config{ config },
+  basePath{ basePath}
 {
   BOOST_LOG_FUNCTION()
 
@@ -34,7 +36,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
     // import media set
     auto importer( Arinc665Utils::arinc665Importer(
       // the read file handler
-      [&mediaSet,&config](
+      [this,&mediaSet](
         const uint8_t mediumNumber,
         const std::filesystem::path &path)->File::RawFile
       {
@@ -49,11 +51,9 @@ MediaSetManagerImpl::MediaSetManagerImpl(
         }
 
         // concatenate file path
-        auto filePath(
-          config.mediaSetBase /
-          mediaSet.first /
-          medium->second /
-          path.relative_path());
+        auto filePath{
+          absolutePath(
+            mediaSet.first / medium->second / path.relative_path() )};
 
         // read file
 
@@ -80,7 +80,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
     auto impMediaSet( importer());
 
     // add media set
-    mediaSetsValue.push_back( impMediaSet);
+    mediaSetsV.push_back( impMediaSet);
 
     // iterate over media
     for ( auto &medium : impMediaSet->media())
@@ -102,7 +102,7 @@ const MediaSetConfiguration& MediaSetManagerImpl::configuration() const
 Media::ConstMediaSetPtr MediaSetManagerImpl::mediaSet(
   std::string_view partNumber) const
 {
-  for ( const auto &mediaSet : mediaSetsValue )
+  for ( const auto &mediaSet : mediaSetsV )
   {
     if ( mediaSet->partNumber() == partNumber )
     {
@@ -115,7 +115,7 @@ Media::ConstMediaSetPtr MediaSetManagerImpl::mediaSet(
 
 const MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::mediaSets() const
 {
-  return mediaSetsValue;
+  return mediaSetsV;
 }
 
 void MediaSetManagerImpl::add(
@@ -131,21 +131,24 @@ void MediaSetManagerImpl::add(
   {
     const auto sourcePath{ mediumPathHandler( medium.second)};
     const auto destinationPath{
-      config.mediaSetBase / mediaSet->partNumber() /
-        (boost::format( "MEDIUM_%03u") % (unsigned int)medium.first).str() };
+      absolutePath(
+        std::filesystem::path{ mediaSet->partNumber()} /
+          (boost::format( "MEDIUM_%03u") % (unsigned int)medium.first).str() ) };
 
     std::filesystem::copy(
       sourcePath,
       destinationPath,
       std::filesystem::copy_options::recursive );
   }
+
+  //! @todo Update Configuration?
 }
 
 Media::ConstLoads MediaSetManagerImpl::loads() const
 {
   Media::ConstLoads loads{};
 
-  for ( const auto &mediaSet : mediaSetsValue)
+  for ( const auto &mediaSet : mediaSetsV )
   {
     auto mediaSetLoads{ mediaSet->loads()};
 
@@ -159,7 +162,7 @@ Media::ConstLoads MediaSetManagerImpl::load( std::string_view filename) const
 {
   Media::ConstLoads loads{};
 
-  for ( const auto &mediaSet : mediaSetsValue)
+  for ( const auto &mediaSet : mediaSetsV )
   {
     auto mediaSetLoad{ mediaSet->load( filename)};
 
@@ -196,7 +199,16 @@ std::filesystem::path MediaSetManagerImpl::filePath(
     return {};
   }
 
-  return config.mediaSetBase / mediumIt->second / file->path().relative_path();
+  return absolutePath( mediumIt->second / file->path().relative_path() );
+}
+
+std::filesystem::path MediaSetManagerImpl::absolutePath(
+  const std::filesystem::path &filePath ) const
+{
+  return (
+    config.mediaSetBase.is_relative() ?
+      basePath / config.mediaSetBase / filePath :
+      config.mediaSetBase / filePath ).lexically_normal();
 }
 
 }

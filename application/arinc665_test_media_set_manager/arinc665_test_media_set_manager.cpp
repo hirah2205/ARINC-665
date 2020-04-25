@@ -21,11 +21,10 @@
 #include <helper/Logger.hpp>
 
 #include <boost/program_options.hpp>
-#include <boost/filesystem/path.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
 #include <iostream>
-
+#include <filesystem>
 /**
  * @brief Program entry point
  *
@@ -43,7 +42,7 @@ int main( int argc, char ** argv)
   Helper::initLogging( Helper::Severity::info);
 
   boost::program_options::options_description optionsDescription;
-  boost::filesystem::path mediaSetConfig;
+  std::filesystem::path mediaSetConfig;
 
   optionsDescription.add_options()
   (
@@ -69,37 +68,40 @@ int main( int argc, char ** argv)
       config);
 
     auto mediaSetManager{ Arinc665::Utils::MediaSetManager::instance(
-      Arinc665::Utils::MediaSetConfiguration( config))};
+      Arinc665::Utils::MediaSetConfiguration{ config },
+      std::filesystem::absolute( mediaSetConfig.parent_path()))};
 
-    for ( const auto &medium : mediaSetManager->mediaSets())
+    for ( const auto &mediaSet : mediaSetManager->mediaSets())
     {
-      std::cout << medium->partNumber() << "\n";
+      std::cout << "Media Set: P/N '" << mediaSet->partNumber() << "'\n";
 
       std::cout << "  Files:\n";
       // iterate over files
-      for ( const auto &file : medium->files())
+      for ( const auto &file : mediaSet->files())
       {
         std::cout
-          << "    " << file->name() << " " << file->partNumber() << " "
+          << "    Name: '" << file->name()
+          << "' P/N: '" << file->partNumber() << "' "
           << mediaSetManager->filePath( file) << "\n";
       }
 
       std::cout << "  Loads:\n";
       // iterate over loads
-      for ( const auto &load : medium->loads())
+      for ( const auto &load : mediaSet->loads())
       {
         std::cout
-          << "    " << load->name() << " " << load->partNumber() << " "
-          << mediaSetManager->filePath( load) << "\n";
+          << "    Name: '" << load->name() << "' "
+          << "P/N: '" << load->partNumber() << "' "
+          << "Path: '" << mediaSetManager->filePath( load) << "'\n";
 
         std::cout << "    Data Files:\n";
         for ( const auto &dataFile : load->dataFiles())
         {
           std::cout
             << "      "
-            << dataFile.lock()->name() << " "
-            << dataFile.lock()->partNumber() << " "
-            << mediaSetManager->filePath( dataFile.lock()) << "\n";
+            << "Name: '" << dataFile.lock()->name() << "' "
+            << "P/N: '" << dataFile.lock()->partNumber() << "' "
+            << "Path: '" << mediaSetManager->filePath( dataFile.lock()) << "'\n";
         }
 
         std::cout << "    Support Files:\n";
@@ -107,24 +109,24 @@ int main( int argc, char ** argv)
         {
           std::cout
             << "      "
-            << supportFile.lock()->name() << " "
-            << supportFile.lock()->partNumber() << " "
-            << mediaSetManager->filePath( supportFile.lock()) << "\n";
+            << "Name: '" << supportFile.lock()->name() << "' "
+            << "P/N: '" << supportFile.lock()->partNumber() << "' "
+            << "Path: '" << mediaSetManager->filePath( supportFile.lock()) << "'\n";
         }
       }
 
       std::cout << "  Batches:\n";
-      for ( const auto &batch : medium->batches())
+      for ( const auto &batch : mediaSet->batches())
       {
         std::cout
           << "    "
-          << batch->name() << " "
-          << batch->partNumber() << " "
-          << mediaSetManager->filePath( batch) << "\n";
-        std::cout << "      " << batch->comment() << "\n";
+          << "Name: '" << batch->name() << "' "
+          << "P/N: '" << batch->partNumber() << "' "
+          << "Path: '" << mediaSetManager->filePath( batch) << "'\n";
+        std::cout << "      Comment: '" << batch->comment() << "'\n";
         for ( const auto &targetHardware : batch->targets())
         {
-          std::cout << "      " << targetHardware.first << "\n";
+          std::cout << "      THW: '" << targetHardware.first << "'\n";
 
           for ( const auto &load : targetHardware.second)
           {
@@ -133,8 +135,8 @@ int main( int argc, char ** argv)
             {
               std::cout
                 << "        "
-                << load2->name() << " - "
-                << load2->partNumber() << "\n";
+                << "Load Name: '" << load2->name() << "' "
+                << "Load P/N: '" << load2->partNumber() << "'\n";
             }
             else
             {

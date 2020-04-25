@@ -13,6 +13,10 @@ file( GENERATE OUTPUT File1 CONTENT ${FILE1_CONTENT})
 file( GENERATE OUTPUT File2 CONTENT ${FILE2_CONTENT})
 file( GENERATE OUTPUT Readme.txt CONTENT "Readme Content")
 
+configure_file(
+  MediaSetConfig.json.in
+  MediaSetConfig.json )
+
 add_test(
   NAME arinc665_generate_media_set_rmoutdir
   COMMAND

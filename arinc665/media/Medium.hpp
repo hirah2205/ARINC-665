@@ -60,13 +60,13 @@ class Medium : public ContainerEntity
 
     /**
      * @copydoc ContainerEntity::parent() const
-     * @retval ConstContainerEntityPtr{} always.
+     * @retval {} always.
      **/
     ConstContainerEntityPtr parent() const final;
 
     /**
      * @copydoc ContainerEntity::parent()
-     * @retval ConstContainerEntityPtr{} always.
+     * @retval {} always.
      **/
     ContainerEntityPtr parent() final;
 
