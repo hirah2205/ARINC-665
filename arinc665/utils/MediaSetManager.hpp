@@ -64,17 +64,17 @@ class MediaSetManager
      *
      * @return Media Set Manager Configuration.
      **/
-    virtual const MediaSetConfiguration& configuration() const = 0;
+    [[nodiscard]] virtual const MediaSetConfiguration& configuration() const = 0;
 
     /**
-     * @brief Returns the media set with the given part number.
+     * @brief Returns the Media Set with the given Part Number.
      *
      * @param[in] partNumber
      *   Media Set Part Number.
      *
      * @return The media set with the given part number.
      **/
-    virtual Media::ConstMediaSetPtr mediaSet(
+    [[nodiscard]] virtual Media::ConstMediaSetPtr mediaSet(
       std::string_view partNumber) const = 0;
 
     //! @copydoc mediaSet(std::string_view) const;
