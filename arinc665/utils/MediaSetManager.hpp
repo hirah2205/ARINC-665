@@ -39,7 +39,8 @@ class MediaSetManager
 {
   public:
     //! Media sets type (list)
-    using MediaSets = std::list< Media::MediaSetPtr>;
+    using MediaSets = std::list< Media::ConstMediaSetPtr>;
+
     //! Handler which returns the path to the given medium number
     using MediumPathHandler =
       std::function< std::filesystem::path( Media::ConstMediumPtr medium)>;
@@ -77,20 +78,12 @@ class MediaSetManager
     [[nodiscard]] virtual Media::ConstMediaSetPtr mediaSet(
       std::string_view partNumber) const = 0;
 
-    //! @copydoc mediaSet(std::string_view) const;
-    virtual Media::MediaSetPtr mediaSet( std::string_view partNumber) = 0;
-
     /**
      * @brief Returns all registered media sets.
      *
      * @return All media sets.
-     *
-     * //! @todo wrong return type
      **/
     [[nodiscard]] virtual const MediaSets& mediaSets() const = 0;
-
-    //! @copydoc MediaSetManager::mediaSets() const
-    [[nodiscard]] virtual MediaSets& mediaSets() = 0;
 
     /**
      * @brief Adds the given media set to the media set manager.
@@ -115,7 +108,7 @@ class MediaSetManager
       MediumPathHandler mediumPathHandler ) = 0;
 
     /**
-     * @brief Get all available Loads.
+     * @brief Get all available Loads from all Media Sets.
      *
      * @return All available loads.
      **/

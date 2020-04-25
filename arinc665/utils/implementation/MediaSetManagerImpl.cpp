@@ -113,25 +113,7 @@ Media::ConstMediaSetPtr MediaSetManagerImpl::mediaSet(
   return {};
 }
 
-Media::MediaSetPtr MediaSetManagerImpl::mediaSet( std::string_view partNumber)
-{
-  for (const auto &mediaSet : mediaSetsValue)
-  {
-    if (mediaSet->partNumber() == partNumber)
-    {
-      return mediaSet;
-    }
-  }
-
-  return {};
-}
-
 const MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::mediaSets() const
-{
-  return mediaSetsValue;
-}
-
-MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::mediaSets()
 {
   return mediaSetsValue;
 }
