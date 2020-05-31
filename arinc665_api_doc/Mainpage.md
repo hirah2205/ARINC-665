@@ -6,4 +6,4 @@ This tool suite contains the components:
 
 Dependencies are:
  * helper,
- * pugixml
+ * libxml++

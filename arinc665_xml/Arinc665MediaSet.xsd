@@ -60,7 +60,7 @@
       </restriction>
     </complexContent>
   </complexType>
-  
+
   <complexType name="BatchFileType" >
     <complexContent>
       <restriction base="ams:BaseFileType" >
@@ -70,10 +70,10 @@
       </restriction>
     </complexContent>
   </complexType>
-  
+
   <complexType name="DirectoryType" >
     <sequence>
-      <group ref="ams:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded" /> 
+      <group ref="ams:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
     <attribute name="Name" type="ams:NameType" use="required" />
   </complexType>
@@ -138,7 +138,7 @@
     </sequence>
     <attribute name="ThwIdPos" type="ams:TargetHardwareIdPosType" use="required" />
   </complexType>
-  
+
   <complexType name="LoadReferenceType" >
     <attribute name="NameRef" type="IDREF" use="required" />
   </complexType>
@@ -146,7 +146,7 @@
   <simpleType name="UserDefinedDataType" >
     <annotation><documentation>
       User Defined Data, which can be part of Load Files.
-      Additionally it can be added to File, Batches and Load Lists.
+      Additionally, it can be added to File, Batches and Load Lists.
     </documentation></annotation>
     <restriction base="anyType" />
   </simpleType>
