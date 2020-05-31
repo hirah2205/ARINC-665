@@ -24,6 +24,12 @@ if( DOXYGEN_FOUND )
   set( DOXYGEN_HTML_DYNAMIC_SECTIONS YES )
 
   set(
+    DOXYGEN_EXCLUDE_PATTERNS
+
+    *Test.*
+    implementation/* )
+
+  set(
     DOXYGEN_STRIP_FROM_PATH
 
     ${helper_SOURCE_DIR}
