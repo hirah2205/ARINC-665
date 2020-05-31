@@ -6,12 +6,11 @@
 
 cmake_minimum_required( VERSION 3.16 )
 
-include( GNUInstallDirs)
+include( GNUInstallDirs )
 
 install(
   FILES
-  BhmAsf.xsd
-  DmgsAsf.xml
+    Arinc665MediaSet.xsd
 
-  DESTINATION
-    ${CMAKE_INSTALL_DATADIR}/bhm_xml)
+  COMPONENT runtime
+  DESTINATION ${CMAKE_INSTALL_DATADIR}/arinc665_xml )
