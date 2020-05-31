@@ -125,7 +125,7 @@ MediumPtr MediaSet::medium( const uint8_t index)
 
 MediumPtr MediaSet::addMedium()
 {
-  if (mediaV.size() >= 255)
+  if ( mediaV.size() >= 255 )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
       << "Maximum number of media reached";
@@ -134,11 +134,11 @@ MediumPtr MediaSet::addMedium()
 
   const auto newIndex{ static_cast< uint8_t>( mediaV.size() + 1U)};
 
-  MediumPtr medium( std::make_shared< Medium>(
+  auto medium( std::make_shared< Medium>(
     std::dynamic_pointer_cast< MediaSet>( shared_from_this()),
-    newIndex));
+    newIndex ));
 
-  mediaV.insert( {newIndex, medium});
+  mediaV.insert( {newIndex, medium });
 
   return medium;
 }

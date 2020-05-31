@@ -6,14 +6,14 @@
 
 cmake_minimum_required( VERSION 3.16 )
 
-find_package( Qt5 COMPONENTS Widgets QUIET)
+find_package( Qt5 COMPONENTS Widgets QUIET )
 
-if( TARGET Qt5::Widgets)
+if( TARGET Qt5::Widgets )
 
-  set( CMAKE_AUTOMOC ON)
-  set( CMAKE_AUTOUIC ON)
+  set( CMAKE_AUTOMOC ON )
+  set( CMAKE_AUTOUIC ON )
 
-  add_library( arinc665_qt)
+  add_library( arinc665_qt )
 
   target_sources(
     arinc665_qt
@@ -36,5 +36,5 @@ if( TARGET Qt5::Widgets)
       arinc665
       Qt5::Widgets )
 
-  add_subdirectory( media)
-endif( TARGET Qt5::Widgets)
+  add_subdirectory( media )
+endif( TARGET Qt5::Widgets )

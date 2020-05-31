@@ -356,15 +356,15 @@ class MediaSet: public Base
     void batchesUserDefinedData( UserDefinedData &&userDefinedData);
 
   private:
-    //! the media
+    //! Media
     Media mediaV;
-    //! The part number
+    //! Part Number
     std::string partNumberV;
-    //! User defined data for Files List Files
+    //! User Defined Data for Files List Files
     UserDefinedData filesUserDefinedDataV;
-    //! User defined data for Loads List Files
+    //! User Defined Data for Loads List Files
     UserDefinedData loadsUserDefinedDataV;
-    //! User defined data for Batches List Files
+    //! User Defined Data for Batches List Files
     UserDefinedData batchesUserDefinedDataV;
 };
 
