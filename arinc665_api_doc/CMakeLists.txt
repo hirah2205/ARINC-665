@@ -6,28 +6,36 @@
 
 cmake_minimum_required( VERSION 3.16 )
 
-find_package( Doxygen)
+find_package( Doxygen )
+find_package( Boost )
 
-if ( NOT TARGET doc)
-  add_custom_target( doc COMMENT "Generate Documentation")
-endif()
+if( NOT TARGET doc )
+  add_custom_target( doc COMMENT "Generate Documentation" )
+endif( NOT TARGET doc )
 
-if (DOXYGEN_FOUND)
-  set( DOXYGEN_PROJECT_NAME "ARINC 665 Library and Tool Suite")
-  set( DOXYGEN_BUILTIN_STL_SUPPORT YES)
-  set( DOXYGEN_EXTRACT_PRIVATE YES)
-  set( DOXYGEN_EXTRACT_PACKAGE YES)
-  set( DOXYGEN_QUIET YES)
-  set( DOXYGEN_WARN_NO_PARAMDOC YES)
-  set( DOXYGEN_HTML_DYNAMIC_SECTIONS YES)
-  set( DOXYGEN_OUTPUT_DIRECTORY arinc_615a_api_doc)
-  set( DOXYGEN_EXCLUDE_PATTERNS *Test.*)
-  #set( DOXYGEN_GENERATE_DOCBOOK YES)
+if( DOXYGEN_FOUND )
+  set( DOXYGEN_PROJECT_NAME "${arinc665_DESCRIPTION}" )
+  set( DOXYGEN_PROJECT_BRIEF "${arinc665_DESCRIPTION}" )
+  set( DOXYGEN_BUILTIN_STL_SUPPORT YES )
+  set( DOXYGEN_EXTRACT_PRIVATE YES )
+  set( DOXYGEN_EXTRACT_PACKAGE YES )
+  set( DOXYGEN_QUIET YES )
+  set( DOXYGEN_WARN_NO_PARAMDOC YES )
+  set( DOXYGEN_HTML_DYNAMIC_SECTIONS YES )
 
-  set( DOXYGEN_STRIP_FROM_PATH
-    ${helper_SOURCE_DIR}/
-    ${arinc665_SOURCE_DIR}/
-    ${arinc665_SOURCE_DIR}/application)
+  set(
+    DOXYGEN_STRIP_FROM_PATH
+
+    ${helper_SOURCE_DIR}
+    ${arinc665_SOURCE_DIR}
+    ${arinc665_SOURCE_DIR}/application )
+
+  set(
+    DOXYGEN_INCLUDE_PATH
+
+    ${Boost_INCLUDE_DIRS}
+    ${helper_SOURCE_DIR}
+    ${arinc665_SOURCE_DIR} )
 
   doxygen_add_docs(
     arinc665_api_doc
@@ -44,21 +52,29 @@ if (DOXYGEN_FOUND)
     ${arinc665_SOURCE_DIR}/application/arinc665_print_media_set
     ${arinc665_SOURCE_DIR}/application/arinc665_test_media_set_manager
     ${arinc665_SOURCE_DIR}/application/arinc665_unit_test
-    ${arinc665_SOURCE_DIR}/application/arinc665_xml_print)
+    ${arinc665_SOURCE_DIR}/application/arinc665_xml_print )
 
-  add_dependencies( doc arinc665_api_doc)
+  add_dependencies( doc arinc665_api_doc )
 
   # add index.html redirection
   configure_file(
     ${cmake_common_SOURCE_DIR}/doxygen_index.html.in
-    ${DOXYGEN_OUTPUT_DIRECTORY}/index.html
-    @ONLY)
+    index.html
+    @ONLY )
+
+  include( GNUInstallDirs )
+  install(
+    DIRECTORY
+      ${CMAKE_CURRENT_BINARY_DIR}/html
+    COMPONENT documentation
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}/arinc665_api_doc
+    OPTIONAL )
 
   install(
-    DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${DOXYGEN_OUTPUT_DIRECTORY}
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/index.html
     COMPONENT documentation
-    DESTINATION doc
-    OPTIONAL)
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}/arinc665_api_doc
+    OPTIONAL )
 
 #  file(
 #    GENERATE
@@ -75,4 +91,4 @@ if (DOXYGEN_FOUND)
 #    COMMAND ${DOXYGEN_DOT_EXECUTABLE} -Tpdf -O ${CMAKE_CURRENT_BINARY_DIR}/doc_dep.dot)
 
   #add_dependencies( doc doc_dep)
-endif()
+endif( DOXYGEN_FOUND )
