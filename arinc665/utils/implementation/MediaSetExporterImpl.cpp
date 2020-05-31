@@ -81,13 +81,13 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   createMediumHandler( medium);
 
   // export sub-directories
-  for ( auto directory : medium->subDirectories())
+  for ( const auto &directory : medium->subDirectories())
   {
     exportDirectory( directory);
   }
 
   // export files
-  for ( auto file : medium->files())
+  for ( const auto &file : medium->files())
   {
     exportFile( file);
   }
@@ -221,13 +221,13 @@ void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory)
   createDirectoryHandler( directory);
 
   // export sub-directories
-  for ( auto subDirectory : directory->subDirectories())
+  for ( const auto &subDirectory : directory->subDirectories())
   {
     exportDirectory( subDirectory);
   }
 
   // export files
-  for ( auto file : directory->files())
+  for ( const auto &file : directory->files())
   {
     exportFile( file);
   }
@@ -329,7 +329,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
   loadHeaderFile.loadType( load->loadType());
 
   // calculate data files CRC and set data.
-  for ( auto dataFile : load->dataFiles())
+  for ( const auto &dataFile : load->dataFiles())
   {
     auto dataFilePtr{ dataFile.lock()};
     auto rawDataFile{ readFileHandler(
@@ -346,7 +346,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
   }
 
   // calculate support files CRC and set data.
-  for ( auto supportFile : load->supportFiles())
+  for ( const auto &supportFile : load->supportFiles())
   {
     auto supportFilePtr{ supportFile.lock()};
     auto rawSupportFile{ readFileHandler(
@@ -378,7 +378,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
   }
 
   // load data files for load CRC.
-  for ( auto dataFile : load->dataFiles())
+  for ( const auto &dataFile : load->dataFiles())
   {
     auto dataFilePtr{ dataFile.lock()};
     auto rawDataFile{ readFileHandler(
@@ -389,7 +389,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
   }
 
   // load support files for load CRC.
-  for ( auto supportFile : load->supportFiles())
+  for ( const auto &supportFile : load->supportFiles())
   {
     auto supportFilePtr{ supportFile.lock()};
     auto rawSupportFile{ readFileHandler(
@@ -423,10 +423,10 @@ void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
   batchFile.partNumber( batch->partNumber());
   batchFile.comment( batch->comment());
 
-  for ( auto target : batch->targets())
+  for ( const auto &target : batch->targets() )
   {
     File::BatchLoadsInfo batchLoadsInfo;
-    for (auto load : target.second)
+    for ( const auto &load : target.second )
     {
       auto loadPtr{ load.lock()};
       batchLoadsInfo.emplace_back(

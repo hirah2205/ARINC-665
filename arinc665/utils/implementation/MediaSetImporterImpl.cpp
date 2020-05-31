@@ -21,7 +21,7 @@
 namespace Arinc665::Utils {
 
 MediaSetImporterImpl::MediaSetImporterImpl(
-  Arinc665Utils::ReadFileHandler readFileHandler):
+  Arinc665Utils::ReadFileHandler readFileHandler ):
   readFileHandler{ readFileHandler}
 {
 }
@@ -43,10 +43,10 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()()
   mediaSet->numberOfMedia( fileListFile.numberOfMediaSetMembers());
 
   // Add content of medium to media set
-  addMedium( 1);
+  addMedium( 1U);
 
   // iterate over additional media
-  for ( unsigned int mediaIndex = 2; mediaIndex <= mediaSet->numberOfMedia();
+  for ( unsigned int mediaIndex = 2U; mediaIndex <= mediaSet->numberOfMedia();
     ++mediaIndex)
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
@@ -82,15 +82,18 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex)
     readFileHandler( mediumIndex, Arinc665::ListOfFilesName)};
 
   // store first list of files for further tests
-  if (!this->fileListFile)
+  if ( !this->fileListFile )
   {
     this->fileListFile = fileListFile;
     fileInfos = fileListFile.filesAsMap();
+
+    // store list of files user defined data
+    mediaSet->filesUserDefinedData( fileListFile.userDefinedData());
   }
   else
   {
     // otherwise compare current list of files to first one
-    if (!this->fileListFile->belongsToSameMediaSet( fileListFile))
+    if ( !this->fileListFile->belongsToSameMediaSet( fileListFile))
     {
       //! @throw Arinc665Exception When FILES.LUM is inconsistent to other media
       BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -160,15 +163,18 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex)
     readFileHandler( mediumIndex, Arinc665::ListOfLoadsName)};
 
   // store first list of loads for further tests
-  if (!this->loadListFile)
+  if ( !this->loadListFile )
   {
     this->loadListFile = loadListFile;
     loadInfos = loadListFile.loadsAsMap();
+
+    // store list of loads user defined data
+    mediaSet->loadsUserDefinedData( loadListFile.userDefinedData());
   }
   else
   {
     // otherwise check against stored version
-    if (!this->loadListFile->belongsToSameMediaSet( loadListFile))
+    if ( !this->loadListFile->belongsToSameMediaSet( loadListFile ))
     {
       //! @throw Arinc665Exception When LOADS.LUM is inconsistent to other media
       BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -190,20 +196,21 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex)
   }
 
   // only the load list of the first media must be checked in detail
-  if (1U == mediumIndex)
+  if ( 1U == mediumIndex)
   {
     // iterate over all loads
     for ( auto &loadInfo : loadInfos)
     {
       // check existence of load header files.
 
-      auto file( fileInfos.find( loadInfo.first));
+      auto file{ fileInfos.find( loadInfo.first )};
 
-      if (file == fileInfos.end())
+      if ( file == fileInfos.end())
       {
         //! @throw Arinc665Exception When load header is not found.
         BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( loadInfo.first.second + ": load header file not found"));
+          << Helper::AdditionalInfo(
+            loadInfo.first.second + ": load header file not found"));
       }
 
       // checks that the load list and file list entry maps to the same file entry
@@ -232,15 +239,18 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
   File::BatchListFile batchListFile{
     readFileHandler( mediumIndex, Arinc665::ListOfBatchesName)};
 
-  if (!this->batchListFile)
+  if ( !this->batchListFile )
   {
     this->batchListFile = batchListFile;
     this->batchInfos = batchListFile.batchesAsMap();
+
+    // store list of batches user defined data
+    mediaSet->batchesUserDefinedData( batchListFile.userDefinedData());
   }
   else
   {
     // otherwise check against stored version
-    if (!this->batchListFile->belongsToSameMediaSet( batchListFile))
+    if ( !this->batchListFile->belongsToSameMediaSet( batchListFile ))
     {
       //! @throw Arinc665Exception When BATCHES.LUM is inconsistent to other media
      BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -258,24 +268,25 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
     //! @throw Arinc665Exception When FILES.LUM is inconsistent to media set
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo(
-        std::string{ Arinc665::ListOfBatchesName}
+        std::string{ Arinc665::ListOfBatchesName }
         + " is not consistent to media set"));
   }
 
 
   // only the batch list of the first media must be checked in detail
-  if (1 == mediumIndex)
+  if ( 1U == mediumIndex)
   {
     // iterate over all batches
     for ( auto &batchInfo : batchInfos)
     {
-      auto file( fileInfos.find( batchInfo.first));
+      auto file{ fileInfos.find( batchInfo.first )};
 
-      if (file == fileInfos.end())
+      if ( file == fileInfos.end())
       {
         //! @throw Arinc665Exception When batch file is not found.
         BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( batchInfo.first.second + ": batch file not found"));
+          << Helper::AdditionalInfo{
+            batchInfo.first.second + ": batch file not found" });
       }
 
       // checks that the batch list and file list entry maps to the same file entry
@@ -283,7 +294,7 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
       {
         //! @throw Arinc665Exception When batch list file and list file reference does not match
         BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( "File inconsistency"));
+          << Helper::AdditionalInfo{ "File inconsistency" });
       }
     }
   }
@@ -291,27 +302,28 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
 
 void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex)
 {
-  // iterate over all load informations
-  for ( const auto &loadInfo : loadInfos)
+  // iterate over all load information
+  for ( const auto &loadInfo : loadInfos )
   {
     // skip load headers, which are not present on current medium
-    if ( loadInfo.first.first != mediumIndex)
+    if ( loadInfo.first.first != mediumIndex )
     {
       continue;
     }
 
     // find load header in file list
-    auto loadHeaderFileIt( fileInfos.find( loadInfo.first));
+    auto loadHeaderFileIt( fileInfos.find( loadInfo.first ));
 
     // Check existence
-    if (fileInfos.end() == loadHeaderFileIt)
+    if ( fileInfos.end() == loadHeaderFileIt )
     {
       //! @throw Arinc665Exception When load header has not been found in file list
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo( "Load header file not found in file list"));
+        << Helper::AdditionalInfo{
+          "Load header file not found in file list" });
     }
 
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
       << "Load Header File " << loadHeaderFileIt->second.path();
 
     // decode load header
@@ -414,9 +426,9 @@ void MediaSetImporterImpl::addLoads(
     auto loadHeaderFile{ loadHeaderFiles.find( loadHeader.first.second)};
 
     // obtain container (directory, medium), which will contain the load.
-    ContainerEntityPtr container( checkCreateDirectory(
+    auto container{ checkCreateDirectory(
       loadHeader.first.first,
-      loadHeader.second.path().parent_path()));
+      loadHeader.second.path().parent_path() )};
 
     // create load
     auto loadPtr{ container->addLoad( loadHeader.second.filename())};
@@ -445,6 +457,9 @@ void MediaSetImporterImpl::addLoads(
 
       loadPtr->supportFile( supportFilePtr);
     }
+
+    // User Defined Data
+    loadPtr->userDefinedData( loadHeaderFile->second.userDefinedData());
   }
 }
 

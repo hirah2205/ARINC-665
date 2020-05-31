@@ -43,7 +43,7 @@ class MediaSetImporterImpl
      *   Handler which is called to obtain the requested file from the medium.
      **/
     explicit MediaSetImporterImpl(
-      Arinc665Utils::ReadFileHandler readFileHandler);
+      Arinc665Utils::ReadFileHandler readFileHandler );
 
     /**
      * @brief Entry-point of the ARINC 665 media set importer.
@@ -66,7 +66,7 @@ class MediaSetImporterImpl
      * @param[in] mediumIndex
      *   The medium index.
      **/
-    void addMedium( uint8_t mediumIndex);
+    void addMedium( uint8_t mediumIndex );
 
     /**
      * @brief Loads the file list file of the given medium.
@@ -74,7 +74,7 @@ class MediaSetImporterImpl
      * @param[in] mediumIndex
      *   The medium index.
      **/
-    void loadFileListFile( uint8_t mediumIndex);
+    void loadFileListFile( uint8_t mediumIndex );
 
     /**
      * @brief Loads the load list file of the given medium.
@@ -82,7 +82,7 @@ class MediaSetImporterImpl
      * @param[in] mediumIndex
      *   The medium index.
      **/
-    void loadLoadListFile( uint8_t mediumIndex);
+    void loadLoadListFile( uint8_t mediumIndex );
 
     /**
      * @brief Loads the batch list file of the given medium.
@@ -90,7 +90,7 @@ class MediaSetImporterImpl
      * @param[in] mediumIndex
      *   The medium index.
      **/
-    void loadBatchListFile( uint8_t mediumIndex);
+    void loadBatchListFile( uint8_t mediumIndex );
 
     /**
      * @brief Loads the load header files of the given medium.
@@ -98,7 +98,7 @@ class MediaSetImporterImpl
      * @param[in] mediumIndex
      *   The medium index.
      **/
-    void loadLoadHeaderFiles( uint8_t mediumIndex);
+    void loadLoadHeaderFiles( uint8_t mediumIndex );
 
     /**
      * @brief Loads the batch files of the given medium.
@@ -106,7 +106,7 @@ class MediaSetImporterImpl
      * @param[in] mediumIndex
      *   The medium index.
      **/
-    void loadBatchFiles( uint8_t mediumIndex);
+    void loadBatchFiles( uint8_t mediumIndex );
 
     /**
      * @brief Adds all files to the media set representation
