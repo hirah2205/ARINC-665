@@ -36,8 +36,8 @@ class Arinc665Xml
     //! file path mapping type
     using FilePathMapping =
       std::map< Media::ConstBaseFilePtr, std::filesystem::path>;
-    //! Load XML result type (Media Set Pointer and corresponding file path mapping)
-    using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping>;
+    //! Load XML Result (Media Set Pointer and corresponding File Path Mapping)
+    using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping >;
 
     /**
      * @brief Creates an ARINC 665 XML handler instance.
@@ -69,7 +69,7 @@ class Arinc665Xml
      *   (used to insert the correct source path attribute.)
      * @param[in] xmlFile
      *   The ARINC 665 XML file.
-     */
+     **/
     virtual void saveToXml(
       Media::ConstMediaSetPtr mediaSet,
       const FilePathMapping &filePathMapping,

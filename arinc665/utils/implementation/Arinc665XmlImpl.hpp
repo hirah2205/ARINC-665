@@ -16,21 +16,21 @@
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
 
-#include <pugixml.hpp>
+#include <libxml++/libxml++.h>
 
 namespace Arinc665::Utils {
 
 /**
 * @brief Handles the representation of Media Sets as XML file.
 **/
-class Arinc665XmlPugiXmlImpl : public Arinc665Xml
+class Arinc665XmlImpl: public Arinc665Xml
 {
   public:
    //! Constructor
-    Arinc665XmlPugiXmlImpl() = default;
+    Arinc665XmlImpl() = default;
 
     //! Destructor
-    ~Arinc665XmlPugiXmlImpl() override = default;
+    ~Arinc665XmlImpl() override = default;
 
     /**
      * @brief Loads the Media Set information from the given XML file.
@@ -45,7 +45,7 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
      * @throw Arinc665::Arinc665Exception
      *   When Loading of XML fails.
      **/
-    LoadXmlResult loadFromXml( const std::filesystem::path &xmlFile) final;
+    LoadXmlResult loadFromXml( const std::filesystem::path &xmlFile ) final;
 
     /**
      * @brief Saves the given Media Set information to the given XML file.
@@ -64,7 +64,7 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
     void saveToXml(
       Media::ConstMediaSetPtr mediaSet,
       const FilePathMapping &filePathMapping,
-      const std::filesystem::path &xmlFile) final;
+      const std::filesystem::path &xmlFile ) final;
 
   private:
     /**
@@ -72,14 +72,12 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
      *
      * @todo Add Loads, and Batches handling.
      *
-     * @param filePathMapping
-     * @param mediaSetNode
+     * @param[in] mediaSetElement
+     *   Media Set to Load.
      *
-     * @return
+     * @return Representation of Media Set
      **/
-    Media::MediaSetPtr loadMediaSet(
-      FilePathMapping &filePathMapping,
-      const pugi::xml_node &mediaSetNode);
+    LoadXmlResult loadMediaSet( const xmlpp::Element &mediaSetElement );
 
     /**
      * @brief Saves the media set section.
@@ -93,7 +91,7 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
     void saveMediaSet(
       Media::ConstMediaSetPtr mediaSet,
       const FilePathMapping &filePathMapping,
-      pugi::xml_node &mediaSetNode);
+      xmlpp::Element &mediaSetNode);
 
     /**
      * @brief Load the medium section.
@@ -105,7 +103,7 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
     void loadMedium(
       Media::MediaSetPtr mediaSet,
       FilePathMapping &filePathMapping,
-      const pugi::xml_node &mediumNode);
+      const xmlpp::Node &mediumNode);
 
     /**
      * @brief Saves the medium section.
@@ -117,7 +115,7 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
     void saveMedium(
       Media::ConstMediumPtr medium,
       const FilePathMapping &filePathMapping,
-      pugi::xml_node &mediumNode);
+      xmlpp::Node &mediumNode);
 
     /**
      * @brief Loads a directory section.
@@ -126,7 +124,7 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
      *   Parent Container
      * @param[in] filePathMapping
      *   The file path mapping
-     * @param[in] directoryNode
+     * @param[in] directoryElement
      *   The XML node representing the directory.
      *
      * @throw Arinc665::Arinc665Exception
@@ -135,19 +133,19 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
     void loadDirectory(
       Media::ContainerEntityPtr parent,
       FilePathMapping &filePathMapping,
-      const pugi::xml_node &directoryNode);
+      const xmlpp::Element &directoryElement );
 
     /**
      * @brief Saves a directory section.
      *
      * @param directory
      * @param filePathMapping
-     * @param directoryNode
+     * @param directoryElement
      **/
     void saveDirectory(
       Media::ConstDirectoryPtr directory,
       const FilePathMapping &filePathMapping,
-      pugi::xml_node &directoryNode);
+      xmlpp::Element &directoryElement );
 
     /**
      * @brief Loads file entries.
@@ -159,7 +157,7 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
     void loadEntries(
       Media::ContainerEntityPtr current,
       FilePathMapping &filePathMapping,
-      const pugi::xml_node &currentNode);
+      const xmlpp::Node &currentNode);
 
     /**
      * @brief Saves file entries.
@@ -171,53 +169,53 @@ class Arinc665XmlPugiXmlImpl : public Arinc665Xml
     void saveEntries(
       Media::ConstContainerEntityPtr current,
       const FilePathMapping &filePathMapping,
-      pugi::xml_node &currentNode);
+      xmlpp::Node &currentNode);
 
     /**
      * @brief Loads the given load-node.
      *
      * @param[in,out] mediaSet
      *   The media set where the load is stored into.
-     * @param[in] loadNode
+     * @param[in] loadElement
      *   The XML-node, where the data is loaded from.
      **/
-    void loadLoad( Media::MediaSetPtr mediaSet, const pugi::xml_node &loadNode);
+    void loadLoad( Media::MediaSetPtr mediaSet, const xmlpp::Element &loadElement );
 
     /**
      * @brief Stores the given load-node.
      *
      * @param[in] load
      *   The load to store.
-     * @param[in,out] loadNode
+     * @param[in,out] loadElement
      *   The XML-node where the data is stored to.
      **/
     void saveLoad(
       Media::ConstLoadPtr load,
-      pugi::xml_node &loadNode);
+      xmlpp::Element &loadElement );
 
     /**
      * @brief Loads the given batch-node.
      *
      * @param[in,out] mediaSet
      *   The media set where the load is stored into.
-     * @param[in] batchNode
+     * @param[in] batchElement
      *   The XML-node, where the data is loaded from.
      **/
     void loadBatch(
       Media::MediaSetPtr mediaSet,
-      const pugi::xml_node &batchNode);
+      const xmlpp::Element &batchElement );
 
     /**
      * @brief Stores the given batch-node.
      *
      * @param[in] batch
      *   The batch to store.
-     * @param[in,out] batchNode
+     * @param[in,out] batchElement
      *   The XML-node where the data is stored to.
      **/
     void saveBatch(
       Media::ConstBatchPtr batch,
-      pugi::xml_node &batchNode);
+      xmlpp::Element &batchElement );
 };
 
 }

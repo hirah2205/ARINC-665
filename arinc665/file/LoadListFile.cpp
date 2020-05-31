@@ -251,7 +251,7 @@ RawFile LoadListFile::encode() const
   assert( userDefinedDataValue.size() % 2 == 0);
   uint32_t userDefinedDataPtr = 0;
 
-  if (!userDefinedDataValue.empty())
+  if ( !userDefinedDataValue.empty() )
   {
     userDefinedDataPtr = nextFreeOffset / 2;
     // nextFreeOffset += userDefinedDataValue.size();
@@ -280,33 +280,33 @@ RawFile LoadListFile::encode() const
 void LoadListFile::decodeBody( const RawFile &rawFile)
 {
   // Spare Field
-  uint32_t spare;
+  uint32_t spare{};
   Helper::getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
 
-  if (0U != spare)
+  if ( 0U != spare )
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
       << Helper::AdditionalInfo( "Spare is not 0"));
   }
 
   // media information pointer
-  uint32_t mediaInformationPtr;
+  uint32_t mediaInformationPtr{};
   Helper::getInt< uint32_t>(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
-    mediaInformationPtr);
+    mediaInformationPtr );
 
   // Loads list pointer
-  uint32_t loadListPtr;
+  uint32_t loadListPtr{};
   Helper::getInt< uint32_t>(
     rawFile.begin() + LoadFilesPointerFieldOffset,
-    loadListPtr);
+    loadListPtr );
 
 
   // user defined data pointer
-  uint32_t userDefinedDataPtr;
+  uint32_t userDefinedDataPtr{};
   Helper::getInt< uint32_t>(
     rawFile.begin() + UserDefinedDataPointerFieldOffset,
-    userDefinedDataPtr);
+    userDefinedDataPtr );
 
 
   // media set part number
@@ -346,7 +346,7 @@ RawFile LoadListFile::encodeLoadsInfo() const
 
   // iterate over files
   uint16_t loadCounter( 0);
-  for (auto const &loadInfo : loadsValue)
+  for ( auto const &loadInfo : loadsValue )
   {
     ++loadCounter;
     auto const rawPartNumber( encodeString( loadInfo.partNumber()));

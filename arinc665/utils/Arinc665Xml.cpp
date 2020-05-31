@@ -12,13 +12,13 @@
 
 #include "Arinc665Xml.hpp"
 
-#include <arinc665/utils/implementation/Arinc665XmlPugiXmlImpl.hpp>
+#include <arinc665/utils/implementation/Arinc665XmlImpl.hpp>
 
 namespace Arinc665::Utils {
 
 Arinc665XmlPtr Arinc665Xml::instance()
 {
-  return std::make_unique< Arinc665XmlPugiXmlImpl>();
+  return std::make_unique< Arinc665XmlImpl >();
 }
 
 }

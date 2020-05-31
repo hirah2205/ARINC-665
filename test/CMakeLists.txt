@@ -30,7 +30,7 @@ add_test(
     --source-directory ${CMAKE_CURRENT_BINARY_DIR}
     --destination-directory MediaSet/CCC
     --create-batch-files All
-    --create-load-header-files All)
+    --create-load-header-files All )
 
 add_test(
   NAME arinc665_decompile_media_set

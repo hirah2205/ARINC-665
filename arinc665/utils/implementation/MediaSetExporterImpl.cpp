@@ -41,18 +41,17 @@ MediaSetExporterImpl::MediaSetExporterImpl(
   const SupportedArinc665Version arinc665Version,
   const FileCreationPolicy createBatchFiles,
   const FileCreationPolicy createLoadHeaderFiles):
-  arinc665Version( arinc665Version),
-  createBatchFiles( createBatchFiles),
-  createLoadHeaderFiles( createLoadHeaderFiles),
-  mediaSet( mediaSet),
-  createMediumHandler( createMediumHandler),
-  createDirectoryHandler( createDirectoryHandler),
-  checkFileExistenceHandler( checkFileExistenceHandler),
-  createFileHandler( createFileHandler),
-  writeFileHandler( writeFileHandler),
-  readFileHandler( readFileHandler)
+  arinc665Version{ arinc665Version },
+  createBatchFiles{ createBatchFiles },
+  createLoadHeaderFiles{ createLoadHeaderFiles },
+  mediaSet{ mediaSet },
+  createMediumHandler{ createMediumHandler },
+  createDirectoryHandler{ createDirectoryHandler },
+  checkFileExistenceHandler{ checkFileExistenceHandler },
+  createFileHandler{ createFileHandler },
+  writeFileHandler{ writeFileHandler },
+  readFileHandler{ readFileHandler}
 {
-
 }
 
 void MediaSetExporterImpl::operator()()
@@ -62,7 +61,7 @@ void MediaSetExporterImpl::operator()()
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
     << "Media set " << " - " << mediaSet->partNumber();
 
-  for (auto medium : mediaSet->media())
+  for ( auto medium : mediaSet->media() )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
       << "Medium " << (unsigned int)medium.first;
@@ -115,12 +114,15 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 
   loadListFile.userDefinedData( mediaSet->loadsUserDefinedData());
 
-  writeFileHandler( medium->mediumNumber(), "/" + std::string{ ListOfLoadsName}, loadListFile);
+  writeFileHandler(
+    medium->mediumNumber(),
+    "/" + std::string{ ListOfLoadsName},
+    loadListFile );
 
   // export list of batches (if present)
-  if (medium->mediaSet()->numberOfBatches() != 0)
+  if ( medium->mediaSet()->numberOfBatches() != 0)
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
       << "Export list of batches";
 
     Arinc665::File::BatchListFile batchListFile{ arinc665Version};

@@ -14,17 +14,17 @@ project(
 
 set( PROJECT_VERSION_ADDITION "dev" )
 
-find_package( Git)
+find_package( Git )
 
-if( GIT_FOUND)
+if( GIT_FOUND )
   execute_process(
     COMMAND ${GIT_EXECUTABLE} rev-parse --verify --short HEAD
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     OUTPUT_VARIABLE GIT_HASH
-    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    OUTPUT_STRIP_TRAILING_WHITESPACE )
 
   set( PROJECT_VERSION_ADDITION "${PROJECT_VERSION_ADDITION}-${GIT_HASH}" )
-endif()
+endif( GIT_FOUND )
 
 
 set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
@@ -45,7 +45,7 @@ endif( CLANG_TIDY_EXE )
 enable_testing()
 
 
-include( FetchContent)
+include( FetchContent )
 
 # get dependencies
 FetchContent_Declare(
@@ -58,42 +58,29 @@ FetchContent_Declare(
   GIT_REPOSITORY https://git.thomas-vogt.de/Thomas-Vogt/helper.git
   GIT_TAG master )
 
-FetchContent_Declare(
-  pugixml
-  GIT_REPOSITORY https://github.com/zeux/pugixml.git
-  GIT_TAG v1.10 )
 
-
-FetchContent_GetProperties( cmake_common)
-if( NOT cmake_common_POPULATED)
-  FetchContent_Populate( cmake_common)
+FetchContent_GetProperties( cmake_common )
+if( NOT cmake_common_POPULATED )
+  FetchContent_Populate( cmake_common )
   # Add own CMake scripts to module path
   list( APPEND CMAKE_MODULE_PATH "${cmake_common_SOURCE_DIR}" )
-endif()
+endif( NOT cmake_common_POPULATED )
 
-FetchContent_GetProperties( helper)
-if( NOT helper_POPULATED)
-  FetchContent_Populate( helper)
+FetchContent_GetProperties( helper )
+if( NOT helper_POPULATED )
+  FetchContent_Populate( helper )
   add_subdirectory( ${helper_SOURCE_DIR} ${helper_BINARY_DIR} )
-endif()
-
-FetchContent_GetProperties( pugixml)
-if( NOT pugixml_POPULATED)
-  FetchContent_Populate( pugixml)
-  add_subdirectory( ${pugixml_SOURCE_DIR} ${pugixml_BINARY_DIR} )
-  # Disable CLANG Tidy Checks on pugixml
-  set_property( TARGET pugixml PROPERTY CXX_CLANG_TIDY )
-endif()
+endif( NOT helper_POPULATED )
 
 
-add_subdirectory( arinc665)
-add_subdirectory( arinc665_qt)
+add_subdirectory( arinc665 )
+add_subdirectory( arinc665_qt )
 
-add_subdirectory( application)
+add_subdirectory( application )
 
 add_subdirectory( arinc665_api_doc )
 
-add_subdirectory( test)
+add_subdirectory( test )
 
 
 set( CPACK_GENERATOR ZIP )

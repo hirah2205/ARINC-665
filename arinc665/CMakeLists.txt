@@ -7,6 +7,13 @@
 cmake_minimum_required( VERSION 3.16 )
 
 find_package( Boost REQUIRED )
+find_package( PkgConfig REQUIRED )
+
+pkg_search_module(
+  Libxmlpp
+  REQUIRED
+  IMPORTED_TARGET
+  "libxml++-2.6" )
 
 # prepare Version.cpp
 configure_file(
@@ -63,13 +70,15 @@ target_link_libraries(
 
   PUBLIC
     helper
-    pugixml
-    Boost::boost )
+    Boost::boost
+
+  PRIVATE
+    PkgConfig::Libxmlpp )
 
 target_compile_features( arinc665 PUBLIC cxx_std_17 )
 
 
-add_library( arinc665_test OBJECT)
+add_library( arinc665_test OBJECT )
 
 target_sources(
   arinc665_test
@@ -122,9 +131,9 @@ install(
   TARGETS arinc665
   COMPONENT runtime
   EXPORT arinc665-config
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} )
 
 install(
   DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}

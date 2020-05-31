@@ -10,8 +10,8 @@ target_sources(
   arinc665
 
   PRIVATE
-    Arinc665XmlPugiXmlImpl.hpp
-    Arinc665XmlPugiXmlImpl.cpp
+  Arinc665XmlImpl.hpp
+  Arinc665XmlImpl.cpp
     MediaSetExporterImpl.hpp
     MediaSetExporterImpl.cpp
     MediaSetImporterImpl.hpp

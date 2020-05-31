@@ -33,7 +33,7 @@
       <DataFile    NameRef="File1" />
       <SupportFile NameRef="File2" />
 
-      <UserDefinedData >TEST</UserDefinedData >
+      <UserDefinedData>TEST</UserDefinedData>
     </Load>
     <Load NameRef="Load2.LUH" >
       <TargetHardware ThwId="ABCDEF" />
