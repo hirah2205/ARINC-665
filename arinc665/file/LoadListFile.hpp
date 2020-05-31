@@ -259,16 +259,22 @@ class LoadListFile: public ListFile
      **/
     void decodeLoadsInfo( const RawFile &rawFile, std::size_t offset);
 
-    //! Media set part number
+
+    /**
+     * @brief Checks, if the User Defined Data is a multiple of 2 size.
+     **/
+    void checkUserDefinedData();
+
+    //! Media Set Part Number
     std::string mediaSetPnValue;
-    //! media sequence number
+    //! Media Sequence Number
     uint8_t mediaSequenceNumberValue;
     //! number of media set members
     uint8_t numberOfMediaSetMembersValue;
     //! The load list
-    LoadsInfo loadsValue;
+    LoadsInfo loadsV;
     //! user defined data
-    UserDefinedData userDefinedDataValue;
+    UserDefinedData userDefinedDataV;
 };
 
 }

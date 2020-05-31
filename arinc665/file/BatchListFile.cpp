@@ -13,10 +13,10 @@
 #include "BatchListFile.hpp"
 
 #include <arinc665/Arinc665Exception.hpp>
+#include <arinc665/Arinc665Logger.hpp>
 
 #include <helper/Endianess.hpp>
 #include <helper/SafeCast.hpp>
-#include <helper/Logger.hpp>
 
 namespace Arinc665::File {
 
@@ -39,8 +39,9 @@ BatchListFile::BatchListFile(
   mediaSequenceNumberValue{ mediaSequenceNumber},
   numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
   batchesValue{ batches},
-  userDefinedDataValue{ userDefinedData}
+  userDefinedDataV{ userDefinedData }
 {
+  checkUserDefinedData();
 }
 
 BatchListFile::BatchListFile(
@@ -55,8 +56,9 @@ BatchListFile::BatchListFile(
   mediaSequenceNumberValue{ mediaSequenceNumber},
   numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
   batchesValue{ std::move( batches)},
-  userDefinedDataValue{ std::move( userDefinedData)}
+  userDefinedDataV{ std::move( userDefinedData)}
 {
+  checkUserDefinedData();
 }
 
 BatchListFile::BatchListFile( const RawFile &rawFile):
@@ -158,17 +160,25 @@ void BatchListFile::batch( BatchInfo &&batch)
 
 const BatchListFile::UserDefinedData& BatchListFile::userDefinedData() const
 {
-  return userDefinedDataValue;
+  return userDefinedDataV;
 }
 
 void BatchListFile::userDefinedData( const UserDefinedData &userDefinedData)
 {
-  userDefinedDataValue = userDefinedData;
+  BOOST_LOG_FUNCTION()
+
+  userDefinedDataV = userDefinedData;
+
+  checkUserDefinedData();
 }
 
 void BatchListFile::userDefinedData( UserDefinedData &&userDefinedData)
 {
-  userDefinedDataValue = std::move( userDefinedData);
+  BOOST_LOG_FUNCTION()
+
+  userDefinedDataV = std::move( userDefinedData );
+
+  checkUserDefinedData();
 }
 
 bool BatchListFile::belongsToSameMediaSet( const BatchListFile &other) const
@@ -181,6 +191,8 @@ bool BatchListFile::belongsToSameMediaSet( const BatchListFile &other) const
 
 RawFile BatchListFile::encode() const
 {
+  BOOST_LOG_FUNCTION()
+
   RawFile rawFile( FileHeaderSize);
 
   // Spare Field
@@ -229,18 +241,18 @@ RawFile BatchListFile::encode() const
 
 
   // user defined data
-  assert( userDefinedDataValue.size() % 2 == 0);
+  assert( userDefinedDataV.size() % 2 == 0);
   uint32_t userDefinedDataPtr = 0;
 
-  if (!userDefinedDataValue.empty())
+  if (!userDefinedDataV.empty())
   {
     userDefinedDataPtr = nextFreeOffset / 2;
     // nextFreeOffset += userDefinedDataValue.size();
 
     rawFile.insert(
       rawFile.end(),
-      userDefinedDataValue.begin(),
-      userDefinedDataValue.end());
+      userDefinedDataV.begin(),
+      userDefinedDataV.end());
   }
 
   Helper::setInt< uint32_t>(
@@ -259,6 +271,8 @@ RawFile BatchListFile::encode() const
 
 void BatchListFile::decodeBody( const RawFile &rawFile)
 {
+  BOOST_LOG_FUNCTION()
+
   // Spare Field
   uint32_t spare{};
   Helper::getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
@@ -266,7 +280,7 @@ void BatchListFile::decodeBody( const RawFile &rawFile)
   if (0U != spare)
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << Helper::AdditionalInfo( "Spare is not 0"));
+      << Helper::AdditionalInfo( "Spare is not 0" ));
   }
 
 
@@ -309,7 +323,7 @@ void BatchListFile::decodeBody( const RawFile &rawFile)
   // user defined data
   if ( 0 != userDefinedDataPtr)
   {
-    userDefinedDataValue.assign(
+    userDefinedDataV.assign(
       rawFile.begin() + userDefinedDataPtr * 2,
       rawFile.begin() + rawFile.size() - DefaultChecksumPosition);
   }
@@ -320,6 +334,8 @@ void BatchListFile::decodeBody( const RawFile &rawFile)
 
 RawFile BatchListFile::encodeBatchesInfo() const
 {
+  BOOST_LOG_FUNCTION()
+
   RawFile rawBatchesInfo( sizeof( uint16_t));
 
   // number of batches
@@ -383,6 +399,8 @@ void BatchListFile::decodeBatchesInfo(
   const RawFile &rawFile,
   const std::size_t offset)
 {
+  BOOST_LOG_FUNCTION()
+
   auto it{ rawFile.begin() + offset};
 
   // clear eventually stored infos
@@ -419,6 +437,19 @@ void BatchListFile::decodeBatchesInfo(
     it += batchPointer * 2U;
 
     batchesValue.emplace_back( partNumber, filename, memberSequenceNumber);
+  }
+}
+
+void BatchListFile::checkUserDefinedData()
+{
+  BOOST_LOG_FUNCTION()
+
+  if ( userDefinedDataV.size() % 2U != 0U)
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
+      << "User defined data must be 2-byte aligned. - extending range";
+
+    userDefinedDataV.push_back(0U);
   }
 }
 

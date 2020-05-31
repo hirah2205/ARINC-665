@@ -478,6 +478,11 @@ class LoadHeaderFile: public Arinc665File
       FileListType type,
       bool decodeV3Data);
 
+    /**
+     * @brief Checks, if the User Defined Data is a multiple of 2 size.
+     **/
+    void checkUserDefinedData();
+
     //! Part Flags
     uint16_t partFlagsValue;
     //! Part number of the load
@@ -491,7 +496,7 @@ class LoadHeaderFile: public Arinc665File
     //! List of Support files
     LoadFilesInfo supportFilesValue;
     //! User defined data
-    UserDefinedData userDefinedDataValue;
+    UserDefinedData userDefinedDataV;
     //! CRC of the complete load
     uint32_t loadCrcValue;
     //! The Load Check Value (since ARINC 665-3)

@@ -13,11 +13,11 @@
 #include "FileListFile.hpp"
 
 #include <arinc665/Arinc665Exception.hpp>
+#include <arinc665/Arinc665Logger.hpp>
 
 #include <arinc665/file/CheckValueUtils.hpp>
 
 #include <helper/Endianess.hpp>
-#include <helper/Logger.hpp>
 
 namespace Arinc665::File {
 
@@ -40,8 +40,9 @@ FileListFile::FileListFile(
   mediaSequenceNumberValue{ mediaSequenceNumber},
   numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
   filesValue{ files},
-  userDefinedDataValue{ userDefinedData}
+  userDefinedDataV{ userDefinedData }
 {
+  checkUserDefinedData();
 }
 
 FileListFile::FileListFile(
@@ -56,8 +57,9 @@ FileListFile::FileListFile(
   mediaSequenceNumberValue{ mediaSequenceNumber},
   numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
   filesValue{ std::move( files)},
-  userDefinedDataValue{ std::move( userDefinedData)}
+  userDefinedDataV{ std::move( userDefinedData)}
 {
+  checkUserDefinedData();
 }
 
 FileListFile::FileListFile( const RawFile &rawFile):
@@ -134,6 +136,8 @@ FilesInfo& FileListFile::files()
 
 FileListFile::FileInfoMap FileListFile::filesAsMap() const
 {
+  BOOST_LOG_FUNCTION()
+
   FileInfoMap fileMap{};
 
   for ( const auto &fileInfo : filesValue)
@@ -151,6 +155,8 @@ FileListFile::FileInfoMap FileListFile::filesAsMap() const
 
 FileListFile::FileInfoPathMap FileListFile::filesAsPathMap() const
 {
+  BOOST_LOG_FUNCTION()
+
   FileInfoPathMap fileMap{};
 
   for ( const auto &fileInfo : filesValue)
@@ -179,17 +185,25 @@ void FileListFile::file( FileInfo &&file)
 
 const FileListFile::UserDefinedData& FileListFile::userDefinedData() const
 {
-  return userDefinedDataValue;
+  return userDefinedDataV;
 }
 
 void FileListFile::userDefinedData( const UserDefinedData &userDefinedData)
 {
-  userDefinedDataValue = userDefinedData;
+  BOOST_LOG_FUNCTION()
+
+  userDefinedDataV = userDefinedData;
+
+  checkUserDefinedData();
 }
 
 void FileListFile::userDefinedData( UserDefinedData &&userDefinedData)
 {
-  userDefinedDataValue = std::move( userDefinedData);
+  BOOST_LOG_FUNCTION()
+
+  userDefinedDataV = std::move( userDefinedData);
+
+  checkUserDefinedData();
 }
 
 const std::optional< CheckValue>& FileListFile::checkValue() const
@@ -209,10 +223,12 @@ void FileListFile::checkValue( std::optional< CheckValue> &&value)
 
 bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
 {
+  BOOST_LOG_FUNCTION()
+
   if (
     (mediaSetPnValue != other.mediaSetPn()) ||
     (numberOfMediaSetMembersValue != other.numberOfMediaSetMembers()) ||
-    (userDefinedDataValue != other.userDefinedData()))
+    ( userDefinedDataV != other.userDefinedData()))
   {
     return false;
   }
@@ -258,6 +274,8 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
 
 RawFile FileListFile::encode() const
 {
+  BOOST_LOG_FUNCTION()
+
   bool encodeV3Data{ false};
   std::size_t baseSize{ 0};
 
@@ -324,18 +342,18 @@ RawFile FileListFile::encode() const
 
 
   // user defined data
-  assert( userDefinedDataValue.size() % 2 == 0);
+  assert( userDefinedDataV.size() % 2 == 0);
   uint32_t userDefinedDataPtr = 0;
 
-  if (!userDefinedDataValue.empty())
+  if (!userDefinedDataV.empty())
   {
     userDefinedDataPtr = nextFreeOffset / 2;
-    nextFreeOffset += userDefinedDataValue.size();
+    nextFreeOffset += userDefinedDataV.size();
 
     rawFile.insert(
       rawFile.end(),
-      userDefinedDataValue.begin(),
-      userDefinedDataValue.end());
+      userDefinedDataV.begin(),
+      userDefinedDataV.end());
   }
 
   Helper::setInt< uint32_t>(
@@ -373,6 +391,8 @@ RawFile FileListFile::encode() const
 
 void FileListFile::decodeBody( const RawFile &rawFile)
 {
+  BOOST_LOG_FUNCTION()
+
   bool decodeV3Data{ false};
 
   switch ( arincVersion())
@@ -463,7 +483,7 @@ void FileListFile::decodeBody( const RawFile &rawFile)
       endOfUserDefinedData = fileCheckValuePtr * 2;
     }
 
-    userDefinedDataValue.assign(
+    userDefinedDataV.assign(
       rawFile.begin() + userDefinedDataPtr * 2,
       rawFile.begin() + endOfUserDefinedData);
   }
@@ -482,6 +502,8 @@ void FileListFile::decodeBody( const RawFile &rawFile)
 
 RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data) const
 {
+  BOOST_LOG_FUNCTION()
+
   RawFile rawFilesInfo( sizeof( uint16_t));
 
   // number of files
@@ -552,6 +574,8 @@ void FileListFile::decodeFilesInfo(
   const std::size_t offset,
   const bool decodeV3Data)
 {
+  BOOST_LOG_FUNCTION()
+
   auto it{ rawFile.begin() + offset};
 
   // clear potentially data
@@ -610,6 +634,19 @@ void FileListFile::decodeFilesInfo(
       memberSequenceNumber,
       crc,
       checkValue);
+  }
+}
+
+void FileListFile::checkUserDefinedData()
+{
+  BOOST_LOG_FUNCTION()
+
+  if ( userDefinedDataV.size() % 2U != 0U)
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
+      << "User defined data must be 2-byte aligned. - extending range";
+
+    userDefinedDataV.push_back(0U);
   }
 }
 

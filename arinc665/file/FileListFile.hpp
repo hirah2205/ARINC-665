@@ -300,16 +300,21 @@ class FileListFile: public ListFile
       std::size_t offset,
       bool decodeV3Data);
 
-    //! The media set part number
+    /**
+     * @brief Checks, if the User Defined Data is a multiple of 2 size.
+     **/
+    void checkUserDefinedData();
+
+    //! Media Set Part Number
     std::string mediaSetPnValue;
-    //! The media sequence number
+    //! Media Sequence Number
     uint8_t mediaSequenceNumberValue;
-    //! The number of media set members.
+    //! Number of Media Set Members.
     uint8_t numberOfMediaSetMembersValue;
-    //! Files information (list)
+    //! Files Information (list)
     FilesInfo filesValue;
     //! Use defined data.
-    UserDefinedData userDefinedDataValue;
+    UserDefinedData userDefinedDataV;
     //! The Load Check Value (since ARINC 665-3)
     std::optional< CheckValue> checkValueValue;
 };

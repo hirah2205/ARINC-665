@@ -37,9 +37,10 @@ LoadListFile::LoadListFile(
   mediaSetPnValue{ mediaSetPn},
   mediaSequenceNumberValue{ mediaSequenceNumber},
   numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
-  loadsValue{ loads},
-  userDefinedDataValue{ userDefinedData}
+  loadsV{ loads},
+  userDefinedDataV{ userDefinedData }
 {
+  checkUserDefinedData();
 }
 
 LoadListFile::LoadListFile(
@@ -53,9 +54,10 @@ LoadListFile::LoadListFile(
   mediaSetPnValue{ std::move( mediaSetPn)},
   mediaSequenceNumberValue{ mediaSequenceNumber},
   numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
-  loadsValue{ std::move( loads)},
-  userDefinedDataValue{ std::move( userDefinedData)}
+  loadsV{ std::move( loads)},
+  userDefinedDataV{ std::move( userDefinedData) }
 {
+  checkUserDefinedData();
 }
 
 LoadListFile::LoadListFile( const RawFile &rawFile):
@@ -115,24 +117,26 @@ void LoadListFile::numberOfMediaSetMembers(
 
 size_t LoadListFile::numberOfLoads() const
 {
-  return loadsValue.size();
+  return loadsV.size();
 }
 
 const LoadsInfo& LoadListFile::loads() const
 {
-  return loadsValue;
+  return loadsV;
 }
 
 LoadsInfo& LoadListFile::loads()
 {
-  return loadsValue;
+  return loadsV;
 }
 
 LoadListFile::LoadsInfoMap LoadListFile::loadsAsMap() const
 {
+  BOOST_LOG_FUNCTION()
+
   LoadsInfoMap loads;
 
-  for (const auto & loadInfo : loadsValue)
+  for ( const auto &loadInfo : loadsV )
   {
     loads.insert( std::make_pair(
       std::make_pair(
@@ -146,60 +150,50 @@ LoadListFile::LoadsInfoMap LoadListFile::loadsAsMap() const
 
 void LoadListFile::load( const LoadInfo &load)
 {
-  loadsValue.push_back( load);
+  loadsV.push_back( load);
 }
 
 void LoadListFile::load( LoadInfo &&load)
 {
-  loadsValue.push_back( std::move( load));
+  loadsV.push_back( std::move( load));
 }
 
 const LoadListFile::UserDefinedData& LoadListFile::userDefinedData() const
 {
-  return userDefinedDataValue;
+  return userDefinedDataV;
 }
 
 void LoadListFile::userDefinedData( const UserDefinedData &userDefinedData)
 {
   BOOST_LOG_FUNCTION()
 
-  userDefinedDataValue = userDefinedData;
+  userDefinedDataV = userDefinedData;
 
-  if (userDefinedData.size() % 2 != 0)
-  {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
-      << "User defined data must be 2-byte aligned. - extending range";
-
-    userDefinedDataValue.push_back(0);
-  }
+  checkUserDefinedData();
 }
 
 void LoadListFile::userDefinedData( UserDefinedData &&userDefinedData)
 {
   BOOST_LOG_FUNCTION()
 
-  userDefinedDataValue = std::move( userDefinedData);
+  userDefinedDataV = std::move( userDefinedData);
 
-  if (userDefinedDataValue.size() % 2U != 0U)
-  {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
-      << "User defined data must be 2-byte aligned. - extending range";
-
-    userDefinedDataValue.push_back(0U);
-  }
+  checkUserDefinedData();
 }
 
 bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
 {
   return
-    (mediaSetPnValue == other.mediaSetPn()) &&
-    (numberOfMediaSetMembersValue == other.numberOfMediaSetMembers()) &&
-    (loadsValue == other.loads()) &&
-    (userDefinedDataValue == other.userDefinedData());
+    ( mediaSetPnValue == other.mediaSetPn()) &&
+    ( numberOfMediaSetMembersValue == other.numberOfMediaSetMembers()) &&
+    ( loadsV == other.loads()) &&
+    ( userDefinedDataV == other.userDefinedData());
 }
 
 RawFile LoadListFile::encode() const
 {
+  BOOST_LOG_FUNCTION()
+
   RawFile rawFile( FileHeaderSize);
 
   // Spare Field
@@ -248,18 +242,18 @@ RawFile LoadListFile::encode() const
 
 
   // user defined data
-  assert( userDefinedDataValue.size() % 2 == 0);
+  assert( userDefinedDataV.size() % 2 == 0);
   uint32_t userDefinedDataPtr = 0;
 
-  if ( !userDefinedDataValue.empty() )
+  if ( !userDefinedDataV.empty() )
   {
     userDefinedDataPtr = nextFreeOffset / 2;
     // nextFreeOffset += userDefinedDataValue.size();
 
     rawFile.insert(
       rawFile.end(),
-      userDefinedDataValue.begin(),
-      userDefinedDataValue.end());
+      userDefinedDataV.begin(),
+      userDefinedDataV.end());
   }
 
   Helper::setInt< uint32_t>(
@@ -279,6 +273,8 @@ RawFile LoadListFile::encode() const
 
 void LoadListFile::decodeBody( const RawFile &rawFile)
 {
+  BOOST_LOG_FUNCTION()
+
   // Spare Field
   uint32_t spare{};
   Helper::getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
@@ -328,7 +324,7 @@ void LoadListFile::decodeBody( const RawFile &rawFile)
   // user defined data
   if ( 0 != userDefinedDataPtr)
   {
-    userDefinedDataValue.assign(
+    userDefinedDataV.assign(
       rawFile.begin() + userDefinedDataPtr * 2,
       rawFile.begin() + rawFile.size() - DefaultChecksumPosition);
   }
@@ -339,6 +335,8 @@ void LoadListFile::decodeBody( const RawFile &rawFile)
 
 RawFile LoadListFile::encodeLoadsInfo() const
 {
+  BOOST_LOG_FUNCTION()
+
   RawFile rawLoadsInfo( sizeof( uint16_t));
 
   // number of loads
@@ -346,7 +344,7 @@ RawFile LoadListFile::encodeLoadsInfo() const
 
   // iterate over files
   uint16_t loadCounter( 0);
-  for ( auto const &loadInfo : loadsValue )
+  for ( auto const &loadInfo : loadsV )
   {
     ++loadCounter;
     auto const rawPartNumber( encodeString( loadInfo.partNumber()));
@@ -397,6 +395,8 @@ void LoadListFile::decodeLoadsInfo(
   const RawFile &rawFile,
   std::size_t offset)
 {
+  BOOST_LOG_FUNCTION()
+
   auto it( rawFile.begin() + offset);
 
   // number of loads
@@ -435,7 +435,7 @@ void LoadListFile::decodeLoadsInfo(
     LoadInfo::ThwIds thwIds{};
     listIt = Arinc665File::decodeStringList( listIt, thwIds);
 
-    loadsValue.emplace_back(
+    loadsV.emplace_back(
       std::move( partNumber),
       std::move( headerFilename),
       static_cast< uint8_t>( fileMemberSequenceNumber),
@@ -443,6 +443,19 @@ void LoadListFile::decodeLoadsInfo(
 
     // set it to begin of next load
     it += loadPointer * 2;
+  }
+}
+
+void LoadListFile::checkUserDefinedData()
+{
+  BOOST_LOG_FUNCTION()
+
+  if ( userDefinedDataV.size() % 2U != 0U)
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
+      << "User defined data must be 2-byte aligned. - extending range";
+
+    userDefinedDataV.push_back(0U);
   }
 }
 

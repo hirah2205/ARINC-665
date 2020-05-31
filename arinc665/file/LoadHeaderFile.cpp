@@ -13,12 +13,12 @@
 #include "LoadHeaderFile.hpp"
 
 #include <arinc665/Arinc665Exception.hpp>
+#include <arinc665/Arinc665Logger.hpp>
 
 #include <arinc665/file/CheckValueUtils.hpp>
 
 #include <helper/Endianess.hpp>
 #include <helper/SafeCast.hpp>
-#include <helper/Logger.hpp>
 
 namespace Arinc665::File {
 
@@ -43,9 +43,10 @@ LoadHeaderFile::LoadHeaderFile(
   targetHardwareIdPositionsValue{ targetHardwareIdPositions},
   dataFilesValue{ dataFilesInfo},
   supportFilesValue{ supportFilesInfo},
-  userDefinedDataValue{ userDefinedData},
+  userDefinedDataV{ userDefinedData},
   loadCrcValue{ loadCrc}
 {
+  checkUserDefinedData();
 }
 
 LoadHeaderFile::LoadHeaderFile(
@@ -62,9 +63,10 @@ LoadHeaderFile::LoadHeaderFile(
   targetHardwareIdPositionsValue{ std::move( targetHardwareIdPositions)},
   dataFilesValue{ std::move( dataFilesInfo)},
   supportFilesValue{ std::move( supportFilesInfo)},
-  userDefinedDataValue{ std::move( userDefinedData)},
-  loadCrcValue{ loadCrc}
+  userDefinedDataV{ std::move( userDefinedData) },
+  loadCrcValue{ loadCrc }
 {
+  checkUserDefinedData();
 }
 
 LoadHeaderFile::LoadHeaderFile( const RawFile &rawFile):
@@ -139,6 +141,8 @@ void LoadHeaderFile::targetHardwareIdPositions(
 
 LoadHeaderFile::StringList LoadHeaderFile::targetHardwareIds() const
 {
+  BOOST_LOG_FUNCTION()
+
   StringList targetHardwareIds{};
 
   for ( const auto &element : targetHardwareIdPositionsValue)
@@ -230,17 +234,25 @@ void LoadHeaderFile::supportFile( LoadFileInfo &&supportFileInfo)
 
 const LoadHeaderFile::UserDefinedData& LoadHeaderFile::userDefinedData() const
 {
-  return userDefinedDataValue;
+  return userDefinedDataV;
 }
 
 void LoadHeaderFile::userDefinedData( const UserDefinedData &userDefinedData)
 {
-  userDefinedDataValue = userDefinedData;
+  BOOST_LOG_FUNCTION()
+
+  userDefinedDataV = userDefinedData;
+
+  checkUserDefinedData();
 }
 
 void LoadHeaderFile::userDefinedData( UserDefinedData &&userDefinedData)
 {
-  userDefinedDataValue = std::move( userDefinedData);
+  BOOST_LOG_FUNCTION()
+
+  userDefinedDataV = std::move( userDefinedData);
+
+  checkUserDefinedData();
 }
 
 uint32_t LoadHeaderFile::loadCrc() const
@@ -270,6 +282,8 @@ void LoadHeaderFile::loadCheckValue( std::optional< CheckValue> &&value)
 
 RawFile LoadHeaderFile::encode() const
 {
+  BOOST_LOG_FUNCTION()
+
   bool encodeV3Data{ false};
   std::size_t baseSize{ 0};
 
@@ -451,18 +465,18 @@ RawFile LoadHeaderFile::encode() const
 
 
   // user defined data pointer
-  assert( userDefinedDataValue.size() % 2 == 0);
+  assert( userDefinedDataV.size() % 2 == 0);
   uint32_t userDefinedDataPtr{ 0};
 
-  if (!userDefinedDataValue.empty())
+  if (!userDefinedDataV.empty())
   {
     userDefinedDataPtr = nextFreeOffset / 2;
-    nextFreeOffset += userDefinedDataValue.size();
+    nextFreeOffset += userDefinedDataV.size();
 
     rawFile.insert(
       rawFile.end(),
-      userDefinedDataValue.begin(),
-      userDefinedDataValue.end());
+      userDefinedDataV.begin(),
+      userDefinedDataV.end());
   }
 
   Helper::setInt< uint32_t>(
@@ -506,6 +520,8 @@ RawFile LoadHeaderFile::encode() const
 
 void LoadHeaderFile::decodeBody( const RawFile &rawFile)
 {
+  BOOST_LOG_FUNCTION()
+
   bool decodeV3Data{ false};
 
   uint32_t partFlags{};
@@ -667,7 +683,7 @@ void LoadHeaderFile::decodeBody( const RawFile &rawFile)
       endOfUserDefinedData = loadCheckValuePtr * 2;
     }
 
-    userDefinedDataValue.assign(
+    userDefinedDataV.assign(
       rawFile.begin() + userDefinedDataPtr * 2,
       rawFile.begin() + endOfUserDefinedData);
   }
@@ -692,6 +708,8 @@ RawFile LoadHeaderFile::encodeFileList(
   const FileListType type,
   const bool encodeV3Data) const
 {
+  BOOST_LOG_FUNCTION()
+
   RawFile rawFileList( sizeof( uint16_t));
 
   // number of loads
@@ -797,6 +815,8 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
   const FileListType type,
   const bool decodeV3Data)
 {
+  BOOST_LOG_FUNCTION()
+
   auto it{ rawFile.begin() + offset};
 
   LoadFilesInfo files{};
@@ -877,6 +897,19 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
   }
 
   return files;
+}
+
+void LoadHeaderFile::checkUserDefinedData()
+{
+  BOOST_LOG_FUNCTION()
+
+  if ( userDefinedDataV.size() % 2U != 0U)
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
+      << "User defined data must be 2-byte aligned. - extending range";
+
+    userDefinedDataV.push_back(0U);
+  }
 }
 
 }

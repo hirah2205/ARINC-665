@@ -243,6 +243,11 @@ class BatchListFile: public ListFile
      **/
     void decodeBatchesInfo( const RawFile &rawFile, std::size_t offset);
 
+    /**
+     * @brief Checks, if the User Defined Data is a multiple of 2 size.
+     **/
+    void checkUserDefinedData();
+
     //! Media Set Part Number
     std::string mediaSetPnValue;
     //! Media Sequence Number
@@ -252,7 +257,7 @@ class BatchListFile: public ListFile
     //! Batches Information
     BatchesInfo batchesValue;
     //! User Defined Data
-    UserDefinedData userDefinedDataValue;
+    UserDefinedData userDefinedDataV;
 };
 
 }
