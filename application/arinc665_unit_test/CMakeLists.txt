@@ -6,12 +6,20 @@
 
 cmake_minimum_required( VERSION 3.16 )
 
-find_package( Boost REQUIRED)
+find_package( Boost REQUIRED )
 
-add_executable( arinc665_unit_test)
+add_executable( arinc665_unit_test )
 
-target_sources( arinc665_unit_test PRIVATE arinc665_unit_test.cpp)
+target_sources( arinc665_unit_test PRIVATE arinc665_unit_test.cpp )
 
-target_link_libraries( arinc665_unit_test arinc665_test helper_test)
+target_link_libraries( arinc665_unit_test arinc665_test helper_test )
 
-add_test( NAME arinc665_unit_test COMMAND arinc665_unit_test)
+add_test( NAME arinc665_unit_test COMMAND arinc665_unit_test )
+
+# INSTALL
+include( GNUInstallDirs )
+
+install(
+  TARGETS arinc665_unit_test
+  COMPONENT runtime
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )

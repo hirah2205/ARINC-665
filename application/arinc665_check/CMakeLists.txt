@@ -6,8 +6,16 @@
 
 cmake_minimum_required( VERSION 3.16 )
 
-add_executable( arinc665_check)
+add_executable( arinc665_check )
 
-target_sources( arinc665_check PRIVATE arinc665_check.cpp)
+target_sources( arinc665_check PRIVATE arinc665_check.cpp )
 
-target_link_libraries( arinc665_check PRIVATE arinc665)
+target_link_libraries( arinc665_check PRIVATE arinc665 )
+
+# INSTALL
+include( GNUInstallDirs )
+
+install(
+  TARGETS arinc665_check
+  COMPONENT runtime
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )

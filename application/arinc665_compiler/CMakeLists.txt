@@ -14,4 +14,12 @@ target_link_libraries(
   arinc665_compiler
 
   PRIVATE
-    arinc665)
+    arinc665 )
+
+# INSTALL
+include( GNUInstallDirs )
+
+install(
+  TARGETS arinc665_compiler
+  COMPONENT runtime
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )

@@ -6,12 +6,19 @@
 
 cmake_minimum_required( VERSION 3.16 )
 
-add_executable( arinc665_decompiler)
+add_executable( arinc665_decompiler )
 
-target_sources( arinc665_decompiler PRIVATE arinc665_decompiler.cpp)
+target_sources( arinc665_decompiler PRIVATE arinc665_decompiler.cpp )
 
 target_link_libraries(
   arinc665_decompiler
 
-  arinc665)
+  arinc665 )
 
+# INSTALL
+include( GNUInstallDirs )
+
+install(
+  TARGETS arinc665_decompiler
+  COMPONENT runtime
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )

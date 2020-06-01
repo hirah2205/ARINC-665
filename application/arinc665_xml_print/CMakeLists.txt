@@ -6,8 +6,16 @@
 
 cmake_minimum_required( VERSION 3.16 )
 
-add_executable( arinc665_xml_print)
+add_executable( arinc665_xml_print )
 
-target_sources( arinc665_xml_print PRIVATE arinc665_xml_print.cpp)
+target_sources( arinc665_xml_print PRIVATE arinc665_xml_print.cpp )
 
-target_link_libraries( arinc665_xml_print arinc665)
+target_link_libraries( arinc665_xml_print arinc665 )
+
+# INSTALL
+include( GNUInstallDirs )
+
+install(
+  TARGETS arinc665_xml_print
+  COMPONENT runtime
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )

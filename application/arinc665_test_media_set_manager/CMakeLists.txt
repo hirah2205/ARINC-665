@@ -6,13 +6,20 @@
 
 cmake_minimum_required( VERSION 3.16 )
 
-add_executable( arinc665_test_media_set_manager)
+add_executable( arinc665_test_media_set_manager )
 
 target_sources(
   arinc665_test_media_set_manager
-  PRIVATE arinc665_test_media_set_manager.cpp)
+  PRIVATE arinc665_test_media_set_manager.cpp )
 
 target_link_libraries(
   arinc665_test_media_set_manager
-  arinc665)
+  arinc665 )
 
+# INSTALL
+include( GNUInstallDirs )
+
+install(
+  TARGETS arinc665_test_media_set_manager
+  COMPONENT runtime
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )

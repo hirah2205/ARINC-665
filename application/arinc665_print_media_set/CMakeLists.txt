@@ -6,8 +6,16 @@
 
 cmake_minimum_required( VERSION 3.16 )
 
-add_executable( arinc665_print_media_set)
+add_executable( arinc665_print_media_set )
 
-target_sources( arinc665_print_media_set PRIVATE arinc665_print_media_set.cpp)
+target_sources( arinc665_print_media_set PRIVATE arinc665_print_media_set.cpp )
 
-target_link_libraries( arinc665_print_media_set arinc665)
+target_link_libraries( arinc665_print_media_set arinc665 )
+
+# INSTALL
+include( GNUInstallDirs )
+
+install(
+  TARGETS arinc665_print_media_set
+  COMPONENT runtime
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )
