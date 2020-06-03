@@ -21,27 +21,27 @@ namespace Arinc665::Media {
 
 bool ContainerEntity::hasChildren() const
 {
-  return !subDirectoriesValue.empty() || !filesValue.empty();
+  return !subDirectoriesV.empty() || !filesV.empty();
 }
 
 size_t ContainerEntity::numberOfSubDirectories() const
 {
-  return subDirectoriesValue.size();
+  return subDirectoriesV.size();
 }
 
 ConstDirectories ContainerEntity::subDirectories() const
 {
-  return ConstDirectories( subDirectoriesValue.begin(), subDirectoriesValue.end());
+  return ConstDirectories( subDirectoriesV.begin(), subDirectoriesV.end());
 }
 
 Directories ContainerEntity::subDirectories()
 {
-  return subDirectoriesValue;
+  return subDirectoriesV;
 }
 
 ConstDirectoryPtr ContainerEntity::subDirectory( std::string_view name) const
 {
-  for (const auto &subDirectory : subDirectoriesValue)
+  for (const auto &subDirectory : subDirectoriesV )
   {
     if (subDirectory->name() == name)
     {
@@ -54,7 +54,7 @@ ConstDirectoryPtr ContainerEntity::subDirectory( std::string_view name) const
 
 DirectoryPtr ContainerEntity::subDirectory( std::string_view name)
 {
-  for (const auto &subDirectory : subDirectoriesValue)
+  for (const auto &subDirectory : subDirectoriesV )
   {
     if (subDirectory->name() == name)
     {
@@ -80,7 +80,7 @@ DirectoryPtr ContainerEntity::addSubDirectory( std::string_view name)
     name)};
 
   // insert into map
-  subDirectoriesValue.push_back( subDirectory);
+  subDirectoriesV.push_back( subDirectory);
 
   // return new sub-directory
   return subDirectory;
@@ -89,47 +89,45 @@ DirectoryPtr ContainerEntity::addSubDirectory( std::string_view name)
 void ContainerEntity::removeSubDirectory( std::string_view name)
 {
   auto dir{ std::find_if(
-    subDirectoriesValue.begin(),
-    subDirectoriesValue.end(),
+    subDirectoriesV.begin(),
+    subDirectoriesV.end(),
     [&name]( const DirectoryPtr &dirEnt){
       return (name == dirEnt->name());
     })};
 
-  if (subDirectoriesValue.end() == dir)
+  if ( subDirectoriesV.end() == dir)
   {
     //! @throw Arinc665Exception() if directory does not exists.
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo( "sub-directory does not exists"));
   }
 
-  subDirectoriesValue.erase( dir);
+  subDirectoriesV.erase( dir);
 }
 
 void ContainerEntity::removeSubDirectory( const DirectoryPtr& subDirectory)
 {
-  auto dir{ std::find(
-    subDirectoriesValue.begin(),
-    subDirectoriesValue.end(),
+  auto dir{ std::find( subDirectoriesV.begin(), subDirectoriesV.end(),
     subDirectory)};
 
-  if (subDirectoriesValue.end() == dir)
+  if ( subDirectoriesV.end() == dir)
    {
      //! @throw Arinc665Exception() if directory does not exists.
      BOOST_THROW_EXCEPTION( Arinc665Exception()
        << Helper::AdditionalInfo( "sub-directory does not exists"));
    }
 
-  subDirectoriesValue.erase( dir);
+   subDirectoriesV.erase( dir);
 }
 
 size_t ContainerEntity::numberOfFiles( const bool recursive) const
 {
-  auto fileSize{ filesValue.size()};
+  auto fileSize{ filesV.size()};
 
   // descent to sub directories if requested
   if ( recursive)
   {
-    for ( const auto &subDirectory : subDirectoriesValue)
+    for ( const auto &subDirectory : subDirectoriesV )
     {
       fileSize += subDirectory->numberOfFiles( true);
     }
@@ -142,12 +140,12 @@ ConstFiles ContainerEntity::files( const bool recursive) const
 {
   if (!recursive)
   {
-    return ConstFiles( filesValue.begin(), filesValue.end());
+    return ConstFiles( filesV.begin(), filesV.end());
   }
 
-  ConstFiles allfiles{ filesValue.begin(), filesValue.end()};
+  ConstFiles allfiles{ filesV.begin(), filesV.end()};
 
-  for ( const auto &subDirectory : subDirectoriesValue)
+  for ( const auto &subDirectory : subDirectoriesV )
   {
     ConstFiles subFiles(
       static_cast< const Directory&>(*subDirectory).files( true));
@@ -162,12 +160,12 @@ Files ContainerEntity::files( const bool recursive)
 {
   if ( !recursive)
   {
-    return filesValue;
+    return filesV;
   }
 
-  Files allFiles{ filesValue};
+  Files allFiles{ filesV };
 
-  for ( auto &subDirectory : subDirectoriesValue)
+  for ( auto &subDirectory : subDirectoriesV )
   {
     Files subFiles( subDirectory->files( true));
 
@@ -181,7 +179,7 @@ ConstFilePtr ContainerEntity::file(
   std::string_view filename,
   const bool recursive) const
 {
-  for ( auto & file : filesValue)
+  for ( auto & file : filesV )
   {
     if ( file->name() == filename)
     {
@@ -191,7 +189,7 @@ ConstFilePtr ContainerEntity::file(
 
   if ( recursive)
   {
-    for (const auto & subDirectory : subDirectoriesValue)
+    for (const auto & subDirectory : subDirectoriesV )
     {
       auto file{ subDirectory->file( filename, true)};
 
@@ -208,7 +206,7 @@ ConstFilePtr ContainerEntity::file(
 
 FilePtr ContainerEntity::file( std::string_view filename, const bool recursive)
 {
-  for ( auto & file : filesValue)
+  for ( auto & file : filesV )
   {
     if ( file->name() == filename)
     {
@@ -218,7 +216,7 @@ FilePtr ContainerEntity::file( std::string_view filename, const bool recursive)
 
   if (recursive)
   {
-    for ( const auto & subDirectory : subDirectoriesValue)
+    for ( const auto & subDirectory : subDirectoriesV )
     {
       FilePtr file = subDirectory->file( filename, true);
 
@@ -247,7 +245,7 @@ FilePtr ContainerEntity::addFile( std::string_view filename)
     filename)};
 
   // insert into map
-  filesValue.push_back( file);
+  filesV.push_back( file);
 
   // return new file
   return file;
@@ -256,37 +254,35 @@ FilePtr ContainerEntity::addFile( std::string_view filename)
 void ContainerEntity::removeFile( std::string_view filename)
 {
   auto file{ std::find_if(
-    filesValue.begin(),
-    filesValue.end(),
+    filesV.begin(),
+    filesV.end(),
     [&filename]( const FilePtr &dirEnt){
       return (filename == dirEnt->name());
     })};
 
-  if (filesValue.end() == file)
+  if ( filesV.end() == file)
   {
     //! @throw Arinc665Exception() if file does not exists.
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo( "File not found"));
   }
 
-  filesValue.erase( file);
+  filesV.erase( file);
 }
 
 void ContainerEntity::removeFile( const ConstFilePtr& file)
 {
-  auto fileIt{ std::find(
-    filesValue.begin(),
-    filesValue.end(),
+  auto fileIt{ std::find( filesV.begin(), filesV.end(),
     file)};
 
-  if ( filesValue.end() == fileIt)
+  if ( filesV.end() == fileIt)
   {
     //! @throw Arinc665Exception() if file does not exists.
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
       Helper::AdditionalInfo( "File not found"));
   }
 
-  filesValue.erase( fileIt);
+  filesV.erase( fileIt);
 }
 
 size_t ContainerEntity::numberOfLoads( const bool recursive) const
@@ -296,7 +292,7 @@ size_t ContainerEntity::numberOfLoads( const bool recursive) const
   // descent to sub directories if requested
   if (recursive)
   {
-    for (const auto &subDirectory : subDirectoriesValue)
+    for (const auto &subDirectory : subDirectoriesV )
     {
       numberOfLoads += subDirectory->numberOfLoads( true);
     }
@@ -318,7 +314,7 @@ ConstLoads ContainerEntity::loads( const bool recursive) const
 
   if (recursive)
   {
-    for (const auto &subDirectory : subDirectoriesValue)
+    for (const auto &subDirectory : subDirectoriesV )
     {
       auto subLoads{
         static_cast< const Directory&>(*subDirectory).loads( true)};
@@ -343,7 +339,7 @@ Loads ContainerEntity::loads( const bool recursive)
 
   if ( recursive)
   {
-    for (const auto &subDirectory : subDirectoriesValue)
+    for (const auto &subDirectory : subDirectoriesV )
     {
       auto subLoads{ subDirectory->loads( true)};
 
@@ -404,7 +400,7 @@ LoadPtr ContainerEntity::addLoad( std::string_view filename)
     filename)};
 
   // insert into map
-  filesValue.push_back( load);
+  filesV.push_back( load);
 
   // return new file
   return load;
@@ -443,7 +439,7 @@ size_t ContainerEntity::numberOfBatches( const bool recursive) const
   // descent to sub directories if requested
   if ( recursive)
   {
-    for ( const auto &subDirectory : subDirectoriesValue)
+    for ( const auto &subDirectory : subDirectoriesV )
     {
       numberOfBatches += subDirectory->numberOfBatches( true);
     }
@@ -469,7 +465,7 @@ ConstBatches ContainerEntity::batches( const bool recursive) const
   // iterate over sub-directories
   if (recursive)
   {
-    for (auto &subDirectory : subDirectoriesValue)
+    for (auto &subDirectory : subDirectoriesV )
     {
       auto subBatches(std::const_pointer_cast< const Directory>(
         subDirectory)->batches( true));
@@ -498,7 +494,7 @@ Batches ContainerEntity::batches( const bool recursive)
   // iterate over sub-directories
   if (recursive)
   {
-    for (auto &subDirectory : subDirectoriesValue)
+    for (auto &subDirectory : subDirectoriesV )
     {
       auto subBatches{ subDirectory->batches( true)};
 
@@ -562,7 +558,7 @@ BatchPtr ContainerEntity::addBatch( std::string_view filename)
     filename)};
 
   // insert into map
-  filesValue.push_back( batch);
+  filesV.push_back( batch);
 
   // return new file
   return batch;
@@ -598,7 +594,7 @@ ConstFiles ContainerEntity::files( FileType fileType) const
 {
   ConstFiles result;
 
-  for ( auto & file : filesValue)
+  for ( auto & file : filesV )
   {
     if ( file->fileType() == fileType)
     {
@@ -613,7 +609,7 @@ Files ContainerEntity::files( FileType fileType)
 {
   Files result;
 
-  for ( auto & file : filesValue)
+  for ( auto & file : filesV )
   {
     if ( file->fileType() == fileType)
     {

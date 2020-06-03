@@ -82,10 +82,10 @@ class ContainerEntity : public Base
      * @retval {}
      *   If no such sub-directory exists.
      **/
-    ConstDirectoryPtr subDirectory( std::string_view name) const;
+    ConstDirectoryPtr subDirectory( std::string_view name ) const;
 
     //! @copydoc subDirectory(std::string_view) const
-    DirectoryPtr subDirectory( std::string_view name);
+    DirectoryPtr subDirectory( std::string_view name );
 
     /**
      * @brief Adds a sub-directory with the given name.
@@ -97,7 +97,7 @@ class ContainerEntity : public Base
      *
      * @return The created sub-directory.
      **/
-    DirectoryPtr addSubDirectory( std::string_view name);
+    DirectoryPtr addSubDirectory( std::string_view name );
 
     /**
      * @brief Removes the sub-directory with the given name.
@@ -107,7 +107,7 @@ class ContainerEntity : public Base
      * @param[in] name
      *   The name of the requested sub-directory to be deleted.
      **/
-    void removeSubDirectory( std::string_view name);
+    void removeSubDirectory( std::string_view name );
 
     /**
      * @brief Removes the given sub-directory.
@@ -117,7 +117,7 @@ class ContainerEntity : public Base
      * @param[in] subDirectory
      *   The sub-directory to be deleted,
      **/
-    void removeSubDirectory( const DirectoryPtr& subDirectory);
+    void removeSubDirectory( const DirectoryPtr& subDirectory );
 
     /**
      * @brief Returns the number of files within this directory and
@@ -128,7 +128,7 @@ class ContainerEntity : public Base
      *
      * @return The number of files within this directory.
      **/
-    size_t numberOfFiles( bool recursive = false) const;
+    size_t numberOfFiles( bool recursive = false ) const;
 
     /**
      * @brief Returns all files present in the given container.
@@ -138,10 +138,10 @@ class ContainerEntity : public Base
      *
      * @return All files of the current container.
      **/
-    ConstFiles files( bool recursive = false) const;
+    ConstFiles files( bool recursive = false ) const;
 
     //! @copydoc files(bool) const
-    Files files( bool recursive = false);
+    Files files( bool recursive = false );
 
     /**
      * @brief Returns the file with the given name.
@@ -162,10 +162,10 @@ class ContainerEntity : public Base
      * @retval {}
      *   If no such file exists.
      **/
-    ConstFilePtr file( std::string_view filename, bool recursive = false) const;
+    ConstFilePtr file( std::string_view filename, bool recursive = false ) const;
 
     //! @copydoc file(const std::string_view,bool) const
-    FilePtr file( std::string_view filename, bool recursive = false);
+    FilePtr file( std::string_view filename, bool recursive = false );
 
     /**
      * @brief Adds a file into this directory.
@@ -175,7 +175,7 @@ class ContainerEntity : public Base
      *
      * @return The created file.
      **/
-    FilePtr addFile( std::string_view filename);
+    FilePtr addFile( std::string_view filename );
 
     /**
      * @brief Removes the file with the given name.
@@ -185,7 +185,7 @@ class ContainerEntity : public Base
      * @param[in] filename
      *   The filename of the file to be deleted.
      **/
-    void removeFile( std::string_view filename);
+    void removeFile( std::string_view filename );
 
     /**
      * @brief Removes the given file.
@@ -195,7 +195,7 @@ class ContainerEntity : public Base
      * @param[in] file
      *   The file to be deleted.
      **/
-    void removeFile( const ConstFilePtr& file);
+    void removeFile( const ConstFilePtr& file );
 
     /**
      * @brief Return the number of loads.
@@ -205,7 +205,7 @@ class ContainerEntity : public Base
      *
      * @return The number of loads.
      **/
-    size_t numberOfLoads( bool recursive = false) const;
+    size_t numberOfLoads( bool recursive = false ) const;
 
     /**
      * @brief Return loads.
@@ -215,10 +215,10 @@ class ContainerEntity : public Base
      *
      * @return Loads contained within this container.
      **/
-    ConstLoads loads( bool recursive = false) const;
+    ConstLoads loads( bool recursive = false ) const;
 
     //! @copydoc loads(bool) const
-    Loads loads( bool recursive = false);
+    Loads loads( bool recursive = false );
 
     /**
      * @brief Returns the load with the given filename.
@@ -232,10 +232,10 @@ class ContainerEntity : public Base
      * @retval {}
      *   If load does not exists.
      **/
-    ConstLoadPtr load( std::string_view filename, bool recursive = false) const;
+    ConstLoadPtr load( std::string_view filename, bool recursive = false ) const;
 
     //! @copydoc load(std::string_view,bool) const
-    LoadPtr load( std::string_view filename, bool recursive = false);
+    LoadPtr load( std::string_view filename, bool recursive = false );
 
     /**
      * @brief Creates a load with the given filename.
@@ -245,7 +245,7 @@ class ContainerEntity : public Base
      *
      * @return Created load
      **/
-    LoadPtr addLoad( std::string_view filename);
+    LoadPtr addLoad( std::string_view filename );
 
     /**
      * @brief Removes the load with the given filename.
@@ -253,7 +253,7 @@ class ContainerEntity : public Base
      * @param[in] filename
      *   Load filename.
      **/
-    void removeLoad( std::string_view filename);
+    void removeLoad( std::string_view filename );
 
     /**
      * @brief Removes the given load.
@@ -261,7 +261,7 @@ class ContainerEntity : public Base
      * @param[in] load
      *   Load to be deleted.
      **/
-    void removeLoad( const ConstLoadPtr& load);
+    void removeLoad( const ConstLoadPtr& load );
 
 
     /**
@@ -272,7 +272,7 @@ class ContainerEntity : public Base
      *
      * @return The number of loads.
      **/
-    size_t numberOfBatches( bool recursive = false) const;
+    size_t numberOfBatches( bool recursive = false ) const;
 
     /**
      * @brief Return batches.
@@ -282,10 +282,10 @@ class ContainerEntity : public Base
      *
      * @return Batches contained within this container.
      **/
-    ConstBatches batches( bool recursive = false) const;
+    ConstBatches batches( bool recursive = false ) const;
 
     //! @copydoc batches(bool) const
-    Batches batches( bool recursive = false);
+    Batches batches( bool recursive = false );
 
     /**
      * @brief Returns the batch with the given filename.
@@ -299,10 +299,10 @@ class ContainerEntity : public Base
      * @retval {}
      *   If batch does not exists.
      **/
-    ConstBatchPtr batch( std::string_view filename, bool recursive = false) const;
+    ConstBatchPtr batch( std::string_view filename, bool recursive = false ) const;
 
     //! @copydoc batch(std::string_view,bool) const
-    BatchPtr batch( std::string_view filename, bool recursive = false);
+    BatchPtr batch( std::string_view filename, bool recursive = false );
 
     /**
      * @brief Creates a batch with the given filename.
@@ -312,7 +312,7 @@ class ContainerEntity : public Base
      *
      * @return Created batch.
      **/
-    BatchPtr addBatch( std::string_view filename);
+    BatchPtr addBatch( std::string_view filename );
 
     /**
      * @brief Removes the batch with the given filename.
@@ -320,7 +320,7 @@ class ContainerEntity : public Base
      * @param[in] filename
      *   Batch filename.
      **/
-    void removeBatch( std::string_view filename);
+    void removeBatch( std::string_view filename );
 
     /**
      * @brief Removes the given batch.
@@ -328,7 +328,7 @@ class ContainerEntity : public Base
      * @param[in] batch
      *   Batch to be deleted.
      **/
-    void removeBatch( const ConstBatchPtr& batch);
+    void removeBatch( const ConstBatchPtr& batch );
 
     /**
      * @brief Returns the parent.
@@ -365,16 +365,16 @@ class ContainerEntity : public Base
      *
      * @return The files (real file, load, batch) with the specified file.
      **/
-    ConstFiles files( FileType fileType) const;
+    ConstFiles files( FileType fileType ) const;
 
     //! @copydoc files(FileType) const
-    Files files( FileType fileType);
+    Files files( FileType fileType );
 
   private:
-    //! sub-directories
-    Directories subDirectoriesValue;
+    //! Sub-Directories
+    Directories subDirectoriesV;
     //! Files
-    Files filesValue;
+    Files filesV;
 };
 
 }
