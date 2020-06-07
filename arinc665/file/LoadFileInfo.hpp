@@ -23,8 +23,10 @@
 namespace Arinc665::File {
 
 /**
- * @brief File Information stored within the file list of the ARINC 665 Load
- *   Header File.
+ * @brief ARINC 665 Load %File Information.
+ *
+ * File Information stored within the file list of the ARINC 665 Load Header
+ * File.
  *
  * The file size is always interpreted in number of bytes (octets).
  *

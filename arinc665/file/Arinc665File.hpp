@@ -24,7 +24,7 @@
 namespace Arinc665::File {
 
 /**
- * @brief Base Class for ARINC 665 Protocol Files
+ * @brief ARINC 665 Protocol %File.
  **/
 class Arinc665File
 {

@@ -23,8 +23,10 @@
 namespace Arinc665::File {
 
 /**
- * @brief Load Information stored within the load list of the ARINC 665 Loads
- *   List File.
+ * @brief ARINC 665 Load Information.
+ *
+ * Load Information stored within the load list of the ARINC 665 Loads List
+ * File.
  *
  * @sa LoadListFile
  **/

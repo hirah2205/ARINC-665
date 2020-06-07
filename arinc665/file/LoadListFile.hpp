@@ -24,7 +24,7 @@
 namespace Arinc665::File {
 
 /**
- * @brief ARINC 665 Load List File (LOADS.LUM).
+ * @brief ARINC 665 Load List %File (LOADS.LUM).
  *
  * @par File Format (ARINC 665-4)
  * Name of Field                   | Field Size (bits)

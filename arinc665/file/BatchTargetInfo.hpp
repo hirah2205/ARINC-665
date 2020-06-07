@@ -22,7 +22,9 @@
 namespace Arinc665::File {
 
 /**
- * @brief The target hardware information, which is part of the batch file.
+ * @brief ARINC 665 Batch Target Information.
+ *
+ * The target hardware information, which is part of the batch file.
  *
  * Within ARINC 665-2 The Target Hardware ID Position Field is named
  * Target HW ID.

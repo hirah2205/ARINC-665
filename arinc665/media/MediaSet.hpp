@@ -22,7 +22,7 @@
 namespace Arinc665::Media {
 
 /**
- * @brief ARINC 665 media set definition.
+ * @brief ARINC 665 %Media Set.
  *
  * A media set consists of one or more medias.
  *

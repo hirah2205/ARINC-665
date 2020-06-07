@@ -21,7 +21,7 @@
 
 namespace Arinc665{
 
-//! ARINC 665 File Type Description
+//! ARINC 665 %File Type Description.
 class FileTypeDescription : public Helper::Description<
   FileTypeDescription,
   FileType,

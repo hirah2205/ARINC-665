@@ -26,7 +26,7 @@ namespace Ui{
 class MediaSetDialog;
 }
 
-//! Media Set Dialog
+//! %Media Set Dialog
 class MediaSetDialog : public QDialog
 {
   Q_OBJECT

@@ -23,7 +23,7 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief Media Set Storage Configuration.
+ * @brief ARINC 665 %Media Set Configuration.
  **/
 class MediaSetConfiguration
 {

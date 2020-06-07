@@ -27,7 +27,7 @@
 namespace Arinc665::Media {
 
 /**
- * @brief Load within media set.
+ * @brief %Load within %Media Set.
  **/
 class Load: public BaseFile
 {

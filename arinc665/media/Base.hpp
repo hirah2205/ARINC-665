@@ -21,8 +21,9 @@
 namespace Arinc665::Media {
 
 /**
- * @brief %Base class for media set classes.
+ * @brief %Media Set Item.
  *
+ * %Base class for media set classes.
  * Provides common attributes.
  */
 class Base : public std::enable_shared_from_this< Base>
@@ -41,7 +42,7 @@ class Base : public std::enable_shared_from_this< Base>
     virtual ~Base() noexcept = default;
 
     /**
-     * @brief Returns the owning media set.
+     * @brief Returns the Owning Media Set.
      *
      * @return The owning media set
      **/
@@ -51,19 +52,19 @@ class Base : public std::enable_shared_from_this< Base>
     virtual MediaSetPtr mediaSet() = 0;
 
     /**
-     * @brief Returns the item type.
+     * @brief Returns the Item Type.
      *
      * @return The item type
      **/
     [[nodiscard]] virtual Type type() const = 0;
 
     /**
-     * @brief Return the part number of the entity.
+     * @brief Return the Part Number of the Item.
      *
      * If the entity itself does not have an part number (e.i. media and
      * directories) the parent part number is returned
      *
-     * @return The part number of the entity
+     * @return The part number of the item.
      **/
     [[nodiscard]] virtual std::string_view partNumber() const = 0;
 };

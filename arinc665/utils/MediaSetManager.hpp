@@ -26,24 +26,26 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief This class manages the locally held media sets.
+ * @brief ARINC 665 %Media Set Manager.
+ *
+ * This class manages the locally held media sets.
  *
  * @par Organisation of Media Set Manager data.
  * * Media sets are stored beneath the [mediaSetBasePath] directory.
  * * Within this directory the media sets each are stored within a directory
- *   named [mediaSetName].
+ *   named @p mediaSetName.
  * * Within the media set directory the media are stored with the corresponding
  *   medium-path mapping.
  **/
 class MediaSetManager
 {
   public:
-    //! Media sets type (list)
+    //! Media Sets (list)
     using MediaSets = std::list< Media::ConstMediaSetPtr>;
 
     //! Handler which returns the path to the given medium number
     using MediumPathHandler =
-      std::function< std::filesystem::path( Media::ConstMediumPtr medium)>;
+      std::function< std::filesystem::path( Media::ConstMediumPtr medium )>;
 
     //! Destructor
     virtual ~MediaSetManager() noexcept = default;

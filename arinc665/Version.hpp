@@ -21,7 +21,7 @@
 
 namespace Arinc665 {
 
-//! ARINC 665 C++ Library Version Information
+//! ARINC 665 C++ Library %Version Information.
 class Version
 {
   public:

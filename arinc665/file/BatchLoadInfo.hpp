@@ -21,8 +21,9 @@
 namespace Arinc665::File {
 
 /**
- * @brief Load Information stored within the taraget list of the ARINC 665
- *   Batch File.
+ * @brief ARINC 665 Batch Load Information.
+ *
+ * Load Information stored within the taraget list of the ARINC 665 Batch File.
  *
  * @sa BatchFile
  **/

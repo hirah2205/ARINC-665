@@ -24,7 +24,7 @@
 namespace Arinc665::File {
 
 /**
- * @brief ARINC 665 Batch List File (BATCHES.LUM).
+ * @brief ARINC 665 Batch List %File (BATCHES.LUM).
  *
  * @par File Format (ARINC 665-4)
  * Name of Field                   | Field Size (bits)

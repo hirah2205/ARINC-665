@@ -20,7 +20,7 @@
 namespace Arinc665::File {
 
 /**
- * @brief Base Class for ARINC 665 Protocol List Files
+ * @brief ARINC 665 Protocol List %File.
  *
  * This intermediate class is defined to add common methods for all List Files.
  *

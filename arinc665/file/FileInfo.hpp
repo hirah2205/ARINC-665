@@ -25,8 +25,10 @@
 namespace Arinc665::File {
 
 /**
- * @brief File Information stored within the file list of the ARINC 665 Files
- *   List File.
+ * @brief ARINC 665 %File List Information.
+ *
+ * File Information stored within the file list of the ARINC 665 Files List
+ * File.
  *
  * @sa FileListFile
  **/

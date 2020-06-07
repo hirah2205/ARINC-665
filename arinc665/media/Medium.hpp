@@ -19,7 +19,7 @@
 namespace Arinc665::Media {
 
 /**
- * @brief Represents a media within an ARINC 665 media set
+ * @brief %Medium within an ARINC 665 %Media Set.
  **/
 class Medium : public ContainerEntity
 {

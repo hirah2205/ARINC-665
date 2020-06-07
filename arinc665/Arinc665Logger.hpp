@@ -21,6 +21,7 @@
 
 namespace Arinc665 {
 
+//! ARINC 665 Logger.
 BOOST_LOG_INLINE_GLOBAL_LOGGER_CTOR_ARGS(
   Arinc665Logger,
   Helper::ChannelSeverityLoggerMt,

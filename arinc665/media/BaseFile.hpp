@@ -21,12 +21,12 @@
 namespace Arinc665::Media {
 
 /**
- * @brief The base class of all files, presented within a media set.
+ * @brief %Media Set %File.
  **/
 class BaseFile: public Base
 {
   public:
-    //! File type
+    //! File Type
     enum class FileType
     {
       RegularFile,
@@ -52,7 +52,7 @@ class BaseFile: public Base
     [[nodiscard]] std::string_view partNumber() const final;
 
     /**
-     * @brief Updates the part number
+     * @brief Updates the Part Number
      *
      * @param[in] partNumber
      *   New Part number
@@ -60,35 +60,31 @@ class BaseFile: public Base
     void partNumber( std::string_view partNumber);
 
     /**
-     * @brief Returns the name of the file.
+     * @brief Returns the Name of the File.
      *
      * @return The name of the file.
      **/
     [[nodiscard]] std::string_view name() const;
 
     /**
-     * @brief Returns the file type.
+     * @brief Returns the File Type.
      *
      * @return The file type
      **/
     [[nodiscard]] virtual FileType fileType() const = 0;
 
     /**
-     * @brief Returns the container element.
-     *
-     * @return The parent container element
-     **/
-    ContainerEntityPtr parent();
-
-    /**
-     * @brief Returns the container element.
+     * @brief Returns the Parent Container.
      *
      * @return The parent container element
      **/
     [[nodiscard]] ConstContainerEntityPtr parent() const;
 
+    //! @copydoc parent() const
+    ContainerEntityPtr parent();
+
     /**
-     * @brief Returns the medium where this file is located.
+     * @brief Returns the Medium where this file is Located.
      *
      * @return The medium where this file is located.
      **/

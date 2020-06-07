@@ -22,7 +22,7 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT Adaption of ARINC 665 Media Set.
+ * @brief QT Adaption of ARINC 665 %Media Set.
  **/
 class MediaSetModel: public QAbstractItemModel
 {

@@ -21,7 +21,7 @@
 #include <arinc665_qt/Arinc665Qt.hpp>
 
 /**
- * @brief ARINC 665 Media QT Classes.
+ * @brief ARINC 665 %Media QT Classes.
  **/
 namespace Arinc665Qt::Media {
 

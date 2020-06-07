@@ -22,7 +22,7 @@
 namespace Arinc665::Media {
 
 /**
- * @brief Data file within media set.
+ * @brief Data %File within %Media Set.
  **/
 class File: public BaseFile
 {

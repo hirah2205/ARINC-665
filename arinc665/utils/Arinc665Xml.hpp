@@ -22,7 +22,9 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief Handles the representation of Media Sets as XML file.
+ * @brief ARINC 665 %Media Set XML Representation Handling.
+ *
+ * Handles the representation of Media Sets as XML file.
  *
  * The ARINC 665 XML is an XML-Schema, which can be used to describe ARINC 665
  * Media Sets and loads in a human readable manner.

@@ -22,8 +22,10 @@
 namespace Arinc665::File {
 
 /**
- * @brief Batch Information stored within the batch list of the ARINC 665 Batch
- *   List File.
+ * @brief ARINC 665 Batch Information.
+ *
+ * Batch Information stored within the batch list of the ARINC 665 Batch List
+ * File.
  *
  * @sa BatchListFile
  **/

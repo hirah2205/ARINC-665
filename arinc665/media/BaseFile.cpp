@@ -62,12 +62,12 @@ std::string_view BaseFile::name() const
   return nameValue;
 }
 
-ContainerEntityPtr BaseFile::parent()
+ConstContainerEntityPtr BaseFile::parent() const
 {
   return parentValue.lock();
 }
 
-ConstContainerEntityPtr BaseFile::parent() const
+ContainerEntityPtr BaseFile::parent()
 {
   return parentValue.lock();
 }

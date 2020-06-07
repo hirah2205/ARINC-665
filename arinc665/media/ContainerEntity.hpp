@@ -28,7 +28,7 @@
 namespace Arinc665::Media {
 
 /**
- * @brief Container base class.
+ * @brief %Media Set Container.
  *
  * Contains common operations needed for containers.
  * Direct children are:

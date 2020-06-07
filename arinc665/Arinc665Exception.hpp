@@ -22,7 +22,7 @@
 
 namespace Arinc665 {
 
-//! Base Class for ARINC 665 Exceptions
+//! ARINC 665 Exception.
 class Arinc665Exception: public virtual Helper::Exception
 {
   public:
@@ -36,7 +36,7 @@ class Arinc665Exception: public virtual Helper::Exception
     }
 };
 
-//! Invalid ARINC 665 file exception.
+//! Invalid ARINC 665 %File Exception.
 class InvalidArinc665File: public virtual Arinc665Exception
 {
   public:

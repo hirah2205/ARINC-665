@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of unit tests for class Arinc665::Media::MediaSet.
+ * @brief Definition of Unit Tests for Class Arinc665::Media::MediaSet.
  **/
 
 #include <arinc665/media/Media.hpp>

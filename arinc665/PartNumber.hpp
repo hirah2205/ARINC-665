@@ -27,7 +27,7 @@ namespace Arinc665 {
  *
  * An ARINC 665 part number is as follows:
  *
- * MMMCC-SSSS-SSSS
+ * `MMMCC-SSSS-SSSS`
  *
  * whereby:
  *  - `MMM` is a unique, upper-case alphanumeric identifier that is assigned to

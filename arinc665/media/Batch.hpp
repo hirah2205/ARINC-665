@@ -23,7 +23,7 @@
 namespace Arinc665::Media {
 
 /**
- * @brief &Batch of loads.
+ * @brief %Batch of Loads.
  **/
 class Batch: public BaseFile
 {

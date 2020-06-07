@@ -27,7 +27,7 @@ namespace Ui {
 class MediaSetWidget;
 }
 
-//! Widget for Media Set Presentation
+//! Widget for %Media Set Presentation
 class MediaSetWidget: public QWidget
 {
   Q_OBJECT

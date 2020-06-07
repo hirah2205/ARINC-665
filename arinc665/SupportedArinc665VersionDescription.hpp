@@ -21,7 +21,7 @@
 
 namespace Arinc665 {
 
-//! Description for SupportedArinc665Version enumeration.
+//! Description for SupportedArinc665Version Enumeration.
 class SupportedArinc665VersionDescription : public Helper::Description<
   SupportedArinc665VersionDescription,
   SupportedArinc665Version,
