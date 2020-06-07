@@ -54,7 +54,7 @@ if( DOXYGEN_FOUND )
     ${arinc665_SOURCE_DIR}/application/arinc665_compiler
     ${arinc665_SOURCE_DIR}/application/arinc665_decompiler
     ${arinc665_SOURCE_DIR}/application/arinc665_ls
-    ${arinc665_SOURCE_DIR}/application/arinc665_media_set_view_qt
+    ${arinc665_SOURCE_DIR}/application/arinc665_media_set_view_gui
     ${arinc665_SOURCE_DIR}/application/arinc665_print_media_set
     ${arinc665_SOURCE_DIR}/application/arinc665_test_media_set_manager
     ${arinc665_SOURCE_DIR}/application/arinc665_unit_test

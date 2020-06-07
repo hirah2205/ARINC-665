@@ -6,12 +6,12 @@
 
 cmake_minimum_required( VERSION 3.16 )
 
-string( RANDOM LENGTH 2048 FILE1_CONTENT)
-string( RANDOM LENGTH 4096 FILE2_CONTENT)
+string( RANDOM LENGTH 2048 FILE1_CONTENT )
+string( RANDOM LENGTH 4096 FILE2_CONTENT )
 
-file( GENERATE OUTPUT File1 CONTENT ${FILE1_CONTENT})
-file( GENERATE OUTPUT File2 CONTENT ${FILE2_CONTENT})
-file( GENERATE OUTPUT Readme.txt CONTENT "Readme Content")
+file( GENERATE OUTPUT File1 CONTENT ${FILE1_CONTENT} )
+file( GENERATE OUTPUT File2 CONTENT ${FILE2_CONTENT} )
+file( GENERATE OUTPUT Readme.txt CONTENT "Readme Content" )
 
 configure_file(
   MediaSetConfig.json.in
@@ -20,7 +20,7 @@ configure_file(
 add_test(
   NAME arinc665_generate_media_set_rmoutdir
   COMMAND
-    ${CMAKE_COMMAND} -E remove_directory MediaSet)
+    ${CMAKE_COMMAND} -E remove_directory MediaSet )
 
 add_test(
   NAME arinc665_generate_media_set
@@ -37,7 +37,7 @@ add_test(
   COMMAND
     arinc665_decompiler
     --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSet.xml
-    --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet/CCC/MEDIUM_001)
+    --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet/CCC/MEDIUM_001 )
 
 
 add_test(
@@ -49,11 +49,11 @@ add_test(
   --destination-directory MediaSet/CCC_V3
   --create-batch-files All
   --create-load-header-files All
-  --version Supplement34)
+  --version Supplement34 )
 
 add_test(
   NAME arinc665_decompile_media_set_v3
   COMMAND
   arinc665_decompiler
   --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSetV3.xml
-  --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet/CCC_V3/MEDIUM_001)
+  --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet/CCC_V3/MEDIUM_001 )

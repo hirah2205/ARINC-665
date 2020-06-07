@@ -14,7 +14,7 @@ if( Qt5Widgets_FOUND )
 
   add_executable( arinc665_media_set_view_qt WIN32 )
 
-  target_sources( arinc665_media_set_view_qt PRIVATE arinc665_media_set_view_qt.cpp )
+  target_sources( arinc665_media_set_view_qt PRIVATE arinc665_media_set_view_gui.cpp )
 
   target_link_libraries(
     arinc665_media_set_view_qt

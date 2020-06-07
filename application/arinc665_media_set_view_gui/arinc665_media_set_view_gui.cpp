@@ -67,6 +67,4 @@ int main( int argc, char * argv[])
     BOOST_LOG_TRIVIAL( error) << "Unknown exception";
     return EXIT_FAILURE;
   }
-
-  return EXIT_SUCCESS;
 }

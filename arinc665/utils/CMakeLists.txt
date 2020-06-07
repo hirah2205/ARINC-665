@@ -20,11 +20,11 @@ target_sources(
     MediaSetConfiguration.hpp
     MediaSetConfiguration.cpp
     MediaSetManager.hpp
-    MediaSetManager.cpp)
+    MediaSetManager.cpp )
 
 #target_sources(
 #  arinc665_test
 #
 #  PRIVATE)
 
-add_subdirectory( implementation)
+add_subdirectory( implementation )

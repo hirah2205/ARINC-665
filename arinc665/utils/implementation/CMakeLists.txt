@@ -10,8 +10,8 @@ target_sources(
   arinc665
 
   PRIVATE
-  Arinc665XmlImpl.hpp
-  Arinc665XmlImpl.cpp
+    Arinc665XmlImpl.hpp
+    Arinc665XmlImpl.cpp
     MediaSetExporterImpl.hpp
     MediaSetExporterImpl.cpp
     MediaSetImporterImpl.hpp
@@ -19,7 +19,7 @@ target_sources(
     MediaSetManagerImpl.hpp
     MediaSetManagerImpl.cpp
     MediaSetValidatorImpl.cpp
-    MediaSetValidatorImpl.hpp)
+    MediaSetValidatorImpl.hpp )
 
 #target_sources(
 #  arinc665_test
