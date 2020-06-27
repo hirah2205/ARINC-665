@@ -68,7 +68,6 @@ if( DOXYGEN_FOUND )
     index.html
     @ONLY )
 
-  include( GNUInstallDirs )
   install(
     DIRECTORY
       ${CMAKE_CURRENT_BINARY_DIR}/html

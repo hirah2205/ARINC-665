@@ -124,16 +124,10 @@ add_subdirectory( file )
 add_subdirectory( media )
 add_subdirectory( utils )
 
-# INSTALL
-include( GNUInstallDirs )
-
 install(
   TARGETS arinc665
   COMPONENT runtime
-  EXPORT arinc665-config
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR}
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} )
+  EXPORT arinc665-config )
 
 install(
   DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}

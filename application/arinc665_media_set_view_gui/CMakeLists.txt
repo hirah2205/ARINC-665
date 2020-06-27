@@ -23,12 +23,8 @@ if( Qt5Widgets_FOUND )
       arinc665_qt
       Qt5::Widgets )
 
-  # INSTALL
-  include( GNUInstallDirs )
-
   install(
     TARGETS arinc665_media_set_view_qt
-    COMPONENT runtime
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )
+    COMPONENT runtime )
 
 endif( Qt5Widgets_FOUND )

@@ -12,10 +12,6 @@ target_sources( arinc665_check PRIVATE arinc665_check.cpp )
 
 target_link_libraries( arinc665_check PRIVATE arinc665 )
 
-# INSTALL
-include( GNUInstallDirs )
-
 install(
   TARGETS arinc665_check
-  COMPONENT runtime
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )
+  COMPONENT runtime )

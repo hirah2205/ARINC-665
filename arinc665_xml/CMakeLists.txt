@@ -6,8 +6,6 @@
 
 cmake_minimum_required( VERSION 3.16 )
 
-include( GNUInstallDirs )
-
 install(
   FILES
     Arinc665MediaSet.xsd

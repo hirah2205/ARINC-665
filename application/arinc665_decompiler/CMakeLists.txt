@@ -10,15 +10,8 @@ add_executable( arinc665_decompiler )
 
 target_sources( arinc665_decompiler PRIVATE arinc665_decompiler.cpp )
 
-target_link_libraries(
-  arinc665_decompiler
-
-  arinc665 )
-
-# INSTALL
-include( GNUInstallDirs )
+target_link_libraries( arinc665_decompiler PRIVATE arinc665 )
 
 install(
   TARGETS arinc665_decompiler
-  COMPONENT runtime
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )
+  COMPONENT runtime )

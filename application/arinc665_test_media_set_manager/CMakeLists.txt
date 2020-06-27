@@ -12,14 +12,8 @@ target_sources(
   arinc665_test_media_set_manager
   PRIVATE arinc665_test_media_set_manager.cpp )
 
-target_link_libraries(
-  arinc665_test_media_set_manager
-  arinc665 )
-
-# INSTALL
-include( GNUInstallDirs )
+target_link_libraries( arinc665_test_media_set_manager PRIVATE arinc665 )
 
 install(
   TARGETS arinc665_test_media_set_manager
-  COMPONENT runtime
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )
+  COMPONENT runtime )

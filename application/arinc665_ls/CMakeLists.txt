@@ -10,12 +10,8 @@ add_executable( arinc665_ls )
 
 target_sources( arinc665_ls PRIVATE arinc665_ls.cpp )
 
-target_link_libraries( arinc665_ls arinc665 )
-
-# INSTALL
-include( GNUInstallDirs )
+target_link_libraries( arinc665_ls PRIVATE arinc665 )
 
 install(
   TARGETS arinc665_ls
-  COMPONENT runtime
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )
+  COMPONENT runtime )

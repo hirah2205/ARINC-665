@@ -12,10 +12,6 @@ target_sources( arinc665_print_media_set PRIVATE arinc665_print_media_set.cpp )
 
 target_link_libraries( arinc665_print_media_set arinc665 )
 
-# INSTALL
-include( GNUInstallDirs )
-
 install(
   TARGETS arinc665_print_media_set
-  COMPONENT runtime
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )
+  COMPONENT runtime )
