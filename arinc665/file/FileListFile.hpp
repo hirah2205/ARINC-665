@@ -142,10 +142,10 @@ class FileListFile: public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit FileListFile( const RawFile &rawFile);
+    explicit FileListFile( const ConstRawFileSpan &rawFile);
 
-    //! @copydoc ListFile::operator=(const RawFile&)
-    FileListFile& operator=( const RawFile &rawFile) final;
+    //! @copydoc ListFile::operator=(const ConstRawFileSpan&)
+    FileListFile& operator=( const ConstRawFileSpan &rawFile) final;
 
     //! @copydoc ListFile::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept final;
@@ -273,7 +273,7 @@ class FileListFile: public ListFile
      * @param[in] rawFile
      *   Raw file list file representation.
      **/
-    void decodeBody( const RawFile &rawFile);
+    void decodeBody( const ConstRawFileSpan &rawFile);
 
     /**
      * @brief Encodes the files information list.
@@ -283,7 +283,7 @@ class FileListFile: public ListFile
      *
      * @return Raw representation of files information list.
      **/
-    [[nodiscard]] RawFile encodeFilesInfo( bool encodeV3Data) const;
+    [[nodiscard]] RawFile encodeFilesInfo( bool encodeV3Data ) const;
 
     /**
      * @brief Decodes the files information list from the raw data.
@@ -296,7 +296,7 @@ class FileListFile: public ListFile
      *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      **/
     void decodeFilesInfo(
-      const RawFile &rawFile,
+      const ConstRawFileSpan &rawFile,
       std::size_t offset,
       bool decodeV3Data);
 

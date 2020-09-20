@@ -19,7 +19,7 @@
 
 namespace Arinc665::File {
 
-RawFile CheckValueUtils_encode( const std::optional< CheckValue> &checkValue)
+RawFile CheckValueUtils_encode( const std::optional< CheckValue> &checkValue )
 {
   RawFile rawCheckValue( sizeof( uint16_t));
 
@@ -53,7 +53,7 @@ RawFile CheckValueUtils_encode( const std::optional< CheckValue> &checkValue)
 }
 
 std::optional< CheckValue> CheckValueUtils_decode(
-  const RawFile &rawFile,
+  const ConstRawFileSpan &rawFile,
   std::size_t offset)
 {
   auto it{ rawFile.begin() + offset};

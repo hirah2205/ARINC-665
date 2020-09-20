@@ -60,14 +60,15 @@ LoadListFile::LoadListFile(
   checkUserDefinedData();
 }
 
-LoadListFile::LoadListFile( const RawFile &rawFile):
+LoadListFile::LoadListFile( const ConstRawFileSpan &rawFile):
   ListFile{ rawFile, FileType::LoadList}
 {
   decodeBody( rawFile);
 }
 
-LoadListFile& LoadListFile::operator=( const RawFile &rawFile)
+LoadListFile& LoadListFile::operator=( const ConstRawFileSpan &rawFile)
 {
+  // call inherited operator
   Arinc665File::operator =( rawFile);
   decodeBody( rawFile);
 
@@ -84,12 +85,12 @@ std::string_view LoadListFile::mediaSetPn() const
   return mediaSetPnValue;
 }
 
-void LoadListFile::mediaSetPn( std::string_view mediaSetPn)
+void LoadListFile::mediaSetPn( std::string_view mediaSetPn )
 {
   mediaSetPnValue = mediaSetPn;
 }
 
-void LoadListFile::mediaSetPn( std::string &&mediaSetPn)
+void LoadListFile::mediaSetPn( std::string &&mediaSetPn )
 {
   mediaSetPnValue = std::move( mediaSetPn);
 }
@@ -99,7 +100,7 @@ uint8_t LoadListFile::mediaSequenceNumber() const
   return mediaSequenceNumberValue;
 }
 
-void LoadListFile::mediaSequenceNumber( const uint8_t mediaSequenceNumber)
+void LoadListFile::mediaSequenceNumber( const uint8_t mediaSequenceNumber )
 {
   mediaSequenceNumberValue = mediaSequenceNumber;
 }
@@ -163,7 +164,7 @@ const LoadListFile::UserDefinedData& LoadListFile::userDefinedData() const
   return userDefinedDataV;
 }
 
-void LoadListFile::userDefinedData( const UserDefinedData &userDefinedData)
+void LoadListFile::userDefinedData( const UserDefinedData &userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 
@@ -172,7 +173,7 @@ void LoadListFile::userDefinedData( const UserDefinedData &userDefinedData)
   checkUserDefinedData();
 }
 
-void LoadListFile::userDefinedData( UserDefinedData &&userDefinedData)
+void LoadListFile::userDefinedData( UserDefinedData &&userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 
@@ -271,7 +272,7 @@ RawFile LoadListFile::encode() const
   return rawFile;
 }
 
-void LoadListFile::decodeBody( const RawFile &rawFile)
+void LoadListFile::decodeBody( const ConstRawFileSpan &rawFile)
 {
   BOOST_LOG_FUNCTION()
 
@@ -392,7 +393,7 @@ RawFile LoadListFile::encodeLoadsInfo() const
 }
 
 void LoadListFile::decodeLoadsInfo(
-  const RawFile &rawFile,
+  const ConstRawFileSpan &rawFile,
   std::size_t offset)
 {
   BOOST_LOG_FUNCTION()

@@ -56,9 +56,9 @@ class Arinc665File
      *
      * @return New iterator position.
      **/
-    static RawFile::const_iterator decodeString(
-      RawFile::const_iterator it,
-      std::string &str);
+    static ConstRawFileSpan::iterator decodeString(
+      ConstRawFileSpan::iterator it,
+      std::string &str );
 
     /**
      * @brief Encodes the ARINC 665 string to the stream.
@@ -80,9 +80,9 @@ class Arinc665File
      *
      * @return New iterator position.
      **/
-    static RawFile::const_iterator decodeStringList(
-      RawFile::const_iterator it,
-      StringList &strings);
+    static ConstRawFileSpan::iterator decodeStringList(
+      ConstRawFileSpan::iterator it,
+      StringList &strings );
 
     /**
      * @brief Encodes the ARINC 665 string list to the stream.
@@ -91,7 +91,7 @@ class Arinc665File
      *
      * @return The encoded raw string list.
      **/
-    static RawFile encodeStringList( const StringList &strings);
+    static RawFile encodeStringList( const StringList &strings );
 
     /**
      * @brief Encodes the given path for storage within ARINC 665 media set
@@ -105,7 +105,7 @@ class Arinc665File
      *
      * @return The converted path.
      **/
-    static std::string encodePath( const std::filesystem::path &path);
+    static std::string encodePath( const std::filesystem::path &path );
 
     /**
      * @brief Decode the file length information from the given file.
@@ -118,7 +118,7 @@ class Arinc665File
      * @throw InvalidArinc665File
      *   If the file size is to small to represent an valid ARINC 665 file.
      **/
-    static uint32_t fileLength( const RawFile &file);
+    static uint32_t fileLength( const ConstRawFileSpan &file );
 
     /**
      * @brief Decode the format version information from the given file.
@@ -128,7 +128,7 @@ class Arinc665File
      *
      * @return The encoded format version.
      **/
-    static uint16_t formatVersion( const RawFile &file);
+    static uint16_t formatVersion( const ConstRawFileSpan &file );
 
     /**
      * @brief Calculates the checksum over the given file.
@@ -142,7 +142,7 @@ class Arinc665File
      * @return The calculated checksum.
      **/
     static uint16_t calculateChecksum(
-      const RawFile &file,
+      const ConstRawFileSpan &file,
       std::size_t skipLastBytes = 2U);
 
     /**
@@ -153,7 +153,7 @@ class Arinc665File
      *
      * @return The ARINC 665 file class type.
      **/
-    static FileClassType fileType( const RawFile &rawFile);
+    static FileClassType fileType( const ConstRawFileSpan &rawFile);
 
     /**
      * @brief Returns the load header file version for [rawFile]
@@ -166,7 +166,7 @@ class Arinc665File
      *   When [rawFile] is not a load header file
      **/
     static LoadFileFormatVersion loadFileFormatVersion(
-      const RawFile &rawFile);
+      const ConstRawFileSpan &rawFile);
 
     /**
      * @brief Returns the batch file version for [rawFile]
@@ -179,7 +179,7 @@ class Arinc665File
      *   When [rawFile] is not a batch file
      **/
     static BatchFileFormatVersion batchFileFormatVersion(
-      const RawFile &rawFile);
+      const ConstRawFileSpan &rawFile);
 
     /**
      * @brief Returns the media file version for [rawFile]
@@ -192,7 +192,7 @@ class Arinc665File
      *   When [rawFile] is not a media file
      **/
     static MediaFileFormatVersion mediaFileFormatVersion(
-      const RawFile &rawFile);
+      const ConstRawFileSpan &rawFile);
 
     /**
      * @brief Returns the Supported ARINC 665 Version for the given @p fileType.
@@ -237,7 +237,7 @@ class Arinc665File
      * @retval FileType::Invalid
      *   If [filename] is not a ARINC 665 file type.
      **/
-    static FileType fileType( const std::filesystem::path &filename);
+    static FileType fileType( const std::filesystem::path &filename );
 
     //! Destructor
     virtual ~Arinc665File() noexcept = default;
@@ -250,7 +250,7 @@ class Arinc665File
      *
      * @return *this
      **/
-    virtual Arinc665File& operator=( const RawFile &rawFile);
+    virtual Arinc665File& operator=( const ConstRawFileSpan &rawFile );
 
     /**
      * @brief Returns the ARINC 665 file as raw data.
@@ -279,7 +279,7 @@ class Arinc665File
      * @param[in] version
      *   The new ARINC 665 version.
      **/
-    void arincVersion( SupportedArinc665Version version);
+    void arincVersion( SupportedArinc665Version version );
 
   protected:
     /**
@@ -292,7 +292,7 @@ class Arinc665File
      **/
     explicit Arinc665File(
       SupportedArinc665Version version,
-      std::size_t checksumPosition = DefaultChecksumPosition) noexcept;
+      std::size_t checksumPosition = DefaultChecksumPosition ) noexcept;
 
     /**
      * @brief Initialises the ARINC 665 file from the given raw data.
@@ -305,7 +305,7 @@ class Arinc665File
      *   Checksum position.
      **/
     explicit Arinc665File(
-      const RawFile &rawFile,
+      const ConstRawFileSpan &rawFile,
       FileType expectedFileType,
       std::size_t checksumPosition = DefaultChecksumPosition);
 
@@ -345,7 +345,9 @@ class Arinc665File
      * @param[in,out] rawFile
      *   The raw file, where the header is encoded.
      **/
-    void insertHeader( RawFile &rawFile) const;
+  //! @throw InvalidArinc665File When file is to small
+  //! @throw InvalidArinc665File When file size is invalid
+    void insertHeader( const RawFileSpan &rawFile) const;
 
   private:
     /**
@@ -356,7 +358,13 @@ class Arinc665File
      * @param[in] expectedFileType
      *   Expected file type.
      **/
-    void decodeHeader( const RawFile &rawFile, const FileType expectedFileType);
+  //! @throw InvalidArinc665File When file is to small
+  //! @throw InvalidArinc665File When file size field is invalid
+  //! @throw InvalidArinc665File When file format is wrong
+  //! @throw InvalidArinc665File When CRC is invalid
+    void decodeHeader(
+      const ConstRawFileSpan &rawFile,
+      const FileType expectedFileType);
 
     //! checksum position
     const std::size_t checksumPosition;

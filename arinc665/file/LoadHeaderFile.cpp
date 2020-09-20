@@ -69,7 +69,7 @@ LoadHeaderFile::LoadHeaderFile(
   checkUserDefinedData();
 }
 
-LoadHeaderFile::LoadHeaderFile( const RawFile &rawFile):
+LoadHeaderFile::LoadHeaderFile( const ConstRawFileSpan &rawFile):
   Arinc665File{ rawFile, FileType::LoadUploadHeader, FileCrcOffset},
   partFlagsValue{ 0},
   loadCrcValue{ 0}
@@ -77,8 +77,9 @@ LoadHeaderFile::LoadHeaderFile( const RawFile &rawFile):
   decodeBody( rawFile);
 }
 
-LoadHeaderFile& LoadHeaderFile::operator=( const RawFile &rawFile)
+LoadHeaderFile& LoadHeaderFile::operator=( const ConstRawFileSpan &rawFile)
 {
+  // call inherited operator
   Arinc665File::operator =( rawFile);
   decodeBody( rawFile);
 
@@ -518,7 +519,7 @@ RawFile LoadHeaderFile::encode() const
   return rawFile;
 }
 
-void LoadHeaderFile::decodeBody( const RawFile &rawFile)
+void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
 {
   BOOST_LOG_FUNCTION()
 
@@ -810,7 +811,7 @@ RawFile LoadHeaderFile::encodeFileList(
 }
 
 LoadFilesInfo LoadHeaderFile::decodeFileList(
-  const RawFile &rawFile,
+  const ConstRawFileSpan &rawFile,
   const std::size_t offset,
   const FileListType type,
   const bool decodeV3Data)

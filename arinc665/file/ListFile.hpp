@@ -45,10 +45,10 @@ class ListFile: public Arinc665File
      * @param[in] mediaSetPn
      *   The Media Set part Number.
      **/
-    virtual void mediaSetPn( std::string_view mediaSetPn) = 0;
+    virtual void mediaSetPn( std::string_view mediaSetPn ) = 0;
 
     //! @copydoc mediaSetPn(std::string_view)
-    virtual void mediaSetPn( std::string &&mediaSetPn) = 0;
+    virtual void mediaSetPn( std::string &&mediaSetPn ) = 0;
 
     /**
      * @brief Returns the media sequence number.
@@ -63,7 +63,7 @@ class ListFile: public Arinc665File
      * @param[in] mediaSequenceNumber
      *   New media sequence number
      **/
-    virtual void mediaSequenceNumber( uint8_t mediaSequenceNumber) = 0;
+    virtual void mediaSequenceNumber( uint8_t mediaSequenceNumber ) = 0;
 
     /**
      * @brief Returns the number of media set members.
@@ -78,29 +78,29 @@ class ListFile: public Arinc665File
      * @param[in] numberOfMediaSetMembers
      *   The new number of media set members
      **/
-    virtual void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) = 0;
+    virtual void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers ) = 0;
 
   protected:
     //! @copydoc Arinc665File::Arinc665File(SupportedArinc665Version,std::size_t)
     explicit ListFile(
       SupportedArinc665Version version,
-      std::size_t checksumPosition = 2U) noexcept;
+      std::size_t checksumPosition = 2U ) noexcept;
 
-    //! @copydoc Arinc665File::Arinc665File(const RawFile&,FileType,std::size_t)
+    //! @copydoc Arinc665File::Arinc665File(const ConstRawFileSpan&,FileType,std::size_t)
     ListFile(
-      const RawFile &rawFile,
+      const ConstRawFileSpan &rawFile,
       FileType expectedFileType,
-      std::size_t checksumPosition = 2U);
+      std::size_t checksumPosition = 2U );
 
     /**
      * @brief Copy Constructor
      *
      * @param[in] other
      **/
-    ListFile( const ListFile &other) = default;
+    ListFile( const ListFile &other ) = default;
 
     //! @copydoc ListFile(const ListFile&)
-    ListFile( ListFile &&other) = default;
+    ListFile( ListFile &&other ) = default;
 
     /**
      * @brief Assignment operator

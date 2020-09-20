@@ -21,7 +21,7 @@ ListFile::ListFile(
 {
 }
 ListFile::ListFile(
-  const RawFile &rawFile,
+  const ConstRawFileSpan &rawFile,
   FileType expectedFileType,
   std::size_t checksumPosition):
   Arinc665File{ rawFile, expectedFileType, checksumPosition}

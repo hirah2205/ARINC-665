@@ -62,7 +62,7 @@ FileListFile::FileListFile(
   checkUserDefinedData();
 }
 
-FileListFile::FileListFile( const RawFile &rawFile):
+FileListFile::FileListFile( const ConstRawFileSpan &rawFile):
   ListFile{ rawFile, FileType::FileList},
   mediaSequenceNumberValue{ 0},
   numberOfMediaSetMembersValue{ 0}
@@ -70,7 +70,7 @@ FileListFile::FileListFile( const RawFile &rawFile):
   decodeBody( rawFile);
 }
 
-FileListFile& FileListFile::operator=( const RawFile &rawFile)
+FileListFile& FileListFile::operator=( const ConstRawFileSpan &rawFile)
 {
   Arinc665File::operator =( rawFile);
   decodeBody( rawFile);
@@ -221,7 +221,7 @@ void FileListFile::checkValue( std::optional< CheckValue> &&value)
   checkValueValue = std::move( value);
 }
 
-bool FileListFile::belongsToSameMediaSet( const FileListFile &other) const
+bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
 {
   BOOST_LOG_FUNCTION()
 
@@ -389,7 +389,7 @@ RawFile FileListFile::encode() const
   return rawFile;
 }
 
-void FileListFile::decodeBody( const RawFile &rawFile)
+void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
 {
   BOOST_LOG_FUNCTION()
 
@@ -500,7 +500,7 @@ void FileListFile::decodeBody( const RawFile &rawFile)
   // file crc decoded and checked within base class
 }
 
-RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data) const
+RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
 {
   BOOST_LOG_FUNCTION()
 
@@ -570,7 +570,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data) const
 }
 
 void FileListFile::decodeFilesInfo(
-  const RawFile &rawFile,
+  const ConstRawFileSpan &rawFile,
   const std::size_t offset,
   const bool decodeV3Data)
 {

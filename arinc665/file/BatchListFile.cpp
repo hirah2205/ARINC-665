@@ -61,13 +61,13 @@ BatchListFile::BatchListFile(
   checkUserDefinedData();
 }
 
-BatchListFile::BatchListFile( const RawFile &rawFile):
+BatchListFile::BatchListFile( const ConstRawFileSpan &rawFile):
   ListFile{ rawFile, FileType::BatchList}
 {
   decodeBody( rawFile);
 }
 
-BatchListFile& BatchListFile::operator=( const RawFile &rawFile)
+BatchListFile& BatchListFile::operator=( const ConstRawFileSpan &rawFile)
 {
   Arinc665File::operator =( rawFile);
   decodeBody( rawFile);
@@ -85,12 +85,12 @@ std::string_view BatchListFile::mediaSetPn() const
   return mediaSetPnValue;
 }
 
-void BatchListFile::mediaSetPn( std::string_view mediaSetPn)
+void BatchListFile::mediaSetPn( std::string_view mediaSetPn )
 {
   mediaSetPnValue = mediaSetPn;
 }
 
-void BatchListFile::mediaSetPn( std::string &&mediaSetPn)
+void BatchListFile::mediaSetPn( std::string &&mediaSetPn )
 {
   mediaSetPnValue = std::move( mediaSetPn);
 }
@@ -100,7 +100,7 @@ uint8_t BatchListFile::mediaSequenceNumber() const
   return mediaSequenceNumberValue;
 }
 
-void BatchListFile::mediaSequenceNumber( const uint8_t mediaSequenceNumber)
+void BatchListFile::mediaSequenceNumber( const uint8_t mediaSequenceNumber )
 {
   mediaSequenceNumberValue = mediaSequenceNumber;
 }
@@ -163,7 +163,7 @@ const BatchListFile::UserDefinedData& BatchListFile::userDefinedData() const
   return userDefinedDataV;
 }
 
-void BatchListFile::userDefinedData( const UserDefinedData &userDefinedData)
+void BatchListFile::userDefinedData( const UserDefinedData &userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 
@@ -172,7 +172,7 @@ void BatchListFile::userDefinedData( const UserDefinedData &userDefinedData)
   checkUserDefinedData();
 }
 
-void BatchListFile::userDefinedData( UserDefinedData &&userDefinedData)
+void BatchListFile::userDefinedData( UserDefinedData &&userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 
@@ -269,7 +269,7 @@ RawFile BatchListFile::encode() const
   return rawFile;
 }
 
-void BatchListFile::decodeBody( const RawFile &rawFile)
+void BatchListFile::decodeBody( const ConstRawFileSpan &rawFile)
 {
   BOOST_LOG_FUNCTION()
 
@@ -396,7 +396,7 @@ RawFile BatchListFile::encodeBatchesInfo() const
 }
 
 void BatchListFile::decodeBatchesInfo(
-  const RawFile &rawFile,
+  const ConstRawFileSpan &rawFile,
   const std::size_t offset)
 {
   BOOST_LOG_FUNCTION()

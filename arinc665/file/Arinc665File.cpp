@@ -21,8 +21,8 @@
 
 namespace Arinc665::File {
 
-RawFile::const_iterator Arinc665File::decodeString(
-  RawFile::const_iterator it,
+ConstRawFileSpan::iterator Arinc665File::decodeString(
+  ConstRawFileSpan::iterator it,
   std::string &str )
 {
   // determine string length
@@ -63,8 +63,8 @@ RawFile Arinc665File::encodeString( std::string_view str )
   return rawString;
 }
 
-RawFile::const_iterator Arinc665File::decodeStringList(
-  RawFile::const_iterator it,
+ConstRawFileSpan::iterator Arinc665File::decodeStringList(
+  ConstRawFileSpan::iterator it,
   StringList &strings)
 {
   // number of strings
@@ -112,7 +112,7 @@ std::string Arinc665File::encodePath( const std::filesystem::path &path)
   return convertedPath;
 }
 
-uint32_t Arinc665File::fileLength( const RawFile &file)
+uint32_t Arinc665File::fileLength( const ConstRawFileSpan &file )
 {
   // check file size
   if ( file.size() < BaseHeaderSize)
@@ -128,7 +128,7 @@ uint32_t Arinc665File::fileLength( const RawFile &file)
   return fileLength;
 }
 
-uint16_t Arinc665File::formatVersion( const RawFile &file)
+uint16_t Arinc665File::formatVersion( const ConstRawFileSpan &file )
 {
   // check file size
   if ( file.size() < BaseHeaderSize)
@@ -147,7 +147,7 @@ uint16_t Arinc665File::formatVersion( const RawFile &file)
 }
 
 uint16_t Arinc665File::calculateChecksum(
-  const RawFile &file,
+  const ConstRawFileSpan &file,
   const std::size_t skipLastBytes)
 {
   Arinc665Crc16 arincCrc16{};
@@ -159,7 +159,8 @@ uint16_t Arinc665File::calculateChecksum(
   return arincCrc16.checksum();
 }
 
-Arinc665::FileClassType Arinc665File::fileType( const RawFile &rawFile )
+Arinc665::FileClassType Arinc665File::fileType(
+  const ConstRawFileSpan &rawFile )
 {
   switch (formatVersion( rawFile))
   {
@@ -181,7 +182,7 @@ Arinc665::FileClassType Arinc665File::fileType( const RawFile &rawFile )
 }
 
 Arinc665::LoadFileFormatVersion Arinc665File::loadFileFormatVersion(
-  const RawFile &rawFile)
+  const ConstRawFileSpan &rawFile)
 {
   const LoadFileFormatVersion formatVersion{
     Arinc665File::formatVersion( rawFile)};
@@ -200,7 +201,7 @@ Arinc665::LoadFileFormatVersion Arinc665File::loadFileFormatVersion(
 }
 
 Arinc665::BatchFileFormatVersion Arinc665File::batchFileFormatVersion(
-  const RawFile &rawFile)
+  const ConstRawFileSpan &rawFile )
 {
   const BatchFileFormatVersion formatVersion{
     Arinc665File::formatVersion( rawFile)};
@@ -219,7 +220,7 @@ Arinc665::BatchFileFormatVersion Arinc665File::batchFileFormatVersion(
 }
 
 Arinc665::MediaFileFormatVersion Arinc665File::mediaFileFormatVersion(
-  const RawFile &rawFile)
+  const ConstRawFileSpan &rawFile )
 {
   const MediaFileFormatVersion formatVersion{
     Arinc665File::formatVersion( rawFile)};
@@ -352,7 +353,7 @@ uint16_t Arinc665File::formatVersionField(
 }
 
 Arinc665::FileType Arinc665File::fileType(
-  const std::filesystem::path &filename)
+  const std::filesystem::path &filename )
 {
   const auto filenameN{ filename.filename().string()};
 
@@ -386,7 +387,7 @@ Arinc665::FileType Arinc665File::fileType(
   return FileType::Invalid;
 }
 
-Arinc665File& Arinc665File::operator=( const RawFile &rawFile)
+Arinc665File& Arinc665File::operator=( const ConstRawFileSpan &rawFile )
 {
   decodeHeader( rawFile, fileType());
   return *this;
@@ -416,7 +417,7 @@ Arinc665File::Arinc665File(
 }
 
 Arinc665File::Arinc665File(
-  const RawFile &rawFile,
+  const ConstRawFileSpan &rawFile,
   const FileType expectedFileType,
   std::size_t checksumPosition) :
   checksumPosition{ checksumPosition},
@@ -453,12 +454,11 @@ Arinc665File& Arinc665File::operator=( Arinc665File &&other) noexcept
   return *this;
 }
 
-void Arinc665File::insertHeader( RawFile &rawFile) const
+void Arinc665File::insertHeader( const RawFileSpan &rawFile) const
 {
   // Check file size
   if ( rawFile.size() <= (BaseHeaderSize + sizeof( uint16_t)))
   {
-    //! @throw InvalidArinc665File When file is to small
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << Helper::AdditionalInfo( "File to small"));
   }
@@ -466,7 +466,6 @@ void Arinc665File::insertHeader( RawFile &rawFile) const
   // Check file size
   if ( rawFile.size() % 2 != 0)
   {
-    //! @throw InvalidArinc665File When file size is invalid
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << Helper::AdditionalInfo( "Invalid size"));
   }
@@ -490,13 +489,12 @@ void Arinc665File::insertHeader( RawFile &rawFile) const
 }
 
 void Arinc665File::decodeHeader(
-  const RawFile &rawFile,
+  const ConstRawFileSpan &rawFile,
   const FileType expectedFileType)
 {
   // Check file size
   if ( rawFile.size() <= BaseHeaderSize)
   {
-    //! @throw InvalidArinc665File When file is to small
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << Helper::AdditionalInfo( "File to small"));
   }
@@ -509,7 +507,6 @@ void Arinc665File::decodeHeader(
 
   if ( fileLength * 2U != rawFile.size())
   {
-    //! @throw InvalidArinc665File When file size field is invalid
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << Helper::AdditionalInfo( "file size invalid"));
   }
@@ -525,7 +522,6 @@ void Arinc665File::decodeHeader(
   // check format field version
   if ( arinc665VersionValue == SupportedArinc665Version::Invalid)
   {
-    //! @throw InvalidArinc665File When file format is wrong
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << Helper::AdditionalInfo( "wrong file format"));
   }
@@ -543,7 +539,6 @@ void Arinc665File::decodeHeader(
   uint16_t calcCrc = calculateChecksum( rawFile, checksumPosition);
   if ( crc != calcCrc)
   {
-    //! @throw InvalidArinc665File When CRC is invalid
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << Helper::AdditionalInfo( "Invalid Checksum"));
   }

@@ -49,14 +49,15 @@ BatchFile::BatchFile(
 {
 }
 
-BatchFile::BatchFile( const RawFile &rawFile):
+BatchFile::BatchFile( const ConstRawFileSpan &rawFile):
   Arinc665File{ rawFile, FileType::BatchFile}
 {
   decodeBody( rawFile);
 }
 
-BatchFile& BatchFile::operator=( const RawFile &rawFile)
+BatchFile& BatchFile::operator=( const ConstRawFileSpan &rawFile)
 {
+  // call inherited operator
   Arinc665File::operator =( rawFile);
   decodeBody( rawFile);
 
@@ -166,7 +167,7 @@ RawFile BatchFile::encode() const
   return rawFile;
 }
 
-void BatchFile::decodeBody( const RawFile &rawFile)
+void BatchFile::decodeBody( const ConstRawFileSpan &rawFile)
 {
   // Spare field
   uint32_t spare{};
@@ -280,14 +281,14 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
 }
 
 void BatchFile::decodeBatchTargetsInfo(
-  const RawFile &rawFile,
+  const ConstRawFileSpan &rawFile,
   const std::size_t offset)
 {
-  //BOOST_LOG_FUNCTION();
+  //BOOST_LOG_FUNCTION()
 
   auto it{ rawFile.begin() + offset};
 
-  // clear potently data
+  // clear potentially data
   targetsHardwareV.clear();
 
   // number of target HW IDs

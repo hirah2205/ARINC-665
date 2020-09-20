@@ -157,7 +157,7 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit LoadHeaderFile( SupportedArinc665Version version);
+    explicit LoadHeaderFile( SupportedArinc665Version version );
 
     /**
      * @brief Creates load header file with the given data.
@@ -184,7 +184,7 @@ class LoadHeaderFile: public Arinc665File
       const LoadFilesInfo &dataFilesInfo,
       const LoadFilesInfo &supportFilesInfo,
       const UserDefinedData &userDefinedData,
-      uint32_t loadCrc);
+      uint32_t loadCrc );
 
     //! @copydoc LoadHeaderFile(SupportedArinc665Version,std::string_view,const TargetHardwareIdPositions&,const LoadFilesInfo&,const LoadFilesInfo&,const UserDefinedData&,uint32_t)
     LoadHeaderFile(
@@ -194,7 +194,7 @@ class LoadHeaderFile: public Arinc665File
       LoadFilesInfo &&dataFilesInfo,
       LoadFilesInfo &&supportFilesInfo,
       UserDefinedData &&userDefinedData,
-      uint32_t loadCrc);
+      uint32_t loadCrc );
 
     /**
      * @brief Creates a load header file from the given raw data.
@@ -202,10 +202,10 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit LoadHeaderFile( const RawFile &rawFile);
+    explicit LoadHeaderFile( const ConstRawFileSpan &rawFile);
 
     //! @copydoc Arinc665File::operator=
-    LoadHeaderFile& operator=( const RawFile &rawFile) final;
+    LoadHeaderFile& operator=( const ConstRawFileSpan &rawFile) final;
 
     //! @copydoc Arinc665File::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept final;
@@ -251,7 +251,8 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return The Target Hardware IDs
      **/
-    [[nodiscard]] const TargetHardwareIdPositions& targetHardwareIdPositions() const;
+    [[nodiscard]] const TargetHardwareIdPositions&
+    targetHardwareIdPositions() const;
 
     //! @copydoc targetHardwareIdPositions() const
     TargetHardwareIdPositions& targetHardwareIdPositions();
@@ -339,10 +340,10 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] dataFileInfo
      *   The data file information.
      **/
-    void dataFile( const LoadFileInfo &dataFileInfo);
+    void dataFile( const LoadFileInfo &dataFileInfo );
 
     //! @copydoc dataFile(const LoadFileInfo&)
-    void dataFile( LoadFileInfo &&dataFileInfo);
+    void dataFile( LoadFileInfo &&dataFileInfo );
 
     /**
      * @brief Return the support files information.
@@ -433,7 +434,7 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] rawFile
      *   Raw Load Header File representation.
      **/
-    void decodeBody( const RawFile &rawFile);
+    void decodeBody( const ConstRawFileSpan &rawFile);
 
     /**
      * @brief Encodes the files information list.
@@ -453,7 +454,7 @@ class LoadHeaderFile: public Arinc665File
     [[nodiscard]] RawFile encodeFileList(
       const LoadFilesInfo &loadFilesInfo,
       FileListType type,
-      bool encodeV3Data) const;
+      bool encodeV3Data ) const;
 
     /**
      * @brief Decodes the files information list from the raw data.
@@ -473,7 +474,7 @@ class LoadHeaderFile: public Arinc665File
      * @return The decoded load files information.
      **/
     LoadFilesInfo decodeFileList(
-      const RawFile &rawFile,
+      const ConstRawFileSpan &rawFile,
       std::size_t offset,
       FileListType type,
       bool decodeV3Data);

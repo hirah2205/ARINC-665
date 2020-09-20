@@ -26,7 +26,7 @@ namespace Arinc665::File {
  *   Check Value to encode.
  * @return The Check Value as raw data.
  **/
-RawFile CheckValueUtils_encode( const std::optional< CheckValue> &checkValue);
+RawFile CheckValueUtils_encode( const std::optional< CheckValue> &checkValue );
 
 /**
  * @brief Decodes the given data as Check Value.
@@ -39,7 +39,7 @@ RawFile CheckValueUtils_encode( const std::optional< CheckValue> &checkValue);
  * @return The decoded Check Value.
  **/
 std::optional< CheckValue> CheckValueUtils_decode(
-  const RawFile &rawFile,
+  const ConstRawFileSpan &rawFile,
   std::size_t offset);
 
 }

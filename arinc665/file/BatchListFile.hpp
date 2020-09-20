@@ -122,10 +122,10 @@ class BatchListFile: public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit BatchListFile( const RawFile &rawFile);
+    explicit BatchListFile( const ConstRawFileSpan &rawFile );
 
-    //! @copydoc ListFile::operator=(const RawFile&)
-    BatchListFile& operator=( const RawFile &rawFile) final;
+    //! @copydoc ListFile::operator=(const ConstRawFileSpan&)
+    BatchListFile& operator=( const ConstRawFileSpan &rawFile ) final;
 
     //! @copydoc ListFile::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept override;
@@ -224,7 +224,7 @@ class BatchListFile: public ListFile
      * @param[in] rawFile
      *   Raw batch list file representation.
      **/
-    void decodeBody( const RawFile &rawFile);
+    void decodeBody( const ConstRawFileSpan &rawFile);
 
     /**
      * @brief Encodes the batches information list.
@@ -241,7 +241,9 @@ class BatchListFile: public ListFile
      * @param[in] offset
      *   Offset of the batches information list.
      **/
-    void decodeBatchesInfo( const RawFile &rawFile, std::size_t offset);
+    void decodeBatchesInfo(
+      const ConstRawFileSpan &rawFile,
+      std::size_t offset );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.

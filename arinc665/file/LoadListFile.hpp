@@ -58,9 +58,9 @@ namespace Arinc665::File {
 class LoadListFile: public ListFile
 {
   public:
-    //! Loads information map
+    //! Loads Information (Map)
     using LoadsInfoMap = std::map< std::pair< uint8_t, std::string>, LoadInfo>;
-    //! User defined data type.
+    //! User Defined Data.
     using UserDefinedData = std::vector< uint8_t>;
 
     //! Offset of the Spare field.
@@ -125,10 +125,10 @@ class LoadListFile: public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit LoadListFile( const RawFile &rawFile);
+    explicit LoadListFile( const ConstRawFileSpan &rawFile);
 
-    //! @copydoc ListFile::operator=(const RawFile&)
-    LoadListFile& operator=( const RawFile &rawFile) final;
+    //! @copydoc ListFile::operator=(const ConstRawFileSpan&)
+    LoadListFile& operator=( const ConstRawFileSpan &rawFile) final;
 
     //! @copydoc ListFile::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept final;
@@ -240,7 +240,7 @@ class LoadListFile: public ListFile
      * @param[in] rawFile
      *   Raw load list file representation.
      **/
-    void decodeBody( const RawFile &rawFile);
+    void decodeBody( const ConstRawFileSpan &rawFile );
 
     /**
      * @brief Encodes the batches information list.
@@ -257,7 +257,7 @@ class LoadListFile: public ListFile
      * @param[in] offset
      *   Offset of the loads information list.
      **/
-    void decodeLoadsInfo( const RawFile &rawFile, std::size_t offset);
+    void decodeLoadsInfo( const ConstRawFileSpan &rawFile, std::size_t offset );
 
 
     /**

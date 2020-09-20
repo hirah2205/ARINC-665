@@ -69,7 +69,7 @@ class BatchFile: public Arinc665File
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit BatchFile( SupportedArinc665Version version);
+    explicit BatchFile( SupportedArinc665Version version );
 
     /**
      * @brief Creates batch file with the given data.
@@ -87,14 +87,14 @@ class BatchFile: public Arinc665File
       SupportedArinc665Version version,
       std::string_view partNumber,
       std::string_view comment,
-      const BatchTargetsInfo &targets);
+      const BatchTargetsInfo &targets );
 
     //! @copydoc BatchFile::BatchFile(SupportedArinc665Version,std::string_view,std::string_view,const BatchTargetsInfo&)
     BatchFile(
       SupportedArinc665Version version,
       std::string &&partNumber,
       std::string &&comment,
-      BatchTargetsInfo &&targets);
+      BatchTargetsInfo &&targets );
 
     /**
      * @brief Creates a batch file from the given raw data.
@@ -102,10 +102,10 @@ class BatchFile: public Arinc665File
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit BatchFile( const RawFile &rawFile);
+    explicit BatchFile( const ConstRawFileSpan &rawFile );
 
     //! @copydoc Arinc665File::operator=
-    BatchFile& operator=( const RawFile &rawFile) final;
+    BatchFile& operator=( const ConstRawFileSpan &rawFile) final;
 
     //! @copydoc Arinc665File::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept final;
@@ -177,7 +177,7 @@ class BatchFile: public Arinc665File
      * @param[in] rawFile
      *   Raw batch file representation.
      **/
-    void decodeBody( const RawFile &rawFile);
+    void decodeBody( const ConstRawFileSpan &rawFile);
 
     /**
      * @brief Encodes the target hardware information list.
@@ -195,7 +195,7 @@ class BatchFile: public Arinc665File
      *   Offset of the target hardware information list.
      **/
     void decodeBatchTargetsInfo(
-      const RawFile &rawFile,
+      const ConstRawFileSpan &rawFile,
       std::size_t offset);
 
     //! Part number
