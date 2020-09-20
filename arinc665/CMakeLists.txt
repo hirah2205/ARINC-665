@@ -4,7 +4,7 @@
 #
 # Thomas Vogt, thomas@thomas-vogt.de
 
-cmake_minimum_required( VERSION 3.16 )
+cmake_minimum_required( VERSION 3.18 )
 
 find_package( Boost REQUIRED )
 find_package( PkgConfig REQUIRED )
@@ -16,9 +16,7 @@ pkg_search_module(
   "libxml++-2.6" )
 
 # prepare Version.cpp
-configure_file(
-  Version.cpp.in
-  Version.cpp )
+configure_file( Version.cpp.in Version.cpp )
 
 add_library( arinc665 )
 
@@ -75,7 +73,7 @@ target_link_libraries(
   PRIVATE
     PkgConfig::Libxmlpp )
 
-target_compile_features( arinc665 PUBLIC cxx_std_17 )
+target_compile_features( arinc665 PUBLIC cxx_std_20 )
 
 
 add_library( arinc665_test OBJECT )
@@ -110,7 +108,7 @@ target_compile_definitions(
     $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS>
     $<$<AND:$<CXX_COMPILER_ID:Clang>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS> )
 
-target_compile_features( arinc665_test PUBLIC cxx_std_17 )
+target_compile_features( arinc665_test PUBLIC cxx_std_20 )
 
 target_include_directories(
   arinc665_test

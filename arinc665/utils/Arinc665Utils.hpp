@@ -151,7 +151,7 @@ class Arinc665Utils
       ReadFileHandler readFileHandler,
       SupportedArinc665Version arinc665Version = SupportedArinc665Version::Supplement2,
       FileCreationPolicy createBatchFiles = FileCreationPolicy::None,
-      FileCreationPolicy createLoadHeaderFiles = FileCreationPolicy::None);
+      FileCreationPolicy createLoadHeaderFiles = FileCreationPolicy::None );
 };
 
 }

@@ -4,14 +4,14 @@
 #
 # Thomas Vogt, thomas@thomas-vogt.de
 
-cmake_minimum_required( VERSION 3.16 )
+cmake_minimum_required( VERSION 3.18 )
 
 find_package( Doxygen )
 find_package( Boost )
 
 if( NOT TARGET doc )
   add_custom_target( doc COMMENT "Generate Documentation" )
-endif( NOT TARGET doc )
+endif()
 
 if( DOXYGEN_FOUND )
   set( DOXYGEN_PROJECT_NAME "${arinc665_DESCRIPTION}" )
@@ -85,7 +85,7 @@ if( DOXYGEN_FOUND )
 #    GENERATE
 #    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/CMakeGraphVizOptions.cmake
 #    CONTENT "\
-#cmake_minimum_required( VERSION 3.16 )
+#cmake_minimum_required( VERSION 3.18 )
 #set( GRAPHVIZ_EXTERNAL_LIBS FALSE)
 #set( GRAPHVIZ_GENERATE_PER_TARGET FALSE)
 #set( GRAPHVIZ_GENERATE_DEPENDERS FALSE)")
@@ -96,4 +96,4 @@ if( DOXYGEN_FOUND )
 #    COMMAND ${DOXYGEN_DOT_EXECUTABLE} -Tpdf -O ${CMAKE_CURRENT_BINARY_DIR}/doc_dep.dot)
 
   #add_dependencies( doc doc_dep)
-endif( DOXYGEN_FOUND )
+endif()

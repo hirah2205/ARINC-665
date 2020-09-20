@@ -23,7 +23,7 @@ namespace Arinc665::File {
 
 RawFile::const_iterator Arinc665File::decodeString(
   RawFile::const_iterator it,
-  std::string &str)
+  std::string &str )
 {
   // determine string length
   uint16_t strLength{};
@@ -42,11 +42,11 @@ RawFile::const_iterator Arinc665File::decodeString(
   return it;
 }
 
-RawFile Arinc665File::encodeString( std::string_view str)
+RawFile Arinc665File::encodeString( std::string_view str )
 {
-  RawFile rawString( sizeof( uint16_t));
+  RawFile rawString( sizeof( uint16_t ));
 
-  auto it{ rawString.begin()};
+  auto it{ rawString.begin() };
 
   // set string length
   it = Helper::setInt< uint16_t>( it, Helper::safeCast< uint16_t>( str.size()));
@@ -82,7 +82,7 @@ RawFile::const_iterator Arinc665File::decodeStringList(
   return it;
 }
 
-RawFile Arinc665File::encodeStringList( const StringList &strings)
+RawFile Arinc665File::encodeStringList( const StringList &strings )
 {
   RawFile rawStrings( sizeof( uint16_t));
 
@@ -159,7 +159,7 @@ uint16_t Arinc665File::calculateChecksum(
   return arincCrc16.checksum();
 }
 
-Arinc665::FileClassType Arinc665File::fileType( const RawFile &rawFile)
+Arinc665::FileClassType Arinc665File::fileType( const RawFile &rawFile )
 {
   switch (formatVersion( rawFile))
   {

@@ -4,7 +4,7 @@
 #
 # Thomas Vogt, thomas@thomas-vogt.de
 
-cmake_minimum_required( VERSION 3.16 )
+cmake_minimum_required( VERSION 3.18 )
 
 string( RANDOM LENGTH 2048 FILE1_CONTENT )
 string( RANDOM LENGTH 4096 FILE2_CONTENT )

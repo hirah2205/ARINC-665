@@ -51,7 +51,7 @@ class MediaSetConfiguration
      * @param[in] config
      *   The ptree to load the config from
      **/
-    void load( const boost::property_tree::ptree &config);
+    void load( const boost::property_tree::ptree &config );
 
     /**
      * @brief Converts the configuration values to a
