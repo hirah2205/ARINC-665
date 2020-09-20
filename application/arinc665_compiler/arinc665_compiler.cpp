@@ -191,7 +191,7 @@ int main( int argc, char ** argv)
   {
     std::cout
       << "ARINC 665 Media Set Compiler - "
-      << Arinc665::Version::version() << "\n";
+      << Arinc665::Version::VersionInformation << "\n";
 
     boost::program_options::variables_map options{};
 

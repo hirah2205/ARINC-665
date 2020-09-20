@@ -31,7 +31,8 @@ BOOST_AUTO_TEST_CASE( version)
     << Version::Patch << "-"
     << Version::Addition << "\n";
 
-  std::cout << "ARINC 665 Version String: " << Version::version() << "\n";
+  std::cout
+    << "ARINC 665 Version Information: " << Version::VersionInformation << "\n";
 }
 
 BOOST_AUTO_TEST_SUITE_END()
