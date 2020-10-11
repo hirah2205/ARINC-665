@@ -30,8 +30,8 @@ namespace Arinc665::Utils {
  * @brief ARINC 665 Utilities.
  *
  * This class provides an interface ARINC 665 Utilities like:
- * * Media set importer, and
- * * Media set exporter
+ * - Media set importer, and
+ * - Media set exporter
  **/
 class Arinc665Utils
 {
@@ -98,7 +98,7 @@ class Arinc665Utils
      * @return The ARINC 665 Media Set importer.
      **/
     static Arinc665Importer arinc665Importer(
-      ReadFileHandler readFileHandler);
+      ReadFileHandler readFileHandler );
 
     /**
      * @brief Creates a ARINC 665 Validator Instance.
@@ -112,7 +112,7 @@ class Arinc665Utils
      **/
     static Arinc665Validator arinc665Validator(
       ReadFileHandler readFileHandler,
-      ValidatorInformationHandler informationHandler);
+      ValidatorInformationHandler informationHandler );
 
     /**
      * @brief Creates a ARINC 665 Media Set exporter.

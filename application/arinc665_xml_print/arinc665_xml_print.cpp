@@ -49,11 +49,11 @@
  **/
 int main( int argc, char* argv[]);
 
-static void listXml( std::filesystem::path &xmlPath);
+static void listXml( std::filesystem::path &xmlPath );
 
-static void listLoad( Arinc665::Media::LoadPtr load);
+static void listLoad( Arinc665::Media::LoadPtr load );
 
-static void listBatch( Arinc665::Media::BatchPtr batch);
+static void listBatch( Arinc665::Media::BatchPtr batch );
 
 int main( int argc, char* argv[])
 {
