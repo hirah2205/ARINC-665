@@ -41,7 +41,6 @@ if( CLANG_TIDY_EXE )
   set( CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE} )
 endif()
 
-# enable testing
 enable_testing()
 
 # GNU Style Installation Directories

@@ -18,11 +18,11 @@
 
 namespace Arinc665 {
 
-BOOST_AUTO_TEST_SUITE( Arinc665Test)
-BOOST_AUTO_TEST_SUITE( Arinc665VersionTest)
+BOOST_AUTO_TEST_SUITE( Arinc665Test )
+BOOST_AUTO_TEST_SUITE( Arinc665VersionTest )
 
 //! Version Test
-BOOST_AUTO_TEST_CASE( version)
+BOOST_AUTO_TEST_CASE( version )
 {
   std::cout
     << "ARINC 665 Version: "
