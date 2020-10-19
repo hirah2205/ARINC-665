@@ -44,16 +44,12 @@ class MediaSet;
 using ConstMediaSetPtr = std::shared_ptr< const MediaSet>;
 //! Media set Pointer
 using MediaSetPtr = std::shared_ptr< MediaSet>;
-//! Weak Media Set Pointer
-using WeakMediaSetPtr = std::weak_ptr< MediaSet>;
 
 class ContainerEntity;
-//! constant container entity Pointer
+//! Constant Container Entity Pointer
 using ConstContainerEntityPtr = std::shared_ptr< const ContainerEntity>;
-//! container entity Pointer
+//! Container Entity Pointer
 using ContainerEntityPtr = std::shared_ptr< ContainerEntity>;
-//! Weak container entity Pointer
-using WeakContainerEntityPtr = std::weak_ptr< ContainerEntity>;
 
 class Medium;
 //! Constant Medium Pointer
@@ -66,16 +62,14 @@ using Media = std::map< uint8_t, MediumPtr>;
 using ConstMedia = std::map< uint8_t, ConstMediumPtr>;
 
 class Directory;
-//! constant directory Pointer
+//! Constant Directory Pointer
 using ConstDirectoryPtr = std::shared_ptr< const Directory>;
-//! directory Pointer
+//! Directory Pointer
 using DirectoryPtr = std::shared_ptr< Directory>;
-//! weak directory Pointer
-using WeakDirectoryPtr = std::weak_ptr< Directory>;
-//! directories list
-using Directories = std::list< DirectoryPtr>;
-//! constant directories list
+//! Constant Directories (List)
 using ConstDirectories = std::list< ConstDirectoryPtr>;
+//! Directories (List)
+using Directories = std::list< DirectoryPtr>;
 
 class PartNumberEntity;
 class BaseFile;
@@ -87,36 +81,26 @@ class Batch;
 using ConstBaseFilePtr = std::shared_ptr< const BaseFile>;
 //! Pointer to BaseFile
 using BaseFilePtr = std::shared_ptr< BaseFile>;
-//! Weak pointer to BaseFile
-using WeakBaseFilePtr = std::weak_ptr< BaseFile>;
-//! files list
+//! Files (List)
 using Files = std::list< BaseFilePtr>;
-//! constant files list
+//! Constant Files (List)
 using ConstFiles = std::list< ConstBaseFilePtr>;
 
 //! Pointer to const BaseFile
 using ConstFilePtr = std::shared_ptr< const BaseFile> ;
 //! Pointer to BaseFile
 using FilePtr = std::shared_ptr< BaseFile>;
-//! Weak pointer to BaseFile
-using WeakFilePtr = std::weak_ptr< BaseFile>;
 
 //! constant load Pointer
 using ConstLoadPtr = std::shared_ptr< const Load>;
 //! load pointer
 using LoadPtr = std::shared_ptr< Load>;
-//! weak load Pointer
-using WeakLoadPtr = std::weak_ptr< Load>;
-//! constant weak load Pointer
-using ConstWeakLoadPtr = std::weak_ptr< const Load>;
 //! loads list
 using Loads = std::list< LoadPtr>;
 //! constant loads list
 using ConstLoads = std::list< ConstLoadPtr>;
-//! weak loads list
-using WeakLoads = std::list< WeakLoadPtr>;
-//! constant weak loads list
-using ConstWeakLoads = std::list< ConstWeakLoadPtr>;
+//! Weak Loads List
+using WeakLoads = std::list< LoadPtr::weak_type >;
 
 //! constant batch Pointer
 using ConstBatchPtr = std::shared_ptr< const Batch> ;

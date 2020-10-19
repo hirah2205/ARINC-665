@@ -79,7 +79,7 @@ const Load::Files& Load::dataFiles() const
   return dataFilesValue;
 }
 
-void Load::dataFile( const WeakFilePtr& dataFile)
+void Load::dataFile( const FilePtr::weak_type &dataFile )
 {
   dataFilesValue.push_back( dataFile);
 }
@@ -89,7 +89,7 @@ const Load::Files& Load::supportFiles() const
   return supportFilesValue;
 }
 
-void Load::supportFile( const WeakFilePtr& supportFile)
+void Load::supportFile( const FilePtr::weak_type &supportFile )
 {
   supportFilesValue.push_back( supportFile);
 }

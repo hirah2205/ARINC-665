@@ -49,27 +49,27 @@ BaseFile::Type BaseFile::type() const
 
 std::string_view BaseFile::partNumber() const
 {
-  return partNumberValue;
+  return partNumberV;
 }
 
-void BaseFile::partNumber( std::string_view partNumber)
+void BaseFile::partNumber( std::string_view partNumber )
 {
-  partNumberValue = partNumber;
+  partNumberV = partNumber;
 }
 
 std::string_view BaseFile::name() const
 {
-  return nameValue;
+  return nameV;
 }
 
 ConstContainerEntityPtr BaseFile::parent() const
 {
-  return parentValue.lock();
+  return parentV.lock();
 }
 
 ContainerEntityPtr BaseFile::parent()
 {
-  return parentValue.lock();
+  return parentV.lock();
 }
 
 ConstMediumPtr BaseFile::medium() const
@@ -105,12 +105,11 @@ std::filesystem::path BaseFile::path() const
     return {};
   }
 
-  return parentPtr->path() / nameValue;
+  return parentPtr->path() / nameV;
 }
 
-BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string_view name):
-  parentValue{ parent},
-  nameValue{ name}
+BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string_view name ):
+  parentV{ parent}, nameV{ name}
 {
   if (!parent)
   {
@@ -120,8 +119,8 @@ BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string_view name):
 }
 
 BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string &&name):
-  parentValue{ parent},
-  nameValue{ std::move( name)}
+  parentV{ parent},
+  nameV{ std::move( name)}
 {
   if (!parent)
   {
@@ -138,12 +137,12 @@ void BaseFile::parent( const ContainerEntityPtr& parent)
       << Helper::AdditionalInfo( "parent must be valid"));
   }
 
-  if (this->parentValue.lock() == parent)
+  if (this->parentV.lock() == parent)
   {
     return;
   }
 
-  parentValue = parent;
+  parentV = parent;
 }
 
 }

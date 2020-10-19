@@ -33,7 +33,7 @@ class Load: public BaseFile
 {
   public:
     //! File List
-    using Files = std::list< WeakFilePtr>;
+    using Files = std::list< FilePtr::weak_type >;
     //! Target Hardware ID / Positions
     using TargetHardwareIdPositions =
       std::map< std::string, std::list< std::string>>;
@@ -54,10 +54,10 @@ class Load: public BaseFile
      * @param[in] name
      *   Name of the Load
      **/
-    Load( ContainerEntityPtr parent, std::string_view name);
+    Load( ContainerEntityPtr parent, std::string_view name );
 
     //! @copydoc Load()
-    Load( ContainerEntityPtr parent, std::string &&name);
+    Load( ContainerEntityPtr parent, std::string &&name );
 
     /**
      * @copydoc BaseFile::fileType()
@@ -133,8 +133,10 @@ class Load: public BaseFile
      *
      * @param[in] dataFile
      *   The data file.
+     *
+     * @todo change to non-weak pointer and check same mediaset (even if null)
      **/
-    void dataFile( const WeakFilePtr& dataFile);
+    void dataFile( const FilePtr::weak_type &dataFile);
 
     /**
      * @brief Returns the support files.
@@ -148,8 +150,10 @@ class Load: public BaseFile
      *
      * @param[in] supportFile
      *   The support file.
+     *
+     * @todo change to non-weak pointer and check same mediaset (even if null)
      **/
-    void supportFile( const WeakFilePtr& supportFile);
+    void supportFile( const FilePtr::weak_type &supportFile);
 
     /**
      * @brief Returns the user-defined data stored in the load header.

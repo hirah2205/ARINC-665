@@ -85,7 +85,7 @@ class Directory : public ContainerEntity
     //! Directory Name
     const std::string nameV;
     //! Parent
-    WeakContainerEntityPtr parentV;
+    ContainerEntityPtr::weak_type parentV;
 };
 
 }

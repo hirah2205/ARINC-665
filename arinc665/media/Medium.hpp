@@ -82,7 +82,7 @@ class Medium : public ContainerEntity
 
   private:
     //! Pointer to media set
-    WeakMediaSetPtr mediaSetV;
+    MediaSetPtr::weak_type mediaSetV;
     //! Medium number
     const uint8_t mediumNumberV;
 };
