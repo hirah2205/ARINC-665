@@ -29,6 +29,8 @@ if( TARGET Qt5::Widgets )
 
   target_include_directories( arinc665_qt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/.. )
 
+  target_compile_features( arinc665_qt PUBLIC cxx_std_20 )
+
   target_link_libraries(
     arinc665_qt
 
@@ -37,4 +39,4 @@ if( TARGET Qt5::Widgets )
       Qt5::Widgets )
 
   add_subdirectory( media )
-endif( TARGET Qt5::Widgets )
+endif()

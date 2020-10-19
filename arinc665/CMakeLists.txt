@@ -39,6 +39,20 @@ target_sources(
     Version.hpp
     ${CMAKE_CURRENT_BINARY_DIR}/Version.cpp )
 
+target_include_directories(
+  arinc665
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> )
+
+target_compile_features( arinc665 PUBLIC cxx_std_20 )
+
+target_compile_definitions(
+  arinc665
+
+  PRIVATE
+  # Activate STL assertions
+  $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS>
+  $<$<AND:$<CXX_COMPILER_ID:Clang>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS> )
+
 target_compile_options(
   arinc665
 
@@ -51,18 +65,6 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
 
-target_compile_definitions(
-  arinc665
-
-  PRIVATE
-    # Activate STL assertions
-    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS>
-    $<$<AND:$<CXX_COMPILER_ID:Clang>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS> )
-
-target_include_directories(
-  arinc665
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> )
-
 target_link_libraries(
   arinc665
 
@@ -72,8 +74,6 @@ target_link_libraries(
 
   PRIVATE
     PkgConfig::Libxmlpp )
-
-target_compile_features( arinc665 PUBLIC cxx_std_20 )
 
 
 add_library( arinc665_test OBJECT )
@@ -85,6 +85,20 @@ target_sources(
     Arinc665CrcTest.cpp
     PartNumberTest.cpp
     VersionTest.cpp )
+
+target_include_directories(
+  arinc665_test
+  PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES> )
+
+target_compile_features( arinc665_test PUBLIC cxx_std_20 )
+
+target_compile_definitions(
+  arinc665_test
+
+  PRIVATE
+    # Activate STL assertions
+    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS>
+    $<$<AND:$<CXX_COMPILER_ID:Clang>,$<CONFIG:Debug>>:_LIBCPP_DEBUG> )
 
 target_compile_options(
   arinc665_test
@@ -99,20 +113,6 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra>
     $<$<CXX_COMPILER_ID:Clang>:-Werror> )
-
-target_compile_definitions(
-  arinc665_test
-
-  PRIVATE
-    # Activate STL assertions
-    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS>
-    $<$<AND:$<CXX_COMPILER_ID:Clang>,$<CONFIG:Debug>>:_GLIBCXX_ASSERTIONS> )
-
-target_compile_features( arinc665_test PUBLIC cxx_std_20 )
-
-target_include_directories(
-  arinc665_test
-  PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES> )
 
 target_link_libraries(
   arinc665_test
