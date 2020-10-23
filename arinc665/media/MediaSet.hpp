@@ -117,7 +117,7 @@ class MediaSet: public Base
     MediumPtr medium( uint8_t index);
 
     /**
-     * @brief Adds an medium to the media set and returns the media index.
+     * @brief Adds an medium to the media set and returns the medium
      *
      * @return The media index of the new medium.
      **/
@@ -156,6 +156,8 @@ class MediaSet: public Base
     /**
      * @brief Returns file with the given filename.
      *
+     * @todo handle multiple files with same name.
+     *
      * @param[in] filename
      *   The filename.
      *
@@ -167,6 +169,8 @@ class MediaSet: public Base
 
     /**
      * @brief Returns file with the given filename.
+     *
+     * @todo handle multiple files with same name.
      *
      * @param[in] filename
      *   The filename.
@@ -201,22 +205,26 @@ class MediaSet: public Base
     /**
      * @brief return the load with the given filename.
      *
+     * @todo handle multiple loads with same name.
+     *
      * @param[in] filename
      *   The filename of the load.
      *
      * @return The load with the given filename.
      **/
-    ConstLoadPtr load( std::string_view filename) const;
+    ConstLoadPtr load( std::string_view filename ) const;
 
     /**
      * @brief return the load with the given filename.
      *
+     * @todo handle multiple loads with same name.
+     *
      * @param[in] filename
      *   The filename of the load.
      *
      * @return The load with the given filename.
      **/
-    LoadPtr load( std::string_view filename);
+    LoadPtr load( std::string_view filename );
 
     /**
      * @brief Removes the load with the given filename.
@@ -224,7 +232,7 @@ class MediaSet: public Base
      * @param[in] filename
      *   The filename of the load.
      **/
-    void removeLoad( std::string_view filename);
+    void removeLoad( std::string_view filename );
 
     /**
      * @brief Removes the given load from the media set.
@@ -232,7 +240,7 @@ class MediaSet: public Base
      * @param[in] load
      *   The load to remove.
      **/
-    void removeLoad( ConstLoadPtr load);
+    void removeLoad( ConstLoadPtr load );
 
     /**
      * @brief Return the number of batches within the media set.
@@ -258,22 +266,26 @@ class MediaSet: public Base
     /**
      * @brief return the batch with the given filename.
      *
+     * @todo handle multiple batches with same name.
+     *
      * @param[in] filename
      *   The filename of the batch.
      *
      * @return The batch with the given filename.
      **/
-    ConstBatchPtr batch( const std::string &filename) const;
+    ConstBatchPtr batch( std::string_view filename ) const;
 
     /**
      * @brief return the batch with the given filename.
      *
+     * @todo handle multiple batches with same name.
+     *
      * @param[in] filename
      *   The filename of the batch.
      *
      * @return The batch with the given filename.
      **/
-    BatchPtr batch( const std::string &filename);
+    BatchPtr batch( std::string_view filename );
 
     /**
      * @brief Removes the batch with the given filename.
@@ -328,10 +340,10 @@ class MediaSet: public Base
      * @param[in] userDefinedData
      *   The user defined data.
      **/
-    void loadsUserDefinedData( const UserDefinedData &userDefinedData);
+    void loadsUserDefinedData( const UserDefinedData &userDefinedData );
 
     //! @copydoc loadsUserDefinedData(const UserDefinedData&)
-    void loadsUserDefinedData( UserDefinedData &&userDefinedData);
+    void loadsUserDefinedData( UserDefinedData &&userDefinedData );
 
     /**
      * @brief Returns the user defined data for batch list files.
@@ -349,10 +361,10 @@ class MediaSet: public Base
      * @param[in] userDefinedData
      *   The user defined data.
      **/
-    void batchesUserDefinedData( const UserDefinedData &userDefinedData);
+    void batchesUserDefinedData( const UserDefinedData &userDefinedData );
 
     //! @copydoc batchesUserDefinedData(const UserDefinedData&)
-    void batchesUserDefinedData( UserDefinedData &&userDefinedData);
+    void batchesUserDefinedData( UserDefinedData &&userDefinedData );
 
   private:
     //! Media

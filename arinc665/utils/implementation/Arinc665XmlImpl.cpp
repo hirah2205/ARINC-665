@@ -623,7 +623,7 @@ void Arinc665XmlImpl::saveLoad(
   }
 
   // iterate over support files
-  for ( auto supportFile : load->supportFiles())
+  for ( const auto& supportFile : load->supportFiles())
   {
     auto supportFileElement{ loadElement.add_child( "SupportFile" )};
     supportFileElement->set_attribute(
@@ -653,7 +653,7 @@ void Arinc665XmlImpl::loadBatch(
       << Helper::AdditionalInfo( "NameRef attribute missing or empty" ));
   }
 
-  auto batch{ mediaSet->batch( nameRef )};
+  auto batch{ mediaSet->batch( toStringView( nameRef ))};
 
   if ( !batch )
   {

@@ -327,9 +327,9 @@ Batches MediaSet::batches()
   return batches;
 }
 
-ConstBatchPtr MediaSet::batch( const std::string &filename) const
+ConstBatchPtr MediaSet::batch( std::string_view filename ) const
 {
-  for (const auto & medium : mediaV)
+  for ( const auto & medium : mediaV)
   {
     auto batch( medium.second->batch( filename, true));
 
@@ -342,13 +342,13 @@ ConstBatchPtr MediaSet::batch( const std::string &filename) const
   return {};
 }
 
-BatchPtr MediaSet::batch( const std::string &filename)
+BatchPtr MediaSet::batch( std::string_view filename)
 {
-  for (const auto & medium : mediaV)
+  for ( const auto & medium : mediaV)
   {
     auto batch( medium.second->batch( filename, true));
 
-    if (batch)
+    if ( batch )
     {
       return batch;
     }
@@ -367,14 +367,14 @@ MediaSet::UserDefinedData& MediaSet::filesUserDefinedData()
   return filesUserDefinedDataV;
 }
 
-void MediaSet::filesUserDefinedData( const UserDefinedData &userDefinedData)
+void MediaSet::filesUserDefinedData( const UserDefinedData &userDefinedData )
 {
   filesUserDefinedDataV = userDefinedData;
 }
 
-void MediaSet::filesUserDefinedData( UserDefinedData &&userDefinedData)
+void MediaSet::filesUserDefinedData( UserDefinedData &&userDefinedData )
 {
-  filesUserDefinedDataV = std::move( userDefinedData);
+  filesUserDefinedDataV = std::move( userDefinedData );
 }
 
 const MediaSet::UserDefinedData& MediaSet::loadsUserDefinedData() const
@@ -387,12 +387,12 @@ MediaSet::UserDefinedData& MediaSet::loadsUserDefinedData()
   return loadsUserDefinedDataV;
 }
 
-void MediaSet::loadsUserDefinedData( const UserDefinedData &userDefinedData)
+void MediaSet::loadsUserDefinedData( const UserDefinedData &userDefinedData )
 {
   loadsUserDefinedDataV = userDefinedData;
 }
 
-void MediaSet::loadsUserDefinedData( UserDefinedData &&userDefinedData)
+void MediaSet::loadsUserDefinedData( UserDefinedData &&userDefinedData )
 {
   loadsUserDefinedDataV = std::move( userDefinedData);
 }

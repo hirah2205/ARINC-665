@@ -33,7 +33,7 @@ class Directory : public ContainerEntity
      * @param[in] name
      *   Name of the directory.
      **/
-    Directory( ContainerEntityPtr parent, std::string_view name);
+    Directory( ContainerEntityPtr parent, std::string_view name );
 
     //! @copydoc ContainerEntity::mediaSet
     ConstMediaSetPtr mediaSet() const final;

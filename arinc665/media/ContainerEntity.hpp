@@ -32,8 +32,8 @@ namespace Arinc665::Media {
  *
  * Contains common operations needed for containers.
  * Direct children are:
- * @li Media, and
- * @li Directory
+ * - Media, and
+ * - Directory.
  **/
 class ContainerEntity : public Base
 {
