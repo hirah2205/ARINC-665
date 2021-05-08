@@ -34,8 +34,8 @@ class Arinc665File
 
     //! Base Header Size
     static constexpr size_t BaseHeaderSize =
-      sizeof( uint32_t) + // file length
-      sizeof( uint16_t);  // ARINC Version
+      sizeof( uint32_t ) + // file length
+      sizeof( uint16_t );  // ARINC Version
 
     //! Default Checksum Position
     static constexpr std::size_t DefaultChecksumPosition = 2U;
@@ -143,7 +143,7 @@ class Arinc665File
      **/
     static uint16_t calculateChecksum(
       const ConstRawFileSpan &file,
-      std::size_t skipLastBytes = 2U);
+      std::size_t skipLastBytes = 2U );
 
     /**
      * @brief Returns the ARINC 665 file class type.
@@ -166,7 +166,7 @@ class Arinc665File
      *   When [rawFile] is not a load header file
      **/
     static LoadFileFormatVersion loadFileFormatVersion(
-      const ConstRawFileSpan &rawFile);
+      const ConstRawFileSpan &rawFile );
 
     /**
      * @brief Returns the batch file version for [rawFile]
@@ -179,7 +179,7 @@ class Arinc665File
      *   When [rawFile] is not a batch file
      **/
     static BatchFileFormatVersion batchFileFormatVersion(
-      const ConstRawFileSpan &rawFile);
+      const ConstRawFileSpan &rawFile );
 
     /**
      * @brief Returns the media file version for [rawFile]
@@ -192,7 +192,7 @@ class Arinc665File
      *   When [rawFile] is not a media file
      **/
     static MediaFileFormatVersion mediaFileFormatVersion(
-      const ConstRawFileSpan &rawFile);
+      const ConstRawFileSpan &rawFile );
 
     /**
      * @brief Returns the Supported ARINC 665 Version for the given @p fileType.
@@ -210,7 +210,7 @@ class Arinc665File
      **/
     static SupportedArinc665Version arinc665Version(
       FileType fileType,
-      uint16_t formatVersionField);
+      uint16_t formatVersionField );
 
     /**
      * @brief Returns the ARINC 665 version for the given [fileType] and
@@ -225,7 +225,7 @@ class Arinc665File
      **/
     static uint16_t formatVersionField(
       FileType fileType,
-      SupportedArinc665Version arinc665Version);
+      SupportedArinc665Version arinc665Version );
 
     /**
      * @brief Detects the file type for the given filename.
@@ -269,7 +269,7 @@ class Arinc665File
     /**
      * @brief Returns the ARINC 665 version of this file.
      *
-     * @return The ARINC 665 version of this file.
+     * @return ARINC 665 version of this file.
      **/
     [[nodiscard]] SupportedArinc665Version arincVersion() const;
 
@@ -277,7 +277,7 @@ class Arinc665File
      * @brief Updates the ARINC 665 version of this file.
      *
      * @param[in] version
-     *   The new ARINC 665 version.
+     *   ARINC 665 version.
      **/
     void arincVersion( SupportedArinc665Version version );
 
@@ -344,27 +344,29 @@ class Arinc665File
      *
      * @param[in,out] rawFile
      *   The raw file, where the header is encoded.
+     *
+     * @throw InvalidArinc665File When file is to small
+     * @throw InvalidArinc665File When file size is invalid
      **/
-  //! @throw InvalidArinc665File When file is to small
-  //! @throw InvalidArinc665File When file size is invalid
-    void insertHeader( const RawFileSpan &rawFile) const;
+    void insertHeader( const RawFileSpan &rawFile ) const;
 
   private:
     /**
      * @brief Initialises class with the given raw data.
      *
-    * @param[in] rawFile
+     * @param[in] rawFile
      *   Raw File.
      * @param[in] expectedFileType
      *   Expected file type.
+     *
+     * @throw InvalidArinc665File When file is to small
+     * @throw InvalidArinc665File When file size field is invalid
+     * @throw InvalidArinc665File When file format is wrong
+     * @throw InvalidArinc665File When CRC is invalid
      **/
-  //! @throw InvalidArinc665File When file is to small
-  //! @throw InvalidArinc665File When file size field is invalid
-  //! @throw InvalidArinc665File When file format is wrong
-  //! @throw InvalidArinc665File When CRC is invalid
     void decodeHeader(
       const ConstRawFileSpan &rawFile,
-      const FileType expectedFileType);
+      FileType expectedFileType );
 
     //! checksum position
     const std::size_t checksumPosition;

@@ -22,7 +22,7 @@ namespace Arinc665::Utils {
 
 MediaSetImporterImpl::MediaSetImporterImpl(
   Arinc665Utils::ReadFileHandler readFileHandler ):
-  readFileHandler{ readFileHandler}
+  readFileHandler{ std::move( readFileHandler ) }
 {
 }
 
@@ -35,7 +35,7 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()()
 
   // Load list of files file
   File::FileListFile fileListFile{
-    readFileHandler( 1, Arinc665::ListOfFilesName)};
+    readFileHandler( 1, Arinc665::ListOfFilesName ) };
 
   // create Media set
   mediaSet = std::make_shared< Media::MediaSet>();

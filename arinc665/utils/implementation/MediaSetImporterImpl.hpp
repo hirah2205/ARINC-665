@@ -21,7 +21,6 @@
 #include <arinc665/file/LoadHeaderFile.hpp>
 #include <arinc665/file/BatchFile.hpp>
 
-
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/MediaSet.hpp>
 
@@ -54,11 +53,11 @@ class MediaSetImporterImpl
 
   private:
     //! Load header files type (mapping filename -> load header file)
-    using LoadHeaderFiles = std::map< std::string, File::LoadHeaderFile>;
+    using LoadHeaderFiles = std::map< std::string, File::LoadHeaderFile >;
     //! Batch files type (mapping filename -> batch file)
-    using BatchFiles = std::map< std::string, File::BatchFile>;
+    using BatchFiles = std::map< std::string, File::BatchFile >;
     //! Container Entity type
-    using ContainerEntityPtr = std::shared_ptr< Media::ContainerEntity>;
+    using ContainerEntityPtr = std::shared_ptr< Media::ContainerEntity >;
 
     /**
      * @brief Loads the information of the given medium
@@ -111,7 +110,7 @@ class MediaSetImporterImpl
     /**
      * @brief Adds all files to the media set representation
      *
-     * Iterates over the file informations and creates the directories and files.
+     * Iterates over the file information and creates the directories and files.
      *
      * @sa addLoads
      * @sa addBatches
@@ -125,7 +124,7 @@ class MediaSetImporterImpl
      * @param[in] loadHeaders
      *   The load header files
      **/
-    void addLoads( File::FileListFile::FileInfoMap &loadHeaders);
+    void addLoads( File::FileListFile::FileInfoMap &loadHeaders );
 
     /**
      * @brief Adds the batches to the media set.
@@ -133,7 +132,7 @@ class MediaSetImporterImpl
      * @param[in] batches
      *   The batch files
      **/
-    void addBatches( File::FileListFile::FileInfoMap &batches);
+    void addBatches( File::FileListFile::FileInfoMap &batches );
 
     /**
      * @brief Creates the logical directory entry if not already created and
@@ -148,30 +147,30 @@ class MediaSetImporterImpl
      **/
     ContainerEntityPtr checkCreateDirectory(
       uint8_t mediumIndex,
-      const std::filesystem::path &directoryPath);
+      const std::filesystem::path &directoryPath );
 
-    //! The read file handler
+    //! Read File Handler
     Arinc665Utils::ReadFileHandler readFileHandler;
 
-    //! The Media Set
+    //! Media Set
     Media::MediaSetPtr mediaSet;
 
-    //! file list file
-    std::optional < File::FileListFile> fileListFile;
-    //! load list file
-    std::optional < File::LoadListFile> loadListFile;
-    //! batch list file
-    std::optional < File::BatchListFile> batchListFile;
-    //! load header files
+    //! File List File
+    std::optional< File::FileListFile > fileListFile;
+    //! Load List File
+    std::optional< File::LoadListFile > loadListFile;
+    //! Batch List File
+    std::optional< File::BatchListFile > batchListFile;
+    //! Load Header Files
     LoadHeaderFiles loadHeaderFiles;
-    //! batch files
+    //! Batch Files
     BatchFiles batchFiles;
 
-    //! file information from list of files
+    //! File Information from List of Files
     File::FileListFile::FileInfoMap fileInfos;
-    //! load information from list of loads
+    //! Load Information from List of Loads
     File::LoadListFile::LoadsInfoMap loadInfos;
-    //! batch information from list of batches
+    //! Batch Information from List of Batches
     File::BatchListFile::BatchInfoMap batchInfos;
 };
 

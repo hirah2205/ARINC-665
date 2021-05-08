@@ -121,29 +121,29 @@ void BatchFile::targetHardware( BatchTargetInfo &&targetHardwareInfo)
 
 RawFile BatchFile::encode() const
 {
-  RawFile rawFile( BatchFileHeaderSize);
+  RawFile rawFile( BatchFileHeaderSize );
 
   // spare field
-  Helper::setInt< uint32_t>( rawFile.begin() + SpareFieldOffset, 0U);
+  Helper::setInt< uint32_t>( rawFile.begin() + SpareFieldOffset, 0U );
 
 
   // Next free Offset (used for optional pointer calculation)
-  size_t nextFreeOffset{ BatchFileHeaderSize};
+  size_t nextFreeOffset{ BatchFileHeaderSize };
 
 
   // batch part number + comment
-  auto rawBatchPn{ encodeString( partNumberValue)};
-  assert( rawBatchPn.size() % 2 == 0);
-  auto rawComment{ encodeString( commentValue)};
-  assert( rawComment.size() % 2 == 0);
+  auto rawBatchPn{ encodeString( partNumberValue ) };
+  assert( rawBatchPn.size() % 2 == 0 );
+  auto rawComment{ encodeString( commentValue ) };
+  assert( rawComment.size() % 2 == 0 );
 
   Helper::setInt< uint32_t>(
     rawFile.begin() + BatchPartNumberPointerFieldOffset,
-    nextFreeOffset / 2);
+    nextFreeOffset / 2 );
   nextFreeOffset += rawBatchPn.size() + rawComment.size();
 
-  rawFile.insert( rawFile.end(), rawBatchPn.begin(), rawBatchPn.end());
-  rawFile.insert( rawFile.end(), rawComment.begin(), rawComment.end());
+  rawFile.insert( rawFile.end(), rawBatchPn.begin(), rawBatchPn.end() );
+  rawFile.insert( rawFile.end(), rawComment.begin(), rawComment.end() );
 
 
   // THW ID load list
@@ -155,28 +155,28 @@ RawFile BatchFile::encode() const
     nextFreeOffset / 2);
   // nextFreeOffset += rawThwIdsList.size();
 
-  rawFile.insert( rawFile.end(), rawThwIdsList.begin(), rawThwIdsList.end());
+  rawFile.insert( rawFile.end(), rawThwIdsList.begin(), rawThwIdsList.end() );
 
 
   // Resize file for file CRC
-  rawFile.resize( rawFile.size() + sizeof( uint16_t));
+  rawFile.resize( rawFile.size() + sizeof( uint16_t) );
 
   // set header and crc
-  insertHeader( rawFile);
+  insertHeader( rawFile );
 
   return rawFile;
 }
 
-void BatchFile::decodeBody( const ConstRawFileSpan &rawFile)
+void BatchFile::decodeBody( const ConstRawFileSpan &rawFile )
 {
   // Spare field
   uint32_t spare{};
-  Helper::getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
+  Helper::getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare );
 
-  if (0U != spare)
+  if ( 0U != spare )
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << Helper::AdditionalInfo( "Spare is not 0"));
+      << Helper::AdditionalInfo( "Spare is not 0" ) );
   }
 
   uint32_t batchPartNumberPtr{};
@@ -192,13 +192,13 @@ void BatchFile::decodeBody( const ConstRawFileSpan &rawFile)
   // batch part number
   auto it{ decodeString(
     rawFile.begin() + batchPartNumberPtr * 2,
-    partNumberValue)};
+    partNumberValue ) };
 
   // comment
-  decodeString( it, commentValue);
+  decodeString( it, commentValue );
 
   // target hardware ID load list
-  decodeBatchTargetsInfo( rawFile, targetHardwareIdListPtr * 2);
+  decodeBatchTargetsInfo( rawFile, targetHardwareIdListPtr * 2 );
 }
 
 RawFile BatchFile::encodeBatchTargetsInfo() const
