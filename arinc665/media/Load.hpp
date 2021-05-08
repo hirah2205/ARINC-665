@@ -36,15 +36,15 @@ class Load: public BaseFile
     using Files = std::list< FilePtr::weak_type >;
     //! Target Hardware ID / Positions
     using TargetHardwareIdPositions =
-      std::map< std::string, std::list< std::string>>;
+      std::map< std::string, std::list< std::string > >;
     //! Target Hardware ID List
-    using TargetHardwareIds = std::list< std::string>;
+    using TargetHardwareIds = std::list< std::string >;
     //! Positions List
-    using Positions = std::list< std::string>;
+    using Positions = std::list< std::string >;
     //! User Defined Data Type
-    using UserDefinedData = std::vector< uint8_t>;
+    using UserDefinedData = std::vector< uint8_t >;
     //! Load Type (Description + ID)
-    using Type = std::optional< std::pair< std::string, uint16_t>>;
+    using Type = std::optional< std::pair< std::string, uint16_t > >;
 
     /**
      * @brief Initialises a ARINC 665 Load
@@ -83,11 +83,11 @@ class Load: public BaseFile
      *   Target Hardware ID/ Positions.
      **/
     void targetHardwareIdPositions(
-      const TargetHardwareIdPositions &targetHardwareIdPositions);
+      const TargetHardwareIdPositions &targetHardwareIdPositions );
 
     //! @copydoc targetHardwareIdPositions(const TargetHardwareIdPositions&)
     void targetHardwareIdPositions(
-      TargetHardwareIdPositions &&targetHardwareIdPositions);
+      TargetHardwareIdPositions &&targetHardwareIdPositions );
 
     /**
      * @brief Returns the List of Target HW IDs without position information.
@@ -114,12 +114,12 @@ class Load: public BaseFile
      **/
     void targetHardwareId(
       std::string_view targetHardwareId,
-      const Positions &positions = {});
+      const Positions &positions = {} );
 
     //! @copydoc targetHardwareId(std::string_view,const Positions&)
     void targetHardwareId(
       std::string &&targetHardwareId,
-      Positions &&positions = {});
+      Positions &&positions = {} );
 
     /**
      * @brief Returns the data files.
@@ -136,7 +136,7 @@ class Load: public BaseFile
      *
      * @todo change to non-weak pointer and check same mediaset (even if null)
      **/
-    void dataFile( const FilePtr::weak_type &dataFile);
+    void dataFile( const FilePtr::weak_type &dataFile );
 
     /**
      * @brief Returns the support files.
@@ -153,7 +153,7 @@ class Load: public BaseFile
      *
      * @todo change to non-weak pointer and check same mediaset (even if null)
      **/
-    void supportFile( const FilePtr::weak_type &supportFile);
+    void supportFile( const FilePtr::weak_type &supportFile );
 
     /**
      * @brief Returns the user-defined data stored in the load header.
@@ -171,10 +171,10 @@ class Load: public BaseFile
      * @param[in] userDefinedData
      *   The updated user-defined data.
      **/
-    void userDefinedData( const UserDefinedData &userDefinedData);
+    void userDefinedData( const UserDefinedData &userDefinedData );
 
     //! @copydoc Load::userDefinedData(const UserDefinedData&)
-    void userDefinedData( UserDefinedData &&userDefinedData);
+    void userDefinedData( UserDefinedData &&userDefinedData );
 
     /**
      * @brief Returns the Load Type.
@@ -189,22 +189,22 @@ class Load: public BaseFile
      * @param[in] type
      *   New Load Type.
      **/
-    void loadType( const Type &type);
+    void loadType( const Type &type );
 
     //! @copydoc loadType(const Type&)
-    void loadType( Type &&type);
+    void loadType( Type &&type );
 
   private:
     //! Target Hardware ID/ Positions
-    TargetHardwareIdPositions targetHardwareIdPositionsValue;
+    TargetHardwareIdPositions targetHardwareIdPositionsV;
     //! Data Files
-    Files dataFilesValue;
+    Files dataFilesV;
     //! Support Files
-    Files supportFilesValue;
+    Files supportFilesV;
     //! User Defined Data
-    UserDefinedData userDefinedDataValue;
+    UserDefinedData userDefinedDataV;
     //! Load Type
-    Type typeValue;
+    Type typeV;
 };
 
 }

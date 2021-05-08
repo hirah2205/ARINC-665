@@ -32,7 +32,7 @@ class Medium : public ContainerEntity
      * @param[in] mediumNumber
      *   The medium number.
      **/
-    Medium( MediaSetPtr mediaSet, uint8_t mediumNumber);
+    Medium( MediaSetPtr mediaSet, uint8_t mediumNumber );
 
     //! @copydoc ContainerEntity::mediaSet
     ConstMediaSetPtr mediaSet() const final;
@@ -81,7 +81,7 @@ class Medium : public ContainerEntity
     uint8_t mediumNumber() const;
 
   private:
-    //! Pointer to media set
+    //! Pointer to Media Set
     MediaSetPtr::weak_type mediaSetV;
     //! Medium number
     const uint8_t mediumNumberV;

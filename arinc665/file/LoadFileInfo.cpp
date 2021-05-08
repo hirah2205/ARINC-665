@@ -20,11 +20,8 @@ LoadFileInfo::LoadFileInfo(
   const uint64_t length,
   const uint16_t crc,
   const std::optional< CheckValue> &checkValue):
-  filenameValue{ filename},
-  partNumberValue{ partNumber},
-  lengthValue{ length},
-  crcValue{ crc},
-  checkValueValue{ checkValue}
+  filenameV{ filename},
+  partNumberV{ partNumber}, lengthV{ length}, crcV{ crc}, checkValueV{ checkValue}
 {
 }
 
@@ -34,77 +31,77 @@ LoadFileInfo::LoadFileInfo(
   const uint64_t length,
   const uint16_t crc,
   std::optional< CheckValue> &&checkValue):
-  filenameValue{( std::move( filename))},
-  partNumberValue{( std::move( partNumber))},
-  lengthValue{ length},
-  crcValue{ crc},
-  checkValueValue{( std::move( checkValue))}
+  filenameV{ std::move( filename) },
+  partNumberV{ std::move( partNumber ) },
+  lengthV{ length },
+  crcV{ crc },
+  checkValueV{ std::move( checkValue ) }
 {
 }
 
 std::string_view LoadFileInfo::filename() const
 {
-  return filenameValue;
+  return filenameV;
 }
 
 void LoadFileInfo::filename( std::string_view filename)
 {
-  filenameValue = filename;
+  filenameV = filename;
 }
 
 void LoadFileInfo::filename( std::string &&filename)
 {
-  filenameValue = std::move( filename);
+  filenameV = std::move( filename);
 }
 
 std::string_view LoadFileInfo::partNumber() const
 {
-  return partNumberValue;
+  return partNumberV;
 }
 
 void LoadFileInfo::partNumber( std::string_view partNumber)
 {
-  partNumberValue = partNumber;
+  partNumberV = partNumber;
 }
 
 void LoadFileInfo::partNumber( std::string &&partNumber)
 {
-  partNumberValue = std::move( partNumber);
+  partNumberV = std::move( partNumber);
 }
 
 uint64_t LoadFileInfo::length() const
 {
-  return lengthValue;
+  return lengthV;
 }
 
 void LoadFileInfo::length( const uint64_t length)
 {
-  lengthValue = length;
+  lengthV = length;
 }
 
 uint16_t LoadFileInfo::crc() const
 {
-  return crcValue;
+  return crcV;
 }
 
 void LoadFileInfo::crc( const uint16_t crc)
 {
-  crcValue = crc;
+  crcV = crc;
 }
 
 const std::optional< CheckValue>& LoadFileInfo::checkValue() const
 {
-  return checkValueValue;
+  return checkValueV;
 }
 
 void LoadFileInfo::checkValue( const std::optional< CheckValue> &checkValue)
 {
-  checkValueValue = checkValue;
+  checkValueV = checkValue;
 }
 
 void LoadFileInfo::checkValue( std::optional< CheckValue> &&checkValue)
 {
-  checkValueValue = std::move( checkValue);
+  checkValueV = std::move( checkValue);
 }
 
 }

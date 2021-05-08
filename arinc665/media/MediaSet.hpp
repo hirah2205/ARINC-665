@@ -27,13 +27,12 @@ namespace Arinc665::Media {
  * A media set consists of one or more medias.
  *
  * Each media consists of one or more files.
- *
  **/
 class MediaSet: public Base
 {
   public:
     //! User Defined Data
-    using UserDefinedData = std::vector< uint8_t>;
+    using UserDefinedData = std::vector< uint8_t >;
 
     /**
      * @brief Creates a new media set.

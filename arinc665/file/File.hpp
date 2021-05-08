@@ -23,6 +23,8 @@
 #include <vector>
 #include <span>
 #include <list>
+#include <map>
+#include <string>
 #include <cstdint>
 
 /**
@@ -55,31 +57,31 @@ using RawFileSpan = std::span< uint8_t>;
 class Arinc665File;
 
 class LoadFileInfo;
-//! Load Files Information (list).
+//! Load Files Information.
 using LoadFilesInfo = std::list< LoadFileInfo>;
 class LoadHeaderFile;
 
 class BatchTargetInfo;
-//! Batch Targets Information (list).
+//! Batch Targets Information.
 using BatchTargetsInfo = std::list< BatchTargetInfo>;
 class BatchLoadInfo;
-//! Batch Loads Information (list).
+//! Batch Loads Information.
 using BatchLoadsInfo = std::list< BatchLoadInfo>;
 class BatchFile;
 
 class BatchInfo;
-//! Batches Information (list).
-using BatchesInfo = std::list< BatchInfo>;
+//! Batches Information.
+using BatchesInfo = std::list< BatchInfo >;
 class BatchListFile;
 
 class LoadInfo;
-//! Loads Information (list).
-using LoadsInfo = std::list< LoadInfo>;
+//! Loads Information.
+using LoadsInfo = std::list< LoadInfo >;
 class LoadListFile;
 
 class FileInfo;
-//! Files Information (list).
-using FilesInfo = std::vector< FileInfo>;
+//! Files Information.
+using FilesInfo = std::vector< FileInfo >;
 class FileListFile;
 
 }

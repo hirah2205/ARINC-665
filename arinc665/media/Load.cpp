@@ -33,31 +33,31 @@ Load::FileType Load::fileType() const
 
 const Load::TargetHardwareIdPositions& Load::targetHardwareIdPositions() const
 {
-  return targetHardwareIdPositionsValue;
+  return targetHardwareIdPositionsV;
 }
 
 Load::TargetHardwareIdPositions& Load::targetHardwareIdPositions()
 {
-  return targetHardwareIdPositionsValue;
+  return targetHardwareIdPositionsV;
 }
 
 void Load::targetHardwareIdPositions(
   const TargetHardwareIdPositions &targetHardwareIdPositions)
 {
-  targetHardwareIdPositionsValue = targetHardwareIdPositions;
+  targetHardwareIdPositionsV = targetHardwareIdPositions;
 }
 
 void Load::targetHardwareIdPositions(
   TargetHardwareIdPositions &&targetHardwareIdPositions)
 {
-  targetHardwareIdPositionsValue = std::move( targetHardwareIdPositions);
+  targetHardwareIdPositionsV = std::move( targetHardwareIdPositions);
 }
 
 Load::TargetHardwareIds Load::targetHardwareIds() const
 {
   std::list< std::string> thwIds;
 
-  for ( const auto &item : targetHardwareIdPositionsValue)
+  for ( const auto &item : targetHardwareIdPositionsV )
   {
     thwIds.push_back( item.first);
   }
@@ -69,64 +69,64 @@ void Load::targetHardwareIds( const TargetHardwareIds &thwIds)
 {
   for ( const auto &targetHardwareId : thwIds)
   {
-    targetHardwareIdPositionsValue.insert(
+    targetHardwareIdPositionsV.insert(
       std::make_pair( targetHardwareId, Positions{}));
   }
 }
 
 const Load::Files& Load::dataFiles() const
 {
-  return dataFilesValue;
+  return dataFilesV;
 }
 
 void Load::dataFile( const FilePtr::weak_type &dataFile )
 {
-  dataFilesValue.push_back( dataFile);
+  dataFilesV.push_back( dataFile);
 }
 
 const Load::Files& Load::supportFiles() const
 {
-  return supportFilesValue;
+  return supportFilesV;
 }
 
 void Load::supportFile( const FilePtr::weak_type &supportFile )
 {
-  supportFilesValue.push_back( supportFile);
+  supportFilesV.push_back( supportFile);
 }
 
 const Load::UserDefinedData& Load::userDefinedData() const
 {
-  return userDefinedDataValue;
+  return userDefinedDataV;
 }
 
 Load::UserDefinedData& Load::userDefinedData()
 {
-  return userDefinedDataValue;
+  return userDefinedDataV;
 }
 
 void Load::userDefinedData( const std::vector< uint8_t> &userDefinedData)
 {
-  userDefinedDataValue = userDefinedData;
+  userDefinedDataV = userDefinedData;
 }
 
 void Load::userDefinedData( Load::UserDefinedData &&userDefinedData)
 {
-  userDefinedDataValue= std::move( userDefinedData);
+  userDefinedDataV = std::move( userDefinedData);
 }
 
 const Load::Type& Load::loadType() const
 {
-  return typeValue;
+  return typeV;
 }
 
 void Load::loadType( const Type &type)
 {
-  typeValue = type;
+  typeV = type;
 }
 
 void Load::loadType( Type &&type)
 {
-  typeValue = std::move( type);
+  typeV = std::move( type);
 }
 
 }

@@ -24,8 +24,8 @@ namespace Arinc665::File {
 
 LoadHeaderFile::LoadHeaderFile( SupportedArinc665Version version) :
   Arinc665File{ version, FileCrcOffset},
-  partFlagsValue{ 0},
-  loadCrcValue{ 0}
+  partFlagsV{ 0},
+  loadCrcV{ 0}
 {
 }
 
@@ -38,13 +38,13 @@ LoadHeaderFile::LoadHeaderFile(
   const UserDefinedData &userDefinedData,
   uint32_t loadCrc):
   Arinc665File{ version, FileCrcOffset},
-  partFlagsValue{ 0}, //! @todo add
-  partNumberValue{ partNumber},
-  targetHardwareIdPositionsValue{ targetHardwareIdPositions},
-  dataFilesValue{ dataFilesInfo},
-  supportFilesValue{ supportFilesInfo},
-  userDefinedDataV{ userDefinedData},
-  loadCrcValue{ loadCrc}
+  partFlagsV{ 0 }, //! @todo add
+  partNumberV{ partNumber },
+  targetHardwareIdPositionsV{ targetHardwareIdPositions },
+  dataFilesV{ dataFilesInfo },
+  supportFilesV{ supportFilesInfo },
+  userDefinedDataV{ userDefinedData },
+  loadCrcV{ loadCrc }
 {
   checkUserDefinedData();
 }
@@ -58,21 +58,21 @@ LoadHeaderFile::LoadHeaderFile(
   UserDefinedData &&userDefinedData,
   uint32_t loadCrc):
   Arinc665File{ version, FileCrcOffset},
-  partFlagsValue{ 0}, //! @todo add
-  partNumberValue{ std::move( partNumber)},
-  targetHardwareIdPositionsValue{ std::move( targetHardwareIdPositions)},
-  dataFilesValue{ std::move( dataFilesInfo)},
-  supportFilesValue{ std::move( supportFilesInfo)},
-  userDefinedDataV{ std::move( userDefinedData) },
-  loadCrcValue{ loadCrc }
+  partFlagsV{ 0 }, //! @todo add
+  partNumberV{ std::move( partNumber ) },
+  targetHardwareIdPositionsV{ std::move( targetHardwareIdPositions ) },
+  dataFilesV{ std::move( dataFilesInfo ) },
+  supportFilesV{ std::move( supportFilesInfo ) },
+  userDefinedDataV{ std::move( userDefinedData ) },
+  loadCrcV{ loadCrc }
 {
   checkUserDefinedData();
 }
 
 LoadHeaderFile::LoadHeaderFile( const ConstRawFileSpan &rawFile):
   Arinc665File{ rawFile, FileType::LoadUploadHeader, FileCrcOffset},
-  partFlagsValue{ 0},
-  loadCrcValue{ 0}
+  partFlagsV{ 0 },
+  loadCrcV{ 0 }
 {
   decodeBody( rawFile);
 }
@@ -93,51 +93,51 @@ FileType LoadHeaderFile::fileType() const noexcept
 
 uint16_t LoadHeaderFile::partFlags() const
 {
-  return partFlagsValue;
+  return partFlagsV;
 }
 
 void LoadHeaderFile::partFlags( uint16_t partFlags)
 {
-  partFlagsValue= partFlags;
+  partFlagsV = partFlags;
 }
 
 std::string_view LoadHeaderFile::partNumber() const
 {
-  return partNumberValue;
+  return partNumberV;
 }
 
 void LoadHeaderFile::partNumber( std::string_view partNumber)
 {
-  partNumberValue = partNumber;
+  partNumberV = partNumber;
 }
 
 void LoadHeaderFile::partNumber( std::string &&partNumber)
 {
-  partNumberValue = std::move( partNumber);
+  partNumberV = std::move( partNumber);
 }
 
 const LoadHeaderFile::TargetHardwareIdPositions&
 LoadHeaderFile::targetHardwareIdPositions() const
 {
-  return targetHardwareIdPositionsValue;
+  return targetHardwareIdPositionsV;
 }
 
 LoadHeaderFile::TargetHardwareIdPositions&
 LoadHeaderFile::targetHardwareIdPositions()
 {
-  return targetHardwareIdPositionsValue;
+  return targetHardwareIdPositionsV;
 }
 
 void LoadHeaderFile::targetHardwareIdPositions(
   const TargetHardwareIdPositions &targetHardwareIdPositions)
 {
-  targetHardwareIdPositionsValue = targetHardwareIdPositions;
+  targetHardwareIdPositionsV = targetHardwareIdPositions;
 }
 
 void LoadHeaderFile::targetHardwareIdPositions(
   TargetHardwareIdPositions &&targetHardwareIdPositions)
 {
-  targetHardwareIdPositionsValue = std::move( targetHardwareIdPositions);
+  targetHardwareIdPositionsV = std::move( targetHardwareIdPositions);
 }
 
 LoadHeaderFile::StringList LoadHeaderFile::targetHardwareIds() const
@@ -146,7 +146,7 @@ LoadHeaderFile::StringList LoadHeaderFile::targetHardwareIds() const
 
   StringList targetHardwareIds{};
 
-  for ( const auto &element : targetHardwareIdPositionsValue)
+  for ( const auto &element : targetHardwareIdPositionsV )
   {
     targetHardwareIds.push_back( element.first);
   }
@@ -166,7 +166,7 @@ void LoadHeaderFile::targetHardwareId(
   std::string_view targetHardwareId,
   const StringList &positions)
 {
-  targetHardwareIdPositionsValue.insert(
+  targetHardwareIdPositionsV.insert(
     std::make_pair( targetHardwareId, positions));
 }
 
@@ -174,63 +174,63 @@ void LoadHeaderFile::targetHardwareId(
   std::string &&targetHardwareId,
   StringList &&positions)
 {
-  targetHardwareIdPositionsValue.emplace(
+  targetHardwareIdPositionsV.emplace(
     std::make_pair( std::move( targetHardwareId), std::move( positions)));
 }
 
 const LoadHeaderFile::LoadType& LoadHeaderFile::loadType() const
 {
-  return typeValue;
+  return typeV;
 }
 
 void LoadHeaderFile::loadType( const LoadType &type)
 {
-  typeValue = type;
+  typeV = type;
 }
 
 void LoadHeaderFile::loadType( LoadType &&type)
 {
-  typeValue = std::move( type);
+  typeV = std::move( type);
 }
 
 const LoadFilesInfo& LoadHeaderFile::dataFiles() const
 {
-  return dataFilesValue;
+  return dataFilesV;
 }
 
 LoadFilesInfo& LoadHeaderFile::dataFiles()
 {
-  return dataFilesValue;
+  return dataFilesV;
 }
 
 void LoadHeaderFile::dataFile( const LoadFileInfo &dataFileInfo)
 {
-  dataFilesValue.push_back( dataFileInfo);
+  dataFilesV.push_back( dataFileInfo);
 }
 
 void LoadHeaderFile::dataFile( LoadFileInfo &&dataFileInfo)
 {
-  dataFilesValue.push_back( std::move( dataFileInfo));
+  dataFilesV.push_back( std::move( dataFileInfo));
 }
 
 const LoadFilesInfo& LoadHeaderFile::supportFiles() const
 {
-  return supportFilesValue;
+  return supportFilesV;
 }
 
 LoadFilesInfo& LoadHeaderFile::supportFiles()
 {
-  return supportFilesValue;
+  return supportFilesV;
 }
 
 void LoadHeaderFile::supportFile( const LoadFileInfo &supportFileInfo)
 {
-  supportFilesValue.push_back( supportFileInfo);
+  supportFilesV.push_back( supportFileInfo);
 }
 
 void LoadHeaderFile::supportFile( LoadFileInfo &&supportFileInfo)
 {
-  supportFilesValue.push_back( std::move( supportFileInfo));
+  supportFilesV.push_back( std::move( supportFileInfo));
 }
 
 const LoadHeaderFile::UserDefinedData& LoadHeaderFile::userDefinedData() const
@@ -258,27 +258,27 @@ void LoadHeaderFile::userDefinedData( UserDefinedData &&userDefinedData)
 
 uint32_t LoadHeaderFile::loadCrc() const
 {
-  return loadCrcValue;
+  return loadCrcV;
 }
 
 void LoadHeaderFile::loadCrc( const uint32_t loadCrc)
 {
-  loadCrcValue = loadCrc;
+  loadCrcV = loadCrc;
 }
 
 const std::optional< CheckValue>& LoadHeaderFile::loadCheckValue() const
 {
-  return loadCheckValueValue;
+  return loadCheckValueV;
 }
 
 void LoadHeaderFile::loadCheckValue( const std::optional< CheckValue> &value)
 {
-  loadCheckValueValue = value;
+  loadCheckValueV = value;
 }
 
 void LoadHeaderFile::loadCheckValue( std::optional< CheckValue> &&value)
 {
-  loadCheckValueValue = std::move( value);
+  loadCheckValueV = std::move( value);
 }
 
 RawFile LoadHeaderFile::encode() const
@@ -311,7 +311,7 @@ RawFile LoadHeaderFile::encode() const
   // Part Flags or Spare
   Helper::setInt< uint16_t>(
     rawFile.begin() + PartFlagsFieldOffset,
-    encodeV3Data ? partFlagsValue : 0U);
+    encodeV3Data ? partFlagsV : 0U);
 
 
   // Next free Offset (used for optional pointer calculation)
@@ -336,11 +336,11 @@ RawFile LoadHeaderFile::encode() const
     uint32_t loadTypePtr{ 0};
 
     // Encode lode type only if set.
-    if (typeValue)
+    if ( typeV )
     {
       loadTypePtr = nextFreeOffset / 2;
 
-      const auto rawTypeDescription{ encodeString( typeValue->first)};
+      const auto rawTypeDescription{ encodeString( typeV->first)};
       assert( rawTypeDescription.size() % 2 == 0);
 
       // description
@@ -349,12 +349,12 @@ RawFile LoadHeaderFile::encode() const
         rawTypeDescription.begin(),
         rawTypeDescription.end());
 
-      rawFile.resize( rawFile.size() + sizeof( uint16_t));
+      rawFile.resize( rawFile.size() + sizeof( uint16_t ) );
       Helper::setInt< uint16_t>(
         rawFile.begin() + nextFreeOffset + rawTypeDescription.size(),
-        typeValue->second);
+        typeV->second );
 
-      nextFreeOffset += rawTypeDescription.size() + sizeof( uint16_t);
+      nextFreeOffset += rawTypeDescription.size() + sizeof( uint16_t );
     }
 
     Helper::setInt< uint32_t>(
@@ -380,7 +380,7 @@ RawFile LoadHeaderFile::encode() const
     unsigned int thwIdPosCount{ 0};
     RawFile rawThwPos( sizeof( uint16_t));
 
-    for ( const auto &thwIdPosition : targetHardwareIdPositionsValue)
+    for ( const auto &thwIdPosition : targetHardwareIdPositionsV )
     {
       if (thwIdPosition.second.empty())
       {
@@ -490,7 +490,7 @@ RawFile LoadHeaderFile::encode() const
   {
     // Alternative implementation set Load Check Pointer to zero
 
-    const auto rawCheckValue{ CheckValueUtils_encode( loadCheckValueValue)};
+    const auto rawCheckValue{ CheckValueUtils_encode( loadCheckValueV ) };
     assert( rawCheckValue.size() % 2 == 0);
 
     Helper::setInt< uint32_t>(
@@ -514,7 +514,7 @@ RawFile LoadHeaderFile::encode() const
 
   Helper::setInt< uint32_t>(
     rawFile.begin() + (rawFile.size() - LoadCrcOffset),
-    loadCrcValue);
+    loadCrcV );
 
   return rawFile;
 }
@@ -536,14 +536,14 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
       // Spare
       if (partFlags != 0U)
       {
-        partFlagsValue = 0;
+        partFlagsV = 0;
         BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo( "Spare not 0"));
       }
       break;
 
     case SupportedArinc665Version::Supplement34:
-      partFlagsValue = partFlags;
+      partFlagsV = partFlags;
       decodeV3Data = true;
       break;
 
@@ -599,7 +599,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
 
 
   // load part number
-  decodeString( rawFile.begin() + loadPartNumberPtr * 2, partNumberValue);
+  decodeString( rawFile.begin() + loadPartNumberPtr * 2, partNumberV );
 
 
   // Load Type Description Field (ARINC 665-3)
@@ -642,7 +642,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
       StringList positions;
       it = decodeStringList( it, positions);
 
-      targetHardwareIdPositionsValue.insert_or_assign(
+      targetHardwareIdPositionsV.insert_or_assign(
         std::move( thwId),
         std::move( positions));
     }
@@ -650,7 +650,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
 
 
   // data file list
-  dataFilesValue = decodeFileList(
+  dataFilesV = decodeFileList(
     rawFile,
     dataFileListPtr * 2,
     FileListType::Data,
@@ -660,7 +660,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
   // support file list
   if ( 0U != supportFileListPtr)
   {
-    supportFilesValue = decodeFileList(
+    supportFilesV = decodeFileList(
       rawFile,
       supportFileListPtr * 2,
       FileListType::Support,
@@ -690,10 +690,10 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
   }
 
   // Load Check Value Field (ARINC 665-3)
-  loadCheckValueValue.reset();
+  loadCheckValueV.reset();
   if (decodeV3Data && (0U!=loadCheckValuePtr))
   {
-    loadCheckValueValue =
+    loadCheckValueV =
       CheckValueUtils_decode( rawFile, 2 * loadCheckValuePtr);
   }
 
@@ -701,7 +701,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
   // file crc decoded and checked within base class
 
   // load crc
-  Helper::getInt< uint32_t>( rawFile.end() - LoadCrcOffset, loadCrcValue);
+  Helper::getInt< uint32_t>( rawFile.end() - LoadCrcOffset, loadCrcV );
 }
 
 RawFile LoadHeaderFile::encodeFileList(

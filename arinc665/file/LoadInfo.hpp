@@ -33,7 +33,7 @@ namespace Arinc665::File {
 class LoadInfo
 {
   public:
-    //! Target Hardware IDs type.
+    //! Target Hardware IDs.
     using ThwIds = std::list< std::string>;
 
     /**

@@ -84,7 +84,7 @@ class LoadListFile: public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit LoadListFile( SupportedArinc665Version version);
+    explicit LoadListFile( SupportedArinc665Version version );
 
     /**
      * @brief Creates load list file with the given data.
@@ -108,7 +108,7 @@ class LoadListFile: public ListFile
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       const LoadsInfo &loads,
-      const UserDefinedData &userDefinedData);
+      const UserDefinedData &userDefinedData );
 
     //! @copydoc LoadListFile(SupportedArinc665Version,std::string_view,uint8_t,uint8_t,const LoadsInfo&,const UserDefinedData&)
     LoadListFile(
@@ -117,7 +117,7 @@ class LoadListFile: public ListFile
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       LoadsInfo &&loads = {},
-      UserDefinedData &&userDefinedData = {});
+      UserDefinedData &&userDefinedData = {} );
 
     /**
      * @brief Creates a load list file from the given raw data.
@@ -125,10 +125,10 @@ class LoadListFile: public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit LoadListFile( const ConstRawFileSpan &rawFile);
+    explicit LoadListFile( const ConstRawFileSpan &rawFile );
 
     //! @copydoc ListFile::operator=(const ConstRawFileSpan&)
-    LoadListFile& operator=( const ConstRawFileSpan &rawFile) final;
+    LoadListFile& operator=( const ConstRawFileSpan &rawFile ) final;
 
     //! @copydoc ListFile::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept final;
@@ -137,22 +137,22 @@ class LoadListFile: public ListFile
     [[nodiscard]] std::string_view mediaSetPn() const final;
 
     //! @copydoc ListFile::mediaSetPn(std::string_view)
-    void mediaSetPn( std::string_view mediaSetPn) final;
+    void mediaSetPn( std::string_view mediaSetPn ) final;
 
     //! @copydoc ListFile::mediaSetPn(std::string&&)
-    void mediaSetPn( std::string &&mediaSetPn) final;
+    void mediaSetPn( std::string &&mediaSetPn ) final;
 
     //! @copydoc ListFile::mediaSequenceNumber() const
     [[nodiscard]] uint8_t mediaSequenceNumber() const final;
 
     //! @copydoc ListFile::mediaSequenceNumber(uint8_t)
-    void mediaSequenceNumber( uint8_t mediaSequenceNumber) final;
+    void mediaSequenceNumber( uint8_t mediaSequenceNumber ) final;
 
     //! @copydoc ListFile::numberOfMediaSetMembers() const
     [[nodiscard]] uint8_t numberOfMediaSetMembers() const final;
 
     //! @copydoc ListFile::numberOfMediaSetMembers(uint8_t)
-    void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) final;
+    void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers ) final;
 
     /**
      * @brief Returns the number of loads.
@@ -188,10 +188,10 @@ class LoadListFile: public ListFile
      * @param[in] load
      *   Load information.
      **/
-    void load( const LoadInfo &load);
+    void load( const LoadInfo &load );
 
     //! @copydoc load(const LoadInfo&)
-    void load( LoadInfo &&load);
+    void load( LoadInfo &&load );
 
     /**
      * @brief Returns the user defined data.
@@ -208,10 +208,10 @@ class LoadListFile: public ListFile
      * @param[in] userDefinedData
      *   The user defined data.
      **/
-    void userDefinedData( const UserDefinedData &userDefinedData);
+    void userDefinedData( const UserDefinedData &userDefinedData );
 
     //! @copydoc userDefinedData(const UserDefinedData&)
-    void userDefinedData( UserDefinedData &&userDefinedData);
+    void userDefinedData( UserDefinedData &&userDefinedData );
 
     /**
      * @brief Returns if the given load list file belongs to the same media set.
@@ -228,7 +228,7 @@ class LoadListFile: public ListFile
      *
      * @return If the given load list files belongs to the same media set
      **/
-    [[nodiscard]] bool belongsToSameMediaSet( const LoadListFile &other) const;
+    [[nodiscard]] bool belongsToSameMediaSet( const LoadListFile &other ) const;
 
   private:
     //! @copydoc ListFile::encode
@@ -256,9 +256,10 @@ class LoadListFile: public ListFile
      *   Raw load list file representation.
      * @param[in] offset
      *   Offset of the loads information list.
+     *
+     * @throw InvalidArinc665File When member sequence number is out of range
      **/
     void decodeLoadsInfo( const ConstRawFileSpan &rawFile, std::size_t offset );
-
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.
@@ -266,14 +267,14 @@ class LoadListFile: public ListFile
     void checkUserDefinedData();
 
     //! Media Set Part Number
-    std::string mediaSetPnValue;
+    std::string mediaSetPnV;
     //! Media Sequence Number
-    uint8_t mediaSequenceNumberValue;
-    //! number of media set members
-    uint8_t numberOfMediaSetMembersValue;
-    //! The load list
+    uint8_t mediaSequenceNumberV;
+    //! Number of Media Set Members
+    uint8_t numberOfMediaSetMembersV;
+    //! Load List
     LoadsInfo loadsV;
-    //! user defined data
+    //! User Defined Data
     UserDefinedData userDefinedDataV;
 };
 

@@ -70,10 +70,10 @@ FileListFile::FileListFile( const ConstRawFileSpan &rawFile):
   decodeBody( rawFile);
 }
 
-FileListFile& FileListFile::operator=( const ConstRawFileSpan &rawFile)
+FileListFile& FileListFile::operator=( const ConstRawFileSpan &rawFile )
 {
-  Arinc665File::operator =( rawFile);
-  decodeBody( rawFile);
+  Arinc665File::operator =( rawFile );
+  decodeBody( rawFile );
 
   return *this;
 }
@@ -140,7 +140,7 @@ FileListFile::FileInfoMap FileListFile::filesAsMap() const
 
   FileInfoMap fileMap{};
 
-  for ( const auto &fileInfo : filesValue)
+  for ( const auto &fileInfo : filesValue )
   {
     fileMap.insert(
       std::make_pair(

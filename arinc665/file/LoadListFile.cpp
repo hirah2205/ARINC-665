@@ -20,9 +20,9 @@
 namespace Arinc665::File {
 
 LoadListFile::LoadListFile( SupportedArinc665Version version):
-  ListFile{ version},
-  mediaSequenceNumberValue{ 0},
-  numberOfMediaSetMembersValue{ 0}
+  ListFile{ version },
+  mediaSequenceNumberV{ 0 },
+  numberOfMediaSetMembersV{ 0 }
 {
 }
 
@@ -33,11 +33,11 @@ LoadListFile::LoadListFile(
   uint8_t numberOfMediaSetMembers,
   const LoadsInfo &loads,
   const UserDefinedData &userDefinedData):
-  ListFile{ version},
-  mediaSetPnValue{ mediaSetPn},
-  mediaSequenceNumberValue{ mediaSequenceNumber},
-  numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
-  loadsV{ loads},
+  ListFile{ version },
+  mediaSetPnV{ mediaSetPn },
+  mediaSequenceNumberV{ mediaSequenceNumber },
+  numberOfMediaSetMembersV{ numberOfMediaSetMembers },
+  loadsV{ loads },
   userDefinedDataV{ userDefinedData }
 {
   checkUserDefinedData();
@@ -51,26 +51,26 @@ LoadListFile::LoadListFile(
   LoadsInfo &&loads,
   UserDefinedData &&userDefinedData):
   ListFile{ version},
-  mediaSetPnValue{ std::move( mediaSetPn)},
-  mediaSequenceNumberValue{ mediaSequenceNumber},
-  numberOfMediaSetMembersValue{ numberOfMediaSetMembers},
-  loadsV{ std::move( loads)},
-  userDefinedDataV{ std::move( userDefinedData) }
+  mediaSetPnV{ std::move( mediaSetPn ) },
+  mediaSequenceNumberV{ mediaSequenceNumber },
+  numberOfMediaSetMembersV{ numberOfMediaSetMembers },
+  loadsV{ std::move( loads ) },
+  userDefinedDataV{ std::move( userDefinedData ) }
 {
   checkUserDefinedData();
 }
 
 LoadListFile::LoadListFile( const ConstRawFileSpan &rawFile):
-  ListFile{ rawFile, FileType::LoadList}
+  ListFile{ rawFile, FileType::LoadList }
 {
-  decodeBody( rawFile);
+  decodeBody( rawFile );
 }
 
-LoadListFile& LoadListFile::operator=( const ConstRawFileSpan &rawFile)
+LoadListFile& LoadListFile::operator=( const ConstRawFileSpan &rawFile )
 {
   // call inherited operator
-  Arinc665File::operator =( rawFile);
-  decodeBody( rawFile);
+  Arinc665File::operator =( rawFile );
+  decodeBody( rawFile );
 
   return *this;
 }
@@ -82,38 +82,38 @@ FileType LoadListFile::fileType() const noexcept
 
 std::string_view LoadListFile::mediaSetPn() const
 {
-  return mediaSetPnValue;
+  return mediaSetPnV;
 }
 
 void LoadListFile::mediaSetPn( std::string_view mediaSetPn )
 {
-  mediaSetPnValue = mediaSetPn;
+  mediaSetPnV = mediaSetPn;
 }
 
 void LoadListFile::mediaSetPn( std::string &&mediaSetPn )
 {
-  mediaSetPnValue = std::move( mediaSetPn);
+  mediaSetPnV = std::move( mediaSetPn);
 }
 
 uint8_t LoadListFile::mediaSequenceNumber() const
 {
-  return mediaSequenceNumberValue;
+  return mediaSequenceNumberV;
 }
 
 void LoadListFile::mediaSequenceNumber( const uint8_t mediaSequenceNumber )
 {
-  mediaSequenceNumberValue = mediaSequenceNumber;
+  mediaSequenceNumberV = mediaSequenceNumber;
 }
 
 uint8_t LoadListFile::numberOfMediaSetMembers() const
 {
-  return numberOfMediaSetMembersValue;
+  return numberOfMediaSetMembersV;
 }
 
 void LoadListFile::numberOfMediaSetMembers(
   const uint8_t numberOfMediaSetMembers)
 {
-  numberOfMediaSetMembersValue = numberOfMediaSetMembers;
+  numberOfMediaSetMembersV = numberOfMediaSetMembers;
 }
 
 size_t LoadListFile::numberOfLoads() const
@@ -185,8 +185,8 @@ void LoadListFile::userDefinedData( UserDefinedData &&userDefinedData )
 bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
 {
   return
-    ( mediaSetPnValue == other.mediaSetPn()) &&
-    ( numberOfMediaSetMembersValue == other.numberOfMediaSetMembers()) &&
+    ( mediaSetPnV == other.mediaSetPn()) &&
+    ( numberOfMediaSetMembersV == other.numberOfMediaSetMembers()) &&
     ( loadsV == other.loads()) &&
     ( userDefinedDataV == other.userDefinedData());
 }
@@ -216,12 +216,12 @@ RawFile LoadListFile::encode() const
   // media sequence number
   Helper::setInt< uint8_t>(
     rawFile.begin() + nextFreeOffset + rawMediaSetPn.size(),
-    mediaSequenceNumberValue);
+    mediaSequenceNumberV );
 
   // number of media set members
   Helper::setInt< uint8_t>(
     rawFile.begin() + nextFreeOffset + rawMediaSetPn.size() + sizeof( uint8_t),
-    numberOfMediaSetMembersValue);
+    numberOfMediaSetMembersV );
 
   Helper::setInt< uint32_t>(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
@@ -308,14 +308,13 @@ void LoadListFile::decodeBody( const ConstRawFileSpan &rawFile)
 
   // media set part number
   auto it = decodeString(
-    rawFile.begin() + mediaInformationPtr * 2,
-    mediaSetPnValue);
+    rawFile.begin() + mediaInformationPtr * 2, mediaSetPnV );
 
   // media sequence number
-  it = Helper::getInt< uint8_t>( it, mediaSequenceNumberValue);
+  it = Helper::getInt< uint8_t>( it, mediaSequenceNumberV );
 
   // number of media set members
-  Helper::getInt< uint8_t>( it, numberOfMediaSetMembersValue);
+  Helper::getInt< uint8_t>( it, numberOfMediaSetMembersV );
 
 
   // Loads list
@@ -398,16 +397,16 @@ void LoadListFile::decodeLoadsInfo(
 {
   BOOST_LOG_FUNCTION()
 
-  auto it( rawFile.begin() + offset);
+  auto it{ rawFile.begin() + offset };
 
   // number of loads
-  uint16_t numberOfLoads;
-  it = Helper::getInt< uint16_t>( it, numberOfLoads);
+  uint16_t numberOfLoads{};
+  it = Helper::getInt< uint16_t>( it, numberOfLoads );
 
   // iterate of load counter
-  for ( unsigned int loadIndex = 0; loadIndex < numberOfLoads; ++loadIndex)
+  for ( uint16_t loadIndex = 0; loadIndex < numberOfLoads; ++loadIndex )
   {
-    auto listIt( it);
+    auto listIt{ it };
 
     // next load pointer
     uint16_t loadPointer{};
@@ -417,20 +416,19 @@ void LoadListFile::decodeLoadsInfo(
 
     // part number
     std::string partNumber{};
-    listIt = Arinc665File::decodeString( listIt, partNumber);
+    listIt = Arinc665File::decodeString( listIt, partNumber );
 
     // header filename
     std::string headerFilename{};
-    listIt = Arinc665File::decodeString( listIt, headerFilename);
+    listIt = Arinc665File::decodeString( listIt, headerFilename );
 
     // member sequence number
     uint16_t fileMemberSequenceNumber{};
-    listIt = Helper::getInt< uint16_t>( listIt, fileMemberSequenceNumber);
-    if (( fileMemberSequenceNumber < 1 ) || (fileMemberSequenceNumber > 255))
+    listIt = Helper::getInt< uint16_t>( listIt, fileMemberSequenceNumber );
+    if ( ( fileMemberSequenceNumber < 1 ) || ( fileMemberSequenceNumber > 255 ) )
     {
-      //! @throw InvalidArinc665File When member sequence number is out of range
       BOOST_THROW_EXCEPTION( InvalidArinc665File()
-        << Helper::AdditionalInfo( "member sequence number out of range"));
+        << Helper::AdditionalInfo( "member sequence number out of range" ) );
     }
 
     LoadInfo::ThwIds thwIds{};
@@ -456,7 +454,7 @@ void LoadListFile::checkUserDefinedData()
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
       << "User defined data must be 2-byte aligned. - extending range";
 
-    userDefinedDataV.push_back(0U);
+    userDefinedDataV.push_back( 0U );
   }
 }
 

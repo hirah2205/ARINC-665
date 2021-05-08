@@ -25,9 +25,9 @@ namespace Arinc665::File {
  * This intermediate class is defined to add common methods for all List Files.
  *
  * Children are:
- * * FileListFile
- * * LoadListFile
- * * BatchListFile
+ * - FileListFile
+ * - LoadListFile
+ * - BatchListFile
  **/
 class ListFile: public Arinc665File
 {
@@ -35,7 +35,7 @@ class ListFile: public Arinc665File
     /**
      * @brief Returns the Media Set Part Number, where the files belongs to.
      *
-     * @return The Media Set Part Number.
+     * @return Media Set Part Number.
      **/
     [[nodiscard]] virtual std::string_view mediaSetPn() const = 0;
 
@@ -43,7 +43,7 @@ class ListFile: public Arinc665File
      * @brief Sets the Media Part Number, where the files belongs to.
      *
      * @param[in] mediaSetPn
-     *   The Media Set part Number.
+     *   Media Set part Number.
      **/
     virtual void mediaSetPn( std::string_view mediaSetPn ) = 0;
 
@@ -51,9 +51,9 @@ class ListFile: public Arinc665File
     virtual void mediaSetPn( std::string &&mediaSetPn ) = 0;
 
     /**
-     * @brief Returns the media sequence number.
+     * @brief Returns the Media Sequence Number.
      *
-     * @return The media sequence number
+     * @return Media sequence number
      **/
     [[nodiscard]] virtual uint8_t mediaSequenceNumber() const = 0;
 
@@ -68,7 +68,7 @@ class ListFile: public Arinc665File
     /**
      * @brief Returns the number of media set members.
      *
-     * @return The number of media set members.
+     * @return Number of media set members.
      **/
     [[nodiscard]] virtual uint8_t numberOfMediaSetMembers() const = 0;
 
@@ -76,7 +76,7 @@ class ListFile: public Arinc665File
      * @brief Updates the number of media set members.
      *
      * @param[in] numberOfMediaSetMembers
-     *   The new number of media set members
+     *   New number of media set members
      **/
     virtual void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers ) = 0;
 

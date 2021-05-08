@@ -54,7 +54,7 @@ class LoadFileInfo
       std::string_view partNumber,
       uint64_t length,
       uint16_t crc,
-      const std::optional< CheckValue> &checkValue = {});
+      const std::optional< CheckValue> &checkValue = {} );
 
     //! @copydoc LoadFileInfo::LoadFileInfo(std::string_view,std::string_view,uint64_t,uint16_t,const std::optional<CheckValue>&)
     LoadFileInfo(
@@ -62,7 +62,7 @@ class LoadFileInfo
       std::string &&partNumber,
       uint64_t length,
       uint16_t crc,
-      std::optional< CheckValue> &&checkValue = {});
+      std::optional< CheckValue> &&checkValue = {} );
 
     /**
      * @brief Returns the Filename.
@@ -77,10 +77,10 @@ class LoadFileInfo
      * @param[in] filename
      *   Filename.
      **/
-    void filename( std::string_view filename);
+    void filename( std::string_view filename );
 
     //! @copydoc filename(std::string_view)
-    void filename( std::string &&filename);
+    void filename( std::string &&filename );
 
     /**
      * @return Returns the File Part Number.
@@ -95,10 +95,10 @@ class LoadFileInfo
      * @param[in] partNumber
      *   File Part Number.
      **/
-    void partNumber( std::string_view partNumber);
+    void partNumber( std::string_view partNumber );
 
     //! @copydoc partNumber(std::string_view)
-    void partNumber( std::string &&partNumber);
+    void partNumber( std::string &&partNumber );
 
     /**
      * @return Returns the file size.
@@ -111,9 +111,9 @@ class LoadFileInfo
      * @brief Updates the file size.
      *
      * @param[in] length
-     *   The file size.
+     *   file size.
      **/
-    void length( uint64_t length);
+    void length( uint64_t length );
 
     /**
      * @return Returns the file CRC.
@@ -128,12 +128,12 @@ class LoadFileInfo
      * @param[in] crc
      *   The file CRC.
      **/
-    void crc( uint16_t crc);
+    void crc( uint16_t crc );
 
     /**
      * @brief Returns the Check Value.
      *
-     * @return The Check Value.
+     * @return Check Value.
      **/
     [[nodiscard]] const std::optional< CheckValue>& checkValue() const;
 
@@ -143,22 +143,22 @@ class LoadFileInfo
      * @param[in] checkValue
      *   Check Value.
      **/
-    void checkValue( const std::optional< CheckValue> &checkValue);
+    void checkValue( const std::optional< CheckValue> &checkValue );
 
     //! @copydoc checkValue(const std::optional<CheckValue>&)
-    void checkValue( std::optional< CheckValue> &&checkValue);
+    void checkValue( std::optional< CheckValue> &&checkValue );
 
   private:
     //! Filename
-    std::string filenameValue;
-    //! File part number
-    std::string partNumberValue;
-    //! File length (Always in bytes)
-    uint64_t lengthValue;
+    std::string filenameV;
+    //! File Part Number
+    std::string partNumberV;
+    //! File Length (Always in bytes)
+    uint64_t lengthV;
     //! File CRC
-    uint16_t crcValue;
+    uint16_t crcV;
     //! Check Value (since ARINC 665-3)
-    std::optional< CheckValue> checkValueValue;
+    std::optional< CheckValue> checkValueV;
 };
 
 }

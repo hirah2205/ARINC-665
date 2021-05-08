@@ -31,34 +31,34 @@ Batch::FileType Batch::fileType() const
 
 std::string_view Batch::comment() const
 {
-  return commentValue;
+  return commentV;
 }
 
 void Batch::comment( std::string_view comment)
 {
-  commentValue = comment;
+  commentV = comment;
 }
 
 void Batch::comment( std::string &&comment)
 {
-  commentValue = std::move( comment);
+  commentV = std::move( comment);
 }
 
 const Batch::BatchInfo& Batch::targets() const
 {
-  return batchesValue;
+  return batchesV;
 }
 
 Batch::BatchInfo& Batch::targets()
 {
-  return batchesValue;
+  return batchesV;
 }
 
 WeakLoads Batch::target( std::string_view targetHardwareId) const
 {
-  auto it{ batchesValue.find( targetHardwareId)};
+  auto it{ batchesV.find( targetHardwareId)};
 
-  if (it == batchesValue.end())
+  if (it == batchesV.end())
   {
     return {};
   }
@@ -68,9 +68,9 @@ WeakLoads Batch::target( std::string_view targetHardwareId) const
 
 WeakLoads Batch::target( std::string_view targetHardwareId)
 {
-  auto it{ batchesValue.find( targetHardwareId)};
+  auto it{ batchesV.find( targetHardwareId)};
 
-  if (it == batchesValue.end())
+  if (it == batchesV.end())
   {
     return {};
   }
@@ -80,12 +80,12 @@ WeakLoads Batch::target( std::string_view targetHardwareId)
 
 void Batch::target( std::string_view targetHardwareId, const WeakLoads &loads)
 {
-  batchesValue.insert( {std::string{ targetHardwareId}, loads});
+  batchesV.insert( {std::string{ targetHardwareId}, loads});
 }
 
 void Batch::target( std::string &&targetHardwareId, WeakLoads &&loads)
 {
-  batchesValue.insert( {std::move( targetHardwareId), std::move( loads)});
+  batchesV.insert( {std::move( targetHardwareId), std::move( loads)});
 }
 
 }
