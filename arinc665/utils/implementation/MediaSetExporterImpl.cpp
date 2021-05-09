@@ -28,6 +28,8 @@
 
 #include <arinc665/Arinc665Crc.hpp>
 
+#include <utility>
+
 namespace Arinc665::Utils {
 
 MediaSetExporterImpl::MediaSetExporterImpl(
@@ -44,13 +46,13 @@ MediaSetExporterImpl::MediaSetExporterImpl(
   arinc665Version{ arinc665Version },
   createBatchFiles{ createBatchFiles },
   createLoadHeaderFiles{ createLoadHeaderFiles },
-  mediaSet{ mediaSet },
-  createMediumHandler{ createMediumHandler },
-  createDirectoryHandler{ createDirectoryHandler },
-  checkFileExistenceHandler{ checkFileExistenceHandler },
-  createFileHandler{ createFileHandler },
-  writeFileHandler{ writeFileHandler },
-  readFileHandler{ readFileHandler}
+  mediaSet{ std::move( mediaSet ) },
+  createMediumHandler{ std::move( createMediumHandler ) },
+  createDirectoryHandler{ std::move( createDirectoryHandler ) },
+  checkFileExistenceHandler{ std::move( checkFileExistenceHandler ) },
+  createFileHandler{ std::move( createFileHandler ) },
+  writeFileHandler{ std::move( writeFileHandler ) },
+  readFileHandler{ std::move( readFileHandler ) }
 {
 }
 
@@ -61,12 +63,12 @@ void MediaSetExporterImpl::operator()()
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
     << "Media set " << " - " << mediaSet->partNumber();
 
-  for ( auto medium : mediaSet->media() )
+  for ( auto &medium : mediaSet->media() )
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
       << "Medium " << (unsigned int)medium.first;
 
-    exportMedium( medium.second);
+    exportMedium( medium.second );
   }
 }
 

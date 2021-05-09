@@ -30,7 +30,7 @@ class MediaSetValidatorImpl
      **/
     MediaSetValidatorImpl(
       Arinc665Utils::ReadFileHandler readFileHandler,
-      Arinc665Utils::ValidatorInformationHandler informationHandler);
+      Arinc665Utils::ValidatorInformationHandler informationHandler );
 
     /**
      * @brief Executes the ARINC 665 Media Set Validator.
