@@ -141,7 +141,7 @@ class Load: public BaseFile
     /**
      * @brief Returns the support files.
      *
-     * @return The support files.
+     * @return Support Files.
      **/
     [[nodiscard]] const Files& supportFiles() const;
 
@@ -149,7 +149,7 @@ class Load: public BaseFile
      * @brief Add the given file as support file.
      *
      * @param[in] supportFile
-     *   The support file.
+     *   Support Fle.
      *
      * @todo change to non-weak pointer and check same mediaset (even if null)
      **/

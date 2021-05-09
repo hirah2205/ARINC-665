@@ -131,23 +131,6 @@ BatchesInfo& BatchListFile::batches()
   return batchesValue;
 }
 
-BatchListFile::BatchInfoMap BatchListFile::batchesAsMap() const
-{
-  BatchInfoMap batches{};
-
-  for (const auto & batch : batchesValue)
-  {
-    batches.insert(
-      std::make_pair(
-        std::make_pair(
-          batch.memberSequenceNumber(),
-          batch.filename()),
-        batch));
-  }
-
-  return batches;
-}
-
 void BatchListFile::batch( const BatchInfo &batch)
 {
   batchesValue.push_back( batch);

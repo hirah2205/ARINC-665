@@ -26,6 +26,7 @@
 
 #include <optional>
 #include <map>
+#include <set>
 
 namespace Arinc665::Utils {
 
@@ -47,31 +48,29 @@ class MediaSetImporterImpl
     /**
      * @brief Entry-point of the ARINC 665 media set importer.
      *
-     * @return The media set instance.
+     * @return Created Media Set Instance.
      **/
     Media::MediaSetPtr operator()();
 
   private:
-    //! Load header files type (mapping filename -> load header file)
-    using LoadHeaderFiles = std::map< std::string, File::LoadHeaderFile >;
-    //! Batch files type (mapping filename -> batch file)
-    using BatchFiles = std::map< std::string, File::BatchFile >;
-    //! Container Entity type
+    //! Container Entity Type
     using ContainerEntityPtr = std::shared_ptr< Media::ContainerEntity >;
 
     /**
      * @brief Loads the information of the given medium
      *
      * @param[in] mediumIndex
-     *   The medium index.
+     *   Medium Index.
+     *
+     * return If last medium has been read
      **/
-    void addMedium( uint8_t mediumIndex );
+    bool loadMedium( uint8_t mediumIndex );
 
     /**
      * @brief Loads the file list file of the given medium.
      *
      * @param[in] mediumIndex
-     *   The medium index.
+     *   Medium Index.
      **/
     void loadFileListFile( uint8_t mediumIndex );
 
@@ -79,7 +78,7 @@ class MediaSetImporterImpl
      * @brief Loads the load list file of the given medium.
      *
      * @param[in] mediumIndex
-     *   The medium index.
+     *   Medium Index.
      **/
     void loadLoadListFile( uint8_t mediumIndex );
 
@@ -87,7 +86,7 @@ class MediaSetImporterImpl
      * @brief Loads the batch list file of the given medium.
      *
      * @param[in] mediumIndex
-     *   The medium index.
+     *   Medium Index.
      **/
     void loadBatchListFile( uint8_t mediumIndex );
 
@@ -95,7 +94,7 @@ class MediaSetImporterImpl
      * @brief Loads the load header files of the given medium.
      *
      * @param[in] mediumIndex
-     *   The medium index.
+     *   Medium Index.
      **/
     void loadLoadHeaderFiles( uint8_t mediumIndex );
 
@@ -103,7 +102,7 @@ class MediaSetImporterImpl
      * @brief Loads the batch files of the given medium.
      *
      * @param[in] mediumIndex
-     *   The medium index.
+     *   Medium Index.
      **/
     void loadBatchFiles( uint8_t mediumIndex );
 
@@ -121,29 +120,29 @@ class MediaSetImporterImpl
     /**
      * @brief Adds the loads to the media set.
      *
-     * @param[in] loadHeaders
-     *   The load header files
+     * @throw Arinc665Exception When files are not existent
      **/
-    void addLoads( File::FileListFile::FileInfoMap &loadHeaders );
+    void addLoads();
 
     /**
      * @brief Adds the batches to the media set.
      *
-     * @param[in] batches
-     *   The batch files
+     * @throw Arinc665Exception When loads are not existent
      **/
-    void addBatches( File::FileListFile::FileInfoMap &batches );
+    void addBatches();
 
     /**
      * @brief Creates the logical directory entry if not already created and
      *   return its representation.
      *
      * @param[in] mediumIndex
-     *   Medium index.
+     *   Medium Index.
      * @param[in] directoryPath
-     *   The directory path.
+     *   Directory Path.
      *
-     * @return The directory entry.
+     * @return Directory entry.
+     *
+     * @throw Arinc665Exception When sub-directory cannot be created
      **/
     ContainerEntityPtr checkCreateDirectory(
       uint8_t mediumIndex,
@@ -161,17 +160,18 @@ class MediaSetImporterImpl
     std::optional< File::LoadListFile > loadListFile;
     //! Batch List File
     std::optional< File::BatchListFile > batchListFile;
-    //! Load Header Files
-    LoadHeaderFiles loadHeaderFiles;
-    //! Batch Files
-    BatchFiles batchFiles;
 
-    //! File Information from List of Files
-    File::FileListFile::FileInfoMap fileInfos;
-    //! Load Information from List of Loads
-    File::LoadListFile::LoadsInfoMap loadInfos;
-    //! Batch Information from List of Batches
-    File::BatchListFile::BatchInfoMap batchInfos;
+    //! Load Header Files (filename, load header file)
+    std::list< std::pair< std::string, File::LoadHeaderFile > > loadHeaderFiles;
+    //! Batch Files (filename, batch file)
+    std::list< std::pair< std::string, File::BatchFile > > batchFiles;
+
+    //! File Information from List of Files ( filename -> file info)
+    std::map< std::string, File::FileInfo, std::less<> > fileInfos;
+    //! Loads (filenames)
+    std::set< std::string > loads;
+    //! Batches (filenames)
+    std::set< std::string > batches;
 };
 
 }

@@ -131,24 +131,6 @@ LoadsInfo& LoadListFile::loads()
   return loadsV;
 }
 
-LoadListFile::LoadsInfoMap LoadListFile::loadsAsMap() const
-{
-  BOOST_LOG_FUNCTION()
-
-  LoadsInfoMap loads;
-
-  for ( const auto &loadInfo : loadsV )
-  {
-    loads.insert( std::make_pair(
-      std::make_pair(
-        loadInfo.memberSequenceNumber(),
-        loadInfo.headerFilename()),
-      loadInfo));
-  }
-
-  return loads;
-}
-
 void LoadListFile::load( const LoadInfo &load)
 {
   loadsV.push_back( load);

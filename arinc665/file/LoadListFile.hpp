@@ -58,8 +58,6 @@ namespace Arinc665::File {
 class LoadListFile: public ListFile
 {
   public:
-    //! Loads Information (Map) (Media Sequence Number - Filename) -> Load Info
-    using LoadsInfoMap = std::map< std::pair< uint8_t, std::string>, LoadInfo>;
     //! User Defined Data.
     using UserDefinedData = std::vector< uint8_t>;
 
@@ -171,16 +169,9 @@ class LoadListFile: public ListFile
     /**
      * @brief Returns the loads.
      *
-     * @return The Loads.
+     * @return Loads.
      **/
     [[nodiscard]] LoadsInfo& loads();
-
-    /**
-     * @brief Returns the loads as map for easy access.
-     *
-     * @return The loads as map.
-     */
-    [[nodiscard]] LoadsInfoMap loadsAsMap() const;
 
     /**
      * @brief Adds the given load information.

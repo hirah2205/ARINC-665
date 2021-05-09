@@ -65,8 +65,6 @@ namespace Arinc665::File {
 class FileListFile: public ListFile
 {
   public:
-    //! Maps media <sequence number, file name> to File Info
-    using FileInfoMap = std::map< std::pair< uint8_t, std::string>, FileInfo>;
     //! Maps media <sequence number, file path> to File Info
     using FileInfoPathMap =
       std::map< std::pair< uint8_t, std::filesystem::path>, FileInfo>;
@@ -188,23 +186,9 @@ class FileListFile: public ListFile
     /**
      * @brief Return the list of files.
      *
-     * @return The list of files
+     * @return List of files
      **/
     FilesInfo& files();
-
-    /**
-     * @brief Return the list of files as map ( media index and filename as key).
-     *
-     * @return The list of files
-     **/
-    [[nodiscard]] FileInfoMap filesAsMap() const;
-
-    /**
-     * @brief Return the list of files as map ( media index and complete path as key).
-     *
-     * @return The list of files
-     **/
-    [[nodiscard]] FileInfoPathMap filesAsPathMap() const;
 
     /**
      * @brief Adds the given file information.
@@ -312,7 +296,7 @@ class FileListFile: public ListFile
     //! Number of Media Set Members.
     uint8_t numberOfMediaSetMembersValue;
     //! Files Information (list)
-    FilesInfo filesValue;
+    FilesInfo filesV;
     //! Use defined data.
     UserDefinedData userDefinedDataV;
     //! The Load Check Value (since ARINC 665-3)

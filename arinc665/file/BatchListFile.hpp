@@ -55,8 +55,6 @@ namespace Arinc665::File {
 class BatchListFile: public ListFile
 {
   public:
-    //! Batch Information Map
-    using BatchInfoMap = std::map< std::pair< uint8_t, std::string>, BatchInfo>;
     //! User Defined Data.
     using UserDefinedData = std::vector< uint8_t>;
 
@@ -167,13 +165,6 @@ class BatchListFile: public ListFile
 
     //! @copydoc batches() const
     BatchesInfo& batches();
-
-    /**
-     * @brief Returns the batches information as map.
-     *
-     * @return The batches information as map.
-     */
-    [[nodiscard]] BatchInfoMap batchesAsMap() const;
 
     /**
      * @brief Adds the given batch information.
