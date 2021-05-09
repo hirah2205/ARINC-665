@@ -79,23 +79,23 @@ class BatchListFile: public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit BatchListFile( SupportedArinc665Version version) noexcept;
+    explicit BatchListFile( SupportedArinc665Version version ) noexcept;
 
     /**
      * @brief Creates batch list file with the given data.
      *
      * @param[in] version
-     *   ARINC 665 version.
+     *   ARINC 665 Version.
      * @param[in] mediaSetPn
      *   Media Set Part Number.
      * @param[in] mediaSequenceNumber
-     *   Media Set sequnce number.
+     *   Media Set Sequence Number.
      * @param[in] numberOfMediaSetMembers
-     *   Number of Media Set members.
+     *   Number of Media Set Members.
      * @param[in] batches
-     *   Batches information.
+     *   Batches Information.
      * @param[in] userDefinedData
-     *   Additional user defined data.
+     *   Additional User Defined Data.
      **/
     BatchListFile(
       SupportedArinc665Version version,
@@ -103,7 +103,7 @@ class BatchListFile: public ListFile
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       const BatchesInfo &batches,
-      const UserDefinedData &userDefinedData);
+      const UserDefinedData &userDefinedData );
 
     //! @copydoc BatchListFile(SupportedArinc665Version,std::string_view,uint8_t,uint8_t,const BatchesInfo&,const UserDefinedData&)
     BatchListFile(
@@ -112,7 +112,7 @@ class BatchListFile: public ListFile
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       BatchesInfo &&batches,
-      UserDefinedData &&userDefinedData);
+      UserDefinedData &&userDefinedData );
 
     /**
      * @brief Creates a batch list file from the given raw data.
@@ -150,16 +150,16 @@ class BatchListFile: public ListFile
     void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) final;
 
     /**
-     * @brief Return the number of batches.
+     * @brief Return the Number of Batches.
      *
-     * @return The number of batches.
+     * @return Number of batches.
      **/
     [[nodiscard]] size_t numberOfBatches() const;
 
     /**
-     * @brief Returns the batches information.
+     * @brief Returns the Batches Information.
      *
-     * @return The batches information.
+     * @return Batches Information.
      **/
     [[nodiscard]] const BatchesInfo& batches() const;
 
@@ -167,10 +167,10 @@ class BatchListFile: public ListFile
     BatchesInfo& batches();
 
     /**
-     * @brief Adds the given batch information.
+     * @brief Adds the given Batch Information.
      *
      * @param[in] batch
-     *   The batch information to add.
+     *   Batch Information.
      **/
     void batch( const BatchInfo &batch);
 
@@ -178,17 +178,17 @@ class BatchListFile: public ListFile
     void batch( BatchInfo &&batch);
 
     /**
-     * @brief Returns the user defined data.
+     * @brief Returns the User Defined Data.
      *
-     * @return The user defined data.
+     * @return User defined data.
      **/
     [[nodiscard]] const UserDefinedData& userDefinedData() const;
 
     /**
-     * @brief Updates the user defined data.
+     * @brief Updates the User Defined Data.
      *
      * @param[in] userDefinedData
-     *   The user defined data.
+     *   User Defined Data.
      **/
     void userDefinedData( const UserDefinedData &userDefinedData);
 
@@ -199,7 +199,7 @@ class BatchListFile: public ListFile
      * @brief Returns if the given batch list file belongs to the same media set.
      *
      * @param[in] other
-     *   The other batch list file to compare to this.
+     *   Other batch list file to compare to this.
      *
      * @return If the given batch list file belongs to the same media set.
      **/
@@ -242,13 +242,13 @@ class BatchListFile: public ListFile
     void checkUserDefinedData();
 
     //! Media Set Part Number
-    std::string mediaSetPnValue;
+    std::string mediaSetPnV;
     //! Media Sequence Number
-    uint8_t mediaSequenceNumberValue;
+    uint8_t mediaSequenceNumberV;
     //! Number of Media Set Members
-    uint8_t numberOfMediaSetMembersValue;
+    uint8_t numberOfMediaSetMembersV;
     //! Batches Information
-    BatchesInfo batchesValue;
+    BatchesInfo batchesV;
     //! User Defined Data
     UserDefinedData userDefinedDataV;
 };

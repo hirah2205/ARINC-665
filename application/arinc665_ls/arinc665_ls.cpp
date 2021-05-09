@@ -166,19 +166,19 @@ static void list_lub( const std::filesystem::path &lubFile)
       << "File size is: "
       << std::dec << std::filesystem::file_size( lubFile) << "\n";
 
-    std::vector< uint8_t> data( std::filesystem::file_size( lubFile));
+    std::vector< uint8_t> data( std::filesystem::file_size( lubFile ) );
 
     std::ifstream file{
       lubFile.string().c_str(),
       std::ifstream::binary | std::ifstream::in };
 
-    if ( !file.is_open())
+    if ( !file.is_open() )
     {
       std::cout << "Error opening file: " << lubFile.string() << "\n";
       return;
     }
 
-    file.read( (char*)&data.at(0), data.size());
+    file.read( (char*)&data.at(0), static_cast< std::streamsize>( data.size() ) );
 
     Arinc665::File::BatchFile batch( data);
 
@@ -232,7 +232,7 @@ static void list_luh( const std::filesystem::path &luhFile)
       return;
     }
 
-    file.read( (char*)&data.at(0), data.size());
+    file.read( (char*)&data.at(0), static_cast< std::streamsize>( data.size() ) );
 
     Arinc665::File::LoadHeaderFile load{ data };
 
@@ -298,7 +298,7 @@ static void list_loads_lum( const std::filesystem::path &loadsLum)
       return;
     }
 
-    file.read( (char*)&data.at(0), data.size());
+    file.read( (char*)&data.at(0), static_cast< std::streamsize>( data.size() ) );
 
     Arinc665::File::LoadListFile loadList( data);
 
@@ -363,7 +363,7 @@ static void list_files_lum( const std::filesystem::path &filesLum)
       return;
     }
 
-    file.read( (char*) &data.at( 0), data.size());
+    file.read( (char*) &data.at( 0), static_cast< std::streamsize>( data.size() ) );
 
     Arinc665::File::FileListFile fileList( data);
 
@@ -371,11 +371,11 @@ static void list_files_lum( const std::filesystem::path &filesLum)
       << "media set pn: " << fileList.mediaSetPn() << "\n";
 
     std::cout
-      << "media seq no: " << (int)fileList.mediaSequenceNumber() << "\n";
+      << "media seq no: " << (unsigned int)fileList.mediaSequenceNumber() << "\n";
 
     std::cout
       << "no of media set members: "
-      << std::dec << (int)fileList.numberOfMediaSetMembers() << "\n";
+      << std::dec << (unsigned int)fileList.numberOfMediaSetMembers() << "\n";
 
     for ( const auto & file : fileList.files())
     {
