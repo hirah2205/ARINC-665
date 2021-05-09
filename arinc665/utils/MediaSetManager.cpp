@@ -18,10 +18,10 @@
 namespace Arinc665::Utils {
 
 MediaSetManagerPtr MediaSetManager::instance(
-  const MediaSetConfiguration &config,
-  const std::filesystem::path &basePath )
+  const std::filesystem::path &basePath,
+  MediaSetConfiguration &config )
 {
-  return std::make_shared< MediaSetManagerImpl>( config, basePath);
+  return std::make_shared< MediaSetManagerImpl>( basePath, config );
 }
 
 }

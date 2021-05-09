@@ -24,27 +24,33 @@
 namespace Arinc665::Utils {
 
 MediaSetManagerImpl::MediaSetManagerImpl(
-  const MediaSetConfiguration &config,
-  const std::filesystem::path &basePath ):
-  config{ config },
-  basePath{ basePath}
+  const std::filesystem::path &basePath,
+  MediaSetConfiguration &config ):
+  basePath{ basePath },
+  configurationV{ config }
 {
   BOOST_LOG_FUNCTION()
 
-  for ( auto const &mediaSet : config.mediaSets)
+  for ( auto const &mediaSet : config.mediaSets )
   {
+    // NOTE: structured bindings cannot be passed as lambda capture at them moment
+    // https://api.csswg.org/bikeshed/#lambda-captures
+
     // import media set
     auto importer( Arinc665Utils::arinc665Importer(
       // the read file handler
       [this,&mediaSet](
         const uint8_t mediumNumber,
-        const std::filesystem::path &path)->File::RawFile
+        const std::filesystem::path &path )->File::RawFile
       {
-        auto medium{ mediaSet.second.find( mediumNumber)};
+        // make structure binding here instead
+        const auto &[mediaSetPath,mediaPaths]{ mediaSet };
 
-        if (mediaSet.second.end() == medium)
+        auto medium{ mediaPaths.find( mediumNumber ) };
+
+        if ( mediaPaths.end() == medium )
         {
-          BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
+          BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning )
             << "Medium not found";
 
           return {};
@@ -53,20 +59,19 @@ MediaSetManagerImpl::MediaSetManagerImpl(
         // concatenate file path
         auto filePath{
           absolutePath(
-            mediaSet.first / medium->second / path.relative_path() )};
+            mediaSetPath / medium->second / path.relative_path() )};
 
         // read file
-
-        File::RawFile data( std::filesystem::file_size( filePath));
+        File::RawFile data( std::filesystem::file_size( filePath ) );
 
         std::ifstream file{
           filePath.string().c_str(),
           std::ifstream::binary | std::ifstream::in };
 
-        if ( !file.is_open())
+        if ( !file.is_open() )
         {
           BOOST_THROW_EXCEPTION( Arinc665Exception()
-            << Helper::AdditionalInfo( "Error opening files"));
+            << Helper::AdditionalInfo( "Error opening files" ) );
         }
 
         // read the data to the buffer
@@ -74,29 +79,28 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 
         // return the buffer
         return data;
-      }));
+      } ) );
 
     // import media set
-    auto impMediaSet( importer());
+    auto impMediaSet( importer() );
 
     // add media set
-    mediaSetsV.push_back( impMediaSet);
+    mediaSetsV.push_back( impMediaSet );
 
     // iterate over media
-    for ( auto &medium : impMediaSet->media())
+    for ( auto &medium : impMediaSet->media() )
     {
       // add path mapping
-      this->mediaPaths.insert(
-        { medium.second,
-          mediaSet.first /
-          mediaSet.second.at( medium.first)}); // should never fail
+      this->mediaPaths.insert( {
+        medium.second,
+        mediaSet.first / mediaSet.second.at( medium.first ) } ); // should never fail
     }
   }
 }
 
 const MediaSetConfiguration& MediaSetManagerImpl::configuration() const
 {
-  return config;
+  return configurationV;
 }
 
 Media::ConstMediaSetPtr MediaSetManagerImpl::mediaSet(
@@ -120,28 +124,46 @@ const MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::mediaSets() const
 
 void MediaSetManagerImpl::add(
   Media::ConstMediaSetPtr mediaSet,
-  MediumPathHandler mediumPathHandler)
+  MediumPathHandler mediumPathHandler )
 {
   BOOST_LOG_FUNCTION()
 
-  assert( mediaSet && mediumPathHandler); //! @todo change to exception --> no terminate
+  if ( !mediaSet || !mediumPathHandler )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665Exception()
+        << Helper::AdditionalInfo{ "Invalid Parameters" } );
+  }
+
+  // Media Set Base path
+  auto mediaSetPath{ mediaSet->partNumber() };
+  // List of Medium Paths
+  MediaSetConfiguration::MediaPaths mediaSetMediaPaths{};
 
   // iterate over media
-  for ( auto &medium : mediaSet->media())
+  for ( auto const &[mediumIndex, medium] : mediaSet->media() )
   {
-    const auto sourcePath{ mediumPathHandler( medium.second)};
+    const auto sourcePath{ mediumPathHandler( medium ) };
+    const auto destinationMediumPath{
+      (boost::format( "MEDIUM_%03u" ) % (unsigned int)mediumIndex ).str() };
+
     const auto destinationPath{
-      absolutePath(
-        std::filesystem::path{ mediaSet->partNumber()} /
-          (boost::format( "MEDIUM_%03u") % (unsigned int)medium.first).str() ) };
+      absolutePath( std::filesystem::path{ mediaSetPath } / destinationMediumPath ) };
 
     std::filesystem::copy(
       sourcePath,
       destinationPath,
       std::filesystem::copy_options::recursive );
+
+    mediaPaths.emplace( medium, destinationPath );
+    mediaSetMediaPaths.emplace( mediumIndex, destinationMediumPath );
   }
 
-  //! @todo Update Configuration?
+  mediaSetsV.emplace_back( mediaSet );
+
+  configurationV.mediaSets.emplace_back(
+    std::string{ mediaSetPath },
+    std::move( mediaSetMediaPaths ) );
 }
 
 Media::ConstLoads MediaSetManagerImpl::loads() const
@@ -205,10 +227,9 @@ std::filesystem::path MediaSetManagerImpl::filePath(
 std::filesystem::path MediaSetManagerImpl::absolutePath(
   const std::filesystem::path &filePath ) const
 {
-  return (
-    config.mediaSetBase.is_relative() ?
-      basePath / config.mediaSetBase / filePath :
-      config.mediaSetBase / filePath ).lexically_normal();
+  return ( configurationV.mediaSetsBase.is_relative() ?
+      basePath / configurationV.mediaSetsBase / filePath :
+      configurationV.mediaSetsBase / filePath ).lexically_normal();
 }
 
 }

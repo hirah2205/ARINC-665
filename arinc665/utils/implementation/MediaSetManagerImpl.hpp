@@ -26,15 +26,15 @@ class MediaSetManagerImpl : public MediaSetManager
     /**
      * @brief Initialises the media set manager.
      *
-     * @param[in] config
-     *   Media set configuration.
      * @param[in] basePath
      *   Base Path to use, when configured paths are relative, i.e. base of
      *   configuration file.
+     * @param[in,out] config
+     *   Media set configuration.
      **/
     explicit MediaSetManagerImpl(
-      const MediaSetConfiguration &config,
-      const std::filesystem::path &basePath );
+      const std::filesystem::path &basePath,
+      MediaSetConfiguration &config );
 
     //! @copydoc MediaSetManager::configuration
     [[nodiscard]] const MediaSetConfiguration& configuration() const final;
@@ -80,15 +80,15 @@ class MediaSetManagerImpl : public MediaSetManager
       const std::filesystem::path &filePath ) const;
 
     //! media path map
-    using MediaPaths = std::map< Media::ConstMediumPtr, std::filesystem::path>;
+    using MediaPaths = std::map< Media::ConstMediumPtr, std::filesystem::path >;
 
-    //! media set configuration
-    const MediaSetConfiguration config;
     //! Base for Relative Paths
-    const std::filesystem::path basePath;
-    //! media sets
+    const std::filesystem::path &basePath;
+    //! Media Set Configuration
+    MediaSetConfiguration &configurationV;
+    //! Media Sets
     MediaSets mediaSetsV;
-    //! media paths
+    //! Media Paths
     MediaPaths mediaPaths;
 };
 

@@ -1,8 +1,8 @@
 {
-  "media_set_base" : "./MediaSet",
+  "media_sets_base" : "./MediaSet",
   "media_sets" : [
     {
-      "part_number" : "CCC",
+      "path" : "CCC",
       "media" : [
         {
           "number" : 1,

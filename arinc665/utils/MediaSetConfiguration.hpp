@@ -19,6 +19,7 @@
 
 #include <filesystem>
 #include <map>
+#include <list>
 
 namespace Arinc665::Utils {
 
@@ -30,8 +31,8 @@ class MediaSetConfiguration
   public:
     //! media-to-path mapping (Medium Number -> Path)
     using MediaPaths = std::map< uint8_t, std::filesystem::path>;
-    //! Mapping of media sets (Media Set Part Number -> Media Paths)
-    using MediaSets = std::map< std::string, MediaPaths>;
+    //! List of Media Sets (Media Set Path, Media Paths)
+    using MediaSets = std::list< std::pair< std::string, MediaPaths > >;
 
     //! Initialises the configuration with default values.
     MediaSetConfiguration() = default;
@@ -62,8 +63,8 @@ class MediaSetConfiguration
     [[nodiscard]] boost::property_tree::ptree toProperties() const;
 
     //! Base directory for all media sets stored.
-    std::filesystem::path mediaSetBase;
-    //! List of media sets (name-path-mapping)
+    std::filesystem::path mediaSetsBase;
+    //! List of media Sets
     MediaSets mediaSets;
 };
 

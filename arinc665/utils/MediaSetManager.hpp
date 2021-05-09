@@ -54,17 +54,17 @@ class MediaSetManager
      * @brief Creates the Media Set Manager instance with the given
      *   configuration.
      *
-     * @param[in] config
-     *   Media Set Manager Configuration.
      * @param[in] basePath
      *   Base Path to use, when configured paths are relative, i.e. base of
      *   configuration file.
+     * @param[in,out] config
+     *   Media Set Manager Configuration.
      *
-     * @return The media set manager instance.
+     * @return Media Set Manager Instance.
      **/
     static MediaSetManagerPtr instance(
-      const MediaSetConfiguration &config,
-      const std::filesystem::path &basePath );
+      const std::filesystem::path &basePath,
+      MediaSetConfiguration &config );
 
     /**
      * @brief Returns the configuration for the media set manager.
@@ -82,7 +82,7 @@ class MediaSetManager
      * @return The media set with the given part number.
      **/
     [[nodiscard]] virtual Media::ConstMediaSetPtr mediaSet(
-      std::string_view partNumber) const = 0;
+      std::string_view partNumber ) const = 0;
 
     /**
      * @brief Returns all registered media sets.
@@ -124,7 +124,7 @@ class MediaSetManager
      * @brief Returns the loads with the given filename.
      *
      * This operation returns a list of loads, because the specific load could
-     * be localised on more than one medium.
+     * be localised on more than one media set.
      *
      * @param[in] filename
      *   Load Filename

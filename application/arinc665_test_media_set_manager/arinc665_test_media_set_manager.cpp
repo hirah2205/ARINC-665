@@ -67,9 +67,12 @@ int main( int argc, char ** argv)
       mediaSetConfig.string(),
       config);
 
+    auto configDir{ std::filesystem::absolute( mediaSetConfig.parent_path() ) };
+    Arinc665::Utils::MediaSetConfiguration mediaSetConfiguration{ config };
+
     auto mediaSetManager{ Arinc665::Utils::MediaSetManager::instance(
-      Arinc665::Utils::MediaSetConfiguration{ config },
-      std::filesystem::absolute( mediaSetConfig.parent_path()))};
+      configDir,
+      mediaSetConfiguration ) };
 
     for ( const auto &mediaSet : mediaSetManager->mediaSets())
     {
