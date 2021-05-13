@@ -62,19 +62,19 @@ class LoadListFile: public ListFile
     using UserDefinedData = std::vector< uint8_t>;
 
     //! Offset of the Spare field.
-    static constexpr std::size_t SpareFieldOffset = 6U;
+    static constexpr ptrdiff_t SpareFieldOffset = 6U;
 
     //! Offset of the Media Set Part Number Pointer Field
-    static constexpr std::size_t MediaSetPartNumberPointerFieldOffset = 8U;
+    static constexpr ptrdiff_t MediaSetPartNumberPointerFieldOffset = 8U;
 
     //! Offset of the Loads Pointer Field
-    static constexpr std::size_t LoadFilesPointerFieldOffset = 12U;
+    static constexpr ptrdiff_t LoadFilesPointerFieldOffset = 12U;
 
     //! Offset of the User Defined Data Pointer Field
-    static constexpr std::size_t UserDefinedDataPointerFieldOffset = 16U;
+    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffset = 16U;
 
     //! First Start of pointer data for ARINC 665 Load List Files.
-    static constexpr std::size_t FileHeaderSize = 20U;
+    static constexpr ptrdiff_t FileHeaderSize = 20U;
 
     /**
      * @brief Creates an empty load list file.
@@ -250,7 +250,7 @@ class LoadListFile: public ListFile
      *
      * @throw InvalidArinc665File When member sequence number is out of range
      **/
-    void decodeLoadsInfo( const ConstRawFileSpan &rawFile, std::size_t offset );
+    void decodeLoadsInfo( const ConstRawFileSpan &rawFile, ptrdiff_t offset );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.

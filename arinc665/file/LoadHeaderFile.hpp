@@ -110,43 +110,43 @@ class LoadHeaderFile: public Arinc665File
       std::optional< std::pair< std::string, uint16_t > >;
 
     //! Offset of the Part Flags Field (ARINC 665-3) - Spare in older supplements
-    static constexpr std::size_t PartFlagsFieldOffset = 6U;
+    static constexpr ptrdiff_t PartFlagsFieldOffset = 6;
 
     //! Offset of the Load Part Number Pointer Field
-    static constexpr std::size_t LoadPartNumberPointerFieldOffset = 8U;
+    static constexpr ptrdiff_t LoadPartNumberPointerFieldOffset = 8;
 
     //! Offset of the THW IDs Pointer Field
-    static constexpr std::size_t ThwIdsPointerFieldOffset = 12U;
+    static constexpr ptrdiff_t ThwIdsPointerFieldOffset = 12;
 
     //! Offset of the Data Files Pointer Field
-    static constexpr std::size_t DataFilesPointerFieldOffset = 16U;
+    static constexpr ptrdiff_t DataFilesPointerFieldOffset = 16;
 
     //! Offset of the Support Files Pointer Field
-    static constexpr std::size_t SupportFilesPointerFieldOffset = 20U;
+    static constexpr ptrdiff_t SupportFilesPointerFieldOffset = 20;
 
     //! Offset of the User Defined Data Pointer Field
-    static constexpr std::size_t UserDefinedDataPointerFieldOffset = 24U;
+    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffset = 24;
 
     //! Offset of the Load Type Description Pointer Field (ARINC 665-3)
-    static constexpr std::size_t LoadTypeDescriptionPointerFieldOffset = 28U;
+    static constexpr ptrdiff_t LoadTypeDescriptionPointerFieldOffset = 28;
 
     //! Offset of the THW IDs with Positions Pointer Field (ARINC 665-3)
-    static constexpr std::size_t ThwIdPositionsPointerFieldOffset = 32U;
+    static constexpr ptrdiff_t ThwIdPositionsPointerFieldOffset = 32;
 
     //! Offset of the Load Check Value Pointer Field (ARINC 665-3)
-    static constexpr std::size_t LoadCheckValuePointerFieldOffset = 36U;
+    static constexpr ptrdiff_t LoadCheckValuePointerFieldOffset = 36;
 
     //! First Start of pointer data for ARINC 665-2 Load Headers.
-    static constexpr std::size_t LoadHeaderSizeV2 = 28U;
+    static constexpr ptrdiff_t LoadHeaderSizeV2 = 28;
 
     //! First Start of pointer data for ARINC 665-3/4 Load Headers.
-    static constexpr std::size_t LoadHeaderSizeV3 = 40U;
+    static constexpr ptrdiff_t LoadHeaderSizeV3 = 40;
 
     //! Position of Load CRC from end of File
-    static constexpr std::size_t LoadCrcOffset = 4U;
+    static constexpr ptrdiff_t LoadCrcOffset = 4;
 
     //! Position of File CRC from end of File
-    static constexpr std::size_t FileCrcOffset = 6U;
+    static constexpr ptrdiff_t FileCrcOffset = 6;
 
     //! Download Flag of Part Flag
     static constexpr std::uint16_t PartFlagDownload = 0x0001U;
@@ -475,7 +475,7 @@ class LoadHeaderFile: public Arinc665File
      **/
     LoadFilesInfo decodeFileList(
       const ConstRawFileSpan &rawFile,
-      std::size_t offset,
+      ptrdiff_t offset,
       FileListType type,
       bool decodeV3Data);
 

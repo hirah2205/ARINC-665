@@ -39,7 +39,7 @@ void MediaSetWidget::selectedMediaSet(
   {
     ui->partNumberLineEdit->setText( QString::fromUtf8(
       mediaSetV->partNumber().data(),
-      mediaSetV->partNumber().length()));
+      static_cast< int >( mediaSetV->partNumber().length() ) ) );
   }
 }
 

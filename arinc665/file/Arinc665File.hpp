@@ -33,18 +33,18 @@ class Arinc665File
     using StringList = std::list< std::string>;
 
     //! Base Header Size
-    static constexpr size_t BaseHeaderSize =
+    static constexpr ptrdiff_t BaseHeaderSize =
       sizeof( uint32_t ) + // file length
       sizeof( uint16_t );  // ARINC Version
 
     //! Default Checksum Position
-    static constexpr std::size_t DefaultChecksumPosition = 2U;
+    static constexpr ptrdiff_t DefaultChecksumPosition = 2;
 
     //! Offset of the File Length Field
-    static constexpr std::size_t FileLengthFieldOffset = 0U;
+    static constexpr ptrdiff_t FileLengthFieldOffset = 0U;
 
     //! Offset of the File Format Version Field
-    static constexpr std::size_t FileFormatVersionFieldOffset = 4U;
+    static constexpr ptrdiff_t FileFormatVersionFieldOffset = 4U;
 
     /**
      * @brief Decodes the ARINC 665 string from the stream.
@@ -292,7 +292,7 @@ class Arinc665File
      **/
     explicit Arinc665File(
       SupportedArinc665Version version,
-      std::size_t checksumPosition = DefaultChecksumPosition ) noexcept;
+      ptrdiff_t checksumPosition = DefaultChecksumPosition ) noexcept;
 
     /**
      * @brief Initialises the ARINC 665 file from the given raw data.
@@ -307,7 +307,7 @@ class Arinc665File
     explicit Arinc665File(
       const ConstRawFileSpan &rawFile,
       FileType expectedFileType,
-      std::size_t checksumPosition = DefaultChecksumPosition);
+      ptrdiff_t checksumPosition = DefaultChecksumPosition );
 
     /**
      * @brief Copy Constructor
@@ -369,7 +369,7 @@ class Arinc665File
       FileType expectedFileType );
 
     //! checksum position
-    const std::size_t checksumPosition;
+    const ptrdiff_t checksumPosition;
     //! ARINC 665 Version
     SupportedArinc665Version arinc665VersionValue;
 };

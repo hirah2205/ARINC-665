@@ -39,7 +39,7 @@ void DirectoryWidget::selectedDirectory(
   {
     ui->nameLineEdit->setText( QString::fromUtf8(
       directoryV->name().data(),
-      directoryV->name().length()));
+      static_cast< int >( directoryV->name().length() ) ) );
   }
 }
 

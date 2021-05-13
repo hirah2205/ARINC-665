@@ -40,7 +40,7 @@ RawFile CheckValueUtils_encode( const std::optional< CheckValue> &checkValue );
  **/
 std::optional< CheckValue> CheckValueUtils_decode(
   const ConstRawFileSpan &rawFile,
-  std::size_t offset);
+  ptrdiff_t offset );
 
 }
 

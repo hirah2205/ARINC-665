@@ -410,7 +410,7 @@ void Arinc665File::arincVersion( const SupportedArinc665Version version)
 
 Arinc665File::Arinc665File(
   const SupportedArinc665Version version,
-  const std::size_t checksumPosition ) noexcept :
+  const ptrdiff_t checksumPosition ) noexcept :
   checksumPosition{ checksumPosition },
   arinc665VersionValue{ version }
 {
@@ -419,7 +419,7 @@ Arinc665File::Arinc665File(
 Arinc665File::Arinc665File(
   const ConstRawFileSpan &rawFile,
   const FileType expectedFileType,
-  std::size_t checksumPosition ) :
+  ptrdiff_t checksumPosition ) :
   checksumPosition{ checksumPosition },
   arinc665VersionValue{ Arinc665Version::Invalid }
 {
@@ -485,7 +485,9 @@ void Arinc665File::insertHeader( const RawFileSpan &rawFile) const
   const uint16_t calculatedCrc{
     calculateChecksum( rawFile, checksumPosition)};
 
-  Helper::setInt< uint16_t>( rawFile.begin() + rawFile.size() - checksumPosition, calculatedCrc);
+  Helper::setInt< uint16_t>(
+    rawFile.begin() + static_cast< ptrdiff_t>( rawFile.size() ) - checksumPosition,
+    calculatedCrc );
 }
 
 void Arinc665File::decodeHeader(
@@ -496,7 +498,7 @@ void Arinc665File::decodeHeader(
   if ( rawFile.size() <= BaseHeaderSize )
   {
     BOOST_THROW_EXCEPTION(
-      InvalidArinc665File() << Helper::AdditionalInfo( "File to small" ) );
+      InvalidArinc665File() << Helper::AdditionalInfo{ "File to small" } );
   }
 
   auto it{ rawFile.begin() };
@@ -507,8 +509,8 @@ void Arinc665File::decodeHeader(
 
   if ( fileLength * 2U != rawFile.size())
   {
-    BOOST_THROW_EXCEPTION(
-      InvalidArinc665File() << Helper::AdditionalInfo( "file size invalid"));
+    BOOST_THROW_EXCEPTION(InvalidArinc665File()
+      << Helper::AdditionalInfo{ "file size invalid" } );
   }
 
   // format version
@@ -523,20 +525,22 @@ void Arinc665File::decodeHeader(
   if ( arinc665VersionValue == SupportedArinc665Version::Invalid )
   {
     BOOST_THROW_EXCEPTION(
-      InvalidArinc665File() << Helper::AdditionalInfo( "wrong file format" ) );
+      InvalidArinc665File() << Helper::AdditionalInfo{ "wrong file format" } );
   }
 
   // Decode checksum field;
   uint16_t crc{};
-  Helper::getInt< uint16_t>( rawFile.begin() + (rawFile.size() - checksumPosition), crc);
+  Helper::getInt< uint16_t>(
+    rawFile.begin() + static_cast< ptrdiff_t>( rawFile.size() ) - checksumPosition,
+    crc );
 
 
   // calculate checksum and compare against stored
-  uint16_t calcCrc = calculateChecksum( rawFile, checksumPosition);
+  uint16_t calcCrc = calculateChecksum( rawFile, checksumPosition );
   if ( crc != calcCrc )
   {
     BOOST_THROW_EXCEPTION(
-      InvalidArinc665File() << Helper::AdditionalInfo( "Invalid Checksum"));
+      InvalidArinc665File() << Helper::AdditionalInfo{ "Invalid Checksum" } );
   }
 }
 

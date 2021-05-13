@@ -72,25 +72,25 @@ class FileListFile: public ListFile
     using UserDefinedData = std::vector< uint8_t>;
 
     //! Offset of the Spare field.
-    static constexpr std::size_t SpareFieldOffset = 6U;
+    static constexpr ptrdiff_t SpareFieldOffset = 6;
 
     //! Offset of the Media Set Part Number Pointer Field
-    static constexpr std::size_t MediaSetPartNumberPointerFieldOffset = 8U;
+    static constexpr ptrdiff_t MediaSetPartNumberPointerFieldOffset = 8;
 
     //! Offset of the Media Set Files Pointer Field
-    static constexpr std::size_t MediaSetFilesPointerFieldOffset = 12U;
+    static constexpr ptrdiff_t MediaSetFilesPointerFieldOffset = 12;
 
     //! Offset of the User Defined Data Pointer Field
-    static constexpr std::size_t UserDefinedDataPointerFieldOffset = 16U;
+    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffset = 16;
 
     //! Offset of the File Check Value Pointer Field (Only ARINC 665-3/4)
-    static constexpr std::size_t FileCheckValuePointerFieldOffset = 20U;
+    static constexpr ptrdiff_t FileCheckValuePointerFieldOffset = 20;
 
     //! First Start of pointer data for ARINC 665-2 Load Headers.
-    static constexpr std::size_t FileHeaderSizeV2 = 20U;
+    static constexpr ptrdiff_t FileHeaderSizeV2 = 20;
 
     //! First Start of pointer data for ARINC 665-3/4 Load Headers.
-    static constexpr std::size_t FileHeaderSizeV3 = 24U;
+    static constexpr ptrdiff_t FileHeaderSizeV3 = 24;
 
     /**
      * @brief Creates an empty file list file.
@@ -132,7 +132,7 @@ class FileListFile: public ListFile
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       FilesInfo &&files = {},
-      UserDefinedData &&userDefinedData = {});
+      UserDefinedData &&userDefinedData = {} );
 
     /**
      * @brief Creates a file list file from the given raw data.
@@ -281,7 +281,7 @@ class FileListFile: public ListFile
      **/
     void decodeFilesInfo(
       const ConstRawFileSpan &rawFile,
-      std::size_t offset,
+      ptrdiff_t offset,
       bool decodeV3Data);
 
     /**

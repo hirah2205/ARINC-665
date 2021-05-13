@@ -192,12 +192,12 @@ RawFile BatchListFile::encode() const
 
   // media sequence number
   Helper::setInt< uint8_t>(
-    rawFile.begin() + static_cast< ssize_t >( nextFreeOffset + rawMediaSetPn.size() ),
+    rawFile.begin() + static_cast< ptrdiff_t >( nextFreeOffset + rawMediaSetPn.size() ),
     mediaSequenceNumberV );
 
   // number of media set members
   Helper::setInt< uint8_t>(
-    rawFile.begin() + static_cast< ssize_t >( nextFreeOffset + rawMediaSetPn.size() + sizeof( uint8_t ) ),
+    rawFile.begin() + static_cast< ptrdiff_t >( nextFreeOffset + rawMediaSetPn.size() + sizeof( uint8_t ) ),
     numberOfMediaSetMembersV );
 
   Helper::setInt< uint32_t>(
@@ -303,7 +303,7 @@ void BatchListFile::decodeBody( const ConstRawFileSpan &rawFile )
   {
     userDefinedDataV.assign(
       rawFile.begin() + userDefinedDataPtr * 2U,
-      rawFile.begin() + static_cast< ssize_t >( rawFile.size() - DefaultChecksumPosition ) );
+      rawFile.begin() + static_cast< ptrdiff_t >( rawFile.size() - DefaultChecksumPosition ) );
   }
 
 
@@ -360,7 +360,7 @@ RawFile BatchListFile::encodeBatchesInfo() const
     rawBatchInfo.resize( oldSize + sizeof( uint16_t ) );
 
     Helper::setInt< uint16_t>(
-      rawBatchInfo.begin() + static_cast< ssize_t >( oldSize ),
+      rawBatchInfo.begin() + static_cast< ptrdiff_t >( oldSize ),
       batchInfo.memberSequenceNumber() );
 
     // add file info to files info
@@ -379,7 +379,7 @@ void BatchListFile::decodeBatchesInfo(
 {
   BOOST_LOG_FUNCTION()
 
-  auto it{ rawFile.begin() + static_cast< ssize_t >( offset ) };
+  auto it{ rawFile.begin() + static_cast< ptrdiff_t >( offset ) };
 
   // clear eventually stored infos
   batchesV.clear();

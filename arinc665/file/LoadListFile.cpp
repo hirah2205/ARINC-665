@@ -183,7 +183,7 @@ RawFile LoadListFile::encode() const
   Helper::setInt< uint16_t>( rawFile.begin() + SpareFieldOffset, 0U);
 
   // Next free Offset (used for optional pointer calculation)
-  size_t nextFreeOffset{ rawFile.size()};
+  ptrdiff_t nextFreeOffset{ static_cast< ptrdiff_t >( rawFile.size() ) };
 
 
   // media set information
@@ -197,29 +197,29 @@ RawFile LoadListFile::encode() const
 
   // media sequence number
   Helper::setInt< uint8_t>(
-    rawFile.begin() + nextFreeOffset + rawMediaSetPn.size(),
+    rawFile.begin() + nextFreeOffset + static_cast< ptrdiff_t >( rawMediaSetPn.size() ),
     mediaSequenceNumberV );
 
   // number of media set members
   Helper::setInt< uint8_t>(
-    rawFile.begin() + nextFreeOffset + rawMediaSetPn.size() + sizeof( uint8_t),
+    rawFile.begin() + nextFreeOffset + static_cast< ptrdiff_t >( rawMediaSetPn.size() ) + sizeof( uint8_t ),
     numberOfMediaSetMembersV );
 
   Helper::setInt< uint32_t>(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
     nextFreeOffset / 2);
-  nextFreeOffset += rawMediaSetPn.size() + 2 * sizeof( uint8_t);
+  nextFreeOffset += static_cast< ptrdiff_t >( rawMediaSetPn.size() + 2 * sizeof( uint8_t ) );
 
 
   // Loads info
-  const auto rawLoadsInfo{ encodeLoadsInfo()};
+  const auto rawLoadsInfo{ encodeLoadsInfo() };
   assert( rawLoadsInfo.size() % 2 == 0);
 
   // loads list pointer
   Helper::setInt< uint32_t>(
     rawFile.begin() + LoadFilesPointerFieldOffset,
     nextFreeOffset / 2);
-  nextFreeOffset += rawLoadsInfo.size();
+  nextFreeOffset += static_cast< ptrdiff_t >( rawLoadsInfo.size() );
 
   rawFile.insert( rawFile.end(), rawLoadsInfo.begin(), rawLoadsInfo.end());
 
@@ -245,7 +245,7 @@ RawFile LoadListFile::encode() const
 
 
   // Resize to final size ( File CRC)
-  rawFile.resize( rawFile.size() + sizeof( uint16_t));
+  rawFile.resize( rawFile.size() + sizeof( uint16_t ) );
 
 
   // set header and CRC
@@ -254,7 +254,7 @@ RawFile LoadListFile::encode() const
   return rawFile;
 }
 
-void LoadListFile::decodeBody( const ConstRawFileSpan &rawFile)
+void LoadListFile::decodeBody( const ConstRawFileSpan &rawFile )
 {
   BOOST_LOG_FUNCTION()
 
@@ -308,9 +308,8 @@ void LoadListFile::decodeBody( const ConstRawFileSpan &rawFile)
   {
     userDefinedDataV.assign(
       rawFile.begin() + userDefinedDataPtr * 2,
-      rawFile.begin() + rawFile.size() - DefaultChecksumPosition);
+      rawFile.begin() + static_cast< ptrdiff_t >( rawFile.size() ) - DefaultChecksumPosition );
   }
-
 
   // file crc decoded and checked within base class
 }
@@ -375,7 +374,7 @@ RawFile LoadListFile::encodeLoadsInfo() const
 
 void LoadListFile::decodeLoadsInfo(
   const ConstRawFileSpan &rawFile,
-  std::size_t offset)
+  const ptrdiff_t offset )
 {
   BOOST_LOG_FUNCTION()
 

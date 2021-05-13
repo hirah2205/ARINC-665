@@ -196,7 +196,7 @@ class BatchFile: public Arinc665File
      **/
     void decodeBatchTargetsInfo(
       const ConstRawFileSpan &rawFile,
-      std::size_t offset);
+      ptrdiff_t offset );
 
     //! Part number
     std::string partNumberValue;

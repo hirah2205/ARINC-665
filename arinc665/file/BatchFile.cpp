@@ -282,11 +282,11 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
 
 void BatchFile::decodeBatchTargetsInfo(
   const ConstRawFileSpan &rawFile,
-  const std::size_t offset)
+  const ptrdiff_t offset )
 {
   //BOOST_LOG_FUNCTION()
 
-  auto it{ rawFile.begin() + offset};
+  auto it{ rawFile.begin() + offset };
 
   // clear potentially data
   targetsHardwareV.clear();
@@ -299,7 +299,7 @@ void BatchFile::decodeBatchTargetsInfo(
   for (
     unsigned int thwIdIndex = 0U;
     thwIdIndex < numberOfTargetHardwareIds;
-    ++thwIdIndex)
+    ++thwIdIndex )
   {
     auto listIt{ it};
 

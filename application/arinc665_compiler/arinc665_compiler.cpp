@@ -417,7 +417,9 @@ static void writeFile(
   }
 
   // write the data to the buffer
-  fileStream.write( (char*) &file.at( 0), file.size());
+  fileStream.write(
+    (char*) &file.at( 0),
+    static_cast< std::streamsize >( file.size() ) );
 }
 
 static Arinc665::File::RawFile readFile(
@@ -456,7 +458,9 @@ static Arinc665::File::RawFile readFile(
   }
 
   // read the data to the buffer
-  file.read( (char*) &data.at( 0), data.size());
+  file.read(
+    (char*) &data.at( 0),
+    static_cast< std::streamsize >( data.size() ) );
 
   // return the buffer
   return data;

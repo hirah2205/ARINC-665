@@ -252,7 +252,7 @@ RawFile FileListFile::encode() const
 
     default:
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo( "Unsupported ARINC 665 Version" ) );
+        << Helper::AdditionalInfo{ "Unsupported ARINC 665 Version" } );
   }
 
   RawFile rawFile( baseSize);
@@ -262,43 +262,43 @@ RawFile FileListFile::encode() const
   Helper::setInt< uint32_t>( rawFile.begin() + SpareFieldOffset, 0U );
 
   // Next free Offset (used for optional pointer calculation)
-  size_t nextFreeOffset{ rawFile.size()};
+  ptrdiff_t nextFreeOffset{ static_cast< ptrdiff_t>( rawFile.size() ) };
 
 
   // media set part number
   const auto rawMediaSetPn{ encodeString( mediaSetPn())};
   assert( rawMediaSetPn.size() % 2 == 0);
 
-  rawFile.insert( rawFile.end(), rawMediaSetPn.begin(), rawMediaSetPn.end());
+  rawFile.insert( rawFile.end(), rawMediaSetPn.begin(), rawMediaSetPn.end() );
 
-  rawFile.resize( rawFile.size() + 2 * sizeof( uint8_t));
+  rawFile.resize( rawFile.size() + 2 * sizeof( uint8_t) );
 
   // media sequence number
   Helper::setInt< uint8_t>(
-    rawFile.begin() + nextFreeOffset + rawMediaSetPn.size(),
-    mediaSequenceNumberValue);
+    rawFile.begin() + nextFreeOffset + static_cast< ptrdiff_t>( rawMediaSetPn.size() ),
+    mediaSequenceNumberValue );
 
   // number of media set members
   Helper::setInt< uint8_t>(
-    rawFile.begin() + nextFreeOffset + rawMediaSetPn.size() + sizeof( uint8_t),
-    numberOfMediaSetMembersValue);
+    rawFile.begin() + nextFreeOffset + static_cast< ptrdiff_t>( rawMediaSetPn.size() ) + sizeof( uint8_t),
+    numberOfMediaSetMembersValue );
 
   Helper::setInt< uint32_t>(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
     nextFreeOffset / 2);
-  nextFreeOffset += rawMediaSetPn.size() + 2 * sizeof( uint8_t);
+  nextFreeOffset += static_cast< ptrdiff_t >( rawMediaSetPn.size() + 2 * sizeof( uint8_t ) );
 
 
   // media set files list
-  const auto rawFilesInfo{ encodeFilesInfo( encodeV3Data)};
+  const auto rawFilesInfo{ encodeFilesInfo( encodeV3Data )};
   assert( rawFilesInfo.size() % 2 == 0);
 
   Helper::setInt< uint32_t>(
     rawFile.begin() + MediaSetFilesPointerFieldOffset,
     nextFreeOffset / 2);
-  nextFreeOffset += rawFilesInfo.size();
+  nextFreeOffset += static_cast< ptrdiff_t>( rawFilesInfo.size() );
 
-  rawFile.insert( rawFile.end(), rawFilesInfo.begin(), rawFilesInfo.end());
+  rawFile.insert( rawFile.end(), rawFilesInfo.begin(), rawFilesInfo.end() );
 
 
   // user defined data
@@ -308,12 +308,12 @@ RawFile FileListFile::encode() const
   if (!userDefinedDataV.empty())
   {
     userDefinedDataPtr = nextFreeOffset / 2;
-    nextFreeOffset += userDefinedDataV.size();
+    nextFreeOffset += static_cast< ptrdiff_t>( userDefinedDataV.size() );
 
     rawFile.insert(
       rawFile.end(),
       userDefinedDataV.begin(),
-      userDefinedDataV.end());
+      userDefinedDataV.end() );
   }
 
   Helper::setInt< uint32_t>(
@@ -326,7 +326,7 @@ RawFile FileListFile::encode() const
   {
     // Alternative implementation set File Check Pointer to zero
 
-    const auto rawCheckValue{ CheckValueUtils_encode( checkValueValue)};
+    const auto rawCheckValue{ CheckValueUtils_encode( checkValueValue) };
     assert( rawCheckValue.size() % 2 == 0);
 
     Helper::setInt< uint32_t>(
@@ -336,7 +336,7 @@ RawFile FileListFile::encode() const
     rawFile.insert(
       rawFile.end(),
       rawCheckValue.begin(),
-      rawCheckValue.end());
+      rawCheckValue.end() );
   }
 
 
@@ -414,7 +414,7 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
   // media set part number
   auto it{ decodeString(
     rawFile.begin() + mediaInformationPtr * 2U,
-    mediaSetPnValue)};
+    mediaSetPnValue ) };
 
   // media sequence number
   it = Helper::getInt< uint8_t>( it, mediaSequenceNumberValue);
@@ -430,7 +430,7 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
   // user defined data
   if ( 0 != userDefinedDataPtr )
   {
-    std::size_t endOfUserDefinedData{ rawFile.size() - DefaultChecksumPosition };
+    ptrdiff_t endOfUserDefinedData{ static_cast< ptrdiff_t>( rawFile.size() ) - DefaultChecksumPosition };
 
     if (fileCheckValuePtr != 0)
     {
@@ -445,7 +445,7 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
 
     userDefinedDataV.assign(
       rawFile.begin() + userDefinedDataPtr * 2,
-      rawFile.begin() + endOfUserDefinedData);
+      rawFile.begin() + endOfUserDefinedData );
   }
 
 
@@ -467,7 +467,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
   RawFile rawFilesInfo( sizeof( uint16_t));
 
   // number of files
-  Helper::setInt< uint16_t>( rawFilesInfo.begin(), numberOfFiles());
+  Helper::setInt< uint16_t>( rawFilesInfo.begin(), numberOfFiles() );
 
   // iterate over files
   uint16_t fileCounter( 0);
@@ -497,17 +497,17 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
 
     // member sequence number
     auto fileInfoIt{ Helper::setInt< uint16_t>(
-      rawFileInfo.begin() + rawFileInfo.size() - ( 2 * sizeof( uint16_t)),
-      fileInfo.memberSequenceNumber())};
+      rawFileInfo.begin() + static_cast< ptrdiff_t>( rawFileInfo.size() ) - ( 2 * sizeof( uint16_t ) ),
+      fileInfo.memberSequenceNumber() ) };
 
     // crc
-    Helper::setInt< uint16_t>( fileInfoIt, fileInfo.crc());
+    Helper::setInt< uint16_t>( fileInfoIt, fileInfo.crc() );
 
     // following fields are available in ARINC 665-3 ff
     if ( encodeV3Data)
     {
       // check Value
-      const auto rawCheckValue{ CheckValueUtils_encode( fileInfo.checkValue())};
+      const auto rawCheckValue{ CheckValueUtils_encode( fileInfo.checkValue() ) };
       assert( rawCheckValue.size() % 2 == 0);
       rawFileInfo.insert(
         rawFileInfo.end(),
@@ -531,19 +531,19 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
 
 void FileListFile::decodeFilesInfo(
   const ConstRawFileSpan &rawFile,
-  const std::size_t offset,
+  const ptrdiff_t offset,
   const bool decodeV3Data)
 {
   BOOST_LOG_FUNCTION()
 
-  auto it{ rawFile.begin() + offset};
+  auto it{ rawFile.begin() + offset };
 
   // clear potentially data
   filesV.clear();
 
   // number of files
   uint16_t numberOfFiles{};
-  it = Helper::getInt< uint16_t>( it, numberOfFiles);
+  it = Helper::getInt< uint16_t>( it, numberOfFiles );
 
   // iterate over index
   for ( unsigned int fileIndex = 0U; fileIndex < numberOfFiles; ++fileIndex)

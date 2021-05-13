@@ -83,7 +83,7 @@ QModelIndex MediaSetModel::index(
 
       auto fileIt{std::next(
         parentContainer->files( false).begin(),
-        row - parentContainer->numberOfSubDirectories())};
+        row - static_cast< ptrdiff_t >( parentContainer->numberOfSubDirectories() ) ) };
 
       return createIndex( row, column, fileIt->get());
     }
@@ -145,7 +145,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index) const
       auto pos( std::find( subDirs.begin(), subDirs.end(), dir->parent()));
 
       return createIndex(
-        std::distance( subDirs.begin(), pos),
+        static_cast< int >( std::distance( subDirs.begin(), pos ) ),
         0,
         dir->parent().get());
     }
@@ -171,7 +171,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index) const
       auto pos{ std::find( subDirs.begin(), subDirs.end(), file->parent())};
 
       return createIndex(
-        std::distance( subDirs.begin(), pos),
+        static_cast< int >( std::distance( subDirs.begin(), pos ) ),
         0,
         file->parent().get());
     }
@@ -321,13 +321,13 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role) const
         case Arinc665::Media::Base::Type::Directory:
         {
           auto * directory{ static_cast< Arinc665::Media::Directory *>( base)};
-          return QString::fromUtf8( directory->name().data(), directory->name().length());
+          return QString::fromUtf8( directory->name().data(), static_cast< int >( directory->name().length() ) );
         }
 
         case Arinc665::Media::Base::Type::File:
         {
           auto * file{ static_cast< Arinc665::Media::BaseFile *>( base)};
-          return QString::fromUtf8( file->name().data(), file->name().length());
+          return QString::fromUtf8( file->name().data(), static_cast< int >( file->name().length() ) );
         }
 
         default:
@@ -335,7 +335,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role) const
       }
 
     case Columns::PartNumber:
-      return QString::fromUtf8( base->partNumber().data(), base->partNumber().size());
+      return QString::fromUtf8( base->partNumber().data(), static_cast< int >( base->partNumber().size() ) );
 
     case Columns::Type:
       switch ( base->type())

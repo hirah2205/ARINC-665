@@ -169,7 +169,9 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
       }
 
       // read the data to the buffer
-      file.read( (char*) &data.at( 0), data.size());
+      file.read(
+        (char*) &data.at( 0),
+        static_cast< std::streamsize >( data.size() ) );
 
       // return the buffer
       return data;

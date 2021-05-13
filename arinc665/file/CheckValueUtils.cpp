@@ -54,9 +54,9 @@ RawFile CheckValueUtils_encode( const std::optional< CheckValue> &checkValue )
 
 std::optional< CheckValue> CheckValueUtils_decode(
   const ConstRawFileSpan &rawFile,
-  std::size_t offset)
+  const ptrdiff_t offset )
 {
-  auto it{ rawFile.begin() + offset};
+  auto it{ rawFile.begin() + offset };
 
   uint16_t checkValueLength{};
   it = Helper::getInt< uint16_t>( it, checkValueLength);
