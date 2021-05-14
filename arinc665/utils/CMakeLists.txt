@@ -27,4 +27,9 @@ target_sources(
 #
 #  PRIVATE)
 
+install(
+  FILES
+    MediaSetConfiguration.template.json
+  TYPE DOC )
+
 add_subdirectory( implementation )
