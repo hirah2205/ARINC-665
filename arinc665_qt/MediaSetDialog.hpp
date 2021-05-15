@@ -38,7 +38,7 @@ class MediaSetDialog : public QDialog
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit MediaSetDialog( QWidget *parent = nullptr);
+    explicit MediaSetDialog( QWidget *parent = nullptr );
 
     //! Destructor
     ~MediaSetDialog() override;

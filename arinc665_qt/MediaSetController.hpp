@@ -30,7 +30,7 @@ namespace Arinc665Qt {
 /**
  * @brief Controller Analysis of BHM Serialisation Database.
  **/
-class MediaSetController: public QObject
+class MediaSetController : public QObject
 {
   Q_OBJECT
 
