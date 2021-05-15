@@ -88,6 +88,10 @@ add_subdirectory( arinc665_api_doc )
 
 add_subdirectory( test )
 
+install(
+  FILES LICENSE
+  TYPE DOC
+  RENAME ${PROJECT_NAME}.LICENSE )
 
 set( CPACK_GENERATOR ZIP )
 set( CPACK_PACKAGE_DESCRIPTION_SUMMARY ${PROJECT_DESCRIPTION} )
