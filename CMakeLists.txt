@@ -80,6 +80,7 @@ FetchContent_MakeAvailable( helper )
 
 add_subdirectory( arinc665 )
 add_subdirectory( arinc665_qt )
+add_subdirectory( arinc665_xml )
 
 add_subdirectory( application )
 

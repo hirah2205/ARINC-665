@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<MediaSet
+  xmlns="http://www.thomas-vogt.de/Arinc665MediaSet"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.thomas-vogt.de/Arinc665MediaSet ../arinc665_xml/Arinc665MediaSet.xsd"
+
+  PartNumber="CCC" >
+
+  <FilesUserDefinedData>File Data</FilesUserDefinedData>
+  <LoadsUserDefinedData>Loads Data</LoadsUserDefinedData>
+  <BatchesUserDefinedData>Batch Data</BatchesUserDefinedData>
+
+  <Medium>
+    <File Name="File1" PartNumber="AABBCC1" SourcePath="File1" />
+    <LoadFile Name="Load1.LUH" PartNumber="AABBCC" />
+    <LoadFile Name="Load2.LUH" PartNumber="AABBDD" />
+    <Directory Name="Directory1" >
+      <File Name="File2" PartNumber="AABBCC2" SourcePath="File2" />
+    </Directory>
+    <File Name="Readme.txt" SourcePath="Readme.txt" />
+    <BatchFile Name="Batch1.LUB" PartNumber="AABBEE" />
+  </Medium>
+
+  <Loads>
+    <Load NameRef="Load1.LUH" Description="Test Load Description" Type="0x0501" >
+      <TargetHardware ThwId="ABCDEF" >
+        <Position Pos="123" />
+        <Position Pos="456" />
+      </TargetHardware>
+      <TargetHardware ThwId="GHIJKL" />
+
+      <DataFile    NameRef="File1" />
+      <SupportFile NameRef="File2" />
+
+      <UserDefinedData>TEST</UserDefinedData>
+    </Load>
+    <Load NameRef="Load2.LUH" >
+      <TargetHardware ThwId="ABCDEF" />
+      <TargetHardware ThwId="GHIJKL" />
+
+      <DataFile    NameRef="File1" />
+      <SupportFile NameRef="File2" />
+    </Load>
+  </Loads>
+
+  <Batches>
+    <Batch NameRef="Batch1.LUB" Comment="Comment Text" >
+      <Target ThwIdPos="ABCDEF_123" >
+        <Load NameRef="Load1.LUH" />
+        <Load NameRef="Load2.LUH" />
+      </Target>
+    </Batch>
+  </Batches>
+</MediaSet>

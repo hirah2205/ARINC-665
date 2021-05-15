@@ -9,6 +9,6 @@ cmake_minimum_required( VERSION 3.18 )
 install(
   FILES
     Arinc665MediaSet.xsd
-
+    MediaSet.template.xml
   COMPONENT runtime
-  DESTINATION ${CMAKE_INSTALL_DATADIR}/arinc665_xml )
+  TYPE DOC )
