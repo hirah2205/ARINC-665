@@ -61,13 +61,10 @@ void MediaSetExporterImpl::operator()()
   BOOST_LOG_FUNCTION()
 
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
-    << "Media set " << " - " << mediaSet->partNumber();
+    << "Media Set " << " - " << mediaSet->partNumber();
 
   for ( auto &medium : mediaSet->media() )
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-      << "Medium " << (unsigned int)medium.first;
-
     exportMedium( medium.second );
   }
 }
@@ -77,7 +74,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   BOOST_LOG_FUNCTION()
 
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
-    << "Export medium #" << (unsigned int)medium->mediumNumber();
+    << "Export Medium #" << (unsigned int)medium->mediumNumber();
 
   // create the medium (i.e. create directory)
   createMediumHandler( medium);
@@ -96,7 +93,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 
   // export list of loads
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
-    << "Export list of loads";
+    << "Export List of Loads";
 
   Arinc665::File::LoadListFile loadListFile{ arinc665Version};
 
@@ -125,7 +122,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   if ( medium->mediaSet()->numberOfBatches() != 0)
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-      << "Export list of batches";
+      << "Export List of Batches";
 
     Arinc665::File::BatchListFile batchListFile{ arinc665Version};
     batchListFile.mediaSequenceNumber( medium->mediumNumber());
@@ -150,8 +147,8 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
   }
 
   // export medium info
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
-    << "Export list of files";
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+    << "Export List of Files";
 
   Arinc665::File::FileListFile fileListFile{ arinc665Version};
   fileListFile.mediaSequenceNumber( medium->mediumNumber());
@@ -181,7 +178,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
 
   fileListFile.file({
     ListOfLoadsName,
-    File::Arinc665File::encodePath( "/"),
+    File::Arinc665File::encodePath( "/" ),
     medium->mediumNumber(),
     listOfLoadsFileCrc});
 
@@ -214,8 +211,8 @@ void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory)
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
-    << "Export directory to ["
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+    << "Export Directory to ["
     << (unsigned int)directory->medium()->mediumNumber()
     << "]:"
     << directory->path();
@@ -240,7 +237,7 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
   BOOST_LOG_FUNCTION()
 
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
-    << "Export file to ["
+    << "Export File to ["
     << (unsigned int)file->medium()->mediumNumber()
     << "]:"
     << file->path();
@@ -275,7 +272,7 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
 
         default:
           BOOST_THROW_EXCEPTION( Arinc665Exception()
-            << Helper::AdditionalInfo( "Invalid value of createLoadHeaderFiles"));
+            << Helper::AdditionalInfo{ "Invalid value of createLoadHeaderFiles" } );
       }
       break;
 
@@ -303,13 +300,13 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
 
         default:
           BOOST_THROW_EXCEPTION( Arinc665Exception()
-            << Helper::AdditionalInfo( "Invalid value of createBatchFiles"));
+            << Helper::AdditionalInfo{ "Invalid value of createBatchFiles" } );
       }
       break;
 
     default:
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo( "Invalid file type"));
+        << Helper::AdditionalInfo{ "Invalid file type" } );
         /* no break: because THROW */
   }
 }
@@ -319,60 +316,60 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
   // up-cast load file
   auto load{ std::dynamic_pointer_cast< const Media::Load>( file)};
 
-  if (!load)
+  if ( !load )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo( "Cannot cast file to load"));
+      << Helper::AdditionalInfo{ "Cannot cast file to load" } );
   }
 
-  File::LoadHeaderFile loadHeaderFile{ arinc665Version};
-  loadHeaderFile.partNumber( load->partNumber());
-  loadHeaderFile.targetHardwareIdPositions( load->targetHardwareIdPositions());
-  loadHeaderFile.loadType( load->loadType());
+  File::LoadHeaderFile loadHeaderFile{ arinc665Version };
+  loadHeaderFile.partNumber( load->partNumber() );
+  loadHeaderFile.targetHardwareIdPositions( load->targetHardwareIdPositions() );
+  loadHeaderFile.loadType( load->loadType() );
 
   // calculate data files CRC and set data.
-  for ( const auto &dataFile : load->dataFiles())
+  for ( const auto &dataFile : load->dataFiles() )
   {
-    auto dataFilePtr{ dataFile.lock()};
+    auto dataFilePtr{ dataFile.lock() };
     auto rawDataFile{ readFileHandler(
       dataFilePtr->medium()->mediumNumber(),
-      dataFilePtr->path())};
+      dataFilePtr->path() ) };
     uint16_t dataFileCrc{
-      File::Arinc665File::calculateChecksum( rawDataFile, 0)};
+      File::Arinc665File::calculateChecksum( rawDataFile, 0 ) };
 
     loadHeaderFile.dataFile( {
       dataFilePtr->name(),
       dataFilePtr->partNumber(),
-      static_cast< uint32_t>( rawDataFile.size() / 2),
-      dataFileCrc});
+      static_cast< uint32_t>( rawDataFile.size() / 2 ),
+      dataFileCrc} );
   }
 
   // calculate support files CRC and set data.
-  for ( const auto &supportFile : load->supportFiles())
+  for ( const auto &supportFile : load->supportFiles() )
   {
-    auto supportFilePtr{ supportFile.lock()};
+    auto supportFilePtr{ supportFile.lock() };
     auto rawSupportFile{ readFileHandler(
       supportFilePtr->medium()->mediumNumber(),
-      supportFilePtr->path())};
+      supportFilePtr->path() ) };
     uint16_t supportFileCrc{
-      File::Arinc665File::calculateChecksum( rawSupportFile, 0)};
+      File::Arinc665File::calculateChecksum( rawSupportFile, 0 ) };
 
     loadHeaderFile.supportFile( {
       supportFilePtr->name(),
       supportFilePtr->partNumber(),
-      static_cast< uint32_t>( rawSupportFile.size() / 2),
-      supportFileCrc});
+      static_cast< uint32_t>( rawSupportFile.size() / 2 ),
+      supportFileCrc } );
   }
 
   // User Defined Data
-  loadHeaderFile.userDefinedData( load->userDefinedData());
+  loadHeaderFile.userDefinedData( load->userDefinedData() );
 
   // calculate load CRC
   Arinc665Crc32 loadCrc;
 
   // load header load CRC calculation
   {
-    File::RawFile rawLoadHeader{ loadHeaderFile};
+    File::RawFile rawLoadHeader{ loadHeaderFile };
 
     loadCrc.process_bytes(
       &(*rawLoadHeader.begin()),
@@ -415,15 +412,15 @@ void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
   // up-cast batch file
   auto batch{ std::dynamic_pointer_cast< const Media::Batch>( file)};
 
-  if (!batch)
+  if ( !batch )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo( "Cannot cast file to batch"));
+      << Helper::AdditionalInfo{ "Cannot cast file to batch" } );
   }
 
-  File::BatchFile batchFile{ arinc665Version};
-  batchFile.partNumber( batch->partNumber());
-  batchFile.comment( batch->comment());
+  File::BatchFile batchFile{ arinc665Version };
+  batchFile.partNumber( batch->partNumber() );
+  batchFile.comment( batch->comment() );
 
   for ( const auto &target : batch->targets() )
   {
@@ -437,11 +434,10 @@ void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
     }
 
     batchFile.targetHardware(
-      File::BatchTargetInfo{ target.first, batchLoadsInfo});
+      File::BatchTargetInfo{ target.first, batchLoadsInfo } );
   }
 
-  writeFileHandler(
-    batch->medium()->mediumNumber(), batch->path(), batchFile);
+  writeFileHandler( batch->medium()->mediumNumber(), batch->path(), batchFile );
 }
 
 }

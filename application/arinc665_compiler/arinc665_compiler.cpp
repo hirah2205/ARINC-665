@@ -295,7 +295,7 @@ static std::filesystem::path mediumPath(
   const uint8_t mediumNumber)
 {
   return base
-    / (boost::format("MEDIUM_%03u") % (unsigned int)mediumNumber).str();
+    / (boost::format("MEDIUM_%03u" ) % (unsigned int)mediumNumber).str();
 }
 
 static void createMedium(
@@ -304,9 +304,9 @@ static void createMedium(
 {
   BOOST_LOG_FUNCTION()
 
-  auto mPath{ mediumPath( base, medium->mediumNumber())};
+  auto mPath{ mediumPath( base, medium->mediumNumber() ) };
 
-  BOOST_LOG_TRIVIAL( severity_level::info)
+  BOOST_LOG_TRIVIAL( severity_level::trace )
     << "Create medium directory " << mPath;
 
   std::filesystem::create_directory( mPath);
@@ -319,10 +319,10 @@ static void createDirectory(
   BOOST_LOG_FUNCTION()
 
   auto directoryPath{
-    mediumPath( mediaSetBase, directory->medium()->mediumNumber())
+    mediumPath( mediaSetBase, directory->medium()->mediumNumber() )
       / directory->path().relative_path()};
 
-  BOOST_LOG_TRIVIAL( severity_level::info)
+  BOOST_LOG_TRIVIAL( severity_level::trace )
     << "Create directory " << directoryPath;
 
   std::filesystem::create_directory( directoryPath);
@@ -335,7 +335,7 @@ static bool checkFileExistance(
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_TRIVIAL( severity_level::info)
+  BOOST_LOG_TRIVIAL( severity_level::trace )
     << "check existence of " << file->path();
 
   // search for file
@@ -347,8 +347,8 @@ static bool checkFileExistance(
   }
 
   auto filePath{
-    mediumPath( mediaSetBase, file->medium()->mediumNumber())
-      / file->path().relative_path()};
+    mediumPath( mediaSetBase, file->medium()->mediumNumber() )
+      / file->path().relative_path() };
 
   return std::filesystem::is_regular_file( filePath);
 }
@@ -357,14 +357,14 @@ static void createFile(
   const std::filesystem::path &sourceBase,
   const std::filesystem::path &mediaSetBase,
   const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
-  Arinc665::Media::ConstFilePtr file)
+  Arinc665::Media::ConstFilePtr file )
 {
   BOOST_LOG_FUNCTION()
 
   // search for file
-  auto fileIt{ filePathMapping.find( file)};
+  auto fileIt{ filePathMapping.find( file ) };
 
-  if (fileIt == filePathMapping.end())
+  if ( fileIt == filePathMapping.end() )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo( "file mapping not found")
@@ -375,7 +375,7 @@ static void createFile(
     mediumPath( mediaSetBase, file->medium()->mediumNumber())
       / file->path().relative_path()};
 
-  BOOST_LOG_TRIVIAL( severity_level::info) << "Copy file " << filePath;
+  BOOST_LOG_TRIVIAL( severity_level::trace ) << "Copy file " << filePath;
 
   // copy file
   std::filesystem::copy(
@@ -394,14 +394,14 @@ static void writeFile(
   auto filePath{
     mediumPath( mediaSetBase, mediumNumber) / path.relative_path()};
 
-  BOOST_LOG_TRIVIAL( severity_level::info) << "Write file " << filePath;
+  BOOST_LOG_TRIVIAL( severity_level::trace ) << "Write file " << filePath;
 
   // check existence of file
-  if (std::filesystem::exists( filePath))
+  if (std::filesystem::exists( filePath) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "File already exists")
-      << boost::errinfo_file_name( filePath.string()));
+      << Helper::AdditionalInfo{ "File already exists" }
+      << boost::errinfo_file_name{ filePath.string() } );
   }
 
   // save file
@@ -412,8 +412,8 @@ static void writeFile(
   if ( !fileStream.is_open())
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "Error opening files")
-      << boost::errinfo_file_name( filePath.string()));
+      << Helper::AdditionalInfo{ "Error opening files" }
+      << boost::errinfo_file_name{ filePath.string() } );
   }
 
   // write the data to the buffer
@@ -433,17 +433,17 @@ static Arinc665::File::RawFile readFile(
   auto filePath{
     mediumPath( mediaSetBase, mediumNumber) / path.relative_path()};
 
-  BOOST_LOG_TRIVIAL( severity_level::info) << "Read file " << filePath;
+  BOOST_LOG_TRIVIAL( severity_level::trace ) << "Read file " << filePath;
 
   // check existence of file
   if (!std::filesystem::is_regular_file( filePath))
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "File not found")
-      << boost::errinfo_file_name( filePath.string()));
+      << Helper::AdditionalInfo{ "File not found" }
+      << boost::errinfo_file_name{ filePath.string() } );
   }
 
-  Arinc665::File::RawFile data( std::filesystem::file_size( filePath));
+  Arinc665::File::RawFile data( std::filesystem::file_size( filePath) );
 
   // load file
   std::ifstream file(
@@ -453,8 +453,8 @@ static Arinc665::File::RawFile readFile(
   if ( !file.is_open())
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "Error opening files")
-      << boost::errinfo_file_name( filePath.string()));
+      << Helper::AdditionalInfo{ "Error opening files" }
+      << boost::errinfo_file_name{ filePath.string() } );
   }
 
   // read the data to the buffer

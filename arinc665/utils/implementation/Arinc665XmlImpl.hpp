@@ -153,7 +153,10 @@ class Arinc665XmlImpl: public Arinc665Xml
      * @param current
      * @param filePathMapping
      * @param currentNode
-     */
+     *
+     * @throw Arinc665::Arinc665Exception
+     *   When Name Attribute is missing or empty.
+     **/
     void loadEntries(
       Media::ContainerEntityPtr current,
       FilePathMapping &filePathMapping,
@@ -178,8 +181,15 @@ class Arinc665XmlImpl: public Arinc665Xml
      *   The media set where the load is stored into.
      * @param[in] loadElement
      *   The XML-node, where the data is loaded from.
+     *
+     * @throw Arinc665::Arinc665Exception
+     *   When NameRef attribute is missing or empty.
+     * @throw Arinc665::Arinc665Exception
+     *   When NameRef attribute does not reference a load.
      **/
-    void loadLoad( Media::MediaSetPtr mediaSet, const xmlpp::Element &loadElement );
+    void loadLoad(
+      Media::MediaSetPtr mediaSet,
+      const xmlpp::Element &loadElement );
 
     /**
      * @brief Stores the given load-node.
@@ -200,6 +210,15 @@ class Arinc665XmlImpl: public Arinc665Xml
      *   The media set where the load is stored into.
      * @param[in] batchElement
      *   The XML-node, where the data is loaded from.
+     *
+     * @throw Arinc665::Arinc665Exception
+     *   When @p Batch element cannot be parsed i.e.:
+     *     - When @p NameRef attribute is missing or empty.
+     *     - When @p NameRef attribute does not reference a batch file.
+     * @throw Arinc665::Arinc665Exception
+     *   When @p Load elements cannot be parsed i.e.:
+     *     - When @p NameRef attribute is missing or empty.
+     *     - When @p NameRef attribute does not reference load.
      **/
     void loadBatch(
       Media::MediaSetPtr mediaSet,

@@ -50,7 +50,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadFromXml(
   if ( !std::filesystem::is_regular_file( xmlFile ))
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo( "XML File does not exist" ));
+      << Helper::AdditionalInfo{ "XML File does not exist" } );
   }
 
   try
@@ -60,7 +60,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadFromXml(
     if ( !parser )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo( "Error Parsing File" ));
+        << Helper::AdditionalInfo{ "Error Parsing File" } );
     }
 
     auto mediaSetElement{ parser.get_document()->get_root_node() };
@@ -68,7 +68,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadFromXml(
       || ( "MediaSet" != mediaSetElement->get_name() ))
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo( "MediaSet not found" ));
+        << Helper::AdditionalInfo{ "MediaSet not found" } );
     }
 
     return loadMediaSet( *mediaSetElement );
@@ -109,7 +109,7 @@ void Arinc665XmlImpl::saveToXml(
 Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
   const xmlpp::Element &mediaSetElement )
 {
-  const auto partNumber{ mediaSetElement.get_attribute_value( "PartNumber" )};
+  const auto partNumber{ mediaSetElement.get_attribute_value( "PartNumber" ) };
 
   auto mediaSet{ std::make_shared< Media::MediaSet>() };
   mediaSet->partNumber( partNumber );
@@ -153,7 +153,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
 
   // iterate over media
   FilePathMapping filePathMapping{};
-  for ( auto mediumNode : mediaSetElement.get_children( "Medium" ))
+  for ( auto mediumNode : mediaSetElement.get_children( "Medium" ) )
   {
     loadMedium( mediaSet, filePathMapping, *mediumNode );
   }
@@ -162,16 +162,16 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
   auto loadsNode{ mediaSetElement.get_first_child( "Loads" ) };
 
   // iterate over loads
-  for ( auto loadNode : loadsNode->get_children( "Load"))
+  for ( auto loadNode : loadsNode->get_children( "Load" ) )
   {
-    auto loadElement{ dynamic_cast< xmlpp::Element*>( loadNode )};
-    if ( nullptr == loadElement)
+    auto loadElement{ dynamic_cast< xmlpp::Element*>( loadNode ) };
+    if ( nullptr == loadElement )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo( "Invalid Load Element" ));
+        << Helper::AdditionalInfo{ "Invalid Load Element" } );
     }
 
-    loadLoad( mediaSet, *loadElement);
+    loadLoad( mediaSet, *loadElement );
   }
 
   // handle Batches
@@ -263,11 +263,11 @@ void Arinc665XmlImpl::saveMediaSet(
 void Arinc665XmlImpl::loadMedium(
   Media::MediaSetPtr mediaSet,
   FilePathMapping &filePathMapping,
-  const xmlpp::Node &mediumNode)
+  const xmlpp::Node &mediumNode )
 {
-  auto medium{ mediaSet->addMedium()};
+  auto medium{ mediaSet->addMedium() };
 
-  loadEntries( medium, filePathMapping, mediumNode);
+  loadEntries( medium, filePathMapping, mediumNode );
 }
 
 void Arinc665XmlImpl::saveMedium(
@@ -283,12 +283,12 @@ void Arinc665XmlImpl::loadDirectory(
   FilePathMapping &filePathMapping,
   const xmlpp::Element &directoryElement )
 {
-  const auto name{ directoryElement.get_attribute_value( "Name" )};
+  const auto name{ directoryElement.get_attribute_value( "Name" ) };
 
   if ( name.empty())
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo( "Name attribute missing or empty" ));
+      << Helper::AdditionalInfo{ "Name attribute missing or empty" } );
   }
 
   auto directory{ parent->addSubDirectory( static_cast< std::string>( name ))};
@@ -330,15 +330,14 @@ void Arinc665XmlImpl::loadEntries(
       continue;
     }
 
-    const auto filename{ entryElement->get_attribute_value( "Name" )};
-    const auto partNumber{ entryElement->get_attribute_value( "PartNumber" )};
-    const auto sourcePath{ entryElement->get_attribute_value( "SourcePath" )};
+    const auto filename{ entryElement->get_attribute_value( "Name" ) };
+    const auto partNumber{ entryElement->get_attribute_value( "PartNumber" ) };
+    const auto sourcePath{ entryElement->get_attribute_value( "SourcePath" ) };
 
     if ( filename.empty())
     {
-      //! @throw Arinc665::Arinc665Exception when Name Attribute is missing or empty.
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo( "Name attribute missing or empty" ));
+        << Helper::AdditionalInfo{ "Name attribute missing or empty" } );
     }
 
     // create the right file
@@ -372,7 +371,7 @@ void Arinc665XmlImpl::loadEntries(
     // set source path if attribute is present
     if ( !sourcePath.empty() )
     {
-      filePathMapping.insert( {file, toStringView( sourcePath )});
+      filePathMapping.insert( {file, toStringView( sourcePath ) } );
     }
   }
 }
@@ -435,32 +434,30 @@ void Arinc665XmlImpl::loadLoad(
   Media::MediaSetPtr mediaSet,
   const xmlpp::Element &loadElement )
 {
-  const auto nameRef{ loadElement.get_attribute_value( "NameRef" )};
-  const auto description{ loadElement.get_attribute_value( "Description" )};
-  const auto type{ loadElement.get_attribute_value( "Type" )};
+  const auto nameRef{ loadElement.get_attribute_value( "NameRef" ) };
+  const auto description{ loadElement.get_attribute_value( "Description" ) };
+  const auto type{ loadElement.get_attribute_value( "Type" ) };
 
   if ( nameRef.empty() )
   {
-    //! @throw Arinc665::Arinc665Exception when NameRef attribute is missing or empty.
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo( "NameRef attribute missing or empty"));
   }
 
-  auto load{ mediaSet->load( toStringView( nameRef ))};
+  auto load{ mediaSet->load( toStringView( nameRef ) ) };
 
   if ( !load )
   {
-    //! @throw Arinc665::Arinc665Exception when NameRef attribute does not reference load.
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo( "NameRef attribute does not reference load" ));
+      << Helper::AdditionalInfo{ "NameRef attribute does not reference load" } );
   }
 
   // Load Type (Description + Type Value)
 
-  // try decode type value and descritpion if present
+  // try decode type value and description if present
   if ( !type.empty() && !description.empty())
   {
-    uint16_t typeValue{ 0U};
+    uint16_t typeValue{ 0U };
     typeValue= Helper::safeCast< uint16_t >( std::stoul( type, nullptr, 0 ));
 
     load->loadType( {std::make_pair( description, typeValue)});
@@ -469,7 +466,7 @@ void Arinc665XmlImpl::loadLoad(
   Media::Load::TargetHardwareIdPositions thwIds{};
 
   // iterate over target hardware
-  for ( auto targetHardwareNode : loadElement.get_children( "TargetHardware" ))
+  for ( auto targetHardwareNode : loadElement.get_children( "TargetHardware" ) )
   {
     auto targetHardwareElement{
       dynamic_cast< xmlpp::Element*>( targetHardwareNode )};
@@ -477,7 +474,7 @@ void Arinc665XmlImpl::loadLoad(
     if ( nullptr == targetHardwareElement)
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo( "TargetHardware Element invalid" ));
+        << Helper::AdditionalInfo{ "TargetHardware Element invalid" } );
     }
 
     auto thwId{ targetHardwareElement->get_attribute_value( "ThwId" )};
@@ -492,7 +489,7 @@ void Arinc665XmlImpl::loadLoad(
       if ( nullptr == positionElement )
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( "Position Element invalid" ));
+          << Helper::AdditionalInfo{ "Position Element invalid" } );
       }
 
       auto position{ positionElement->get_attribute_value( "Pos" )};
@@ -513,7 +510,7 @@ void Arinc665XmlImpl::loadLoad(
     if ( nullptr == dataFileElement )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo( "DataFile Element invalid" ));
+        << Helper::AdditionalInfo{ "DataFile Element invalid" } );
     }
 
     auto fileNameRef{ dataFileElement->get_attribute_value( "NameRef" )};
@@ -595,22 +592,22 @@ void Arinc665XmlImpl::saveLoad(
 
   if ( loadType )
   {
-    loadElement.set_attribute( "Description", std::get< 0>( *loadType));
+    loadElement.set_attribute( "Description", std::get< 0>( *loadType ) );
     loadElement.set_attribute(
       "Type",
-      (boost::format( "0x%04X") % std::get< 1>( *loadType)).str());
+      (boost::format( "0x%04X") % std::get< 1>( *loadType ) ).str());
   }
 
   // iterate over target hardware
   for ( const auto &[targetHardwareId, positions] :
     load->targetHardwareIdPositions() )
   {
-    auto targetHardwareElement{ loadElement.add_child( "TargetHardware" )};
+    auto targetHardwareElement{ loadElement.add_child( "TargetHardware" ) };
     targetHardwareElement->set_attribute( "ThwId", targetHardwareId );
 
     for( const auto &position : positions )
     {
-      auto positionElement{ targetHardwareElement->add_child( "Position" )};
+      auto positionElement{ targetHardwareElement->add_child( "Position" ) };
       positionElement->set_attribute( "Pos", position );
     }
   }
@@ -618,17 +615,17 @@ void Arinc665XmlImpl::saveLoad(
   // iterate over data files
   for ( auto dataFile : load->dataFiles() )
   {
-    auto dataFileElement{ loadElement.add_child( "DataFile" )};
+    auto dataFileElement{ loadElement.add_child( "DataFile" ) };
     dataFileElement->set_attribute( "NameRef", dataFile.lock()->name().data());
   }
 
   // iterate over support files
   for ( const auto& supportFile : load->supportFiles())
   {
-    auto supportFileElement{ loadElement.add_child( "SupportFile" )};
+    auto supportFileElement{ loadElement.add_child( "SupportFile" ) };
     supportFileElement->set_attribute(
       "NameRef",
-      supportFile.lock()->name().data());
+      supportFile.lock()->name().data() );
   }
 
   const auto userDefinedData{ load->userDefinedData()};
@@ -643,12 +640,11 @@ void Arinc665XmlImpl::loadBatch(
   Media::MediaSetPtr mediaSet,
   const xmlpp::Element &batchElement )
 {
-  const auto nameRef{ batchElement.get_attribute_value( "NameRef" )};
-  const auto comment{ batchElement.get_attribute_value( "Comment" )};
+  const auto nameRef{ batchElement.get_attribute_value( "NameRef" ) };
+  const auto comment{ batchElement.get_attribute_value( "Comment" ) };
 
   if ( nameRef.empty() )
   {
-    //! @throw Arinc665::Arinc665Exception when NameRef attribute is missing or empty.
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo( "NameRef attribute missing or empty" ));
   }
@@ -657,21 +653,20 @@ void Arinc665XmlImpl::loadBatch(
 
   if ( !batch )
   {
-    //! @throw Arinc665::Arinc665Exception when NameRef attribute does not reference batch.
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo( "NameRef attribute does not reference batch"));
+      << Helper::AdditionalInfo( "NameRef attribute does not reference batch" ) );
   }
 
   batch->comment( comment );
 
   // iterate over targets
-  for ( auto targetNode : batchElement.get_children( "Target" ))
+  for ( auto targetNode : batchElement.get_children( "Target" ) )
   {
-    auto targetElement{ dynamic_cast< xmlpp::Element*>( targetNode )};
-    if ( nullptr == targetElement)
+    auto targetElement{ dynamic_cast< xmlpp::Element*>( targetNode ) };
+    if ( nullptr == targetElement )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo( "Invalid Target Element" ));
+        << Helper::AdditionalInfo( "Invalid Target Element" ) );
     }
 
     const auto thwIdPos{ targetElement->get_attribute_value( "ThwIdPos" )};
@@ -679,20 +674,19 @@ void Arinc665XmlImpl::loadBatch(
     Media::WeakLoads loads{};
 
     // iterate over loads
-    for ( auto LoadNode : targetNode->get_children( "Load" ))
+    for ( auto LoadNode : targetNode->get_children( "Load" ) )
     {
-      auto loadElement{ dynamic_cast< xmlpp::Element*>( LoadNode)};
+      auto loadElement{ dynamic_cast< xmlpp::Element*>( LoadNode ) };
       if ( nullptr == loadElement)
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( "Node is not an Element"));
+          << Helper::AdditionalInfo( "Node is not an Element" ) );
       }
 
-      const auto loadNameRef{ loadElement->get_attribute_value( "NameRef" )};
+      const auto loadNameRef{ loadElement->get_attribute_value( "NameRef" ) };
 
       if ( loadNameRef.empty())
       {
-        //! @throw Arinc665::Arinc665Exception when NameRef attribute is missing or empty.
         BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo( "NameRef attribute missing or empty"));
       }
@@ -701,9 +695,8 @@ void Arinc665XmlImpl::loadBatch(
 
       if ( !load )
       {
-        //! @throw Arinc665::Arinc665Exception when NameRef attribute does not reference load.
         BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( "NameRef attribute does not reference load"));
+          << Helper::AdditionalInfo( "NameRef attribute does not reference load" ) );
       }
 
       loads.push_back( load);
