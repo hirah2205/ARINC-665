@@ -165,10 +165,10 @@ ConstFiles MediaSet::files() const
 {
   ConstFiles files;
 
-  // Iterate over all medias and add their files to a complete list.
-  for ( const auto &medium : mediaV)
+  // Iterate over all media and add their files to a complete list.
+  for ( const auto &[mediumNumber,medium] : mediaV )
   {
-    auto mediaFiles{ static_cast< const Medium&>( *medium.second).files( true)};
+    auto mediaFiles{ static_cast< const Medium&>( *medium).files( true) };
     files.insert( files.end(), mediaFiles.begin(), mediaFiles.end());
   }
 
@@ -179,11 +179,11 @@ Files MediaSet::files()
 {
   Files files;
 
-  // Iterate over all medias and add their files to a complete list.
-  for ( auto &medium : mediaV)
+  // Iterate over all media and add their files to a complete list.
+  for ( auto &[mediumNumber,medium] : mediaV)
   {
-    auto mediaFiles{ medium.second->files( true)};
-    files.insert( files.end(), mediaFiles.begin(), mediaFiles.end());
+    auto mediaFiles{ medium->files( true) };
+    files.insert( files.end(), mediaFiles.begin(), mediaFiles.end() );
   }
 
   return files;

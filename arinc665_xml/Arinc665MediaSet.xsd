@@ -185,7 +185,7 @@
 
   <group name="DirectoryFileGroup" >
     <annotation>
-      <documentation>Contents of medias and directories</documentation>
+      <documentation>Contents of media and directories</documentation>
     </annotation>
     <choice>
       <element name="Directory" type="ams:DirectoryType" />

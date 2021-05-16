@@ -65,7 +65,7 @@ QModelIndex MediaSetModel::index(
   switch ( parentBase->type())
   {
     case Arinc665::Media::Base::Type::MediaSet:
-      // all children of media set are medias (+1 because medias are 1-indexed)
+      // all children of media set are media (+1 because media are 1-indexed)
       return createIndex( row, column, mediaSetV->medium( row+1U).get());
 
     case Arinc665::Media::Base::Type::Medium:
@@ -204,7 +204,7 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent) const
   {
     case Arinc665::Media::Base::Type::MediaSet:
     {
-      // The media set has medias
+      // The media set has media
       auto * mediaSet{ dynamic_cast< Arinc665::Media::MediaSet *>( base)};
       return (mediaSet->numberOfMedia()!=0);
     }
@@ -252,7 +252,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent) const
       auto * mediaSet{
         dynamic_cast< Arinc665::Media::MediaSet *>( base)};
 
-      // The media set has medias
+      // The media set has media
       return mediaSet->numberOfMedia();
     }
 

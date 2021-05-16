@@ -24,7 +24,7 @@ namespace Arinc665::Media {
 /**
  * @brief ARINC 665 %Media Set.
  *
- * A media set consists of one or more medias.
+ * A media set consists of one or more media.
  *
  * Each media consists of one or more files.
  **/
@@ -66,25 +66,26 @@ class MediaSet: public Base
     void partNumber( std::string &&partNumber);
 
     /**
-     * @brief Get the number of medias within the media set
+     * @brief Get the Number of Media within the Media Set.
      *
-     * @return The number of medias within the media set.
+     * @return The number of media within the media set.
      **/
     uint8_t numberOfMedia() const;
 
     /**
-     * @brief Set the number of media.
+     * @brief Set the Number of Media.
      *
      * If there are fewer media than requested, the media are created empty,
      * otherwise the media are deleted.
      *
      * @param[in] numberOfMedia
-     *   The new number of media. Must be bigger or equal to 1.
+     *   The new number of media.
+     *   Must be bigger or equal to 1.
      * @param[in] deleteFiles
-     *   Delete files, which are part of the not existing files.
+     *   Delete files, which are part of the not existing media.
      *   Otherwise, they are moved to the first media.
      **/
-    void numberOfMedia( uint8_t numberOfMedia, bool deleteFiles = false);
+    void numberOfMedia( uint8_t numberOfMedia, bool deleteFiles = false );
 
     /**
      * @brief Returns all media.

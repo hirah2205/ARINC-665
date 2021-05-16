@@ -134,7 +134,7 @@ class Load: public BaseFile
      * @param[in] dataFile
      *   The data file.
      *
-     * @todo change to non-weak pointer and check same mediaset (even if null)
+     * @todo change to non-weak pointer and check same media set (even if null)
      **/
     void dataFile( const FilePtr::weak_type &dataFile );
 
@@ -151,7 +151,7 @@ class Load: public BaseFile
      * @param[in] supportFile
      *   Support Fle.
      *
-     * @todo change to non-weak pointer and check same mediaset (even if null)
+     * @todo change to non-weak pointer and check same media set (even if null)
      **/
     void supportFile( const FilePtr::weak_type &supportFile );
 
