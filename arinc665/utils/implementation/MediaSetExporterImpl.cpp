@@ -60,7 +60,7 @@ void MediaSetExporterImpl::operator()()
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
     << "Media Set " << " - " << mediaSet->partNumber();
 
   for ( auto &medium : mediaSet->media() )
@@ -69,40 +69,40 @@ void MediaSetExporterImpl::operator()()
   }
 }
 
-void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
+void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium )
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
     << "Export Medium #" << (unsigned int)medium->mediumNumber();
 
   // create the medium (i.e. create directory)
-  createMediumHandler( medium);
+  createMediumHandler( medium );
 
   // export sub-directories
-  for ( const auto &directory : medium->subDirectories())
+  for ( const auto &directory : medium->subDirectories() )
   {
-    exportDirectory( directory);
+    exportDirectory( directory );
   }
 
   // export files
-  for ( const auto &file : medium->files())
+  for ( const auto &file : medium->files() )
   {
-    exportFile( file);
+    exportFile( file );
   }
 
   // export list of loads
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
     << "Export List of Loads";
 
   Arinc665::File::LoadListFile loadListFile{ arinc665Version};
 
   loadListFile.mediaSequenceNumber( medium->mediumNumber());
   loadListFile.mediaSetPn( medium->partNumber());
-  loadListFile.numberOfMediaSetMembers(  medium->mediaSet()->numberOfMedia());
+  loadListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia());
 
   /* add all load to loads list */
-  for ( auto &load : medium->mediaSet()->loads())
+  for ( auto &load : medium->mediaSet()->loads() )
   {
     loadListFile.load({
       load->partNumber(),
@@ -111,103 +111,103 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium)
       load->targetHardwareIds()});
   }
 
-  loadListFile.userDefinedData( mediaSet->loadsUserDefinedData());
+  loadListFile.userDefinedData( mediaSet->loadsUserDefinedData() );
 
   writeFileHandler(
     medium->mediumNumber(),
-    "/" + std::string{ ListOfLoadsName},
+    "/" + std::string{ ListOfLoadsName },
     loadListFile );
 
   // export list of batches (if present)
-  if ( medium->mediaSet()->numberOfBatches() != 0)
+  if ( medium->mediaSet()->numberOfBatches() != 0U )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
       << "Export List of Batches";
 
-    Arinc665::File::BatchListFile batchListFile{ arinc665Version};
-    batchListFile.mediaSequenceNumber( medium->mediumNumber());
-    batchListFile.mediaSetPn( medium->partNumber());
-    batchListFile.numberOfMediaSetMembers(  medium->mediaSet()->numberOfMedia());
+    Arinc665::File::BatchListFile batchListFile{ arinc665Version };
+    batchListFile.mediaSequenceNumber( medium->mediumNumber() );
+    batchListFile.mediaSetPn( medium->partNumber() );
+    batchListFile.numberOfMediaSetMembers(  medium->mediaSet()->numberOfMedia() );
 
     /* add all batches to batches list */
-    for ( auto &batch : medium->mediaSet()->batches())
+    for ( auto &batch : medium->mediaSet()->batches() )
     {
       batchListFile.batch({
         batch->partNumber(),
         batch->name(),
-        batch->medium()->mediumNumber()});
+        batch->medium()->mediumNumber() } );
     }
 
-    batchListFile.userDefinedData( mediaSet->batchesUserDefinedData());
+    batchListFile.userDefinedData( mediaSet->batchesUserDefinedData() );
 
     writeFileHandler(
       medium->mediumNumber(),
-      "/" + std::string{ ListOfBatchesName},
-      batchListFile);
+      "/" + std::string{ ListOfBatchesName },
+      batchListFile );
   }
 
   // export medium info
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
     << "Export List of Files";
 
-  Arinc665::File::FileListFile fileListFile{ arinc665Version};
-  fileListFile.mediaSequenceNumber( medium->mediumNumber());
-  fileListFile.mediaSetPn( medium->partNumber());
-  fileListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia());
+  Arinc665::File::FileListFile fileListFile{ arinc665Version };
+  fileListFile.mediaSequenceNumber( medium->mediumNumber() );
+  fileListFile.mediaSetPn( medium->partNumber() );
+  fileListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia() );
 
   /* add all files, load header files, and batch files to file list */
-  for ( auto &file : medium->mediaSet()->files())
+  for ( auto &file : medium->mediaSet()->files() )
   {
-    const auto rawFile{ readFileHandler( medium->mediumNumber(), file->path())};
-    const uint16_t crc{ File::Arinc665File::calculateChecksum( rawFile, 0)};
+    const auto rawFile{ readFileHandler( medium->mediumNumber(), file->path() ) };
+    const uint16_t crc{ File::Arinc665File::calculateChecksum( rawFile, 0 ) };
 
     fileListFile.file({
       file->name(),
       File::Arinc665File::encodePath( file->path().parent_path()),
       file->medium()->mediumNumber(),
-      crc});
+      crc } );
   }
 
   // add list of loads
   const auto rawListOfLoadsFile{
     readFileHandler(
       medium->mediumNumber(),
-      "/" + std::string{ ListOfLoadsName})};
+      "/" + std::string{ ListOfLoadsName } ) };
   const uint16_t listOfLoadsFileCrc{
-    File::Arinc665File::calculateChecksum( rawListOfLoadsFile, 0)};
+    File::Arinc665File::calculateChecksum( rawListOfLoadsFile, 0 ) };
 
   fileListFile.file({
     ListOfLoadsName,
     File::Arinc665File::encodePath( "/" ),
     medium->mediumNumber(),
-    listOfLoadsFileCrc});
+    listOfLoadsFileCrc } );
 
   // add list of batches - if present
-  if (medium->mediaSet()->numberOfBatches() != 0)
+  if ( medium->mediaSet()->numberOfBatches() != 0 )
   {
     const auto rawListOfBatchesFile{
       readFileHandler(
         medium->mediumNumber(),
-        "/" + std::string{ ListOfBatchesName})};
+        "/" + std::string{ ListOfBatchesName } ) };
     const uint16_t listOfBatchesFileCrc{
-      File::Arinc665File::calculateChecksum( rawListOfBatchesFile, 0)};
+      File::Arinc665File::calculateChecksum( rawListOfBatchesFile, 0 ) };
 
     fileListFile.file({
       ListOfBatchesName,
-      File::Arinc665File::encodePath( "/"),
+      File::Arinc665File::encodePath( "/" ),
       medium->mediumNumber(),
-      listOfBatchesFileCrc});
+      listOfBatchesFileCrc } );
   }
 
-  fileListFile.userDefinedData( mediaSet->filesUserDefinedData());
+  fileListFile.userDefinedData( mediaSet->filesUserDefinedData() );
 
   writeFileHandler(
     medium->mediumNumber(),
-    "/" + std::string{ ListOfFilesName},
-    fileListFile);
+    "/" + std::string{ ListOfFilesName },
+    fileListFile );
 }
 
-void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory)
+void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory )
 {
   BOOST_LOG_FUNCTION()
 
@@ -217,26 +217,26 @@ void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory)
     << "]:"
     << directory->path();
 
-  createDirectoryHandler( directory);
+  createDirectoryHandler( directory );
 
   // export sub-directories
-  for ( const auto &subDirectory : directory->subDirectories())
+  for ( const auto &subDirectory : directory->subDirectories() )
   {
-    exportDirectory( subDirectory);
+    exportDirectory( subDirectory );
   }
 
   // export files
-  for ( const auto &file : directory->files())
+  for ( const auto &file : directory->files() )
   {
-    exportFile( file);
+    exportFile( file );
   }
 }
 
-void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
+void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file )
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
     << "Export File to ["
     << (unsigned int)file->medium()->mediumNumber()
     << "]:"
@@ -245,29 +245,29 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
   switch (file->fileType())
   {
     case Media::File::FileType::RegularFile:
-      createFileHandler( file);
+      createFileHandler( file );
       break;
 
     case Media::File::FileType::LoadFile:
       switch (createLoadHeaderFiles)
       {
         case FileCreationPolicy::None:
-          createFileHandler( file);
+          createFileHandler( file );
           break;
 
         case FileCreationPolicy::NoneExisting:
-          if (checkFileExistenceHandler( file))
+          if (checkFileExistenceHandler( file ) )
           {
-            createFileHandler( file);
+            createFileHandler( file );
           }
           else
           {
-            createLoadHeaderFile( file);
+            createLoadHeaderFile( file );
           }
           break;
 
         case FileCreationPolicy::All:
-          createLoadHeaderFile( file);
+          createLoadHeaderFile( file );
           break;
 
         default:
@@ -280,22 +280,22 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
       switch (createBatchFiles)
       {
         case FileCreationPolicy::None:
-          createFileHandler( file);
+          createFileHandler( file );
           break;
 
         case FileCreationPolicy::NoneExisting:
-          if (checkFileExistenceHandler( file))
+          if ( checkFileExistenceHandler( file ) )
           {
-            createFileHandler( file);
+            createFileHandler( file );
           }
           else
           {
-            createBatchFile( file);
+            createBatchFile( file );
           }
           break;
 
         case FileCreationPolicy::All:
-          createBatchFile( file);
+          createBatchFile( file );
           break;
 
         default:
@@ -311,10 +311,10 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file)
   }
 }
 
-void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
+void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file )
 {
   // up-cast load file
-  auto load{ std::dynamic_pointer_cast< const Media::Load>( file)};
+  auto load{ std::dynamic_pointer_cast< const Media::Load>( file ) };
 
   if ( !load )
   {
@@ -340,7 +340,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
     loadHeaderFile.dataFile( {
       dataFilePtr->name(),
       dataFilePtr->partNumber(),
-      static_cast< uint32_t>( rawDataFile.size() / 2 ),
+      rawDataFile.size(),
       dataFileCrc} );
   }
 
@@ -357,7 +357,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
     loadHeaderFile.supportFile( {
       supportFilePtr->name(),
       supportFilePtr->partNumber(),
-      static_cast< uint32_t>( rawSupportFile.size() / 2 ),
+      rawSupportFile.size(),
       supportFileCrc } );
   }
 
@@ -373,7 +373,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
 
     loadCrc.process_bytes(
       &(*rawLoadHeader.begin()),
-      rawLoadHeader.size() - sizeof( uint32_t));
+      rawLoadHeader.size() - sizeof( uint32_t ) );
   }
 
   // load data files for load CRC.
@@ -384,27 +384,27 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file)
       dataFilePtr->medium()->mediumNumber(),
       dataFilePtr->path())};
 
-    loadCrc.process_bytes( &(*rawDataFile.begin()), rawDataFile.size());
+    loadCrc.process_bytes( &(*rawDataFile.begin()), rawDataFile.size() );
   }
 
   // load support files for load CRC.
-  for ( const auto &supportFile : load->supportFiles())
+  for ( const auto &supportFile : load->supportFiles() )
   {
     auto supportFilePtr{ supportFile.lock()};
     auto rawSupportFile{ readFileHandler(
       supportFilePtr->medium()->mediumNumber(),
       supportFilePtr->path())};
 
-    loadCrc.process_bytes( &(*rawSupportFile.begin()), rawSupportFile.size());
+    loadCrc.process_bytes( &(*rawSupportFile.begin()), rawSupportFile.size() );
   }
 
   // set load CRC
-  loadHeaderFile.loadCrc( loadCrc.checksum());
+  loadHeaderFile.loadCrc( loadCrc.checksum() );
 
   writeFileHandler(
     load->medium()->mediumNumber(),
     load->path(),
-    loadHeaderFile);
+    loadHeaderFile );
 }
 
 void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
