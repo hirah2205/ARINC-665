@@ -231,27 +231,28 @@ FilePtr ContainerEntity::file( std::string_view filename, const bool recursive)
   return {};
 }
 
-FilePtr ContainerEntity::addFile( std::string_view filename)
+FilePtr ContainerEntity::addFile( std::string_view filename )
 {
-  if ( file( filename))
+  if ( file( filename ) )
   {
     BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "File already exists"));
+      << Helper::AdditionalInfo{ "File already exists" }
+      << boost::errinfo_file_name{ std::string{ filename } } );
   }
 
   // create file
   auto file{ std::make_shared< File>(
-    std::dynamic_pointer_cast< ContainerEntity>( shared_from_this()),
-    filename)};
+    std::dynamic_pointer_cast< ContainerEntity>( shared_from_this() ),
+    filename ) };
 
   // insert into map
-  filesV.push_back( file);
+  filesV.push_back( file );
 
   // return new file
   return file;
 }
 
-void ContainerEntity::removeFile( std::string_view filename)
+void ContainerEntity::removeFile( std::string_view filename )
 {
   auto file{ std::find_if(
     filesV.begin(),
@@ -260,11 +261,11 @@ void ContainerEntity::removeFile( std::string_view filename)
       return (filename == dirEnt->name());
     })};
 
-  if ( filesV.end() == file)
+  if ( filesV.end() == file )
   {
-    //! @throw Arinc665Exception() if file does not exists.
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "File not found"));
+      << Helper::AdditionalInfo( "File not found" )
+      << boost::errinfo_file_name{ std::string{ filename } } );
   }
 
   filesV.erase( file);
@@ -277,9 +278,8 @@ void ContainerEntity::removeFile( const ConstFilePtr& file)
 
   if ( filesV.end() == fileIt)
   {
-    //! @throw Arinc665Exception() if file does not exists.
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      Helper::AdditionalInfo( "File not found"));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "File not found" } );
   }
 
   filesV.erase( fileIt);

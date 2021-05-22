@@ -184,6 +184,8 @@ class ContainerEntity : public Base
      *
      * @param[in] filename
      *   The filename of the file to be deleted.
+     *
+     * @throw Arinc665Exception() if file does not exists.
      **/
     void removeFile( std::string_view filename );
 
@@ -194,6 +196,8 @@ class ContainerEntity : public Base
      *
      * @param[in] file
      *   The file to be deleted.
+     *
+     * @throw Arinc665Exception() if file does not exists.
      **/
     void removeFile( const ConstFilePtr& file );
 

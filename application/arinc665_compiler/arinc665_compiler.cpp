@@ -397,11 +397,11 @@ static void writeFile(
   BOOST_LOG_TRIVIAL( severity_level::trace ) << "Write file " << filePath;
 
   // check existence of file
-  if (std::filesystem::exists( filePath) )
+  if (std::filesystem::exists( filePath))
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "File already exists" }
-      << boost::errinfo_file_name{ filePath.string() } );
+      << Helper::AdditionalInfo( "File already exists")
+      << boost::errinfo_file_name( filePath.string()));
   }
 
   // save file

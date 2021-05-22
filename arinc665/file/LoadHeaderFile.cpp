@@ -429,7 +429,7 @@ RawFile LoadHeaderFile::encode() const
   auto rawDataFiles{ encodeFileList(
     dataFiles(),
     FileListType::Data,
-    encodeV3Data)};
+    encodeV3Data ) };
   assert( rawDataFiles.size() % 2 == 0);
 
   Helper::setInt< uint32_t>(
