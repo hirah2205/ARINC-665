@@ -19,22 +19,22 @@
 namespace Arinc665::Utils {
 
 Arinc665Utils::Arinc665Importer Arinc665Utils::arinc665Importer(
-  ReadFileHandler readFileHandler)
+  ReadFileHandler readFileHandler )
 {
   return std::bind(
     &MediaSetImporterImpl::operator(),
-    std::make_shared< MediaSetImporterImpl>( readFileHandler));
+    std::make_shared< MediaSetImporterImpl>( std::move( readFileHandler ) ) );
 }
 
 Arinc665Utils::Arinc665Validator Arinc665Utils::arinc665Validator(
   ReadFileHandler readFileHandler,
-  ValidatorInformationHandler informationHandler)
+  ValidatorInformationHandler informationHandler )
 {
   return std::bind(
     &MediaSetValidatorImpl::operator(),
     std::make_shared< MediaSetValidatorImpl>(
-      readFileHandler,
-      informationHandler));
+      std::move( readFileHandler ),
+      std::move( informationHandler ) ) );
 }
 
 Arinc665Utils::Arinc665Exporter Arinc665Utils::arinc665Exporter(
@@ -61,7 +61,7 @@ Arinc665Utils::Arinc665Exporter Arinc665Utils::arinc665Exporter(
       readFileHandler,
       arinc665Version,
       createBatchFiles,
-      createLoadHeaderFiles));
+      createLoadHeaderFiles ) );
 }
 
 }

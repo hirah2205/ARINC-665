@@ -44,9 +44,11 @@ class MediaSetExporterImpl
      * @param[in] arinc665Version
      *   The ARINC 665 version used for exporting
      * @param[in] createBatchFiles
-     *   If set to true, Batch Files are created by exporter.
+     *   Defines, if Batch Files are created by exporter or pre-existing ones
+     *   are used.
      * @param[in] createLoadHeaderFiles
-     *   If set to true, Load Header Files are created by exporter.
+     *   Defines, if Load Header Files are created by exporter or pre-existing
+     *   ones are used.
      **/
     MediaSetExporterImpl(
       Media::ConstMediaSetPtr mediaSet,
@@ -58,7 +60,7 @@ class MediaSetExporterImpl
       Arinc665Utils::ReadFileHandler readFileHandler,
       SupportedArinc665Version arinc665Version,
       FileCreationPolicy createBatchFiles,
-      FileCreationPolicy createLoadHeaderFiles);
+      FileCreationPolicy createLoadHeaderFiles );
 
     /**
      * @brief Entry-point of the ARINC 665 media set exporter.

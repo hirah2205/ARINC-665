@@ -74,7 +74,7 @@ uint64_t LoadFileInfo::length() const
   return lengthV;
 }
 
-void LoadFileInfo::length( const uint64_t length)
+void LoadFileInfo::length( const uint64_t length )
 {
   lengthV = length;
 }

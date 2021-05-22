@@ -223,14 +223,14 @@ LoadFilesInfo& LoadHeaderFile::supportFiles()
   return supportFilesV;
 }
 
-void LoadHeaderFile::supportFile( const LoadFileInfo &supportFileInfo)
+void LoadHeaderFile::supportFile( const LoadFileInfo &supportFileInfo )
 {
-  supportFilesV.push_back( supportFileInfo);
+  supportFilesV.push_back( supportFileInfo );
 }
 
-void LoadHeaderFile::supportFile( LoadFileInfo &&supportFileInfo)
+void LoadHeaderFile::supportFile( LoadFileInfo &&supportFileInfo )
 {
-  supportFilesV.push_back( std::move( supportFileInfo));
+  supportFilesV.push_back( std::move( supportFileInfo ) );
 }
 
 const LoadHeaderFile::UserDefinedData& LoadHeaderFile::userDefinedData() const
@@ -238,7 +238,7 @@ const LoadHeaderFile::UserDefinedData& LoadHeaderFile::userDefinedData() const
   return userDefinedDataV;
 }
 
-void LoadHeaderFile::userDefinedData( const UserDefinedData &userDefinedData)
+void LoadHeaderFile::userDefinedData( const UserDefinedData &userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 
@@ -251,7 +251,7 @@ void LoadHeaderFile::userDefinedData( UserDefinedData &&userDefinedData)
 {
   BOOST_LOG_FUNCTION()
 
-  userDefinedDataV = std::move( userDefinedData);
+  userDefinedDataV = std::move( userDefinedData );
 
   checkUserDefinedData();
 }
@@ -331,7 +331,7 @@ RawFile LoadHeaderFile::encode() const
 
 
   // Load Type (only in V3 mode)
-  if (encodeV3Data)
+  if ( encodeV3Data )
   {
     uint32_t loadTypePtr{ 0};
 
@@ -378,7 +378,7 @@ RawFile LoadHeaderFile::encode() const
   if ( encodeV3Data )
   {
     unsigned int thwIdPosCount{ 0};
-    RawFile rawThwPos( sizeof( uint16_t));
+    RawFile rawThwPos( sizeof( uint16_t ) );
 
     for ( const auto &thwIdPosition : targetHardwareIdPositionsV )
     {
@@ -707,7 +707,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
 RawFile LoadHeaderFile::encodeFileList(
   const LoadFilesInfo &loadFilesInfo,
   const FileListType type,
-  const bool encodeV3Data) const
+  const bool encodeV3Data ) const
 {
   BOOST_LOG_FUNCTION()
 
@@ -716,11 +716,11 @@ RawFile LoadHeaderFile::encodeFileList(
   // number of loads
   Helper::setInt< uint16_t>(
     rawFileList.begin(),
-    Helper::safeCast< uint16_t>( loadFilesInfo.size()));
+    Helper::safeCast< uint16_t>( loadFilesInfo.size() ) );
 
   // iterate over files
   uint16_t fileCounter{ 0};
-  for (auto const &fileInfo : loadFilesInfo)
+  for ( auto const &fileInfo : loadFilesInfo )
   {
     ++fileCounter;
 
@@ -775,10 +775,10 @@ RawFile LoadHeaderFile::encodeFileList(
       fileInfo.crc());
 
     // following fields are available in ARINC 665-3 ff
-    if (encodeV3Data)
+    if ( encodeV3Data )
     {
       // length in bytes (Data File List)
-      if (type == FileListType::Data)
+      if ( type == FileListType::Data )
       {
         rawFileInfo.resize( rawFileInfo.size() + sizeof( uint64_t) );
         Helper::setInt<uint64_t>(
@@ -788,7 +788,7 @@ RawFile LoadHeaderFile::encodeFileList(
 
       // check Value
       const auto rawCheckValue{ CheckValueUtils_encode( fileInfo.checkValue() ) };
-      assert( rawCheckValue.size() % 2 == 0);
+      assert( rawCheckValue.size() % 2 == 0 );
       rawFileInfo.insert(
         rawFileInfo.end(),
         rawCheckValue.begin(),
@@ -824,16 +824,16 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
 
   // number of data files
   uint16_t numberOfFiles{};
-  it = Helper::getInt< uint16_t>( it, numberOfFiles);
+  it = Helper::getInt< uint16_t>( it, numberOfFiles );
 
   // iterate over file index
-  for ( unsigned int fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex)
+  for ( uint16_t fileIndex = 0; fileIndex < numberOfFiles; ++fileIndex )
   {
-    auto listIt{ it};
+    auto listIt{ it };
 
     // next file pointer
     uint16_t filePointer{};
-    listIt = Helper::getInt< uint16_t>( listIt, filePointer);
+    listIt = Helper::getInt< uint16_t>( listIt, filePointer );
 
     // filename
     std::string name{};
@@ -849,11 +849,11 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
 
     uint64_t realLength{ 0};
 
-    switch (type)
+    switch ( type )
     {
       case FileListType::Data:
         // rounded number of 16-bit words
-        realLength = length * 2;
+        realLength = length * 2U;
         break;
 
       case FileListType::Support:
@@ -868,33 +868,33 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
 
     // CRC
     uint16_t crc{};
-    listIt = Helper::getInt< uint16_t>( listIt, crc);
+    listIt = Helper::getInt< uint16_t>( listIt, crc );
 
     // CheckValue (keep default initialised if not V3 File Info
     std::optional< CheckValue> checkValue;
 
     // following fields are available in ARINC 665-3 ff
-    if (decodeV3Data)
+    if ( decodeV3Data )
     {
       // length in bytes (Data File List)
       if (type == FileListType::Data)
       {
         uint64_t fileLengthInBytes{};
-        listIt = Helper::getInt< uint64_t>( listIt, fileLengthInBytes);
+        listIt = Helper::getInt< uint64_t>( listIt, fileLengthInBytes );
         realLength = fileLengthInBytes;
       }
 
       // check Value
       checkValue = CheckValueUtils_decode(
         rawFile,
-        std::distance( rawFile.begin(), listIt));
+        std::distance( rawFile.begin(), listIt ) );
     }
 
     // set it to begin of next file
     it += filePointer * 2U;
 
     // file info
-    files.emplace_back( name, partNumber, realLength, crc, checkValue);
+    files.emplace_back( name, partNumber, realLength, crc, checkValue );
   }
 
   return files;
@@ -904,12 +904,12 @@ void LoadHeaderFile::checkUserDefinedData()
 {
   BOOST_LOG_FUNCTION()
 
-  if ( userDefinedDataV.size() % 2U != 0U)
+  if ( userDefinedDataV.size() % 2U != 0U )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning )
       << "User defined data must be 2-byte aligned. - extending range";
 
-    userDefinedDataV.push_back(0U);
+    userDefinedDataV.push_back( 0U );
   }
 }
 

@@ -40,9 +40,9 @@ class LoadInfo
      * @brief Initialises the load information
      *
      * @param[in] partNumber
-     *   Load part number.
+     *   Load Part Number.
      * @param[in] headerFilename
-     *   Load header filename
+     *   Load Header Filename
      * @param[in] memberSequenceNumber
      *   Member sequence number.
      * @param[in] targetHardwareIds
@@ -62,17 +62,17 @@ class LoadInfo
       ThwIds &&targetHardwareIds );
 
     /**
-     * @brief Returns the load part number.
+     * @brief Returns the Load Part Number.
      *
-     * @return The load part number
+     * @return Load Part Number
      **/
     [[nodiscard]] std::string_view partNumber() const;
 
     /**
-     * @brief Updates the load part number.
+     * @brief Updates the Load Part Number.
      *
      * @param[in] partNumber
-     *   load part number.
+     *   Load Part Number.
      **/
     void partNumber( std::string_view partNumber );
 
@@ -80,17 +80,17 @@ class LoadInfo
     void partNumber( std::string &&partNumber );
 
     /**
-     * @brief Returns the load header filename.
+     * @brief Returns the Load Header Filename.
      *
-     * @return The load header filename.
+     * @return Load Header Filename.
      **/
     [[nodiscard]] std::string_view headerFilename() const;
 
     /**
-     * @brief Updates the load header filename.
+     * @brief Updates the Load Header Filename.
      *
      * @param[in] headerFilename
-     *   The load header filename.
+     *   Load Header Filename.
      **/
     void headerFilename( std::string_view headerFilename );
 
@@ -98,24 +98,24 @@ class LoadInfo
     void headerFilename( std::string &&headerFilename );
 
     /**
-     * @brief Returns the member sequence number.
+     * @brief Returns the Member Sequence Number.
      *
-     * @return The member sequence number
+     * @return Member Sequence Number
      **/
     [[nodiscard]] uint8_t memberSequenceNumber() const;
 
     /**
-     * @brief Updates the  member sequence number.
+     * @brief Updates the Member Sequence Number.
      *
      * @param[in] memberSequenceNumber
-     *   The  member sequence number.
+     *   Member Sequence Number.
      **/
     void memberSequenceNumber( uint8_t memberSequenceNumber );
 
     /**
-     * @brief Returns the target hardware IDs.
+     * @brief Returns the Target Hardware IDs.
      *
-     * @return The target hardware IDs.
+     * @return Target Hardware IDs.
      **/
     [[nodiscard]] const ThwIds& targetHardwareIds() const;
 
@@ -123,7 +123,7 @@ class LoadInfo
     [[nodiscard]] ThwIds& targetHardwareIds();
 
     /**
-     * @brief Adds a target hardware ID.
+     * @brief Adds a Target Hardware ID.
      *
      * @param[in] targetHardwareId
      *   target hardware ID.
@@ -134,75 +134,75 @@ class LoadInfo
     void targetHardwareId( std::string &&targetHardwareId );
 
     /**
-     * @brief Compares the other load information against this for equality.
+     * @brief Compares the other load information against @p this for equality.
      *
      * @param[in] other
      *   Other load information
      *
-     * @return if [this] and [other] are equal.
+     * @return if @p this and @p other are equal.
      **/
     bool operator ==( const LoadInfo &other ) const;
 
     /**
-     * @brief Compares the other load information against this for inequality.
+     * @brief Compares the other load information against @p this for inequality.
      *
      * @param[in] other
      *   Other load information
      *
-     * @return if [this] and [other] are unequal.
+     * @return if @p this and @p other are unequal.
      **/
     bool operator !=( const LoadInfo &other ) const;
 
     /**
-     * @brief Compares the other file information against this for equality.
+     * @brief Compares the other file information against @p this for equality.
      *
      * @param[in] other
      *   Other file information
      *
-     * @return if [this] and [other] are equal.
+     * @return if @p this and @p other are equal.
      **/
     bool operator ==( const FileInfo &other ) const;
 
     /**
-     * @brief Compares the other file information against this for inequality.
+     * @brief Compares the other file information against @p this for inequality.
      *
      * @param[in] other
      *   Other file information
      *
-     * @return if [this] and [other] are unequal.
+     * @return if @p this and @p other are unequal.
      **/
     bool operator !=( const FileInfo &other ) const;
 
   private:
-    //! Load part number
+    //! Load Part Number
     std::string partNumberValue;
-    //! Header filename
+    //! Header Filename
     std::string headerFilenameValue;
-    //! Member sequence number
+    //! Member Sequence Number
     uint8_t memberSequenceNumberValue;
     //! Target Hardware IDs (list)
     ThwIds targetHardwareIdsValue;
 };
 
 /**
- * @brief Compares FileInfo against LoadInfo
+ * @brief Compares @p FileInfo against @p LoadInfo
  *
  * @param[in] fileInfo
- *   The file information.
+ *   File Information.
  * @param[in] loadInfo
- *   The load information.
+ *   Load Information.
  *
  * @return If file information is equal to the load information.
  **/
 bool operator ==( const FileInfo &fileInfo, const LoadInfo &loadInfo );
 
 /**
- * @brief Compares FileInfo against LoadInfo
+ * @brief Compares @p FileInfo against @p LoadInfo
  *
  * @param[in] fileInfo
- *   The file information.
+ *   File Information.
  * @param[in] loadInfo
- *   The load information.
+ *   Load Information.
  *
  * @return If file information is not equal to the load information.
  **/

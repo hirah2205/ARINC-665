@@ -38,21 +38,25 @@ class Arinc665Utils
   public:
     //! Handler, which is called to generate the given medium.
     using CreateMediumHandler =
-      std::function< void( Media::ConstMediumPtr medium)>;
+      std::function< void( Media::ConstMediumPtr medium )>;
 
     //! Handler, which is called to generate the given directory.
     using CreateDirectoryHandler =
-      std::function< void( Media::ConstDirectoryPtr directory)>;
+      std::function< void( Media::ConstDirectoryPtr directory )>;
 
     //! Handler, which checks the existence of a file within the source
     using CheckFileExistenceHandler =
-      std::function< bool( Media::ConstFilePtr file)>;
+      std::function< bool( Media::ConstFilePtr file )>;
 
     //! Handler, which is called to generate the given file at the requested position.
-    using CreateFileHandler = std::function< void( Media::ConstFilePtr file)>;
+    using CreateFileHandler = std::function< void( Media::ConstFilePtr file )>;
 
     /**
      * @brief Handler, which is called to read a file form a medium.
+     *
+     * This handler is also used to read files, which are not represented by
+     * Arinc665::Media classes.
+     * Therefore a basic representation is used.
      *
      * @param[in] mediumNumber
      *   Medium Number
@@ -62,21 +66,40 @@ class Arinc665Utils
      * @return File Data (Read as binary).
      **/
     using ReadFileHandler =
-      std::function< File::RawFile( uint8_t mediumNumber, const std::filesystem::path &path)>;
+      std::function< File::RawFile(
+        uint8_t mediumNumber,
+        const std::filesystem::path &path ) >;
 
-    //! Handler, which is called to write the given file at the requested position.
+    /**
+     * @brief Handler, which is called to write the given file at the requested
+     *   position.
+     *
+     * This handler is also used to write files, which are not represented by
+     * Arinc665::Media classes.
+     * Therefore a basic representation is used.
+     *
+     * @param[in] mediumNumber
+     *   Medium Number
+     * @param[in] path
+     *   Relative Path on Medium.
+     * @param[in] file
+     *   File Data (binary).
+     **/
     using WriteFileHandler =
-      std::function< void( uint8_t mediumNumber, const std::filesystem::path &path, const File::RawFile &file)>;
+      std::function< void(
+        uint8_t mediumNumber,
+        const std::filesystem::path &path,
+        const File::RawFile &file )>;
 
     //! Handler which is called for Validation Information.
     using ValidatorInformationHandler =
-      std::function< void( std::string_view information)>;
+      std::function< void( std::string_view information ) >;
 
     /**
      * @brief The ARINC 665 Media Set Importer.
      * Returns the MediaSet
      **/
-    using Arinc665Importer = std::function< Media::MediaSetPtr()>;
+    using Arinc665Importer = std::function< Media::MediaSetPtr() >;
 
     /**
      * @brief ARINC 665 Media Set Validator
@@ -90,7 +113,7 @@ class Arinc665Utils
     using Arinc665Exporter = std::function< void()>;
 
     /**
-     * @brief Create a ARINC 665 Media Set importer.
+     * @brief Create a ARINC 665 Media Set Importer.
      *
      * @param[in] readFileHandler
      *   Handler which is called to obtain the requested file from the medium.
@@ -133,13 +156,15 @@ class Arinc665Utils
      *   Reads a given file from the output media set.
      *   Used for CRC calculation.
      * @param[in] arinc665Version
-     *   The ARINC 665 version used for exporting.
+     *   ARINC 665 version used for exporting.
      * @param[in] createBatchFiles
-     *   If set to true, Batch Files are created by exporter.
+     *   Defines, if Batch Files are created by exporter or pre-existing ones
+     *   are used.
      * @param[in] createLoadHeaderFiles
-     *   If set to true, Load Header Files are created by exporter.
+     *   Defines, if Load Header Files are created by exporter or pre-existing
+     *   ones are used.
      *
-     * @return The ARINC 665 Media Set exporter.
+     * @return ARINC 665 Media Set Exporter.
      **/
     static Arinc665Exporter arinc665Exporter(
       Media::ConstMediaSetPtr mediaSet,
@@ -149,7 +174,8 @@ class Arinc665Utils
       CreateFileHandler createFileHandler,
       WriteFileHandler writeFileHandler,
       ReadFileHandler readFileHandler,
-      SupportedArinc665Version arinc665Version = SupportedArinc665Version::Supplement2,
+      SupportedArinc665Version arinc665Version =
+        SupportedArinc665Version::Supplement2,
       FileCreationPolicy createBatchFiles = FileCreationPolicy::None,
       FileCreationPolicy createLoadHeaderFiles = FileCreationPolicy::None );
 };
