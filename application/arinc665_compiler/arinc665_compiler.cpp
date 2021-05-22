@@ -27,6 +27,7 @@
 #include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/File.hpp>
+#include <arinc665/media/MediaSet.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/SupportedArinc665VersionDescription.hpp>
@@ -49,9 +50,9 @@
  * @param[in] argc
  *   Number of arguments.
  * @param[in] argv
- *   The arguments
+ *   Arguments
  *
- * @return The success state of this operation.
+ * @return Success state of this operation.
  **/
 int main( int argc, char ** argv);
 
@@ -59,19 +60,19 @@ int main( int argc, char ** argv);
  * @brief Returns the medium path.
  *
  * @param[in] mediumNumber
- *   The medium number.
+ *   Medium Number.
  *
- * @return The medium path.
+ * @return Medium Path.
  **/
 static std::filesystem::path mediumPath(
   const std::filesystem::path &base,
-  uint8_t mediumNumber);
+  uint8_t mediumNumber );
 
 /**
  * @brief Creates the directory for the given medium.
  *
  * @param[in] medium
- *   The medium.
+ *   Medium.
  **/
 static void createMedium(
   const std::filesystem::path &base,
@@ -109,11 +110,11 @@ static Arinc665::File::RawFile readFile(
   uint8_t mediumNumber,
   const std::filesystem::path &path );
 
-int main( int argc, char ** argv)
+int main( int argc, char ** argv )
 {
   BOOST_LOG_FUNCTION()
 
-  Helper::initLogging( Helper::Severity::info);
+  Helper::initLogging( Helper::Severity::info );
 
   auto fileCreatPolDes{
     Arinc665::Utils::FileCreationPolicyDescription::instance() };
@@ -216,44 +217,47 @@ int main( int argc, char ** argv)
     // load XML file
     auto [mediaSet, fileMapping] = xml->loadFromXml( mediaSetXmlFile);
 
+    // Add Media Set Part Number to Output Path
+    mediaSetDestinationDirectory /= mediaSet->partNumber();
+
     // create media set directory
-    std::filesystem::create_directories( mediaSetDestinationDirectory);
+    std::filesystem::create_directories( mediaSetDestinationDirectory );
 
     auto exporter{ Arinc665::Utils::Arinc665Utils::arinc665Exporter(
       mediaSet,
       std::bind(
         &createMedium,
         mediaSetDestinationDirectory,
-        std::placeholders::_1),
+        std::placeholders::_1 ),
       std::bind(
         &createDirectory,
         mediaSetDestinationDirectory,
-        std::placeholders::_1),
+        std::placeholders::_1 ),
       std::bind(
         &checkFileExistance,
         mediaSetDestinationDirectory,
         fileMapping,
-        std::placeholders::_1),
+        std::placeholders::_1 ),
       std::bind(
         &createFile,
         mediaSetSourceDirectory,
         mediaSetDestinationDirectory,
         fileMapping,
-        std::placeholders::_1),
+        std::placeholders::_1 ),
       std::bind(
         &writeFile,
         mediaSetDestinationDirectory,
         std::placeholders::_1,
         std::placeholders::_2,
-        std::placeholders::_3),
+        std::placeholders::_3 ),
       std::bind(
         &readFile,
         mediaSetDestinationDirectory,
         std::placeholders::_1,
-        std::placeholders::_2),
+        std::placeholders::_2 ),
       version,
       createBatchFiles,
-      createLoadHeaderFiles)};
+      createLoadHeaderFiles ) };
 
     exporter();
   }
@@ -292,7 +296,7 @@ int main( int argc, char ** argv)
 
 static std::filesystem::path mediumPath(
   const std::filesystem::path &base,
-  const uint8_t mediumNumber)
+  const uint8_t mediumNumber )
 {
   return base
     / (boost::format("MEDIUM_%03u" ) % (unsigned int)mediumNumber).str();
@@ -300,7 +304,7 @@ static std::filesystem::path mediumPath(
 
 static void createMedium(
   const std::filesystem::path &base,
-  Arinc665::Media::ConstMediumPtr medium)
+  Arinc665::Media::ConstMediumPtr medium )
 {
   BOOST_LOG_FUNCTION()
 
@@ -314,7 +318,7 @@ static void createMedium(
 
 static void createDirectory(
   const std::filesystem::path &mediaSetBase,
-  Arinc665::Media::ConstDirectoryPtr directory)
+  Arinc665::Media::ConstDirectoryPtr directory )
 {
   BOOST_LOG_FUNCTION()
 
@@ -339,9 +343,9 @@ static bool checkFileExistance(
     << "check existence of " << file->path();
 
   // search for file
-  auto fileIt{ filePathMapping.find( file)};
+  auto fileIt{ filePathMapping.find( file ) };
 
-  if (fileIt == filePathMapping.end())
+  if ( fileIt == filePathMapping.end() )
   {
     return false;
   }
@@ -368,19 +372,19 @@ static void createFile(
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo( "file mapping not found")
-      << boost::errinfo_file_name( std::string{ file->name()}));
+      << boost::errinfo_file_name( std::string{ file->name() } ) );
   }
 
   auto filePath{
-    mediumPath( mediaSetBase, file->medium()->mediumNumber())
-      / file->path().relative_path()};
+    mediumPath( mediaSetBase, file->medium()->mediumNumber() )
+      / file->path().relative_path() };
 
   BOOST_LOG_TRIVIAL( severity_level::trace ) << "Copy file " << filePath;
 
   // copy file
   std::filesystem::copy(
     sourceBase / fileIt->second,
-    filePath);
+    filePath );
 }
 
 static void writeFile(

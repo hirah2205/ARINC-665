@@ -13,31 +13,40 @@ file( GENERATE OUTPUT File1 CONTENT ${FILE1_CONTENT} )
 file( GENERATE OUTPUT File2 CONTENT ${FILE2_CONTENT} )
 file( GENERATE OUTPUT Readme.txt CONTENT "Readme Content" )
 
+set( MEDIA_SET_OUTPUT MediaSet_V2 )
 configure_file(
   MediaSetConfig.json.in
-  MediaSetConfig.json )
+  MediaSetConfig_v2.json )
+set( MEDIA_SET_OUTPUT MediaSet_V3 )
+configure_file(
+  MediaSetConfig.json.in
+  MediaSetConfig_v3.json )
 
 add_test(
-  NAME arinc665_generate_media_set_rmoutdir
+  NAME arinc665_generate_media_set_rmoutdir_v2
   COMMAND
-    ${CMAKE_COMMAND} -E remove_directory MediaSet )
+  ${CMAKE_COMMAND} -E remove_directory MediaSet_V2 )
+add_test(
+  NAME arinc665_generate_media_set_rmoutdir_v3
+  COMMAND
+  ${CMAKE_COMMAND} -E remove_directory MediaSet_V3 )
 
 add_test(
-  NAME arinc665_generate_media_set
+  NAME arinc665_generate_media_set_v2
   COMMAND
     arinc665_compiler
     --xml-file ${CMAKE_CURRENT_SOURCE_DIR}/ExampleMediaSet.xml
     --source-directory ${CMAKE_CURRENT_BINARY_DIR}
-    --destination-directory MediaSet/CCC
+    --destination-directory MediaSet_V2
     --create-batch-files All
     --create-load-header-files All )
 
 add_test(
-  NAME arinc665_decompile_media_set
+  NAME arinc665_decompile_media_set_v2
   COMMAND
     arinc665_decompiler
     --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSet.xml
-    --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet/CCC/MEDIUM_001 )
+    --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet_V2/CCC/MEDIUM_001 )
 
 
 add_test(
@@ -46,7 +55,7 @@ add_test(
   arinc665_compiler
   --xml-file ${CMAKE_CURRENT_SOURCE_DIR}/ExampleMediaSet.xml
   --source-directory ${CMAKE_CURRENT_BINARY_DIR}
-  --destination-directory MediaSet/CCC_V3
+  --destination-directory MediaSet_V3
   --create-batch-files All
   --create-load-header-files All
   --version Supplement34 )
@@ -56,4 +65,4 @@ add_test(
   COMMAND
   arinc665_decompiler
   --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSetV3.xml
-  --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet/CCC_V3/MEDIUM_001 )
+  --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet_V3/CCC/MEDIUM_001 )

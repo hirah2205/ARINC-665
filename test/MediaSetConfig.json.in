@@ -1,5 +1,5 @@
 {
-  "media_sets_base" : "./MediaSet",
+  "media_sets_base" : "./${MEDIA_SET_OUTPUT}",
   "media_sets" : [
     {
       "path" : "CCC",
