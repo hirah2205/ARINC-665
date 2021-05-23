@@ -42,17 +42,17 @@ class PartNumber
 {
   public:
     //! Length of Manufacturer Code
-    static constexpr size_t ManufacturerCodeLength{ 3U};
+    static constexpr size_t ManufacturerCodeLength{ 3U };
 
     //! Length of Product Identifier
-    static constexpr size_t ProductIdentifierLength{ 8U};
+    static constexpr size_t ProductIdentifierLength{ 8U };
 
     //! Length of the Check Code when represented as string
-    static constexpr size_t CheckCodeLength{ 2U};
+    static constexpr size_t CheckCodeLength{ 2U };
 
     //! Length of an ARINC 665 Part Number
-    static constexpr size_t Length{ ManufacturerCodeLength
-      + CheckCodeLength + ProductIdentifierLength};
+    static constexpr size_t Length{
+      ManufacturerCodeLength + CheckCodeLength + ProductIdentifierLength };
 
     /**
      * @brief Constructs an ARINC 665 part number based on manufacturer code
@@ -65,7 +65,7 @@ class PartNumber
      **/
     PartNumber(
       std::string_view manufacturerCode,
-      std::string_view productIdentifier);
+      std::string_view productIdentifier );
 
     /**
      * @brief Constructs an ARINC 665 part number based on a part number
@@ -132,7 +132,7 @@ class PartNumber
      * @param[in] manufacturerCode
      *   Manufacturer Code to check
      **/
-    void checkManufacturerCode( std::string_view manufacturerCode) const;
+    void checkManufacturerCode( std::string_view manufacturerCode ) const;
 
     /**
      * @brief Checks the Product Identifier.
@@ -143,20 +143,20 @@ class PartNumber
      * @throw Arinc665Exception
      *   if length is invalid.
      **/
-    void checkProductIdentifier( std::string_view productIdentifier) const;
+    void checkProductIdentifier( std::string_view productIdentifier ) const;
 
     /**
-     * @brief Checks the ManuCheckfacturer Code.
+     * @brief Checks the Check Code.
      *
      * @param[in] checkCode
-     *   Check  Code to check
+     *   Check Code to check
      *
      * @throw Arinc665Exception
      *   if length of checkCode is invalid.
      * @throw std::invalid_argument
      *   When invalid string is supplied
      **/
-    void checkCheckCode( std::string_view checkCode) const;
+    void checkCheckCode( std::string_view checkCode ) const;
 
     //! Manufacture Code
     std::string manufacturerCodeValue;
