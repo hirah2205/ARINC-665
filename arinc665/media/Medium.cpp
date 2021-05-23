@@ -41,11 +41,6 @@ Medium::Type Medium::type() const
   return Type::Medium;
 }
 
-std::string_view Medium::partNumber() const
-{
-  return mediaSetV.lock()->partNumber();
-}
-
 std::filesystem::path Medium::path() const
 {
   return "/";

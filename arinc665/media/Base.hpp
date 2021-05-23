@@ -66,7 +66,7 @@ class Base : public std::enable_shared_from_this< Base>
      *
      * @return Part Number of the item.
      **/
-    [[nodiscard]] virtual std::string_view partNumber() const = 0;
+    //[[nodiscard]] virtual std::string_view partNumber() const = 0;
 };
 
 }

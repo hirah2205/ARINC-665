@@ -58,7 +58,7 @@ add_test(
   --destination-directory MediaSet_V3
   --create-batch-files All
   --create-load-header-files All
-  --version Supplement34 )
+  --version Supplement345 )
 
 add_test(
   NAME arinc665_decompile_media_set_v3

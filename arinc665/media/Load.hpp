@@ -33,7 +33,7 @@ class Load: public BaseFile
 {
   public:
     //! File List
-    using Files = std::list< FilePtr::weak_type >;
+    using Files = std::list< std::pair< FilePtr::weak_type, std::string > >;
     //! Target Hardware ID / Positions
     using TargetHardwareIdPositions =
       std::map< std::string, std::list< std::string > >;
@@ -65,6 +65,21 @@ class Load: public BaseFile
      * @return FileType::LoadFile always.
      **/
     [[nodiscard]] FileType fileType() const final;
+
+    /**
+     * @brief Return the Part Number of the Media Set.
+     *
+     * @return Part Number of the Media Set.
+     **/
+    [[nodiscard]] std::string_view partNumber() const;
+
+    /**
+     * @brief Updates the Part Number
+     *
+     * @param[in] partNumber
+     *   New Part number
+     **/
+    void partNumber( std::string_view partNumber);
 
     /**
      * @brief Returns the List of Target HW IDs.
@@ -131,12 +146,14 @@ class Load: public BaseFile
     /**
      * @brief Add the given file as data file.
      *
-     * @param[in] dataFile
-     *   The data file.
+     * @param[in] file
+     *   Data File.
      *
      * @todo change to non-weak pointer and check same media set (even if null)
      **/
-    void dataFile( const FilePtr::weak_type &dataFile );
+    void dataFile( const Files::value_type &file );
+
+    void dataFile( Files::value_type &&file );
 
     /**
      * @brief Returns the support files.
@@ -148,17 +165,19 @@ class Load: public BaseFile
     /**
      * @brief Add the given file as support file.
      *
-     * @param[in] supportFile
-     *   Support Fle.
+     * @param[in] file
+     *   Support File.
      *
      * @todo change to non-weak pointer and check same media set (even if null)
      **/
-    void supportFile( const FilePtr::weak_type &supportFile );
+    void supportFile( const Files::value_type &file );
+
+    void supportFile( Files::value_type &&file );
 
     /**
      * @brief Returns the user-defined data stored in the load header.
      *
-     * @return The user-defined data.
+     * @return User-defined data.
      **/
     [[nodiscard]] const UserDefinedData& userDefinedData() const;
 
@@ -195,6 +214,8 @@ class Load: public BaseFile
     void loadType( Type &&type );
 
   private:
+    //! Part Number
+    std::string partNumberV;
     //! Target Hardware ID/ Positions
     TargetHardwareIdPositions targetHardwareIdPositionsV;
     //! Data Files

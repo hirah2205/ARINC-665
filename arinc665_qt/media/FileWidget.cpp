@@ -43,10 +43,6 @@ void FileWidget::selectedFile(
     ui->nameLineEdit->setText( QString::fromUtf8(
       fileV->name().data(),
       static_cast< int >( fileV->name().length() ) ) );
-
-    ui->partNumberLineEdit->setText( QString::fromUtf8(
-      fileV->partNumber().data(),
-      static_cast< int >( fileV->partNumber().length() ) ) );
   }
 
   switch ( fileV->fileType())

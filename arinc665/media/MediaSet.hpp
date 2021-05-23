@@ -51,8 +51,12 @@ class MediaSet: public Base
     //! @copydoc Base::type() const
     Type type() const final;
 
-    //! @copydoc Base::partNumber() const
-    std::string_view partNumber() const final;
+    /**
+     * @brief Return the Part Number of the Media Set.
+     *
+     * @return Part Number of the Media Set.
+     **/
+    std::string_view partNumber() const;
 
     /**
      * @brief Set the part number of the entity.

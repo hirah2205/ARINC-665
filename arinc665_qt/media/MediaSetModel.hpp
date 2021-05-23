@@ -33,7 +33,6 @@ class MediaSetModel: public QAbstractItemModel
     enum class Columns
     {
       Name,
-      PartNumber,
       Type,
 
       Last

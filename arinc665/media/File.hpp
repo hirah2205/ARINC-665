@@ -42,10 +42,10 @@ class File: public BaseFile
      * @param[in] name
      *   Name of the file.
      **/
-    File( ContainerEntityPtr parent, std::string_view name);
+    File( ContainerEntityPtr parent, std::string_view name );
 
     //! @copydoc File()
-    File( ContainerEntityPtr parent, std::string &&name);
+    File( ContainerEntityPtr parent, std::string &&name );
 
     /**
      * @copydoc BaseFile::fileType

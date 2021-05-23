@@ -17,18 +17,28 @@
 namespace Arinc665::Media {
 
 Load::Load( ContainerEntityPtr parent, std::string_view name) :
-  BaseFile( std::move(parent), name)
+  BaseFile{ std::move( parent ), name }
 {
 }
 
 Load::Load( ContainerEntityPtr parent, std::string &&name) :
-  BaseFile( std::move(parent), std::move( name))
+  BaseFile{ std::move( parent ), std::move( name ) }
 {
 }
 
 Load::FileType Load::fileType() const
 {
   return FileType::LoadFile;
+}
+
+std::string_view Load::partNumber() const
+{
+  return partNumberV;
+}
+
+void Load::partNumber( std::string_view partNumber )
+{
+  partNumberV = partNumber;
 }
 
 const Load::TargetHardwareIdPositions& Load::targetHardwareIdPositions() const
@@ -79,9 +89,14 @@ const Load::Files& Load::dataFiles() const
   return dataFilesV;
 }
 
-void Load::dataFile( const FilePtr::weak_type &dataFile )
+void Load::dataFile( const Files::value_type &file )
 {
-  dataFilesV.push_back( dataFile);
+  dataFilesV.push_back( file );
+}
+
+void Load::dataFile( Files::value_type &&file )
+{
+  dataFilesV.push_back( std::move( file ) );
 }
 
 const Load::Files& Load::supportFiles() const
@@ -89,9 +104,14 @@ const Load::Files& Load::supportFiles() const
   return supportFilesV;
 }
 
-void Load::supportFile( const FilePtr::weak_type &supportFile )
+void Load::supportFile( const Files::value_type &file )
 {
-  supportFilesV.push_back( supportFile);
+  supportFilesV.push_back( file );
+}
+
+void Load::supportFile( Files::value_type &&file )
+{
+  supportFilesV.push_back( std::move( file ) );
 }
 
 const Load::UserDefinedData& Load::userDefinedData() const

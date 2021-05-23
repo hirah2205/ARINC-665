@@ -331,29 +331,61 @@ void Arinc665XmlImpl::loadEntries(
     }
 
     const auto filename{ entryElement->get_attribute_value( "Name" ) };
-    const auto partNumber{ entryElement->get_attribute_value( "PartNumber" ) };
     const auto sourcePath{ entryElement->get_attribute_value( "SourcePath" ) };
 
-    if ( filename.empty())
+    if ( filename.empty() )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "Name attribute missing or empty" } );
     }
 
-    // create the right file
-    Media::BaseFilePtr file;
-
     if ( entryNode->get_name() == "File"s )
     {
-      file = current->addFile( toStringView( filename ));
+      auto file{ current->addFile( toStringView( filename ) ) };
+
+      // set source path if attribute is present
+      if ( !sourcePath.empty() )
+      {
+        filePathMapping.insert( { file, toStringView( sourcePath ) } );
+      }
     }
     else if ( entryNode->get_name() == "LoadFile"s )
     {
-      file = current->addLoad( toStringView( filename ));
+      const auto partNumber{ entryElement->get_attribute_value( "PartNumber" ) };
+
+      if ( partNumber.empty() )
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+           << Helper::AdditionalInfo{ "Load Part Number Missing" } );
+      }
+
+      auto load{ current->addLoad( toStringView( filename ) ) };
+      load->partNumber( toStringView( partNumber ) );
+
+      // set source path if attribute is present
+      if ( !sourcePath.empty() )
+      {
+        filePathMapping.insert( { load, toStringView( sourcePath ) } );
+      }
     }
     else if ( entryNode->get_name() == "BatchFile"s )
     {
-      file = current->addBatch( toStringView( filename ));
+      const auto partNumber{ entryElement->get_attribute_value( "PartNumber" ) };
+
+      if ( partNumber.empty() )
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo{ "Batch Part Number Missing" } );
+      }
+
+      auto batch{ current->addBatch( toStringView( filename ) ) };
+      batch->partNumber( toStringView( partNumber ) );
+
+      // set source path if attribute is present
+      if ( !sourcePath.empty() )
+      {
+        filePathMapping.insert( { batch, toStringView( sourcePath ) } );
+      }
     }
     else
     {
@@ -361,25 +393,13 @@ void Arinc665XmlImpl::loadEntries(
         << "Ignore element " << entryNode->get_name();
       continue;
     }
-
-    // set part number if attribute is present
-    if ( !partNumber.empty() )
-    {
-      file->partNumber( toStringView( partNumber ));
-    }
-
-    // set source path if attribute is present
-    if ( !sourcePath.empty() )
-    {
-      filePathMapping.insert( {file, toStringView( sourcePath ) } );
-    }
   }
 }
 
 void Arinc665XmlImpl::saveEntries(
   Media::ConstContainerEntityPtr current,
   const FilePathMapping &filePathMapping,
-  xmlpp::Node &currentNode)
+  xmlpp::Node &currentNode )
 {
   // iterate over sub-directories within container
   for ( auto dirEntry : current->subDirectories() )
@@ -394,19 +414,31 @@ void Arinc665XmlImpl::saveEntries(
   {
     xmlpp::Element * fileNode{};
 
-    switch (fileEntry->fileType())
+    switch ( fileEntry->fileType() )
     {
       case Media::BaseFile::FileType::RegularFile:
         fileNode = currentNode.add_child( "File" );
         break;
 
       case Media::BaseFile::FileType::LoadFile:
+      {
         fileNode = currentNode.add_child( "LoadFile" );
+        auto load{ std::dynamic_pointer_cast< const Media::Load >( fileEntry ) };
+        assert( load );
+        // Add part number attribute
+        fileNode->set_attribute( "PartNumber", load->partNumber().data() );
         break;
+      }
 
       case Media::BaseFile::FileType::BatchFile:
+      {
         fileNode = currentNode.add_child( "BatchFile" );
+        auto batch{ std::dynamic_pointer_cast< const Media::Batch >( fileEntry ) };
+        assert( batch );
+        // Add part number attribute
+        fileNode->set_attribute( "PartNumber", batch->partNumber().data() );
         break;
+      }
 
       default:
         continue;
@@ -414,12 +446,6 @@ void Arinc665XmlImpl::saveEntries(
 
     // Add name attribute
     fileNode->set_attribute( "Name", fileEntry->name().data() );
-
-    // Add part number attribute (optional)
-    if ( !fileEntry->partNumber().empty() )
-    {
-      fileNode->set_attribute( "PartNumber", fileEntry->partNumber().data() );
-    }
 
     // Add source path attribute (optional)
     auto filePathIt{ filePathMapping.find( fileEntry)};
@@ -503,9 +529,9 @@ void Arinc665XmlImpl::loadLoad(
   load->targetHardwareIdPositions( std::move( thwIds ));
 
   // iterate over data files
-  for ( auto dataFileNode : loadElement.get_children( "DataFile" ))
+  for ( auto dataFileNode : loadElement.get_children( "DataFile" ) )
   {
-    auto dataFileElement{ dynamic_cast< xmlpp::Element*>( dataFileNode )};
+    auto dataFileElement{ dynamic_cast< xmlpp::Element*>( dataFileNode ) };
 
     if ( nullptr == dataFileElement )
     {
@@ -513,7 +539,7 @@ void Arinc665XmlImpl::loadLoad(
         << Helper::AdditionalInfo{ "DataFile Element invalid" } );
     }
 
-    auto fileNameRef{ dataFileElement->get_attribute_value( "NameRef" )};
+    const auto fileNameRef{ dataFileElement->get_attribute_value( "NameRef" )};
 
     if ( fileNameRef.empty() )
     {
@@ -522,7 +548,16 @@ void Arinc665XmlImpl::loadLoad(
         << Helper::AdditionalInfo( "NameRef attribute missing or empty"));
     }
 
-    auto file{ mediaSet->file( toStringView( fileNameRef ))};
+    const auto partNumber{ dataFileElement->get_attribute_value( "PartNumber" ) };
+
+    if ( partNumber.empty() )
+    {
+      //! @throw Arinc665::Arinc665Exception when PartNumber attribute is missing or empty.
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo( "PartNumber attribute missing or empty"));
+    }
+
+    auto file{ mediaSet->file( toStringView( fileNameRef ) ) };
 
     if ( !file )
     {
@@ -531,7 +566,7 @@ void Arinc665XmlImpl::loadLoad(
         << Helper::AdditionalInfo( "NameRef attribute does not reference file"));
     }
 
-    load->dataFile( file );
+    load->dataFile( { file, partNumber } );
   }
 
   // iterate over support files
@@ -554,6 +589,15 @@ void Arinc665XmlImpl::loadLoad(
         << Helper::AdditionalInfo( "NameRef attribute missing or empty"));
     }
 
+    const auto partNumber{ supportFileElement->get_attribute_value( "PartNumber" ) };
+
+    if ( partNumber.empty() )
+    {
+      //! @throw Arinc665::Arinc665Exception when PartNumber attribute is missing or empty.
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo( "PartNumber attribute missing or empty" ) );
+    }
+
     auto file{ mediaSet->file( toStringView( fileNameRef ))};
 
     if ( !file )
@@ -563,11 +607,11 @@ void Arinc665XmlImpl::loadLoad(
         << Helper::AdditionalInfo( "NameRef attribute does not reference file"));
     }
 
-    load->supportFile( file);
+    load->supportFile( { file, partNumber } );
   }
 
   const auto userDefinedDataElement{ dynamic_cast< const xmlpp::Element*>(
-    loadElement.get_first_child( "UserDefinedData" ))};
+    loadElement.get_first_child( "UserDefinedData" ) ) };
 
   if ( nullptr != userDefinedDataElement )
   {
@@ -613,19 +657,21 @@ void Arinc665XmlImpl::saveLoad(
   }
 
   // iterate over data files
-  for ( auto dataFile : load->dataFiles() )
+  for ( const auto &[dataFile,partNumber] : load->dataFiles() )
   {
     auto dataFileElement{ loadElement.add_child( "DataFile" ) };
-    dataFileElement->set_attribute( "NameRef", dataFile.lock()->name().data());
+    dataFileElement->set_attribute( "NameRef", dataFile.lock()->name().data() );
+    dataFileElement->set_attribute( "PartNumber", partNumber );
   }
 
   // iterate over support files
-  for ( const auto& supportFile : load->supportFiles())
+  for ( const auto &[supportFile,partNumber] : load->supportFiles())
   {
     auto supportFileElement{ loadElement.add_child( "SupportFile" ) };
     supportFileElement->set_attribute(
       "NameRef",
       supportFile.lock()->name().data() );
+    supportFileElement->set_attribute( "PartNumber", partNumber );
   }
 
   const auto userDefinedData{ load->userDefinedData()};

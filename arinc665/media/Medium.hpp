@@ -48,13 +48,6 @@ class Medium : public ContainerEntity
      **/
     Type type() const final;
 
-    /**
-     * @copydoc ContainerEntity::partNumber
-     *
-     * @return The part number of the owning media set.
-     **/
-    std::string_view partNumber() const final;
-
     //! @copydoc ContainerEntity::path() const
     std::filesystem::path path() const final;
 

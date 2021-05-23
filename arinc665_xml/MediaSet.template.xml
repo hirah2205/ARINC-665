@@ -12,11 +12,11 @@
   <BatchesUserDefinedData>Batch Data</BatchesUserDefinedData>
 
   <Medium>
-    <File Name="File1" PartNumber="AABBCC1" SourcePath="File1" />
+    <File Name="File1" SourcePath="File1" />
     <LoadFile Name="Load1.LUH" PartNumber="AABBCC" />
     <LoadFile Name="Load2.LUH" PartNumber="AABBDD" />
     <Directory Name="Directory1" >
-      <File Name="File2" PartNumber="AABBCC2" SourcePath="File2" />
+      <File Name="File2" SourcePath="File2" />
     </Directory>
     <File Name="Readme.txt" SourcePath="Readme.txt" />
     <BatchFile Name="Batch1.LUB" PartNumber="AABBEE" />
@@ -30,8 +30,8 @@
       </TargetHardware>
       <TargetHardware ThwId="GHIJKL" />
 
-      <DataFile    NameRef="File1" />
-      <SupportFile NameRef="File2" />
+      <DataFile    NameRef="File1" PartNumber="AABBCC1" />
+      <SupportFile NameRef="File2" PartNumber="AABBCC2" />
 
       <UserDefinedData>TEST</UserDefinedData>
     </Load>
@@ -39,8 +39,8 @@
       <TargetHardware ThwId="ABCDEF" />
       <TargetHardware ThwId="GHIJKL" />
 
-      <DataFile    NameRef="File1" />
-      <SupportFile NameRef="File2" />
+      <DataFile    NameRef="File1" PartNumber="AABBCC1" />
+      <SupportFile NameRef="File2" PartNumber="AABBCC2" />
     </Load>
   </Loads>
 

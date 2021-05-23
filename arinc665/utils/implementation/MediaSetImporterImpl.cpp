@@ -452,9 +452,7 @@ void MediaSetImporterImpl::addLoads()
 
       // TODO Check Type Value ?!?
 
-      dataFilePtr->partNumber( dataFile.partNumber() );
-
-      loadPtr->dataFile( dataFilePtr );
+      loadPtr->dataFile( { dataFilePtr, std::string{ dataFile.partNumber() } } );
     }
 
     // iterate over support files
@@ -508,9 +506,7 @@ void MediaSetImporterImpl::addLoads()
 
       // TODO Check Type Value ?!?
 
-      supportFilePtr->partNumber( supportFile.partNumber() );
-
-      loadPtr->supportFile( supportFilePtr );
+      loadPtr->supportFile( { supportFilePtr, std::string{ supportFile.partNumber() } } );
     }
 
     // User Defined Data

@@ -47,16 +47,6 @@ BaseFile::Type BaseFile::type() const
   return Type::File;
 }
 
-std::string_view BaseFile::partNumber() const
-{
-  return partNumberV;
-}
-
-void BaseFile::partNumber( std::string_view partNumber )
-{
-  partNumberV = partNumber;
-}
-
 std::string_view BaseFile::name() const
 {
   return nameV;

@@ -334,9 +334,6 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role) const
           return QString{ "Invalid Type"};
       }
 
-    case Columns::PartNumber:
-      return QString::fromUtf8( base->partNumber().data(), static_cast< int >( base->partNumber().size() ) );
-
     case Columns::Type:
       switch ( base->type())
       {
@@ -399,9 +396,6 @@ QVariant MediaSetModel::headerData(
   {
     case Columns::Name:
       return QString( "Name");
-
-    case Columns::PartNumber:
-      return QString( "Part Number");
 
     case Columns::Type:
       return QString( "Type");

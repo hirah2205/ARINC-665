@@ -37,7 +37,6 @@
 
   <complexType name="BaseFileType" >
     <attribute name="Name"            type="ams:NameType"       use="required" />
-    <attribute name="PartNumber"      type="ams:PartNumberType" use="optional" />
     <attribute name="SourcePath"      type="string"             use="optional" />
   </complexType>
 
@@ -45,7 +44,6 @@
     <complexContent>
       <restriction base="ams:BaseFileType">
         <attribute name="Name"            type="ams:NameType"        use="required" />
-        <attribute name="PartNumber"      type="ams:PartNumberType"  use="optional" />
         <attribute name="SourcePath"      type="string"              use="optional" />
       </restriction>
     </complexContent>
@@ -64,9 +62,9 @@
   <complexType name="BatchFileType" >
     <complexContent>
       <restriction base="ams:BaseFileType" >
-        <attribute name="Name"            type="ams:NameType"        use="required" />
-        <attribute name="PartNumber"      type="ams:PartNumberType"  use="required" />
-        <attribute name="SourcePath"      type="string"              use="optional" />
+        <attribute name="Name"       type="ams:NameType"       use="required" />
+        <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
+        <attribute name="SourcePath" type="string"             use="optional" />
       </restriction>
     </complexContent>
   </complexType>
@@ -111,7 +109,8 @@
   </complexType>
 
   <complexType name="FileReferenceType" >
-    <attribute name="NameRef" type="IDREF" use="required" />
+    <attribute name="NameRef"    type="IDREF"              use="required" />
+    <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
   </complexType>
 
 

@@ -84,7 +84,6 @@ int main( int argc, char ** argv)
       {
         std::cout
           << "    Name: '" << file->name()
-          << "' P/N: '" << file->partNumber() << "' "
           << mediaSetManager->filePath( file) << "\n";
       }
 
@@ -102,9 +101,9 @@ int main( int argc, char ** argv)
         {
           std::cout
             << "      "
-            << "Name: '" << dataFile.lock()->name() << "' "
-            << "P/N: '" << dataFile.lock()->partNumber() << "' "
-            << "Path: '" << mediaSetManager->filePath( dataFile.lock()) << "'\n";
+            << "Name: '" << dataFile.first.lock()->name() << "' "
+            << "P/N: '" << dataFile.second << "' "
+            << "Path: '" << mediaSetManager->filePath( dataFile.first.lock()) << "'\n";
         }
 
         std::cout << "    Support Files:\n";
@@ -112,9 +111,9 @@ int main( int argc, char ** argv)
         {
           std::cout
             << "      "
-            << "Name: '" << supportFile.lock()->name() << "' "
-            << "P/N: '" << supportFile.lock()->partNumber() << "' "
-            << "Path: '" << mediaSetManager->filePath( supportFile.lock()) << "'\n";
+            << "Name: '" << supportFile.first.lock()->name() << "' "
+            << "P/N: '" << supportFile.second << "' "
+            << "Path: '" << mediaSetManager->filePath( supportFile.first.lock()) << "'\n";
         }
       }
 

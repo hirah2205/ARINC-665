@@ -29,6 +29,16 @@ Batch::FileType Batch::fileType() const
   return FileType::BatchFile;
 }
 
+std::string_view Batch::partNumber() const
+{
+  return partNumberV;
+}
+
+void Batch::partNumber( std::string_view partNumber )
+{
+  partNumberV = partNumber;
+}
+
 std::string_view Batch::comment() const
 {
   return commentV;

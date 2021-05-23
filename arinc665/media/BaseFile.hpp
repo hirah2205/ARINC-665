@@ -48,17 +48,6 @@ class BaseFile: public Base
 
    //void setName( void);
 
-    //! @copydoc Base::partNumber
-    [[nodiscard]] std::string_view partNumber() const final;
-
-    /**
-     * @brief Updates the Part Number
-     *
-     * @param[in] partNumber
-     *   New Part number
-     **/
-    void partNumber( std::string_view partNumber);
-
     /**
      * @brief Returns the Name of the File.
      *
@@ -136,10 +125,8 @@ class BaseFile: public Base
   private:
     //! Parent
     ContainerEntityPtr::weak_type parentV;
-    //! File name
+    //! File Name
     const std::string nameV;
-    //! Part Number
-    std::string partNumberV;
 };
 
 }

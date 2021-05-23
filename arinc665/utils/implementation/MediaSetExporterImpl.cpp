@@ -98,7 +98,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium )
   Arinc665::File::LoadListFile loadListFile{ arinc665Version};
 
   loadListFile.mediaSequenceNumber( medium->mediumNumber());
-  loadListFile.mediaSetPn( medium->partNumber());
+  loadListFile.mediaSetPn( medium->mediaSet()->partNumber() );
   loadListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia());
 
   /* add all load to loads list */
@@ -126,8 +126,8 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium )
 
     Arinc665::File::BatchListFile batchListFile{ arinc665Version };
     batchListFile.mediaSequenceNumber( medium->mediumNumber() );
-    batchListFile.mediaSetPn( medium->partNumber() );
-    batchListFile.numberOfMediaSetMembers(  medium->mediaSet()->numberOfMedia() );
+    batchListFile.mediaSetPn( medium->mediaSet()->partNumber() );
+    batchListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia() );
 
     /* add all batches to batches list */
     for ( auto &batch : medium->mediaSet()->batches() )
@@ -152,7 +152,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium )
 
   Arinc665::File::FileListFile fileListFile{ arinc665Version };
   fileListFile.mediaSequenceNumber( medium->mediumNumber() );
-  fileListFile.mediaSetPn( medium->partNumber() );
+  fileListFile.mediaSetPn( medium->mediaSet()->partNumber() );
   fileListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia() );
 
   /* add all files, load header files, and batch files to file list */
@@ -328,7 +328,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file )
   loadHeaderFile.loadType( load->loadType() );
 
   // calculate data files CRC and set data.
-  for ( const auto &dataFile : load->dataFiles() )
+  for ( const auto &[dataFile,partNumber] : load->dataFiles() )
   {
     auto dataFilePtr{ dataFile.lock() };
     auto rawDataFile{ readFileHandler(
@@ -339,13 +339,13 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file )
 
     loadHeaderFile.dataFile( {
       dataFilePtr->name(),
-      dataFilePtr->partNumber(),
+      partNumber,
       rawDataFile.size(),
       dataFileCrc} );
   }
 
   // calculate support files CRC and set data.
-  for ( const auto &supportFile : load->supportFiles() )
+  for ( const auto &[supportFile,partNumber] : load->supportFiles() )
   {
     auto supportFilePtr{ supportFile.lock() };
     auto rawSupportFile{ readFileHandler(
@@ -356,7 +356,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file )
 
     loadHeaderFile.supportFile( {
       supportFilePtr->name(),
-      supportFilePtr->partNumber(),
+      partNumber,
       rawSupportFile.size(),
       supportFileCrc } );
   }
@@ -379,7 +379,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file )
   // load data files for load CRC.
   for ( const auto &dataFile : load->dataFiles())
   {
-    auto dataFilePtr{ dataFile.lock()};
+    auto dataFilePtr{ dataFile.first.lock()};
     auto rawDataFile{ readFileHandler(
       dataFilePtr->medium()->mediumNumber(),
       dataFilePtr->path())};
@@ -390,7 +390,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file )
   // load support files for load CRC.
   for ( const auto &supportFile : load->supportFiles() )
   {
-    auto supportFilePtr{ supportFile.lock()};
+    auto supportFilePtr{ supportFile.first.lock()};
     auto rawSupportFile{ readFileHandler(
       supportFilePtr->medium()->mediumNumber(),
       supportFilePtr->path())};

@@ -52,6 +52,21 @@ class Batch: public BaseFile
     [[nodiscard]] FileType fileType() const final;
 
     /**
+     * @brief Return the Part Number of the Media Set.
+     *
+     * @return Part Number of the Media Set.
+     **/
+    [[nodiscard]] std::string_view partNumber() const;
+
+    /**
+     * @brief Updates the Part Number
+     *
+     * @param[in] partNumber
+     *   New Part number
+     **/
+    void partNumber( std::string_view partNumber );
+
+    /**
      * @brief Get the comment, which describes the batch.
      *
      * @return The comment, which describes the batch.
@@ -113,9 +128,11 @@ class Batch: public BaseFile
     void target( std::string &&targetHardwareId, WeakLoads &&loads);
 
   private:
-    //! Batch comment
+    //! Part Number
+    std::string partNumberV;
+    //! Batch Comment
     std::string commentV;
-    //! Batch information
+    //! Batch Information
     BatchInfo batchesV;
 };
 

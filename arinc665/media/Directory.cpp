@@ -64,18 +64,6 @@ std::string_view Directory::name() const
   return nameV;
 }
 
-std::string_view Directory::partNumber() const
-{
-  auto parentPtr{ parent()};
-
-  if ( !parentPtr)
-  {
-    return {};
-  }
-
-  return parentPtr->partNumber();
-}
-
 std::filesystem::path Directory::path() const
 {
   auto parentPtr{ parent()};

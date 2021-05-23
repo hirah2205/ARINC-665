@@ -237,18 +237,18 @@ static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet)
     {
       std::cout
         << "        * "
-        << dataFile.lock()->name() << " "
-        << dataFile.lock()->partNumber() << "\n";
+        << dataFile.first.lock()->name() << " "
+        << dataFile.second << "\n";
     }
 
     std::cout << "       Support Files\n";
-    // iterate over Data Files
+    // iterate over Support Files
     for ( const auto & supportFile : load->supportFiles())
     {
       std::cout
         << "        * "
-        << supportFile.lock()->name() << " "
-        << supportFile.lock()->partNumber() << "\n";
+        << supportFile.first.lock()->name() << " "
+        << supportFile.second << "\n";
     }
   }
 }
