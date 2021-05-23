@@ -33,6 +33,8 @@
 #include <fstream>
 #include <iostream>
 
+using Directories = std::vector< std::filesystem::path >;
+
 /**
  * @brief Entry point of application.
  *
@@ -48,13 +50,13 @@ int main( int argc, char const * argv[]);
 /**
  * @brief Loads the media set from the given directory.
  *
- * @param[in] mediaSetDirectory
- *   Media Set directory
+ * @param[in] mediaSetDirectories
+ *   Media Set Directories
  *
  * @return The loaded media set.
  **/
 static Arinc665::Media::MediaSetPtr loadMediaSet(
-  const std::filesystem::path &mediaSetDirectory);
+  const Directories &mediaSetDirectories );
 
 /**
  * @brief Decodes an prints the content of the Media Set.
@@ -67,14 +69,16 @@ static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet);
 
 int main( int argc, char const * argv[])
 {
+  Helper::initLogging( Helper::Severity::warning, true );
+
   std::cout
     << "ARINC 665 Media Set Printer\n";
 
   boost::program_options::options_description options{
     "ARINC 665 Media Set Printer options"};
 
-  // directory which contains the medium 1 of the media set
-  std::filesystem::path directory;
+  // directories which contains the medias
+  std::vector< std::filesystem::path > directories;
 
   options.add_options()
   (
@@ -83,15 +87,15 @@ int main( int argc, char const * argv[])
   )
   (
     "directory",
-    boost::program_options::value( &directory)->required(),
-    "start directory"
+    boost::program_options::value( &directories)->required()->multitoken(),
+    "media directories (can be passed multiple times)"
   );
 
   try
   {
     boost::program_options::variables_map vm;
     boost::program_options::store(
-      boost::program_options::parse_command_line( argc, argv, options),
+      boost::program_options::parse_command_line( argc, argv, options ),
       vm);
 
     if ( vm.count( "help") != 0)
@@ -104,10 +108,10 @@ int main( int argc, char const * argv[])
 
     boost::program_options::notify( vm);
 
-    std::cout << std::endl << "Load Media Set\n";
-    auto mediaSet{ loadMediaSet( directory)};
+    std::cout << "\n" << "Load Media Set\n";
+    auto mediaSet{ loadMediaSet( directories ) };
 
-    std::cout << std::endl << "Print Media Set\n";
+    std::cout << "\n" << "Print Media Set\n";
     printMediaSet( mediaSet);
   }
   catch ( boost::program_options::error &e)
@@ -139,21 +143,22 @@ int main( int argc, char const * argv[])
 
 
 static Arinc665::Media::MediaSetPtr loadMediaSet(
-  const std::filesystem::path &mediaSetDirectory)
+  const Directories &mediaSetDirectories )
 {
   auto importer{ Arinc665::Utils::Arinc665Utils::arinc665Importer(
     // read file handler
-    [&mediaSetDirectory](
-      const uint8_t /*mediumNumber*/,
+    [&mediaSetDirectories](
+      const uint8_t mediumNumber,
       const std::filesystem::path &path)->Arinc665::File::RawFile
     {
-      auto filePath( mediaSetDirectory / path.relative_path());
+      auto filePath{
+        mediaSetDirectories.at( mediumNumber - 1U ) / path.relative_path() };
 
-      if (!std::filesystem::is_regular_file( filePath))
+      if (!std::filesystem::is_regular_file( filePath ) )
       {
         BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
-          << boost::errinfo_file_name( filePath.string())
-          << Helper::AdditionalInfo( "File not found"));
+          << boost::errinfo_file_name{ filePath.string() }
+          << Helper::AdditionalInfo{ "File not found" } );
       }
 
       Arinc665::File::RawFile data( std::filesystem::file_size( filePath));
@@ -180,11 +185,10 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
   auto mediaSet{ importer()};
 
   std::cout
-    << "media set pn: " << mediaSet->partNumber() << "\n";
-
-  std::cout
-    << "no of media set members: "
-    << std::dec << (int)mediaSet->numberOfMedia() << "\n";
+    << "Media Set PN: "
+      << mediaSet->partNumber() << "\n"
+    << "Number of Media Set Members: "
+      << std::dec << (int)mediaSet->numberOfMedia() << "\n";
 
   return mediaSet;
 }
@@ -198,7 +202,7 @@ static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet)
 
   for ( auto const &file : mediaSet->files())
   {
-    std::cout << "   * File " << file->name() << "\n";
+    std::cout << "   * File " << file->path() << "\n";
   }
 
   // iterate over loads
@@ -209,29 +213,29 @@ static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet)
     std::cout
       << "   * Load " << load->name() << " " << load->partNumber() << "\n";
 
-    std::cout << "     Compatible THW IDs\n";
+    std::cout << "       Compatible THW IDs\n";
     // iterate over THW ID list
     for ( auto const & thwId : load->targetHardwareIds())
     {
-      std::cout << "      * " << thwId << "\n";
+      std::cout << "        * " << thwId << "\n";
     }
 
-    std::cout << "     Data Files\n";
+    std::cout << "       Data Files\n";
     // iterate over Data Files
     for ( const auto & dataFile : load->dataFiles())
     {
       std::cout
-        << "      * "
+        << "        * "
         << dataFile.lock()->name() << " "
         << dataFile.lock()->partNumber() << "\n";
     }
 
-    std::cout << "     Support Files\n";
+    std::cout << "       Support Files\n";
     // iterate over Data Files
     for ( const auto & supportFile : load->supportFiles())
     {
       std::cout
-        << "      * "
+        << "        * "
         << supportFile.lock()->name() << " "
         << supportFile.lock()->partNumber() << "\n";
     }
