@@ -21,8 +21,10 @@
 namespace Arinc665::Utils {
 
 MediaSetImporterImpl::MediaSetImporterImpl(
-  Arinc665Utils::ReadFileHandler readFileHandler ):
-  readFileHandler{ std::move( readFileHandler ) }
+  Arinc665Utils::ReadFileHandler readFileHandler,
+  const bool checkFileIntegrity ):
+  readFileHandler{ std::move( readFileHandler ) },
+  checkFileIntegrity{ checkFileIntegrity }
 {
 }
 
@@ -103,9 +105,8 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
       || ( mediumIndex != currentFileListFile.mediaSequenceNumber() ) )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{
-          std::string{ Arinc665::ListOfFilesName }
-          + " is not consistent to other file list" } );
+        << Helper::AdditionalInfo{ "inconsistent file list file" }
+        << boost::errinfo_file_name{ std::string{ Arinc665::ListOfFilesName } } );
     }
   }
 
@@ -114,6 +115,12 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
   {
     // skip files, which are not part of the current medium
     if ( fileInfo.memberSequenceNumber() != mediumIndex )
+    {
+      continue;
+    }
+
+    // skip file integrity checks if requested
+    if ( !checkFileIntegrity )
     {
       continue;
     }
@@ -129,8 +136,11 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     if ( crc != fileInfo.crc() )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ fileInfo.path().string() + ": CRC of file invalid" } );
+        << Helper::AdditionalInfo{ "CRC of file invalid" }
+        << boost::errinfo_file_name{ fileInfo.path().string() } );
     }
+
+    // TODO Check Value
 
     // remember file size
     fileSizes.emplace( fileName, rawFile.size() );
@@ -267,7 +277,8 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex )
     if ( fileInfos.end() == loadHeaderFileIt )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "Load header file not found in file list" } );
+        << Helper::AdditionalInfo{ "Load header file not found in file list" }
+        << boost::errinfo_file_name{ load } );
     }
 
     // skip load headers, which are not present on current medium
@@ -297,10 +308,11 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex )
     // find batch in file list
     auto batchFileIt{ fileInfos.find ( batch ) };
 
-    if ( fileInfos.end() == batchFileIt)
+    if ( fileInfos.end() == batchFileIt )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo( "Medium is not consistent to media set" ) );
+        << Helper::AdditionalInfo{ "Medium is not consistent to media set" }
+        << boost::errinfo_file_name{ batch });
     }
 
     // Skip batch files not located on this medium
@@ -401,28 +413,31 @@ void MediaSetImporterImpl::addLoads()
           << boost::errinfo_file_name( std::string{ dataFile.filename() } ) );
       }
 
-      // get memorised file size
-      const auto dataFileSize = fileSizes.find( dataFile.filename() );
-      if ( dataFileSize == fileSizes.end() )
+      // get memorised file size ( only when file integrity is checked)
+      if ( checkFileIntegrity )
       {
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( "No Size Info for Data File" )
-          << boost::errinfo_file_name( std::string{ dataFile.filename() } ) );
-      }
+        const auto dataFileSize = fileSizes.find( dataFile.filename() );
+        if ( dataFileSize == fileSizes.end() )
+        {
+          BOOST_THROW_EXCEPTION(
+            Arinc665Exception()
+            << Helper::AdditionalInfo( "No Size Info for Data File" )
+            << boost::errinfo_file_name( std::string{ dataFile.filename() } ) );
+        }
 
-      // check load data file size - we divide by 2 to work around 16-bit size
-      // storage within Supplement 2 LUHs (Only Data Files)
-      if ( (dataFileSize->second / 2) != ( dataFile.length() / 2) )
-      {
-        BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
-          << "Data File Size inconsistent "
-          << dataFile.filename() << " "
-          << dataFileSize->second << " "
-          << dataFile.length();
+        // check load data file size - we divide by 2 to work around 16-bit size
+        // storage within Supplement 2 LUHs (Only Data Files)
+        if ( ( dataFileSize->second / 2 ) != ( dataFile.length() / 2 ) )
+        {
+          BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+            << "Data File Size inconsistent " << dataFile.filename() << " "
+            << dataFileSize->second << " " << dataFile.length();
 
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( "Data File Size inconsistent" )
-          << boost::errinfo_file_name( std::string{ dataFile.filename() } ) );
+          BOOST_THROW_EXCEPTION(
+            Arinc665Exception()
+            << Helper::AdditionalInfo( "Data File Size inconsistent" )
+            << boost::errinfo_file_name( std::string{ dataFile.filename() } ) );
+        }
       }
 
       // Check CRC
@@ -455,27 +470,30 @@ void MediaSetImporterImpl::addLoads()
             << boost::errinfo_file_name( std::string{ supportFile.filename() } ) );
       }
 
-      // get memorised file size
-      const auto dataFileSize = fileSizes.find( supportFile.filename() );
-      if ( dataFileSize == fileSizes.end() )
+      // get memorised file size ( only when file integrity is checked)
+      if ( checkFileIntegrity )
       {
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( "No Size Info for Support File" )
-          << boost::errinfo_file_name( std::string{ supportFile.filename() } ) );
-      }
+        const auto dataFileSize = fileSizes.find( supportFile.filename() );
+        if ( dataFileSize == fileSizes.end() )
+        {
+          BOOST_THROW_EXCEPTION( Arinc665Exception()
+            << Helper::AdditionalInfo( "No Size Info for Support File" )
+            << boost::errinfo_file_name( std::string{ supportFile.filename() } ) );
+        }
 
-      // check load data file size
-      if ( dataFileSize->second != supportFile.length() )
-      {
-        BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
-          << "Support File Size inconsistent "
-            << supportFile.filename() << " "
-            << dataFileSize->second << " "
-            << supportFile.length();
+        // check load data file size
+        if ( dataFileSize->second != supportFile.length() )
+        {
+          BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+            << "Support File Size inconsistent "
+              << supportFile.filename() << " "
+              << dataFileSize->second << " "
+              << supportFile.length();
 
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( "Support File Size inconsistent" )
-          << boost::errinfo_file_name( std::string{ supportFile.filename() } ) );
+          BOOST_THROW_EXCEPTION( Arinc665Exception()
+            << Helper::AdditionalInfo( "Support File Size inconsistent" )
+            << boost::errinfo_file_name( std::string{ supportFile.filename() } ) );
+        }
       }
 
       // Check CRC
@@ -523,7 +541,7 @@ void MediaSetImporterImpl::addBatches()
     // iterate over target hardware
     for ( const auto &targetHardware : batchFile.second.targetsHardware() )
     {
-      Media::WeakLoads loads;
+      Media::WeakLoads batchLoads;
 
       // iterate over loads
       for ( const auto& load : targetHardware.loads() )
@@ -538,11 +556,11 @@ void MediaSetImporterImpl::addBatches()
               << boost::errinfo_file_name( std::string{ load.headerFilename() } ) );
         }
 
-        loads.push_back( loadPtr);
+        batchLoads.push_back( loadPtr);
       }
 
       // add Target Hardware/ Position
-      batchPtr->target( targetHardware.targetHardwareIdPosition(), loads);
+      batchPtr->target( targetHardware.targetHardwareIdPosition(), batchLoads );
     }
   }
 }

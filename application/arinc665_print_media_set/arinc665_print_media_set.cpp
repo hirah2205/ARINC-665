@@ -52,11 +52,14 @@ int main( int argc, char const * argv[]);
  *
  * @param[in] mediaSetDirectories
  *   Media Set Directories
+ * @param[in] checkFileIntegrity
+ *   Check File Integrity
  *
  * @return The loaded media set.
  **/
 static Arinc665::Media::MediaSetPtr loadMediaSet(
-  const Directories &mediaSetDirectories );
+  const Directories &mediaSetDirectories,
+  bool checkFileIntegrity );
 
 /**
  * @brief Decodes an prints the content of the Media Set.
@@ -78,7 +81,8 @@ int main( int argc, char const * argv[])
     "ARINC 665 Media Set Printer options"};
 
   // directories which contains the medias
-  std::vector< std::filesystem::path > directories;
+  std::vector< std::filesystem::path > directories{};
+  bool checkFileIntegrity{ true };
 
   options.add_options()
   (
@@ -89,6 +93,11 @@ int main( int argc, char const * argv[])
     "directory",
     boost::program_options::value( &directories)->required()->multitoken(),
     "media directories (can be passed multiple times)"
+  )
+  (
+    "check-file-integrity",
+    boost::program_options::value( &checkFileIntegrity )->default_value( true ),
+    "Check File Integrity during Import"
   );
 
   try
@@ -109,7 +118,7 @@ int main( int argc, char const * argv[])
     boost::program_options::notify( vm);
 
     std::cout << "\n" << "Load Media Set\n";
-    auto mediaSet{ loadMediaSet( directories ) };
+    auto mediaSet{ loadMediaSet( directories, checkFileIntegrity ) };
 
     std::cout << "\n" << "Print Media Set\n";
     printMediaSet( mediaSet);
@@ -143,7 +152,8 @@ int main( int argc, char const * argv[])
 
 
 static Arinc665::Media::MediaSetPtr loadMediaSet(
-  const Directories &mediaSetDirectories )
+  const Directories &mediaSetDirectories,
+  const bool checkFileIntegrity )
 {
   auto importer{ Arinc665::Utils::Arinc665Utils::arinc665Importer(
     // read file handler
@@ -154,20 +164,20 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
       auto filePath{
         mediaSetDirectories.at( mediumNumber - 1U ) / path.relative_path() };
 
-      if (!std::filesystem::is_regular_file( filePath ) )
+      if ( !std::filesystem::is_regular_file( filePath ) )
       {
         BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
           << boost::errinfo_file_name{ filePath.string() }
           << Helper::AdditionalInfo{ "File not found" } );
       }
 
-      Arinc665::File::RawFile data( std::filesystem::file_size( filePath));
+      Arinc665::File::RawFile data( std::filesystem::file_size( filePath ) );
 
       std::ifstream file(
         filePath.string().c_str(),
-        std::ifstream::binary | std::ifstream::in);
+        std::ifstream::binary | std::ifstream::in );
 
-      if ( !file.is_open())
+      if ( !file.is_open() )
       {
         BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
           << Helper::AdditionalInfo( "Error opening files"));
@@ -180,9 +190,10 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
 
       // return the buffer
       return data;
-    })};
+    },
+    checkFileIntegrity ) };
 
-  auto mediaSet{ importer()};
+  auto mediaSet{ importer() };
 
   std::cout
     << "Media Set PN: "

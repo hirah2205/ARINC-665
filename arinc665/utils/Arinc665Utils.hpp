@@ -117,11 +117,14 @@ class Arinc665Utils
      *
      * @param[in] readFileHandler
      *   Handler which is called to obtain the requested file from the medium.
+     * @param[in] checkFileIntegrity
+     *   If set to true additional file integrity steps are performed
      *
      * @return The ARINC 665 Media Set importer.
      **/
     static Arinc665Importer arinc665Importer(
-      ReadFileHandler readFileHandler );
+      ReadFileHandler readFileHandler,
+      bool checkFileIntegrity = true );
 
     /**
      * @brief Creates a ARINC 665 Validator Instance.

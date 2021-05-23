@@ -41,9 +41,12 @@ class MediaSetImporterImpl
      *
      * @param[in] readFileHandler
      *   Handler which is called to obtain the requested file from the medium.
+     * @param[in] checkFileIntegrity
+     *   If set to true additional file integrity steps are performed
      **/
     explicit MediaSetImporterImpl(
-      Arinc665Utils::ReadFileHandler readFileHandler );
+      Arinc665Utils::ReadFileHandler readFileHandler,
+      bool checkFileIntegrity );
 
     /**
      * @brief Entry-point of the ARINC 665 media set importer.
@@ -169,6 +172,8 @@ class MediaSetImporterImpl
 
     //! Read File Handler
     Arinc665Utils::ReadFileHandler readFileHandler;
+    //! Check File Integrity
+    const bool checkFileIntegrity;
 
     //! Media Set
     Media::MediaSetPtr mediaSet;
