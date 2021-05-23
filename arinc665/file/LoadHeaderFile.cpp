@@ -285,10 +285,10 @@ RawFile LoadHeaderFile::encode() const
 {
   BOOST_LOG_FUNCTION()
 
-  bool encodeV3Data{ false};
-  std::size_t baseSize{ 0};
+  bool encodeV3Data{ false };
+  std::size_t baseSize{ 0 };
 
-  switch ( arincVersion())
+  switch ( arincVersion() )
   {
     case SupportedArinc665Version::Supplement2:
       // Spare
@@ -311,7 +311,7 @@ RawFile LoadHeaderFile::encode() const
   // Part Flags or Spare
   Helper::setInt< uint16_t>(
     rawFile.begin() + PartFlagsFieldOffsetV3,
-    encodeV3Data ? partFlagsV : 0U);
+    encodeV3Data ? partFlagsV : 0U );
 
 
   // Next free Offset (used for optional pointer calculation)
@@ -333,7 +333,7 @@ RawFile LoadHeaderFile::encode() const
   // Load Type (only in V3 mode)
   if ( encodeV3Data )
   {
-    uint32_t loadTypePtr{ 0};
+    uint32_t loadTypePtr{ 0 };
 
     // Encode lode type only if set.
     if ( typeV )
@@ -525,16 +525,16 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
 
   bool decodeV3Data{ false};
 
-  uint32_t partFlags{};
-  Helper::getInt< uint32_t>(
+  uint16_t partFlags{};
+  Helper::getInt< uint16_t>(
     rawFile.begin() + PartFlagsFieldOffsetV3,
     partFlags);
 
-  switch ( arincVersion())
+  switch ( arincVersion() )
   {
     case SupportedArinc665Version::Supplement2:
       // Spare
-      if (partFlags != 0U)
+      if ( partFlags != 0U )
       {
         partFlagsV = 0;
         BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -582,19 +582,19 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
   uint32_t loadCheckValuePtr = 0;
 
   // only decode this pointers in V3 mode
-  if (decodeV3Data)
+  if ( decodeV3Data )
   {
     Helper::getInt< uint32_t>(
       rawFile.begin() + LoadTypeDescriptionPointerFieldOffsetV3,
-      loadTypeDescriptionPtr);
+      loadTypeDescriptionPtr );
 
     Helper::getInt< uint32_t>(
       rawFile.begin() + ThwIdPositionsPointerFieldOffsetV3,
-      thwIdsPositionPtr);
+      thwIdsPositionPtr );
 
     Helper::getInt< uint32_t>(
       rawFile.begin() + LoadCheckValuePointerFieldOffsetV3,
-      loadCheckValuePtr);
+      loadCheckValuePtr );
   }
 
 
@@ -603,17 +603,17 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
 
 
   // Load Type Description Field (ARINC 665-3)
-  if (decodeV3Data && (0!=loadTypeDescriptionPtr))
+  if ( decodeV3Data && ( 0!=loadTypeDescriptionPtr ) )
   {
     std::string loadTypeDescription{};
     auto it{ decodeString(
       rawFile.begin() + loadTypeDescriptionPtr * 2,
-      loadTypeDescription)};
+      loadTypeDescription ) };
 
     uint16_t loadTypeValue{};
-    Helper::getInt< uint16_t>( it, loadTypeValue);
+    Helper::getInt< uint16_t>( it, loadTypeValue );
 
-    loadType( {std::make_pair(std::move( loadTypeDescription), loadTypeValue)});
+    loadType( {std::make_pair(std::move( loadTypeDescription ), loadTypeValue ) } );
   }
 
 
