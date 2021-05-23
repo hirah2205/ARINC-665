@@ -116,7 +116,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium )
   writeFileHandler(
     medium->mediumNumber(),
     "/" + std::string{ ListOfLoadsName },
-    loadListFile );
+    static_cast< File::RawFile >( loadListFile ) );
 
   // export list of batches (if present)
   if ( medium->mediaSet()->numberOfBatches() != 0U )
@@ -143,7 +143,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium )
     writeFileHandler(
       medium->mediumNumber(),
       "/" + std::string{ ListOfBatchesName },
-      batchListFile );
+      static_cast< File::RawFile >( batchListFile ) );
   }
 
   // export medium info
@@ -204,7 +204,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium )
   writeFileHandler(
     medium->mediumNumber(),
     "/" + std::string{ ListOfFilesName },
-    fileListFile );
+    static_cast< File::RawFile >( fileListFile ) );
 }
 
 void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory )
@@ -404,7 +404,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file )
   writeFileHandler(
     load->medium()->mediumNumber(),
     load->path(),
-    loadHeaderFile );
+    static_cast< File::RawFile >( loadHeaderFile ) );
 }
 
 void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
@@ -437,7 +437,10 @@ void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
       File::BatchTargetInfo{ target.first, batchLoadsInfo } );
   }
 
-  writeFileHandler( batch->medium()->mediumNumber(), batch->path(), batchFile );
+  writeFileHandler(
+    batch->medium()->mediumNumber(),
+    batch->path(),
+    static_cast< File::RawFile >( batchFile ) );
 }
 
 }

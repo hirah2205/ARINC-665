@@ -89,7 +89,7 @@ class Arinc665Utils
       std::function< void(
         uint8_t mediumNumber,
         const std::filesystem::path &path,
-        const File::RawFile &file )>;
+        const File::ConstRawFileSpan &file )>;
 
     //! Handler which is called for Validation Information.
     using ValidatorInformationHandler =

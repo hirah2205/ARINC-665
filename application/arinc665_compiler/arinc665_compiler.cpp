@@ -103,7 +103,7 @@ static void writeFile(
   const std::filesystem::path &mediaSetBase,
   uint8_t mediumNumber,
   const std::filesystem::path &path,
-  const Arinc665::File::RawFile &file );
+  const Arinc665::File::ConstRawFileSpan &file );
 
 static Arinc665::File::RawFile readFile(
   const std::filesystem::path &mediaSetBase,
@@ -391,7 +391,7 @@ static void writeFile(
   const std::filesystem::path &mediaSetBase,
   const uint8_t mediumNumber,
   const std::filesystem::path &path,
-  const Arinc665::File::RawFile &file)
+  const Arinc665::File::ConstRawFileSpan &file)
 {
   BOOST_LOG_FUNCTION()
 
@@ -422,7 +422,7 @@ static void writeFile(
 
   // write the data to the buffer
   fileStream.write(
-    (char*) &file.at( 0),
+    (char*) file.data(),
     static_cast< std::streamsize >( file.size() ) );
 }
 
