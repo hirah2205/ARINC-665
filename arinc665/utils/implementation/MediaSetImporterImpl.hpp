@@ -69,8 +69,16 @@ class MediaSetImporterImpl
     /**
      * @brief Loads the file list file of the given medium.
      *
+     * Also checks the files on the current medium.
+     * Checks File CRCs.
+     *
      * @param[in] mediumIndex
      *   Medium Index.
+     *
+     * @throw Arinc665Exception
+     *   When FILES.LUM are inconsistent between media.
+     * @throw Arinc665Exception
+     *   When file CRCs does not match
      **/
     void loadFileListFile( uint8_t mediumIndex );
 
@@ -79,6 +87,11 @@ class MediaSetImporterImpl
      *
      * @param[in] mediumIndex
      *   Medium Index.
+     *
+     *  @throw Arinc665Exception
+     *    When load header file is not found on the media set.
+     *  @throw Arinc665Exception
+     *    When LOADS.LUM files are inconsistent between media.
      **/
     void loadLoadListFile( uint8_t mediumIndex );
 
@@ -87,6 +100,9 @@ class MediaSetImporterImpl
      *
      * @param[in] mediumIndex
      *   Medium Index.
+     *
+     * @throw Arinc665Exception
+     *   When BATCHES.LUM files are inconsistent between media.
      **/
     void loadBatchListFile( uint8_t mediumIndex );
 
@@ -95,6 +111,9 @@ class MediaSetImporterImpl
      *
      * @param[in] mediumIndex
      *   Medium Index.
+     *
+     * @throw Arinc665Exception
+     *   When is inconsistent.
      **/
     void loadLoadHeaderFiles( uint8_t mediumIndex );
 
@@ -161,16 +180,18 @@ class MediaSetImporterImpl
     //! Batch List File
     std::optional< File::BatchListFile > batchListFile;
 
-    //! Load Header Files (filename, load header file)
+    //! Load Header Files (file name, load header file)
     std::list< std::pair< std::string, File::LoadHeaderFile > > loadHeaderFiles;
-    //! Batch Files (filename, batch file)
+    //! Batch Files (file name, batch file)
     std::list< std::pair< std::string, File::BatchFile > > batchFiles;
 
-    //! File Information from List of Files ( filename -> file info)
+    //! File Information from List of Files ( file name -> file info )
     std::map< std::string, File::FileInfo, std::less<> > fileInfos;
-    //! Loads (filenames)
+    //! File Sizes ( file name -> file size )
+    std::map< std::string, std::size_t , std::less<> > fileSizes;
+    //! Loads (file names)
     std::set< std::string > loads;
-    //! Batches (filenames)
+    //! Batches (file names)
     std::set< std::string > batches;
 };
 

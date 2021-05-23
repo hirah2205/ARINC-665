@@ -61,7 +61,7 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()()
 
 bool MediaSetImporterImpl::loadMedium( const uint8_t mediumIndex )
 {
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
     << "Medium " << (unsigned int)mediumIndex;
 
   loadFileListFile( mediumIndex );
@@ -79,12 +79,12 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
 
   assert( mediumIndex > 0U );
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
     << "Load File List File " << Arinc665::ListOfFilesName;
 
   // Load list of files file
   File::FileListFile currentFileListFile{
-    readFileHandler( mediumIndex, Arinc665::ListOfFilesName)};
+    readFileHandler( mediumIndex, Arinc665::ListOfFilesName ) };
 
   // store first list of files for further tests
   if ( 1U == mediumIndex )
@@ -102,38 +102,38 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     if ( !this->fileListFile->belongsToSameMediaSet( currentFileListFile )
       || ( mediumIndex != currentFileListFile.mediaSequenceNumber() ) )
     {
-      //! @throw Arinc665Exception When FILES.LUM is inconsistent to other media
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo(
-          std::string{ Arinc665::ListOfFilesName}
-          + " is not consistent to other file list" ) );
+        << Helper::AdditionalInfo{
+          std::string{ Arinc665::ListOfFilesName }
+          + " is not consistent to other file list" } );
     }
   }
 
   // iterate over files
-  for ( auto &fileInfo : fileInfos )
+  for ( const auto &[fileName, fileInfo] : fileInfos )
   {
     // skip files, which are not part of the current medium
-    if ( fileInfo.second.memberSequenceNumber() != mediumIndex )
+    if ( fileInfo.memberSequenceNumber() != mediumIndex )
     {
       continue;
     }
 
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-      << "Check file " << fileInfo.second.path();
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+      << "Check file " << fileInfo.path();
 
-    auto rawFile( readFileHandler( mediumIndex, fileInfo.second.path() ) );
+    const auto rawFile{ readFileHandler( mediumIndex, fileInfo.path() ) };
 
     const uint16_t crc{ File::Arinc665File::calculateChecksum( rawFile, 0 ) };
 
     // compare checksums
-    if ( crc != fileInfo.second.crc() )
+    if ( crc != fileInfo.crc() )
     {
-      //! @throw Arinc665Exception When file CRCs does not match
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo(
-          fileInfo.second.path().string() + ": CRC of file invalid"));
+        << Helper::AdditionalInfo{ fileInfo.path().string() + ": CRC of file invalid" } );
     }
+
+    // remember file size
+    fileSizes.emplace( fileName, rawFile.size() );
   }
 }
 
@@ -143,12 +143,12 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
 
   assert( mediumIndex > 0U );
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
     << "Load Load List File " << Arinc665::ListOfLoadsName;
 
   // Load list of loads file
   File::LoadListFile currentLoadListFile{
-    readFileHandler( mediumIndex, Arinc665::ListOfLoadsName)};
+    readFileHandler( mediumIndex, Arinc665::ListOfLoadsName ) };
 
   if ( 1U == mediumIndex )
   {
@@ -163,7 +163,6 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
 
       if ( fileIt == fileInfos.end() )
       {
-        //! @throw Arinc665Exception When load header is not found.
         BOOST_THROW_EXCEPTION(
           Arinc665Exception()
             << Helper::AdditionalInfo( "load header file not found")
@@ -186,11 +185,10 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
     if ( !this->loadListFile->belongsToSameMediaSet( currentLoadListFile )
       || ( currentLoadListFile.mediaSequenceNumber() != mediumIndex ) )
     {
-      //! @throw Arinc665Exception When LOADS.LUM is inconsistent to other media
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo(
+        << Helper::AdditionalInfo{
           std::string{ Arinc665::ListOfLoadsName}
-          + " is not consistent to other loads list"));
+          + " is not consistent to other loads list" } );
     }
   }
 }
@@ -207,7 +205,7 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
     return;
   }
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
     << "Load Batch List File " << Arinc665::ListOfBatchesName;
 
   // Load list of batches file
@@ -249,16 +247,15 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
     if ( !this->batchListFile->belongsToSameMediaSet( currentBatchListFile )
       || ( currentBatchListFile.mediaSequenceNumber() != mediumIndex ) )
     {
-      //! @throw Arinc665Exception When BATCHES.LUM is inconsistent to other media
-     BOOST_THROW_EXCEPTION( Arinc665Exception()
-       << Helper::AdditionalInfo(
-         std::string{ Arinc665::ListOfBatchesName}
-           + " is not consistent to other batches list"));
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{
+          std::string{ Arinc665::ListOfBatchesName}
+            + " is not consistent to other batches list" } );
     }
   }
 }
 
-void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex)
+void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex )
 {
   // iterate over all load information
   for ( const auto &load : loads )
@@ -269,17 +266,17 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex)
     // Check existence
     if ( fileInfos.end() == loadHeaderFileIt )
     {
-      //! @throw Arinc665Exception When load header has not been found in file list
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "Load header file not found in file list" });
+        << Helper::AdditionalInfo{ "Load header file not found in file list" } );
     }
+
     // skip load headers, which are not present on current medium
     if ( loadHeaderFileIt->second.memberSequenceNumber() != mediumIndex )
     {
       continue;
     }
 
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
       << "Load Header File " << loadHeaderFileIt->second.path();
 
     // decode load header
@@ -312,7 +309,7 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex )
       continue;
     }
 
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
       << "Load Batch File " << batchFileIt->second.path();
 
     // Decode batch File
@@ -399,11 +396,46 @@ void MediaSetImporterImpl::addLoads()
 
       if ( !dataFilePtr )
       {
-        BOOST_THROW_EXCEPTION(
-          Arinc665Exception()
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo( "Data file not found" )
           << boost::errinfo_file_name( std::string{ dataFile.filename() } ) );
       }
+
+      // get memorised file size
+      const auto dataFileSize = fileSizes.find( dataFile.filename() );
+      if ( dataFileSize == fileSizes.end() )
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo( "No Size Info for Data File" )
+          << boost::errinfo_file_name( std::string{ dataFile.filename() } ) );
+      }
+
+      // check load data file size - we divide by 2 to work around 16-bit size
+      // storage within Supplement 2 LUHs (Only Data Files)
+      if ( (dataFileSize->second / 2) != ( dataFile.length() / 2) )
+      {
+        BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+          << "Data File Size inconsistent "
+          << dataFile.filename() << " "
+          << dataFileSize->second << " "
+          << dataFile.length();
+
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo( "Data File Size inconsistent" )
+          << boost::errinfo_file_name( std::string{ dataFile.filename() } ) );
+      }
+
+      // Check CRC
+      const auto &dataFileInfo{ fileInfos.find( dataFile.filename() ) };
+      assert( dataFileInfo != fileInfos.end() );
+      if ( dataFileInfo->second.crc() != dataFile.crc() )
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo( "Data File CRC inconsistent" )
+          << boost::errinfo_file_name( std::string{ dataFile.filename() } ) );
+      }
+
+      // TODO Check Type Value ?!?
 
       dataFilePtr->partNumber( dataFile.partNumber() );
 
@@ -422,6 +454,41 @@ void MediaSetImporterImpl::addLoads()
             << Helper::AdditionalInfo( "Support file not found" )
             << boost::errinfo_file_name( std::string{ supportFile.filename() } ) );
       }
+
+      // get memorised file size
+      const auto dataFileSize = fileSizes.find( supportFile.filename() );
+      if ( dataFileSize == fileSizes.end() )
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo( "No Size Info for Support File" )
+          << boost::errinfo_file_name( std::string{ supportFile.filename() } ) );
+      }
+
+      // check load data file size
+      if ( dataFileSize->second != supportFile.length() )
+      {
+        BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+          << "Support File Size inconsistent "
+            << supportFile.filename() << " "
+            << dataFileSize->second << " "
+            << supportFile.length();
+
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo( "Support File Size inconsistent" )
+          << boost::errinfo_file_name( std::string{ supportFile.filename() } ) );
+      }
+
+      // Check CRC
+      const auto &supportFileInfo{ fileInfos.find( supportFile.filename() ) };
+      assert( supportFileInfo != fileInfos.end() );
+      if ( supportFileInfo->second.crc() != supportFile.crc() )
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo( "Support File CRC inconsistent" )
+          << boost::errinfo_file_name( std::string{ supportFile.filename() } ) );
+      }
+
+      // TODO Check Type Value ?!?
 
       supportFilePtr->partNumber( supportFile.partNumber() );
 

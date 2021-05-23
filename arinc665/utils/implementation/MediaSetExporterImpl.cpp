@@ -410,7 +410,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file )
 void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
 {
   // up-cast batch file
-  auto batch{ std::dynamic_pointer_cast< const Media::Batch>( file)};
+  auto batch{ std::dynamic_pointer_cast< const Media::Batch>( file) };
 
   if ( !batch )
   {
@@ -427,10 +427,10 @@ void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
     File::BatchLoadsInfo batchLoadsInfo;
     for ( const auto &load : target.second )
     {
-      auto loadPtr{ load.lock()};
+      auto loadPtr{ load.lock() };
       batchLoadsInfo.emplace_back(
         loadPtr->name(),
-        loadPtr->partNumber());
+        loadPtr->partNumber() );
     }
 
     batchFile.targetHardware(
