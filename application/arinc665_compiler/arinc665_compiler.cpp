@@ -122,13 +122,13 @@ int main( int argc, char ** argv )
   const std::string fileCreationPolicyValues{
     "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::None)} + "': Create never\n" +
     "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::NoneExisting)} + "': Create none-existing\n" +
-    "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::All)} + "': Create all"};
+    "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::All)} + "': Create all" };
 
   auto versionDes{ Arinc665::SupportedArinc665VersionDescription::instance()};
 
   const std::string versionValues{
     "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement2)} +   "': ARINC 665-2\n" +
-    "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement34)} +  "': ARINC 665-3/4"};
+    "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement345 )} +  "': ARINC 665-3/4/5" };
 
   // Media Set XML file
   std::filesystem::path mediaSetXmlFile;

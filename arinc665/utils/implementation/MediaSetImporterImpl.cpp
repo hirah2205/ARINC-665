@@ -30,7 +30,7 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()()
 {
   BOOST_LOG_FUNCTION()
 
-  // iterate over additional media
+  // iterate over media
   for (
     uint8_t mediumIndex = 1U;
     !loadMedium( mediumIndex );

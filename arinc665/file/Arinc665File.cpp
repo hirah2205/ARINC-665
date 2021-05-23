@@ -165,15 +165,15 @@ Arinc665::FileClassType Arinc665File::fileType(
   switch (formatVersion( rawFile))
   {
     case static_cast< uint16_t>( LoadFileFormatVersion::Version2):
-    case static_cast< uint16_t>( LoadFileFormatVersion::Version34):
+    case static_cast< uint16_t>( LoadFileFormatVersion::Version345 ):
       return FileClassType::LoadFile;
 
     case static_cast< uint16_t>( BatchFileFormatVersion::Version2):
-    case static_cast< uint16_t>( BatchFileFormatVersion::Version34):
+    case static_cast< uint16_t>( BatchFileFormatVersion::Version345 ):
       return FileClassType::BatchFile;
 
     case static_cast< uint16_t>( MediaFileFormatVersion::Version2):
-    case static_cast< uint16_t>( MediaFileFormatVersion::Version34):
+    case static_cast< uint16_t>( MediaFileFormatVersion::Version345 ):
       return FileClassType::MediaFile;
 
     default:
@@ -190,7 +190,7 @@ Arinc665::LoadFileFormatVersion Arinc665File::loadFileFormatVersion(
   switch ( formatVersion)
   {
     case LoadFileFormatVersion::Version2:
-    case LoadFileFormatVersion::Version34:
+    case LoadFileFormatVersion::Version345:
       break;
 
     default:
@@ -209,7 +209,7 @@ Arinc665::BatchFileFormatVersion Arinc665File::batchFileFormatVersion(
   switch ( formatVersion)
   {
     case BatchFileFormatVersion::Version2:
-    case BatchFileFormatVersion::Version34:
+    case BatchFileFormatVersion::Version345:
       break;
 
     default:
@@ -228,7 +228,7 @@ Arinc665::MediaFileFormatVersion Arinc665File::mediaFileFormatVersion(
   switch ( formatVersion)
   {
     case MediaFileFormatVersion::Version2:
-    case MediaFileFormatVersion::Version34:
+    case MediaFileFormatVersion::Version345:
       break;
 
     default:
@@ -250,8 +250,8 @@ SupportedArinc665Version Arinc665File::arinc665Version(
         case BatchFileFormatVersion::Version2:
           return SupportedArinc665Version::Supplement2;
 
-        case BatchFileFormatVersion::Version34:
-          return SupportedArinc665Version::Supplement34;
+        case BatchFileFormatVersion::Version345:
+          return SupportedArinc665Version::Supplement345;
 
         default:
           break;
@@ -264,8 +264,8 @@ SupportedArinc665Version Arinc665File::arinc665Version(
         case LoadFileFormatVersion::Version2:
           return SupportedArinc665Version::Supplement2;
 
-        case LoadFileFormatVersion::Version34:
-          return SupportedArinc665Version::Supplement34;
+        case LoadFileFormatVersion::Version345:
+          return SupportedArinc665Version::Supplement345;
 
         default:
           break;
@@ -280,8 +280,8 @@ SupportedArinc665Version Arinc665File::arinc665Version(
         case MediaFileFormatVersion::Version2:
           return SupportedArinc665Version::Supplement2;
 
-        case MediaFileFormatVersion::Version34:
-          return SupportedArinc665Version::Supplement34;
+        case MediaFileFormatVersion::Version345:
+          return SupportedArinc665Version::Supplement345;
 
         default:
           break;
@@ -307,8 +307,8 @@ uint16_t Arinc665File::formatVersionField(
         case SupportedArinc665Version::Supplement2:
           return static_cast< uint16_t>( BatchFileFormatVersion::Version2);
 
-        case SupportedArinc665Version::Supplement34:
-          return static_cast< uint16_t>( BatchFileFormatVersion::Version34);
+        case SupportedArinc665Version::Supplement345:
+          return static_cast< uint16_t>( BatchFileFormatVersion::Version345 );
 
         default:
           break;
@@ -321,8 +321,8 @@ uint16_t Arinc665File::formatVersionField(
         case SupportedArinc665Version::Supplement2:
           return static_cast< uint16_t>( LoadFileFormatVersion::Version2);
 
-        case SupportedArinc665Version::Supplement34:
-          return static_cast< uint16_t>( LoadFileFormatVersion::Version34);
+        case SupportedArinc665Version::Supplement345:
+          return static_cast< uint16_t>( LoadFileFormatVersion::Version345 );
 
         default:
           break;
@@ -337,8 +337,8 @@ uint16_t Arinc665File::formatVersionField(
         case SupportedArinc665Version::Supplement2:
           return static_cast< uint16_t>( MediaFileFormatVersion::Version2);
 
-        case SupportedArinc665Version::Supplement34:
-          return static_cast< uint16_t>( MediaFileFormatVersion::Version34);
+        case SupportedArinc665Version::Supplement345:
+          return static_cast< uint16_t>( MediaFileFormatVersion::Version345 );
 
         default:
           break;

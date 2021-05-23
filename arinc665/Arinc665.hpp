@@ -59,8 +59,8 @@ enum class SupportedArinc665Version
 {
   //! ARINC 665-2 Compatible
   Supplement2,
-  //! ARINC 665-3/4 Compatible
-  Supplement34,
+  //! ARINC 665-3/4/5 Compatible
+  Supplement345,
 
   Invalid
 };
@@ -90,8 +90,8 @@ enum class LoadFileFormatVersion : uint16_t
   Version1 = 0x8002U,
   //! ARINC 665-2 version of load file
   Version2 = 0x8003U,
-  //! ARINC 665-3 version of load file
-  Version34 = 0x8004U,
+  //! ARINC 665-3/4/5 version of load file
+  Version345 = 0x8004U,
 
   //! invalid value
   Invalid  = 0xFFFFU
@@ -108,8 +108,8 @@ enum class BatchFileFormatVersion : uint16_t
   Version1 = 0x8002U,
   //! ARINC 665-2 version of batch file
   Version2 = 0x9003U,
-  //! ARINC 665-3 version of batch file
-  Version34 = 0x9004U,
+  //! ARINC 665-3/4/5 version of batch file
+  Version345 = 0x9004U,
 
   //! invalid value
   Invalid  = 0xFFFFU
@@ -119,9 +119,9 @@ enum class BatchFileFormatVersion : uint16_t
  * @brief Enumeration of media file versions.
  *
  * Used for:
- * @li list of batch file,
- * @li list of loads file, and
- * @li list of files file
+ * - list of batch file,
+ * - list of loads file, and
+ * - list of files file
  **/
 enum class MediaFileFormatVersion : uint16_t
 {
@@ -129,8 +129,8 @@ enum class MediaFileFormatVersion : uint16_t
   Version1 = 0x8002U,
   //! ARINC 665-2 Version of Media File
   Version2 = 0xA003U,
-  //! ARINC 665-3 Version of Media File
-  Version34 = 0xA004U,
+  //! ARINC 665-3/4/5 Version of Media File
+  Version345 = 0xA004U,
 
   //! invalid value
   Invalid  = 0xFFFFU
@@ -139,14 +139,14 @@ enum class MediaFileFormatVersion : uint16_t
 //! All ARINC 665 file types combined
 enum class Arinc665FileFormatVersion : uint16_t
 {
-  LoadFileVersion2   = static_cast< uint16_t>( LoadFileFormatVersion::Version2),
-  LoadFileVersion34  = static_cast< uint16_t>( LoadFileFormatVersion::Version34),
+  LoadFileVersion2   = static_cast< uint16_t>( LoadFileFormatVersion::Version2 ),
+  LoadFileVersion345 = static_cast< uint16_t>( LoadFileFormatVersion::Version345 ),
 
-  BatchFileVersion2  = static_cast< uint16_t>( BatchFileFormatVersion::Version2),
-  BatchFileVersion34 = static_cast< uint16_t>( BatchFileFormatVersion::Version34),
+  BatchFileVersion2   = static_cast< uint16_t>( BatchFileFormatVersion::Version2 ),
+  BatchFileVersion345 = static_cast< uint16_t>( BatchFileFormatVersion::Version345 ),
 
-  MediaFileVersion2  = static_cast< uint16_t>( MediaFileFormatVersion::Version2),
-  MediaFileVersion34 = static_cast< uint16_t>( MediaFileFormatVersion::Version34),
+  MediaFileVersion2   = static_cast< uint16_t>( MediaFileFormatVersion::Version2 ),
+  MediaFileVersion345 = static_cast< uint16_t>( MediaFileFormatVersion::Version345 ),
 
   Invalid = 0xFFFFU  //!< invalid value
 };

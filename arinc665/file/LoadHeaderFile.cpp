@@ -295,7 +295,7 @@ RawFile LoadHeaderFile::encode() const
       baseSize = LoadHeaderSizeV2;
       break;
 
-    case SupportedArinc665Version::Supplement34:
+    case SupportedArinc665Version::Supplement345:
       // Part Flags
       encodeV3Data = true;
       baseSize = LoadHeaderSizeV3;
@@ -542,7 +542,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
       }
       break;
 
-    case SupportedArinc665Version::Supplement34:
+    case SupportedArinc665Version::Supplement345:
       partFlagsV = partFlags;
       decodeV3Data = true;
       break;

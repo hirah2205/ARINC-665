@@ -245,7 +245,7 @@ RawFile FileListFile::encode() const
       baseSize = FileHeaderSizeV2;
       break;
 
-    case SupportedArinc665Version::Supplement34:
+    case SupportedArinc665Version::Supplement345:
       encodeV3Data = true;
       baseSize = FileHeaderSizeV3;
       break;
@@ -360,7 +360,7 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
     case SupportedArinc665Version::Supplement2:
       break;
 
-    case SupportedArinc665Version::Supplement34:
+    case SupportedArinc665Version::Supplement345:
       decodeV3Data = true;
       break;
 
