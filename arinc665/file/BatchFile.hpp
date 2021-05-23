@@ -162,10 +162,10 @@ class BatchFile: public Arinc665File
      * @param[in] targetHardwareInfo
      *   The target hardware information to add.
      **/
-    void targetHardware( const BatchTargetInfo &targetHardwareInfo);
+    void targetHardware( const BatchTargetInfo &targetHardwareInfo );
 
     //! @copydoc targetHardware(const BatchTargetInfo&)
-    void targetHardware( BatchTargetInfo &&targetHardwareInfo);
+    void targetHardware( BatchTargetInfo &&targetHardwareInfo );
 
   private:
     //! @copydoc Arinc665File::encode

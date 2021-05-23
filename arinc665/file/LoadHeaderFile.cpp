@@ -818,7 +818,7 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
 {
   BOOST_LOG_FUNCTION()
 
-  auto it{ rawFile.begin() + offset};
+  auto it{ rawFile.begin() + offset };
 
   LoadFilesInfo files{};
 
@@ -863,7 +863,7 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
 
       default:
         BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( "Invalid List Type"));
+          << Helper::AdditionalInfo{ "Invalid List Type" } );
     }
 
     // CRC
@@ -881,6 +881,15 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
       {
         uint64_t fileLengthInBytes{};
         listIt = Helper::getInt< uint64_t>( listIt, fileLengthInBytes );
+
+        // check length fields for consistency
+        if ( ( fileLengthInBytes / 2 ) <= std::numeric_limits< uint32_t >::max()
+          && ( length != ( static_cast< uint32_t >( fileLengthInBytes / 2 ) ) ) )
+        {
+          BOOST_THROW_EXCEPTION( Arinc665Exception()
+            << Helper::AdditionalInfo{ "Inconsistent length fields" } );
+        }
+        // update real length
         realLength = fileLengthInBytes;
       }
 

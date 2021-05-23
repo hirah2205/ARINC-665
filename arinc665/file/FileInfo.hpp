@@ -54,7 +54,7 @@ class FileInfo
       std::string_view pathName,
       uint16_t memberSequenceNumber,
       uint16_t crc,
-      const std::optional< CheckValue> &checkValue = {});
+      const std::optional< CheckValue> &checkValue = {} );
 
     //! @copydoc FileInfo::FileInfo(std::string_view,std::string_view,uint16_t,uint16_t,const std::optional<CheckValue>&)
     FileInfo(
@@ -62,7 +62,7 @@ class FileInfo
       std::string &&pathName,
       uint16_t memberSequenceNumber,
       uint16_t crc,
-      std::optional< CheckValue> &&checkValue = {});
+      std::optional< CheckValue> &&checkValue = {} );
 
     /**
      * @brief Returns the filename.
@@ -93,12 +93,12 @@ class FileInfo
      * @brief Updates the path name.
      *
      * @param[in] pathName
-     *   The path name.
+     *   Path name.
      **/
-    void pathName( std::string_view pathName);
+    void pathName( std::string_view pathName );
 
     //! @copydoc pathName(std::string_view)
-    void pathName( std::string &&pathName);
+    void pathName( std::string &&pathName );
 
     /**
      * @brief Returns the path (path name / filename)
@@ -120,7 +120,7 @@ class FileInfo
      * @param[in] memberSequenceNumber
      *   The  member sequence number.
      **/
-    void memberSequenceNumber( uint16_t memberSequenceNumber);
+    void memberSequenceNumber( uint16_t memberSequenceNumber );
 
     /**
      * @brief Returns the file CRC.
@@ -135,7 +135,7 @@ class FileInfo
      * @param[in] crc
      *   File CRC.
      **/
-    void crc( uint16_t crc);
+    void crc( uint16_t crc );
 
     /**
      * @brief Returns the Check Value.
@@ -150,10 +150,10 @@ class FileInfo
      * @param[in] checkValue
      *   Check Value.
      **/
-    void checkValue( const std::optional< CheckValue> &checkValue);
+    void checkValue( const std::optional< CheckValue> &checkValue );
 
     //! @copydoc checkValue(const std::optional<CheckValue>&)
-    void checkValue( std::optional< CheckValue> &&checkValue);
+    void checkValue( std::optional< CheckValue> &&checkValue );
 
     /**
      * @brief Compares the given file info against [this].
@@ -163,7 +163,7 @@ class FileInfo
      *
      * @return if [this] is equal to [other].
      **/
-    bool operator==( const FileInfo &other) const;
+    bool operator==( const FileInfo &other ) const;
 
     /**
      * @brief Compares the given file info against [this].

@@ -86,10 +86,10 @@ class FileListFile: public ListFile
     //! Offset of the File Check Value Pointer Field (Only ARINC 665-3/4)
     static constexpr ptrdiff_t FileCheckValuePointerFieldOffset = 20;
 
-    //! First Start of pointer data for ARINC 665-2 Load Headers.
+    //! First Start of pointer Data for ARINC 665-2 Load Headers.
     static constexpr ptrdiff_t FileHeaderSizeV2 = 20;
 
-    //! First Start of pointer data for ARINC 665-3/4 Load Headers.
+    //! First Start of pointer Data for ARINC 665-3/4 Load Headers.
     static constexpr ptrdiff_t FileHeaderSizeV3 = 24;
 
     /**
@@ -98,7 +98,7 @@ class FileListFile: public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit FileListFile( SupportedArinc665Version version);
+    explicit FileListFile( SupportedArinc665Version version );
 
     /**
      * @brief Creates file list file with the given data.
@@ -106,11 +106,11 @@ class FileListFile: public ListFile
      * @param[in] version
      *   ARINC 665 version.
      * @param[in] mediaSetPn
-     *   The Media Set Part Number.
+     *   Media Set Part Number.
      * @param[in] mediaSequenceNumber
-     *   The Media Sequence Number [1..255].
+     *   Media Sequence Number [1..255].
      * @param numberOfMediaSetMembers
-     *   The Number of Media Set Members [1..255] & mediaSequenceNumber <=
+     *   Number of Media Set Members [1..255] & mediaSequenceNumber <=
      *     [numberOfMediaSetMembers]
      * @param[in] files
      *   Files information.
@@ -123,7 +123,7 @@ class FileListFile: public ListFile
       uint8_t mediaSequenceNumber,
       uint8_t numberOfMediaSetMembers,
       const FilesInfo &files,
-      const UserDefinedData &userDefinedData);
+      const UserDefinedData &userDefinedData );
 
     //! @copydoc FileListFile(SupportedArinc665Version,std::string_view,uint8_t,uint8_t,const FilesInfo&,const UserDefinedData&)
     FileListFile(
@@ -172,14 +172,14 @@ class FileListFile: public ListFile
     /**
      * @brief Returns the number of files.
      *
-     * @return The number of files.
+     * @return Number of files.
      **/
     [[nodiscard]] size_t numberOfFiles() const;
 
     /**
      * @brief Return the list of files.
      *
-     * @return The list of files
+     * @return list of files
      **/
     [[nodiscard]] const FilesInfo& files() const;
 
@@ -214,10 +214,10 @@ class FileListFile: public ListFile
      * @param[in] userDefinedData
      *   The user defined data.
      **/
-    void userDefinedData( const UserDefinedData &userDefinedData);
+    void userDefinedData( const UserDefinedData &userDefinedData );
 
     //! @copydoc userDefinedData(const UserDefinedData&)
-    void userDefinedData( UserDefinedData &&userDefinedData);
+    void userDefinedData( UserDefinedData &&userDefinedData );
 
     /**
      * @brief Returns the Check Value.
