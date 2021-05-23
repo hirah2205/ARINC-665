@@ -71,25 +71,37 @@ class FileListFile: public ListFile
     //! User Defined Data Type
     using UserDefinedData = std::vector< uint8_t>;
 
-    //! Offset of the Spare field.
-    static constexpr ptrdiff_t SpareFieldOffset = 6;
+    //! Offset of the Spare field (Since ARINC 665-2).
+    static constexpr ptrdiff_t SpareFieldOffsetV2{ 6 };
 
-    //! Offset of the Media Set Part Number Pointer Field
-    static constexpr ptrdiff_t MediaSetPartNumberPointerFieldOffset = 8;
+    //! Offset of the Media Set Part Number Pointer Field (Since ARINC 665-1)
+    static constexpr ptrdiff_t MediaSetPartNumberPointerFieldOffsetV1{ 6 };
 
-    //! Offset of the Media Set Files Pointer Field
-    static constexpr ptrdiff_t MediaSetFilesPointerFieldOffset = 12;
+    //! Offset of the Media Set Part Number Pointer Field (Since ARINC 665-2)
+    static constexpr ptrdiff_t MediaSetPartNumberPointerFieldOffsetV2{ 8 };
 
-    //! Offset of the User Defined Data Pointer Field
-    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffset = 16;
+    //! Offset of the Media Set Files Pointer Field (Since ARINC 665-1)
+    static constexpr ptrdiff_t MediaSetFilesPointerFieldOffsetV1{ 10 };
+
+    //! Offset of the Media Set Files Pointer Field (Since ARINC 665-2)
+    static constexpr ptrdiff_t MediaSetFilesPointerFieldOffsetV2{ 12 };
+
+    //! Offset of the User Defined Data Pointer Field (Since ARINC 665-1)
+    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffsetV1{ 14 };
+
+    //! Offset of the User Defined Data Pointer Field (Since ARINC 665-2)
+    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffsetV2{ 16 };
 
     //! Offset of the File Check Value Pointer Field (Only ARINC 665-3/4)
-    static constexpr ptrdiff_t FileCheckValuePointerFieldOffset = 20;
+    static constexpr ptrdiff_t FileCheckValuePointerFieldOffsetV3{ 20 };
+
+    //! First Start of pointer Data for ARINC 665-1 Load Headers.
+    static constexpr ptrdiff_t FileHeaderSizeV1 = 18;
 
     //! First Start of pointer Data for ARINC 665-2 Load Headers.
     static constexpr ptrdiff_t FileHeaderSizeV2 = 20;
 
-    //! First Start of pointer Data for ARINC 665-3/4 Load Headers.
+    //! First Start of pointer Data for ARINC 665-3/4/5 Load Headers.
     static constexpr ptrdiff_t FileHeaderSizeV3 = 24;
 
     /**
@@ -222,7 +234,7 @@ class FileListFile: public ListFile
     /**
      * @brief Returns the Check Value.
      *
-     * @return The Check Value.
+     * @return Check Value.
      **/
     [[nodiscard]] const std::optional< CheckValue>& checkValue() const;
 

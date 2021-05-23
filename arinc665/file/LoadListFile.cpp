@@ -177,10 +177,10 @@ RawFile LoadListFile::encode() const
 {
   BOOST_LOG_FUNCTION()
 
-  RawFile rawFile( FileHeaderSize);
+  RawFile rawFile( FileHeaderSizeV2 );
 
   // Spare Field
-  Helper::setInt< uint16_t>( rawFile.begin() + SpareFieldOffset, 0U);
+  Helper::setInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, 0U);
 
   // Next free Offset (used for optional pointer calculation)
   ptrdiff_t nextFreeOffset{ static_cast< ptrdiff_t >( rawFile.size() ) };
@@ -206,7 +206,7 @@ RawFile LoadListFile::encode() const
     numberOfMediaSetMembersV );
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
+    rawFile.begin() + MediaSetPartNumberPointerFieldOffsetV2,
     nextFreeOffset / 2);
   nextFreeOffset += static_cast< ptrdiff_t >( rawMediaSetPn.size() + 2 * sizeof( uint8_t ) );
 
@@ -217,7 +217,7 @@ RawFile LoadListFile::encode() const
 
   // loads list pointer
   Helper::setInt< uint32_t>(
-    rawFile.begin() + LoadFilesPointerFieldOffset,
+    rawFile.begin() + LoadFilesPointerFieldOffsetV2,
     nextFreeOffset / 2);
   nextFreeOffset += static_cast< ptrdiff_t >( rawLoadsInfo.size() );
 
@@ -240,7 +240,7 @@ RawFile LoadListFile::encode() const
   }
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
     userDefinedDataPtr);
 
 
@@ -259,8 +259,8 @@ void LoadListFile::decodeBody( const ConstRawFileSpan &rawFile )
   BOOST_LOG_FUNCTION()
 
   // Spare Field
-  uint32_t spare{};
-  Helper::getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
+  uint16_t spare{};
+  Helper::getInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, spare);
 
   if ( 0U != spare )
   {
@@ -271,20 +271,20 @@ void LoadListFile::decodeBody( const ConstRawFileSpan &rawFile )
   // media information pointer
   uint32_t mediaInformationPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
+    rawFile.begin() + MediaSetPartNumberPointerFieldOffsetV2,
     mediaInformationPtr );
 
   // Loads list pointer
   uint32_t loadListPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + LoadFilesPointerFieldOffset,
+    rawFile.begin() + LoadFilesPointerFieldOffsetV2,
     loadListPtr );
 
 
   // user defined data pointer
   uint32_t userDefinedDataPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
     userDefinedDataPtr );
 
 

@@ -121,14 +121,14 @@ void BatchFile::targetHardware( BatchTargetInfo &&targetHardwareInfo)
 
 RawFile BatchFile::encode() const
 {
-  RawFile rawFile( BatchFileHeaderSize );
+  RawFile rawFile( BatchFileHeaderSizeV2 );
 
   // spare field
-  Helper::setInt< uint32_t>( rawFile.begin() + SpareFieldOffset, 0U );
+  Helper::setInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, 0U );
 
 
   // Next free Offset (used for optional pointer calculation)
-  size_t nextFreeOffset{ BatchFileHeaderSize };
+  size_t nextFreeOffset{ BatchFileHeaderSizeV2 };
 
 
   // batch part number + comment
@@ -138,7 +138,7 @@ RawFile BatchFile::encode() const
   assert( rawComment.size() % 2 == 0 );
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + BatchPartNumberPointerFieldOffset,
+    rawFile.begin() + BatchPartNumberPointerFieldOffsetV2,
     nextFreeOffset / 2 );
   nextFreeOffset += rawBatchPn.size() + rawComment.size();
 
@@ -151,7 +151,7 @@ RawFile BatchFile::encode() const
   assert( rawThwIdsList.size() % 2 == 0);
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + ThwIdsPointerFieldOffset,
+    rawFile.begin() + ThwIdsPointerFieldOffsetV2,
     nextFreeOffset / 2);
   // nextFreeOffset += rawThwIdsList.size();
 
@@ -170,8 +170,8 @@ RawFile BatchFile::encode() const
 void BatchFile::decodeBody( const ConstRawFileSpan &rawFile )
 {
   // Spare field
-  uint32_t spare{};
-  Helper::getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare );
+  uint16_t spare{};
+  Helper::getInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, spare );
 
   if ( 0U != spare )
   {
@@ -181,12 +181,12 @@ void BatchFile::decodeBody( const ConstRawFileSpan &rawFile )
 
   uint32_t batchPartNumberPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + BatchPartNumberPointerFieldOffset,
+    rawFile.begin() + BatchPartNumberPointerFieldOffsetV2,
     batchPartNumberPtr);
 
   uint32_t targetHardwareIdListPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + ThwIdsPointerFieldOffset,
+    rawFile.begin() + ThwIdsPointerFieldOffsetV2,
     targetHardwareIdListPtr);
 
   // batch part number

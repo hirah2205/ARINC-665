@@ -110,7 +110,7 @@ class LoadHeaderFile: public Arinc665File
       std::optional< std::pair< std::string, uint16_t > >;
 
     //! Offset of the Spare Field (since ARINC 665-2)
-    static constexpr ptrdiff_t PartFlagsFieldOffsetV2{ 6 };
+    static constexpr ptrdiff_t SpareFieldOffsetV2{ 6 };
 
     //! Offset of the Part Flags Field (since ARINC 665-3) - Spare in older supplements
     static constexpr ptrdiff_t PartFlagsFieldOffsetV3{ 6 };
@@ -153,6 +153,9 @@ class LoadHeaderFile: public Arinc665File
 
     //! Offset of the Load Check Value Pointer Field (since ARINC 665-3)
     static constexpr ptrdiff_t LoadCheckValuePointerFieldOffsetV3{ 36 };
+
+    //! First Start of pointer data for ARINC 665-1 Load Headers.
+    static constexpr ptrdiff_t LoadHeaderSizeV1{ 26 };
 
     //! First Start of pointer data for ARINC 665-2 Load Headers.
     static constexpr ptrdiff_t LoadHeaderSizeV2{ 28 };

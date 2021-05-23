@@ -51,17 +51,26 @@ namespace Arinc665::File {
 class BatchFile: public Arinc665File
 {
   public:
-    //! Offset of the Part Flags Field (ARINC 665-3) - Spare in older supplements
-    static constexpr std::size_t SpareFieldOffset = 6U;
+    ///! Offset of the Spare field (since ARINC 665-2).
+    static constexpr std::ptrdiff_t SpareFieldOffsetV2{ 6 };
 
-    //! Offset of the Batch Part Number Pointer Field
-    static constexpr std::size_t BatchPartNumberPointerFieldOffset = 8U;
+    //! Offset of the Batch Part Number Pointer Field (since ARINC 665-1)
+    static constexpr std::ptrdiff_t BatchPartNumberPointerFieldOffsetV1{ 6 };
 
-    //! Offset of the THW IDs Pointer Field
-    static constexpr std::size_t ThwIdsPointerFieldOffset = 12U;
+    //! Offset of the Batch Part Number Pointer Field (since ARINC 665-2)
+    static constexpr std::ptrdiff_t BatchPartNumberPointerFieldOffsetV2{ 8 };
 
-    //! First Start of pointer data for ARINC 665-2 Load Headers.
-    static constexpr std::size_t BatchFileHeaderSize = 16U;
+    //! Offset of the THW IDs Pointer Field (since ARINC 665-1)
+    static constexpr std::ptrdiff_t ThwIdsPointerFieldOffsetV1{ 10 };
+
+    //! Offset of the THW IDs Pointer Field (since ARINC 665-2)
+    static constexpr std::ptrdiff_t ThwIdsPointerFieldOffsetV2{ 12 };
+
+    //! First Start of Pointer Data for ARINC 665-1 Batch Files.
+    static constexpr std::ptrdiff_t BatchFileHeaderSizeV1{ 14 };
+
+    //! First Start of Pointer Data for ARINC 665-2 Batch Files.
+    static constexpr std::ptrdiff_t BatchFileHeaderSizeV2{ 16 };
 
     /**
      * @brief Creates an empty batch file.

@@ -259,7 +259,7 @@ RawFile FileListFile::encode() const
 
 
   // spare field
-  Helper::setInt< uint32_t>( rawFile.begin() + SpareFieldOffset, 0U );
+  Helper::setInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, 0U );
 
   // Next free Offset (used for optional pointer calculation)
   ptrdiff_t nextFreeOffset{ static_cast< ptrdiff_t>( rawFile.size() ) };
@@ -284,7 +284,7 @@ RawFile FileListFile::encode() const
     numberOfMediaSetMembersValue );
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
+    rawFile.begin() + MediaSetPartNumberPointerFieldOffsetV2,
     nextFreeOffset / 2);
   nextFreeOffset += static_cast< ptrdiff_t >( rawMediaSetPn.size() + 2 * sizeof( uint8_t ) );
 
@@ -294,7 +294,7 @@ RawFile FileListFile::encode() const
   assert( rawFilesInfo.size() % 2 == 0);
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + MediaSetFilesPointerFieldOffset,
+    rawFile.begin() + MediaSetFilesPointerFieldOffsetV2,
     nextFreeOffset / 2);
   nextFreeOffset += static_cast< ptrdiff_t>( rawFilesInfo.size() );
 
@@ -317,7 +317,7 @@ RawFile FileListFile::encode() const
   }
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
     userDefinedDataPtr);
 
 
@@ -330,7 +330,7 @@ RawFile FileListFile::encode() const
     assert( rawCheckValue.size() % 2 == 0);
 
     Helper::setInt< uint32_t>(
-      rawFile.begin() + FileCheckValuePointerFieldOffset,
+      rawFile.begin() + FileCheckValuePointerFieldOffsetV3,
       nextFreeOffset / 2);
 
     rawFile.insert(
@@ -371,8 +371,8 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
 
 
   // Spare Field
-  uint32_t spare{};
-  Helper::getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare);
+  uint16_t spare{};
+  Helper::getInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, spare);
 
   if ( 0U != spare )
   {
@@ -384,30 +384,30 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
   // media information pointer
   uint32_t mediaInformationPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
+    rawFile.begin() + MediaSetPartNumberPointerFieldOffsetV2,
     mediaInformationPtr);
 
 
   // file list pointer
   uint32_t fileListPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + MediaSetFilesPointerFieldOffset,
+    rawFile.begin() + MediaSetFilesPointerFieldOffsetV2,
     fileListPtr);
 
 
   // user defined data pointer
   uint32_t userDefinedDataPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
     userDefinedDataPtr);
 
   uint32_t fileCheckValuePtr = 0;
 
   // only decode this pointers in V3 mode
-  if (decodeV3Data)
+  if ( decodeV3Data )
   {
     Helper::getInt< uint32_t>(
-      rawFile.begin() + FileCheckValuePointerFieldOffset,
+      rawFile.begin() + FileCheckValuePointerFieldOffsetV3,
       fileCheckValuePtr);
   }
 

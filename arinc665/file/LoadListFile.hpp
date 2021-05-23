@@ -61,20 +61,32 @@ class LoadListFile: public ListFile
     //! User Defined Data.
     using UserDefinedData = std::vector< uint8_t>;
 
-    //! Offset of the Spare field.
-    static constexpr ptrdiff_t SpareFieldOffset = 6U;
+    //! Offset of the Spare field (since ARINC 665-2).
+    static constexpr ptrdiff_t SpareFieldOffsetV2{ 6U };
 
-    //! Offset of the Media Set Part Number Pointer Field
-    static constexpr ptrdiff_t MediaSetPartNumberPointerFieldOffset = 8U;
+    //! Offset of the Media Set Part Number Pointer Field (since ARINC 665-1)
+    static constexpr ptrdiff_t MediaSetPartNumberPointerFieldOffsetV1{ 6U };
 
-    //! Offset of the Loads Pointer Field
-    static constexpr ptrdiff_t LoadFilesPointerFieldOffset = 12U;
+    //! Offset of the Media Set Part Number Pointer Field (since ARINC 665-2)
+    static constexpr ptrdiff_t MediaSetPartNumberPointerFieldOffsetV2{ 8U };
 
-    //! Offset of the User Defined Data Pointer Field
-    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffset = 16U;
+    //! Offset of the Loads Pointer Field (since ARINC 665-1)
+    static constexpr ptrdiff_t LoadFilesPointerFieldOffsetV1{ 10U };
 
-    //! First Start of pointer data for ARINC 665 Load List Files.
-    static constexpr ptrdiff_t FileHeaderSize = 20U;
+    //! Offset of the Loads Pointer Field (since ARINC 665-2)
+    static constexpr ptrdiff_t LoadFilesPointerFieldOffsetV2{ 12U };
+
+    //! Offset of the User Defined Data Pointer Field (since ARINC 665-1)
+    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffsetV1{ 14U };
+
+    //! Offset of the User Defined Data Pointer Field (since ARINC 665-2)
+    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffsetV2{ 16U };
+
+    //! First Start of Pointer Data for ARINC 665 Load List Files (since ARINC 665-1).
+    static constexpr ptrdiff_t FileHeaderSizeV1{ 18U };
+
+    //! First Start of Pointer Data for ARINC 665 Load List Files (since ARINC 665-2).
+    static constexpr ptrdiff_t FileHeaderSizeV2{ 20U };
 
     /**
      * @brief Creates an empty load list file.

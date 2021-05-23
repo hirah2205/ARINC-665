@@ -501,8 +501,6 @@ void Arinc665File::decodeHeader(
       InvalidArinc665File() << Helper::AdditionalInfo{ "File to small" } );
   }
 
-  auto it{ rawFile.begin() };
-
   // check size field
   uint32_t fileLength{};
   Helper::getInt< uint32_t>( rawFile.begin() + FileLengthFieldOffset, fileLength );

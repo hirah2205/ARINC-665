@@ -58,20 +58,32 @@ class BatchListFile: public ListFile
     //! User Defined Data.
     using UserDefinedData = std::vector< uint8_t>;
 
-    //! Offset of the Spare field.
-    static constexpr std::size_t SpareFieldOffset = 6U;
+    //! Offset of the Spare field (since ARINC 665-2).
+    static constexpr std::size_t SpareFieldOffsetV2{ 6U };
 
-    //! Offset of the Media Set Part Number Pointer Field
-    static constexpr std::size_t MediaSetPartNumberPointerFieldOffset = 8U;
+    //! Offset of the Media Set Part Number Pointer Field (since ARINC 665-1)
+    static constexpr std::size_t MediaSetPartNumberPointerFieldOffsetV1{ 6U };
 
-    //! Offset of the Batches Pointer Field
-    static constexpr std::size_t BatchFilesPointerFieldOffset = 12U;
+    //! Offset of the Media Set Part Number Pointer Field (since ARINC 665-2)
+    static constexpr std::size_t MediaSetPartNumberPointerFieldOffsetV2{ 8U };
 
-    //! Offset of the User Defined Data Pointer Field
-    static constexpr std::size_t UserDefinedDataPointerFieldOffset = 16U;
+    //! Offset of the Batches Pointer Field (since ARINC 665-1)
+    static constexpr std::size_t BatchFilesPointerFieldOffsetV1{ 10U };
 
-    //! First Start of pointer data for ARINC 665 Batch List Files.
-    static constexpr std::size_t FileHeaderSize = 20U;
+    //! Offset of the Batches Pointer Field (since ARINC 665-2)
+    static constexpr std::size_t BatchFilesPointerFieldOffsetV2{ 12U };
+
+    //! Offset of the User Defined Data Pointer Field (since ARINC 665-1)
+    static constexpr std::size_t UserDefinedDataPointerFieldOffsetV1{ 14U };
+
+    //! Offset of the User Defined Data Pointer Field (since ARINC 665-2)
+    static constexpr std::size_t UserDefinedDataPointerFieldOffsetV2{ 16U };
+
+    //! First Start of pointer data for ARINC 665 Batch List Files (since ARINC 665-1).
+    static constexpr std::size_t FileHeaderSizeV1{ 18U };
+
+    //! First Start of pointer data for ARINC 665 Batch List Files (since ARINC 665-2).
+    static constexpr std::size_t FileHeaderSizeV2{ 20U };
 
     /**
      * @brief Creates an empty batch list file.

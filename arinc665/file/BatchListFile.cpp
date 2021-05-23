@@ -172,10 +172,10 @@ RawFile BatchListFile::encode() const
 {
   BOOST_LOG_FUNCTION()
 
-  RawFile rawFile( FileHeaderSize );
+  RawFile rawFile( FileHeaderSizeV2 );
 
   // Spare Field
-  Helper::setInt< uint16_t>( rawFile.begin() + SpareFieldOffset, 0U );
+  Helper::setInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, 0U );
 
   // Next free Offset (used for optional pointer calculation)
   size_t nextFreeOffset{ rawFile.size()};
@@ -201,7 +201,7 @@ RawFile BatchListFile::encode() const
     numberOfMediaSetMembersV );
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
+    rawFile.begin() + MediaSetPartNumberPointerFieldOffsetV2,
     nextFreeOffset / 2);
   nextFreeOffset += rawMediaSetPn.size() + 2U * sizeof( uint8_t );
 
@@ -212,7 +212,7 @@ RawFile BatchListFile::encode() const
 
   // batches list pointer
   Helper::setInt< uint32_t>(
-    rawFile.begin() + BatchFilesPointerFieldOffset,
+    rawFile.begin() + BatchFilesPointerFieldOffsetV2,
     nextFreeOffset / 2 );
   nextFreeOffset += rawBatchesInfo.size();
 
@@ -235,7 +235,7 @@ RawFile BatchListFile::encode() const
   }
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
     userDefinedDataPtr );
 
 
@@ -253,10 +253,10 @@ void BatchListFile::decodeBody( const ConstRawFileSpan &rawFile )
   BOOST_LOG_FUNCTION()
 
   // Spare Field
-  uint32_t spare{};
-  Helper::getInt< uint32_t>( rawFile.begin() + SpareFieldOffset, spare );
+  uint16_t spare{};
+  Helper::getInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, spare );
 
-  if (0U != spare)
+  if ( 0U != spare )
   {
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << Helper::AdditionalInfo{ "Spare is not 0" } );
@@ -266,20 +266,20 @@ void BatchListFile::decodeBody( const ConstRawFileSpan &rawFile )
   // media information pointer
   uint32_t mediaInformationPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + MediaSetPartNumberPointerFieldOffset,
+    rawFile.begin() + MediaSetPartNumberPointerFieldOffsetV2,
     mediaInformationPtr );
 
   // Batch list pointer
   uint32_t batchListPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + BatchFilesPointerFieldOffset,
+    rawFile.begin() + BatchFilesPointerFieldOffsetV2,
     batchListPtr );
 
 
   // user defined data pointer
   uint32_t userDefinedDataPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
     userDefinedDataPtr );
 
 
