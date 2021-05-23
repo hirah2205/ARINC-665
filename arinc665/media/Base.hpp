@@ -61,10 +61,10 @@ class Base : public std::enable_shared_from_this< Base>
     /**
      * @brief Return the Part Number of the Item.
      *
-     * If the entity itself does not have an part number (e.i. media and
+     * If the entity itself does not have an part number (e.g. media and
      * directories) the parent part number is returned
      *
-     * @return The part number of the item.
+     * @return Part Number of the item.
      **/
     [[nodiscard]] virtual std::string_view partNumber() const = 0;
 };

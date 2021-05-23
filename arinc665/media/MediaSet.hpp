@@ -58,7 +58,7 @@ class MediaSet: public Base
      * @brief Set the part number of the entity.
      *
      * @param[in] partNumber
-     *   The part number
+     *   Part number
      **/
     void partNumber( std::string_view partNumber);
 
@@ -68,7 +68,7 @@ class MediaSet: public Base
     /**
      * @brief Get the Number of Media within the Media Set.
      *
-     * @return The number of media within the media set.
+     * @return Number of media within the media set.
      **/
     uint8_t numberOfMedia() const;
 
@@ -103,7 +103,7 @@ class MediaSet: public Base
      * @param[in] index
      *   The medium index.
      *
-     * @return The medium with the requested index.
+     * @return Medium with the requested index.
      **/
     ConstMediumPtr medium( uint8_t index) const;
 
@@ -113,14 +113,14 @@ class MediaSet: public Base
      * @param[in] index
      *   The medium index.
      *
-     * @return The medium with the requested index.
+     * @return Medium with the requested index.
      **/
     MediumPtr medium( uint8_t index);
 
     /**
      * @brief Adds an medium to the media set and returns the medium
      *
-     * @return The media index of the new medium.
+     * @return Media index of the new medium.
      **/
     MediumPtr addMedium();
 
@@ -136,7 +136,7 @@ class MediaSet: public Base
     /**
      * @brief Return the total number of files within the media set.
      *
-     * @return The number of files.
+     * @return Number of files.
      **/
     size_t numberOfFiles() const;
 
@@ -160,13 +160,13 @@ class MediaSet: public Base
      * @todo handle multiple files with same name.
      *
      * @param[in] filename
-     *   The filename.
+     *   Filename.
      *
      * @return File with the given filename.
      * @retval ConstFilePtr()
      *   If file is not found.
      **/
-    ConstFilePtr file( std::string_view filename) const;
+    ConstFilePtr file( std::string_view filename ) const;
 
     /**
      * @brief Returns file with the given filename.
@@ -174,32 +174,32 @@ class MediaSet: public Base
      * @todo handle multiple files with same name.
      *
      * @param[in] filename
-     *   The filename.
+     *   Filename.
      *
      * @return File with the given filename.
      * @retval ConstFilePtr()
      *   If file is not found.
      **/
-    FilePtr file( std::string_view filename);
+    FilePtr file( std::string_view filename );
 
     /**
      * @brief Return the number of loads within the media set.
      *
-     * @return The number of loads within the media set.
+     * @return Number of loads within the media set.
      **/
     size_t numberOfLoads() const;
 
     /**
      * @brief Returns the loads within the media set.
      *
-     * @return The loads within the media set.
+     * @return Loads within the media set.
      **/
     ConstLoads loads() const;
 
     /**
      * @brief Returns the loads within the media set.
      *
-     * @return The loads within the media set.
+     * @return Loads within the media set.
      **/
     Loads loads();
 
@@ -211,7 +211,7 @@ class MediaSet: public Base
      * @param[in] filename
      *   The filename of the load.
      *
-     * @return The load with the given filename.
+     * @return Load with the given filename.
      **/
     ConstLoadPtr load( std::string_view filename ) const;
 
@@ -221,9 +221,9 @@ class MediaSet: public Base
      * @todo handle multiple loads with same name.
      *
      * @param[in] filename
-     *   The filename of the load.
+     *   Filename of the load.
      *
-     * @return The load with the given filename.
+     * @return Load with the given filename.
      **/
     LoadPtr load( std::string_view filename );
 
@@ -231,7 +231,7 @@ class MediaSet: public Base
      * @brief Removes the load with the given filename.
      *
      * @param[in] filename
-     *   The filename of the load.
+     *   Filename of the load.
      **/
     void removeLoad( std::string_view filename );
 
@@ -239,28 +239,28 @@ class MediaSet: public Base
      * @brief Removes the given load from the media set.
      *
      * @param[in] load
-     *   The load to remove.
+     *   Load to remove.
      **/
     void removeLoad( ConstLoadPtr load );
 
     /**
      * @brief Return the number of batches within the media set.
      *
-     * @return The number of batches within the media set.
+     * @return Number of batches within the media set.
      **/
     size_t numberOfBatches() const;
 
     /**
      * @brief Returns the batches within the media set.
      *
-     * @return The batches within the media set.
+     * @return Batches within the media set.
      **/
     ConstBatches batches() const;
 
     /**
      * @brief Returns the batches within the media set.
      *
-     * @return The batches within the media set.
+     * @return Batches within the media set.
      **/
     Batches batches();
 
@@ -272,7 +272,7 @@ class MediaSet: public Base
      * @param[in] filename
      *   The filename of the batch.
      *
-     * @return The batch with the given filename.
+     * @return Batch with the given filename.
      **/
     ConstBatchPtr batch( std::string_view filename ) const;
 
@@ -284,7 +284,7 @@ class MediaSet: public Base
      * @param[in] filename
      *   The filename of the batch.
      *
-     * @return The batch with the given filename.
+     * @return Batch with the given filename.
      **/
     BatchPtr batch( std::string_view filename );
 
@@ -292,7 +292,7 @@ class MediaSet: public Base
      * @brief Removes the batch with the given filename.
      *
      * @param[in] filename
-     *   The filename of the batch.
+     *   Filename of the batch.
      **/
     void removeBatch( std::string_view filename);
 
@@ -300,7 +300,7 @@ class MediaSet: public Base
      * @brief Removes the given batch from the media set.
      *
      * @param[in] batch
-     *   The batch to remove.
+     *   Batch to remove.
      **/
     void removeBatch( ConstBatchPtr batch);
 
@@ -318,7 +318,7 @@ class MediaSet: public Base
      * @brief Updates the user defined data for file list files.
      *
      * @param[in] userDefinedData
-     *   The user defined data.
+     *   User defined data.
      **/
     void filesUserDefinedData( const UserDefinedData &userDefinedData);
 
@@ -328,7 +328,7 @@ class MediaSet: public Base
     /**
      * @brief Returns the user defined data for loads list files.
      *
-     * @return The user defined data for loads list files.
+     * @return User defined data for loads list files.
      **/
     const UserDefinedData& loadsUserDefinedData() const;
 
@@ -339,7 +339,7 @@ class MediaSet: public Base
      * @brief Updates the user defined data for load list files.
      *
      * @param[in] userDefinedData
-     *   The user defined data.
+     *   User defined data.
      **/
     void loadsUserDefinedData( const UserDefinedData &userDefinedData );
 
@@ -349,7 +349,7 @@ class MediaSet: public Base
     /**
      * @brief Returns the user defined data for batch list files.
      *
-     * @return The user defined data for batch list files.
+     * @return User defined data for batch list files.
      **/
     const UserDefinedData& batchesUserDefinedData() const;
 
@@ -360,7 +360,7 @@ class MediaSet: public Base
      * @brief Updates the user defined data for batch list files.
      *
      * @param[in] userDefinedData
-     *   The user defined data.
+     *   User Defined Data.
      **/
     void batchesUserDefinedData( const UserDefinedData &userDefinedData );
 

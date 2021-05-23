@@ -31,11 +31,11 @@ class File: public BaseFile
      * @brief Creates a file, which is part of an media within a media set
      *
      * The list of files does not handle the protocol files like:
-     * @li List of files file
-     * @li List of loads file
-     * @li List of batches file
-     * @li Load upload header file
-     * @li Batch file
+     * - List of files file
+     * - List of loads file
+     * - List of batches file
+     * - Load upload header file
+     * - Batch file
      *
      * @param[in] parent
      *   The parent of this file.
