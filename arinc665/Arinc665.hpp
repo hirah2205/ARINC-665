@@ -36,6 +36,7 @@
  * - ARINC Report 665-2: Loadable Software Standards; 2002-08-30
  * - ARINC Report 665-3: Loadable Software Standards; 2005-08-12
  * - ARINC Report 665-4: Loadable Software Standards; 2016-07-14
+ * - ARINC Report 665-5: Loadable Software Standards; 2019
  **/
 namespace Arinc665 {
 

@@ -109,47 +109,65 @@ class LoadHeaderFile: public Arinc665File
     using LoadType =
       std::optional< std::pair< std::string, uint16_t > >;
 
-    //! Offset of the Part Flags Field (ARINC 665-3) - Spare in older supplements
-    static constexpr ptrdiff_t PartFlagsFieldOffset = 6;
+    //! Offset of the Spare Field (since ARINC 665-2)
+    static constexpr ptrdiff_t PartFlagsFieldOffsetV2{ 6 };
 
-    //! Offset of the Load Part Number Pointer Field
-    static constexpr ptrdiff_t LoadPartNumberPointerFieldOffset = 8;
+    //! Offset of the Part Flags Field (since ARINC 665-3) - Spare in older supplements
+    static constexpr ptrdiff_t PartFlagsFieldOffsetV3{ 6 };
 
-    //! Offset of the THW IDs Pointer Field
-    static constexpr ptrdiff_t ThwIdsPointerFieldOffset = 12;
+    //! Offset of the Load Part Number Pointer Field (since ARINC 665-1)
+    static constexpr ptrdiff_t LoadPartNumberPointerFieldOffsetV1{ 6 };
 
-    //! Offset of the Data Files Pointer Field
-    static constexpr ptrdiff_t DataFilesPointerFieldOffset = 16;
+    //! Offset of the Load Part Number Pointer Field (since ARINC 665-2)
+    static constexpr ptrdiff_t LoadPartNumberPointerFieldOffsetV2{ 8 };
 
-    //! Offset of the Support Files Pointer Field
-    static constexpr ptrdiff_t SupportFilesPointerFieldOffset = 20;
+    //! Offset of the THW IDs Pointer Field (since ARINC 665-1)
+    static constexpr ptrdiff_t ThwIdsPointerFieldOffsetV1{ 10 };
 
-    //! Offset of the User Defined Data Pointer Field
-    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffset = 24;
+    //! Offset of the THW IDs Pointer Field (since ARINC 665-2)
+    static constexpr ptrdiff_t ThwIdsPointerFieldOffsetV2{ 12 };
 
-    //! Offset of the Load Type Description Pointer Field (ARINC 665-3)
-    static constexpr ptrdiff_t LoadTypeDescriptionPointerFieldOffset = 28;
+    //! Offset of the Data Files Pointer Field (since ARINC 665-1)
+    static constexpr ptrdiff_t DataFilesPointerFieldOffsetV1{ 14 };
 
-    //! Offset of the THW IDs with Positions Pointer Field (ARINC 665-3)
-    static constexpr ptrdiff_t ThwIdPositionsPointerFieldOffset = 32;
+    //! Offset of the Data Files Pointer Field (since ARINC 665-2)
+    static constexpr ptrdiff_t DataFilesPointerFieldOffsetV2{ 16 };
 
-    //! Offset of the Load Check Value Pointer Field (ARINC 665-3)
-    static constexpr ptrdiff_t LoadCheckValuePointerFieldOffset = 36;
+    //! Offset of the Support Files Pointer Field (since ARINC 665-1)
+    static constexpr ptrdiff_t SupportFilesPointerFieldOffsetV1{ 18 };
+
+    //! Offset of the Support Files Pointer Field (since ARINC 665-2)
+    static constexpr ptrdiff_t SupportFilesPointerFieldOffsetV2{ 20 };
+
+    //! Offset of the User Defined Data Pointer Field (since ARINC 665-1)
+    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffsetV1{ 22 };
+
+    //! Offset of the User Defined Data Pointer Field (since ARINC 665-2)
+    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffsetV2{ 24 };
+
+    //! Offset of the Load Type Description Pointer Field (since ARINC 665-3)
+    static constexpr ptrdiff_t LoadTypeDescriptionPointerFieldOffsetV3{ 28 };
+
+    //! Offset of the THW IDs with Positions Pointer Field (since ARINC 665-3)
+    static constexpr ptrdiff_t ThwIdPositionsPointerFieldOffsetV3{ 32 };
+
+    //! Offset of the Load Check Value Pointer Field (since ARINC 665-3)
+    static constexpr ptrdiff_t LoadCheckValuePointerFieldOffsetV3{ 36 };
 
     //! First Start of pointer data for ARINC 665-2 Load Headers.
-    static constexpr ptrdiff_t LoadHeaderSizeV2 = 28;
+    static constexpr ptrdiff_t LoadHeaderSizeV2{ 28 };
 
     //! First Start of pointer data for ARINC 665-3/4 Load Headers.
-    static constexpr ptrdiff_t LoadHeaderSizeV3 = 40;
+    static constexpr ptrdiff_t LoadHeaderSizeV3{ 40 };
 
     //! Position of Load CRC from end of File
-    static constexpr ptrdiff_t LoadCrcOffset = 4;
+    static constexpr ptrdiff_t LoadCrcOffset{ 4 };
 
     //! Position of File CRC from end of File
-    static constexpr ptrdiff_t FileCrcOffset = 6;
+    static constexpr ptrdiff_t FileCrcOffset{ 6 };
 
     //! Download Flag of Part Flag
-    static constexpr std::uint16_t PartFlagDownload = 0x0001U;
+    static constexpr std::uint16_t PartFlagDownload{ 0x0001U };
 
     /**
      * @brief Creates an empty load header file.

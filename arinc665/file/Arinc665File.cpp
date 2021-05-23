@@ -400,19 +400,19 @@ Arinc665File::operator RawFile() const
 
 SupportedArinc665Version Arinc665File::arincVersion() const
 {
-  return arinc665VersionValue;
+  return arinc665VersionV;
 }
 
 void Arinc665File::arincVersion( const SupportedArinc665Version version)
 {
-  arinc665VersionValue = version;
+  arinc665VersionV = version;
 }
 
 Arinc665File::Arinc665File(
   const SupportedArinc665Version version,
   const ptrdiff_t checksumPosition ) noexcept :
   checksumPosition{ checksumPosition },
-  arinc665VersionValue{ version }
+  arinc665VersionV{ version }
 {
 }
 
@@ -421,9 +421,9 @@ Arinc665File::Arinc665File(
   const FileType expectedFileType,
   ptrdiff_t checksumPosition ) :
   checksumPosition{ checksumPosition },
-  arinc665VersionValue{ Arinc665Version::Invalid }
+  arinc665VersionV{ Arinc665Version::Invalid }
 {
-  decodeHeader( rawFile, expectedFileType);
+  decodeHeader( rawFile, expectedFileType );
 }
 
 Arinc665File& Arinc665File::operator=( const Arinc665File &other ) noexcept
@@ -436,7 +436,7 @@ Arinc665File& Arinc665File::operator=( const Arinc665File &other ) noexcept
   // if this assertion fails, we have an error within this library
   assert( this->checksumPosition == other.checksumPosition );
 
-  arinc665VersionValue = other.arinc665VersionValue;
+  arinc665VersionV = other.arinc665VersionV;
   return *this;
 }
 
@@ -450,7 +450,7 @@ Arinc665File& Arinc665File::operator=( Arinc665File &&other) noexcept
   // if this assertion fails, we have an error within this library
   assert( this->checksumPosition == other.checksumPosition );
 
-  arinc665VersionValue = other.arinc665VersionValue;
+  arinc665VersionV = other.arinc665VersionV;
   return *this;
 }
 
@@ -479,7 +479,7 @@ void Arinc665File::insertHeader( const RawFileSpan &rawFile) const
   Helper::setInt< uint16_t>(
     rawFile.begin() + FileFormatVersionFieldOffset,
     static_cast< uint16_t>(
-      formatVersionField( fileType(), arinc665VersionValue ) ) );
+      formatVersionField( fileType(), arinc665VersionV ) ) );
 
   // crc
   const uint16_t calculatedCrc{
@@ -515,14 +515,14 @@ void Arinc665File::decodeHeader(
 
   // format version
   uint16_t formatVersion{};
-  it = Helper::getInt< uint16_t>(
+  Helper::getInt< uint16_t>(
     rawFile.begin() + FileFormatVersionFieldOffset,
     formatVersion );
 
-  arinc665VersionValue = arinc665Version( expectedFileType, formatVersion );
+  arinc665VersionV = arinc665Version( expectedFileType, formatVersion );
 
   // check format field version
-  if ( arinc665VersionValue == SupportedArinc665Version::Invalid )
+  if ( arinc665VersionV == SupportedArinc665Version::Invalid )
   {
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << Helper::AdditionalInfo{ "wrong file format" } );

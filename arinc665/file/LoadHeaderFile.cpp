@@ -70,7 +70,7 @@ LoadHeaderFile::LoadHeaderFile(
 }
 
 LoadHeaderFile::LoadHeaderFile( const ConstRawFileSpan &rawFile):
-  Arinc665File{ rawFile, FileType::LoadUploadHeader, FileCrcOffset},
+  Arinc665File{ rawFile, FileType::LoadUploadHeader, FileCrcOffset },
   partFlagsV{ 0 },
   loadCrcV{ 0 }
 {
@@ -310,7 +310,7 @@ RawFile LoadHeaderFile::encode() const
 
   // Part Flags or Spare
   Helper::setInt< uint16_t>(
-    rawFile.begin() + PartFlagsFieldOffset,
+    rawFile.begin() + PartFlagsFieldOffsetV3,
     encodeV3Data ? partFlagsV : 0U);
 
 
@@ -323,7 +323,7 @@ RawFile LoadHeaderFile::encode() const
   assert( rawLoadPn.size() % 2 == 0);
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + LoadPartNumberPointerFieldOffset,
+    rawFile.begin() + LoadPartNumberPointerFieldOffsetV2,
     nextFreeOffset / 2);
   nextFreeOffset += static_cast< ptrdiff_t>( rawLoadPn.size() );
 
@@ -358,7 +358,7 @@ RawFile LoadHeaderFile::encode() const
     }
 
     Helper::setInt< uint32_t>(
-      rawFile.begin() + LoadTypeDescriptionPointerFieldOffset,
+      rawFile.begin() + LoadTypeDescriptionPointerFieldOffsetV3,
       loadTypePtr );
   }
 
@@ -367,7 +367,7 @@ RawFile LoadHeaderFile::encode() const
   assert( rawThwIdsList.size() % 2 == 0);
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + ThwIdsPointerFieldOffset,
+    rawFile.begin() + ThwIdsPointerFieldOffsetV2,
     nextFreeOffset / 2);
   nextFreeOffset += static_cast< ptrdiff_t>( rawThwIdsList.size() );
 
@@ -420,7 +420,7 @@ RawFile LoadHeaderFile::encode() const
     }
 
     Helper::setInt< uint32_t>(
-      rawFile.begin() + ThwIdPositionsPointerFieldOffset,
+      rawFile.begin() + ThwIdPositionsPointerFieldOffsetV3,
       thwIdPosPtr );
   }
 
@@ -433,7 +433,7 @@ RawFile LoadHeaderFile::encode() const
   assert( rawDataFiles.size() % 2 == 0);
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + DataFilesPointerFieldOffset,
+    rawFile.begin() + DataFilesPointerFieldOffsetV2,
     nextFreeOffset / 2);
   nextFreeOffset += static_cast< ptrdiff_t>( rawDataFiles.size() );
 
@@ -461,7 +461,7 @@ RawFile LoadHeaderFile::encode() const
   }
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + SupportFilesPointerFieldOffset,
+    rawFile.begin() + SupportFilesPointerFieldOffsetV2,
     supportFileListPtr );
 
 
@@ -481,7 +481,7 @@ RawFile LoadHeaderFile::encode() const
   }
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
     userDefinedDataPtr);
 
 
@@ -494,7 +494,7 @@ RawFile LoadHeaderFile::encode() const
     assert( rawCheckValue.size() % 2 == 0);
 
     Helper::setInt< uint32_t>(
-      rawFile.begin() + LoadCheckValuePointerFieldOffset,
+      rawFile.begin() + LoadCheckValuePointerFieldOffsetV3,
       nextFreeOffset / 2);
 
     rawFile.insert(
@@ -527,7 +527,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
 
   uint32_t partFlags{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + PartFlagsFieldOffset,
+    rawFile.begin() + PartFlagsFieldOffsetV3,
     partFlags);
 
   switch ( arincVersion())
@@ -554,27 +554,27 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
 
   uint32_t loadPartNumberPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + LoadPartNumberPointerFieldOffset,
+    rawFile.begin() + LoadPartNumberPointerFieldOffsetV2,
     loadPartNumberPtr);
 
   uint32_t targetHardwareIdListPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + ThwIdsPointerFieldOffset,
+    rawFile.begin() + ThwIdsPointerFieldOffsetV2,
     targetHardwareIdListPtr);
 
   uint32_t dataFileListPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + DataFilesPointerFieldOffset,
+    rawFile.begin() + DataFilesPointerFieldOffsetV2,
     dataFileListPtr);
 
   uint32_t supportFileListPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + SupportFilesPointerFieldOffset,
+    rawFile.begin() + SupportFilesPointerFieldOffsetV2,
     supportFileListPtr);
 
   uint32_t userDefinedDataPtr{};
   Helper::getInt< uint32_t>(
-    rawFile.begin() + UserDefinedDataPointerFieldOffset,
+    rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
     userDefinedDataPtr);
 
   uint32_t loadTypeDescriptionPtr = 0;
@@ -585,15 +585,15 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
   if (decodeV3Data)
   {
     Helper::getInt< uint32_t>(
-      rawFile.begin() + LoadTypeDescriptionPointerFieldOffset,
+      rawFile.begin() + LoadTypeDescriptionPointerFieldOffsetV3,
       loadTypeDescriptionPtr);
 
     Helper::getInt< uint32_t>(
-      rawFile.begin() + ThwIdPositionsPointerFieldOffset,
+      rawFile.begin() + ThwIdPositionsPointerFieldOffsetV3,
       thwIdsPositionPtr);
 
     Helper::getInt< uint32_t>(
-      rawFile.begin() + LoadCheckValuePointerFieldOffset,
+      rawFile.begin() + LoadCheckValuePointerFieldOffsetV3,
       loadCheckValuePtr);
   }
 

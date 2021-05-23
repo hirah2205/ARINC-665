@@ -314,10 +314,10 @@ class Arinc665File
      *
      * @param[in] other
      **/
-    Arinc665File( const Arinc665File &other) noexcept = default;
+    Arinc665File( const Arinc665File &other ) noexcept = default;
 
     //! @copydoc Arinc665File(const Arinc665File&)
-    Arinc665File( Arinc665File &&other) noexcept = default;
+    Arinc665File( Arinc665File &&other ) noexcept = default;
 
     /**
      * @brief Assignment operator
@@ -327,10 +327,10 @@ class Arinc665File
      *
      * @return *this
      **/
-    Arinc665File& operator=( const Arinc665File &other) noexcept;
+    Arinc665File& operator=( const Arinc665File &other ) noexcept;
 
     //! @copydoc operator=(const Arinc665File&)
-    Arinc665File& operator=( Arinc665File &&other) noexcept;
+    Arinc665File& operator=( Arinc665File &&other ) noexcept;
 
     /**
      * @brief Encodes the ARINC 665 file as raw data.
@@ -371,7 +371,7 @@ class Arinc665File
     //! checksum position
     const ptrdiff_t checksumPosition;
     //! ARINC 665 Version
-    SupportedArinc665Version arinc665VersionValue;
+    SupportedArinc665Version arinc665VersionV;
 };
 
 }
