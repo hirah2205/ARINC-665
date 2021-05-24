@@ -251,4 +251,24 @@ static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet)
         << supportFile.second << "\n";
     }
   }
+
+  // iterate over Batches
+  std::cout << " * Batches " << "\n";
+
+  for ( auto const &batch : mediaSet->batches())
+  {
+    std::cout
+      << "   * Batch " << batch->name() << " " << batch->partNumber() << " " << batch->comment() << "\n";
+
+    std::cout << "       Targets\n";
+    // iterate over Target list
+    for ( auto const & [target,loads] : batch->targets())
+    {
+      std::cout << "        * " << target << "\n";
+      for ( const auto &load : loads )
+      {
+        std::cout << "          * " << load.lock()->name() << "\n";
+      }
+    }
+  }
 }

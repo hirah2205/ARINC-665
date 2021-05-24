@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665::Utils::Arinc665XmlPugiXmlImpl.
+ * @brief Definition of Class Arinc665::Utils::Arinc665XmlImpl.
  **/
 
 #include "Arinc665XmlImpl.hpp"
@@ -34,7 +34,7 @@ namespace Arinc665::Utils {
  * @param[in] str
  *   GLib String.
  *
- * @return steing view of @p str.
+ * @return string view of @p str.
  **/
 static std::string_view toStringView( const Glib::ustring &str );
 

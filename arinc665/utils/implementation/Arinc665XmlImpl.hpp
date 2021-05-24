@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Utils::Arinc665XmlPugiXmlImpl.
+ * @brief Declaration of Class Arinc665::Utils::Arinc665XmlImpl.
  **/
 
 #ifndef ARINC665_UTILS_ARINC665XMLPUGIXMLIMPL_HPP
@@ -21,8 +21,8 @@
 namespace Arinc665::Utils {
 
 /**
-* @brief Handles the representation of Media Sets as XML file.
-**/
+ * @brief Handles the representation of Media Sets as XML file.
+ **/
 class Arinc665XmlImpl: public Arinc665Xml
 {
   public:
