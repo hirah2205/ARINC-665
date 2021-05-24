@@ -6,12 +6,39 @@
   xmlns="http://www.w3.org/2001/XMLSchema"
   xmlns:ams="http://www.thomas-vogt.de/Arinc665MediaSet" >
 
-  <element name="MediaSet" type="ams:MediaSetType" />
+  <element name="MediaSet" type="ams:MediaSetType" >
+    <key name="FileKey" >
+      <selector xpath="ams:File|ams:LoadFile|ams:BatchFile" />
+      <field    xpath="@Name" />
+    </key>
+    <key name="LoadKey" >
+      <selector xpath="ams:LoadFile" />
+      <field    xpath="@Name" />
+    </key>
+    <key name="BatchKey" >
+      <selector xpath="ams:BatchFile" />
+      <field    xpath="@Name" />
+    </key>
+    <keyref name="FileRef" refer="ams:FileKey" >
+      <selector xpath="ams:DataFile|ams:SupportFile" />
+      <field    xpath="@NameRef" />
+    </keyref>
+    <keyref name="LoadRef" refer="ams:LoadKey" >
+      <selector xpath="ams:Load" />
+      <field    xpath="@NameRef" />
+    </keyref>
+    <keyref name="BatchRef" refer="ams:BatchKey" >
+      <selector xpath="ams:Batch" />
+      <field    xpath="@NameRef" />
+    </keyref>
+  </element>
 
-  <element name="Medium"   type="ams:MediumType" />
+  <element name="Medium"   type="ams:MediumType" >
+  </element>
 
   <element name="Loads"    type="ams:LoadsType" />
-  <element name="Load"     type="ams:LoadType" />
+  <element name="Load"     type="ams:LoadType" >
+  </element>
 
   <element name="Batches"  type="ams:BatchesType" />
   <element name="Batch"    type="ams:BatchType" />
@@ -53,7 +80,6 @@
     <complexContent>
       <restriction base="ams:BaseFileType" >
         <attribute name="Name"            type="ams:NameType"        use="required" />
-        <attribute name="PartNumber"      type="ams:PartNumberType"  use="required" />
         <attribute name="SourcePath"      type="string"              use="optional" />
       </restriction>
     </complexContent>
@@ -63,7 +89,6 @@
     <complexContent>
       <restriction base="ams:BaseFileType" >
         <attribute name="Name"       type="ams:NameType"       use="required" />
-        <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
         <attribute name="SourcePath" type="string"             use="optional" />
       </restriction>
     </complexContent>
@@ -92,9 +117,10 @@
       <element name="SupportFile"     type="ams:FileReferenceType"   minOccurs="0" maxOccurs="unbounded" />
       <element name="UserDefinedData" type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
     </sequence>
-    <attribute name="NameRef"     type="IDREF"            use="required" />
-    <attribute name="Description" type="ams:StringType"   use="optional" />
-    <attribute name="Type"        type="ams:HexValueType" use="optional" default="0x0000"/>
+    <attribute name="NameRef"     type="ams:NameRefType"    use="required" />
+    <attribute name="PartNumber"  type="ams:PartNumberType" use="required" />
+    <attribute name="Description" type="ams:StringType"     use="optional" />
+    <attribute name="Type"        type="ams:HexValueType"   use="optional" default="0x0000"/>
   </complexType>
 
   <complexType name="TargetHardwareType" >
@@ -109,7 +135,7 @@
   </complexType>
 
   <complexType name="FileReferenceType" >
-    <attribute name="NameRef"    type="IDREF"              use="required" />
+    <attribute name="NameRef"    type="ams:StringType"     use="required" />
     <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
   </complexType>
 
@@ -127,8 +153,9 @@
     <sequence>
       <element name="Target" type="ams:BatchTargetType" minOccurs="1" maxOccurs="unbounded" />
     </sequence>
-    <attribute name="NameRef" type="IDREF"          use="required" />
-    <attribute name="Comment" type="ams:StringType" use="optional" />
+    <attribute name="NameRef"    type="ams:NameRefType"    use="required" />
+    <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
+    <attribute name="Comment"    type="ams:StringType"     use="optional" />
   </complexType>
 
   <complexType name="BatchTargetType" >
@@ -139,7 +166,7 @@
   </complexType>
 
   <complexType name="LoadReferenceType" >
-    <attribute name="NameRef" type="IDREF" use="required" />
+    <attribute name="NameRef" type="ams:NameRefType" use="required" />
   </complexType>
 
   <simpleType name="UserDefinedDataType" >
@@ -147,7 +174,7 @@
       User Defined Data, which can be part of Load Files.
       Additionally, it can be added to File, Batches and Load Lists.
     </documentation></annotation>
-    <restriction base="anyType" />
+    <restriction base="string" />
   </simpleType>
 
   <simpleType name="PartNumberType" >
@@ -159,7 +186,12 @@
   </simpleType>
 
   <simpleType name="NameType" >
-    <restriction base="ID" >
+    <restriction base="ams:StringType" >
+    </restriction>
+  </simpleType>
+
+  <simpleType name="NameRefType" >
+    <restriction base="ams:StringType" >
     </restriction>
   </simpleType>
 

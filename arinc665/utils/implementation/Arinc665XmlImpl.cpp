@@ -351,16 +351,7 @@ void Arinc665XmlImpl::loadEntries(
     }
     else if ( entryNode->get_name() == "LoadFile"s )
     {
-      const auto partNumber{ entryElement->get_attribute_value( "PartNumber" ) };
-
-      if ( partNumber.empty() )
-      {
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-           << Helper::AdditionalInfo{ "Load Part Number Missing" } );
-      }
-
       auto load{ current->addLoad( toStringView( filename ) ) };
-      load->partNumber( toStringView( partNumber ) );
 
       // set source path if attribute is present
       if ( !sourcePath.empty() )
@@ -370,16 +361,7 @@ void Arinc665XmlImpl::loadEntries(
     }
     else if ( entryNode->get_name() == "BatchFile"s )
     {
-      const auto partNumber{ entryElement->get_attribute_value( "PartNumber" ) };
-
-      if ( partNumber.empty() )
-      {
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{ "Batch Part Number Missing" } );
-      }
-
       auto batch{ current->addBatch( toStringView( filename ) ) };
-      batch->partNumber( toStringView( partNumber ) );
 
       // set source path if attribute is present
       if ( !sourcePath.empty() )
@@ -402,7 +384,7 @@ void Arinc665XmlImpl::saveEntries(
   xmlpp::Node &currentNode )
 {
   // iterate over sub-directories within container
-  for ( auto dirEntry : current->subDirectories() )
+  for ( const auto &dirEntry : current->subDirectories() )
   {
     auto directoryNode{ currentNode.add_child( "Directory" )};
 
@@ -410,7 +392,7 @@ void Arinc665XmlImpl::saveEntries(
   }
 
   // iterate over files within container
-  for ( auto fileEntry : current->files( false) )
+  for ( const auto &fileEntry : current->files( false) )
   {
     xmlpp::Element * fileNode{};
 
@@ -423,20 +405,12 @@ void Arinc665XmlImpl::saveEntries(
       case Media::BaseFile::FileType::LoadFile:
       {
         fileNode = currentNode.add_child( "LoadFile" );
-        auto load{ std::dynamic_pointer_cast< const Media::Load >( fileEntry ) };
-        assert( load );
-        // Add part number attribute
-        fileNode->set_attribute( "PartNumber", load->partNumber().data() );
         break;
       }
 
       case Media::BaseFile::FileType::BatchFile:
       {
         fileNode = currentNode.add_child( "BatchFile" );
-        auto batch{ std::dynamic_pointer_cast< const Media::Batch >( fileEntry ) };
-        assert( batch );
-        // Add part number attribute
-        fileNode->set_attribute( "PartNumber", batch->partNumber().data() );
         break;
       }
 
@@ -461,13 +435,20 @@ void Arinc665XmlImpl::loadLoad(
   const xmlpp::Element &loadElement )
 {
   const auto nameRef{ loadElement.get_attribute_value( "NameRef" ) };
+  const auto partNumber{ loadElement.get_attribute_value( "PartNumber" ) };
   const auto description{ loadElement.get_attribute_value( "Description" ) };
   const auto type{ loadElement.get_attribute_value( "Type" ) };
 
   if ( nameRef.empty() )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo( "NameRef attribute missing or empty"));
+      << Helper::AdditionalInfo{ "NameRef attribute missing or empty" } );
+  }
+
+  if ( partNumber.empty() )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "PartNumber attribute missing or empty" } );
   }
 
   auto load{ mediaSet->load( toStringView( nameRef ) ) };
@@ -477,6 +458,8 @@ void Arinc665XmlImpl::loadLoad(
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "NameRef attribute does not reference load" } );
   }
+
+  load->partNumber( toStringView( partNumber ) );
 
   // Load Type (Description + Type Value)
 
@@ -631,6 +614,8 @@ void Arinc665XmlImpl::saveLoad(
 {
   loadElement.set_attribute( "NameRef", load->name().data() );
 
+  loadElement.set_attribute( "PartNumber", load->partNumber().data() );
+
   // Optional Load Type (Description + Type Value)
   const auto &loadType{ load->loadType()};
 
@@ -687,12 +672,19 @@ void Arinc665XmlImpl::loadBatch(
   const xmlpp::Element &batchElement )
 {
   const auto nameRef{ batchElement.get_attribute_value( "NameRef" ) };
+  const auto partNumber{ batchElement.get_attribute_value( "PartNumber" ) };
   const auto comment{ batchElement.get_attribute_value( "Comment" ) };
 
   if ( nameRef.empty() )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo( "NameRef attribute missing or empty" ));
+      << Helper::AdditionalInfo{ "NameRef attribute missing or empty" } );
+  }
+
+  if ( partNumber.empty() )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "PartNumber attribute missing or empty" } );
   }
 
   auto batch{ mediaSet->batch( toStringView( nameRef ))};
@@ -703,6 +695,7 @@ void Arinc665XmlImpl::loadBatch(
       << Helper::AdditionalInfo( "NameRef attribute does not reference batch" ) );
   }
 
+  batch->partNumber( toStringView( partNumber ) );
   batch->comment( comment );
 
   // iterate over targets
@@ -715,7 +708,7 @@ void Arinc665XmlImpl::loadBatch(
         << Helper::AdditionalInfo( "Invalid Target Element" ) );
     }
 
-    const auto thwIdPos{ targetElement->get_attribute_value( "ThwIdPos" )};
+    const auto thwIdPos{ targetElement->get_attribute_value( "ThwIdPos" ) };
 
     Media::WeakLoads loads{};
 
@@ -759,6 +752,8 @@ void Arinc665XmlImpl::saveBatch(
 {
   batchElement.set_attribute( "NameRef", batch->name().data());
 
+  batchElement.set_attribute( "PartNumber", batch->partNumber().data() );
+
   // set optional comment
   if ( !batch->comment().empty())
   {
@@ -766,18 +761,18 @@ void Arinc665XmlImpl::saveBatch(
   }
 
   // Iterate over batch information
-  for ( const auto &target : batch->targets() )
+  for ( const auto &[thwIdPos,loads] : batch->targets() )
   {
-    auto targetElement{ batchElement.add_child( "Target" )};
+    auto targetElement{ batchElement.add_child( "Target" ) };
 
-    targetElement->set_attribute( "ThwIdPos", target.first );
+    targetElement->set_attribute( "ThwIdPos", thwIdPos );
 
     // iterate over loads
-    for ( auto load : target.second )
+    for ( const auto &load : loads )
     {
-      auto loadNode{ targetElement->add_child( "Load" )};
+      auto loadNode{ targetElement->add_child( "Load" ) };
 
-      loadNode->set_attribute( "NameRef", load.lock()->name().data());
+      loadNode->set_attribute( "NameRef", load.lock()->name().data() );
     }
   }
 }
