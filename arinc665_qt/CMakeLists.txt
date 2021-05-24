@@ -8,35 +8,48 @@ cmake_minimum_required( VERSION 3.18 )
 
 find_package( Qt5 COMPONENTS Widgets QUIET )
 
-if( TARGET Qt5::Widgets )
-
-  set( CMAKE_AUTOMOC ON )
-  set( CMAKE_AUTOUIC ON )
-
-  add_library( arinc665_qt )
-
-  target_sources(
-    arinc665_qt
-
-    PRIVATE
-      Arinc665Qt.hpp
-      Arinc665QtLogger.hpp
-      MediaSetController.hpp
-      MediaSetController.cpp
-      MediaSetDialog.hpp
-      MediaSetDialog.cpp
-      MediaSetDialog.ui )
-
-  target_include_directories( arinc665_qt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/.. )
-
-  target_compile_features( arinc665_qt PUBLIC cxx_std_20 )
-
-  target_link_libraries(
-    arinc665_qt
-
-    PUBLIC
-      arinc665
-      Qt5::Widgets )
-
-  add_subdirectory( media )
+if( NOT TARGET Qt5::Widgets )
+  return()
 endif()
+
+set( CMAKE_AUTOMOC ON )
+set( CMAKE_AUTOUIC ON )
+
+add_library( arinc665_qt )
+
+target_sources(
+  arinc665_qt
+
+  PRIVATE
+    Arinc665Qt.hpp
+    Arinc665QtLogger.hpp
+    MediaSetController.hpp
+    MediaSetController.cpp
+    MediaSetDialog.hpp
+    MediaSetDialog.cpp
+    MediaSetDialog.ui )
+
+target_include_directories( arinc665_qt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/.. )
+
+target_compile_features( arinc665_qt PUBLIC cxx_std_20 )
+
+target_link_libraries(
+  arinc665_qt
+
+  PUBLIC
+    arinc665
+    Qt5::Widgets )
+
+add_subdirectory( media )
+
+install(
+  TARGETS arinc665_qt
+  COMPONENT runtime
+  EXPORT arinc665_qt-config )
+
+install(
+  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  COMPONENT development
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  FILES_MATCHING
+  PATTERN "*.hpp" )

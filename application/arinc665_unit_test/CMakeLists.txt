@@ -6,8 +6,6 @@
 
 cmake_minimum_required( VERSION 3.18 )
 
-find_package( Boost REQUIRED )
-
 add_executable( arinc665_unit_test )
 
 target_sources( arinc665_unit_test PRIVATE arinc665_unit_test.cpp )

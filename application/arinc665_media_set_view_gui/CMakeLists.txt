@@ -8,23 +8,24 @@ cmake_minimum_required( VERSION 3.18 )
 
 find_package( Qt5Widgets QUIET )
 
-if( Qt5Widgets_FOUND )
+if( NOT Qt5Widgets_FOUND )
+  return()
+endif()
 
-  set( CMAKE_AUTOMOC ON )
+set( CMAKE_AUTOMOC ON )
 
-  add_executable( arinc665_media_set_view_qt WIN32 )
+add_executable( arinc665_media_set_view_gui WIN32 )
 
-  target_sources( arinc665_media_set_view_qt PRIVATE arinc665_media_set_view_gui.cpp )
+target_sources( arinc665_media_set_view_gui PRIVATE arinc665_media_set_view_gui.cpp )
 
-  target_link_libraries(
-    arinc665_media_set_view_qt
+target_link_libraries(
+  arinc665_media_set_view_gui
 
-    PRIVATE
-      arinc665_qt
-      Qt5::Widgets )
+  PRIVATE
+    arinc665_qt
+    Qt5::Widgets )
 
-  install(
-    TARGETS arinc665_media_set_view_qt
-    COMPONENT runtime )
+install(
+  TARGETS arinc665_media_set_view_gui
+  COMPONENT runtime )
 
-endif( Qt5Widgets_FOUND )

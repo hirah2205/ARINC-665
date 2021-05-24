@@ -133,7 +133,7 @@ void PartNumber::checkCheckCode( std::string_view checkCode) const
   if ( checkCode.size() != CheckCodeLength)
   {
     BOOST_THROW_EXCEPTION(Arinc665Exception()
-      << Helper::AdditionalInfo( "length of check code string invalid"));
+      << Helper::AdditionalInfo{ "length of check code string invalid" } );
   }
 
   // decode string to integer
