@@ -29,14 +29,14 @@
  * This library implements the ARINC 665 specification.
  * This library currently supports following supplements of ARINC 665:
  * - Supplement 2 (Full)
- * - Supplement 3/4 (Initially)
+ * - Supplement 3/4/5 (Initially)
  *
  * @par Referenced Documents
  * - ARINC Report 665-1: Loadable Software Standards; 2001-01-12
  * - ARINC Report 665-2: Loadable Software Standards; 2002-08-30
  * - ARINC Report 665-3: Loadable Software Standards; 2005-08-12
  * - ARINC Report 665-4: Loadable Software Standards; 2016-07-14
- * - ARINC Report 665-5: Loadable Software Standards; 2019
+ * - ARINC Report 665-5: Loadable Software Standards; 2019-08-13
  **/
 namespace Arinc665 {
 
@@ -51,6 +51,8 @@ enum class Arinc665Version
   Supplement3,
   //! ARINC 665 Supplement 4
   Supplement4,
+  //! ARINC 665 Supplement 5
+  Supplement5,
 
   Invalid
 };

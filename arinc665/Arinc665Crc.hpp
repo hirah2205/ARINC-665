@@ -29,7 +29,7 @@ using Arinc665Crc16 =
     Crc16Init,
     Crc16FinalXor,
     Crc16ReflectIn,
-    Crc16ReflectOut>;
+    Crc16ReflectOut >;
 
 //! ARINC 665 CRC 32 Definition
 using Arinc665Crc32 =
@@ -39,7 +39,7 @@ using Arinc665Crc32 =
     Crc32Init,
     Crc32FinalXor,
     Crc32ReflectIn,
-    Crc32ReflectOut>;
+    Crc32ReflectOut >;
 
 //! ARINC 665 CRC 64 Definition
 using Arinc665Crc64 =
@@ -49,10 +49,10 @@ using Arinc665Crc64 =
     Crc64Init,
     Crc64FinalXor,
     Crc64ReflectIn,
-    Crc64ReflectOut>;
+    Crc64ReflectOut >;
 
 //! Check Value Sizes Definition.
-extern const std::map< CheckValueType, uint16_t> CheckValueSize;
+extern const std::map< CheckValueType, uint16_t > CheckValueSize;
 
 }
 

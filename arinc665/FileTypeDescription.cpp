@@ -18,18 +18,18 @@ using namespace std::literals;
 
 FileTypeDescription::FileTypeDescription():
   Description{
-    { "BatchFile"sv,        FileType::BatchFile},
-    { "LoadUploadHeader"sv, FileType::LoadUploadHeader},
-    { "LoadList"sv,         FileType::LoadList},
-    { "BatchList"sv,        FileType::BatchList},
-    { "FileList"sv,         FileType::FileList},
+    { "BatchFile"sv,        FileType::BatchFile },
+    { "LoadUploadHeader"sv, FileType::LoadUploadHeader },
+    { "LoadList"sv,         FileType::LoadList },
+    { "BatchList"sv,        FileType::BatchList },
+    { "FileList"sv,         FileType::FileList },
   }
 {
 }
 
-std::ostream& operator<<( std::ostream &stream, const FileType fileType)
+std::ostream& operator<<( std::ostream &stream, const FileType fileType )
 {
-  return (stream << FileTypeDescription::instance().name( fileType));
+  return ( stream << FileTypeDescription::instance().name( fileType ) );
 }
 
 }

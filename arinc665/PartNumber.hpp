@@ -159,9 +159,9 @@ class PartNumber
     void checkCheckCode( std::string_view checkCode ) const;
 
     //! Manufacture Code
-    std::string manufacturerCodeValue;
+    std::string manufacturerCodeV;
     //! Product Identifier
-    std::string productIdentifierValue;
+    std::string productIdentifierV;
 };
 
 }

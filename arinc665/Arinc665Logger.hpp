@@ -25,7 +25,7 @@ namespace Arinc665 {
 BOOST_LOG_INLINE_GLOBAL_LOGGER_CTOR_ARGS(
   Arinc665Logger,
   Helper::ChannelSeverityLoggerMt,
-  (boost::log::keywords::channel = "Arinc665"))
+  (boost::log::keywords::channel = "Arinc665" ) )
 
 }
 

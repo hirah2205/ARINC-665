@@ -51,7 +51,7 @@ std::istream& operator>>(
   if ( SupportedArinc665Version::Invalid == version)
   {
     BOOST_THROW_EXCEPTION(
-      boost::program_options::invalid_option_value( versionStr));
+      boost::program_options::invalid_option_value( versionStr ) );
   }
 
   return stream;

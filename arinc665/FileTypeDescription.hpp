@@ -25,7 +25,7 @@ namespace Arinc665{
 class FileTypeDescription : public Helper::Description<
   FileTypeDescription,
   FileType,
-  FileType::Invalid>
+  FileType::Invalid >
 {
   public:
     //! Initialises Description
@@ -42,7 +42,7 @@ class FileTypeDescription : public Helper::Description<
  *
  * @return The stream for chaining.
  **/
-std::ostream& operator<<( std::ostream &stream, FileType fileType);
+std::ostream& operator<<( std::ostream &stream, FileType fileType );
 
 }
 
