@@ -18,6 +18,10 @@
     <Directory Name="Directory1" >
       <File Name="File2" SourcePath="File2" />
     </Directory>
+    <Directory Name="Directory2" >
+      <File Name="File3" SourcePath="File3" />
+      <File Name="File4" SourcePath="File4" />
+    </Directory>
     <File Name="Readme.txt" SourcePath="Readme.txt" />
     <BatchFile Name="Batch1.LUB" />
   </Medium>
@@ -31,7 +35,9 @@
       <TargetHardware ThwId="GHIJKL" />
 
       <DataFile    NameRef="File1" PartNumber="AABBCC1" />
+      <DataFile    NameRef="File3" PartNumber="AABBCC1" />
       <SupportFile NameRef="File2" PartNumber="AABBCC2" />
+      <SupportFile NameRef="File4" PartNumber="AABBCC2" />
 
       <UserDefinedData>TEST</UserDefinedData>
     </Load>
@@ -40,7 +46,9 @@
       <TargetHardware ThwId="GHIJKL" />
 
       <DataFile    NameRef="File1" PartNumber="AABBCC1" />
+      <DataFile    NameRef="File3" PartNumber="AABBCC1" />
       <SupportFile NameRef="File2" PartNumber="AABBCC2" />
+      <SupportFile NameRef="File4" PartNumber="AABBCC2" />
     </Load>
   </Loads>
 
