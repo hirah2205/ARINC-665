@@ -106,10 +106,10 @@ class BaseFile: public Base
      * @throw Arinc665Exception
      *   If parent is invalid
      **/
-    BaseFile( const ContainerEntityPtr& parent, std::string_view name);
+    BaseFile( const ContainerEntityPtr& parent, std::string_view name );
 
     //! @copydoc BaseFile::BaseFile(const ContainerEntityPtr&,std::string_view)
-    BaseFile( const ContainerEntityPtr& parent, std::string &&name);
+    BaseFile( const ContainerEntityPtr& parent, std::string &&name );
 
     /**
      * @brief Sets the parent element.

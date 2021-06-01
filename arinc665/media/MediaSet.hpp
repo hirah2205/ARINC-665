@@ -64,10 +64,10 @@ class MediaSet: public Base
      * @param[in] partNumber
      *   Part number
      **/
-    void partNumber( std::string_view partNumber);
+    void partNumber( std::string_view partNumber );
 
     //! @copydoc partNumber(std::string_view)
-    void partNumber( std::string &&partNumber);
+    void partNumber( std::string &&partNumber );
 
     /**
      * @brief Get the Number of Media within the Media Set.
@@ -109,7 +109,7 @@ class MediaSet: public Base
      *
      * @return Medium with the requested index.
      **/
-    ConstMediumPtr medium( uint8_t index) const;
+    ConstMediumPtr medium( uint8_t index ) const;
 
     /**
      * @brief Return the medium with the requested index.
@@ -119,7 +119,7 @@ class MediaSet: public Base
      *
      * @return Medium with the requested index.
      **/
-    MediumPtr medium( uint8_t index);
+    MediumPtr medium( uint8_t index );
 
     /**
      * @brief Adds an medium to the media set and returns the medium
@@ -135,7 +135,7 @@ class MediaSet: public Base
      *   Delete files, which are part of the not existing medium.
      *   Otherwise, they are moved to the first media.
      **/
-    void removeMedium( bool deleteFiles = false);
+    void removeMedium( bool deleteFiles = false );
 
     /**
      * @brief Return the total number of files within the media set.

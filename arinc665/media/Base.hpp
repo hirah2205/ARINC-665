@@ -44,7 +44,7 @@ class Base : public std::enable_shared_from_this< Base>
     /**
      * @brief Returns the Owning Media Set.
      *
-     * @return The owning media set
+     * @return Owning media set
      **/
     [[nodiscard]] virtual ConstMediaSetPtr mediaSet() const = 0;
 
@@ -54,7 +54,7 @@ class Base : public std::enable_shared_from_this< Base>
     /**
      * @brief Returns the Item Type.
      *
-     * @return The item type
+     * @return Item type
      **/
     [[nodiscard]] virtual Type type() const = 0;
 

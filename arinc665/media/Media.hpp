@@ -82,7 +82,7 @@ using ConstBaseFilePtr = std::shared_ptr< const BaseFile>;
 //! Pointer to BaseFile
 using BaseFilePtr = std::shared_ptr< BaseFile>;
 //! Files (List)
-using Files = std::list< BaseFilePtr>;
+using Files = std::list< BaseFilePtr >;
 //! Constant Files (List)
 using ConstFiles = std::list< ConstBaseFilePtr>;
 
