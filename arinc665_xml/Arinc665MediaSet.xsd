@@ -7,6 +7,9 @@
   xmlns:ams="http://www.thomas-vogt.de/Arinc665MediaSet" >
 
   <element name="MediaSet" type="ams:MediaSetType" >
+    <annotation><documentation>
+      Media Set Definition
+    </documentation></annotation>
     <key name="FileKey" >
       <selector xpath="ams:File|ams:LoadFile|ams:BatchFile" />
       <field    xpath="@Name" />
@@ -44,6 +47,9 @@
   <element name="Batch"    type="ams:BatchType" />
 
   <complexType name="MediaSetType" >
+    <annotation><documentation>
+      Media Set
+    </documentation></annotation>
     <sequence>
       <element name="FilesUserDefinedData"   type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
       <element name="LoadsUserDefinedData"   type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
@@ -57,17 +63,26 @@
   </complexType>
 
   <complexType name="MediumType" >
+    <annotation><documentation>
+      Medium
+    </documentation></annotation>
     <sequence>
       <group ref="ams:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
   </complexType>
 
-  <complexType name="BaseFileType" >
+  <complexType name="BaseFileType" abstract="true" >
+    <annotation><documentation>
+      Base of File
+    </documentation></annotation>
     <attribute name="Name"            type="ams:NameType"       use="required" />
     <attribute name="SourcePath"      type="string"             use="optional" />
   </complexType>
 
   <complexType name="FileType" >
+    <annotation><documentation>
+      Regular Data File.
+    </documentation></annotation>
     <complexContent>
       <restriction base="ams:BaseFileType">
         <attribute name="Name"            type="ams:NameType"        use="required" />
@@ -77,6 +92,9 @@
   </complexType>
 
   <complexType name="LoadFileType" >
+    <annotation><documentation>
+      Load Header File
+    </documentation></annotation>
     <complexContent>
       <restriction base="ams:BaseFileType" >
         <attribute name="Name"            type="ams:NameType"        use="required" />
@@ -86,6 +104,9 @@
   </complexType>
 
   <complexType name="BatchFileType" >
+    <annotation><documentation>
+      Batch File
+    </documentation></annotation>
     <complexContent>
       <restriction base="ams:BaseFileType" >
         <attribute name="Name"       type="ams:NameType"       use="required" />
@@ -95,6 +116,9 @@
   </complexType>
 
   <complexType name="DirectoryType" >
+    <annotation><documentation>
+      Directory within Media.
+    </documentation></annotation>
     <sequence>
       <group ref="ams:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
@@ -102,6 +126,9 @@
   </complexType>
 
   <complexType name="LoadsType" >
+    <annotation><documentation>
+      Loads Definition (all contained Loads)
+    </documentation></annotation>
     <sequence>
       <element ref="ams:Load" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
@@ -124,6 +151,9 @@
   </complexType>
 
   <complexType name="TargetHardwareType" >
+    <annotation><documentation>
+      Target Hardware Definition (Part of Load)
+    </documentation></annotation>
     <sequence>
       <element name="Position" type="ams:PositionType" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
@@ -131,16 +161,25 @@
   </complexType>
 
   <complexType name="PositionType" >
+    <annotation><documentation>
+      Target Position Information (Part of Load)
+    </documentation></annotation>
     <attribute name="Pos" type="ams:PosType" use="required" />
   </complexType>
 
   <complexType name="FileReferenceType" >
+    <annotation><documentation>
+      File Reference (part of Load)
+    </documentation></annotation>
     <attribute name="NameRef"    type="ams:StringType"     use="required" />
     <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
   </complexType>
 
 
   <complexType name="BatchesType" >
+    <annotation><documentation>
+      Batches Definition
+    </documentation></annotation>
     <sequence>
       <element ref="ams:Batch" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
@@ -159,13 +198,19 @@
   </complexType>
 
   <complexType name="BatchTargetType" >
-      <sequence>
+    <annotation><documentation>
+      Batch Target Definition
+    </documentation></annotation>
+    <sequence>
       <element name="Load" type="ams:LoadReferenceType" minOccurs="1" maxOccurs="unbounded" />
     </sequence>
     <attribute name="ThwIdPos" type="ams:TargetHardwareIdPosType" use="required" />
   </complexType>
 
   <complexType name="LoadReferenceType" >
+    <annotation><documentation>
+      References a Load contained in the Media Set
+    </documentation></annotation>
     <attribute name="NameRef" type="ams:NameRefType" use="required" />
   </complexType>
 
@@ -178,36 +223,60 @@
   </simpleType>
 
   <simpleType name="PartNumberType" >
+    <annotation><documentation>
+      Part Number of Media Set, Load, Batch, File
+    </documentation></annotation>
     <restriction base="string" />
   </simpleType>
 
   <simpleType name="StringType" >
+    <annotation><documentation>
+      String
+    </documentation></annotation>
     <restriction base="string" />
   </simpleType>
 
   <simpleType name="NameType" >
+    <annotation><documentation>
+      File Name
+    </documentation></annotation>
     <restriction base="ams:StringType" >
     </restriction>
   </simpleType>
 
   <simpleType name="NameRefType" >
+    <annotation><documentation>
+      File Name Reference
+    </documentation></annotation>
     <restriction base="ams:StringType" >
     </restriction>
   </simpleType>
 
   <simpleType name="TargetHardwareIdType" >
+    <annotation><documentation>
+      Target Hardware ID
+    </documentation></annotation>
     <restriction base="string" />
   </simpleType>
 
   <simpleType name="PosType" >
+    <annotation><documentation>
+      Target Position
+    </documentation></annotation>
     <restriction base="string" />
   </simpleType>
 
   <simpleType name="TargetHardwareIdPosType" >
+    <annotation><documentation>
+      Target Hardware ID - Position Information
+    </documentation></annotation>
     <restriction base="string" />
   </simpleType>
 
   <simpleType name="HexValueType" >
+    <annotation><documentation>
+      Hexadecimal Value
+    </documentation></annotation>
     <restriction base="string" >
       <minLength value="3" />
       <pattern value="0x([0-9a-fA-F])+" />
