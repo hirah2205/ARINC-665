@@ -45,13 +45,13 @@ class BatchInfo
     BatchInfo(
       std::string_view partNumber,
       std::string_view filename,
-      uint16_t memberSequenceNumber);
+      uint16_t memberSequenceNumber );
 
     //! @copydoc BatchInfo::BatchInfo(std::string_view,std::string_view,uint16_t)
     BatchInfo(
       std::string &&partNumber,
       std::string &&filename,
-      uint16_t memberSequenceNumber);
+      uint16_t memberSequenceNumber );
 
     /**
      * @brief Returns the Batch Part Number.
@@ -66,10 +66,10 @@ class BatchInfo
      * @param[in] partNumber
      *   Batch Part Number.
      **/
-    void partNumber( std::string_view partNumber);
+    void partNumber( std::string_view partNumber );
 
     //! @copydoc partNumber(std::string_view)
-    void partNumber( std::string &&partNumber);
+    void partNumber( std::string &&partNumber );
 
     /**
      * @brief Returns the Batch Filename.
@@ -84,10 +84,10 @@ class BatchInfo
      * @param[in] filename
      *   Btch Filename.
      **/
-    void filename( std::string_view filename);
+    void filename( std::string_view filename );
 
     //! @copydoc filename(std::string_view)
-    void filename( std::string &&filename);
+    void filename( std::string &&filename );
 
     /**
      * @brief Returns the Member Sequence Number.
@@ -102,80 +102,80 @@ class BatchInfo
      * @param[in] memberSequenceNumber
      *   Member sequence number.
      **/
-    void memberSequenceNumber( uint16_t memberSequenceNumber);
+    void memberSequenceNumber( uint16_t memberSequenceNumber );
 
     /**
      * @brief Compares batch info against each other
      *
      * @param[in] other
-     *   Right hand side, which should be compared with [this].
+     *   Right-hand side, which should be compared with @p this.
      *
-     * @return If [this] is equal to [other].
+     * @return @p this is equal to @p other.
      **/
-    bool operator ==( const BatchInfo &other) const;
+    bool operator ==( const BatchInfo &other ) const;
 
     /**
      * @brief Compares batch info against each other to be unequal.
      *
      * @param[in] other
-     *   Right hand side, which should be compared with [this].
+     *   Right-hand side, which should be compared with @p this.
      *
-     * @return If [this] is un-equal to [other].
+     * @return @p this is un-equal to @p other.
      **/
-    bool operator !=( const BatchInfo &other) const;
+    bool operator !=( const BatchInfo &other ) const;
 
     /**
      * @brief Compares batch info against file info.
      *
      * @param[in] other
-     *   Right hand side, which should be compared with [this].
+     *   Right-hand side, which should be compared with @p this.
      *
-     * @return If [this] is equal to [other].
+     * @return @p this is equal to @p other.
      **/
-    bool operator ==( const FileInfo &other) const;
+    bool operator ==( const FileInfo &other ) const;
 
     /**
      * @brief Compares batch info against file info to be unequal.
      *
      * @param[in] other
-     *   Right hand side, which should be compared with [this].
+     *   Right-hand side, which should be compared with @p this.
      *
-     * @return If [this] is un-equal to [other].
+     * @return @p this is un-equal to @p other.
      **/
     bool operator !=( const FileInfo &other) const;
 
   private:
     //! Part Number
-    std::string partNumberValue;
-    //! Filename
-    std::string filenameValue;
+    std::string partNumberV;
+    //! File Name
+    std::string filenameV;
     //! Member Sequence Number
-    uint16_t memberSequenceNumberValue;
+    uint16_t memberSequenceNumberV;
 };
 
 /**
  * @brief Compares batch info against file info.
  *
  * @param fileInfo
- *   File info, which should be compared with [batchInfo].
+ *   File info, which should be compared with @p batchInfo.
  * @param batchInfo
- *   Batch info, which should be compared with [fileInfo].
+ *   Batch info, which should be compared with @p fileInfo.
  *
- * @return If [fileInfo] is equal to [batchInfo].
+ * @return @p fileInfo is equal to @p batchInfo.
  **/
-bool operator==( const FileInfo &fileInfo, const BatchInfo &batchInfo);
+bool operator==( const FileInfo &fileInfo, const BatchInfo &batchInfo );
 
 /**
  * @brief Compares batch info against file info.
  *
  * @param fileInfo
- *   File info, which should be compared with [batchInfo].
+ *   File info, which should be compared with @p batchInfo.
  * @param batchInfo
- *   Batch info, which should be compared with [fileInfo].
+ *   Batch info, which should be compared with @p fileInfo.
  *
- * @return If [fileInfo] is un-equal to [batchInfo].
+ * @return @p fileInfo is un-equal to @p batchInfo.
  **/
-bool operator!=( const FileInfo &fileInfo, const BatchInfo &batchInfo);
+bool operator!=( const FileInfo &fileInfo, const BatchInfo &batchInfo );
 
 }
 

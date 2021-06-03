@@ -42,12 +42,12 @@ class BatchLoadInfo
      **/
     BatchLoadInfo(
       std::string_view headerFilename,
-      std::string_view partNumber);
+      std::string_view partNumber );
 
     //! @copydoc BatchLoadInfo::BatchLoadInfo(std::string_view,std::string_view)
     BatchLoadInfo(
       std::string &&headerFilename,
-      std::string &&partNumber);
+      std::string &&partNumber );
 
     /**
      * @brief Returns the load header filename.

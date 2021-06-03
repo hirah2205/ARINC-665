@@ -42,12 +42,12 @@ class BatchTargetInfo
      **/
     BatchTargetInfo(
       std::string_view targetHardwareIdPosition,
-      const BatchLoadsInfo &loads);
+      const BatchLoadsInfo &loads );
 
     //! @copydoc BatchTargetInfo::BatchTargetInfo(std::string_view,const BatchLoadsInfo&)
     BatchTargetInfo(
       std::string &&targetHardwareIdPosition,
-      BatchLoadsInfo &&loads);
+      BatchLoadsInfo &&loads );
 
     /**
      * @brief Returns the Target Hardware ID + Position for this batch
@@ -63,10 +63,10 @@ class BatchTargetInfo
      * @param[in] targetHardwareIdPosition
      *   The target hardware ID (THW ID)
      **/
-    void targetHardwareIdPosition( std::string_view targetHardwareIdPosition);
+    void targetHardwareIdPosition( std::string_view targetHardwareIdPosition );
 
     //! @copydoc targetHardwareIdPosition(std::string_view)
-    void targetHardwareIdPosition( std::string &&targetHardwareIdPosition);
+    void targetHardwareIdPosition( std::string &&targetHardwareIdPosition );
 
     /**
      * @brief Returns the list of available loads for this target hardware.
@@ -88,10 +88,10 @@ class BatchTargetInfo
      * @param[in] loads
      *   Batch loads information.
      **/
-    void loads( const BatchLoadsInfo &loads);
+    void loads( const BatchLoadsInfo &loads );
 
     //! @copydoc loads(const BatchLoadsInfo&)
-    void loads( BatchLoadsInfo &&loads);
+    void loads( BatchLoadsInfo &&loads );
 
     /**
      * @brief Adds a load.
@@ -99,10 +99,10 @@ class BatchTargetInfo
      * @param[in] load
      *   The load.
      **/
-    void load( const BatchLoadInfo &load);
+    void load( const BatchLoadInfo &load );
 
     //! @copydoc load(const BatchLoadInfo&)
-    void load( BatchLoadInfo &&load);
+    void load( BatchLoadInfo &&load );
 
   private:
     //! Target hardware id

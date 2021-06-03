@@ -20,9 +20,8 @@ BatchInfo::BatchInfo(
   std::string_view partNumber,
   std::string_view filename,
   uint16_t memberSequenceNumber):
-  partNumberValue{ partNumber},
-  filenameValue{ filename},
-  memberSequenceNumberValue{ memberSequenceNumber}
+  partNumberV{ partNumber},
+  filenameV{ filename}, memberSequenceNumberV{ memberSequenceNumber}
 {
 }
 
@@ -30,58 +29,57 @@ BatchInfo::BatchInfo(
   std::string &&partNumber,
   std::string &&filename,
   uint16_t memberSequenceNumber):
-  partNumberValue{ partNumber},
-  filenameValue{ filename},
-  memberSequenceNumberValue{ memberSequenceNumber}
+  partNumberV{ partNumber},
+  filenameV{ filename}, memberSequenceNumberV{ memberSequenceNumber}
 {
 }
 
 std::string_view BatchInfo::partNumber() const
 {
-  return partNumberValue;
+  return partNumberV;
 }
 
 void BatchInfo::partNumber( std::string_view partNumber)
 {
-  partNumberValue = partNumber;
+  partNumberV = partNumber;
 }
 
 void BatchInfo::partNumber( std::string &&partNumber)
 {
-  partNumberValue = std::move( partNumber);
+  partNumberV = std::move( partNumber);
 }
 
 std::string_view BatchInfo::filename() const
 {
-  return filenameValue;
+  return filenameV;
 }
 
 void BatchInfo::filename( std::string_view filename)
 {
-  filenameValue = filename;
+  filenameV = filename;
 }
 
 void BatchInfo::filename( std::string &&filename)
 {
-  filenameValue = std::move( filename);
+  filenameV = std::move( filename);
 }
 
 uint16_t BatchInfo::memberSequenceNumber() const
 {
-  return memberSequenceNumberValue;
+  return memberSequenceNumberV;
 }
 
 void BatchInfo::memberSequenceNumber( const uint16_t memberSequenceNumber)
 {
-  memberSequenceNumberValue = memberSequenceNumber;
+  memberSequenceNumberV = memberSequenceNumber;
 }
 
 bool BatchInfo::operator ==( const BatchInfo &other) const
 {
   return
-    (partNumberValue == other.partNumber()) &&
-    (filenameValue == other.filename()) &&
-    (memberSequenceNumberValue == other.memberSequenceNumber());
+    ( partNumberV == other.partNumber()) &&
+    ( filenameV == other.filename()) &&
+    ( memberSequenceNumberV == other.memberSequenceNumber());
 }
 
 bool BatchInfo::operator !=( const BatchInfo &other) const
@@ -92,8 +90,8 @@ bool BatchInfo::operator !=( const BatchInfo &other) const
 bool BatchInfo::operator ==( const FileInfo &other) const
 {
   return
-    (filenameValue == other.filename()) &&
-    (memberSequenceNumberValue == other.memberSequenceNumber());
+    ( filenameV == other.filename()) &&
+    ( memberSequenceNumberV == other.memberSequenceNumber());
 }
 
 bool BatchInfo::operator !=( const FileInfo &other) const

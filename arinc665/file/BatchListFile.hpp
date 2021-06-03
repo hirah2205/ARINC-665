@@ -19,7 +19,6 @@
 
 #include <list>
 #include <vector>
-#include <map>
 
 namespace Arinc665::File {
 
@@ -144,22 +143,22 @@ class BatchListFile: public ListFile
     [[nodiscard]] std::string_view mediaSetPn() const final;
 
     //! @copydoc ListFile::mediaSetPn(std::string_view)
-    void mediaSetPn( std::string_view mediaSetPn) final;
+    void mediaSetPn( std::string_view mediaSetPn ) final;
 
     //! @copydoc ListFile::mediaSetPn(std::string&&)
-    void mediaSetPn( std::string &&mediaSetPn) final;
+    void mediaSetPn( std::string &&mediaSetPn ) final;
 
     //! @copydoc ListFile::mediaSequenceNumber() const
     [[nodiscard]] uint8_t mediaSequenceNumber() const final;
 
     //! @copydoc ListFile::mediaSequenceNumber(uint8_t)
-    void mediaSequenceNumber( uint8_t mediaSequenceNumber) final;
+    void mediaSequenceNumber( uint8_t mediaSequenceNumber ) final;
 
     //! @copydoc ListFile::numberOfMediaSetMembers() const
     [[nodiscard]] uint8_t numberOfMediaSetMembers() const final;
 
     //! @copydoc ListFile::numberOfMediaSetMembers(uint8_t)
-    void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) final;
+    void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers ) final;
 
     /**
      * @brief Return the Number of Batches.
