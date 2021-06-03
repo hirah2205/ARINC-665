@@ -19,8 +19,8 @@
 
 #include <string>
 #include <list>
-#include <map>
 #include <vector>
+#include <utility>
 #include <optional>
 #include <cstdint>
 
@@ -36,7 +36,7 @@ class Load: public BaseFile
     using Files = std::list< std::pair< FilePtr::weak_type, std::string > >;
     //! Target Hardware ID / Positions
     using TargetHardwareIdPositions =
-      std::map< std::string, std::list< std::string > >;
+      std::list< std::pair< std::string, std::list< std::string > > >;
     //! Target Hardware ID List
     using TargetHardwareIds = std::list< std::string >;
     //! Positions List
@@ -86,7 +86,8 @@ class Load: public BaseFile
      *
      * @return The list of Target HW IDs.
      **/
-    [[nodiscard]] const TargetHardwareIdPositions& targetHardwareIdPositions() const;
+    [[nodiscard]] const TargetHardwareIdPositions&
+    targetHardwareIdPositions() const;
 
     //! @copydoc targetHardwareIdPositions() const
     TargetHardwareIdPositions& targetHardwareIdPositions();
@@ -117,7 +118,7 @@ class Load: public BaseFile
      * @param[in] thwIds
      *   The list of Target HW IDs.
      **/
-    void targetHardwareIds( const TargetHardwareIds &thwIds);
+    void targetHardwareIds( const TargetHardwareIds &thwIds );
 
     /**
      * @brief Adds a Target Hardware ID to the List of THW IDs.
@@ -153,6 +154,7 @@ class Load: public BaseFile
      **/
     void dataFile( const Files::value_type &file );
 
+    //! @copydoc dataFile(const Files::value_type&)
     void dataFile( Files::value_type &&file );
 
     /**
@@ -172,6 +174,7 @@ class Load: public BaseFile
      **/
     void supportFile( const Files::value_type &file );
 
+    //! @copydoc supportFile(const Files::value_type&)
     void supportFile( Files::value_type &&file );
 
     /**

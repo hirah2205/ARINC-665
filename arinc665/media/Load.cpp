@@ -75,12 +75,12 @@ Load::TargetHardwareIds Load::targetHardwareIds() const
   return thwIds;
 }
 
-void Load::targetHardwareIds( const TargetHardwareIds &thwIds)
+void Load::targetHardwareIds( const TargetHardwareIds &thwIds )
 {
-  for ( const auto &targetHardwareId : thwIds)
+  for ( const auto &targetHardwareId : thwIds )
   {
-    targetHardwareIdPositionsV.insert(
-      std::make_pair( targetHardwareId, Positions{}));
+    targetHardwareIdPositionsV.emplace_back(
+      std::make_pair( targetHardwareId, Positions{} ) );
   }
 }
 

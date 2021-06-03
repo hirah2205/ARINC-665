@@ -18,9 +18,9 @@
 #include <arinc665/file/LoadFileInfo.hpp>
 
 #include <string_view>
-#include <map>
 #include <list>
 #include <vector>
+#include <utility>
 #include <optional>
 #include <cstdint>
 
@@ -100,9 +100,9 @@ namespace Arinc665::File {
 class LoadHeaderFile: public Arinc665File
 {
   public:
-    //! Target Hardware ID -> Positions
+    //! Target Hardware ID + Positions
     using TargetHardwareIdPositions =
-      std::map< std::string, StringList >;
+      std::list< std::pair< std::string, StringList > >;
     //! User Defined Data
     using UserDefinedData = std::vector< uint8_t>;
     //! Load Type (Description + ID)

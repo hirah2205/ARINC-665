@@ -20,7 +20,6 @@
 #include <string_view>
 #include <string>
 #include <vector>
-#include <map>
 #include <cstdint>
 
 namespace Arinc665::File {
@@ -65,9 +64,6 @@ namespace Arinc665::File {
 class FileListFile: public ListFile
 {
   public:
-    //! Maps media <sequence number, file path> to File Info
-    using FileInfoPathMap =
-      std::map< std::pair< uint8_t, std::filesystem::path>, FileInfo>;
     //! User Defined Data Type
     using UserDefinedData = std::vector< uint8_t>;
 

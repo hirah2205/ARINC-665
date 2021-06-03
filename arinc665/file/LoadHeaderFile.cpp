@@ -166,15 +166,15 @@ void LoadHeaderFile::targetHardwareId(
   std::string_view targetHardwareId,
   const StringList &positions)
 {
-  targetHardwareIdPositionsV.insert(
-    std::make_pair( targetHardwareId, positions));
+  targetHardwareIdPositionsV.emplace_back(
+    std::make_pair( targetHardwareId, positions) );
 }
 
 void LoadHeaderFile::targetHardwareId(
   std::string &&targetHardwareId,
   StringList &&positions)
 {
-  targetHardwareIdPositionsV.emplace(
+  targetHardwareIdPositionsV.emplace_back(
     std::make_pair( std::move( targetHardwareId), std::move( positions)));
 }
 
@@ -642,9 +642,9 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
       StringList positions;
       it = decodeStringList( it, positions);
 
-      targetHardwareIdPositionsV.insert_or_assign(
-        std::move( thwId),
-        std::move( positions));
+      targetHardwareIdPositionsV.emplace_back(
+        std::move( thwId ),
+        std::move( positions ) );
     }
   }
 
