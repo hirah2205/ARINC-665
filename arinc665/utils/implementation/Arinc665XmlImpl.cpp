@@ -115,9 +115,9 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
   mediaSet->partNumber( partNumber );
 
   const auto filesUserDefinedDataNode = dynamic_cast< const xmlpp::Element*>(
-    mediaSetElement.get_first_child( "FilesUserDefinedData" ));
+    mediaSetElement.get_first_child( "FilesUserDefinedData" ) );
 
-  if ( nullptr != filesUserDefinedDataNode)
+  if ( nullptr != filesUserDefinedDataNode )
   {
     const auto userDefinedData{
       filesUserDefinedDataNode->get_child_text()->get_content() };
@@ -128,8 +128,8 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
   }
 
   const auto loadsUserDefinedDataNode = dynamic_cast< const xmlpp::Element *>(
-    mediaSetElement.get_first_child( "LoadsUserDefinedData" ));
-  if ( nullptr != loadsUserDefinedDataNode)
+    mediaSetElement.get_first_child( "LoadsUserDefinedData" ) );
+  if ( nullptr != loadsUserDefinedDataNode )
   {
     const auto userDefinedData{
       loadsUserDefinedDataNode->get_child_text()->get_content() };
@@ -140,15 +140,15 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
   }
 
   const auto batchesUserDefinedDataNode = dynamic_cast< const xmlpp::Element*>(
-      mediaSetElement.get_first_child( "BatchesUserDefinedData"));
-  if ( nullptr != batchesUserDefinedDataNode)
+      mediaSetElement.get_first_child( "BatchesUserDefinedData") );
+  if ( nullptr != batchesUserDefinedDataNode )
   {
     const auto userDefinedData{
       batchesUserDefinedDataNode->get_child_text()->get_content() };
     mediaSet->batchesUserDefinedData(
       Arinc665::Media::MediaSet::UserDefinedData{
         userDefinedData.begin(),
-        userDefinedData.end()});
+        userDefinedData.end() } );
   }
 
   // iterate over media
@@ -326,7 +326,7 @@ void Arinc665XmlImpl::loadEntries(
     // iterate recursively over directories
     if ( entryNode->get_name() == "Directory"s )
     {
-      loadDirectory( current, filePathMapping, *entryElement);
+      loadDirectory( current, filePathMapping, *entryElement );
       continue;
     }
 

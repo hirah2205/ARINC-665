@@ -120,7 +120,7 @@
     <attribute name="NameRef"     type="ams:NameRefType"    use="required" />
     <attribute name="PartNumber"  type="ams:PartNumberType" use="required" />
     <attribute name="Description" type="ams:StringType"     use="optional" />
-    <attribute name="Type"        type="ams:HexValueType"   use="optional" default="0x0000"/>
+    <attribute name="Type"        type="ams:HexValueType"   use="optional" default="0x0000" />
   </complexType>
 
   <complexType name="TargetHardwareType" >
@@ -178,11 +178,11 @@
   </simpleType>
 
   <simpleType name="PartNumberType" >
-    <restriction base="string"></restriction>
+    <restriction base="string" />
   </simpleType>
 
   <simpleType name="StringType" >
-    <restriction base="string"></restriction>
+    <restriction base="string" />
   </simpleType>
 
   <simpleType name="NameType" >
@@ -196,21 +196,21 @@
   </simpleType>
 
   <simpleType name="TargetHardwareIdType" >
-    <restriction base="string"></restriction>
+    <restriction base="string" />
   </simpleType>
 
   <simpleType name="PosType" >
-    <restriction base="string"></restriction>
+    <restriction base="string" />
   </simpleType>
 
   <simpleType name="TargetHardwareIdPosType" >
-    <restriction base="string"></restriction>
+    <restriction base="string" />
   </simpleType>
 
   <simpleType name="HexValueType" >
     <restriction base="string" >
-      <minLength value="3"></minLength>
-      <pattern value="0x([0-9a-fA-F])+"></pattern>
+      <minLength value="3" />
+      <pattern value="0x([0-9a-fA-F])+" />
     </restriction>
   </simpleType>
 
