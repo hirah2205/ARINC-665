@@ -883,8 +883,8 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
         listIt = Helper::getInt< uint64_t>( listIt, fileLengthInBytes );
 
         // check length fields for consistency
-        if ( ( fileLengthInBytes / 2 ) <= std::numeric_limits< uint32_t >::max()
-          && ( length != ( static_cast< uint32_t >( fileLengthInBytes / 2 ) ) ) )
+        if ( ( ( fileLengthInBytes + 1 ) / 2 ) <= std::numeric_limits< uint32_t >::max()
+          && ( length != ( static_cast< uint32_t >( (fileLengthInBytes + 1) / 2 ) ) ) )
         {
           BOOST_THROW_EXCEPTION( Arinc665Exception()
             << Helper::AdditionalInfo{ "Inconsistent length fields" } );
