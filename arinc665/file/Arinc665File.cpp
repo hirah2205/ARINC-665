@@ -460,14 +460,14 @@ void Arinc665File::insertHeader( const RawFileSpan &rawFile) const
   if ( rawFile.size() <= ( BaseHeaderSize + sizeof( uint16_t ) ) )
   {
     BOOST_THROW_EXCEPTION(
-      InvalidArinc665File() << Helper::AdditionalInfo( "File to small" ) );
+      InvalidArinc665File() << Helper::AdditionalInfo{ "File to small" } );
   }
 
   // Check file size
   if ( rawFile.size() % 2 != 0 )
   {
     BOOST_THROW_EXCEPTION(
-      InvalidArinc665File() << Helper::AdditionalInfo( "Invalid size" ) );
+      InvalidArinc665File() << Helper::AdditionalInfo{ "Invalid size" } );
   }
 
   // file size
