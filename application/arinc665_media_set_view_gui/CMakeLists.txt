@@ -6,9 +6,8 @@
 
 cmake_minimum_required( VERSION 3.18 )
 
-find_package( Qt5Widgets QUIET )
-
-if( NOT Qt5Widgets_FOUND )
+# skip app when arinc665_qt is not avialable
+if( NOT TARGET arinc665_qt )
   return()
 endif()
 
@@ -22,10 +21,8 @@ target_link_libraries(
   arinc665_media_set_view_gui
 
   PRIVATE
-    arinc665_qt
-    Qt5::Widgets )
+    arinc665_qt )
 
 install(
   TARGETS arinc665_media_set_view_gui
   COMPONENT runtime )
-
