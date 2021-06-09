@@ -29,7 +29,7 @@ class Batch: public BaseFile
 {
   public:
     //! Batch Information (Target Hardware ID -> Loads)
-    using BatchInfo = std::map< std::string, WeakLoads, std::less<>>;
+    using BatchInfo = std::map< std::string, WeakLoads, std::less<> >;
 
     /**
      * @brief Initialises the batch with the given data.
@@ -39,10 +39,10 @@ class Batch: public BaseFile
      * @param[in] name
      *   Name of the batch.
      **/
-    Batch( const ContainerEntityPtr& parent, std::string_view name);
+    Batch( const ContainerEntityPtr& parent, std::string_view name );
 
     //! @copydoc Batch(const ContainerEntityPtr&,std::string_view)
-    Batch( const ContainerEntityPtr& parent, std::string &&name);
+    Batch( const ContainerEntityPtr& parent, std::string &&name );
 
     /**
      * @copydoc BaseFile::fileType()

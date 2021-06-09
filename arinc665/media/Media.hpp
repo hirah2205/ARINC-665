@@ -53,23 +53,23 @@ using ContainerEntityPtr = std::shared_ptr< ContainerEntity>;
 
 class Medium;
 //! Constant Medium Pointer
-using ConstMediumPtr = std::shared_ptr< const Medium>;
+using ConstMediumPtr = std::shared_ptr< const Medium >;
 //! Medium Pointer
-using MediumPtr = std::shared_ptr< Medium>;
+using MediumPtr = std::shared_ptr< Medium >;
 //! Media
-using Media = std::map< uint8_t, MediumPtr>;
+using Media = std::map< uint8_t, MediumPtr >;
 //! Const Media
-using ConstMedia = std::map< uint8_t, ConstMediumPtr>;
+using ConstMedia = std::map< uint8_t, ConstMediumPtr >;
 
 class Directory;
 //! Constant Directory Pointer
-using ConstDirectoryPtr = std::shared_ptr< const Directory>;
+using ConstDirectoryPtr = std::shared_ptr< const Directory >;
 //! Directory Pointer
-using DirectoryPtr = std::shared_ptr< Directory>;
+using DirectoryPtr = std::shared_ptr< Directory >;
 //! Constant Directories (List)
-using ConstDirectories = std::list< ConstDirectoryPtr>;
+using ConstDirectories = std::list< ConstDirectoryPtr >;
 //! Directories (List)
-using Directories = std::list< DirectoryPtr>;
+using Directories = std::list< DirectoryPtr >;
 
 class PartNumberEntity;
 class BaseFile;

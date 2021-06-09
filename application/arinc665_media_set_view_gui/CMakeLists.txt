@@ -6,12 +6,10 @@
 
 cmake_minimum_required( VERSION 3.18 )
 
-# skip app when arinc665_qt is not avialable
+# skip app when arinc665_qt is not available
 if( NOT TARGET arinc665_qt )
   return()
 endif()
-
-set( CMAKE_AUTOMOC ON )
 
 add_executable( arinc665_media_set_view_gui WIN32 )
 

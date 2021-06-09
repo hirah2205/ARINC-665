@@ -31,13 +31,13 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief Implementation of a ARINC 665 media set importer.
+ * @brief Implementation of a ARINC 665 Media Set Importer.
  */
 class MediaSetImporterImpl
 {
   public:
     /**
-     * @brief Initialises the ARINC 665 media set importer
+     * @brief Initialises the ARINC 665 Media Set Importer
      *
      * @param[in] readFileHandler
      *   Handler which is called to obtain the requested file from the medium.
@@ -49,7 +49,7 @@ class MediaSetImporterImpl
       bool checkFileIntegrity );
 
     /**
-     * @brief Entry-point of the ARINC 665 media set importer.
+     * @brief Entry-point of the ARINC 665 Media Set Importer.
      *
      * @return Created Media Set Instance.
      **/
@@ -60,7 +60,7 @@ class MediaSetImporterImpl
     using ContainerEntityPtr = std::shared_ptr< Media::ContainerEntity >;
 
     /**
-     * @brief Loads the information of the given medium
+     * @brief Loads the Information of the Given Medium.
      *
      * @param[in] mediumIndex
      *   Medium Index.
@@ -79,9 +79,9 @@ class MediaSetImporterImpl
      *   Medium Index.
      *
      * @throw Arinc665Exception
-     *   When FILES.LUM are inconsistent between media.
+     *   FILES.LUM are inconsistent between media.
      * @throw Arinc665Exception
-     *   When file CRCs does not match
+     *   File CRCs does not match
      **/
     void loadFileListFile( uint8_t mediumIndex );
 
@@ -91,10 +91,10 @@ class MediaSetImporterImpl
      * @param[in] mediumIndex
      *   Medium Index.
      *
-     *  @throw Arinc665Exception
-     *    When load header file is not found on the media set.
-     *  @throw Arinc665Exception
-     *    When LOADS.LUM files are inconsistent between media.
+     * @throw Arinc665Exception
+     *   Load header file is not found on the media set.
+     * @throw Arinc665Exception
+     *   LOADS.LUM files are inconsistent between media.
      **/
     void loadLoadListFile( uint8_t mediumIndex );
 
