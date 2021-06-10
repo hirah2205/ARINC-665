@@ -24,6 +24,7 @@ BOOST_AUTO_TEST_SUITE( Arinc665Test)
 BOOST_AUTO_TEST_SUITE( FileTest)
 BOOST_AUTO_TEST_SUITE( CheckValueUtilsTest)
 
+//! CheckValueUtils_encode Test
 BOOST_AUTO_TEST_CASE( CheckValueUtils_encode1)
 {
   BOOST_CHECK( CheckValueUtils_encode( {}) == RawFile({ 0x00, 0x00}));
@@ -33,6 +34,7 @@ BOOST_AUTO_TEST_CASE( CheckValueUtils_encode1)
       RawFile({ 0x12, 0x34}))) == RawFile({ 0x00, 0x06, 0x00, 0x01, 0x12, 0x34}));
 }
 
+//! CheckValueUtils_decode Test
 BOOST_AUTO_TEST_CASE( CheckValueUtils_decode1)
 {
   BOOST_CHECK( CheckValueUtils_decode( RawFile({ 0x00, 0x00}), 0) == std::optional< CheckValue>());

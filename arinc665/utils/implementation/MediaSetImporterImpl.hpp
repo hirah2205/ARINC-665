@@ -65,7 +65,7 @@ class MediaSetImporterImpl
      * @param[in] mediumIndex
      *   Medium Index.
      *
-     * return If last medium has been read
+     * @return If last medium has been read
      **/
     bool loadMedium( uint8_t mediumIndex );
 

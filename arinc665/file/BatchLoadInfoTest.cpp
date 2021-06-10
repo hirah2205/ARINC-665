@@ -26,6 +26,7 @@ BOOST_AUTO_TEST_SUITE( Arinc665Test)
 BOOST_AUTO_TEST_SUITE( FileTest)
 BOOST_AUTO_TEST_SUITE( BatchLoadInfoTest)
 
+//! ARINC 665 BatchLoadInfo Constructor Test
 BOOST_AUTO_TEST_CASE( constructor1)
 {
   using namespace std::string_view_literals;
@@ -34,6 +35,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( batchLoadInfo.partNumber() == "Partnumber1");
 }
 
+//! ARINC 665 BatchLoadInfo Constructor Test
 BOOST_AUTO_TEST_CASE( constructor2)
 {
   using namespace std::string_literals;
@@ -42,6 +44,7 @@ BOOST_AUTO_TEST_CASE( constructor2)
   BOOST_CHECK( batchLoadInfo.partNumber() == "Partnumber2");
 }
 
+//! ARINC 665 Batch File Header Filename Test
 BOOST_AUTO_TEST_CASE( headerFilename)
 {
   using namespace std::string_view_literals;
@@ -60,6 +63,7 @@ BOOST_AUTO_TEST_CASE( headerFilename)
   BOOST_CHECK( batchLoadInfo.partNumber().empty());
 }
 
+//! ARINC 665 Batch File Part Number Test
 BOOST_AUTO_TEST_CASE( partNumber)
 {
   using namespace std::string_view_literals;

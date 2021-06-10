@@ -81,6 +81,7 @@ BOOST_AUTO_TEST_CASE( testPartNumber2)
   BOOST_CHECK_THROW( (PartNumber{ "0123456789ABCDE"}), Arinc665Exception);
 }
 
+//! ARINC 665 Manufacturer Code Tests
 BOOST_AUTO_TEST_CASE( manufacturerCodeTest)
 {
   PartNumber pn{ "AAA", "12345678"};
@@ -102,6 +103,7 @@ BOOST_AUTO_TEST_CASE( manufacturerCodeTest)
   BOOST_CHECK( pn.manufacturerCode() == "BBB");
 }
 
+//! ARINC 665 Product Identifier Test
 BOOST_AUTO_TEST_CASE( productIdentifierTest)
 {
   PartNumber pn{ "ABC", "12345678"};
