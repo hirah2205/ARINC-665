@@ -9,28 +9,19 @@ cmake_minimum_required( VERSION 3.18 )
 find_package( Doxygen )
 find_package( Boost )
 
-if( NOT TARGET doc )
-  add_custom_target( doc COMMENT "Generate Documentation" )
-endif()
-
 if( NOT DOXYGEN_FOUND )
   return()
 endif()
 
 set( DOXYGEN_PROJECT_NAME "${arinc665_DESCRIPTION}" )
 set( DOXYGEN_PROJECT_BRIEF "${arinc665_DESCRIPTION}" )
-set( DOXYGEN_BUILTIN_STL_SUPPORT YES )
+set( DOXYGEN_PROJECT_NUMBER "${arinc665_VERSION}" )
+#set( DOXYGEN_BUILTIN_STL_SUPPORT YES )
 set( DOXYGEN_EXTRACT_PRIVATE YES )
 set( DOXYGEN_EXTRACT_PACKAGE YES )
 set( DOXYGEN_QUIET YES )
 set( DOXYGEN_WARN_NO_PARAMDOC YES )
 set( DOXYGEN_HTML_DYNAMIC_SECTIONS YES )
-
-set(
-  DOXYGEN_EXCLUDE_PATTERNS
-
-  *Test.*
-  */implementation/* )
 
 set(
   DOXYGEN_STRIP_FROM_PATH
@@ -47,9 +38,9 @@ set(
   ${arinc665_SOURCE_DIR} )
 
 doxygen_add_docs(
-  arinc665_api_doc
+  arinc665_internal_doc
 
-  Mainpage.md
+  ../Mainpage.md
   ${helper_SOURCE_DIR}/helper
   ${arinc665_SOURCE_DIR}/arinc665
   ${arinc665_SOURCE_DIR}/arinc665_qt
@@ -63,7 +54,7 @@ doxygen_add_docs(
   ${arinc665_SOURCE_DIR}/application/arinc665_unit_test
   ${arinc665_SOURCE_DIR}/application/arinc665_xml_print )
 
-add_dependencies( doc arinc665_api_doc )
+add_dependencies( doc arinc665_internal_doc )
 
 # add index.html redirection
 configure_file(
@@ -75,11 +66,11 @@ install(
   DIRECTORY
     ${CMAKE_CURRENT_BINARY_DIR}/html
   COMPONENT documentation
-  DESTINATION ${CMAKE_INSTALL_DOCDIR}/arinc665_api_doc
+  DESTINATION ${CMAKE_INSTALL_DOCDIR}/arinc665_internal_doc
   OPTIONAL )
 
 install(
   FILES ${CMAKE_CURRENT_BINARY_DIR}/index.html
   COMPONENT documentation
-  DESTINATION ${CMAKE_INSTALL_DOCDIR}/arinc665_api_doc
+  DESTINATION ${CMAKE_INSTALL_DOCDIR}/arinc665_internal_doc
   OPTIONAL )

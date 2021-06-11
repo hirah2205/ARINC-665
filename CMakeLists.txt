@@ -84,7 +84,7 @@ add_subdirectory( arinc665_xml )
 
 add_subdirectory( application )
 
-add_subdirectory( arinc665_api_doc )
+add_subdirectory( arinc665_doc )
 
 add_subdirectory( test )
 
