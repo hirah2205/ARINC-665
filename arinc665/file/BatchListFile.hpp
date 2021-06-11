@@ -183,15 +183,15 @@ class BatchListFile: public ListFile
      * @param[in] batch
      *   Batch Information.
      **/
-    void batch( const BatchInfo &batch);
+    void batch( const BatchInfo &batch) ;
 
     //! @copydoc batch(const BatchInfo&)
-    void batch( BatchInfo &&batch);
+    void batch( BatchInfo &&batch );
 
     /**
      * @brief Returns the User Defined Data.
      *
-     * @return User defined data.
+     * @return User Defined Data.
      **/
     [[nodiscard]] const UserDefinedData& userDefinedData() const;
 
@@ -201,10 +201,10 @@ class BatchListFile: public ListFile
      * @param[in] userDefinedData
      *   User Defined Data.
      **/
-    void userDefinedData( const UserDefinedData &userDefinedData);
+    void userDefinedData( const UserDefinedData &userDefinedData );
 
     //! @copydoc userDefinedData(const UserDefinedData&)
-    void userDefinedData( UserDefinedData &&userDefinedData);
+    void userDefinedData( UserDefinedData &&userDefinedData );
 
     /**
      * @brief Returns if the given batch list file belongs to the same media set.
@@ -214,7 +214,7 @@ class BatchListFile: public ListFile
      *
      * @return If the given batch list file belongs to the same media set.
      **/
-    [[nodiscard]] bool belongsToSameMediaSet( const BatchListFile &other) const;
+    [[nodiscard]] bool belongsToSameMediaSet( const BatchListFile &other ) const;
 
   private:
     //! @copydoc ListFile::encode
