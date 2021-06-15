@@ -122,21 +122,14 @@ add_subdirectory( file )
 add_subdirectory( media )
 add_subdirectory( utils )
 
-install(
-  TARGETS arinc665
-  COMPONENT runtime
-  EXPORT arinc665-config )
+install( TARGETS arinc665 EXPORT arinc665-config )
 
 install(
   DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  COMPONENT development
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  TYPE INCLUDE
   FILES_MATCHING
   PATTERN "*.hpp"
   PATTERN "*Test.*" EXCLUDE
   PATTERN "implementation" EXCLUDE )
 
-install(
-  EXPORT arinc665-config
-  COMPONENT development
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake )
+install( EXPORT arinc665-config DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake )

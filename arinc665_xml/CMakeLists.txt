@@ -10,5 +10,4 @@ install(
   FILES
     Arinc665MediaSet.xsd
     MediaSet.template.xml
-  COMPONENT runtime
   TYPE DOC )

@@ -42,14 +42,10 @@ target_link_libraries(
 
 add_subdirectory( media )
 
-install(
-  TARGETS arinc665_qt
-  COMPONENT runtime
-  EXPORT arinc665_qt-config )
+install( TARGETS arinc665_qt EXPORT arinc665_qt-config )
 
 install(
   DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  COMPONENT development
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  TYPE INCLUDE
   FILES_MATCHING
   PATTERN "*.hpp" )

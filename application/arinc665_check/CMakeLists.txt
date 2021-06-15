@@ -12,6 +12,4 @@ target_sources( arinc665_check PRIVATE arinc665_check.cpp )
 
 target_link_libraries( arinc665_check PRIVATE arinc665 )
 
-install(
-  TARGETS arinc665_check
-  COMPONENT runtime )
+install( TARGETS arinc665_check )

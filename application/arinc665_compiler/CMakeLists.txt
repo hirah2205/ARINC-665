@@ -12,6 +12,4 @@ target_sources( arinc665_compiler PRIVATE arinc665_compiler.cpp)
 
 target_link_libraries( arinc665_compiler PRIVATE arinc665 )
 
-install(
-  TARGETS arinc665_compiler
-  COMPONENT runtime )
+install( TARGETS arinc665_compiler )

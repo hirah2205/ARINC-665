@@ -21,6 +21,4 @@ target_link_libraries(
   PRIVATE
     arinc665_qt )
 
-install(
-  TARGETS arinc665_media_set_view_gui
-  COMPONENT runtime )
+install( TARGETS arinc665_media_set_view_gui )
