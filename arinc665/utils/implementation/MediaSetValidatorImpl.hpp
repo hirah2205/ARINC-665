@@ -19,7 +19,7 @@
 namespace Arinc665::Utils {
 
 //! ARINC 665 Media Set Validator.
-class MediaSetValidatorImpl
+class MediaSetValidatorImpl final
 {
   public:
     /**

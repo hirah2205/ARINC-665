@@ -25,7 +25,7 @@ namespace Arinc665 {
 class SupportedArinc665VersionDescription : public Helper::Description<
   SupportedArinc665VersionDescription,
   SupportedArinc665Version,
-  SupportedArinc665Version::Invalid>
+  SupportedArinc665Version::Invalid >
 {
   public:
     //! Initialises Description Values
@@ -36,28 +36,30 @@ class SupportedArinc665VersionDescription : public Helper::Description<
  * @brief Streaming operator to output ARINC 665 Version as string
  *
  * @param[in,out] stream
- *   The output stream
+ *   Output Stream
  * @param[in] version
- *   The ARINC 665 version.
+ *   ARINC 665 version.
  *
- * @return The stream for chaining.
+ * @return @p stream for chaining.
  **/
-std::ostream& operator<<( std::ostream &stream, SupportedArinc665Version version);
+std::ostream& operator<<(
+  std::ostream &stream,
+  SupportedArinc665Version version );
 
 /**
  * @brief Streaming operator for parsing a version string as ARINC 665 version
  *   type.
  *
  * @param[in,out] stream
- *   The input stream
+ *   Input Stream
  * @param[out] version
- *   The decoded ARINC 665 Version
+ *   Decoded ARINC 665 Version
  *
- * @return The stream for chaining.
+ * @return @p stream for chaining.
  **/
 std::istream& operator>>(
   std::istream& stream,
-  SupportedArinc665Version &version);
+  SupportedArinc665Version &version );
 
 }
 

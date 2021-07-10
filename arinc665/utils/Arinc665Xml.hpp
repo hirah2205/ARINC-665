@@ -44,7 +44,7 @@ class Arinc665Xml
     /**
      * @brief Creates an ARINC 665 XML handler instance.
      *
-     * @return The ARINC 665 XML handler instance.
+     * @return Created ARINC 665 XML Handler Instance.
      **/
     static Arinc665XmlPtr instance();
 

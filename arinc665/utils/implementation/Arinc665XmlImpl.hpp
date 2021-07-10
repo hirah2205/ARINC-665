@@ -23,7 +23,7 @@ namespace Arinc665::Utils {
 /**
  * @brief Handles the representation of Media Sets as XML file.
  **/
-class Arinc665XmlImpl: public Arinc665Xml
+class Arinc665XmlImpl final : public Arinc665Xml
 {
   public:
    //! Constructor
@@ -36,7 +36,7 @@ class Arinc665XmlImpl: public Arinc665Xml
      * @brief Loads the Media Set information from the given XML file.
      *
      * @param[in] xmlFile
-     *   The ARINC 665 XML file.
+     *   ARINC 665 XML file.
      *
      * @return The loaded Media Set information.
      *
@@ -51,9 +51,9 @@ class Arinc665XmlImpl: public Arinc665Xml
      * @brief Saves the given Media Set information to the given XML file.
      *
      * @param[in] mediaSet
-     *   The Media Set information.
+     *   Media Set Information.
      * @param[in] filePathMapping
-     *   The file path mapping
+     *   File Path Mapping
      *   (used to insert the correct source path attribute.)
      * @param[in] xmlFile
      *   The ARINC 665 XML file.

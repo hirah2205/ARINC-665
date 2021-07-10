@@ -18,13 +18,13 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief Implementation of a media set exporter.
+ * @brief Implementation of a Media Set Exporter.
  **/
-class MediaSetExporterImpl
+class MediaSetExporterImpl final
 {
   public:
     /**
-     * @brief Initialises the ARINC 665 media set importer
+     * @brief Initialises the ARINC 665 Media Set Importer
      *
      * @param[in] mediaSet
      *   The media set, which shall be exported.
@@ -74,7 +74,7 @@ class MediaSetExporterImpl
      * @param[in] medium
      *   The medium, which is exported.
      **/
-    void exportMedium( Media::ConstMediumPtr medium);
+    void exportMedium( Media::ConstMediumPtr medium );
 
     /**
      * @brief Called to export the given directory.
@@ -82,52 +82,52 @@ class MediaSetExporterImpl
      * @param[in] directory
      *   The directory, which is exported.
      **/
-    void exportDirectory( Media::ConstDirectoryPtr directory);
+    void exportDirectory( Media::ConstDirectoryPtr directory );
 
     /**
-     * @brief Called to export the given file.
+     * @brief Called to Export the Given File.
      *
      * @param[in] file
      *   The file, which is exported.
      **/
-    void exportFile( Media::ConstFilePtr file);
+    void exportFile( Media::ConstFilePtr file );
 
     /**
-     * @brief Creates the load header file.
+     * @brief Creates the Load Header File.
      *
      * @param[in] file
      *   The load header file.
      **/
-    void createLoadHeaderFile( Media::ConstFilePtr file);
+    void createLoadHeaderFile( Media::ConstFilePtr file );
 
     /**
-     * @brief Creates the batch file.
+     * @brief Creates the Batch File.
      *
      * @param[in] file
      *   The batch file.
      **/
-    void createBatchFile( Media::ConstFilePtr file);
+    void createBatchFile( Media::ConstFilePtr file );
 
-    //! The ARINC 665 version used for exporting
+    //! ARINC 665 Version used for exporting
     const SupportedArinc665Version arinc665Version;
-    //! indicates if batch files shall be created by media set exporter
+    //! Indicates if batch files shall be created by Media set Exporter
     const FileCreationPolicy createBatchFiles;
-    //! indicates if load header files shall be created by media set exporter
+    //! Indicates if load header files shall be created by Media Set Exporter
     const FileCreationPolicy createLoadHeaderFiles;
 
-    //! The Media Set
+    //! Media Set
     Media::ConstMediaSetPtr mediaSet;
-    //! Create medium handler
+    //! Create Medium Handler
     Arinc665Utils::CreateMediumHandler createMediumHandler;
-    //! Create directory handler
+    //! Create Directory Handler
     Arinc665Utils::CreateDirectoryHandler createDirectoryHandler;
-    //! Check file existence handler
+    //! Check File existence Handler
     Arinc665Utils::CheckFileExistenceHandler checkFileExistenceHandler;
-    //! Create file handler
+    //! Create File Handler
     Arinc665Utils::CreateFileHandler createFileHandler;
-    //! Write file handler
+    //! Write File Handler
     Arinc665Utils::WriteFileHandler writeFileHandler;
-    //! Read file handler
+    //! Read File Handler
     Arinc665Utils::ReadFileHandler readFileHandler;
 };
 

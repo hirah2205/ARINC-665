@@ -180,7 +180,7 @@ enum class CheckValueType : uint16_t
 };
 
 //! Check Value
-using CheckValue = std::tuple< CheckValueType, std::vector< uint8_t>>;
+using CheckValue = std::tuple< CheckValueType, std::vector< uint8_t > >;
 
 //! @brief ARINC 665 File Types
 enum class FileType

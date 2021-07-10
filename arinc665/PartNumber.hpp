@@ -79,7 +79,7 @@ class PartNumber
      * @throw Arinc665Exception
      *   when calculated check code differs from current
      **/
-    PartNumber( std::string_view partNumber);
+    PartNumber( std::string_view partNumber );
 
     /**
      * @brief Returns the manufacturer code.
@@ -94,7 +94,7 @@ class PartNumber
      * @param[in] manufacturerCode
      *   The manufacturer code.
      **/
-    void manufacturerCode( std::string_view manufacturerCode);
+    void manufacturerCode( std::string_view manufacturerCode );
 
     /**
      * @brief Returns the product identifier.
@@ -109,7 +109,7 @@ class PartNumber
      * @param[in] productIdentifier
      *   The product identifier.
      **/
-    void productIdentifier( std::string_view productIdentifier);
+    void productIdentifier( std::string_view productIdentifier );
 
     /**
      * @brief Calculates and return the check code

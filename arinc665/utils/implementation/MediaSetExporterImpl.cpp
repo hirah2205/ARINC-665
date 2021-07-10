@@ -61,7 +61,7 @@ void MediaSetExporterImpl::operator()()
   BOOST_LOG_FUNCTION()
 
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-    << "Media Set " << " - " << mediaSet->partNumber();
+    << "Media Set " << mediaSet->partNumber();
 
   for ( auto &medium : mediaSet->media() )
   {
@@ -95,11 +95,11 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium )
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
     << "Export List of Loads";
 
-  Arinc665::File::LoadListFile loadListFile{ arinc665Version};
+  Arinc665::File::LoadListFile loadListFile{ arinc665Version };
 
-  loadListFile.mediaSequenceNumber( medium->mediumNumber());
+  loadListFile.mediaSequenceNumber( medium->mediumNumber() );
   loadListFile.mediaSetPn( medium->mediaSet()->partNumber() );
-  loadListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia());
+  loadListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia() );
 
   /* add all load to loads list */
   for ( auto &load : medium->mediaSet()->loads() )
@@ -108,7 +108,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium )
       load->partNumber(),
       load->name(),
       load->medium()->mediumNumber(),
-      load->targetHardwareIds()});
+      load->targetHardwareIds() } );
   }
 
   loadListFile.userDefinedData( mediaSet->loadsUserDefinedData() );

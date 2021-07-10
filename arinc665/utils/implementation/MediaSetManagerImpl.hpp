@@ -20,7 +20,7 @@
 namespace Arinc665::Utils {
 
 //! Implementation of MediaSetManager
-class MediaSetManagerImpl : public MediaSetManager
+class MediaSetManagerImpl final : public MediaSetManager
 {
   public:
     /**
