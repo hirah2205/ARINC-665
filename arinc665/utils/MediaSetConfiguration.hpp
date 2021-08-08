@@ -40,19 +40,19 @@ class MediaSetConfiguration
     /**
      * @brief Loads the configuration via a boost::property_tree::ptree.
      *
-     * @param[in] config
+     * @param[in] ptree
      *   The stored configuration.
      **/
     explicit MediaSetConfiguration(
-      const boost::property_tree::ptree &config );
+      const boost::property_tree::ptree &ptree );
 
     /**
      * @brief Loads the media set configuration form the given property tree.
      *
-     * @param[in] config
-     *   The ptree to load the config from
+     * @param[in] ptree
+     *   The ptree to fromProperties the config from
      **/
-    void load( const boost::property_tree::ptree &config );
+    void fromProperties( const boost::property_tree::ptree &ptree );
 
     /**
      * @brief Converts the configuration values to a
