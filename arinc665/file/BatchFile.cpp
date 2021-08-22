@@ -31,8 +31,7 @@ BatchFile::BatchFile(
   std::string_view comment,
   const BatchTargetsInfo &targets):
   Arinc665File{ version},
-  partNumberValue{ partNumber},
-  commentValue{ comment},
+  partNumberV{ partNumber}, commentV{ comment},
   targetsHardwareV{ targets}
 {
 }
@@ -43,8 +42,7 @@ BatchFile::BatchFile(
   std::string &&comment,
   BatchTargetsInfo &&targets):
   Arinc665File{ version},
-  partNumberValue{ std::move( partNumber)},
-  commentValue{ std::move( comment)},
+  partNumberV{ std::move( partNumber)}, commentV{ std::move( comment)},
   targetsHardwareV{ std::move( targets)}
 {
 }
@@ -71,32 +69,32 @@ FileType BatchFile::fileType() const noexcept
 
 std::string_view BatchFile::partNumber() const
 {
-  return partNumberValue;
+  return partNumberV;
 }
 
 void BatchFile::partNumber( std::string_view partNumber)
 {
-  partNumberValue = partNumber;
+  partNumberV = partNumber;
 }
 
 void BatchFile::partNumber( std::string &&partNumber)
 {
-  partNumberValue = std::move( partNumber);
+  partNumberV = std::move( partNumber);
 }
 
 std::string_view BatchFile::comment() const
 {
-  return commentValue;
+  return commentV;
 }
 
 void BatchFile::comment( std::string_view comment)
 {
-  commentValue = comment;
+  commentV = comment;
 }
 
 void BatchFile::comment( std::string &&comment)
 {
-  commentValue = std::move( comment);
+  commentV = std::move( comment);
 }
 
 const BatchTargetsInfo& BatchFile::targetsHardware() const
@@ -132,9 +130,9 @@ RawFile BatchFile::encode() const
 
 
   // batch part number + comment
-  auto rawBatchPn{ encodeString( partNumberValue ) };
+  auto rawBatchPn{ encodeString( partNumberV ) };
   assert( rawBatchPn.size() % 2 == 0 );
-  auto rawComment{ encodeString( commentValue ) };
+  auto rawComment{ encodeString( commentV ) };
   assert( rawComment.size() % 2 == 0 );
 
   Helper::setInt< uint32_t>(
@@ -191,11 +189,10 @@ void BatchFile::decodeBody( const ConstRawFileSpan &rawFile )
 
   // batch part number
   auto it{ decodeString(
-    rawFile.begin() + batchPartNumberPtr * 2,
-    partNumberValue ) };
+    rawFile.begin() + batchPartNumberPtr * 2, partNumberV ) };
 
   // comment
-  decodeString( it, commentValue );
+  decodeString( it, commentV );
 
   // target hardware ID load list
   decodeBatchTargetsInfo( rawFile, targetHardwareIdListPtr * 2 );
@@ -217,18 +214,18 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
     ++thwCounter;
 
     auto const rawThwIdPosition{
-      encodeString( targetHardwareInfo.targetHardwareIdPosition())};
+      encodeString( targetHardwareInfo.targetHardwareIdPosition ) };
     assert( rawThwIdPosition.size() % 2 == 0);
 
     RawFile rawLoadsInfo{};
     /* iterate over loads */
-    for ( auto const &loadInfo : targetHardwareInfo.loads())
+    for ( auto const &loadInfo : targetHardwareInfo.loads )
     {
-      auto const rawHeaderFilename{ encodeString( loadInfo.headerFilename())};
-      assert( rawHeaderFilename.size() % 2 == 0);
+      auto const rawHeaderFilename{ encodeString( loadInfo.headerFilename ) };
+      assert( rawHeaderFilename.size() % 2 == 0 );
 
-      auto const rawPartNumber{ encodeString( loadInfo.partNumber())};
-      assert( rawPartNumber.size() % 2 == 0);
+      auto const rawPartNumber{ encodeString( loadInfo.partNumber ) };
+      assert( rawPartNumber.size() % 2 == 0 );
 
       rawLoadsInfo.insert(
         rawLoadsInfo.end(),
@@ -265,7 +262,7 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
     // Number of Loads
     batchTargetInfoIt = Helper::setInt< uint16_t>(
       batchTargetInfoIt,
-      Helper::safeCast< uint16_t>( targetHardwareInfo.loads().size()));
+      Helper::safeCast< uint16_t>( targetHardwareInfo.loads.size() ) );
 
     // Loads list
     std::copy( rawLoadsInfo.begin(), rawLoadsInfo.end(), batchTargetInfoIt);
@@ -330,16 +327,18 @@ void BatchFile::decodeBatchTargetsInfo(
       listIt = decodeString( listIt, partNumber);
 
       // Batch Load info
-      batchLoadsInfo.emplace_back( std::move( filename), std::move( partNumber));
+      batchLoadsInfo.emplace_back( BatchLoadInfo{
+        std::move( filename),
+        std::move( partNumber) } );
     }
 
     // set it to begin of next file
     it += thwIdPointer * 2U;
 
     // THW ID info
-    targetsHardwareV.emplace_back(
-      std::move( thwId),
-      std::move( batchLoadsInfo));
+    targetsHardwareV.emplace_back( BatchTargetInfo{
+      std::move( thwId ),
+      std::move( batchLoadsInfo ) } );
   }
 }
 

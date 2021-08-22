@@ -29,86 +29,13 @@ namespace Arinc665::File {
  * Within ARINC 665-2 The Target Hardware ID Position Field is named
  * Target HW ID.
  **/
-class BatchTargetInfo
+struct BatchTargetInfo
 {
   public:
-    /**
-     * @brief Initialises the batch target information.
-     *
-     * @param[in] targetHardwareIdPosition
-     *   The target hardware ID (THW ID)
-     * @param[in] loads
-     *   Batch loads information.
-     **/
-    BatchTargetInfo(
-      std::string_view targetHardwareIdPosition,
-      const BatchLoadsInfo &loads );
-
-    //! @copydoc BatchTargetInfo::BatchTargetInfo(std::string_view,const BatchLoadsInfo&)
-    BatchTargetInfo(
-      std::string &&targetHardwareIdPosition,
-      BatchLoadsInfo &&loads );
-
-    /**
-     * @brief Returns the Target Hardware ID + Position for this batch
-     *   information.
-     *
-     * @return The Target Hardware ID + Position
-     **/
-    [[nodiscard]] std::string_view targetHardwareIdPosition() const;
-
-    /**
-     * @brief Updates the target hardware ID for this loads info.
-     *
-     * @param[in] targetHardwareIdPosition
-     *   The target hardware ID (THW ID)
-     **/
-    void targetHardwareIdPosition( std::string_view targetHardwareIdPosition );
-
-    //! @copydoc targetHardwareIdPosition(std::string_view)
-    void targetHardwareIdPosition( std::string &&targetHardwareIdPosition );
-
-    /**
-     * @brief Returns the list of available loads for this target hardware.
-     *
-     * @return The list of loads (const version).
-     **/
-    [[nodiscard]] const BatchLoadsInfo& loads() const;
-
-    /**
-     * @brief Returns the list of available loads for this target hardware.
-     *
-     * @return The list of loads (modifiable version).
-     **/
-    BatchLoadsInfo& loads();
-
-    /**
-     * @brief Replaces the stored load information.
-     *
-     * @param[in] loads
-     *   Batch loads information.
-     **/
-    void loads( const BatchLoadsInfo &loads );
-
-    //! @copydoc loads(const BatchLoadsInfo&)
-    void loads( BatchLoadsInfo &&loads );
-
-    /**
-     * @brief Adds a load.
-     *
-     * @param[in] load
-     *   The load.
-     **/
-    void load( const BatchLoadInfo &load );
-
-    //! @copydoc load(const BatchLoadInfo&)
-    void load( BatchLoadInfo &&load );
-
-  private:
-    //! Target Hardware ID
-    std::string targetHardwareIdPositionV;
-    //! List of Loads
-    BatchLoadsInfo loadsV;
+  //! Target Hardware ID and Position
+  std::string targetHardwareIdPosition;
+  //! List of Loads for Batch
+  BatchLoadsInfo loads;
 };
 
 }

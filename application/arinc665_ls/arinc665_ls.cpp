@@ -188,21 +188,21 @@ static void list_lub( const std::filesystem::path &lubFile)
     for ( auto const &targetHardware : batch.targetsHardware())
     {
       std::cout
-        << "target HW: " << targetHardware.targetHardwareIdPosition() << "\n";
-      for ( auto const &load : targetHardware.loads())
+        << "target HW: " << targetHardware.targetHardwareIdPosition << "\n";
+      for ( auto const &load : targetHardware.loads )
       {
         std::cout
-          << "  load: " << load.headerFilename()
-          << " - " << load.partNumber() << "\n";
+          << "  load: " << load.headerFilename
+          << " - " << load.partNumber << "\n";
       }
     }
   }
-  catch ( boost::exception &e)
+  catch ( const boost::exception &e )
   {
     std::cout
       << "Boost exception: " << boost::diagnostic_information(e) << "\n";
   }
-  catch ( std::exception &e)
+  catch ( const std::exception &e )
   {
     std::cout << "std exception: " << e.what() << "\n";
   }

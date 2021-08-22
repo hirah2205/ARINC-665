@@ -540,23 +540,23 @@ void MediaSetImporterImpl::addBatches()
       Media::WeakLoads batchLoads;
 
       // iterate over loads
-      for ( const auto& load : targetHardware.loads() )
+      for ( const auto& load : targetHardware.loads )
       {
-        auto loadPtr{ mediaSet->load( load.headerFilename() ) };
+        auto loadPtr{ mediaSet->load( load.headerFilename ) };
 
         if ( !loadPtr )
         {
           BOOST_THROW_EXCEPTION(
             Arinc665Exception()
               << Helper::AdditionalInfo( "Load not found" )
-              << boost::errinfo_file_name( std::string{ load.headerFilename() } ) );
+              << boost::errinfo_file_name( std::string{ load.headerFilename } ) );
         }
 
         batchLoads.push_back( loadPtr);
       }
 
       // add Target Hardware/ Position
-      batchPtr->target( targetHardware.targetHardwareIdPosition(), batchLoads );
+      batchPtr->target( targetHardware.targetHardwareIdPosition, batchLoads );
     }
   }
 }

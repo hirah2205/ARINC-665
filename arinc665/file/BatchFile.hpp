@@ -120,9 +120,14 @@ class BatchFile: public Arinc665File
     [[nodiscard]] FileType fileType() const noexcept final;
 
     /**
-     * @brief Returns the part number of the batch file.
+     * @name Part Number
+     * @{
+     **/
+
+    /**
+     * @brief Returns the Part Number of the Batch File.
      *
-     * @return The part number of the batch file.
+     * @return Part number of the batch file.
      **/
     [[nodiscard]] std::string_view partNumber() const;
 
@@ -136,6 +141,13 @@ class BatchFile: public Arinc665File
 
     //! @copydoc partNumber(std::string_view)
     void partNumber( std::string &&partNumber);
+
+    /** @} **/
+
+    /**
+     * @name Comment
+     * @{
+     **/
 
     /**
      * @brief Returns the comment text of the batch file.
@@ -154,6 +166,13 @@ class BatchFile: public Arinc665File
 
     //! @copydoc comment(std::string_view)
     void comment( std::string &&comment);
+
+    /** @} **/
+
+    /**
+     * @name Targets Hardware
+     * @{
+     **/
 
     /**
      * @brief Returns the Targets Hardware Information.
@@ -175,6 +194,8 @@ class BatchFile: public Arinc665File
 
     //! @copydoc targetHardware(const BatchTargetInfo&)
     void targetHardware( BatchTargetInfo &&targetHardwareInfo );
+
+    /** @} **/
 
   private:
     //! @copydoc Arinc665File::encode
@@ -208,9 +229,9 @@ class BatchFile: public Arinc665File
       ptrdiff_t offset );
 
     //! Part number
-    std::string partNumberValue;
+    std::string partNumberV;
     //! Comment
-    std::string commentValue;
+    std::string commentV;
     //! Targets Hardware Information
     BatchTargetsInfo targetsHardwareV;
 };

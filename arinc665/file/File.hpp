@@ -60,10 +60,10 @@ class LoadFileInfo;
 using LoadFilesInfo = std::list< LoadFileInfo>;
 class LoadHeaderFile;
 
-class BatchTargetInfo;
+struct BatchTargetInfo;
 //! Batch Targets Information.
 using BatchTargetsInfo = std::list< BatchTargetInfo>;
-class BatchLoadInfo;
+struct BatchLoadInfo;
 //! Batch Loads Information.
 using BatchLoadsInfo = std::list< BatchLoadInfo>;
 class BatchFile;

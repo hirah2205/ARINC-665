@@ -29,19 +29,9 @@ BOOST_AUTO_TEST_SUITE( BatchLoadInfoTest)
 //! ARINC 665 BatchLoadInfo Constructor Test
 BOOST_AUTO_TEST_CASE( constructor1)
 {
-  using namespace std::string_view_literals;
-  BatchLoadInfo batchLoadInfo{ "Filename1"sv, "Partnumber1"sv};
-  BOOST_CHECK( batchLoadInfo.headerFilename() == "Filename1");
-  BOOST_CHECK( batchLoadInfo.partNumber() == "Partnumber1");
-}
-
-//! ARINC 665 BatchLoadInfo Constructor Test
-BOOST_AUTO_TEST_CASE( constructor2)
-{
-  using namespace std::string_literals;
-  BatchLoadInfo batchLoadInfo{ "Filename2"s, "Partnumber2"s};
-  BOOST_CHECK( batchLoadInfo.headerFilename() == "Filename2");
-  BOOST_CHECK( batchLoadInfo.partNumber() == "Partnumber2");
+  BatchLoadInfo batchLoadInfo{ "Filename1", "Partnumber1" };
+  BOOST_CHECK( batchLoadInfo.headerFilename == "Filename1" );
+  BOOST_CHECK( batchLoadInfo.partNumber == "Partnumber1" );
 }
 
 //! ARINC 665 Batch File Header Filename Test
@@ -51,16 +41,12 @@ BOOST_AUTO_TEST_CASE( headerFilename)
   using namespace std::string_literals;
 
   BatchLoadInfo batchLoadInfo{};
-  BOOST_CHECK( batchLoadInfo.headerFilename().empty());
-  BOOST_CHECK( batchLoadInfo.partNumber().empty());
+  BOOST_CHECK( batchLoadInfo.headerFilename.empty() );
+  BOOST_CHECK( batchLoadInfo.partNumber.empty() );
 
-  batchLoadInfo.headerFilename( "Filename1"sv);
-  BOOST_CHECK( batchLoadInfo.headerFilename() == "Filename1");
-  BOOST_CHECK( batchLoadInfo.partNumber().empty());
-
-  batchLoadInfo.headerFilename( "Filename2"s);
-  BOOST_CHECK( batchLoadInfo.headerFilename() == "Filename2");
-  BOOST_CHECK( batchLoadInfo.partNumber().empty());
+  batchLoadInfo.headerFilename = "Filename1";
+  BOOST_CHECK( batchLoadInfo.headerFilename == "Filename1");
+  BOOST_CHECK( batchLoadInfo.partNumber.empty());
 }
 
 //! ARINC 665 Batch File Part Number Test
@@ -70,16 +56,12 @@ BOOST_AUTO_TEST_CASE( partNumber)
   using namespace std::string_literals;
 
   BatchLoadInfo batchLoadInfo{};
-  BOOST_CHECK( batchLoadInfo.headerFilename().empty());
-  BOOST_CHECK( batchLoadInfo.partNumber().empty());
+  BOOST_CHECK( batchLoadInfo.headerFilename.empty());
+  BOOST_CHECK( batchLoadInfo.partNumber.empty());
 
-  batchLoadInfo.partNumber( "Partnumber1"sv);
-  BOOST_CHECK( batchLoadInfo.headerFilename().empty());
-  BOOST_CHECK( batchLoadInfo.partNumber() == "Partnumber1");
-
-  batchLoadInfo.partNumber( "Partnumber2"s);
-  BOOST_CHECK( batchLoadInfo.headerFilename().empty());
-  BOOST_CHECK( batchLoadInfo.partNumber() == "Partnumber2");
+  batchLoadInfo.partNumber = "Partnumber1";
+  BOOST_CHECK( batchLoadInfo.headerFilename.empty());
+  BOOST_CHECK( batchLoadInfo.partNumber == "Partnumber1");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

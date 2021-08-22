@@ -27,69 +27,13 @@ namespace Arinc665::File {
  *
  * @sa BatchFile
  **/
-class BatchLoadInfo
+struct BatchLoadInfo
 {
   public:
-    BatchLoadInfo() noexcept = default;
-
-    /**
-     * @brief Initialises the batch load information with the given data.
-     *
-     * @param[in] headerFilename
-     *   Load Header filename.
-     * @param[in] partNumber
-     *   Load Part Number.
-     **/
-    BatchLoadInfo(
-      std::string_view headerFilename,
-      std::string_view partNumber );
-
-    //! @copydoc BatchLoadInfo::BatchLoadInfo(std::string_view,std::string_view)
-    BatchLoadInfo(
-      std::string &&headerFilename,
-      std::string &&partNumber );
-
-    /**
-     * @brief Returns the load header filename.
-     *
-     * @return The Load Header filename.
-     **/
-    [[nodiscard]] std::string_view headerFilename() const;
-
-    /**
-     * @brief Sets the load header filename.
-     *
-     * @param[in] headerFilename
-     *   The load header filename.
-     **/
-    void headerFilename( std::string_view headerFilename);
-
-    //! @copydoc headerFilename(std::string_view)
-    void headerFilename( std::string &&headerFilename);
-
-    /**
-     * @brief Returns the load part number.
-     *
-     * @return The load part number.
-     **/
-    [[nodiscard]] std::string_view partNumber() const;
-
-    /**
-     * @brief Updates the load part number.
-     *
-     * @param[in] partNumber
-     *   The load part number.
-     **/
-    void partNumber( std::string_view partNumber);
-
-    //! @copydoc partNumber(std::string_view)
-    void partNumber( std::string &&partNumber);
-
-  private:
     //! Load header filename.
-    std::string headerFilenameV;
+    std::string headerFilename;
     //! Load part number.
-    std::string partNumberV;
+    std::string partNumber;
 };
 
 }

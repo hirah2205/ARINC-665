@@ -100,16 +100,16 @@ BOOST_AUTO_TEST_CASE( constructor2)
 
   BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2);
 
-  BOOST_CHECK( file.partNumber() == "PN123");
-  BOOST_CHECK( file.comment() == "COMMENT");
+  BOOST_CHECK( file.partNumber() == "PN123" );
+  BOOST_CHECK( file.comment() == "COMMENT" );
 
-  const auto &targetHardwareIds{ file.targetsHardware()};
-  BOOST_CHECK( targetHardwareIds.size() == 1);
-  BOOST_CHECK( targetHardwareIds.begin()->targetHardwareIdPosition() == "THW0");
-  const auto &loads{ targetHardwareIds.begin()->loads()};
-  BOOST_CHECK( loads.size() == 1);
-  BOOST_CHECK( loads.begin()->headerFilename() == "FN_001");
-  BOOST_CHECK( loads.begin()->partNumber() == "PN_001");
+  const auto &targetHardwareIds{ file.targetsHardware() };
+  BOOST_CHECK( targetHardwareIds.size() == 1U );
+  BOOST_CHECK( targetHardwareIds.begin()->targetHardwareIdPosition == "THW0" );
+  const auto &loads{ targetHardwareIds.begin()->loads };
+  BOOST_CHECK( loads.size() == 1U );
+  BOOST_CHECK( loads.begin()->headerFilename == "FN_001" );
+  BOOST_CHECK( loads.begin()->partNumber == "PN_001" );
 
   const auto raw2{ static_cast< RawFile>( file)};
 
