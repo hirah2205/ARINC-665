@@ -72,41 +72,41 @@ class MediaSetExporterImpl final
      * @brief Called to export the given medium.
      *
      * @param[in] medium
-     *   The medium, which is exported.
+     *   Medium, which is exported.
      **/
-    void exportMedium( Media::ConstMediumPtr medium );
+    void exportMedium( const Media::ConstMediumPtr &medium );
 
     /**
      * @brief Called to export the given directory.
      *
      * @param[in] directory
-     *   The directory, which is exported.
+     *   Directory, which is exported.
      **/
-    void exportDirectory( Media::ConstDirectoryPtr directory );
+    void exportDirectory( const Media::ConstDirectoryPtr &directory );
 
     /**
      * @brief Called to Export the Given File.
      *
      * @param[in] file
-     *   The file, which is exported.
+     *   File, which is exported.
      **/
-    void exportFile( Media::ConstFilePtr file );
+    void exportFile( const Media::ConstFilePtr &file ) const;
 
     /**
      * @brief Creates the Load Header File.
      *
-     * @param[in] file
-     *   The load header file.
+     * @param[in] loadFile
+     *   Load header file.
      **/
-    void createLoadHeaderFile( Media::ConstFilePtr file );
+    void createLoadHeaderFile( const Media::ConstFilePtr &loadFile ) const;
 
     /**
      * @brief Creates the Batch File.
      *
      * @param[in] file
-     *   The batch file.
+     *   Batch file.
      **/
-    void createBatchFile( Media::ConstFilePtr file );
+    void createBatchFile( const Media::ConstFilePtr &file ) const;
 
     //! ARINC 665 Version used for exporting
     const SupportedArinc665Version arinc665Version;

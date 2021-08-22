@@ -617,14 +617,13 @@ void Arinc665XmlImpl::saveLoad(
   loadElement.set_attribute( "PartNumber", load->partNumber().data() );
 
   // Optional Load Type (Description + Type Value)
-  const auto &loadType{ load->loadType()};
-
-  if ( loadType )
+  if ( const auto &loadType{ load->loadType() }; loadType )
   {
-    loadElement.set_attribute( "Description", std::get< 0>( *loadType ) );
+    const auto &[description,id]{ *loadType};
+    loadElement.set_attribute( "Description", description );
     loadElement.set_attribute(
       "Type",
-      (boost::format( "0x%04X") % std::get< 1>( *loadType ) ).str());
+      (boost::format( "0x%04X") % id ).str());
   }
 
   // iterate over target hardware

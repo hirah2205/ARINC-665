@@ -338,23 +338,23 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex )
 void MediaSetImporterImpl::addFiles()
 {
   // iterate over all files
-  for ( const auto &fileInfo : fileInfos )
+  for ( const auto &[fileName, fileInfo] : fileInfos )
   {
-    if ( loads.end() != loads.find( fileInfo.first ) )
+    if ( loads.end() != loads.find( fileName ) )
     {
-      // skip load
+      // skip load header file
       continue;
     }
 
-    if ( batches.end() != batches.find( fileInfo.first ) )
+    if ( batches.end() != batches.find( fileName ) )
     {
-      // skip batch
+      // skip batch file
       continue;
     }
 
     // get file type
     // skip list files and handle load headers and batch files separate
-    switch ( Arinc665::File::Arinc665File::fileType( fileInfo.first ) )
+    switch ( Arinc665::File::Arinc665File::fileType( fileName ) )
     {
       case Arinc665::FileType::FileList:
       case Arinc665::FileType::LoadList:
@@ -368,11 +368,11 @@ void MediaSetImporterImpl::addFiles()
 
     // get directory, where file will be placed into.
     ContainerEntityPtr container{ checkCreateDirectory(
-      fileInfo.second.memberSequenceNumber(),
-      fileInfo.second.path().parent_path() ) };
+      fileInfo.memberSequenceNumber(),
+      fileInfo.path().parent_path() ) };
 
     // place file
-    auto filePtr{ container->addFile( fileInfo.second.filename() ) };
+    auto filePtr{ container->addFile( fileInfo.filename() ) };
   }
 
   addLoads();

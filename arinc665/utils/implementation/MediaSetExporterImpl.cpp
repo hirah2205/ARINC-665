@@ -63,13 +63,13 @@ void MediaSetExporterImpl::operator()()
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
     << "Media Set " << mediaSet->partNumber();
 
-  for ( auto &medium : mediaSet->media() )
+  for ( const auto &[mediumNumber, medium] : mediaSet->media() )
   {
-    exportMedium( medium.second );
+    exportMedium( medium );
   }
 }
 
-void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium )
+void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
 {
   BOOST_LOG_FUNCTION()
 
@@ -102,7 +102,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium )
   loadListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia() );
 
   /* add all load to loads list */
-  for ( auto &load : medium->mediaSet()->loads() )
+  for ( const auto &load : medium->mediaSet()->loads() )
   {
     loadListFile.load({
       load->partNumber(),
@@ -130,7 +130,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium )
     batchListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia() );
 
     /* add all batches to batches list */
-    for ( auto &batch : medium->mediaSet()->batches() )
+    for ( const auto &batch : medium->mediaSet()->batches() )
     {
       batchListFile.batch({
         batch->partNumber(),
@@ -156,7 +156,7 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium )
   fileListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia() );
 
   /* add all files, load header files, and batch files to file list */
-  for ( auto &file : medium->mediaSet()->files() )
+  for ( const auto &file : medium->mediaSet()->files() )
   {
     const auto rawFile{ readFileHandler( medium->mediumNumber(), file->path() ) };
     const uint16_t crc{ File::Arinc665File::calculateChecksum( rawFile, 0 ) };
@@ -207,7 +207,8 @@ void MediaSetExporterImpl::exportMedium( Media::ConstMediumPtr medium )
     static_cast< File::RawFile >( fileListFile ) );
 }
 
-void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory )
+void MediaSetExporterImpl::exportDirectory(
+  const Media::ConstDirectoryPtr &directory )
 {
   BOOST_LOG_FUNCTION()
 
@@ -232,7 +233,7 @@ void MediaSetExporterImpl::exportDirectory( Media::ConstDirectoryPtr directory )
   }
 }
 
-void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file )
+void MediaSetExporterImpl::exportFile( const Media::ConstFilePtr &file ) const
 {
   BOOST_LOG_FUNCTION()
 
@@ -311,10 +312,11 @@ void MediaSetExporterImpl::exportFile( Media::ConstFilePtr file )
   }
 }
 
-void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file )
+void MediaSetExporterImpl::createLoadHeaderFile(
+  const Media::ConstFilePtr &loadFile ) const
 {
   // up-cast load file
-  auto load{ std::dynamic_pointer_cast< const Media::Load>( file ) };
+  auto load{ std::dynamic_pointer_cast< const Media::Load>( loadFile ) };
 
   if ( !load )
   {
@@ -328,26 +330,26 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file )
   loadHeaderFile.loadType( load->loadType() );
 
   // calculate data files CRC and set data.
-  for ( const auto &[dataFile,partNumber] : load->dataFiles() )
+  for ( const auto &[ file,partNumber ] : load->dataFiles() )
   {
-    auto dataFilePtr{ dataFile.lock() };
+    auto dataFilePtr{ file.lock() };
     auto rawDataFile{ readFileHandler(
       dataFilePtr->medium()->mediumNumber(),
       dataFilePtr->path() ) };
-    uint16_t dataFileCrc{
+    uint16_t fileCrc{
       File::Arinc665File::calculateChecksum( rawDataFile, 0 ) };
 
     loadHeaderFile.dataFile( {
       dataFilePtr->name(),
       partNumber,
       rawDataFile.size(),
-      dataFileCrc} );
+      fileCrc } );
   }
 
   // calculate support files CRC and set data.
-  for ( const auto &[supportFile,partNumber] : load->supportFiles() )
+  for ( const auto &[file,partNumber] : load->supportFiles() )
   {
-    auto supportFilePtr{ supportFile.lock() };
+    auto supportFilePtr{ file.lock() };
     auto rawSupportFile{ readFileHandler(
       supportFilePtr->medium()->mediumNumber(),
       supportFilePtr->path() ) };
@@ -372,28 +374,28 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file )
     File::RawFile rawLoadHeader{ loadHeaderFile };
 
     loadCrc.process_bytes(
-      &(*rawLoadHeader.begin()),
+      &( *rawLoadHeader.begin() ),
       rawLoadHeader.size() - sizeof( uint32_t ) );
   }
 
   // load data files for load CRC.
-  for ( const auto &dataFile : load->dataFiles())
+  for ( const auto &[file,partNumber] : load->dataFiles() )
   {
-    auto dataFilePtr{ dataFile.first.lock()};
+    auto dataFilePtr{ file.lock() };
     auto rawDataFile{ readFileHandler(
       dataFilePtr->medium()->mediumNumber(),
-      dataFilePtr->path())};
+      dataFilePtr->path() ) };
 
     loadCrc.process_bytes( &(*rawDataFile.begin()), rawDataFile.size() );
   }
 
   // load support files for load CRC.
-  for ( const auto &supportFile : load->supportFiles() )
+  for ( const auto &[file,partNumber] : load->supportFiles() )
   {
-    auto supportFilePtr{ supportFile.first.lock()};
+    auto supportFilePtr{ file.lock() };
     auto rawSupportFile{ readFileHandler(
       supportFilePtr->medium()->mediumNumber(),
-      supportFilePtr->path())};
+      supportFilePtr->path() ) };
 
     loadCrc.process_bytes( &(*rawSupportFile.begin()), rawSupportFile.size() );
   }
@@ -407,10 +409,11 @@ void MediaSetExporterImpl::createLoadHeaderFile( Media::ConstFilePtr file )
     static_cast< File::RawFile >( loadHeaderFile ) );
 }
 
-void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
+void MediaSetExporterImpl::createBatchFile(
+  const Media::ConstFilePtr &file ) const
 {
   // up-cast batch file
-  auto batch{ std::dynamic_pointer_cast< const Media::Batch>( file) };
+  auto batch{ std::dynamic_pointer_cast< const Media::Batch>( file ) };
 
   if ( !batch )
   {
@@ -422,10 +425,11 @@ void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
   batchFile.partNumber( batch->partNumber() );
   batchFile.comment( batch->comment() );
 
-  for ( const auto &target : batch->targets() )
+  for ( const auto &[targetHwId,loads] : batch->targets() )
   {
-    File::BatchLoadsInfo batchLoadsInfo;
-    for ( const auto &load : target.second )
+    File::BatchLoadsInfo batchLoadsInfo{};
+
+    for ( const auto &load : loads )
     {
       auto loadPtr{ load.lock() };
       batchLoadsInfo.emplace_back(
@@ -434,7 +438,7 @@ void MediaSetExporterImpl::createBatchFile( Media::ConstFilePtr file)
     }
 
     batchFile.targetHardware(
-      File::BatchTargetInfo{ target.first, batchLoadsInfo } );
+      File::BatchTargetInfo{ targetHwId, batchLoadsInfo } );
   }
 
   writeFileHandler(
