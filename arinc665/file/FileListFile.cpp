@@ -204,13 +204,13 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
   for ( size_t i = 0; i < filesV.size(); ++i )
   {
     if (
-      ( filesV[i].filename() != otherFileList[i].filename()) ||
-      ( filesV[i].pathName() != otherFileList[i].pathName()))
+      ( filesV[i].filename != otherFileList[i].filename ) ||
+      ( filesV[i].pathName != otherFileList[i].pathName ))
     {
       return false;
     }
 
-    switch ( Arinc665File::fileType( filesV[i].filename() ) )
+    switch ( Arinc665File::fileType( filesV[i].filename ) )
     {
       case FileType::LoadList:
       case FileType::BatchList:
@@ -218,9 +218,9 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
         break;
 
       default:
-        if ( ( filesV[i].crc() != otherFileList[i].crc() )
-          || ( filesV[i].checkValue() != otherFileList[i].checkValue() )
-          || ( filesV[i].memberSequenceNumber() != otherFileList[i].memberSequenceNumber() ) )
+        if ( ( filesV[i].crc != otherFileList[i].crc )
+          || ( filesV[i].checkValue != otherFileList[i].checkValue )
+          || ( filesV[i].memberSequenceNumber != otherFileList[i].memberSequenceNumber ) )
         {
           return false;
         }
@@ -478,7 +478,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
     RawFile rawFileInfo( sizeof( uint16_t));
 
     // filename
-    auto const rawFilename{ encodeString( fileInfo.filename())};
+    auto const rawFilename{ encodeString( fileInfo.filename )};
     assert( rawFilename.size() % 2 == 0);
     rawFileInfo.insert(
       rawFileInfo.end(),
@@ -486,7 +486,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
       rawFilename.end());
 
     // path name
-    auto const rawPathname{ encodeString( fileInfo.pathName())};
+    auto const rawPathname{ encodeString( fileInfo.pathName )};
     assert( rawPathname.size() % 2 == 0);
     rawFileInfo.insert(
       rawFileInfo.end(),
@@ -498,16 +498,16 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
     // member sequence number
     auto fileInfoIt{ Helper::setInt< uint16_t>(
       rawFileInfo.begin() + static_cast< ptrdiff_t>( rawFileInfo.size() ) - ( 2 * sizeof( uint16_t ) ),
-      fileInfo.memberSequenceNumber() ) };
+      fileInfo.memberSequenceNumber ) };
 
     // crc
-    Helper::setInt< uint16_t>( fileInfoIt, fileInfo.crc() );
+    Helper::setInt< uint16_t>( fileInfoIt, fileInfo.crc );
 
     // following fields are available in ARINC 665-3 ff
     if ( encodeV3Data)
     {
       // check Value
-      const auto rawCheckValue{ CheckValueUtils_encode( fileInfo.checkValue() ) };
+      const auto rawCheckValue{ CheckValueUtils_encode( fileInfo.checkValue ) };
       assert( rawCheckValue.size() % 2 == 0);
       rawFileInfo.insert(
         rawFileInfo.end(),
@@ -593,12 +593,12 @@ void FileListFile::decodeFilesInfo(
     // set it to begin of next file
     it += filePointer * 2;
 
-    filesV.emplace_back(
+    filesV.emplace_back( FileInfo{
       filename,
       pathName,
       static_cast< uint8_t >( memberSequenceNumber ),
       crc,
-      checkValue);
+      checkValue } );
   }
 }
 

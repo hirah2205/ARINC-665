@@ -95,12 +95,12 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     fileInfos.clear();
     for ( const auto &fileInfo : currentFileListFile.files() )
     {
-      fileInfos.emplace( fileInfo.filename(), fileInfo );
+      fileInfos.emplace( fileInfo.filename, fileInfo );
     }
   }
   else
   {
-    // otherwise compare current list of files to first one
+    // otherwise, compare current list of files to first one
     if ( !this->fileListFile->belongsToSameMediaSet( currentFileListFile )
       || ( mediumIndex != currentFileListFile.mediaSequenceNumber() ) )
     {
@@ -114,7 +114,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
   for ( const auto &[fileName, fileInfo] : fileInfos )
   {
     // skip files, which are not part of the current medium
-    if ( fileInfo.memberSequenceNumber() != mediumIndex )
+    if ( fileInfo.memberSequenceNumber != mediumIndex )
     {
       continue;
     }
@@ -133,7 +133,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     const uint16_t crc{ File::Arinc665File::calculateChecksum( rawFile, 0 ) };
 
     // compare checksums
-    if ( crc != fileInfo.crc() )
+    if ( crc != fileInfo.crc )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "CRC of file invalid" }
@@ -282,7 +282,7 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex )
     }
 
     // skip load headers, which are not present on current medium
-    if ( loadHeaderFileIt->second.memberSequenceNumber() != mediumIndex )
+    if ( loadHeaderFileIt->second.memberSequenceNumber != mediumIndex )
     {
       continue;
     }
@@ -296,7 +296,7 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex )
 
     // add load header to global information
     loadHeaderFiles.emplace_back(
-      loadHeaderFileIt->second.filename(),
+      loadHeaderFileIt->second.filename,
       std::move( loadHeaderFile ) );
   }
 }
@@ -316,7 +316,7 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex )
     }
 
     // Skip batch files not located on this medium
-    if ( batchFileIt->second.memberSequenceNumber() != mediumIndex )
+    if ( batchFileIt->second.memberSequenceNumber != mediumIndex )
     {
       continue;
     }
@@ -330,7 +330,7 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex )
 
     // add batch file to to batch file list
     batchFiles.emplace_back(
-      batchFileIt->second.filename(),
+      batchFileIt->second.filename,
       std::move( batchFile ) );
   }
 }
@@ -368,11 +368,11 @@ void MediaSetImporterImpl::addFiles()
 
     // get directory, where file will be placed into.
     ContainerEntityPtr container{ checkCreateDirectory(
-      fileInfo.memberSequenceNumber(),
+      fileInfo.memberSequenceNumber,
       fileInfo.path().parent_path() ) };
 
     // place file
-    auto filePtr{ container->addFile( fileInfo.filename() ) };
+    auto filePtr{ container->addFile( fileInfo.filename ) };
   }
 
   addLoads();
@@ -390,7 +390,7 @@ void MediaSetImporterImpl::addLoads()
 
     // obtain container (directory, medium), which will contain the load.
     auto container{ checkCreateDirectory(
-      fileInfoIt->second.memberSequenceNumber(),
+      fileInfoIt->second.memberSequenceNumber,
       fileInfoIt->second.path().parent_path() ) };
 
     // create load
@@ -443,7 +443,7 @@ void MediaSetImporterImpl::addLoads()
       // Check CRC
       const auto &dataFileInfo{ fileInfos.find( dataFile.filename() ) };
       assert( dataFileInfo != fileInfos.end() );
-      if ( dataFileInfo->second.crc() != dataFile.crc() )
+      if ( dataFileInfo->second.crc != dataFile.crc() )
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo( "Data File CRC inconsistent" )
@@ -497,7 +497,7 @@ void MediaSetImporterImpl::addLoads()
       // Check CRC
       const auto &supportFileInfo{ fileInfos.find( supportFile.filename() ) };
       assert( supportFileInfo != fileInfos.end() );
-      if ( supportFileInfo->second.crc() != supportFile.crc() )
+      if ( supportFileInfo->second.crc != supportFile.crc() )
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo( "Support File CRC inconsistent" )
@@ -525,7 +525,7 @@ void MediaSetImporterImpl::addBatches()
 
     // obtain container (directory, medium), which will contain the batch.
     auto container{ checkCreateDirectory(
-      fileInfoIt->second.memberSequenceNumber(),
+      fileInfoIt->second.memberSequenceNumber,
       fileInfoIt->second.path().parent_path() ) };
 
     // create batch

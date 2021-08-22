@@ -161,11 +161,12 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
     const auto rawFile{ readFileHandler( medium->mediumNumber(), file->path() ) };
     const uint16_t crc{ File::Arinc665File::calculateChecksum( rawFile, 0 ) };
 
-    fileListFile.file({
-      file->name(),
-      File::Arinc665File::encodePath( file->path().parent_path()),
+    fileListFile.file( {
+      std::string{ file->name() },
+      File::Arinc665File::encodePath( file->path().parent_path() ),
       file->medium()->mediumNumber(),
-      crc } );
+      crc,
+      {} } );
   }
 
   // add list of loads
@@ -177,10 +178,11 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
     File::Arinc665File::calculateChecksum( rawListOfLoadsFile, 0 ) };
 
   fileListFile.file({
-    ListOfLoadsName,
+    std::string{ ListOfLoadsName },
     File::Arinc665File::encodePath( "/" ),
     medium->mediumNumber(),
-    listOfLoadsFileCrc } );
+    listOfLoadsFileCrc,
+    {} } );
 
   // add list of batches - if present
   if ( medium->mediaSet()->numberOfBatches() != 0 )
@@ -192,11 +194,12 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
     const uint16_t listOfBatchesFileCrc{
       File::Arinc665File::calculateChecksum( rawListOfBatchesFile, 0 ) };
 
-    fileListFile.file({
-      ListOfBatchesName,
+    fileListFile.file( {
+      std::string{ ListOfBatchesName },
       File::Arinc665File::encodePath( "/" ),
       medium->mediumNumber(),
-      listOfBatchesFileCrc } );
+      listOfBatchesFileCrc,
+      {} } );
   }
 
   fileListFile.userDefinedData( mediaSet->filesUserDefinedData() );

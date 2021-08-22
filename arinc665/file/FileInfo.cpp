@@ -16,116 +16,23 @@
 
 namespace Arinc665::File {
 
-FileInfo::FileInfo(
-  std::string_view filename,
-  std::string_view pathName,
-  const uint8_t memberSequenceNumber,
-  const uint16_t crc,
-  const std::optional< CheckValue> &checkValue):
-  filenameValue{ filename},
-  pathNameValue{ pathName},
-  memberSequenceNumberValue{ memberSequenceNumber},
-  crcValue{ crc},
-  checkValueValue{ checkValue}
-{
-}
-
-FileInfo::FileInfo(
-  std::string &&filename,
-  std::string &&pathName,
-  uint8_t memberSequenceNumber,
-  uint16_t crc,
-  std::optional< CheckValue> &&checkValue):
-  filenameValue{ std::move( filename)},
-  pathNameValue{ std::move( pathName)},
-  memberSequenceNumberValue{ memberSequenceNumber},
-  crcValue{ crc},
-  checkValueValue{ std::move( checkValue)}
-{
-}
-
-std::string_view FileInfo::filename() const
-{
-  return filenameValue;
-}
-
-void FileInfo::filename( std::string_view filename)
-{
-  filenameValue = filename;
-}
-
-void FileInfo::filename( std::string &&filename)
-{
-  filenameValue = std::move( filename);
-}
-
-std::string_view FileInfo::pathName() const
-{
-  return pathNameValue;
-}
-
-void FileInfo::pathName( std::string_view pathName)
-{
-  pathNameValue = pathName;
-}
-
-void FileInfo::pathName( std::string &&pathName)
-{
-  pathNameValue = std::move( pathName);
-}
-
 std::filesystem::path FileInfo::path() const
 {
-  std::string newPathName{ pathNameValue};
+  std::string newPathName{ pathName };
 
   std::replace( newPathName.begin(), newPathName.end(), '\\', '/');
 
-  return std::filesystem::path{ newPathName} / filenameValue;
-}
-
-uint8_t FileInfo::memberSequenceNumber() const
-{
-  return memberSequenceNumberValue;
-}
-
-void FileInfo::memberSequenceNumber( const uint8_t memberSequenceNumber)
-{
-  memberSequenceNumberValue = memberSequenceNumber;
-}
-
-uint16_t FileInfo::crc() const
-{
-  return crcValue;
-}
-
-void FileInfo::crc( const uint16_t crc)
-{
-  crcValue = crc;
-}
-
-const std::optional< CheckValue>& FileInfo::checkValue() const
-{
-  return checkValueValue;
-}
-
-void FileInfo::checkValue( const std::optional< CheckValue> &checkValue)
-{
-  checkValueValue = checkValue;
-}
-
-void FileInfo::checkValue( std::optional< CheckValue> &&checkValue)
-{
-  checkValueValue = std::move( checkValue);
+  return std::filesystem::path{ newPathName} / filename;
 }
 
 bool FileInfo::operator ==( const FileInfo &other) const
 {
   return
-    (filenameValue == other.filename()) &&
-    (pathNameValue == other.pathName()) &&
-    (memberSequenceNumberValue == other.memberSequenceNumber()) &&
-    (crcValue == other.crc()) &&
-    (checkValueValue == other.checkValue());
+    (filename == other.filename) &&
+    (pathName == other.pathName ) &&
+    (memberSequenceNumber == other.memberSequenceNumber ) &&
+    (crc == other.crc ) &&
+    (checkValue == other.checkValue );
 }
 
 bool FileInfo::operator !=( const FileInfo &other) const

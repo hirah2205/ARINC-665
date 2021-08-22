@@ -114,17 +114,18 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( files.size() == 2);
 
   auto fileI{ files.begin()};
-  BOOST_CHECK( fileI->filename() == "FN_001");
-  BOOST_CHECK( fileI->pathName() == "\\");
+  BOOST_CHECK( fileI->filename == "FN_001");
+  BOOST_CHECK( fileI->pathName == "\\");
   BOOST_CHECK( fileI->path() == "/FN_001");
-  BOOST_CHECK( fileI->memberSequenceNumber() == 1);
-  BOOST_CHECK( fileI->crc() == 0xABCD);
+  BOOST_CHECK( fileI->memberSequenceNumber == 1);
+  BOOST_CHECK( fileI->crc == 0xABCDU );
 
   ++fileI;
-  BOOST_CHECK( fileI->filename() == "FN_002");
-  BOOST_CHECK( fileI->path() == "/A/FN_002");
-  BOOST_CHECK( fileI->memberSequenceNumber() == 1);
-  BOOST_CHECK( fileI->crc() == 0x0123);
+  BOOST_CHECK( fileI->filename == "FN_002" );
+  BOOST_CHECK( fileI->pathName == "/A" );
+  BOOST_CHECK( fileI->path() == "/A/FN_002" );
+  BOOST_CHECK( fileI->memberSequenceNumber == 1 );
+  BOOST_CHECK( fileI->crc == 0x0123U );
 
 
   BOOST_CHECK( (file.userDefinedData() ==

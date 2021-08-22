@@ -117,8 +117,8 @@ bool LoadInfo::operator !=( const LoadInfo &other) const
 bool LoadInfo::operator ==( const FileInfo &other) const
 {
   return
-    (headerFilenameValue == other.filename()) &&
-    (memberSequenceNumberValue == other.memberSequenceNumber());
+    (headerFilenameValue == other.filename ) &&
+    (memberSequenceNumberValue == other.memberSequenceNumber );
 }
 
 bool LoadInfo::operator !=( const FileInfo &other) const

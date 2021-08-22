@@ -78,7 +78,7 @@ class LoadInfo;
 using LoadsInfo = std::list< LoadInfo >;
 class LoadListFile;
 
-class FileInfo;
+struct FileInfo;
 //! Files Information.
 using FilesInfo = std::vector< FileInfo >;
 class FileListFile;

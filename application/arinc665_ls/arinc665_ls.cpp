@@ -328,12 +328,12 @@ static void list_loads_lum( const std::filesystem::path &loadsLum)
     }
 
   }
-  catch (boost::exception &e)
+  catch ( boost::exception &e )
   {
     std::cout
-      << "Boost exception: " << boost::diagnostic_information(e) << "\n";
+      << "Boost exception: " << boost::diagnostic_information( e ) << "\n";
   }
-  catch ( std::exception &e)
+  catch ( std::exception &e )
   {
     std::cout << "std exception: " << e.what() << "\n";
   }
@@ -379,12 +379,12 @@ static void list_files_lum( const std::filesystem::path &filesLum)
 
     for ( const auto & file : fileList.files())
     {
-      std::cout << "file file name: " << file.filename() << "\n";
-      std::cout << "file path name: " << file.pathName() << "\n";
+      std::cout << "file file name: " << file.filename << "\n";
+      std::cout << "file path name: " << file.pathName << "\n";
       std::cout
         << "file member sequence number: "
-        << std::dec << file.memberSequenceNumber() << "\n";
-      std::cout << "file crc: " << std::hex << file.crc() << "\n\n";
+        << std::dec << file.memberSequenceNumber << "\n";
+      std::cout << "file crc: " << std::hex << file.crc << "\n\n";
     }
 
   }

@@ -17,8 +17,6 @@
 
 #include <filesystem>
 #include <string>
-#include <string_view>
-#include <vector>
 #include <optional>
 #include <cstdint>
 
@@ -32,73 +30,19 @@ namespace Arinc665::File {
  *
  * @sa FileListFile
  **/
-class FileInfo
+struct FileInfo
 {
   public:
-    /**
-     * @brief Initialises the file information
-     *
-     * @param[in] filename
-     *   File filename
-     * @param[in] pathName
-     *   File path name
-     * @param[in] memberSequenceNumber
-     *   Member sequence number.
-     * @param[in] crc
-     *   File CRC
-     * @param[in] checkValue
-     *   Check Value.
-     **/
-    FileInfo(
-      std::string_view filename,
-      std::string_view pathName,
-      uint8_t memberSequenceNumber,
-      uint16_t crc,
-      const std::optional< CheckValue> &checkValue = {} );
-
-    //! @copydoc FileInfo::FileInfo(std::string_view,std::string_view,uint8_t,uint16_t,const std::optional<CheckValue>&)
-    FileInfo(
-      std::string &&filename,
-      std::string &&pathName,
-      uint8_t memberSequenceNumber,
-      uint16_t crc,
-      std::optional< CheckValue> &&checkValue = {} );
-
-    /**
-     * @brief Returns the filename.
-     *
-     * @return The filename
-     **/
-    [[nodiscard]] std::string_view filename() const;
-
-    /**
-     * @brief Updates the filename.
-     *
-     * @param[in] filename
-     *   The filename.
-     **/
-    void filename( std::string_view filename);
-
-    //! @copydoc filename(std::string_view)
-    void filename( std::string &&filename);
-
-    /**
-     * @brief Returns the path name.
-     *
-     * @return The path name
-     **/
-    [[nodiscard]] std::string_view pathName() const;
-
-    /**
-     * @brief Updates the path name.
-     *
-     * @param[in] pathName
-     *   Path name.
-     **/
-    void pathName( std::string_view pathName );
-
-    //! @copydoc pathName(std::string_view)
-    void pathName( std::string &&pathName );
+    //! Filename
+    std::string filename;
+    //! Path Name
+    std::string pathName;
+    //! Member Sequence Number
+    uint8_t memberSequenceNumber;
+    //! CRC
+    uint16_t crc;
+    //! Check Value (since ARINC 665-3)
+    std::optional< CheckValue> checkValue;
 
     /**
      * @brief Returns the path (path name / filename)
@@ -106,61 +50,6 @@ class FileInfo
      * @return path (incl. filename)
      **/
     [[nodiscard]] std::filesystem::path path() const;
-
-    /**
-     * @name Member Sequence Number
-     * @{
-     **/
-
-    /**
-     * @brief Returns the Member Sequence Number.
-     *
-     * @return Member sequence number
-     **/
-    [[nodiscard]] uint8_t memberSequenceNumber() const;
-
-    /**
-     * @brief Updates the Member Sequence Number.
-     *
-     * @param[in] memberSequenceNumber
-     *   The  member sequence number.
-     **/
-    void memberSequenceNumber( uint8_t memberSequenceNumber );
-
-    /** @} **/
-
-    /**
-     * @brief Returns the file CRC.
-     *
-     * @return The file CRC.
-     **/
-    [[nodiscard]] uint16_t crc() const;
-
-    /**
-     * @brief Updates the file CRC.
-     *
-     * @param[in] crc
-     *   File CRC.
-     **/
-    void crc( uint16_t crc );
-
-    /**
-     * @brief Returns the Check Value.
-     *
-     * @return The Check Value.
-     **/
-    [[nodiscard]] const std::optional< CheckValue>& checkValue() const;
-
-    /**
-     * @brief Updates the Check Value
-     *
-     * @param[in] checkValue
-     *   Check Value.
-     **/
-    void checkValue( const std::optional< CheckValue> &checkValue );
-
-    //! @copydoc checkValue(const std::optional<CheckValue>&)
-    void checkValue( std::optional< CheckValue> &&checkValue );
 
     /**
      * @brief Compares the given file info against [this].
@@ -181,18 +70,6 @@ class FileInfo
      * @return if [this] is un-equal to [other].
      **/
     bool operator!=( const FileInfo &other) const;
-
-  private:
-    //! Filename
-    std::string filenameValue;
-    //! Path Name
-    std::string pathNameValue;
-    //! Member Sequence Number
-    uint8_t memberSequenceNumberValue;
-    //! CRC
-    uint16_t crcValue;
-    //! Check Value (since ARINC 665-3)
-    std::optional< CheckValue> checkValueValue;
 };
 
 }
