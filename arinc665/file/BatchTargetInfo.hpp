@@ -105,9 +105,9 @@ class BatchTargetInfo
     void load( BatchLoadInfo &&load );
 
   private:
-    //! Target hardware id
+    //! Target Hardware ID
     std::string targetHardwareIdPositionV;
-    //! List of loads
+    //! List of Loads
     BatchLoadsInfo loadsV;
 };
 

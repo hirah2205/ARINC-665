@@ -19,7 +19,7 @@ namespace Arinc665::File {
 FileInfo::FileInfo(
   std::string_view filename,
   std::string_view pathName,
-  const uint16_t memberSequenceNumber,
+  const uint8_t memberSequenceNumber,
   const uint16_t crc,
   const std::optional< CheckValue> &checkValue):
   filenameValue{ filename},
@@ -33,7 +33,7 @@ FileInfo::FileInfo(
 FileInfo::FileInfo(
   std::string &&filename,
   std::string &&pathName,
-  uint16_t memberSequenceNumber,
+  uint8_t memberSequenceNumber,
   uint16_t crc,
   std::optional< CheckValue> &&checkValue):
   filenameValue{ std::move( filename)},
@@ -83,12 +83,12 @@ std::filesystem::path FileInfo::path() const
   return std::filesystem::path{ newPathName} / filenameValue;
 }
 
-uint16_t FileInfo::memberSequenceNumber() const
+uint8_t FileInfo::memberSequenceNumber() const
 {
   return memberSequenceNumberValue;
 }
 
-void FileInfo::memberSequenceNumber( const uint16_t memberSequenceNumber)
+void FileInfo::memberSequenceNumber( const uint8_t memberSequenceNumber)
 {
   memberSequenceNumberValue = memberSequenceNumber;
 }

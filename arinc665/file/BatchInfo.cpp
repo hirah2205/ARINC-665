@@ -19,7 +19,7 @@ namespace Arinc665::File {
 BatchInfo::BatchInfo(
   std::string_view partNumber,
   std::string_view filename,
-  uint16_t memberSequenceNumber):
+  uint8_t memberSequenceNumber):
   partNumberV{ partNumber},
   filenameV{ filename}, memberSequenceNumberV{ memberSequenceNumber}
 {
@@ -28,7 +28,7 @@ BatchInfo::BatchInfo(
 BatchInfo::BatchInfo(
   std::string &&partNumber,
   std::string &&filename,
-  uint16_t memberSequenceNumber):
+  uint8_t memberSequenceNumber):
   partNumberV{ partNumber},
   filenameV{ filename}, memberSequenceNumberV{ memberSequenceNumber}
 {
@@ -64,12 +64,12 @@ void BatchInfo::filename( std::string &&filename)
   filenameV = std::move( filename);
 }
 
-uint16_t BatchInfo::memberSequenceNumber() const
+uint8_t BatchInfo::memberSequenceNumber() const
 {
   return memberSequenceNumberV;
 }
 
-void BatchInfo::memberSequenceNumber( const uint16_t memberSequenceNumber)
+void BatchInfo::memberSequenceNumber( const uint8_t memberSequenceNumber)
 {
   memberSequenceNumberV = memberSequenceNumber;
 }

@@ -52,15 +52,15 @@ class FileInfo
     FileInfo(
       std::string_view filename,
       std::string_view pathName,
-      uint16_t memberSequenceNumber,
+      uint8_t memberSequenceNumber,
       uint16_t crc,
       const std::optional< CheckValue> &checkValue = {} );
 
-    //! @copydoc FileInfo::FileInfo(std::string_view,std::string_view,uint16_t,uint16_t,const std::optional<CheckValue>&)
+    //! @copydoc FileInfo::FileInfo(std::string_view,std::string_view,uint8_t,uint16_t,const std::optional<CheckValue>&)
     FileInfo(
       std::string &&filename,
       std::string &&pathName,
-      uint16_t memberSequenceNumber,
+      uint8_t memberSequenceNumber,
       uint16_t crc,
       std::optional< CheckValue> &&checkValue = {} );
 
@@ -108,19 +108,26 @@ class FileInfo
     [[nodiscard]] std::filesystem::path path() const;
 
     /**
-     * @brief Returns the member sequence number.
-     *
-     * @return The member sequence number
+     * @name Member Sequence Number
+     * @{
      **/
-    [[nodiscard]] uint16_t memberSequenceNumber() const;
 
     /**
-     * @brief Updates the  member sequence number.
+     * @brief Returns the Member Sequence Number.
+     *
+     * @return Member sequence number
+     **/
+    [[nodiscard]] uint8_t memberSequenceNumber() const;
+
+    /**
+     * @brief Updates the Member Sequence Number.
      *
      * @param[in] memberSequenceNumber
      *   The  member sequence number.
      **/
-    void memberSequenceNumber( uint16_t memberSequenceNumber );
+    void memberSequenceNumber( uint8_t memberSequenceNumber );
+
+    /** @} **/
 
     /**
      * @brief Returns the file CRC.
@@ -181,7 +188,7 @@ class FileInfo
     //! Path Name
     std::string pathNameValue;
     //! Member Sequence Number
-    uint16_t memberSequenceNumberValue;
+    uint8_t memberSequenceNumberValue;
     //! CRC
     uint16_t crcValue;
     //! Check Value (since ARINC 665-3)

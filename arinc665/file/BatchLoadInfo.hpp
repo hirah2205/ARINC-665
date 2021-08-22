@@ -23,7 +23,7 @@ namespace Arinc665::File {
 /**
  * @brief ARINC 665 Batch Load Information.
  *
- * Load Information stored within the taraget list of the ARINC 665 Batch File.
+ * Load Information stored within the target list of the ARINC 665 Batch File.
  *
  * @sa BatchFile
  **/
@@ -86,9 +86,9 @@ class BatchLoadInfo
     void partNumber( std::string &&partNumber);
 
   private:
-    //! The load header filename.
+    //! Load header filename.
     std::string headerFilenameV;
-    //! The load part number.
+    //! Load part number.
     std::string partNumberV;
 };
 

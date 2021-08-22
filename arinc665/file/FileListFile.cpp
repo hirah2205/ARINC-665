@@ -470,8 +470,8 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
   Helper::setInt< uint16_t>( rawFilesInfo.begin(), numberOfFiles() );
 
   // iterate over files
-  uint16_t fileCounter( 0);
-  for (auto const &fileInfo : filesV )
+  uint16_t fileCounter{ 0 };
+  for ( auto const &fileInfo : filesV )
   {
     ++fileCounter;
 
@@ -532,7 +532,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
 void FileListFile::decodeFilesInfo(
   const ConstRawFileSpan &rawFile,
   const ptrdiff_t offset,
-  const bool decodeV3Data)
+  const bool decodeV3Data )
 {
   BOOST_LOG_FUNCTION()
 
@@ -567,6 +567,11 @@ void FileListFile::decodeFilesInfo(
     // member sequence number
     uint16_t memberSequenceNumber{};
     listIt = Helper::getInt< uint16_t>( listIt, memberSequenceNumber);
+    if ( ( memberSequenceNumber < 1U ) || ( memberSequenceNumber > 255U ) )
+    {
+      BOOST_THROW_EXCEPTION( InvalidArinc665File()
+      << Helper::AdditionalInfo( "member sequence number out of range" ) );
+    }
 
     // crc
     uint16_t crc{};
@@ -576,7 +581,7 @@ void FileListFile::decodeFilesInfo(
     std::optional< CheckValue> checkValue{};
 
     // following fields are available in ARINC 665-3 ff
-    if ( decodeV3Data)
+    if ( decodeV3Data )
     {
       // check Value
       checkValue = CheckValueUtils_decode(
@@ -591,7 +596,7 @@ void FileListFile::decodeFilesInfo(
     filesV.emplace_back(
       filename,
       pathName,
-      memberSequenceNumber,
+      static_cast< uint8_t >( memberSequenceNumber ),
       crc,
       checkValue);
   }
@@ -603,10 +608,10 @@ void FileListFile::checkUserDefinedData()
 
   if ( userDefinedDataV.size() % 2U != 0U)
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning )
       << "User defined data must be 2-byte aligned. - extending range";
 
-    userDefinedDataV.push_back(0U);
+    userDefinedDataV.push_back( 0U );
   }
 }
 

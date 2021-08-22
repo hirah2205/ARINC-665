@@ -45,13 +45,13 @@ class BatchInfo
     BatchInfo(
       std::string_view partNumber,
       std::string_view filename,
-      uint16_t memberSequenceNumber );
+      uint8_t memberSequenceNumber );
 
-    //! @copydoc BatchInfo::BatchInfo(std::string_view,std::string_view,uint16_t)
+    //! @copydoc BatchInfo::BatchInfo(std::string_view,std::string_view,uint8_t)
     BatchInfo(
       std::string &&partNumber,
       std::string &&filename,
-      uint16_t memberSequenceNumber );
+      uint8_t memberSequenceNumber );
 
     /**
      * @brief Returns the Batch Part Number.
@@ -94,7 +94,7 @@ class BatchInfo
      *
      * @return Member sequence number
      **/
-    [[nodiscard]] uint16_t memberSequenceNumber() const;
+    [[nodiscard]] uint8_t memberSequenceNumber() const;
 
     /**
      * @brief Updates the Member Sequence Number.
@@ -102,7 +102,7 @@ class BatchInfo
      * @param[in] memberSequenceNumber
      *   Member sequence number.
      **/
-    void memberSequenceNumber( uint16_t memberSequenceNumber );
+    void memberSequenceNumber( uint8_t memberSequenceNumber );
 
     /**
      * @brief Compares batch info against each other
@@ -150,7 +150,7 @@ class BatchInfo
     //! File Name
     std::string filenameV;
     //! Member Sequence Number
-    uint16_t memberSequenceNumberV;
+    uint8_t memberSequenceNumberV;
 };
 
 /**

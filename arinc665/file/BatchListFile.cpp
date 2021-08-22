@@ -414,11 +414,16 @@ void BatchListFile::decodeBatchesInfo(
     // member sequence number
     uint16_t memberSequenceNumber{};
     Helper::getInt< uint16_t>( listIt, memberSequenceNumber);
+    if ( ( memberSequenceNumber < 1U ) || ( memberSequenceNumber > 255U ) )
+    {
+      BOOST_THROW_EXCEPTION( InvalidArinc665File()
+      << Helper::AdditionalInfo( "member sequence number out of range" ) );
+    }
 
     // set it to begin of next batch
     it += batchPointer * 2U;
 
-    batchesV.emplace_back( partNumber, filename, memberSequenceNumber);
+    batchesV.emplace_back( partNumber, filename, memberSequenceNumber );
   }
 }
 

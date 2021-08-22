@@ -406,7 +406,7 @@ void LoadListFile::decodeLoadsInfo(
     // member sequence number
     uint16_t fileMemberSequenceNumber{};
     listIt = Helper::getInt< uint16_t>( listIt, fileMemberSequenceNumber );
-    if ( ( fileMemberSequenceNumber < 1 ) || ( fileMemberSequenceNumber > 255 ) )
+    if ( ( fileMemberSequenceNumber < 1U ) || ( fileMemberSequenceNumber > 255U ) )
     {
       BOOST_THROW_EXCEPTION( InvalidArinc665File()
         << Helper::AdditionalInfo( "member sequence number out of range" ) );
