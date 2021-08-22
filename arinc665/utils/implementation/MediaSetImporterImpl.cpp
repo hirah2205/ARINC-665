@@ -210,7 +210,7 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
   assert( mediumIndex > 0U );
 
   // Check for optional batch list file
-  if ( fileInfos.find( std::string{ ListOfBatchesName } ) == fileInfos.end())
+  if ( fileInfos.contains( std::string{ ListOfBatchesName } ) )
   {
     return;
   }
@@ -228,10 +228,10 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
     batches.clear();
     for ( const auto &batch : currentBatchListFile.batches() )
     {
-      batches.emplace( batch.filename() );
+      batches.emplace( batch.filename );
 
       // check existence of batch file
-      const auto fileIt{ fileInfos.find( batch.filename() ) };
+      const auto fileIt{ fileInfos.find( batch.filename ) };
 
       if ( fileIt == fileInfos.end() )
       {
@@ -239,7 +239,7 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
         BOOST_THROW_EXCEPTION(
           Arinc665Exception()
             << Helper::AdditionalInfo{ "batch file not found" }
-            << boost::errinfo_file_name( std::string{ batch.filename() } ) );
+            << boost::errinfo_file_name( std::string{ batch.filename } ) );
       }
 
       // checks that the batch list and file list entry maps to the same file entry
@@ -253,7 +253,7 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
   }
   else
   {
-    // otherwise check against stored version
+    // otherwise, check against stored version
     if ( !this->batchListFile->belongsToSameMediaSet( currentBatchListFile )
       || ( currentBatchListFile.mediaSequenceNumber() != mediumIndex ) )
     {

@@ -68,7 +68,7 @@ class BatchLoadInfo;
 using BatchLoadsInfo = std::list< BatchLoadInfo>;
 class BatchFile;
 
-class BatchInfo;
+struct BatchInfo;
 //! Batches Information.
 using BatchesInfo = std::list< BatchInfo >;
 class BatchListFile;

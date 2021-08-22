@@ -62,9 +62,10 @@ BatchListFile::BatchListFile(
 }
 
 BatchListFile::BatchListFile( const ConstRawFileSpan &rawFile):
-  ListFile{ rawFile, FileType::BatchList }
+  ListFile{ rawFile, FileType::BatchList },
+  mediaSequenceNumberV{ 0U }
 {
-  decodeBody( rawFile);
+  decodeBody( rawFile );
 }
 
 BatchListFile& BatchListFile::operator=( const ConstRawFileSpan &rawFile)
@@ -138,7 +139,7 @@ void BatchListFile::batch( const BatchInfo &batch )
 
 void BatchListFile::batch( BatchInfo &&batch )
 {
-  batchesV.push_back( batch );
+  batchesV.push_back( std::move( batch ) );
 }
 
 const BatchListFile::UserDefinedData& BatchListFile::userDefinedData() const
@@ -331,10 +332,10 @@ RawFile BatchListFile::encodeBatchesInfo() const
 
     RawFile rawBatchInfo( sizeof( uint16_t ) );
 
-    auto const rawPartNumber{ encodeString( batchInfo.partNumber() ) };
+    auto const rawPartNumber{ encodeString( batchInfo.partNumber ) };
     assert( rawPartNumber.size() % 2 == 0 );
 
-    auto const rawFilename{ encodeString( batchInfo.filename() ) };
+    auto const rawFilename{ encodeString( batchInfo.filename ) };
     assert( rawFilename.size() % 2 == 0 );
 
     // next pointer
@@ -365,7 +366,7 @@ RawFile BatchListFile::encodeBatchesInfo() const
 
     Helper::setInt< uint16_t>(
       rawBatchInfo.begin() + static_cast< ptrdiff_t >( oldSize ),
-      batchInfo.memberSequenceNumber() );
+      batchInfo.memberSequenceNumber );
 
     // add file info to files info
     rawBatchesInfo.insert(
@@ -423,7 +424,10 @@ void BatchListFile::decodeBatchesInfo(
     // set it to begin of next batch
     it += batchPointer * 2U;
 
-    batchesV.emplace_back( partNumber, filename, memberSequenceNumber );
+    batchesV.emplace_back( BatchInfo{
+      std::move( partNumber ),
+      std::move( filename ),
+      static_cast< uint8_t >( memberSequenceNumber ) } );
   }
 }
 

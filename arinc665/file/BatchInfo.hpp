@@ -29,80 +29,15 @@ namespace Arinc665::File {
  *
  * @sa BatchListFile
  **/
-class BatchInfo
+struct BatchInfo
 {
   public:
-    /**
-     * @brief Initialises the batch information with te given data.
-     *
-     * @param[in] partNumber
-     *   Part Number
-     * @param[in] filename
-     *   Filename
-     * @param[in] memberSequenceNumber
-     *   Member Sequence Number
-     **/
-    BatchInfo(
-      std::string_view partNumber,
-      std::string_view filename,
-      uint8_t memberSequenceNumber );
-
-    //! @copydoc BatchInfo::BatchInfo(std::string_view,std::string_view,uint8_t)
-    BatchInfo(
-      std::string &&partNumber,
-      std::string &&filename,
-      uint8_t memberSequenceNumber );
-
-    /**
-     * @brief Returns the Batch Part Number.
-     *
-     * @return The batch Batch part number
-     **/
-    [[nodiscard]] std::string_view partNumber() const;
-
-    /**
-     * @brief Updates the Batch Part Number.
-     *
-     * @param[in] partNumber
-     *   Batch Part Number.
-     **/
-    void partNumber( std::string_view partNumber );
-
-    //! @copydoc partNumber(std::string_view)
-    void partNumber( std::string &&partNumber );
-
-    /**
-     * @brief Returns the Batch Filename.
-     *
-     * @return Batch Filename
-     **/
-    [[nodiscard]] std::string_view filename() const;
-
-    /**
-     * @brief Updates the Batch Filename.
-     *
-     * @param[in] filename
-     *   Btch Filename.
-     **/
-    void filename( std::string_view filename );
-
-    //! @copydoc filename(std::string_view)
-    void filename( std::string &&filename );
-
-    /**
-     * @brief Returns the Member Sequence Number.
-     *
-     * @return Member sequence number
-     **/
-    [[nodiscard]] uint8_t memberSequenceNumber() const;
-
-    /**
-     * @brief Updates the Member Sequence Number.
-     *
-     * @param[in] memberSequenceNumber
-     *   Member sequence number.
-     **/
-    void memberSequenceNumber( uint8_t memberSequenceNumber );
+    //! Part Number
+    std::string partNumber;
+    //! File Name
+    std::string filename;
+    //! Member Sequence Number
+    uint8_t memberSequenceNumber;
 
     /**
      * @brief Compares batch info against each other
@@ -143,14 +78,6 @@ class BatchInfo
      * @return @p this is un-equal to @p other.
      **/
     bool operator !=( const FileInfo &other) const;
-
-  private:
-    //! Part Number
-    std::string partNumberV;
-    //! File Name
-    std::string filenameV;
-    //! Member Sequence Number
-    uint8_t memberSequenceNumberV;
 };
 
 /**

@@ -139,6 +139,11 @@ class BatchListFile: public ListFile
     //! @copydoc ListFile::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept override;
 
+    /**
+     * @name Media Set PN
+     * @{
+     **/
+
     //! @copydoc ListFile::mediaSetPn() const
     [[nodiscard]] std::string_view mediaSetPn() const final;
 
@@ -147,6 +152,13 @@ class BatchListFile: public ListFile
 
     //! @copydoc ListFile::mediaSetPn(std::string&&)
     void mediaSetPn( std::string &&mediaSetPn ) final;
+
+    /** @} **/
+
+    /**
+     * @name Media Sequence Number
+     * @{
+     **/
 
     //! @copydoc ListFile::mediaSequenceNumber() const
     [[nodiscard]] uint8_t mediaSequenceNumber() const final;
@@ -157,6 +169,8 @@ class BatchListFile: public ListFile
     //! @copydoc ListFile::numberOfMediaSetMembers() const
     [[nodiscard]] uint8_t numberOfMediaSetMembers() const final;
 
+    /** @} **/
+
     //! @copydoc ListFile::numberOfMediaSetMembers(uint8_t)
     void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers ) final;
 
@@ -166,6 +180,11 @@ class BatchListFile: public ListFile
      * @return Number of batches.
      **/
     [[nodiscard]] size_t numberOfBatches() const;
+
+    /**
+     * @name Batches
+     * @{
+     **/
 
     /**
      * @brief Returns the Batches Information.
@@ -188,6 +207,13 @@ class BatchListFile: public ListFile
     //! @copydoc batch(const BatchInfo&)
     void batch( BatchInfo &&batch );
 
+    /** @} **/
+
+    /**
+     * @name User Defined Data
+     * @{
+     **/
+
     /**
      * @brief Returns the User Defined Data.
      *
@@ -205,6 +231,8 @@ class BatchListFile: public ListFile
 
     //! @copydoc userDefinedData(const UserDefinedData&)
     void userDefinedData( UserDefinedData &&userDefinedData );
+
+    /** @} **/
 
     /**
      * @brief Returns if the given batch list file belongs to the same media set.

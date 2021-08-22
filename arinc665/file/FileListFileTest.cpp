@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
 
   ++fileI;
   BOOST_CHECK( fileI->filename == "FN_002" );
-  BOOST_CHECK( fileI->pathName == "/A" );
+  BOOST_CHECK( fileI->pathName == "\\A\\" );
   BOOST_CHECK( fileI->path() == "/A/FN_002" );
   BOOST_CHECK( fileI->memberSequenceNumber == 1 );
   BOOST_CHECK( fileI->crc == 0x0123U );

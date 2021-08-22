@@ -132,9 +132,9 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
     /* add all batches to batches list */
     for ( const auto &batch : medium->mediaSet()->batches() )
     {
-      batchListFile.batch({
-        batch->partNumber(),
-        batch->name(),
+      batchListFile.batch( File::BatchInfo{
+        std::string{ batch->partNumber() },
+        std::string{ batch->name() },
         batch->medium()->mediumNumber() } );
     }
 

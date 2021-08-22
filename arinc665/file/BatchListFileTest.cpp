@@ -111,20 +111,20 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( batches.size() == 2);
 
   auto batch{ batches.begin()};
-  BOOST_CHECK( batch->partNumber() == "PN001");
-  BOOST_CHECK( batch->filename() == "FN_001");
-  BOOST_CHECK( batch->memberSequenceNumber() == 1);
+  BOOST_CHECK( batch->partNumber == "PN001" );
+  BOOST_CHECK( batch->filename == "FN_001" );
+  BOOST_CHECK( batch->memberSequenceNumber == 1U );
 
   ++batch;
-  BOOST_CHECK( batch->partNumber() == "PN002");
-  BOOST_CHECK( batch->filename() == "FN_002");
-  BOOST_CHECK( batch->memberSequenceNumber() == 1);
+  BOOST_CHECK( batch->partNumber == "PN002" );
+  BOOST_CHECK( batch->filename == "FN_002" );
+  BOOST_CHECK( batch->memberSequenceNumber == 1U );
 
 
   BOOST_CHECK( (file.userDefinedData() ==
     BatchListFile::UserDefinedData{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06}));
 
-  const auto raw2{ static_cast< RawFile>( file)};
+  const auto raw2{ static_cast< RawFile>( file) };
 
   // std::cout << Dump( &(*(raw2.begin())), raw2.size());
 

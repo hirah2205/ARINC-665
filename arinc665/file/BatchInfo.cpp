@@ -16,70 +16,12 @@
 
 namespace Arinc665::File {
 
-BatchInfo::BatchInfo(
-  std::string_view partNumber,
-  std::string_view filename,
-  uint8_t memberSequenceNumber):
-  partNumberV{ partNumber},
-  filenameV{ filename}, memberSequenceNumberV{ memberSequenceNumber}
-{
-}
-
-BatchInfo::BatchInfo(
-  std::string &&partNumber,
-  std::string &&filename,
-  uint8_t memberSequenceNumber):
-  partNumberV{ partNumber},
-  filenameV{ filename}, memberSequenceNumberV{ memberSequenceNumber}
-{
-}
-
-std::string_view BatchInfo::partNumber() const
-{
-  return partNumberV;
-}
-
-void BatchInfo::partNumber( std::string_view partNumber)
-{
-  partNumberV = partNumber;
-}
-
-void BatchInfo::partNumber( std::string &&partNumber)
-{
-  partNumberV = std::move( partNumber);
-}
-
-std::string_view BatchInfo::filename() const
-{
-  return filenameV;
-}
-
-void BatchInfo::filename( std::string_view filename)
-{
-  filenameV = filename;
-}
-
-void BatchInfo::filename( std::string &&filename)
-{
-  filenameV = std::move( filename);
-}
-
-uint8_t BatchInfo::memberSequenceNumber() const
-{
-  return memberSequenceNumberV;
-}
-
-void BatchInfo::memberSequenceNumber( const uint8_t memberSequenceNumber)
-{
-  memberSequenceNumberV = memberSequenceNumber;
-}
-
 bool BatchInfo::operator ==( const BatchInfo &other) const
 {
   return
-    ( partNumberV == other.partNumber()) &&
-    ( filenameV == other.filename()) &&
-    ( memberSequenceNumberV == other.memberSequenceNumber());
+    ( partNumber == other.partNumber ) &&
+    ( filename == other.filename ) &&
+    ( memberSequenceNumber == other.memberSequenceNumber );
 }
 
 bool BatchInfo::operator !=( const BatchInfo &other) const
@@ -90,8 +32,8 @@ bool BatchInfo::operator !=( const BatchInfo &other) const
 bool BatchInfo::operator ==( const FileInfo &other) const
 {
   return
-    ( filenameV == other.filename ) &&
-    ( memberSequenceNumberV == other.memberSequenceNumber );
+    ( filename == other.filename ) &&
+    ( memberSequenceNumber == other.memberSequenceNumber );
 }
 
 bool BatchInfo::operator !=( const FileInfo &other) const
