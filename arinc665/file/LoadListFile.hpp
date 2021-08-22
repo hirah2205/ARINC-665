@@ -142,6 +142,11 @@ class LoadListFile: public ListFile
     //! @copydoc ListFile::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept final;
 
+    /**
+     * @name Media Set PN
+     * @{
+     **/
+
     //! @copydoc ListFile::mediaSetPn() const
     [[nodiscard]] std::string_view mediaSetPn() const final;
 
@@ -151,11 +156,25 @@ class LoadListFile: public ListFile
     //! @copydoc ListFile::mediaSetPn(std::string&&)
     void mediaSetPn( std::string &&mediaSetPn ) final;
 
+    /** @} **/
+
+    /**
+     * @name Media Sequence Number
+     * @{
+     **/
+
     //! @copydoc ListFile::mediaSequenceNumber() const
     [[nodiscard]] uint8_t mediaSequenceNumber() const final;
 
     //! @copydoc ListFile::mediaSequenceNumber(uint8_t)
     void mediaSequenceNumber( uint8_t mediaSequenceNumber ) final;
+
+    /** @} **/
+
+    /**
+     * @name Number of Media Set Members
+     * @{
+     **/
 
     //! @copydoc ListFile::numberOfMediaSetMembers() const
     [[nodiscard]] uint8_t numberOfMediaSetMembers() const final;
@@ -163,17 +182,24 @@ class LoadListFile: public ListFile
     //! @copydoc ListFile::numberOfMediaSetMembers(uint8_t)
     void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers ) final;
 
+    /** @} **/
+
+    /**
+     * @name Loads
+     * @{
+     **/
+
     /**
      * @brief Returns the number of loads.
      *
-     * @return The number of loads.
+     * @return Number of loads.
      **/
     [[nodiscard]] size_t numberOfLoads() const;
 
     /**
      * @brief Returns the loads.
      *
-     * @return The Loads.
+     * @return Loads.
      **/
     [[nodiscard]] const LoadsInfo& loads() const;
 
@@ -195,6 +221,13 @@ class LoadListFile: public ListFile
     //! @copydoc load(const LoadInfo&)
     void load( LoadInfo &&load );
 
+    /** @} **/
+
+    /**
+     * @name User Defined Data
+     * @{
+     **/
+
     /**
      * @brief Returns the user defined data.
      *
@@ -214,6 +247,8 @@ class LoadListFile: public ListFile
 
     //! @copydoc userDefinedData(const UserDefinedData&)
     void userDefinedData( UserDefinedData &&userDefinedData );
+
+    /** @} **/
 
     /**
      * @brief Returns if the given load list file belongs to the same media set.

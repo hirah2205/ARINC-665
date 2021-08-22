@@ -18,9 +18,9 @@
 
 namespace Arinc665::File {
 
-BOOST_AUTO_TEST_SUITE( Arinc665Test)
-BOOST_AUTO_TEST_SUITE( FileTest)
-BOOST_AUTO_TEST_SUITE( LoadListFileTest)
+BOOST_AUTO_TEST_SUITE( Arinc665Test )
+BOOST_AUTO_TEST_SUITE( FileTest )
+BOOST_AUTO_TEST_SUITE( LoadListFileTest )
 
 BOOST_AUTO_TEST_CASE( constructor1)
 {
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
     0x00, 0x05,
     // Media Set PN
     'P', 'N', '1', '2', '3', 0x00,
-    // Media Sequnece Number
+    // Media Sequence Number
     0x01,
     // Number of media set members
     0x01,
@@ -105,36 +105,36 @@ BOOST_AUTO_TEST_CASE( constructor1)
 
   LoadListFile file{ rawFile};
 
-  BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2);
+  BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2 );
 
-  BOOST_CHECK( file.mediaSetPn() == "PN123");
-  BOOST_CHECK( file.mediaSequenceNumber() == 1);
-  BOOST_CHECK( file.numberOfMediaSetMembers() == 1);
+  BOOST_CHECK( file.mediaSetPn() == "PN123" );
+  BOOST_CHECK( file.mediaSequenceNumber() == 1 );
+  BOOST_CHECK( file.numberOfMediaSetMembers() == 1 );
 
-  const auto& loads{ file.loads()};
-  BOOST_CHECK( loads.size() == 2);
+  const auto& loads{ file.loads() };
+  BOOST_CHECK( loads.size() == 2 );
 
   auto load{ loads.begin()};
-  BOOST_CHECK( load->partNumber() == "PN001");
-  BOOST_CHECK( load->headerFilename() == "FN_001");
-  BOOST_CHECK( load->memberSequenceNumber() == 1);
-  BOOST_CHECK( load->targetHardwareIds().size() == 1);
-  BOOST_CHECK( *load->targetHardwareIds().begin() == "THWID010");
+  BOOST_CHECK( load->partNumber == "PN001" );
+  BOOST_CHECK( load->headerFilename == "FN_001" );
+  BOOST_CHECK( load->memberSequenceNumber == 1 );
+  BOOST_CHECK( load->targetHardwareIds.size() == 1 );
+  BOOST_CHECK( *load->targetHardwareIds.begin() == "THWID010" );
 
   ++load;
-  BOOST_CHECK( load->partNumber() == "PN002");
-  BOOST_CHECK( load->headerFilename() == "FN_002");
-  BOOST_CHECK( load->memberSequenceNumber() == 1);
-  BOOST_CHECK( load->targetHardwareIds().size() == 1);
-  BOOST_CHECK( *load->targetHardwareIds().begin() == "THWID010");
+  BOOST_CHECK( load->partNumber == "PN002" );
+  BOOST_CHECK( load->headerFilename == "FN_002" );
+  BOOST_CHECK( load->memberSequenceNumber == 1U );
+  BOOST_CHECK( load->targetHardwareIds.size() == 1U );
+  BOOST_CHECK( *load->targetHardwareIds.begin() == "THWID010" );
 
 
   BOOST_CHECK( (file.userDefinedData() ==
-    LoadListFile::UserDefinedData{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06}));
+    LoadListFile::UserDefinedData{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 } ) );
 
-  const auto raw2{ static_cast< RawFile>( file)};
+  const auto raw2{ static_cast< RawFile>( file ) };
 
-  BOOST_CHECK( rawFile == raw2);
+  BOOST_CHECK( rawFile == raw2 );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -328,13 +328,13 @@ RawFile LoadListFile::encodeLoadsInfo() const
   for ( auto const &loadInfo : loadsV )
   {
     ++loadCounter;
-    auto const rawPartNumber( encodeString( loadInfo.partNumber()));
+    auto const rawPartNumber( encodeString( loadInfo.partNumber ) );
     assert( rawPartNumber.size() % 2 == 0);
 
-    auto const rawHeaderFilename( encodeString( loadInfo.headerFilename()));
+    auto const rawHeaderFilename( encodeString( loadInfo.headerFilename ) );
     assert( rawHeaderFilename.size() % 2 == 0);
 
-    auto const rawThwIds( encodeStringList( loadInfo.targetHardwareIds()));
+    auto const rawThwIds( encodeStringList( loadInfo.targetHardwareIds ) );
     assert( rawThwIds.size() % 2 == 0);
 
     RawFile rawLoadInfo(
@@ -354,16 +354,16 @@ RawFile LoadListFile::encodeLoadsInfo() const
         (rawLoadInfo.size() / 2));
 
     // part number
-    loadInfoIt = std::copy( rawPartNumber.begin(), rawPartNumber.end(), loadInfoIt);
+    loadInfoIt = std::copy( rawPartNumber.begin(), rawPartNumber.end(), loadInfoIt );
 
     // header filename
-    loadInfoIt = std::copy( rawHeaderFilename.begin(), rawHeaderFilename.end(), loadInfoIt);
+    loadInfoIt = std::copy( rawHeaderFilename.begin(), rawHeaderFilename.end(), loadInfoIt );
 
     // member sequence number
-    loadInfoIt = Helper::setInt< uint16_t>( loadInfoIt, loadInfo.memberSequenceNumber());
+    loadInfoIt = Helper::setInt< uint16_t>( loadInfoIt, loadInfo.memberSequenceNumber );
 
     // THW IDs list
-    loadInfoIt = std::copy( rawThwIds.begin(), rawThwIds.end(), loadInfoIt);
+    loadInfoIt = std::copy( rawThwIds.begin(), rawThwIds.end(), loadInfoIt );
 
     // add file info to files info
     rawLoadsInfo.insert( rawLoadsInfo.end(), rawLoadInfo.begin(), rawLoadInfo.end());
@@ -415,11 +415,11 @@ void LoadListFile::decodeLoadsInfo(
     LoadInfo::ThwIds thwIds{};
     listIt = Arinc665File::decodeStringList( listIt, thwIds);
 
-    loadsV.emplace_back(
-      std::move( partNumber),
-      std::move( headerFilename),
-      static_cast< uint8_t>( fileMemberSequenceNumber),
-      std::move( thwIds));
+    loadsV.emplace_back( LoadInfo{
+      std::move( partNumber ),
+      std::move( headerFilename ),
+      static_cast< uint8_t>( fileMemberSequenceNumber ),
+      std::move( thwIds ) } );
 
     // set it to begin of next load
     it += loadPointer * 2;

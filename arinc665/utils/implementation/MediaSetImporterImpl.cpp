@@ -166,17 +166,17 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
     loads.clear();
     for ( const auto &load : currentLoadListFile.loads() )
     {
-      loads.emplace( load.headerFilename() );
+      loads.emplace( load.headerFilename );
 
       // check existence of load header file
-      const auto fileIt{ fileInfos.find( load.headerFilename() ) };
+      const auto fileIt{ fileInfos.find( load.headerFilename ) };
 
       if ( fileIt == fileInfos.end() )
       {
         BOOST_THROW_EXCEPTION(
           Arinc665Exception()
             << Helper::AdditionalInfo( "load header file not found")
-            << boost::errinfo_file_name( std::string{ load.headerFilename() } ) );
+            << boost::errinfo_file_name( std::string{ load.headerFilename } ) );
       }
 
       // checks that the load list and file list entry maps to the same file entry

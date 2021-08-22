@@ -73,7 +73,7 @@ struct BatchInfo;
 using BatchesInfo = std::list< BatchInfo >;
 class BatchListFile;
 
-class LoadInfo;
+struct LoadInfo;
 //! Loads Information.
 using LoadsInfo = std::list< LoadInfo >;
 class LoadListFile;

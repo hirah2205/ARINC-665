@@ -166,13 +166,25 @@ class BatchListFile: public ListFile
     //! @copydoc ListFile::mediaSequenceNumber(uint8_t)
     void mediaSequenceNumber( uint8_t mediaSequenceNumber ) final;
 
+    /** @} **/
+
+    /**
+     * @name Number of Media Set Members
+     * @{
+     **/
+
     //! @copydoc ListFile::numberOfMediaSetMembers() const
     [[nodiscard]] uint8_t numberOfMediaSetMembers() const final;
 
-    /** @} **/
-
     //! @copydoc ListFile::numberOfMediaSetMembers(uint8_t)
     void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers ) final;
+
+    /** @} **/
+
+    /**
+     * @name Batches
+     * @{
+     **/
 
     /**
      * @brief Return the Number of Batches.
@@ -180,11 +192,6 @@ class BatchListFile: public ListFile
      * @return Number of batches.
      **/
     [[nodiscard]] size_t numberOfBatches() const;
-
-    /**
-     * @name Batches
-     * @{
-     **/
 
     /**
      * @brief Returns the Batches Information.

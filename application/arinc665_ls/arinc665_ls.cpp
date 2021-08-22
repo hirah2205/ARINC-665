@@ -316,12 +316,12 @@ static void list_loads_lum( const std::filesystem::path &loadsLum)
     for ( const auto & load : loadList.loads())
     {
       std::cout
-        << "load load pn: "                << load.partNumber() << "\n"
-        << "load header file name: "       << load.headerFilename() << "\n"
+        << "load load pn: "                << load.partNumber << "\n"
+        << "load header file name: "       << load.headerFilename << "\n"
         << "load member sequence number: "
-          << std::dec << (int)load.memberSequenceNumber() << "\n\n";
+          << std::dec << (int)load.memberSequenceNumber << "\n\n";
 
-      for ( const auto & thw : load.targetHardwareIds())
+      for ( const auto & thw : load.targetHardwareIds )
       {
         std::cout << "target hardware id: " << thw << "\n\n";
       }

@@ -104,9 +104,9 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
   /* add all load to loads list */
   for ( const auto &load : medium->mediaSet()->loads() )
   {
-    loadListFile.load({
-      load->partNumber(),
-      load->name(),
+    loadListFile.load( File::LoadInfo{
+      std::string{ load->partNumber() },
+      std::string{ load->name() },
       load->medium()->mediumNumber(),
       load->targetHardwareIds() } );
   }

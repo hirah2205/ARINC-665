@@ -156,6 +156,11 @@ class FileListFile: public ListFile
     //! @copydoc ListFile::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept final;
 
+    /**
+     * @name Media Set PN
+     * @{
+     **/
+
     //! @copydoc ListFile::mediaSetPn() const
     [[nodiscard]] std::string_view mediaSetPn() const final;
 
@@ -165,17 +170,33 @@ class FileListFile: public ListFile
     //! @copydoc ListFile::mediaSetPn(std::string&&)
     void mediaSetPn( std::string &&mediaSetPn) final;
 
+    /** @} **/
+
+    /**
+     * @name Media Sequence Number
+     * @{
+     **/
+
     //! @copydoc ListFile::mediaSequenceNumber() const
     [[nodiscard]] uint8_t mediaSequenceNumber() const final;
 
     //! @copydoc ListFile::mediaSequenceNumber(uint8_t)
     void mediaSequenceNumber( uint8_t mediaSequenceNumber) final;
 
+    /** @} **/
+
+    /**
+     * @name Number of Media Set Members
+     * @{
+     **/
+
     //! @copydoc ListFile::numberOfMediaSetMembers() const
     [[nodiscard]] uint8_t numberOfMediaSetMembers() const final;
 
     //! @copydoc ListFile::numberOfMediaSetMembers(uint8_t)
     void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers) final;
+
+    /** @} **/
 
     /**
      * @brief Returns the number of files.
@@ -190,6 +211,11 @@ class FileListFile: public ListFile
      * @return list of files
      **/
     [[nodiscard]] const FilesInfo& files() const;
+
+    /**
+     * @name Files
+     * @{
+     **/
 
     /**
      * @brief Return the list of files.
@@ -209,6 +235,13 @@ class FileListFile: public ListFile
     //! @copydoc file(const FileInfo&)
     void file( FileInfo &&file);
 
+    /** @} **/
+
+    /**
+     * @name User Defined Data
+     * @{
+     **/
+
     /**
      * @brief Returns the user defined data.
      *
@@ -227,6 +260,13 @@ class FileListFile: public ListFile
     //! @copydoc userDefinedData(const UserDefinedData&)
     void userDefinedData( UserDefinedData &&userDefinedData );
 
+    /** @} **/
+
+    /**
+     * @name Check Value
+     * @{
+     **/
+
     /**
      * @brief Returns the Check Value.
      *
@@ -244,6 +284,8 @@ class FileListFile: public ListFile
 
     //! @copydoc checkValue(const std::optional<CheckValue>&)
     void checkValue( std::optional< CheckValue> &&value);
+
+    /** @} **/
 
     /**
      * @brief Returns if the given file list file belongs to the same media set.
