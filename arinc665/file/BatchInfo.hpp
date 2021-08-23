@@ -31,53 +31,52 @@ namespace Arinc665::File {
  **/
 struct BatchInfo
 {
-  public:
-    //! Part Number
-    std::string partNumber;
-    //! File Name
-    std::string filename;
-    //! Member Sequence Number
-    uint8_t memberSequenceNumber;
+  //! Part Number
+  std::string partNumber;
+  //! File Name
+  std::string filename;
+  //! Member Sequence Number
+  uint8_t memberSequenceNumber;
 
-    /**
-     * @brief Compares batch info against each other
-     *
-     * @param[in] other
-     *   Right-hand side, which should be compared with @p this.
-     *
-     * @return @p this is equal to @p other.
-     **/
-    bool operator ==( const BatchInfo &other ) const;
+  /**
+   * @brief Compares batch info against each other
+   *
+   * @param[in] other
+   *   Right-hand side, which should be compared with @p this.
+   *
+   * @return @p this is equal to @p other.
+   **/
+  bool operator ==( const BatchInfo &other ) const;
 
-    /**
-     * @brief Compares batch info against each other to be unequal.
-     *
-     * @param[in] other
-     *   Right-hand side, which should be compared with @p this.
-     *
-     * @return @p this is un-equal to @p other.
-     **/
-    bool operator !=( const BatchInfo &other ) const;
+  /**
+   * @brief Compares batch info against each other to be unequal.
+   *
+   * @param[in] other
+   *   Right-hand side, which should be compared with @p this.
+   *
+   * @return @p this is un-equal to @p other.
+   **/
+  bool operator !=( const BatchInfo &other ) const;
 
-    /**
-     * @brief Compares batch info against file info.
-     *
-     * @param[in] other
-     *   Right-hand side, which should be compared with @p this.
-     *
-     * @return @p this is equal to @p other.
-     **/
-    bool operator ==( const FileInfo &other ) const;
+  /**
+   * @brief Compares batch info against file info.
+   *
+   * @param[in] other
+   *   Right-hand side, which should be compared with @p this.
+   *
+   * @return @p this is equal to @p other.
+   **/
+  bool operator ==( const FileInfo &other ) const;
 
-    /**
-     * @brief Compares batch info against file info to be unequal.
-     *
-     * @param[in] other
-     *   Right-hand side, which should be compared with @p this.
-     *
-     * @return @p this is un-equal to @p other.
-     **/
-    bool operator !=( const FileInfo &other) const;
+  /**
+   * @brief Compares batch info against file info to be unequal.
+   *
+   * @param[in] other
+   *   Right-hand side, which should be compared with @p this.
+   *
+   * @return @p this is un-equal to @p other.
+   **/
+  bool operator !=( const FileInfo &other) const;
 };
 
 /**

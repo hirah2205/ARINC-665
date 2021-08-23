@@ -16,7 +16,6 @@
 #include <arinc665/file/File.hpp>
 
 #include <string>
-#include <string_view>
 #include <optional>
 #include <cstdint>
 
@@ -32,133 +31,18 @@ namespace Arinc665::File {
  *
  * @sa LoadHeaderFile
  **/
-class LoadFileInfo
+struct LoadFileInfo
 {
-  public:
-    /**
-     * @brief Initialise the load file information with the given data.
-     *
-     * @param[in] filename
-     *   filename
-     * @param[in] partNumber
-     *   Part number
-     * @param[in] length
-     *   File size
-     * @param[in] crc
-     *   File CRC
-     * @param[in] checkValue
-     *   Check Value.
-     **/
-    LoadFileInfo(
-      std::string_view filename,
-      std::string_view partNumber,
-      uint64_t length,
-      uint16_t crc,
-      const std::optional< CheckValue> &checkValue = {} );
-
-    //! @copydoc LoadFileInfo::LoadFileInfo(std::string_view,std::string_view,uint64_t,uint16_t,const std::optional<CheckValue>&)
-    LoadFileInfo(
-      std::string &&filename,
-      std::string &&partNumber,
-      uint64_t length,
-      uint16_t crc,
-      std::optional< CheckValue> &&checkValue = {} );
-
-    /**
-     * @brief Returns the Filename.
-     *
-     * @return Filename.
-     **/
-    [[nodiscard]] std::string_view filename() const;
-
-    /**
-     * @brief Updates the filename.
-     *
-     * @param[in] filename
-     *   Filename.
-     **/
-    void filename( std::string_view filename );
-
-    //! @copydoc filename(std::string_view)
-    void filename( std::string &&filename );
-
-    /**
-     * @return Returns the File Part Number.
-     *
-     * @return File Part Number.
-     **/
-    [[nodiscard]] std::string_view partNumber() const;
-
-    /**
-     * @brief Updates the file part number.
-     *
-     * @param[in] partNumber
-     *   File Part Number.
-     **/
-    void partNumber( std::string_view partNumber );
-
-    //! @copydoc partNumber(std::string_view)
-    void partNumber( std::string &&partNumber );
-
-    /**
-     * @return Returns the file size.
-     *
-     * @return File size.
-     **/
-    [[nodiscard]] uint64_t length() const;
-
-    /**
-     * @brief Updates the file size.
-     *
-     * @param[in] length
-     *   file size.
-     **/
-    void length( uint64_t length );
-
-    /**
-     * @return Returns the file CRC.
-     *
-     * @return The file CRC.
-     **/
-    [[nodiscard]] uint16_t crc() const;
-
-    /**
-     * @brief Updates the file CRC.
-     *
-     * @param[in] crc
-     *   The file CRC.
-     **/
-    void crc( uint16_t crc );
-
-    /**
-     * @brief Returns the Check Value.
-     *
-     * @return Check Value.
-     **/
-    [[nodiscard]] const std::optional< CheckValue>& checkValue() const;
-
-    /**
-     * @brief Updates the Check Value
-     *
-     * @param[in] checkValue
-     *   Check Value.
-     **/
-    void checkValue( const std::optional< CheckValue> &checkValue );
-
-    //! @copydoc checkValue(const std::optional<CheckValue>&)
-    void checkValue( std::optional< CheckValue> &&checkValue );
-
-  private:
-    //! Filename
-    std::string filenameV;
-    //! File Part Number
-    std::string partNumberV;
-    //! File Length (Always in bytes)
-    uint64_t lengthV;
-    //! File CRC
-    uint16_t crcV;
-    //! Check Value (since ARINC 665-3)
-    std::optional< CheckValue> checkValueV;
+  //! Filename
+  std::string filename;
+  //! File Part Number
+  std::string partNumber;
+  //! File Length (Always in bytes)
+  uint64_t length;
+  //! File CRC
+  uint16_t crc;
+  //! Check Value (since ARINC 665-3)
+  std::optional< CheckValue> checkValue;
 };
 
 }

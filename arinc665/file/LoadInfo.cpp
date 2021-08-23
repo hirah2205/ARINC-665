@@ -37,21 +37,10 @@ bool LoadInfo::operator ==( const FileInfo &other) const
     ( memberSequenceNumber == other.memberSequenceNumber );
 }
 
-bool LoadInfo::operator !=( const FileInfo &other) const
-{
-  return !(*this == other);
-}
-
 bool operator ==( const FileInfo &fileInfo, const LoadInfo &loadInfo)
 {
   // delegate to class member compare operator
   return loadInfo == fileInfo;
-}
-
-bool operator !=( const FileInfo &fileInfo, const LoadInfo &loadInfo)
-{
-  // delegate to class member compare operator
-  return loadInfo != fileInfo;
 }
 
 }

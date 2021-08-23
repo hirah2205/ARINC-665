@@ -404,109 +404,109 @@ void MediaSetImporterImpl::addLoads()
     // iterate over data files
     for ( const auto &dataFile : loadHeaderFile.second.dataFiles() )
     {
-      auto dataFilePtr{ mediaSet->file( dataFile.filename() ) };
+      auto dataFilePtr{ mediaSet->file( dataFile.filename ) };
 
       if ( !dataFilePtr )
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo( "Data file not found" )
-          << boost::errinfo_file_name( std::string{ dataFile.filename() } ) );
+          << boost::errinfo_file_name( dataFile.filename ) );
       }
 
       // get memorised file size ( only when file integrity is checked)
       if ( checkFileIntegrity )
       {
-        const auto dataFileSize = fileSizes.find( dataFile.filename() );
+        const auto dataFileSize = fileSizes.find( dataFile.filename );
         if ( dataFileSize == fileSizes.end() )
         {
           BOOST_THROW_EXCEPTION(
             Arinc665Exception()
             << Helper::AdditionalInfo( "No Size Info for Data File" )
-            << boost::errinfo_file_name( std::string{ dataFile.filename() } ) );
+            << boost::errinfo_file_name( dataFile.filename ) );
         }
 
         // check load data file size - we divide by 2 to work around 16-bit size
         // storage within Supplement 2 LUHs (Only Data Files)
-        if ( ( dataFileSize->second / 2 ) != ( dataFile.length() / 2 ) )
+        if ( ( dataFileSize->second / 2 ) != ( dataFile.length / 2 ) )
         {
           BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
-            << "Data File Size inconsistent " << dataFile.filename() << " "
-            << dataFileSize->second << " " << dataFile.length();
+            << "Data File Size inconsistent " << dataFile.filename << " "
+            << dataFileSize->second << " " << dataFile.length;
 
           BOOST_THROW_EXCEPTION(
             Arinc665Exception()
-            << Helper::AdditionalInfo( "Data File Size inconsistent" )
-            << boost::errinfo_file_name( std::string{ dataFile.filename() } ) );
+            << Helper::AdditionalInfo{ "Data File Size inconsistent" }
+            << boost::errinfo_file_name{ dataFile.filename } );
         }
       }
 
       // Check CRC
-      const auto &dataFileInfo{ fileInfos.find( dataFile.filename() ) };
+      const auto &dataFileInfo{ fileInfos.find( dataFile.filename ) };
       assert( dataFileInfo != fileInfos.end() );
-      if ( dataFileInfo->second.crc != dataFile.crc() )
+      if ( dataFileInfo->second.crc != dataFile.crc )
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( "Data File CRC inconsistent" )
-          << boost::errinfo_file_name( std::string{ dataFile.filename() } ) );
+          << Helper::AdditionalInfo{ "Data File CRC inconsistent" }
+          << boost::errinfo_file_name{ dataFile.filename } );
       }
 
       // TODO Check Type Value ?!?
 
-      loadPtr->dataFile( { dataFilePtr, std::string{ dataFile.partNumber() } } );
+      loadPtr->dataFile( { dataFilePtr,  dataFile.partNumber } );
     }
 
     // iterate over support files
     for ( const auto &supportFile : loadHeaderFile.second.supportFiles() )
     {
-      auto supportFilePtr{ mediaSet->file( supportFile.filename() ) };
+      auto supportFilePtr{ mediaSet->file( supportFile.filename ) };
 
       if ( !supportFilePtr )
       {
         BOOST_THROW_EXCEPTION(
           Arinc665Exception()
-            << Helper::AdditionalInfo( "Support file not found" )
-            << boost::errinfo_file_name( std::string{ supportFile.filename() } ) );
+            << Helper::AdditionalInfo{ "Support file not found" }
+          << boost::errinfo_file_name{ supportFile.filename } );
       }
 
       // get memorised file size ( only when file integrity is checked)
       if ( checkFileIntegrity )
       {
-        const auto dataFileSize = fileSizes.find( supportFile.filename() );
+        const auto dataFileSize = fileSizes.find( supportFile.filename );
         if ( dataFileSize == fileSizes.end() )
         {
           BOOST_THROW_EXCEPTION( Arinc665Exception()
-            << Helper::AdditionalInfo( "No Size Info for Support File" )
-            << boost::errinfo_file_name( std::string{ supportFile.filename() } ) );
+            << Helper::AdditionalInfo{ "No Size Info for Support File" }
+            << boost::errinfo_file_name{ supportFile.filename } );
         }
 
         // check load data file size
-        if ( dataFileSize->second != supportFile.length() )
+        if ( dataFileSize->second != supportFile.length )
         {
           BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
             << "Support File Size inconsistent "
-              << supportFile.filename() << " "
+              << supportFile.filename << " "
               << dataFileSize->second << " "
-              << supportFile.length();
+              << supportFile.length;
 
           BOOST_THROW_EXCEPTION( Arinc665Exception()
-            << Helper::AdditionalInfo( "Support File Size inconsistent" )
-            << boost::errinfo_file_name( std::string{ supportFile.filename() } ) );
+            << Helper::AdditionalInfo{ "Support File Size inconsistent" }
+            << boost::errinfo_file_name{ supportFile.filename } );
         }
       }
 
       // Check CRC
-      const auto &supportFileInfo{ fileInfos.find( supportFile.filename() ) };
+      const auto &supportFileInfo{ fileInfos.find( supportFile.filename ) };
       assert( supportFileInfo != fileInfos.end() );
-      if ( supportFileInfo->second.crc != supportFile.crc() )
+      if ( supportFileInfo->second.crc != supportFile.crc )
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( "Support File CRC inconsistent" )
-          << boost::errinfo_file_name( std::string{ supportFile.filename() } ) );
+          << Helper::AdditionalInfo{ "Support File CRC inconsistent" }
+          << boost::errinfo_file_name{ supportFile.filename } );
       }
 
       // TODO Check Type Value ?!?
 
-      loadPtr->supportFile( { supportFilePtr, std::string{ supportFile.partNumber() } } );
+      loadPtr->supportFile( { supportFilePtr, supportFile.partNumber } );
     }
 
     // User Defined Data

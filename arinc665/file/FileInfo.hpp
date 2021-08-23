@@ -32,44 +32,33 @@ namespace Arinc665::File {
  **/
 struct FileInfo
 {
-  public:
-    //! Filename
-    std::string filename;
-    //! Path Name
-    std::string pathName;
-    //! Member Sequence Number
-    uint8_t memberSequenceNumber;
-    //! CRC
-    uint16_t crc;
-    //! Check Value (since ARINC 665-3)
-    std::optional< CheckValue> checkValue;
+  //! Filename
+  std::string filename;
+  //! Path Name
+  std::string pathName;
+  //! Member Sequence Number
+  uint8_t memberSequenceNumber;
+  //! CRC
+  uint16_t crc;
+  //! Check Value (since ARINC 665-3)
+  std::optional< CheckValue> checkValue;
 
-    /**
-     * @brief Returns the path (path name / filename)
-     *
-     * @return path (incl. filename)
-     **/
-    [[nodiscard]] std::filesystem::path path() const;
+  /**
+   * @brief Returns the path (path name / filename)
+   *
+   * @return path (incl. filename)
+   **/
+  [[nodiscard]] std::filesystem::path path() const;
 
-    /**
-     * @brief Compares the given file info against [this].
-     *
-     * @param[in] other
-     *  Other file info.
-     *
-     * @return if [this] is equal to [other].
-     **/
-    bool operator==( const FileInfo &other ) const;
-
-    /**
-     * @brief Compares the given file info against [this].
-     *
-     * @param[in] other
-     *  Other file info.
-     *
-     * @return if [this] is un-equal to [other].
-     **/
-    bool operator!=( const FileInfo &other) const;
+  /**
+   * @brief Compares the given file info against [this].
+   *
+   * @param[in] other
+   *  Other file info.
+   *
+   * @return if [this] is equal to [other].
+   **/
+  bool operator==( const FileInfo &other ) const;
 };
 
 }

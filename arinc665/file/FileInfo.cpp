@@ -20,24 +20,19 @@ std::filesystem::path FileInfo::path() const
 {
   std::string newPathName{ pathName };
 
-  std::replace( newPathName.begin(), newPathName.end(), '\\', '/');
+  std::replace( newPathName.begin(), newPathName.end(), '\\', '/' );
 
-  return std::filesystem::path{ newPathName} / filename;
+  return std::filesystem::path{ newPathName } / filename;
 }
 
-bool FileInfo::operator ==( const FileInfo &other) const
+bool FileInfo::operator ==( const FileInfo &other ) const
 {
   return
-    (filename == other.filename) &&
-    (pathName == other.pathName ) &&
-    (memberSequenceNumber == other.memberSequenceNumber ) &&
-    (crc == other.crc ) &&
-    (checkValue == other.checkValue );
-}
-
-bool FileInfo::operator !=( const FileInfo &other) const
-{
-  return !(*this == other);
+    ( filename == other.filename ) &&
+    ( pathName == other.pathName ) &&
+    ( memberSequenceNumber == other.memberSequenceNumber ) &&
+    ( crc == other.crc ) &&
+    ( checkValue == other.checkValue );
 }
 
 }

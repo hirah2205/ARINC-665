@@ -55,7 +55,7 @@ using RawFileSpan = std::span< uint8_t>;
 
 class Arinc665File;
 
-class LoadFileInfo;
+struct LoadFileInfo;
 //! Load Files Information.
 using LoadFilesInfo = std::list< LoadFileInfo>;
 class LoadHeaderFile;

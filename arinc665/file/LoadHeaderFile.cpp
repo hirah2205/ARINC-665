@@ -727,23 +727,23 @@ RawFile LoadHeaderFile::encodeFileList(
     RawFile rawFileInfo( sizeof( uint16_t));
 
     // filename
-    auto const rawFilename{ encodeString( fileInfo.filename())};
+    auto const rawFilename{ encodeString( fileInfo.filename ) };
     assert( rawFilename.size() % 2 == 0);
     rawFileInfo.insert(
       rawFileInfo.end(),
       rawFilename.begin(),
-      rawFilename.end());
+      rawFilename.end() );
 
     // part number
-    auto const rawPartNumber{ encodeString( fileInfo.partNumber())};
+    auto const rawPartNumber{ encodeString( fileInfo.partNumber ) };
     assert( rawPartNumber.size() % 2 == 0);
     rawFileInfo.insert(
       rawFileInfo.end(),
       rawPartNumber.begin(),
-      rawPartNumber.end());
+      rawPartNumber.end() );
 
     rawFileInfo.resize(
-      rawFileInfo.size() + sizeof( uint32_t) + sizeof( uint16_t));
+      rawFileInfo.size() + sizeof( uint32_t) + sizeof( uint16_t) );
 
     // file length
     uint32_t fileLength{ 0};
@@ -752,12 +752,12 @@ RawFile LoadHeaderFile::encodeFileList(
     {
       case FileListType::Data:
         // rounded number of 16-bit words
-        fileLength = Helper::safeCast< uint32_t>( (fileInfo.length() + 1) / 2);
+        fileLength = Helper::safeCast< uint32_t>( (fileInfo.length + 1) / 2);
         break;
 
       case FileListType::Support:
         // number of bytes
-        fileLength = fileInfo.length();
+        fileLength = fileInfo.length;
         break;
 
       default:
@@ -772,7 +772,7 @@ RawFile LoadHeaderFile::encodeFileList(
     // CRC
     Helper::setInt< uint16_t>(
       rawFileInfo.begin() + static_cast< ptrdiff_t>( rawFileInfo.size() ) - sizeof( uint16_t),
-      fileInfo.crc());
+      fileInfo.crc );
 
     // following fields are available in ARINC 665-3 ff
     if ( encodeV3Data )
@@ -783,11 +783,11 @@ RawFile LoadHeaderFile::encodeFileList(
         rawFileInfo.resize( rawFileInfo.size() + sizeof( uint64_t) );
         Helper::setInt<uint64_t>(
           rawFileInfo.begin() + static_cast< ptrdiff_t>( rawFileInfo.size() ) - sizeof( uint64_t ),
-          fileInfo.length() );
+          fileInfo.length );
       }
 
       // check Value
-      const auto rawCheckValue{ CheckValueUtils_encode( fileInfo.checkValue() ) };
+      const auto rawCheckValue{ CheckValueUtils_encode( fileInfo.checkValue ) };
       assert( rawCheckValue.size() % 2 == 0 );
       rawFileInfo.insert(
         rawFileInfo.end(),
@@ -800,7 +800,7 @@ RawFile LoadHeaderFile::encodeFileList(
       rawFileInfo.begin(),
       (fileCounter == loadFilesInfo.size()) ?
       (0U) :
-      Helper::safeCast< uint16_t>( rawFileInfo.size() / 2));
+      Helper::safeCast< uint16_t>( rawFileInfo.size() / 2 ) );
 
 
     // add file info to files info
@@ -903,7 +903,12 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
     it += filePointer * 2U;
 
     // file info
-    files.emplace_back( name, partNumber, realLength, crc, checkValue );
+    files.emplace_back( LoadFileInfo{
+      std::move( name ),
+      std::move( partNumber ),
+      realLength,
+      crc,
+      std::move( checkValue ) } );
   }
 
   return files;

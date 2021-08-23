@@ -32,58 +32,47 @@ namespace Arinc665::File {
  **/
 struct LoadInfo
 {
-  public:
-    //! Target Hardware IDs.
-    using ThwIds = std::list< std::string>;
+  //! Target Hardware IDs.
+  using ThwIds = std::list< std::string>;
 
-    //! Load Part Number
-    std::string partNumber;
-    //! Header Filename
-    std::string headerFilename;
-    //! Member Sequence Number
-    uint8_t memberSequenceNumber;
-    //! Target Hardware IDs (list)
-    ThwIds targetHardwareIds;
+  //! Load Part Number
+  std::string partNumber;
+  //! Header Filename
+  std::string headerFilename;
+  //! Member Sequence Number
+  uint8_t memberSequenceNumber;
+  //! Target Hardware IDs (list)
+  ThwIds targetHardwareIds;
 
-    /**
-     * @brief Compares the other load information against @p this for equality.
-     *
-     * @param[in] other
-     *   Other load information
-     *
-     * @return if @p this and @p other are equal.
-     **/
-    bool operator ==( const LoadInfo &other ) const;
+  /**
+   * @brief Compares the other load information against @p this for equality.
+   *
+   * @param[in] other
+   *   Other load information
+   *
+   * @return if @p this and @p other are equal.
+   **/
+  bool operator ==( const LoadInfo &other ) const;
 
-    /**
-     * @brief Compares the other load information against @p this for inequality.
-     *
-     * @param[in] other
-     *   Other load information
-     *
-     * @return if @p this and @p other are unequal.
-     **/
-    bool operator !=( const LoadInfo &other ) const;
+  /**
+   * @brief Compares the other load information against @p this for inequality.
+   *
+   * @param[in] other
+   *   Other load information
+   *
+   * @return if @p this and @p other are unequal.
+   **/
+  bool operator !=( const LoadInfo &other ) const;
 
-    /**
-     * @brief Compares the other file information against @p this for equality.
-     *
-     * @param[in] other
-     *   Other file information
-     *
-     * @return if @p this and @p other are equal.
-     **/
-    bool operator ==( const FileInfo &other ) const;
-
-    /**
-     * @brief Compares the other file information against @p this for inequality.
-     *
-     * @param[in] other
-     *   Other file information
-     *
-     * @return if @p this and @p other are unequal.
-     **/
-    bool operator !=( const FileInfo &other ) const;
+  /**
+   * @brief Compares the other file information against @p this for equality.
+   *
+   * @param[in] other
+   *   Other file information
+   *
+   * @return if @p this and @p other are equal.
+   **/
+  bool operator ==( const FileInfo &other ) const;
 };
 
 /**
@@ -97,18 +86,6 @@ struct LoadInfo
  * @return If file information is equal to the load information.
  **/
 bool operator ==( const FileInfo &fileInfo, const LoadInfo &loadInfo );
-
-/**
- * @brief Compares @p FileInfo against @p LoadInfo
- *
- * @param[in] fileInfo
- *   File Information.
- * @param[in] loadInfo
- *   Load Information.
- *
- * @return If file information is not equal to the load information.
- **/
-bool operator !=( const FileInfo &fileInfo, const LoadInfo &loadInfo );
 
 }
 

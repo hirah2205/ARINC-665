@@ -342,11 +342,12 @@ void MediaSetExporterImpl::createLoadHeaderFile(
     uint16_t fileCrc{
       File::Arinc665File::calculateChecksum( rawDataFile, 0 ) };
 
-    loadHeaderFile.dataFile( {
-      dataFilePtr->name(),
+    loadHeaderFile.dataFile( File::LoadFileInfo{
+      std::string{ dataFilePtr->name() },
       partNumber,
       rawDataFile.size(),
-      fileCrc } );
+      fileCrc,
+      {} } );
   }
 
   // calculate support files CRC and set data.
@@ -359,11 +360,12 @@ void MediaSetExporterImpl::createLoadHeaderFile(
     uint16_t supportFileCrc{
       File::Arinc665File::calculateChecksum( rawSupportFile, 0 ) };
 
-    loadHeaderFile.supportFile( {
-      supportFilePtr->name(),
+    loadHeaderFile.supportFile( File::LoadFileInfo{
+      std::string{ supportFilePtr->name() },
       partNumber,
       rawSupportFile.size(),
-      supportFileCrc } );
+      supportFileCrc,
+      {} } );
   }
 
   // User Defined Data

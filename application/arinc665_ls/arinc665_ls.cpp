@@ -246,19 +246,19 @@ static void list_luh( const std::filesystem::path &luhFile)
     for ( auto const &dataFile : load.dataFiles())
     {
       std::cout
-        << "data file name: " << dataFile.filename() << "\n"
-        << "data file PN:   " << dataFile.partNumber() << "\n"
-        << "data file size: " << std::dec << dataFile.length() << "\n"
-        << "data file CRC:  " << std::hex << dataFile.crc() << "\n\n";
+        << "data file name: " << dataFile.filename << "\n"
+        << "data file PN:   " << dataFile.partNumber << "\n"
+        << "data file size: " << std::dec << dataFile.length << "\n"
+        << "data file CRC:  " << std::hex << dataFile.crc << "\n\n";
     }
 
     for ( auto const &supportFile : load.supportFiles())
     {
       std::cout
-        << "support file name: " << supportFile.filename() << "\n"
-        << "support file PN:   " << supportFile.partNumber() << "\n"
-        << "support file size: " << std::dec << supportFile.length() << "\n"
-        << "support file CRC:  " << std::hex << supportFile.crc() << "\n\n";
+        << "support file name: " << supportFile.filename << "\n"
+        << "support file PN:   " << supportFile.partNumber << "\n"
+        << "support file size: " << std::dec << supportFile.length << "\n"
+        << "support file CRC:  " << std::hex << supportFile.crc << "\n\n";
     }
 
     std::cout << "load crc " << std::hex << load.loadCrc() << "\n";
