@@ -33,18 +33,18 @@ class Arinc665File
     using StringList = std::list< std::string>;
 
     //! Base Header Size
-    static constexpr ptrdiff_t BaseHeaderSize =
-      sizeof( uint32_t ) + // file length
-      sizeof( uint16_t );  // ARINC Version
+    static constexpr ptrdiff_t BaseHeaderSize{
+      sizeof( uint32_t ) +  // file length
+      sizeof( uint16_t ) }; // ARINC Version
 
     //! Default Checksum Position
-    static constexpr ptrdiff_t DefaultChecksumPosition = 2;
+    static constexpr ptrdiff_t DefaultChecksumPosition{ 2 };
 
     //! Offset of the File Length Field
-    static constexpr ptrdiff_t FileLengthFieldOffset = 0U;
+    static constexpr ptrdiff_t FileLengthFieldOffset{ 0 };
 
     //! Offset of the File Format Version Field
-    static constexpr ptrdiff_t FileFormatVersionFieldOffset = 4U;
+    static constexpr ptrdiff_t FileFormatVersionFieldOffset{ 4 };
 
     /**
      * @brief Decodes the ARINC 665 string from the stream.
@@ -64,9 +64,9 @@ class Arinc665File
      * @brief Encodes the ARINC 665 string to the stream.
      *
      * @param[in] str
-     *  The string to encode.
+     *  String to encode.
      *
-     * @return The encoded raw string.
+     * @return Encoded raw string.
      **/
     static RawFile encodeString( std::string_view str);
 
@@ -76,7 +76,7 @@ class Arinc665File
      * @param[in] it
      *   current position, where the raw string list starts.
      * @param[out] strings
-     *   The decoded string list.
+     *   Decoded string list.
      *
      * @return New iterator position.
      **/
@@ -88,8 +88,9 @@ class Arinc665File
      * @brief Encodes the ARINC 665 string list to the stream.
      *
      * @param[in] strings
+     *   String List
      *
-     * @return The encoded raw string list.
+     * @return Encoded raw string list.
      **/
     static RawFile encodeStringList( const StringList &strings );
 
@@ -111,7 +112,7 @@ class Arinc665File
      * @brief Decode the file length information from the given file.
      *
      * @param[in] file
-     *   The raw ARINC 665 file.
+     *   Raw ARINC 665 file.
      *
      * @return The encoded file length.
      *
@@ -124,9 +125,9 @@ class Arinc665File
      * @brief Decode the format version information from the given file.
      *
      * @param[in] file
-     *   The raw ARINC 665 file.
+     *   Raw ARINC 665 file.
      *
-     * @return The encoded format version.
+     * @return Decoded format version.
      **/
     static uint16_t formatVersion( const ConstRawFileSpan &file );
 
@@ -139,7 +140,7 @@ class Arinc665File
      *   Defines the number of bytes, which are skipped, e.g. contains the
      *   stored checksum.
      *
-     * @return The calculated checksum.
+     * @return Calculated checksum.
      **/
     static uint16_t calculateChecksum(
       const ConstRawFileSpan &file,
@@ -149,34 +150,34 @@ class Arinc665File
      * @brief Returns the ARINC 665 file class type.
      *
      * @param[in] rawFile
-     *   The raw file data.
+     *   Raw file data.
      *
-     * @return The ARINC 665 file class type.
+     * @return ARINC 665 file class type.
      **/
-    static FileClassType fileType( const ConstRawFileSpan &rawFile);
+    static FileClassType fileType( const ConstRawFileSpan &rawFile );
 
     /**
-     * @brief Returns the load header file version for [rawFile]
+     * @brief Returns the load header file version for @p rawFile.
      *
      * @param[in] rawFile
-     *   The raw file data.
+     *   Raw file data.
      *
-     * @return The load header file version for [rawFile].
+     * @return The load header file version for @p rawFile.
      * @retval LoadFileFormatVersion::Invalid
-     *   When [rawFile] is not a load header file
+     *   When @p rawFile is not a load header file
      **/
     static LoadFileFormatVersion loadFileFormatVersion(
       const ConstRawFileSpan &rawFile );
 
     /**
-     * @brief Returns the batch file version for [rawFile]
+     * @brief Returns the batch file version for @p rawFile.
      *
      * @param[in] rawFile
-     *   The raw file data.
+     *   Raw file data.
      *
      * @return The batch file version for [rawFile].
      * @retval BatchFileFormatVersion::Invalid
-     *   When [rawFile] is not a batch file
+     *   When @p rawFile is not a batch file
      **/
     static BatchFileFormatVersion batchFileFormatVersion(
       const ConstRawFileSpan &rawFile );
@@ -185,11 +186,11 @@ class Arinc665File
      * @brief Returns the media file version for [rawFile]
      *
      * @param[in] rawFile
-     *   The raw file data.
+     *   Raw file data.
      *
      * @return The media file version for [rawFile].
      * @retval MediaFileFormatVersion::Invalid
-     *   When [rawFile] is not a media file
+     *   When @p rawFile is not a media file
      **/
     static MediaFileFormatVersion mediaFileFormatVersion(
       const ConstRawFileSpan &rawFile );
@@ -262,9 +263,14 @@ class Arinc665File
     /**
      * @brief Returns the ARINC 665 file type.
      *
-     * @return The ARINC 665 file type.
+     * @return ARINC 665 file type.
      **/
     [[nodiscard]] virtual FileType fileType() const noexcept = 0;
+
+    /**
+     * @name ARINC Version
+     * @{
+     **/
 
     /**
      * @brief Returns the ARINC 665 version of this file.
@@ -280,6 +286,8 @@ class Arinc665File
      *   ARINC 665 version.
      **/
     void arincVersion( SupportedArinc665Version version );
+
+    /** @} **/
 
   protected:
     /**
@@ -368,7 +376,7 @@ class Arinc665File
       const ConstRawFileSpan &rawFile,
       FileType expectedFileType );
 
-    //! checksum position
+    //! Checksum Position
     const ptrdiff_t checksumPosition;
     //! ARINC 665 Version
     SupportedArinc665Version arinc665VersionV;
