@@ -47,6 +47,11 @@ class Arinc665File
     static constexpr ptrdiff_t FileFormatVersionFieldOffset{ 4 };
 
     /**
+     * @name ARINC 665 String Handling.
+     * @{
+     **/
+
+    /**
      * @brief Decodes the ARINC 665 string from the stream.
      *
      * @param[in] it
@@ -69,6 +74,13 @@ class Arinc665File
      * @return Encoded raw string.
      **/
     static RawFile encodeString( std::string_view str);
+
+    /** @} **/
+
+    /**
+     * @name ARINC 665 String List Handling.
+     * @{
+     **/
 
     /**
      * @brief Decodes the ARINC 665 string list from the stream.
@@ -93,6 +105,8 @@ class Arinc665File
      * @return Encoded raw string list.
      **/
     static RawFile encodeStringList( const StringList &strings );
+
+    /** @} **/
 
     /**
      * @brief Encodes the given path for storage within ARINC 665 media set
@@ -268,7 +282,7 @@ class Arinc665File
     [[nodiscard]] virtual FileType fileType() const noexcept = 0;
 
     /**
-     * @name ARINC Version
+     * @name ARINC 665 Version
      * @{
      **/
 
@@ -331,7 +345,7 @@ class Arinc665File
      * @brief Assignment operator
      *
      * @param[in] other
-     *   The other file.
+     *   Other file.
      *
      * @return *this
      **/
@@ -353,8 +367,10 @@ class Arinc665File
      * @param[in,out] rawFile
      *   The raw file, where the header is encoded.
      *
-     * @throw InvalidArinc665File When file is to small
-     * @throw InvalidArinc665File When file size is invalid
+     * @throw InvalidArinc665File
+     *   When file is to small
+     * @throw InvalidArinc665File
+     *   When file size is invalid
      **/
     void insertHeader( const RawFileSpan &rawFile ) const;
 
@@ -367,10 +383,14 @@ class Arinc665File
      * @param[in] expectedFileType
      *   Expected file type.
      *
-     * @throw InvalidArinc665File When file is to small
-     * @throw InvalidArinc665File When file size field is invalid
-     * @throw InvalidArinc665File When file format is wrong
-     * @throw InvalidArinc665File When CRC is invalid
+     * @throw InvalidArinc665File
+     *   When file is to small
+     * @throw InvalidArinc665File
+     *   When file size field is invalid
+     * @throw InvalidArinc665File
+     *   When file format is wrong
+     * @throw InvalidArinc665File
+     *   When CRC is invalid
      **/
     void decodeHeader(
       const ConstRawFileSpan &rawFile,

@@ -84,13 +84,13 @@ class BatchFile: public Arinc665File
      * @brief Creates batch file with the given data.
      *
      * @param[in] version
-     *   ARINC 665 version.
+     *   ARINC 665 Version.
      * @param[in] partNumber
-     *   The part number.
+     *   Part Number.
      * @param[in] comment
-     *   Batch comment.
+     *   Batch Comment.
      * @param[in] targets
-     *   List of target information.
+     *   Targets Information.
      **/
     BatchFile(
       SupportedArinc665Version version,
@@ -120,7 +120,7 @@ class BatchFile: public Arinc665File
     [[nodiscard]] FileType fileType() const noexcept final;
 
     /**
-     * @name Part Number
+     * @name Batch Part Number
      * @{
      **/
 
@@ -152,7 +152,7 @@ class BatchFile: public Arinc665File
     /**
      * @brief Returns the comment text of the batch file.
      *
-     * @return The comment text of the batch file.
+     * @return Comment text of the batch file.
      **/
     [[nodiscard]] std::string_view comment() const;
 
@@ -170,7 +170,8 @@ class BatchFile: public Arinc665File
     /** @} **/
 
     /**
-     * @name Targets Hardware
+     * @name Batch Targets Hardware Information
+     * @sa BatchTargetInfo, BatchTargetsInfo
      * @{
      **/
 
@@ -188,7 +189,7 @@ class BatchFile: public Arinc665File
      * @brief Adds the given target hardware information to the batch file.
      *
      * @param[in] targetHardwareInfo
-     *   The target hardware information to add.
+     *   Target hardware information to add.
      **/
     void targetHardware( const BatchTargetInfo &targetHardwareInfo );
 

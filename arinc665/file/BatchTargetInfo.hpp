@@ -27,6 +27,9 @@ namespace Arinc665::File {
  *
  * Within ARINC 665-2 The Target Hardware ID Position Field is named
  * Target HW ID.
+ *
+ * @sa BatchListFile
+ * @sa BatchLoadInfo, BatchLoadsInfo
  **/
 struct BatchTargetInfo
 {

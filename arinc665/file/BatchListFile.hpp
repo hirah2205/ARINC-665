@@ -140,7 +140,7 @@ class BatchListFile: public ListFile
     [[nodiscard]] FileType fileType() const noexcept override;
 
     /**
-     * @name Media Set PN
+     * @name Media Set Part Number
      * @{
      **/
 

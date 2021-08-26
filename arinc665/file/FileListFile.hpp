@@ -157,7 +157,7 @@ class FileListFile: public ListFile
     [[nodiscard]] FileType fileType() const noexcept final;
 
     /**
-     * @name Media Set PN
+     * @name Media Set Part Number
      * @{
      **/
 
@@ -199,6 +199,12 @@ class FileListFile: public ListFile
     /** @} **/
 
     /**
+     * @name Files
+     * @sa FileInfo, FilesInfo
+     * @{
+     **/
+
+    /**
      * @brief Returns the number of files.
      *
      * @return Number of files.
@@ -211,11 +217,6 @@ class FileListFile: public ListFile
      * @return list of files
      **/
     [[nodiscard]] const FilesInfo& files() const;
-
-    /**
-     * @name Files
-     * @{
-     **/
 
     /**
      * @brief Return the list of files.

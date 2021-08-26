@@ -264,7 +264,7 @@ class LoadHeaderFile: public Arinc665File
     /**
      * @brief Returns the part number of the load header file.
      *
-     * @return The part number of the load header file.
+     * @return Part number of the load header file.
      **/
     [[nodiscard]] std::string_view partNumber() const;
 
@@ -283,6 +283,7 @@ class LoadHeaderFile: public Arinc665File
 
     /**
      * @name Target Hardware IDs with Positions
+     * @sa TargetHardwareIdPositions
      * @{
      **/
 
@@ -353,6 +354,7 @@ class LoadHeaderFile: public Arinc665File
 
     /**
      * @name Load Type
+     * @sa LoadType
      * @{
      **/
 
@@ -382,11 +384,12 @@ class LoadHeaderFile: public Arinc665File
 
     /**
      * @name Data Files
+     * @sa LoadFilesInfo, LoadFileInfo
      * @{
      **/
 
     /**
-     * @brief Return the data files information.
+     * @brief Return the Data Files.
      *
      * @return Data files information.
      **/
@@ -396,7 +399,7 @@ class LoadHeaderFile: public Arinc665File
     LoadFilesInfo& dataFiles();
 
     /**
-     * @brief Add data file.
+     * @brief Add Data File.
      *
      * @param[in] dataFileInfo
      *   The data file information.
@@ -410,13 +413,14 @@ class LoadHeaderFile: public Arinc665File
 
     /**
      * @name Support Files
+     * @sa LoadFilesInfo, LoadFileInfo
      * @{
      **/
 
     /**
-     * @brief Return the support files information.
+     * @brief Return the Support Files.
      *
-     * @return The support files information.
+     * @return Support Files.
      **/
     [[nodiscard]] const LoadFilesInfo& supportFiles() const;
 
@@ -424,10 +428,10 @@ class LoadHeaderFile: public Arinc665File
     LoadFilesInfo& supportFiles();
 
     /**
-     * @brief Add support file.
+     * @brief Add Support File.
      *
      * @param[in] supportFileInfo
-     *   Support file information.
+     *   Support File.
      **/
     void supportFile( const LoadFileInfo &supportFileInfo );
 
@@ -442,14 +446,14 @@ class LoadHeaderFile: public Arinc665File
      **/
 
     /**
-     * @brief Returns the user defined data.
+     * @brief Returns the User Defined Data.
      *
      * @return User defined data.
      **/
     [[nodiscard]] const UserDefinedData& userDefinedData() const;
 
     /**
-     * @brief Updates the user defined data.
+     * @brief Updates the User Defined Data.
      *
      * @param[in] userDefinedData
      *   User defined data.
@@ -485,15 +489,16 @@ class LoadHeaderFile: public Arinc665File
 
     /**
      * @name Load Check Value
+     * @sa CheckValue
      * @{
      **/
 
     /**
      * @brief Returns the Load Check Value.
      *
-     * @return The Load Check Value.
+     * @return Load Check Value.
      **/
-    [[nodiscard]] const std::optional< CheckValue>& loadCheckValue() const;
+    [[nodiscard]] const std::optional< CheckValue >& loadCheckValue() const;
 
     /**
      * @brief Updates the Load Check Value
@@ -512,7 +517,9 @@ class LoadHeaderFile: public Arinc665File
     //! File List Type
     enum class FileListType
     {
+      //! Data File
       Data,
+      //! Support File
       Support
     };
 
@@ -528,7 +535,7 @@ class LoadHeaderFile: public Arinc665File
     void decodeBody( const ConstRawFileSpan &rawFile );
 
     /**
-     * @brief Encodes the files information list.
+     * @brief Encodes the Files Information List.
      *
      * @todo split between data and support files - the format differs in later
      * ARINC 665 supplements.
@@ -548,7 +555,7 @@ class LoadHeaderFile: public Arinc665File
       bool encodeV3Data ) const;
 
     /**
-     * @brief Decodes the files information list from the raw data.
+     * @brief Decodes the Files Information List from the raw data.
      *
      * @todo split between data and support files - the format differs in later
      * ARINC 665 supplements.

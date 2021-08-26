@@ -25,11 +25,11 @@ BOOST_AUTO_TEST_SUITE( Arinc665Test)
 BOOST_AUTO_TEST_SUITE( FileTest)
 BOOST_AUTO_TEST_SUITE( BatchFileTest)
 
-BOOST_AUTO_TEST_CASE( constructor1)
+BOOST_AUTO_TEST_CASE( constructor1 )
 {
-  BatchFile file{ SupportedArinc665Version::Supplement2};
+  BatchFile file{ SupportedArinc665Version::Supplement2 };
 
-  BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2);
+  BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2 );
 
   BOOST_CHECK( file.partNumber().empty());
   BOOST_CHECK( file.comment().empty());
@@ -37,7 +37,8 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( file.targetsHardware().empty());
 }
 
-BOOST_AUTO_TEST_CASE( constructor2)
+//! Constructor Test - Raw Decoding
+BOOST_AUTO_TEST_CASE( constructor2 )
 {
   RawFile rawFile{
     // header file length

@@ -25,13 +25,14 @@ namespace Arinc665::File {
  * Load Information stored within the target list of the ARINC 665 Batch File.
  *
  * @sa BatchFile
+ * @sa BatchTargetInfo
  **/
 struct BatchLoadInfo
 {
   public:
-    //! Load header filename.
+    //! Load Header Filename.
     std::string headerFilename;
-    //! Load part number.
+    //! Load Part Number.
     std::string partNumber;
 };
 
