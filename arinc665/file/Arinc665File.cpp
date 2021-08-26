@@ -478,8 +478,7 @@ void Arinc665File::insertHeader( const RawFileSpan &rawFile) const
   // format version
   Helper::setInt< uint16_t>(
     rawFile.begin() + FileFormatVersionFieldOffset,
-    static_cast< uint16_t>(
-      formatVersionField( fileType(), arinc665VersionV ) ) );
+      formatVersionField( fileType(), arinc665VersionV ) );
 
   // crc
   const uint16_t calculatedCrc{
