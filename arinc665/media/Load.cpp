@@ -84,6 +84,22 @@ void Load::targetHardwareIds( const TargetHardwareIds &thwIds )
   }
 }
 
+void Load::targetHardwareId(
+  std::string_view targetHardwareId,
+  const Positions &positions )
+{
+  targetHardwareIdPositionsV.emplace_back(
+    std::make_pair( targetHardwareId, positions ) );
+}
+
+void Load::targetHardwareId(
+  std::string &&targetHardwareId,
+  Positions &&positions )
+{
+  targetHardwareIdPositionsV.emplace_back(
+    std::make_pair( std::move( targetHardwareId ) , std::move( positions ) ) );
+}
+
 const Load::Files& Load::dataFiles() const
 {
   return dataFilesV;

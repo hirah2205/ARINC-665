@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE( GetSetName)
   BOOST_CHECK( !loadFileInfo.checkValue );
 }
 
-//! get/set partnumber test
+//! get/set part number test
 BOOST_AUTO_TEST_CASE( GetSetPartNumber)
 {
   LoadFileInfo loadFileInfo{ "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU, {} };

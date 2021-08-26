@@ -90,7 +90,6 @@ QModelIndex MediaSetModel::index(
 
     case Arinc665::Media::Base::Type::File:
       // file has no children
-      return QModelIndex();
 
     default:
       // Should not happen

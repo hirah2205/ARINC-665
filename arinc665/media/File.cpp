@@ -12,8 +12,6 @@
 
 #include "File.hpp"
 
-#include <cassert>
-
 namespace Arinc665::Media {
 
 File::File( ContainerEntityPtr parent, std::string_view name) :

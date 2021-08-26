@@ -18,7 +18,6 @@
  **/
 
 #include <arinc665/Arinc665.hpp>
-#include <arinc665/Arinc665Exception.hpp>
 
 #include <arinc665/file/FileListFile.hpp>
 #include <arinc665/file/LoadListFile.hpp>

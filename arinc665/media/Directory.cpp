@@ -14,17 +14,14 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
-#include <cassert>
-
 namespace Arinc665::Media {
 
-Directory::Directory( ContainerEntityPtr parent, std::string_view name):
+Directory::Directory( ContainerEntityPtr parent, std::string_view name ):
   nameV{ name},
   parentV{ std::move( parent)}
 {
   if ( !parent)
   {
-    //! @throw Arinc665::Arinc665Exception when parent is not valid
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo( "parent must be valid"));
   }

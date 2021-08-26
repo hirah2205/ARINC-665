@@ -32,6 +32,9 @@ class Directory : public ContainerEntity
      *   Parent of this directory.
      * @param[in] name
      *   Name of the directory.
+     *
+     * @throw Arinc665::Arinc665Exception
+     *   When parent is not valid
      **/
     Directory( ContainerEntityPtr parent, std::string_view name );
 

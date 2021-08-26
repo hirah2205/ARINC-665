@@ -17,8 +17,8 @@ namespace Arinc665::Utils {
 MediaSetValidatorImpl::MediaSetValidatorImpl(
   Arinc665Utils::ReadFileHandler readFileHandler,
   Arinc665Utils::ValidatorInformationHandler informationHandler):
-  readFileHandler( readFileHandler),
-  informationHandler( informationHandler)
+  readFileHandler{ readFileHandler },
+  informationHandler{ informationHandler }
 {
 }
 
