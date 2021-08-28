@@ -140,48 +140,6 @@ class BatchListFile: public ListFile
     [[nodiscard]] FileType fileType() const noexcept override;
 
     /**
-     * @name Media Set Part Number
-     * @{
-     **/
-
-    //! @copydoc ListFile::mediaSetPn() const
-    [[nodiscard]] std::string_view mediaSetPn() const final;
-
-    //! @copydoc ListFile::mediaSetPn(std::string_view)
-    void mediaSetPn( std::string_view mediaSetPn ) final;
-
-    //! @copydoc ListFile::mediaSetPn(std::string&&)
-    void mediaSetPn( std::string &&mediaSetPn ) final;
-
-    /** @} **/
-
-    /**
-     * @name Media Sequence Number
-     * @{
-     **/
-
-    //! @copydoc ListFile::mediaSequenceNumber() const
-    [[nodiscard]] uint8_t mediaSequenceNumber() const final;
-
-    //! @copydoc ListFile::mediaSequenceNumber(uint8_t)
-    void mediaSequenceNumber( uint8_t mediaSequenceNumber ) final;
-
-    /** @} **/
-
-    /**
-     * @name Number of Media Set Members
-     * @{
-     **/
-
-    //! @copydoc ListFile::numberOfMediaSetMembers() const
-    [[nodiscard]] uint8_t numberOfMediaSetMembers() const final;
-
-    //! @copydoc ListFile::numberOfMediaSetMembers(uint8_t)
-    void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers ) final;
-
-    /** @} **/
-
-    /**
      * @name Batches
      * @{
      **/
@@ -287,12 +245,6 @@ class BatchListFile: public ListFile
      **/
     void checkUserDefinedData();
 
-    //! Media Set Part Number
-    std::string mediaSetPnV;
-    //! Media Sequence Number
-    uint8_t mediaSequenceNumberV;
-    //! Number of Media Set Members
-    uint8_t numberOfMediaSetMembersV;
     //! Batches Information
     BatchesInfo batchesV;
     //! User Defined Data

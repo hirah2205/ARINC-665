@@ -20,7 +20,7 @@
 namespace Arinc665::File {
 
 /**
- * @brief ARINC 665 Protocol List %File.
+ * @brief Base Class for ARINC 665 Protocol List %Files.
  *
  * This intermediate class is defined to add common methods for all List Files.
  *
@@ -42,7 +42,7 @@ class ListFile: public Arinc665File
      *
      * @return Media Set Part Number.
      **/
-    [[nodiscard]] virtual std::string_view mediaSetPn() const = 0;
+    [[nodiscard]] std::string_view mediaSetPn() const;
 
     /**
      * @brief Sets the Media Part Number, where the files belongs to.
@@ -50,10 +50,10 @@ class ListFile: public Arinc665File
      * @param[in] mediaSetPn
      *   Media Set part Number.
      **/
-    virtual void mediaSetPn( std::string_view mediaSetPn ) = 0;
+    void mediaSetPn( std::string_view mediaSetPn );
 
     //! @copydoc mediaSetPn(std::string_view)
-    virtual void mediaSetPn( std::string &&mediaSetPn ) = 0;
+    void mediaSetPn( std::string &&mediaSetPn );
 
     /** @} **/
 
@@ -67,7 +67,7 @@ class ListFile: public Arinc665File
      *
      * @return Media sequence number
      **/
-    [[nodiscard]] virtual uint8_t mediaSequenceNumber() const = 0;
+    [[nodiscard]] uint8_t mediaSequenceNumber() const;
 
     /**
      * @brief Updates the media sequence number
@@ -75,7 +75,7 @@ class ListFile: public Arinc665File
      * @param[in] mediaSequenceNumber
      *   New media sequence number
      **/
-    virtual void mediaSequenceNumber( uint8_t mediaSequenceNumber ) = 0;
+    void mediaSequenceNumber( uint8_t mediaSequenceNumber );
 
     /** @} **/
 
@@ -89,7 +89,7 @@ class ListFile: public Arinc665File
      *
      * @return Number of media set members.
      **/
-    [[nodiscard]] virtual uint8_t numberOfMediaSetMembers() const = 0;
+    [[nodiscard]] uint8_t numberOfMediaSetMembers() const;
 
     /**
      * @brief Updates the number of media set members.
@@ -97,14 +97,41 @@ class ListFile: public Arinc665File
      * @param[in] numberOfMediaSetMembers
      *   New number of media set members
      **/
-    virtual void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers ) = 0;
+    void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers );
 
     /** @} **/
 
   protected:
-    //! @copydoc Arinc665File::Arinc665File(SupportedArinc665Version,ptrdiff_t)
+    /**
+     * @copydoc Arinc665File::Arinc665File(SupportedArinc665Version,ptrdiff_t)
+     **/
     explicit ListFile(
       SupportedArinc665Version version,
+      ptrdiff_t checksumPosition = DefaultChecksumPosition ) noexcept;
+
+    /**
+     * @copydoc Arinc665File::Arinc665File(SupportedArinc665Version,ptrdiff_t)
+     * @param[in] mediaSetPn
+     *   Media Set Part Number.
+     * @param[in] mediaSequenceNumber
+     *   Media Sequence Number [1..255].
+     * @param[in] numberOfMediaSetMembers
+     *   Number of Media Set Members [1..255] & mediaSequenceNumber <=
+     *     @p numberOfMediaSetMembers
+     **/
+    ListFile(
+      SupportedArinc665Version version,
+      std::string_view mediaSetPn,
+      uint8_t mediaSequenceNumber,
+      uint8_t numberOfMediaSetMembers,
+      ptrdiff_t checksumPosition = DefaultChecksumPosition ) noexcept;
+
+    //! @copydoc ListFile(SupportedArinc665Version,std::string_view,uint8_t,uint8_t,ptrdiff_t)
+    ListFile(
+      SupportedArinc665Version version,
+      std::string &&mediaSetPn,
+      uint8_t mediaSequenceNumber,
+      uint8_t numberOfMediaSetMembers,
       ptrdiff_t checksumPosition = DefaultChecksumPosition ) noexcept;
 
     //! @copydoc Arinc665File::Arinc665File(const ConstRawFileSpan&,FileType,ptrdiff_t)
@@ -136,6 +163,35 @@ class ListFile: public Arinc665File
     //! @copydoc operator=(const Arinc665File&)
     ListFile& operator=( ListFile &&other) = default;
 
+    /**
+     * @brief Encodes the Media Information.
+     *
+     * @return Raw representation of Media Information.
+     **/
+    [[nodiscard]] RawFile encodeMediaInformation() const;
+
+    /**
+     * @brief Decodes the Media Information.
+     *
+     * @param[in] rawFile
+     *   Raw List File
+     * @param[in] mediaInformationPtr
+     *   Media Information Pointer as stored within List File.
+     *
+     * @throw InvalidArinc665File
+     *   When Offset is Invalid
+     **/
+    void decodeMediaInformation(
+      const ConstRawFileSpan &rawFile,
+      uint32_t mediaInformationPtr );
+
+  private:
+    //! Media Set Part Number
+    std::string mediaSetPnV;
+    //! Media Sequence Number
+    uint8_t mediaSequenceNumberV;
+    //! Number of Media Set Members.
+    uint8_t numberOfMediaSetMembersV;
 };
 
 }

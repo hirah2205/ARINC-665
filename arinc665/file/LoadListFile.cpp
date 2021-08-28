@@ -19,10 +19,8 @@
 
 namespace Arinc665::File {
 
-LoadListFile::LoadListFile( SupportedArinc665Version version):
-  ListFile{ version },
-  mediaSequenceNumberV{ 0 },
-  numberOfMediaSetMembersV{ 0 }
+LoadListFile::LoadListFile( SupportedArinc665Version version ):
+  ListFile{ version }
 {
 }
 
@@ -33,10 +31,7 @@ LoadListFile::LoadListFile(
   uint8_t numberOfMediaSetMembers,
   const LoadsInfo &loads,
   const UserDefinedData &userDefinedData):
-  ListFile{ version },
-  mediaSetPnV{ mediaSetPn },
-  mediaSequenceNumberV{ mediaSequenceNumber },
-  numberOfMediaSetMembersV{ numberOfMediaSetMembers },
+  ListFile{ version, mediaSetPn, mediaSequenceNumber, numberOfMediaSetMembers },
   loadsV{ loads },
   userDefinedDataV{ userDefinedData }
 {
@@ -50,17 +45,18 @@ LoadListFile::LoadListFile(
   uint8_t numberOfMediaSetMembers,
   LoadsInfo &&loads,
   UserDefinedData &&userDefinedData):
-  ListFile{ version},
-  mediaSetPnV{ std::move( mediaSetPn ) },
-  mediaSequenceNumberV{ mediaSequenceNumber },
-  numberOfMediaSetMembersV{ numberOfMediaSetMembers },
+  ListFile{
+    version,
+    std::move( mediaSetPn ),
+    mediaSequenceNumber,
+    numberOfMediaSetMembers },
   loadsV{ std::move( loads ) },
   userDefinedDataV{ std::move( userDefinedData ) }
 {
   checkUserDefinedData();
 }
 
-LoadListFile::LoadListFile( const ConstRawFileSpan &rawFile):
+LoadListFile::LoadListFile( const ConstRawFileSpan &rawFile ):
   ListFile{ rawFile, FileType::LoadList }
 {
   decodeBody( rawFile );
@@ -78,42 +74,6 @@ LoadListFile& LoadListFile::operator=( const ConstRawFileSpan &rawFile )
 FileType LoadListFile::fileType() const noexcept
 {
   return FileType::LoadList;
-}
-
-std::string_view LoadListFile::mediaSetPn() const
-{
-  return mediaSetPnV;
-}
-
-void LoadListFile::mediaSetPn( std::string_view mediaSetPn )
-{
-  mediaSetPnV = mediaSetPn;
-}
-
-void LoadListFile::mediaSetPn( std::string &&mediaSetPn )
-{
-  mediaSetPnV = std::move( mediaSetPn);
-}
-
-uint8_t LoadListFile::mediaSequenceNumber() const
-{
-  return mediaSequenceNumberV;
-}
-
-void LoadListFile::mediaSequenceNumber( const uint8_t mediaSequenceNumber )
-{
-  mediaSequenceNumberV = mediaSequenceNumber;
-}
-
-uint8_t LoadListFile::numberOfMediaSetMembers() const
-{
-  return numberOfMediaSetMembersV;
-}
-
-void LoadListFile::numberOfMediaSetMembers(
-  const uint8_t numberOfMediaSetMembers)
-{
-  numberOfMediaSetMembersV = numberOfMediaSetMembers;
 }
 
 size_t LoadListFile::numberOfLoads() const
@@ -167,10 +127,10 @@ void LoadListFile::userDefinedData( UserDefinedData &&userDefinedData )
 bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
 {
   return
-    ( mediaSetPnV == other.mediaSetPn()) &&
-    ( numberOfMediaSetMembersV == other.numberOfMediaSetMembers()) &&
-    ( loadsV == other.loads()) &&
-    ( userDefinedDataV == other.userDefinedData());
+    ( mediaSetPn() == other.mediaSetPn() ) &&
+    ( numberOfMediaSetMembers() == other.numberOfMediaSetMembers() ) &&
+    ( loadsV == other.loads() ) &&
+    ( userDefinedDataV == other.userDefinedData() );
 }
 
 RawFile LoadListFile::encode() const
@@ -180,36 +140,22 @@ RawFile LoadListFile::encode() const
   RawFile rawFile( FileHeaderSizeV2 );
 
   // Spare Field
-  Helper::setInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, 0U);
+  Helper::setInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, 0U );
 
   // Next free Offset (used for optional pointer calculation)
   ptrdiff_t nextFreeOffset{ static_cast< ptrdiff_t >( rawFile.size() ) };
 
 
   // media set information
-  const auto rawMediaSetPn{ encodeString( mediaSetPn())};
-  assert( rawMediaSetPn.size() % 2 == 0);
+  const auto rawMediaInformation{ encodeMediaInformation() };
+  assert( rawMediaInformation.size() % 2 == 0);
+  rawFile.insert( rawFile.end(), rawMediaInformation.begin(), rawMediaInformation.end() );
 
-  // media set part number
-  rawFile.insert( rawFile.end(), rawMediaSetPn.begin(), rawMediaSetPn.end());
-
-  rawFile.resize( rawFile.size() + 2 * sizeof( uint8_t));
-
-  // media sequence number
-  Helper::setInt< uint8_t>(
-    rawFile.begin() + nextFreeOffset + static_cast< ptrdiff_t >( rawMediaSetPn.size() ),
-    mediaSequenceNumberV );
-
-  // number of media set members
-  Helper::setInt< uint8_t>(
-    rawFile.begin() + nextFreeOffset + static_cast< ptrdiff_t >( rawMediaSetPn.size() ) + sizeof( uint8_t ),
-    numberOfMediaSetMembersV );
-
+  // Update Pointer
   Helper::setInt< uint32_t>(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffsetV2,
-    nextFreeOffset / 2);
-  nextFreeOffset += static_cast< ptrdiff_t >( rawMediaSetPn.size() + 2 * sizeof( uint8_t ) );
-
+    static_cast< uint32_t >( nextFreeOffset / 2U ) );
+  nextFreeOffset += static_cast< ptrdiff_t >( rawMediaInformation.size() );
 
   // Loads info
   const auto rawLoadsInfo{ encodeLoadsInfo() };
@@ -218,19 +164,19 @@ RawFile LoadListFile::encode() const
   // loads list pointer
   Helper::setInt< uint32_t>(
     rawFile.begin() + LoadFilesPointerFieldOffsetV2,
-    nextFreeOffset / 2);
+    static_cast< uint32_t >( nextFreeOffset / 2U ) );
   nextFreeOffset += static_cast< ptrdiff_t >( rawLoadsInfo.size() );
 
-  rawFile.insert( rawFile.end(), rawLoadsInfo.begin(), rawLoadsInfo.end());
+  rawFile.insert( rawFile.end(), rawLoadsInfo.begin(), rawLoadsInfo.end() );
 
 
   // user defined data
-  assert( userDefinedDataV.size() % 2 == 0);
+  assert( userDefinedDataV.size() % 2 == 0 );
   uint32_t userDefinedDataPtr = 0;
 
   if ( !userDefinedDataV.empty() )
   {
-    userDefinedDataPtr = nextFreeOffset / 2;
+    userDefinedDataPtr = static_cast< uint32_t >( nextFreeOffset / 2U );
     // nextFreeOffset += userDefinedDataValue.size();
 
     rawFile.insert(
@@ -287,17 +233,8 @@ void LoadListFile::decodeBody( const ConstRawFileSpan &rawFile )
     rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
     userDefinedDataPtr );
 
-
-  // media set part number
-  auto it = decodeString(
-    rawFile.begin() + mediaInformationPtr * 2, mediaSetPnV );
-
-  // media sequence number
-  it = Helper::getInt< uint8_t>( it, mediaSequenceNumberV );
-
-  // number of media set members
-  Helper::getInt< uint8_t>( it, numberOfMediaSetMembersV );
-
+  // decode Media Information
+  decodeMediaInformation( rawFile, mediaInformationPtr );
 
   // Loads list
   decodeLoadsInfo( rawFile, 2 * loadListPtr);
@@ -321,7 +258,9 @@ RawFile LoadListFile::encodeLoadsInfo() const
   RawFile rawLoadsInfo( sizeof( uint16_t));
 
   // number of loads
-  Helper::setInt< uint16_t>( rawLoadsInfo.begin(), numberOfLoads());
+  Helper::setInt< uint16_t>(
+    rawLoadsInfo.begin(),
+    static_cast< uint16_t >( numberOfLoads() ) );
 
   // iterate over files
   uint16_t loadCounter( 0);
@@ -350,8 +289,8 @@ RawFile LoadListFile::encodeLoadsInfo() const
     loadInfoIt = Helper::setInt< uint16_t>(
       loadInfoIt,
       (loadCounter == numberOfLoads()) ?
-        (0U) :
-        (rawLoadInfo.size() / 2));
+        0U :
+        static_cast< uint16_t >( rawLoadInfo.size() / 2U ) );
 
     // part number
     loadInfoIt = std::copy( rawPartNumber.begin(), rawPartNumber.end(), loadInfoIt );

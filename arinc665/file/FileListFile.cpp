@@ -22,9 +22,7 @@
 namespace Arinc665::File {
 
 FileListFile::FileListFile( SupportedArinc665Version version):
-  ListFile{ version},
-  mediaSequenceNumberValue{ 0},
-  numberOfMediaSetMembersValue{ 0}
+  ListFile{ version}
 {
 }
 
@@ -35,10 +33,7 @@ FileListFile::FileListFile(
   uint8_t numberOfMediaSetMembers,
   const FilesInfo &files,
   const UserDefinedData &userDefinedData ):
-  ListFile{ version },
-  mediaSetPnValue{ mediaSetPn },
-  mediaSequenceNumberValue{ mediaSequenceNumber },
-  numberOfMediaSetMembersValue{ numberOfMediaSetMembers },
+  ListFile{ version, mediaSetPn, mediaSequenceNumber, numberOfMediaSetMembers },
   filesV{ files },
   userDefinedDataV{ userDefinedData }
 {
@@ -52,10 +47,11 @@ FileListFile::FileListFile(
   uint8_t numberOfMediaSetMembers,
   FilesInfo &&files,
   UserDefinedData &&userDefinedData ):
-  ListFile{ version },
-  mediaSetPnValue{ std::move( mediaSetPn ) },
-  mediaSequenceNumberValue{ mediaSequenceNumber },
-  numberOfMediaSetMembersValue{ numberOfMediaSetMembers },
+  ListFile{
+    version,
+    std::move( mediaSetPn ),
+    mediaSequenceNumber,
+    numberOfMediaSetMembers },
   filesV{ std::move( files ) },
   userDefinedDataV{ std::move( userDefinedData ) }
 {
@@ -63,9 +59,7 @@ FileListFile::FileListFile(
 }
 
 FileListFile::FileListFile( const ConstRawFileSpan &rawFile):
-  ListFile{ rawFile, FileType::FileList},
-  mediaSequenceNumberValue{ 0},
-  numberOfMediaSetMembersValue{ 0}
+  ListFile{ rawFile, FileType::FileList }
 {
   decodeBody( rawFile);
 }
@@ -81,42 +75,6 @@ FileListFile& FileListFile::operator=( const ConstRawFileSpan &rawFile )
 FileType FileListFile::fileType() const noexcept
 {
   return FileType::FileList;
-}
-
-std::string_view FileListFile::mediaSetPn() const
-{
-  return mediaSetPnValue;
-}
-
-void FileListFile::mediaSetPn( std::string_view mediaSetPn)
-{
-  mediaSetPnValue = mediaSetPn;
-}
-
-void FileListFile::mediaSetPn( std::string &&mediaSetPn)
-{
-  mediaSetPnValue = std::move( mediaSetPn);
-}
-
-uint8_t FileListFile::mediaSequenceNumber() const
-{
-  return mediaSequenceNumberValue;
-}
-
-void FileListFile::mediaSequenceNumber( const uint8_t mediaSequenceNumber)
-{
-  mediaSequenceNumberValue = mediaSequenceNumber;
-}
-
-uint8_t FileListFile::numberOfMediaSetMembers() const
-{
-  return numberOfMediaSetMembersValue;
-}
-
-void FileListFile::numberOfMediaSetMembers(
-  const uint8_t numberOfMediaSetMembers)
-{
-  numberOfMediaSetMembersValue = numberOfMediaSetMembers;
 }
 
 size_t FileListFile::numberOfFiles() const
@@ -187,8 +145,8 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
 {
   BOOST_LOG_FUNCTION()
 
-  if ( ( mediaSetPnValue != other.mediaSetPn() )
-    || ( numberOfMediaSetMembersValue != other.numberOfMediaSetMembers() )
+  if ( ( mediaSetPn() != other.mediaSetPn() )
+    || ( numberOfMediaSetMembers() != other.numberOfMediaSetMembers() )
     || ( userDefinedDataV != other.userDefinedData() ) )
   {
     return false;
@@ -265,28 +223,16 @@ RawFile FileListFile::encode() const
   ptrdiff_t nextFreeOffset{ static_cast< ptrdiff_t>( rawFile.size() ) };
 
 
-  // media set part number
-  const auto rawMediaSetPn{ encodeString( mediaSetPn())};
-  assert( rawMediaSetPn.size() % 2 == 0);
+  // media set information
+  const auto rawMediaInformation{ encodeMediaInformation() };
+  assert( rawMediaInformation.size() % 2 == 0);
+  rawFile.insert( rawFile.end(), rawMediaInformation.begin(), rawMediaInformation.end() );
 
-  rawFile.insert( rawFile.end(), rawMediaSetPn.begin(), rawMediaSetPn.end() );
-
-  rawFile.resize( rawFile.size() + 2 * sizeof( uint8_t) );
-
-  // media sequence number
-  Helper::setInt< uint8_t>(
-    rawFile.begin() + nextFreeOffset + static_cast< ptrdiff_t>( rawMediaSetPn.size() ),
-    mediaSequenceNumberValue );
-
-  // number of media set members
-  Helper::setInt< uint8_t>(
-    rawFile.begin() + nextFreeOffset + static_cast< ptrdiff_t>( rawMediaSetPn.size() ) + sizeof( uint8_t),
-    numberOfMediaSetMembersValue );
-
+  // Update Pointer
   Helper::setInt< uint32_t>(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffsetV2,
-    nextFreeOffset / 2);
-  nextFreeOffset += static_cast< ptrdiff_t >( rawMediaSetPn.size() + 2 * sizeof( uint8_t ) );
+    static_cast< uint32_t >( nextFreeOffset / 2U ) );
+  nextFreeOffset += static_cast< ptrdiff_t >( rawMediaInformation.size() );
 
 
   // media set files list
@@ -295,7 +241,7 @@ RawFile FileListFile::encode() const
 
   Helper::setInt< uint32_t>(
     rawFile.begin() + MediaSetFilesPointerFieldOffsetV2,
-    nextFreeOffset / 2);
+    static_cast< uint32_t >( nextFreeOffset / 2U ) );
   nextFreeOffset += static_cast< ptrdiff_t>( rawFilesInfo.size() );
 
   rawFile.insert( rawFile.end(), rawFilesInfo.begin(), rawFilesInfo.end() );
@@ -307,7 +253,7 @@ RawFile FileListFile::encode() const
 
   if (!userDefinedDataV.empty())
   {
-    userDefinedDataPtr = nextFreeOffset / 2;
+    userDefinedDataPtr = static_cast< uint32_t >( nextFreeOffset / 2U );
     nextFreeOffset += static_cast< ptrdiff_t>( userDefinedDataV.size() );
 
     rawFile.insert(
@@ -331,7 +277,7 @@ RawFile FileListFile::encode() const
 
     Helper::setInt< uint32_t>(
       rawFile.begin() + FileCheckValuePointerFieldOffsetV3,
-      nextFreeOffset / 2);
+      static_cast< uint32_t >( nextFreeOffset / 2U ) );
 
     rawFile.insert(
       rawFile.end(),
@@ -411,20 +357,11 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
       fileCheckValuePtr);
   }
 
-  // media set part number
-  auto it{ decodeString(
-    rawFile.begin() + mediaInformationPtr * 2U,
-    mediaSetPnValue ) };
-
-  // media sequence number
-  it = Helper::getInt< uint8_t>( it, mediaSequenceNumberValue);
-
-  // number of media set members
-  Helper::getInt< uint8_t>( it, numberOfMediaSetMembersValue);
-
+  // decode Media Information
+  decodeMediaInformation( rawFile, mediaInformationPtr );
 
   // file list
-  decodeFilesInfo( rawFile, 2 * fileListPtr, decodeV3Data);
+  decodeFilesInfo( rawFile, 2 * fileListPtr, decodeV3Data );
 
 
   // user defined data
@@ -432,12 +369,12 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
   {
     ptrdiff_t endOfUserDefinedData{ static_cast< ptrdiff_t>( rawFile.size() ) - DefaultChecksumPosition };
 
-    if (fileCheckValuePtr != 0)
+    if ( fileCheckValuePtr != 0 )
     {
-      if (fileCheckValuePtr <= userDefinedDataPtr)
+      if ( fileCheckValuePtr <= userDefinedDataPtr )
       {
         BOOST_THROW_EXCEPTION( InvalidArinc665File()
-          << Helper::AdditionalInfo( "Invalid Pointers"));
+          << Helper::AdditionalInfo{ "Invalid Pointers" } );
       }
 
       endOfUserDefinedData = fileCheckValuePtr * 2;
@@ -467,7 +404,9 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
   RawFile rawFilesInfo( sizeof( uint16_t));
 
   // number of files
-  Helper::setInt< uint16_t>( rawFilesInfo.begin(), numberOfFiles() );
+  Helper::setInt< uint16_t>(
+    rawFilesInfo.begin(),
+    static_cast< uint16_t >( numberOfFiles() ) );
 
   // iterate over files
   uint16_t fileCounter{ 0 };
@@ -519,8 +458,8 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
     Helper::setInt< uint16_t>(
       rawFileInfo.begin(),
       (fileCounter == numberOfFiles()) ?
-      (0U) :
-      (rawFileInfo.size() / 2));
+      0U :
+      static_cast< uint16_t >( rawFileInfo.size() / 2U ) );
 
     // add file info to files info
     rawFilesInfo.insert( rawFilesInfo.end(), rawFileInfo.begin(), rawFileInfo.end());

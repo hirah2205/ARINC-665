@@ -12,20 +12,140 @@
 
 #include "ListFile.hpp"
 
+#include <arinc665/Arinc665Exception.hpp>
+
+#include <helper/Endianess.hpp>
+
 namespace Arinc665::File {
+
+std::string_view ListFile::mediaSetPn() const
+{
+  return mediaSetPnV;
+}
+
+void ListFile::mediaSetPn( std::string_view mediaSetPn )
+{
+  mediaSetPnV = mediaSetPn;
+}
+
+void ListFile::mediaSetPn( std::string &&mediaSetPn )
+{
+  mediaSetPnV = std::move( mediaSetPn );
+}
+
+
+uint8_t ListFile::mediaSequenceNumber() const
+{
+  return mediaSequenceNumberV;
+}
+
+void ListFile::mediaSequenceNumber( const uint8_t mediaSequenceNumber )
+{
+  mediaSequenceNumberV = mediaSequenceNumber;
+}
+
+uint8_t ListFile::numberOfMediaSetMembers() const
+{
+  return numberOfMediaSetMembersV;
+}
+
+void ListFile::numberOfMediaSetMembers(
+  const uint8_t numberOfMediaSetMembers )
+{
+  numberOfMediaSetMembersV = numberOfMediaSetMembers;
+}
+
+ListFile::ListFile(
+  SupportedArinc665Version version,
+  ptrdiff_t checksumPosition ) noexcept:
+  Arinc665File{ version, checksumPosition },
+  mediaSequenceNumberV{ 0 },
+  numberOfMediaSetMembersV{ 0 }
+{
+}
 
 ListFile::ListFile(
   const SupportedArinc665Version version,
-  const ptrdiff_t checksumPosition) noexcept:
-  Arinc665File{ version, checksumPosition }
+  std::string_view mediaSetPn,
+  uint8_t mediaSequenceNumber,
+  uint8_t numberOfMediaSetMembers,
+  const ptrdiff_t checksumPosition ) noexcept:
+  Arinc665File{ version, checksumPosition },
+  mediaSetPnV{ mediaSetPn },
+  mediaSequenceNumberV{ mediaSequenceNumber },
+  numberOfMediaSetMembersV{ numberOfMediaSetMembers }
 {
 }
+
+ListFile::ListFile(
+  const SupportedArinc665Version version,
+  std::string &&mediaSetPn,
+  uint8_t mediaSequenceNumber,
+  uint8_t numberOfMediaSetMembers,
+  const ptrdiff_t checksumPosition ) noexcept:
+  Arinc665File{ version, checksumPosition },
+  mediaSetPnV{ std::move( mediaSetPn ) },
+  mediaSequenceNumberV{ mediaSequenceNumber },
+  numberOfMediaSetMembersV{ numberOfMediaSetMembers }
+{
+}
+
 ListFile::ListFile(
   const ConstRawFileSpan &rawFile,
   FileType expectedFileType,
-  ptrdiff_t checksumPosition):
-  Arinc665File{ rawFile, expectedFileType, checksumPosition}
+  ptrdiff_t checksumPosition ):
+  Arinc665File{ rawFile, expectedFileType, checksumPosition },
+  mediaSequenceNumberV{ 0 },
+  numberOfMediaSetMembersV{ 0 }
 {
+}
+
+RawFile ListFile::encodeMediaInformation() const
+{
+  // media set part number
+  auto rawMediaInformation{ encodeString( mediaSetPn() ) };
+  assert( rawMediaInformation.size() % 2 == 0U );
+
+  const auto partNumberSize{
+    static_cast< ptrdiff_t >( rawMediaInformation.size() ) };
+
+  rawMediaInformation.resize( rawMediaInformation.size() + 2 * sizeof( uint8_t ) );
+
+  // media sequence number
+  Helper::setInt< uint8_t>(
+    rawMediaInformation.begin() + partNumberSize,
+    mediaSequenceNumberV );
+
+  // number of media set members
+  Helper::setInt< uint8_t>(
+    rawMediaInformation.begin() + partNumberSize + sizeof( uint8_t ),
+    numberOfMediaSetMembers() );
+
+  return rawMediaInformation;
+}
+
+void ListFile::decodeMediaInformation(
+  const ConstRawFileSpan &rawFile,
+  uint32_t mediaInformationPtr )
+{
+  if ( mediaInformationPtr * 2U >= rawFile.size() )
+  {
+    BOOST_THROW_EXCEPTION( InvalidArinc665File{}
+      << Helper::AdditionalInfo{ "Media Information Pointer Exceeds File" } );
+
+    //! @todo also check (minimum) processing size for check
+  }
+
+  // media set part number
+  auto it{ decodeString(
+    rawFile.begin() + mediaInformationPtr * 2U,
+    mediaSetPnV ) };
+
+  // media sequence number
+  it = Helper::getInt< uint8_t>( it, mediaSequenceNumberV );
+
+  // number of media set members
+  Helper::getInt< uint8_t>( it, numberOfMediaSetMembersV );
 }
 
 }
