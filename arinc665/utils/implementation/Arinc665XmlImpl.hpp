@@ -89,9 +89,9 @@ class Arinc665XmlImpl final : public Arinc665Xml
      * @param mediaSetNode
      **/
     void saveMediaSet(
-      Media::ConstMediaSetPtr mediaSet,
+      const Media::ConstMediaSetPtr &mediaSet,
       const FilePathMapping &filePathMapping,
-      xmlpp::Element &mediaSetNode);
+      xmlpp::Element &mediaSetNode );
 
     /**
      * @brief Load the medium section.
@@ -101,9 +101,9 @@ class Arinc665XmlImpl final : public Arinc665Xml
      * @param mediumNode
      **/
     void loadMedium(
-      Media::MediaSetPtr mediaSet,
+      const Media::MediaSetPtr &mediaSet,
       FilePathMapping &filePathMapping,
-      const xmlpp::Node &mediumNode);
+      const xmlpp::Node &mediumNode );
 
     /**
      * @brief Saves the medium section.
@@ -113,9 +113,9 @@ class Arinc665XmlImpl final : public Arinc665Xml
      * @param mediumNode
      **/
     void saveMedium(
-      Media::ConstMediumPtr medium,
+      const Media::ConstMediumPtr &medium,
       const FilePathMapping &filePathMapping,
-      xmlpp::Node &mediumNode);
+      xmlpp::Node &mediumNode );
 
     /**
      * @brief Loads a directory section.
@@ -131,7 +131,7 @@ class Arinc665XmlImpl final : public Arinc665Xml
      *   When Name Attribute is missing or empty.
      **/
     void loadDirectory(
-      Media::ContainerEntityPtr parent,
+      const Media::ContainerEntityPtr &parent,
       FilePathMapping &filePathMapping,
       const xmlpp::Element &directoryElement );
 
@@ -143,7 +143,7 @@ class Arinc665XmlImpl final : public Arinc665Xml
      * @param directoryElement
      **/
     void saveDirectory(
-      Media::ConstDirectoryPtr directory,
+      const Media::ConstDirectoryPtr& directory,
       const FilePathMapping &filePathMapping,
       xmlpp::Element &directoryElement );
 
@@ -158,7 +158,7 @@ class Arinc665XmlImpl final : public Arinc665Xml
      *   When Name Attribute is missing or empty.
      **/
     void loadEntries(
-      Media::ContainerEntityPtr current,
+      const Media::ContainerEntityPtr &current,
       FilePathMapping &filePathMapping,
       const xmlpp::Node &currentNode);
 
@@ -170,9 +170,9 @@ class Arinc665XmlImpl final : public Arinc665Xml
      * @param currentNode
      */
     void saveEntries(
-      Media::ConstContainerEntityPtr current,
+      const Media::ConstContainerEntityPtr &current,
       const FilePathMapping &filePathMapping,
-      xmlpp::Node &currentNode);
+      xmlpp::Node &currentNode );
 
     /**
      * @brief Loads the given load-node.
@@ -188,7 +188,7 @@ class Arinc665XmlImpl final : public Arinc665Xml
      *   When NameRef attribute does not reference a load.
      **/
     void loadLoad(
-      Media::MediaSetPtr mediaSet,
+     const  Media::MediaSetPtr &mediaSet,
       const xmlpp::Element &loadElement );
 
     /**
@@ -200,7 +200,7 @@ class Arinc665XmlImpl final : public Arinc665Xml
      *   The XML-node where the data is stored to.
      **/
     void saveLoad(
-      Media::ConstLoadPtr load,
+      const Media::ConstLoadPtr &load,
       xmlpp::Element &loadElement );
 
     /**
@@ -221,7 +221,7 @@ class Arinc665XmlImpl final : public Arinc665Xml
      *     - When @p NameRef attribute does not reference load.
      **/
     void loadBatch(
-      Media::MediaSetPtr mediaSet,
+      const Media::MediaSetPtr &mediaSet,
       const xmlpp::Element &batchElement );
 
     /**
@@ -233,7 +233,7 @@ class Arinc665XmlImpl final : public Arinc665Xml
      *   The XML-node where the data is stored to.
      **/
     void saveBatch(
-      Media::ConstBatchPtr batch,
+      const Media::ConstBatchPtr &batch,
       xmlpp::Element &batchElement );
 };
 

@@ -185,19 +185,19 @@ class MediaSetImporterImpl final
     //! Batch List File
     std::optional< File::BatchListFile > batchListFile;
 
-    //! Load Header Files (file name, load header file)
-    std::list< std::pair< std::string, File::LoadHeaderFile > > loadHeaderFiles;
-    //! Batch Files (file name, batch file)
-    std::list< std::pair< std::string, File::BatchFile > > batchFiles;
+    //! Load Header Files (file name -> load header file)
+    std::map< std::string, File::LoadHeaderFile, std::less<> > loadHeaderFiles;
+    //! Batch Files (file name -> batch file)
+    std::map< std::string, File::BatchFile, std::less<> > batchFiles;
 
     //! File Information from List of Files ( file name -> file info )
     std::map< std::string, File::FileInfo, std::less<> > fileInfos;
     //! File Sizes ( file name -> file size )
-    std::map< std::string, std::size_t , std::less<> > fileSizes;
+    std::map< std::string, std::size_t, std::less<> > fileSizes;
     //! Loads (file names)
-    std::set< std::string > loads;
+    std::set< std::string, std::less<> > loads;
     //! Batches (file names)
-    std::set< std::string > batches;
+    std::set< std::string, std::less<> > batches;
 };
 
 }

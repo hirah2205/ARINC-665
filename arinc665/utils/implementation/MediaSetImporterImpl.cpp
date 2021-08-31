@@ -295,7 +295,7 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex )
       readFileHandler( mediumIndex, loadHeaderFileIt->second.path() ) };
 
     // add load header to global information
-    loadHeaderFiles.emplace_back(
+    loadHeaderFiles.emplace(
       loadHeaderFileIt->second.filename,
       std::move( loadHeaderFile ) );
   }
@@ -328,10 +328,8 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex )
     File::BatchFile batchFile{
       readFileHandler( mediumIndex, batchFileIt->second.path() ) };
 
-    // add batch file to to batch file list
-    batchFiles.emplace_back(
-      batchFileIt->second.filename,
-      std::move( batchFile ) );
+    // add batch file to batch file list
+    batchFiles.emplace( batchFileIt->second.filename, std::move( batchFile ) );
   }
 }
 
@@ -410,8 +408,8 @@ void MediaSetImporterImpl::addLoads()
       if ( !dataFilePtr )
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( "Data file not found" )
-          << boost::errinfo_file_name( dataFile.filename ) );
+          << Helper::AdditionalInfo{ "Data file not found" }
+          << boost::errinfo_file_name{ dataFile.filename } );
       }
 
       // get memorised file size ( only when file integrity is checked)
@@ -422,8 +420,8 @@ void MediaSetImporterImpl::addLoads()
         {
           BOOST_THROW_EXCEPTION(
             Arinc665Exception()
-            << Helper::AdditionalInfo( "No Size Info for Data File" )
-            << boost::errinfo_file_name( dataFile.filename ) );
+            << Helper::AdditionalInfo{ "No Size Info for Data File" }
+            << boost::errinfo_file_name{ dataFile.filename } );
         }
 
         // check load data file size - we divide by 2 to work around 16-bit size
@@ -565,7 +563,7 @@ void MediaSetImporterImpl::addBatches()
 MediaSetImporterImpl::ContainerEntityPtr
 MediaSetImporterImpl::checkCreateDirectory(
   const uint8_t mediumIndex,
-  const std::filesystem::path &directoryPath)
+  const std::filesystem::path &directoryPath )
 {
   // make path relative (remove leading slash)
   auto dirPath{ directoryPath.relative_path()};
@@ -585,7 +583,7 @@ MediaSetImporterImpl::checkCreateDirectory(
   {
     auto subDir{ dir->subDirectory( subPath.string())};
 
-    // if sub-directory does not exists - create it
+    // if sub-directory does not exist - create it
     if (!subDir)
     {
       subDir = dir->addSubDirectory( subPath.string());
@@ -593,7 +591,7 @@ MediaSetImporterImpl::checkCreateDirectory(
       if (!subDir)
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo( "Cannot create sub-directory" ) );
+          << Helper::AdditionalInfo{ "Cannot create sub-directory" } );
       }
     }
 
