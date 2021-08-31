@@ -20,6 +20,8 @@
 #include <string_view>
 #include <list>
 #include <vector>
+#include <set>
+#include <map>
 #include <utility>
 #include <optional>
 #include <cstdint>
@@ -100,9 +102,13 @@ namespace Arinc665::File {
 class LoadHeaderFile: public Arinc665File
 {
   public:
-    //! Target Hardware ID + Positions
+    //! Positions List
+    using Positions = std::set< std::string, std::less<> >;
+    //! Target Hardware ID / Positions
     using TargetHardwareIdPositions =
-      std::list< std::pair< std::string, StringList > >;
+      std::map< std::string, Positions, std::less<> >;
+    //! Target Hardware IDs
+    using TargetHardwareIds = std::set< std::string, std::less<> >;
     //! User Defined Data
     using UserDefinedData = std::vector< uint8_t>;
     //! Load Type (Description + ID)
@@ -323,7 +329,7 @@ class LoadHeaderFile: public Arinc665File
      *
      * @return Target Hardware IDs.
      **/
-    [[nodiscard]] StringList targetHardwareIds() const;
+    [[nodiscard]] TargetHardwareIds targetHardwareIds() const;
 
     /**
      * @brief Add Target Hardware IDs without position information.
@@ -331,7 +337,7 @@ class LoadHeaderFile: public Arinc665File
      * @param[in] targetHardwareIds
      *   Target Hardware IDs.
      **/
-    void targetHardwareIds( const StringList& targetHardwareIds );
+    void targetHardwareIds( const TargetHardwareIds& targetHardwareIds );
 
     /**
      * @brief Add Target Hardware ID/ Positions.
@@ -343,12 +349,12 @@ class LoadHeaderFile: public Arinc665File
      **/
     void targetHardwareId(
       std::string_view targetHardwareId,
-      const StringList &positions = {} );
+      const Positions &positions = {} );
 
-    //! @copydoc targetHardwareId(std::string_view,const StringList&)
+    //! @copydoc targetHardwareId(std::string_view,const Positions&)
     void targetHardwareId(
       std::string &&targetHardwareId,
-      StringList &&positions = {} );
+      Positions &&positions = {} );
 
     /** @} **/
 

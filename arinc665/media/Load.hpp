@@ -20,6 +20,8 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <set>
+#include <map>
 #include <utility>
 #include <optional>
 #include <cstdint>
@@ -32,15 +34,15 @@ namespace Arinc665::Media {
 class Load: public BaseFile
 {
   public:
-    //! File List
+    //! File List ( File, Part Number)
     using Files = std::list< std::pair< FilePtr::weak_type, std::string > >;
+    //! Positions List
+    using Positions = std::set< std::string, std::less<> >;
     //! Target Hardware ID / Positions
     using TargetHardwareIdPositions =
-      std::list< std::pair< std::string, std::list< std::string > > >;
+      std::map< std::string, Positions, std::less<> >;
     //! Target Hardware ID List
-    using TargetHardwareIds = std::list< std::string >;
-    //! Positions List
-    using Positions = std::list< std::string >;
+    using TargetHardwareIds = std::set< std::string, std::less<> >;
     //! User Defined Data Type
     using UserDefinedData = std::vector< uint8_t >;
     //! Load Type (Description + ID)
@@ -67,6 +69,11 @@ class Load: public BaseFile
     [[nodiscard]] FileType fileType() const final;
 
     /**
+     * @name Load Part Number
+     * @{
+     **/
+
+    /**
      * @brief Return the Part Number of the Media Set.
      *
      * @return Part Number of the Media Set.
@@ -79,7 +86,17 @@ class Load: public BaseFile
      * @param[in] partNumber
      *   New Part number
      **/
-    void partNumber( std::string_view partNumber);
+    void partNumber( std::string_view partNumber );
+
+    //! @copydoc partNumber( std::string_view)
+    void partNumber( std::string &&partNumber );
+
+    /** @} **/
+
+    /**
+     * @name Target Hardware IDs with Positions.
+     * @{
+     **/
 
     /**
      * @brief Returns the List of Target HW IDs.
@@ -105,10 +122,17 @@ class Load: public BaseFile
     void targetHardwareIdPositions(
       TargetHardwareIdPositions &&targetHardwareIdPositions );
 
+    /** @} **/
+
+    /**
+     * @name Target Hardware IDs without Positions Information.
+     * @{
+     **/
+
     /**
      * @brief Returns the List of Target HW IDs without position information.
      *
-     * @return The list of Target HW IDs.
+     * @return Target HW IDs.
      **/
     [[nodiscard]] TargetHardwareIds targetHardwareIds() const;
 
@@ -116,7 +140,7 @@ class Load: public BaseFile
      * @brief Adds a list of Target HW IDs without position information.
      *
      * @param[in] thwIds
-     *   The list of Target HW IDs.
+     *   Target HW IDs.
      **/
     void targetHardwareIds( const TargetHardwareIds &thwIds );
 
@@ -137,10 +161,17 @@ class Load: public BaseFile
       std::string &&targetHardwareId,
       Positions &&positions = {} );
 
+    /** @} **/
+
+    /**
+     * @name Data Files
+     * @{
+     **/
+
     /**
      * @brief Returns the data files.
      *
-     * @return The data files.
+     * @return Data files.
      **/
     [[nodiscard]] const Files& dataFiles() const;
 
@@ -156,6 +187,13 @@ class Load: public BaseFile
 
     //! @copydoc dataFile(const Files::value_type&)
     void dataFile( Files::value_type &&file );
+
+    /** @} **/
+
+    /**
+     * @name Support Files
+     * @{
+     **/
 
     /**
      * @brief Returns the support files.
@@ -176,6 +214,13 @@ class Load: public BaseFile
 
     //! @copydoc supportFile(const Files::value_type&)
     void supportFile( Files::value_type &&file );
+
+    /** @} **/
+
+    /**
+     * @name User Defined Data
+     * @{
+     **/
 
     /**
      * @brief Returns the user-defined data stored in the load header.
@@ -198,6 +243,13 @@ class Load: public BaseFile
     //! @copydoc Load::userDefinedData(const UserDefinedData&)
     void userDefinedData( UserDefinedData &&userDefinedData );
 
+    /** @} **/
+
+    /**
+     * @name Load Type
+     * @{
+     **/
+
     /**
      * @brief Returns the Load Type.
      *
@@ -215,6 +267,8 @@ class Load: public BaseFile
 
     //! @copydoc loadType(const Type&)
     void loadType( Type &&type );
+
+    /** @} **/
 
   private:
     //! Part Number

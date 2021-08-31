@@ -140,42 +140,45 @@ void LoadHeaderFile::targetHardwareIdPositions(
   targetHardwareIdPositionsV = std::move( targetHardwareIdPositions);
 }
 
-LoadHeaderFile::StringList LoadHeaderFile::targetHardwareIds() const
+LoadHeaderFile::TargetHardwareIds LoadHeaderFile::targetHardwareIds() const
 {
   BOOST_LOG_FUNCTION()
 
-  StringList targetHardwareIds{};
+  TargetHardwareIds targetHardwareIds{};
 
   for ( const auto &element : targetHardwareIdPositionsV )
   {
-    targetHardwareIds.push_back( element.first);
+    targetHardwareIds.emplace( element.first );
   }
 
   return targetHardwareIds;
 }
 
-void LoadHeaderFile::targetHardwareIds( const StringList &targetHardwareIds)
+void LoadHeaderFile::targetHardwareIds(
+  const TargetHardwareIds &targetHardwareIds )
 {
-  for ( const auto &thwId : targetHardwareIds)
+  for ( const auto &thwId : targetHardwareIds )
   {
-    targetHardwareId( thwId);
+    targetHardwareId( thwId );
   }
 }
 
 void LoadHeaderFile::targetHardwareId(
   std::string_view targetHardwareId,
-  const StringList &positions)
+  const Positions &positions )
 {
-  targetHardwareIdPositionsV.emplace_back(
-    std::make_pair( targetHardwareId, positions) );
+  targetHardwareIdPositionsV.insert_or_assign(
+    TargetHardwareIdPositions::key_type{ targetHardwareId },
+    positions );
 }
 
 void LoadHeaderFile::targetHardwareId(
   std::string &&targetHardwareId,
-  StringList &&positions)
+  Positions &&positions )
 {
-  targetHardwareIdPositionsV.emplace_back(
-    std::make_pair( std::move( targetHardwareId), std::move( positions)));
+  targetHardwareIdPositionsV.insert_or_assign(
+    std::move( targetHardwareId ),
+    std::move( positions ) );
 }
 
 const LoadHeaderFile::LoadType& LoadHeaderFile::loadType() const
@@ -363,7 +366,7 @@ RawFile LoadHeaderFile::encode() const
   }
 
   // THW ID list
-  auto rawThwIdsList{ encodeStringList( targetHardwareIds())};
+  auto rawThwIdsList{ encodeStrings( targetHardwareIds() ) };
   assert( rawThwIdsList.size() % 2 == 0);
 
   Helper::setInt< uint32_t>(
@@ -397,7 +400,7 @@ RawFile LoadHeaderFile::encode() const
         rawThwId.end() );
 
       // Positions
-      const auto rawPositions{ encodeStringList( thwIdPosition.second ) };
+      const auto rawPositions{ encodeStrings( thwIdPosition.second ) };
       assert( rawThwId.size() % 2 == 0 );
 
       rawThwPos.insert(
@@ -618,13 +621,13 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
 
 
   // target hardware id list
-  StringList targetHardwareIdsValue{};
+  TargetHardwareIds targetHardwareIdsValue{};
 
-  decodeStringList(
+  decodeStrings(
     rawFile.begin() + targetHardwareIdListPtr * 2,
     targetHardwareIdsValue);
 
-  targetHardwareIds( targetHardwareIdsValue);
+  targetHardwareIds( targetHardwareIdsValue );
 
   // THW IDs with Positions Field (ARINC 665-3)
   if (decodeV3Data && (0!=thwIdsPositionPtr))
@@ -632,19 +635,17 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
     uint16_t numberOfThwIdsWithPos{};
     auto it{ Helper::getInt< uint16_t>(
       rawFile.begin() + thwIdsPositionPtr * 2,
-      numberOfThwIdsWithPos)};
+      numberOfThwIdsWithPos ) };
 
-    for ( unsigned int thwIdIndex = 0; thwIdIndex < numberOfThwIdsWithPos; ++thwIdIndex)
+    for ( uint16_t thwIdIndex = 0; thwIdIndex < numberOfThwIdsWithPos; ++thwIdIndex)
     {
-      std::string thwId;
+      std::string thwId{};
       it = decodeString( it, thwId);
 
-      StringList positions;
-      it = decodeStringList( it, positions);
+      Positions positions{};
+      it = decodeStrings( it, positions);
 
-      targetHardwareIdPositionsV.emplace_back(
-        std::move( thwId ),
-        std::move( positions ) );
+      targetHardwareId( std::move( thwId ), std::move( positions ) );
     }
   }
 

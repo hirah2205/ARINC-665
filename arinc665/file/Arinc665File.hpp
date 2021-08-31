@@ -19,6 +19,7 @@
 #include <string>
 #include <string_view>
 #include <list>
+#include <set>
 #include <cstdint>
 
 namespace Arinc665::File {
@@ -83,28 +84,37 @@ class Arinc665File
      **/
 
     /**
-     * @brief Decodes the ARINC 665 string list from the stream.
+     * @brief Decodes the ARINC 665 String List from the stream.
      *
      * @param[in] it
      *   current position, where the raw string list starts.
      * @param[out] strings
-     *   Decoded string list.
+     *   Decoded Strings.
      *
      * @return New iterator position.
      **/
-    static ConstRawFileSpan::iterator decodeStringList(
+    static ConstRawFileSpan::iterator decodeStrings(
       ConstRawFileSpan::iterator it,
-      StringList &strings );
+      std::list< std::string > &strings );
+
+    //! @copydoc decodeStrings(ConstRawFileSpan::iterator,std::list<std::string>&)
+    static ConstRawFileSpan::iterator decodeStrings(
+      ConstRawFileSpan::iterator it,
+      std::set< std::string, std::less<> > &strings );
 
     /**
-     * @brief Encodes the ARINC 665 string list to the stream.
+     * @brief Encodes the ARINC 665 String List to the Stream.
      *
      * @param[in] strings
      *   String List
      *
      * @return Encoded raw string list.
      **/
-    static RawFile encodeStringList( const StringList &strings );
+    static RawFile encodeStrings( const std::list< std::string > &strings );
+
+    //! @copydoc encodeStrings(const std::list<std::string>&)
+    static RawFile encodeStrings(
+      const std::set< std::string, std::less<> > &strings );
 
     /** @} **/
 
@@ -116,9 +126,9 @@ class Arinc665File
      * back-slashes '\'.
      *
      * @param[in] path
-     *   The path, which should be converted.
+     *   Path, which should be converted.
      *
-     * @return The converted path.
+     * @return Converted Path.
      **/
     static std::string encodePath( const std::filesystem::path &path );
 

@@ -273,7 +273,7 @@ RawFile LoadListFile::encodeLoadsInfo() const
     auto const rawHeaderFilename( encodeString( loadInfo.headerFilename ) );
     assert( rawHeaderFilename.size() % 2 == 0);
 
-    auto const rawThwIds( encodeStringList( loadInfo.targetHardwareIds ) );
+    auto const rawThwIds( encodeStrings( loadInfo.targetHardwareIds ) );
     assert( rawThwIds.size() % 2 == 0);
 
     RawFile rawLoadInfo(
@@ -352,7 +352,7 @@ void LoadListFile::decodeLoadsInfo(
     }
 
     LoadInfo::ThwIds thwIds{};
-    listIt = Arinc665File::decodeStringList( listIt, thwIds);
+    listIt = Arinc665File::decodeStrings( listIt, thwIds );
 
     loadsV.emplace_back( LoadInfo{
       std::move( partNumber ),

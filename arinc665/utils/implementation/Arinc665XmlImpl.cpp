@@ -488,7 +488,7 @@ void Arinc665XmlImpl::loadLoad(
 
     auto thwId{ targetHardwareElement->get_attribute_value( "ThwId" ) };
 
-    std::list< std::string> positions{};
+    Media::Load::Positions positions{};
 
     // iterate over positions
     for ( auto positionNode : targetHardwareElement->get_children( "Position" ) )
@@ -503,10 +503,10 @@ void Arinc665XmlImpl::loadLoad(
 
       auto position{ positionElement->get_attribute_value( "Pos" ) };
 
-      positions.push_back( position);
+      positions.emplace( position );
     }
 
-    thwIds.emplace_back( std::move( thwId), std::move( positions ) );
+    thwIds.emplace( thwId, std::move( positions ) );
   }
 
   load->targetHardwareIdPositions( std::move( thwIds ) );

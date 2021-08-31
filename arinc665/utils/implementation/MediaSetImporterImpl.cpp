@@ -210,7 +210,7 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
   assert( mediumIndex > 0U );
 
   // Check for optional batch list file
-  if ( fileInfos.contains( std::string{ ListOfBatchesName } ) )
+  if ( !fileInfos.contains( std::string{ ListOfBatchesName } ) )
   {
     return;
   }
@@ -340,13 +340,13 @@ void MediaSetImporterImpl::addFiles()
   // iterate over all files
   for ( const auto &[fileName, fileInfo] : fileInfos )
   {
-    if ( loads.end() != loads.find( fileName ) )
+    if ( loads.contains( fileName ) )
     {
       // skip load header file
       continue;
     }
 
-    if ( batches.end() != batches.find( fileName ) )
+    if ( batches.contains( fileName ) )
     {
       // skip batch file
       continue;
@@ -384,9 +384,10 @@ void MediaSetImporterImpl::addLoads()
   BOOST_LOG_FUNCTION()
 
   // iterate over load headers
-  for ( const auto &loadHeaderFile : loadHeaderFiles )
+  for ( const auto &[filename,loadHeaderFile] : loadHeaderFiles )
   {
-    const auto fileInfoIt{ fileInfos.find( loadHeaderFile.first ) };
+    // obtain file information for load header
+    const auto fileInfoIt{ fileInfos.find( filename ) };
 
     // obtain container (directory, medium), which will contain the load.
     auto container{ checkCreateDirectory(
@@ -394,15 +395,15 @@ void MediaSetImporterImpl::addLoads()
       fileInfoIt->second.path().parent_path() ) };
 
     // create load
-    auto loadPtr{ container->addLoad( loadHeaderFile.first ) };
+    auto loadPtr{ container->addLoad( filename ) };
 
-    loadPtr->partNumber( loadHeaderFile.second.partNumber() );
-    loadPtr->loadType( loadHeaderFile.second.loadType() );
+    loadPtr->partNumber( loadHeaderFile.partNumber() );
+    loadPtr->loadType( loadHeaderFile.loadType() );
     loadPtr->targetHardwareIdPositions(
-      loadHeaderFile.second.targetHardwareIdPositions() );
+      loadHeaderFile.targetHardwareIdPositions() );
 
     // iterate over data files
-    for ( const auto &dataFile : loadHeaderFile.second.dataFiles() )
+    for ( const auto &dataFile : loadHeaderFile.dataFiles() )
     {
       auto dataFilePtr{ mediaSet->file( dataFile.filename ) };
 
@@ -456,7 +457,7 @@ void MediaSetImporterImpl::addLoads()
     }
 
     // iterate over support files
-    for ( const auto &supportFile : loadHeaderFile.second.supportFiles() )
+    for ( const auto &supportFile : loadHeaderFile.supportFiles() )
     {
       auto supportFilePtr{ mediaSet->file( supportFile.filename ) };
 
@@ -510,7 +511,7 @@ void MediaSetImporterImpl::addLoads()
     }
 
     // User Defined Data
-    loadPtr->userDefinedData( loadHeaderFile.second.userDefinedData() );
+    loadPtr->userDefinedData( loadHeaderFile.userDefinedData() );
   }
 }
 
@@ -537,7 +538,7 @@ void MediaSetImporterImpl::addBatches()
     // iterate over target hardware
     for ( const auto &targetHardware : batchFile.second.targetsHardware() )
     {
-      Media::WeakLoads batchLoads;
+      Media::WeakLoads batchLoads{};
 
       // iterate over loads
       for ( const auto& load : targetHardware.loads )
@@ -548,11 +549,11 @@ void MediaSetImporterImpl::addBatches()
         {
           BOOST_THROW_EXCEPTION(
             Arinc665Exception()
-              << Helper::AdditionalInfo( "Load not found" )
-              << boost::errinfo_file_name( std::string{ load.headerFilename } ) );
+              << Helper::AdditionalInfo{ "Load not found" }
+              << boost::errinfo_file_name{ std::string{ load.headerFilename } } );
         }
 
-        batchLoads.push_back( loadPtr);
+        batchLoads.emplace_back( std::move( loadPtr ) );
       }
 
       // add Target Hardware/ Position

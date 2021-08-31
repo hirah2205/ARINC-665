@@ -63,26 +63,45 @@ RawFile Arinc665File::encodeString( std::string_view str )
   return rawString;
 }
 
-ConstRawFileSpan::iterator Arinc665File::decodeStringList(
+ConstRawFileSpan::iterator Arinc665File::decodeStrings(
   ConstRawFileSpan::iterator it,
-  StringList &strings)
+  std::list< std::string > &strings)
 {
   // number of strings
   uint16_t numberOfEntries{};
   it = Helper::getInt< uint16_t>( it, numberOfEntries);
 
-  for ( unsigned int index = 0U; index < numberOfEntries; ++index)
+  for ( uint16_t index = 0U; index < numberOfEntries; ++index)
   {
     // string
     std::string str{};
     it = decodeString( it, str);
-    strings.push_back( std::move( str));
+    strings.emplace_back( std::move( str) );
   }
 
   return it;
 }
 
-RawFile Arinc665File::encodeStringList( const StringList &strings )
+ConstRawFileSpan::iterator Arinc665File::decodeStrings(
+  ConstRawFileSpan::iterator it,
+  std::set< std::string, std::less<> > &strings )
+{
+  // number of strings
+  uint16_t numberOfEntries{};
+  it = Helper::getInt< uint16_t>( it, numberOfEntries);
+
+  for ( uint16_t index = 0U; index < numberOfEntries; ++index)
+  {
+    // string
+    std::string str{};
+    it = decodeString( it, str);
+    strings.emplace( std::move( str) );
+  }
+
+  return it;
+}
+
+RawFile Arinc665File::encodeStrings( const std::list< std::string > &strings )
 {
   RawFile rawStrings( sizeof( uint16_t));
 
@@ -92,6 +111,28 @@ RawFile Arinc665File::encodeStringList( const StringList &strings )
     static_cast< uint16_t>( strings.size()));
 
   for ( const auto &str : strings)
+  {
+    auto rawStr{ encodeString( str)};
+    assert( rawStr.size() % 2 == 0);
+
+    // append string
+    rawStrings.insert( rawStrings.end(), rawStr.begin(), rawStr.end());
+  }
+
+  return rawStrings;
+}
+
+RawFile Arinc665File::encodeStrings(
+  const std::set< std::string, std::less<> > &strings )
+{
+  RawFile rawStrings( sizeof( uint16_t));
+
+  // set number of strings
+  Helper::setInt< uint16_t>(
+    rawStrings.begin(),
+    static_cast< uint16_t>( strings.size()));
+
+  for ( const auto &str : strings )
   {
     auto rawStr{ encodeString( str)};
     assert( rawStr.size() % 2 == 0);

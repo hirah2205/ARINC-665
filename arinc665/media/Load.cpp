@@ -41,6 +41,11 @@ void Load::partNumber( std::string_view partNumber )
   partNumberV = partNumber;
 }
 
+void Load::partNumber( std::string &&partNumber )
+{
+  partNumberV = std::move( partNumber );
+}
+
 const Load::TargetHardwareIdPositions& Load::targetHardwareIdPositions() const
 {
   return targetHardwareIdPositionsV;
@@ -65,11 +70,11 @@ void Load::targetHardwareIdPositions(
 
 Load::TargetHardwareIds Load::targetHardwareIds() const
 {
-  std::list< std::string> thwIds;
+  TargetHardwareIds thwIds{};
 
   for ( const auto &item : targetHardwareIdPositionsV )
   {
-    thwIds.push_back( item.first);
+    thwIds.emplace( item.first );
   }
 
   return thwIds;
@@ -79,8 +84,7 @@ void Load::targetHardwareIds( const TargetHardwareIds &thwIds )
 {
   for ( const auto &targetHardwareId : thwIds )
   {
-    targetHardwareIdPositionsV.emplace_back(
-      std::make_pair( targetHardwareId, Positions{} ) );
+    targetHardwareIdPositionsV.insert_or_assign( targetHardwareId, Positions{} );
   }
 }
 
@@ -88,16 +92,20 @@ void Load::targetHardwareId(
   std::string_view targetHardwareId,
   const Positions &positions )
 {
-  targetHardwareIdPositionsV.emplace_back(
-    std::make_pair( targetHardwareId, positions ) );
+  // as long there is no override with key like std::map::find we have to
+  // manually cast to key_type
+  targetHardwareIdPositionsV.insert_or_assign(
+    TargetHardwareIdPositions::key_type{ targetHardwareId },
+    positions );
 }
 
 void Load::targetHardwareId(
   std::string &&targetHardwareId,
   Positions &&positions )
 {
-  targetHardwareIdPositionsV.emplace_back(
-    std::make_pair( std::move( targetHardwareId ) , std::move( positions ) ) );
+  targetHardwareIdPositionsV.insert_or_assign(
+    std::move( targetHardwareId ),
+    std::move( positions ) );
 }
 
 const Load::Files& Load::dataFiles() const
