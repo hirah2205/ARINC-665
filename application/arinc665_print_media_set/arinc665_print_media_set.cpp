@@ -197,8 +197,8 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
   auto mediaSet{ importer() };
 
   std::cout
-    << "Media Set PN: "
-      << mediaSet->partNumber() << "\n"
+    << "Media Set PN: \""
+      << mediaSet->partNumber() << "\"\n"
     << "Number of Media Set Members: "
       << std::dec << (int)mediaSet->numberOfMedia() << "\n";
 
@@ -207,14 +207,33 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
 
 static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet)
 {
-  std::cout << "Media Set " << mediaSet->partNumber() << "\n";
+  std::cout << "Media Set \"" << mediaSet->partNumber() << "\"\n";
 
   // iterate over files
   std::cout << " * Files " << "\n";
 
-  for ( auto const &file : mediaSet->files())
+  for ( auto const &file : mediaSet->files() )
   {
-    std::cout << "   * File " << file->path() << "\n";
+    std::cout << "   * File " << file->path() << " (";
+    switch ( file->fileType() )
+    {
+      case Arinc665::Media::BaseFile::FileType::RegularFile:
+        std::cout << "Regular File";
+        break;
+
+      case Arinc665::Media::BaseFile::FileType::BatchFile:
+        std::cout << "Batch File";
+        break;
+
+      case Arinc665::Media::BaseFile::FileType::LoadFile:
+        std::cout << "Load Header File";
+        break;
+
+      default:
+        std::cout << "Illegal Value";
+        break;
+    }
+    std::cout << ")\n";
   }
 
   // iterate over loads
@@ -227,9 +246,14 @@ static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet)
 
     std::cout << "       Compatible THW IDs\n";
     // iterate over THW ID list
-    for ( auto const & thwId : load->targetHardwareIds())
+    for ( auto const &[thwId,positions] : load->targetHardwareIdPositions() )
     {
       std::cout << "        * " << thwId << "\n";
+
+      for ( auto const &position : positions )
+      {
+        std::cout << "          * " << position << "\n";
+      }
     }
 
     std::cout << "       Data Files\n";
