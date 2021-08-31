@@ -71,7 +71,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
         if ( !file.is_open() )
         {
           BOOST_THROW_EXCEPTION( Arinc665Exception()
-            << Helper::AdditionalInfo( "Error opening files" ) );
+            << Helper::AdditionalInfo{ "Error opening files" } );
         }
 
         // read the data to the buffer

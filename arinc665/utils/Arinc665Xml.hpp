@@ -59,7 +59,8 @@ class Arinc665Xml
      * @throw Arinc665Exception
      *   If file cannot be loaded or is invalid.
      **/
-    virtual LoadXmlResult loadFromXml( const std::filesystem::path &xmlFile ) = 0;
+    virtual LoadXmlResult loadFromXml(
+      const std::filesystem::path &xmlFile ) = 0;
 
     /**
      * @brief Saves the given Media Set information to the given XML file.
@@ -75,7 +76,7 @@ class Arinc665Xml
     virtual void saveToXml(
       Media::ConstMediaSetPtr mediaSet,
       const FilePathMapping &filePathMapping,
-      const std::filesystem::path &xmlFile) = 0;
+      const std::filesystem::path &xmlFile ) = 0;
 
     //! Destructor
     virtual ~Arinc665Xml() = default;

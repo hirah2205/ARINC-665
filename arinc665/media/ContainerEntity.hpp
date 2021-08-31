@@ -56,6 +56,11 @@ class ContainerEntity : public Base
     bool hasChildren() const;
 
     /**
+     * @name Sub-Directories
+     * @{
+     **/
+
+    /**
      * @brief Return the number of sub-directories.
      *
      * @return The number of sub-directories.
@@ -118,6 +123,13 @@ class ContainerEntity : public Base
      *   The sub-directory to be deleted,
      **/
     void removeSubDirectory( const DirectoryPtr& subDirectory );
+
+    /** @} **/
+
+    /**
+     * @name Files
+     * @{
+     **/
 
     /**
      * @brief Returns the number of files within this directory and
@@ -201,6 +213,13 @@ class ContainerEntity : public Base
      **/
     void removeFile( const ConstFilePtr& file );
 
+    /** @} **/
+
+    /**
+     * @name Loads
+     * @{
+     **/
+
     /**
      * @brief Return the number of loads.
      *
@@ -267,6 +286,12 @@ class ContainerEntity : public Base
      **/
     void removeLoad( const ConstLoadPtr& load );
 
+    /** @} **/
+
+    /**
+     * @name Batches
+     * @{
+     **/
 
     /**
      * @brief Return the number of batches.
@@ -333,6 +358,8 @@ class ContainerEntity : public Base
      *   Batch to be deleted.
      **/
     void removeBatch( const ConstBatchPtr& batch );
+
+    /** @} **/
 
     /**
      * @brief Returns the parent.

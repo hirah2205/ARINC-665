@@ -52,6 +52,11 @@ class MediaSet: public Base
     Type type() const final;
 
     /**
+     * @name Media Set Part Number
+     * @{
+     **/
+
+    /**
      * @brief Return the Part Number of the Media Set.
      *
      * @return Part Number of the Media Set.
@@ -68,6 +73,13 @@ class MediaSet: public Base
 
     //! @copydoc partNumber(std::string_view)
     void partNumber( std::string &&partNumber );
+
+    /** @} **/
+
+    /**
+     * @name Media
+     * @{
+     **/
 
     /**
      * @brief Get the Number of Media within the Media Set.
@@ -137,6 +149,13 @@ class MediaSet: public Base
      **/
     void removeMedium( bool deleteFiles = false );
 
+    /** @} **/
+
+    /**
+     * @name Files
+     * @{
+     **/
+
     /**
      * @brief Return the total number of files within the media set.
      *
@@ -185,6 +204,13 @@ class MediaSet: public Base
      *   If file is not found.
      **/
     FilePtr file( std::string_view filename );
+
+    /** @} **/
+
+    /**
+     * @name Loads
+     * @{
+     **/
 
     /**
      * @brief Return the number of loads within the media set.
@@ -247,6 +273,13 @@ class MediaSet: public Base
      **/
     void removeLoad( ConstLoadPtr load );
 
+    /** @} **/
+
+    /**
+     * @name Batches
+     * @{
+     **/
+
     /**
      * @brief Return the number of batches within the media set.
      *
@@ -308,6 +341,13 @@ class MediaSet: public Base
      **/
     void removeBatch( ConstBatchPtr batch);
 
+    /** @} **/
+
+    /**
+     * @name User Defined Data
+     * @{
+     **/
+
     /**
      * @brief Returns the user defined data for file list files.
      *
@@ -324,10 +364,10 @@ class MediaSet: public Base
      * @param[in] userDefinedData
      *   User defined data.
      **/
-    void filesUserDefinedData( const UserDefinedData &userDefinedData);
+    void filesUserDefinedData( const UserDefinedData &userDefinedData );
 
     //! @copydoc filesUserDefinedData(const UserDefinedData&)
-    void filesUserDefinedData( UserDefinedData &&userDefinedData);
+    void filesUserDefinedData( UserDefinedData &&userDefinedData );
 
     /**
      * @brief Returns the user defined data for loads list files.
@@ -370,6 +410,8 @@ class MediaSet: public Base
 
     //! @copydoc batchesUserDefinedData(const UserDefinedData&)
     void batchesUserDefinedData( UserDefinedData &&userDefinedData );
+
+    /** @} **/
 
   private:
     //! Media

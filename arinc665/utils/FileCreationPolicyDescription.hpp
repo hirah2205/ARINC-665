@@ -25,7 +25,7 @@ namespace Arinc665::Utils {
 class FileCreationPolicyDescription : public Helper::Description<
   FileCreationPolicyDescription,
   FileCreationPolicy,
-  FileCreationPolicy::Invalid>
+  FileCreationPolicy::Invalid >
 {
   public:
     //! Constructs and adds the entries
@@ -44,7 +44,7 @@ class FileCreationPolicyDescription : public Helper::Description<
  **/
 std::ostream& operator<<(
   std::ostream &stream,
-  FileCreationPolicy fileCreationPolicy);
+  FileCreationPolicy fileCreationPolicy );
 
 /**
  * @brief Streaming operator for parsing a string as file creation policy.
@@ -58,7 +58,7 @@ std::ostream& operator<<(
  **/
 std::istream& operator>>(
   std::istream& stream,
-  FileCreationPolicy &fileCreationPolicy);
+  FileCreationPolicy &fileCreationPolicy );
 
 }
 #endif

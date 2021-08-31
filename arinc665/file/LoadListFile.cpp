@@ -302,7 +302,7 @@ RawFile LoadListFile::encodeLoadsInfo() const
     loadInfoIt = Helper::setInt< uint16_t>( loadInfoIt, loadInfo.memberSequenceNumber );
 
     // THW IDs list
-    loadInfoIt = std::copy( rawThwIds.begin(), rawThwIds.end(), loadInfoIt );
+    std::copy( rawThwIds.begin(), rawThwIds.end(), loadInfoIt );
 
     // add file info to files info
     rawLoadsInfo.insert( rawLoadsInfo.end(), rawLoadInfo.begin(), rawLoadInfo.end());

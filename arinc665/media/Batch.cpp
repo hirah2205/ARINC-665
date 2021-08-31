@@ -88,14 +88,14 @@ WeakLoads Batch::target( std::string_view targetHardwareId)
   return it->second;
 }
 
-void Batch::target( std::string_view targetHardwareId, const WeakLoads &loads)
+void Batch::target( std::string_view targetHardwareId, const WeakLoads &loads )
 {
-  batchesV.insert( {std::string{ targetHardwareId}, loads});
+  batchesV.emplace( std::string{ targetHardwareId}, loads );
 }
 
-void Batch::target( std::string &&targetHardwareId, WeakLoads &&loads)
+void Batch::target( std::string &&targetHardwareId, WeakLoads &&loads )
 {
-  batchesV.insert( {std::move( targetHardwareId), std::move( loads)});
+  batchesV.emplace( std::move( targetHardwareId), std::move( loads) );
 }
 
 }

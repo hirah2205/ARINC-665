@@ -63,7 +63,7 @@ class Directory : public ContainerEntity
     //! @copydoc ContainerEntity::parent() const
     ConstContainerEntityPtr parent() const final;
 
-    ///! @copydoc ContainerEntity::parent()
+    //! @copydoc ContainerEntity::parent()
     ContainerEntityPtr parent() final;
 
     //! @copydoc ContainerEntity::medium() const

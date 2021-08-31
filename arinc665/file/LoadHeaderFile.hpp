@@ -365,7 +365,7 @@ class LoadHeaderFile: public Arinc665File
      **/
 
     /**
-     * @brief Returns the Load Type information.
+     * @brief Returns the Load Type Information.
      *
      * This information is only used in ARIN 665-3/4 files.
      *
@@ -374,12 +374,12 @@ class LoadHeaderFile: public Arinc665File
     [[nodiscard]] const LoadType& loadType() const;
 
     /**
-     * @brief Updates the Load Type information.
+     * @brief Updates the Load Type Information.
      *
      * This information is only used in ARIN 665-3/4 files.
      *
      * @param[in] type
-     *   The Load Type information.
+     *   Load Type Information.
      **/
     void loadType( const LoadType &type );
 
@@ -405,10 +405,10 @@ class LoadHeaderFile: public Arinc665File
     LoadFilesInfo& dataFiles();
 
     /**
-     * @brief Add Data File.
+     * @brief Add Data %File.
      *
      * @param[in] dataFileInfo
-     *   The data file information.
+     *   Data file information.
      **/
     void dataFile( const LoadFileInfo &dataFileInfo );
 
@@ -434,7 +434,7 @@ class LoadHeaderFile: public Arinc665File
     LoadFilesInfo& supportFiles();
 
     /**
-     * @brief Add Support File.
+     * @brief Add Support %File.
      *
      * @param[in] supportFileInfo
      *   Support File.
@@ -479,7 +479,7 @@ class LoadHeaderFile: public Arinc665File
     /**
      * @brief Returns the Load CRC.
      *
-     * @return The Load CRC
+     * @return Load CRC
      **/
     [[nodiscard]] uint32_t loadCrc() const;
 
@@ -487,7 +487,7 @@ class LoadHeaderFile: public Arinc665File
      * @brief Updates the Load CRC.
      *
      * @param[in] loadCrc
-     *   The Load CRC
+     *   Load CRC
      **/
     void loadCrc( uint32_t loadCrc );
 

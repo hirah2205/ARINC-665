@@ -52,6 +52,11 @@ class Batch: public BaseFile
     [[nodiscard]] FileType fileType() const final;
 
     /**
+     * @name Part Number
+     * @{
+     **/
+
+    /**
      * @brief Return the Part Number of the Media Set.
      *
      * @return Part Number of the Media Set.
@@ -65,6 +70,13 @@ class Batch: public BaseFile
      *   New Part number
      **/
     void partNumber( std::string_view partNumber );
+
+    /** @} **/
+
+    /**
+     * @name Comment
+     * @{
+     **/
 
     /**
      * @brief Get the comment, which describes the batch.
@@ -84,8 +96,15 @@ class Batch: public BaseFile
     //! @copydoc comment(std::string_view)
     void comment( std::string &&comment);
 
+    /** @} **/
+
     /**
-     * @brief Return batches.
+     * @name Batch Targets Information
+     * @{
+     **/
+
+    /**
+     * @brief Return Batch Information for Targets.
      *
      * @return The batch target information.
      **/
@@ -95,7 +114,7 @@ class Batch: public BaseFile
     BatchInfo& targets();
 
     /**
-     * @brief Return the batch info for the given target hardware ID
+     * @brief Return the Batch info for the given target hardware ID
      *
      * @param[in] targetHardwareId
      *   Target hardware ID
@@ -126,6 +145,8 @@ class Batch: public BaseFile
 
     //! @copydoc target(std::string_view,const WeakLoads&)
     void target( std::string &&targetHardwareId, WeakLoads &&loads);
+
+    /** @} **/
 
   private:
     //! Part Number

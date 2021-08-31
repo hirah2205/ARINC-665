@@ -64,7 +64,7 @@ class MediaSetConfiguration
 
     //! Base directory for all media sets stored.
     std::filesystem::path mediaSetsBase;
-    //! List of media Sets
+    //! Media Sets
     MediaSets mediaSets;
 };
 

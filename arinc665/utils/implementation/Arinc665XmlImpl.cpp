@@ -429,8 +429,9 @@ void Arinc665XmlImpl::saveEntries(
     fileNode->set_attribute( "Name", fileEntry->name().data() );
 
     // Add source path attribute (optional)
-    auto filePathIt{ filePathMapping.find( fileEntry ) };
-    if ( filePathIt != filePathMapping.end() )
+    if (
+      auto filePathIt{ filePathMapping.find( fileEntry ) };
+      filePathIt != filePathMapping.end() )
     {
       fileNode->set_attribute( "SourcePath", filePathIt->second.string() );
     }

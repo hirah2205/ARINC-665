@@ -173,10 +173,9 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
 
       if ( fileIt == fileInfos.end() )
       {
-        BOOST_THROW_EXCEPTION(
-          Arinc665Exception()
-            << Helper::AdditionalInfo( "load header file not found")
-            << boost::errinfo_file_name( std::string{ load.headerFilename } ) );
+        BOOST_THROW_EXCEPTION(Arinc665Exception()
+          << Helper::AdditionalInfo{ "load header file not found" }
+          << boost::errinfo_file_name{ std::string{ load.headerFilename } } );
       }
 
       // checks that the load list and file list entry maps to the same file entry
@@ -185,13 +184,13 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
         //! @throw Arinc665Exception When load file and list file reference does not match
         BOOST_THROW_EXCEPTION(
           Arinc665Exception()
-            << Helper::AdditionalInfo( "data inconsistency" ) );
+            << Helper::AdditionalInfo{ "data inconsistency" } );
       }
     }
   }
   else
   {
-    // otherwise check against stored version
+    // otherwise, check against stored version
     if ( !this->loadListFile->belongsToSameMediaSet( currentLoadListFile )
       || ( currentLoadListFile.mediaSequenceNumber() != mediumIndex ) )
     {
@@ -203,7 +202,7 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
   }
 }
 
-void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex)
+void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex )
 {
   BOOST_LOG_FUNCTION()
 
@@ -415,7 +414,7 @@ void MediaSetImporterImpl::addLoads()
       // get memorised file size ( only when file integrity is checked)
       if ( checkFileIntegrity )
       {
-        const auto dataFileSize = fileSizes.find( dataFile.filename );
+        const auto dataFileSize{ fileSizes.find( dataFile.filename ) };
         if ( dataFileSize == fileSizes.end() )
         {
           BOOST_THROW_EXCEPTION(
@@ -470,7 +469,7 @@ void MediaSetImporterImpl::addLoads()
       // get memorised file size ( only when file integrity is checked)
       if ( checkFileIntegrity )
       {
-        const auto dataFileSize = fileSizes.find( supportFile.filename );
+        const auto dataFileSize{ fileSizes.find( supportFile.filename ) };
         if ( dataFileSize == fileSizes.end() )
         {
           BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -518,9 +517,9 @@ void MediaSetImporterImpl::addBatches()
   BOOST_LOG_FUNCTION()
 
   // iterate over batches
-  for ( const auto &batchFile : batchFiles )
+  for ( const auto &[filename,batchFile] : batchFiles )
   {
-    const auto fileInfoIt{ fileInfos.find( batchFile.first ) };
+    const auto fileInfoIt{ fileInfos.find( filename ) };
 
     // obtain container (directory, medium), which will contain the batch.
     auto container{ checkCreateDirectory(
@@ -528,13 +527,13 @@ void MediaSetImporterImpl::addBatches()
       fileInfoIt->second.path().parent_path() ) };
 
     // create batch
-    auto batchPtr{ container->addBatch( batchFile.first ) };
+    auto batchPtr{ container->addBatch( filename ) };
 
-    batchPtr->partNumber( batchFile.second.partNumber());
-    batchPtr->comment( batchFile.second.comment());
+    batchPtr->partNumber( batchFile.partNumber());
+    batchPtr->comment( batchFile.comment());
 
     // iterate over target hardware
-    for ( const auto &targetHardware : batchFile.second.targetsHardware() )
+    for ( const auto &targetHardware : batchFile.targetsHardware() )
     {
       Media::WeakLoads batchLoads{};
 
@@ -581,12 +580,12 @@ MediaSetImporterImpl::checkCreateDirectory(
   // iterate over path elements
   for ( auto &subPath : dirPath )
   {
-    auto subDir{ dir->subDirectory( subPath.string())};
+    auto subDir{ dir->subDirectory( subPath.string() ) };
 
     // if sub-directory does not exist - create it
-    if (!subDir)
+    if ( !subDir )
     {
-      subDir = dir->addSubDirectory( subPath.string());
+      subDir = dir->addSubDirectory( subPath.string() );
 
       if (!subDir)
       {

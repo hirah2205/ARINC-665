@@ -129,7 +129,7 @@ class MediaSetManager
      * @param[in] filename
      *   Load Filename
      *
-     * @return The loads with the given filename.
+     * @return Loads with the given filename.
      **/
     [[nodiscard]] virtual Media::ConstLoads load(
       std::string_view filename ) const = 0;
