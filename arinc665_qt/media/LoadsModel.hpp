@@ -44,21 +44,21 @@ class LoadsModel : public QAbstractTableModel
      * @brief Returns the number of rows.
      *
      * @param[in] parent
-     *   The index-parent - assumed to be the root element (invalid).
+     *   Index-parent - assumed to be the root element (invalid).
      *
      * @return The number of loads.
      **/
-    virtual int rowCount( const QModelIndex &parent) const override;
+    virtual int rowCount( const QModelIndex &parent ) const override;
 
     /**
      * @brief Returns the number of columns.
      *
      * @param[in] parent
-     *   The index-parent - assumed to be the root element (invalid).
+     *   Index-parent - assumed to be the root element (invalid).
      *
      * @return Always 2.
      **/
-    int columnCount( const QModelIndex &parent) const override;
+    int columnCount( const QModelIndex &parent ) const override;
 
     /**
      * @brief Returns the requested data.
@@ -70,7 +70,7 @@ class LoadsModel : public QAbstractTableModel
      *
      * @return The data dependent of the index and role.
      **/
-    QVariant data( const QModelIndex &index, int role) const override;
+    QVariant data( const QModelIndex &index, int role ) const override;
 
     /**
      * @brief Returns the data for the given role and section in the header with
@@ -89,7 +89,7 @@ class LoadsModel : public QAbstractTableModel
     QVariant headerData(
       int section,
       ::Qt::Orientation orientation,
-      int role) const override;
+      int role ) const override;
 
     /**
      * @brief Returns the load for the given index.
@@ -99,7 +99,8 @@ class LoadsModel : public QAbstractTableModel
      *
      * @return The load for the given index.
      **/
-    virtual Arinc665::Media::LoadPtr getLoad( const QModelIndex &index) const = 0;
+    virtual Arinc665::Media::LoadPtr getLoad(
+      const QModelIndex &index ) const = 0;
 
     /**
      * @brief Return the number of Loads.
@@ -115,7 +116,7 @@ class LoadsModel : public QAbstractTableModel
      * @param[in] loads
      *   Loads, contained by the model.
      **/
-    void setLoads( const Arinc665::Media::Loads &loads = {});
+    void setLoads( const Arinc665::Media::Loads &loads = {} );
 
   private:
     //! loads list

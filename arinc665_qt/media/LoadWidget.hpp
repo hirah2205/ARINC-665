@@ -39,7 +39,7 @@ class LoadWidget : public QWidget
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit LoadWidget( QWidget *parent = nullptr);
+    explicit LoadWidget( QWidget * parent = nullptr );
 
     //! Destructor
     ~LoadWidget() override;
@@ -53,7 +53,7 @@ class LoadWidget : public QWidget
      * @param[in] load
      *   Selected Load
      **/
-    void selectedLoad( MediaSetModel * model, Arinc665::Media::LoadPtr load);
+    void selectedLoad( MediaSetModel * model, Arinc665::Media::LoadPtr load );
 
   private:
     //! UI (designer)

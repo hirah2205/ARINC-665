@@ -47,7 +47,7 @@ class MediaSetDialog : public QDialog
      * @brief Sets the Model of the Dialog.
      *
      * @param[in] mediaSetModel
-     *   The Media Set Model.
+     *   Media Set Model.
      **/
     void model( Media::MediaSetModel * mediaSetModel);
 

@@ -39,7 +39,7 @@ class BatchWidget : public QWidget
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit BatchWidget( QWidget * parent = nullptr);
+    explicit BatchWidget( QWidget * parent = nullptr );
 
     //! Destructor
     ~BatchWidget() override;
@@ -53,7 +53,9 @@ class BatchWidget : public QWidget
      * @param[in] batch
      *   Selected Batch
      **/
-    void selectedBatch( MediaSetModel * model, Arinc665::Media::BatchPtr batch);
+    void selectedBatch(
+      MediaSetModel * model,
+      Arinc665::Media::BatchPtr batch );
 
   private:
     //! UI (designer)

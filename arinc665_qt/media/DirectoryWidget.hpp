@@ -39,7 +39,7 @@ class DirectoryWidget : public QWidget
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit DirectoryWidget( QWidget * parent = nullptr);
+    explicit DirectoryWidget( QWidget * parent = nullptr );
 
     //! Destructor
     ~DirectoryWidget() override;
@@ -55,7 +55,7 @@ class DirectoryWidget : public QWidget
      **/
     void selectedDirectory(
       MediaSetModel * model,
-      Arinc665::Media::DirectoryPtr directory);
+      Arinc665::Media::DirectoryPtr directory );
 
   private:
     //! UI (designer)

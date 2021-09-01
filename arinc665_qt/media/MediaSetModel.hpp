@@ -48,7 +48,7 @@ class MediaSetModel: public QAbstractItemModel
      **/
     explicit MediaSetModel(
       QObject * parent = nullptr,
-      Arinc665::Media::MediaSetPtr mediaSet = {});
+      Arinc665::Media::MediaSetPtr mediaSet = {} );
 
     //! Destructor
     ~MediaSetModel() override = default;
@@ -66,7 +66,7 @@ class MediaSetModel: public QAbstractItemModel
     [[nodiscard]] QModelIndex index(
       int row,
       int column,
-      const QModelIndex &parent) const override;
+      const QModelIndex &parent ) const override;
 
     /**
      * @brief Return the parent of the given index.
@@ -75,7 +75,7 @@ class MediaSetModel: public QAbstractItemModel
      *
      * @return
      **/
-    [[nodiscard]] QModelIndex parent( const QModelIndex &index) const override;
+    [[nodiscard]] QModelIndex parent( const QModelIndex &index ) const override;
 
     /**
      * @brief Return if the given parent has children.
@@ -84,7 +84,7 @@ class MediaSetModel: public QAbstractItemModel
      *
      * @return
      **/
-    [[nodiscard]] bool hasChildren( const QModelIndex &parent) const override;
+    [[nodiscard]] bool hasChildren( const QModelIndex &parent ) const override;
 
     /**
      * @brief Returns the number of rows.
@@ -94,7 +94,7 @@ class MediaSetModel: public QAbstractItemModel
      *
      * @return
      **/
-    [[nodiscard]] int rowCount( const QModelIndex & parent) const override;
+    [[nodiscard]] int rowCount( const QModelIndex &parent ) const override;
 
     /**
      * @brief Returns the number of columns.
@@ -104,7 +104,7 @@ class MediaSetModel: public QAbstractItemModel
      *
      * @return
      **/
-    [[nodiscard]] int columnCount( const QModelIndex &parent) const override;
+    [[nodiscard]] int columnCount( const QModelIndex &parent ) const override;
 
     /**
      * @brief Returns the data for the given index.
@@ -114,7 +114,9 @@ class MediaSetModel: public QAbstractItemModel
      *
      * @return
      **/
-    [[nodiscard]] QVariant data( const QModelIndex &index, int role) const override;
+    [[nodiscard]] QVariant data(
+      const QModelIndex &index,
+      int role ) const override;
 
     /**
      * @brief Returns the header data.
@@ -126,7 +128,7 @@ class MediaSetModel: public QAbstractItemModel
      * @param[in] role
      *   Display role.
      *
-     * @return The corresponding Header Data.
+     * @return Corresponding Header Data.
      **/
     [[nodiscard]] QVariant headerData(
       int section,
@@ -139,7 +141,7 @@ class MediaSetModel: public QAbstractItemModel
      * @param[in] index
      *   Index of requested element.
      *
-     * @return The corresponding Media Set Element.
+     * @return Corresponding Media Set Element.
      * @retval Arinc665::Media::BasePtr{}
      *   If index is invalid or no model stored.
      **/
