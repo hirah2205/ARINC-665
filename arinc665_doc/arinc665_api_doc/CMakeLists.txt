@@ -50,6 +50,7 @@ doxygen_add_docs(
   ${helper_SOURCE_DIR}/helper
   ${arinc665_SOURCE_DIR}/arinc665
   ${arinc665_SOURCE_DIR}/arinc665_qt
+  ${arinc665_SOURCE_DIR}/application/arinc665_applications.md
   ${arinc665_SOURCE_DIR}/application/arinc665_check
   ${arinc665_SOURCE_DIR}/application/arinc665_compiler
   ${arinc665_SOURCE_DIR}/application/arinc665_decompiler
