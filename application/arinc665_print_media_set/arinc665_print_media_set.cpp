@@ -68,10 +68,9 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
  * @param[in] mediaSet
  *   The media set to print.
  **/
-static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet);
+static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet );
 
-
-int main( int argc, char const * argv[])
+int main( int argc, char const * argv[] )
 {
   Helper::initLogging( Helper::Severity::warning, true );
 
