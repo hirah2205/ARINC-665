@@ -169,7 +169,8 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
       {
         BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
           << boost::errinfo_file_name{ filePath.string() }
-          << Helper::AdditionalInfo{ "File not found" } );
+          << Helper::AdditionalInfo{ "File not found" }
+          << boost::errinfo_file_name{ filePath.string() } );
       }
 
       Arinc665::File::RawFile data( std::filesystem::file_size( filePath ) );
@@ -181,7 +182,8 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
       if ( !file.is_open() )
       {
         BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
-          << Helper::AdditionalInfo( "Error opening files"));
+          << Helper::AdditionalInfo{ "Error opening files" }
+          << boost::errinfo_file_name{ filePath.string() } );
       }
 
       // read the data to the buffer
@@ -214,7 +216,7 @@ static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet)
 
   for ( auto const &file : mediaSet->files() )
   {
-    std::cout << "   * File " << file->path() << " (";
+    std::cout << "   * File " << file->path().generic_string() << " (";
     switch ( file->fileType() )
     {
       case Arinc665::Media::BaseFile::FileType::RegularFile:

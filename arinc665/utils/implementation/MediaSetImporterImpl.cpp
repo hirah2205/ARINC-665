@@ -84,7 +84,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
     << "Load File List File " << Arinc665::ListOfFilesName;
 
-  // Load list of files file
+  // Load "list of files" file
   File::FileListFile currentFileListFile{
     readFileHandler( mediumIndex, Arinc665::ListOfFilesName ) };
 
@@ -126,7 +126,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     }
 
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
-      << "Check file " << fileInfo.path();
+      << "Check file " << fileInfo.path().generic_string();
 
     const auto rawFile{ readFileHandler( mediumIndex, fileInfo.path() ) };
 
@@ -287,7 +287,7 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex )
     }
 
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
-      << "Load Header File " << loadHeaderFileIt->second.path();
+      << "Load Header File " << loadHeaderFileIt->second.path().generic_string();
 
     // decode load header
     File::LoadHeaderFile loadHeaderFile{
@@ -321,7 +321,7 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex )
     }
 
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
-      << "Load Batch File " << batchFileIt->second.path();
+      << "Load Batch File " << batchFileIt->second.path().generic_string();
 
     // Decode batch File
     File::BatchFile batchFile{

@@ -138,17 +138,17 @@ RawFile Arinc665File::encodeStrings(
     assert( rawStr.size() % 2 == 0);
 
     // append string
-    rawStrings.insert( rawStrings.end(), rawStr.begin(), rawStr.end());
+    rawStrings.insert( rawStrings.end(), rawStr.begin(), rawStr.end() );
   }
 
   return rawStrings;
 }
 
-std::string Arinc665File::encodePath( const std::filesystem::path &path)
+std::string Arinc665File::encodePath( const std::filesystem::path &path )
 {
-  std::string convertedPath{ path.string()};
+  std::string convertedPath{ path.string() };
 
-  std::replace( convertedPath.begin(), convertedPath.end(), '/', '\\');
+  std::replace( convertedPath.begin(), convertedPath.end(), '/', '\\' );
 
   return convertedPath;
 }
@@ -159,7 +159,7 @@ uint32_t Arinc665File::fileLength( const ConstRawFileSpan &file )
   if ( file.size() < BaseHeaderSize)
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << Helper::AdditionalInfo( "length of check code string invalid"));
+      << Helper::AdditionalInfo{ "length of check code string invalid" } );
   }
 
   // decode the file length

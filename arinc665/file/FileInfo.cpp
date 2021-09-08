@@ -22,7 +22,7 @@ std::filesystem::path FileInfo::path() const
 
   std::replace( newPathName.begin(), newPathName.end(), '\\', '/' );
 
-  return std::filesystem::path{ newPathName } / filename;
+  return ( std::filesystem::path{ newPathName } / filename).make_preferred();
 }
 
 bool FileInfo::operator ==( const FileInfo &other ) const

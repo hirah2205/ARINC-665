@@ -43,7 +43,7 @@ Medium::Type Medium::type() const
 
 std::filesystem::path Medium::path() const
 {
-  return "/";
+  return std::filesystem::path{ { std::filesystem::path::preferred_separator } };
 }
 
 ConstContainerEntityPtr Medium::parent() const

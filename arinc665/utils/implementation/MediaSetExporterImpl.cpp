@@ -101,7 +101,7 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
   loadListFile.mediaSetPn( medium->mediaSet()->partNumber() );
   loadListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia() );
 
-  /* add all load to loads list */
+  /* add all loads to "list of loads" file  */
   for ( const auto &load : medium->mediaSet()->loads() )
   {
     loadListFile.load( File::LoadInfo{
@@ -118,7 +118,7 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
     "/" + std::string{ ListOfLoadsName },
     static_cast< File::RawFile >( loadListFile ) );
 
-  // export list of batches (if present)
+  // export "list of batches" file (if present)
   if ( medium->mediaSet()->numberOfBatches() != 0U )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
