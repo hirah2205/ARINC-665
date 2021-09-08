@@ -61,7 +61,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadFromXml(
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "Error Parsing File" }
-        << boost::errinfo_file_name{ xmlFile } );
+        << boost::errinfo_file_name{ xmlFile.string() } );
     }
 
     auto mediaSetElement{ parser.get_document()->get_root_node() };
@@ -70,7 +70,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadFromXml(
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "MediaSet XML Element not found" }
-        << boost::errinfo_file_name{ xmlFile } );
+        << boost::errinfo_file_name{ xmlFile.string() } );
     }
 
     return loadMediaSet( *mediaSetElement );
@@ -79,7 +79,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadFromXml(
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ e.what() }
-      << boost::errinfo_file_name{ xmlFile } );
+      << boost::errinfo_file_name{ xmlFile.string() } );
   }
 }
 
@@ -107,7 +107,7 @@ void Arinc665XmlImpl::saveToXml(
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "Error writing XML file" }
       << Helper::AdditionalInfo{ e.what() }
-      << boost::errinfo_file_name{ xmlFile } );
+      << boost::errinfo_file_name{ xmlFile.string() } );
   }
 }
 
@@ -129,7 +129,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
     mediaSet->filesUserDefinedData(
       Arinc665::Media::MediaSet::UserDefinedData{
         userDefinedData.begin(),
-        userDefinedData.end() });
+        userDefinedData.end() } );
   }
 
   const auto loadsUserDefinedDataNode = dynamic_cast< const xmlpp::Element *>(
@@ -141,7 +141,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
     mediaSet->loadsUserDefinedData(
       Arinc665::Media::MediaSet::UserDefinedData{
         userDefinedData.begin(),
-        userDefinedData.end() });
+        userDefinedData.end() } );
   }
 
   const auto batchesUserDefinedDataNode = dynamic_cast< const xmlpp::Element*>(
