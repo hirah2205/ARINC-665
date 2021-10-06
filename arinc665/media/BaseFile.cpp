@@ -110,24 +110,24 @@ BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string_view name ):
 
 BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string &&name):
   parentV{ parent},
-  nameV{ std::move( name)}
+  nameV{ std::move( name) }
 {
-  if (!parent)
+  if ( !parent )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo( "parent must be valid"));
+      << Helper::AdditionalInfo{ "parent must be valid" } );
   }
 }
 
-void BaseFile::parent( const ContainerEntityPtr& parent)
+void BaseFile::parent( const ContainerEntityPtr &parent )
 {
-  if (!parent)
+  if ( !parent )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo( "parent must be valid"));
+      << Helper::AdditionalInfo{ "parent must be valid" } );
   }
 
-  if (this->parentV.lock() == parent)
+  if ( this->parentV.lock() == parent )
   {
     return;
   }

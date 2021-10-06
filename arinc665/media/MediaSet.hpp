@@ -257,22 +257,6 @@ class MediaSet: public Base
      **/
     LoadPtr load( std::string_view filename );
 
-    /**
-     * @brief Removes the load with the given filename.
-     *
-     * @param[in] filename
-     *   Filename of the load.
-     **/
-    void removeLoad( std::string_view filename );
-
-    /**
-     * @brief Removes the given load from the media set.
-     *
-     * @param[in] load
-     *   Load to remove.
-     **/
-    void removeLoad( ConstLoadPtr load );
-
     /** @} **/
 
     /**
@@ -307,7 +291,7 @@ class MediaSet: public Base
      * @todo handle multiple batches with same name.
      *
      * @param[in] filename
-     *   The filename of the batch.
+     *   Filename of the batch.
      *
      * @return Batch with the given filename.
      **/
@@ -319,27 +303,11 @@ class MediaSet: public Base
      * @todo handle multiple batches with same name.
      *
      * @param[in] filename
-     *   The filename of the batch.
+     *   Filename of the batch.
      *
      * @return Batch with the given filename.
      **/
     BatchPtr batch( std::string_view filename );
-
-    /**
-     * @brief Removes the batch with the given filename.
-     *
-     * @param[in] filename
-     *   Filename of the batch.
-     **/
-    void removeBatch( std::string_view filename);
-
-    /**
-     * @brief Removes the given batch from the media set.
-     *
-     * @param[in] batch
-     *   Batch to remove.
-     **/
-    void removeBatch( ConstBatchPtr batch);
 
     /** @} **/
 

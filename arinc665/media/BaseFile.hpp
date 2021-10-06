@@ -22,6 +22,11 @@ namespace Arinc665::Media {
 
 /**
  * @brief %Media Set %File.
+ *
+ * This class is used as common base for:
+ *  - regular files (File),
+ *  - load header files (Load), and
+ *  - batch files (Batch).
  **/
 class BaseFile: public Base
 {
@@ -51,14 +56,14 @@ class BaseFile: public Base
     /**
      * @brief Returns the Name of the File.
      *
-     * @return The name of the file.
+     * @return Name of the file.
      **/
     [[nodiscard]] std::string_view name() const;
 
     /**
      * @brief Returns the File Type.
      *
-     * @return The file type
+     * @return File type
      **/
     [[nodiscard]] virtual FileType fileType() const = 0;
 
@@ -70,17 +75,17 @@ class BaseFile: public Base
     [[nodiscard]] ConstContainerEntityPtr parent() const;
 
     //! @copydoc parent() const
-    ContainerEntityPtr parent();
+    [[nodiscard]] ContainerEntityPtr parent();
 
     /**
      * @brief Returns the Medium where this file is Located.
      *
-     * @return The medium where this file is located.
+     * @return Medium where this file is located.
      **/
     [[nodiscard]] ConstMediumPtr medium() const;
 
     //! @copydoc medium() const
-    MediumPtr medium();
+    [[nodiscard]] MediumPtr medium();
 
     /**
      * @brief Returns the file path up to the medium root.
@@ -115,7 +120,7 @@ class BaseFile: public Base
      * @brief Sets the parent element.
      *
      * @param[in] parent
-     *   The parent element.
+     *   Parent element.
      *
      * @throw Arinc665Exception
      *   If parent is invalid
