@@ -125,7 +125,7 @@ MediumPtr MediaSet::medium( const uint8_t index)
 
 MediumPtr MediaSet::addMedium()
 {
-  if ( mediaV.size() >= 255 )
+  if ( mediaV.size() >= 255U )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
       << "Maximum number of media reached";

@@ -52,7 +52,7 @@ std::istream& operator>>(
   if ( FileCreationPolicy::Invalid == fileCreationPolicy)
   {
     BOOST_THROW_EXCEPTION(
-      boost::program_options::invalid_option_value( str));
+      boost::program_options::invalid_option_value( str ) );
   }
 
   return stream;

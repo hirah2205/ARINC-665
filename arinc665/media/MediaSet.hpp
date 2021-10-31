@@ -37,8 +37,7 @@ class MediaSet: public Base
     /**
      * @brief Creates a new media set.
      *
-     * An empty media is automatically created.
-     * This media set contains no data files, no loads and no batches.
+     * This media set contains no media, data files, loads nor batches.
      **/
     MediaSet() = default;
 

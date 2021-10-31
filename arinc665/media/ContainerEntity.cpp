@@ -136,9 +136,9 @@ size_t ContainerEntity::numberOfFiles( const bool recursive) const
   return fileSize;
 }
 
-ConstFiles ContainerEntity::files( const bool recursive) const
+ConstFiles ContainerEntity::files( const bool recursive ) const
 {
-  if (!recursive)
+  if ( !recursive )
   {
     return ConstFiles( filesV.begin(), filesV.end() );
   }
@@ -156,7 +156,7 @@ ConstFiles ContainerEntity::files( const bool recursive) const
   return allfiles;
 }
 
-Files ContainerEntity::files( const bool recursive)
+Files ContainerEntity::files( const bool recursive )
 {
   if ( !recursive)
   {
@@ -167,9 +167,9 @@ Files ContainerEntity::files( const bool recursive)
 
   for ( auto &subDirectory : subDirectoriesV )
   {
-    Files subFiles( subDirectory->files( true));
+    Files subFiles( subDirectory->files( true ) );
 
-    allFiles.insert( allFiles.begin(), subFiles.begin(), subFiles.end());
+    allFiles.insert( allFiles.begin(), subFiles.begin(), subFiles.end() );
   }
 
   return allFiles;
@@ -191,7 +191,7 @@ ConstFilePtr ContainerEntity::file(
   {
     for (const auto & subDirectory : subDirectoriesV )
     {
-      auto file{ subDirectory->file( filename, true)};
+      auto file{ subDirectory->file( filename, true ) };
 
       // if file has been found return immediately
       if ( file)
@@ -388,40 +388,40 @@ LoadPtr ContainerEntity::load( std::string_view filename, const bool recursive )
 
 LoadPtr ContainerEntity::addLoad( std::string_view filename)
 {
-  if ( file( filename))
+  if ( file( filename ) )
   {
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() <<
-      Helper::AdditionalInfo( "File with this name already exists"));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "File with this name already exists" } );
   }
 
   // create file
   auto load{ std::make_shared< Load>(
-    std::dynamic_pointer_cast< ContainerEntity>( shared_from_this()),
-    filename)};
+    std::dynamic_pointer_cast< ContainerEntity>( shared_from_this() ),
+    filename ) };
 
   // insert into map
-  filesV.push_back( load);
+  filesV.push_back( load );
 
   // return new file
   return load;
 }
 
-void ContainerEntity::removeLoad( std::string_view filename)
+void ContainerEntity::removeLoad( std::string_view filename )
 {
-  auto loadFile{ file( filename)};
+  auto loadFile{ file( filename ) };
 
-  if ( !loadFile)
+  if ( !loadFile )
   {
     //! @throw Arinc665Exception() if load does not exists.
-    BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "Load does not exists"));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "Load does not exists" } );
   }
 
-  if ( BaseFile::FileType::LoadFile != loadFile->fileType())
+  if ( BaseFile::FileType::LoadFile != loadFile->fileType() )
   {
     //! @throw Arinc665Exception() if filename does not address a load.
-    BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
-        << Helper::AdditionalInfo( "File does not name a load"));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "File does not name a load" } );
   }
 
   removeFile( loadFile);
@@ -479,26 +479,26 @@ ConstBatches ContainerEntity::batches( const bool recursive) const
 
 Batches ContainerEntity::batches( const bool recursive)
 {
-  auto batchFiles( files( BaseFile::FileType::BatchFile));
+  auto batchFiles{ files( BaseFile::FileType::BatchFile ) };
 
   Batches batches{};
 
   // add batch files to list
-  for ( auto &batchFile : batchFiles)
+  for ( auto &batchFile : batchFiles )
   {
-    auto realBatchFile( std::dynamic_pointer_cast< Batch>( batchFile));
+    auto realBatchFile( std::dynamic_pointer_cast< Batch>( batchFile ) );
     assert( realBatchFile);
     batches.push_back( realBatchFile);
   }
 
-  // iterate over sub-directories
+  // iterate over subdirectories
   if (recursive)
   {
-    for (auto &subDirectory : subDirectoriesV )
+    for ( auto &subDirectory : subDirectoriesV )
     {
-      auto subBatches{ subDirectory->batches( true)};
+      auto subBatches{ subDirectory->batches( true ) };
 
-      batches.insert( batches.end(), subBatches.begin(), subBatches.end());
+      batches.insert( batches.end(), subBatches.begin(), subBatches.end() );
     }
   }
 
@@ -507,37 +507,37 @@ Batches ContainerEntity::batches( const bool recursive)
 
 ConstBatchPtr ContainerEntity::batch(
   std::string_view filename,
-  const bool recursive) const
+  const bool recursive ) const
 {
-  auto filePtr{ file( filename, recursive)};
+  auto filePtr{ file( filename, recursive ) };
 
-  if ( !filePtr)
+  if ( !filePtr )
   {
-    return ConstBatchPtr();
+    return ConstBatchPtr{};
   }
 
-  if (filePtr->fileType() != BaseFile::FileType::BatchFile)
+  if ( filePtr->fileType() != BaseFile::FileType::BatchFile )
   {
-    return ConstBatchPtr();
+    return ConstBatchPtr{};
   }
 
-  return std::dynamic_pointer_cast< const Batch>( filePtr);
+  return std::dynamic_pointer_cast< const Batch>( filePtr );
 }
 
 BatchPtr ContainerEntity::batch(
   std::string_view filename,
-  const bool recursive)
+  const bool recursive )
 {
   FilePtr filePtr{ file( filename, recursive ) };
 
   if ( !filePtr )
   {
-    return BatchPtr();
+    return BatchPtr{};
   }
 
   if ( filePtr->fileType() != BaseFile::FileType::BatchFile )
   {
-    return BatchPtr();
+    return BatchPtr{};
   }
 
   return std::dynamic_pointer_cast< Batch>( filePtr );

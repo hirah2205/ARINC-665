@@ -105,12 +105,12 @@ class Arinc665Utils
      * @brief ARINC 665 Media Set Validator
      * Validates the integrity and consistency of a ARINC 665 Media Set
      **/
-    using Arinc665Validator = std::function< bool()>;
+    using Arinc665Validator = std::function< bool() >;
 
     /**
      * The ARINC 665 Media Set exporter.
      **/
-    using Arinc665Exporter = std::function< void()>;
+    using Arinc665Exporter = std::function< void() >;
 
     /**
      * @brief Create a ARINC 665 Media Set Importer.

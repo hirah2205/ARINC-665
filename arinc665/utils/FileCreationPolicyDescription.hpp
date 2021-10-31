@@ -36,11 +36,11 @@ class FileCreationPolicyDescription : public Helper::Description<
  * @brief Streaming operator to output File creation policy as string
  *
  * @param[in,out] stream
- *   The output stream
+ *   Output Stream
  * @param[in] fileCreationPolicy
- *   The File Creation Policy.
+ *   File Creation Policy.
  *
- * @return The stream for chaining.
+ * @return Output Stream for chaining.
  **/
 std::ostream& operator<<(
   std::ostream &stream,
@@ -50,15 +50,19 @@ std::ostream& operator<<(
  * @brief Streaming operator for parsing a string as file creation policy.
  *
  * @param[in,out] stream
- *   The input stream
+ *   Input stream
  * @param[out] fileCreationPolicy
- *   The decoded file creation policy
+ *   Decoded file creation policy
  *
- * @return The stream for chaining.
+ * @return Input Stream for chaining.
+ *
+ * @throw boost::program_options
+ *   When @p stream cannot be decoded to FileCreationPolicy.
  **/
 std::istream& operator>>(
   std::istream& stream,
   FileCreationPolicy &fileCreationPolicy );
 
 }
+
 #endif

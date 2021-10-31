@@ -88,7 +88,7 @@ MediumPtr BaseFile::medium()
 
 std::filesystem::path BaseFile::path() const
 {
-  auto parentPtr{ parent()};
+  auto parentPtr{ parent() };
 
   if ( !parentPtr)
   {
@@ -104,7 +104,7 @@ BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string_view name ):
   if (!parent)
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo( "parent must be valid"));
+      << Helper::AdditionalInfo{ "parent must be valid" } );
   }
 }
 
