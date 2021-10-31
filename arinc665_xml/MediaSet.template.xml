@@ -23,7 +23,7 @@
   </Medium>
 
   <Loads>
-    <Load NameRef="Load1.LUH" PartNumber="AABBCC" Description="Test Load Description" Type="0x0501" >
+    <Load NameRef="Load1.LUH" PartNumber="AABBCC" PartFlags="0x0000" Description="Test Load Description" Type="0x0501" >
       <TargetHardware ThwId="ABCDEF" >
         <Position Pos="123" />
         <Position Pos="456" />
@@ -35,7 +35,7 @@
 
       <UserDefinedData>TEST</UserDefinedData>
     </Load>
-    <Load NameRef="Load2.LUH" PartNumber="AABBDD" >
+    <Load NameRef="Load2.LUH" PartNumber="AABBDD" PartFlags="0x0000" >
       <TargetHardware ThwId="ABCDEF" />
       <TargetHardware ThwId="GHIJKL" />
 
