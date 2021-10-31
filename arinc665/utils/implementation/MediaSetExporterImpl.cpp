@@ -155,20 +155,6 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
   fileListFile.mediaSetPn( medium->mediaSet()->partNumber() );
   fileListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia() );
 
-  /* add all files, load header files, and batch files to file list */
-  for ( const auto &file : medium->mediaSet()->files() )
-  {
-    const auto rawFile{ readFileHandler( medium->mediumNumber(), file->path() ) };
-    const uint16_t crc{ File::Arinc665File::calculateChecksum( rawFile, 0 ) };
-
-    fileListFile.file( {
-      std::string{ file->name() },
-      File::Arinc665File::encodePath( file->path().parent_path() ),
-      file->medium()->mediumNumber(),
-      crc,
-      {} } );
-  }
-
   // add list of loads
   const auto rawListOfLoadsFile{
     readFileHandler(
@@ -199,6 +185,20 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
       File::Arinc665File::encodePath( "/" ),
       medium->mediumNumber(),
       listOfBatchesFileCrc,
+      {} } );
+  }
+
+  /* add all files, load header files, and batch files to file list */
+  for ( const auto &file : medium->mediaSet()->files() )
+  {
+    const auto rawFile{ readFileHandler( medium->mediumNumber(), file->path() ) };
+    const uint16_t crc{ File::Arinc665File::calculateChecksum( rawFile, 0 ) };
+
+    fileListFile.file( {
+      std::string{ file->name() },
+      File::Arinc665File::encodePath( file->path().parent_path() ),
+      file->medium()->mediumNumber(),
+      crc,
       {} } );
   }
 
@@ -253,7 +253,7 @@ void MediaSetExporterImpl::exportFile( const Media::ConstFilePtr &file ) const
       break;
 
     case Media::File::FileType::LoadFile:
-      switch (createLoadHeaderFiles)
+      switch ( createLoadHeaderFiles )
       {
         case FileCreationPolicy::None:
           createFileHandler( file );
@@ -281,7 +281,7 @@ void MediaSetExporterImpl::exportFile( const Media::ConstFilePtr &file ) const
       break;
 
     case Media::File::FileType::BatchFile:
-      switch (createBatchFiles)
+      switch ( createBatchFiles )
       {
         case FileCreationPolicy::None:
           createFileHandler( file );
