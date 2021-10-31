@@ -328,6 +328,7 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   }
 
   File::LoadHeaderFile loadHeaderFile{ arinc665Version };
+  loadHeaderFile.partFlags( load->partFlags() );
   loadHeaderFile.partNumber( load->partNumber() );
   loadHeaderFile.targetHardwareIdPositions( load->targetHardwareIdPositions() );
   loadHeaderFile.loadType( load->loadType() );

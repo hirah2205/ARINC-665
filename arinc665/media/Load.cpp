@@ -17,18 +17,30 @@
 namespace Arinc665::Media {
 
 Load::Load( ContainerEntityPtr parent, std::string_view name) :
-  BaseFile{ std::move( parent ), name }
+  BaseFile{ std::move( parent ), name },
+  partFlagsV{}
 {
 }
 
 Load::Load( ContainerEntityPtr parent, std::string &&name) :
-  BaseFile{ std::move( parent ), std::move( name ) }
+  BaseFile{ std::move( parent ), std::move( name ) },
+  partFlagsV{}
 {
 }
 
 Load::FileType Load::fileType() const
 {
   return FileType::LoadFile;
+}
+
+uint16_t Load::partFlags() const
+{
+  return partFlagsV;
+}
+
+void Load::partFlags( const uint16_t partFlags )
+{
+  partFlagsV = partFlags;
 }
 
 std::string_view Load::partNumber() const

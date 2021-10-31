@@ -394,6 +394,7 @@ void MediaSetImporterImpl::addLoads()
     // create load
     auto loadPtr{ container->addLoad( filename ) };
 
+    loadPtr->partFlags( loadHeaderFile.partFlags() );
     loadPtr->partNumber( loadHeaderFile.partNumber() );
     loadPtr->loadType( loadHeaderFile.loadType() );
     loadPtr->targetHardwareIdPositions(

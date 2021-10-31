@@ -444,6 +444,7 @@ void Arinc665XmlImpl::loadLoad(
 {
   const auto nameRef{ loadElement.get_attribute_value( "NameRef" ) };
   const auto partNumber{ loadElement.get_attribute_value( "PartNumber" ) };
+  const auto partFlags{ loadElement.get_attribute_value( "PartFlags" ) };
   const auto description{ loadElement.get_attribute_value( "Description" ) };
   const auto type{ loadElement.get_attribute_value( "Type" ) };
 
@@ -471,6 +472,15 @@ void Arinc665XmlImpl::loadLoad(
   }
 
   load->partNumber( toStringView( partNumber ) );
+
+  // Part Flags
+  if ( !partFlags.empty() )
+  {
+    uint16_t partFlagsValue{ 0U };
+    partFlagsValue= Helper::safeCast< uint16_t >( std::stoul( partFlags, nullptr, 0 ) );
+
+    load->partFlags( partFlagsValue );
+  }
 
   // Load Type (Description + Type Value)
 
@@ -637,6 +647,10 @@ void Arinc665XmlImpl::saveLoad(
 
   loadElement.set_attribute( "PartNumber", load->partNumber().data() );
 
+  loadElement.set_attribute(
+    "PartFlags",
+    (boost::format( "0x%04X" ) % load->partFlags() ).str() );
+
   // Optional Load Type (Description + Type Value)
   if ( const auto &loadType{ load->loadType() }; loadType )
   {
@@ -644,7 +658,7 @@ void Arinc665XmlImpl::saveLoad(
     loadElement.set_attribute( "Description", description );
     loadElement.set_attribute(
       "Type",
-      (boost::format( "0x%04X") % id ).str());
+      (boost::format( "0x%04X") % id ).str() );
   }
 
   // iterate over target hardware

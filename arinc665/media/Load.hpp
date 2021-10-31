@@ -69,6 +69,27 @@ class Load: public BaseFile
     [[nodiscard]] FileType fileType() const final;
 
     /**
+     * @name Part Flags.
+     * @{
+     **/
+    /**
+     * @brief Obtains the Part Flags Field.
+     *
+     * @return The part Flags Field.
+     **/
+    uint16_t partFlags() const;
+
+    /**
+     * @brief Updates the Part Flags Field
+     *
+     * @param[in] partFlags
+     *   Part Flags
+     **/
+    void partFlags( uint16_t partFlags );
+
+    /** @} **/
+
+    /**
      * @name Load Part Number
      * @{
      **/
@@ -101,7 +122,7 @@ class Load: public BaseFile
     /**
      * @brief Returns the List of Target HW IDs.
      *
-     * @return The list of Target HW IDs.
+     * @return List of Target HW IDs.
      **/
     [[nodiscard]] const TargetHardwareIdPositions&
     targetHardwareIdPositions() const;
@@ -271,6 +292,8 @@ class Load: public BaseFile
     /** @} **/
 
   private:
+    //! Part Flags
+    uint16_t partFlagsV;
     //! Part Number
     std::string partNumberV;
     //! Target Hardware ID/ Positions
