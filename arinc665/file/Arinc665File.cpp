@@ -150,6 +150,12 @@ std::string Arinc665File::encodePath( const std::filesystem::path &path )
 
   std::replace( convertedPath.begin(), convertedPath.end(), '/', '\\' );
 
+  // append final backslash if not present
+  if ( !convertedPath.ends_with( '\\' ) )
+  {
+    convertedPath += '\\';
+  }
+
   return convertedPath;
 }
 

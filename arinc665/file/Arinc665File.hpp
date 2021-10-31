@@ -124,6 +124,7 @@ class Arinc665File
      *
      * The main purpose is to replace all forward slashes '/' by
      * back-slashes '\'.
+     * The path always contains a trailing '\'.
      *
      * @param[in] path
      *   Path, which should be converted.
