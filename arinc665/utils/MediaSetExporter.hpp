@@ -47,9 +47,6 @@ public:
   //! Handler, which is called to generate the given file at the requested position.
   using CreateFileHandler = std::function< void( Media::ConstFilePtr file )>;
 
-  //! Destructor
-  virtual ~MediaSetExporter() = default;
-
   /**
    * @brief Handler, which is called to write the given file at the requested
    *   position.
@@ -97,6 +94,9 @@ public:
    **/
   static MediaSetExporterPtr create();
 
+  //! Destructor
+  virtual ~MediaSetExporter() = default;
+
   /**
    * @brief Sets the Media Set to export.
    *
@@ -108,7 +108,7 @@ public:
   virtual MediaSetExporter& mediaSet( Media::ConstMediaSetPtr mediaSet) = 0;
 
   /**
-   * @brief Sets the .
+   * @brief Sets the Create Medium Handler.
    *
    * @param[in] createMediumHandler
    *   Called to create the given medium.
@@ -119,7 +119,7 @@ public:
     CreateMediumHandler createMediumHandler ) = 0;
 
   /**
-   * @brief Sets the .
+   * @brief Sets the Create Directory Handler.
    *
    * @param[in] createDirectoryHandler
    *   Called to create the given directory.
@@ -130,7 +130,7 @@ public:
     CreateDirectoryHandler createDirectoryHandler ) = 0;
 
   /**
-   * @brief Sets the .
+   * @brief Sets the Check File Existence Handler.
    *
    * @param[in] checkFileExistenceHandler
    *   Called to check if file exists.
@@ -141,7 +141,7 @@ public:
     CheckFileExistenceHandler checkFileExistenceHandler ) = 0;
 
   /**
-   * @brief Sets the .
+   * @brief Sets the Create File Handler.
    *
    * @param[in] createFileHandler
    *   When a file needs to be generated, this handler is called.
@@ -152,7 +152,7 @@ public:
     CreateFileHandler createFileHandler ) = 0;
 
   /**
-   * @brief Sets the .
+   * @brief Sets the Write File Handler.
    *
    * @param[in] writeFileHandler
    *   Writes a given file to the output media set.
@@ -163,7 +163,7 @@ public:
     WriteFileHandler writeFileHandler ) = 0;
 
   /**
-   * @brief Sets the .
+   * @brief Sets the Read File Handler.
    *
    * @param[in] readFileHandler
    *   Reads a given file from the output media set.
@@ -175,7 +175,7 @@ public:
     ReadFileHandler readFileHandler ) = 0;
 
   /**
-   * @brief Sets the .
+   * @brief Sets the ARINC 665 Version Flag.
    *
    * @param[in] arinc665Version
    *   ARINC 665 version used for exporting.
@@ -186,7 +186,7 @@ public:
     SupportedArinc665Version arinc665Version ) = 0;
 
   /**
-   * @brief Sets the .
+   * @brief Sets the Create Batch Files Flag.
    *
    * @param[in] createBatchFiles
    *   Defines, if Batch Files are created by exporter or pre-existing ones
@@ -198,7 +198,7 @@ public:
     FileCreationPolicy createBatchFiles ) = 0;
 
   /**
-   * @brief Sets the .
+   * @brief Sets the Create Load Header Files Flag.
    *
    * @param[in] createLoadHeaderFiles
    *   Defines, if Load Header Files are created by exporter or pre-existing

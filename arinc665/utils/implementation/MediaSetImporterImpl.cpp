@@ -20,12 +20,23 @@
 
 namespace Arinc665::Utils {
 
-MediaSetImporterImpl::MediaSetImporterImpl(
-  Arinc665Utils::ReadFileHandler readFileHandler,
-  const bool checkFileIntegrity ):
-  readFileHandler{ std::move( readFileHandler ) },
-  checkFileIntegrity{ checkFileIntegrity }
+MediaSetImporterImpl::MediaSetImporterImpl():
+  checkFileIntegrityV{ true }
 {
+}
+
+MediaSetImporter& MediaSetImporterImpl::readFileHandler(
+  ReadFileHandler readFileHandler )
+{
+  readFileHandlerV = readFileHandler;
+  return *this;
+}
+
+MediaSetImporter& MediaSetImporterImpl::checkFileIntegrity(
+  const bool checkFileIntegrity )
+{
+  checkFileIntegrityV = checkFileIntegrity;
+  return *this;
 }
 
 Media::MediaSetPtr MediaSetImporterImpl::operator()()
@@ -86,7 +97,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
 
   // Load "list of files" file
   File::FileListFile currentFileListFile{
-    readFileHandler( mediumIndex, Arinc665::ListOfFilesName ) };
+    readFileHandlerV( mediumIndex, Arinc665::ListOfFilesName ) };
 
   // store first list of files for further tests
   if ( 1U == mediumIndex )
@@ -120,7 +131,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     }
 
     // skip file integrity checks if requested
-    if ( !checkFileIntegrity )
+    if ( !checkFileIntegrityV )
     {
       continue;
     }
@@ -128,7 +139,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
       << "Check file " << fileInfo.path().generic_string();
 
-    const auto rawFile{ readFileHandler( mediumIndex, fileInfo.path() ) };
+    const auto rawFile{ readFileHandlerV( mediumIndex, fileInfo.path() ) };
 
     const uint16_t crc{ File::Arinc665File::calculateChecksum( rawFile, 0 ) };
 
@@ -158,7 +169,7 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
 
   // Load list of loads file
   File::LoadListFile currentLoadListFile{
-    readFileHandler( mediumIndex, Arinc665::ListOfLoadsName ) };
+    readFileHandlerV( mediumIndex, Arinc665::ListOfLoadsName ) };
 
   if ( 1U == mediumIndex )
   {
@@ -219,7 +230,7 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex )
 
   // Load list of batches file
   File::BatchListFile currentBatchListFile{
-    readFileHandler( mediumIndex, Arinc665::ListOfBatchesName ) };
+    readFileHandlerV( mediumIndex, Arinc665::ListOfBatchesName ) };
 
   if ( 1U == mediumIndex )
   {
@@ -291,7 +302,7 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex )
 
     // decode load header
     File::LoadHeaderFile loadHeaderFile{
-      readFileHandler( mediumIndex, loadHeaderFileIt->second.path() ) };
+      readFileHandlerV( mediumIndex, loadHeaderFileIt->second.path() ) };
 
     // add load header to global information
     loadHeaderFiles.emplace(
@@ -325,7 +336,7 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex )
 
     // Decode batch File
     File::BatchFile batchFile{
-      readFileHandler( mediumIndex, batchFileIt->second.path() ) };
+      readFileHandlerV( mediumIndex, batchFileIt->second.path() ) };
 
     // add batch file to batch file list
     batchFiles.emplace( batchFileIt->second.filename, std::move( batchFile ) );
@@ -413,7 +424,7 @@ void MediaSetImporterImpl::addLoads()
       }
 
       // get memorised file size ( only when file integrity is checked)
-      if ( checkFileIntegrity )
+      if ( checkFileIntegrityV )
       {
         const auto dataFileSize{ fileSizes.find( dataFile.filename ) };
         if ( dataFileSize == fileSizes.end() )
@@ -468,7 +479,7 @@ void MediaSetImporterImpl::addLoads()
       }
 
       // get memorised file size ( only when file integrity is checked)
-      if ( checkFileIntegrity )
+      if ( checkFileIntegrityV )
       {
         const auto dataFileSize{ fileSizes.find( supportFile.filename ) };
         if ( dataFileSize == fileSizes.end() )

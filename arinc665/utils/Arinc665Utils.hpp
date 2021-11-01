@@ -62,30 +62,10 @@ class Arinc665Utils
       std::function< void( std::string_view information ) >;
 
     /**
-     * @brief The ARINC 665 Media Set Importer.
-     * Returns the MediaSet
-     **/
-    using Arinc665Importer = std::function< Media::MediaSetPtr() >;
-
-    /**
      * @brief ARINC 665 Media Set Validator
      * Validates the integrity and consistency of a ARINC 665 Media Set
      **/
     using Arinc665Validator = std::function< bool() >;
-
-    /**
-     * @brief Create a ARINC 665 Media Set Importer.
-     *
-     * @param[in] readFileHandler
-     *   Handler which is called to obtain the requested file from the medium.
-     * @param[in] checkFileIntegrity
-     *   If set to true additional file integrity steps are performed
-     *
-     * @return The ARINC 665 Media Set importer.
-     **/
-    static Arinc665Importer arinc665Importer(
-      ReadFileHandler readFileHandler,
-      bool checkFileIntegrity = true );
 
     /**
      * @brief Creates a ARINC 665 Validator Instance.

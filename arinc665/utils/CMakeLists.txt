@@ -11,8 +11,6 @@ target_sources(
 
   PRIVATE
     Utils.hpp
-  MediaSetExporter.hpp
-  MediaSetExporter.cpp
     Arinc665Utils.hpp
     Arinc665Utils.cpp
     Arinc665Xml.hpp
@@ -21,6 +19,10 @@ target_sources(
     FileCreationPolicyDescription.cpp
     MediaSetConfiguration.hpp
     MediaSetConfiguration.cpp
+    MediaSetExporter.hpp
+    MediaSetExporter.cpp
+    MediaSetImporter.hpp
+    MediaSetImporter.cpp
     MediaSetManager.hpp
     MediaSetManager.cpp )
 

@@ -12,21 +12,9 @@
 
 #include "Arinc665Utils.hpp"
 
-#include <arinc665/utils/implementation/MediaSetImporterImpl.hpp>
 #include <arinc665/utils/implementation/MediaSetValidatorImpl.hpp>
 
 namespace Arinc665::Utils {
-
-Arinc665Utils::Arinc665Importer Arinc665Utils::arinc665Importer(
-  ReadFileHandler readFileHandler,
-  const bool checkFileIntegrity )
-{
-  return std::bind(
-    &MediaSetImporterImpl::operator(),
-    std::make_shared< MediaSetImporterImpl>(
-      std::move( readFileHandler ),
-      checkFileIntegrity ) );
-}
 
 Arinc665Utils::Arinc665Validator Arinc665Utils::arinc665Validator(
   ReadFileHandler readFileHandler,

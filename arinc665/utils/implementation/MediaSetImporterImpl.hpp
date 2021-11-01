@@ -13,7 +13,7 @@
 #ifndef ARINC665_UTILS_MEDIASETIMPORTERIMPL_HPP
 #define ARINC665_UTILS_MEDIASETIMPORTERIMPL_HPP
 
-#include <arinc665/utils/Arinc665Utils.hpp>
+#include <arinc665/utils/MediaSetImporter.hpp>
 
 #include <arinc665/file/FileListFile.hpp>
 #include <arinc665/file/LoadListFile.hpp>
@@ -33,20 +33,19 @@ namespace Arinc665::Utils {
 /**
  * @brief Implementation of a ARINC 665 Media Set Importer.
  */
-class MediaSetImporterImpl final
+class MediaSetImporterImpl final : public MediaSetImporter
 {
   public:
     /**
      * @brief Initialises the ARINC 665 Media Set Importer
-     *
-     * @param[in] readFileHandler
-     *   Handler which is called to obtain the requested file from the medium.
-     * @param[in] checkFileIntegrity
-     *   If set to true additional file integrity steps are performed
      **/
-    explicit MediaSetImporterImpl(
-      Arinc665Utils::ReadFileHandler readFileHandler,
-      bool checkFileIntegrity );
+    explicit MediaSetImporterImpl();
+
+    //! @copydoc MediaSetImporter::readFileHandler()
+    MediaSetImporter& readFileHandler( ReadFileHandler readFileHandler ) final;
+
+    //! @copydoc MediaSetImporter::checkFileIntegrity()
+    MediaSetImporter& checkFileIntegrity( bool checkFileIntegrity ) final;
 
     /**
      * @brief Entry-point of the ARINC 665 Media Set Importer.
@@ -171,9 +170,9 @@ class MediaSetImporterImpl final
       const std::filesystem::path &directoryPath );
 
     //! Read File Handler
-    Arinc665Utils::ReadFileHandler readFileHandler;
+    ReadFileHandler readFileHandlerV;
     //! Check File Integrity
-    const bool checkFileIntegrity;
+    bool checkFileIntegrityV;
 
     //! Media Set
     Media::MediaSetPtr mediaSet;

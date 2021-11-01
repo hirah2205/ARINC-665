@@ -15,9 +15,11 @@
 #include <arinc665_qt/MediaSetDialog.hpp>
 #include <arinc665_qt/media/MediaSetModel.hpp>
 
-#include <arinc665/Arinc665Exception.hpp>
-#include <arinc665/utils/Arinc665Utils.hpp>
+#include <arinc665/utils/MediaSetImporter.hpp>
+
 #include <arinc665/media/MediaSet.hpp>
+
+#include <arinc665/Arinc665Exception.hpp>
 
 #include <QMessageBox>
 
@@ -66,20 +68,21 @@ void MediaSetController::directorySelected()
 {
   try
   {
-    auto importer{ Arinc665::Utils::Arinc665Utils::arinc665Importer(
-      std::bind(
-        &MediaSetController::loadFile,
-        this,
-        std::placeholders::_1,
-        std::placeholders::_2))};
+    auto importer{ Arinc665::Utils::MediaSetImporter::create() };
 
-    auto mediaSet{ importer()};
+    importer->readFileHandler( std::bind(
+      &MediaSetController::loadFile,
+      this,
+      std::placeholders::_1,
+      std::placeholders::_2 ) );
+
+    auto mediaSet{ (*importer)()};
 
     mediaSetModel->setMediaSet( mediaSet);
 
     // Set window title
     mediaSetDialog->setWindowTitle(
-      selectDirectoryDialog->directory().absolutePath());
+      selectDirectoryDialog->directory().absolutePath() );
   }
   catch (Arinc665::Arinc665Exception &e)
   {

@@ -54,6 +54,10 @@ class MediaSetExporter;
 //! ARINC 665 Media Set Exporter Instance Pointer.
 using MediaSetExporterPtr = std::unique_ptr< MediaSetExporter >;
 
+class MediaSetImporter;
+//! ARINC 665 Media Set Importer Instance Pointer.
+using MediaSetImporterPtr = std::unique_ptr< MediaSetImporter >;
+
 class MediaSetConfiguration;
 class MediaSetManager;
 //! ARINC 665 Media Set Manager Instance Pointer.

@@ -20,7 +20,7 @@
 
 #include <arinc665/media/MediaSet.hpp>
 
-#include <arinc665/utils/Arinc665Utils.hpp>
+#include <arinc665/utils/MediaSetImporter.hpp>
 
 #include <helper/Dump.hpp>
 #include <helper/Logger.hpp>
@@ -155,47 +155,50 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
   const Directories &mediaSetDirectories,
   const bool checkFileIntegrity )
 {
-  auto importer{ Arinc665::Utils::Arinc665Utils::arinc665Importer(
-    // read file handler
+  auto importer{ Arinc665::Utils::MediaSetImporter::create() };
+
+  // read file handler
+  importer->readFileHandler(
     [&mediaSetDirectories](
       const uint8_t mediumNumber,
-      const std::filesystem::path &path)->Arinc665::File::RawFile
-    {
-      auto filePath{
-        mediaSetDirectories.at( mediumNumber - 1U ) / path.relative_path() };
+      const std::filesystem::path &path)->Arinc665::File::RawFile {
+        auto filePath{
+          mediaSetDirectories.at( mediumNumber - 1U ) / path.relative_path() };
 
-      if ( !std::filesystem::is_regular_file( filePath ) )
-      {
-        BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
-          << boost::errinfo_file_name{ filePath.string() }
-          << Helper::AdditionalInfo{ "File not found" }
-          << boost::errinfo_file_name{ filePath.string() } );
-      }
+        if ( !std::filesystem::is_regular_file( filePath ) )
+        {
+          BOOST_THROW_EXCEPTION(
+            Arinc665::Arinc665Exception()
+            << boost::errinfo_file_name{ filePath.string() }
+            << Helper::AdditionalInfo{ "File not found" }
+            << boost::errinfo_file_name{ filePath.string() } );
+        }
 
-      Arinc665::File::RawFile data( std::filesystem::file_size( filePath ) );
+        Arinc665::File::RawFile data( std::filesystem::file_size( filePath ) );
 
-      std::ifstream file(
-        filePath.string().c_str(),
-        std::ifstream::binary | std::ifstream::in );
+        std::ifstream file(
+          filePath.string().c_str(),
+          std::ifstream::binary | std::ifstream::in );
 
-      if ( !file.is_open() )
-      {
-        BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
-          << Helper::AdditionalInfo{ "Error opening files" }
-          << boost::errinfo_file_name{ filePath.string() } );
-      }
+        if ( !file.is_open() )
+        {
+          BOOST_THROW_EXCEPTION(
+            Arinc665::Arinc665Exception()
+            << Helper::AdditionalInfo{ "Error opening files" }
+            << boost::errinfo_file_name{ filePath.string() } );
+        }
 
-      // read the data to the buffer
-      file.read(
-        (char*) &data.at( 0),
-        static_cast< std::streamsize >( data.size() ) );
+        // read the data to the buffer
+        file.read(
+          (char *)&data.at( 0 ),
+          static_cast< std::streamsize >( data.size() ) );
 
-      // return the buffer
-      return data;
-    },
-    checkFileIntegrity ) };
+        // return the buffer
+        return data;
+      } )
+    .checkFileIntegrity( checkFileIntegrity );
 
-  auto mediaSet{ importer() };
+  auto mediaSet{ (*importer)() };
 
   std::cout
     << "Media Set PN: \""

@@ -20,7 +20,7 @@
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/File.hpp>
 
-#include <arinc665/utils/Arinc665Utils.hpp>
+#include <arinc665/utils/MediaSetImporter.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
@@ -116,12 +116,13 @@ int main( int argc, char const * argv[])
     boost::program_options::notify( options);
 
     // create importer
-    auto importer{
-      Arinc665::Utils::Arinc665Utils::arinc665Importer(
-        std::bind( &readFile, std::placeholders::_1, std::placeholders::_2))};
+    auto importer{ Arinc665::Utils::MediaSetImporter::create() };
+
+    importer->readFileHandler(
+      std::bind( &readFile, std::placeholders::_1, std::placeholders::_2 ) );
 
     // perform import
-    auto result{ importer()};
+    auto result{ (*importer)()};
 
     Arinc665::Utils::Arinc665Xml::FilePathMapping fileMapping;
 

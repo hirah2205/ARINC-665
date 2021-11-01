@@ -15,7 +15,7 @@
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
 
-#include <arinc665/utils/Arinc665Utils.hpp>
+#include <arinc665/utils/MediaSetImporter.hpp>
 
 #include <boost/format.hpp>
 
@@ -37,8 +37,10 @@ MediaSetManagerImpl::MediaSetManagerImpl(
     // https://api.csswg.org/bikeshed/#lambda-captures
 
     // import media set
-    auto importer( Arinc665Utils::arinc665Importer(
-      // the read file handler
+    auto importer( MediaSetImporter::create() );
+
+    // the read file handler
+    importer->readFileHandler(
       [this,&mediaSet](
         const uint8_t mediumNumber,
         const std::filesystem::path &path )->File::RawFile
@@ -81,10 +83,10 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 
         // return the buffer
         return data;
-      } ) );
+      } );
 
     // import media set
-    auto impMediaSet( importer() );
+    auto impMediaSet( (*importer)() );
 
     // add media set
     mediaSetsV.push_back( impMediaSet );
