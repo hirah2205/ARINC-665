@@ -237,14 +237,14 @@ void BatchListFile::decodeBody( const ConstRawFileSpan &rawFile )
   decodeMediaInformation( rawFile, mediaInformationPtr );
 
   // batch list
-  decodeBatchesInfo( rawFile, 2U * batchListPtr );
+  decodeBatchesInfo( rawFile, 2U * static_cast< size_t >( batchListPtr ) );
 
 
   // user defined data
   if ( 0 != userDefinedDataPtr )
   {
     userDefinedDataV.assign(
-      rawFile.begin() + userDefinedDataPtr * 2U,
+      rawFile.begin() + static_cast< ptrdiff_t >( userDefinedDataPtr ) * 2,
       rawFile.begin() + static_cast< ptrdiff_t >( rawFile.size() - DefaultChecksumPosition ) );
   }
 
@@ -361,7 +361,7 @@ void BatchListFile::decodeBatchesInfo(
     }
 
     // set it to begin of next batch
-    it += batchPointer * 2U;
+    it += static_cast< ptrdiff_t >( batchPointer ) * 2;
 
     batchesV.emplace_back( BatchInfo{
       std::move( partNumber ),

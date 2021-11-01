@@ -361,7 +361,10 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
   decodeMediaInformation( rawFile, mediaInformationPtr );
 
   // file list
-  decodeFilesInfo( rawFile, 2 * fileListPtr, decodeV3Data );
+  decodeFilesInfo(
+    rawFile,
+    static_cast< ptrdiff_t >( fileListPtr ) * 2,
+    decodeV3Data );
 
 
   // user defined data
@@ -377,20 +380,22 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
           << Helper::AdditionalInfo{ "Invalid Pointers" } );
       }
 
-      endOfUserDefinedData = fileCheckValuePtr * 2;
+      endOfUserDefinedData = static_cast< ptrdiff_t >( fileCheckValuePtr ) * 2;
     }
 
     userDefinedDataV.assign(
-      rawFile.begin() + userDefinedDataPtr * 2,
+      rawFile.begin() + static_cast< ptrdiff_t >( userDefinedDataPtr ) * 2,
       rawFile.begin() + endOfUserDefinedData );
   }
 
 
   // File Check Value Field (ARINC 665-3)
   checkValueValue.reset();
-  if (decodeV3Data && (0U!=fileCheckValuePtr))
+  if ( decodeV3Data && ( 0U != fileCheckValuePtr ) )
   {
-    checkValueValue = CheckValueUtils_decode( rawFile, 2U * fileCheckValuePtr);
+    checkValueValue = CheckValueUtils_decode(
+      rawFile,
+      2 * static_cast< ptrdiff_t >( fileCheckValuePtr ) );
   }
 
 
@@ -530,7 +535,7 @@ void FileListFile::decodeFilesInfo(
 
 
     // set it to begin of next file
-    it += filePointer * 2;
+    it += static_cast< ptrdiff_t >( filePointer ) * 2;
 
     filesV.emplace_back( FileInfo{
       filename,

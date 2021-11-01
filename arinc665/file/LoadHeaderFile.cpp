@@ -602,7 +602,9 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
 
 
   // load part number
-  decodeString( rawFile.begin() + loadPartNumberPtr * 2, partNumberV );
+  decodeString(
+    rawFile.begin() + static_cast< ptrdiff_t >( loadPartNumberPtr ) * 2,
+    partNumberV );
 
 
   // Load Type Description Field (ARINC 665-3)
@@ -610,7 +612,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
   {
     std::string loadTypeDescription{};
     auto it{ decodeString(
-      rawFile.begin() + loadTypeDescriptionPtr * 2,
+      rawFile.begin() + static_cast< ptrdiff_t >( loadTypeDescriptionPtr ) * 2,
       loadTypeDescription ) };
 
     uint16_t loadTypeValue{};
@@ -624,17 +626,17 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
   TargetHardwareIds targetHardwareIdsValue{};
 
   decodeStrings(
-    rawFile.begin() + targetHardwareIdListPtr * 2,
+    rawFile.begin() + static_cast< ptrdiff_t >( targetHardwareIdListPtr ) * 2,
     targetHardwareIdsValue);
 
   targetHardwareIds( targetHardwareIdsValue );
 
   // THW IDs with Positions Field (ARINC 665-3)
-  if (decodeV3Data && (0!=thwIdsPositionPtr))
+  if ( decodeV3Data && ( 0U != thwIdsPositionPtr ) )
   {
     uint16_t numberOfThwIdsWithPos{};
     auto it{ Helper::getInt< uint16_t>(
-      rawFile.begin() + thwIdsPositionPtr * 2,
+      rawFile.begin() + static_cast< ptrdiff_t >( thwIdsPositionPtr ) * 2,
       numberOfThwIdsWithPos ) };
 
     for ( uint16_t thwIdIndex = 0; thwIdIndex < numberOfThwIdsWithPos; ++thwIdIndex)
@@ -653,9 +655,9 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
   // data file list
   dataFilesV = decodeFileList(
     rawFile,
-    dataFileListPtr * 2,
+    static_cast< ptrdiff_t >( dataFileListPtr ) * 2,
     FileListType::Data,
-    decodeV3Data);
+    decodeV3Data );
 
 
   // support file list
@@ -663,7 +665,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
   {
     supportFilesV = decodeFileList(
       rawFile,
-      supportFileListPtr * 2,
+      static_cast< ptrdiff_t >( supportFileListPtr ) * 2,
       FileListType::Support,
       decodeV3Data);
   }
@@ -682,20 +684,21 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile)
           << Helper::AdditionalInfo{ "Invalid Pointers" } );
       }
 
-      endOfUserDefinedData = loadCheckValuePtr * 2;
+      endOfUserDefinedData = static_cast< ptrdiff_t >( loadCheckValuePtr ) * 2;
     }
 
     userDefinedDataV.assign(
-      rawFile.begin() + userDefinedDataPtr * 2,
+      rawFile.begin() + static_cast< ptrdiff_t >( userDefinedDataPtr ) * 2,
       rawFile.begin() + endOfUserDefinedData );
   }
 
   // Load Check Value Field (ARINC 665-3)
   loadCheckValueV.reset();
-  if (decodeV3Data && (0U!=loadCheckValuePtr))
+  if ( decodeV3Data && ( 0U!=loadCheckValuePtr ) )
   {
-    loadCheckValueV =
-      CheckValueUtils_decode( rawFile, 2 * loadCheckValuePtr );
+    loadCheckValueV = CheckValueUtils_decode(
+      rawFile,
+      static_cast< ptrdiff_t >( loadCheckValuePtr ) * 2 );
   }
 
 
@@ -854,7 +857,7 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
     {
       case FileListType::Data:
         // rounded number of 16-bit words
-        realLength = length * 2U;
+        realLength = static_cast< uint64_t >( length ) * 2U;
         break;
 
       case FileListType::Support:
@@ -901,7 +904,7 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
     }
 
     // set it to begin of next file
-    it += filePointer * 2U;
+    it += static_cast< ptrdiff_t >( filePointer ) * 2;
 
     // file info
     files.emplace_back( LoadFileInfo{

@@ -237,14 +237,14 @@ void LoadListFile::decodeBody( const ConstRawFileSpan &rawFile )
   decodeMediaInformation( rawFile, mediaInformationPtr );
 
   // Loads list
-  decodeLoadsInfo( rawFile, 2 * loadListPtr);
+  decodeLoadsInfo( rawFile, static_cast< ptrdiff_t >( loadListPtr ) * 2 );
 
 
   // user defined data
   if ( 0 != userDefinedDataPtr)
   {
     userDefinedDataV.assign(
-      rawFile.begin() + userDefinedDataPtr * 2,
+      rawFile.begin() + static_cast< ptrdiff_t >( userDefinedDataPtr ) * 2,
       rawFile.begin() + static_cast< ptrdiff_t >( rawFile.size() ) - DefaultChecksumPosition );
   }
 
@@ -361,7 +361,7 @@ void LoadListFile::decodeLoadsInfo(
       std::move( thwIds ) } );
 
     // set it to begin of next load
-    it += loadPointer * 2;
+    it += static_cast< ptrdiff_t >( loadPointer ) * 2;
   }
 }
 

@@ -551,7 +551,7 @@ void Arinc665File::decodeHeader(
   uint32_t fileLength{};
   Helper::getInt< uint32_t>( rawFile.begin() + FileLengthFieldOffset, fileLength );
 
-  if ( fileLength * 2U != rawFile.size() )
+  if ( static_cast< size_t >( fileLength ) * 2U != rawFile.size() )
   {
     BOOST_THROW_EXCEPTION(InvalidArinc665File()
       << Helper::AdditionalInfo{ "file size invalid" } );

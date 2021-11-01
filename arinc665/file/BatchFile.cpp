@@ -189,13 +189,13 @@ void BatchFile::decodeBody( const ConstRawFileSpan &rawFile )
 
   // batch part number
   auto it{ decodeString(
-    rawFile.begin() + batchPartNumberPtr * 2, partNumberV ) };
+    rawFile.begin() + static_cast< ptrdiff_t >( batchPartNumberPtr ) * 2, partNumberV ) };
 
   // comment
   decodeString( it, commentV );
 
   // target hardware ID load list
-  decodeBatchTargetsInfo( rawFile, targetHardwareIdListPtr * 2 );
+  decodeBatchTargetsInfo( rawFile, static_cast< ptrdiff_t >( targetHardwareIdListPtr ) * 2 );
 }
 
 RawFile BatchFile::encodeBatchTargetsInfo() const
@@ -333,7 +333,7 @@ void BatchFile::decodeBatchTargetsInfo(
     }
 
     // set it to begin of next file
-    it += thwIdPointer * 2U;
+    it += static_cast< ptrdiff_t >( thwIdPointer ) * 2;
 
     // THW ID info
     targetsHardwareV.emplace_back( BatchTargetInfo{
