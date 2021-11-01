@@ -7,29 +7,29 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Utils::MediaSetImporter.
+ * @brief Declaration of Class Arinc665::Utils::MediaSetValidator.
  **/
 
-#ifndef ARINC665_ARINC665_UTILS_MEDIASETIMPORTER_HPP
-#define ARINC665_ARINC665_UTILS_MEDIASETIMPORTER_HPP
+#ifndef ARINC665_UTILS_ARINC665VALIDATOR_HPP
+#define ARINC665_UTILS_ARINC665VALIDATOR_HPP
 
 #include <arinc665/utils/Utils.hpp>
-
-#include <arinc665/media/Media.hpp>
 
 #include <arinc665/file/File.hpp>
 
 #include <filesystem>
 #include <functional>
+#include <string>
+#include <string_view>
 
 namespace Arinc665::Utils {
 
 /**
- * @brief ARINC 665 Media Set Importer
+ * @brief ARINC 665 Media Set Validator.
  *
- * Imports the Media Set given by the provided properties.
+ * Validates the integrity and consistency of a ARINC 665 Media Set.
  **/
-class MediaSetImporter
+class MediaSetValidator
 {
 public:
   /**
@@ -51,48 +51,53 @@ public:
       uint8_t mediumNumber,
       const std::filesystem::path &path ) >;
 
+  //! Handler which is called for Validation Information.
+  using ValidatorInformationHandler =
+    std::function< void( std::string_view information ) >;
+
   /**
-   * @brief Creates the ARINC 665 Media Set Importer Instance.
+   * @brief Creates the ARINC 665 Media Set Validator Instance.
    *
-   * @return ARINC 665 Importer Instance
+   * @return ARINC 665 Validator Instance
    **/
-  static MediaSetImporterPtr create();
+  static MediaSetValidatorPtr create();
 
   //! Destructor
-  virtual ~MediaSetImporter() = default;
+  virtual ~MediaSetValidator() = default;
 
   /**
    * @brief Sets the Read File Handler.
    *
    * @param[in] readFileHandler
-   *   Handler which is called to obtain the requested file from the medium.
+   *   Handler for reading files.
    *
    * @return *this for chaining.
    **/
-  virtual MediaSetImporter& readFileHandler(
+  virtual MediaSetValidator& readFileHandler(
     ReadFileHandler readFileHandler ) = 0;
 
+
   /**
-   * @brief Sets the Check File Integrity Flag.
+   * @brief Sets the Validator Information Handler.
    *
-   * @param[in] checkFileIntegrity
-   *   If set to true additional file integrity steps are performed
+   * @param[in] informationHandler
+   *   Handler for validation information.
    *
    * @return *this for chaining.
    **/
-  virtual MediaSetImporter& checkFileIntegrity(
-    bool checkFileIntegrity ) = 0;
+  virtual MediaSetValidator& informationHandler(
+    ValidatorInformationHandler informationHandler ) = 0;
 
   /**
-   * @brief Executes the ARINC 665 Media Set Importer.
+   * @brief Executes the ARINC 665 Media Set Validator.
    *
    * All parameters must have been set previously.
    *
-   * @return The imported Media Set
+   * @return If the validation was successful.
    *
    * @throw Arinc665Exception
    **/
-  virtual Media::MediaSetPtr operator()() = 0;
+  virtual bool operator()() = 0;
 };
 
 }

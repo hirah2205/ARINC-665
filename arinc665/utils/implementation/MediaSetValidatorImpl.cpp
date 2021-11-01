@@ -14,17 +14,26 @@
 
 namespace Arinc665::Utils {
 
-MediaSetValidatorImpl::MediaSetValidatorImpl(
-  Arinc665Utils::ReadFileHandler readFileHandler,
-  Arinc665Utils::ValidatorInformationHandler informationHandler):
-  readFileHandler{ readFileHandler },
-  informationHandler{ informationHandler }
+MediaSetValidatorImpl::MediaSetValidatorImpl() = default;
+
+MediaSetValidator& MediaSetValidatorImpl::readFileHandler(
+  ReadFileHandler readFileHandler )
 {
+  readFileHandlerV = std::move( readFileHandler );
+  return *this;
 }
+
+MediaSetValidator& MediaSetValidatorImpl::informationHandler(
+  ValidatorInformationHandler informationHandler )
+{
+  informationHandlerV = std::move( informationHandler );
+  return *this;
+}
+
 
 bool MediaSetValidatorImpl::operator()()
 {
-  informationHandler( "Not implemented");
+  informationHandlerV( "Not implemented" );
 
   return false;
 }

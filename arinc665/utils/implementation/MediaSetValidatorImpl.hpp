@@ -14,36 +14,38 @@
 #define ARINC665_UTILS_MEDIASETVALIDATORIMPL_HPP
 
 #include <arinc665/utils/Utils.hpp>
-#include <arinc665/utils/Arinc665Utils.hpp>
+#include <arinc665/utils/MediaSetValidator.hpp>
 
 namespace Arinc665::Utils {
 
 //! ARINC 665 Media Set Validator.
-class MediaSetValidatorImpl final
+class MediaSetValidatorImpl final : public MediaSetValidator
 {
-  public:
-    /**
-     * @brief Created the ARINC 665 Media Set Validator.
-     *
-     * @param[in] readFileHandler
-     * @param[in] informationHandler
-     **/
-    MediaSetValidatorImpl(
-      Arinc665Utils::ReadFileHandler readFileHandler,
-      Arinc665Utils::ValidatorInformationHandler informationHandler );
+public:
+  /**
+   * @brief Created the ARINC 665 Media Set Validator.
+   **/
+  MediaSetValidatorImpl();
 
-    /**
-     * @brief Executes the ARINC 665 Media Set Validator.
-     *
-     * @return Validation Result.
-     **/
-    bool operator()();
+  //! @copydoc MediaSetValidator::readFileHandler()
+  MediaSetValidator& readFileHandler( ReadFileHandler readFileHandler ) final;
 
-  private:
-    //! Read File Handler
-    Arinc665Utils::ReadFileHandler readFileHandler;
-    //! Information Handler
-    Arinc665Utils::ValidatorInformationHandler informationHandler;
+  //! @copydoc MediaSetValidator::informationHandler()
+  MediaSetValidator& informationHandler(
+    ValidatorInformationHandler informationHandler ) final;
+
+  /**
+   * @brief Executes the ARINC 665 Media Set Validator.
+   *
+   * @return Validation Result.
+   **/
+  bool operator()();
+
+private:
+  //! Read File Handler
+  MediaSetValidator::ReadFileHandler readFileHandlerV;
+  //! Information Handler
+  MediaSetValidator::ValidatorInformationHandler informationHandlerV;
 };
 
 }

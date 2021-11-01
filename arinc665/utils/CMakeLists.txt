@@ -11,8 +11,6 @@ target_sources(
 
   PRIVATE
     Utils.hpp
-    Arinc665Utils.hpp
-    Arinc665Utils.cpp
     Arinc665Xml.hpp
     Arinc665Xml.cpp
     FileCreationPolicyDescription.hpp
@@ -24,7 +22,9 @@ target_sources(
     MediaSetImporter.hpp
     MediaSetImporter.cpp
     MediaSetManager.hpp
-    MediaSetManager.cpp )
+    MediaSetManager.cpp
+    MediaSetValidator.hpp
+    MediaSetValidator.cpp )
 
 #target_sources(
 #  arinc665_test

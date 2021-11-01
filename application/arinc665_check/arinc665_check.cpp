@@ -15,7 +15,7 @@
  * @brief ARINC 665 Media Set Validator Application.
  **/
 
-#include <arinc665/utils/Arinc665Utils.hpp>
+#include <arinc665/utils/MediaSetValidator.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <helper/Logger.hpp>
@@ -113,13 +113,14 @@ int main( int argc, char * argv[])
     boost::program_options::notify( options);
 
     // create validator
-    auto validator{
-      Arinc665::Utils::Arinc665Utils::arinc665Validator(
-        std::bind( &readFile, std::placeholders::_1, std::placeholders::_2 ),
-        std::bind( &printInformation, std::placeholders::_1 ))};
+    auto validator{ Arinc665::Utils::MediaSetValidator::create() };
+
+    validator->readFileHandler(
+      std::bind( &readFile, std::placeholders::_1, std::placeholders::_2 ) )
+      .informationHandler( std::bind( &printInformation, std::placeholders::_1 ) );
 
     // perform validation
-    auto result{ validator()};
+    auto result{ (*validator)()};
 
     if ( !result)
     {

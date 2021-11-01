@@ -58,6 +58,10 @@ class MediaSetImporter;
 //! ARINC 665 Media Set Importer Instance Pointer.
 using MediaSetImporterPtr = std::unique_ptr< MediaSetImporter >;
 
+class MediaSetValidator;
+//! ARINC 665 Media Set Validator Instance Pointer.
+using MediaSetValidatorPtr = std::unique_ptr< MediaSetValidator >;
+
 class MediaSetConfiguration;
 class MediaSetManager;
 //! ARINC 665 Media Set Manager Instance Pointer.
