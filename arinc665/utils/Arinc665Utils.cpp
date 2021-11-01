@@ -13,7 +13,6 @@
 #include "Arinc665Utils.hpp"
 
 #include <arinc665/utils/implementation/MediaSetImporterImpl.hpp>
-#include <arinc665/utils/implementation/MediaSetExporterImpl.hpp>
 #include <arinc665/utils/implementation/MediaSetValidatorImpl.hpp>
 
 namespace Arinc665::Utils {
@@ -38,33 +37,6 @@ Arinc665Utils::Arinc665Validator Arinc665Utils::arinc665Validator(
     std::make_shared< MediaSetValidatorImpl>(
       std::move( readFileHandler ),
       std::move( informationHandler ) ) );
-}
-
-Arinc665Utils::Arinc665Exporter Arinc665Utils::arinc665Exporter(
-  Media::ConstMediaSetPtr mediaSet,
-  CreateMediumHandler createMediumHandler,
-  CreateDirectoryHandler createDirectoryHandler,
-  CheckFileExistenceHandler checkFileExistenceHandler,
-  CreateFileHandler createFileHandler,
-  WriteFileHandler writeFileHandler,
-  ReadFileHandler readFileHandler,
-  const SupportedArinc665Version arinc665Version,
-  const FileCreationPolicy createBatchFiles,
-  const FileCreationPolicy createLoadHeaderFiles )
-{
-  return std::bind(
-    &MediaSetExporterImpl::operator(),
-    std::make_shared< MediaSetExporterImpl>(
-      mediaSet,
-      createMediumHandler,
-      createDirectoryHandler,
-      checkFileExistenceHandler,
-      createFileHandler,
-      writeFileHandler,
-      readFileHandler,
-      arinc665Version,
-      createBatchFiles,
-      createLoadHeaderFiles ) );
 }
 
 }

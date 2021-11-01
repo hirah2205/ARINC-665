@@ -30,26 +30,12 @@ namespace Arinc665::Utils {
  * @brief ARINC 665 Utilities.
  *
  * This class provides an interface ARINC 665 Utilities like:
- * - Media set importer, and
- * - Media set exporter
+ * - ARINC 665 Media Set importer, and
+ * - ARINC 665 Media Set exporter
  **/
 class Arinc665Utils
 {
   public:
-    //! Handler, which is called to generate the given medium.
-    using CreateMediumHandler =
-      std::function< void( Media::ConstMediumPtr medium )>;
-
-    //! Handler, which is called to generate the given directory.
-    using CreateDirectoryHandler =
-      std::function< void( Media::ConstDirectoryPtr directory )>;
-
-    //! Handler, which checks the existence of a file within the source
-    using CheckFileExistenceHandler =
-      std::function< bool( Media::ConstFilePtr file )>;
-
-    //! Handler, which is called to generate the given file at the requested position.
-    using CreateFileHandler = std::function< void( Media::ConstFilePtr file )>;
 
     /**
      * @brief Handler, which is called to read a file form a medium.
@@ -70,26 +56,6 @@ class Arinc665Utils
         uint8_t mediumNumber,
         const std::filesystem::path &path ) >;
 
-    /**
-     * @brief Handler, which is called to write the given file at the requested
-     *   position.
-     *
-     * This handler is also used to write files, which are not represented by
-     * Arinc665::Media classes.
-     * Therefore a basic representation is used.
-     *
-     * @param[in] mediumNumber
-     *   Medium Number
-     * @param[in] path
-     *   Relative Path on Medium.
-     * @param[in] file
-     *   File Data (binary).
-     **/
-    using WriteFileHandler =
-      std::function< void(
-        uint8_t mediumNumber,
-        const std::filesystem::path &path,
-        const File::ConstRawFileSpan &file )>;
 
     //! Handler which is called for Validation Information.
     using ValidatorInformationHandler =
@@ -106,11 +72,6 @@ class Arinc665Utils
      * Validates the integrity and consistency of a ARINC 665 Media Set
      **/
     using Arinc665Validator = std::function< bool() >;
-
-    /**
-     * The ARINC 665 Media Set exporter.
-     **/
-    using Arinc665Exporter = std::function< void() >;
 
     /**
      * @brief Create a ARINC 665 Media Set Importer.
@@ -139,48 +100,6 @@ class Arinc665Utils
     static Arinc665Validator arinc665Validator(
       ReadFileHandler readFileHandler,
       ValidatorInformationHandler informationHandler );
-
-    /**
-     * @brief Creates a ARINC 665 Media Set exporter.
-     *
-     * @param[in] mediaSet
-     *   The media set, which shall be exported.
-     * @param[in] createMediumHandler
-     *   Called to create the given medium.
-     * @param[in] createDirectoryHandler
-     *   Called to create the given directory.
-     * @param[in] checkFileExistenceHandler
-     *   Called to check if file exists.
-     * @param[in] createFileHandler
-     *   When a file needs to be generated, this handler is called.
-     * @param[in] writeFileHandler
-     *   Writes a given file to the output media set.
-     * @param[in] readFileHandler
-     *   Reads a given file from the output media set.
-     *   Used for CRC calculation.
-     * @param[in] arinc665Version
-     *   ARINC 665 version used for exporting.
-     * @param[in] createBatchFiles
-     *   Defines, if Batch Files are created by exporter or pre-existing ones
-     *   are used.
-     * @param[in] createLoadHeaderFiles
-     *   Defines, if Load Header Files are created by exporter or pre-existing
-     *   ones are used.
-     *
-     * @return ARINC 665 Media Set Exporter.
-     **/
-    static Arinc665Exporter arinc665Exporter(
-      Media::ConstMediaSetPtr mediaSet,
-      CreateMediumHandler createMediumHandler,
-      CreateDirectoryHandler createDirectoryHandler,
-      CheckFileExistenceHandler checkFileExistenceHandler,
-      CreateFileHandler createFileHandler,
-      WriteFileHandler writeFileHandler,
-      ReadFileHandler readFileHandler,
-      SupportedArinc665Version arinc665Version =
-        SupportedArinc665Version::Supplement2,
-      FileCreationPolicy createBatchFiles = FileCreationPolicy::None,
-      FileCreationPolicy createLoadHeaderFiles = FileCreationPolicy::None );
 };
 
 }

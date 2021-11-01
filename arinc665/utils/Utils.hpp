@@ -47,12 +47,16 @@ enum class FileCreationPolicy
 
 
 class Arinc665Xml;
-//! ARINC 665 XML instance pointer.
+//! ARINC 665 XML Instance Pointer.
 using Arinc665XmlPtr = std::unique_ptr< Arinc665Xml>;
+
+class MediaSetExporter;
+//! ARINC 665 Media Set Exporter Instance Pointer.
+using MediaSetExporterPtr = std::unique_ptr< MediaSetExporter >;
 
 class MediaSetConfiguration;
 class MediaSetManager;
-//! ARINC 665 media set manager instance pointer.
+//! ARINC 665 Media Set Manager Instance Pointer.
 using MediaSetManagerPtr = std::shared_ptr< MediaSetManager>;
 
 }

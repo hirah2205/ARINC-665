@@ -128,7 +128,7 @@ void ListFile::decodeMediaInformation(
   const ConstRawFileSpan &rawFile,
   uint32_t mediaInformationPtr )
 {
-  if ( mediaInformationPtr * 2U >= rawFile.size() )
+  if ( static_cast< size_t >( mediaInformationPtr ) * 2U >= rawFile.size() )
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File{}
       << Helper::AdditionalInfo{ "Media Information Pointer Exceeds File" } );
@@ -138,7 +138,8 @@ void ListFile::decodeMediaInformation(
 
   // media set part number
   auto it{ decodeString(
-    rawFile.begin() + mediaInformationPtr * 2U,
+    rawFile.begin()
+      + static_cast< ConstRawFileSpan::difference_type>( mediaInformationPtr ) * 2,
     mediaSetPnV ) };
 
   // media sequence number

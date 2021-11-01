@@ -13,61 +13,66 @@
 #ifndef ARINC665_UTILS_IMPLEMENTATION_MEDIASETEXPORTERIMPL_HPP_
 #define ARINC665_UTILS_IMPLEMENTATION_MEDIASETEXPORTERIMPL_HPP_
 
-#include <arinc665/utils/Arinc665Utils.hpp>
+#include <arinc665/utils/MediaSetExporter.hpp>
 
 namespace Arinc665::Utils {
 
 /**
  * @brief Implementation of a Media Set Exporter.
  **/
-class MediaSetExporterImpl final
+class MediaSetExporterImpl final : public MediaSetExporter
 {
-  public:
-    /**
-     * @brief Initialises the ARINC 665 Media Set Importer
-     *
-     * @param[in] mediaSet
-     *   The media set, which shall be exported.
-     * @param[in] createMediumHandler
-     *   Called to create the given medium.
-     * @param[in] createDirectoryHandler
-     *   Called to create the given directory.
-     * @param[in] checkFileExistenceHandler
-     *   Called to check if desired file exists
-     * @param[in] createFileHandler
-     *   When a file needs to be generated, this handler is called.
-     * @param[in] writeFileHandler
-     *   Writes a given file to the output media set.
-     * @param[in] readFileHandler
-     *   Reads a given file from the output media set.
-     *   Used for CRC calculation.
-     * @param[in] arinc665Version
-     *   The ARINC 665 version used for exporting
-     * @param[in] createBatchFiles
-     *   Defines, if Batch Files are created by exporter or pre-existing ones
-     *   are used.
-     * @param[in] createLoadHeaderFiles
-     *   Defines, if Load Header Files are created by exporter or pre-existing
-     *   ones are used.
-     **/
-    MediaSetExporterImpl(
-      Media::ConstMediaSetPtr mediaSet,
-      Arinc665Utils::CreateMediumHandler createMediumHandler,
-      Arinc665Utils::CreateDirectoryHandler createDirectoryHandler,
-      Arinc665Utils::CheckFileExistenceHandler checkFileExistenceHandler,
-      Arinc665Utils::CreateFileHandler createFileHandler,
-      Arinc665Utils::WriteFileHandler writeFileHandler,
-      Arinc665Utils::ReadFileHandler readFileHandler,
-      SupportedArinc665Version arinc665Version,
-      FileCreationPolicy createBatchFiles,
-      FileCreationPolicy createLoadHeaderFiles );
+public:
+  /**
+   * @brief Initialises the ARINC 665 Media Set Importer
+   **/
+  MediaSetExporterImpl();
 
-    /**
-     * @brief Entry-point of the ARINC 665 media set exporter.
-     ***/
-    void operator()();
+  //! @copydoc MediaSetExporter::mediaSet()
+  MediaSetExporter& mediaSet( Media::ConstMediaSetPtr mediaSet ) final;
 
-  private:
+  //! @copydoc MediaSetExporter::createMediumHandler()
+  MediaSetExporter& createMediumHandler(
+    CreateMediumHandler createMediumHandler ) final;
+
+  //! @copydoc MediaSetExporter::createDirectoryHandler()
+  MediaSetExporter& createDirectoryHandler(
+    CreateDirectoryHandler createDirectoryHandler ) final;
+
+  //! @copydoc MediaSetExporter::checkFileExistenceHandler()
+  MediaSetExporter& checkFileExistenceHandler(
+    CheckFileExistenceHandler checkFileExistenceHandler ) final;
+
+  //! @copydoc MediaSetExporter::createFileHandler()
+  MediaSetExporter& createFileHandler(
+    CreateFileHandler createFileHandler ) final;
+
+  //! @copydoc MediaSetExporter::writeFileHandler()
+  MediaSetExporter& writeFileHandler(
+    WriteFileHandler writeFileHandler ) final;
+
+  //! @copydoc MediaSetExporter::readFileHandler()
+  MediaSetExporter& readFileHandler(
+    ReadFileHandler readFileHandler ) final;
+
+  //! @copydoc MediaSetExporter::arinc665Version()
+  MediaSetExporter& arinc665Version(
+    SupportedArinc665Version arinc665Version ) final;
+
+  //! @copydoc MediaSetExporter::createBatchFiles()
+  MediaSetExporter& createBatchFiles(
+    FileCreationPolicy createBatchFiles ) final;
+
+  //! @copydoc MediaSetExporter::createLoadHeaderFiles()
+  MediaSetExporter& createLoadHeaderFiles(
+    FileCreationPolicy createLoadHeaderFiles ) final;
+
+  /**
+   * @brief Entry-point of the ARINC 665 media set exporter.
+   ***/
+  void operator()() final;
+
+private:
     /**
      * @brief Called to export the given medium.
      *
@@ -109,26 +114,26 @@ class MediaSetExporterImpl final
     void createBatchFile( const Media::ConstFilePtr &file ) const;
 
     //! ARINC 665 Version used for exporting
-    const SupportedArinc665Version arinc665Version;
+    SupportedArinc665Version arinc665VersionV;
     //! Indicates if batch files shall be created by Media set Exporter
-    const FileCreationPolicy createBatchFiles;
+    FileCreationPolicy createBatchFilesV;
     //! Indicates if load header files shall be created by Media Set Exporter
-    const FileCreationPolicy createLoadHeaderFiles;
+    FileCreationPolicy createLoadHeaderFilesV;
 
     //! Media Set
-    Media::ConstMediaSetPtr mediaSet;
+    Media::ConstMediaSetPtr mediaSetV;
     //! Create Medium Handler
-    Arinc665Utils::CreateMediumHandler createMediumHandler;
+    CreateMediumHandler createMediumHandlerV;
     //! Create Directory Handler
-    Arinc665Utils::CreateDirectoryHandler createDirectoryHandler;
+    CreateDirectoryHandler createDirectoryHandlerV;
     //! Check File existence Handler
-    Arinc665Utils::CheckFileExistenceHandler checkFileExistenceHandler;
+    CheckFileExistenceHandler checkFileExistenceHandlerV;
     //! Create File Handler
-    Arinc665Utils::CreateFileHandler createFileHandler;
+    CreateFileHandler createFileHandlerV;
     //! Write File Handler
-    Arinc665Utils::WriteFileHandler writeFileHandler;
+    WriteFileHandler writeFileHandlerV;
     //! Read File Handler
-    Arinc665Utils::ReadFileHandler readFileHandler;
+    ReadFileHandler readFileHandlerV;
 };
 
 }

@@ -4,13 +4,15 @@
 #
 # Thomas Vogt, thomas@thomas-vogt.de
 
-cmake_minimum_required( VERSION 3.18 )
+cmake_minimum_required( VERSION 3.21 )
 
 target_sources(
   arinc665
 
   PRIVATE
     Utils.hpp
+  MediaSetExporter.hpp
+  MediaSetExporter.cpp
     Arinc665Utils.hpp
     Arinc665Utils.cpp
     Arinc665Xml.hpp

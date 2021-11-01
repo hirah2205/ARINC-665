@@ -21,7 +21,7 @@
 
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
-#include <arinc665/utils/Arinc665Utils.hpp>
+#include <arinc665/utils/MediaSetExporter.hpp>
 #include <arinc665/utils/FileCreationPolicyDescription.hpp>
 
 #include <arinc665/media/Medium.hpp>
@@ -223,43 +223,45 @@ int main( int argc, char ** argv )
     // create media set directory
     std::filesystem::create_directories( mediaSetDestinationDirectory );
 
-    auto exporter{ Arinc665::Utils::Arinc665Utils::arinc665Exporter(
-      mediaSet,
-      std::bind(
+    auto exporter{ Arinc665::Utils::MediaSetExporter::create() };
+
+    // set exporter parameters
+    exporter->mediaSet( mediaSet )
+      .createMediumHandler( std::bind(
         &createMedium,
         mediaSetDestinationDirectory,
-        std::placeholders::_1 ),
-      std::bind(
+        std::placeholders::_1 ) )
+      .createDirectoryHandler( std::bind(
         &createDirectory,
         mediaSetDestinationDirectory,
-        std::placeholders::_1 ),
-      std::bind(
+        std::placeholders::_1 ) )
+      .checkFileExistenceHandler( std::bind(
         &checkFileExistance,
         mediaSetDestinationDirectory,
         fileMapping,
-        std::placeholders::_1 ),
-      std::bind(
+        std::placeholders::_1 ) )
+      .createFileHandler( std::bind(
         &createFile,
         mediaSetSourceDirectory,
         mediaSetDestinationDirectory,
         fileMapping,
-        std::placeholders::_1 ),
-      std::bind(
+        std::placeholders::_1 ) )
+      .writeFileHandler( std::bind(
         &writeFile,
         mediaSetDestinationDirectory,
         std::placeholders::_1,
         std::placeholders::_2,
-        std::placeholders::_3 ),
-      std::bind(
+        std::placeholders::_3 ) )
+      .readFileHandler( std::bind(
         &readFile,
         mediaSetDestinationDirectory,
         std::placeholders::_1,
-        std::placeholders::_2 ),
-      version,
-      createBatchFiles,
-      createLoadHeaderFiles ) };
+        std::placeholders::_2 ) )
+      .arinc665Version( version )
+      .createBatchFiles( createBatchFiles )
+      .createLoadHeaderFiles( createLoadHeaderFiles );
 
-    exporter();
+    (*exporter)();
   }
   catch ( boost::program_options::error &e)
   {
