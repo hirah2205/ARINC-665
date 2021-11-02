@@ -764,7 +764,7 @@ void Arinc665XmlImpl::loadBatch(
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo{ "Node is not an Element" }
-          << boost::errinfo_at_line{ loadElement->get_line() } );
+          << boost::errinfo_at_line{ LoadNode->get_line() } );
       }
 
       const auto loadNameRef{ loadElement->get_attribute_value( "NameRef" ) };
