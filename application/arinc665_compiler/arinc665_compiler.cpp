@@ -263,19 +263,19 @@ int main( int argc, char ** argv )
 
     (*exporter)();
   }
-  catch ( boost::program_options::error &e)
+  catch ( boost::program_options::error &e )
   {
     std::cout << e.what() << "\n";
     return EXIT_FAILURE;
   }
-  catch ( Arinc665::Arinc665Exception &e)
+  catch ( Arinc665::Arinc665Exception &e )
   {
     std::cerr
       << "Arinc665Exception in compiler: "
       << boost::diagnostic_information( e) << "\n";
     return EXIT_FAILURE;
   }
-  catch ( boost::exception &e)
+  catch ( boost::exception &e )
   {
     std::cerr
       << "BOOST Error in compiler: "
