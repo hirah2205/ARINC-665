@@ -135,7 +135,7 @@ void PartNumber::checkCheckCode( std::string_view checkCode ) const
   }
 
   // decode string to integer
-  unsigned long parsedCheckCode{
+  [[maybe_unused]] unsigned long parsedCheckCode{
     std::stoul( std::string{ checkCode}, 0, 16 ) }; //! @todo check implementation of explicit cast
 
   assert( parsedCheckCode <= 255U );
