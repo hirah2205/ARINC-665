@@ -57,7 +57,7 @@
 
       <element ref="ams:Medium"  minOccurs="1" maxOccurs="unbounded" />
       <element ref="ams:Loads"   minOccurs="1" maxOccurs="1" />
-      <element ref="ams:Batches" minOccurs="1" maxOccurs="1" />
+      <element ref="ams:Batches" minOccurs="0" maxOccurs="1" />
     </sequence>
     <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
   </complexType>
@@ -117,7 +117,7 @@
 
   <complexType name="DirectoryType" >
     <annotation><documentation>
-      Directory within Media.
+      Directory within Medium.
     </documentation></annotation>
     <sequence>
       <group ref="ams:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded" />

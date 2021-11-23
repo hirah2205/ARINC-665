@@ -157,8 +157,15 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
   }
 
   // iterate over media
+  auto mediaNodes{ mediaSetElement.get_children( "Medium" ) };
+  if ( mediaNodes.empty() )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Medium XML Elements missing" } );
+  }
+
   FilePathMapping filePathMapping{};
-  for ( auto mediumNode : mediaSetElement.get_children( "Medium" ) )
+  for ( auto mediumNode : mediaNodes )
   {
     loadMedium( mediaSet, filePathMapping, *mediumNode );
   }
@@ -166,8 +173,22 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
   // handle Loads
   auto loadsNode{ mediaSetElement.get_first_child( "Loads" ) };
 
+  if ( nullptr == loadsNode )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Loads XML Element missing" } );
+  }
+
   // iterate over loads
-  for ( auto loadNode : loadsNode->get_children( "Load" ) )
+  auto loadNodes{ loadsNode->get_children( "Load" ) };
+
+  if ( loadNodes.empty() )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Load XML Elements missing" } );
+  }
+
+  for ( auto loadNode : loadNodes )
   {
     auto loadElement{ dynamic_cast< xmlpp::Element*>( loadNode ) };
     if ( nullptr == loadElement )
@@ -179,20 +200,24 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
     loadLoad( mediaSet, *loadElement );
   }
 
-  // handle Batches
+  // handle Batches (optional)
   auto batchesNode{ mediaSetElement.get_first_child( "Batches" ) };
 
-  // iterate over loads
-  for ( auto batchNode : batchesNode->get_children( "Batch") )
+  if ( nullptr != batchesNode )
   {
-    auto batchElement{ dynamic_cast< xmlpp::Element*>( batchNode ) };
-    if ( nullptr == batchElement )
+    // iterate over loads
+    for ( auto batchNode : batchesNode->get_children( "Batch" ) )
     {
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "Invalid Batch XML Element" } );
-    }
+      auto batchElement{ dynamic_cast< xmlpp::Element * >( batchNode ) };
+      if ( nullptr == batchElement )
+      {
+        BOOST_THROW_EXCEPTION(
+          Arinc665Exception()
+          << Helper::AdditionalInfo{ "Invalid Batch XML Element" } );
+      }
 
-    loadBatch( mediaSet, *batchElement );
+      loadBatch( mediaSet, *batchElement );
+    }
   }
 
   return std::make_tuple( std::move( mediaSet ), std::move( filePathMapping ) );
