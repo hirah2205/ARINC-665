@@ -380,8 +380,11 @@ void Arinc665XmlImpl::loadEntries(
       {
         filePathMapping.insert( { file, toStringView( sourcePath ) } );
       }
+
+      continue;
     }
-    else if ( entryNode->get_name() == "LoadFile"s )
+
+    if ( entryNode->get_name() == "LoadFile"s )
     {
       auto load{ current->addLoad( toStringView( filename ) ) };
 
@@ -390,8 +393,11 @@ void Arinc665XmlImpl::loadEntries(
       {
         filePathMapping.insert( { load, toStringView( sourcePath ) } );
       }
+
+      continue;
     }
-    else if ( entryNode->get_name() == "BatchFile"s )
+
+    if ( entryNode->get_name() == "BatchFile"s )
     {
       auto batch{ current->addBatch( toStringView( filename ) ) };
 
@@ -400,13 +406,13 @@ void Arinc665XmlImpl::loadEntries(
       {
         filePathMapping.insert( { batch, toStringView( sourcePath ) } );
       }
-    }
-    else
-    {
-      BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning )
-        << "Ignore element " << entryNode->get_name();
+
       continue;
     }
+
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning )
+      << "Ignore element " << entryNode->get_name();
+    continue;
   }
 }
 
@@ -415,7 +421,7 @@ void Arinc665XmlImpl::saveEntries(
   const FilePathMapping &filePathMapping,
   xmlpp::Node &currentNode )
 {
-  // iterate over sub-directories within container
+  // iterate over subdirectories within container
   for ( const auto &dirEntry : current->subDirectories() )
   {
     auto directoryNode{ currentNode.add_child( "Directory" ) };
@@ -575,7 +581,6 @@ void Arinc665XmlImpl::loadLoad(
 
     if ( fileNameRef.empty() )
     {
-      //! @throw Arinc665::Arinc665Exception when NameRef attribute is missing or empty.
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "NameRef attribute missing or empty" }
         << boost::errinfo_at_line{ dataFileNode->get_line() } );
@@ -585,7 +590,6 @@ void Arinc665XmlImpl::loadLoad(
 
     if ( filePartNumber.empty() )
     {
-      //! @throw Arinc665::Arinc665Exception when PartNumber attribute is missing or empty.
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "PartNumber attribute missing or empty" }
         << boost::errinfo_at_line{ dataFileNode->get_line() } );
@@ -595,7 +599,6 @@ void Arinc665XmlImpl::loadLoad(
 
     if ( !file )
     {
-      //! @throw Arinc665::Arinc665Exception when NameRef attribute does not reference file.
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "NameRef attribute does not reference file" }
         << boost::errinfo_at_line{ dataFileNode->get_line() } );
@@ -620,7 +623,6 @@ void Arinc665XmlImpl::loadLoad(
 
     if ( fileNameRef.empty() )
     {
-      //! @throw Arinc665::Arinc665Exception when NameRef attribute is missing or empty.
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "NameRef attribute missing or empty" }
         << boost::errinfo_at_line{ supportFileNode->get_line() } );
@@ -630,7 +632,6 @@ void Arinc665XmlImpl::loadLoad(
 
     if ( filePartNumber.empty() )
     {
-      //! @throw Arinc665::Arinc665Exception when PartNumber attribute is missing or empty.
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "PartNumber attribute missing or empty" }
         << boost::errinfo_at_line{ supportFileNode->get_line() } );
@@ -640,7 +641,6 @@ void Arinc665XmlImpl::loadLoad(
 
     if ( !file )
     {
-      //! @throw Arinc665::Arinc665Exception when NameRef attribute does not reference file.
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "NameRef attribute does not reference file" }
         << boost::errinfo_at_line{ supportFileNode->get_line() } );

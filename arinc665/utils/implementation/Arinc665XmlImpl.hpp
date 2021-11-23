@@ -186,6 +186,8 @@ class Arinc665XmlImpl final : public Arinc665Xml
      *   When NameRef attribute is missing or empty.
      * @throw Arinc665::Arinc665Exception
      *   When NameRef attribute does not reference a load.
+     * @throw Arinc665::Arinc665Exception
+     *   When PartNumber attribute is missing or empty.
      **/
     void loadLoad(
      const  Media::MediaSetPtr &mediaSet,
