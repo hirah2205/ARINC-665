@@ -67,7 +67,10 @@ int main( int argc, char ** argv)
       mediaSetConfig.string(),
       config);
 
-    auto configDir{ std::filesystem::absolute( mediaSetConfig.parent_path() ) };
+    auto configDir{
+      mediaSetConfig.has_parent_path() ?
+        std::filesystem::absolute( mediaSetConfig.parent_path() ) :
+        std::filesystem::current_path() };
     Arinc665::Utils::MediaSetConfiguration mediaSetConfiguration{ config };
 
     auto mediaSetManager{ Arinc665::Utils::MediaSetManager::instance(
