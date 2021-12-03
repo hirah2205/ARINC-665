@@ -43,7 +43,6 @@ endif()
 
 enable_testing()
 
-# GNU Style Installation Directories
 include( GNUInstallDirs )
 
 # get dependencies
@@ -88,7 +87,11 @@ add_subdirectory( arinc665_doc )
 
 add_subdirectory( test )
 
-install( FILES LICENSE TYPE DOC RENAME ${PROJECT_NAME}.LICENSE )
+install(
+  FILES LICENSE
+  RENAME ${PROJECT_NAME}.LICENSE
+  TYPE DOC
+  COMPONENT runtime )
 
 set( CPACK_GENERATOR ZIP )
 set( CPACK_PACKAGE_DESCRIPTION_SUMMARY ${PROJECT_DESCRIPTION} )

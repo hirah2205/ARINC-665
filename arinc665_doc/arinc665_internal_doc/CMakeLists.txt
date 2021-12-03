@@ -67,9 +67,11 @@ install(
   DIRECTORY
     ${CMAKE_CURRENT_BINARY_DIR}/html
   DESTINATION ${CMAKE_INSTALL_DOCDIR}/arinc665_internal_doc
+  COMPONENT development
   OPTIONAL )
 
 install(
   FILES ${CMAKE_CURRENT_BINARY_DIR}/index.html
   DESTINATION ${CMAKE_INSTALL_DOCDIR}/arinc665_internal_doc
+  COMPONENT development
   OPTIONAL )

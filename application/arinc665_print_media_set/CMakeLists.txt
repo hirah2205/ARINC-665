@@ -12,4 +12,4 @@ target_sources( arinc665_print_media_set PRIVATE arinc665_print_media_set.cpp )
 
 target_link_libraries( arinc665_print_media_set arinc665 )
 
-install( TARGETS arinc665_print_media_set )
+install( TARGETS arinc665_print_media_set COMPONENT runtime )

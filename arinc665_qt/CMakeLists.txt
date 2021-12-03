@@ -29,7 +29,9 @@ target_sources(
     MediaSetDialog.cpp
     MediaSetDialog.ui )
 
-target_include_directories( arinc665_qt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/.. )
+target_include_directories(
+  arinc665_qt
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> )
 
 target_compile_features( arinc665_qt PUBLIC cxx_std_20 )
 
@@ -42,10 +44,20 @@ target_link_libraries(
 
 add_subdirectory( media )
 
-install( TARGETS arinc665_qt EXPORT arinc665_qt-config )
+install(
+  TARGETS arinc665_qt
+  EXPORT arinc665_qt-config
+  COMPONENT runtime
+  ARCHIVE COMPONENT development )
 
 install(
   DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   TYPE INCLUDE
+  COMPONENT development
   FILES_MATCHING
-  PATTERN "*.hpp" )
+    PATTERN "*.hpp" )
+
+install(
+  EXPORT arinc665_qt-config
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
+  COMPONENT development )

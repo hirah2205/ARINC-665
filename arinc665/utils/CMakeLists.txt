@@ -34,6 +34,7 @@ target_sources(
 install(
   FILES
     MediaSetConfiguration.template.json
-  TYPE DOC )
+  TYPE DOC
+  COMPONENT runtime )
 
 add_subdirectory( implementation )

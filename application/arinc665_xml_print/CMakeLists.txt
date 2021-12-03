@@ -12,4 +12,4 @@ target_sources( arinc665_xml_print PRIVATE arinc665_xml_print.cpp )
 
 target_link_libraries( arinc665_xml_print arinc665 )
 
-install( TARGETS arinc665_xml_print )
+install( TARGETS arinc665_xml_print COMPONENT runtime )

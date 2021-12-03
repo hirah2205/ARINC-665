@@ -14,4 +14,4 @@ target_sources(
 
 target_link_libraries( arinc665_test_media_set_manager PRIVATE arinc665 )
 
-install( TARGETS arinc665_test_media_set_manager )
+install( TARGETS arinc665_test_media_set_manager COMPONENT runtime )
