@@ -124,6 +124,7 @@ add_subdirectory( utils )
 
 install(
   TARGETS arinc665
+  RUNTIME_DEPENDENCY_SET runtime-libs
   EXPORT arinc665-config
   COMPONENT runtime
   ARCHIVE COMPONENT development )
