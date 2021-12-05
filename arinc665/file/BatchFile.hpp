@@ -137,10 +137,10 @@ class BatchFile: public Arinc665File
      * @param[in] partNumber
      *   The new part number.
      **/
-    void partNumber( std::string_view partNumber);
+    void partNumber( std::string_view partNumber );
 
     //! @copydoc partNumber(std::string_view)
-    void partNumber( std::string &&partNumber);
+    void partNumber( std::string &&partNumber );
 
     /** @} **/
 
@@ -162,10 +162,10 @@ class BatchFile: public Arinc665File
      * @param[in] comment
      *   The new comment text.
      **/
-    void comment( std::string_view comment);
+    void comment( std::string_view comment );
 
     //! @copydoc comment(std::string_view)
-    void comment( std::string &&comment);
+    void comment( std::string &&comment );
 
     /** @} **/
 

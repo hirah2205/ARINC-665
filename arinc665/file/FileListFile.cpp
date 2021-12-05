@@ -61,7 +61,7 @@ FileListFile::FileListFile(
 FileListFile::FileListFile( const ConstRawFileSpan &rawFile):
   ListFile{ rawFile, FileType::FileList }
 {
-  decodeBody( rawFile);
+  decodeBody( rawFile );
 }
 
 FileListFile& FileListFile::operator=( const ConstRawFileSpan &rawFile )
@@ -92,14 +92,14 @@ FilesInfo& FileListFile::files()
   return filesV;
 }
 
-void FileListFile::file( const FileInfo &file)
+void FileListFile::file( const FileInfo &file )
 {
   filesV.push_back( file);
 }
 
-void FileListFile::file( FileInfo &&file)
+void FileListFile::file( FileInfo &&file )
 {
-  filesV.push_back( std::move( file));
+  filesV.push_back( std::move( file ) );
 }
 
 
@@ -108,7 +108,7 @@ const FileListFile::UserDefinedData& FileListFile::userDefinedData() const
   return userDefinedDataV;
 }
 
-void FileListFile::userDefinedData( const UserDefinedData &userDefinedData)
+void FileListFile::userDefinedData( const UserDefinedData &userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 
@@ -117,7 +117,7 @@ void FileListFile::userDefinedData( const UserDefinedData &userDefinedData)
   checkUserDefinedData();
 }
 
-void FileListFile::userDefinedData( UserDefinedData &&userDefinedData)
+void FileListFile::userDefinedData( UserDefinedData &&userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 
@@ -131,12 +131,12 @@ const std::optional< CheckValue>& FileListFile::checkValue() const
   return checkValueValue;
 }
 
-void FileListFile::checkValue( const std::optional< CheckValue> &value)
+void FileListFile::checkValue( const std::optional< CheckValue> &value )
 {
   checkValueValue = value;
 }
 
-void FileListFile::checkValue( std::optional< CheckValue> &&value)
+void FileListFile::checkValue( std::optional< CheckValue> &&value )
 {
   checkValueValue = std::move( value);
 }
@@ -163,7 +163,7 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
   {
     if (
       ( filesV[i].filename != otherFileList[i].filename ) ||
-      ( filesV[i].pathName != otherFileList[i].pathName ))
+      ( filesV[i].pathName != otherFileList[i].pathName ) )
     {
       return false;
     }
@@ -194,10 +194,10 @@ RawFile FileListFile::encode() const
 {
   BOOST_LOG_FUNCTION()
 
-  bool encodeV3Data{ false};
-  std::size_t baseSize{ 0};
+  bool encodeV3Data{ false };
+  std::size_t baseSize{};
 
-  switch ( arincVersion())
+  switch ( arincVersion() )
   {
     case SupportedArinc665Version::Supplement2:
       baseSize = FileHeaderSizeV2;
@@ -213,7 +213,7 @@ RawFile FileListFile::encode() const
         << Helper::AdditionalInfo{ "Unsupported ARINC 665 Version" } );
   }
 
-  RawFile rawFile( baseSize);
+  RawFile rawFile( baseSize );
 
 
   // spare field
@@ -236,8 +236,8 @@ RawFile FileListFile::encode() const
 
 
   // media set files list
-  const auto rawFilesInfo{ encodeFilesInfo( encodeV3Data )};
-  assert( rawFilesInfo.size() % 2 == 0);
+  const auto rawFilesInfo{ encodeFilesInfo( encodeV3Data ) };
+  assert( rawFilesInfo.size() % 2 == 0 );
 
   Helper::setInt< uint32_t>(
     rawFile.begin() + MediaSetFilesPointerFieldOffsetV2,
@@ -251,7 +251,7 @@ RawFile FileListFile::encode() const
   assert( userDefinedDataV.size() % 2 == 0);
   uint32_t userDefinedDataPtr = 0;
 
-  if (!userDefinedDataV.empty())
+  if ( !userDefinedDataV.empty() )
   {
     userDefinedDataPtr = static_cast< uint32_t >( nextFreeOffset / 2U );
     nextFreeOffset += static_cast< ptrdiff_t>( userDefinedDataV.size() );
@@ -406,12 +406,19 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
 {
   BOOST_LOG_FUNCTION()
 
-  RawFile rawFilesInfo( sizeof( uint16_t));
+  RawFile rawFilesInfo( sizeof( uint16_t) );
+
+  // Number of files must not exceed field
+  if ( filesV.size() > std::numeric_limits< uint16_t>::max() )
+  {
+    BOOST_THROW_EXCEPTION( InvalidArinc665File()
+      << Helper::AdditionalInfo{ "More files than allowed" } );
+  }
 
   // number of files
   Helper::setInt< uint16_t>(
     rawFilesInfo.begin(),
-    static_cast< uint16_t >( numberOfFiles() ) );
+    static_cast< uint16_t >( filesV.size() ) );
 
   // iterate over files
   uint16_t fileCounter{ 0 };
@@ -498,7 +505,23 @@ void FileListFile::decodeFilesInfo(
     uint16_t filePointer{};
     listIt = Helper::getInt< uint16_t>( listIt, filePointer);
 
-    //! @todo check pointer for != 0 (all except last ==> OK, last ==> error)
+    // check file pointer for validity
+    if ( fileIndex != numberOfFiles - 1U )
+    {
+      if ( filePointer == 0U )
+      {
+        BOOST_THROW_EXCEPTION( InvalidArinc665File()
+          << Helper::AdditionalInfo{ "next file pointer is 0" } );
+      }
+    }
+    else
+    {
+      if ( filePointer != 0U )
+      {
+        BOOST_THROW_EXCEPTION( InvalidArinc665File()
+          << Helper::AdditionalInfo{ "next file pointer is not 0" } );
+      }
+    }
 
     // filename
     std::string filename{};
@@ -514,7 +537,7 @@ void FileListFile::decodeFilesInfo(
     if ( ( memberSequenceNumber < 1U ) || ( memberSequenceNumber > 255U ) )
     {
       BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << Helper::AdditionalInfo( "member sequence number out of range" ) );
+      << Helper::AdditionalInfo{ "member sequence number out of range" } );
     }
 
     // crc

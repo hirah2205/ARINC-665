@@ -107,14 +107,14 @@ BatchTargetsInfo& BatchFile::targetsHardware()
   return targetsHardwareV;
 }
 
-void BatchFile::targetHardware( const BatchTargetInfo &targetHardwareInfo)
+void BatchFile::targetHardware( const BatchTargetInfo &targetHardwareInfo )
 {
-  targetsHardwareV.push_back( targetHardwareInfo);
+  targetsHardwareV.push_back( targetHardwareInfo );
 }
 
 void BatchFile::targetHardware( BatchTargetInfo &&targetHardwareInfo)
 {
-  targetsHardwareV.push_back( targetHardwareInfo);
+  targetsHardwareV.push_back( targetHardwareInfo );
 }
 
 RawFile BatchFile::encode() const
@@ -145,19 +145,19 @@ RawFile BatchFile::encode() const
 
 
   // THW ID load list
-  auto rawThwIdsList{ encodeBatchTargetsInfo()};
-  assert( rawThwIdsList.size() % 2 == 0);
+  auto rawThwIdsList{ encodeBatchTargetsInfo() };
+  assert( rawThwIdsList.size() % 2 == 0 );
 
   Helper::setInt< uint32_t>(
     rawFile.begin() + ThwIdsPointerFieldOffsetV2,
-    nextFreeOffset / 2);
+    nextFreeOffset / 2 );
   // nextFreeOffset += rawThwIdsList.size();
 
   rawFile.insert( rawFile.end(), rawThwIdsList.begin(), rawThwIdsList.end() );
 
 
   // Resize file for file CRC
-  rawFile.resize( rawFile.size() + sizeof( uint16_t) );
+  rawFile.resize( rawFile.size() + sizeof( uint16_t ) );
 
   // set header and crc
   insertHeader( rawFile );
@@ -174,7 +174,7 @@ void BatchFile::decodeBody( const ConstRawFileSpan &rawFile )
   if ( 0U != spare )
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << Helper::AdditionalInfo( "Spare is not 0" ) );
+      << Helper::AdditionalInfo{ "Spare is not 0" } );
   }
 
   uint32_t batchPartNumberPtr{};
@@ -200,16 +200,24 @@ void BatchFile::decodeBody( const ConstRawFileSpan &rawFile )
 
 RawFile BatchFile::encodeBatchTargetsInfo() const
 {
-  RawFile rawBatchTargetsInfo( sizeof(uint16_t)); // Number of THW IDs
+  BOOST_LOG_FUNCTION()
 
-  // number of THW IDs TODO: Check for maximum number of entries.
+  RawFile rawBatchTargetsInfo( sizeof( uint16_t ) ); // Number of THW IDs
+
+  // Number of targets must not exceed field
+  if ( targetsHardwareV.size() > std::numeric_limits< uint16_t>::max() )
+  {
+    BOOST_THROW_EXCEPTION( InvalidArinc665File()
+      << Helper::AdditionalInfo{ "More THW IDs than allowed" } );
+  }
+
   Helper::setInt< uint16_t>(
     rawBatchTargetsInfo.begin(),
-    Helper::safeCast< uint16_t>( targetsHardwareV.size()));
+    Helper::safeCast< uint16_t>( targetsHardwareV.size() ) );
 
   // iterate over target HWs
   uint16_t thwCounter{ 0};
-  for ( auto const &targetHardwareInfo : targetsHardwareV)
+  for ( auto const &targetHardwareInfo : targetsHardwareV )
   {
     ++thwCounter;
 
@@ -239,25 +247,25 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
     assert( rawLoadsInfo.size() % 2 == 0);
 
     RawFile rawBatchTargetInfo(
-      sizeof( uint16_t) + // next THW ID pointer
+      sizeof( uint16_t ) + // next THW ID pointer
       rawThwIdPosition.size() +
-      sizeof( uint16_t) + // number of loads
-      rawLoadsInfo.size());
+      sizeof( uint16_t ) + // number of loads
+      rawLoadsInfo.size() );
 
-    auto batchTargetInfoIt{ rawBatchTargetInfo.begin()};
+    auto batchTargetInfoIt{ rawBatchTargetInfo.begin() };
 
     // next load pointer (is set to 0 for last load)
     batchTargetInfoIt = Helper::setInt< uint16_t>(
       batchTargetInfoIt,
-      (thwCounter == targetsHardwareV.size()) ?
-        (0U) :
-        Helper::safeCast< uint16_t>( rawBatchTargetInfo.size() / 2));
+      ( thwCounter == targetsHardwareV.size() ) ?
+        ( 0U ) :
+        Helper::safeCast< uint16_t>( rawBatchTargetInfo.size() / 2 ) );
 
     // THW ID
     batchTargetInfoIt = std::copy(
       rawThwIdPosition.begin(),
       rawThwIdPosition.end(),
-      batchTargetInfoIt);
+      batchTargetInfoIt );
 
     // Number of Loads
     batchTargetInfoIt = Helper::setInt< uint16_t>(
@@ -265,13 +273,13 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
       Helper::safeCast< uint16_t>( targetHardwareInfo.loads.size() ) );
 
     // Loads list
-    std::copy( rawLoadsInfo.begin(), rawLoadsInfo.end(), batchTargetInfoIt);
+    std::copy( rawLoadsInfo.begin(), rawLoadsInfo.end(), batchTargetInfoIt );
 
     // add THW info to files info
     rawBatchTargetsInfo.insert(
       rawBatchTargetsInfo.end(),
       rawBatchTargetInfo.begin(),
-      rawBatchTargetInfo.end());
+      rawBatchTargetInfo.end() );
   }
 
   return rawBatchTargetsInfo;
@@ -290,7 +298,7 @@ void BatchFile::decodeBatchTargetsInfo(
 
   // number of target HW IDs
   uint16_t numberOfTargetHardwareIds{};
-  it = Helper::getInt< uint16_t>( it, numberOfTargetHardwareIds);
+  it = Helper::getInt< uint16_t>( it, numberOfTargetHardwareIds );
 
   // iterate over THW ID index
   for (
@@ -298,11 +306,29 @@ void BatchFile::decodeBatchTargetsInfo(
     thwIdIndex < numberOfTargetHardwareIds;
     ++thwIdIndex )
   {
-    auto listIt{ it};
+    auto listIt{ it };
 
     // next THW ID pointer
     uint16_t thwIdPointer{};
-    listIt = Helper::getInt< uint16_t>( listIt, thwIdPointer);
+    listIt = Helper::getInt< uint16_t>( listIt, thwIdPointer );
+
+    // check file pointer for validity
+    if ( thwIdIndex != numberOfTargetHardwareIds - 1U )
+    {
+      if ( thwIdPointer == 0U )
+      {
+        BOOST_THROW_EXCEPTION( InvalidArinc665File()
+          << Helper::AdditionalInfo{ "next THW ID pointer is 0" } );
+      }
+    }
+    else
+    {
+      if ( thwIdPointer != 0U )
+      {
+        BOOST_THROW_EXCEPTION( InvalidArinc665File()
+          << Helper::AdditionalInfo{ "next THW ID pointer is not 0" } );
+      }
+    }
 
     // THW ID
     std::string thwId{};
@@ -313,23 +339,23 @@ void BatchFile::decodeBatchTargetsInfo(
 
     // number of loads
     uint16_t numberOfLoads{};
-    listIt = Helper::getInt< uint16_t>( listIt, numberOfLoads);
+    listIt = Helper::getInt< uint16_t>( listIt, numberOfLoads );
 
     // iterate over load index
-    for ( unsigned int loadIndex = 0U; loadIndex < numberOfLoads; ++loadIndex)
+    for ( uint16_t loadIndex = 0U; loadIndex < numberOfLoads; ++loadIndex )
     {
       // header filename
       std::string filename{};
-      listIt = decodeString( listIt, filename);
+      listIt = decodeString( listIt, filename );
 
       // Load PN
       std::string partNumber{};
-      listIt = decodeString( listIt, partNumber);
+      listIt = decodeString( listIt, partNumber );
 
       // Batch Load info
       batchLoadsInfo.emplace_back( BatchLoadInfo{
-        std::move( filename),
-        std::move( partNumber) } );
+        std::move( filename ),
+        std::move( partNumber ) } );
     }
 
     // set it to begin of next file

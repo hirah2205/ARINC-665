@@ -255,12 +255,19 @@ RawFile LoadListFile::encodeLoadsInfo() const
 {
   BOOST_LOG_FUNCTION()
 
-  RawFile rawLoadsInfo( sizeof( uint16_t));
+  RawFile rawLoadsInfo( sizeof( uint16_t ) );
+
+  // Number of loads must not exceed field
+  if ( loadsV.size() > std::numeric_limits< uint16_t>::max() )
+  {
+    BOOST_THROW_EXCEPTION( InvalidArinc665File()
+      << Helper::AdditionalInfo{ "More loads than allowed" } );
+  }
 
   // number of loads
   Helper::setInt< uint16_t>(
     rawLoadsInfo.begin(),
-    static_cast< uint16_t >( numberOfLoads() ) );
+    static_cast< uint16_t >( loadsV.size() ) );
 
   // iterate over files
   uint16_t loadCounter( 0);
@@ -332,7 +339,23 @@ void LoadListFile::decodeLoadsInfo(
     uint16_t loadPointer{};
     listIt = Helper::getInt< uint16_t>( listIt, loadPointer);
 
-    //! @todo check pointer for != 0 (all except last ==> OK, last ==> error)
+    // check load pointer for validity
+    if ( loadIndex != numberOfLoads - 1U )
+    {
+      if ( loadPointer == 0U )
+      {
+        BOOST_THROW_EXCEPTION( InvalidArinc665File()
+          << Helper::AdditionalInfo{ "next load pointer is 0" } );
+      }
+    }
+    else
+    {
+      if ( loadPointer != 0U )
+      {
+        BOOST_THROW_EXCEPTION( InvalidArinc665File()
+          << Helper::AdditionalInfo{ "next load pointer is not 0" } );
+      }
+    }
 
     // part number
     std::string partNumber{};
@@ -348,11 +371,11 @@ void LoadListFile::decodeLoadsInfo(
     if ( ( fileMemberSequenceNumber < 1U ) || ( fileMemberSequenceNumber > 255U ) )
     {
       BOOST_THROW_EXCEPTION( InvalidArinc665File()
-        << Helper::AdditionalInfo( "member sequence number out of range" ) );
+        << Helper::AdditionalInfo{ "member sequence number out of range" } );
     }
 
     LoadInfo::ThwIds thwIds{};
-    listIt = Arinc665File::decodeStrings( listIt, thwIds );
+    Arinc665File::decodeStrings( listIt, thwIds );
 
     loadsV.emplace_back( LoadInfo{
       std::move( partNumber ),

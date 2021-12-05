@@ -715,7 +715,14 @@ RawFile LoadHeaderFile::encodeFileList(
 {
   BOOST_LOG_FUNCTION()
 
-  RawFile rawFileList( sizeof( uint16_t));
+  RawFile rawFileList( sizeof( uint16_t ) );
+
+  // Number of files must not exceed field
+  if ( loadFilesInfo.size() > std::numeric_limits< uint16_t>::max() )
+  {
+    BOOST_THROW_EXCEPTION( InvalidArinc665File()
+      << Helper::AdditionalInfo{ "More files than allowed" } );
+  }
 
   // number of loads
   Helper::setInt< uint16_t>(
@@ -838,6 +845,24 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
     // next file pointer
     uint16_t filePointer{};
     listIt = Helper::getInt< uint16_t>( listIt, filePointer );
+
+    // check file pointer for validity
+    if ( fileIndex != numberOfFiles - 1U )
+    {
+      if ( filePointer == 0U )
+      {
+        BOOST_THROW_EXCEPTION( InvalidArinc665File()
+          << Helper::AdditionalInfo{ "next file pointer is 0" } );
+      }
+    }
+    else
+    {
+      if ( filePointer != 0U )
+      {
+        BOOST_THROW_EXCEPTION( InvalidArinc665File()
+          << Helper::AdditionalInfo{ "next file pointer is not 0" } );
+      }
+    }
 
     // filename
     std::string name{};

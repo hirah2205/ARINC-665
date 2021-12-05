@@ -258,10 +258,17 @@ RawFile BatchListFile::encodeBatchesInfo() const
 
   RawFile rawBatchesInfo( sizeof( uint16_t ) );
 
+  // Number of batches must not exceed field
+  if ( batchesV.size() > std::numeric_limits< uint16_t>::max() )
+  {
+    BOOST_THROW_EXCEPTION( InvalidArinc665File()
+      << Helper::AdditionalInfo{ "More batches than allowed" } );
+  }
+
   // number of batches
   Helper::setInt< uint16_t>(
     rawBatchesInfo.begin(),
-    static_cast< uint16_t >( numberOfBatches() ) );
+    static_cast< uint16_t >( batchesV.size() ) );
 
   // iterate over batches
   uint16_t batchCounter{ 0 };
@@ -339,21 +346,37 @@ void BatchListFile::decodeBatchesInfo(
 
     // next batch pointer
     uint16_t batchPointer{};
-    listIt = Helper::getInt< uint16_t>( listIt, batchPointer);
+    listIt = Helper::getInt< uint16_t>( listIt, batchPointer );
 
-    //! @todo check pointer for != 0 (all except last ==> OK, last ==> error)
+    // check batch pointer for validity
+    if ( batchIndex != numberOfBatches - 1U )
+    {
+      if ( batchPointer == 0U )
+      {
+        BOOST_THROW_EXCEPTION( InvalidArinc665File()
+          << Helper::AdditionalInfo{ "next batch pointer is 0" } );
+      }
+    }
+    else
+    {
+      if ( batchPointer != 0U )
+      {
+        BOOST_THROW_EXCEPTION( InvalidArinc665File()
+          << Helper::AdditionalInfo{ "next batch pointer is not 0" } );
+      }
+    }
 
     // part number
     std::string partNumber{};
-    listIt = Arinc665File::decodeString( listIt, partNumber);
+    listIt = Arinc665File::decodeString( listIt, partNumber );
 
     // batch filename
     std::string filename{};
-    listIt = Arinc665File::decodeString( listIt, filename);
+    listIt = Arinc665File::decodeString( listIt, filename );
 
     // member sequence number
     uint16_t memberSequenceNumber{};
-    Helper::getInt< uint16_t>( listIt, memberSequenceNumber);
+    Helper::getInt< uint16_t>( listIt, memberSequenceNumber );
     if ( ( memberSequenceNumber < 1U ) || ( memberSequenceNumber > 255U ) )
     {
       BOOST_THROW_EXCEPTION( InvalidArinc665File()
