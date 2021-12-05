@@ -151,7 +151,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
         << boost::errinfo_file_name{ fileInfo.path().string() } );
     }
 
-    // TODO Check Value
+    //! @todo Check Value
 
     // remember file size
     fileSizes.emplace( fileName, rawFile.size() );
@@ -460,7 +460,7 @@ void MediaSetImporterImpl::addLoads()
           << boost::errinfo_file_name{ dataFile.filename } );
       }
 
-      // TODO Check Type Value ?!?
+      //! @todo Check Type Value ?!?
 
       loadPtr->dataFile( { dataFilePtr,  dataFile.partNumber } );
     }
@@ -514,7 +514,7 @@ void MediaSetImporterImpl::addLoads()
           << boost::errinfo_file_name{ supportFile.filename } );
       }
 
-      // TODO Check Type Value ?!?
+      //! @todo Check Type Value ?!?
 
       loadPtr->supportFile( { supportFilePtr, supportFile.partNumber } );
     }
