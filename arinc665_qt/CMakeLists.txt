@@ -46,6 +46,7 @@ add_subdirectory( media )
 
 install(
   TARGETS arinc665_qt
+  RUNTIME_DEPENDENCY_SET runtime-libs
   EXPORT arinc665_qt-config
   COMPONENT runtime
   ARCHIVE COMPONENT development )
