@@ -23,7 +23,9 @@
 namespace Arinc665 {
 
 //! ARINC 665 Exception.
-class Arinc665Exception: public virtual Helper::Exception
+class Arinc665Exception :
+  public std::exception,
+  public boost::exception
 {
   public:
     /**
@@ -37,7 +39,7 @@ class Arinc665Exception: public virtual Helper::Exception
 };
 
 //! Invalid ARINC 665 %File Exception.
-class InvalidArinc665File: public virtual Arinc665Exception
+class InvalidArinc665File : public Arinc665Exception
 {
   public:
     /**
