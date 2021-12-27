@@ -50,7 +50,7 @@ class MediaSetConfiguration
      * @brief Loads the media set configuration form the given property tree.
      *
      * @param[in] ptree
-     *   The ptree to fromProperties the config from
+     *   The ptree to read the config from
      **/
     void fromProperties( const boost::property_tree::ptree &ptree );
 
