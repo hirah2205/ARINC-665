@@ -38,7 +38,7 @@
 *
 * @return The success state of this operation.
 **/
-int main( int argc, char * argv[]);
+int main( int argc, char * argv[] );
 
 /**
  * @brief Reads the give file and returns the data.
@@ -55,9 +55,9 @@ int main( int argc, char * argv[]);
  **/
 static Arinc665::File::RawFile readFile(
   uint8_t mediumNumber,
-  const std::filesystem::path &path);
+  const std::filesystem::path &path );
 
-static void printInformation( std::string_view information);
+static void printInformation( std::string_view information );
 
 //! Media Directories
 static std::vector< std::filesystem::path> mediaDirectories;
@@ -72,7 +72,7 @@ static std::vector< std::filesystem::path> mediaDirectories;
  *
  * # verbose options print file-contents
  **/
-int main( int argc, char * argv[])
+int main( int argc, char * argv[] )
 {
   boost::program_options::options_description optionsDescription(
     "ARINC 665 Media Set Validator Options");

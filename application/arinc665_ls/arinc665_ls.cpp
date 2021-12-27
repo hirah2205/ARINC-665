@@ -97,7 +97,7 @@ int main( int argc, char const * argv[])
     "ARINC 665 List options"};
 
   // directory to list
-  std::filesystem::path directory;
+  std::filesystem::path directory{};
 
   options.add_options()
   (
@@ -114,7 +114,7 @@ int main( int argc, char const * argv[])
   {
     boost::program_options::variables_map vm;
     boost::program_options::store(
-      boost::program_options::parse_command_line( argc, argv, options),
+      boost::program_options::parse_command_line( argc, argv, options ),
       vm);
 
     if ( vm.count( "help") != 0)
@@ -125,25 +125,25 @@ int main( int argc, char const * argv[])
       return EXIT_FAILURE;
     }
 
-    boost::program_options::notify( vm);
+    boost::program_options::notify( vm );
 
     std::cout << "List files in " << directory << "\n";
 
     list_files( directory);
   }
-  catch ( boost::program_options::error &e)
+  catch ( boost::program_options::error &e )
   {
     std::cout
       << "Error parsing command line: " << e.what() << "\n"
       << "Enter " << argv[0] << " --help for command line description\n";
     return EXIT_FAILURE;
   }
-  catch ( boost::exception &e)
+  catch ( boost::exception &e )
   {
     std::cout << "Error: " << boost::diagnostic_information( e) << "\n";
     return EXIT_FAILURE;
   }
-  catch ( std::exception &e)
+  catch ( std::exception &e )
   {
     std::cout << "Error: " << e.what() << "\n";
     return EXIT_FAILURE;
@@ -157,7 +157,7 @@ int main( int argc, char const * argv[])
   return EXIT_SUCCESS;
 }
 
-static void list_lub( const std::filesystem::path &lubFile)
+static void list_lub( const std::filesystem::path &lubFile )
 {
   try
   {

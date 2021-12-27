@@ -186,6 +186,8 @@ class Load: public BaseFile
 
     /**
      * @name Data Files
+     * A (data) file is a pair of file and part number.
+     *
      * @{
      **/
 
@@ -213,6 +215,8 @@ class Load: public BaseFile
 
     /**
      * @name Support Files
+     * A (Support) file is a pair of file and part number.
+     *
      * @{
      **/
 

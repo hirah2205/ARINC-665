@@ -21,6 +21,7 @@
 #include <arinc665/media/MediaSet.hpp>
 
 #include <arinc665/utils/MediaSetImporter.hpp>
+#include <arinc665/utils/Printer.hpp>
 
 #include <helper/Dump.hpp>
 #include <helper/Logger.hpp>
@@ -61,14 +62,6 @@ int main( int argc, char const * argv[]);
 static Arinc665::Media::MediaSetPtr loadMediaSet(
   const Directories &mediaSetDirectories,
   bool checkFileIntegrity );
-
-/**
- * @brief Decodes an prints the content of the Media Set.
- *
- * @param[in] mediaSet
- *   The media set to print.
- **/
-static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet );
 
 int main( int argc, char const * argv[] )
 {
@@ -115,13 +108,13 @@ int main( int argc, char const * argv[] )
       return EXIT_FAILURE;
     }
 
-    boost::program_options::notify( vm);
+    boost::program_options::notify( vm );
 
     std::cout << "\n" << "Load Media Set\n";
     auto mediaSet{ loadMediaSet( directories, checkFileIntegrity ) };
 
     std::cout << "\n" << "Print Media Set\n";
-    printMediaSet( mediaSet);
+    Arinc665::Utils::printMediaSet( mediaSet, std::cout, "  ", "  " );
   }
   catch ( boost::program_options::error &e)
   {
@@ -207,97 +200,4 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
       << std::dec << (int)mediaSet->numberOfMedia() << "\n";
 
   return mediaSet;
-}
-
-static void printMediaSet( Arinc665::Media::MediaSetPtr &mediaSet)
-{
-  std::cout << "Media Set \"" << mediaSet->partNumber() << "\"\n";
-
-  // iterate over files
-  std::cout << " * Files " << "\n";
-
-  for ( auto const &file : mediaSet->files() )
-  {
-    std::cout << "   * File " << file->path().generic_string() << " (";
-    switch ( file->fileType() )
-    {
-      case Arinc665::Media::BaseFile::FileType::RegularFile:
-        std::cout << "Regular File";
-        break;
-
-      case Arinc665::Media::BaseFile::FileType::BatchFile:
-        std::cout << "Batch File";
-        break;
-
-      case Arinc665::Media::BaseFile::FileType::LoadFile:
-        std::cout << "Load Header File";
-        break;
-
-      default:
-        std::cout << "Illegal Value";
-        break;
-    }
-    std::cout << ")\n";
-  }
-
-  // iterate over loads
-  std::cout << " * Loads " << "\n";
-
-  for ( auto const &load : mediaSet->loads())
-  {
-    std::cout
-      << "   * Load " << load->name() << " " << load->partNumber() << "\n";
-
-    std::cout << "       Compatible THW IDs\n";
-    // iterate over THW ID list
-    for ( auto const &[thwId,positions] : load->targetHardwareIdPositions() )
-    {
-      std::cout << "        * " << thwId << "\n";
-
-      for ( auto const &position : positions )
-      {
-        std::cout << "          * " << position << "\n";
-      }
-    }
-
-    std::cout << "       Data Files\n";
-    // iterate over Data Files
-    for ( const auto & dataFile : load->dataFiles())
-    {
-      std::cout
-        << "        * "
-        << dataFile.first.lock()->name() << " "
-        << dataFile.second << "\n";
-    }
-
-    std::cout << "       Support Files\n";
-    // iterate over Support Files
-    for ( const auto & supportFile : load->supportFiles())
-    {
-      std::cout
-        << "        * "
-        << supportFile.first.lock()->name() << " "
-        << supportFile.second << "\n";
-    }
-  }
-
-  // iterate over Batches
-  std::cout << " * Batches " << "\n";
-
-  for ( auto const &batch : mediaSet->batches())
-  {
-    std::cout
-      << "   * Batch " << batch->name() << " " << batch->partNumber() << " " << batch->comment() << "\n";
-
-    std::cout << "       Targets\n";
-    // iterate over Target list
-    for ( auto const & [target,loads] : batch->targets())
-    {
-      std::cout << "        * " << target << "\n";
-      for ( const auto &load : loads )
-      {
-        std::cout << "          * " << load.lock()->name() << "\n";
-      }
-    }
-  }
 }
