@@ -35,26 +35,38 @@ void MediaSetConfiguration::fromProperties(
     std::filesystem::current_path() );
 
   // iterate over media sets
-  for ( auto &mediaSetConfig : ptree.get_child( "media_sets" ) )
+  if ( const auto mediaSetsConfig{ ptree.get_child_optional( "media_sets" ) };
+       mediaSetsConfig )
   {
-    auto mediaSetPath{
-      mediaSetConfig.second.get< std::string>( "path" ) };
-
-    MediaPaths mediaPaths{};
-
-    // iterate over media
-    for ( auto &mediumConfig : mediaSetConfig.second.get_child( "media" ) )
+    for ( auto &mediaSetConfig : *mediaSetsConfig )
     {
-      auto mediumNumber{ mediumConfig.second.get< unsigned int>( "number" ) };
-      auto mediumPath{ mediumConfig.second.get< std::filesystem::path>( "path" ) };
+      auto mediaSetPath{
+        mediaSetConfig.second.get< std::string>( "path", {} ) };
 
-      mediaPaths.emplace(
-        static_cast< uint8_t>( mediumNumber ),
-        std::move( mediumPath ) );
+      MediaPaths mediaPaths{};
+
+      // iterate over media
+      if ( const auto mediaConfigs{ mediaSetConfig.second.get_child_optional( "media" ) };
+           mediaConfigs )
+      {
+        for ( auto &mediumConfig : *mediaConfigs )
+        {
+          auto mediumNumber{
+            mediumConfig.second.get< unsigned int >( "number" ) };
+          auto mediumPath{
+            mediumConfig.second.get< std::filesystem::path >( "path" ) };
+
+          mediaPaths.emplace(
+            static_cast< uint8_t >( mediumNumber ),
+            std::move( mediumPath ) );
+        }
+      }
+
+      // insert media set configuration
+      mediaSets.emplace_back(
+        std::move( mediaSetPath ),
+        std::move( mediaPaths ) );
     }
-
-    // insert media set configuration
-    mediaSets.emplace_back( std::move( mediaSetPath ), std::move( mediaPaths ) );
   }
 }
 
