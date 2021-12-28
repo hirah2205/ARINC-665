@@ -30,7 +30,7 @@ class MediaSetConfiguration
 {
   public:
     //! media-to-path mapping (Medium Number -> Path)
-    using MediaPaths = std::map< uint8_t, std::filesystem::path>;
+    using MediaPaths = std::map< uint8_t, std::filesystem::path> ;
     //! List of Media Sets (Media Set Path, Media Paths)
     using MediaSets = std::list< std::pair< std::string, MediaPaths > >;
 
