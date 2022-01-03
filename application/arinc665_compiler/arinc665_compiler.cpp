@@ -54,7 +54,7 @@
  *
  * @return Success state of this operation.
  **/
-int main( int argc, char ** argv);
+int main( int argc, char * argv[] );
 
 /**
  * @brief Returns the medium path.
@@ -76,7 +76,7 @@ static std::filesystem::path mediumPath(
  **/
 static void createMedium(
   const std::filesystem::path &base,
-  Arinc665::Media::ConstMediumPtr medium);
+  Arinc665::Media::ConstMediumPtr medium );
 
 /**
  * @brief Creates the directory for the given directory.
@@ -110,7 +110,7 @@ static Arinc665::File::RawFile readFile(
   uint8_t mediumNumber,
   const std::filesystem::path &path );
 
-int main( int argc, char ** argv )
+int main( int argc, char * argv[] )
 {
   BOOST_LOG_FUNCTION()
 
@@ -124,11 +124,11 @@ int main( int argc, char ** argv )
     "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::NoneExisting)} + "': Create none-existing\n" +
     "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::All)} + "': Create all" };
 
-  auto versionDes{ Arinc665::SupportedArinc665VersionDescription::instance()};
+  auto versionDes{ Arinc665::SupportedArinc665VersionDescription::instance() };
 
   const std::string versionValues{
-    "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement2)} +   "': ARINC 665-2\n" +
-    "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement345 )} +  "': ARINC 665-3/4/5" };
+    "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement2 ) } +   "': ARINC 665-2\n" +
+    "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement345 ) } +  "': ARINC 665-3/4/5" };
 
   // Media Set XML file
   std::filesystem::path mediaSetXmlFile;
@@ -156,36 +156,36 @@ int main( int argc, char ** argv )
   )
   (
     "xml-file",
-    boost::program_options::value( &mediaSetXmlFile)->required(),
+    boost::program_options::value( &mediaSetXmlFile )->required(),
     "ARINC 665 media set description file"
   )
   (
     "source-directory",
-    boost::program_options::value( &mediaSetSourceDirectory)->required(),
+    boost::program_options::value( &mediaSetSourceDirectory )->required(),
     "ARINC 665 source directory"
   )
   (
     "destination-directory",
-    boost::program_options::value( &mediaSetDestinationDirectory)->required(),
+    boost::program_options::value( &mediaSetDestinationDirectory )->required(),
     "Output directory for ARINC 665 media set"
   )
   (
     "create-batch-files",
     boost::program_options::value(
-      &createBatchFiles)->default_value( Arinc665::Utils::FileCreationPolicy::None),
-    (std::string( "batch-files creation policy:\n") + fileCreationPolicyValues).c_str()
+      &createBatchFiles )->default_value( Arinc665::Utils::FileCreationPolicy::None ),
+    ( std::string( "batch-files creation policy:\n" ) + fileCreationPolicyValues ).c_str()
   )
   (
     "create-load-header-files",
     boost::program_options::value( &createLoadHeaderFiles)->default_value(
-      Arinc665::Utils::FileCreationPolicy::None),
-    (std::string( "Load-headers-files creation policy:\n") + fileCreationPolicyValues).c_str()
+      Arinc665::Utils::FileCreationPolicy::None ),
+    ( std::string( "Load-headers-files creation policy:\n" ) + fileCreationPolicyValues).c_str()
   )
   (
     "version",
-    boost::program_options::value( &version)->default_value(
-      Arinc665::SupportedArinc665Version::Supplement2),
-    (std::string( "ARINC 665 Version:\n") + versionValues).c_str()
+    boost::program_options::value( &version )->default_value(
+      Arinc665::SupportedArinc665Version::Supplement2 ),
+    ( std::string( "ARINC 665 Version:\n" ) + versionValues ).c_str()
   );
 
   try
