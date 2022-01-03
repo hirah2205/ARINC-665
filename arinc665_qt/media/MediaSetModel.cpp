@@ -39,7 +39,7 @@ QModelIndex MediaSetModel::index(
   // check if model contains valid media set
   if ( !mediaSetV)
   {
-    return QModelIndex();
+    return {};
   }
 
   // if parent is invalid, it is automatically the media set
@@ -55,7 +55,7 @@ QModelIndex MediaSetModel::index(
       << "Invalid Model Index";
 
     // invalid model index
-    return QModelIndex();
+    return {};
   }
 
   // cast internal pointer of parent
@@ -66,7 +66,7 @@ QModelIndex MediaSetModel::index(
   {
     case Arinc665::Media::Base::Type::MediaSet:
       // all children of media set are media (+1 because media are 1-indexed)
-      return createIndex( row, column, mediaSetV->medium( row+1U).get());
+      return createIndex( row, column, mediaSetV->medium( row+1U ).get() );
 
     case Arinc665::Media::Base::Type::Medium:
     case Arinc665::Media::Base::Type::Directory:
@@ -93,22 +93,22 @@ QModelIndex MediaSetModel::index(
 
     default:
       // Should not happen
-      return QModelIndex();
+      return {};
   }
 }
 
 QModelIndex MediaSetModel::parent( const QModelIndex &index) const
 {
   // invalid index has no parent
-  if (!index.isValid())
+  if ( !index.isValid() )
   {
-    return QModelIndex();
+    return {};
   }
 
   if ( index.internalPointer() == nullptr)
   {
     // invalid model index
-    return QModelIndex();
+    return {};
   }
 
   auto * base{ static_cast< Arinc665::Media::Base *>( index.internalPointer())};
@@ -117,7 +117,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index) const
   {
     case Arinc665::Media::Base::Type::MediaSet:
       // The media set has no parent
-      return QModelIndex();
+      return {};
 
     case Arinc665::Media::Base::Type::Medium:
      // A medium has the single media set as parent.
@@ -166,7 +166,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index) const
 
       auto subDirs{ grandParent->subDirectories()};
 
-      // find index of parent in grand-parent list
+      // find index of parent in grandparent list
       auto pos{ std::find( subDirs.begin(), subDirs.end(), file->parent())};
 
       return createIndex(
@@ -179,20 +179,20 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index) const
       // Should not happen
       BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error)
         << "Invalid Container Type";
-      return QModelIndex();
+      return {};
   }
 }
 
 bool MediaSetModel::hasChildren( const QModelIndex &parent) const
 {
   // First level (media set)
-  if (!parent.isValid())
+  if ( !parent.isValid() )
   {
     // return true, if a media set is assigned
-    return static_cast< bool>( mediaSetV);
+    return static_cast< bool>( mediaSetV );
   }
 
-  if( parent.internalPointer() == nullptr)
+  if ( parent.internalPointer() == nullptr )
   {
     return false;
   }
@@ -281,24 +281,24 @@ int MediaSetModel::rowCount( const QModelIndex &parent) const
 
 int MediaSetModel::columnCount( const QModelIndex & /*parent*/) const
 {
-  return static_cast< int>( Columns::Last);
+  return static_cast< int>( Columns::Last );
 }
 
 QVariant MediaSetModel::data( const QModelIndex & index, int role) const
 {
   if ( !index.isValid())
   {
-    return QVariant();
+    return {};
   }
 
   if ( role != Qt::DisplayRole)
   {
-    return QVariant();
+    return {};
   }
 
   if( index.internalPointer() == nullptr)
   {
-    return QVariant();
+    return {};
   }
 
   auto * base{ static_cast< Arinc665::Media::Base *>( index.internalPointer())};
@@ -313,19 +313,19 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role) const
 
         case Arinc665::Media::Base::Type::Medium:
         {
-          auto * medium{ static_cast< Arinc665::Media::Medium *>( base)};
+          auto * medium{ dynamic_cast< Arinc665::Media::Medium *>( base)};
           return medium->mediumNumber();
         }
 
         case Arinc665::Media::Base::Type::Directory:
         {
-          auto * directory{ static_cast< Arinc665::Media::Directory *>( base)};
+          auto * directory{ dynamic_cast< Arinc665::Media::Directory *>( base)};
           return QString::fromUtf8( directory->name().data(), static_cast< int >( directory->name().length() ) );
         }
 
         case Arinc665::Media::Base::Type::File:
         {
-          auto * file{ static_cast< Arinc665::Media::BaseFile *>( base)};
+          auto * file{ dynamic_cast< Arinc665::Media::BaseFile *>( base)};
           return QString::fromUtf8( file->name().data(), static_cast< int >( file->name().length() ) );
         }
 
@@ -367,12 +367,12 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role) const
 
         default:
           // Should never happen
-          return QVariant();
+          return {};
       }
       /* no break -because inner switch always returns */
 
     default:
-      return QVariant();
+      return {};
   }
 }
 
@@ -383,12 +383,12 @@ QVariant MediaSetModel::headerData(
 {
   if ( orientation == Qt::Vertical)
   {
-    return QVariant();
+    return {};
   }
 
   if ( role != Qt::DisplayRole)
   {
-    return QVariant();
+    return {};
   }
 
   switch ( Columns{ section})
@@ -400,7 +400,7 @@ QVariant MediaSetModel::headerData(
       return QString( "Type");
 
     default:
-      return QVariant();
+      return {};
   }
 }
 
