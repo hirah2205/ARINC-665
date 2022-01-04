@@ -71,7 +71,6 @@ using ConstDirectories = std::list< ConstDirectoryPtr >;
 //! Directories (List)
 using Directories = std::list< DirectoryPtr >;
 
-class PartNumberEntity;
 class BaseFile;
 class File;
 class Load;
@@ -91,13 +90,13 @@ using ConstFilePtr = std::shared_ptr< const BaseFile> ;
 //! Pointer to BaseFile
 using FilePtr = std::shared_ptr< BaseFile>;
 
-//! constant load Pointer
+//! Constant Load Pointer
 using ConstLoadPtr = std::shared_ptr< const Load>;
-//! load pointer
+//! Load Pointer
 using LoadPtr = std::shared_ptr< Load>;
-//! loads list
+//! Loads List
 using Loads = std::list< LoadPtr>;
-//! constant loads list
+//! Constant Loads List
 using ConstLoads = std::list< ConstLoadPtr>;
 //! Weak Loads List
 using WeakLoads = std::list< LoadPtr::weak_type >;
