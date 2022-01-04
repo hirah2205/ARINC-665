@@ -39,7 +39,7 @@ class MediaSetWidget: public QWidget
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit MediaSetWidget( QWidget *parent = nullptr);
+    explicit MediaSetWidget( QWidget *parent = nullptr );
 
     //! Destructor
     ~MediaSetWidget() override;
@@ -53,7 +53,9 @@ class MediaSetWidget: public QWidget
      * @param[in] mediaSet
      *   Selected Media Set
      **/
-    void selectedMediaSet( MediaSetModel * model, Arinc665::Media::MediaSetPtr mediaSet);
+    void selectedMediaSet(
+      Arinc665Qt::Media::MediaSetModel * model,
+      Arinc665::Media::MediaSetPtr mediaSet );
 
   private:
     //! UI (designer)

@@ -27,7 +27,7 @@ BatchWidget::BatchWidget( QWidget * const parent):
 BatchWidget::~BatchWidget() = default;
 
 void BatchWidget::selectedBatch(
-  MediaSetModel * const model,
+  Arinc665Qt::Media::MediaSetModel * const model,
   Arinc665::Media::BatchPtr batch)
 {
   modelV = model;

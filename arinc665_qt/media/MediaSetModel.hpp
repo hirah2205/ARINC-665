@@ -154,7 +154,7 @@ class MediaSetModel: public QAbstractItemModel
      * @param[in] mediaSet
      *   New associated media set
      **/
-    void setMediaSet( Arinc665::Media::MediaSetPtr mediaSet = {});
+    void setMediaSet( Arinc665::Media::MediaSetPtr mediaSet = {} );
 
   private:
     //! Media Set

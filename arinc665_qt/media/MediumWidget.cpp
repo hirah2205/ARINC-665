@@ -28,14 +28,16 @@ MediumWidget::MediumWidget( QWidget * const parent):
 
 MediumWidget::~MediumWidget() = default;
 
-void MediumWidget::selectedMedium( MediaSetModel * model, Arinc665::Media::MediumPtr medium)
+void MediumWidget::selectedMedium(
+  Arinc665Qt::Media::MediaSetModel * const model,
+  Arinc665::Media::MediumPtr medium )
 {
   modelV = model;
-  mediumV = std::move( medium);
+  mediumV = std::move( medium );
 
   if (mediumV)
   {
-    ui->numberSpinBox->setValue( mediumV->mediumNumber());
+    ui->numberSpinBox->setValue( mediumV->mediumNumber() );
   }
 }
 

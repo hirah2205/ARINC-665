@@ -32,13 +32,13 @@ FileWidget::FileWidget( QWidget * const parent):
 FileWidget::~FileWidget() = default;
 
 void FileWidget::selectedFile(
-  MediaSetModel * model,
-  Arinc665::Media::BaseFilePtr file)
+  Arinc665Qt::Media::MediaSetModel * const model,
+  Arinc665::Media::BaseFilePtr file )
 {
   modelV = model;
-  fileV = std::move( file);
+  fileV = std::move( file );
 
-  if ( fileV)
+  if ( fileV )
   {
     ui->nameLineEdit->setText( QString::fromUtf8(
       fileV->name().data(),
@@ -48,24 +48,24 @@ void FileWidget::selectedFile(
   switch ( fileV->fileType())
   {
     case Arinc665::Media::BaseFile::FileType::RegularFile:
-      ui->detailsStackedWidget->setCurrentIndex( 0);
+      ui->detailsStackedWidget->setCurrentIndex( 0 );
       ui->regularFilePage->selectedFile(
         modelV,
-        std::dynamic_pointer_cast< Arinc665::Media::File>( fileV));
+        std::dynamic_pointer_cast< Arinc665::Media::File>( fileV ) );
       break;
 
     case Arinc665::Media::BaseFile::FileType::LoadFile:
-      ui->detailsStackedWidget->setCurrentIndex( 1);
+      ui->detailsStackedWidget->setCurrentIndex( 1 );
       ui->loadPage->selectedLoad(
         modelV,
-        std::dynamic_pointer_cast< Arinc665::Media::Load>( fileV));
+        std::dynamic_pointer_cast< Arinc665::Media::Load>( fileV ) );
       break;
 
     case Arinc665::Media::BaseFile::FileType::BatchFile:
-      ui->detailsStackedWidget->setCurrentIndex( 2);
+      ui->detailsStackedWidget->setCurrentIndex( 2 );
       ui->batchPage->selectedBatch(
         modelV,
-        std::dynamic_pointer_cast< Arinc665::Media::Batch>( fileV));
+        std::dynamic_pointer_cast< Arinc665::Media::Batch>( fileV ) );
       break;
 
     default:

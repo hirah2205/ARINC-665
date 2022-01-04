@@ -28,7 +28,7 @@
 namespace Arinc665Qt {
 
 /**
- * @brief Controller Analysis of BHM Serialisation Database.
+ * @brief Media Set Load and Display Controller.
  **/
 class MediaSetController : public QObject
 {
@@ -84,9 +84,9 @@ class MediaSetController : public QObject
 
     //! Media Set Model Model
     Media::MediaSetModel * mediaSetModel;
-    //! Select BHM database directory dialog
+    //! Select Media Set directory dialog
     QFileDialog * selectDirectoryDialog;
-    //! BHM analyse dialog
+    //! Media Set Dialog
     MediaSetDialog * mediaSetDialog;
 };
 

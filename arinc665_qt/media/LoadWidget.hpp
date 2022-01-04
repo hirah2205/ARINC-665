@@ -53,7 +53,9 @@ class LoadWidget : public QWidget
      * @param[in] load
      *   Selected Load
      **/
-    void selectedLoad( MediaSetModel * model, Arinc665::Media::LoadPtr load );
+    void selectedLoad(
+      Arinc665Qt::Media::MediaSetModel * model,
+      Arinc665::Media::LoadPtr load );
 
   private:
     //! UI (designer)

@@ -38,7 +38,7 @@ class MediaSetDialog : public QDialog
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit MediaSetDialog( QWidget *parent = nullptr );
+    explicit MediaSetDialog( QWidget * parent = nullptr );
 
     //! Destructor
     ~MediaSetDialog() override;
@@ -49,7 +49,7 @@ class MediaSetDialog : public QDialog
      * @param[in] mediaSetModel
      *   Media Set Model.
      **/
-    void model( Media::MediaSetModel * mediaSetModel);
+    void model( Media::MediaSetModel * mediaSetModel );
 
   private slots:
     /**
@@ -58,7 +58,7 @@ class MediaSetDialog : public QDialog
      * @param[in] index
      *   Index of selected element.
      **/
-    void itemSelected( const QModelIndex &index);
+    void itemSelected( const QModelIndex &index );
 
   private:
     //! UI (designer)

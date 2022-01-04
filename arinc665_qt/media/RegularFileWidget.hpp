@@ -39,7 +39,7 @@ class RegularFileWidget : public QWidget
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit RegularFileWidget( QWidget *parent = nullptr);
+    explicit RegularFileWidget( QWidget * parent = nullptr );
 
     //! Destructor
     ~RegularFileWidget() override;
@@ -53,11 +53,13 @@ class RegularFileWidget : public QWidget
      * @param[in] file
      *   Selected File
      **/
-    void selectedFile( MediaSetModel * model, Arinc665::Media::FilePtr file);
+    void selectedFile(
+      Arinc665Qt::Media::MediaSetModel * model,
+      Arinc665::Media::FilePtr file );
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::RegularFileWidget> ui;
+    std::unique_ptr< Ui::RegularFileWidget > ui;
     //! Media Set Model
     MediaSetModel * modelV;
     //! File

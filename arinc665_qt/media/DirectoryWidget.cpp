@@ -29,13 +29,13 @@ DirectoryWidget::DirectoryWidget( QWidget * const parent):
 DirectoryWidget::~DirectoryWidget() = default;
 
 void DirectoryWidget::selectedDirectory(
-  MediaSetModel * model,
+  Arinc665Qt::Media::MediaSetModel * const model,
   Arinc665::Media::DirectoryPtr directory)
 {
   modelV = model;
   directoryV = std::move( directory);
 
-  if ( directoryV)
+  if ( directoryV )
   {
     ui->nameLineEdit->setText( QString::fromUtf8(
       directoryV->name().data(),

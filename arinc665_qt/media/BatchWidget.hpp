@@ -54,7 +54,7 @@ class BatchWidget : public QWidget
      *   Selected Batch
      **/
     void selectedBatch(
-      MediaSetModel * model,
+      Arinc665Qt::Media::MediaSetModel * model,
       Arinc665::Media::BatchPtr batch );
 
   private:

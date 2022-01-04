@@ -27,13 +27,13 @@ LoadWidget::LoadWidget( QWidget *parent):
 LoadWidget::~LoadWidget() = default;
 
 void LoadWidget::selectedLoad(
-  MediaSetModel * model,
+  Arinc665Qt::Media::MediaSetModel * const model,
   Arinc665::Media::LoadPtr load)
 {
   modelV = model;
-  loadV = std::move( load);
+  loadV = std::move( load );
 
-  if ( loadV)
+  if ( loadV )
   {
   }
 }

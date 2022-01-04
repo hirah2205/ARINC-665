@@ -39,7 +39,7 @@ class MediumWidget: public QWidget
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit MediumWidget( QWidget *parent = nullptr);
+    explicit MediumWidget( QWidget *parent = nullptr );
 
     //! Destructor
     ~MediumWidget() override;
@@ -53,11 +53,13 @@ class MediumWidget: public QWidget
      * @param[in] medium
      *   Selected Medium
      **/
-    void selectedMedium( MediaSetModel * model, Arinc665::Media::MediumPtr medium);
+    void selectedMedium(
+      Arinc665Qt::Media::MediaSetModel * model,
+      Arinc665::Media::MediumPtr medium );
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediumWidget> ui;
+    std::unique_ptr< Ui::MediumWidget > ui;
     //! Media Set Model
     MediaSetModel * modelV;
     //! Medium

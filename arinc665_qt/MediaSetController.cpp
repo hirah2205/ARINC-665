@@ -32,24 +32,24 @@ namespace Arinc665Qt {
 MediaSetController::MediaSetController( QWidget * const parent):
   QObject{ parent},
   mediaSetModel{ new Media::MediaSetModel( parent)},
-  selectDirectoryDialog{ new QFileDialog(
+  selectDirectoryDialog{ new QFileDialog{
     parent,
-    tr( "Select ARINC 665 Medium"))},
-  mediaSetDialog{ new MediaSetDialog( parent)}
+    tr( "Select ARINC 665 Medium" ) } },
+  mediaSetDialog{ new MediaSetDialog{ parent } }
 {
-  selectDirectoryDialog->setFileMode( QFileDialog::Directory);
-  selectDirectoryDialog->setOption( QFileDialog::ShowDirsOnly);
+  selectDirectoryDialog->setFileMode( QFileDialog::Directory );
+  selectDirectoryDialog->setOption( QFileDialog::ShowDirsOnly );
 
-  connect( selectDirectoryDialog, SIGNAL( rejected()), this, SIGNAL( finished()));
-  connect( selectDirectoryDialog, SIGNAL( accepted()), this, SLOT( directorySelected()));
+  connect( selectDirectoryDialog, SIGNAL( rejected()), this, SIGNAL( finished() ) );
+  connect( selectDirectoryDialog, SIGNAL( accepted()), this, SLOT( directorySelected() ) );
 
   mediaSetDialog->model( mediaSetModel);
 
   connect(
     mediaSetDialog,
-    SIGNAL( finished( int)),
+    SIGNAL( finished( int ) ),
     this,
-    SIGNAL( finished()));
+    SIGNAL( finished() ) );
 }
 
 MediaSetController::~MediaSetController()
@@ -86,25 +86,25 @@ void MediaSetController::directorySelected()
   }
   catch (Arinc665::Arinc665Exception &e)
   {
-    std::string const * info = boost::get_error_info< Helper::AdditionalInfo>( e);
+    std::string const * info = boost::get_error_info< Helper::AdditionalInfo>( e );
 
     QString description{};
 
-    if (nullptr == info)
+    if ( nullptr == info )
     {
       description = e.what();
     }
     else
     {
-      description = QString::fromStdString( *info);
+      description = QString::fromStdString( *info );
     }
 
     BOOST_LOG_TRIVIAL( error) << boost::diagnostic_information( e, true);
 
     QMessageBox::critical(
       nullptr,
-      tr( "Load Media Set"),
-      tr( "Error loading Media Set: ") + description);
+      tr( "Load Media Set" ),
+      tr( "Error loading Media Set: " ) + description);
 
     emit finished();
     return;
@@ -120,30 +120,30 @@ Arinc665::File::RawFile MediaSetController::loadFile(
   if (1U != mediumNumber)
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "Multi Medium Media Sets not supported"));
+      << Helper::AdditionalInfo( "Multi Medium Media Sets not supported" ) );
   }
 
   auto filePath{
-    selectDirectoryDialog->directory().absolutePath().toStdString() / path.relative_path()};
+    selectDirectoryDialog->directory().absolutePath().toStdString() / path.relative_path() };
 
   if ( !std::filesystem::is_regular_file( filePath))
   {
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception()
-        << boost::errinfo_file_name( filePath.string())
-        << Helper::AdditionalInfo( "File not found"));
+        << boost::errinfo_file_name{ filePath.string() }
+        << Helper::AdditionalInfo{ "File not found" } );
   }
 
-  Arinc665::File::RawFile data( std::filesystem::file_size( filePath));
+  Arinc665::File::RawFile data( std::filesystem::file_size( filePath ) );
 
   std::ifstream file(
     filePath.string().c_str(),
-    std::ifstream::binary | std::ifstream::in);
+    std::ifstream::binary | std::ifstream::in );
 
   if ( !file.is_open())
   {
-    BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "Error opening files"));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "Error opening files" } );
   }
 
   // read the data to the buffer

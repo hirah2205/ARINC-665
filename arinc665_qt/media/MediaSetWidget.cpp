@@ -29,11 +29,11 @@ MediaSetWidget::MediaSetWidget( QWidget * const parent):
 MediaSetWidget::~MediaSetWidget() = default;
 
 void MediaSetWidget::selectedMediaSet(
-  MediaSetModel * model,
-  Arinc665::Media::MediaSetPtr mediaSet)
+  Arinc665Qt::Media::MediaSetModel * const model,
+  Arinc665::Media::MediaSetPtr mediaSet )
 {
   modelV = model;
-  mediaSetV = std::move( mediaSet);
+  mediaSetV = std::move( mediaSet );
 
   if ( mediaSetV)
   {

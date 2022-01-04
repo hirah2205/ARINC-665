@@ -54,7 +54,7 @@ class FileWidget: public QWidget
      *   Selected File
      **/
     void selectedFile(
-      MediaSetModel * model,
+      Arinc665Qt::Media::MediaSetModel * model,
       Arinc665::Media::BaseFilePtr file );
 
   private:
