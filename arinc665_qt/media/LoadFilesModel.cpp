@@ -12,7 +12,7 @@
 
 #include "LoadFilesModel.hpp"
 
-#include <arinc665/media/BaseFile.hpp>
+#include <arinc665/media/File.hpp>
 
 namespace Arinc665Qt::Media {
 

@@ -131,6 +131,7 @@ class ContainerEntity : public Base
 
     /**
      * @name Files
+     * All files, including regular files, loads, and batches.
      * @{
      **/
 
@@ -183,16 +184,6 @@ class ContainerEntity : public Base
     FilePtr file( std::string_view filename, bool recursive = false );
 
     /**
-     * @brief Adds a file into this directory.
-     *
-     * @param[in] filename
-     *   The filename of the file to be created.
-     *
-     * @return The created file.
-     **/
-    FilePtr addFile( std::string_view filename );
-
-    /**
      * @brief Removes the file with the given name.
      *
      * A non-existing file is handled as failure.
@@ -210,11 +201,28 @@ class ContainerEntity : public Base
      * A non-existing file (in this directory) is handled as failure.
      *
      * @param[in] file
-     *   The file to be deleted.
+     *   File to be deleted.
      *
      * @throw Arinc665Exception() if file does not exists.
      **/
     void removeFile( const ConstFilePtr& file );
+
+    /** @} **/
+
+    /**
+     * @name Regular Files
+     * @{
+     **/
+
+    /**
+     * @brief Adds a regular file into this directory.
+     *
+     * @param[in] filename
+     *   Filename of the file to be created.
+     *
+     * @return The created file.
+     **/
+    RegularFilePtr addRegularFile( std::string_view filename );
 
     /** @} **/
 
@@ -273,22 +281,6 @@ class ContainerEntity : public Base
      **/
     LoadPtr addLoad( std::string_view filename );
 
-    /**
-     * @brief Removes the load with the given filename.
-     *
-     * @param[in] filename
-     *   Load filename.
-     **/
-    void removeLoad( std::string_view filename );
-
-    /**
-     * @brief Removes the given load.
-     *
-     * @param[in] load
-     *   Load to be deleted.
-     **/
-    void removeLoad( const ConstLoadPtr& load );
-
     /** @} **/
 
     /**
@@ -331,7 +323,9 @@ class ContainerEntity : public Base
      * @retval {}
      *   If batch does not exists.
      **/
-    ConstBatchPtr batch( std::string_view filename, bool recursive = false ) const;
+    ConstBatchPtr batch(
+      std::string_view filename,
+      bool recursive = false ) const;
 
     //! @copydoc batch(std::string_view,bool) const
     BatchPtr batch( std::string_view filename, bool recursive = false );
@@ -345,22 +339,6 @@ class ContainerEntity : public Base
      * @return Created batch.
      **/
     BatchPtr addBatch( std::string_view filename );
-
-    /**
-     * @brief Removes the batch with the given filename.
-     *
-     * @param[in] filename
-     *   Batch filename.
-     **/
-    void removeBatch( std::string_view filename );
-
-    /**
-     * @brief Removes the given batch.
-     *
-     * @param[in] batch
-     *   Batch to be deleted.
-     **/
-    void removeBatch( const ConstBatchPtr& batch );
 
     /** @} **/
 
@@ -388,7 +366,7 @@ class ContainerEntity : public Base
 
   protected:
     //! File type
-    using FileType = BaseFile::FileType;
+    using FileType = File::FileType;
 
     /**
      * @brief Return the files (real file, load, batch) with the specified file

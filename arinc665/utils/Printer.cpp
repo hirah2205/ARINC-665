@@ -103,15 +103,15 @@ void printFile(
 
   switch ( file->fileType() )
   {
-    case Arinc665::Media::BaseFile::FileType::RegularFile:
+    case Arinc665::Media::File::FileType::RegularFile:
       outS << "Regular File";
       break;
 
-    case Arinc665::Media::BaseFile::FileType::BatchFile:
+    case Arinc665::Media::File::FileType::BatchFile:
       outS << "Batch File";
       break;
 
-    case Arinc665::Media::BaseFile::FileType::LoadFile:
+    case Arinc665::Media::File::FileType::LoadFile:
       outS << "Load Header File";
       break;
 

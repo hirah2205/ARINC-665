@@ -37,7 +37,7 @@ class Arinc665Xml
   public:
     //! File Path Mapping
     using FilePathMapping =
-      std::map< Media::ConstBaseFilePtr, std::filesystem::path >;
+      std::map< Media::ConstFilePtr, std::filesystem::path >;
     //! Load XML Result (Media Set Pointer and corresponding File Path Mapping)
     using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping >;
 
@@ -52,7 +52,7 @@ class Arinc665Xml
      * @brief Loads the Media Set information from the given XML file.
      *
      * @param[in] xmlFile
-     *   The ARINC 665 XML file.
+     *   ARINC 665 XML file.
      *
      * @return The loaded Media Set information.
      *

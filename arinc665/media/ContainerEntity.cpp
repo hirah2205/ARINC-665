@@ -123,7 +123,7 @@ void ContainerEntity::removeSubDirectory( const DirectoryPtr& subDirectory )
 
 size_t ContainerEntity::numberOfFiles( const bool recursive ) const
 {
-  auto fileSize{ filesV.size()};
+  auto fileSize{ filesV.size() };
 
   // descent to sub directories if requested
   if ( recursive )
@@ -141,7 +141,7 @@ ConstFiles ContainerEntity::files( const bool recursive ) const
 {
   if ( !recursive )
   {
-    return ConstFiles( filesV.begin(), filesV.end() );
+    return ConstFiles{ filesV.begin(), filesV.end() };
   }
 
   ConstFiles allfiles{ filesV.begin(), filesV.end() };
@@ -178,7 +178,7 @@ Files ContainerEntity::files( const bool recursive )
 
 ConstFilePtr ContainerEntity::file(
   std::string_view filename,
-  const bool recursive) const
+  const bool recursive ) const
 {
   for ( auto & file : filesV )
   {
@@ -234,7 +234,41 @@ FilePtr ContainerEntity::file(
   return {};
 }
 
-FilePtr ContainerEntity::addFile( std::string_view filename )
+void ContainerEntity::removeFile( std::string_view filename )
+{
+  auto file{ std::find_if(
+    filesV.begin(),
+    filesV.end(),
+    [&filename]( const FilePtr &dirEnt){
+      return ( filename == dirEnt->name() );
+    } ) };
+
+  if ( filesV.end() == file )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "File not found" }
+      << boost::errinfo_file_name{ std::string{ filename } } );
+  }
+
+  filesV.erase( file);
+}
+
+void ContainerEntity::removeFile( const ConstFilePtr& file )
+{
+  auto fileIt{
+    std::find( filesV.begin(), filesV.end(), file ) };
+
+  if ( filesV.end() == fileIt )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "File not found" }
+      << boost::errinfo_file_name{ std::string{ file->name() } } );
+  }
+
+  filesV.erase( fileIt );
+}
+
+RegularFilePtr ContainerEntity::addRegularFile( std::string_view filename )
 {
   if ( file( filename ) )
   {
@@ -255,42 +289,9 @@ FilePtr ContainerEntity::addFile( std::string_view filename )
   return file;
 }
 
-void ContainerEntity::removeFile( std::string_view filename )
-{
-  auto file{ std::find_if(
-    filesV.begin(),
-    filesV.end(),
-    [&filename]( const FilePtr &dirEnt){
-      return (filename == dirEnt->name());
-    })};
-
-  if ( filesV.end() == file )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "File not found" }
-      << boost::errinfo_file_name{ std::string{ filename } } );
-  }
-
-  filesV.erase( file);
-}
-
-void ContainerEntity::removeFile( const ConstFilePtr& file )
-{
-  auto fileIt{
-    std::find( filesV.begin(), filesV.end(), file ) };
-
-  if ( filesV.end() == fileIt )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "File not found" } );
-  }
-
-  filesV.erase( fileIt);
-}
-
 size_t ContainerEntity::numberOfLoads( const bool recursive ) const
 {
-  auto numberOfLoads{ files( BaseFile::FileType::LoadFile).size()};
+  auto numberOfLoads{ files( File::FileType::LoadFile).size()};
 
   // descent to sub directories if requested
   if ( recursive )
@@ -306,7 +307,7 @@ size_t ContainerEntity::numberOfLoads( const bool recursive ) const
 
 ConstLoads ContainerEntity::loads( const bool recursive ) const
 {
-  auto loadFiles{ files( BaseFile::FileType::LoadFile ) };
+  auto loadFiles{ files( File::FileType::LoadFile ) };
 
   ConstLoads loads{};
 
@@ -331,7 +332,7 @@ ConstLoads ContainerEntity::loads( const bool recursive ) const
 
 Loads ContainerEntity::loads( const bool recursive )
 {
-  auto loadFiles{ files( BaseFile::FileType::LoadFile ) };
+  auto loadFiles{ files( File::FileType::LoadFile ) };
 
   Loads loads{};
 
@@ -364,7 +365,7 @@ ConstLoadPtr ContainerEntity::load(
     return {};
   }
 
-  if ( filePtr->fileType() != BaseFile::FileType::LoadFile )
+  if ( filePtr->fileType() != File::FileType::LoadFile )
   {
     return {};
   }
@@ -378,10 +379,10 @@ LoadPtr ContainerEntity::load( std::string_view filename, const bool recursive )
 
   if ( !filePtr )
   {
-    return LoadPtr();
+    return {};
   }
 
-  if ( filePtr->fileType() != BaseFile::FileType::LoadFile )
+  if ( filePtr->fileType() != File::FileType::LoadFile )
   {
     return {};
   }
@@ -389,7 +390,7 @@ LoadPtr ContainerEntity::load( std::string_view filename, const bool recursive )
   return std::dynamic_pointer_cast< Load>( filePtr );
 }
 
-LoadPtr ContainerEntity::addLoad( std::string_view filename)
+LoadPtr ContainerEntity::addLoad( std::string_view filename )
 {
   if ( file( filename ) )
   {
@@ -409,35 +410,9 @@ LoadPtr ContainerEntity::addLoad( std::string_view filename)
   return load;
 }
 
-void ContainerEntity::removeLoad( std::string_view filename )
-{
-  auto loadFile{ file( filename ) };
-
-  if ( !loadFile )
-  {
-    //! @throw Arinc665Exception() if load does not exists.
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "Load does not exists" } );
-  }
-
-  if ( BaseFile::FileType::LoadFile != loadFile->fileType() )
-  {
-    //! @throw Arinc665Exception() if filename does not address a load.
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "File does not name a load" } );
-  }
-
-  removeFile( loadFile);
-}
-
-void ContainerEntity::removeLoad( const ConstLoadPtr& load)
-{
-  removeFile( load);
-}
-
 size_t ContainerEntity::numberOfBatches( const bool recursive) const
 {
-  size_t numberOfBatches( files( BaseFile::FileType::BatchFile).size());
+  size_t numberOfBatches( files( File::FileType::BatchFile).size());
 
   // descent to sub directories if requested
   if ( recursive)
@@ -453,7 +428,7 @@ size_t ContainerEntity::numberOfBatches( const bool recursive) const
 
 ConstBatches ContainerEntity::batches( const bool recursive) const
 {
-  auto batchFiles( files( BaseFile::FileType::BatchFile));
+  auto batchFiles( files( File::FileType::BatchFile));
 
   ConstBatches batches;
 
@@ -482,7 +457,7 @@ ConstBatches ContainerEntity::batches( const bool recursive) const
 
 Batches ContainerEntity::batches( const bool recursive)
 {
-  auto batchFiles{ files( BaseFile::FileType::BatchFile ) };
+  auto batchFiles{ files( File::FileType::BatchFile ) };
 
   Batches batches{};
 
@@ -490,8 +465,8 @@ Batches ContainerEntity::batches( const bool recursive)
   for ( auto &batchFile : batchFiles )
   {
     auto realBatchFile( std::dynamic_pointer_cast< Batch>( batchFile ) );
-    assert( realBatchFile);
-    batches.push_back( realBatchFile);
+    assert( realBatchFile );
+    batches.push_back( realBatchFile );
   }
 
   // iterate over subdirectories
@@ -519,7 +494,7 @@ ConstBatchPtr ContainerEntity::batch(
     return ConstBatchPtr{};
   }
 
-  if ( filePtr->fileType() != BaseFile::FileType::BatchFile )
+  if ( filePtr->fileType() != File::FileType::BatchFile )
   {
     return ConstBatchPtr{};
   }
@@ -538,7 +513,7 @@ BatchPtr ContainerEntity::batch(
     return BatchPtr{};
   }
 
-  if ( filePtr->fileType() != BaseFile::FileType::BatchFile )
+  if ( filePtr->fileType() != File::FileType::BatchFile )
   {
     return BatchPtr{};
   }
@@ -567,35 +542,9 @@ BatchPtr ContainerEntity::addBatch( std::string_view filename )
   return batch;
 }
 
-void ContainerEntity::removeBatch( std::string_view filename )
-{
-  FilePtr batchFile{ file( filename ) };
-
-  if ( !batchFile )
-  {
-    //! @throw Arinc665Exception() if load does not exists.
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "Batch does not exists" } );
-  }
-
-  if ( BaseFile::FileType::BatchFile != batchFile->fileType() )
-  {
-    //! @throw Arinc665Exception() if filename does not address a batch
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "File does not name a batch" } );
-  }
-
-  removeFile( batchFile );
-}
-
-void ContainerEntity::removeBatch( const ConstBatchPtr& batch )
-{
-  removeFile( batch );
-}
-
 ConstFiles ContainerEntity::files( FileType fileType ) const
 {
-  ConstFiles result;
+  ConstFiles result{};
 
   for ( auto & file : filesV )
   {
@@ -610,7 +559,7 @@ ConstFiles ContainerEntity::files( FileType fileType ) const
 
 Files ContainerEntity::files( FileType fileType )
 {
-  Files result;
+  Files result{};
 
   for ( auto & file : filesV )
   {

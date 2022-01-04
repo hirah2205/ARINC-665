@@ -14,7 +14,7 @@
 #define ARINC665_MEDIA_REGULARFILE_HPP
 
 #include <arinc665/media/Media.hpp>
-#include <arinc665/media/BaseFile.hpp>
+#include <arinc665/media/File.hpp>
 
 #include <string>
 #include <cstdint>
@@ -24,7 +24,7 @@ namespace Arinc665::Media {
 /**
  * @brief Regular %File within %Media Set.
  **/
-class RegularFile : public BaseFile
+class RegularFile : public File
 {
   public:
     /**

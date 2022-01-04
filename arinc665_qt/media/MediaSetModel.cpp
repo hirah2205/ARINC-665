@@ -17,7 +17,7 @@
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
-#include <arinc665/media/BaseFile.hpp>
+#include <arinc665/media/File.hpp>
 
 #include <iterator>
 
@@ -151,7 +151,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
 
     case Arinc665::Media::Base::Type::File:
     {
-      auto * file{ dynamic_cast< Arinc665::Media::BaseFile *>( base) };
+      auto * file{ dynamic_cast< Arinc665::Media::File *>( base) };
 
       if ( Arinc665::Media::Base::Type::Medium == file->parent()->type() )
       {
@@ -325,7 +325,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
 
         case Arinc665::Media::Base::Type::File:
         {
-          auto * file{ dynamic_cast< Arinc665::Media::BaseFile *>( base)};
+          auto * file{ dynamic_cast< Arinc665::Media::File *>( base)};
           return QString::fromUtf8( file->name().data(), static_cast< int >( file->name().length() ) );
         }
 
@@ -347,16 +347,16 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
 
         case Arinc665::Media::Base::Type::File:
         {
-          auto * file = dynamic_cast< Arinc665::Media::BaseFile*>( base );
+          auto * file = dynamic_cast< Arinc665::Media::File*>( base );
           switch ( file->fileType() )
           {
-            case Arinc665::Media::BaseFile::FileType::RegularFile:
+            case Arinc665::Media::File::FileType::RegularFile:
               return QString{ "Regular File" };
 
-            case Arinc665::Media::BaseFile::FileType::LoadFile:
+            case Arinc665::Media::File::FileType::LoadFile:
               return QString{ "Load" };
 
-            case Arinc665::Media::BaseFile::FileType::BatchFile:
+            case Arinc665::Media::File::FileType::BatchFile:
               return QString{ "Batch" };
 
             default:

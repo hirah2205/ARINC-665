@@ -18,7 +18,7 @@
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
-#include <arinc665/media/BaseFile.hpp>
+#include <arinc665/media/File.hpp>
 
 #include "ui_MediaSetDialog.h"
 
@@ -88,7 +88,7 @@ void MediaSetDialog::itemSelected( const QModelIndex &index)
       ui->detailsStackedWidget->setCurrentIndex( 3 );
       ui->fileWidget->selectedFile(
         mediaSetModelV,
-        std::dynamic_pointer_cast< Arinc665::Media::BaseFile>( element ) );
+        std::dynamic_pointer_cast< Arinc665::Media::File>( element ) );
       break;
 
     default:

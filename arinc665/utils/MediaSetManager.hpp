@@ -160,7 +160,7 @@ class MediaSetManager
      * @return Path to the given file.
      **/
     [[nodiscard]] virtual std::filesystem::path filePath(
-      Media::ConstBaseFilePtr file ) const = 0;
+      Media::ConstFilePtr file ) const = 0;
 };
 
 }

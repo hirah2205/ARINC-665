@@ -219,7 +219,7 @@ Media::ConstLoadPtr MediaSetManagerImpl::load(
 }
 
 std::filesystem::path MediaSetManagerImpl::filePath(
-  Media::ConstBaseFilePtr file) const
+  Media::ConstFilePtr file ) const
 {
   auto mediumIt{ mediaPaths.find( file->parent()->medium() ) };
 

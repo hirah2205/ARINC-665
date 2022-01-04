@@ -7,10 +7,10 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665::Media::BaseFile.
+ * @brief Definition of Class Arinc665::Media::File.
  **/
 
-#include "BaseFile.hpp"
+#include "File.hpp"
 
 #include <arinc665/media/ContainerEntity.hpp>
 
@@ -18,7 +18,7 @@
 
 namespace Arinc665::Media {
 
-ConstMediaSetPtr BaseFile::mediaSet() const
+ConstMediaSetPtr File::mediaSet() const
 {
   auto parentPtr{ parent()};
 
@@ -30,7 +30,7 @@ ConstMediaSetPtr BaseFile::mediaSet() const
   return parentPtr->mediaSet();
 }
 
-MediaSetPtr BaseFile::mediaSet()
+MediaSetPtr File::mediaSet()
 {
   auto parentPtr{ parent()};
 
@@ -42,27 +42,27 @@ MediaSetPtr BaseFile::mediaSet()
   return parentPtr->mediaSet();
 }
 
-BaseFile::Type BaseFile::type() const
+File::Type File::type() const
 {
   return Type::File;
 }
 
-std::string_view BaseFile::name() const
+std::string_view File::name() const
 {
   return nameV;
 }
 
-ConstContainerEntityPtr BaseFile::parent() const
+ConstContainerEntityPtr File::parent() const
 {
   return parentV.lock();
 }
 
-ContainerEntityPtr BaseFile::parent()
+ContainerEntityPtr File::parent()
 {
   return parentV.lock();
 }
 
-ConstMediumPtr BaseFile::medium() const
+ConstMediumPtr File::medium() const
 {
   auto parentPtr{ parent()};
 
@@ -74,7 +74,7 @@ ConstMediumPtr BaseFile::medium() const
   return parentPtr->medium();
 }
 
-MediumPtr BaseFile::medium()
+MediumPtr File::medium()
 {
   auto parentPtr{ parent()};
 
@@ -86,7 +86,7 @@ MediumPtr BaseFile::medium()
   return parentPtr->medium();
 }
 
-std::filesystem::path BaseFile::path() const
+std::filesystem::path File::path() const
 {
   auto parentPtr{ parent() };
 
@@ -98,7 +98,7 @@ std::filesystem::path BaseFile::path() const
   return parentPtr->path() / nameV;
 }
 
-BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string_view name ):
+File::File( const ContainerEntityPtr& parent, std::string_view name ):
   parentV{ parent}, nameV{ name}
 {
   if (!parent)
@@ -108,7 +108,7 @@ BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string_view name ):
   }
 }
 
-BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string &&name):
+File::File( const ContainerEntityPtr& parent, std::string &&name):
   parentV{ parent},
   nameV{ std::move( name) }
 {
@@ -119,7 +119,7 @@ BaseFile::BaseFile( const ContainerEntityPtr& parent, std::string &&name):
   }
 }
 
-void BaseFile::parent( const ContainerEntityPtr &parent )
+void File::parent( const ContainerEntityPtr &parent )
 {
   if ( !parent )
   {

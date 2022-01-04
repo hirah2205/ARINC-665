@@ -71,24 +71,28 @@ using ConstDirectories = std::list< ConstDirectoryPtr >;
 //! Directories (List)
 using Directories = std::list< DirectoryPtr >;
 
-class BaseFile;
+class File;
 class RegularFile;
 class Load;
 class Batch;
 
-//! Pointer to const BaseFile
-using ConstBaseFilePtr = std::shared_ptr< const BaseFile >;
-//! Pointer to BaseFile
-using BaseFilePtr = std::shared_ptr< BaseFile >;
-//! Files (List)
-using Files = std::list< BaseFilePtr >;
-//! Constant Files (List)
-using ConstFiles = std::list< ConstBaseFilePtr>;
-
-//! Pointer to Const File
-using ConstFilePtr = std::shared_ptr< const BaseFile > ;
+//! Pointer to const File
+using ConstFilePtr = std::shared_ptr< const File >;
 //! Pointer to File
-using FilePtr = std::shared_ptr< BaseFile >;
+using FilePtr = std::shared_ptr< File >;
+//! Files (List)
+using Files = std::list< FilePtr >;
+//! Constant Files (List)
+using ConstFiles = std::list< ConstFilePtr>;
+
+//! Pointer to Const Regular File
+using ConstRegularFilePtr = std::shared_ptr< const RegularFile > ;
+//! Pointer to regular File
+using RegularFilePtr = std::shared_ptr< RegularFile >;
+//! Regular Files (List)
+using RegularFiles = std::list< RegularFilePtr >;
+//! Constant Regular Files (List)
+using ConstRegularFiles = std::list< ConstRegularFilePtr>;
 
 //! Constant Load Pointer
 using ConstLoadPtr = std::shared_ptr< const Load >;

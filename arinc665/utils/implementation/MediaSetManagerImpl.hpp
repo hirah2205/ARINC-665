@@ -67,7 +67,7 @@ class MediaSetManagerImpl final : public MediaSetManager
 
     //! @copydoc MediaSetManager::filePath
     [[nodiscard]] std::filesystem::path filePath(
-      Media::ConstBaseFilePtr file) const final;
+      Media::ConstFilePtr file) const final;
 
   private:
     /**

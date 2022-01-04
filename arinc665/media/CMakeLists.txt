@@ -11,8 +11,8 @@ target_sources(
 
   PRIVATE
     Base.hpp
-    BaseFile.hpp
-    BaseFile.cpp
+    File.hpp
+    File.cpp
     Batch.hpp
     Batch.cpp
     ContainerEntity.hpp

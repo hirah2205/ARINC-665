@@ -14,7 +14,7 @@
 #define ARINC665_MEDIA_LOAD_HPP
 
 #include <arinc665/media/Media.hpp>
-#include <arinc665/media/BaseFile.hpp>
+#include <arinc665/media/File.hpp>
 #include <arinc665/media/RegularFile.hpp>
 
 #include <string>
@@ -31,7 +31,7 @@ namespace Arinc665::Media {
 /**
  * @brief %Load within %Media Set.
  **/
-class Load : public BaseFile
+class Load : public File
 {
   public:
     //! Positions List
@@ -54,10 +54,10 @@ class Load : public BaseFile
      * @param[in] name
      *   Name of the Load
      **/
-    Load( ContainerEntityPtr parent, std::string_view name );
+    Load( const ContainerEntityPtr& parent, std::string_view name );
 
     //! @copydoc Load()
-    Load( ContainerEntityPtr parent, std::string &&name );
+    Load( const ContainerEntityPtr& parent, std::string &&name );
 
     /**
      * @copydoc BaseFile::fileType()

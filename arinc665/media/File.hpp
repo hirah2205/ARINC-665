@@ -7,11 +7,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Media::BaseFile.
+ * @brief Declaration of Class Arinc665::Media::File.
  **/
 
-#ifndef ARINC665_MEDIA_BASEFILE_HPP
-#define ARINC665_MEDIA_BASEFILE_HPP
+#ifndef ARINC665_MEDIA_FILE_HPP
+#define ARINC665_MEDIA_FILE_HPP
 
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/Base.hpp>
@@ -28,7 +28,7 @@ namespace Arinc665::Media {
  *  - load header files (Load), and
  *  - batch files (Batch).
  **/
-class BaseFile: public Base
+class File : public Base
 {
   public:
     //! File Type
@@ -40,7 +40,7 @@ class BaseFile: public Base
     };
 
     //! Destructor
-    ~BaseFile() override = default;
+    ~File() override = default;
 
     //! @copydoc Base::mediaSet
     [[nodiscard]] ConstMediaSetPtr mediaSet() const final;
@@ -111,10 +111,10 @@ class BaseFile: public Base
      * @throw Arinc665Exception
      *   If parent is invalid
      **/
-    BaseFile( const ContainerEntityPtr& parent, std::string_view name );
+    File( const ContainerEntityPtr& parent, std::string_view name );
 
     //! @copydoc BaseFile::BaseFile(const ContainerEntityPtr&,std::string_view)
-    BaseFile( const ContainerEntityPtr& parent, std::string &&name );
+    File( const ContainerEntityPtr& parent, std::string &&name );
 
     /**
      * @brief Sets the parent element.

@@ -333,7 +333,7 @@ void Arinc665XmlImpl::loadEntries(
 
     if ( entryNode->get_name() == "File"s )
     {
-      auto file{ current->addFile( toStringView( name ) ) };
+      auto file{ current->addRegularFile( toStringView( name ) ) };
 
       // set source path if attribute is present
       if ( !sourcePath.empty() )
@@ -398,17 +398,17 @@ void Arinc665XmlImpl::saveEntries(
 
     switch ( fileEntry->fileType() )
     {
-      case Media::BaseFile::FileType::RegularFile:
+      case Media::File::FileType::RegularFile:
         fileNode = currentNode.add_child( "File" );
         break;
 
-      case Media::BaseFile::FileType::LoadFile:
+      case Media::File::FileType::LoadFile:
       {
         fileNode = currentNode.add_child( "LoadFile" );
         break;
       }
 
-      case Media::BaseFile::FileType::BatchFile:
+      case Media::File::FileType::BatchFile:
       {
         fileNode = currentNode.add_child( "BatchFile" );
         break;

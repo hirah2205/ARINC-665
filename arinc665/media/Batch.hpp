@@ -14,7 +14,7 @@
 #define ARINC665_MEDIA_BATCH_HPP
 
 #include <arinc665/media/Media.hpp>
-#include <arinc665/media/BaseFile.hpp>
+#include <arinc665/media/File.hpp>
 
 #include <map>
 #include <string>
@@ -25,7 +25,7 @@ namespace Arinc665::Media {
 /**
  * @brief %Batch of Loads.
  **/
-class Batch: public BaseFile
+class Batch : public File
 {
   public:
     //! Batch Information (Target Hardware ID -> Loads)
@@ -53,13 +53,15 @@ class Batch: public BaseFile
 
     /**
      * @name Part Number
+     * A batch has its own pat number.
+     *
      * @{
      **/
 
     /**
-     * @brief Return the Part Number of the Media Set.
+     * @brief Return the Part Number of the Batch.
      *
-     * @return Part Number of the Media Set.
+     * @return Part Number of the Batch.
      **/
     [[nodiscard]] std::string_view partNumber() const;
 
@@ -67,7 +69,7 @@ class Batch: public BaseFile
      * @brief Updates the Part Number
      *
      * @param[in] partNumber
-     *   New Part number
+     *   New Part Number
      **/
     void partNumber( std::string_view partNumber );
 
@@ -89,7 +91,7 @@ class Batch: public BaseFile
      * @brief Set the comment, which describes the batch.
      *
      * @param[in] comment
-     *   The comment, which describes the batch.
+     *   Comment, which describes the batch.
      **/
     void comment( std::string_view comment);
 
@@ -121,7 +123,7 @@ class Batch: public BaseFile
      *
      * @return The corresponding loads
      **/
-    [[nodiscard]] WeakLoads target( std::string_view targetHardwareId) const;
+    [[nodiscard]] WeakLoads target( std::string_view targetHardwareId ) const;
 
     /**
      * @brief Return the batch info for the given target hardware ID
@@ -131,7 +133,7 @@ class Batch: public BaseFile
      *
      * @return The corresponding loads
      **/
-    WeakLoads target( std::string_view targetHardwareId);
+    WeakLoads target( std::string_view targetHardwareId );
 
     /**
      * @brief Add batch info for the given target hardware ID.
@@ -141,10 +143,10 @@ class Batch: public BaseFile
      * @param[in] loads
      *   Loads.
      **/
-    void target( std::string_view targetHardwareId, const WeakLoads &loads);
+    void target( std::string_view targetHardwareId, const WeakLoads &loads );
 
     //! @copydoc target(std::string_view,const WeakLoads&)
-    void target( std::string &&targetHardwareId, WeakLoads &&loads);
+    void target( std::string &&targetHardwareId, WeakLoads &&loads );
 
     /** @} **/
 

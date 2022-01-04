@@ -14,13 +14,17 @@
 
 namespace Arinc665::Media {
 
-RegularFile::RegularFile( const ContainerEntityPtr& parent, std::string_view name ) :
-  BaseFile{  parent, name }
+RegularFile::RegularFile(
+  const ContainerEntityPtr& parent,
+  std::string_view name ) :
+  File{  parent, name }
 {
 }
 
-RegularFile::RegularFile( const ContainerEntityPtr& parent, std::string &&name ) :
-  BaseFile{ parent, std::move( name ) }
+RegularFile::RegularFile(
+  const ContainerEntityPtr& parent,
+  std::string &&name ) :
+  File{ parent, std::move( name ) }
 {
 }
 

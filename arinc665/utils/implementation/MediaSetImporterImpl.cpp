@@ -380,7 +380,7 @@ void MediaSetImporterImpl::addFiles()
       fileInfo.path().parent_path() ) };
 
     // place file
-    auto filePtr{ container->addFile( fileInfo.filename ) };
+    auto filePtr{ container->addRegularFile( fileInfo.filename ) };
   }
 
   addLoads();
