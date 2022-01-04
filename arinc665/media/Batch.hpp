@@ -45,7 +45,7 @@ class Batch : public File
     Batch( const ContainerEntityPtr& parent, std::string &&name );
 
     /**
-     * @copydoc BaseFile::fileType()
+     * @copydoc File::fileType()
      *
      * @return FileType::BatchFile always.
      **/

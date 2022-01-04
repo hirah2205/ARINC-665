@@ -105,7 +105,7 @@ public:
    *
    * @return *this for chaining.
    **/
-  virtual MediaSetExporter& mediaSet( Media::ConstMediaSetPtr mediaSet) = 0;
+  virtual MediaSetExporter& mediaSet( Media::ConstMediaSetPtr mediaSet ) = 0;
 
   /**
    * @brief Sets the Create Medium Handler.

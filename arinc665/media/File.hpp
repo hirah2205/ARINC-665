@@ -113,7 +113,7 @@ class File : public Base
      **/
     File( const ContainerEntityPtr& parent, std::string_view name );
 
-    //! @copydoc BaseFile::BaseFile(const ContainerEntityPtr&,std::string_view)
+    //! @copydoc File::File(const ContainerEntityPtr&,std::string_view)
     File( const ContainerEntityPtr& parent, std::string &&name );
 
     /**

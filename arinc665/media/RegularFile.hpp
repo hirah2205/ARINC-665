@@ -48,7 +48,7 @@ class RegularFile : public File
     RegularFile( const ContainerEntityPtr& parent, std::string &&name );
 
     /**
-     * @copydoc BaseFile::fileType
+     * @copydoc File::fileType
      * @retval FileType::RegularFile
      *   Always
      **/

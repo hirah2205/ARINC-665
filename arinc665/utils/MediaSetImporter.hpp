@@ -31,68 +31,67 @@ namespace Arinc665::Utils {
  **/
 class MediaSetImporter
 {
-public:
-  /**
-   * @brief Handler, which is called to read a file form a medium.
-   *
-   * This handler is also used to read files, which are not represented by
-   * Arinc665::Media classes.
-   * Therefore a basic representation is used.
-   *
-   * @param[in] mediumNumber
-   *   Medium Number
-   * @param[in] path
-   *   Relative Path on Medium.
-   *
-   * @return File Data (Read as binary).
-   **/
-  using ReadFileHandler =
-    std::function< Files::RawFile(
+  public:
+
+    /**
+     * @brief Handler, which is called to read a file form a medium.
+     *
+     * This handler is also used to read files, which are not represented by
+     * Arinc665::Media classes.
+     * Therefore a basic representation is used.
+     *
+     * @param[in] mediumNumber
+     *   Medium Number
+     * @param[in] path
+     *   Relative Path on Medium.
+     *
+     * @return File Data (Read as binary).
+     **/
+    using ReadFileHandler = std::function< Files::RawFile(
       uint8_t mediumNumber,
       const std::filesystem::path &path ) >;
 
-  /**
-   * @brief Creates the ARINC 665 Media Set Importer Instance.
-   *
-   * @return ARINC 665 Importer Instance
-   **/
-  static MediaSetImporterPtr create();
+    /**
+     * @brief Creates the ARINC 665 Media Set Importer Instance.
+     *
+     * @return ARINC 665 Importer Instance
+     **/
+    static MediaSetImporterPtr create();
 
-  //! Destructor
-  virtual ~MediaSetImporter() = default;
+    //! Destructor
+    virtual ~MediaSetImporter() = default;
 
-  /**
-   * @brief Sets the Read File Handler.
-   *
-   * @param[in] readFileHandler
-   *   Handler which is called to obtain the requested file from the medium.
-   *
-   * @return *this for chaining.
-   **/
-  virtual MediaSetImporter& readFileHandler(
-    ReadFileHandler readFileHandler ) = 0;
+    /**
+     * @brief Sets the Read File Handler.
+     *
+     * @param[in] readFileHandler
+     *   Handler which is called to obtain the requested file from the medium.
+     *
+     * @return *this for chaining.
+     **/
+    virtual MediaSetImporter& readFileHandler(
+      ReadFileHandler readFileHandler ) = 0;
 
-  /**
-   * @brief Sets the Check File Integrity Flag.
-   *
-   * @param[in] checkFileIntegrity
-   *   If set to true additional file integrity steps are performed
-   *
-   * @return *this for chaining.
-   **/
-  virtual MediaSetImporter& checkFileIntegrity(
-    bool checkFileIntegrity ) = 0;
+    /**
+     * @brief Sets the Check File Integrity Flag.
+     *
+     * @param[in] checkFileIntegrity
+     *   If set to true additional file integrity steps are performed
+     *
+     * @return *this for chaining.
+     **/
+    virtual MediaSetImporter &checkFileIntegrity( bool checkFileIntegrity ) = 0;
 
-  /**
-   * @brief Executes the ARINC 665 Media Set Importer.
-   *
-   * All parameters must have been set previously.
-   *
-   * @return The imported Media Set
-   *
-   * @throw Arinc665Exception
-   **/
-  virtual Media::MediaSetPtr operator()() = 0;
+    /**
+     * @brief Executes the ARINC 665 Media Set Importer.
+     *
+     * All parameters must have been set previously.
+     *
+     * @return The imported Media Set
+     *
+     * @throw Arinc665Exception
+     **/
+    virtual Media::MediaSetPtr operator()() = 0;
 };
 
 }

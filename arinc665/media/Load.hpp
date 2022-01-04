@@ -60,7 +60,7 @@ class Load : public File
     Load( const ContainerEntityPtr& parent, std::string &&name );
 
     /**
-     * @copydoc BaseFile::fileType()
+     * @copydoc File::fileType()
      *
      * @return FileType::LoadFile always.
      **/

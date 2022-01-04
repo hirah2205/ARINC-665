@@ -31,73 +31,71 @@ namespace Arinc665::Utils {
  **/
 class MediaSetValidator
 {
-public:
-  /**
-   * @brief Handler, which is called to read a file form a medium.
-   *
-   * This handler is also used to read files, which are not represented by
-   * Arinc665::Media classes.
-   * Therefore a basic representation is used.
-   *
-   * @param[in] mediumNumber
-   *   Medium Number
-   * @param[in] path
-   *   Relative Path on Medium.
-   *
-   * @return File Data (Read as binary).
-   **/
-  using ReadFileHandler =
-    std::function< Files::RawFile(
+  public:
+    /**
+     * @brief Handler, which is called to read a file form a medium.
+     *
+     * This handler is also used to read files, which are not represented by
+     * Arinc665::Media classes.
+     * Therefore a basic representation is used.
+     *
+     * @param[in] mediumNumber
+     *   Medium Number
+     * @param[in] path
+     *   Relative Path on Medium.
+     *
+     * @return File Data (Read as binary).
+     **/
+    using ReadFileHandler = std::function< Files::RawFile(
       uint8_t mediumNumber,
       const std::filesystem::path &path ) >;
 
-  //! Handler which is called for Validation Information.
-  using ValidatorInformationHandler =
-    std::function< void( std::string_view information ) >;
+    //! Handler which is called for Validation Information.
+    using ValidatorInformationHandler =
+      std::function< void( std::string_view information ) >;
 
-  /**
-   * @brief Creates the ARINC 665 Media Set Validator Instance.
-   *
-   * @return ARINC 665 Validator Instance
-   **/
-  static MediaSetValidatorPtr create();
+    /**
+     * @brief Creates the ARINC 665 Media Set Validator Instance.
+     *
+     * @return ARINC 665 Validator Instance
+     **/
+    static MediaSetValidatorPtr create();
 
-  //! Destructor
-  virtual ~MediaSetValidator() = default;
+    //! Destructor
+    virtual ~MediaSetValidator() = default;
 
-  /**
-   * @brief Sets the Read File Handler.
-   *
-   * @param[in] readFileHandler
-   *   Handler for reading files.
-   *
-   * @return *this for chaining.
-   **/
-  virtual MediaSetValidator& readFileHandler(
-    ReadFileHandler readFileHandler ) = 0;
+    /**
+     * @brief Sets the Read File Handler.
+     *
+     * @param[in] readFileHandler
+     *   Handler for reading files.
+     *
+     * @return *this for chaining.
+     **/
+    virtual MediaSetValidator& readFileHandler(
+      ReadFileHandler readFileHandler ) = 0;
 
+    /**
+     * @brief Sets the Validator Information Handler.
+     *
+     * @param[in] informationHandler
+     *   Handler for validation information.
+     *
+     * @return *this for chaining.
+     **/
+    virtual MediaSetValidator& informationHandler(
+      ValidatorInformationHandler informationHandler ) = 0;
 
-  /**
-   * @brief Sets the Validator Information Handler.
-   *
-   * @param[in] informationHandler
-   *   Handler for validation information.
-   *
-   * @return *this for chaining.
-   **/
-  virtual MediaSetValidator& informationHandler(
-    ValidatorInformationHandler informationHandler ) = 0;
-
-  /**
-   * @brief Executes the ARINC 665 Media Set Validator.
-   *
-   * All parameters must have been set previously.
-   *
-   * @return If the validation was successful.
-   *
-   * @throw Arinc665Exception
-   **/
-  virtual bool operator()() = 0;
+    /**
+     * @brief Executes the ARINC 665 Media Set Validator.
+     *
+     * All parameters must have been set previously.
+     *
+     * @return If the validation was successful.
+     *
+     * @throw Arinc665Exception
+     **/
+    virtual bool operator()() = 0;
 };
 
 }

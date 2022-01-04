@@ -82,6 +82,11 @@ class PartNumber
     PartNumber( std::string_view partNumber );
 
     /**
+     * @name Manufacturer Code
+     * @{
+     **/
+
+    /**
      * @brief Returns the manufacturer code.
      *
      * @return The manufacturer code.
@@ -95,6 +100,13 @@ class PartNumber
      *   The manufacturer code.
      **/
     void manufacturerCode( std::string_view manufacturerCode );
+
+    /** @} **/
+
+    /**
+     * @name Product Identifier
+     * @{
+     **/
 
     /**
      * @brief Returns the product identifier.
@@ -110,6 +122,8 @@ class PartNumber
      *   The product identifier.
      **/
     void productIdentifier( std::string_view productIdentifier );
+
+    /** @} **/
 
     /**
      * @brief Calculates and return the check code
