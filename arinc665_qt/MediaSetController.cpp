@@ -113,7 +113,7 @@ void MediaSetController::directorySelected()
   mediaSetDialog->show();
 }
 
-Arinc665::File::RawFile MediaSetController::loadFile(
+Arinc665::Files::RawFile MediaSetController::loadFile(
   const uint8_t mediumNumber,
   const std::filesystem::path &path)
 {
@@ -134,7 +134,7 @@ Arinc665::File::RawFile MediaSetController::loadFile(
         << Helper::AdditionalInfo{ "File not found" } );
   }
 
-  Arinc665::File::RawFile data( std::filesystem::file_size( filePath ) );
+  Arinc665::Files::RawFile data( std::filesystem::file_size( filePath ) );
 
   std::ifstream file(
     filePath.string().c_str(),

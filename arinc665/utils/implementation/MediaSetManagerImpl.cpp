@@ -44,7 +44,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
     importer->readFileHandler(
       [this,&mediaSet](
         const uint8_t mediumNumber,
-        const std::filesystem::path &path )->File::RawFile
+        const std::filesystem::path &path )->Files::RawFile
       {
         // make structure binding here instead
         const auto &[mediaSetPath,mediaPaths]{ mediaSet };
@@ -65,7 +65,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
             mediaSetPath / medium->second / path.relative_path() ) };
 
         // read file
-        File::RawFile data( std::filesystem::file_size( filePath ) );
+        Files::RawFile data( std::filesystem::file_size( filePath ) );
 
         std::ifstream file{
           filePath.string().c_str(),

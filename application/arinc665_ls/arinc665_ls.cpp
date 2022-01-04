@@ -19,11 +19,11 @@
 
 #include <arinc665/Arinc665.hpp>
 
-#include <arinc665/file/FileListFile.hpp>
-#include <arinc665/file/LoadListFile.hpp>
-#include <arinc665/file/BatchListFile.hpp>
-#include <arinc665/file/LoadHeaderFile.hpp>
-#include <arinc665/file/BatchFile.hpp>
+#include <arinc665/files/FileListFile.hpp>
+#include <arinc665/files/LoadListFile.hpp>
+#include <arinc665/files/BatchListFile.hpp>
+#include <arinc665/files/LoadHeaderFile.hpp>
+#include <arinc665/files/BatchFile.hpp>
 
 #include <helper/Dump.hpp>
 #include <helper/Logger.hpp>
@@ -179,7 +179,7 @@ static void list_lub( const std::filesystem::path &lubFile )
 
     file.read( (char*)&data.at(0), static_cast< std::streamsize>( data.size() ) );
 
-    Arinc665::File::BatchFile batch( data);
+    Arinc665::Files::BatchFile batch( data);
 
     std::cout << "part number: "<< batch.partNumber() << "\n";
     std::cout << "comment: "<< batch.comment() << "\n";
@@ -233,7 +233,7 @@ static void list_luh( const std::filesystem::path &luhFile)
 
     file.read( (char*)&data.at(0), static_cast< std::streamsize>( data.size() ) );
 
-    Arinc665::File::LoadHeaderFile load{ data };
+    Arinc665::Files::LoadHeaderFile load{ data };
 
     std::cout << "part number: "<< load.partNumber() << "\n";
 
@@ -299,7 +299,7 @@ static void list_loads_lum( const std::filesystem::path &loadsLum)
 
     file.read( (char*)&data.at(0), static_cast< std::streamsize>( data.size() ) );
 
-    Arinc665::File::LoadListFile loadList( data);
+    Arinc665::Files::LoadListFile loadList( data);
 
     std::cout
       << "media set pn: " << loadList.mediaSetPn() << "\n";
@@ -364,7 +364,7 @@ static void list_files_lum( const std::filesystem::path &filesLum)
 
     file.read( (char*) &data.at( 0), static_cast< std::streamsize>( data.size() ) );
 
-    Arinc665::File::FileListFile fileList( data);
+    Arinc665::Files::FileListFile fileList( data);
 
     std::cout
       << "media set pn: " << fileList.mediaSetPn() << "\n";
@@ -409,14 +409,14 @@ static void list_files( const std::filesystem::path &loadDir)
   {
     std::cout << " * " << itr->path().filename() << " - ";
 
-    if ( std::filesystem::is_directory( itr->path()))
+    if ( std::filesystem::is_directory( itr->path() ) )
     {
       std::cout << "Directory\n";
       list_files( itr->path());
     }
     else if ( is_regular_file( itr->status()))
     {
-      switch ( Arinc665::File::Arinc665File::fileType( itr->path().filename()))
+      switch ( Arinc665::Files::Arinc665File::fileType( itr->path().filename()))
       {
         case Arinc665::FileType::BatchFile:
           std::cout << "ARINC 665 BATCH file\n";

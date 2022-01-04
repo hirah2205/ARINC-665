@@ -17,7 +17,7 @@
 
 #include <arinc665/media/Media.hpp>
 
-#include <arinc665/file/File.hpp>
+#include <arinc665/files/Files.hpp>
 
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
@@ -103,9 +103,9 @@ static void writeFile(
   const std::filesystem::path &mediaSetBase,
   uint8_t mediumNumber,
   const std::filesystem::path &path,
-  const Arinc665::File::ConstRawFileSpan &file );
+  const Arinc665::Files::ConstRawFileSpan &file );
 
-static Arinc665::File::RawFile readFile(
+static Arinc665::Files::RawFile readFile(
   const std::filesystem::path &mediaSetBase,
   uint8_t mediumNumber,
   const std::filesystem::path &path );
@@ -393,7 +393,7 @@ static void writeFile(
   const std::filesystem::path &mediaSetBase,
   const uint8_t mediumNumber,
   const std::filesystem::path &path,
-  const Arinc665::File::ConstRawFileSpan &file)
+  const Arinc665::Files::ConstRawFileSpan &file)
 {
   BOOST_LOG_FUNCTION()
 
@@ -428,7 +428,7 @@ static void writeFile(
     static_cast< std::streamsize >( file.size() ) );
 }
 
-static Arinc665::File::RawFile readFile(
+static Arinc665::Files::RawFile readFile(
   const std::filesystem::path &mediaSetBase,
   const uint8_t mediumNumber,
   const std::filesystem::path &path)
@@ -449,7 +449,7 @@ static Arinc665::File::RawFile readFile(
       << boost::errinfo_file_name{ filePath.string() } );
   }
 
-  Arinc665::File::RawFile data( std::filesystem::file_size( filePath) );
+  Arinc665::Files::RawFile data( std::filesystem::file_size( filePath) );
 
   // load file
   std::ifstream file(

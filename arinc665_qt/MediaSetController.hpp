@@ -17,7 +17,7 @@
 #include <arinc665_qt/media/Media.hpp>
 
 #include <arinc665/media/Media.hpp>
-#include <arinc665/file/File.hpp>
+#include <arinc665/files/Files.hpp>
 
 #include <QObject>
 #include <QFileDialog>
@@ -76,9 +76,9 @@ class MediaSetController : public QObject
      * @param[in] path
      *   Path of file.
      *
-     * @return The loaded file data.
+     * @return Loaded file data.
      **/
-    Arinc665::File::RawFile loadFile(
+    Arinc665::Files::RawFile loadFile(
       uint8_t mediumNumber,
       const std::filesystem::path &path );
 

@@ -152,7 +152,7 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
   importer->readFileHandler(
     [&mediaSetDirectories](
       const uint8_t mediumNumber,
-      const std::filesystem::path &path)->Arinc665::File::RawFile {
+      const std::filesystem::path &path)->Arinc665::Files::RawFile {
         auto filePath{
           mediaSetDirectories.at( mediumNumber - 1U ) / path.relative_path() };
 
@@ -165,7 +165,7 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
             << boost::errinfo_file_name{ filePath.string() } );
         }
 
-        Arinc665::File::RawFile data( std::filesystem::file_size( filePath ) );
+        Arinc665::Files::RawFile data( std::filesystem::file_size( filePath ) );
 
         std::ifstream file(
           filePath.string().c_str(),

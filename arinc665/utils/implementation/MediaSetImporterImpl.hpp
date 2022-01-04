@@ -15,11 +15,11 @@
 
 #include <arinc665/utils/MediaSetImporter.hpp>
 
-#include <arinc665/file/FileListFile.hpp>
-#include <arinc665/file/LoadListFile.hpp>
-#include <arinc665/file/BatchListFile.hpp>
-#include <arinc665/file/LoadHeaderFile.hpp>
-#include <arinc665/file/BatchFile.hpp>
+#include <arinc665/files/FileListFile.hpp>
+#include <arinc665/files/LoadListFile.hpp>
+#include <arinc665/files/BatchListFile.hpp>
+#include <arinc665/files/LoadHeaderFile.hpp>
+#include <arinc665/files/BatchFile.hpp>
 
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/MediaSet.hpp>
@@ -178,19 +178,19 @@ class MediaSetImporterImpl final : public MediaSetImporter
     Media::MediaSetPtr mediaSet;
 
     //! File List File
-    std::optional< File::FileListFile > fileListFile;
+    std::optional< Files::FileListFile > fileListFile;
     //! Load List File
-    std::optional< File::LoadListFile > loadListFile;
+    std::optional< Files::LoadListFile > loadListFile;
     //! Batch List File
-    std::optional< File::BatchListFile > batchListFile;
+    std::optional< Files::BatchListFile > batchListFile;
 
     //! Load Header Files (file name -> load header file)
-    std::map< std::string, File::LoadHeaderFile, std::less<> > loadHeaderFiles;
+    std::map< std::string, Files::LoadHeaderFile, std::less<> > loadHeaderFiles;
     //! Batch Files (file name -> batch file)
-    std::map< std::string, File::BatchFile, std::less<> > batchFiles;
+    std::map< std::string, Files::BatchFile, std::less<> > batchFiles;
 
     //! File Information from List of Files ( file name -> file info )
-    std::map< std::string, File::FileInfo, std::less<> > fileInfos;
+    std::map< std::string, Files::FileInfo, std::less<> > fileInfos;
     //! File Sizes ( file name -> file size )
     std::map< std::string, std::size_t, std::less<> > fileSizes;
     //! Loads (file names)

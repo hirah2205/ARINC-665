@@ -15,7 +15,7 @@
 
 #include <arinc665/utils/Utils.hpp>
 
-#include <arinc665/file/File.hpp>
+#include <arinc665/files/Files.hpp>
 
 #include <filesystem>
 #include <functional>
@@ -47,7 +47,7 @@ public:
    * @return File Data (Read as binary).
    **/
   using ReadFileHandler =
-    std::function< File::RawFile(
+    std::function< Files::RawFile(
       uint8_t mediumNumber,
       const std::filesystem::path &path ) >;
 

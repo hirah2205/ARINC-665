@@ -17,7 +17,7 @@
 
 #include <arinc665/media/Media.hpp>
 
-#include <arinc665/file/File.hpp>
+#include <arinc665/files/Files.hpp>
 
 #include <filesystem>
 #include <functional>
@@ -66,7 +66,7 @@ public:
     std::function< void(
       uint8_t mediumNumber,
       const std::filesystem::path &path,
-      const File::ConstRawFileSpan &file )>;
+      const Files::ConstRawFileSpan &file )>;
 
   /**
    * @brief Handler, which is called to read a file form a medium.
@@ -83,7 +83,7 @@ public:
    * @return File Data (Read as binary).
    **/
   using ReadFileHandler =
-    std::function< File::RawFile(
+    std::function< Files::RawFile(
       uint8_t mediumNumber,
       const std::filesystem::path &path ) >;
 

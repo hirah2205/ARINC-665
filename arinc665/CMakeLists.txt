@@ -118,7 +118,7 @@ target_link_libraries(
   arinc665_test
   PUBLIC arinc665 )
 
-add_subdirectory( file )
+add_subdirectory( files )
 add_subdirectory( media )
 add_subdirectory( utils )
 

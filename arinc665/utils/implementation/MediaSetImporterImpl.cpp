@@ -96,7 +96,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     << "Load File List File " << Arinc665::ListOfFilesName;
 
   // Load "list of files" file
-  File::FileListFile currentFileListFile{
+  Files::FileListFile currentFileListFile{
     readFileHandlerV( mediumIndex, Arinc665::ListOfFilesName ) };
 
   // store first list of files for further tests
@@ -141,7 +141,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
 
     const auto rawFile{ readFileHandlerV( mediumIndex, fileInfo.path() ) };
 
-    const uint16_t crc{ File::Arinc665File::calculateChecksum( rawFile, 0 ) };
+    const uint16_t crc{ Files::Arinc665File::calculateChecksum( rawFile, 0 ) };
 
     // compare checksums
     if ( crc != fileInfo.crc )
@@ -168,7 +168,7 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
     << "Load Load List File " << Arinc665::ListOfLoadsName;
 
   // Load list of loads file
-  File::LoadListFile currentLoadListFile{
+  Files::LoadListFile currentLoadListFile{
     readFileHandlerV( mediumIndex, Arinc665::ListOfLoadsName ) };
 
   if ( 1U == mediumIndex )
@@ -229,7 +229,7 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex )
     << "Load Batch List File " << Arinc665::ListOfBatchesName;
 
   // Load list of batches file
-  File::BatchListFile currentBatchListFile{
+  Files::BatchListFile currentBatchListFile{
     readFileHandlerV( mediumIndex, Arinc665::ListOfBatchesName ) };
 
   if ( 1U == mediumIndex )
@@ -301,7 +301,7 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex )
       << "Load Header File " << loadHeaderFileIt->second.path().generic_string();
 
     // decode load header
-    File::LoadHeaderFile loadHeaderFile{
+    Files::LoadHeaderFile loadHeaderFile{
       readFileHandlerV( mediumIndex, loadHeaderFileIt->second.path() ) };
 
     // add load header to global information
@@ -335,7 +335,7 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex )
       << "Load Batch File " << batchFileIt->second.path().generic_string();
 
     // Decode batch File
-    File::BatchFile batchFile{
+    Files::BatchFile batchFile{
       readFileHandlerV( mediumIndex, batchFileIt->second.path() ) };
 
     // add batch file to batch file list
@@ -362,7 +362,7 @@ void MediaSetImporterImpl::addFiles()
 
     // get file type
     // skip list files and handle load headers and batch files separate
-    switch ( Arinc665::File::Arinc665File::fileType( fileName ) )
+    switch ( Arinc665::Files::Arinc665File::fileType( fileName ) )
     {
       case Arinc665::FileType::FileList:
       case Arinc665::FileType::LoadList:
