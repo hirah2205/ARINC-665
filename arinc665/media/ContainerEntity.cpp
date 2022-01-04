@@ -105,31 +105,32 @@ void ContainerEntity::removeSubDirectory( std::string_view name)
   subDirectoriesV.erase( dir);
 }
 
-void ContainerEntity::removeSubDirectory( const DirectoryPtr& subDirectory)
+void ContainerEntity::removeSubDirectory( const DirectoryPtr& subDirectory )
 {
-  auto dir{ std::find( subDirectoriesV.begin(), subDirectoriesV.end(),
-    subDirectory)};
+  auto dir{ std::find(
+    subDirectoriesV.begin(),
+    subDirectoriesV.end(),
+    subDirectory ) };
 
-  if ( subDirectoriesV.end() == dir)
+  if ( subDirectoriesV.end() == dir )
    {
-     //! @throw Arinc665Exception() if directory does not exists.
      BOOST_THROW_EXCEPTION( Arinc665Exception()
-       << Helper::AdditionalInfo( "sub-directory does not exists"));
+       << Helper::AdditionalInfo{ "sub-directory does not exists" } );
    }
 
    subDirectoriesV.erase( dir);
 }
 
-size_t ContainerEntity::numberOfFiles( const bool recursive) const
+size_t ContainerEntity::numberOfFiles( const bool recursive ) const
 {
   auto fileSize{ filesV.size()};
 
   // descent to sub directories if requested
-  if ( recursive)
+  if ( recursive )
   {
     for ( const auto &subDirectory : subDirectoriesV )
     {
-      fileSize += subDirectory->numberOfFiles( true);
+      fileSize += subDirectory->numberOfFiles( true );
     }
   }
 
@@ -204,24 +205,26 @@ ConstFilePtr ContainerEntity::file(
   return {};
 }
 
-FilePtr ContainerEntity::file( std::string_view filename, const bool recursive)
+FilePtr ContainerEntity::file(
+  std::string_view filename,
+  const bool recursive )
 {
   for ( auto & file : filesV )
   {
-    if ( file->name() == filename)
+    if ( file->name() == filename )
     {
       return file;
     }
   }
 
-  if (recursive)
+  if ( recursive )
   {
     for ( const auto & subDirectory : subDirectoriesV )
     {
-      FilePtr file = subDirectory->file( filename, true);
+      FilePtr file{ subDirectory->file( filename, true ) };
 
       // if file has been found return immediately
-      if (file)
+      if ( file )
       {
         return file;
       }

@@ -31,7 +31,7 @@ namespace Arinc665::Media {
 /**
  * @brief %Load within %Media Set.
  **/
-class Load: public BaseFile
+class Load : public BaseFile
 {
   public:
     //! Positions List
@@ -50,7 +50,7 @@ class Load: public BaseFile
      * @brief Initialises a ARINC 665 Load
      *
      * @param[in] parent
-     *   The parent of this load.
+     *   Parent of this Load.
      * @param[in] name
      *   Name of the Load
      **/

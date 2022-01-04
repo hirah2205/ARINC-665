@@ -77,27 +77,27 @@ class Load;
 class Batch;
 
 //! Pointer to const BaseFile
-using ConstBaseFilePtr = std::shared_ptr< const BaseFile>;
+using ConstBaseFilePtr = std::shared_ptr< const BaseFile >;
 //! Pointer to BaseFile
-using BaseFilePtr = std::shared_ptr< BaseFile>;
+using BaseFilePtr = std::shared_ptr< BaseFile >;
 //! Files (List)
 using Files = std::list< BaseFilePtr >;
 //! Constant Files (List)
 using ConstFiles = std::list< ConstBaseFilePtr>;
 
-//! Pointer to const BaseFile
-using ConstFilePtr = std::shared_ptr< const BaseFile> ;
-//! Pointer to BaseFile
-using FilePtr = std::shared_ptr< BaseFile>;
+//! Pointer to Const File
+using ConstFilePtr = std::shared_ptr< const BaseFile > ;
+//! Pointer to File
+using FilePtr = std::shared_ptr< BaseFile >;
 
 //! Constant Load Pointer
-using ConstLoadPtr = std::shared_ptr< const Load>;
+using ConstLoadPtr = std::shared_ptr< const Load >;
 //! Load Pointer
-using LoadPtr = std::shared_ptr< Load>;
+using LoadPtr = std::shared_ptr< Load >;
 //! Loads List
-using Loads = std::list< LoadPtr>;
+using Loads = std::list< LoadPtr >;
 //! Constant Loads List
-using ConstLoads = std::list< ConstLoadPtr>;
+using ConstLoads = std::list< ConstLoadPtr >;
 //! Weak Loads List
 using WeakLoads = std::list< LoadPtr::weak_type >;
 

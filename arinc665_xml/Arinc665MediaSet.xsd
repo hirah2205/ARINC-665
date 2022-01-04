@@ -11,7 +11,7 @@
       Media Set Definition
     </documentation></annotation>
     <key name="FileKey" >
-      <selector xpath="ams:File|ams:LoadFile|ams:BatchFile" />
+      <selector xpath="ams:RegularFile|ams:LoadFile|ams:BatchFile" />
       <field    xpath="@Name" />
     </key>
     <key name="LoadKey" >
@@ -71,20 +71,20 @@
     </sequence>
   </complexType>
 
-  <complexType name="BaseFileType" abstract="true" >
+  <complexType name="FileType" abstract="true" >
     <annotation><documentation>
-      Base of File
+      Base of all Files
     </documentation></annotation>
     <attribute name="Name"            type="ams:NameType"       use="required" />
     <attribute name="SourcePath"      type="string"             use="optional" />
   </complexType>
 
-  <complexType name="FileType" >
+  <complexType name="RegularFileType" >
     <annotation><documentation>
       Regular Data File.
     </documentation></annotation>
     <complexContent>
-      <restriction base="ams:BaseFileType">
+      <restriction base="ams:FileType">
         <attribute name="Name"            type="ams:NameType"        use="required" />
         <attribute name="SourcePath"      type="string"              use="optional" />
       </restriction>
@@ -96,7 +96,7 @@
       Load Header File
     </documentation></annotation>
     <complexContent>
-      <restriction base="ams:BaseFileType" >
+      <restriction base="ams:FileType" >
         <attribute name="Name"            type="ams:NameType"        use="required" />
         <attribute name="SourcePath"      type="string"              use="optional" />
       </restriction>
@@ -108,7 +108,7 @@
       Batch File
     </documentation></annotation>
     <complexContent>
-      <restriction base="ams:BaseFileType" >
+      <restriction base="ams:FileType" >
         <attribute name="Name"       type="ams:NameType"       use="required" />
         <attribute name="SourcePath" type="string"             use="optional" />
       </restriction>
@@ -290,7 +290,7 @@
     </annotation>
     <choice>
       <element name="Directory" type="ams:DirectoryType" />
-      <element name="File"      type="ams:FileType" />
+      <element name="File"      type="ams:RegularFileType" />
       <element name="LoadFile"  type="ams:LoadFileType" />
       <element name="BatchFile" type="ams:BatchFileType" />
     </choice>

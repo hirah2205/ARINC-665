@@ -120,7 +120,10 @@ class ContainerEntity : public Base
      * It is a failure to try to delete a non-existing directory.
      *
      * @param[in] subDirectory
-     *   The sub-directory to be deleted,
+     *   Sub-directory to be deleted.
+     *
+     * @throw Arinc665Exception()
+     *   if directory does not exists.
      **/
     void removeSubDirectory( const DirectoryPtr& subDirectory );
 
