@@ -13,7 +13,7 @@
 #include "FileWidget.hpp"
 
 #include <arinc665/media/BaseFile.hpp>
-#include <arinc665/media/File.hpp>
+#include <arinc665/media/RegularFile.hpp>
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/Batch.hpp>
 
@@ -51,21 +51,21 @@ void FileWidget::selectedFile(
       ui->detailsStackedWidget->setCurrentIndex( 0 );
       ui->regularFilePage->selectedFile(
         modelV,
-        std::dynamic_pointer_cast< Arinc665::Media::File>( fileV ) );
+        std::dynamic_pointer_cast< Arinc665::Media::RegularFile >( fileV ) );
       break;
 
     case Arinc665::Media::BaseFile::FileType::LoadFile:
       ui->detailsStackedWidget->setCurrentIndex( 1 );
       ui->loadPage->selectedLoad(
         modelV,
-        std::dynamic_pointer_cast< Arinc665::Media::Load>( fileV ) );
+        std::dynamic_pointer_cast< Arinc665::Media::Load >( fileV ) );
       break;
 
     case Arinc665::Media::BaseFile::FileType::BatchFile:
       ui->detailsStackedWidget->setCurrentIndex( 2 );
       ui->batchPage->selectedBatch(
         modelV,
-        std::dynamic_pointer_cast< Arinc665::Media::Batch>( fileV ) );
+        std::dynamic_pointer_cast< Arinc665::Media::Batch >( fileV ) );
       break;
 
     default:

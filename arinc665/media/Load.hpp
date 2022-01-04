@@ -15,7 +15,7 @@
 
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/BaseFile.hpp>
-#include <arinc665/media/File.hpp>
+#include <arinc665/media/RegularFile.hpp>
 
 #include <string>
 #include <list>

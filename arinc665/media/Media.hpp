@@ -72,7 +72,7 @@ using ConstDirectories = std::list< ConstDirectoryPtr >;
 using Directories = std::list< DirectoryPtr >;
 
 class BaseFile;
-class File;
+class RegularFile;
 class Load;
 class Batch;
 

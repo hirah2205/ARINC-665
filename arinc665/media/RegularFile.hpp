@@ -7,11 +7,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Media::File.
+ * @brief Declaration of Class Arinc665::Media::RegularFile.
  **/
 
-#ifndef ARINC665_MEDIA_FILE_HPP
-#define ARINC665_MEDIA_FILE_HPP
+#ifndef ARINC665_MEDIA_REGULARFILE_HPP
+#define ARINC665_MEDIA_REGULARFILE_HPP
 
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/BaseFile.hpp>
@@ -22,9 +22,9 @@
 namespace Arinc665::Media {
 
 /**
- * @brief Data %File within %Media Set.
+ * @brief Regular %File within %Media Set.
  **/
-class File: public BaseFile
+class RegularFile : public BaseFile
 {
   public:
     /**
@@ -38,14 +38,14 @@ class File: public BaseFile
      * - Batch file
      *
      * @param[in] parent
-     *   The parent of this file.
+     *   Parent of this file.
      * @param[in] name
      *   Name of the file.
      **/
-    File( ContainerEntityPtr parent, std::string_view name );
+    RegularFile( const ContainerEntityPtr& parent, std::string_view name );
 
-    //! @copydoc File()
-    File( ContainerEntityPtr parent, std::string &&name );
+    //! @copydoc RegularFile()
+    RegularFile( const ContainerEntityPtr& parent, std::string &&name );
 
     /**
      * @copydoc BaseFile::fileType

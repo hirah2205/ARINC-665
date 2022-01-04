@@ -15,7 +15,7 @@
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
-#include <arinc665/media/File.hpp>
+#include <arinc665/media/RegularFile.hpp>
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/Batch.hpp>
 

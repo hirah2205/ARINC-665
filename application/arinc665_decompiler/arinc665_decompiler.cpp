@@ -18,7 +18,7 @@
 #include <arinc665/file/File.hpp>
 
 #include <arinc665/media/MediaSet.hpp>
-#include <arinc665/media/File.hpp>
+#include <arinc665/media/RegularFile.hpp>
 
 #include <arinc665/utils/MediaSetImporter.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>

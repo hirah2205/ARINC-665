@@ -18,7 +18,7 @@
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
-#include <arinc665/media/File.hpp>
+#include <arinc665/media/RegularFile.hpp>
 
 #include <arinc665/file/LoadListFile.hpp>
 #include <arinc665/file/BatchListFile.hpp>
@@ -301,11 +301,11 @@ void MediaSetExporterImpl::exportFile( const Media::ConstFilePtr &file ) const
 
   switch (file->fileType())
   {
-    case Media::File::FileType::RegularFile:
+    case Media::RegularFile::FileType::RegularFile:
       createFileHandlerV( file );
       break;
 
-    case Media::File::FileType::LoadFile:
+    case Media::RegularFile::FileType::LoadFile:
       switch ( createLoadHeaderFilesV )
       {
         case FileCreationPolicy::None:
@@ -333,7 +333,7 @@ void MediaSetExporterImpl::exportFile( const Media::ConstFilePtr &file ) const
       }
       break;
 
-    case Media::File::FileType::BatchFile:
+    case Media::RegularFile::FileType::BatchFile:
       switch ( createBatchFilesV )
       {
         case FileCreationPolicy::None:

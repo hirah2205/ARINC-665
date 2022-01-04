@@ -19,8 +19,8 @@ target_sources(
     ContainerEntity.cpp
     Directory.hpp
     Directory.cpp
-    File.hpp
-    File.cpp
+    RegularFile.hpp
+    RegularFile.cpp
     Load.hpp
     Load.cpp
     Media.hpp

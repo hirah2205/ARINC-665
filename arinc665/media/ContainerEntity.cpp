@@ -244,7 +244,7 @@ FilePtr ContainerEntity::addFile( std::string_view filename )
   }
 
   // create file
-  auto file{ std::make_shared< File>(
+  auto file{ std::make_shared< RegularFile >(
     std::dynamic_pointer_cast< ContainerEntity>( shared_from_this() ),
     filename ) };
 
