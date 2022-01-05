@@ -46,7 +46,7 @@ class LoadFilesModel : public QAbstractTableModel
      * @param[in] parent
      *   Parent QObject.
      **/
-    LoadFilesModel( QObject * parent = nullptr);
+    LoadFilesModel( QObject * parent = nullptr );
 
     //! Destructor
     virtual ~LoadFilesModel();
@@ -55,7 +55,7 @@ class LoadFilesModel : public QAbstractTableModel
      * @brief Returns the number of rows.
      *
      * @param[in] parent
-     *   The index-parent - assumed to be the root element (invalid).
+     *   Index-parent - assumed to be the root element (invalid).
      *
      * @return Number of Files.
      * @retval 0
@@ -67,7 +67,7 @@ class LoadFilesModel : public QAbstractTableModel
      * @brief Returns the number of columns.
      *
      * @param[in] parent
-     *   The index-parent - assumed to be the root element (invalid).
+     *   Index-parent - assumed to be the root element (invalid).
      *
      * @return Always Columns::ColumnsCount.
      **/
@@ -83,8 +83,9 @@ class LoadFilesModel : public QAbstractTableModel
      *
      * @return Data dependent of the index and role.
      **/
-    [[nodiscard]] QVariant
-    data( const QModelIndex &index, int role ) const override;
+    [[nodiscard]] QVariant data(
+      const QModelIndex &index,
+      int role ) const override;
 
     /**
      * @brief Returns the data for the given role and section in the header with

@@ -7,11 +7,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::Media::LoadsModel.
+ * @brief Declaration of Class Arinc665Qt::Media::BatchesModel.
  **/
 
-#ifndef ARINC665_QT_MEDIA_LOADSMODEL_HPP
-#define ARINC665_QT_MEDIA_LOADSMODEL_HPP
+#ifndef ARINC665_QT_MEDIA_BATCHESMODEL_HPP
+#define ARINC665_QT_MEDIA_BATCHESMODEL_HPP
 
 #include <arinc665_qt/media/Media.hpp>
 
@@ -22,9 +22,9 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT model of list of loads.
+ * @brief QT model of List of Batches.
  **/
-class LoadsModel : public QAbstractTableModel
+class BatchesModel : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -34,20 +34,21 @@ class LoadsModel : public QAbstractTableModel
     {
       Name,
       PartNumber,
+      Comment,
 
       ColumnsCount
     };
 
     /**
-     * @brief Initialises the loads model.
+     * @brief Initialises the Batches Model.
      *
      * @param[in] parent
      *   Parent QObject.
      **/
-    LoadsModel( QObject * parent = nullptr );
+    BatchesModel( QObject *parent = nullptr );
 
     //! Destructor
-    virtual ~LoadsModel();
+    virtual ~BatchesModel();
 
     /**
      * @brief Returns the number of rows.
@@ -104,28 +105,28 @@ class LoadsModel : public QAbstractTableModel
       int role ) const override;
 
     /**
-     * @brief Returns the load for the given index.
+     * @brief Returns the Batch for the given index.
      *
      * @param[in] index
      *   Index of the requested item.
      *
-     * @return The load for the given index.
+     * @return Batch for the given index.
      **/
-    virtual Arinc665::Media::LoadPtr getLoad(
+    virtual Arinc665::Media::BatchPtr getBatch(
       const QModelIndex &index ) const = 0;
 
   public slots:
     /**
-     * @brief Updates the data model with the given ASF messages.
+     * @brief Updates the Data Model with the given Batches.
      *
      * @param[in] loads
-     *   Loads, contained by the model.
+     *   Batches, contained by the model.
      **/
-    void setLoads( const Arinc665::Media::Loads &loads = {} );
+    void setBatches( const Arinc665::Media::Batches &batches = {} );
 
   private:
-    //! loads list
-    Arinc665::Media::Loads loadsV;
+    //! Batches List
+    Arinc665::Media::Batches batchesV;
 };
 
 }

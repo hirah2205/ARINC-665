@@ -10,6 +10,8 @@ target_sources(
   arinc665_qt
 
   PRIVATE
+    BatchesModel.hpp
+    BatchesModel.cpp
     BatchWidget.hpp
     BatchWidget.cpp
     BatchWidget.ui
@@ -21,7 +23,8 @@ target_sources(
     FileWidget.ui
     LoadFilesModel.hpp
     LoadFilesModel.cpp
-    #LoadsModel.hpp
+    LoadsModel.hpp
+    LoadsModel.cpp
     LoadWidget.hpp
     LoadWidget.cpp
     LoadWidget.ui

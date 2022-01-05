@@ -108,7 +108,7 @@ class Batch : public File
     /**
      * @brief Return Batch Information for Targets.
      *
-     * @return The batch target information.
+     * @return Batch target information.
      **/
     [[nodiscard]] const BatchInfo& targets() const;
 
@@ -131,7 +131,7 @@ class Batch : public File
      * @param[in] targetHardwareId
      *   Target hardware ID
      *
-     * @return The corresponding loads
+     * @return Corresponding loads
      **/
     WeakLoads target( std::string_view targetHardwareId );
 

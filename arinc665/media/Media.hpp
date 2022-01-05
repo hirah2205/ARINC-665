@@ -105,14 +105,14 @@ using ConstLoads = std::list< ConstLoadPtr >;
 //! Weak Loads List
 using WeakLoads = std::list< LoadPtr::weak_type >;
 
-//! constant batch Pointer
-using ConstBatchPtr = std::shared_ptr< const Batch> ;
-//! batch pointer
-using BatchPtr = std::shared_ptr< Batch> ;
-//! batches list
-using Batches = std::list< BatchPtr>;
-//! constant batches list
-using ConstBatches = std::list< ConstBatchPtr>;
+//! Constant Batch Pointer
+using ConstBatchPtr = std::shared_ptr< const Batch > ;
+//! Batch Pointer
+using BatchPtr = std::shared_ptr< Batch > ;
+//! Batches List
+using Batches = std::list< BatchPtr >;
+//! Constant Batches List
+using ConstBatches = std::list< ConstBatchPtr >;
 
 //! Tuple of directory an const file
 using ConstDirectoryFileTuple  = std::tuple< const Directory&, ConstFilePtr>;
