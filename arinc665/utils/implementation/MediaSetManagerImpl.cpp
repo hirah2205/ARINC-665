@@ -62,7 +62,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
         // concatenate file path
         auto filePath{
           absolutePath(
-            mediaSetPath / medium->second / path.relative_path() )};
+            mediaSetPath / medium->second / path.relative_path() ) };
 
         // read file
         File::RawFile data( std::filesystem::file_size( filePath ) );
@@ -179,25 +179,25 @@ Media::ConstLoads MediaSetManagerImpl::loads() const
 
   for ( const auto &mediaSet : mediaSetsV )
   {
-    auto mediaSetLoads{ mediaSet->loads()};
+    auto mediaSetLoads{ mediaSet->loads() };
 
-    loads.insert( loads.end(), mediaSetLoads.begin(), mediaSetLoads.end());
+    loads.insert( loads.end(), mediaSetLoads.begin(), mediaSetLoads.end() );
   }
 
   return loads;
 }
 
-Media::ConstLoads MediaSetManagerImpl::load( std::string_view filename) const
+Media::ConstLoads MediaSetManagerImpl::load( std::string_view filename ) const
 {
   Media::ConstLoads loads{};
 
   for ( const auto &mediaSet : mediaSetsV )
   {
-    auto mediaSetLoad{ mediaSet->load( filename)};
+    auto mediaSetLoad{ mediaSet->load( filename ) };
 
-    if (mediaSetLoad)
+    if ( mediaSetLoad )
     {
-      loads.push_back( mediaSetLoad);
+      loads.push_back( mediaSetLoad );
     }
   }
 
@@ -206,24 +206,24 @@ Media::ConstLoads MediaSetManagerImpl::load( std::string_view filename) const
 
 Media::ConstLoadPtr MediaSetManagerImpl::load(
   std::string_view partNumber,
-  std::string_view filename) const
+  std::string_view filename ) const
 {
-  const auto mediaSetFound{ mediaSet( partNumber)};
+  const auto mediaSetFound{ mediaSet( partNumber ) };
 
-  if ( !mediaSetFound)
+  if ( !mediaSetFound )
   {
     return {};
   }
 
-  return mediaSetFound->load( filename);
+  return mediaSetFound->load( filename );
 }
 
 std::filesystem::path MediaSetManagerImpl::filePath(
   Media::ConstBaseFilePtr file) const
 {
-  auto mediumIt{ mediaPaths.find( file->parent()->medium())};
+  auto mediumIt{ mediaPaths.find( file->parent()->medium() ) };
 
-  if ( mediumIt == mediaPaths.end())
+  if ( mediumIt == mediaPaths.end() )
   {
     return {};
   }

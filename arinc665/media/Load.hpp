@@ -34,8 +34,6 @@ namespace Arinc665::Media {
 class Load: public BaseFile
 {
   public:
-    //! File List ( File, Part Number)
-    using Files = std::list< std::pair< FilePtr::weak_type, std::string > >;
     //! Positions List
     using Positions = std::set< std::string, std::less<> >;
     //! Target Hardware ID / Positions
@@ -196,7 +194,7 @@ class Load: public BaseFile
      *
      * @return Data files.
      **/
-    [[nodiscard]] const Files& dataFiles() const;
+    [[nodiscard]] LoadFiles dataFiles() const;
 
     /**
      * @brief Add the given file as data file.
@@ -225,7 +223,7 @@ class Load: public BaseFile
      *
      * @return Support Files.
      **/
-    [[nodiscard]] const Files& supportFiles() const;
+    [[nodiscard]] LoadFiles supportFiles() const;
 
     /**
      * @brief Add the given file as support file.
@@ -303,9 +301,9 @@ class Load: public BaseFile
     //! Target Hardware ID/ Positions
     TargetHardwareIdPositions targetHardwareIdPositionsV;
     //! Data Files
-    Files dataFilesV;
+    WeakLoadFiles dataFilesV;
     //! Support Files
-    Files supportFilesV;
+    WeakLoadFiles supportFilesV;
     //! User Defined Data
     UserDefinedData userDefinedDataV;
     //! Load Type

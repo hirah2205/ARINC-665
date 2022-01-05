@@ -185,11 +185,11 @@ void printLoad(
     outS
       << nextIndent
       << "File Name: "
-      << file.lock()->name() << "\n"
+      << file->name() << "\n"
 
       << nextIndent
       << "File Path: "
-      << file.lock()->path().generic_string() << "\n"
+      << file->path().generic_string() << "\n"
 
       << nextIndent
       << "File Part Number: '"
@@ -208,11 +208,11 @@ void printLoad(
     outS
       << nextIndent
       << "File Name: "
-      << file.lock()->name() << "\n"
+      << file->name() << "\n"
 
       << nextIndent
       << "File Path: "
-      << file.lock()->path().generic_string() << "\n"
+      << file->path().generic_string() << "\n"
 
       << nextIndent
       << "Part Number: '"

@@ -105,7 +105,6 @@ void Arinc665XmlImpl::saveToXml(
   catch ( xmlpp::exception &e)
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Error writing XML file" }
       << Helper::AdditionalInfo{ e.what() }
       << boost::errinfo_file_name{ xmlFile.string() } );
   }
@@ -167,7 +166,9 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
   FilePathMapping filePathMapping{};
   for ( auto mediumNode : mediaNodes )
   {
-    loadMedium( mediaSet, filePathMapping, *mediumNode );
+    auto medium{ mediaSet->addMedium() };
+
+    loadEntries( medium, filePathMapping, *mediumNode );
   }
 
   // handle Loads
@@ -266,7 +267,7 @@ void Arinc665XmlImpl::saveMediaSet(
 
     auto mediumNode{ mediaSetNode.add_child( "Medium" ) };
 
-    saveMedium( medium, filePathMapping, *mediumNode );
+    saveEntries( medium, filePathMapping, *mediumNode );
   }
 
   // handle Loads
@@ -290,53 +291,6 @@ void Arinc665XmlImpl::saveMediaSet(
   }
 }
 
-void Arinc665XmlImpl::loadMedium(
-  const Media::MediaSetPtr& mediaSet,
-  FilePathMapping &filePathMapping,
-  const xmlpp::Node &mediumNode )
-{
-  auto medium{ mediaSet->addMedium() };
-
-  loadEntries( medium, filePathMapping, mediumNode );
-}
-
-void Arinc665XmlImpl::saveMedium(
-  const Media::ConstMediumPtr& medium,
-  const FilePathMapping &filePathMapping,
-  xmlpp::Node &mediumNode )
-{
-  saveEntries( medium, filePathMapping, mediumNode );
-}
-
-void Arinc665XmlImpl::loadDirectory(
-  const Media::ContainerEntityPtr& parent,
-  FilePathMapping &filePathMapping,
-  const xmlpp::Element &directoryElement )
-{
-  const auto name{ directoryElement.get_attribute_value( "Name" ) };
-
-  if ( name.empty() )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Name attribute missing or empty" }
-      << boost::errinfo_at_line{ directoryElement.get_line() } );
-  }
-
-  auto directory{ parent->addSubDirectory( static_cast< std::string>( name ) ) };
-
-  loadEntries( directory, filePathMapping, directoryElement );
-}
-
-void Arinc665XmlImpl::saveDirectory(
-  const Media::ConstDirectoryPtr& directory,
-  const FilePathMapping &filePathMapping,
-  xmlpp::Element &directoryElement )
-{
-  directoryElement.set_attribute( "Name", directory->name().data() );
-
-  saveEntries( directory, filePathMapping, directoryElement );
-}
-
 void Arinc665XmlImpl::loadEntries(
   const Media::ContainerEntityPtr& current,
   FilePathMapping &filePathMapping,
@@ -354,26 +308,32 @@ void Arinc665XmlImpl::loadEntries(
       continue;
     }
 
-    // iterate recursively over directories
-    if ( entryNode->get_name() == "Directory"s )
-    {
-      loadDirectory( current, filePathMapping, *entryElement );
-      continue;
-    }
+    // Common Name attribute for directories and files
+    const auto name{ entryElement->get_attribute_value( "Name" ) };
 
-    const auto filename{ entryElement->get_attribute_value( "Name" ) };
-    const auto sourcePath{ entryElement->get_attribute_value( "SourcePath" ) };
-
-    if ( filename.empty() )
+    if ( name.empty() )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "Name attribute missing or empty" }
         << boost::errinfo_at_line{ currentNode.get_line() } );
     }
 
+    // iterate recursively over directories
+    if ( entryNode->get_name() == "Directory"s )
+    {
+      auto directory{ current->addSubDirectory( static_cast< std::string>( name ) ) };
+
+      loadEntries( directory, filePathMapping, *entryElement );
+
+      continue;
+    }
+
+    // common source path attribute for files
+    const auto sourcePath{ entryElement->get_attribute_value( "SourcePath" ) };
+
     if ( entryNode->get_name() == "File"s )
     {
-      auto file{ current->addFile( toStringView( filename ) ) };
+      auto file{ current->addFile( toStringView( name ) ) };
 
       // set source path if attribute is present
       if ( !sourcePath.empty() )
@@ -386,7 +346,7 @@ void Arinc665XmlImpl::loadEntries(
 
     if ( entryNode->get_name() == "LoadFile"s )
     {
-      auto load{ current->addLoad( toStringView( filename ) ) };
+      auto load{ current->addLoad( toStringView( name ) ) };
 
       // set source path if attribute is present
       if ( !sourcePath.empty() )
@@ -399,7 +359,7 @@ void Arinc665XmlImpl::loadEntries(
 
     if ( entryNode->get_name() == "BatchFile"s )
     {
-      auto batch{ current->addBatch( toStringView( filename ) ) };
+      auto batch{ current->addBatch( toStringView( name ) ) };
 
       // set source path if attribute is present
       if ( !sourcePath.empty() )
@@ -426,7 +386,9 @@ void Arinc665XmlImpl::saveEntries(
   {
     auto directoryNode{ currentNode.add_child( "Directory" ) };
 
-    saveDirectory( dirEntry, filePathMapping, *directoryNode );
+    directoryNode->set_attribute( "Name", dirEntry->name().data() );
+
+    saveEntries( dirEntry, filePathMapping, *directoryNode );
   }
 
   // iterate over files within container
@@ -453,8 +415,11 @@ void Arinc665XmlImpl::saveEntries(
       }
 
       default:
+        // should not happen
         continue;
     }
+
+    assert( nullptr != fileNode );
 
     // Add name attribute
     fileNode->set_attribute( "Name", fileEntry->name().data() );
@@ -701,22 +666,16 @@ void Arinc665XmlImpl::saveLoad(
   }
 
   // iterate over data files
-  for ( const auto &[weakDataFile,partNumber] : load->dataFiles() )
+  for ( const auto &[dataFile,partNumber] : load->dataFiles() )
   {
-    const auto dataFile{ weakDataFile.lock() };
-    assert( dataFile );
-
     auto * const dataFileElement{ loadElement.add_child( "DataFile" ) };
     dataFileElement->set_attribute( "NameRef", dataFile->name().data() );
     dataFileElement->set_attribute( "PartNumber", partNumber );
   }
 
   // iterate over support files
-  for ( const auto &[weakSupportFile,partNumber] : load->supportFiles())
+  for ( const auto &[supportFile,partNumber] : load->supportFiles())
   {
-    const auto supportFile{ weakSupportFile.lock() };
-    assert( supportFile );
-
     auto supportFileElement{ loadElement.add_child( "SupportFile" ) };
     supportFileElement->set_attribute(
       "NameRef",

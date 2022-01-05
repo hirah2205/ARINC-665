@@ -389,15 +389,14 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   // calculate data files CRC and set data.
   for ( const auto &[ file,partNumber ] : load->dataFiles() )
   {
-    auto dataFilePtr{ file.lock() };
     auto rawDataFile{ readFileHandlerV(
-      dataFilePtr->medium()->mediumNumber(),
-      dataFilePtr->path() ) };
+      file->medium()->mediumNumber(),
+      file->path() ) };
     uint16_t fileCrc{
       File::Arinc665File::calculateChecksum( rawDataFile, 0 ) };
 
     loadHeaderFile.dataFile( File::LoadFileInfo{
-      std::string{ dataFilePtr->name() },
+      std::string{ file->name() },
       partNumber,
       rawDataFile.size(),
       fileCrc,
@@ -407,15 +406,14 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   // calculate support files CRC and set data.
   for ( const auto &[file,partNumber] : load->supportFiles() )
   {
-    auto supportFilePtr{ file.lock() };
     auto rawSupportFile{ readFileHandlerV(
-      supportFilePtr->medium()->mediumNumber(),
-      supportFilePtr->path() ) };
+      file->medium()->mediumNumber(),
+      file->path() ) };
     uint16_t supportFileCrc{
       File::Arinc665File::calculateChecksum( rawSupportFile, 0 ) };
 
     loadHeaderFile.supportFile( File::LoadFileInfo{
-      std::string{ supportFilePtr->name() },
+      std::string{ file->name() },
       partNumber,
       rawSupportFile.size(),
       supportFileCrc,
@@ -440,10 +438,9 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   // load data files for load CRC.
   for ( const auto &[file,partNumber] : load->dataFiles() )
   {
-    auto dataFilePtr{ file.lock() };
     auto rawDataFile{ readFileHandlerV(
-      dataFilePtr->medium()->mediumNumber(),
-      dataFilePtr->path() ) };
+      file->medium()->mediumNumber(),
+      file->path() ) };
 
     loadCrc.process_bytes( &(*rawDataFile.begin()), rawDataFile.size() );
   }
@@ -451,10 +448,9 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   // load support files for load CRC.
   for ( const auto &[file,partNumber] : load->supportFiles() )
   {
-    auto supportFilePtr{ file.lock() };
     auto rawSupportFile{ readFileHandlerV(
-      supportFilePtr->medium()->mediumNumber(),
-      supportFilePtr->path() ) };
+      file->medium()->mediumNumber(),
+      file->path() ) };
 
     loadCrc.process_bytes( &(*rawSupportFile.begin()), rawSupportFile.size() );
   }

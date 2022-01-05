@@ -115,6 +115,11 @@ using ConstDirectoryFileTuple  = std::tuple< const Directory&, ConstFilePtr>;
 //! Tuple of directory an file
 using DirectoryFileTuple = std::tuple< Directory&, FilePtr>;
 
+//! Load File List ( File, Part Number). Used for Data and Support Files of Load
+using LoadFiles = std::list< std::pair< FilePtr, std::string > >;
+//! Weak Load File List ( File, Part Number). Used for Data and Support Files of Load
+using WeakLoadFiles = std::list< std::pair< FilePtr::weak_type, std::string > >;
+
 }
 
 #endif

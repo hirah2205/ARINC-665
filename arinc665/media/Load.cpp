@@ -122,9 +122,16 @@ void Load::targetHardwareId(
     std::move( positions ) );
 }
 
-const Load::Files& Load::dataFiles() const
+LoadFiles Load::dataFiles() const
 {
-  return dataFilesV;
+  LoadFiles files{};
+
+  for ( const auto &[filePtr, partNumber] : dataFilesV )
+  {
+    files.emplace_back( filePtr.lock(), partNumber );
+  }
+
+  return files;
 }
 
 void Load::dataFile( const FilePtr &file, std::string_view partNumber )
@@ -149,9 +156,16 @@ void Load::dataFile( const FilePtr &file, std::string &&partNumber )
   dataFilesV.emplace_back( file, std::move( partNumber ) );
 }
 
-const Load::Files& Load::supportFiles() const
+LoadFiles Load::supportFiles() const
 {
-  return supportFilesV;
+  LoadFiles files{};
+
+  for ( const auto &[filePtr, partNumber] : supportFilesV )
+  {
+    files.emplace_back( filePtr.lock(), partNumber );
+  }
+
+  return files;
 }
 
 void Load::supportFile( const FilePtr &file, std::string_view partNumber )

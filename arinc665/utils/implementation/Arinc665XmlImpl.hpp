@@ -38,7 +38,7 @@ class Arinc665XmlImpl final : public Arinc665Xml
      * @param[in] xmlFile
      *   ARINC 665 XML file.
      *
-     * @return The loaded Media Set information.
+     * @return Loaded Media Set information.
      *
      * @throw Arinc665::Arinc665Exception
      *   When XML file does not exist.
@@ -56,7 +56,7 @@ class Arinc665XmlImpl final : public Arinc665Xml
      *   File Path Mapping
      *   (used to insert the correct source path attribute.)
      * @param[in] xmlFile
-     *   The ARINC 665 XML file.
+     *   ARINC 665 XML file.
      *
      * @throw Arinc665Exception
      *   When XML file cannot be written.
@@ -94,65 +94,17 @@ class Arinc665XmlImpl final : public Arinc665Xml
       xmlpp::Element &mediaSetNode );
 
     /**
-     * @brief Load the medium section.
-     *
-     * @param mediaSet
-     * @param filePathMapping
-     * @param mediumNode
-     **/
-    void loadMedium(
-      const Media::MediaSetPtr &mediaSet,
-      FilePathMapping &filePathMapping,
-      const xmlpp::Node &mediumNode );
-
-    /**
-     * @brief Saves the medium section.
-     *
-     * @param medium
-     * @param filePathMapping
-     * @param mediumNode
-     **/
-    void saveMedium(
-      const Media::ConstMediumPtr &medium,
-      const FilePathMapping &filePathMapping,
-      xmlpp::Node &mediumNode );
-
-    /**
-     * @brief Loads a directory section.
-     *
-     * @param[in] parent
-     *   Parent Container
-     * @param[in] filePathMapping
-     *   The file path mapping
-     * @param[in] directoryElement
-     *   The XML node representing the directory.
-     *
-     * @throw Arinc665::Arinc665Exception
-     *   When Name Attribute is missing or empty.
-     **/
-    void loadDirectory(
-      const Media::ContainerEntityPtr &parent,
-      FilePathMapping &filePathMapping,
-      const xmlpp::Element &directoryElement );
-
-    /**
-     * @brief Saves a directory section.
-     *
-     * @param directory
-     * @param filePathMapping
-     * @param directoryElement
-     **/
-    void saveDirectory(
-      const Media::ConstDirectoryPtr& directory,
-      const FilePathMapping &filePathMapping,
-      xmlpp::Element &directoryElement );
-
-    /**
      * @brief Loads file entries.
      *
-     * @param current
-     * @param filePathMapping
-     * @param currentNode
+     * Loads all child elements (Files, Directories) for the given medium, or
+     * directory.
+     *
+     * @param[in,out] current
+     *   Current Medium, or Directory
+     * @param[in,out] filePathMapping
+     *   File path mapping
+     * @param[in] currentNode
+     *   XML node representing the directory.
      *
      * @throw Arinc665::Arinc665Exception
      *   When Name Attribute is missing or empty.
@@ -160,7 +112,7 @@ class Arinc665XmlImpl final : public Arinc665Xml
     void loadEntries(
       const Media::ContainerEntityPtr &current,
       FilePathMapping &filePathMapping,
-      const xmlpp::Node &currentNode);
+      const xmlpp::Node &currentNode );
 
     /**
      * @brief Saves file entries.

@@ -145,7 +145,7 @@ class MediaSetManager
      * @param[in] filename
      *   Load Filename
      *
-     * @return The loads with the given filename.
+     * @return Load with the given filename.
      **/
     [[nodiscard]] virtual Media::ConstLoadPtr load(
       std::string_view partNumber,
@@ -157,7 +157,7 @@ class MediaSetManager
      * @param[in] file
      *   File to request the path from
      *
-     * @return The path to the given file.
+     * @return Path to the given file.
      **/
     [[nodiscard]] virtual std::filesystem::path filePath(
       Media::ConstBaseFilePtr file ) const = 0;
