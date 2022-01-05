@@ -51,7 +51,7 @@ int main( int argc, char * argv[] )
   boost::program_options::options_description options{
     "ARINC 665 List options"};
 
-  std::filesystem::path xmlPath;
+  std::filesystem::path xmlPath{};
 
   options.add_options()
   (

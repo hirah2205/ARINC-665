@@ -57,9 +57,9 @@ doxygen_add_docs(
   ${arinc665_SOURCE_DIR}/application/arinc665_ls
   ${arinc665_SOURCE_DIR}/application/arinc665_media_set_view_gui
   ${arinc665_SOURCE_DIR}/application/arinc665_print_media_set
+  ${arinc665_SOURCE_DIR}/application/arinc665_print_xml
   ${arinc665_SOURCE_DIR}/application/arinc665_test_media_set_manager
-  ${arinc665_SOURCE_DIR}/application/arinc665_unit_test
-  ${arinc665_SOURCE_DIR}/application/arinc665_xml_print )
+  ${arinc665_SOURCE_DIR}/application/arinc665_unit_test )
 
 add_dependencies( doc arinc665_api_doc )
 
