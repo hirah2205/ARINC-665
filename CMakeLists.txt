@@ -9,7 +9,7 @@ cmake_minimum_required( VERSION 3.21 )
 project(
   arinc665
   VERSION 0.0.0.0
-  DESCRIPTION "ARINC 665"
+  DESCRIPTION "ARINC 665 Library and Applications"
   HOMEPAGE_URL "https://git.thomas-vogt.de/Thomas-Vogt/arinc665" )
 
 set( PROJECT_VERSION_ADDITION "dev" )

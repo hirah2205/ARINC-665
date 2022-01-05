@@ -203,13 +203,13 @@ class Load: public BaseFile
      *
      * @param[in] file
      *   Data File.
-     *
-     * @todo change to non-weak pointer and check same media set (even if null)
+     * @param[in] partNumber
+     *   Part Number.
      **/
-    void dataFile( const Files::value_type &file );
+    void dataFile( const FilePtr &file, std::string_view partNumber );
 
-    //! @copydoc dataFile(const Files::value_type&)
-    void dataFile( Files::value_type &&file );
+    //! @copydoc dataFile(const FilePtr&,std::string_view)
+    void dataFile( const FilePtr &file, std::string &&partNumber );
 
     /** @} **/
 
@@ -232,13 +232,13 @@ class Load: public BaseFile
      *
      * @param[in] file
      *   Support File.
-     *
-     * @todo change to non-weak pointer and check same media set (even if null)
+     * @param[in] partNumber
+     *   Part Number.
      **/
-    void supportFile( const Files::value_type &file );
+    void supportFile( const FilePtr &file, std::string_view partNumber );
 
-    //! @copydoc supportFile(const Files::value_type&)
-    void supportFile( Files::value_type &&file );
+    //! @copydoc supportFile(const FilePtr&,std::string_view)
+    void supportFile( const FilePtr &file, std::string &&partNumber );
 
     /** @} **/
 
@@ -261,7 +261,7 @@ class Load: public BaseFile
      * @brief Sets the user-defined data stored in the load header.
      *
      * @param[in] userDefinedData
-     *   The updated user-defined data.
+     *   Updated user-defined data.
      **/
     void userDefinedData( const UserDefinedData &userDefinedData );
 
@@ -278,7 +278,7 @@ class Load: public BaseFile
     /**
      * @brief Returns the Load Type.
      *
-     * @return The Load Type.
+     * @return Load Type.
      **/
     [[nodiscard]] const Type& loadType() const;
 

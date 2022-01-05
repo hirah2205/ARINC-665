@@ -12,6 +12,8 @@
 
 #include "Load.hpp"
 
+#include <arinc665/Arinc665Exception.hpp>
+
 #include <utility>
 
 namespace Arinc665::Media {
@@ -125,14 +127,26 @@ const Load::Files& Load::dataFiles() const
   return dataFilesV;
 }
 
-void Load::dataFile( const Files::value_type &file )
+void Load::dataFile( const FilePtr &file, std::string_view partNumber )
 {
-  dataFilesV.push_back( file );
+  if ( !file || ( file->mediaSet() != mediaSet() ) )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception{}
+      << Helper::AdditionalInfo{ "invalid File" });
+  }
+
+  dataFilesV.emplace_back( file, partNumber );
 }
 
-void Load::dataFile( Files::value_type &&file )
+void Load::dataFile( const FilePtr &file, std::string &&partNumber )
 {
-  dataFilesV.push_back( std::move( file ) );
+  if ( !file || ( file->mediaSet() != mediaSet() ) )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception{}
+      << Helper::AdditionalInfo{ "invalid File" } );
+  }
+
+  dataFilesV.emplace_back( file, std::move( partNumber ) );
 }
 
 const Load::Files& Load::supportFiles() const
@@ -140,14 +154,26 @@ const Load::Files& Load::supportFiles() const
   return supportFilesV;
 }
 
-void Load::supportFile( const Files::value_type &file )
+void Load::supportFile( const FilePtr &file, std::string_view partNumber )
 {
-  supportFilesV.push_back( file );
+  if ( !file || ( file->mediaSet() != mediaSet() ) )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception{}
+      << Helper::AdditionalInfo{ "invalid File" } );
+  }
+
+  supportFilesV.emplace_back( file, partNumber );
 }
 
-void Load::supportFile( Files::value_type &&file )
+void Load::supportFile( const FilePtr &file, std::string &&partNumber )
 {
-  supportFilesV.push_back( std::move( file ) );
+  if ( !file || ( file->mediaSet() != mediaSet() ) )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception{}
+      << Helper::AdditionalInfo{ "invalid File" } );
+  }
+
+  supportFilesV.emplace_back( file, std::move( partNumber ) );
 }
 
 const Load::UserDefinedData& Load::userDefinedData() const

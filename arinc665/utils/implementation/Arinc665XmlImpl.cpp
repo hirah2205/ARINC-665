@@ -604,7 +604,7 @@ void Arinc665XmlImpl::loadLoad(
         << boost::errinfo_at_line{ dataFileNode->get_line() } );
     }
 
-    load->dataFile( { file, filePartNumber } );
+    load->dataFile( file, filePartNumber );
   }
 
   // iterate over support files
@@ -646,7 +646,7 @@ void Arinc665XmlImpl::loadLoad(
         << boost::errinfo_at_line{ supportFileNode->get_line() } );
     }
 
-    load->supportFile( { file, filePartNumber } );
+    load->supportFile( file, filePartNumber );
   }
 
   const auto userDefinedDataElement{ dynamic_cast< const xmlpp::Element*>(

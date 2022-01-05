@@ -24,7 +24,7 @@ namespace Arinc665 {
 BOOST_AUTO_TEST_SUITE( Arinc665Test)
 BOOST_AUTO_TEST_SUITE( Arinc665CrcTest)
 
-//! ARINC CRC data
+//! ARINC CRC Test Data
 static struct ArincCrcData
 {
   std::vector< uint8_t> t02a;
