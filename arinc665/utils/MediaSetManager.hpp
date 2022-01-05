@@ -59,12 +59,15 @@ class MediaSetManager
      *   configuration file.
      * @param[in,out] config
      *   Media Set Manager Configuration.
+     * @param[in] checkFileIntegrity
+     *   If set to true additional file integrity steps are performed
      *
      * @return Media Set Manager Instance.
      **/
     static MediaSetManagerPtr instance(
       const std::filesystem::path &basePath,
-      MediaSetConfiguration &config );
+      MediaSetConfiguration &config,
+      bool checkFileIntegrity );
 
     /**
      * @brief Returns the configuration for the media set manager.

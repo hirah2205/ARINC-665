@@ -31,10 +31,13 @@ class MediaSetManagerImpl final : public MediaSetManager
      *   configuration file.
      * @param[in,out] config
      *   Media set configuration.
+     * @param[in] checkFileIntegrity
+     *   If set to true additional file integrity steps are performed
      **/
     explicit MediaSetManagerImpl(
       const std::filesystem::path &basePath,
-      MediaSetConfiguration &config );
+      MediaSetConfiguration &config,
+      bool checkFileIntegrity );
 
     //! @copydoc MediaSetManager::configuration
     [[nodiscard]] const MediaSetConfiguration& configuration() const final;

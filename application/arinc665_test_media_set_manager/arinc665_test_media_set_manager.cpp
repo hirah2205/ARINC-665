@@ -43,14 +43,20 @@ int main( int argc, char * argv[] )
 {
   Helper::initLogging( Helper::Severity::info );
 
-  boost::program_options::options_description optionsDescription;
-  std::filesystem::path mediaSetConfig;
+  boost::program_options::options_description optionsDescription{};
+  std::filesystem::path mediaSetConfig{};
+  bool checkFileIntegrity{};
 
   optionsDescription.add_options()
   (
     "media-set-config",
-     boost::program_options::value( &mediaSetConfig)->required(),
+     boost::program_options::value( &mediaSetConfig )->required(),
      "Media Set configuration"
+  )
+  (
+    "check-file-integrity",
+    boost::program_options::value( &checkFileIntegrity )->default_value( true ),
+    "Check File Integrity during Import"
   );
 
   try
@@ -77,7 +83,8 @@ int main( int argc, char * argv[] )
 
     auto mediaSetManager{ Arinc665::Utils::MediaSetManager::instance(
       configDir,
-      mediaSetConfiguration ) };
+      mediaSetConfiguration,
+      checkFileIntegrity ) };
 
     for ( const auto &mediaSet : mediaSetManager->mediaSets() )
     {

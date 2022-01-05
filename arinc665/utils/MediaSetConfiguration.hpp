@@ -31,7 +31,7 @@ class MediaSetConfiguration
   public:
     //! media-to-path mapping (Medium Number -> Path)
     using MediaPaths = std::map< uint8_t, std::filesystem::path> ;
-    //! List of Media Sets (Media Set Path, Media Paths)
+    //! List of Media Sets (Media Set Path, @ref MediaPaths)
     using MediaSets = std::list< std::pair< std::string, MediaPaths > >;
 
     //! Initialises the configuration with default values.
@@ -41,7 +41,7 @@ class MediaSetConfiguration
      * @brief Loads the configuration via a boost::property_tree::ptree.
      *
      * @param[in] ptree
-     *   The stored configuration.
+     *   Stored configuration.
      **/
     explicit MediaSetConfiguration(
       const boost::property_tree::ptree &ptree );

@@ -25,7 +25,8 @@ namespace Arinc665::Utils {
 
 MediaSetManagerImpl::MediaSetManagerImpl(
   const std::filesystem::path &basePath,
-  MediaSetConfiguration &config ):
+  MediaSetConfiguration &config,
+  const bool checkFileIntegrity ):
   basePath{ basePath },
   configurationV{ config }
 {
@@ -33,7 +34,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 
   for ( auto const &mediaSet : config.mediaSets )
   {
-    // NOTE: structured bindings cannot be passed as lambda capture at them moment
+    // NOTE: structured bindings cannot be passed as lambda capture at the moment
     // https://api.csswg.org/bikeshed/#lambda-captures
 
     // import media set
@@ -84,6 +85,8 @@ MediaSetManagerImpl::MediaSetManagerImpl(
         // return the buffer
         return data;
       } );
+
+    importer->checkFileIntegrity( checkFileIntegrity );
 
     // import media set
     auto impMediaSet( (*importer)() );

@@ -44,9 +44,9 @@
  * @param[in] argv
  *   Arguments
  *
- * @return The success state of this operation.
+ * @return Success state of this operation.
  **/
-int main( int argc, char const * argv[]);
+int main( int argc, char const * argv[] );
 
 /**
  * @brief Reads the give file and returns the data.
@@ -63,20 +63,23 @@ int main( int argc, char const * argv[]);
  **/
 static Arinc665::File::RawFile readFile(
   uint8_t mediumNumber,
-  const std::filesystem::path &path);
+  const std::filesystem::path &path );
 
 //! Media source directories
-static std::vector< std::filesystem::path> mediaSourceDirectories;
+static std::vector< std::filesystem::path> mediaSourceDirectories{};
 
 //! Media Set XML file
-static std::filesystem::path mediaSetXmlFile;
+static std::filesystem::path mediaSetXmlFile{};
+
+//! Check File Integrity
+bool checkFileIntegrity{};
 
 int main( int argc, char const * argv[])
 {
   std::cout << "ARINC 665 Media Set Decompiler" << "\n";
 
   boost::program_options::options_description optionsDescription{
-    "ARINC 665 Media Set Decompiler Options"};
+    "ARINC 665 Media Set Decompiler Options" };
 
   optionsDescription.add_options()
   (
@@ -86,13 +89,18 @@ int main( int argc, char const * argv[])
   (
     "source-directory",
     boost::program_options::value(
-      &mediaSourceDirectories)->required()->composing(),
+      &mediaSourceDirectories )->required()->composing(),
     "ARINC 665 media source directories"
   )
   (
     "xml-file",
-    boost::program_options::value( &mediaSetXmlFile)->required(),
+    boost::program_options::value( &mediaSetXmlFile )->required(),
     "Output ARINC 665 media set description XML"
+  )
+  (
+    "check-file-integrity",
+    boost::program_options::value( &checkFileIntegrity )->default_value( true ),
+    "Check File Integrity during Import"
   );
 
   Helper::initLogging( Helper::Severity::info);
@@ -105,9 +113,9 @@ int main( int argc, char const * argv[])
         argc,
         argv,
         optionsDescription),
-      options);
+      options );
 
-    if ( options.count( "help") != 0)
+    if ( options.count( "help" ) != 0 )
     {
       std::cout << optionsDescription << "\n";
       return EXIT_FAILURE;
@@ -121,10 +129,12 @@ int main( int argc, char const * argv[])
     importer->readFileHandler(
       std::bind( &readFile, std::placeholders::_1, std::placeholders::_2 ) );
 
+    importer->checkFileIntegrity( checkFileIntegrity );
+
     // perform import
     auto result{ (*importer)()};
 
-    Arinc665::Utils::Arinc665Xml::FilePathMapping fileMapping;
+    Arinc665::Utils::Arinc665Xml::FilePathMapping fileMapping{};
 
     // iterate over files
     for ( const auto &file : result->files())
@@ -183,30 +193,30 @@ static Arinc665::File::RawFile readFile(
   if ( mediumNumber > mediaSourceDirectories.size())
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "Medium number unknown"));
+      << Helper::AdditionalInfo{ "Medium number unknown" } );
   }
 
-  auto filePath{ mediaSourceDirectories[ mediumNumber-1] / path.relative_path()};
+  auto filePath{ mediaSourceDirectories[ mediumNumber-1] / path.relative_path() };
 
   // check existence of file
   if ( !std::filesystem::is_regular_file( filePath))
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << boost::errinfo_file_name( filePath.string())
-      << Helper::AdditionalInfo( "File not found"));
+      << boost::errinfo_file_name{ filePath.string() }
+      << Helper::AdditionalInfo{ "File not found" } );
   }
 
-  Arinc665::File::RawFile data( std::filesystem::file_size( filePath));
+  Arinc665::File::RawFile data( std::filesystem::file_size( filePath ) );
 
   // load file
   std::ifstream file{
     filePath.string().c_str(),
     std::ifstream::binary | std::ifstream::in };
 
-  if ( !file.is_open())
+  if ( !file.is_open() )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "Error opening files"));
+      << Helper::AdditionalInfo{ "Error opening files" } );
   }
 
   // read the data to the buffer

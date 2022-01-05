@@ -66,7 +66,7 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()()
     mediaSet->batchesUserDefinedData( batchListFile->userDefinedData() );
   }
 
-  // finally add all files (regular, load headers, batches) to the media set
+  // finally, add all files (regular, load headers, batches) to the media set
   addFiles();
 
   return mediaSet;
@@ -151,7 +151,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
         << boost::errinfo_file_name{ fileInfo.path().string() } );
     }
 
-    //! @todo Check Value
+    //! @todo Check "Check Value"
 
     // remember file size
     fileSizes.emplace( fileName, rawFile.size() );

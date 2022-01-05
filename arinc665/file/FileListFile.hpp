@@ -148,10 +148,10 @@ class FileListFile: public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit FileListFile( const ConstRawFileSpan &rawFile);
+    explicit FileListFile( const ConstRawFileSpan &rawFile );
 
     //! @copydoc ListFile::operator=(const ConstRawFileSpan&)
-    FileListFile& operator=( const ConstRawFileSpan &rawFile) final;
+    FileListFile& operator=( const ConstRawFileSpan &rawFile ) final;
 
     //! @copydoc ListFile::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept final;
