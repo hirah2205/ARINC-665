@@ -26,15 +26,16 @@
 
 #include <iostream>
 #include <filesystem>
+
 /**
  * @brief Program entry point
  *
  * @param[in] argc
  *   Number of arguments.
  * @param[in] argv
- *   The arguments
+ *   Arguments
  *
- * @return The success state of this operation.
+ * @return Success state of this operation.
  **/
 int main( int argc, char * argv[] );
 
@@ -54,7 +55,7 @@ int main( int argc, char * argv[] )
 
   try
   {
-    boost::program_options::variables_map options;
+    boost::program_options::variables_map options{};
     boost::program_options::store(
       boost::program_options::parse_command_line(
         argc,

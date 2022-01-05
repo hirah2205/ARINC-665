@@ -71,7 +71,7 @@ int main( int argc, char const * argv[] )
     << "ARINC 665 Media Set Printer\n";
 
   boost::program_options::options_description options{
-    "ARINC 665 Media Set Printer options"};
+    "ARINC 665 Media Set Printer options" };
 
   // directories which contains the medias
   std::vector< std::filesystem::path > directories{};
@@ -95,12 +95,12 @@ int main( int argc, char const * argv[] )
 
   try
   {
-    boost::program_options::variables_map vm;
+    boost::program_options::variables_map vm{};
     boost::program_options::store(
       boost::program_options::parse_command_line( argc, argv, options ),
-      vm);
+      vm );
 
-    if ( vm.count( "help") != 0)
+    if ( vm.count( "help" ) != 0 )
     {
       std::cout
         << "Prints the ARINC 665 Media Set located in the given directory\n"
@@ -110,11 +110,9 @@ int main( int argc, char const * argv[] )
 
     boost::program_options::notify( vm );
 
-    std::cout << "\n" << "Load Media Set\n";
     auto mediaSet{ loadMediaSet( directories, checkFileIntegrity ) };
 
-    std::cout << "\n" << "Print Media Set\n";
-    Arinc665::Utils::printMediaSet( mediaSet, std::cout, "  ", "  " );
+    Arinc665::Utils::printMediaSet( mediaSet, std::cout, "", "  " );
   }
   catch ( boost::program_options::error &e)
   {
@@ -192,12 +190,6 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
     .checkFileIntegrity( checkFileIntegrity );
 
   auto mediaSet{ (*importer)() };
-
-  std::cout
-    << "Media Set PN: \""
-      << mediaSet->partNumber() << "\"\n"
-    << "Number of Media Set Members: "
-      << std::dec << (int)mediaSet->numberOfMedia() << "\n";
 
   return mediaSet;
 }

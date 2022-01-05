@@ -16,6 +16,18 @@
 
 namespace Arinc665::Utils {
 
+/**
+ * @brief Print Medium
+ *
+ * @param[in] medium
+ *   ARINC 665 Medium
+ * @param[in,out] outS
+ *   Output Stream
+ * @param[in] initialIndent
+ *   Initial Indention prepended before each output.
+ * @param[in] indent
+ *   Indent for sub-information
+ **/
 static void printMedium(
   const Media::ConstMediumPtr &medium,
   std::ostream &outS,
@@ -36,8 +48,7 @@ void printMediaSet(
 
   outS
     << initialIndent
-    << "Media Set Part Number: '"
-    << mediaSet->partNumber() << "'\n";
+    << "Media Set Part Number: '" << mediaSet->partNumber() << "'\n";
 
   // print files
   outS
@@ -134,10 +145,7 @@ void printLoad(
 
     << initialIndent
     << "Load Part Nummer: '"
-    << load->partNumber() << "'\n"
-
-    << initialIndent
-    << "Compatible THW IDs:\n";
+    << load->partNumber() << "'\n";
 
   if ( const auto type{ load->loadType() }; type )
   {
@@ -146,6 +154,10 @@ void printLoad(
       << "Load Type: '" << type->first
       << "' 0x" << std::hex << type->second << std::dec << "\n";
   }
+
+  outS
+    << initialIndent
+    << "Compatible THW IDs:\n";
 
   // iterate over THW ID list
   for ( auto const &[ thwId, positions ] : load->targetHardwareIdPositions() )
