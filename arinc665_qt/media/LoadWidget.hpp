@@ -60,8 +60,13 @@ class LoadWidget : public QWidget
   private:
     //! UI (designer)
     std::unique_ptr< Ui::LoadWidget> ui;
+    //! Data Files Model
+    std::unique_ptr< LoadFilesModel > dataFilesModelV;
+    //! Support Files Model
+    std::unique_ptr< LoadFilesModel > supportFilesModelV;
+
     //! Media Set Model
-    MediaSetModel * modelV;
+    MediaSetModel * mediaSetModelV;
     //! Load
     Arinc665::Media::LoadPtr loadV;
 };

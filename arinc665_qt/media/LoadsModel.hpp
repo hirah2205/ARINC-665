@@ -33,11 +33,11 @@ class LoadsModel : public QAbstractTableModel
      * @brief Initialises the loads model.
      *
      * @param[in] parent
-     *   The parent QObject.
+     *   Parent QObject.
      **/
     LoadsModel( QObject * parent = nullptr);
 
-    //! Default destructor
+    //! Destructor
     virtual ~LoadsModel() = default;
 
     /**

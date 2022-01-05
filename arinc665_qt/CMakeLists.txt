@@ -43,6 +43,7 @@ target_link_libraries(
     Qt5::Widgets )
 
 add_subdirectory( media )
+add_subdirectory( media_set_manager )
 
 install(
   TARGETS arinc665_qt

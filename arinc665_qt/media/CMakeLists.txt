@@ -19,6 +19,8 @@ target_sources(
     FileWidget.hpp
     FileWidget.cpp
     FileWidget.ui
+    LoadFilesModel.hpp
+    LoadFilesModel.cpp
     #LoadsModel.hpp
     LoadWidget.hpp
     LoadWidget.cpp

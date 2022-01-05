@@ -14,28 +14,37 @@
 
 #include "ui_LoadWidget.h"
 
+#include <arinc665_qt/media/LoadFilesModel.hpp>
+
+#include <arinc665/media/Load.hpp>
+
 namespace Arinc665Qt::Media {
 
-LoadWidget::LoadWidget( QWidget *parent):
+LoadWidget::LoadWidget( QWidget * const parent):
   QWidget{ parent},
-  ui{ std::make_unique< Ui::LoadWidget>()},
-  modelV{ nullptr}
+  ui{ std::make_unique< Ui::LoadWidget>() },
+  dataFilesModelV{ std::make_unique< LoadFilesModel >( this ) },
+  supportFilesModelV{ std::make_unique< LoadFilesModel >( this ) },
+  mediaSetModelV{ nullptr }
 {
-  ui->setupUi( this);
+  ui->setupUi( this );
 }
 
 LoadWidget::~LoadWidget() = default;
 
 void LoadWidget::selectedLoad(
   Arinc665Qt::Media::MediaSetModel * const model,
-  Arinc665::Media::LoadPtr load)
+  Arinc665::Media::LoadPtr load )
 {
-  modelV = model;
+  mediaSetModelV = model;
   loadV = std::move( load );
 
   if ( loadV )
   {
+    dataFilesModelV->loadFiles( loadV->dataFiles() );
+    supportFilesModelV->loadFiles( loadV->supportFiles() );
   }
+
 }
 
 }
