@@ -111,8 +111,7 @@ class LoadsModel : public QAbstractTableModel
      *
      * @return The load for the given index.
      **/
-    virtual Arinc665::Media::LoadPtr getLoad(
-      const QModelIndex &index ) const = 0;
+    Arinc665::Media::LoadPtr getLoad( const QModelIndex &index ) const;
 
   public slots:
     /**

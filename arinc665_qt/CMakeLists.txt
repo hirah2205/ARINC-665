@@ -40,7 +40,10 @@ target_link_libraries(
 
   PUBLIC
     arinc665
-    Qt5::Widgets )
+    Qt5::Widgets
+
+  PRIVATE
+    helper_qt )
 
 add_subdirectory( media )
 add_subdirectory( media_set_manager )

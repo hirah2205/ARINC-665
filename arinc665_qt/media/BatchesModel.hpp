@@ -119,7 +119,7 @@ class BatchesModel : public QAbstractTableModel
     /**
      * @brief Updates the Data Model with the given Batches.
      *
-     * @param[in] loads
+     * @param[in] batches
      *   Batches, contained by the model.
      **/
     void setBatches( const Arinc665::Media::Batches &batches = {} );

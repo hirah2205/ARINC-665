@@ -33,96 +33,169 @@
  **/
 namespace Arinc665::Media {
 
+/**
+ * @name %Base Class Declarations
+ * @{
+ **/
+
 class Base;
-//! Constant Base Pointer
+//! Constant %Base Pointer
 using ConstBasePtr = std::shared_ptr< const Base>;
-//! Base Pointer
+//! %Base Pointer
 using BasePtr = std::shared_ptr< Base>;
 
+/** @} **/
+
+/**
+ * @name Media Set Declarations
+ * @{
+ **/
+
 class MediaSet;
-//! Constant media set Pointer
-using ConstMediaSetPtr = std::shared_ptr< const MediaSet>;
-//! Media set Pointer
-using MediaSetPtr = std::shared_ptr< MediaSet>;
+//! Constant %Media Set Pointer
+using ConstMediaSetPtr = std::shared_ptr< const MediaSet >;
+//! %Media Set Pointer
+using MediaSetPtr = std::shared_ptr< MediaSet >;
+//! List of %Media Sets
+using MediaSets = std::list< MediaSetPtr >;
+//! List of Constant %Media Sets
+using ConstMediaSets = std::list< ConstMediaSetPtr >;
+
+/** @} **/
+
+/**
+ * @name Container Declarations
+ * @{
+ **/
 
 class ContainerEntity;
-//! Constant Container Entity Pointer
+//! Constant %Container Entity Pointer
 using ConstContainerEntityPtr = std::shared_ptr< const ContainerEntity>;
-//! Container Entity Pointer
+//! %Container Entity Pointer
 using ContainerEntityPtr = std::shared_ptr< ContainerEntity>;
 
+/** @} **/
+
+/**
+ * @name Medium Declarations
+ * @{
+ **/
+
 class Medium;
-//! Constant Medium Pointer
+//! Constant %Medium Pointer
 using ConstMediumPtr = std::shared_ptr< const Medium >;
-//! Medium Pointer
+//! %Medium Pointer
 using MediumPtr = std::shared_ptr< Medium >;
-//! Media
+//! List of %Media
 using Media = std::map< uint8_t, MediumPtr >;
-//! Const Media
+//! List of Constant %Media
 using ConstMedia = std::map< uint8_t, ConstMediumPtr >;
 
+/** @} **/
+
+/**
+ * @name Directory Declarations
+ * @{
+ **/
+
 class Directory;
-//! Constant Directory Pointer
+//! Constant %Directory Pointer
 using ConstDirectoryPtr = std::shared_ptr< const Directory >;
-//! Directory Pointer
+//! %Directory Pointer
 using DirectoryPtr = std::shared_ptr< Directory >;
-//! Constant Directories (List)
+//! Constant %Directories (List)
 using ConstDirectories = std::list< ConstDirectoryPtr >;
-//! Directories (List)
+//! %Directories (List)
 using Directories = std::list< DirectoryPtr >;
 
+/** @} **/
+
+/**
+ * @name File Declarations
+ * @{
+ **/
 class File;
 class RegularFile;
 class Load;
 class Batch;
 
-//! Pointer to const File
+//! Pointer to Const %File
 using ConstFilePtr = std::shared_ptr< const File >;
-//! Pointer to File
+//! Pointer to %File
 using FilePtr = std::shared_ptr< File >;
-//! Files (List)
+//! List of %Files
 using Files = std::list< FilePtr >;
-//! Constant Files (List)
+//! List of Constant %Files
 using ConstFiles = std::list< ConstFilePtr>;
 
-//! Pointer to Const Regular File
+/** @} **/
+
+/**
+ * @name Regular File Declarations
+ * @{
+ **/
+
+//! Pointer to Const Regular %File
 using ConstRegularFilePtr = std::shared_ptr< const RegularFile > ;
-//! Pointer to regular File
+//! Pointer to Regular %File
 using RegularFilePtr = std::shared_ptr< RegularFile >;
-//! Regular Files (List)
+//! Regular %Files (List)
 using RegularFiles = std::list< RegularFilePtr >;
-//! Constant Regular Files (List)
+//! Constant Regular %Files (List)
 using ConstRegularFiles = std::list< ConstRegularFilePtr>;
 
-//! Constant Load Pointer
+/** @} **/
+
+/**
+ * @name Load Declarations
+ * @{
+ **/
+
+//! Constant %Load Pointer
 using ConstLoadPtr = std::shared_ptr< const Load >;
-//! Load Pointer
+//! %Load Pointer
 using LoadPtr = std::shared_ptr< Load >;
-//! Loads List
+//! %Loads List
 using Loads = std::list< LoadPtr >;
-//! Constant Loads List
+//! Constant %Loads List
 using ConstLoads = std::list< ConstLoadPtr >;
-//! Weak Loads List
+//! Weak %Loads List
 using WeakLoads = std::list< LoadPtr::weak_type >;
 
-//! Constant Batch Pointer
+//! %Load %File List ( File, Part Number). Used for Data and Support Files of Load
+using LoadFiles = std::list< std::pair< FilePtr, std::string > >;
+//! Weak %Load %File List ( File, Part Number). Used for Data and Support Files of Load
+using WeakLoadFiles = std::list< std::pair< FilePtr::weak_type, std::string > >;
+
+/** @} **/
+
+/**
+ * @name Batch Declarations
+ * @{
+ **/
+
+//! Constant %Batch Pointer
 using ConstBatchPtr = std::shared_ptr< const Batch > ;
-//! Batch Pointer
+//! %Batch Pointer
 using BatchPtr = std::shared_ptr< Batch > ;
-//! Batches List
+//! %Batches List
 using Batches = std::list< BatchPtr >;
-//! Constant Batches List
+//! Constant %Batches List
 using ConstBatches = std::list< ConstBatchPtr >;
+
+/** @} **/
+
+/**
+ * @name Directory Declarations
+ * @{
+ **/
 
 //! Tuple of directory an const file
 using ConstDirectoryFileTuple  = std::tuple< const Directory&, ConstFilePtr>;
 //! Tuple of directory an file
 using DirectoryFileTuple = std::tuple< Directory&, FilePtr>;
 
-//! Load File List ( File, Part Number). Used for Data and Support Files of Load
-using LoadFiles = std::list< std::pair< FilePtr, std::string > >;
-//! Weak Load File List ( File, Part Number). Used for Data and Support Files of Load
-using WeakLoadFiles = std::list< std::pair< FilePtr::weak_type, std::string > >;
+/** @} **/
 
 }
 

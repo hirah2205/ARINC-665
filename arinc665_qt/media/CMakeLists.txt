@@ -31,6 +31,8 @@ target_sources(
     Media.hpp
     MediaSetModel.hpp
     MediaSetModel.cpp
+    MediaSetsModel.hpp
+    MediaSetsModel.cpp
     MediaSetWidget.hpp
     MediaSetWidget.cpp
     MediaSetWidget.ui

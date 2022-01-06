@@ -7,35 +7,35 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Qt::Media::LoadsModel.
+ * @brief Definition of Class Arinc665Qt::Media::MediaSetsModel.
  **/
 
-#include "LoadsModel.hpp"
+#include "MediaSetsModel.hpp"
 
-#include <arinc665/media/Load.hpp>
+#include <arinc665/media/MediaSet.hpp>
 
 #include <helper_qt/String.hpp>
 
 namespace Arinc665Qt::Media {
 
-LoadsModel::LoadsModel( QObject * const parent ) :
+MediaSetsModel::MediaSetsModel( QObject * const parent ) :
   QAbstractTableModel{ parent }
 {
 }
 
-LoadsModel::~LoadsModel() = default;
+MediaSetsModel::~MediaSetsModel() = default;
 
-int LoadsModel::rowCount( const QModelIndex &parent ) const
+int MediaSetsModel::rowCount( const QModelIndex &parent ) const
 {
   if ( parent.isValid() )
   {
     return 0;
   }
 
-  return static_cast< int >( loadsV.size() );
+  return static_cast< int >( mediaSetsV.size() );
 }
 
-int LoadsModel::columnCount( const QModelIndex &parent ) const
+int MediaSetsModel::columnCount( const QModelIndex &parent ) const
 {
   if ( parent.isValid() )
   {
@@ -43,9 +43,10 @@ int LoadsModel::columnCount( const QModelIndex &parent ) const
   }
 
   return static_cast< int >( Columns::ColumnsCount );
+
 }
 
-QVariant LoadsModel::data(
+QVariant MediaSetsModel::data(
   const QModelIndex &index,
   const int role ) const
 {
@@ -55,23 +56,20 @@ QVariant LoadsModel::data(
   }
 
   // out of range access
-  if ( static_cast< size_t>( index.row() ) >= loadsV.size() )
+  if ( static_cast< size_t>( index.row() ) >= mediaSetsV.size() )
   {
     return {};
   }
 
-  auto load{ std::next( loadsV.begin(), index.row() ) };
+  auto mediaSet{ std::next( mediaSetsV.begin(), index.row() ) };
 
   switch ( role )
   {
     case Qt::ItemDataRole::DisplayRole:
       switch ( static_cast< Columns>( index.column() ) )
       {
-        case Columns::Name:
-          return HelperQt::toQString( load->get()->name() );
-
         case Columns::PartNumber:
-          return HelperQt::toQString( load->get()->partNumber() );
+          return HelperQt::toQString( mediaSet->get()->partNumber() );
 
         default:
           return {};
@@ -84,7 +82,7 @@ QVariant LoadsModel::data(
   }
 }
 
-QVariant LoadsModel::headerData(
+QVariant MediaSetsModel::headerData(
   const int section,
   const ::Qt::Orientation orientation,
   const int role ) const
@@ -101,9 +99,6 @@ QVariant LoadsModel::headerData(
 
   switch ( static_cast< Columns>( section ) )
   {
-    case Columns::Name:
-      return QString{ tr( "Name" ) };
-
     case Columns::PartNumber:
       return QString{ tr( "Part Number" ) };
 
@@ -112,16 +107,16 @@ QVariant LoadsModel::headerData(
   }
 }
 
-Arinc665::Media::LoadPtr LoadsModel::getLoad(
+Arinc665::Media::MediaSetPtr MediaSetsModel::getMediaSet(
   const QModelIndex &index ) const
 {
   return {};
 }
 
-void LoadsModel::setLoads( const Arinc665::Media::Loads &loads )
+void MediaSetsModel::setMediaSets( const Arinc665::Media::MediaSets &mediaSets )
 {
   beginResetModel();
-  loadsV = loads;
+  mediaSetsV = mediaSets;
   endResetModel();
 }
 

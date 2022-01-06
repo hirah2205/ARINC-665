@@ -7,11 +7,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::Media::LoadFilesModel.
+ * @brief Declaration of Class Arinc665Qt::Media::MediaSetsModel.
  **/
 
-#ifndef ARINC665_QT_MEDIA_LOADFILESMODEL_HPP
-#define ARINC665_QT_MEDIA_LOADFILESMODEL_HPP
+#ifndef ARINC665_ARINC665_QT_MEDIA_MEDIASETSMODEL_HPP
+#define ARINC665_ARINC665_QT_MEDIA_MEDIASETSMODEL_HPP
 
 #include <arinc665_qt/media/Media.hpp>
 
@@ -19,14 +19,12 @@
 
 #include <QAbstractTableModel>
 
-#include <memory>
-
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT Model handling the files, which are part of a load.
+ * @brief QT model of list of Media Sets.
  **/
-class LoadFilesModel : public QAbstractTableModel
+class MediaSetsModel : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -34,22 +32,21 @@ class LoadFilesModel : public QAbstractTableModel
     //! Columns of Model
     enum class Columns
     {
-      Name,
       PartNumber,
 
       ColumnsCount
     };
 
     /**
-     * @brief Initialises the load files model.
+     * @brief Initialises the loads model.
      *
      * @param[in] parent
      *   Parent QObject.
      **/
-    LoadFilesModel( QObject * parent = nullptr );
+    MediaSetsModel( QObject *parent = nullptr );
 
     //! Destructor
-    virtual ~LoadFilesModel();
+    virtual ~MediaSetsModel();
 
     /**
      * @brief Returns the number of rows.
@@ -57,7 +54,7 @@ class LoadFilesModel : public QAbstractTableModel
      * @param[in] parent
      *   Index-parent - assumed to be the root element (invalid).
      *
-     * @return Number of Files.
+     * @return The number of loads.
      * @retval 0
      *   If @p is valid (not root element)
      **/
@@ -83,9 +80,8 @@ class LoadFilesModel : public QAbstractTableModel
      *
      * @return Data dependent of the index and role.
      **/
-    [[nodiscard]] QVariant data(
-      const QModelIndex &index,
-      int role ) const override;
+    [[nodiscard]] QVariant
+    data( const QModelIndex &index, int role ) const override;
 
     /**
      * @brief Returns the data for the given role and section in the header with
@@ -105,18 +101,29 @@ class LoadFilesModel : public QAbstractTableModel
       ::Qt::Orientation orientation,
       int role ) const override;
 
+    /**
+     * @brief Returns the Media Set for the given index.
+     *
+     * @param[in] index
+     *   Index of the requested item.
+     *
+     * @return The load for the given index.
+     **/
+    Arinc665::Media::MediaSetPtr getMediaSet( const QModelIndex &index ) const;
+
   public slots:
     /**
-     * @brief Updates the Data Model with the given Files.
+     * @brief Updates the data model with the given Media Sets.
      *
-     * @param[in] loadFiles
-     *   Load Files, contained by the model.
+     * @param[in] mediaSets
+     *   Media Sets, contained by the model.
      **/
-    void loadFiles( const Arinc665::Media::LoadFiles &loadFiles );
+    void setMediaSets( const Arinc665::Media::MediaSets &mediaSets = {} );
 
   private:
-    //! Load Files
-    Arinc665::Media::LoadFiles loadFilesV;
+
+    //! loads list
+    Arinc665::Media::MediaSets mediaSetsV;
 };
 
 }
