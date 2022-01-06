@@ -45,10 +45,10 @@ class BatchesModel : public QAbstractTableModel
      * @param[in] parent
      *   Parent QObject.
      **/
-    BatchesModel( QObject *parent = nullptr );
+    explicit BatchesModel( QObject *parent = nullptr );
 
     //! Destructor
-    virtual ~BatchesModel();
+    ~BatchesModel() override;
 
     /**
      * @brief Returns the number of rows.
@@ -112,21 +112,20 @@ class BatchesModel : public QAbstractTableModel
      *
      * @return Batch for the given index.
      **/
-    virtual Arinc665::Media::BatchPtr getBatch(
+    virtual Arinc665::Media::ConstBatchPtr batch(
       const QModelIndex &index ) const = 0;
 
-  public slots:
     /**
      * @brief Updates the Data Model with the given Batches.
      *
      * @param[in] batches
      *   Batches, contained by the model.
      **/
-    void setBatches( const Arinc665::Media::Batches &batches = {} );
+    void batches( const Arinc665::Media::ConstBatches &batches = {} );
 
   private:
     //! Batches List
-    Arinc665::Media::Batches batchesV;
+    Arinc665::Media::ConstBatches batchesV;
 };
 
 }

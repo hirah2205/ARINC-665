@@ -112,13 +112,13 @@ QVariant LoadsModel::headerData(
   }
 }
 
-Arinc665::Media::LoadPtr LoadsModel::getLoad(
+Arinc665::Media::ConstLoadPtr LoadsModel::load(
   const QModelIndex &index ) const
 {
   return {};
 }
 
-void LoadsModel::setLoads( const Arinc665::Media::Loads &loads )
+void LoadsModel::loads( const Arinc665::Media::ConstLoads &loads )
 {
   beginResetModel();
   loadsV = loads;

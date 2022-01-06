@@ -55,7 +55,7 @@ class LoadWidget : public QWidget
      **/
     void selectedLoad(
       Arinc665Qt::Media::MediaSetModel * model,
-      Arinc665::Media::LoadPtr load );
+      Arinc665::Media::ConstLoadPtr load );
 
   private:
     //! UI (designer)
@@ -68,7 +68,7 @@ class LoadWidget : public QWidget
     //! Media Set Model
     MediaSetModel * mediaSetModelV;
     //! Load
-    Arinc665::Media::LoadPtr loadV;
+    Arinc665::Media::ConstLoadPtr loadV;
 };
 
 }

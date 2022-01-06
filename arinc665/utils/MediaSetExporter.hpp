@@ -25,7 +25,7 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief ARINC 665 Media Set Exporter
+ * @brief ARINC 665 %Media Set Exporter
  *
  * This exporter uses a Media Set and exports all files and structures.
  **/

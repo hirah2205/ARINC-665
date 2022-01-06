@@ -119,13 +119,13 @@ QVariant BatchesModel::headerData(
   }
 }
 
-Arinc665::Media::BatchPtr BatchesModel::getBatch(
+Arinc665::Media::ConstBatchPtr BatchesModel::batch(
   const QModelIndex &index ) const
 {
   return {};
 }
 
-void BatchesModel::setBatches( const Arinc665::Media::Batches &batches )
+void BatchesModel::batches( const Arinc665::Media::ConstBatches &batches )
 {
   beginResetModel();
   batchesV = batches;

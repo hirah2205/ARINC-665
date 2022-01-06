@@ -124,7 +124,7 @@ Media::ConstMediaSetPtr MediaSetManagerImpl::mediaSet(
   return {};
 }
 
-const MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::mediaSets() const
+const Media::ConstMediaSets& MediaSetManagerImpl::mediaSets() const
 {
   return mediaSetsV;
 }

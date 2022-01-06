@@ -25,7 +25,7 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief ARINC 665 Media Set Validator.
+ * @brief ARINC 665 %Media Set Validator.
  *
  * Validates the integrity and consistency of a ARINC 665 Media Set.
  **/

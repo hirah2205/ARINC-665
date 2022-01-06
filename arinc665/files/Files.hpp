@@ -27,7 +27,7 @@
 #include <cstdint>
 
 /**
- * @brief ARINC 665 Files.
+ * @brief ARINC 665 %Files.
  *
  * This namespace contains the implementation of the following ARINC 665
  * protocol files:

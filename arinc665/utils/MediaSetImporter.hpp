@@ -25,7 +25,7 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief ARINC 665 Media Set Importer
+ * @brief ARINC 665 %Media Set Importer
  *
  * Imports the Media Set given by the provided properties.
  **/

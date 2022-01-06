@@ -46,10 +46,10 @@ class LoadFilesModel : public QAbstractTableModel
      * @param[in] parent
      *   Parent QObject.
      **/
-    LoadFilesModel( QObject * parent = nullptr );
+    explicit LoadFilesModel( QObject * parent = nullptr );
 
     //! Destructor
-    virtual ~LoadFilesModel();
+    ~LoadFilesModel() override;
 
     /**
      * @brief Returns the number of rows.
@@ -105,18 +105,17 @@ class LoadFilesModel : public QAbstractTableModel
       ::Qt::Orientation orientation,
       int role ) const override;
 
-  public slots:
     /**
      * @brief Updates the Data Model with the given Files.
      *
      * @param[in] loadFiles
      *   Load Files, contained by the model.
      **/
-    void loadFiles( const Arinc665::Media::LoadFiles &loadFiles );
+    void loadFiles( const Arinc665::Media::ConstLoadFiles &loadFiles );
 
   private:
     //! Load Files
-    Arinc665::Media::LoadFiles loadFilesV;
+    Arinc665::Media::ConstLoadFiles loadFilesV;
 };
 
 }

@@ -194,7 +194,10 @@ class Load : public File
      *
      * @return Data files.
      **/
-    [[nodiscard]] LoadFiles dataFiles() const;
+    [[nodiscard]] ConstLoadFiles dataFiles() const;
+
+    //! @copydoc dataFiles() const
+    [[nodiscard]] LoadFiles dataFiles();
 
     /**
      * @brief Add the given file as data file.
@@ -223,7 +226,10 @@ class Load : public File
      *
      * @return Support Files.
      **/
-    [[nodiscard]] LoadFiles supportFiles() const;
+    [[nodiscard]] ConstLoadFiles supportFiles() const;
+
+    //! @copydoc supportFiles() const
+    [[nodiscard]] LoadFiles supportFiles();
 
     /**
      * @brief Add the given file as support file.

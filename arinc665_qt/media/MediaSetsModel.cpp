@@ -107,13 +107,14 @@ QVariant MediaSetsModel::headerData(
   }
 }
 
-Arinc665::Media::MediaSetPtr MediaSetsModel::getMediaSet(
+Arinc665::Media::ConstMediaSetPtr MediaSetsModel::mediaSet(
   const QModelIndex &index ) const
 {
   return {};
 }
 
-void MediaSetsModel::setMediaSets( const Arinc665::Media::MediaSets &mediaSets )
+void MediaSetsModel::mediaSets(
+  const Arinc665::Media::ConstMediaSets &mediaSets )
 {
   beginResetModel();
   mediaSetsV = mediaSets;

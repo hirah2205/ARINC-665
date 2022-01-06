@@ -34,7 +34,7 @@ LoadWidget::~LoadWidget() = default;
 
 void LoadWidget::selectedLoad(
   Arinc665Qt::Media::MediaSetModel * const model,
-  Arinc665::Media::LoadPtr load )
+  Arinc665::Media::ConstLoadPtr load )
 {
   mediaSetModelV = model;
   loadV = std::move( load );

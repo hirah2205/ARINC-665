@@ -47,7 +47,7 @@ class MediaSetManagerImpl final : public MediaSetManager
       std::string_view partNumber) const final;
 
     //! @copydoc MediaSetManager::mediaSets() const
-    [[nodiscard]] const MediaSets& mediaSets() const final;
+    [[nodiscard]] const Media::ConstMediaSets& mediaSets() const final;
 
     //! @copydoc MediaSetManager::add()
     void add(
@@ -90,7 +90,7 @@ class MediaSetManagerImpl final : public MediaSetManager
     //! Media Set Configuration
     MediaSetConfiguration &configurationV;
     //! Media Sets
-    MediaSets mediaSetsV;
+    Media::ConstMediaSets mediaSetsV;
     //! Media Paths
     MediaPaths mediaPaths;
 };

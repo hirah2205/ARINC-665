@@ -40,9 +40,6 @@ namespace Arinc665::Utils {
 class MediaSetManager
 {
   public:
-    //! Media Sets (list)
-    using MediaSets = std::list< Media::ConstMediaSetPtr >;
-
     //! Handler which returns the path to the given medium number
     using MediumPathHandler =
       std::function< std::filesystem::path( Media::ConstMediumPtr medium ) >;
@@ -92,7 +89,7 @@ class MediaSetManager
      *
      * @return All media sets.
      **/
-    [[nodiscard]] virtual const MediaSets& mediaSets() const = 0;
+    [[nodiscard]] virtual const Media::ConstMediaSets& mediaSets() const = 0;
 
     /**
      * @brief Adds the given media set to the media set manager.

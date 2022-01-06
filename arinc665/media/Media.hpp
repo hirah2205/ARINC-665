@@ -164,6 +164,8 @@ using WeakLoads = std::list< LoadPtr::weak_type >;
 
 //! %Load %File List ( File, Part Number). Used for Data and Support Files of Load
 using LoadFiles = std::list< std::pair< FilePtr, std::string > >;
+//! Const %Load %File List ( File, Part Number). Used for Data and Support Files of Load
+using ConstLoadFiles = std::list< std::pair< ConstFilePtr, std::string > >;
 //! Weak %Load %File List ( File, Part Number). Used for Data and Support Files of Load
 using WeakLoadFiles = std::list< std::pair< FilePtr::weak_type, std::string > >;
 

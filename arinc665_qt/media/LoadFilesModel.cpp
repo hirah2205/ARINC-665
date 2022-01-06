@@ -114,7 +114,7 @@ QVariant LoadFilesModel::headerData(
   }
 }
 
-void LoadFilesModel::loadFiles( const Arinc665::Media::LoadFiles &loadFiles )
+void LoadFilesModel::loadFiles( const Arinc665::Media::ConstLoadFiles &loadFiles )
 {
   beginResetModel();
   loadFilesV = loadFiles;

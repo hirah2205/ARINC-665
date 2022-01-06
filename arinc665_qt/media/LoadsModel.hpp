@@ -44,10 +44,10 @@ class LoadsModel : public QAbstractTableModel
      * @param[in] parent
      *   Parent QObject.
      **/
-    LoadsModel( QObject * parent = nullptr );
+    explicit LoadsModel( QObject * parent = nullptr );
 
     //! Destructor
-    virtual ~LoadsModel();
+    ~LoadsModel() override;
 
     /**
      * @brief Returns the number of rows.
@@ -111,20 +111,20 @@ class LoadsModel : public QAbstractTableModel
      *
      * @return The load for the given index.
      **/
-    Arinc665::Media::LoadPtr getLoad( const QModelIndex &index ) const;
+    [[nodiscard]] Arinc665::Media::ConstLoadPtr load(
+      const QModelIndex &index ) const;
 
-  public slots:
     /**
      * @brief Updates the data model with the given ASF messages.
      *
      * @param[in] loads
      *   Loads, contained by the model.
      **/
-    void setLoads( const Arinc665::Media::Loads &loads = {} );
+    void loads( const Arinc665::Media::ConstLoads &loads = {} );
 
   private:
     //! loads list
-    Arinc665::Media::Loads loadsV;
+    Arinc665::Media::ConstLoads loadsV;
 };
 
 }

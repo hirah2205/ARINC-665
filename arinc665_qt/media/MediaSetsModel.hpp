@@ -22,7 +22,7 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT model of list of Media Sets.
+ * @brief QT model of list of %Media Sets.
  **/
 class MediaSetsModel : public QAbstractTableModel
 {
@@ -43,10 +43,10 @@ class MediaSetsModel : public QAbstractTableModel
      * @param[in] parent
      *   Parent QObject.
      **/
-    MediaSetsModel( QObject *parent = nullptr );
+    explicit MediaSetsModel( QObject *parent = nullptr );
 
     //! Destructor
-    virtual ~MediaSetsModel();
+    ~MediaSetsModel() override;
 
     /**
      * @brief Returns the number of rows.
@@ -80,8 +80,9 @@ class MediaSetsModel : public QAbstractTableModel
      *
      * @return Data dependent of the index and role.
      **/
-    [[nodiscard]] QVariant
-    data( const QModelIndex &index, int role ) const override;
+    [[nodiscard]] QVariant data(
+      const QModelIndex &index,
+      int role ) const override;
 
     /**
      * @brief Returns the data for the given role and section in the header with
@@ -107,23 +108,23 @@ class MediaSetsModel : public QAbstractTableModel
      * @param[in] index
      *   Index of the requested item.
      *
-     * @return The load for the given index.
+     * @return Media Set for the given index.
      **/
-    Arinc665::Media::MediaSetPtr getMediaSet( const QModelIndex &index ) const;
+    [[nodiscard]] Arinc665::Media::ConstMediaSetPtr mediaSet(
+      const QModelIndex &index ) const;
 
-  public slots:
     /**
      * @brief Updates the data model with the given Media Sets.
      *
      * @param[in] mediaSets
      *   Media Sets, contained by the model.
      **/
-    void setMediaSets( const Arinc665::Media::MediaSets &mediaSets = {} );
+    void mediaSets( const Arinc665::Media::ConstMediaSets &mediaSets = {} );
 
   private:
 
     //! loads list
-    Arinc665::Media::MediaSets mediaSetsV;
+    Arinc665::Media::ConstMediaSets mediaSetsV;
 };
 
 }
