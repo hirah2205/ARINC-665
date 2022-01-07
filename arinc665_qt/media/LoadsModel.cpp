@@ -115,13 +115,38 @@ QVariant LoadsModel::headerData(
 Arinc665::Media::ConstLoadPtr LoadsModel::load(
   const QModelIndex &index ) const
 {
-  return {};
+  if ( !index.isValid() )
+  {
+    return {};
+  }
+
+  if ( ( index.row() < 0 )
+    || ( index.row() ) >= static_cast< int >( loadsV.size() ) )
+  {
+    return {};
+  }
+
+  auto load{ std::next( loadsV.begin(), index.row() ) };
+
+  return *load;
+}
+
+const Arinc665::Media::ConstLoads& LoadsModel::loads() const
+{
+  return loadsV;
 }
 
 void LoadsModel::loads( const Arinc665::Media::ConstLoads &loads )
 {
   beginResetModel();
   loadsV = loads;
+  endResetModel();
+}
+
+void LoadsModel::loads( Arinc665::Media::ConstLoads &&loads )
+{
+  beginResetModel();
+  loadsV = std::move( loads );
   endResetModel();
 }
 

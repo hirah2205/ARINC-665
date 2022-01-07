@@ -115,12 +115,22 @@ class LoadsModel : public QAbstractTableModel
       const QModelIndex &index ) const;
 
     /**
+     * @brief Returns the Loads.
+     *
+     * @return Loads
+     **/
+    const Arinc665::Media::ConstLoads& loads() const;
+
+    /**
      * @brief Updates the data model with the given ASF messages.
      *
      * @param[in] loads
      *   Loads, contained by the model.
      **/
-    void loads( const Arinc665::Media::ConstLoads &loads = {} );
+    void loads( const Arinc665::Media::ConstLoads &loads );
+
+    //! @copydoc loads(const Arinc665::Media::ConstLoads&)
+    void loads( Arinc665::Media::ConstLoads &&loads );
 
   private:
     //! loads list

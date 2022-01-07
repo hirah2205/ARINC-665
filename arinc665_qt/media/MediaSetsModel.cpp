@@ -110,7 +110,20 @@ QVariant MediaSetsModel::headerData(
 Arinc665::Media::ConstMediaSetPtr MediaSetsModel::mediaSet(
   const QModelIndex &index ) const
 {
-  return {};
+  if ( !index.isValid() )
+  {
+    return {};
+  }
+
+  if ( ( index.row() < 0 )
+    || ( index.row() ) >= static_cast< int >( mediaSetsV.size() ) )
+  {
+    return {};
+  }
+
+  auto mediaSet{ std::next( mediaSetsV.begin(), index.row() ) };
+
+  return *mediaSet;
 }
 
 void MediaSetsModel::mediaSets(

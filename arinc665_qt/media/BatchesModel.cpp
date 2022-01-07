@@ -122,7 +122,20 @@ QVariant BatchesModel::headerData(
 Arinc665::Media::ConstBatchPtr BatchesModel::batch(
   const QModelIndex &index ) const
 {
-  return {};
+  if ( !index.isValid() )
+  {
+    return {};
+  }
+
+  if ( ( index.row() < 0 )
+       || ( index.row() ) >= static_cast< int >( batchesV.size() ) )
+  {
+    return {};
+  }
+
+  auto batch{ std::next( batchesV.begin(), index.row() ) };
+
+  return *batch;
 }
 
 void BatchesModel::batches( const Arinc665::Media::ConstBatches &batches )
