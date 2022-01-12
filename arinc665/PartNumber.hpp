@@ -38,7 +38,7 @@ namespace Arinc665 {
  *    consisting of upper-case alphanumeric characters except for alpha
  *    characters "I", "O", "Q" and "Z".
  **/
-class PartNumber
+class ARINC665_EXPORT PartNumber
 {
   public:
     //! Length of Manufacturer Code

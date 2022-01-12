@@ -28,7 +28,7 @@ class MediumWidget;
 }
 
 //! Widget for Medium Presentation
-class MediumWidget: public QWidget
+class ARINC665_QT_EXPORT MediumWidget : public QWidget
 {
   Q_OBJECT
 

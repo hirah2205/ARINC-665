@@ -27,7 +27,7 @@ namespace Arinc665Qt::Media {
  * This is an hierarchical model giving access to Media Sets, Media, Directories
  * and Files.
  **/
-class MediaSetModel: public QAbstractItemModel
+class ARINC665_QT_EXPORT MediaSetModel: public QAbstractItemModel
 {
   Q_OBJECT
 

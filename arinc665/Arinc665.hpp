@@ -10,18 +10,20 @@
  * @brief Declaration of Namespace Arinc665.
  **/
 
-/**
- * @dir
- * @brief Declaration/ Definition of Namespace Arinc665.
- **/
-
 #ifndef ARINC665_ARINC665_HPP
 #define ARINC665_ARINC665_HPP
+
+#include <arinc665/arinc665_export.h>
 
 #include <string_view>
 #include <tuple>
 #include <vector>
 #include <cstdint>
+
+/**
+ * @dir
+ * @brief Declaration/ Definition of Namespace Arinc665.
+ **/
 
 /**
  * @brief ARINC 665 Specification.

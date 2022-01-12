@@ -41,7 +41,9 @@ target_sources(
 
 target_include_directories(
   arinc665
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> )
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..> )
 
 target_compile_features( arinc665 PUBLIC cxx_std_20 )
 
@@ -74,6 +76,9 @@ target_link_libraries(
 
   PRIVATE
     PkgConfig::Libxmlpp )
+
+include( GenerateExportHeader )
+generate_export_header( arinc665 )
 
 
 add_library( arinc665_test OBJECT )
@@ -137,6 +142,11 @@ install(
     PATTERN "*.hpp"
     PATTERN "*Test.*" EXCLUDE
     PATTERN "implementation" EXCLUDE )
+
+install(
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/arinc665_export.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/arinc665
+  COMPONENT development )
 
 install(
   EXPORT arinc665-config

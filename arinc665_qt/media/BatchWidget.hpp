@@ -28,9 +28,9 @@ class BatchWidget;
 }
 
 //! Widget for Batch Presentation
-class BatchWidget : public QWidget
+class ARINC665_QT_EXPORT BatchWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
   public:
     /**

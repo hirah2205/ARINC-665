@@ -28,9 +28,9 @@ class DirectoryWidget;
 }
 
 //! Widget for Directory Presentation
-class DirectoryWidget : public QWidget
+class ARINC665_QT_EXPORT DirectoryWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
   public:
     /**

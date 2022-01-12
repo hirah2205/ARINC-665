@@ -24,7 +24,7 @@ namespace Arinc665Qt::Media {
 /**
  * @brief QT model of list of %Media Sets.
  **/
-class MediaSetsModel : public QAbstractTableModel
+class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
 {
     Q_OBJECT
 

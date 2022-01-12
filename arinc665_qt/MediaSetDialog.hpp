@@ -27,9 +27,9 @@ class MediaSetDialog;
 }
 
 //! %Media Set Dialog
-class MediaSetDialog : public QDialog
+class ARINC665_QT_EXPORT  MediaSetDialog : public QDialog
 {
-  Q_OBJECT
+    Q_OBJECT
 
   public:
     /**

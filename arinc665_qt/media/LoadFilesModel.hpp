@@ -26,7 +26,7 @@ namespace Arinc665Qt::Media {
 /**
  * @brief QT Model handling the files, which are part of a load.
  **/
-class LoadFilesModel : public QAbstractTableModel
+class ARINC665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
 {
     Q_OBJECT
 

@@ -28,7 +28,7 @@ class RegularFileWidget;
 }
 
 //! Widget for Regular File Presentation
-class RegularFileWidget : public QWidget
+class ARINC665_QT_EXPORT RegularFileWidget : public QWidget
 {
   Q_OBJECT
 

@@ -28,7 +28,7 @@ class LoadWidget;
 }
 
 //! Widget for Load Presentation
-class LoadWidget : public QWidget
+class ARINC665_QT_EXPORT LoadWidget : public QWidget
 {
   Q_OBJECT
 

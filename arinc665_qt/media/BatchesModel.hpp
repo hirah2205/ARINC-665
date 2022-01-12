@@ -24,7 +24,7 @@ namespace Arinc665Qt::Media {
 /**
  * @brief QT model of List of Batches.
  **/
-class BatchesModel : public QAbstractTableModel
+class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
 {
     Q_OBJECT
 

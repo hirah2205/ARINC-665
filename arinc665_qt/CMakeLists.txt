@@ -45,6 +45,9 @@ target_link_libraries(
   PRIVATE
     helper_qt )
 
+include( GenerateExportHeader )
+generate_export_header( arinc665_qt )
+
 add_subdirectory( media )
 add_subdirectory( media_set_manager )
 
@@ -61,6 +64,11 @@ install(
   COMPONENT development
   FILES_MATCHING
     PATTERN "*.hpp" )
+
+install(
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/arinc665_qt_export.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/arinc665_qt
+  COMPONENT development )
 
 install(
   EXPORT arinc665_qt-config

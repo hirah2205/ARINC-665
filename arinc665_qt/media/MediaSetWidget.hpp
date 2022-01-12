@@ -28,9 +28,9 @@ class MediaSetWidget;
 }
 
 //! Widget for %Media Set Presentation
-class MediaSetWidget: public QWidget
+class ARINC665_QT_EXPORT MediaSetWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
   public:
     /**
