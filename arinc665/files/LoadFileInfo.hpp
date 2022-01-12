@@ -31,7 +31,7 @@ namespace Arinc665::Files {
  *
  * @sa LoadHeaderFile
  **/
-struct LoadFileInfo
+struct ARINC665_EXPORT LoadFileInfo
 {
   //! Filename
   std::string filename;

@@ -51,7 +51,7 @@ namespace Arinc665::Files {
  * User Defined Data               | 16
  * BATCHES.LUM File CRC            | 16
  **/
-class BatchListFile: public ListFile
+class ARINC665_EXPORT BatchListFile : public ListFile
 {
   public:
     //! User Defined Data.

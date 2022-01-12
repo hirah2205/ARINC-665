@@ -29,7 +29,7 @@ namespace Arinc665::Utils {
  *
  * Validates the integrity and consistency of a ARINC 665 Media Set.
  **/
-class MediaSetValidator
+class ARINC665_EXPORT MediaSetValidator
 {
   public:
     /**

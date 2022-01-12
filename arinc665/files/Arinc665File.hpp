@@ -27,7 +27,7 @@ namespace Arinc665::Files {
 /**
  * @brief ARINC 665 Protocol %File.
  **/
-class Arinc665File
+class ARINC665_EXPORT Arinc665File
 {
   public:
     //! String List

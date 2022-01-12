@@ -22,10 +22,11 @@
 namespace Arinc665::Utils {
 
 //! %File Creation Policy Description
-class FileCreationPolicyDescription : public Helper::Description<
-  FileCreationPolicyDescription,
-  FileCreationPolicy,
-  FileCreationPolicy::Invalid >
+class ARINC665_EXPORT FileCreationPolicyDescription :
+  public Helper::Description<
+    FileCreationPolicyDescription,
+    FileCreationPolicy,
+    FileCreationPolicy::Invalid >
 {
   public:
     //! Constructs and adds the entries
@@ -42,7 +43,7 @@ class FileCreationPolicyDescription : public Helper::Description<
  *
  * @return Output Stream for chaining.
  **/
-std::ostream& operator<<(
+std::ostream& ARINC665_EXPORT operator<<(
   std::ostream &stream,
   FileCreationPolicy fileCreationPolicy );
 
@@ -59,7 +60,7 @@ std::ostream& operator<<(
  * @throw boost::program_options
  *   When @p stream cannot be decoded to FileCreationPolicy.
  **/
-std::istream& operator>>(
+std::istream& ARINC665_EXPORT operator>>(
   std::istream& stream,
   FileCreationPolicy &fileCreationPolicy );
 

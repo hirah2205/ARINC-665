@@ -25,7 +25,7 @@ namespace Arinc665::Media {
 /**
  * @brief %Batch of Loads.
  **/
-class Batch : public File
+class ARINC665_EXPORT Batch : public File
 {
   public:
     //! Batch Information (Target Hardware ID -> Loads)

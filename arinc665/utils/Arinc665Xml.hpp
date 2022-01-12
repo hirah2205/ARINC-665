@@ -32,7 +32,7 @@ namespace Arinc665::Utils {
  * Tools can use this representation to "decompile" binary media sets to this
  * representation and "compile" the XML representation to an binary media set.
  **/
-class Arinc665Xml
+class ARINC665_EXPORT Arinc665Xml
 {
   public:
     //! File Path Mapping

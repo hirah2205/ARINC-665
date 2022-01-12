@@ -30,7 +30,7 @@ namespace Arinc665::Files {
  *
  * @sa FileListFile
  **/
-struct FileInfo
+struct ARINC665_EXPORT FileInfo
 {
   //! Filename
   std::string filename;

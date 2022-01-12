@@ -29,7 +29,7 @@ namespace Arinc665::Utils {
  *
  * Imports the Media Set given by the provided properties.
  **/
-class MediaSetImporter
+class ARINC665_EXPORT MediaSetImporter
 {
   public:
 

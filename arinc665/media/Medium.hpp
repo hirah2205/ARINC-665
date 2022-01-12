@@ -21,7 +21,7 @@ namespace Arinc665::Media {
 /**
  * @brief %Medium within an ARINC 665 %Media Set.
  **/
-class Medium : public ContainerEntity
+class ARINC665_EXPORT Medium : public ContainerEntity
 {
   public:
     /**

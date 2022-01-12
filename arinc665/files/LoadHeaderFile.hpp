@@ -99,7 +99,7 @@ namespace Arinc665::Files {
  * Header File CRC                                  | 16
  * Load CRC                                         | 32
  **/
-class LoadHeaderFile: public Arinc665File
+class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
 {
   public:
     //! Positions List

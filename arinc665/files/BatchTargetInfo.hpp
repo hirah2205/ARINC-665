@@ -31,9 +31,8 @@ namespace Arinc665::Files {
  * @sa BatchListFile
  * @sa BatchLoadInfo, BatchLoadsInfo
  **/
-struct BatchTargetInfo
+struct ARINC665_EXPORT BatchTargetInfo
 {
-  public:
   //! Target Hardware ID and Position
   std::string targetHardwareIdPosition;
   //! List of Loads for Batch

@@ -22,7 +22,7 @@
 namespace Arinc665 {
 
 //! ARINC 665 C++ Library %Version Information.
-class Version
+class ARINC665_EXPORT Version
 {
   public:
     // delete constructors

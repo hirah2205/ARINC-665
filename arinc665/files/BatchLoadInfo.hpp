@@ -27,13 +27,12 @@ namespace Arinc665::Files {
  * @sa BatchFile
  * @sa BatchTargetInfo
  **/
-struct BatchLoadInfo
+struct ARINC665_EXPORT BatchLoadInfo
 {
-  public:
-    //! Load Header Filename.
-    std::string headerFilename;
-    //! Load Part Number.
-    std::string partNumber;
+  //! Load Header Filename.
+  std::string headerFilename;
+  //! Load Part Number.
+  std::string partNumber;
 };
 
 }

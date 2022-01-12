@@ -48,7 +48,7 @@ namespace Arinc665::Files {
  * Expansion Point 3                                  |  0
  * Batch File CRC                                     | 16
  **/
-class BatchFile: public Arinc665File
+class ARINC665_EXPORT BatchFile : public Arinc665File
 {
   public:
     ///! Offset of the Spare field (since ARINC 665-2).

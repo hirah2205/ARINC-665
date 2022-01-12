@@ -22,10 +22,11 @@
 namespace Arinc665 {
 
 //! Description for SupportedArinc665Version Enumeration.
-class SupportedArinc665VersionDescription : public Helper::Description<
-  SupportedArinc665VersionDescription,
-  SupportedArinc665Version,
-  SupportedArinc665Version::Invalid >
+class ARINC665_EXPORT SupportedArinc665VersionDescription :
+  public Helper::Description<
+    SupportedArinc665VersionDescription,
+    SupportedArinc665Version,
+    SupportedArinc665Version::Invalid >
 {
   public:
     //! Initialises Description Values
@@ -42,7 +43,7 @@ class SupportedArinc665VersionDescription : public Helper::Description<
  *
  * @return @p stream for chaining.
  **/
-std::ostream& operator<<(
+std::ostream& ARINC665_EXPORT operator<<(
   std::ostream &stream,
   SupportedArinc665Version version );
 
@@ -57,7 +58,7 @@ std::ostream& operator<<(
  *
  * @return @p stream for chaining.
  **/
-std::istream& operator>>(
+std::istream& ARINC665_EXPORT operator>>(
   std::istream& stream,
   SupportedArinc665Version &version );
 

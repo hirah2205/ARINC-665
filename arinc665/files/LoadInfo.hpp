@@ -30,7 +30,7 @@ namespace Arinc665::Files {
  *
  * @sa LoadListFile
  **/
-struct LoadInfo
+struct ARINC665_EXPORT LoadInfo
 {
   //! Target Hardware IDs.
   using ThwIds = std::set< std::string, std::less<> >;

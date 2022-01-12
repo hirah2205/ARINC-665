@@ -29,7 +29,7 @@ namespace Arinc665::Utils {
  *
  * This exporter uses a Media Set and exports all files and structures.
  **/
-class MediaSetExporter
+class ARINC665_EXPORT MediaSetExporter
 {
 public:
   //! Handler, which is called to generate the given medium.

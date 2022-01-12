@@ -22,7 +22,7 @@ namespace Arinc665::Media {
 /**
  * @brief %Directory within a %Medium.
  **/
-class Directory : public ContainerEntity
+class ARINC665_EXPORT Directory : public ContainerEntity
 {
   public:
     /**

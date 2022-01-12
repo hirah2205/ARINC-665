@@ -54,7 +54,7 @@ namespace Arinc665::Files {
  * User Defined Data               | 16
  * LOADS.LUM File CRC              | 16
  **/
-class LoadListFile: public ListFile
+class ARINC665_EXPORT LoadListFile : public ListFile
 {
   public:
     //! User Defined Data.

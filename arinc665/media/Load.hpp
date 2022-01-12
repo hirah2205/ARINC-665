@@ -31,7 +31,7 @@ namespace Arinc665::Media {
 /**
  * @brief %Load within %Media Set.
  **/
-class Load : public File
+class ARINC665_EXPORT Load : public File
 {
   public:
     //! Positions List

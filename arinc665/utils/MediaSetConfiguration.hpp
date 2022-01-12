@@ -26,7 +26,7 @@ namespace Arinc665::Utils {
 /**
  * @brief ARINC 665 %Media Set Configuration.
  **/
-class MediaSetConfiguration
+class ARINC665_EXPORT MediaSetConfiguration
 {
   public:
     //! media-to-path mapping (Medium Number -> Path)

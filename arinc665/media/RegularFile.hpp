@@ -24,7 +24,7 @@ namespace Arinc665::Media {
 /**
  * @brief Regular %File within %Media Set.
  **/
-class RegularFile : public File
+class ARINC665_EXPORT RegularFile : public File
 {
   public:
     /**

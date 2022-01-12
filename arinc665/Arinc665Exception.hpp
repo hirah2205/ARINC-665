@@ -23,7 +23,7 @@
 namespace Arinc665 {
 
 //! ARINC 665 Exception.
-class Arinc665Exception :
+class ARINC665_EXPORT Arinc665Exception :
   public std::exception,
   public boost::exception
 {
@@ -39,7 +39,7 @@ class Arinc665Exception :
 };
 
 //! Invalid ARINC 665 %File Exception.
-class InvalidArinc665File : public Arinc665Exception
+class ARINC665_EXPORT InvalidArinc665File : public Arinc665Exception
 {
   public:
     /**

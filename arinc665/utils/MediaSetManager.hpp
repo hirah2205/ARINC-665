@@ -37,7 +37,7 @@ namespace Arinc665::Utils {
  * - Within the media set directory the media are stored with the corresponding
  *   medium-path mapping.
  **/
-class MediaSetManager
+class ARINC665_EXPORT MediaSetManager
 {
   public:
     //! Handler which returns the path to the given medium number

@@ -35,7 +35,7 @@ namespace Arinc665::Media {
  * - Media, and
  * - Directory.
  **/
-class ContainerEntity : public Base
+class ARINC665_EXPORT ContainerEntity : public Base
 {
   public:
     //! Constructor

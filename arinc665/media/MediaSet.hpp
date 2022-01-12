@@ -28,7 +28,7 @@ namespace Arinc665::Media {
  *
  * Each media consists of one or more files.
  **/
-class MediaSet: public Base
+class ARINC665_EXPORT MediaSet : public Base
 {
   public:
     //! User Defined Data

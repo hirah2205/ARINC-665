@@ -29,7 +29,7 @@ namespace Arinc665::Files {
  *
  * @sa BatchListFile
  **/
-struct BatchInfo
+struct ARINC665_EXPORT BatchInfo
 {
   //! Part Number
   std::string partNumber;

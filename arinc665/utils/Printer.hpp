@@ -42,7 +42,7 @@ namespace Arinc665::Utils {
  * @param[in] indent
  *   Indent for sub-information
  **/
-void printMediaSet(
+void ARINC665_EXPORT printMediaSet(
   const Media::ConstMediaSetPtr &mediaSet,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
@@ -61,7 +61,7 @@ void printMediaSet(
  * @param[in] initialIndent
  *   Initial Indention prepended before each output.
  **/
-void printFile(
+void ARINC665_EXPORT printFile(
   const Media::ConstFilePtr &file,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {} );
@@ -83,7 +83,7 @@ void printFile(
  * @param[in] indent
  *   Indent for sub-information
  **/
-void printLoad(
+void ARINC665_EXPORT printLoad(
   const Media::ConstLoadPtr &load,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
@@ -105,7 +105,7 @@ void printLoad(
  * @param[in] indent
  *   Indent for sub-information
  **/
-void printBatch(
+void ARINC665_EXPORT printBatch(
   const Media::ConstBatchPtr &batch,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},

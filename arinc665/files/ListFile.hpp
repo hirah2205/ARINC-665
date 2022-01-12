@@ -29,7 +29,7 @@ namespace Arinc665::Files {
  * - LoadListFile
  * - BatchListFile
  **/
-class ListFile: public Arinc665File
+class ARINC665_EXPORT ListFile : public Arinc665File
 {
   public:
     /**

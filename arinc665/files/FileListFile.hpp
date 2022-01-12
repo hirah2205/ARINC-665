@@ -61,7 +61,7 @@ namespace Arinc665::Files {
  * FILES.LUM File Check Value                   | 16
  * FILES.LUM File CRC                           | 16
  **/
-class FileListFile: public ListFile
+class ARINC665_EXPORT FileListFile : public ListFile
 {
   public:
     //! User Defined Data Type

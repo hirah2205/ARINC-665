@@ -28,7 +28,7 @@ namespace Arinc665::Media {
  *  - load header files (Load), and
  *  - batch files (Batch).
  **/
-class File : public Base
+class ARINC665_EXPORT File : public Base
 {
   public:
     //! File Type
