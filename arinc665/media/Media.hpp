@@ -24,6 +24,7 @@
 #include <vector>
 #include <list>
 #include <memory>
+#include <variant>
 
 /**
  * @brief ARINC 665 %Media (Set).
@@ -60,6 +61,10 @@ using MediaSetPtr = std::shared_ptr< MediaSet >;
 using MediaSets = std::list< MediaSetPtr >;
 //! List of Constant %Media Sets
 using ConstMediaSets = std::list< ConstMediaSetPtr >;
+//! Media Set Variant
+using MediaSetVariant = std::variant< MediaSetPtr, ConstMediaSetPtr >;
+//! Media Sets Variant
+using MediaSetsVariant = std::variant< MediaSets, ConstMediaSets >;
 
 /** @} **/
 
@@ -161,6 +166,10 @@ using Loads = std::list< LoadPtr >;
 using ConstLoads = std::list< ConstLoadPtr >;
 //! Weak %Loads List
 using WeakLoads = std::list< LoadPtr::weak_type >;
+//! Load Variants
+using LoadVariant = std::variant< LoadPtr, ConstLoadPtr >;
+//! Loads Variant
+using LoadsVariant = std::variant< Loads, ConstLoads >;
 
 //! %Load %File List ( File, Part Number). Used for Data and Support Files of Load
 using LoadFiles = std::list< std::pair< FilePtr, std::string > >;
@@ -184,6 +193,10 @@ using BatchPtr = std::shared_ptr< Batch > ;
 using Batches = std::list< BatchPtr >;
 //! Constant %Batches List
 using ConstBatches = std::list< ConstBatchPtr >;
+//! Batch Variants
+using BatchVariant = std::variant< BatchPtr, ConstBatchPtr >;
+//! Batches Variant
+using BatchesVariant = std::variant< Batches, ConstBatches >;
 
 /** @} **/
 

@@ -41,16 +41,6 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
       ColumnsCount
     };
 
-    //! Batch Variants
-    using Batch = std::variant<
-      Arinc665::Media::BatchPtr ,
-      Arinc665::Media::ConstBatchPtr >;
-
-    //! Batches Variant
-    using Batches = std::variant<
-      Arinc665::Media::Batches ,
-      Arinc665::Media::ConstBatches >;
-
     /**
      * @brief Initialises the Batches Model.
      *
@@ -117,21 +107,11 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
       int role ) const override;
 
     /**
-     * @brief Returns the Batch for the given index.
-     *
-     * @param[in] index
-     *   Index of the requested item.
-     *
-     * @return Batch for the given index.
-     **/
-    virtual Batch batch( const QModelIndex &index ) const = 0;
-
-    /**
      * @brief Returns the Batches.
      *
      * @return Batches
      **/
-     const Batches batches() const;
+    const Arinc665::Media::BatchesVariant& batches() const;
 
     /**
      * @brief Updates the Data Model with the given Batches.
@@ -139,18 +119,27 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
      * @param[in] batches
      *   Batches, contained by the model.
      **/
-    void batches( const Batches &batches );
+    void batches( const Arinc665::Media::BatchesVariant &batches );
 
-    //! @copydoc batches(const Batches&)
-    void batches( Batches &&batches );
+    //! @copydoc batches(const Arinc665::Media::BatchesVariant&)
+    void batches( Arinc665::Media::BatchesVariant &&batches );
 
-  private:
     /**
      * @brief Returns the Number of Batches
      *
      * @return Number of Batches
      **/
     size_t numberOfBatches() const;
+
+    /**
+     * @brief Returns the Batch for the given index.
+     *
+     * @param[in] index
+     *   Index of the requested item.
+     *
+     * @return Batch for the given index.
+     **/
+    Arinc665::Media::BatchVariant batch( const QModelIndex &index ) const;
 
     /**
      * @brief Return Batch for given Index.
@@ -162,7 +151,7 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
      * @retval {}
      *   If index is invalid
      **/
-    Batch batch( std::size_t index ) const;
+    Arinc665::Media::BatchVariant batch( std::size_t index ) const;
 
     /**
      * @brief Converts given Batch Variant to Const Batch Pointer.
@@ -175,10 +164,12 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
      *
      * @return Const Batch Pointer
      **/
-    Arinc665::Media::ConstBatchPtr batch( const Batch &batch ) const;
+    Arinc665::Media::ConstBatchPtr constBatch(
+      const Arinc665::Media::BatchVariant &batch ) const;
 
+  private:
     //! Batches List
-    Batches batchesV;
+    Arinc665::Media::BatchesVariant batchesV;
 };
 
 }

@@ -39,16 +39,6 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
       ColumnsCount
     };
 
-    //! Media Set Variants
-    using MediaSet = std::variant<
-      Arinc665::Media::MediaSetPtr,
-      Arinc665::Media::ConstMediaSetPtr >;
-
-    //! Media Sets Variant
-    using MediaSets = std::variant<
-      Arinc665::Media::MediaSets,
-      Arinc665::Media::ConstMediaSets >;
-
     /**
      * @brief Initialises the loads model.
      *
@@ -115,22 +105,18 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
       int role ) const override;
 
     /**
-     * @brief Returns the Media Set for the given index.
+     * @brief Returns the Number of Media Sets
      *
-     * @param[in] index
-     *   Index of the requested item.
-     *
-     * @return Media Set for the given index.
+     * @return Number of Media Sets
      **/
-    [[nodiscard]] MediaSet mediaSet(
-      const QModelIndex &index ) const;
+    size_t numberOfMediaSets() const;
 
     /**
      * @brief Returns the Media Sets.
      *
      * @return Media Sets
      **/
-    const MediaSets& mediaSets() const;
+    const Arinc665::Media::MediaSetsVariant& mediaSets() const;
 
     /**
      * @brief Updates the data model with the given Media Sets.
@@ -138,18 +124,21 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      * @param[in] mediaSets
      *   Media Sets, contained by the model.
      **/
-    void mediaSets( const MediaSets &mediaSets );
+    void mediaSets( const Arinc665::Media::MediaSetsVariant &mediaSets );
 
-    //! @copydoc mediaSets(const MediaSets&)
-    void mediaSets( MediaSets &&mediaSets = {} );
+    //! @copydoc mediaSets(const Arinc665::Media::MediaSetsVariant&)
+    void mediaSets( Arinc665::Media::MediaSetsVariant &&mediaSets );
 
-  private:
     /**
-     * @brief Returns the Number of Media Sets
+     * @brief Returns the Media Set for the given index.
      *
-     * @return Number of Media Sets
+     * @param[in] index
+     *   Index of the requested item.
+     *
+     * @return Media Set for the given index.
      **/
-    size_t numberOfMediaSets() const;
+    [[nodiscard]] Arinc665::Media::MediaSetVariant mediaSet(
+      const QModelIndex &index ) const;
 
     /**
      * @brief Return Media Set for given Index.
@@ -161,7 +150,7 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      * @retval {}
      *   If index is invalid
      **/
-    MediaSet mediaSet( std::size_t index ) const;
+    Arinc665::Media::MediaSetVariant mediaSet( std::size_t index ) const;
 
     /**
      * @brief Converts given Media Set Variant to Const Media Set Pointer.
@@ -174,11 +163,12 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      *
      * @return Const Media Set Pointer
      **/
-    Arinc665::Media::ConstMediaSetPtr mediaSet(
-      const MediaSet &mediaSet ) const;
+    Arinc665::Media::ConstMediaSetPtr constMediaSet(
+      const Arinc665::Media::MediaSetVariant &mediaSet ) const;
 
+  private:
     //! Media Sets
-    MediaSets mediaSetsV;
+    Arinc665::Media::MediaSetsVariant mediaSetsV;
 };
 
 }

@@ -19,8 +19,6 @@
 
 #include <QAbstractTableModel>
 
-#include <variant>
-
 namespace Arinc665Qt::Media {
 
 /**
@@ -39,16 +37,6 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
 
       ColumnsCount
     };
-
-    //! Load Variants
-    using Load = std::variant<
-      Arinc665::Media::LoadPtr,
-      Arinc665::Media::ConstLoadPtr >;
-
-    //! Loads Variant
-    using Loads = std::variant<
-      Arinc665::Media::Loads,
-      Arinc665::Media::ConstLoads >;
 
     /**
      * @brief Initialises the loads model.
@@ -116,21 +104,18 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
       int role ) const override;
 
     /**
-     * @brief Returns the load for the given index.
+     * @brief Returns the Number of Loads
      *
-     * @param[in] index
-     *   Index of the requested item.
-     *
-     * @return Load for the given index.
+     * @return Number of Loads
      **/
-    [[nodiscard]] Load load( const QModelIndex &index ) const;
+    size_t numberOfLoads() const;
 
     /**
      * @brief Returns the Loads.
      *
      * @return Loads
      **/
-    const Loads& loads() const;
+    const Arinc665::Media::LoadsVariant& loads() const;
 
     /**
      * @brief Updates the data model with the given ASF messages.
@@ -138,18 +123,35 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      * @param[in] loads
      *   Loads, contained by the model.
      **/
-    void loads( const Loads &loads );
+    void loads( const Arinc665::Media::LoadsVariant &loads );
 
-    //! @copydoc loads(const Loads&)
-    void loads( Loads &&loads = {} );
+    //! @copydoc loads(const Arinc665::Media::LoadsVariant&)
+    void loads( Arinc665::Media::LoadsVariant &&loads );
 
-  private:
     /**
-     * @brief Returns the Number of Loads
+     * @brief Converts given Loads Variant to Const Loads List.
      *
-     * @return Number of Loads
+     * If variant stores a const load list, it is returned directly, otherwise
+     * converts it to const load list.
+     *
+     * @param[in] loads
+     *   Loads Variant
+     *
+     * @return Const Loads List
      **/
-    size_t numberOfLoads() const;
+    Arinc665::Media::ConstLoads constLoads(
+      const Arinc665::Media::LoadsVariant &loads ) const;
+
+    /**
+     * @brief Returns the load for the given index.
+     *
+     * @param[in] index
+     *   Index of the requested item.
+     *
+     * @return Load for the given index.
+     **/
+    [[nodiscard]] Arinc665::Media::LoadVariant load(
+      const QModelIndex &index ) const;
 
     /**
      * @brief Return Load for given Index.
@@ -161,7 +163,7 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      * @retval {}
      *   If index is invalid
      **/
-    Load load( std::size_t index ) const;
+    Arinc665::Media::LoadVariant load( std::size_t index ) const;
 
     /**
      * @brief Converts given Load Variant to Const Load Pointer.
@@ -174,10 +176,12 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      *
      * @return Const Load Pointer
      **/
-    Arinc665::Media::ConstLoadPtr load( const Load &load ) const;
+    Arinc665::Media::ConstLoadPtr constLoad(
+      const Arinc665::Media::LoadVariant &load ) const;
 
-    //! loads list
-    Loads loadsV;
+  private:
+    //! Loads List
+    Arinc665::Media::LoadsVariant loadsV;
 };
 
 }

@@ -59,7 +59,7 @@ QVariant BatchesModel::data(
     return {};
   }
 
-  auto batchPtr{ batch( batch( index.row() ) ) };
+  auto batchPtr{ constBatch( batch( index.row() ) ) };
 
   // out of range access
   if ( !batchPtr )
@@ -120,7 +120,33 @@ QVariant BatchesModel::headerData(
   }
 }
 
-BatchesModel::Batch BatchesModel::batch( const QModelIndex &index ) const
+size_t BatchesModel::numberOfBatches() const
+{
+  return std::visit(
+    []( auto &batches ) { return batches.size(); },
+    batchesV );
+}
+
+const Arinc665::Media::BatchesVariant& BatchesModel::batches() const
+{
+  return batchesV;
+}
+
+void BatchesModel::batches( const Arinc665::Media::BatchesVariant &batches )
+{
+  beginResetModel();
+  batchesV = batches;
+  endResetModel();
+}
+
+void BatchesModel::batches( Arinc665::Media::BatchesVariant &&batches )
+{
+  beginResetModel();
+  batchesV = std::move( batches );
+  endResetModel();
+}
+
+Arinc665::Media::BatchVariant BatchesModel::batch( const QModelIndex &index ) const
 {
   if ( !index.isValid() )
   {
@@ -135,33 +161,7 @@ BatchesModel::Batch BatchesModel::batch( const QModelIndex &index ) const
   return batch( index.row() );
 }
 
-const BatchesModel::Batches BatchesModel::batches() const
-{
-  return batchesV;
-}
-
-void BatchesModel::batches( const Batches &batches )
-{
-  beginResetModel();
-  batchesV = batches;
-  endResetModel();
-}
-
-void BatchesModel::batches( Batches &&batches )
-{
-  beginResetModel();
-  batchesV = std::move( batches );
-  endResetModel();
-}
-
-size_t BatchesModel::numberOfBatches() const
-{
-  return std::visit(
-    []( auto &batches ) { return batches.size(); },
-    batchesV );
-}
-
-BatchesModel::Batch BatchesModel::batch( std::size_t index ) const
+Arinc665::Media::BatchVariant BatchesModel::batch( std::size_t index ) const
 {
   if ( index >= numberOfBatches() )
   {
@@ -171,12 +171,13 @@ BatchesModel::Batch BatchesModel::batch( std::size_t index ) const
   return std::visit(
     [ index ]( auto &batches ) {
       auto batch{ std::next( batches.begin(), index ) };
-      return Batch{ *batch };
+      return Arinc665::Media::BatchVariant{ *batch };
     },
     batchesV );
 }
 
-Arinc665::Media::ConstBatchPtr BatchesModel::batch( const Batch &batch ) const
+Arinc665::Media::ConstBatchPtr BatchesModel::constBatch(
+  const Arinc665::Media::BatchVariant &batch ) const
 {
   return std::visit(
     []( const auto &batch ) {

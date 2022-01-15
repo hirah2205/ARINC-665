@@ -57,7 +57,7 @@ QVariant MediaSetsModel::data( const QModelIndex &index, const int role ) const
     return {};
   }
 
-  auto mediaSetPtr{ mediaSet( mediaSet( index.row() ) ) };
+  auto mediaSetPtr{ constMediaSet( mediaSet( index.row() ) ) };
 
   // out of range access
   if ( !mediaSetPtr )
@@ -109,7 +109,34 @@ QVariant MediaSetsModel::headerData(
   }
 }
 
-MediaSetsModel::MediaSet MediaSetsModel::mediaSet(
+size_t MediaSetsModel::numberOfMediaSets() const
+{
+  return std::visit(
+    []( auto &mediaSets ) { return mediaSets.size(); },
+    mediaSetsV );
+}
+
+const Arinc665::Media::MediaSetsVariant& MediaSetsModel::mediaSets() const
+{
+  return mediaSetsV;
+}
+
+void MediaSetsModel::mediaSets(
+  const Arinc665::Media::MediaSetsVariant &mediaSets )
+{
+  beginResetModel();
+  mediaSetsV = mediaSets;
+  endResetModel();
+}
+
+void MediaSetsModel::mediaSets( Arinc665::Media::MediaSetsVariant &&mediaSets )
+{
+  beginResetModel();
+  mediaSetsV = std::move( mediaSets );
+  endResetModel();
+}
+
+Arinc665::Media::MediaSetVariant MediaSetsModel::mediaSet(
   const QModelIndex &index ) const
 {
   if ( !index.isValid() )
@@ -126,33 +153,7 @@ MediaSetsModel::MediaSet MediaSetsModel::mediaSet(
   return mediaSet( index.row() );
 }
 
-const MediaSetsModel::MediaSets& MediaSetsModel::mediaSets() const
-{
-  return mediaSetsV;
-}
-
-void MediaSetsModel::mediaSets( const MediaSets &mediaSets )
-{
-  beginResetModel();
-  mediaSetsV = mediaSets;
-  endResetModel();
-}
-
-void MediaSetsModel::mediaSets( MediaSets &&mediaSets )
-{
-  beginResetModel();
-  mediaSetsV = std::move( mediaSets );
-  endResetModel();
-}
-
-size_t MediaSetsModel::numberOfMediaSets() const
-{
-  return std::visit(
-    []( auto &mediaSets ) { return mediaSets.size(); },
-    mediaSetsV );
-}
-
-MediaSetsModel::MediaSet MediaSetsModel::mediaSet(
+Arinc665::Media::MediaSetVariant MediaSetsModel::mediaSet(
   const std::size_t index ) const
 {
   if ( index >= numberOfMediaSets() )
@@ -163,13 +164,13 @@ MediaSetsModel::MediaSet MediaSetsModel::mediaSet(
   return std::visit(
     [ index ]( auto &mediaSets ) {
       auto mediaSet{ std::next( mediaSets.begin(), index ) };
-      return MediaSet{ *mediaSet };
+      return Arinc665::Media::MediaSetVariant{ *mediaSet };
     },
     mediaSetsV );
 }
 
-Arinc665::Media::ConstMediaSetPtr MediaSetsModel::mediaSet(
-  const MediaSet &mediaSet ) const
+Arinc665::Media::ConstMediaSetPtr MediaSetsModel::constMediaSet(
+  const Arinc665::Media::MediaSetVariant &mediaSet ) const
 {
   return std::visit(
     []( const auto &mediaSet ) {

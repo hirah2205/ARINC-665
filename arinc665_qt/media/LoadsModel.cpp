@@ -57,7 +57,7 @@ QVariant LoadsModel::data( const QModelIndex &index, const int role ) const
     return {};
   }
 
-  auto loadPtr{ load( load( index.row() ) ) };
+  auto loadPtr{ constLoad( load( index.row() ) ) };
 
   // out of range access
   if ( !loadPtr )
@@ -115,7 +115,45 @@ QVariant LoadsModel::headerData(
   }
 }
 
-LoadsModel::Load LoadsModel::load( const QModelIndex &index ) const
+size_t LoadsModel::numberOfLoads() const
+{
+  return std::visit(
+    []( auto &loads ) { return loads.size(); },
+    loadsV );
+}
+
+const Arinc665::Media::LoadsVariant& LoadsModel::loads() const
+{
+  return loadsV;
+}
+
+void LoadsModel::loads( const Arinc665::Media::LoadsVariant &loads )
+{
+  beginResetModel();
+  loadsV = loads;
+  endResetModel();
+}
+
+void LoadsModel::loads( Arinc665::Media::LoadsVariant &&loads )
+{
+  beginResetModel();
+  loadsV = std::move( loads );
+  endResetModel();
+}
+
+Arinc665::Media::ConstLoads LoadsModel::constLoads(
+  const Arinc665::Media::LoadsVariant &loads ) const
+{
+  if ( holds_alternative< Arinc665::Media::ConstLoads >( loads ) )
+  {
+    return std::get< Arinc665::Media::ConstLoads >( loads );
+  }
+
+  const auto &realLoads{ std::get< Arinc665::Media::Loads >( loads ) };
+  return Arinc665::Media::ConstLoads{ realLoads.begin(), realLoads.end() };
+}
+
+Arinc665::Media::LoadVariant LoadsModel::load( const QModelIndex &index ) const
 {
   if ( !index.isValid() )
   {
@@ -131,33 +169,7 @@ LoadsModel::Load LoadsModel::load( const QModelIndex &index ) const
   return load( index.row() );
 }
 
-const LoadsModel::Loads& LoadsModel::loads() const
-{
-  return loadsV;
-}
-
-void LoadsModel::loads( const Loads &loads )
-{
-  beginResetModel();
-  loadsV = loads;
-  endResetModel();
-}
-
-void LoadsModel::loads( Loads &&loads )
-{
-  beginResetModel();
-  loadsV = std::move( loads );
-  endResetModel();
-}
-
-size_t LoadsModel::numberOfLoads() const
-{
-  return std::visit(
-    []( auto &loads ) { return loads.size(); },
-    loadsV );
-}
-
-LoadsModel::Load LoadsModel::load( const std::size_t index ) const
+Arinc665::Media::LoadVariant LoadsModel::load( const std::size_t index ) const
 {
   if ( index >= numberOfLoads() )
   {
@@ -167,12 +179,13 @@ LoadsModel::Load LoadsModel::load( const std::size_t index ) const
   return std::visit(
     [ index ]( auto &loads ) {
       auto load{ std::next( loads.begin(), index ) };
-      return Load{ *load };
+      return Arinc665::Media::LoadVariant{ *load };
     },
     loadsV );
 }
 
-Arinc665::Media::ConstLoadPtr LoadsModel::load( const Load &load ) const
+Arinc665::Media::ConstLoadPtr LoadsModel::constLoad(
+  const Arinc665::Media::LoadVariant &load ) const
 {
   return std::visit(
     []( const auto &load ) {
