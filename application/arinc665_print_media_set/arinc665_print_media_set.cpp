@@ -47,7 +47,7 @@ using Directories = std::vector< std::filesystem::path >;
  *
  * @return Application exit status.
  **/
-int main( int argc, char const * argv[]);
+int main( int argc, char const * argv[] );
 
 /**
  * @brief Loads the media set from the given directory.
@@ -100,7 +100,7 @@ int main( int argc, char const * argv[] )
       boost::program_options::parse_command_line( argc, argv, options ),
       vm );
 
-    if ( vm.count( "help" ) != 0 )
+    if ( 0U != vm.count( "help" ) )
     {
       std::cout
         << "Prints the ARINC 665 Media Set located in the given directory\n"

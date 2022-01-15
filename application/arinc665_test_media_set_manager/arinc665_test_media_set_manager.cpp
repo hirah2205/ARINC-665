@@ -95,7 +95,7 @@ int main( int argc, char * argv[] )
       std::cout << "\n";
     }
   }
-  catch ( boost::program_options::error &e)
+  catch ( boost::program_options::error &e )
   {
     std::cout << e.what() << "\n" << optionsDescription << "\n";
     return EXIT_FAILURE;
@@ -103,7 +103,7 @@ int main( int argc, char * argv[] )
   catch ( boost::exception &e)
   {
     std::cerr
-      << "Operation failed: " << boost::diagnostic_information( e) << "\n";
+      << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( std::exception &e)

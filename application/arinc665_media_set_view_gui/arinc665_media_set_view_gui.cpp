@@ -33,38 +33,38 @@
  *
  * @return Success state of this operation.
  **/
-int main( int argc, char * argv[]);
+int main( int argc, char * argv[] );
 
-int main( int argc, char * argv[])
+int main( int argc, char * argv[] )
 {
   try
   {
-    Helper::initLogging( Helper::Severity::info);
+    Helper::initLogging( Helper::Severity::info );
 
     QApplication application{ argc, argv };
-    application.setApplicationName( "ARINC 665 Media Set Viewer");
-    application.setApplicationDisplayName( "ARINC 665 Media Set Viewer");
+    application.setApplicationName( "ARINC 665 Media Set Viewer" );
+    application.setApplicationDisplayName( "ARINC 665 Media Set Viewer" );
 
     Arinc665Qt::MediaSetController mediaSetController{};
 
     QObject::connect(
       &mediaSetController,
-      SIGNAL( finished()),
+      &Arinc665Qt::MediaSetController::finished,
       &application,
-      SLOT( quit()));
+      &QApplication::quit );
 
     emit mediaSetController.start();
 
     return application.exec();
   }
-  catch ( std::exception &e)
+  catch ( std::exception &e )
   {
-    BOOST_LOG_TRIVIAL( error) << e.what();
+    BOOST_LOG_TRIVIAL( error ) << e.what();
     return EXIT_FAILURE;
   }
   catch ( ...)
   {
-    BOOST_LOG_TRIVIAL( error) << "Unknown exception";
+    BOOST_LOG_TRIVIAL( error ) << "Unknown exception";
     return EXIT_FAILURE;
   }
 }
