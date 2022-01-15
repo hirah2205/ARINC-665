@@ -115,6 +115,9 @@ QVariant BatchesModel::headerData(
     case Columns::PartNumber:
       return QString{ tr( "Part Number" ) };
 
+    case Columns::Comment:
+      return QString{ tr( "Comment" ) };
+
     default:
       return {};
   }

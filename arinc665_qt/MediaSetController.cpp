@@ -12,8 +12,10 @@
 
 #include "MediaSetController.hpp"
 
-#include <arinc665_qt/MediaSetDialog.hpp>
 #include <arinc665_qt/media/MediaSetModel.hpp>
+#include <arinc665_qt/media/LoadsModel.hpp>
+#include <arinc665_qt/media/BatchesModel.hpp>
+#include <arinc665_qt/MediaSetDialog.hpp>
 
 #include <arinc665/utils/MediaSetImporter.hpp>
 
@@ -23,40 +25,50 @@
 
 #include <QMessageBox>
 
+#include <boost/log/trivial.hpp>
+
 #include <fstream>
 #include <iostream>
-#include <boost/log/trivial.hpp>
 
 namespace Arinc665Qt {
 
 MediaSetController::MediaSetController( QWidget * const parent):
   QObject{ parent},
-  mediaSetModel{ new Media::MediaSetModel( parent)},
-  selectDirectoryDialog{ new QFileDialog{
+  mediaSetModel{ std::make_unique< Media::MediaSetModel >( this ) },
+  loadsModel{ std::make_unique< Media::LoadsModel >( this ) },
+  batchesModel{ std::make_unique< Media::BatchesModel >( this ) },
+  selectDirectoryDialog{ std::make_unique< QFileDialog>(
     parent,
-    tr( "Select ARINC 665 Medium" ) } },
-  mediaSetDialog{ new MediaSetDialog{ parent } }
+    tr( "Select ARINC 665 Medium" ) ) },
+  mediaSetDialog{ std::make_unique< MediaSetDialog >( parent ) }
 {
   selectDirectoryDialog->setFileMode( QFileDialog::Directory );
   selectDirectoryDialog->setOption( QFileDialog::ShowDirsOnly );
 
-  connect( selectDirectoryDialog, SIGNAL( rejected()), this, SIGNAL( finished() ) );
-  connect( selectDirectoryDialog, SIGNAL( accepted()), this, SLOT( directorySelected() ) );
+  connect(
+    selectDirectoryDialog.get(),
+    &QFileDialog::rejected,
+    this,
+    &MediaSetController::finished );
+  connect(
+    selectDirectoryDialog.get(),
+    &QFileDialog::accepted,
+    this,
+    &MediaSetController::directorySelected );
 
-  mediaSetDialog->model( mediaSetModel);
+  mediaSetDialog->mediaSetModel( mediaSetModel.get() );
+  mediaSetDialog->loadsModel( loadsModel.get() );
+  mediaSetDialog->batchesModel( batchesModel.get() );
 
   connect(
-    mediaSetDialog,
-    SIGNAL( finished( int ) ),
+    mediaSetDialog.get(),
+    &MediaSetDialog::finished,
     this,
-    SIGNAL( finished() ) );
+    &MediaSetController::finished );
 }
 
 MediaSetController::~MediaSetController()
 {
-  mediaSetDialog->deleteLater();
-  selectDirectoryDialog->deleteLater();
-  mediaSetModel->deleteLater();
 }
 
 void MediaSetController::start()

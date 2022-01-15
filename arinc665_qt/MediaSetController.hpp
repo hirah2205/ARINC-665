@@ -24,6 +24,7 @@
 #include <QWidget>
 
 #include <filesystem>
+#include <memory>
 
 namespace Arinc665Qt {
 
@@ -82,12 +83,17 @@ class ARINC665_QT_EXPORT MediaSetController : public QObject
       uint8_t mediumNumber,
       const std::filesystem::path &path );
 
-    //! Media Set Model Model
-    Media::MediaSetModel * mediaSetModel;
+    //! Media Set Model
+    std::unique_ptr< Media::MediaSetModel > mediaSetModel;
+    //! Loads Model
+    std::unique_ptr< Media::LoadsModel > loadsModel;
+    //! Batches Model
+    std::unique_ptr< Media::BatchesModel > batchesModel;
+
     //! Select Media Set directory dialog
-    QFileDialog * selectDirectoryDialog;
+    std::unique_ptr< QFileDialog > selectDirectoryDialog;
     //! Media Set Dialog
-    MediaSetDialog * mediaSetDialog;
+    std::unique_ptr< MediaSetDialog > mediaSetDialog;
 };
 
 }

@@ -44,24 +44,32 @@ class ARINC665_QT_EXPORT MediaSetWidget : public QWidget
     //! Destructor
     ~MediaSetWidget() override;
 
+    void mediaSetModel( Arinc665Qt::Media::MediaSetModel * model );
+
+    void loadsModel( Arinc665Qt::Media::LoadsModel * model );
+
+    void batchesModel( Arinc665Qt::Media::BatchesModel * model );
+
   public slots:
     /**
      * @brief Called when a Media Set has been selected.
      *
-     * @param[in] model
-     *   Model owning @p mediaSet
      * @param[in] mediaSet
      *   Selected Media Set
      **/
-    void selectedMediaSet(
-      Arinc665Qt::Media::MediaSetModel * model,
-      Arinc665::Media::MediaSetPtr mediaSet );
+    void selectedMediaSet( Arinc665::Media::MediaSetPtr mediaSet );
 
   private:
     //! UI (designer)
     std::unique_ptr< Ui::MediaSetWidget> ui;
+
     //! Media Set Model
-    MediaSetModel * modelV;
+    MediaSetModel * mediaSetModelV;
+    //! Loads Model
+    LoadsModel * loadsModelV;
+    //! Batches Model
+    BatchesModel * batchesModelV;
+
     //! Media Set
     Arinc665::Media::MediaSetPtr mediaSetV;
 };

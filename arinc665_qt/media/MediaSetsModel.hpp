@@ -109,14 +109,14 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      *
      * @return Number of Media Sets
      **/
-    size_t numberOfMediaSets() const;
+    [[nodiscard]] size_t numberOfMediaSets() const;
 
     /**
      * @brief Returns the Media Sets.
      *
      * @return Media Sets
      **/
-    const Arinc665::Media::MediaSetsVariant& mediaSets() const;
+    [[nodiscard]] const Arinc665::Media::MediaSetsVariant& mediaSets() const;
 
     /**
      * @brief Updates the data model with the given Media Sets.

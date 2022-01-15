@@ -16,23 +16,42 @@
 
 #include "ui_MediaSetWidget.h"
 
+#include <arinc665_qt/media/LoadsModel.hpp>
+#include <arinc665_qt/media/BatchesModel.hpp>
+
 namespace Arinc665Qt::Media {
 
-MediaSetWidget::MediaSetWidget( QWidget * const parent):
-  QWidget{ parent},
-  ui{ std::make_unique< Ui::MediaSetWidget>()},
-  modelV{ nullptr}
+MediaSetWidget::MediaSetWidget( QWidget * const parent ):
+  QWidget{ parent },
+  ui{ std::make_unique< Ui::MediaSetWidget>() },
+  mediaSetModelV{ nullptr },
+  loadsModelV{ nullptr },
+  batchesModelV{ nullptr }
 {
-  ui->setupUi( this);
+  ui->setupUi( this );
 }
 
 MediaSetWidget::~MediaSetWidget() = default;
 
-void MediaSetWidget::selectedMediaSet(
-  Arinc665Qt::Media::MediaSetModel * const model,
-  Arinc665::Media::MediaSetPtr mediaSet )
+void MediaSetWidget::mediaSetModel(
+  Arinc665Qt::Media::MediaSetModel * const model )
 {
-  modelV = model;
+  mediaSetModelV = model;
+}
+
+void MediaSetWidget::loadsModel( Arinc665Qt::Media::LoadsModel * const model )
+{
+  ui->loads->setModel( model );
+}
+
+void MediaSetWidget::batchesModel(
+  Arinc665Qt::Media::BatchesModel * const model )
+{
+  ui->batches->setModel( model );
+}
+
+void MediaSetWidget::selectedMediaSet( Arinc665::Media::MediaSetPtr mediaSet )
+{
   mediaSetV = std::move( mediaSet );
 
   if ( mediaSetV)

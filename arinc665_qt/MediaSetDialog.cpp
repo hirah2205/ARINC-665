@@ -12,7 +12,11 @@
 
 #include "MediaSetDialog.hpp"
 
+#include "ui_MediaSetDialog.h"
+
 #include <arinc665_qt/media/MediaSetModel.hpp>
+#include <arinc665_qt/media/LoadsModel.hpp>
+#include <arinc665_qt/media/BatchesModel.hpp>
 
 #include <arinc665/media/Base.hpp>
 #include <arinc665/media/MediaSet.hpp>
@@ -20,39 +24,55 @@
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/File.hpp>
 
-#include "ui_MediaSetDialog.h"
-
 namespace Arinc665Qt {
 
 MediaSetDialog::MediaSetDialog( QWidget * const parent ):
   QDialog{ parent},
   ui{ std::make_unique< Ui::MediaSetDialog>() },
-  mediaSetModelV{ nullptr }
+  mediaSetModelV{ nullptr },
+  loadsModelV{ nullptr },
+  batchesModelV{ nullptr }
 {
   ui->setupUi( this );
 
   connect(
     ui->mediaSetTreeView,
-    SIGNAL( activated( const QModelIndex& ) ),
+    &QTreeView::activated,
     this,
-    SLOT( itemSelected( const QModelIndex& ) ) );
+    &MediaSetDialog::itemSelected );
 }
 
 MediaSetDialog::~MediaSetDialog() = default;
 
-void MediaSetDialog::model( Media::MediaSetModel * const mediaSetModel )
+void MediaSetDialog::mediaSetModel( Media::MediaSetModel * const model )
 {
   if ( mediaSetModelV != nullptr )
   {
     // disconnect old model
   }
 
-  mediaSetModelV = mediaSetModel;
+  mediaSetModelV = model;
 
-  ui->mediaSetTreeView->setModel( mediaSetModel );
+  ui->mediaSetTreeView->setModel( model );
+  ui->mediaSetWidget->mediaSetModel( model );
 }
 
-void MediaSetDialog::itemSelected( const QModelIndex &index)
+void MediaSetDialog::loadsModel( Media::LoadsModel * const model )
+{
+  loadsModelV = model;
+
+  ui->mediaSetWidget->loadsModel( model );
+}
+
+void MediaSetDialog::batchesModel( Media::BatchesModel * const model )
+{
+  batchesModelV = model;
+
+  ui->mediaSetWidget->batchesModel( model );
+}
+
+
+void MediaSetDialog::itemSelected( const QModelIndex &index )
 {
   auto element{ mediaSetModelV->element( index ) };
 
@@ -64,11 +84,17 @@ void MediaSetDialog::itemSelected( const QModelIndex &index)
   switch ( element->type() )
   {
     case Arinc665::Media::Base::Type::MediaSet:
+    {
+      const auto mediaSet{
+        std::dynamic_pointer_cast< Arinc665::Media::MediaSet>( element ) };
+
+      loadsModelV->loads( mediaSet->loads() );
+      batchesModelV->batches( mediaSet->batches() );
+
       ui->detailsStackedWidget->setCurrentIndex( 0 );
-      ui->mediaSetWidget->selectedMediaSet(
-        mediaSetModelV,
-        std::dynamic_pointer_cast< Arinc665::Media::MediaSet>( element ) );
+      ui->mediaSetWidget->selectedMediaSet( mediaSet );
       break;
+    }
 
     case Arinc665::Media::Base::Type::Medium:
       ui->detailsStackedWidget->setCurrentIndex( 1 );

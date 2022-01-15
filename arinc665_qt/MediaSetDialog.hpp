@@ -44,12 +44,16 @@ class ARINC665_QT_EXPORT  MediaSetDialog : public QDialog
     ~MediaSetDialog() override;
 
     /**
-     * @brief Sets the Model of the Dialog.
+     * @brief Sets the Media Set Model of the Dialog.
      *
      * @param[in] mediaSetModel
      *   Media Set Model.
      **/
-    void model( Media::MediaSetModel * mediaSetModel );
+    void mediaSetModel( Media::MediaSetModel * model );
+
+    void loadsModel( Media::LoadsModel * model );
+
+    void batchesModel( Media::BatchesModel * model );
 
   private slots:
     /**
@@ -65,6 +69,10 @@ class ARINC665_QT_EXPORT  MediaSetDialog : public QDialog
     std::unique_ptr< Ui::MediaSetDialog> ui;
     //! Media Set Model
     Media::MediaSetModel * mediaSetModelV;
+    //! Loads Model
+    Media::LoadsModel * loadsModelV;
+    //! Batches Model
+    Media::BatchesModel * batchesModelV;
 };
 
 }

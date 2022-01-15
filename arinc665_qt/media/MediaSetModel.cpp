@@ -43,7 +43,7 @@ QModelIndex MediaSetModel::index(
   }
 
   // if parent is invalid, it is automatically the media set
-  if ( !parent.isValid())
+  if ( !parent.isValid() )
   {
     return createIndex( row, column, mediaSetV.get() );
   }
@@ -51,7 +51,7 @@ QModelIndex MediaSetModel::index(
   if ( parent.internalPointer() == nullptr )
   {
     // Should not happen
-    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error)
+    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
       << "Invalid Model Index";
 
     // invalid model index
@@ -120,7 +120,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
       return {};
 
     case Arinc665::Media::Base::Type::Medium:
-     // A medium has the single media set as parent.
+      // A medium has the single media set as parent.
       return createIndex( 0, 0, base->mediaSet().get() );
 
     case Arinc665::Media::Base::Type::Directory:
