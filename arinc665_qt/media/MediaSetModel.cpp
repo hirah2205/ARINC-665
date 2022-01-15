@@ -37,7 +37,7 @@ QModelIndex MediaSetModel::index(
   const QModelIndex &parent ) const
 {
   // check if model contains valid media set
-  if ( !mediaSetV)
+  if ( !mediaSetV )
   {
     return {};
   }
@@ -45,10 +45,10 @@ QModelIndex MediaSetModel::index(
   // if parent is invalid, it is automatically the media set
   if ( !parent.isValid())
   {
-    return createIndex( row, column, mediaSetV.get());
+    return createIndex( row, column, mediaSetV.get() );
   }
 
-  if ( parent.internalPointer() == nullptr)
+  if ( parent.internalPointer() == nullptr )
   {
     // Should not happen
     BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error)
@@ -74,15 +74,15 @@ QModelIndex MediaSetModel::index(
       auto * parentContainer{ static_cast< Arinc665::Media::ContainerEntity*>(
         parent.internalPointer())};
 
-      if ( static_cast< size_t>( row) < parentContainer->numberOfSubDirectories())
+      if ( static_cast< size_t>( row) < parentContainer->numberOfSubDirectories() )
       {
-        auto dirIt{ std::next( parentContainer->subDirectories().begin(), row)};
+        auto dirIt{ std::next( parentContainer->subDirectories().begin(), row ) };
 
-        return createIndex( row, column, dirIt->get());
+        return createIndex( row, column, dirIt->get() );
       }
 
       auto fileIt{std::next(
-        parentContainer->files( false).begin(),
+        parentContainer->files( false ).begin(),
         row - static_cast< ptrdiff_t >( parentContainer->numberOfSubDirectories() ) ) };
 
       return createIndex( row, column, fileIt->get() );

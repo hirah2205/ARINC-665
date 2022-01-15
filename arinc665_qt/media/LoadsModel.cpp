@@ -32,7 +32,7 @@ int LoadsModel::rowCount( const QModelIndex &parent ) const
     return 0;
   }
 
-  return static_cast< int >( loadsV.size() );
+  return static_cast< int >( numberOfLoads() );
 }
 
 int LoadsModel::columnCount( const QModelIndex &parent ) const
@@ -45,33 +45,36 @@ int LoadsModel::columnCount( const QModelIndex &parent ) const
   return static_cast< int >( Columns::ColumnsCount );
 }
 
-QVariant LoadsModel::data(
-  const QModelIndex &index,
-  const int role ) const
+QVariant LoadsModel::data( const QModelIndex &index, const int role ) const
 {
   if ( !index.isValid() )
   {
     return {};
   }
 
-  // out of range access
-  if ( static_cast< size_t>( index.row() ) >= loadsV.size() )
+  if ( index.row() < 0 )
   {
     return {};
   }
 
-  auto load{ std::next( loadsV.begin(), index.row() ) };
+  auto loadPtr{ load( load( index.row() ) ) };
+
+  // out of range access
+  if ( !loadPtr )
+  {
+    return {};
+  }
 
   switch ( role )
   {
     case Qt::ItemDataRole::DisplayRole:
-      switch ( static_cast< Columns>( index.column() ) )
+      switch ( static_cast< Columns >( index.column() ) )
       {
         case Columns::Name:
-          return HelperQt::toQString( load->get()->name() );
+          return HelperQt::toQString( loadPtr->name() );
 
         case Columns::PartNumber:
-          return HelperQt::toQString( load->get()->partNumber() );
+          return HelperQt::toQString( loadPtr->partNumber() );
 
         default:
           return {};
@@ -99,7 +102,7 @@ QVariant LoadsModel::headerData(
     return section;
   }
 
-  switch ( static_cast< Columns>( section ) )
+  switch ( static_cast< Columns >( section ) )
   {
     case Columns::Name:
       return QString{ tr( "Name" ) };
@@ -112,42 +115,70 @@ QVariant LoadsModel::headerData(
   }
 }
 
-Arinc665::Media::ConstLoadPtr LoadsModel::load(
-  const QModelIndex &index ) const
+LoadsModel::Load LoadsModel::load( const QModelIndex &index ) const
 {
   if ( !index.isValid() )
   {
     return {};
   }
 
-  if ( ( index.row() < 0 )
-    || ( index.row() ) >= static_cast< int >( loadsV.size() ) )
+  if ( index.row() < 0 )
   {
     return {};
   }
 
-  auto load{ std::next( loadsV.begin(), index.row() ) };
-
-  return *load;
+  // return media set depending on variant
+  return load( index.row() );
 }
 
-const Arinc665::Media::ConstLoads& LoadsModel::loads() const
+const LoadsModel::Loads& LoadsModel::loads() const
 {
   return loadsV;
 }
 
-void LoadsModel::loads( const Arinc665::Media::ConstLoads &loads )
+void LoadsModel::loads( const Loads &loads )
 {
   beginResetModel();
   loadsV = loads;
   endResetModel();
 }
 
-void LoadsModel::loads( Arinc665::Media::ConstLoads &&loads )
+void LoadsModel::loads( Loads &&loads )
 {
   beginResetModel();
   loadsV = std::move( loads );
   endResetModel();
+}
+
+size_t LoadsModel::numberOfLoads() const
+{
+  return std::visit(
+    []( auto &loads ) { return loads.size(); },
+    loadsV );
+}
+
+LoadsModel::Load LoadsModel::load( const std::size_t index ) const
+{
+  if ( index >= numberOfLoads() )
+  {
+    return {};
+  }
+
+  return std::visit(
+    [ index ]( auto &loads ) {
+      auto load{ std::next( loads.begin(), index ) };
+      return Load{ *load };
+    },
+    loadsV );
+}
+
+Arinc665::Media::ConstLoadPtr LoadsModel::load( const Load &load ) const
+{
+  return std::visit(
+    []( const auto &load ) {
+      return Arinc665::Media::ConstLoadPtr{ load };
+    },
+    load );
 }
 
 }

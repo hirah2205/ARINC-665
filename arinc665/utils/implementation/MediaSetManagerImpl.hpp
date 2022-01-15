@@ -30,7 +30,7 @@ class MediaSetManagerImpl final : public MediaSetManager
      *   Base Path to use, when configured paths are relative, i.e. base of
      *   configuration file.
      * @param[in,out] config
-     *   Media set configuration.
+     *   Media Set Configuration.
      * @param[in] checkFileIntegrity
      *   If set to true additional file integrity steps are performed
      **/
@@ -44,7 +44,7 @@ class MediaSetManagerImpl final : public MediaSetManager
 
     //! @copydoc MediaSetManager::mediaSet(std::string_view) const
     [[nodiscard]] Media::ConstMediaSetPtr mediaSet(
-      std::string_view partNumber) const final;
+      std::string_view partNumber ) const final;
 
     //! @copydoc MediaSetManager::mediaSets() const
     [[nodiscard]] const Media::ConstMediaSets& mediaSets() const final;
@@ -52,22 +52,23 @@ class MediaSetManagerImpl final : public MediaSetManager
     //! @copydoc MediaSetManager::add()
     void add(
       Media::ConstMediaSetPtr mediaSet,
-      MediumPathHandler mediumPathHandler) final;
+      MediumPathHandler mediumPathHandler ) final;
 
     //! @copydoc MediaSetManager::loads() const
     [[nodiscard]] Media::ConstLoads loads() const final;
 
     //! @copydoc MediaSetManager::load(std::string_view) const
-    [[nodiscard]] Media::ConstLoads load( std::string_view filename) const final;
+    [[nodiscard]] Media::ConstLoads load(
+      std::string_view filename ) const final;
 
     //! @copydoc MediaSetManager::load(std::string_view,std::string_view) const
     [[nodiscard]] Media::ConstLoadPtr load(
       std::string_view partNumber,
-      std::string_view filename) const final;
+      std::string_view filename ) const final;
 
     //! @copydoc MediaSetManager::filePath
     [[nodiscard]] std::filesystem::path filePath(
-      Media::ConstFilePtr file) const final;
+      Media::ConstFilePtr file ) const final;
 
   private:
     /**

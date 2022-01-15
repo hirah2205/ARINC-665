@@ -18,7 +18,7 @@
 
 namespace Arinc665Qt::Media {
 
-MediaSetsModel::MediaSetsModel( QObject * const parent ) :
+MediaSetsModel::MediaSetsModel( QObject *const parent ) :
   QAbstractTableModel{ parent }
 {
 }
@@ -32,7 +32,7 @@ int MediaSetsModel::rowCount( const QModelIndex &parent ) const
     return 0;
   }
 
-  return static_cast< int >( mediaSetsV.size() );
+  return static_cast< int >( numberOfMediaSets() );
 }
 
 int MediaSetsModel::columnCount( const QModelIndex &parent ) const
@@ -43,33 +43,35 @@ int MediaSetsModel::columnCount( const QModelIndex &parent ) const
   }
 
   return static_cast< int >( Columns::ColumnsCount );
-
 }
 
-QVariant MediaSetsModel::data(
-  const QModelIndex &index,
-  const int role ) const
+QVariant MediaSetsModel::data( const QModelIndex &index, const int role ) const
 {
   if ( !index.isValid() )
   {
     return {};
   }
 
-  // out of range access
-  if ( static_cast< size_t>( index.row() ) >= mediaSetsV.size() )
+  if ( index.row() < 0 )
   {
     return {};
   }
 
-  auto mediaSet{ std::next( mediaSetsV.begin(), index.row() ) };
+  auto mediaSetPtr{ mediaSet( mediaSet( index.row() ) ) };
+
+  // out of range access
+  if ( !mediaSetPtr )
+  {
+    return {};
+  }
 
   switch ( role )
   {
     case Qt::ItemDataRole::DisplayRole:
-      switch ( static_cast< Columns>( index.column() ) )
+      switch ( static_cast< Columns >( index.column() ) )
       {
         case Columns::PartNumber:
-          return HelperQt::toQString( mediaSet->get()->partNumber() );
+          return HelperQt::toQString( mediaSetPtr->partNumber() );
 
         default:
           return {};
@@ -97,7 +99,7 @@ QVariant MediaSetsModel::headerData(
     return section;
   }
 
-  switch ( static_cast< Columns>( section ) )
+  switch ( static_cast< Columns >( section ) )
   {
     case Columns::PartNumber:
       return QString{ tr( "Part Number" ) };
@@ -107,7 +109,7 @@ QVariant MediaSetsModel::headerData(
   }
 }
 
-Arinc665::Media::ConstMediaSetPtr MediaSetsModel::mediaSet(
+MediaSetsModel::MediaSet MediaSetsModel::mediaSet(
   const QModelIndex &index ) const
 {
   if ( !index.isValid() )
@@ -115,23 +117,65 @@ Arinc665::Media::ConstMediaSetPtr MediaSetsModel::mediaSet(
     return {};
   }
 
-  if ( ( index.row() < 0 )
-    || ( index.row() ) >= static_cast< int >( mediaSetsV.size() ) )
+  if ( index.row() < 0 )
   {
     return {};
   }
 
-  auto mediaSet{ std::next( mediaSetsV.begin(), index.row() ) };
-
-  return *mediaSet;
+  // return media set depending on variant
+  return mediaSet( index.row() );
 }
 
-void MediaSetsModel::mediaSets(
-  const Arinc665::Media::ConstMediaSets &mediaSets )
+const MediaSetsModel::MediaSets& MediaSetsModel::mediaSets() const
+{
+  return mediaSetsV;
+}
+
+void MediaSetsModel::mediaSets( const MediaSets &mediaSets )
 {
   beginResetModel();
   mediaSetsV = mediaSets;
   endResetModel();
+}
+
+void MediaSetsModel::mediaSets( MediaSets &&mediaSets )
+{
+  beginResetModel();
+  mediaSetsV = std::move( mediaSets );
+  endResetModel();
+}
+
+size_t MediaSetsModel::numberOfMediaSets() const
+{
+  return std::visit(
+    []( auto &mediaSets ) { return mediaSets.size(); },
+    mediaSetsV );
+}
+
+MediaSetsModel::MediaSet MediaSetsModel::mediaSet(
+  const std::size_t index ) const
+{
+  if ( index >= numberOfMediaSets() )
+  {
+    return {};
+  }
+
+  return std::visit(
+    [ index ]( auto &mediaSets ) {
+      auto mediaSet{ std::next( mediaSets.begin(), index ) };
+      return MediaSet{ *mediaSet };
+    },
+    mediaSetsV );
+}
+
+Arinc665::Media::ConstMediaSetPtr MediaSetsModel::mediaSet(
+  const MediaSet &mediaSet ) const
+{
+  return std::visit(
+    []( const auto &mediaSet ) {
+      return Arinc665::Media::ConstMediaSetPtr{ mediaSet };
+    },
+    mediaSet );
 }
 
 }

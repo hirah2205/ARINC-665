@@ -19,6 +19,8 @@
 
 #include <QAbstractTableModel>
 
+#include <variant>
+
 namespace Arinc665Qt::Media {
 
 /**
@@ -37,13 +39,23 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
       ColumnsCount
     };
 
+    //! Media Set Variants
+    using MediaSet = std::variant<
+      Arinc665::Media::MediaSetPtr,
+      Arinc665::Media::ConstMediaSetPtr >;
+
+    //! Media Sets Variant
+    using MediaSets = std::variant<
+      Arinc665::Media::MediaSets,
+      Arinc665::Media::ConstMediaSets >;
+
     /**
      * @brief Initialises the loads model.
      *
      * @param[in] parent
      *   Parent QObject.
      **/
-    explicit MediaSetsModel( QObject *parent = nullptr );
+    explicit MediaSetsModel( QObject * parent = nullptr );
 
     //! Destructor
     ~MediaSetsModel() override;
@@ -110,8 +122,15 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      *
      * @return Media Set for the given index.
      **/
-    [[nodiscard]] Arinc665::Media::ConstMediaSetPtr mediaSet(
+    [[nodiscard]] MediaSet mediaSet(
       const QModelIndex &index ) const;
+
+    /**
+     * @brief Returns the Media Sets.
+     *
+     * @return Media Sets
+     **/
+    const MediaSets& mediaSets() const;
 
     /**
      * @brief Updates the data model with the given Media Sets.
@@ -119,12 +138,47 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      * @param[in] mediaSets
      *   Media Sets, contained by the model.
      **/
-    void mediaSets( const Arinc665::Media::ConstMediaSets &mediaSets = {} );
+    void mediaSets( const MediaSets &mediaSets );
+
+    //! @copydoc mediaSets(const MediaSets&)
+    void mediaSets( MediaSets &&mediaSets = {} );
 
   private:
+    /**
+     * @brief Returns the Number of Media Sets
+     *
+     * @return Number of Media Sets
+     **/
+    size_t numberOfMediaSets() const;
 
-    //! loads list
-    Arinc665::Media::ConstMediaSets mediaSetsV;
+    /**
+     * @brief Return Media Set for given Index.
+     *
+     * @param[in] index
+     *   Media Set Index
+     *
+     * @return Media Set for given Index
+     * @retval {}
+     *   If index is invalid
+     **/
+    MediaSet mediaSet( std::size_t index ) const;
+
+    /**
+     * @brief Converts given Media Set Variant to Const Media Set Pointer.
+     *
+     * If variant stores a const media set, it is returned directly, otherwise
+     * converts it to const media set pointer.
+     *
+     * @param[in] mediaSet
+     *   Media Set Variant
+     *
+     * @return Const Media Set Pointer
+     **/
+    Arinc665::Media::ConstMediaSetPtr mediaSet(
+      const MediaSet &mediaSet ) const;
+
+    //! Media Sets
+    MediaSets mediaSetsV;
 };
 
 }

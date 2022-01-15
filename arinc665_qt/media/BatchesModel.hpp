@@ -19,6 +19,8 @@
 
 #include <QAbstractTableModel>
 
+#include <variant>
+
 namespace Arinc665Qt::Media {
 
 /**
@@ -38,6 +40,16 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
 
       ColumnsCount
     };
+
+    //! Batch Variants
+    using Batch = std::variant<
+      Arinc665::Media::BatchPtr ,
+      Arinc665::Media::ConstBatchPtr >;
+
+    //! Batches Variant
+    using Batches = std::variant<
+      Arinc665::Media::Batches ,
+      Arinc665::Media::ConstBatches >;
 
     /**
      * @brief Initialises the Batches Model.
@@ -112,8 +124,14 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
      *
      * @return Batch for the given index.
      **/
-    virtual Arinc665::Media::ConstBatchPtr batch(
-      const QModelIndex &index ) const = 0;
+    virtual Batch batch( const QModelIndex &index ) const = 0;
+
+    /**
+     * @brief Returns the Batches.
+     *
+     * @return Batches
+     **/
+     const Batches batches() const;
 
     /**
      * @brief Updates the Data Model with the given Batches.
@@ -121,11 +139,46 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
      * @param[in] batches
      *   Batches, contained by the model.
      **/
-    void batches( const Arinc665::Media::ConstBatches &batches = {} );
+    void batches( const Batches &batches );
+
+    //! @copydoc batches(const Batches&)
+    void batches( Batches &&batches );
 
   private:
+    /**
+     * @brief Returns the Number of Batches
+     *
+     * @return Number of Batches
+     **/
+    size_t numberOfBatches() const;
+
+    /**
+     * @brief Return Batch for given Index.
+     *
+     * @param[in] index
+     *   Batch Index
+     *
+     * @return Batch for given Index
+     * @retval {}
+     *   If index is invalid
+     **/
+    Batch batch( std::size_t index ) const;
+
+    /**
+     * @brief Converts given Batch Variant to Const Batch Pointer.
+     *
+     * If variant stores a const batch, it is returned directly, otherwise
+     * converts it to const batch pointer.
+     *
+     * @param[in] batch
+     *   Batch Variant
+     *
+     * @return Const Batch Pointer
+     **/
+    Arinc665::Media::ConstBatchPtr batch( const Batch &batch ) const;
+
     //! Batches List
-    Arinc665::Media::ConstBatches batchesV;
+    Batches batchesV;
 };
 
 }

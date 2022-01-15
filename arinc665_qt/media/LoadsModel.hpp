@@ -19,6 +19,8 @@
 
 #include <QAbstractTableModel>
 
+#include <variant>
+
 namespace Arinc665Qt::Media {
 
 /**
@@ -37,6 +39,16 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
 
       ColumnsCount
     };
+
+    //! Load Variants
+    using Load = std::variant<
+      Arinc665::Media::LoadPtr,
+      Arinc665::Media::ConstLoadPtr >;
+
+    //! Loads Variant
+    using Loads = std::variant<
+      Arinc665::Media::Loads,
+      Arinc665::Media::ConstLoads >;
 
     /**
      * @brief Initialises the loads model.
@@ -109,17 +121,16 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      * @param[in] index
      *   Index of the requested item.
      *
-     * @return The load for the given index.
+     * @return Load for the given index.
      **/
-    [[nodiscard]] Arinc665::Media::ConstLoadPtr load(
-      const QModelIndex &index ) const;
+    [[nodiscard]] Load load( const QModelIndex &index ) const;
 
     /**
      * @brief Returns the Loads.
      *
      * @return Loads
      **/
-    const Arinc665::Media::ConstLoads& loads() const;
+    const Loads& loads() const;
 
     /**
      * @brief Updates the data model with the given ASF messages.
@@ -127,14 +138,46 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      * @param[in] loads
      *   Loads, contained by the model.
      **/
-    void loads( const Arinc665::Media::ConstLoads &loads );
+    void loads( const Loads &loads );
 
-    //! @copydoc loads(const Arinc665::Media::ConstLoads&)
-    void loads( Arinc665::Media::ConstLoads &&loads );
+    //! @copydoc loads(const Loads&)
+    void loads( Loads &&loads = {} );
 
   private:
+    /**
+     * @brief Returns the Number of Loads
+     *
+     * @return Number of Loads
+     **/
+    size_t numberOfLoads() const;
+
+    /**
+     * @brief Return Load for given Index.
+     *
+     * @param[in] index
+     *   Load Index
+     *
+     * @return Load for given Index
+     * @retval {}
+     *   If index is invalid
+     **/
+    Load load( std::size_t index ) const;
+
+    /**
+     * @brief Converts given Load Variant to Const Load Pointer.
+     *
+     * If variant stores a const load, it is returned directly, otherwise
+     * converts it to const load pointer.
+     *
+     * @param[in] load
+     *   Load Variant
+     *
+     * @return Const Load Pointer
+     **/
+    Arinc665::Media::ConstLoadPtr load( const Load &load ) const;
+
     //! loads list
-    Arinc665::Media::ConstLoads loadsV;
+    Loads loadsV;
 };
 
 }

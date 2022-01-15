@@ -14,6 +14,8 @@
 
 #include <arinc665/media/Batch.hpp>
 
+#include <helper_qt/String.hpp>
+
 namespace Arinc665Qt::Media {
 
 BatchesModel::BatchesModel( QObject * const parent ) :
@@ -30,7 +32,7 @@ int BatchesModel::rowCount( const QModelIndex &parent ) const
     return 0;
   }
 
-  return static_cast< int >( batchesV.size() );
+  return static_cast< int >( numberOfBatches() );
 }
 
 int BatchesModel::columnCount( const QModelIndex &parent ) const
@@ -52,13 +54,18 @@ QVariant BatchesModel::data(
     return {};
   }
 
-  // out of range access
-  if ( static_cast< size_t>( index.row() ) >= batchesV.size() )
+  if ( index.row() < 0 )
   {
     return {};
   }
 
-  auto batch{ std::next( batchesV.begin(), index.row() ) };
+  auto batchPtr{ batch( batch( index.row() ) ) };
+
+  // out of range access
+  if ( !batchPtr )
+  {
+    return {};
+  }
 
   switch ( role )
   {
@@ -66,19 +73,13 @@ QVariant BatchesModel::data(
       switch ( static_cast< Columns>( index.column() ) )
       {
         case Columns::Name:
-          return QString::fromUtf8(
-            batch->get()->name().data(),
-            static_cast< int >( batch->get()->name().size() ) );
+          return HelperQt::toQString( batchPtr->name() );
 
         case Columns::PartNumber:
-          return QString::fromUtf8(
-            batch->get()->partNumber().data(),
-            static_cast< int >( batch->get()->partNumber().size() ) );
+          return HelperQt::toQString( batchPtr->partNumber() );
 
         case Columns::Comment:
-          return QString::fromUtf8(
-            batch->get()->comment().data(),
-            static_cast< int >( batch->get()->comment().size() ) );
+          return HelperQt::toQString( batchPtr->comment() );
 
         default:
           return {};
@@ -92,9 +93,9 @@ QVariant BatchesModel::data(
 }
 
 QVariant BatchesModel::headerData(
-  int section,
-  ::Qt::Orientation orientation,
-  int role ) const
+  const int section,
+  const ::Qt::Orientation orientation,
+  const int role ) const
 {
   if ( role != Qt::DisplayRole )
   {
@@ -119,30 +120,69 @@ QVariant BatchesModel::headerData(
   }
 }
 
-Arinc665::Media::ConstBatchPtr BatchesModel::batch(
-  const QModelIndex &index ) const
+BatchesModel::Batch BatchesModel::batch( const QModelIndex &index ) const
 {
   if ( !index.isValid() )
   {
     return {};
   }
 
-  if ( ( index.row() < 0 )
-       || ( index.row() ) >= static_cast< int >( batchesV.size() ) )
+  if ( index.row() < 0 )
   {
     return {};
   }
 
-  auto batch{ std::next( batchesV.begin(), index.row() ) };
-
-  return *batch;
+  return batch( index.row() );
 }
 
-void BatchesModel::batches( const Arinc665::Media::ConstBatches &batches )
+const BatchesModel::Batches BatchesModel::batches() const
+{
+  return batchesV;
+}
+
+void BatchesModel::batches( const Batches &batches )
 {
   beginResetModel();
   batchesV = batches;
   endResetModel();
+}
+
+void BatchesModel::batches( Batches &&batches )
+{
+  beginResetModel();
+  batchesV = std::move( batches );
+  endResetModel();
+}
+
+size_t BatchesModel::numberOfBatches() const
+{
+  return std::visit(
+    []( auto &batches ) { return batches.size(); },
+    batchesV );
+}
+
+BatchesModel::Batch BatchesModel::batch( std::size_t index ) const
+{
+  if ( index >= numberOfBatches() )
+  {
+    return {};
+  }
+
+  return std::visit(
+    [ index ]( auto &batches ) {
+      auto batch{ std::next( batches.begin(), index ) };
+      return Batch{ *batch };
+    },
+    batchesV );
+}
+
+Arinc665::Media::ConstBatchPtr BatchesModel::batch( const Batch &batch ) const
+{
+  return std::visit(
+    []( const auto &batch ) {
+      return Arinc665::Media::ConstBatchPtr { batch };
+    },
+    batch );
 }
 
 }
