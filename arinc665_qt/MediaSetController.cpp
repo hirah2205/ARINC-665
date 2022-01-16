@@ -67,9 +67,7 @@ MediaSetController::MediaSetController( QWidget * const parent):
     &MediaSetController::finished );
 }
 
-MediaSetController::~MediaSetController()
-{
-}
+MediaSetController::~MediaSetController() = default;
 
 void MediaSetController::start()
 {
