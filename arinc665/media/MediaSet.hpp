@@ -311,7 +311,7 @@ class ARINC665_EXPORT MediaSet : public Base
     /** @} **/
 
     /**
-     * @name User Defined Data
+     * @name User Defined Data of Files List
      * @{
      **/
 
@@ -336,6 +336,13 @@ class ARINC665_EXPORT MediaSet : public Base
     //! @copydoc filesUserDefinedData(const UserDefinedData&)
     void filesUserDefinedData( UserDefinedData &&userDefinedData );
 
+    /** @} **/
+
+    /**
+     * @name User Defined Data of Loads List
+     * @{
+     **/
+
     /**
      * @brief Returns the user defined data for loads list files.
      *
@@ -356,6 +363,13 @@ class ARINC665_EXPORT MediaSet : public Base
 
     //! @copydoc loadsUserDefinedData(const UserDefinedData&)
     void loadsUserDefinedData( UserDefinedData &&userDefinedData );
+
+    /** @} **/
+
+    /**
+     * @name User Defined Data of Batches List
+     * @{
+     **/
 
     /**
      * @brief Returns the user defined data for batch list files.

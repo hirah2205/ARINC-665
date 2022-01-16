@@ -41,9 +41,9 @@ namespace Arinc665::Media {
 
 class Base;
 //! Constant %Base Pointer
-using ConstBasePtr = std::shared_ptr< const Base>;
+using ConstBasePtr = std::shared_ptr< const Base >;
 //! %Base Pointer
-using BasePtr = std::shared_ptr< Base>;
+using BasePtr = std::shared_ptr< Base >;
 
 /** @} **/
 

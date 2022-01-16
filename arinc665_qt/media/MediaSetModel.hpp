@@ -44,14 +44,10 @@ class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
     /**
      * @brief Initialises the model instance.
      *
-     * @param[in] mediaSet
-     *   Associated media set.
      * @param[in] parent
      *   Parent object
      **/
-    explicit MediaSetModel(
-      QObject * parent = nullptr,
-      Arinc665::Media::MediaSetPtr mediaSet = {} );
+    explicit MediaSetModel( QObject * parent = nullptr);
 
     //! Destructor
     ~MediaSetModel() override = default;
@@ -61,10 +57,13 @@ class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
      *   row and column.
      *
      * @param[in] row
+     *   Index Row
      * @param[in] column
+     *   Index Column
      * @param[in] parent
+     *   Parent Model Index
      *
-     * @return
+     * @return Model Index
      **/
     [[nodiscard]] QModelIndex index(
       int row,
@@ -152,20 +151,19 @@ class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
      * @retval Arinc665::Media::BasePtr{}
      *   If index is invalid or no model stored.
      **/
-    Arinc665::Media::BasePtr element( const QModelIndex &index );
+    Arinc665::Media::BasePtr element( const QModelIndex &index ) const;
 
-  public slots:
     /**
-     * @brief Updates the associated media set.
+     * @brief Updates the associated Root Element.
      *
      * @param[in] mediaSet
-     *   New associated media set
+     *   New Root Element.
      **/
-    void setMediaSet( Arinc665::Media::MediaSetPtr mediaSet = {} );
+    void root( Arinc665::Media::BasePtr root = {} );
 
   private:
-    //! Media Set
-    Arinc665::Media::MediaSetPtr mediaSetV;
+    //! Root Element
+    Arinc665::Media::BasePtr rootV;
 };
 
 }

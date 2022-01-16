@@ -26,7 +26,7 @@ namespace Arinc665::Media {
  * %Base class for media set classes.
  * Provides common attributes.
  */
-class Base : public std::enable_shared_from_this< Base>
+class Base : public std::enable_shared_from_this< Base >
 {
   public:
     //! Item Type
@@ -44,7 +44,7 @@ class Base : public std::enable_shared_from_this< Base>
     /**
      * @brief Returns the Owning Media Set.
      *
-     * @return Owning media set
+     * @return Owning Media Set
      **/
     [[nodiscard]] virtual ConstMediaSetPtr mediaSet() const = 0;
 
@@ -54,7 +54,7 @@ class Base : public std::enable_shared_from_this< Base>
     /**
      * @brief Returns the Item Type.
      *
-     * @return Item type
+     * @return Item Type
      **/
     [[nodiscard]] virtual Type type() const = 0;
 };

@@ -90,7 +90,7 @@ void MediaSetController::directorySelected()
 
     auto mediaSet{ (*importer)()};
 
-    mediaSetModel->setMediaSet( mediaSet);
+    mediaSetModel->root( mediaSet );
 
     // Set window title
     mediaSetDialog->setWindowTitle(
