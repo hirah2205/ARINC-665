@@ -39,29 +39,43 @@ class ARINC665_QT_EXPORT MediumWidget : public QWidget
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit MediumWidget( QWidget *parent = nullptr );
+    explicit MediumWidget( QWidget * parent = nullptr );
 
     //! Destructor
     ~MediumWidget() override;
 
+    /**
+     * @brief Sets the Media Set Model.
+     *
+     * @param[in] model
+     *   Media Set Model.
+     **/
+    void mediaSetModel( Arinc665Qt::Media::MediaSetModel * model );
+
   public slots:
+    /**
+     * @brief Slot called, when a Medium is selected.
+     *
+     * Updated the Table View to show content of selected medium.
+     *
+     * @param[in] index
+     *   Model Index of selected Medium.
+     **/
+    void selectedMedium( const QModelIndex index );
+
     /**
      * @brief Called when a Medium has been selected.
      *
-     * @param[in] model
-     *   Model owning @p medium
      * @param[in] medium
      *   Selected Medium
      **/
-    void selectedMedium(
-      Arinc665Qt::Media::MediaSetModel * model,
-      Arinc665::Media::MediumPtr medium );
+    void selectedMedium( Arinc665::Media::MediumPtr medium );
 
   private:
     //! UI (designer)
     std::unique_ptr< Ui::MediumWidget > ui;
     //! Media Set Model
-    MediaSetModel * modelV;
+    MediaSetModel * mediaSetModelV;
     //! Medium
     Arinc665::Media::MediumPtr mediumV;
 };

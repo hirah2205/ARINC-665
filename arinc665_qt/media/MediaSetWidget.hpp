@@ -44,10 +44,28 @@ class ARINC665_QT_EXPORT MediaSetWidget : public QWidget
     //! Destructor
     ~MediaSetWidget() override;
 
+    /**
+     * @brief Sets the Media Set Model.
+     *
+     * @param[in] model
+     *   Media Set Model.
+     **/
     void mediaSetModel( Arinc665Qt::Media::MediaSetModel * model );
 
+    /**
+     * @brief Sets the Loads Model.
+     *
+     * @param[in] model
+     *   Loads Model.
+     **/
     void loadsModel( Arinc665Qt::Media::LoadsModel * model );
 
+    /**
+     * @brief Sets the Batches Model.
+     *
+     * @param[in] model
+     *   Batches Model.
+     **/
     void batchesModel( Arinc665Qt::Media::BatchesModel * model );
 
   public slots:

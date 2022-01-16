@@ -12,30 +12,41 @@
 
 #include "MediumWidget.hpp"
 
-#include <arinc665/media/Medium.hpp>
-
 #include "ui_MediumWidget.h"
+
+#include <arinc665_qt/media/MediaSetModel.hpp>
+
+#include <arinc665/media/Medium.hpp>
 
 namespace Arinc665Qt::Media {
 
 MediumWidget::MediumWidget( QWidget * const parent):
   QWidget{ parent},
-  ui{ std::make_unique< Ui::MediumWidget>()},
-  modelV{ nullptr}
+  ui{ std::make_unique< Ui::MediumWidget>() },
+  mediaSetModelV{ nullptr }
 {
-  ui->setupUi( this);
+  ui->setupUi( this );
 }
 
 MediumWidget::~MediumWidget() = default;
 
-void MediumWidget::selectedMedium(
-  Arinc665Qt::Media::MediaSetModel * const model,
-  Arinc665::Media::MediumPtr medium )
+void MediumWidget::mediaSetModel(
+  Arinc665Qt::Media::MediaSetModel * const model )
 {
-  modelV = model;
+  mediaSetModelV = model;
+  ui->content->setModel( model );
+}
+
+void MediumWidget::selectedMedium( const QModelIndex index )
+{
+  ui->content->setRootIndex( index );
+}
+
+void MediumWidget::selectedMedium( Arinc665::Media::MediumPtr medium )
+{
   mediumV = std::move( medium );
 
-  if (mediumV)
+  if ( mediumV )
   {
     ui->numberSpinBox->setValue( mediumV->mediumNumber() );
   }

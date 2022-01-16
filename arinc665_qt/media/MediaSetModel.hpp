@@ -156,7 +156,7 @@ class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
     /**
      * @brief Updates the associated Root Element.
      *
-     * @param[in] mediaSet
+     * @param[in] root
      *   New Root Element.
      **/
     void root( Arinc665::Media::BasePtr root = {} );

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>Thomas Vogt</author>
  <class>Arinc665Qt::Media::DirectoryWidget</class>
  <widget class="QWidget" name="Arinc665Qt::Media::DirectoryWidget">
   <property name="geometry">
@@ -33,17 +34,32 @@
       <item row="0" column="1">
        <widget class="QLineEdit" name="nameLineEdit"/>
       </item>
+      <item row="1" column="1">
+       <widget class="QTableView" name="content">
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::NoSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <attribute name="verticalHeaderCascadingSectionResizes">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>30</number>
+        </attribute>
+       </widget>
+      </item>
      </layout>
     </widget>
-   </item>
-   <item>
-    <widget class="QListView" name="listView"/>
    </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>nameLineEdit</tabstop>
-  <tabstop>listView</tabstop>
  </tabstops>
  <resources/>
  <connections/>

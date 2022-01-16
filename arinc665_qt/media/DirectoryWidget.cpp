@@ -12,34 +12,46 @@
 
 #include "DirectoryWidget.hpp"
 
+#include "ui_DirectoryWidget.h"
+
+#include <arinc665_qt/media/MediaSetModel.hpp>
+
 #include <arinc665/media/Directory.hpp>
 
-#include "ui_DirectoryWidget.h"
+#include <helper_qt/String.hpp>
 
 namespace Arinc665Qt::Media {
 
 DirectoryWidget::DirectoryWidget( QWidget * const parent):
   QWidget{ parent},
-  ui{ std::make_unique< Ui::DirectoryWidget>()},
-  modelV{ nullptr}
+  ui{ std::make_unique< Ui::DirectoryWidget >() },
+  mediaSetModelV{ nullptr }
 {
-  ui->setupUi( this);
+  ui->setupUi( this );
 }
 
 DirectoryWidget::~DirectoryWidget() = default;
 
-void DirectoryWidget::selectedDirectory(
-  Arinc665Qt::Media::MediaSetModel * const model,
-  Arinc665::Media::DirectoryPtr directory)
+void DirectoryWidget::mediaSetModel(
+  Arinc665Qt::Media::MediaSetModel * const model )
 {
-  modelV = model;
+  mediaSetModelV = model;
+  ui->content->setModel( model );
+}
+
+void DirectoryWidget::selectedDirectory( const QModelIndex index )
+{
+  ui->content->setRootIndex( index );
+}
+
+void DirectoryWidget::selectedDirectory(
+  Arinc665::Media::DirectoryPtr directory )
+{
   directoryV = std::move( directory);
 
   if ( directoryV )
   {
-    ui->nameLineEdit->setText( QString::fromUtf8(
-      directoryV->name().data(),
-      static_cast< int >( directoryV->name().length() ) ) );
+    ui->nameLineEdit->setText( HelperQt::toQString( directoryV->name() ) );
   }
 }
 

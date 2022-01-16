@@ -44,24 +44,38 @@ class ARINC665_QT_EXPORT DirectoryWidget : public QWidget
     //! Destructor
     ~DirectoryWidget() override;
 
-  public slots:
     /**
-     * @brief Called when a directory has been selected.
+     * @brief Sets the Media Set Model.
      *
      * @param[in] model
-     *   Model owning @p directory
+     *   Media Set Model.
+     **/
+    void mediaSetModel( Arinc665Qt::Media::MediaSetModel * model );
+
+  public slots:
+    /**
+     * @brief Slot called, when a Directory is selected.
+     *
+     * Updated the Table View to show content of selected directory.
+     *
+     * @param[in] index
+     *   Model Index of selected Medium.
+     **/
+    void selectedDirectory( const QModelIndex index );
+
+    /**
+     * @brief Called when a Directory has been selected.
+     *
      * @param[in] directory
      *   Selected Directory
      **/
-    void selectedDirectory(
-      Arinc665Qt::Media::MediaSetModel * model,
-      Arinc665::Media::DirectoryPtr directory );
+    void selectedDirectory( Arinc665::Media::DirectoryPtr directory );
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::DirectoryWidget> ui;
+    std::unique_ptr< Ui::DirectoryWidget > ui;
     //! Media Set Model
-    MediaSetModel * modelV;
+    MediaSetModel * mediaSetModelV;
     //! Directory
     Arinc665::Media::DirectoryPtr directoryV;
 };

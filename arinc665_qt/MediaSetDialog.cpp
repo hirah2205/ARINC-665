@@ -54,7 +54,10 @@ void MediaSetDialog::mediaSetModel( Media::MediaSetModel * const model )
   mediaSetModelV = model;
 
   ui->mediaSetTreeView->setModel( model );
+
   ui->mediaSetWidget->mediaSetModel( model );
+  ui->mediumWidget->mediaSetModel( model );
+  ui->directoryWidget->mediaSetModel( model );
 }
 
 void MediaSetDialog::loadsModel( Media::LoadsModel * const model )
@@ -98,15 +101,15 @@ void MediaSetDialog::itemSelected( const QModelIndex &index )
 
     case Arinc665::Media::Base::Type::Medium:
       ui->detailsStackedWidget->setCurrentIndex( 1 );
+      ui->mediumWidget->selectedMedium( index );
       ui->mediumWidget->selectedMedium(
-        mediaSetModelV,
         std::dynamic_pointer_cast< Arinc665::Media::Medium>( element ) );
       break;
 
     case Arinc665::Media::Base::Type::Directory:
       ui->detailsStackedWidget->setCurrentIndex( 2 );
+      ui->directoryWidget->selectedDirectory( index );
       ui->directoryWidget->selectedDirectory(
-        mediaSetModelV,
         std::dynamic_pointer_cast< Arinc665::Media::Directory>( element ) );
       break;
 
