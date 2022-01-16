@@ -51,6 +51,13 @@ generate_export_header( arinc665_qt )
 add_subdirectory( media )
 add_subdirectory( media_set_manager )
 
+# disable clang tidy in binary dir by placing dummy .clang-tidy file
+file(
+  WRITE
+  ${CMAKE_CURRENT_BINARY_DIR}/.clang-tidy
+  "Checks: '-*,llvm-twine-local'" )
+
+
 install(
   TARGETS arinc665_qt
   RUNTIME_DEPENDENCY_SET runtime-libs
