@@ -263,11 +263,11 @@ void printBatch(
     {
       outS
         << nextNextIndent
-        << "Name: " << load.lock()->name() << "\n"
+        << "Name: " << load->name() << "\n"
 
         << nextNextIndent
         << "Load Path: "
-        << load.lock()->path().generic_string() << "\n";
+        << load->path().generic_string() << "\n";
 
       outS << "\n";
     }

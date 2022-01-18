@@ -738,7 +738,7 @@ void Arinc665XmlImpl::loadBatch(
 
     const auto thwIdPos{ targetElement->get_attribute_value( "ThwIdPos" ) };
 
-    Media::WeakLoads loads{};
+    Media::Loads loads{};
 
     // iterate over loads
     for ( auto LoadNode : targetNode->get_children( "Load" ) )
@@ -773,7 +773,7 @@ void Arinc665XmlImpl::loadBatch(
     }
 
     // add load
-    batch->target( toStringView( thwIdPos ), loads);
+    batch->target( toStringView( thwIdPos ), loads );
   }
 }
 
@@ -803,7 +803,7 @@ void Arinc665XmlImpl::saveBatch(
     {
       auto loadNode{ targetElement->add_child( "Load" ) };
 
-      loadNode->set_attribute( "NameRef", load.lock()->name().data() );
+      loadNode->set_attribute( "NameRef", load->name().data() );
     }
   }
 }

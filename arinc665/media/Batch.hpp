@@ -29,7 +29,9 @@ class ARINC665_EXPORT Batch : public File
 {
   public:
     //! Batch Information (Target Hardware ID -> Loads)
-    using BatchInfo = std::map< std::string, WeakLoads, std::less<> >;
+    using BatchInfo = std::map< std::string, Loads, std::less<> >;
+    //! Const Batch Information (Target Hardware ID -> Loads)
+    using ConstBatchInfo = std::map< std::string, ConstLoads, std::less<> >;
 
     /**
      * @brief Initialises the batch with the given data.
@@ -110,53 +112,49 @@ class ARINC665_EXPORT Batch : public File
      *
      * @return Batch target information.
      **/
-    [[nodiscard]] const BatchInfo& targets() const;
+    [[nodiscard]] const ConstBatchInfo targets() const;
 
     //! @copydoc targets() const
-    BatchInfo& targets();
+    BatchInfo targets();
 
     /**
-     * @brief Return the Batch info for the given target hardware ID
+     * @brief Return the Loads for the given Target Hardware ID
      *
      * @param[in] targetHardwareId
      *   Target hardware ID
      *
      * @return The corresponding loads
      **/
-    [[nodiscard]] WeakLoads target( std::string_view targetHardwareId ) const;
+    [[nodiscard]] ConstLoads target( std::string_view targetHardwareId ) const;
+
+    //! @copydoc target(std::string_view) const
+    Loads target( std::string_view targetHardwareId );
 
     /**
-     * @brief Return the batch info for the given target hardware ID
+     * @brief Add Loads for the given Target Hardware ID.
      *
      * @param[in] targetHardwareId
-     *   Target hardware ID
-     *
-     * @return Corresponding loads
-     **/
-    WeakLoads target( std::string_view targetHardwareId );
-
-    /**
-     * @brief Add batch info for the given target hardware ID.
-     *
-     * @param[in] targetHardwareId
-     *   Target hardware IDs
+     *   Target Hardware ID
      * @param[in] loads
      *   Loads.
      **/
-    void target( std::string_view targetHardwareId, const WeakLoads &loads );
+    void target( std::string_view targetHardwareId, const Loads &loads );
 
-    //! @copydoc target(std::string_view,const WeakLoads&)
-    void target( std::string &&targetHardwareId, WeakLoads &&loads );
+    //! @copydoc target(std::string_view,const Loads&)
+    void target( std::string &&targetHardwareId, const Loads &loads );
 
     /** @} **/
 
   private:
+    //! Batch Information (Target Hardware ID -> Weak Loads)
+    using WeakBatchInfo = std::map< std::string, WeakLoads, std::less<> >;
+
     //! Part Number
     std::string partNumberV;
     //! Batch Comment
     std::string commentV;
     //! Batch Information
-    BatchInfo batchesV;
+    WeakBatchInfo batchesV;
 };
 
 }

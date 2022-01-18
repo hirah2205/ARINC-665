@@ -486,10 +486,9 @@ void MediaSetExporterImpl::createBatchFile(
 
     for ( const auto &load : loads )
     {
-      auto loadPtr{ load.lock() };
       batchLoadsInfo.emplace_back( Files::BatchLoadInfo{
-        std::string{ loadPtr->name() },
-        std::string{ loadPtr->partNumber() } } );
+        std::string{ load->name() },
+        std::string{ load->partNumber() } } );
     }
 
     batchFile.targetHardware(

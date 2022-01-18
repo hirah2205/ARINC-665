@@ -134,7 +134,6 @@ ConstLoadFiles Load::dataFiles() const
   return files;
 }
 
-
 LoadFiles Load::dataFiles()
 {
   LoadFiles files{};

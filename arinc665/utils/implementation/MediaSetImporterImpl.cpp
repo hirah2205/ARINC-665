@@ -423,7 +423,7 @@ void MediaSetImporterImpl::addLoads()
           << boost::errinfo_file_name{ dataFile.filename } );
       }
 
-      // get memorised file size ( only when file integrity is checked)
+      // get memorised file size (only when file integrity is checked)
       if ( checkFileIntegrityV )
       {
         const auto dataFileSize{ fileSizes.find( dataFile.filename ) };
@@ -541,13 +541,13 @@ void MediaSetImporterImpl::addBatches()
     // create batch
     auto batchPtr{ container->addBatch( filename ) };
 
-    batchPtr->partNumber( batchFile.partNumber());
-    batchPtr->comment( batchFile.comment());
+    batchPtr->partNumber( batchFile.partNumber() );
+    batchPtr->comment( batchFile.comment() );
 
     // iterate over target hardware
     for ( const auto &targetHardware : batchFile.targetsHardware() )
     {
-      Media::WeakLoads batchLoads{};
+      Media::Loads batchLoads{};
 
       // iterate over loads
       for ( const auto& load : targetHardware.loads )
@@ -577,9 +577,9 @@ MediaSetImporterImpl::checkCreateDirectory(
   const std::filesystem::path &directoryPath )
 {
   // make path relative (remove leading slash)
-  auto dirPath{ directoryPath.relative_path()};
+  auto dirPath{ directoryPath.relative_path() };
 
-  auto medium( mediaSet->medium( mediumIndex));
+  auto medium( mediaSet->medium( mediumIndex ) );
 
   // we are in root-directory
   if ( dirPath.empty() )
@@ -594,7 +594,7 @@ MediaSetImporterImpl::checkCreateDirectory(
   {
     auto subDir{ dir->subDirectory( subPath.string() ) };
 
-    // if sub-directory does not exist - create it
+    // if subdirectory does not exist - create it
     if ( !subDir )
     {
       subDir = dir->addSubDirectory( subPath.string() );
@@ -602,7 +602,7 @@ MediaSetImporterImpl::checkCreateDirectory(
       if (!subDir)
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{ "Cannot create sub-directory" } );
+          << Helper::AdditionalInfo{ "Cannot create subdirectory" } );
       }
     }
 

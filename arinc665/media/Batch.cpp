@@ -14,13 +14,13 @@
 
 namespace Arinc665::Media {
 
-Batch::Batch( const ContainerEntityPtr& parent, std::string_view name) :
-  File{ parent, name}
+Batch::Batch( const ContainerEntityPtr& parent, std::string_view name ) :
+  File{ parent, name }
 {
 }
 
-Batch::Batch( const ContainerEntityPtr& parent, std::string &&name):
-  File{ parent, std::move( name)}
+Batch::Batch( const ContainerEntityPtr& parent, std::string &&name ) :
+  File{ parent, std::move( name ) }
 {
 }
 
@@ -44,58 +44,78 @@ std::string_view Batch::comment() const
   return commentV;
 }
 
-void Batch::comment( std::string_view comment)
+void Batch::comment( std::string_view comment )
 {
   commentV = comment;
 }
 
-void Batch::comment( std::string &&comment)
+void Batch::comment( std::string &&comment )
 {
   commentV = std::move( comment);
 }
 
-const Batch::BatchInfo& Batch::targets() const
+const Batch::ConstBatchInfo Batch::targets() const
 {
-  return batchesV;
+  Batch::ConstBatchInfo batchInfo{};
+
+  for ( const auto &[ targetHardwareId, loads ] : batchesV )
+  {
+    batchInfo.emplace(
+      targetHardwareId,
+      ConstLoads{ loads.begin(), loads.end() } );
+  }
+
+  return batchInfo;
 }
 
-Batch::BatchInfo& Batch::targets()
+Batch::BatchInfo Batch::targets()
 {
-  return batchesV;
+  Batch::BatchInfo batchInfo{};
+
+  for ( const auto &[ targetHardwareId, loads ] : batchesV )
+  {
+    batchInfo.emplace(
+      targetHardwareId,
+      Loads{ loads.begin(), loads.end() } );
+  }
+
+  return batchInfo;
 }
 
-WeakLoads Batch::target( std::string_view targetHardwareId) const
+ConstLoads Batch::target( std::string_view targetHardwareId ) const
 {
-  auto it{ batchesV.find( targetHardwareId)};
+  auto it{ batchesV.find( targetHardwareId ) };
+
+  if ( it == batchesV.end() )
+  {
+    return {};
+  }
+
+  return { it->second.begin(), it->second.end() };
+}
+
+Loads Batch::target( std::string_view targetHardwareId )
+{
+  auto it{ batchesV.find( targetHardwareId ) };
 
   if (it == batchesV.end())
   {
     return {};
   }
 
-  return it->second;
+  return { it->second.begin(), it->second.end() };
 }
 
-WeakLoads Batch::target( std::string_view targetHardwareId)
+void Batch::target( std::string_view targetHardwareId, const Loads &loads )
 {
-  auto it{ batchesV.find( targetHardwareId)};
-
-  if (it == batchesV.end())
-  {
-    return {};
-  }
-
-  return it->second;
+  WeakLoads weakLoads{ loads.begin(), loads.end() };
+  batchesV.emplace( std::string{ targetHardwareId}, std::move( weakLoads ) );
 }
 
-void Batch::target( std::string_view targetHardwareId, const WeakLoads &loads )
+void Batch::target( std::string &&targetHardwareId, const Loads &loads )
 {
-  batchesV.emplace( std::string{ targetHardwareId}, loads );
-}
-
-void Batch::target( std::string &&targetHardwareId, WeakLoads &&loads )
-{
-  batchesV.emplace( std::move( targetHardwareId), std::move( loads) );
+  WeakLoads weakLoads{ loads.begin(), loads.end() };
+  batchesV.emplace( std::move( targetHardwareId), std::move( weakLoads ) );
 }
 
 }
