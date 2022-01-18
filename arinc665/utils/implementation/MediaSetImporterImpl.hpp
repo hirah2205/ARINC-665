@@ -148,7 +148,10 @@ class MediaSetImporterImpl final : public MediaSetImporter
     /**
      * @brief Adds the batches to the media set.
      *
-     * @throw Arinc665Exception When loads are not existent
+     * @throw Arinc665Exception
+     *   When loads are not existent
+     * @throw Arinc665Exception
+     *   When Load Part Number does not match Batch Information
      **/
     void addBatches();
 

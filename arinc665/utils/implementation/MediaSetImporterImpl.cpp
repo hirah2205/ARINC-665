@@ -562,6 +562,15 @@ void MediaSetImporterImpl::addBatches()
               << boost::errinfo_file_name{ std::string{ load.headerFilename } } );
         }
 
+        // check that Part Number Information matches
+        if ( loadPtr->partNumber() != load.partNumber )
+        {
+          BOOST_THROW_EXCEPTION(
+            Arinc665Exception()
+            << Helper::AdditionalInfo{ "Load part NUmber does not match Batch Info" }
+            << boost::errinfo_file_name{ std::string{ load.headerFilename } } );
+        }
+
         batchLoads.emplace_back( std::move( loadPtr ) );
       }
 
