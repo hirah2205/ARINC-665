@@ -28,11 +28,6 @@ namespace Arinc665::Media {
 class ARINC665_EXPORT Batch : public File
 {
   public:
-    //! Batch Information (Target Hardware ID -> Loads)
-    using BatchInfo = std::map< std::string, Loads, std::less<> >;
-    //! Const Batch Information (Target Hardware ID -> Loads)
-    using ConstBatchInfo = std::map< std::string, ConstLoads, std::less<> >;
-
     /**
      * @brief Initialises the batch with the given data.
      *

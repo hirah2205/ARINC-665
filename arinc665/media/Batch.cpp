@@ -54,9 +54,9 @@ void Batch::comment( std::string &&comment )
   commentV = std::move( comment);
 }
 
-const Batch::ConstBatchInfo Batch::targets() const
+const ConstBatchInfo Batch::targets() const
 {
-  Batch::ConstBatchInfo batchInfo{};
+  ConstBatchInfo batchInfo{};
 
   for ( const auto &[ targetHardwareId, loads ] : batchesV )
   {
@@ -68,9 +68,9 @@ const Batch::ConstBatchInfo Batch::targets() const
   return batchInfo;
 }
 
-Batch::BatchInfo Batch::targets()
+BatchInfo Batch::targets()
 {
-  Batch::BatchInfo batchInfo{};
+  BatchInfo batchInfo{};
 
   for ( const auto &[ targetHardwareId, loads ] : batchesV )
   {
