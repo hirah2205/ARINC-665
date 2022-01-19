@@ -198,12 +198,20 @@ using BatchVariant = std::variant< BatchPtr, ConstBatchPtr >;
 //! Batches Variant
 using BatchesVariant = std::variant< Batches, ConstBatches >;
 
-//! Batch Information (Target Hardware ID -> Loads)
-using BatchInfo = std::map< std::string, Loads, std::less<> >;
-//! Const Batch Information (Target Hardware ID -> Loads)
-using ConstBatchInfo = std::map< std::string, ConstLoads, std::less<> >;
+//! Batch Information (Maps: Target Hardware ID Position -> Loads)
+using BatchInformation = std::map< std::string, Loads, std::less<> >;
+//! Const Batch Information (Maps: Target Hardware ID Position -> Loads)
+using ConstBatchInformation = std::map< std::string, ConstLoads, std::less<> >;
 //! Batch Information Variant
-using BatchInfoVariant = std::variant< BatchInfo, ConstBatchInfo >;
+using BatchInformationVariant =
+  std::variant< BatchInformation, ConstBatchInformation >;
+//! Batch Target Information
+using BatchTargetInformation = BatchInformation::value_type;
+//! Const Batch Target Information
+using ConstBatchTargetInformation = ConstBatchInformation::value_type;
+//! Batch Target Information Variant
+using BatchTargetInformationVariant =
+  std::variant< BatchTargetInformation, ConstBatchTargetInformation >;
 
 /** @} **/
 

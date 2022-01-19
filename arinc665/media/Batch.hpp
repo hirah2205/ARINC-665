@@ -107,10 +107,10 @@ class ARINC665_EXPORT Batch : public File
      *
      * @return Batch target information.
      **/
-    [[nodiscard]] const ConstBatchInfo targets() const;
+    [[nodiscard]] ConstBatchInformation targets() const;
 
     //! @copydoc targets() const
-    BatchInfo targets();
+    BatchInformation targets();
 
     /**
      * @brief Return the Loads for the given Target Hardware ID
@@ -118,7 +118,7 @@ class ARINC665_EXPORT Batch : public File
      * @param[in] targetHardwareId
      *   Target hardware ID
      *
-     * @return The corresponding loads
+     * @return Loads corresponding to @p targetHardwareId
      **/
     [[nodiscard]] ConstLoads target( std::string_view targetHardwareId ) const;
 
@@ -131,7 +131,7 @@ class ARINC665_EXPORT Batch : public File
      * @param[in] targetHardwareId
      *   Target Hardware ID
      * @param[in] loads
-     *   Loads.
+     *   Loads for @p targetHardwareId.
      **/
     void target( std::string_view targetHardwareId, const Loads &loads );
 

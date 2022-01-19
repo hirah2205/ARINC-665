@@ -12,6 +12,8 @@ target_sources(
   PRIVATE
     BatchesModel.hpp
     BatchesModel.cpp
+    BatchInfoModel.hpp
+    BatchInfoModel.cpp
     BatchWidget.hpp
     BatchWidget.cpp
     BatchWidget.ui

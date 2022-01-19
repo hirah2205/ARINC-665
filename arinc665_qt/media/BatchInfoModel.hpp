@@ -7,11 +7,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::Media::BatchesModel.
+ * @brief Declaration of Class Arinc665Qt::Media::BatchInfoModel.
  **/
 
-#ifndef ARINC665_QT_MEDIA_BATCHESMODEL_HPP
-#define ARINC665_QT_MEDIA_BATCHESMODEL_HPP
+#ifndef ARINC665_QT_MEDIA_BATCHINFOMODEL_HPP
+#define ARINC665_QT_MEDIA_BATCHINFOMODEL_HPP
 
 #include <arinc665_qt/media/Media.hpp>
 
@@ -24,9 +24,9 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT model of List of Batches.
+ * @brief QT model of Batch Information.
  **/
-class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
+ class ARINC665_QT_EXPORT BatchInfoModel : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -34,23 +34,21 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
     //! Columns of Model
     enum class Columns
     {
-      Name,
-      PartNumber,
-      Comment,
+      TargetHardwareIdPosition,
 
       ColumnsCount
     };
 
     /**
-     * @brief Initialises the Batches Model.
+     * @brief Initialises the Batch Information Model.
      *
      * @param[in] parent
      *   Parent QObject.
      **/
-    explicit BatchesModel( QObject *parent = nullptr );
+    explicit BatchInfoModel( QObject * parent = nullptr );
 
     //! Destructor
-    ~BatchesModel() override;
+    ~BatchInfoModel() override;
 
     /**
      * @brief Returns the number of rows.
@@ -58,7 +56,7 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
      * @param[in] parent
      *   Index-parent - assumed to be the root element (invalid).
      *
-     * @return The number of loads.
+     * @return Number of Batch Information.
      * @retval 0
      *   If @p is valid (not root element)
      **/
@@ -107,58 +105,62 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
       int role ) const override;
 
     /**
-     * @name Batches
+     * @name Batch Information
      * @{
      **/
 
     /**
-     * @brief Returns the Number of Batches
+     * @brief Returns the Number of Batch Information
      *
-     * @return Number of Batches
+     * @return Number of Batch Information
      **/
-    size_t numberOfBatches() const;
+    size_t numberOfBatchInformation() const;
 
     /**
      * @brief Returns the Batches.
      *
      * @return Batches
      **/
-    const Arinc665::Media::BatchesVariant& batches() const;
+    const Arinc665::Media::BatchInformationVariant& batchInformation() const;
 
     /**
-     * @brief Updates the Data Model with the given Batches.
+     * @brief Updates the Data Model with the given Batch Information.
      *
-     * @param[in] batches
-     *   Batches, contained by the model.
+     * @param[in] information
+     *   Batch Information, contained by the model.
      **/
-    void batches( const Arinc665::Media::BatchesVariant &batches );
+    void batchInformation(
+      const Arinc665::Media::BatchInformationVariant &information );
 
-    //! @copydoc batches(const Arinc665::Media::BatchesVariant&)
-    void batches( Arinc665::Media::BatchesVariant &&batches );
+    //! @copydoc batches(const Arinc665::Media::BatchInfoVariant&)
+    void batchInformation(
+      Arinc665::Media::BatchInformationVariant &&information );
 
     /** @} **/
 
     /**
-     * @brief Returns the Batch for the given index.
+     * @brief Returns the Batch Target Information for the given index.
      *
      * @param[in] index
-     *   Index of the requested item.
+     *   Model Index of the requested item.
      *
-     * @return Batch for the given index.
+     * @return Batch Target Information for the given index.
      **/
-    Arinc665::Media::BatchVariant batch( const QModelIndex &index ) const;
+    Arinc665::Media::BatchTargetInformationVariant batchTargetInformation(
+      const QModelIndex &index ) const;
 
     /**
-     * @brief Return Batch for given Index.
+     * @brief Return Batch Target Information for given Index.
      *
      * @param[in] index
      *   Batch Index
      *
-     * @return Batch for given Index
+     * @return Batch Target Information for given Index
      * @retval {}
      *   If index is invalid
      **/
-    Arinc665::Media::BatchVariant batch( std::size_t index ) const;
+    Arinc665::Media::BatchTargetInformationVariant batchTargetInformation(
+      std::size_t index ) const;
 
     /**
      * @brief Converts given Batch Variant to Const Batch Pointer.
@@ -171,14 +173,15 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
      *
      * @return Const Batch Pointer
      **/
-    Arinc665::Media::ConstBatchPtr constBatch(
-      const Arinc665::Media::BatchVariant &batch ) const;
+    Arinc665::Media::ConstBatchTargetInformation constBatchTargetInformation(
+      const Arinc665::Media::BatchTargetInformationVariant &batchTargetInformation ) const;
 
   private:
-    //! Batches List
-    Arinc665::Media::BatchesVariant batchesV;
+    //! Batch Information
+    Arinc665::Media::BatchInformationVariant batchInformationV;
 };
 
 }
+
 
 #endif
