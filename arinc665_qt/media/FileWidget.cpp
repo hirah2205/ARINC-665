@@ -57,14 +57,12 @@ void FileWidget::selectedFile(
     case Arinc665::Media::File::FileType::LoadFile:
       ui->detailsStackedWidget->setCurrentIndex( 1 );
       ui->loadPage->selectedLoad(
-        modelV,
         std::dynamic_pointer_cast< Arinc665::Media::Load >( fileV ) );
       break;
 
     case Arinc665::Media::File::FileType::BatchFile:
       ui->detailsStackedWidget->setCurrentIndex( 2 );
       ui->batchPage->selectedBatch(
-        modelV,
         std::dynamic_pointer_cast< Arinc665::Media::Batch >( fileV ) );
       break;
 

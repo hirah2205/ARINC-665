@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>Thomas Vogt</author>
  <class>Arinc665Qt::Media::BatchWidget</class>
  <widget class="QWidget" name="Arinc665Qt::Media::BatchWidget">
   <property name="geometry">
@@ -7,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>316</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,13 +28,10 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QListView" name="loadsList"/>
-      </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="loadsLabel">
+       <widget class="QLabel" name="targetsLabel">
         <property name="text">
-         <string>Loads</string>
+         <string>Targets</string>
         </property>
        </widget>
       </item>
@@ -45,10 +43,55 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLineEdit" name="commentLineEdit"/>
+       <widget class="QLineEdit" name="comment"/>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="partNumberLineEdit"/>
+       <widget class="QLineEdit" name="partNumber"/>
+      </item>
+      <item row="3" column="1">
+       <widget class="QTableView" name="targets">
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QTableView" name="loads">
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::NoSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="lblLoads">
+        <property name="text">
+         <string>Loads</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

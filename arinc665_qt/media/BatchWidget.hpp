@@ -48,20 +48,29 @@ class ARINC665_QT_EXPORT BatchWidget : public QWidget
     /**
      * @brief Called when a batch has been selected.
      *
-     * @param[in] model
-     *   Model owning @p batch
      * @param[in] batch
      *   Selected Batch
      **/
-    void selectedBatch(
-      Arinc665Qt::Media::MediaSetModel * model,
-      Arinc665::Media::BatchPtr batch );
+    void selectedBatch( Arinc665::Media::BatchPtr batch );
+
+  private slots:
+    /**
+     * @brief Slot Called, when user selects a Target.
+     *
+     * @param[in] index
+     *   Model Index of selected Target
+     **/
+    void activatedTarget( const QModelIndex index );
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::BatchWidget> ui;
-    //! Media Set Model
-    MediaSetModel * modelV;
+    std::unique_ptr< Ui::BatchWidget > ui;
+
+    //! Batch Target Information Model
+    std::unique_ptr< BatchInfoModel > batchInfoModel;
+    //! Batch Target Loads Model
+    std::unique_ptr< LoadsModel > targetLoadsModel;
+
     //! Batch
     Arinc665::Media::BatchPtr batchV;
 };

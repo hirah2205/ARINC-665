@@ -18,29 +18,31 @@
 
 #include <arinc665/media/Load.hpp>
 
+#include <helper_qt/String.hpp>
+
 namespace Arinc665Qt::Media {
 
 LoadWidget::LoadWidget( QWidget * const parent):
   QWidget{ parent},
   ui{ std::make_unique< Ui::LoadWidget>() },
   dataFilesModelV{ std::make_unique< LoadFilesModel >( this ) },
-  supportFilesModelV{ std::make_unique< LoadFilesModel >( this ) },
-  mediaSetModelV{ nullptr }
+  supportFilesModelV{ std::make_unique< LoadFilesModel >( this ) }
 {
   ui->setupUi( this );
+  ui->dataFiles->setModel( dataFilesModelV.get() );
+  ui->supportFiles->setModel( supportFilesModelV.get() );
 }
 
 LoadWidget::~LoadWidget() = default;
 
 void LoadWidget::selectedLoad(
-  Arinc665Qt::Media::MediaSetModel * const model,
   Arinc665::Media::ConstLoadPtr load )
 {
-  mediaSetModelV = model;
   loadV = std::move( load );
 
   if ( loadV )
   {
+    ui->partNumber->setText( HelperQt::toQString( loadV->partNumber() ) );
     dataFilesModelV->loadFiles( loadV->dataFiles() );
     supportFilesModelV->loadFiles( loadV->supportFiles() );
   }

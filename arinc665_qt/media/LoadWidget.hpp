@@ -53,9 +53,7 @@ class ARINC665_QT_EXPORT LoadWidget : public QWidget
      * @param[in] load
      *   Selected Load
      **/
-    void selectedLoad(
-      Arinc665Qt::Media::MediaSetModel * model,
-      Arinc665::Media::ConstLoadPtr load );
+    void selectedLoad( Arinc665::Media::ConstLoadPtr load );
 
   private:
     //! UI (designer)
@@ -65,8 +63,6 @@ class ARINC665_QT_EXPORT LoadWidget : public QWidget
     //! Support Files Model
     std::unique_ptr< LoadFilesModel > supportFilesModelV;
 
-    //! Media Set Model
-    MediaSetModel * mediaSetModelV;
     //! Load
     Arinc665::Media::ConstLoadPtr loadV;
 };

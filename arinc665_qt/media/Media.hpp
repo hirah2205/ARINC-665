@@ -38,6 +38,7 @@ class RegularFileWidget;
 class MediaSetModel;
 class MediaSetsModel;
 class BatchesModel;
+class BatchInfoModel;
 class LoadsModel;
 class LoadFilesModel;
 
