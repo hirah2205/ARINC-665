@@ -42,7 +42,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 
     // the read file handler
     importer->readFileHandler(
-      [this,&mediaSet](
+      [ this, &mediaSet ](
         const uint8_t mediumNumber,
         const std::filesystem::path &path )->Files::RawFile
       {
@@ -111,7 +111,7 @@ const MediaSetConfiguration& MediaSetManagerImpl::configuration() const
 }
 
 Media::ConstMediaSetPtr MediaSetManagerImpl::mediaSet(
-  std::string_view partNumber) const
+  std::string_view partNumber ) const
 {
   for ( const auto &mediaSet : mediaSetsV )
   {

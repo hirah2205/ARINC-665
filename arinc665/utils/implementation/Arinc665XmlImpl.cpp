@@ -65,7 +65,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadFromXml(
     }
 
     auto mediaSetElement{ parser.get_document()->get_root_node() };
-    if (( nullptr == mediaSetElement )
+    if ( ( nullptr == mediaSetElement )
       || ( "MediaSet" != mediaSetElement->get_name() ) )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -75,7 +75,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadFromXml(
 
     return loadMediaSet( *mediaSetElement );
   }
-  catch ( xmlpp::exception &e)
+  catch ( xmlpp::exception &e )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ e.what() }
@@ -102,7 +102,7 @@ void Arinc665XmlImpl::saveToXml(
 
     xmlDoc.write_to_file_formatted( xmlFile.string() );
   }
-  catch ( xmlpp::exception &e)
+  catch ( xmlpp::exception &e )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ e.what() }
@@ -232,24 +232,27 @@ void Arinc665XmlImpl::saveMediaSet(
   mediaSetNode.set_attribute( "PartNumber", mediaSet->partNumber().data() );
 
   // Files List User Defined Data
-  const auto filesUserDefinedData{ mediaSet->filesUserDefinedData()};
-  if ( !filesUserDefinedData.empty() )
+  if (
+    const auto &filesUserDefinedData{ mediaSet->filesUserDefinedData() };
+    !filesUserDefinedData.empty() )
   {
     mediaSetNode.add_child( "FilesUserDefinedData")->add_child_text(
       std::string{ filesUserDefinedData.begin(), filesUserDefinedData.end() } );
   }
 
   // List of Loads User Defined Data
-  const auto loadsUserDefinedData{ mediaSet->loadsUserDefinedData()};
-  if ( !loadsUserDefinedData.empty())
+  if (
+    const auto &loadsUserDefinedData{ mediaSet->loadsUserDefinedData() };
+    !loadsUserDefinedData.empty() )
   {
     mediaSetNode.add_child( "LoadsUserDefinedData")->add_child_text(
       std::string{ loadsUserDefinedData.begin(), loadsUserDefinedData.end() } );
   }
 
   // List of Batches User Defined Data
-  const auto batchesUserDefinedData{ mediaSet->batchesUserDefinedData() };
-  if ( !batchesUserDefinedData.empty() )
+  if (
+    const auto &batchesUserDefinedData{ mediaSet->batchesUserDefinedData() };
+    !batchesUserDefinedData.empty() )
   {
     mediaSetNode.add_child( "BatchesUserDefinedData")->add_child_text(
       std::string{
@@ -259,7 +262,7 @@ void Arinc665XmlImpl::saveMediaSet(
 
   // iterate over media
   for (
-    unsigned int mediumNumber = 1U;
+    uint8_t mediumNumber = 1U;
     mediumNumber <= mediaSet->numberOfMedia();
     ++mediumNumber )
   {
@@ -372,7 +375,6 @@ void Arinc665XmlImpl::loadEntries(
 
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning )
       << "Ignore element " << entryNode->get_name();
-    continue;
   }
 }
 
@@ -497,7 +499,7 @@ void Arinc665XmlImpl::loadLoad(
     auto targetHardwareElement{
       dynamic_cast< xmlpp::Element*>( targetHardwareNode ) };
 
-    if ( nullptr == targetHardwareElement)
+    if ( nullptr == targetHardwareElement )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "TargetHardware Element invalid" }
@@ -639,16 +641,16 @@ void Arinc665XmlImpl::saveLoad(
 
   loadElement.set_attribute(
     "PartFlags",
-    (boost::format( "0x%04X" ) % load->partFlags() ).str() );
+    ( boost::format( "0x%04X" ) % load->partFlags() ).str() );
 
   // Optional Load Type (Description + Type Value)
   if ( const auto &loadType{ load->loadType() }; loadType )
   {
-    const auto &[description,id]{ *loadType};
+    const auto &[ description, id ]{ *loadType };
     loadElement.set_attribute( "Description", description );
     loadElement.set_attribute(
       "Type",
-      (boost::format( "0x%04X") % id ).str() );
+      ( boost::format( "0x%04X" ) % id ).str() );
   }
 
   // iterate over target hardware
@@ -666,7 +668,7 @@ void Arinc665XmlImpl::saveLoad(
   }
 
   // iterate over data files
-  for ( const auto &[dataFile,partNumber] : load->dataFiles() )
+  for ( const auto &[ dataFile, partNumber ] : load->dataFiles() )
   {
     auto * const dataFileElement{ loadElement.add_child( "DataFile" ) };
     dataFileElement->set_attribute( "NameRef", dataFile->name().data() );
@@ -674,7 +676,7 @@ void Arinc665XmlImpl::saveLoad(
   }
 
   // iterate over support files
-  for ( const auto &[supportFile,partNumber] : load->supportFiles())
+  for ( const auto &[ supportFile, partNumber ] : load->supportFiles() )
   {
     auto supportFileElement{ loadElement.add_child( "SupportFile" ) };
     supportFileElement->set_attribute(
@@ -683,8 +685,9 @@ void Arinc665XmlImpl::saveLoad(
     supportFileElement->set_attribute( "PartNumber", partNumber );
   }
 
-  const auto userDefinedData{ load->userDefinedData() };
-  if ( !userDefinedData.empty() )
+  if (
+    const auto userDefinedData{ load->userDefinedData() };
+    !userDefinedData.empty() )
   {
     loadElement.add_child( "UserDefinedData" )->add_child_text(
       std::string{ userDefinedData.begin(), userDefinedData.end() } );

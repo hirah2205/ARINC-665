@@ -94,6 +94,8 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *   Load header file is not found on the media set.
      * @throw Arinc665Exception
      *   LOADS.LUM files are inconsistent between media.
+     * @throw Arinc665Exception
+     *   When load file and list file reference does not match
      **/
     void loadLoadListFile( uint8_t mediumIndex );
 
@@ -105,6 +107,10 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *
      * @throw Arinc665Exception
      *   When BATCHES.LUM files are inconsistent between media.
+     * @throw Arinc665Exception
+     *   When batch file is not found.
+     * @throw Arinc665Exception
+     *   When batch list file and list file reference does not match
      **/
     void loadBatchListFile( uint8_t mediumIndex );
 

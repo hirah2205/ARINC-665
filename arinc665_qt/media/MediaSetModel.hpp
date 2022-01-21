@@ -29,7 +29,7 @@ namespace Arinc665Qt::Media {
  **/
 class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
 {
-  Q_OBJECT
+    Q_OBJECT
 
   public:
     //! Displayed Columns
@@ -47,7 +47,7 @@ class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
      * @param[in] parent
      *   Parent object
      **/
-    explicit MediaSetModel( QObject * parent = nullptr);
+    explicit MediaSetModel( QObject * parent = nullptr );
 
     //! Destructor
     ~MediaSetModel() override = default;

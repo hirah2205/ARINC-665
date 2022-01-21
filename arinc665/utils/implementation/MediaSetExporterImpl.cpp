@@ -480,7 +480,7 @@ void MediaSetExporterImpl::createBatchFile(
   batchFile.partNumber( batch->partNumber() );
   batchFile.comment( batch->comment() );
 
-  for ( const auto &[targetHwId,loads] : batch->targets() )
+  for ( const auto &[ targetHwId, loads ] : batch->targets() )
   {
     Files::BatchLoadsInfo batchLoadsInfo{};
 

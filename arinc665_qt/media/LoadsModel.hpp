@@ -22,7 +22,7 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT model of list of loads.
+ * @brief QT model of List of Loads.
  **/
 class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
 {
@@ -108,14 +108,14 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      *
      * @return Number of Loads
      **/
-    size_t numberOfLoads() const;
+    [[nodiscard]] size_t numberOfLoads() const;
 
     /**
      * @brief Returns the Loads.
      *
      * @return Loads
      **/
-    const Arinc665::Media::LoadsVariant& loads() const;
+    [[nodiscard]] const Arinc665::Media::LoadsVariant& loads() const;
 
     /**
      * @brief Updates the data model with the given ASF messages.
@@ -139,7 +139,7 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      *
      * @return Const Loads List
      **/
-    Arinc665::Media::ConstLoads constLoads(
+    [[nodiscard]] Arinc665::Media::ConstLoads constLoads(
       const Arinc665::Media::LoadsVariant &loads ) const;
 
     /**
@@ -163,7 +163,7 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      * @retval {}
      *   If index is invalid
      **/
-    Arinc665::Media::LoadVariant load( std::size_t index ) const;
+    [[nodiscard]] Arinc665::Media::LoadVariant load( std::size_t index ) const;
 
     /**
      * @brief Converts given Load Variant to Const Load Pointer.
@@ -176,7 +176,7 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      *
      * @return Const Load Pointer
      **/
-    Arinc665::Media::ConstLoadPtr constLoad(
+    [[nodiscard]] Arinc665::Media::ConstLoadPtr constLoad(
       const Arinc665::Media::LoadVariant &load ) const;
 
   private:
