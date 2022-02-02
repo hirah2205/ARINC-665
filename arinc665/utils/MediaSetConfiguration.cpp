@@ -93,12 +93,12 @@ boost::property_tree::ptree MediaSetConfiguration::toProperties() const
       mediumConfig.add( "number", mediumNumber );
       mediumConfig.add( "path", mediumPath );
 
-      mediaConfig.add_child( "", mediumConfig );
+      mediaConfig.add_child( "medium", mediumConfig );
     }
 
     mediaSetConfig.add_child( "media", mediaConfig );
 
-    mediaSetsConfig.add_child( "", mediaSetConfig );
+    mediaSetsConfig.add_child( "media_set", mediaSetConfig );
   }
 
   ptree.add_child( "media_sets", mediaSetsConfig );
