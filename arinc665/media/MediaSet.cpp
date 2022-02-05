@@ -146,7 +146,7 @@ MediumPtr MediaSet::addMedium()
 void MediaSet::removeMedium( const bool deleteFiles [[maybe_unused]])
 {
   //! @todo implement
-  BOOST_THROW_EXCEPTION( std::exception());
+  BOOST_THROW_EXCEPTION( std::exception() );
 }
 
 size_t MediaSet::numberOfFiles() const
@@ -168,8 +168,8 @@ ConstFiles MediaSet::files() const
   // Iterate over all media and add their files to a complete list.
   for ( const auto &[mediumNumber,medium] : mediaV )
   {
-    auto mediaFiles{ static_cast< const Medium&>( *medium).files( true) };
-    files.insert( files.end(), mediaFiles.begin(), mediaFiles.end());
+    auto mediaFiles{ static_cast< const Medium& >( *medium ).files( true) };
+    files.insert( files.end(), mediaFiles.begin(), mediaFiles.end() );
   }
 
   return files;
@@ -180,20 +180,20 @@ Files MediaSet::files()
   Files files;
 
   // Iterate over all media and add their files to a complete list.
-  for ( auto &[mediumNumber,medium] : mediaV)
+  for ( auto &[ mediumNumber, medium ] : mediaV )
   {
-    auto mediaFiles{ medium->files( true) };
+    auto mediaFiles{ medium->files( true ) };
     files.insert( files.end(), mediaFiles.begin(), mediaFiles.end() );
   }
 
   return files;
 }
 
-ConstFilePtr MediaSet::file( std::string_view filename) const
+ConstFilePtr MediaSet::file( std::string_view filename ) const
 {
   for ( auto const &medium : mediaV)
   {
-    ConstFilePtr file( medium.second->file( filename, true));
+    ConstFilePtr file( medium.second->file( filename, true ) );
 
     if ( file)
     {
@@ -204,11 +204,11 @@ ConstFilePtr MediaSet::file( std::string_view filename) const
   return ConstFilePtr();
 }
 
-FilePtr MediaSet::file( std::string_view filename)
+FilePtr MediaSet::file( std::string_view filename )
 {
   for ( auto &medium : mediaV)
   {
-    FilePtr file( medium.second->file( filename, true));
+    FilePtr file( medium.second->file( filename, true ) );
 
     if ( file)
     {

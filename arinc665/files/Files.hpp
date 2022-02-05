@@ -57,7 +57,7 @@ class Arinc665File;
 
 struct LoadFileInfo;
 //! Load Files Information.
-using LoadFilesInfo = std::list< LoadFileInfo>;
+using LoadFilesInfo = std::list< LoadFileInfo >;
 class LoadHeaderFile;
 
 struct BatchTargetInfo;
