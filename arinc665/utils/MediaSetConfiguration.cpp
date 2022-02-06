@@ -30,7 +30,7 @@ void MediaSetConfiguration::fromProperties(
 {
   BOOST_LOG_FUNCTION()
 
-  mediaSetsBase = ptree.get< std::filesystem::path>(
+  mediaSetsBase = ptree.get< std::filesystem::path >(
     "media_sets_base",
     std::filesystem::current_path() );
 
@@ -41,7 +41,7 @@ void MediaSetConfiguration::fromProperties(
     for ( auto &mediaSetConfig : *mediaSetsConfig )
     {
       auto mediaSetPath{
-        mediaSetConfig.second.get< std::string>( "path", {} ) };
+        mediaSetConfig.second.get< std::filesystem::path >( "path", {} ) };
 
       MediaPaths mediaPaths{};
 

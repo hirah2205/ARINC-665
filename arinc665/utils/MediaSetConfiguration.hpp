@@ -30,9 +30,10 @@ class ARINC665_EXPORT MediaSetConfiguration
 {
   public:
     //! media-to-path mapping (Medium Number -> Path)
-    using MediaPaths = std::map< uint8_t, std::filesystem::path> ;
+    using MediaPaths = std::map< uint8_t, std::filesystem::path > ;
     //! List of Media Sets (Media Set Path, @ref MediaPaths)
-    using MediaSets = std::list< std::pair< std::string, MediaPaths > >;
+    using MediaSets =
+      std::list< std::pair< std::filesystem::path, MediaPaths > >;
 
     //! Initialises the configuration with default values.
     MediaSetConfiguration() = default;
