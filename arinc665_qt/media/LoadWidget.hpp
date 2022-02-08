@@ -48,8 +48,6 @@ class ARINC665_QT_EXPORT LoadWidget : public QWidget
     /**
      * @brief Called when a Load has been selected.
      *
-     * @param[in] model
-     *   Model owning @p load
      * @param[in] load
      *   Selected Load
      **/

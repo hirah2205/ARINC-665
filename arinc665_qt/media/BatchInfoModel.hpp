@@ -132,7 +132,7 @@ namespace Arinc665Qt::Media {
     void batchInformation(
       const Arinc665::Media::BatchInformationVariant &information );
 
-    //! @copydoc batches(const Arinc665::Media::BatchInfoVariant&)
+    //! @copydoc batchInformation(const Arinc665::Media::BatchInformationVariant&)
     void batchInformation(
       Arinc665::Media::BatchInformationVariant &&information );
 
@@ -146,7 +146,8 @@ namespace Arinc665Qt::Media {
      *
      * @return Batch Target Information for the given index.
      **/
-    Arinc665::Media::BatchTargetInformationVariant batchTargetInformation(
+    [[nodiscard]] Arinc665::Media::BatchTargetInformationVariant
+    batchTargetInformation(
       const QModelIndex &index ) const;
 
     /**
@@ -159,7 +160,8 @@ namespace Arinc665Qt::Media {
      * @retval {}
      *   If index is invalid
      **/
-    Arinc665::Media::BatchTargetInformationVariant batchTargetInformation(
+    [[nodiscard]] Arinc665::Media::BatchTargetInformationVariant
+    batchTargetInformation(
       std::size_t index ) const;
 
     /**
@@ -168,12 +170,13 @@ namespace Arinc665Qt::Media {
      * If variant stores a const batch, it is returned directly, otherwise
      * converts it to const batch pointer.
      *
-     * @param[in] batch
+     * @param[in] batchTargetInformation
      *   Batch Variant
      *
      * @return Const Batch Pointer
      **/
-    Arinc665::Media::ConstBatchTargetInformation constBatchTargetInformation(
+    [[nodiscard]] Arinc665::Media::ConstBatchTargetInformation
+    constBatchTargetInformation(
       const Arinc665::Media::BatchTargetInformationVariant &batchTargetInformation ) const;
 
   private:
