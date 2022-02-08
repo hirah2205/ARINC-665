@@ -200,8 +200,8 @@ int main( int argc, char * argv[] )
       boost::program_options::parse_command_line(
         argc,
         argv,
-        optionsDescription),
-      options);
+        optionsDescription ),
+      options );
 
     if ( options.count( "help") != 0)
     {
@@ -393,12 +393,12 @@ static void writeFile(
   const std::filesystem::path &mediaSetBase,
   const uint8_t mediumNumber,
   const std::filesystem::path &path,
-  const Arinc665::Files::ConstRawFileSpan &file)
+  const Arinc665::Files::ConstRawFileSpan &file )
 {
   BOOST_LOG_FUNCTION()
 
   auto filePath{
-    mediumPath( mediaSetBase, mediumNumber) / path.relative_path()};
+    mediumPath( mediaSetBase, mediumNumber) / path.relative_path() };
 
   BOOST_LOG_TRIVIAL( severity_level::trace ) << "Write file " << filePath;
 
@@ -406,8 +406,8 @@ static void writeFile(
   if (std::filesystem::exists( filePath))
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "File already exists")
-      << boost::errinfo_file_name( filePath.string()));
+      << Helper::AdditionalInfo( "File already exists" )
+      << boost::errinfo_file_name( filePath.string() ) );
   }
 
   // save file
@@ -437,26 +437,26 @@ static Arinc665::Files::RawFile readFile(
 
   // check medium number
   auto filePath{
-    mediumPath( mediaSetBase, mediumNumber) / path.relative_path()};
+    mediumPath( mediaSetBase, mediumNumber ) / path.relative_path() };
 
   BOOST_LOG_TRIVIAL( severity_level::trace ) << "Read file " << filePath;
 
   // check existence of file
-  if (!std::filesystem::is_regular_file( filePath))
+  if ( !std::filesystem::is_regular_file( filePath ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo{ "File not found" }
       << boost::errinfo_file_name{ filePath.string() } );
   }
 
-  Arinc665::Files::RawFile data( std::filesystem::file_size( filePath) );
+  Arinc665::Files::RawFile data( std::filesystem::file_size( filePath ) );
 
   // load file
   std::ifstream file(
     filePath.string().c_str(),
-    std::ifstream::binary | std::ifstream::in);
+    std::ifstream::binary | std::ifstream::in );
 
-  if ( !file.is_open())
+  if ( !file.is_open() )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo{ "Error opening files" }

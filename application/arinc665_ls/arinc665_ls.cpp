@@ -46,7 +46,7 @@
  *
  * @return Application exit status.
  **/
-int main( int argc, char const * argv[]);
+int main( int argc, char const * argv[] );
 
 /**
  * @brief Loads the load upload header file and decodes its content.
@@ -54,7 +54,7 @@ int main( int argc, char const * argv[]);
  * @param[in] luhFile
  *   The load upload header.
  **/
-static void list_lub( const std::filesystem::path &lubFile);
+static void list_lub( const std::filesystem::path &lubFile );
 
 /**
  * @brief Loads the load upload header file and decodes its content.
@@ -62,7 +62,7 @@ static void list_lub( const std::filesystem::path &lubFile);
  * @param[in] luhFile
  *   The load upload header.
  **/
-static void list_luh( const std::filesystem::path &luhFile);
+static void list_luh( const std::filesystem::path &luhFile );
 
 /**
  * @brief Loads the load list file and decodes its content.
@@ -70,7 +70,7 @@ static void list_luh( const std::filesystem::path &luhFile);
  * @param[in] loadsLum
  *   The load list file.
  **/
-static void list_loads_lum( const std::filesystem::path &loadsLum);
+static void list_loads_lum( const std::filesystem::path &loadsLum );
 
 /**
  * @brief Loads the file list file and decodes its content.
@@ -78,7 +78,7 @@ static void list_loads_lum( const std::filesystem::path &loadsLum);
  * @param[in] filesLum
  *   The file list file.
  **/
-static void list_files_lum( const std::filesystem::path &filesLum);
+static void list_files_lum( const std::filesystem::path &filesLum );
 
 /**
  * @brief Iterates over every file and sub-directory and tries to decodes its
@@ -87,7 +87,7 @@ static void list_files_lum( const std::filesystem::path &filesLum);
  * @param[in] loadDir
  *   The directory to decode.
  **/
-static void list_files( const std::filesystem::path &loadDir);
+static void list_files( const std::filesystem::path &loadDir );
 
 int main( int argc, char const * argv[])
 {
@@ -163,7 +163,7 @@ static void list_lub( const std::filesystem::path &lubFile )
   {
     std::cout
       << "File size is: "
-      << std::dec << std::filesystem::file_size( lubFile) << "\n";
+      << std::dec << std::filesystem::file_size( lubFile ) << "\n";
 
     std::vector< uint8_t> data( std::filesystem::file_size( lubFile ) );
 
