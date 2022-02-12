@@ -43,6 +43,7 @@ class BatchInfoModel;
 
 class LoadsModel;
 class LoadFilesModel;
+class TargetHardwareIdsPositionsModel;
 
 }
 

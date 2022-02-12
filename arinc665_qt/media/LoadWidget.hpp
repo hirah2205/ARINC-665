@@ -56,6 +56,8 @@ class ARINC665_QT_EXPORT LoadWidget : public QWidget
   private:
     //! UI (designer)
     std::unique_ptr< Ui::LoadWidget> ui;
+    //! THW ID Positions Model
+    std::unique_ptr< TargetHardwareIdsPositionsModel > targetHardwareIdsPositionsModel;
     //! Data Files Model
     std::unique_ptr< LoadFilesModel > dataFilesModelV;
     //! Support Files Model

@@ -31,7 +31,7 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QTableView" name="targetHardwares">
+          <widget class="QTreeView" name="targetHardwareIdsPositions">
            <property name="alternatingRowColors">
             <bool>true</bool>
            </property>
@@ -41,12 +41,6 @@
            <property name="selectionBehavior">
             <enum>QAbstractItemView::SelectRows</enum>
            </property>
-           <attribute name="horizontalHeaderStretchLastSection">
-            <bool>true</bool>
-           </attribute>
-           <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
           </widget>
          </item>
         </layout>

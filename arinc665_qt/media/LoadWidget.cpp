@@ -15,6 +15,7 @@
 #include "ui_LoadWidget.h"
 
 #include <arinc665_qt/media/LoadFilesModel.hpp>
+#include <arinc665_qt/media/TargetHardwareIdsPositionsModel.hpp>
 
 #include <arinc665/media/Load.hpp>
 
@@ -25,10 +26,15 @@ namespace Arinc665Qt::Media {
 LoadWidget::LoadWidget( QWidget * const parent):
   QWidget{ parent},
   ui{ std::make_unique< Ui::LoadWidget>() },
+  targetHardwareIdsPositionsModel{
+    std::make_unique< TargetHardwareIdsPositionsModel >( this ) },
   dataFilesModelV{ std::make_unique< LoadFilesModel >( this ) },
   supportFilesModelV{ std::make_unique< LoadFilesModel >( this ) }
 {
   ui->setupUi( this );
+
+  ui->targetHardwareIdsPositions->setModel(
+    targetHardwareIdsPositionsModel.get() );
   ui->dataFiles->setModel( dataFilesModelV.get() );
   ui->supportFiles->setModel( supportFilesModelV.get() );
 }
@@ -43,10 +49,11 @@ void LoadWidget::selectedLoad(
   if ( loadV )
   {
     ui->partNumber->setText( HelperQt::toQString( loadV->partNumber() ) );
+    targetHardwareIdsPositionsModel->targetHardwareIdsPositions(
+      loadV->targetHardwareIdPositions() );
     dataFilesModelV->loadFiles( loadV->dataFiles() );
     supportFilesModelV->loadFiles( loadV->supportFiles() );
   }
-
 }
 
 }

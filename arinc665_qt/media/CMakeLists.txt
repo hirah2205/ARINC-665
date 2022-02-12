@@ -43,4 +43,6 @@ target_sources(
     MediumWidget.ui
     RegularFileWidget.hpp
     RegularFileWidget.cpp
-    RegularFileWidget.ui )
+    RegularFileWidget.ui
+    TargetHardwareIdsPositionsModel.hpp
+    TargetHardwareIdsPositionsModel.cpp )
