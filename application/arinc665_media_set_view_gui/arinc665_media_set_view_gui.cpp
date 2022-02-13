@@ -15,11 +15,13 @@
  * @brief ARINC 665 Media Set Viewer QT Application.
  **/
 
+#include <arinc665_qt/resources/Resources.hpp>
 #include <arinc665_qt/MediaSetController.hpp>
 
 #include <helper/Logger.hpp>
 
 #include <QApplication>
+#include <QIcon>
 
 #include <cstdlib>
 
@@ -41,9 +43,12 @@ int main( int argc, char * argv[] )
   {
     Helper::initLogging( Helper::Severity::info );
 
+    Arinc665Qt::Resources::initialise();
+
     QApplication application{ argc, argv };
-    application.setApplicationName( "ARINC 665 Media Set Viewer" );
-    application.setApplicationDisplayName( "ARINC 665 Media Set Viewer" );
+    QApplication::setApplicationName( "ARINC 665 Media Set Viewer" );
+    QApplication::setApplicationDisplayName( "ARINC 665 Media Set Viewer" );
+    QApplication::setWindowIcon( QIcon( ":/arinc665_media_set_manager.svg" ) );
 
     Arinc665Qt::MediaSetController mediaSetController{};
 

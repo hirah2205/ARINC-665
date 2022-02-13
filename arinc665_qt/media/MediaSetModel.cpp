@@ -21,6 +21,8 @@
 
 #include <helper_qt/String.hpp>
 
+#include <QIcon>
+
 #include <iterator>
 
 namespace Arinc665Qt::Media {
@@ -320,11 +322,6 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
     return {};
   }
 
-  if ( role != Qt::DisplayRole )
-  {
-    return {};
-  }
-
   // cast internal pointer of parent
   auto base{ element( index ) };
 
@@ -334,96 +331,194 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
     return 0;
   }
 
-  switch ( Columns{ index.column() } )
+  switch ( static_cast< Qt::ItemDataRole>( role ) )
   {
-    case Columns::Name:
-      switch ( base->type() )
+    case Qt::DecorationRole:
+      switch ( Columns{ index.column() } )
       {
-        case Arinc665::Media::Base::Type::MediaSet:
+        case Columns::Name:
         {
-          auto mediaSet{
-            std::dynamic_pointer_cast< Arinc665::Media::MediaSet >( base) };
+          QIcon icon{};
 
-          assert( mediaSet );
-
-          return HelperQt::toQString( mediaSet->partNumber() );
-        }
-
-        case Arinc665::Media::Base::Type::Medium:
-        {
-          auto medium{
-            std::dynamic_pointer_cast< Arinc665::Media::Medium >( base) };
-
-          assert( medium );
-
-          return medium->mediumNumber();
-        }
-
-        case Arinc665::Media::Base::Type::Directory:
-        {
-          auto directory{
-            std::dynamic_pointer_cast< Arinc665::Media::Directory >( base) };
-
-          assert( directory);
-
-          return HelperQt::toQString( directory->name() );
-        }
-
-        case Arinc665::Media::Base::Type::File:
-        {
-          auto file{
-            std::dynamic_pointer_cast< Arinc665::Media::File >( base) };
-
-          assert( file );
-
-          return HelperQt::toQString( file->name() );
-        }
-
-        default:
-          return QString{ "Invalid Type" };
-      }
-
-    case Columns::Type:
-      switch ( base->type())
-      {
-        case Arinc665::Media::Base::Type::MediaSet:
-          return tr( "Media Set" );
-
-        case Arinc665::Media::Base::Type::Medium:
-          return tr(  "Medium" );
-
-        case Arinc665::Media::Base::Type::Directory:
-          return tr(  "Directory" );
-
-        case Arinc665::Media::Base::Type::File:
-        {
-          auto file{
-            std::dynamic_pointer_cast< Arinc665::Media::File >( base ) };
-
-          assert( file );
-
-          switch ( file->fileType() )
+          switch ( base->type() )
           {
-            case Arinc665::Media::File::FileType::RegularFile:
-              return tr( "Regular File" );
+            case Arinc665::Media::Base::Type::MediaSet:
+              icon.addFile(
+                QString::fromUtf8(
+                  ":/media_set/arinc665_media_set.svg" ),
+                QSize{},
+                QIcon::Normal,
+                QIcon::Off );
+              break;
 
-            case Arinc665::Media::File::FileType::LoadFile:
-              return tr( "Load" );
+            case Arinc665::Media::Base::Type::Medium:
+              icon.addFile(
+                QString::fromUtf8(
+                  ":/media_set/arinc665_medium.svg" ),
+                QSize{},
+                QIcon::Normal,
+                QIcon::Off );
+              break;
 
-            case Arinc665::Media::File::FileType::BatchFile:
-              return tr( "Batch" );
+            case Arinc665::Media::Base::Type::Directory:
+              icon.addFile(
+                QString::fromUtf8(
+                  ":/media_set/arinc665_directory.svg" ),
+                QSize{},
+                QIcon::Normal,
+                QIcon::Off );
+              break;
+
+            case Arinc665::Media::Base::Type::File:
+            {
+              auto file{
+                std::dynamic_pointer_cast< Arinc665::Media::File >( base ) };
+
+              assert( file );
+
+              switch ( file->fileType() )
+              {
+                case Arinc665::Media::File::FileType::RegularFile:
+                  icon.addFile(
+                    QString::fromUtf8(
+                      ":/media_set/arinc665_file.svg" ),
+                    QSize{},
+                    QIcon::Normal,
+                    QIcon::Off );
+                  break;
+
+                case Arinc665::Media::File::FileType::LoadFile:
+                  icon.addFile(
+                    QString::fromUtf8(
+                      ":/media_set/arinc665_load.svg" ),
+                    QSize{},
+                    QIcon::Normal,
+                    QIcon::Off );
+                  break;
+
+                case Arinc665::Media::File::FileType::BatchFile:
+                  icon.addFile(
+                    QString::fromUtf8(
+                      ":/media_set/arinc665_batch.svg" ),
+                    QSize{},
+                    QIcon::Normal,
+                    QIcon::Off );
+                  break;
+
+                default:
+                  return {};
+              }
+            }
+            break;
 
             default:
-              return tr( "INVALID File Type" );
+              return {};
           }
-        }
-        /* no break -because inner switch always returns */
 
+          return icon;
+        }
+
+        case Columns::Type:
         default:
-          // Should never happen
           return {};
       }
-      /* no break -because inner switch always returns */
+
+    case Qt::EditRole:
+    case Qt::DisplayRole:
+      switch ( Columns{ index.column() } )
+      {
+        case Columns::Name:
+          switch ( base->type() )
+          {
+            case Arinc665::Media::Base::Type::MediaSet:
+            {
+              auto mediaSet{
+                std::dynamic_pointer_cast< Arinc665::Media::MediaSet >( base) };
+
+              assert( mediaSet );
+
+              return HelperQt::toQString( mediaSet->partNumber() );
+            }
+
+            case Arinc665::Media::Base::Type::Medium:
+            {
+              auto medium{
+                std::dynamic_pointer_cast< Arinc665::Media::Medium >( base) };
+
+              assert( medium );
+
+              return medium->mediumNumber();
+            }
+
+            case Arinc665::Media::Base::Type::Directory:
+            {
+              auto directory{
+                std::dynamic_pointer_cast< Arinc665::Media::Directory >( base) };
+
+              assert( directory);
+
+              return HelperQt::toQString( directory->name() );
+            }
+
+            case Arinc665::Media::Base::Type::File:
+            {
+              auto file{
+                std::dynamic_pointer_cast< Arinc665::Media::File >( base) };
+
+              assert( file );
+
+              return HelperQt::toQString( file->name() );
+            }
+
+            default:
+              return QString{ "Invalid Type" };
+          }
+
+        case Columns::Type:
+          switch ( base->type())
+          {
+            case Arinc665::Media::Base::Type::MediaSet:
+              return tr( "Media Set" );
+
+            case Arinc665::Media::Base::Type::Medium:
+              return tr(  "Medium" );
+
+            case Arinc665::Media::Base::Type::Directory:
+              return tr(  "Directory" );
+
+            case Arinc665::Media::Base::Type::File:
+            {
+              auto file{
+                std::dynamic_pointer_cast< Arinc665::Media::File >( base ) };
+
+              assert( file );
+
+              switch ( file->fileType() )
+              {
+                case Arinc665::Media::File::FileType::RegularFile:
+                  return tr( "Regular File" );
+
+                case Arinc665::Media::File::FileType::LoadFile:
+                  return tr( "Load" );
+
+                case Arinc665::Media::File::FileType::BatchFile:
+                  return tr( "Batch" );
+
+                default:
+                  return tr( "INVALID File Type" );
+              }
+            }
+              /* no break -because inner switch always returns */
+
+            default:
+              // Should never happen
+              return {};
+          }
+          /* no break -because inner switch always returns */
+
+        default:
+          return {};
+      }
 
     default:
       return {};

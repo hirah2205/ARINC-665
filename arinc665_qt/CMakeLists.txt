@@ -14,6 +14,7 @@ endif()
 
 set( CMAKE_AUTOMOC ON )
 set( CMAKE_AUTOUIC ON )
+set( CMAKE_AUTORCC ON )
 
 add_library( arinc665_qt )
 
@@ -31,9 +32,23 @@ target_sources(
 
 target_include_directories(
   arinc665_qt
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> )
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..> )
 
 target_compile_features( arinc665_qt PUBLIC cxx_std_20 )
+
+target_compile_options(
+  arinc665_qt
+
+  PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:-W3>
+
+    $<$<CXX_COMPILER_ID:GNU>:-Wall>
+    $<$<CXX_COMPILER_ID:GNU>:-Wextra>
+
+    $<$<CXX_COMPILER_ID:Clang>:-Wall>
+    $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
 
 target_link_libraries(
   arinc665_qt
@@ -50,6 +65,7 @@ generate_export_header( arinc665_qt )
 
 add_subdirectory( media )
 add_subdirectory( media_set_manager )
+add_subdirectory( resources )
 
 # disable clang tidy in binary dir by placing dummy .clang-tidy file
 file(

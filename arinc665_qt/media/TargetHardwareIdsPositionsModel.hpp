@@ -31,7 +31,8 @@ class ARINC665_QT_EXPORT TargetHardwareIdsPositionsModel :
     //! Displayed Columns
     enum class Columns
     {
-      Name,
+      //! Target Hardware ID/ Position Information
+      ThwIdPosition,
 
       Last
     };

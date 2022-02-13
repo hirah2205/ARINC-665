@@ -1,0 +1,14 @@
+<!DOCTYPE RCC>
+<RCC version="1.0" >
+  <qresource prefix="/media_set" >
+    <file>arinc665_batch.svg</file>
+    <file>arinc665_directory.svg</file>
+    <file>arinc665_file.svg</file>
+    <file>arinc665_load.svg</file>
+    <file>arinc665_media_set.svg</file>
+    <file>arinc665_medium.svg</file>
+  </qresource>
+  <qresource>
+    <file>arinc665_media_set_manager.svg</file>
+  </qresource>
+</RCC>

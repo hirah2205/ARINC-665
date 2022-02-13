@@ -31,7 +31,7 @@ QModelIndex TargetHardwareIdsPositionsModel::index(
   // if parent is invalid, it is the target hardware id
   if ( !parent.isValid() )
   {
-    if ( row > thwIdsPositionsV.size() )
+    if ( std::cmp_greater_equal( row, thwIdsPositionsV.size() ) )
     {
       return {};
     }
@@ -41,7 +41,7 @@ QModelIndex TargetHardwareIdsPositionsModel::index(
 
   auto thwId{ std::next( thwIdsPositionsV.begin(), parent.row() ) };
 
-  if ( row >= thwId->second.size() )
+  if ( std::cmp_greater_equal( row, thwId->second.size() ) )
   {
     return {};
   }
@@ -172,8 +172,8 @@ QVariant TargetHardwareIdsPositionsModel::headerData(
 
   switch ( Columns{ section } )
   {
-    case Columns::Name:
-      return tr( "Name" );
+    case Columns::ThwIdPosition:
+      return tr( "Target Hardware ID / Position" );
 
     default:
       return {};
@@ -213,7 +213,7 @@ QVariant TargetHardwareIdsPositionsModel::dataThwId(
     case Qt::DisplayRole:
       switch ( Columns{ index.column() } )
       {
-        case Columns::Name:
+        case Columns::ThwIdPosition:
           return QString::fromStdString( thwId->first );
 
         default:
@@ -249,7 +249,7 @@ QVariant TargetHardwareIdsPositionsModel::dataPosition(
     case Qt::DisplayRole:
       switch ( Columns{ index.column() } )
       {
-        case Columns::Name:
+        case Columns::ThwIdPosition:
           return QString::fromStdString( *position );
 
         default:
