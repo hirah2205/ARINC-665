@@ -30,6 +30,7 @@ BatchWidget::BatchWidget( QWidget * const parent):
   targetLoadsModel{ std::make_unique< LoadsModel >( this ) }
 {
   ui->setupUi( this );
+
   ui->targets->setModel( batchInfoModel.get() );
   ui->loads->setModel( targetLoadsModel.get() );
 
@@ -44,9 +45,9 @@ BatchWidget::~BatchWidget() = default;
 
 
 void BatchWidget::selectedBatch(
-  Arinc665::Media::BatchPtr batch)
+  Arinc665::Media::BatchPtr batch )
 {
-  batchV = std::move( batch);
+  batchV = std::move( batch );
 
   if ( batchV )
   {

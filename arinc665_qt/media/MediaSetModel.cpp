@@ -340,7 +340,14 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
       switch ( base->type() )
       {
         case Arinc665::Media::Base::Type::MediaSet:
-          return QString{ "Media Set" };
+        {
+          auto mediaSet{
+            std::dynamic_pointer_cast< Arinc665::Media::MediaSet >( base) };
+
+          assert( mediaSet );
+
+          return HelperQt::toQString( mediaSet->partNumber() );
+        }
 
         case Arinc665::Media::Base::Type::Medium:
         {

@@ -60,7 +60,7 @@ class ARINC665_QT_EXPORT BatchWidget : public QWidget
      * @param[in] index
      *   Model Index of selected Target
      **/
-    void activatedTarget( const QModelIndex index );
+    void activatedTarget( QModelIndex index );
 
   private:
     //! UI (designer)
