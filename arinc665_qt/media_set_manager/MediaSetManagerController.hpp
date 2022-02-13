@@ -14,24 +14,61 @@
 #define ARINC665_QT_MEDIA_SET_MANAGER_MEDIASETMANAGERCONTROLLER_HPP
 
 #include <arinc665_qt/media_set_manager/MediaSetManager.hpp>
+#include <arinc665_qt/media/Media.hpp>
 
-#include <QObject>
+#include <arinc665/utils/Utils.hpp>
+
+#include <QWidget>
+#include <QFileDialog>
 
 namespace Arinc665Qt::MediaSetManager {
 
-class MediaSetController : public QObject
+class MediaSetManagerController : public QObject
 {
     Q_OBJECT
 
   public:
-    MediaSetController( QObject * parent );
+    MediaSetManagerController( QWidget * parent = nullptr );
+
+    ~MediaSetManagerController() override;
+
+  public slots:
+    /**
+     * @brief Querries fro Media Set Configuration,
+     **/
+    void start();
+
+    /**
+     * @brief Use given Media Set Configuration.
+     *
+     * @param mediaSetManager
+     **/
+    void start( Arinc665::Utils::MediaSetManagerPtr mediaSetManager );
+
+  signals:
+    void finished();
 
   private slots:
-    //void mediaSetOpen();
+    void configurationSelected();
 
-    //void mediaSetAdd();
+    void view();
 
-    //void mediaSetDelete();
+    //void import();
+
+    //void importXml();
+
+    void remove();
+
+  private:
+    //! Media Sets Model
+    std::unique_ptr< Media::MediaSetsModel > mediaSetsModelV;
+    //! Media Set Manager Dialog
+    std::unique_ptr< MediaSetManagerDialog > mediaSetManagerDialogV;
+    //! Select Media Set File Dialog
+    std::unique_ptr< QFileDialog > selectMediaSetConfigDialogV;
+
+    //! Media Set Manager
+    Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV;
 };
 
 }

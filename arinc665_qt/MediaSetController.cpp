@@ -86,7 +86,7 @@ void MediaSetController::directorySelected()
       std::placeholders::_1,
       std::placeholders::_2 ) );
 
-    auto mediaSet{ (*importer)()};
+    auto mediaSet{ (*importer)() };
 
     mediaSetModel->root( mediaSet );
 
@@ -114,7 +114,7 @@ void MediaSetController::directorySelected()
     QMessageBox::critical(
       nullptr,
       tr( "Load Media Set" ),
-      tr( "Error loading Media Set: " ) + description);
+      tr( "Error loading Media Set: " ) + description );
 
     emit finished();
     return;

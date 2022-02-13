@@ -22,7 +22,7 @@ MediaSetManagerPtr MediaSetManager::instance(
   MediaSetConfiguration &config,
   const bool checkFileIntegrity )
 {
-  return std::make_shared< MediaSetManagerImpl>(
+  return std::make_shared< MediaSetManagerImpl >(
     basePath,
     config,
     checkFileIntegrity );

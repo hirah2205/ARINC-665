@@ -48,7 +48,8 @@ int main( int argc, char * argv[] )
     QApplication application{ argc, argv };
     QApplication::setApplicationName( "ARINC 665 Media Set Viewer" );
     QApplication::setApplicationDisplayName( "ARINC 665 Media Set Viewer" );
-    QApplication::setWindowIcon( QIcon( ":/arinc665_media_set_manager.svg" ) );
+    QApplication::setWindowIcon( QIcon(
+      ":/media_set_manager/arinc665_media_set_manager.svg" ) );
 
     Arinc665Qt::MediaSetController mediaSetController{};
 

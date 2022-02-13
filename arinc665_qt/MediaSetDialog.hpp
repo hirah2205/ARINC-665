@@ -78,7 +78,7 @@ class ARINC665_QT_EXPORT  MediaSetDialog : public QDialog
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaSetDialog> ui;
+    std::unique_ptr< Ui::MediaSetDialog > ui;
     //! Media Set Model
     Media::MediaSetModel * mediaSetModelV;
     //! Loads Model

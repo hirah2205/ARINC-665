@@ -11,4 +11,8 @@ target_sources(
 
   PRIVATE
     MediaSetManager.hpp
-    MediaSetManagerController.hpp )
+    MediaSetManagerController.hpp
+    MediaSetManagerController.cpp
+    MediaSetManagerDialog.hpp
+    MediaSetManagerDialog.cpp
+    MediaSetManagerDialog.ui )
