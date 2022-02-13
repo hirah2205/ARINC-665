@@ -153,6 +153,9 @@ class ARINC665_EXPORT Arinc665File
      *   Raw ARINC 665 file.
      *
      * @return Decoded format version.
+     *
+     * @throw InvalidArinc665File
+     *   If the file size is to small to represent an valid ARINC 665 file.
      **/
     static uint16_t formatVersion( const ConstRawFileSpan &file );
 
