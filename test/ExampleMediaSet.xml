@@ -58,6 +58,13 @@
         <Load NameRef="Load1.LUH" />
         <Load NameRef="Load2.LUH" />
       </Target>
+      <Target ThwIdPos="ABCDEF_456" >
+        <Load NameRef="Load1.LUH" />
+      </Target >
+      <Target ThwIdPos="GHIJKL_123" >
+        <Load NameRef="Load1.LUH" />
+        <Load NameRef="Load2.LUH" />
+      </Target >
     </Batch>
   </Batches>
 </MediaSet>
