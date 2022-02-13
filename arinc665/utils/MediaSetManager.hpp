@@ -64,7 +64,7 @@ class ARINC665_EXPORT MediaSetManager
     static MediaSetManagerPtr instance(
       const std::filesystem::path &basePath,
       MediaSetConfiguration &config,
-      bool checkFileIntegrity );
+      bool checkFileIntegrity = true );
 
     /**
      * @brief Returns the configuration for the media set manager.
