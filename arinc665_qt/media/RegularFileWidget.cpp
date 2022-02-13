@@ -28,7 +28,7 @@ RegularFileWidget::~RegularFileWidget() = default;
 
 void RegularFileWidget::selectedFile(
   Arinc665Qt::Media::MediaSetModel * const model,
-  Arinc665::Media::FilePtr file )
+  Arinc665::Media::ConstFilePtr file )
 {
   modelV = model;
   fileV = std::move( file );

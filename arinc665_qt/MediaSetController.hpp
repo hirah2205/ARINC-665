@@ -60,6 +60,14 @@ class ARINC665_QT_EXPORT MediaSetController : public QObject
      **/
     void start();
 
+    /**
+     * @brief Starts the Media Set View with the given Media Set.
+     *
+     * @param[in] mediaSet
+     *   Media Set
+     **/
+    void start( Arinc665::Media::ConstMediaSetPtr mediaSet );
+
   private slots:
     /**
      * @brief Called, when the user has selected a dialog

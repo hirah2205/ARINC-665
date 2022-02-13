@@ -61,7 +61,7 @@ class ARINC665_QT_EXPORT DirectoryWidget : public QWidget
      * @param[in] index
      *   Model Index of selected Medium.
      **/
-    void selectedDirectory( const QModelIndex index );
+    void selectedDirectory( const QModelIndex &index );
 
     /**
      * @brief Called when a Directory has been selected.
@@ -69,7 +69,7 @@ class ARINC665_QT_EXPORT DirectoryWidget : public QWidget
      * @param[in] directory
      *   Selected Directory
      **/
-    void selectedDirectory( Arinc665::Media::DirectoryPtr directory );
+    void selectedDirectory( Arinc665::Media::ConstDirectoryPtr directory );
 
   private:
     //! UI (designer)
@@ -77,7 +77,7 @@ class ARINC665_QT_EXPORT DirectoryWidget : public QWidget
     //! Media Set Model
     MediaSetModel * mediaSetModelV;
     //! Directory
-    Arinc665::Media::DirectoryPtr directoryV;
+    Arinc665::Media::ConstDirectoryPtr directoryV;
 };
 
 }

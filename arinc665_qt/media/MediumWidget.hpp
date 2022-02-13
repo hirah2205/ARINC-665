@@ -61,7 +61,7 @@ class ARINC665_QT_EXPORT MediumWidget : public QWidget
      * @param[in] index
      *   Model Index of selected Medium.
      **/
-    void selectedMedium( const QModelIndex index );
+    void selectedMedium( const QModelIndex &index );
 
     /**
      * @brief Called when a Medium has been selected.
@@ -69,7 +69,7 @@ class ARINC665_QT_EXPORT MediumWidget : public QWidget
      * @param[in] medium
      *   Selected Medium
      **/
-    void selectedMedium( Arinc665::Media::MediumPtr medium );
+    void selectedMedium( Arinc665::Media::ConstMediumPtr medium );
 
   private:
     //! UI (designer)
@@ -77,7 +77,7 @@ class ARINC665_QT_EXPORT MediumWidget : public QWidget
     //! Media Set Model
     MediaSetModel * mediaSetModelV;
     //! Medium
-    Arinc665::Media::MediumPtr mediumV;
+    Arinc665::Media::ConstMediumPtr mediumV;
 };
 
 }

@@ -51,7 +51,7 @@ class ARINC665_QT_EXPORT BatchWidget : public QWidget
      * @param[in] batch
      *   Selected Batch
      **/
-    void selectedBatch( Arinc665::Media::BatchPtr batch );
+    void selectedBatch( Arinc665::Media::ConstBatchPtr batch );
 
   private slots:
     /**
@@ -60,7 +60,7 @@ class ARINC665_QT_EXPORT BatchWidget : public QWidget
      * @param[in] index
      *   Model Index of selected Target
      **/
-    void activatedTarget( QModelIndex index );
+    void activatedTarget( const QModelIndex &index );
 
   private:
     //! UI (designer)
@@ -72,7 +72,7 @@ class ARINC665_QT_EXPORT BatchWidget : public QWidget
     std::unique_ptr< LoadsModel > targetLoadsModel;
 
     //! Batch
-    Arinc665::Media::BatchPtr batchV;
+    Arinc665::Media::ConstBatchPtr batchV;
 };
 
 }

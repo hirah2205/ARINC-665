@@ -150,7 +150,8 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      * @retval {}
      *   If index is invalid
      **/
-    Arinc665::Media::MediaSetVariant mediaSet( std::size_t index ) const;
+    [[nodiscard]] Arinc665::Media::MediaSetVariant mediaSet(
+      std::size_t index ) const;
 
     /**
      * @brief Converts given Media Set Variant to Const Media Set Pointer.
@@ -163,7 +164,7 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      *
      * @return Const Media Set Pointer
      **/
-    Arinc665::Media::ConstMediaSetPtr constMediaSet(
+    [[nodiscard]] Arinc665::Media::ConstMediaSetPtr constMediaSet(
       const Arinc665::Media::MediaSetVariant &mediaSet ) const;
 
   private:

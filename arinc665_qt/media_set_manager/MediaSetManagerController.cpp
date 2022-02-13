@@ -14,7 +14,7 @@
 
 #include <arinc665_qt/media/MediaSetsModel.hpp>
 #include <arinc665_qt/media_set_manager/MediaSetManagerDialog.hpp>
-
+#include <arinc665_qt/MediaSetController.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/MediaSetConfiguration.hpp>
@@ -39,6 +39,27 @@ MediaSetManagerController::MediaSetManagerController(
     &MediaSetManagerDialog::finished,
     this,
     &MediaSetManagerController::finished );
+
+  connect(
+    mediaSetManagerDialogV.get(),
+    &MediaSetManagerDialog::viewMediaSet,
+    this,
+    &MediaSetManagerController::viewMediaSet );
+  connect(
+    mediaSetManagerDialogV.get(),
+    &MediaSetManagerDialog::importMediaSet,
+    this,
+    &MediaSetManagerController::importMediaSet );
+  connect(
+    mediaSetManagerDialogV.get(),
+    &MediaSetManagerDialog::importMediaSetXml,
+    this,
+    &MediaSetManagerController::importMediaSetXml );
+  connect(
+    mediaSetManagerDialogV.get(),
+    &MediaSetManagerDialog::removeMediaSet,
+    this,
+    &MediaSetManagerController::removeMediaSet );
 
   connect(
     selectMediaSetConfigDialogV.get(),
@@ -81,12 +102,38 @@ void MediaSetManagerController::configurationSelected()
   emit start( Arinc665::Utils::MediaSetManager::instance( baseDir, config, true )  );
 }
 
-void MediaSetManagerController::view()
+void MediaSetManagerController::viewMediaSet( const QModelIndex &index )
+{
+  auto mediaSet{
+    mediaSetsModelV->constMediaSet( mediaSetsModelV->mediaSet( index ) ) };
+
+  if ( !mediaSet )
+  {
+    return;
+  }
+
+  auto controller{ new MediaSetController{ mediaSetManagerDialogV.get() } };
+
+  connect(
+    controller,
+    &MediaSetController::finished,
+    controller,
+    &MediaSetController::deleteLater );
+
+  controller->start( mediaSet );
+}
+
+void MediaSetManagerController::importMediaSet()
 {
 
 }
 
-void MediaSetManagerController::remove()
+void MediaSetManagerController::importMediaSetXml()
+{
+
+}
+
+void MediaSetManagerController::removeMediaSet( const QModelIndex &index )
 {
 
 }

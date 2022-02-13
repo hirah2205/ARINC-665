@@ -23,6 +23,8 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <helper_qt/String.hpp>
+
 #include <QMessageBox>
 
 #include <boost/log/trivial.hpp>
@@ -32,7 +34,7 @@
 
 namespace Arinc665Qt {
 
-MediaSetController::MediaSetController( QWidget * const parent):
+MediaSetController::MediaSetController( QWidget * const parent ):
   QObject{ parent},
   mediaSetModel{ std::make_unique< Media::MediaSetModel >( this ) },
   loadsModel{ std::make_unique< Media::LoadsModel >( this ) },
@@ -74,6 +76,17 @@ void MediaSetController::start()
   selectDirectoryDialog->open();
 }
 
+void MediaSetController::start( Arinc665::Media::ConstMediaSetPtr mediaSet )
+{
+  mediaSetModel->root( mediaSet );
+
+  // Set window title
+  mediaSetDialog->setWindowTitle(
+    HelperQt::toQString( mediaSet->partNumber() ) );
+
+  mediaSetDialog->open();
+}
+
 void MediaSetController::directorySelected()
 {
   try
@@ -93,8 +106,11 @@ void MediaSetController::directorySelected()
     // Set window title
     mediaSetDialog->setWindowTitle(
       selectDirectoryDialog->directory().absolutePath() );
+
+    // Open Dialog
+    mediaSetDialog->open();
   }
-  catch (Arinc665::Arinc665Exception &e)
+  catch ( Arinc665::Arinc665Exception &e )
   {
     std::string const * info = boost::get_error_info< Helper::AdditionalInfo>( e );
 
@@ -119,18 +135,16 @@ void MediaSetController::directorySelected()
     emit finished();
     return;
   }
-
-  mediaSetDialog->show();
 }
 
 Arinc665::Files::RawFile MediaSetController::loadFile(
   const uint8_t mediumNumber,
-  const std::filesystem::path &path)
+  const std::filesystem::path& path )
 {
-  if (1U != mediumNumber)
+  if ( 1U != mediumNumber )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "Multi Medium Media Sets not supported" ) );
+      << Helper::AdditionalInfo{ "Multi Medium Media Sets not supported" } );
   }
 
   auto filePath{

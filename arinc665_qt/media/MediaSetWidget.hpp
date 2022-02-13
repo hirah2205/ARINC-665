@@ -39,7 +39,7 @@ class ARINC665_QT_EXPORT MediaSetWidget : public QWidget
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit MediaSetWidget( QWidget *parent = nullptr );
+    explicit MediaSetWidget( QWidget * parent = nullptr );
 
     //! Destructor
     ~MediaSetWidget() override;
@@ -75,7 +75,7 @@ class ARINC665_QT_EXPORT MediaSetWidget : public QWidget
      * @param[in] mediaSet
      *   Selected Media Set
      **/
-    void selectedMediaSet( Arinc665::Media::MediaSetPtr mediaSet );
+    void selectedMediaSet( Arinc665::Media::ConstMediaSetPtr mediaSet );
 
   private:
     //! UI (designer)
@@ -89,7 +89,7 @@ class ARINC665_QT_EXPORT MediaSetWidget : public QWidget
     BatchesModel * batchesModelV;
 
     //! Media Set
-    Arinc665::Media::MediaSetPtr mediaSetV;
+    Arinc665::Media::ConstMediaSetPtr mediaSetV;
 };
 
 }

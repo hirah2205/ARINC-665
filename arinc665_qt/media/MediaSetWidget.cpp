@@ -50,7 +50,8 @@ void MediaSetWidget::batchesModel(
   ui->batches->setModel( model );
 }
 
-void MediaSetWidget::selectedMediaSet( Arinc665::Media::MediaSetPtr mediaSet )
+void MediaSetWidget::selectedMediaSet(
+  Arinc665::Media::ConstMediaSetPtr mediaSet )
 {
   mediaSetV = std::move( mediaSet );
 

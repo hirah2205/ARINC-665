@@ -89,7 +89,7 @@ void MediaSetDialog::itemSelected( const QModelIndex &index )
     case Arinc665::Media::Base::Type::MediaSet:
     {
       const auto mediaSet{
-        std::dynamic_pointer_cast< Arinc665::Media::MediaSet>( element ) };
+        std::dynamic_pointer_cast< const Arinc665::Media::MediaSet>( element ) };
 
       loadsModelV->loads( mediaSet->loads() );
       batchesModelV->batches( mediaSet->batches() );
@@ -103,21 +103,21 @@ void MediaSetDialog::itemSelected( const QModelIndex &index )
       ui->detailsStackedWidget->setCurrentIndex( 1 );
       ui->mediumWidget->selectedMedium( index );
       ui->mediumWidget->selectedMedium(
-        std::dynamic_pointer_cast< Arinc665::Media::Medium>( element ) );
+        std::dynamic_pointer_cast< const Arinc665::Media::Medium>( element ) );
       break;
 
     case Arinc665::Media::Base::Type::Directory:
       ui->detailsStackedWidget->setCurrentIndex( 2 );
       ui->directoryWidget->selectedDirectory( index );
       ui->directoryWidget->selectedDirectory(
-        std::dynamic_pointer_cast< Arinc665::Media::Directory>( element ) );
+        std::dynamic_pointer_cast< const Arinc665::Media::Directory>( element ) );
       break;
 
     case Arinc665::Media::Base::Type::File:
       ui->detailsStackedWidget->setCurrentIndex( 3 );
       ui->fileWidget->selectedFile(
         mediaSetModelV,
-        std::dynamic_pointer_cast< Arinc665::Media::File>( element ) );
+        std::dynamic_pointer_cast< const Arinc665::Media::File>( element ) );
       break;
 
     default:

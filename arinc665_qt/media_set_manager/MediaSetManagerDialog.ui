@@ -46,7 +46,7 @@
     <widget class="QWidget" name="widget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="view">
+       <widget class="QPushButton" name="viewMediaSet">
         <property name="toolTip">
          <string>View Media Set</string>
         </property>
@@ -80,7 +80,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="importXml">
+       <widget class="QPushButton" name="importMediaSetXml">
         <property name="toolTip">
          <string>Import Media Set XML</string>
         </property>
@@ -97,7 +97,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="remove">
+       <widget class="QPushButton" name="removeMediaSet">
         <property name="toolTip">
          <string>Remove Media Set</string>
         </property>
@@ -133,10 +133,10 @@
  </widget>
  <tabstops>
   <tabstop>mediaSets</tabstop>
-  <tabstop>view</tabstop>
+  <tabstop>viewMediaSet</tabstop>
   <tabstop>importMediaSet</tabstop>
-  <tabstop>importXml</tabstop>
-  <tabstop>remove</tabstop>
+  <tabstop>importMediaSetXml</tabstop>
+  <tabstop>removeMediaSet</tabstop>
  </tabstops>
  <resources>
   <include location="../resources/arinc665_qt_resources.qrc"/>

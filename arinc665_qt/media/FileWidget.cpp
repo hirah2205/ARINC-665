@@ -33,7 +33,7 @@ FileWidget::~FileWidget() = default;
 
 void FileWidget::selectedFile(
   Arinc665Qt::Media::MediaSetModel * const model,
-  Arinc665::Media::FilePtr file )
+  Arinc665::Media::ConstFilePtr file )
 {
   modelV = model;
   fileV = std::move( file );
@@ -51,19 +51,19 @@ void FileWidget::selectedFile(
       ui->detailsStackedWidget->setCurrentIndex( 0 );
       ui->regularFilePage->selectedFile(
         modelV,
-        std::dynamic_pointer_cast< Arinc665::Media::RegularFile >( fileV ) );
+        std::dynamic_pointer_cast< const Arinc665::Media::RegularFile >( fileV ) );
       break;
 
     case Arinc665::Media::File::FileType::LoadFile:
       ui->detailsStackedWidget->setCurrentIndex( 1 );
       ui->loadPage->selectedLoad(
-        std::dynamic_pointer_cast< Arinc665::Media::Load >( fileV ) );
+        std::dynamic_pointer_cast< const Arinc665::Media::Load >( fileV ) );
       break;
 
     case Arinc665::Media::File::FileType::BatchFile:
       ui->detailsStackedWidget->setCurrentIndex( 2 );
       ui->batchPage->selectedBatch(
-        std::dynamic_pointer_cast< Arinc665::Media::Batch >( fileV ) );
+        std::dynamic_pointer_cast< const Arinc665::Media::Batch >( fileV ) );
       break;
 
     default:

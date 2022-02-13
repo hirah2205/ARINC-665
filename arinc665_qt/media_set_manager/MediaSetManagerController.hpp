@@ -51,13 +51,13 @@ class MediaSetManagerController : public QObject
   private slots:
     void configurationSelected();
 
-    void view();
+    void viewMediaSet( const QModelIndex &index );
 
-    //void import();
+    void importMediaSet();
 
-    //void importXml();
+    void importMediaSetXml();
 
-    void remove();
+    void removeMediaSet( const QModelIndex &index);
 
   private:
     //! Media Sets Model

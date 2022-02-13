@@ -39,13 +39,13 @@ void DirectoryWidget::mediaSetModel(
   ui->content->setModel( model );
 }
 
-void DirectoryWidget::selectedDirectory( const QModelIndex index )
+void DirectoryWidget::selectedDirectory( const QModelIndex &index )
 {
   ui->content->setRootIndex( index );
 }
 
 void DirectoryWidget::selectedDirectory(
-  Arinc665::Media::DirectoryPtr directory )
+  Arinc665::Media::ConstDirectoryPtr directory )
 {
   directoryV = std::move( directory);
 

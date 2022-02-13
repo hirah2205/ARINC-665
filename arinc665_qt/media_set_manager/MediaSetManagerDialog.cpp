@@ -25,6 +25,27 @@ MediaSetManagerDialog::MediaSetManagerDialog( QWidget * const parent ) :
   mediaSetsModelV{}
 {
   ui->setupUi( this );
+
+  connect(
+    ui->viewMediaSet,
+    &QPushButton::clicked,
+    this,
+    &MediaSetManagerDialog::viewMediaSetClicked );
+  connect(
+    ui->importMediaSet,
+    &QPushButton::clicked,
+    this,
+    &MediaSetManagerDialog::importMediaSet );
+  connect(
+    ui->importMediaSetXml,
+    &QPushButton::clicked,
+    this,
+    &MediaSetManagerDialog::importMediaSetXml );
+  connect(
+    ui->removeMediaSet,
+    &QPushButton::clicked,
+    this,
+    &MediaSetManagerDialog::removeMediaSetClicked );
 }
 
 MediaSetManagerDialog::~MediaSetManagerDialog() = default;
@@ -34,6 +55,22 @@ void MediaSetManagerDialog::mediaSetsModel(
 {
   mediaSetsModelV = model;
   ui->mediaSets->setModel( model );
+}
+
+void MediaSetManagerDialog::viewMediaSetClicked()
+{
+  if ( ui->mediaSets->currentIndex().isValid() )
+  {
+    emit viewMediaSet( ui->mediaSets->currentIndex() );
+  }
+}
+
+void MediaSetManagerDialog::removeMediaSetClicked()
+{
+  if ( ui->mediaSets->currentIndex().isValid() )
+  {
+    emit removeMediaSet( ui->mediaSets->currentIndex() );
+  }
 }
 
 }

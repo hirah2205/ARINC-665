@@ -151,7 +151,8 @@ class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
      * @retval Arinc665::Media::BasePtr{}
      *   If index is invalid or no model stored.
      **/
-    Arinc665::Media::BasePtr element( const QModelIndex &index ) const;
+    [[nodiscard]] Arinc665::Media::ConstBasePtr element(
+      const QModelIndex &index ) const;
 
     /**
      * @brief Updates the associated Root Element.
@@ -159,11 +160,11 @@ class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
      * @param[in] root
      *   New Root Element.
      **/
-    void root( Arinc665::Media::BasePtr root = {} );
+    void root( Arinc665::Media::ConstBasePtr root = {} );
 
   private:
     //! Root Element
-    Arinc665::Media::BasePtr rootV;
+    Arinc665::Media::ConstBasePtr rootV;
 };
 
 }

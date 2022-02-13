@@ -55,7 +55,7 @@ class ARINC665_QT_EXPORT FileWidget : public QWidget
      **/
     void selectedFile(
       Arinc665Qt::Media::MediaSetModel * model,
-      Arinc665::Media::FilePtr file );
+      Arinc665::Media::ConstFilePtr file );
 
   private:
     //! UI (designer)
@@ -63,7 +63,7 @@ class ARINC665_QT_EXPORT FileWidget : public QWidget
     //! Media Set Model
     MediaSetModel * modelV;
     //! File
-    Arinc665::Media::FilePtr fileV;
+    Arinc665::Media::ConstFilePtr fileV;
 };
 
 }

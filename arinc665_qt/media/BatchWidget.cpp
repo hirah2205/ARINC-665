@@ -45,7 +45,7 @@ BatchWidget::~BatchWidget() = default;
 
 
 void BatchWidget::selectedBatch(
-  Arinc665::Media::BatchPtr batch )
+  Arinc665::Media::ConstBatchPtr batch )
 {
   batchV = std::move( batch );
 
@@ -59,7 +59,7 @@ void BatchWidget::selectedBatch(
   }
 }
 
-void BatchWidget::activatedTarget( const QModelIndex index )
+void BatchWidget::activatedTarget( const QModelIndex &index )
 {
   auto batchTagetInformation{ batchInfoModel->batchTargetInformation( index ) };
 

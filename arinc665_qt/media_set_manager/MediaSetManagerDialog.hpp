@@ -45,6 +45,20 @@ class ARINC665_QT_EXPORT MediaSetManagerDialog : public QDialog
 
     void mediaSetsModel( Media::MediaSetsModel * model );
 
+  signals:
+    void viewMediaSet( const QModelIndex &index );
+
+    void importMediaSet();
+
+    void importMediaSetXml();
+
+    void removeMediaSet( const QModelIndex &index );
+
+  private slots:
+    void viewMediaSetClicked();
+
+    void removeMediaSetClicked();
+
   private:
     //! UI (designer)
     std::unique_ptr< Ui::MediaSetManagerDialog > ui;

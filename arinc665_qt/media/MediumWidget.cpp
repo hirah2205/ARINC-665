@@ -37,12 +37,12 @@ void MediumWidget::mediaSetModel(
   ui->content->setModel( model );
 }
 
-void MediumWidget::selectedMedium( const QModelIndex index )
+void MediumWidget::selectedMedium( const QModelIndex &index )
 {
   ui->content->setRootIndex( index );
 }
 
-void MediumWidget::selectedMedium( Arinc665::Media::MediumPtr medium )
+void MediumWidget::selectedMedium( Arinc665::Media::ConstMediumPtr medium )
 {
   mediumV = std::move( medium );
 
