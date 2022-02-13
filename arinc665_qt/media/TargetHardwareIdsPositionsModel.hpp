@@ -22,6 +22,11 @@
 
 namespace Arinc665Qt::Media {
 
+/**
+ * @brief Target Hardware IDs / Positions Model.
+ *
+ * Target Hardware IDs and Positions are displayed in a tree view.
+ **/
 class ARINC665_QT_EXPORT TargetHardwareIdsPositionsModel :
   public QAbstractItemModel
 {
@@ -137,9 +142,16 @@ class ARINC665_QT_EXPORT TargetHardwareIdsPositionsModel :
       ::Qt::Orientation orientation,
       int role ) const override;
 
+    /**
+     * @brief Assigns the THW IDs and Positions Information.
+     *
+     * @param[in] thwIdsPositions
+     *   THW IDs and Positions.
+     **/
     void targetHardwareIdsPositions(
       const Arinc665::Media::Load::TargetHardwareIdPositions &thwIdsPositions );
 
+    //! @copydoc targetHardwareIdsPositions(const Arinc665::Media::Load::TargetHardwareIdPositions&)
     void targetHardwareIdsPositions(
       Arinc665::Media::Load::TargetHardwareIdPositions &&thwIdsPositions );
 

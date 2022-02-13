@@ -55,6 +55,7 @@ doxygen_add_docs(
   ${arinc665_SOURCE_DIR}/application/arinc665_compiler
   ${arinc665_SOURCE_DIR}/application/arinc665_decompiler
   ${arinc665_SOURCE_DIR}/application/arinc665_ls
+  ${arinc665_SOURCE_DIR}/application/arinc665_media_set_manager_gui
   ${arinc665_SOURCE_DIR}/application/arinc665_media_set_view_gui
   ${arinc665_SOURCE_DIR}/application/arinc665_print_media_set
   ${arinc665_SOURCE_DIR}/application/arinc665_print_xml

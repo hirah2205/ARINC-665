@@ -27,6 +27,7 @@ namespace Ui{
 class MediaSetManagerDialog;
 }
 
+//! Media Set Manager Dialog
 class ARINC665_QT_EXPORT MediaSetManagerDialog : public QDialog
 {
     Q_OBJECT

@@ -23,13 +23,21 @@
 
 namespace Arinc665Qt::MediaSetManager {
 
+//! Media Set Manager Controller
 class MediaSetManagerController : public QObject
 {
     Q_OBJECT
 
   public:
-    MediaSetManagerController( QWidget * parent = nullptr );
+    /**
+     * @brief Initialises the Media Set Manager Controller.
+     *
+     * @param[in] parent
+     *   Parent Widget
+     **/
+    explicit MediaSetManagerController( QWidget * parent = nullptr );
 
+    //! Destructor
     ~MediaSetManagerController() override;
 
   public slots:
@@ -46,6 +54,7 @@ class MediaSetManagerController : public QObject
     void start( Arinc665::Utils::MediaSetManagerPtr mediaSetManager );
 
   signals:
+    //! Emitted, when controller is finished.
     void finished();
 
   private slots:
