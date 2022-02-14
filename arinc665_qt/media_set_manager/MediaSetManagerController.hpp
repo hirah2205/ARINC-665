@@ -24,7 +24,7 @@
 namespace Arinc665Qt::MediaSetManager {
 
 //! Media Set Manager Controller
-class MediaSetManagerController : public QObject
+class ARINC665_QT_EXPORT MediaSetManagerController : public QObject
 {
     Q_OBJECT
 
