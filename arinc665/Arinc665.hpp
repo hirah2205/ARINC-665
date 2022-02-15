@@ -16,7 +16,6 @@
 #include <arinc665/arinc665_export.h>
 
 #include <string_view>
-#include <tuple>
 #include <vector>
 #include <cstdint>
 
@@ -156,34 +155,6 @@ enum class Arinc665FileFormatVersion : uint16_t
   Invalid = 0xFFFFU  //!< invalid value
 };
 
-//! Check Value Type Enumeration
-enum class CheckValueType : uint16_t
-{
-  //! Not to be used
-  NotUsed = 0u,
-  //! 8-bit CRC (deprecated)
-  Crc8 = 1u,
-  //! 16-bit CRC (deprecated)
-  Crc16 = 2u,
-  //! 32-bit CRC
-  Crc32 = 3u,
-  //! MD5
-  Md5 = 4u,
-  //! SHA1
-  Sha1 = 5u,
-  //! SHA-256
-  Sha256 = 6u,
-  //! SHA-512
-  Sha512 = 7u,
-  //! 64-bit CRC
-  Crc64 = 8u,
-
-  Invalid = 0xFFFFU
-};
-
-//! Check Value
-using CheckValue = std::tuple< CheckValueType, std::vector< uint8_t > >;
-
 //! @brief ARINC 665 File Types
 enum class FileType
 {
@@ -210,51 +181,6 @@ extern const std::string_view LoadUploadHeaderExtension;
 
 //! Default Extension of a Batch File: ".LUB"
 extern const std::string_view BatchFileExtension;
-
-//! CRC 8bit Polynom
-constexpr uint8_t Crc8Polynom{ 0x80U };
-//! CRC 8bit initialisation value
-constexpr uint8_t Crc8Init{ 0x00U };
-//! CRC 8bit final XOR value
-constexpr uint8_t Crc8FinalXor{ 0x00U };
-//! CRC 8bit reflect in
-constexpr bool Crc8ReflectIn{ false };
-//! CRC 8bit reflect out
-constexpr bool Crc8ReflectOut{ false };
-
-//! CRC 16bit Polynom
-constexpr uint16_t Crc16Polynom{ 0x1021U };
-//! CRC 16bit initialisation value
-constexpr uint16_t Crc16Init{ 0xFFFFU };
-//! CRC 16bit final XOR value
-constexpr uint16_t Crc16FinalXor{ 0x0000U };
-//! CRC 16bit reflect in
-constexpr bool Crc16ReflectIn{ false };
-//! CRC 16bit reflect out
-constexpr bool Crc16ReflectOut{ false };
-
-//! CRC 32bit Polynom
-constexpr uint32_t Crc32Polynom{ 0x04C1'1DB7U };
-//! CRC 32bit initialisation value
-constexpr uint32_t Crc32Init{ 0xFFFF'FFFFU };
-//! CRC 32bit final XOR value
-constexpr uint32_t Crc32FinalXor{ 0xFFFF'FFFFU };
-//! CRC 32bit reflect in
-constexpr bool Crc32ReflectIn{ false };
-//! CRC 32bit reflect out
-constexpr bool Crc32ReflectOut{ false };
-
-//! CRC 64bit Polynom
-constexpr uint64_t Crc64Polynom{ 0x42F0'E1EB'A9EA'3693U };
-//! CRC 64bit initialisation value
-constexpr uint64_t Crc64Init{ 0xFFFF'FFFF'FFFF'FFFFU };
-//! CRC 64bit final XOR value
-constexpr uint64_t Crc64FinalXor{ 0xFFFF'FFFF'FFFF'FFFFU };
-//! CRC 64bit reflect in
-//! @todo According to ARINC 665-4 Reflect In/Out should be set to true - but then the tests fail!
-constexpr bool Crc64ReflectIn{ false };
-//! CRC 64bit reflect out
-constexpr bool Crc64ReflectOut{ false };
 
 class PartNumber;
 

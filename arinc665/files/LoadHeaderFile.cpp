@@ -269,17 +269,20 @@ void LoadHeaderFile::loadCrc( const uint32_t loadCrc)
   loadCrcV = loadCrc;
 }
 
-const std::optional< CheckValue>& LoadHeaderFile::loadCheckValue() const
+const std::optional< Arinc645::CheckValue >&
+LoadHeaderFile::loadCheckValue() const
 {
   return loadCheckValueV;
 }
 
-void LoadHeaderFile::loadCheckValue( const std::optional< CheckValue> &value)
+void LoadHeaderFile::loadCheckValue(
+  const std::optional< Arinc645::CheckValue > &value)
 {
   loadCheckValueV = value;
 }
 
-void LoadHeaderFile::loadCheckValue( std::optional< CheckValue> &&value)
+void LoadHeaderFile::loadCheckValue(
+  std::optional< Arinc645::CheckValue> &&value )
 {
   loadCheckValueV = std::move( value);
 }
@@ -900,7 +903,7 @@ LoadFilesInfo LoadHeaderFile::decodeFileList(
     listIt = Helper::getInt< uint16_t>( listIt, crc );
 
     // CheckValue (keep default initialised if not V3 File Info
-    std::optional< CheckValue> checkValue;
+    std::optional< Arinc645::CheckValue > checkValue;
 
     // following fields are available in ARINC 665-3 ff
     if ( decodeV3Data )

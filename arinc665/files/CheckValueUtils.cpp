@@ -19,7 +19,8 @@
 
 namespace Arinc665::Files {
 
-RawFile CheckValueUtils_encode( const std::optional< CheckValue> &checkValue )
+RawFile CheckValueUtils_encode(
+  const std::optional< Arinc645::CheckValue> &checkValue )
 {
   RawFile rawCheckValue( sizeof( uint16_t));
 
@@ -52,7 +53,7 @@ RawFile CheckValueUtils_encode( const std::optional< CheckValue> &checkValue )
   return rawCheckValue;
 }
 
-std::optional< CheckValue> CheckValueUtils_decode(
+std::optional< Arinc645::CheckValue > CheckValueUtils_decode(
   const ConstRawFileSpan &rawFile,
   const ptrdiff_t offset )
 {
@@ -70,17 +71,17 @@ std::optional< CheckValue> CheckValueUtils_decode(
   if ( checkValueLength <= ( 2U * sizeof( uint16_t)))
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo( "Invalid length field of check value"));
+      << Helper::AdditionalInfo{ "Invalid length field of check value" } );
   }
 
   uint16_t checkValueType{};
   it = Helper::getInt< uint16_t>( it, checkValueType);
 
   return { std::make_tuple(
-    static_cast< CheckValueType >( checkValueType),
-    std::vector< uint8_t>{
+    static_cast< Arinc645::CheckValueType >( checkValueType ),
+    std::vector< uint8_t >{
       it,
-      it + checkValueLength - ( 2U * sizeof( uint16_t))})};
+      it + checkValueLength - ( 2U * sizeof( uint16_t ) ) } ) };
 }
 
 }

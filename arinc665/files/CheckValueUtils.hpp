@@ -15,6 +15,8 @@
 
 #include <arinc665/files/Files.hpp>
 
+#include <arinc645/Arinc645.hpp>
+
 #include <optional>
 
 namespace Arinc665::Files {
@@ -28,7 +30,7 @@ namespace Arinc665::Files {
  * @return Check Value as raw data.
  **/
 RawFile ARINC665_EXPORT CheckValueUtils_encode(
-  const std::optional< CheckValue > &checkValue );
+  const std::optional< Arinc645::CheckValue > &checkValue );
 
 /**
  * @brief Decodes the given data as Check Value.
@@ -40,7 +42,7 @@ RawFile ARINC665_EXPORT CheckValueUtils_encode(
  *
  * @return Decoded Check Value.
  **/
-std::optional< CheckValue > ARINC665_EXPORT CheckValueUtils_decode(
+std::optional< Arinc645::CheckValue > ARINC665_EXPORT CheckValueUtils_decode(
   const ConstRawFileSpan &rawFile,
   ptrdiff_t offset );
 

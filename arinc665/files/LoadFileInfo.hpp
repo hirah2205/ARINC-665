@@ -15,6 +15,8 @@
 
 #include <arinc665/files/Files.hpp>
 
+#include <arinc645/Arinc645.hpp>
+
 #include <string>
 #include <optional>
 #include <cstdint>
@@ -42,7 +44,7 @@ struct ARINC665_EXPORT LoadFileInfo
   //! File CRC
   uint16_t crc;
   //! Check Value (since ARINC 665-3)
-  std::optional< CheckValue> checkValue;
+  std::optional< Arinc645::CheckValue > checkValue;
 };
 
 }

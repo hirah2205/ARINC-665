@@ -17,6 +17,8 @@
 #include <arinc665/files/Arinc665File.hpp>
 #include <arinc665/files/LoadFileInfo.hpp>
 
+#include <arinc645/Arinc645.hpp>
+
 #include <string_view>
 #include <list>
 #include <vector>
@@ -504,7 +506,8 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      *
      * @return Load Check Value.
      **/
-    [[nodiscard]] const std::optional< CheckValue >& loadCheckValue() const;
+    [[nodiscard]] const std::optional< Arinc645::CheckValue >&
+    loadCheckValue() const;
 
     /**
      * @brief Updates the Load Check Value
@@ -512,10 +515,10 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] value
      *   Load Check Value.
      **/
-    void loadCheckValue( const std::optional< CheckValue> &value);
+    void loadCheckValue( const std::optional< Arinc645::CheckValue> &value );
 
-    //! @copydoc loadCheckValue(const std::optional<CheckValue>&)
-    void loadCheckValue( std::optional< CheckValue> &&value);
+    //! @copydoc loadCheckValue(const std::optional<Arinc645::CheckValue>&)
+    void loadCheckValue( std::optional< Arinc645::CheckValue> &&value );
 
     /** @} **/
 
@@ -605,7 +608,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     //! CRC of the complete load
     uint32_t loadCrcV;
     //! Load Check Value (since ARINC 665-3)
-    std::optional< CheckValue> loadCheckValueV;
+    std::optional< Arinc645::CheckValue> loadCheckValueV;
 };
 
 }

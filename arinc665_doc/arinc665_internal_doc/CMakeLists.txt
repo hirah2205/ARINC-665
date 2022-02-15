@@ -41,7 +41,11 @@ doxygen_add_docs(
   arinc665_internal_doc
 
   ../Mainpage.md
+
   ${helper_SOURCE_DIR}/helper
+
+  ${arinc645_SOURCE_DIR}/arinc645
+
   ${arinc665_SOURCE_DIR}/arinc665
   ${arinc665_SOURCE_DIR}/arinc665_qt
   ${arinc665_SOURCE_DIR}/application/arinc665_applications.md

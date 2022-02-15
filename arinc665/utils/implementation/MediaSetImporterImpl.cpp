@@ -12,11 +12,11 @@
 
 #include "MediaSetImporterImpl.hpp"
 
+#include <arinc665/media/Directory.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
-#include <arinc665/Arinc665Crc.hpp>
 
-#include <arinc665/media/Directory.hpp>
+#include <arinc645/Arinc645Crc.hpp>
 
 namespace Arinc665::Utils {
 

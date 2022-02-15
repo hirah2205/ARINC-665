@@ -13,7 +13,8 @@
 #include "Arinc665File.hpp"
 
 #include <arinc665/Arinc665Exception.hpp>
-#include <arinc665/Arinc665Crc.hpp>
+
+#include <arinc645/Arinc645Crc.hpp>
 
 #include <helper/Endianess.hpp>
 #include <helper/SafeCast.hpp>
@@ -195,7 +196,7 @@ uint16_t Arinc665File::calculateChecksum(
   const ConstRawFileSpan &file,
   const std::size_t skipLastBytes)
 {
-  Arinc665Crc16 arincCrc16{};
+  Arinc645::Arinc645Crc16 arincCrc16{};
 
   arincCrc16.process_block(
     &(*file.begin()),

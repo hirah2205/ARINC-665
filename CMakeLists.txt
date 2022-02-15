@@ -77,6 +77,18 @@ endif()
 FetchContent_MakeAvailable( helper )
 
 
+FetchContent_Declare(
+  arinc645
+  GIT_REPOSITORY https://git.thomas-vogt.de/Thomas-Vogt/arinc645.git
+  GIT_TAG        main )
+
+if( IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/arinc645 )
+  set( FETCHCONTENT_SOURCE_DIR_ARINC645 ${CMAKE_CURRENT_SOURCE_DIR}/arinc645 )
+endif()
+
+FetchContent_MakeAvailable( arinc645 )
+
+
 add_subdirectory( arinc665 )
 add_subdirectory( arinc665_qt )
 add_subdirectory( arinc665_xml )

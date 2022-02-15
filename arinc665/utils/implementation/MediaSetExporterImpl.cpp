@@ -12,9 +12,6 @@
 
 #include "MediaSetExporterImpl.hpp"
 
-#include <arinc665/Arinc665Logger.hpp>
-#include <arinc665/Arinc665Exception.hpp>
-
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
@@ -26,7 +23,10 @@
 #include <arinc665/files/LoadHeaderFile.hpp>
 #include <arinc665/files/BatchFile.hpp>
 
-#include <arinc665/Arinc665Crc.hpp>
+#include <arinc665/Arinc665Logger.hpp>
+#include <arinc665/Arinc665Exception.hpp>
+
+#include <arinc645/Arinc645Crc.hpp>
 
 #include <utility>
 
@@ -424,7 +424,7 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   loadHeaderFile.userDefinedData( load->userDefinedData() );
 
   // calculate load CRC
-  Arinc665Crc32 loadCrc;
+  Arinc645::Arinc645Crc32 loadCrc;
 
   // load header load CRC calculation
   {

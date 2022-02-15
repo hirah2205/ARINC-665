@@ -17,6 +17,8 @@
 #include <arinc665/files/ListFile.hpp>
 #include <arinc665/files/FileInfo.hpp>
 
+#include <arinc645/Arinc645.hpp>
+
 #include <string_view>
 #include <string>
 #include <vector>
@@ -231,7 +233,7 @@ class ARINC665_EXPORT FileListFile : public ListFile
      *
      * @return Check Value.
      **/
-    [[nodiscard]] const std::optional< CheckValue>& checkValue() const;
+    [[nodiscard]] const std::optional< Arinc645::CheckValue>& checkValue() const;
 
     /**
      * @brief Updates the Check Value
@@ -239,10 +241,10 @@ class ARINC665_EXPORT FileListFile : public ListFile
      * @param[in] value
      *   Check Value.
      **/
-    void checkValue( const std::optional< CheckValue> &value);
+    void checkValue( const std::optional< Arinc645::CheckValue> &value );
 
-    //! @copydoc checkValue(const std::optional<CheckValue>&)
-    void checkValue( std::optional< CheckValue> &&value);
+    //! @copydoc checkValue(const std::optional<Arinc645::CheckValue>&)
+    void checkValue( std::optional< Arinc645::CheckValue> &&value );
 
     /** @} **/
 
@@ -254,7 +256,7 @@ class ARINC665_EXPORT FileListFile : public ListFile
      *
      * @return If the given file list file belongs to the same media set.
      **/
-    [[nodiscard]] bool belongsToSameMediaSet( const FileListFile &other) const;
+    [[nodiscard]] bool belongsToSameMediaSet( const FileListFile &other ) const;
 
   private:
     //! @copydoc ListFile::encode
@@ -266,7 +268,7 @@ class ARINC665_EXPORT FileListFile : public ListFile
      * @param[in] rawFile
      *   Raw file list file representation.
      **/
-    void decodeBody( const ConstRawFileSpan &rawFile);
+    void decodeBody( const ConstRawFileSpan &rawFile );
 
     /**
      * @brief Encodes the files information list.
@@ -291,7 +293,7 @@ class ARINC665_EXPORT FileListFile : public ListFile
     void decodeFilesInfo(
       const ConstRawFileSpan &rawFile,
       ptrdiff_t offset,
-      bool decodeV3Data);
+      bool decodeV3Data );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.
@@ -300,10 +302,10 @@ class ARINC665_EXPORT FileListFile : public ListFile
 
     //! Files Information (list)
     FilesInfo filesV;
-    //! Use defined data.
+    //! Use Defined Data.
     UserDefinedData userDefinedDataV;
-    //! The Load Check Value (since ARINC 665-3)
-    std::optional< CheckValue> checkValueValue;
+    //! Load Check Value (since ARINC 665-3)
+    std::optional< Arinc645::CheckValue> checkValueValue;
 };
 
 }

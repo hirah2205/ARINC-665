@@ -127,7 +127,7 @@ BOOST_AUTO_TEST_CASE( GetSetCheckValue)
 
   BOOST_CHECK_NO_THROW(
     loadFileInfo.checkValue = std::make_tuple(
-      CheckValueType::Crc8,
+      Arinc645::CheckValueType::Crc8,
       std::vector< uint8_t>{ 0x12, 0x34} ) );
 
   BOOST_CHECK( loadFileInfo.filename == "NAME");
@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_CASE( GetSetCheckValue)
   BOOST_CHECK( loadFileInfo.length == 0xDEADBEEFUL);
   BOOST_CHECK( loadFileInfo.crc == 0xBABEU);
   BOOST_CHECK( loadFileInfo.checkValue);
-  BOOST_CHECK( std::get< 0>( *loadFileInfo.checkValue) == CheckValueType::Crc8);
+  BOOST_CHECK( std::get< 0>( *loadFileInfo.checkValue) == Arinc645::CheckValueType::Crc8);
   BOOST_CHECK( std::get< 1>( *loadFileInfo.checkValue) == std::vector< uint8_t>({ 0x12, 0x34}));
 }
 

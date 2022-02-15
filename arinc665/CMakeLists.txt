@@ -26,8 +26,6 @@ target_sources(
   PRIVATE
     Arinc665.hpp
     Arinc665.cpp
-    Arinc665Crc.cpp
-    Arinc665Crc.hpp
     Arinc665Exception.hpp
     Arinc665Logger.hpp
     FileTypeDescription.hpp
@@ -72,6 +70,7 @@ target_link_libraries(
 
   PUBLIC
     helper
+    arinc645
     Boost::boost
 
   PRIVATE
@@ -87,7 +86,6 @@ target_sources(
   arinc665_test
 
   PRIVATE
-    Arinc665CrcTest.cpp
     PartNumberTest.cpp
     VersionTest.cpp )
 

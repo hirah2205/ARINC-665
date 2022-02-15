@@ -126,17 +126,18 @@ void FileListFile::userDefinedData( UserDefinedData &&userDefinedData )
   checkUserDefinedData();
 }
 
-const std::optional< CheckValue>& FileListFile::checkValue() const
+const std::optional< Arinc645::CheckValue >& FileListFile::checkValue() const
 {
   return checkValueValue;
 }
 
-void FileListFile::checkValue( const std::optional< CheckValue> &value )
+void FileListFile::checkValue(
+  const std::optional< Arinc645::CheckValue> &value )
 {
   checkValueValue = value;
 }
 
-void FileListFile::checkValue( std::optional< CheckValue> &&value )
+void FileListFile::checkValue( std::optional< Arinc645::CheckValue> &&value )
 {
   checkValueValue = std::move( value);
 }
@@ -545,7 +546,7 @@ void FileListFile::decodeFilesInfo(
     listIt = Helper::getInt< uint16_t>( listIt, crc);
 
     // CheckValue (keep default initialised if not V3 File Info
-    std::optional< CheckValue> checkValue{};
+    std::optional< Arinc645::CheckValue > checkValue{};
 
     // following fields are available in ARINC 665-3 ff
     if ( decodeV3Data )
@@ -553,7 +554,7 @@ void FileListFile::decodeFilesInfo(
       // check Value
       checkValue = CheckValueUtils_decode(
         rawFile,
-        std::distance( rawFile.begin(), listIt));
+        std::distance( rawFile.begin(), listIt ) );
     }
 
 
