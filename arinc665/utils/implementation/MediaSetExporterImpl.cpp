@@ -214,7 +214,7 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
       medium->mediumNumber(),
       "/" + std::string{ ListOfLoadsName } ) };
   const uint16_t listOfLoadsFileCrc{
-    Files::Arinc665File::calculateChecksum( rawListOfLoadsFile, 0 ) };
+    Files::Arinc665File::calculateChecksum( rawListOfLoadsFile ) };
 
   fileListFile.file({
     std::string{ ListOfLoadsName },
@@ -231,7 +231,7 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
         medium->mediumNumber(),
         "/" + std::string{ ListOfBatchesName } ) };
     const uint16_t listOfBatchesFileCrc{
-      Files::Arinc665File::calculateChecksum( rawListOfBatchesFile, 0 ) };
+      Files::Arinc665File::calculateChecksum( rawListOfBatchesFile ) };
 
     fileListFile.file( {
       std::string{ ListOfBatchesName },
@@ -245,7 +245,7 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
   for ( const auto &file : medium->mediaSet()->files() )
   {
     const auto rawFile{ readFileHandlerV( medium->mediumNumber(), file->path() ) };
-    const uint16_t crc{ Files::Arinc665File::calculateChecksum( rawFile, 0 ) };
+    const uint16_t crc{ Files::Arinc665File::calculateChecksum( rawFile ) };
 
     fileListFile.file( {
       std::string{ file->name() },
@@ -393,7 +393,7 @@ void MediaSetExporterImpl::createLoadHeaderFile(
       file->medium()->mediumNumber(),
       file->path() ) };
     uint16_t fileCrc{
-      Files::Arinc665File::calculateChecksum( rawDataFile, 0 ) };
+      Files::Arinc665File::calculateChecksum( rawDataFile ) };
 
     loadHeaderFile.dataFile( Files::LoadFileInfo{
       std::string{ file->name() },
@@ -410,7 +410,7 @@ void MediaSetExporterImpl::createLoadHeaderFile(
       file->medium()->mediumNumber(),
       file->path() ) };
     uint16_t supportFileCrc{
-      Files::Arinc665File::calculateChecksum( rawSupportFile, 0 ) };
+      Files::Arinc665File::calculateChecksum( rawSupportFile ) };
 
     loadHeaderFile.supportFile( Files::LoadFileInfo{
       std::string{ file->name() },

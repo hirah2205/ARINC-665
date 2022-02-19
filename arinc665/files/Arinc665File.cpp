@@ -192,15 +192,13 @@ uint16_t Arinc665File::formatVersion( const ConstRawFileSpan &file )
   return formatVersion;
 }
 
-uint16_t Arinc665File::calculateChecksum(
-  const ConstRawFileSpan &file,
-  const std::size_t skipLastBytes)
+uint16_t Arinc665File::calculateChecksum( const ConstRawFileSpan &file )
 {
   Arinc645::Arinc645Crc16 arincCrc16{};
 
   arincCrc16.process_block(
-    &(*file.begin()),
-    &(*file.begin()) + file.size() - skipLastBytes);
+    std::data( file ),
+    std::data( file ) + file.size() );
 
   return arincCrc16.checksum();
 }
@@ -488,7 +486,7 @@ Arinc665File& Arinc665File::operator=( const Arinc665File &other ) noexcept
 
 Arinc665File& Arinc665File::operator=( Arinc665File &&other ) noexcept
 {
-  if ( this == &other)
+  if ( this == &other )
   {
     return *this;
   }
@@ -528,7 +526,7 @@ void Arinc665File::insertHeader( const RawFileSpan &rawFile ) const
 
   // crc
   const uint16_t calculatedCrc{
-    calculateChecksum( rawFile, checksumPosition ) };
+    calculateChecksum( rawFile.first( rawFile.size() - checksumPosition ) ) };
 
   Helper::setInt< uint16_t>(
     rawFile.begin() + static_cast< ptrdiff_t>( rawFile.size() ) - checksumPosition,
@@ -579,7 +577,7 @@ void Arinc665File::decodeHeader(
 
 
   // calculate checksum and compare against stored
-  uint16_t calcCrc = calculateChecksum( rawFile, checksumPosition );
+  uint16_t calcCrc = calculateChecksum( rawFile.first( rawFile.size() - checksumPosition ) );
   if ( crc != calcCrc )
   {
     BOOST_THROW_EXCEPTION(

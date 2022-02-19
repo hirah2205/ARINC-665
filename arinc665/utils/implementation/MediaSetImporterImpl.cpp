@@ -141,7 +141,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
 
     const auto rawFile{ readFileHandlerV( mediumIndex, fileInfo.path() ) };
 
-    const uint16_t crc{ Files::Arinc665File::calculateChecksum( rawFile, 0 ) };
+    const uint16_t crc{ Files::Arinc665File::calculateChecksum( rawFile ) };
 
     // compare checksums
     if ( crc != fileInfo.crc )

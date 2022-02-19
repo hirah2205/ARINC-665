@@ -23,9 +23,9 @@
 namespace Arinc665::Files {
 
 LoadHeaderFile::LoadHeaderFile( SupportedArinc665Version version) :
-  Arinc665File{ version, FileCrcOffset},
-  partFlagsV{ 0},
-  loadCrcV{ 0}
+  Arinc665File{ version, FileCrcOffset },
+  partFlagsV{ 0 },
+  loadCrcV{ 0 }
 {
 }
 
@@ -80,8 +80,8 @@ LoadHeaderFile::LoadHeaderFile( const ConstRawFileSpan &rawFile):
 LoadHeaderFile& LoadHeaderFile::operator=( const ConstRawFileSpan &rawFile)
 {
   // call inherited operator
-  Arinc665File::operator =( rawFile);
-  decodeBody( rawFile);
+  Arinc665File::operator =( rawFile );
+  decodeBody( rawFile );
 
   return *this;
 }

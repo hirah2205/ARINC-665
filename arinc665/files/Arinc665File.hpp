@@ -164,15 +164,10 @@ class ARINC665_EXPORT Arinc665File
      *
      * @param[in] file
      *   The raw ARINC 665 file.
-     * @param[in] skipLastBytes
-     *   Defines the number of bytes, which are skipped, e.g. contains the
-     *   stored checksum.
      *
      * @return Calculated checksum.
      **/
-    static uint16_t calculateChecksum(
-      const ConstRawFileSpan &file,
-      std::size_t skipLastBytes = 2U );
+    static uint16_t calculateChecksum( const ConstRawFileSpan &file );
 
     /**
      * @brief Returns the ARINC 665 file class type.
@@ -250,7 +245,7 @@ class ARINC665_EXPORT Arinc665File
      * @param[in] arinc665Version
      *   The ARINC 665 version.
      *
-     * @return The format version field of file.
+     * @return Format version field of file.
      **/
     static uint16_t formatVersionField(
       FileType fileType,

@@ -24,31 +24,32 @@ RawFile CheckValueUtils_encode(
 {
   RawFile rawCheckValue( sizeof( uint16_t ) );
 
-  if ( !checkValue)
+  if ( !checkValue
+    || ( Arinc645::CheckValueType::NotUsed == std::get< 0 >( *checkValue ) ) )
   {
-    Helper::setInt< uint16_t>( rawCheckValue.begin(), 0U);
+    Helper::setInt< uint16_t>( rawCheckValue.begin(), 0U );
     return rawCheckValue;
   }
 
   // Add Check Value Type
-  rawCheckValue.resize( rawCheckValue.size() + sizeof( uint16_t));
+  rawCheckValue.resize( rawCheckValue.size() + sizeof( uint16_t ) );
 
   Helper::setInt< uint16_t>(
-    rawCheckValue.begin() + sizeof( uint16_t),
-    static_cast< uint16_t>( std::get< 0>( *checkValue)));
+    rawCheckValue.begin() + sizeof( uint16_t ),
+    static_cast< uint16_t>( std::get< 0 >( *checkValue ) ) );
 
   // Check Value Data
-  const auto &checkValueData{ std::get< 1>( *checkValue)};
+  const auto &checkValueData{ std::get< 1 >( *checkValue ) };
 
   rawCheckValue.insert(
     rawCheckValue.end(),
     checkValueData.begin(),
-    checkValueData.end());
+    checkValueData.end() );
 
   // Check Value Length
   Helper::setInt< uint16_t>(
     rawCheckValue.begin(),
-    Helper::safeCast< uint16_t>( rawCheckValue.size()));
+    Helper::safeCast< uint16_t>( rawCheckValue.size() ) );
 
   return rawCheckValue;
 }
@@ -60,22 +61,22 @@ std::optional< Arinc645::CheckValue > CheckValueUtils_decode(
   auto it{ rawFile.begin() + offset };
 
   uint16_t checkValueLength{};
-  it = Helper::getInt< uint16_t>( it, checkValueLength);
+  it = Helper::getInt< uint16_t>( it, checkValueLength );
 
-  if (0U == checkValueLength)
+  if ( 0U == checkValueLength )
   {
     // empty check value
     return {};
   }
 
-  if ( checkValueLength <= ( 2U * sizeof( uint16_t)))
+  if ( checkValueLength <= ( 2U * sizeof( uint16_t ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "Invalid length field of check value" } );
   }
 
   uint16_t checkValueType{};
-  it = Helper::getInt< uint16_t>( it, checkValueType);
+  it = Helper::getInt< uint16_t>( it, checkValueType );
 
   return { std::make_tuple(
     static_cast< Arinc645::CheckValueType >( checkValueType ),

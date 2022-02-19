@@ -299,7 +299,7 @@ RawFile FileListFile::encode() const
   rawFile.resize( rawFile.size() + sizeof( uint16_t ) );
 
   // set header and crc
-  insertHeader( rawFile);
+  insertHeader( rawFile );
 
   return rawFile;
 }
