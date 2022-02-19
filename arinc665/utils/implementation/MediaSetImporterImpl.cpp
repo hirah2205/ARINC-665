@@ -17,6 +17,7 @@
 #include <arinc665/Arinc665Logger.hpp>
 
 #include <arinc645/Arinc645Crc.hpp>
+#include <arinc645/CheckValue.hpp>
 
 namespace Arinc665::Utils {
 
@@ -151,7 +152,22 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
         << boost::errinfo_file_name{ fileInfo.path().string() } );
     }
 
-    //! @todo Check "Check Value"
+    // Check and compare Check Value
+    if ( fileInfo.checkValue )
+    {
+      const auto &[ checkValueType, checkValue ] = *fileInfo.checkValue;
+
+      const auto checkValueCalculated{ Arinc645::CheckValue_calculate(
+        checkValueType,
+        rawFile ) };
+
+      if ( checkValue != checkValueCalculated )
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo{ "Check Value of file invalid" }
+          << boost::errinfo_file_name{ fileInfo.path().string() } );
+      }
+    }
 
     // remember file size
     fileSizes.emplace( fileName, rawFile.size() );
@@ -244,17 +260,16 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex )
 
       if ( fileIt == fileInfos.end() )
       {
-        BOOST_THROW_EXCEPTION(
-          Arinc665Exception()
-            << Helper::AdditionalInfo{ "batch file not found" }
-            << boost::errinfo_file_name( std::string{ batch.filename } ) );
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo{ "batch file not found" }
+          << boost::errinfo_file_name( std::string{ batch.filename } ) );
       }
 
       // checks that the batch list and file list entry maps to the same file entry
       if ( batch != fileIt->second )
       {
-        BOOST_THROW_EXCEPTION(
-          Arinc665Exception() << Helper::AdditionalInfo{ "File inconsistency" } );
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo{ "File inconsistency" } );
       }
     }
   }
@@ -457,7 +472,24 @@ void MediaSetImporterImpl::addLoads()
           << boost::errinfo_file_name{ dataFile.filename } );
       }
 
-      //! @todo Check Type Value ?!?
+      // Check File Check Value
+      if ( dataFile.checkValue )
+      {
+        if ( dataFileInfo->second.checkValue
+          && ( std::get< 0 >( *dataFile.checkValue ) == std::get< 0 >( *dataFileInfo->second.checkValue ) ) )
+        {
+          if ( std::get< 1 >( *dataFile.checkValue ) != std::get< 1 >( *dataFileInfo->second.checkValue ) )
+          {
+            BOOST_THROW_EXCEPTION( Arinc665Exception()
+              << Helper::AdditionalInfo{ "Data File Check Value inconsistent" }
+              << boost::errinfo_file_name{ dataFile.filename } );
+          }
+        }
+        else
+        {
+          //! @todo Check Check Type Value
+        }
+      }
 
       loadPtr->dataFile( dataFilePtr, dataFile.partNumber );
     }
@@ -511,7 +543,24 @@ void MediaSetImporterImpl::addLoads()
           << boost::errinfo_file_name{ supportFile.filename } );
       }
 
-      //! @todo Check Type Value ?!?
+      // Check File Check Value
+      if ( supportFile.checkValue )
+      {
+        if ( supportFileInfo->second.checkValue
+          && ( std::get< 0 >( *supportFile.checkValue ) == std::get< 0 >( *supportFileInfo->second.checkValue ) ) )
+        {
+          if ( std::get< 1 >( *supportFile.checkValue ) != std::get< 1 >( *supportFileInfo->second.checkValue ) )
+          {
+            BOOST_THROW_EXCEPTION( Arinc665Exception()
+              << Helper::AdditionalInfo{ "Data File Check Value inconsistent" }
+              << boost::errinfo_file_name{ supportFile.filename } );
+          }
+        }
+        else
+        {
+          //! @todo Check Check Type Value
+        }
+      }
 
       loadPtr->supportFile( supportFilePtr, supportFile.partNumber );
     }

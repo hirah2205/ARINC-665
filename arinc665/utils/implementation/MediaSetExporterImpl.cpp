@@ -98,14 +98,14 @@ MediaSetExporter& MediaSetExporterImpl::arinc665Version(
 MediaSetExporter& MediaSetExporterImpl::createBatchFiles(
   FileCreationPolicy createBatchFiles )
 {
-  createBatchFilesV = std::move( createBatchFiles );
+  createBatchFilesV = createBatchFiles ;
   return *this;
 }
 
 MediaSetExporter& MediaSetExporterImpl::createLoadHeaderFiles(
   FileCreationPolicy createLoadHeaderFiles )
 {
-  createLoadHeaderFilesV = std::move( createLoadHeaderFiles );
+  createLoadHeaderFilesV = createLoadHeaderFiles;
   return *this;
 }
 
@@ -389,10 +389,11 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   // calculate data files CRC and set data.
   for ( const auto &[ file,partNumber ] : load->dataFiles() )
   {
-    auto rawDataFile{ readFileHandlerV(
+    const auto rawDataFile{ readFileHandlerV(
       file->medium()->mediumNumber(),
       file->path() ) };
-    uint16_t fileCrc{
+
+    const uint16_t fileCrc{
       Files::Arinc665File::calculateChecksum( rawDataFile ) };
 
     loadHeaderFile.dataFile( Files::LoadFileInfo{
@@ -406,10 +407,11 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   // calculate support files CRC and set data.
   for ( const auto &[file,partNumber] : load->supportFiles() )
   {
-    auto rawSupportFile{ readFileHandlerV(
+    const auto rawSupportFile{ readFileHandlerV(
       file->medium()->mediumNumber(),
       file->path() ) };
-    uint16_t supportFileCrc{
+
+    const uint16_t supportFileCrc{
       Files::Arinc665File::calculateChecksum( rawSupportFile ) };
 
     loadHeaderFile.supportFile( Files::LoadFileInfo{
