@@ -249,4 +249,37 @@ void Load::loadType( Type &&type)
   typeV = std::move( type);
 }
 
+std::optional< Arinc645::CheckValueType > Load::loadCheckValueType() const
+{
+  return loadCheckValueTypeV;
+}
+
+void Load::loadCheckValueType(
+  std::optional< Arinc645::CheckValueType > checkValueType )
+{
+  loadCheckValueTypeV = checkValueType;
+}
+
+std::optional< Arinc645::CheckValueType > Load::dataFilesCheckValueType() const
+{
+  return dataFilesCheckValueTypeV;
+}
+
+void Load::dataFilesCheckValueType(
+  std::optional< Arinc645::CheckValueType > checkValueType )
+{
+  dataFilesCheckValueTypeV = checkValueType;
+}
+
+std::optional< Arinc645::CheckValueType > Load::supportFilesCheckValueType() const
+{
+  return supportFilesCheckValueTypeV;
+}
+
+void Load::supportFilesCheckValueType(
+  std::optional< Arinc645::CheckValueType > checkValueType )
+{
+  supportFilesCheckValueTypeV = checkValueType;
+}
+
 }

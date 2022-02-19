@@ -93,13 +93,13 @@ class ARINC665_EXPORT FileListFile : public ListFile
     //! Offset of the File Check Value Pointer Field (Only ARINC 665-3/4)
     static constexpr ptrdiff_t FileCheckValuePointerFieldOffsetV3{ 20 };
 
-    //! First Start of pointer Data for ARINC 665-1 Load Headers.
+    //! First Start of pointer Data for ARINC 665-1 File List File.
     static constexpr ptrdiff_t FileHeaderSizeV1 = 18;
 
-    //! First Start of pointer Data for ARINC 665-2 Load Headers.
+    //! First Start of pointer Data for ARINC 665-2 File List File.
     static constexpr ptrdiff_t FileHeaderSizeV2 = 20;
 
-    //! First Start of pointer Data for ARINC 665-3/4/5 Load Headers.
+    //! First Start of pointer Data for ARINC 665-3/4/5 File List File.
     static constexpr ptrdiff_t FileHeaderSizeV3 = 24;
 
     /**
@@ -304,8 +304,8 @@ class ARINC665_EXPORT FileListFile : public ListFile
     FilesInfo filesV;
     //! Use Defined Data.
     UserDefinedData userDefinedDataV;
-    //! Load Check Value (since ARINC 665-3)
-    std::optional< Arinc645::CheckValue> checkValueValue;
+    //! Check Value (since ARINC 665-3)
+    std::optional< Arinc645::CheckValue> checkValueV;
 };
 
 }

@@ -17,7 +17,10 @@
 #include <arinc665/media/Base.hpp>
 #include <arinc665/media/Medium.hpp>
 
+#include <arinc645/Arinc645.hpp>
+
 #include <string_view>
+#include <optional>
 
 namespace Arinc665::Media {
 
@@ -394,6 +397,60 @@ class ARINC665_EXPORT MediaSet : public Base
 
     /** @} **/
 
+    /**
+     * @name Media Set Check Value Type
+     *
+     * This information is used to determine the Check Value Type used for
+     * genration of Media Set Check Value within FILES.LUM.
+     *
+     * @{
+     **/
+
+    /**
+     * @brief Returns the Media Set Check Value Type.
+     *
+     * @return Media Set Check Value Type
+     **/
+    std::optional< Arinc645::CheckValueType > mediaSetCheckValueType() const;
+
+    /**
+     * @brief Updates the Media Set Check Value Type
+     *
+     * @param[in] checkValueType
+     *   New Media Set Check Value Type.
+     **/
+    void mediaSetCheckValueType(
+      std::optional< Arinc645::CheckValueType > checkValueType );
+
+    /** @} **/
+
+    /**
+     * @name Files Check Value Type
+     *
+     * This information is used to determine the Check Value Type used for
+     * genration of Files Check Value within FILES.LUM.
+     * It can be override on per file basis.
+     * @{
+     **/
+
+    /**
+     * @brief Returns the Files Check Value Type.
+     *
+     * @return Media Set Check Value Type
+     **/
+    std::optional< Arinc645::CheckValueType > filesCheckValueType() const;
+
+    /**
+     * @brief Updates the Files Check Value Type
+     *
+     * @param[in] checkValueType
+     *   New Files Check Value Type.
+     **/
+    void filesCheckValueType(
+      std::optional< Arinc645::CheckValueType > checkValueType );
+
+    /** @} **/
+
   private:
     //! Media
     Media mediaV;
@@ -405,6 +462,10 @@ class ARINC665_EXPORT MediaSet : public Base
     UserDefinedData loadsUserDefinedDataV;
     //! User Defined Data for Batches List Files
     UserDefinedData batchesUserDefinedDataV;
+    //! ARINC 645 Check Value for Media Set Generation
+    std::optional< Arinc645::CheckValueType > mediaSetCheckValueTypeV;
+    //! ARINC 645 Check Value for Media Set File List Generation
+    std::optional< Arinc645::CheckValueType > filesCheckValueTypeV;
 };
 
 }

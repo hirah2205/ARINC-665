@@ -16,7 +16,10 @@
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/Base.hpp>
 
+#include <arinc645/Arinc645.hpp>
+
 #include <filesystem>
+#include <optional>
 
 namespace Arinc665::Media {
 
@@ -99,6 +102,36 @@ class ARINC665_EXPORT File : public Base
      **/
     [[nodiscard]] std::filesystem::path path() const;
 
+
+    /**
+     * @name File Check Value Type
+     *
+     * This information is used to determine the Check Value Type used for
+     * generation of Media Set Files List Check Value.
+     * This Value override a common value set by
+     * ref MediaSet::filesCheckValueType().
+     *
+     * @{
+     **/
+
+    /**
+     * @brief Returns the File Check Value Type.
+     *
+     * @return File Check Value Type
+     **/
+    std::optional< Arinc645::CheckValueType > checkValueType() const;
+
+    /**
+     * @brief Updates the File Check Value Type
+     *
+     * @param[in] checkValueType
+     *   New File Check Value Type.
+     **/
+    void checkValueType(
+      std::optional< Arinc645::CheckValueType > checkValueType );
+
+    /** @} **/
+
   protected:
     /**
      * @brief Initialises the instance with the given data.
@@ -125,13 +158,15 @@ class ARINC665_EXPORT File : public Base
      * @throw Arinc665Exception
      *   If parent is invalid
      **/
-    void parent( const ContainerEntityPtr& parent);
+    void parent( const ContainerEntityPtr& parent );
 
   private:
     //! Parent
     ContainerEntityPtr::weak_type parentV;
     //! File Name
     const std::string nameV;
+    //! Check Value Type
+    std::optional< Arinc645::CheckValueType > checkValueTypeV;
 };
 
 }

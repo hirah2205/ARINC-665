@@ -16,6 +16,8 @@
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
 
+#include <arinc645/Arinc645.hpp>
+
 #include <libxml++/libxml++.h>
 
 namespace Arinc665::Utils {

@@ -22,6 +22,8 @@
 #include <arinc665/Arinc665Logger.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <arinc645/CheckValueTypeDescription.hpp>
+
 #include <helper/SafeCast.hpp>
 
 #include <boost/format.hpp>
@@ -37,6 +39,8 @@ namespace Arinc665::Utils {
  * @return string view of @p str.
  **/
 static std::string_view toStringView( const Glib::ustring &str );
+
+static Glib::ustring toGlibString( std::string_view str );
 
 Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadFromXml(
   const std::filesystem::path &xmlFile )
@@ -114,9 +118,45 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
   const xmlpp::Element &mediaSetElement )
 {
   const auto partNumber{ mediaSetElement.get_attribute_value( "PartNumber" ) };
+  const auto mediaSetCheckValue{ mediaSetElement.get_attribute_value( "MediaSetCheckValue" ) };
+  const auto filesCheckValue{ mediaSetElement.get_attribute_value( "FilesCheckValue" ) };
 
   auto mediaSet{ std::make_shared< Media::MediaSet>() };
   mediaSet->partNumber( partNumber );
+
+  // Media Set Check Value
+  if ( !mediaSetCheckValue.empty() )
+  {
+    auto checkValue{
+      Arinc645::CheckValueTypeDescription::instance().enumeration(
+        static_cast< std::string >( mediaSetCheckValue ) ) };
+
+    if ( Arinc645::CheckValueType::Invalid == checkValue )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ "Invalid Check Value" }
+        << boost::errinfo_at_line{ mediaSetElement.get_line() } );
+    }
+
+    mediaSet->mediaSetCheckValueType( checkValue );
+  }
+
+  // Files Check Value
+  if ( !filesCheckValue.empty() )
+  {
+    auto checkValue{
+      Arinc645::CheckValueTypeDescription::instance().enumeration(
+        static_cast< std::string >( filesCheckValue ) ) };
+
+    if ( Arinc645::CheckValueType::Invalid == checkValue )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ "Invalid Check Value" }
+        << boost::errinfo_at_line{ mediaSetElement.get_line() } );
+    }
+
+    mediaSet->filesCheckValueType( checkValue );
+  }
 
   const auto filesUserDefinedDataNode = dynamic_cast< const xmlpp::Element*>(
     mediaSetElement.get_first_child( "FilesUserDefinedData" ) );
@@ -231,12 +271,30 @@ void Arinc665XmlImpl::saveMediaSet(
 {
   mediaSetNode.set_attribute( "PartNumber", mediaSet->partNumber().data() );
 
+  // Media Set Check Value
+  if ( auto checkValue{ mediaSet->mediaSetCheckValueType() }; checkValue )
+  {
+    mediaSetNode.set_attribute(
+      "MediaSetCheckValue",
+      toGlibString(
+        Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) ) );
+  }
+
+  // Files Check Value
+  if ( auto checkValue{ mediaSet->filesCheckValueType() }; checkValue )
+  {
+    mediaSetNode.set_attribute(
+      "FilesCheckValue",
+      toGlibString(
+        Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) ) );
+  }
+
   // Files List User Defined Data
   if (
     const auto &filesUserDefinedData{ mediaSet->filesUserDefinedData() };
     !filesUserDefinedData.empty() )
   {
-    mediaSetNode.add_child( "FilesUserDefinedData")->add_child_text(
+    mediaSetNode.add_child( "FilesUserDefinedData" )->add_child_text(
       std::string{ filesUserDefinedData.begin(), filesUserDefinedData.end() } );
   }
 
@@ -245,7 +303,7 @@ void Arinc665XmlImpl::saveMediaSet(
     const auto &loadsUserDefinedData{ mediaSet->loadsUserDefinedData() };
     !loadsUserDefinedData.empty() )
   {
-    mediaSetNode.add_child( "LoadsUserDefinedData")->add_child_text(
+    mediaSetNode.add_child( "LoadsUserDefinedData" )->add_child_text(
       std::string{ loadsUserDefinedData.begin(), loadsUserDefinedData.end() } );
   }
 
@@ -254,7 +312,7 @@ void Arinc665XmlImpl::saveMediaSet(
     const auto &batchesUserDefinedData{ mediaSet->batchesUserDefinedData() };
     !batchesUserDefinedData.empty() )
   {
-    mediaSetNode.add_child( "BatchesUserDefinedData")->add_child_text(
+    mediaSetNode.add_child( "BatchesUserDefinedData" )->add_child_text(
       std::string{
         batchesUserDefinedData.begin(),
         batchesUserDefinedData.end() } );
@@ -331,12 +389,32 @@ void Arinc665XmlImpl::loadEntries(
       continue;
     }
 
+    // Check Value
+    const auto checkValueAttr{ entryElement->get_attribute_value( "CheckValue" ) };
     // common source path attribute for files
     const auto sourcePath{ entryElement->get_attribute_value( "SourcePath" ) };
+
+    std::optional< Arinc645::CheckValueType > checkValue{};
+
+    // File Check Value
+    if ( !checkValueAttr.empty() )
+    {
+      checkValue = Arinc645::CheckValueTypeDescription::instance().enumeration(
+        static_cast< std::string >( checkValueAttr ) );
+
+      if ( Arinc645::CheckValueType::Invalid == checkValue )
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo{ "Invalid Check Value" }
+          << boost::errinfo_at_line{ entryNode->get_line() } );
+      }
+    }
 
     if ( entryNode->get_name() == "File"s )
     {
       auto file{ current->addRegularFile( toStringView( name ) ) };
+
+      file->checkValueType( checkValue );
 
       // set source path if attribute is present
       if ( !sourcePath.empty() )
@@ -351,6 +429,8 @@ void Arinc665XmlImpl::loadEntries(
     {
       auto load{ current->addLoad( toStringView( name ) ) };
 
+      load->checkValueType( checkValue );
+
       // set source path if attribute is present
       if ( !sourcePath.empty() )
       {
@@ -363,6 +443,8 @@ void Arinc665XmlImpl::loadEntries(
     if ( entryNode->get_name() == "BatchFile"s )
     {
       auto batch{ current->addBatch( toStringView( name ) ) };
+
+      batch->checkValueType( checkValue );
 
       // set source path if attribute is present
       if ( !sourcePath.empty() )
@@ -388,7 +470,7 @@ void Arinc665XmlImpl::saveEntries(
   {
     auto directoryNode{ currentNode.add_child( "Directory" ) };
 
-    directoryNode->set_attribute( "Name", dirEntry->name().data() );
+    directoryNode->set_attribute( "Name", toGlibString( dirEntry->name() ) );
 
     saveEntries( dirEntry, filePathMapping, *directoryNode );
   }
@@ -424,7 +506,16 @@ void Arinc665XmlImpl::saveEntries(
     assert( nullptr != fileNode );
 
     // Add name attribute
-    fileNode->set_attribute( "Name", fileEntry->name().data() );
+    fileNode->set_attribute( "Name", toGlibString( fileEntry->name() ) );
+
+    // Check Value Type
+    if ( auto checkValue{ fileEntry->checkValueType() }; checkValue )
+    {
+      fileNode->set_attribute(
+        "CheckValue",
+        toGlibString(
+          Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) ) );
+    }
 
     // Add source path attribute (optional)
     if (
@@ -445,6 +536,9 @@ void Arinc665XmlImpl::loadLoad(
   const auto partFlags{ loadElement.get_attribute_value( "PartFlags" ) };
   const auto description{ loadElement.get_attribute_value( "Description" ) };
   const auto type{ loadElement.get_attribute_value( "Type" ) };
+  const auto loadCheckValue{ loadElement.get_attribute_value( "LoadCheckValue" ) };
+  const auto dataFilesCheckValue{ loadElement.get_attribute_value( "DataFilesCheckValue" ) };
+  const auto supportFilesCheckValue{ loadElement.get_attribute_value( "SupportFilesCheckValue" ) };
 
   if ( nameRef.empty() )
   {
@@ -629,6 +723,57 @@ void Arinc665XmlImpl::loadLoad(
         userDefinedData.begin(),
         userDefinedData.end() } );
   }
+
+  // Load Check Value
+  if ( !loadCheckValue.empty() )
+  {
+    auto checkValue{
+      Arinc645::CheckValueTypeDescription::instance().enumeration(
+        static_cast< std::string >( loadCheckValue ) ) };
+
+    if ( Arinc645::CheckValueType::Invalid == checkValue )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ "Invalid Check Value" }
+        << boost::errinfo_at_line{ loadElement.get_line() } );
+    }
+
+    load->loadCheckValueType( checkValue );
+  }
+
+  // Data Files Check Value
+  if ( !dataFilesCheckValue.empty() )
+  {
+    auto checkValue{
+      Arinc645::CheckValueTypeDescription::instance().enumeration(
+        static_cast< std::string >( dataFilesCheckValue ) ) };
+
+    if ( Arinc645::CheckValueType::Invalid == checkValue )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ "Invalid Check Value" }
+        << boost::errinfo_at_line{ loadElement.get_line() } );
+    }
+
+    load->dataFilesCheckValueType( checkValue );
+  }
+
+  // Support Files Check Value
+  if ( !supportFilesCheckValue.empty() )
+  {
+    auto checkValue{
+      Arinc645::CheckValueTypeDescription::instance().enumeration(
+        static_cast< std::string >( supportFilesCheckValue ) ) };
+
+    if ( Arinc645::CheckValueType::Invalid == checkValue )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ "Invalid Check Value" }
+        << boost::errinfo_at_line{ loadElement.get_line() } );
+    }
+
+    load->supportFilesCheckValueType( checkValue );
+  }
 }
 
 void Arinc665XmlImpl::saveLoad(
@@ -651,6 +796,33 @@ void Arinc665XmlImpl::saveLoad(
     loadElement.set_attribute(
       "Type",
       ( boost::format( "0x%04X" ) % id ).str() );
+  }
+
+  // Load Check Value
+  if ( auto checkValue{ load->loadCheckValueType() }; checkValue )
+  {
+    loadElement.set_attribute(
+      "LoadCheckValue",
+      toGlibString(
+        Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) ) );
+  }
+
+  // Data Files Check Value
+  if ( auto checkValue{ load->dataFilesCheckValueType() }; checkValue )
+  {
+    loadElement.set_attribute(
+      "DataFilesCheckValue",
+      toGlibString(
+        Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) ) );
+  }
+
+  // Support Files Check Value
+  if ( auto checkValue{ load->supportFilesCheckValueType() }; checkValue )
+  {
+    loadElement.set_attribute(
+      "SupportFilesCheckValue",
+      toGlibString(
+        Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) ) );
   }
 
   // iterate over target hardware
@@ -814,6 +986,11 @@ void Arinc665XmlImpl::saveBatch(
 static std::string_view toStringView( const Glib::ustring &str )
 {
   return std::string_view{ str.data(), str.length() };
+}
+
+static Glib::ustring toGlibString( std::string_view str )
+{
+  return Glib::ustring{ str.data(), str.size() };
 }
 
 }

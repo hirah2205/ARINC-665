@@ -19,7 +19,7 @@ namespace Arinc665 {
 
 using namespace std::literals;
 
-SupportedArinc665VersionDescription::SupportedArinc665VersionDescription():
+SupportedArinc665VersionDescription::SupportedArinc665VersionDescription() :
   Description{
     { "Supplement2"sv,   SupportedArinc665Version::Supplement2 },
     { "Supplement345"sv, SupportedArinc665Version::Supplement345 }

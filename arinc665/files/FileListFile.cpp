@@ -21,8 +21,8 @@
 
 namespace Arinc665::Files {
 
-FileListFile::FileListFile( SupportedArinc665Version version):
-  ListFile{ version}
+FileListFile::FileListFile( SupportedArinc665Version version ):
+  ListFile{ version }
 {
 }
 
@@ -128,18 +128,18 @@ void FileListFile::userDefinedData( UserDefinedData &&userDefinedData )
 
 const std::optional< Arinc645::CheckValue >& FileListFile::checkValue() const
 {
-  return checkValueValue;
+  return checkValueV;
 }
 
 void FileListFile::checkValue(
   const std::optional< Arinc645::CheckValue> &value )
 {
-  checkValueValue = value;
+  checkValueV = value;
 }
 
-void FileListFile::checkValue( std::optional< Arinc645::CheckValue> &&value )
+void FileListFile::checkValue( std::optional< Arinc645::CheckValue > &&value )
 {
-  checkValueValue = std::move( value);
+  checkValueV = std::move( value);
 }
 
 bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
@@ -268,22 +268,30 @@ RawFile FileListFile::encode() const
     userDefinedDataPtr);
 
 
-  // Load Check Value (only in V3 mode)
+  // Check Value (only in V3 mode)
   if ( encodeV3Data )
   {
-    // Alternative implementation set File Check Pointer to zero
+    if ( checkValueV )
+    {
+      const auto rawCheckValue{ CheckValueUtils_encode( checkValueV ) };
+      assert( rawCheckValue.size() % 2 == 0 );
 
-    const auto rawCheckValue{ CheckValueUtils_encode( checkValueValue) };
-    assert( rawCheckValue.size() % 2 == 0);
+      Helper::setInt< uint32_t >(
+        rawFile.begin() + FileCheckValuePointerFieldOffsetV3,
+        static_cast< uint32_t >( nextFreeOffset / 2U ) );
 
-    Helper::setInt< uint32_t>(
-      rawFile.begin() + FileCheckValuePointerFieldOffsetV3,
-      static_cast< uint32_t >( nextFreeOffset / 2U ) );
-
-    rawFile.insert(
-      rawFile.end(),
-      rawCheckValue.begin(),
-      rawCheckValue.end() );
+      rawFile.insert(
+        rawFile.end(),
+        rawCheckValue.begin(),
+        rawCheckValue.end() );
+    }
+    else
+    {
+      // no Check Value provided - set to 0
+      Helper::setInt< uint32_t >(
+        rawFile.begin() + FileCheckValuePointerFieldOffsetV3,
+        0U );
+    }
   }
 
 
@@ -348,7 +356,7 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
     rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
     userDefinedDataPtr);
 
-  uint32_t fileCheckValuePtr = 0;
+  uint32_t fileCheckValuePtr{};
 
   // only decode this pointers in V3 mode
   if ( decodeV3Data )
@@ -391,10 +399,10 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
 
 
   // File Check Value Field (ARINC 665-3)
-  checkValueValue.reset();
+  checkValueV.reset();
   if ( decodeV3Data && ( 0U != fileCheckValuePtr ) )
   {
-    checkValueValue = CheckValueUtils_decode(
+    checkValueV = CheckValueUtils_decode(
       rawFile,
       2 * static_cast< ptrdiff_t >( fileCheckValuePtr ) );
   }

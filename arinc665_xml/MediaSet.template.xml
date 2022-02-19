@@ -5,7 +5,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.thomas-vogt.de/Arinc665MediaSet ../arinc665_xml/Arinc665MediaSet.xsd"
 
-  PartNumber="CCC" >
+  PartNumber="CCC" MediaSetCheckValue="Crc64" >
 
   <FilesUserDefinedData>File Data</FilesUserDefinedData>
   <LoadsUserDefinedData>Loads Data</LoadsUserDefinedData>
@@ -23,7 +23,7 @@
   </Medium>
 
   <Loads>
-    <Load NameRef="Load1.LUH" PartNumber="AABBCC" PartFlags="0x0000" Description="Test Load Description" Type="0x0501" >
+    <Load NameRef="Load1.LUH" PartNumber="AABBCC" PartFlags="0x0000" Description="Test Load Description" Type="0x0501" LoadCheckValue="Crc64" >
       <TargetHardware ThwId="ABCDEF" >
         <Position Pos="123" />
         <Position Pos="456" />

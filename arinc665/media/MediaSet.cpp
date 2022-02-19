@@ -417,4 +417,27 @@ void MediaSet::batchesUserDefinedData( UserDefinedData &&userDefinedData)
   batchesUserDefinedDataV = std::move( userDefinedData);
 }
 
+std::optional< Arinc645::CheckValueType >
+MediaSet::mediaSetCheckValueType() const
+{
+  return mediaSetCheckValueTypeV;
+}
+
+void MediaSet::mediaSetCheckValueType(
+  std::optional< Arinc645::CheckValueType > checkValueType )
+{
+  mediaSetCheckValueTypeV = checkValueType;
+}
+
+std::optional< Arinc645::CheckValueType > MediaSet::filesCheckValueType() const
+{
+  return filesCheckValueTypeV;
+}
+
+void MediaSet::filesCheckValueType(
+  std::optional< Arinc645::CheckValueType > checkValueType )
+{
+  filesCheckValueTypeV = checkValueType;
+}
+
 }

@@ -98,6 +98,17 @@ std::filesystem::path File::path() const
   return parentPtr->path() / nameV;
 }
 
+std::optional< Arinc645::CheckValueType > File::checkValueType() const
+{
+  return checkValueTypeV;
+}
+
+void File::checkValueType(
+  std::optional< Arinc645::CheckValueType > checkValueType )
+{
+  checkValueTypeV = checkValueType;
+}
+
 File::File( const ContainerEntityPtr& parent, std::string_view name ):
   parentV{ parent}, nameV{ name}
 {

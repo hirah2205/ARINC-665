@@ -17,6 +17,8 @@
 #include <arinc665/media/File.hpp>
 #include <arinc665/media/RegularFile.hpp>
 
+#include <arinc645/Arinc645.hpp>
+
 #include <string>
 #include <list>
 #include <vector>
@@ -299,6 +301,87 @@ class ARINC665_EXPORT Load : public File
 
     /** @} **/
 
+    /**
+     * @name Load Check Value Type
+     *
+     * This information is used to determine the Check Value Type used for
+     * generation of Load Check Value.
+     *
+     * @{
+     **/
+
+    /**
+     * @brief Returns the Load Check Value Type.
+     *
+     * @return Load Check Value Type
+     **/
+    std::optional< Arinc645::CheckValueType > loadCheckValueType() const;
+
+    /**
+     * @brief Updates the Load Check Value Type
+     *
+     * @param[in] checkValueType
+     *   New Load Check Value Type.
+     **/
+    void loadCheckValueType(
+      std::optional< Arinc645::CheckValueType > checkValueType );
+
+    /** @} **/
+
+    /**
+     * @name Data Files Check Value Type
+     *
+     * This information is used to determine the Check Value Type used for
+     * generation of Data Files Check Value.
+     *
+     * @{
+     **/
+
+    /**
+     * @brief Returns the Data Files Check Value Type.
+     *
+     * @return Data Files Check Value Type
+     **/
+    std::optional< Arinc645::CheckValueType > dataFilesCheckValueType() const;
+
+    /**
+     * @brief Updates the Data Files Check Value Type
+     *
+     * @param[in] checkValueType
+     *   New Data Files Check Value Type.
+     **/
+    void dataFilesCheckValueType(
+      std::optional< Arinc645::CheckValueType > checkValueType );
+
+    /** @} **/
+
+    /**
+     * @name Support Files Check Value Type
+     *
+     * This information is used to determine the Check Value Type used for
+     * generation of Support Files Check Value.
+     *
+     * @{
+     **/
+
+    /**
+     * @brief Returns the Support Files Check Value Type.
+     *
+     * @return Support Files Check Value Type
+     **/
+    std::optional< Arinc645::CheckValueType > supportFilesCheckValueType() const;
+
+    /**
+     * @brief Updates the Support Files Check Value Type
+     *
+     * @param[in] checkValueType
+     *   New Support Files Check Value Type.
+     **/
+    void supportFilesCheckValueType(
+      std::optional< Arinc645::CheckValueType > checkValueType );
+
+    /** @} **/
+
   private:
     //! Part Flags
     uint16_t partFlagsV;
@@ -314,6 +397,12 @@ class ARINC665_EXPORT Load : public File
     UserDefinedData userDefinedDataV;
     //! Load Type
     Type typeV;
+    //! Load Check Value Type
+    std::optional< Arinc645::CheckValueType > loadCheckValueTypeV;
+    //! Data Files Check Value Type
+    std::optional< Arinc645::CheckValueType > dataFilesCheckValueTypeV;
+    //! Support Files Check Value Type
+    std::optional< Arinc645::CheckValueType > supportFilesCheckValueTypeV;
 };
 
 }

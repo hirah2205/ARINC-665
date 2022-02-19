@@ -22,7 +22,7 @@ namespace Arinc665::Files {
 RawFile CheckValueUtils_encode(
   const std::optional< Arinc645::CheckValue> &checkValue )
 {
-  RawFile rawCheckValue( sizeof( uint16_t));
+  RawFile rawCheckValue( sizeof( uint16_t ) );
 
   if ( !checkValue)
   {
