@@ -24,11 +24,14 @@ namespace Arinc665Qt::Media {
 MediaSetWidget::MediaSetWidget( QWidget * const parent ):
   QWidget{ parent },
   ui{ std::make_unique< Ui::MediaSetWidget>() },
-  mediaSetModelV{ nullptr },
-  loadsModelV{ nullptr },
-  batchesModelV{ nullptr }
+  loadsModelV{ std::make_unique< Media::LoadsModel >( this ) },
+  batchesModelV{ std::make_unique< Media::BatchesModel >( this ) },
+  mediaSetModelV{ nullptr }
 {
   ui->setupUi( this );
+
+  ui->loads->setModel( loadsModelV.get() );
+  ui->batches->setModel( batchesModelV.get() );
 }
 
 MediaSetWidget::~MediaSetWidget() = default;
@@ -39,27 +42,22 @@ void MediaSetWidget::mediaSetModel(
   mediaSetModelV = model;
 }
 
-void MediaSetWidget::loadsModel( Arinc665Qt::Media::LoadsModel * const model )
-{
-  ui->loads->setModel( model );
-}
-
-void MediaSetWidget::batchesModel(
-  Arinc665Qt::Media::BatchesModel * const model )
-{
-  ui->batches->setModel( model );
-}
-
 void MediaSetWidget::selectedMediaSet(
   Arinc665::Media::ConstMediaSetPtr mediaSet )
 {
   mediaSetV = std::move( mediaSet );
 
-  if ( mediaSetV)
+  if ( mediaSetV )
   {
     ui->partNumberLineEdit->setText( QString::fromUtf8(
       mediaSetV->partNumber().data(),
       static_cast< int >( mediaSetV->partNumber().length() ) ) );
+
+    loadsModelV->loads( mediaSetV->loads() );
+    ui->loads->resizeColumnsToContents();
+
+    batchesModelV->batches( mediaSetV->batches() );
+    ui->batches->resizeColumnsToContents();
   }
 }
 

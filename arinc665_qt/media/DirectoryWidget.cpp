@@ -37,11 +37,13 @@ void DirectoryWidget::mediaSetModel(
 {
   mediaSetModelV = model;
   ui->content->setModel( model );
+  ui->content->resizeColumnsToContents();
 }
 
 void DirectoryWidget::selectedDirectory( const QModelIndex &index )
 {
   ui->content->setRootIndex( index );
+  ui->content->resizeColumnsToContents();
 }
 
 void DirectoryWidget::selectedDirectory(

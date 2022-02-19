@@ -35,11 +35,13 @@ void MediumWidget::mediaSetModel(
 {
   mediaSetModelV = model;
   ui->content->setModel( model );
+  ui->content->resizeColumnsToContents();
 }
 
 void MediumWidget::selectedMedium( const QModelIndex &index )
 {
   ui->content->setRootIndex( index );
+  ui->content->resizeColumnsToContents();
 }
 
 void MediumWidget::selectedMedium( Arinc665::Media::ConstMediumPtr medium )

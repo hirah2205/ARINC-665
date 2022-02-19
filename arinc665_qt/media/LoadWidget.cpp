@@ -53,6 +53,9 @@ void LoadWidget::selectedLoad(
       loadV->targetHardwareIdPositions() );
     dataFilesModelV->loadFiles( loadV->dataFiles() );
     supportFilesModelV->loadFiles( loadV->supportFiles() );
+
+    ui->dataFiles->resizeColumnsToContents();
+    ui->supportFiles->resizeColumnsToContents();
   }
 }
 

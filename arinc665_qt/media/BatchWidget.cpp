@@ -56,6 +56,8 @@ void BatchWidget::selectedBatch(
 
     batchInfoModel->batchInformation( batchV->targets() );
     targetLoadsModel->loads( {} );
+
+    ui->targets->resizeColumnsToContents();
   }
 }
 
@@ -65,6 +67,8 @@ void BatchWidget::activatedTarget( const QModelIndex &index )
 
   targetLoadsModel->loads(
     batchInfoModel->constBatchTargetInformation( batchTagetInformation ).second );
+
+  ui->loads->resizeColumnsToContents();
 }
 
 }

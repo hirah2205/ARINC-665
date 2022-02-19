@@ -23,14 +23,21 @@
 
 namespace Arinc665Qt::MediaSetManager {
 
-//! Media Set Manager Controller
+/**
+ * @brief %Media Set Manager Controller
+ *
+ * This controller supports operation by using a predefined media set manager
+ * by calling @ref start(Arinc665::Utils::MediaSetManagerPtr).
+ * When calling @ref start(), the user is asked to select a media set
+ * configuration to load it.
+ **/
 class ARINC665_QT_EXPORT MediaSetManagerController : public QObject
 {
     Q_OBJECT
 
   public:
     /**
-     * @brief Initialises the Media Set Manager Controller.
+     * @brief Initialises the %Media Set Manager Controller.
      *
      * @param[in] parent
      *   Parent Widget
@@ -42,14 +49,15 @@ class ARINC665_QT_EXPORT MediaSetManagerController : public QObject
 
   public slots:
     /**
-     * @brief Querries fro Media Set Configuration,
+     * @brief Querries for %Media Set Configuration,
      **/
     void start();
 
     /**
-     * @brief Use given Media Set Configuration.
+     * @brief Use given %Media Set Configuration.
      *
-     * @param mediaSetManager
+     * @param[in] mediaSetManager
+     *   %Media Set Manager to use
      **/
     void start( Arinc665::Utils::MediaSetManagerPtr mediaSetManager );
 
@@ -58,8 +66,17 @@ class ARINC665_QT_EXPORT MediaSetManagerController : public QObject
     void finished();
 
   private slots:
+    /**
+     * @brief Slot called, when user has selected %Media Set Configuration.
+     **/
     void configurationSelected();
 
+    /**
+     * @brief User Selects View %Media Set Button
+     *
+     * @param[in] index
+     *   Model Index of Selected %Media Set
+     **/
     void viewMediaSet( const QModelIndex &index );
 
     void importMediaSet();

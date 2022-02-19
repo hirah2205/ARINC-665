@@ -93,10 +93,6 @@ class ARINC665_QT_EXPORT MediaSetController : public QObject
 
     //! Media Set Model
     std::unique_ptr< Media::MediaSetModel > mediaSetModel;
-    //! Loads Model
-    std::unique_ptr< Media::LoadsModel > loadsModel;
-    //! Batches Model
-    std::unique_ptr< Media::BatchesModel > batchesModel;
 
     //! Select Media Set directory dialog
     std::unique_ptr< QFileDialog > selectDirectoryDialog;

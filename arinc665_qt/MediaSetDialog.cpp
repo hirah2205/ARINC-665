@@ -29,9 +29,7 @@ namespace Arinc665Qt {
 MediaSetDialog::MediaSetDialog( QWidget * const parent ):
   QDialog{ parent},
   ui{ std::make_unique< Ui::MediaSetDialog>() },
-  mediaSetModelV{ nullptr },
-  loadsModelV{ nullptr },
-  batchesModelV{ nullptr }
+  mediaSetModelV{ nullptr }
 {
   ui->setupUi( this );
 
@@ -53,27 +51,27 @@ void MediaSetDialog::mediaSetModel( Media::MediaSetModel * const model )
 
   mediaSetModelV = model;
 
-  ui->mediaSetTreeView->setModel( model );
+  ui->mediaSetTreeView->setModel( mediaSetModelV );
 
-  ui->mediaSetWidget->mediaSetModel( model );
-  ui->mediumWidget->mediaSetModel( model );
-  ui->directoryWidget->mediaSetModel( model );
+  ui->mediaSetWidget->mediaSetModel( mediaSetModelV );
+  ui->mediumWidget->mediaSetModel( mediaSetModelV );
+  ui->directoryWidget->mediaSetModel( mediaSetModelV );
+
+  if ( nullptr != mediaSetModelV )
+  {
+    connect(
+      mediaSetModelV,
+      &Media::MediaSetModel::modelReset,
+      [ this ]{
+        ui->mediaSetTreeView->setCurrentIndex(
+          mediaSetModelV->index( 0, 0 ) );
+        ui->mediaSetTreeView->setExpanded(
+          mediaSetModelV->index( 0, 0 ),
+          true );
+        ui->mediaSetTreeView->resizeColumnToContents( 0 );
+      } );
+  }
 }
-
-void MediaSetDialog::loadsModel( Media::LoadsModel * const model )
-{
-  loadsModelV = model;
-
-  ui->mediaSetWidget->loadsModel( model );
-}
-
-void MediaSetDialog::batchesModel( Media::BatchesModel * const model )
-{
-  batchesModelV = model;
-
-  ui->mediaSetWidget->batchesModel( model );
-}
-
 
 void MediaSetDialog::itemSelected( const QModelIndex &index )
 {
@@ -90,9 +88,6 @@ void MediaSetDialog::itemSelected( const QModelIndex &index )
     {
       const auto mediaSet{
         std::dynamic_pointer_cast< const Arinc665::Media::MediaSet>( element ) };
-
-      loadsModelV->loads( mediaSet->loads() );
-      batchesModelV->batches( mediaSet->batches() );
 
       ui->detailsStackedWidget->setCurrentIndex( 0 );
       ui->mediaSetWidget->selectedMediaSet( mediaSet );

@@ -156,10 +156,30 @@ class ARINC665_QT_EXPORT TargetHardwareIdsPositionsModel :
       Arinc665::Media::Load::TargetHardwareIdPositions &&thwIdsPositions );
 
   private:
+    /**
+     * @brief Returns that for Target Hardware ID.
+     *
+     * @param[in] index
+     *   Model Index
+     * @param[in] role
+     *   Role to siplay
+     *
+     * @return Data Representation.
+     **/
     [[nodiscard]] QVariant dataThwId(
       const QModelIndex &index,
       int role ) const;
 
+    /**
+     * @brief Returns that for Target Position.
+     *
+     * @param[in] index
+     *   Model Index
+     * @param[in] role
+     *   Role to siplay
+     *
+     * @return Data Representation.
+     **/
     [[nodiscard]] QVariant dataPosition(
       const QModelIndex &index,
       int role ) const;

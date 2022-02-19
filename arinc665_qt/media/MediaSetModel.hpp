@@ -68,7 +68,7 @@ class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
     [[nodiscard]] QModelIndex index(
       int row,
       int column,
-      const QModelIndex &parent ) const override;
+      const QModelIndex &parent = {} ) const override;
 
     /**
      * @brief Return the parent of the given index.

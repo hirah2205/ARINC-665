@@ -51,22 +51,6 @@ class ARINC665_QT_EXPORT  MediaSetDialog : public QDialog
      **/
     void mediaSetModel( Media::MediaSetModel * model );
 
-    /**
-     * @brief Sets the Loads Model.
-     *
-     * @param[in] model
-     *   Loads Model.
-     **/
-    void loadsModel( Media::LoadsModel * model );
-
-    /**
-     * @brief Sets the Batches Model.
-     *
-     * @param[in] model
-     *   Batches Model.
-     **/
-    void batchesModel( Media::BatchesModel * model );
-
   private slots:
     /**
      * @brief Called when a selection has been made within tree-view.
@@ -81,10 +65,6 @@ class ARINC665_QT_EXPORT  MediaSetDialog : public QDialog
     std::unique_ptr< Ui::MediaSetDialog > ui;
     //! Media Set Model
     Media::MediaSetModel * mediaSetModelV;
-    //! Loads Model
-    Media::LoadsModel * loadsModelV;
-    //! Batches Model
-    Media::BatchesModel * batchesModelV;
 };
 
 }

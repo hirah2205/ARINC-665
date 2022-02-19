@@ -47,6 +47,12 @@ class ARINC665_QT_EXPORT MediaSetManagerDialog : public QDialog
     void mediaSetsModel( Media::MediaSetsModel * model );
 
   signals:
+    /**
+     * @brief Signals Request of Viewing given Media Set.
+     *
+     * @param[in] index
+     *   Model Index of selected Media Set
+     **/
     void viewMediaSet( const QModelIndex &index );
 
     void importMediaSet();

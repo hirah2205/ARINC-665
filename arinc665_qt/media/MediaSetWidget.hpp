@@ -52,22 +52,6 @@ class ARINC665_QT_EXPORT MediaSetWidget : public QWidget
      **/
     void mediaSetModel( Arinc665Qt::Media::MediaSetModel * model );
 
-    /**
-     * @brief Sets the Loads Model.
-     *
-     * @param[in] model
-     *   Loads Model.
-     **/
-    void loadsModel( Arinc665Qt::Media::LoadsModel * model );
-
-    /**
-     * @brief Sets the Batches Model.
-     *
-     * @param[in] model
-     *   Batches Model.
-     **/
-    void batchesModel( Arinc665Qt::Media::BatchesModel * model );
-
   public slots:
     /**
      * @brief Called when a Media Set has been selected.
@@ -81,12 +65,13 @@ class ARINC665_QT_EXPORT MediaSetWidget : public QWidget
     //! UI (designer)
     std::unique_ptr< Ui::MediaSetWidget> ui;
 
+    //! Loads Model
+    std::unique_ptr< Media::LoadsModel > loadsModelV;
+    //! Batches Model
+    std::unique_ptr< Media::BatchesModel > batchesModelV;
+
     //! Media Set Model
     MediaSetModel * mediaSetModelV;
-    //! Loads Model
-    LoadsModel * loadsModelV;
-    //! Batches Model
-    BatchesModel * batchesModelV;
 
     //! Media Set
     Arinc665::Media::ConstMediaSetPtr mediaSetV;

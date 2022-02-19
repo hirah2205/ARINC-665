@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>Arinc665Qt::MediaSetManager::MediaSetManagerDialog</class>
  <widget class="QDialog" name="Arinc665Qt::MediaSetManager::MediaSetManagerDialog">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +14,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Media Set Manager</string>
+   <string>Mange Media Sets</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/arinc665_qt_resources.qrc">
+    <normaloff>:/media_set_manager/arinc665_media_set_manager.svg</normaloff>:/media_set_manager/arinc665_media_set_manager.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>

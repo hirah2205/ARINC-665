@@ -37,8 +37,6 @@ namespace Arinc665Qt {
 MediaSetController::MediaSetController( QWidget * const parent ):
   QObject{ parent},
   mediaSetModel{ std::make_unique< Media::MediaSetModel >( this ) },
-  loadsModel{ std::make_unique< Media::LoadsModel >( this ) },
-  batchesModel{ std::make_unique< Media::BatchesModel >( this ) },
   selectDirectoryDialog{ std::make_unique< QFileDialog>(
     parent,
     tr( "Select ARINC 665 Medium" ) ) },
@@ -59,8 +57,6 @@ MediaSetController::MediaSetController( QWidget * const parent ):
     &MediaSetController::directorySelected );
 
   mediaSetDialog->mediaSetModel( mediaSetModel.get() );
-  mediaSetDialog->loadsModel( loadsModel.get() );
-  mediaSetDialog->batchesModel( batchesModel.get() );
 
   connect(
     mediaSetDialog.get(),
