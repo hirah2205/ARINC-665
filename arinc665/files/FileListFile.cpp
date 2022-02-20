@@ -12,10 +12,11 @@
 
 #include "FileListFile.hpp"
 
+#include <arinc665/files/CheckValueUtils.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
 
-#include <arinc665/files/CheckValueUtils.hpp>
+#include <arinc645/CheckValueGenerator.hpp>
 
 #include <helper/Endianess.hpp>
 
@@ -126,20 +127,15 @@ void FileListFile::userDefinedData( UserDefinedData &&userDefinedData )
   checkUserDefinedData();
 }
 
-const std::optional< Arinc645::CheckValue >& FileListFile::checkValue() const
+std::optional< Arinc645::CheckValueType > FileListFile::checkValueType() const
 {
-  return checkValueV;
+  return checkValueTypeV;
 }
 
-void FileListFile::checkValue(
-  const std::optional< Arinc645::CheckValue> &value )
+void FileListFile::checkValueType(
+  std::optional< Arinc645::CheckValueType > type )
 {
-  checkValueV = value;
-}
-
-void FileListFile::checkValue( std::optional< Arinc645::CheckValue > &&value )
-{
-  checkValueV = std::move( value);
+  checkValueTypeV = type;
 }
 
 bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
@@ -271,10 +267,21 @@ RawFile FileListFile::encode() const
   // Check Value (only in V3 mode)
   if ( encodeV3Data )
   {
-    if ( checkValueV )
+    if ( checkValueTypeV )
     {
-      const auto rawCheckValue{ CheckValueUtils_encode( checkValueV ) };
-      assert( rawCheckValue.size() % 2 == 0 );
+      std::vector<uint8_t> rawCheckValue{};
+
+      if ( Arinc645::CheckValueType::NotUsed != *checkValueTypeV )
+      {
+        rawCheckValue =
+          CheckValueUtils_encode( Arinc645::CheckValueGenerator::checkValue(
+            *checkValueTypeV,
+            rawFile ) );
+      }
+      else
+      {
+        rawCheckValue = CheckValueUtils_encode( {} );
+      }
 
       Helper::setInt< uint32_t >(
         rawFile.begin() + FileCheckValuePointerFieldOffsetV3,
@@ -293,7 +300,6 @@ RawFile FileListFile::encode() const
         0U );
     }
   }
-
 
   // Resize to final size ( File CRC)
   rawFile.resize( rawFile.size() + sizeof( uint16_t ) );
@@ -321,18 +327,18 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
 
     default:
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo( "Unsupported ARINC 665 Version"));
+        << Helper::AdditionalInfo{ "Unsupported ARINC 665 Version" } );
   }
 
 
   // Spare Field
   uint16_t spare{};
-  Helper::getInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, spare);
+  Helper::getInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, spare );
 
   if ( 0U != spare )
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << Helper::AdditionalInfo( "Spare is not 0" ) );
+      << Helper::AdditionalInfo{ "Spare is not 0" } );
   }
 
 
@@ -372,7 +378,7 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
   // file list
   decodeFilesInfo(
     rawFile,
-    static_cast< ptrdiff_t >( fileListPtr ) * 2,
+    static_cast< ptrdiff_t >( fileListPtr ) * 2U,
     decodeV3Data );
 
 
@@ -397,16 +403,33 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
       rawFile.begin() + endOfUserDefinedData );
   }
 
-
   // File Check Value Field (ARINC 665-3)
-  checkValueV.reset();
+  checkValueTypeV.reset();
   if ( decodeV3Data && ( 0U != fileCheckValuePtr ) )
   {
-    checkValueV = CheckValueUtils_decode(
+    const auto checkValue = CheckValueUtils_decode(
       rawFile,
-      2 * static_cast< ptrdiff_t >( fileCheckValuePtr ) );
-  }
+      2U * static_cast< ptrdiff_t >( fileCheckValuePtr ) );
 
+    if ( checkValue )
+    {
+      const auto calcCheckValue{ Arinc645::CheckValueGenerator::checkValue(
+        std::get< 0 >( *checkValue ),
+        rawFile.first( 2U * std::size_t{ fileCheckValuePtr } ) ) };
+
+      if ( checkValue != calcCheckValue )
+      {
+        BOOST_THROW_EXCEPTION(
+          InvalidArinc665File()
+          << Helper::AdditionalInfo{ "Check Value Verification failed" } );
+      }
+
+      checkValueTypeV = std::get< 0 >( *checkValue );
+    }
+    {
+      checkValueTypeV = Arinc645::CheckValueType::NotUsed;
+    }
+  }
 
   // file crc decoded and checked within base class
 }
@@ -415,7 +438,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
 {
   BOOST_LOG_FUNCTION()
 
-  RawFile rawFilesInfo( sizeof( uint16_t) );
+  RawFile rawFilesInfo( sizeof( uint16_t ) );
 
   // Number of files must not exceed field
   if ( filesV.size() > std::numeric_limits< uint16_t>::max() )

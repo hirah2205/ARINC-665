@@ -224,27 +224,27 @@ class ARINC665_EXPORT FileListFile : public ListFile
     /** @} **/
 
     /**
-     * @name Check Value
+     * @name Check Value Type
+     *
+     * Check Value Type used for Generation of the File List File
      * @{
      **/
 
     /**
-     * @brief Returns the Check Value.
+     * @brief Returns the Check Value Type.
      *
      * @return Check Value.
      **/
-    [[nodiscard]] const std::optional< Arinc645::CheckValue>& checkValue() const;
+    [[nodiscard]] std::optional< Arinc645::CheckValueType >
+    checkValueType() const;
 
     /**
-     * @brief Updates the Check Value
+     * @brief Updates the Check Value Type
      *
-     * @param[in] value
-     *   Check Value.
+     * @param[in] type
+     *   Check Value Type.
      **/
-    void checkValue( const std::optional< Arinc645::CheckValue> &value );
-
-    //! @copydoc checkValue(const std::optional<Arinc645::CheckValue>&)
-    void checkValue( std::optional< Arinc645::CheckValue> &&value );
+    void checkValueType( std::optional< Arinc645::CheckValueType > type );
 
     /** @} **/
 
@@ -304,8 +304,8 @@ class ARINC665_EXPORT FileListFile : public ListFile
     FilesInfo filesV;
     //! Use Defined Data.
     UserDefinedData userDefinedDataV;
-    //! Check Value (since ARINC 665-3)
-    std::optional< Arinc645::CheckValue> checkValueV;
+    //! Check Value Type (since ARINC 665-3)
+    std::optional< Arinc645::CheckValueType > checkValueTypeV;
 };
 
 }

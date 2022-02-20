@@ -392,6 +392,12 @@ void MediaSetImporterImpl::addFiles()
 
     // place file
     auto filePtr{ container->addRegularFile( fileInfo.filename ) };
+
+    // set check value indicator
+    if ( fileInfo.checkValue )
+    {
+      filePtr->checkValueType( std::get< 0 >( *fileInfo.checkValue ) );
+    }
   }
 
   addLoads();
@@ -415,6 +421,12 @@ void MediaSetImporterImpl::addLoads()
 
     // create load
     auto loadPtr{ container->addLoad( filename ) };
+
+    // set check value indicator
+    if ( fileInfoIt->second.checkValue )
+    {
+      loadPtr->checkValueType( std::get< 0 >( *fileInfoIt->second.checkValue  ) );
+    }
 
     loadPtr->partFlags( loadHeaderFile.partFlags() );
     loadPtr->partNumber( loadHeaderFile.partNumber() );
@@ -600,6 +612,12 @@ void MediaSetImporterImpl::addBatches()
 
     // create batch
     auto batchPtr{ container->addBatch( filename ) };
+
+    // set check value indicator
+    if ( fileInfoIt->second.checkValue )
+    {
+      batchPtr->checkValueType( std::get< 0 >( *fileInfoIt->second.checkValue  ) );
+    }
 
     batchPtr->partNumber( batchFile.partNumber() );
     batchPtr->comment( batchFile.comment() );
