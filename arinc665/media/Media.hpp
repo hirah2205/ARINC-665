@@ -20,11 +20,15 @@
 
 #include <arinc665/Arinc665.hpp>
 
+#include <arinc645/Arinc645.hpp>
+
 #include <map>
 #include <vector>
 #include <list>
 #include <memory>
 #include <variant>
+#include <optional>
+#include <tuple>
 
 /**
  * @brief ARINC 665 %Media (Set).
@@ -171,12 +175,18 @@ using LoadVariant = std::variant< LoadPtr, ConstLoadPtr >;
 //! Loads Variant
 using LoadsVariant = std::variant< Loads, ConstLoads >;
 
-//! %Load %File List ( File, Part Number). Used for Data and Support Files of Load
-using LoadFiles = std::list< std::pair< FilePtr, std::string > >;
-//! Const %Load %File List ( File, Part Number). Used for Data and Support Files of Load
-using ConstLoadFiles = std::list< std::pair< ConstFilePtr, std::string > >;
-//! Weak %Load %File List ( File, Part Number). Used for Data and Support Files of Load
-using WeakLoadFiles = std::list< std::pair< FilePtr::weak_type, std::string > >;
+//! %Load %File List (File, Part Number, Check Value Type for this File).
+//! Used for Data and Support Files of Load
+using LoadFile =
+  std::tuple< FilePtr, std::string, std::optional< Arinc645::CheckValueType > >;
+//! Const %Load %File List (File, Part Number, Check Value Type for this File).
+using ConstLoadFile =
+  std::tuple< ConstFilePtr, std::string, std::optional< Arinc645::CheckValueType > >;
+
+//! %Load %File List. Used for Data and Support Files of Load
+using LoadFiles = std::list< LoadFile >;
+//! Const %Load %File List. Used for Data and Support Files of Load
+using ConstLoadFiles = std::list< ConstLoadFile >;
 
 /** @} **/
 

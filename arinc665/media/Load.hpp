@@ -208,11 +208,20 @@ class ARINC665_EXPORT Load : public File
      *   Data File.
      * @param[in] partNumber
      *   Part Number.
+     * @param[in] checkValueType
+     *   Check Value Type used for this File Entry.
+     *   Uf set to {} the inherited value will be used.
      **/
-    void dataFile( const FilePtr &file, std::string_view partNumber );
+    void dataFile(
+      const FilePtr& file,
+      std::string_view partNumber,
+      const std::optional< Arinc645::CheckValueType >& checkValueType );
 
-    //! @copydoc dataFile(const FilePtr&,std::string_view)
-    void dataFile( const FilePtr &file, std::string &&partNumber );
+    //! @copydoc dataFile(const FilePtr&,std::string_view,const std::optional<Arinc645::CheckValueType>&)
+    void dataFile(
+      const FilePtr &file,
+      std::string &&partNumber,
+      std::optional< Arinc645::CheckValueType >&& checkValueType = {} );
 
     /** @} **/
 
@@ -240,11 +249,20 @@ class ARINC665_EXPORT Load : public File
      *   Support File.
      * @param[in] partNumber
      *   Part Number.
+     * @param[in] checkValueType
+     *   Check Value Type used for this File Entry.
+     *   Uf set to {} the inherited value will be used.
      **/
-    void supportFile( const FilePtr &file, std::string_view partNumber );
+    void supportFile(
+      const FilePtr &file,
+      std::string_view partNumber,
+      const std::optional< Arinc645::CheckValueType >& checkValueType );
 
-    //! @copydoc supportFile(const FilePtr&,std::string_view)
-    void supportFile( const FilePtr &file, std::string &&partNumber );
+    //! @copydoc supportFile(const FilePtr&,std::string_view,const std::optional<Arinc645::CheckValueType>&)
+    void supportFile(
+      const FilePtr &file,
+      std::string &&partNumber,
+      std::optional< Arinc645::CheckValueType >&& checkValueType = {} );
 
     /** @} **/
 
@@ -383,6 +401,13 @@ class ARINC665_EXPORT Load : public File
     /** @} **/
 
   private:
+    //! Weak %Load %File.
+    using WeakLoadFile =
+      std::tuple< FilePtr::weak_type, std::string, std::optional< Arinc645::CheckValueType > >;
+    //! Weak %Load %File List.
+    using WeakLoadFiles =
+      std::list< WeakLoadFile >;
+
     //! Part Flags
     uint16_t partFlagsV;
     //! Part Number

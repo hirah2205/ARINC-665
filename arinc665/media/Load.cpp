@@ -126,9 +126,9 @@ ConstLoadFiles Load::dataFiles() const
 {
   ConstLoadFiles files{};
 
-  for ( const auto &[filePtr, partNumber] : dataFilesV )
+  for ( const auto &[filePtr, partNumber, checkValueType ] : dataFilesV )
   {
-    files.emplace_back( filePtr.lock(), partNumber );
+    files.emplace_back( filePtr.lock(), partNumber, checkValueType );
   }
 
   return files;
@@ -138,15 +138,18 @@ LoadFiles Load::dataFiles()
 {
   LoadFiles files{};
 
-  for ( const auto &[filePtr, partNumber] : dataFilesV )
+  for ( const auto &[filePtr, partNumber, checkValueType] : dataFilesV )
   {
-    files.emplace_back( filePtr.lock(), partNumber );
+    files.emplace_back( filePtr.lock(), partNumber, checkValueType );
   }
 
   return files;
 }
 
-void Load::dataFile( const FilePtr &file, std::string_view partNumber )
+void Load::dataFile(
+  const FilePtr &file,
+  std::string_view partNumber,
+  const std::optional< Arinc645::CheckValueType >& checkValueType )
 {
   if ( !file || ( file->mediaSet() != mediaSet() ) )
   {
@@ -154,10 +157,13 @@ void Load::dataFile( const FilePtr &file, std::string_view partNumber )
       << Helper::AdditionalInfo{ "invalid File" });
   }
 
-  dataFilesV.emplace_back( file, partNumber );
+  dataFilesV.emplace_back( file, partNumber, checkValueType );
 }
 
-void Load::dataFile( const FilePtr &file, std::string &&partNumber )
+void Load::dataFile(
+  const FilePtr &file,
+  std::string &&partNumber,
+  std::optional< Arinc645::CheckValueType >&& checkValueType )
 {
   if ( !file || ( file->mediaSet() != mediaSet() ) )
   {
@@ -165,16 +171,19 @@ void Load::dataFile( const FilePtr &file, std::string &&partNumber )
       << Helper::AdditionalInfo{ "invalid File" } );
   }
 
-  dataFilesV.emplace_back( file, std::move( partNumber ) );
+  dataFilesV.emplace_back(
+    file,
+    std::move( partNumber ),
+    std::move( checkValueType ) );
 }
 
 ConstLoadFiles Load::supportFiles() const
 {
   ConstLoadFiles files{};
 
-  for ( const auto &[filePtr, partNumber] : supportFilesV )
+  for ( const auto &[filePtr, partNumber, checkValueType ] : supportFilesV )
   {
-    files.emplace_back( filePtr.lock(), partNumber );
+    files.emplace_back( filePtr.lock(), partNumber, checkValueType );
   }
 
   return files;
@@ -184,15 +193,18 @@ LoadFiles Load::supportFiles()
 {
   LoadFiles files{};
 
-  for ( const auto &[filePtr, partNumber] : supportFilesV )
+  for ( const auto &[filePtr, partNumber, checkValueType ] : supportFilesV )
   {
-    files.emplace_back( filePtr.lock(), partNumber );
+    files.emplace_back( filePtr.lock(), partNumber, checkValueType );
   }
 
   return files;
 }
 
-void Load::supportFile( const FilePtr &file, std::string_view partNumber )
+void Load::supportFile(
+  const FilePtr &file,
+  std::string_view partNumber,
+  const std::optional< Arinc645::CheckValueType >& checkValueType )
 {
   if ( !file || ( file->mediaSet() != mediaSet() ) )
   {
@@ -200,10 +212,13 @@ void Load::supportFile( const FilePtr &file, std::string_view partNumber )
       << Helper::AdditionalInfo{ "invalid File" } );
   }
 
-  supportFilesV.emplace_back( file, partNumber );
+  supportFilesV.emplace_back( file, partNumber, checkValueType );
 }
 
-void Load::supportFile( const FilePtr &file, std::string &&partNumber )
+void Load::supportFile(
+  const FilePtr &file,
+  std::string &&partNumber,
+  std::optional< Arinc645::CheckValueType >&& checkValueType )
 {
   if ( !file || ( file->mediaSet() != mediaSet() ) )
   {
@@ -211,7 +226,10 @@ void Load::supportFile( const FilePtr &file, std::string &&partNumber )
       << Helper::AdditionalInfo{ "invalid File" } );
   }
 
-  supportFilesV.emplace_back( file, std::move( partNumber ) );
+  supportFilesV.emplace_back(
+    file,
+    std::move( partNumber ),
+    std::move( checkValueType ) );
 }
 
 const Load::UserDefinedData& Load::userDefinedData() const
@@ -224,14 +242,14 @@ Load::UserDefinedData& Load::userDefinedData()
   return userDefinedDataV;
 }
 
-void Load::userDefinedData( const std::vector< uint8_t> &userDefinedData)
+void Load::userDefinedData( const std::vector< uint8_t> &userDefinedData )
 {
   userDefinedDataV = userDefinedData;
 }
 
-void Load::userDefinedData( Load::UserDefinedData &&userDefinedData)
+void Load::userDefinedData( Load::UserDefinedData &&userDefinedData )
 {
-  userDefinedDataV = std::move( userDefinedData);
+  userDefinedDataV = std::move( userDefinedData) ;
 }
 
 const Load::Type& Load::loadType() const
@@ -239,12 +257,12 @@ const Load::Type& Load::loadType() const
   return typeV;
 }
 
-void Load::loadType( const Type &type)
+void Load::loadType( const Type &type )
 {
   typeV = type;
 }
 
-void Load::loadType( Type &&type)
+void Load::loadType( Type &&type )
 {
   typeV = std::move( type);
 }

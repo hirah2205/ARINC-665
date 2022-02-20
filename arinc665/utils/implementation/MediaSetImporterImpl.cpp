@@ -490,7 +490,12 @@ void MediaSetImporterImpl::addLoads()
         }
       }
 
-      loadPtr->dataFile( dataFilePtr, dataFile.partNumber );
+      loadPtr->dataFile(
+        dataFilePtr,
+        dataFile.partNumber,
+        dataFile.checkValue ?
+          std::get< 0 >( *dataFile.checkValue ) :
+          std::optional< Arinc645::CheckValueType >{} );
     }
 
     // iterate over support files
@@ -561,11 +566,21 @@ void MediaSetImporterImpl::addLoads()
         }
       }
 
-      loadPtr->supportFile( supportFilePtr, supportFile.partNumber );
+      loadPtr->supportFile(
+        supportFilePtr,
+        supportFile.partNumber,
+        supportFile.checkValue ?
+          std::get< 0 >( *supportFile.checkValue ) :
+          std::optional< Arinc645::CheckValueType >{} );
     }
 
     // User Defined Data
     loadPtr->userDefinedData( loadHeaderFile.userDefinedData() );
+    // Load Check Value
+    loadPtr->loadCheckValueType(
+      loadHeaderFile.loadCheckValue() ?
+        std::get< 0 >( *loadHeaderFile.loadCheckValue() ) :
+        std::optional< Arinc645::CheckValueType >{} );
   }
 }
 

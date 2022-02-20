@@ -416,11 +416,11 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @brief Updates the Media Set Check Value Type
      *
-     * @param[in] checkValueType
+     * @param[in] type
      *   New Media Set Check Value Type.
      **/
     void mediaSetCheckValueType(
-      std::optional< Arinc645::CheckValueType > checkValueType );
+      std::optional< Arinc645::CheckValueType > type );
 
     /** @} **/
 
@@ -443,11 +443,10 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @brief Updates the Files Check Value Type
      *
-     * @param[in] checkValueType
+     * @param[in] type
      *   New Files Check Value Type.
      **/
-    void filesCheckValueType(
-      std::optional< Arinc645::CheckValueType > checkValueType );
+    void filesCheckValueType( std::optional< Arinc645::CheckValueType > type );
 
     /** @} **/
 

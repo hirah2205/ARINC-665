@@ -14,6 +14,8 @@
 
 #include <arinc665/media/File.hpp>
 
+#include <helper_qt/String.hpp>
+
 namespace Arinc665Qt::Media {
 
 LoadFilesModel::LoadFilesModel( QObject * const parent ) :
@@ -66,14 +68,10 @@ QVariant LoadFilesModel::data(
       switch ( static_cast< Columns>( index.column() ) )
       {
         case Columns::Name:
-          return QString::fromUtf8(
-            loadFile->first->name().data(),
-            static_cast< int >( loadFile->first->name().size() ) );
+          return HelperQt::toQString( std::get< 0 >( *loadFile )->name() );
 
         case Columns::PartNumber:
-          return QString::fromUtf8(
-            loadFile->second.data(),
-            static_cast< int >( loadFile->second.size() ) );
+          return HelperQt::toQString( std::get< 1 >( *loadFile ) );
 
         default:
           return {};

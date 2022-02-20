@@ -27,6 +27,7 @@
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <arinc645/Arinc645Crc.hpp>
+#include <arinc645/CheckValueGenerator.hpp>
 
 #include <utility>
 
@@ -386,79 +387,137 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   loadHeaderFile.targetHardwareIdPositions( load->targetHardwareIdPositions() );
   loadHeaderFile.loadType( load->loadType() );
 
+  const auto loadCheckValue{ load->loadCheckValueType() ?
+    load->loadCheckValueType() :
+    load->mediaSet()->mediaSetCheckValueType() };
+
   // calculate data files CRC and set data.
-  for ( const auto &[ file,partNumber ] : load->dataFiles() )
+  const auto dataFilesCheckValue{ load->dataFilesCheckValueType() ?
+    load->dataFilesCheckValueType() : loadCheckValue };
+  for ( const auto &[ file, partNumber, checkValueType ] : load->dataFiles() )
   {
+    const auto fileCheckValueType{ checkValueType ?
+      checkValueType :
+      dataFilesCheckValue };
+
     const auto rawDataFile{ readFileHandlerV(
       file->medium()->mediumNumber(),
       file->path() ) };
 
-    const uint16_t fileCrc{
+    const auto fileCrc{
       Files::Arinc665File::calculateChecksum( rawDataFile ) };
+
+    Arinc645::CheckValue checkValue{};
+
+    if ( fileCheckValueType )
+    {
+      const auto fileCheckValue{ Arinc645::CheckValueGenerator::checkValue(
+        *fileCheckValueType,
+        rawDataFile ) };
+    }
 
     loadHeaderFile.dataFile( Files::LoadFileInfo{
       std::string{ file->name() },
       partNumber,
       rawDataFile.size(),
       fileCrc,
-      {} } );
+      std::move( checkValue ) } );
   }
 
   // calculate support files CRC and set data.
-  for ( const auto &[file,partNumber] : load->supportFiles() )
+  const std::optional< Arinc645::CheckValueType > supportFilesCheckValue{
+    load->supportFilesCheckValueType() ?
+      load->supportFilesCheckValueType() : loadCheckValue };
+  for ( const auto &[ file, partNumber, checkValueType ] : load->supportFiles() )
   {
+    const auto fileCheckValueType{ checkValueType ?
+      checkValueType :
+      supportFilesCheckValue };
+
     const auto rawSupportFile{ readFileHandlerV(
       file->medium()->mediumNumber(),
       file->path() ) };
 
-    const uint16_t supportFileCrc{
+    const auto supportFileCrc{
       Files::Arinc665File::calculateChecksum( rawSupportFile ) };
+
+    Arinc645::CheckValue checkValue{};
+
+    if ( fileCheckValueType )
+    {
+      const auto fileCheckValue{ Arinc645::CheckValueGenerator::checkValue(
+        *fileCheckValueType,
+        rawSupportFile ) };
+    }
 
     loadHeaderFile.supportFile( Files::LoadFileInfo{
       std::string{ file->name() },
       partNumber,
       rawSupportFile.size(),
       supportFileCrc,
-      {} } );
+      std::move( checkValue ) } );
   }
 
   // User Defined Data
   loadHeaderFile.userDefinedData( load->userDefinedData() );
 
-  // calculate load CRC
-  Arinc645::Arinc645Crc32 loadCrc;
+  // calculate load CRC and Check Value
+  Arinc645::Arinc645Crc32 loadCrc{};
+  std::optional< Arinc645::CheckValueGenerator > checkValueGenerator{
+    loadCheckValue ?
+      Arinc645::CheckValueGenerator{ *loadCheckValue } :
+      std::optional< Arinc645::CheckValueGenerator >{} };
 
   // load header load CRC calculation
   {
     Files::RawFile rawLoadHeader{ loadHeaderFile };
 
     loadCrc.process_bytes(
-      &( *rawLoadHeader.begin() ),
+      std::data( rawLoadHeader ),
       rawLoadHeader.size() - sizeof( uint32_t ) );
+
+    if ( checkValueGenerator )
+    {
+      checkValueGenerator->process( rawLoadHeader );
+    }
   }
 
   // load data files for load CRC.
-  for ( const auto &[file,partNumber] : load->dataFiles() )
+  for ( const auto &[ file, partNumber, checkValueType ] : load->dataFiles() )
   {
     auto rawDataFile{ readFileHandlerV(
       file->medium()->mediumNumber(),
       file->path() ) };
 
     loadCrc.process_bytes( &(*rawDataFile.begin()), rawDataFile.size() );
+
+    if ( checkValueGenerator )
+    {
+      checkValueGenerator->process( rawDataFile );
+    }
   }
 
   // load support files for load CRC.
-  for ( const auto &[file,partNumber] : load->supportFiles() )
+  for ( const auto &[ file, partNumber, checkValueType ] : load->supportFiles() )
   {
     auto rawSupportFile{ readFileHandlerV(
       file->medium()->mediumNumber(),
       file->path() ) };
 
     loadCrc.process_bytes( &(*rawSupportFile.begin()), rawSupportFile.size() );
+
+    if ( checkValueGenerator )
+    {
+      checkValueGenerator->process( rawSupportFile );
+    }
   }
 
-  // set load CRC
+  // set load CRC + Check Value
   loadHeaderFile.loadCrc( loadCrc.checksum() );
+  if ( checkValueGenerator )
+  {
+    loadHeaderFile.loadCheckValue( checkValueGenerator->checkValue() );
+  }
 
   writeFileHandlerV(
     load->medium()->mediumNumber(),

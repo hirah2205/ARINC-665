@@ -656,6 +656,26 @@ void Arinc665XmlImpl::loadLoad(
         << boost::errinfo_at_line{ dataFileNode->get_line() } );
     }
 
+    //  Check Value
+    std::optional< Arinc645::CheckValueType > checkValueType{};
+    const auto checkValueAttr(
+      dataFileElement->get_attribute_value( "CheckValue" ) );
+    if ( !checkValueAttr.empty() )
+    {
+      auto checkValue{
+        Arinc645::CheckValueTypeDescription::instance().enumeration(
+          static_cast< std::string >( checkValueAttr ) ) };
+
+      if ( Arinc645::CheckValueType::Invalid == checkValue )
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo{ "Invalid Check Value" }
+          << boost::errinfo_at_line{ dataFileNode->get_line() } );
+      }
+
+      checkValueType = checkValue;
+    }
+
     auto file{ mediaSet->file( toStringView( fileNameRef ) ) };
 
     if ( !file )
@@ -665,7 +685,7 @@ void Arinc665XmlImpl::loadLoad(
         << boost::errinfo_at_line{ dataFileNode->get_line() } );
     }
 
-    load->dataFile( file, filePartNumber );
+    load->dataFile( file, filePartNumber, std::move( checkValueType ) );
   }
 
   // iterate over support files
@@ -698,6 +718,26 @@ void Arinc665XmlImpl::loadLoad(
         << boost::errinfo_at_line{ supportFileNode->get_line() } );
     }
 
+    //  Check Value
+    std::optional< Arinc645::CheckValueType > checkValueType{};
+    const auto checkValueAttr(
+      supportFileElement->get_attribute_value( "CheckValue" ) );
+    if ( !checkValueAttr.empty() )
+    {
+      auto checkValue{
+        Arinc645::CheckValueTypeDescription::instance().enumeration(
+          static_cast< std::string >( checkValueAttr ) ) };
+
+      if ( Arinc645::CheckValueType::Invalid == checkValue )
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo{ "Invalid Check Value" }
+          << boost::errinfo_at_line{ supportFileElement->get_line() } );
+      }
+
+      checkValueType = checkValue;
+    }
+
     auto file{ mediaSet->file( toStringView( fileNameRef ) ) };
 
     if ( !file )
@@ -707,7 +747,7 @@ void Arinc665XmlImpl::loadLoad(
         << boost::errinfo_at_line{ supportFileNode->get_line() } );
     }
 
-    load->supportFile( file, filePartNumber );
+    load->supportFile( file, filePartNumber, std::move( checkValueType ) );
   }
 
   const auto userDefinedDataElement{ dynamic_cast< const xmlpp::Element*>(
@@ -840,21 +880,37 @@ void Arinc665XmlImpl::saveLoad(
   }
 
   // iterate over data files
-  for ( const auto &[ dataFile, partNumber ] : load->dataFiles() )
+  for ( const auto &[ dataFile, partNumber, checkValueType ] : load->dataFiles() )
   {
     auto * const dataFileElement{ loadElement.add_child( "DataFile" ) };
     dataFileElement->set_attribute( "NameRef", dataFile->name().data() );
     dataFileElement->set_attribute( "PartNumber", partNumber );
+    if ( checkValueType )
+    {
+      dataFileElement->set_attribute(
+        "CheckValue",
+        toGlibString(
+          Arinc645::CheckValueTypeDescription::instance().name(
+            *checkValueType ) ) );
+    }
   }
 
   // iterate over support files
-  for ( const auto &[ supportFile, partNumber ] : load->supportFiles() )
+  for ( const auto &[ supportFile, partNumber, checkValueType ] : load->supportFiles() )
   {
     auto supportFileElement{ loadElement.add_child( "SupportFile" ) };
     supportFileElement->set_attribute(
       "NameRef",
       supportFile->name().data() );
     supportFileElement->set_attribute( "PartNumber", partNumber );
+    if ( checkValueType )
+    {
+      supportFileElement->set_attribute(
+        "CheckValue",
+        toGlibString(
+          Arinc645::CheckValueTypeDescription::instance().name(
+            *checkValueType ) ) );
+    }
   }
 
   if (

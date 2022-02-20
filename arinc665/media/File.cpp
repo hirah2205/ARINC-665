@@ -103,10 +103,9 @@ std::optional< Arinc645::CheckValueType > File::checkValueType() const
   return checkValueTypeV;
 }
 
-void File::checkValueType(
-  std::optional< Arinc645::CheckValueType > checkValueType )
+void File::checkValueType( std::optional< Arinc645::CheckValueType > type )
 {
-  checkValueTypeV = checkValueType;
+  checkValueTypeV = type;
 }
 
 File::File( const ContainerEntityPtr& parent, std::string_view name ):

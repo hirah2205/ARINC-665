@@ -124,11 +124,10 @@ class ARINC665_EXPORT File : public Base
     /**
      * @brief Updates the File Check Value Type
      *
-     * @param[in] checkValueType
+     * @param[in] type
      *   New File Check Value Type.
      **/
-    void checkValueType(
-      std::optional< Arinc645::CheckValueType > checkValueType );
+    void checkValueType( std::optional< Arinc645::CheckValueType > type );
 
     /** @} **/
 

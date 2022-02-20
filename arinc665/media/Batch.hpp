@@ -105,7 +105,7 @@ class ARINC665_EXPORT Batch : public File
     /**
      * @brief Return Batch Information for Targets.
      *
-     * @return Batch target information.
+     * @return Batch Target Information.
      **/
     [[nodiscard]] ConstBatchInformation targets() const;
 
@@ -116,7 +116,7 @@ class ARINC665_EXPORT Batch : public File
      * @brief Return the Loads for the given Target Hardware ID
      *
      * @param[in] targetHardwareId
-     *   Target hardware ID
+     *   Target Hardware ID
      *
      * @return Loads corresponding to @p targetHardwareId
      **/

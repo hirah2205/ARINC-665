@@ -424,9 +424,9 @@ MediaSet::mediaSetCheckValueType() const
 }
 
 void MediaSet::mediaSetCheckValueType(
-  std::optional< Arinc645::CheckValueType > checkValueType )
+  std::optional< Arinc645::CheckValueType > type )
 {
-  mediaSetCheckValueTypeV = checkValueType;
+  mediaSetCheckValueTypeV = type;
 }
 
 std::optional< Arinc645::CheckValueType > MediaSet::filesCheckValueType() const
@@ -435,9 +435,9 @@ std::optional< Arinc645::CheckValueType > MediaSet::filesCheckValueType() const
 }
 
 void MediaSet::filesCheckValueType(
-  std::optional< Arinc645::CheckValueType > checkValueType )
+  std::optional< Arinc645::CheckValueType > type )
 {
-  filesCheckValueTypeV = checkValueType;
+  filesCheckValueTypeV = type;
 }
 
 }

@@ -14,6 +14,8 @@
 
 #include <arinc665/media/MediaSet.hpp>
 
+#include <arinc645/CheckValueTypeDescription.hpp>
+
 namespace Arinc665::Utils {
 
 /**
@@ -180,7 +182,7 @@ void printLoad(
     << "Data Files:\n";
 
   // iterate over Data Files
-  for ( const auto &[file, partNumber] : load->dataFiles() )
+  for ( const auto &[ file, partNumber, checkValueType ] : load->dataFiles() )
   {
     outS
       << nextIndent
@@ -193,7 +195,13 @@ void printLoad(
 
       << nextIndent
       << "File Part Number: '"
-      << partNumber << "'\n";
+      << partNumber << "'\n"
+
+      << nextIndent
+      << "Check Value Type: '"
+      << ( checkValueType ?
+        Arinc645::CheckValueTypeDescription::instance().name( * checkValueType ) :
+        "None" ) << "'\n";
 
     outS << "\n";
   }
@@ -203,7 +211,7 @@ void printLoad(
     << "Support Files:\n";
 
   // iterate over Support Files
-  for ( const auto &[file, partNumber] : load->supportFiles() )
+  for ( const auto &[ file, partNumber, checkValueType ] : load->supportFiles() )
   {
     outS
       << nextIndent
@@ -216,7 +224,13 @@ void printLoad(
 
       << nextIndent
       << "Part Number: '"
-      << partNumber << "'\n";
+      << partNumber << "'\n"
+
+      << nextIndent
+      << "Check Value Type: '"
+      << ( checkValueType ?
+        Arinc645::CheckValueTypeDescription::instance().name( * checkValueType ) :
+        "None" ) << "'\n";
 
     outS << "\n";
   }
