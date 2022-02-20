@@ -17,7 +17,7 @@
 #include <arinc665/Arinc665Logger.hpp>
 
 #include <arinc645/Arinc645Crc.hpp>
-#include <arinc645/CheckValue.hpp>
+#include <arinc645/CheckValueGenerator.hpp>
 
 namespace Arinc665::Utils {
 
@@ -84,7 +84,8 @@ bool MediaSetImporterImpl::loadMedium( const uint8_t mediumIndex )
   loadLoadHeaderFiles( mediumIndex );
   loadBatchFiles( mediumIndex );
 
-  return mediumIndex == fileListFile->mediaSequenceNumber();
+  // if current medium Index equals number of media set members -> read finished
+  return mediumIndex == fileListFile->numberOfMediaSetMembers();
 }
 
 void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
@@ -155,13 +156,11 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     // Check and compare Check Value
     if ( fileInfo.checkValue )
     {
-      const auto &[ checkValueType, checkValue ] = *fileInfo.checkValue;
-
-      const auto checkValueCalculated{ Arinc645::CheckValue_calculate(
-        checkValueType,
+      const auto checkValueCalculated{ Arinc645::CheckValueGenerator::checkValue(
+        std::get< 0 >( *fileInfo.checkValue ),
         rawFile ) };
 
-      if ( checkValue != checkValueCalculated )
+      if ( *fileInfo.checkValue != checkValueCalculated )
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo{ "Check Value of file invalid" }
@@ -200,7 +199,7 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
 
       if ( fileIt == fileInfos.end() )
       {
-        BOOST_THROW_EXCEPTION(Arinc665Exception()
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo{ "load header file not found" }
           << boost::errinfo_file_name{ std::string{ load.headerFilename } } );
       }
@@ -222,7 +221,7 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{
-          std::string{ Arinc665::ListOfLoadsName}
+          std::string{ Arinc665::ListOfLoadsName }
           + " is not consistent to other loads list" } );
     }
   }
