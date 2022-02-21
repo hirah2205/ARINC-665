@@ -12,9 +12,9 @@
 
 #include "File.hpp"
 
-#include <arinc665/media/ContainerEntity.hpp>
-
 #include <arinc665/Arinc665Exception.hpp>
+#include <arinc665/media/ContainerEntity.hpp>
+#include <arinc665/media/MediaSet.hpp>
 
 namespace Arinc665::Media {
 
@@ -98,8 +98,16 @@ std::filesystem::path File::path() const
   return parentPtr->path() / nameV;
 }
 
-std::optional< Arinc645::CheckValueType > File::checkValueType() const
+std::optional< Arinc645::CheckValueType > File::checkValueType(
+  const bool effective ) const
 {
+  if ( effective )
+  {
+    return checkValueTypeV ?
+      checkValueTypeV :
+      mediaSet()->filesCheckValueType( true );
+  }
+
   return checkValueTypeV;
 }
 

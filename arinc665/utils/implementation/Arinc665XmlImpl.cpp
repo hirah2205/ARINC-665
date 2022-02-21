@@ -119,6 +119,9 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
 {
   const auto partNumber{ mediaSetElement.get_attribute_value( "PartNumber" ) };
   const auto mediaSetCheckValue{ mediaSetElement.get_attribute_value( "MediaSetCheckValue" ) };
+  const auto listOfFilesCheckValue{ mediaSetElement.get_attribute_value( "ListOfFilesCheckValue" ) };
+  const auto listOfLoadsCheckValue{ mediaSetElement.get_attribute_value( "ListOfLoadsCheckValue" ) };
+  const auto listOfBatchesCheckValue{ mediaSetElement.get_attribute_value( "ListOfBatchesCheckValue" ) };
   const auto filesCheckValue{ mediaSetElement.get_attribute_value( "FilesCheckValue" ) };
 
   auto mediaSet{ std::make_shared< Media::MediaSet>() };
@@ -139,6 +142,57 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
     }
 
     mediaSet->mediaSetCheckValueType( checkValue );
+  }
+
+  // List of Files Check Value
+  if ( !listOfFilesCheckValue.empty() )
+  {
+    auto checkValue{
+      Arinc645::CheckValueTypeDescription::instance().enumeration(
+        static_cast< std::string >( listOfFilesCheckValue ) ) };
+
+    if ( Arinc645::CheckValueType::Invalid == checkValue )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ "Invalid Check Value" }
+        << boost::errinfo_at_line{ mediaSetElement.get_line() } );
+    }
+
+    mediaSet->listOfFilesCheckValueType( checkValue );
+  }
+
+  // List of Loads Check Value
+  if ( !listOfLoadsCheckValue.empty() )
+  {
+    auto checkValue{
+      Arinc645::CheckValueTypeDescription::instance().enumeration(
+        static_cast< std::string >( listOfLoadsCheckValue ) ) };
+
+    if ( Arinc645::CheckValueType::Invalid == checkValue )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ "Invalid Check Value" }
+        << boost::errinfo_at_line{ mediaSetElement.get_line() } );
+    }
+
+    mediaSet->listOfLoadsCheckValueType( checkValue );
+  }
+
+  // List of Batches Check Value
+  if ( !listOfBatchesCheckValue.empty() )
+  {
+    auto checkValue{
+      Arinc645::CheckValueTypeDescription::instance().enumeration(
+        static_cast< std::string >( listOfBatchesCheckValue ) ) };
+
+    if ( Arinc645::CheckValueType::Invalid == checkValue )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ "Invalid Check Value" }
+        << boost::errinfo_at_line{ mediaSetElement.get_line() } );
+    }
+
+    mediaSet->listOfBatchesCheckValueType( checkValue );
   }
 
   // Files Check Value
@@ -276,6 +330,33 @@ void Arinc665XmlImpl::saveMediaSet(
   {
     mediaSetNode.set_attribute(
       "MediaSetCheckValue",
+      toGlibString(
+        Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) ) );
+  }
+
+  // List of Files Check Value
+  if ( auto checkValue{ mediaSet->listOfFilesCheckValueType() }; checkValue )
+  {
+    mediaSetNode.set_attribute(
+      "ListOfFilesCheckValue",
+      toGlibString(
+        Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) ) );
+  }
+
+  // List of Loads Check Value
+  if ( auto checkValue{ mediaSet->listOfLoadsCheckValueType() }; checkValue )
+  {
+    mediaSetNode.set_attribute(
+      "ListOfLoadsCheckValue",
+      toGlibString(
+        Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) ) );
+  }
+
+  // List of Batches Check Value
+  if ( auto checkValue{ mediaSet->listOfBatchesCheckValueType() }; checkValue )
+  {
+    mediaSetNode.set_attribute(
+      "ListOfBatchesCheckValue",
       toGlibString(
         Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) ) );
   }

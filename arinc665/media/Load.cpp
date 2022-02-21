@@ -12,6 +12,7 @@
 
 #include "Load.hpp"
 
+#include <arinc665/media/MediaSet.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <utility>
@@ -122,25 +123,49 @@ void Load::targetHardwareId(
     std::move( positions ) );
 }
 
-ConstLoadFiles Load::dataFiles() const
+ConstLoadFiles Load::dataFiles( const bool effective ) const
 {
   ConstLoadFiles files{};
 
   for ( const auto &[filePtr, partNumber, checkValueType ] : dataFilesV )
   {
-    files.emplace_back( filePtr.lock(), partNumber, checkValueType );
+    if ( effective )
+    {
+      files.emplace_back(
+        filePtr.lock(),
+        partNumber,
+        checkValueType ?
+          checkValueType :
+          dataFilesCheckValueType( true ) );
+    }
+    else
+    {
+      files.emplace_back( filePtr.lock(), partNumber, checkValueType );
+    }
   }
 
   return files;
 }
 
-LoadFiles Load::dataFiles()
+LoadFiles Load::dataFiles( const bool effective )
 {
   LoadFiles files{};
 
   for ( const auto &[filePtr, partNumber, checkValueType] : dataFilesV )
   {
-    files.emplace_back( filePtr.lock(), partNumber, checkValueType );
+    if ( effective )
+    {
+      files.emplace_back(
+        filePtr.lock(),
+        partNumber,
+        checkValueType ?
+          checkValueType :
+          dataFilesCheckValueType( true ) );
+    }
+    else
+    {
+      files.emplace_back( filePtr.lock(), partNumber, checkValueType );
+    }
   }
 
   return files;
@@ -154,7 +179,7 @@ void Load::dataFile(
   if ( !file || ( file->mediaSet() != mediaSet() ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception{}
-      << Helper::AdditionalInfo{ "invalid File" });
+      << Helper::AdditionalInfo{ "invalid File" } );
   }
 
   dataFilesV.emplace_back( file, partNumber, checkValueType );
@@ -177,25 +202,49 @@ void Load::dataFile(
     std::move( checkValueType ) );
 }
 
-ConstLoadFiles Load::supportFiles() const
+ConstLoadFiles Load::supportFiles( const bool effective ) const
 {
   ConstLoadFiles files{};
 
   for ( const auto &[filePtr, partNumber, checkValueType ] : supportFilesV )
   {
-    files.emplace_back( filePtr.lock(), partNumber, checkValueType );
+    if ( effective )
+    {
+      files.emplace_back(
+        filePtr.lock(),
+        partNumber,
+        checkValueType ?
+        checkValueType :
+        supportFilesCheckValueType( true ) );
+    }
+    else
+    {
+      files.emplace_back( filePtr.lock(), partNumber, checkValueType );
+    }
   }
 
   return files;
 }
 
-LoadFiles Load::supportFiles()
+LoadFiles Load::supportFiles( const bool effective )
 {
   LoadFiles files{};
 
   for ( const auto &[filePtr, partNumber, checkValueType ] : supportFilesV )
   {
-    files.emplace_back( filePtr.lock(), partNumber, checkValueType );
+    if ( effective )
+    {
+      files.emplace_back(
+        filePtr.lock(),
+        partNumber,
+        checkValueType ?
+        checkValueType :
+        supportFilesCheckValueType( true ) );
+    }
+    else
+    {
+      files.emplace_back( filePtr.lock(), partNumber, checkValueType );
+    }
   }
 
   return files;
@@ -249,7 +298,7 @@ void Load::userDefinedData( const std::vector< uint8_t> &userDefinedData )
 
 void Load::userDefinedData( Load::UserDefinedData &&userDefinedData )
 {
-  userDefinedDataV = std::move( userDefinedData) ;
+  userDefinedDataV = std::move( userDefinedData ) ;
 }
 
 const Load::Type& Load::loadType() const
@@ -264,11 +313,19 @@ void Load::loadType( const Type &type )
 
 void Load::loadType( Type &&type )
 {
-  typeV = std::move( type);
+  typeV = std::move( type );
 }
 
-std::optional< Arinc645::CheckValueType > Load::loadCheckValueType() const
+std::optional< Arinc645::CheckValueType > Load::loadCheckValueType(
+  const bool effective ) const
 {
+  if ( effective )
+  {
+    return loadCheckValueTypeV ?
+      loadCheckValueTypeV :
+      mediaSet()->mediaSetCheckValueType();
+  }
+
   return loadCheckValueTypeV;
 }
 
@@ -278,8 +335,16 @@ void Load::loadCheckValueType(
   loadCheckValueTypeV = checkValueType;
 }
 
-std::optional< Arinc645::CheckValueType > Load::dataFilesCheckValueType() const
+std::optional< Arinc645::CheckValueType > Load::dataFilesCheckValueType(
+  const bool effective ) const
 {
+  if ( effective )
+  {
+    return dataFilesCheckValueTypeV ?
+      dataFilesCheckValueTypeV :
+      mediaSet()->mediaSetCheckValueType();
+  }
+
   return dataFilesCheckValueTypeV;
 }
 
@@ -289,8 +354,16 @@ void Load::dataFilesCheckValueType(
   dataFilesCheckValueTypeV = checkValueType;
 }
 
-std::optional< Arinc645::CheckValueType > Load::supportFilesCheckValueType() const
+std::optional< Arinc645::CheckValueType > Load::supportFilesCheckValueType(
+  const bool effective ) const
 {
+  if ( effective )
+  {
+    return supportFilesCheckValueTypeV ?
+      supportFilesCheckValueTypeV :
+      mediaSet()->mediaSetCheckValueType();
+  }
+
   return supportFilesCheckValueTypeV;
 }
 

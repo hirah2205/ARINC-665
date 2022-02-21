@@ -155,7 +155,7 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
   loadListFile.mediaSetPn( medium->mediaSet()->partNumber() );
   loadListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia() );
 
-  /* add all loads to "list of loads" file  */
+  /* add all loads to "list of loads" file */
   for ( const auto &load : medium->mediaSet()->loads() )
   {
     loadListFile.load( Files::LoadInfo{
@@ -200,14 +200,9 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
       static_cast< Files::RawFile >( batchListFile ) );
   }
 
-  // export medium info
+  // export "list of files"
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
     << "Export List of Files";
-
-  auto filesCheckValueType{
-    medium->mediaSet()->filesCheckValueType() ?
-      medium->mediaSet()->filesCheckValueType() :
-      medium->mediaSet()->mediaSetCheckValueType() };
 
   Arinc665::Files::FileListFile fileListFile{ arinc665VersionV };
   fileListFile.mediaSequenceNumber( medium->mediumNumber() );
@@ -216,9 +211,12 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
 
   // add list of loads
   {
+    const auto listOfLoadsCheckValueType{
+      medium->mediaSet()->listOfLoadsCheckValueType( true ) };
+
     std::optional< Arinc645::CheckValueGenerator > checkValueGenerator{
-      filesCheckValueType ?
-        Arinc645::CheckValueGenerator{ *filesCheckValueType } :
+      listOfLoadsCheckValueType ?
+        Arinc645::CheckValueGenerator{ *listOfLoadsCheckValueType } :
         std::optional< Arinc645::CheckValueGenerator >{} };
 
     const auto rawListOfLoadsFile{
@@ -247,9 +245,12 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
   // add list of batches - if present
   if ( medium->mediaSet()->numberOfBatches() != 0 )
   {
+    const auto listOfBatchesCheckValueType{
+      medium->mediaSet()->listOfBatchesCheckValueType( true ) };
+
     std::optional< Arinc645::CheckValueGenerator > checkValueGenerator{
-      filesCheckValueType ?
-        Arinc645::CheckValueGenerator{ *filesCheckValueType } :
+      listOfBatchesCheckValueType ?
+        Arinc645::CheckValueGenerator{ *listOfBatchesCheckValueType } :
         std::optional< Arinc645::CheckValueGenerator >{} };
 
     const auto rawListOfBatchesFile{
@@ -278,8 +279,7 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
   /* add all files, load header files, and batch files to file list */
   for ( const auto &file : medium->mediaSet()->files() )
   {
-    const auto fileCheckValueType{ file->checkValueType() ?
-      file->checkValueType() : filesCheckValueType };
+    const auto fileCheckValueType{ file->checkValueType( true ) };
 
     std::optional< Arinc645::CheckValueGenerator > checkValueGenerator{
       fileCheckValueType ?
@@ -306,6 +306,8 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
   }
 
   fileListFile.userDefinedData( mediaSetV->filesUserDefinedData() );
+  fileListFile.checkValueType(
+    medium->mediaSet()->listOfFilesCheckValueType( true ) );
 
   writeFileHandlerV(
     medium->mediumNumber(),
@@ -436,19 +438,9 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   loadHeaderFile.targetHardwareIdPositions( load->targetHardwareIdPositions() );
   loadHeaderFile.loadType( load->loadType() );
 
-  const auto loadCheckValue{ load->loadCheckValueType() ?
-    load->loadCheckValueType() :
-    load->mediaSet()->mediaSetCheckValueType() };
-
   // calculate data files CRC and set data.
-  const auto dataFilesCheckValue{ load->dataFilesCheckValueType() ?
-    load->dataFilesCheckValueType() : loadCheckValue };
-  for ( const auto &[ file, partNumber, checkValueType ] : load->dataFiles() )
+  for ( const auto &[ file, partNumber, checkValueType ] : load->dataFiles( true ) )
   {
-    const auto fileCheckValueType{ checkValueType ?
-      checkValueType :
-      dataFilesCheckValue };
-
     const auto rawDataFile{ readFileHandlerV(
       file->medium()->mediumNumber(),
       file->path() ) };
@@ -458,10 +450,10 @@ void MediaSetExporterImpl::createLoadHeaderFile(
 
     Arinc645::CheckValue checkValue{};
 
-    if ( fileCheckValueType )
+    if ( checkValueType )
     {
       const auto fileCheckValue{ Arinc645::CheckValueGenerator::checkValue(
-        *fileCheckValueType,
+        *checkValueType,
         rawDataFile ) };
     }
 
@@ -474,15 +466,8 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   }
 
   // calculate support files CRC and set data.
-  const std::optional< Arinc645::CheckValueType > supportFilesCheckValue{
-    load->supportFilesCheckValueType() ?
-      load->supportFilesCheckValueType() : loadCheckValue };
-  for ( const auto &[ file, partNumber, checkValueType ] : load->supportFiles() )
+  for ( const auto &[ file, partNumber, checkValueType ] : load->supportFiles( true ) )
   {
-    const auto fileCheckValueType{ checkValueType ?
-      checkValueType :
-      supportFilesCheckValue };
-
     const auto rawSupportFile{ readFileHandlerV(
       file->medium()->mediumNumber(),
       file->path() ) };
@@ -492,10 +477,10 @@ void MediaSetExporterImpl::createLoadHeaderFile(
 
     Arinc645::CheckValue checkValue{};
 
-    if ( fileCheckValueType )
+    if ( checkValueType )
     {
       const auto fileCheckValue{ Arinc645::CheckValueGenerator::checkValue(
-        *fileCheckValueType,
+        *checkValueType,
         rawSupportFile ) };
     }
 
@@ -512,9 +497,10 @@ void MediaSetExporterImpl::createLoadHeaderFile(
 
   // calculate load CRC and Check Value
   Arinc645::Arinc645Crc32 loadCrc{};
+  const auto loadCheckValueType{ load->loadCheckValueType( true ) };
   std::optional< Arinc645::CheckValueGenerator > checkValueGenerator{
-    loadCheckValue ?
-      Arinc645::CheckValueGenerator{ *loadCheckValue } :
+    loadCheckValueType ?
+      Arinc645::CheckValueGenerator{ *loadCheckValueType } :
       std::optional< Arinc645::CheckValueGenerator >{} };
 
   // load header load CRC calculation

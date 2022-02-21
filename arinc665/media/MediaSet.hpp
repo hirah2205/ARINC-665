@@ -400,8 +400,9 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @name Media Set Check Value Type
      *
-     * This information is used to determine the Check Value Type used for
-     * genration of Media Set Check Value within FILES.LUM.
+     * This information is used to determine the Check Value Type on the Media
+     * Set.
+     * It can be overridden by specific Check Value Types.
      *
      * @{
      **/
@@ -414,7 +415,7 @@ class ARINC665_EXPORT MediaSet : public Base
     std::optional< Arinc645::CheckValueType > mediaSetCheckValueType() const;
 
     /**
-     * @brief Updates the Media Set Check Value Type
+     * @brief Updates the Media Set Check Value Type.
      *
      * @param[in] type
      *   New Media Set Check Value Type.
@@ -425,20 +426,131 @@ class ARINC665_EXPORT MediaSet : public Base
     /** @} **/
 
     /**
+     * @name List of Files Check Value Type
+     *
+     * This information is used to determine the Check Value Type used for
+     * genration of List of Files (`FILES.LUM`) Check Value.
+     *
+     * If not provided, the Media Set Check Value is used.
+     *
+     * @{
+     **/
+
+    /**
+     * @brief Returns the List of Files Check Value Type.
+     *
+     * If no value is set, the Media Set Check Value Type is used.
+     *
+     * @param[in] effective
+     *   If set to true the effective value is returned.
+     *
+     * @return List of Files Check Value Type
+     **/
+    std::optional< Arinc645::CheckValueType > listOfFilesCheckValueType(
+      bool effective = false ) const;
+
+    /**
+     * @brief Updates the List of Files Check Value Type
+     *
+     * @param[in] type
+     *   New List of Files Check Value Type.
+     **/
+    void listOfFilesCheckValueType(
+      std::optional< Arinc645::CheckValueType > type );
+
+    /** @} **/
+
+    /**
+     * @name List of Loads Check Value Type
+     *
+     * This information is used to determine the Check Value Type used for
+     * genration of List of Loads (`LOADS.LUM`) Check Value.
+     *
+     * If not provided, the Media Set Check Value is used.
+     *
+     * @{
+     **/
+
+    /**
+     * @brief Returns the List of Loads Check Value Type.
+     *
+     * If no value is set, the Media Set Check Value Type is used.
+     *
+     * @param[in] effective
+     *   If set to true the effective value is returned.
+     *
+     * @return List of Loads Check Value Type
+     **/
+    std::optional< Arinc645::CheckValueType > listOfLoadsCheckValueType(
+      bool effective = false ) const;
+
+    /**
+     * @brief Updates the List of Loads Check Value Type
+     *
+     * @param[in] type
+     *   New List of Loads Check Value Type.
+     **/
+    void listOfLoadsCheckValueType(
+      std::optional< Arinc645::CheckValueType > type );
+
+    /** @} **/
+
+    /**
+     * @name List of Batches Check Value Type
+     *
+     * This information is used to determine the Check Value Type used for
+     * genration of List of Batches (`BATCHES.LUM`) Check Value.
+     *
+     * If not provided, the Media Set Check Value is used.
+     *
+     * @{
+     **/
+
+    /**
+     * @brief Returns the List of Batches Check Value Type.
+     *
+     * If no value is set, the Media Set Check Value Type is used.
+     *
+     * @param[in] effective
+     *   If set to true the effective value is returned.
+     *
+     * @return List of Batches Check Value Type
+     **/
+    std::optional< Arinc645::CheckValueType > listOfBatchesCheckValueType(
+      bool effective = false ) const;
+
+    /**
+     * @brief Updates the List of Batches Check Value Type
+     *
+     * @param[in] type
+     *   New List of Batches Check Value Type.
+     **/
+    void listOfBatchesCheckValueType(
+      std::optional< Arinc645::CheckValueType > type );
+
+    /** @} **/
+
+    /**
      * @name Files Check Value Type
      *
      * This information is used to determine the Check Value Type used for
-     * genration of Files Check Value within FILES.LUM.
+     * genration of Files Check Value within `FILES.LUM`.
      * It can be override on per file basis.
+     *
+     * If not provided, the Media Set Check Value is used.
      * @{
      **/
 
     /**
      * @brief Returns the Files Check Value Type.
      *
-     * @return Media Set Check Value Type
+     * @param[in] effective
+     *   If set to true the effective value is returned.
+     *
+     * @return Files Check Value Type
      **/
-    std::optional< Arinc645::CheckValueType > filesCheckValueType() const;
+    std::optional< Arinc645::CheckValueType > filesCheckValueType(
+      bool effective = false ) const;
 
     /**
      * @brief Updates the Files Check Value Type
@@ -463,6 +575,12 @@ class ARINC665_EXPORT MediaSet : public Base
     UserDefinedData batchesUserDefinedDataV;
     //! ARINC 645 Check Value for Media Set Generation
     std::optional< Arinc645::CheckValueType > mediaSetCheckValueTypeV;
+    //! ARINC 645 Check Value Type for List of Files Generation
+    std::optional< Arinc645::CheckValueType > listOfFilesCheckValueTypeV;
+    //! ARINC 645 Check Value Type for List of Loads Generation
+    std::optional< Arinc645::CheckValueType > listOfLoadsCheckValueTypeV;
+    //! ARINC 645 Check Value Type for List of Batches Generation
+    std::optional< Arinc645::CheckValueType > listOfBatchesCheckValueTypeV;
     //! ARINC 645 Check Value for Media Set File List Generation
     std::optional< Arinc645::CheckValueType > filesCheckValueTypeV;
 };

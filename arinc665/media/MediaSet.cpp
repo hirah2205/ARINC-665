@@ -429,8 +429,73 @@ void MediaSet::mediaSetCheckValueType(
   mediaSetCheckValueTypeV = type;
 }
 
-std::optional< Arinc645::CheckValueType > MediaSet::filesCheckValueType() const
+std::optional< Arinc645::CheckValueType > MediaSet::listOfFilesCheckValueType(
+  const bool effective ) const
 {
+  if ( effective )
+  {
+    return listOfFilesCheckValueTypeV ?
+      listOfFilesCheckValueTypeV :
+      mediaSetCheckValueTypeV;
+  }
+
+  return listOfFilesCheckValueTypeV;
+}
+
+void MediaSet::listOfFilesCheckValueType(
+  std::optional< Arinc645::CheckValueType > type )
+{
+  listOfFilesCheckValueTypeV = type;
+}
+
+std::optional< Arinc645::CheckValueType > MediaSet::listOfLoadsCheckValueType(
+  const bool effective  ) const
+{
+  if ( effective )
+  {
+    return listOfLoadsCheckValueTypeV ?
+      listOfLoadsCheckValueTypeV :
+      mediaSetCheckValueTypeV;
+  }
+
+  return listOfLoadsCheckValueTypeV;
+}
+
+void MediaSet::listOfLoadsCheckValueType(
+  std::optional< Arinc645::CheckValueType > type )
+{
+  listOfLoadsCheckValueTypeV = type;
+}
+
+std::optional< Arinc645::CheckValueType > MediaSet::listOfBatchesCheckValueType(
+  const bool effective ) const
+{
+  if ( effective )
+  {
+    return listOfBatchesCheckValueTypeV ?
+      listOfBatchesCheckValueTypeV :
+      mediaSetCheckValueTypeV;
+  }
+
+  return listOfBatchesCheckValueTypeV;
+}
+
+void MediaSet::listOfBatchesCheckValueType(
+  std::optional< Arinc645::CheckValueType > type )
+{
+  listOfBatchesCheckValueTypeV = type;
+}
+
+std::optional< Arinc645::CheckValueType > MediaSet::filesCheckValueType(
+  const bool effective ) const
+{
+  if ( effective )
+  {
+    return filesCheckValueTypeV ?
+      filesCheckValueTypeV :
+      mediaSetCheckValueTypeV;
+  }
+
   return filesCheckValueTypeV;
 }
 

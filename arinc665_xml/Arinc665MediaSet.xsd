@@ -59,9 +59,12 @@
       <element ref="ams:Loads"   minOccurs="1" maxOccurs="1" />
       <element ref="ams:Batches" minOccurs="0" maxOccurs="1" />
     </sequence>
-    <attribute name="PartNumber"         type="ams:PartNumberType" use="required" />
-    <attribute name="MediaSetCheckValue" type="ams:CheckValueType" use="optional" />
-    <attribute name="FilesCheckValue"    type="ams:CheckValueType" use="optional" />
+    <attribute name="PartNumber"              type="ams:PartNumberType" use="required" />
+    <attribute name="MediaSetCheckValue"      type="ams:CheckValueType" use="optional" />
+    <attribute name="ListOfFilesCheckValue"   type="ams:CheckValueType" use="optional" />
+    <attribute name="ListOfLoadsCheckValue"   type="ams:CheckValueType" use="optional" />
+    <attribute name="ListOfBatchesCheckValue" type="ams:CheckValueType" use="optional" />
+    <attribute name="FilesCheckValue"         type="ams:CheckValueType" use="optional" />
   </complexType>
 
   <complexType name="MediumType" >
