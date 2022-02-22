@@ -57,7 +57,7 @@ int main( int argc, char const * argv[] );
  * @param[in] checkFileIntegrity
  *   Check File Integrity
  *
- * @return The loaded media set.
+ * @return Loaded Media Set.
  **/
 static Arinc665::Media::MediaSetPtr loadMediaSet(
   const Directories &mediaSetDirectories,
@@ -114,25 +114,25 @@ int main( int argc, char const * argv[] )
 
     Arinc665::Utils::printMediaSet( mediaSet, std::cout, "", "  " );
   }
-  catch ( boost::program_options::error &e)
+  catch ( boost::program_options::error &e )
   {
     std::cout
       << "Error parsing command line: " << e.what() << "\n"
       << "Enter " << argv[0] << " --help for command line description\n";
     return EXIT_FAILURE;
   }
-  catch ( boost::exception &e)
+  catch ( boost::exception &e )
   {
     std::cout
-      << "Boost exception: " << boost::diagnostic_information(e) << "\n";
+      << "Boost exception: " << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
-  catch ( std::exception &e)
+  catch ( std::exception &e )
   {
     std::cout << "std exception: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
-  catch ( ...)
+  catch ( ... )
   {
     std::cout << "unknown exception occurred\n";
     return EXIT_FAILURE;
@@ -150,7 +150,7 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
 
   // read file handler
   importer->readFileHandler(
-    [&mediaSetDirectories](
+    [ &mediaSetDirectories ](
       const uint8_t mediumNumber,
       const std::filesystem::path &path)->Arinc665::Files::RawFile {
         auto filePath{

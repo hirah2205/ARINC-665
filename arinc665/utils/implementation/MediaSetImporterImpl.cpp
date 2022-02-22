@@ -154,13 +154,13 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     }
 
     // Check and compare Check Value
-    if ( fileInfo.checkValue )
+    if ( Arinc645::CheckValueType::NotUsed != std::get< 0 >( fileInfo.checkValue ) )
     {
       const auto checkValueCalculated{ Arinc645::CheckValueGenerator::checkValue(
-        std::get< 0 >( *fileInfo.checkValue ),
+        std::get< 0 >( fileInfo.checkValue ),
         rawFile ) };
 
-      if ( *fileInfo.checkValue != checkValueCalculated )
+      if ( fileInfo.checkValue != checkValueCalculated )
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo{ "Check Value of file invalid" }
@@ -394,10 +394,7 @@ void MediaSetImporterImpl::addFiles()
     auto filePtr{ container->addRegularFile( fileInfo.filename ) };
 
     // set check value indicator
-    if ( fileInfo.checkValue )
-    {
-      filePtr->checkValueType( std::get< 0 >( *fileInfo.checkValue ) );
-    }
+    filePtr->checkValueType( std::get< 0 >( fileInfo.checkValue ) );
   }
 
   addLoads();
@@ -423,10 +420,7 @@ void MediaSetImporterImpl::addLoads()
     auto loadPtr{ container->addLoad( filename ) };
 
     // set check value indicator
-    if ( fileInfoIt->second.checkValue )
-    {
-      loadPtr->checkValueType( std::get< 0 >( *fileInfoIt->second.checkValue  ) );
-    }
+    loadPtr->checkValueType( std::get< 0 >( fileInfoIt->second.checkValue ) );
 
     loadPtr->partFlags( loadHeaderFile.partFlags() );
     loadPtr->partNumber( loadHeaderFile.partNumber() );
@@ -486,10 +480,9 @@ void MediaSetImporterImpl::addLoads()
       // Check File Check Value
       if ( dataFile.checkValue )
       {
-        if ( dataFileInfo->second.checkValue
-          && ( std::get< 0 >( *dataFile.checkValue ) == std::get< 0 >( *dataFileInfo->second.checkValue ) ) )
+        if ( std::get< 0 >( *dataFile.checkValue ) == std::get< 0 >( dataFileInfo->second.checkValue ) )
         {
-          if ( std::get< 1 >( *dataFile.checkValue ) != std::get< 1 >( *dataFileInfo->second.checkValue ) )
+          if ( std::get< 1 >( *dataFile.checkValue ) != std::get< 1 >( dataFileInfo->second.checkValue ) )
           {
             BOOST_THROW_EXCEPTION( Arinc665Exception()
               << Helper::AdditionalInfo{ "Data File Check Value inconsistent" }
@@ -562,10 +555,9 @@ void MediaSetImporterImpl::addLoads()
       // Check File Check Value
       if ( supportFile.checkValue )
       {
-        if ( supportFileInfo->second.checkValue
-          && ( std::get< 0 >( *supportFile.checkValue ) == std::get< 0 >( *supportFileInfo->second.checkValue ) ) )
+        if ( std::get< 0 >( *supportFile.checkValue ) == std::get< 0 >( supportFileInfo->second.checkValue ) )
         {
-          if ( std::get< 1 >( *supportFile.checkValue ) != std::get< 1 >( *supportFileInfo->second.checkValue ) )
+          if ( std::get< 1 >( *supportFile.checkValue ) != std::get< 1 >( supportFileInfo->second.checkValue ) )
           {
             BOOST_THROW_EXCEPTION( Arinc665Exception()
               << Helper::AdditionalInfo{ "Data File Check Value inconsistent" }
@@ -614,10 +606,7 @@ void MediaSetImporterImpl::addBatches()
     auto batchPtr{ container->addBatch( filename ) };
 
     // set check value indicator
-    if ( fileInfoIt->second.checkValue )
-    {
-      batchPtr->checkValueType( std::get< 0 >( *fileInfoIt->second.checkValue  ) );
-    }
+    batchPtr->checkValueType( std::get< 0 >( fileInfoIt->second.checkValue  ) );
 
     batchPtr->partNumber( batchFile.partNumber() );
     batchPtr->comment( batchFile.comment() );

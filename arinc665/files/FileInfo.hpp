@@ -43,7 +43,7 @@ struct ARINC665_EXPORT FileInfo
   //! CRC
   uint16_t crc;
   //! Check Value (since ARINC 665-3)
-  std::optional< Arinc645::CheckValue > checkValue;
+  Arinc645::CheckValue checkValue;
 
   /**
    * @brief Returns the path (path name / filename)

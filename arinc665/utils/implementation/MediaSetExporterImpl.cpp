@@ -227,14 +227,14 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
     const auto listOfLoadsFileCrc{
       Files::Arinc665File::calculateChecksum( rawListOfLoadsFile ) };
 
-    std::optional< Arinc645::CheckValue > listOfLoadsFileCheckValue{};
+   Arinc645::CheckValue listOfLoadsFileCheckValue{ Arinc645::CheckValueType::NotUsed, {} };
     if ( checkValueGenerator )
     {
       checkValueGenerator->process( rawListOfLoadsFile );
       listOfLoadsFileCheckValue = checkValueGenerator->checkValue();
     }
 
-    fileListFile.file({
+    fileListFile.file( {
       std::string{ ListOfLoadsName },
       Files::Arinc665File::encodePath( "/" ),
       medium->mediumNumber(),
@@ -261,7 +261,7 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
     const auto listOfBatchesFileCrc{
       Files::Arinc665File::calculateChecksum( rawListOfBatchesFile ) };
 
-    std::optional< Arinc645::CheckValue > listOfBatchesFileCheckValue{};
+    Arinc645::CheckValue listOfBatchesFileCheckValue{ Arinc645::CheckValueType::NotUsed, {} };
     if ( checkValueGenerator )
     {
       checkValueGenerator->process( rawListOfBatchesFile );
@@ -290,7 +290,7 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
 
     const auto crc{ Files::Arinc665File::calculateChecksum( rawFile ) };
 
-    std::optional< Arinc645::CheckValue > fileCheckValue{};
+    Arinc645::CheckValue fileCheckValue{ Arinc645::CheckValueType::NotUsed, {} };
     if ( checkValueGenerator )
     {
       checkValueGenerator->process( rawFile );

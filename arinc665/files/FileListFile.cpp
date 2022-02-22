@@ -411,10 +411,12 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
       rawFile,
       2U * static_cast< ptrdiff_t >( fileCheckValuePtr ) );
 
-    if ( checkValue )
+    checkValueTypeV = std::get< 0 >( checkValue );
+
+    if ( Arinc645::CheckValueType::NotUsed != *checkValueTypeV )
     {
       const auto calcCheckValue{ Arinc645::CheckValueGenerator::checkValue(
-        std::get< 0 >( *checkValue ),
+        *checkValueTypeV,
         rawFile.first( 2U * std::size_t{ fileCheckValuePtr } ) ) };
 
       if ( checkValue != calcCheckValue )
@@ -423,11 +425,6 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
           InvalidArinc665File()
           << Helper::AdditionalInfo{ "Check Value Verification failed" } );
       }
-
-      checkValueTypeV = std::get< 0 >( *checkValue );
-    }
-    {
-      checkValueTypeV = Arinc645::CheckValueType::NotUsed;
     }
   }
 
@@ -461,22 +458,22 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
     RawFile rawFileInfo( sizeof( uint16_t));
 
     // filename
-    auto const rawFilename{ encodeString( fileInfo.filename )};
-    assert( rawFilename.size() % 2 == 0);
+    auto const rawFilename{ encodeString( fileInfo.filename ) };
+    assert( rawFilename.size() % 2 == 0 );
     rawFileInfo.insert(
       rawFileInfo.end(),
       rawFilename.begin(),
-      rawFilename.end());
+      rawFilename.end() );
 
     // path name
-    auto const rawPathname{ encodeString( fileInfo.pathName )};
+    auto const rawPathname{ encodeString( fileInfo.pathName ) };
     assert( rawPathname.size() % 2 == 0);
     rawFileInfo.insert(
       rawFileInfo.end(),
       rawPathname.begin(),
-      rawPathname.end());
+      rawPathname.end() );
 
-    rawFileInfo.resize( rawFileInfo.size() + 2 * sizeof( uint16_t));
+    rawFileInfo.resize( rawFileInfo.size() + 2 * sizeof( uint16_t ) );
 
     // member sequence number
     auto fileInfoIt{ Helper::setInt< uint16_t>(
@@ -487,15 +484,15 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
     Helper::setInt< uint16_t>( fileInfoIt, fileInfo.crc );
 
     // following fields are available in ARINC 665-3 ff
-    if ( encodeV3Data)
+    if ( encodeV3Data )
     {
       // check Value
       const auto rawCheckValue{ CheckValueUtils_encode( fileInfo.checkValue ) };
-      assert( rawCheckValue.size() % 2 == 0);
+      assert( rawCheckValue.size() % 2 == 0 );
       rawFileInfo.insert(
         rawFileInfo.end(),
         rawCheckValue.begin(),
-        rawCheckValue.end());
+        rawCheckValue.end() );
     }
 
     // next file pointer (is set to 0 for last file)
@@ -577,7 +574,7 @@ void FileListFile::decodeFilesInfo(
     listIt = Helper::getInt< uint16_t>( listIt, crc);
 
     // CheckValue (keep default initialised if not V3 File Info
-    std::optional< Arinc645::CheckValue > checkValue{};
+    Arinc645::CheckValue checkValue{ Arinc645::CheckValueType::NotUsed, {} };
 
     // following fields are available in ARINC 665-3 ff
     if ( decodeV3Data )

@@ -35,14 +35,12 @@ BOOST_AUTO_TEST_CASE( CheckValueUtils_encode1)
 }
 
 //! CheckValueUtils_decode Test
-BOOST_AUTO_TEST_CASE( CheckValueUtils_decode1)
+BOOST_AUTO_TEST_CASE( CheckValueUtils_decode1 )
 {
-  BOOST_CHECK( CheckValueUtils_decode( RawFile({ 0x00, 0x00}), 0) ==
-    std::optional< Arinc645::CheckValue>());
-  BOOST_CHECK( CheckValueUtils_decode( RawFile({ 0x00, 0x06, 0x00, 0x01, 0x12, 0x34}),0) ==
-    std::make_tuple(
-      Arinc645::CheckValueType::Crc8,
-      RawFile({ 0x12, 0x34})));
+  BOOST_CHECK( ( CheckValueUtils_decode( RawFile({ 0x00, 0x00 } ), 0) ==
+    Arinc645::CheckValue{ Arinc645::CheckValueType::NotUsed, {} } ) );
+  BOOST_CHECK( ( CheckValueUtils_decode( RawFile( { 0x00, 0x06, 0x00, 0x01, 0x12, 0x34 } ), 0 ) ==
+   Arinc645::CheckValue{ Arinc645::CheckValueType::Crc8, RawFile( { 0x12, 0x34 } ) } ) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

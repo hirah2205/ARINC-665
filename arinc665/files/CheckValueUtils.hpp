@@ -41,8 +41,11 @@ RawFile ARINC665_EXPORT CheckValueUtils_encode(
  *   Offset where to start decoding.
  *
  * @return Decoded Check Value.
+ *
+ * @throw Arinc665Exception
+ *   When Check Value is Invalid
  **/
-std::optional< Arinc645::CheckValue > ARINC665_EXPORT CheckValueUtils_decode(
+Arinc645::CheckValue ARINC665_EXPORT CheckValueUtils_decode(
   const ConstRawFileSpan &rawFile,
   ptrdiff_t offset );
 

@@ -36,6 +36,9 @@ static void printMedium(
   std::string_view initialIndent,
   std::string_view indent );
 
+static std::string printCheckValueType(
+  std::optional< Arinc645::CheckValueType > type );
+
 void printMediaSet(
   const Media::ConstMediaSetPtr &mediaSet,
   std::ostream &outS,
@@ -50,7 +53,35 @@ void printMediaSet(
 
   outS
     << initialIndent
-    << "Media Set Part Number: '" << mediaSet->partNumber() << "'\n";
+    << "Media Set Part Number: '" << mediaSet->partNumber() << "'\n"
+
+    << initialIndent
+    << "Media Set Check Value Type: "
+    << printCheckValueType( mediaSet->mediaSetCheckValueType() ) << "\n"
+
+    << initialIndent
+    << "List of Files Check Value Type: "
+    << printCheckValueType( mediaSet->listOfFilesCheckValueType() )
+    << " - "
+    << printCheckValueType( mediaSet->listOfFilesCheckValueType( true ) ) << "\n"
+
+    << initialIndent
+    << "List of Loads Check Value Type: "
+    << printCheckValueType( mediaSet->listOfLoadsCheckValueType() )
+    << " - "
+    << printCheckValueType( mediaSet->listOfLoadsCheckValueType( true ) ) << "\n"
+
+    << initialIndent
+    << "List of Batches Check Value Type: "
+    << printCheckValueType( mediaSet->listOfBatchesCheckValueType() )
+    << " - "
+    << printCheckValueType( mediaSet->listOfBatchesCheckValueType( true ) ) << "\n"
+
+    << initialIndent
+    << "Files Check Value Type: "
+    << printCheckValueType( mediaSet->filesCheckValueType() )
+    << " - "
+    << printCheckValueType( mediaSet->filesCheckValueType( true ) ) << "\n";
 
   // print files
   outS
@@ -122,6 +153,14 @@ void printFile(
       break;
   }
   outS << "\n";
+
+  outS
+    << initialIndent
+    << "File Check Value Type: "
+    << printCheckValueType( file->checkValueType() )
+    << " - "
+    << printCheckValueType( file->checkValueType( true ) ) << "\n";
+
 }
 
 void printLoad(
@@ -147,7 +186,25 @@ void printLoad(
 
     << initialIndent
     << "Load Part Nummer: '"
-    << load->partNumber() << "'\n";
+    << load->partNumber() << "'\n"
+
+    << initialIndent
+    << "Load Check Value Type: '"
+    << printCheckValueType( load->loadCheckValueType() )
+    << " - "
+    << printCheckValueType( load->loadCheckValueType( true ) ) << "\n"
+
+    << initialIndent
+    << "Data Files Check Value Type: '"
+    << printCheckValueType( load->dataFilesCheckValueType() )
+    << " - "
+    << printCheckValueType( load->dataFilesCheckValueType( true ) ) << "\n"
+
+    << initialIndent
+    << "Support Files Check Value Type: '"
+    << printCheckValueType( load->supportFilesCheckValueType() )
+    << " - "
+    << printCheckValueType( load->supportFilesCheckValueType( true ) ) << "\n";
 
   if ( const auto type{ load->loadType() }; type )
   {
@@ -199,9 +256,7 @@ void printLoad(
 
       << nextIndent
       << "Check Value Type: '"
-      << ( checkValueType ?
-        Arinc645::CheckValueTypeDescription::instance().name( * checkValueType ) :
-        "None" ) << "'\n";
+      << printCheckValueType( checkValueType ) << "'\n";
 
     outS << "\n";
   }
@@ -228,9 +283,7 @@ void printLoad(
 
       << nextIndent
       << "Check Value Type: '"
-      << ( checkValueType ?
-        Arinc645::CheckValueTypeDescription::instance().name( * checkValueType ) :
-        "None" ) << "'\n";
+      << printCheckValueType( checkValueType ) << "'\n";
 
     outS << "\n";
   }
@@ -314,6 +367,14 @@ static void printMedium(
     printFile( file, outS, nextIndent );
     outS << "\n";
   }
+}
+
+static std::string printCheckValueType(
+  std::optional< Arinc645::CheckValueType > type )
+{
+  return ( type ?
+      std::string( Arinc645::CheckValueTypeDescription::instance().name( * type ) ) :
+      "***Undefined***" );
 }
 
 }

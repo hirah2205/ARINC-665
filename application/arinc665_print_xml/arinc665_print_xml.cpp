@@ -60,7 +60,7 @@ int main( int argc, char * argv[] )
   )
   (
     "xml",
-    boost::program_options::value( &xmlPath)->required(),
+    boost::program_options::value( &xmlPath )->required(),
     "XML File"
   );
 
@@ -68,8 +68,8 @@ int main( int argc, char * argv[] )
   {
     boost::program_options::variables_map vm{};
     boost::program_options::store(
-      boost::program_options::parse_command_line( argc, argv, options),
-      vm);
+      boost::program_options::parse_command_line( argc, argv, options ),
+      vm );
 
     if ( vm.count( "help" ) != 0 )
     {

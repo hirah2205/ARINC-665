@@ -54,7 +54,7 @@ RawFile CheckValueUtils_encode(
   return rawCheckValue;
 }
 
-std::optional< Arinc645::CheckValue > CheckValueUtils_decode(
+Arinc645::CheckValue CheckValueUtils_decode(
   const ConstRawFileSpan &rawFile,
   const ptrdiff_t offset )
 {
@@ -66,7 +66,7 @@ std::optional< Arinc645::CheckValue > CheckValueUtils_decode(
   if ( 0U == checkValueLength )
   {
     // empty check value
-    return {};
+    return { Arinc645::CheckValueType::NotUsed, {} };
   }
 
   if ( checkValueLength <= ( 2U * sizeof( uint16_t ) ) )
@@ -77,6 +77,8 @@ std::optional< Arinc645::CheckValue > CheckValueUtils_decode(
 
   uint16_t checkValueType{};
   it = Helper::getInt< uint16_t>( it, checkValueType );
+
+  //! @todo Check Check Value Length against Type
 
   return { std::make_tuple(
     static_cast< Arinc645::CheckValueType >( checkValueType ),
