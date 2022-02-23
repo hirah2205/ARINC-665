@@ -371,7 +371,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      *
      * This information is only used in ARIN 665-3/4 files.
      *
-     * @return The Load Type information.
+     * @return Load Type information.
      **/
     [[nodiscard]] const LoadType& loadType() const;
 

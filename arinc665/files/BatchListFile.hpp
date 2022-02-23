@@ -137,7 +137,7 @@ class ARINC665_EXPORT BatchListFile : public ListFile
     BatchListFile& operator=( const ConstRawFileSpan &rawFile ) final;
 
     //! @copydoc ListFile::fileType() const noexcept
-    [[nodiscard]] FileType fileType() const noexcept override;
+    [[nodiscard]] FileType fileType() const noexcept final;
 
     /**
      * @name Batches

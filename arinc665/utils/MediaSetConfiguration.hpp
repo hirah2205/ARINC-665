@@ -59,7 +59,7 @@ class ARINC665_EXPORT MediaSetConfiguration
      * @brief Converts the configuration values to a
      *   boost::property_tree::ptree.
      *
-     * @return The boost::property_tree::ptree.
+     * @return Configuration as boost::property_tree::ptree.
      **/
     [[nodiscard]] boost::property_tree::ptree toProperties() const;
 

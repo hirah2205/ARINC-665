@@ -62,10 +62,10 @@ class LoadHeaderFile;
 
 struct BatchTargetInfo;
 //! Batch Targets Information.
-using BatchTargetsInfo = std::list< BatchTargetInfo>;
+using BatchTargetsInfo = std::list< BatchTargetInfo >;
 struct BatchLoadInfo;
 //! Batch Loads Information.
-using BatchLoadsInfo = std::list< BatchLoadInfo>;
+using BatchLoadsInfo = std::list< BatchLoadInfo >;
 class BatchFile;
 
 struct BatchInfo;

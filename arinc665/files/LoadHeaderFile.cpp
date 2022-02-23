@@ -69,7 +69,7 @@ LoadHeaderFile::LoadHeaderFile(
   checkUserDefinedData();
 }
 
-LoadHeaderFile::LoadHeaderFile( const ConstRawFileSpan &rawFile):
+LoadHeaderFile::LoadHeaderFile( const ConstRawFileSpan &rawFile ):
   Arinc665File{ rawFile, FileType::LoadUploadHeader, FileCrcOffset },
   partFlagsV{ 0 },
   loadCrcV{ 0 }
@@ -77,7 +77,7 @@ LoadHeaderFile::LoadHeaderFile( const ConstRawFileSpan &rawFile):
   decodeBody( rawFile);
 }
 
-LoadHeaderFile& LoadHeaderFile::operator=( const ConstRawFileSpan &rawFile)
+LoadHeaderFile& LoadHeaderFile::operator=( const ConstRawFileSpan &rawFile )
 {
   // call inherited operator
   Arinc665File::operator =( rawFile );
@@ -96,7 +96,7 @@ uint16_t LoadHeaderFile::partFlags() const
   return partFlagsV;
 }
 
-void LoadHeaderFile::partFlags( uint16_t partFlags)
+void LoadHeaderFile::partFlags( uint16_t partFlags )
 {
   partFlagsV = partFlags;
 }
@@ -106,14 +106,14 @@ std::string_view LoadHeaderFile::partNumber() const
   return partNumberV;
 }
 
-void LoadHeaderFile::partNumber( std::string_view partNumber)
+void LoadHeaderFile::partNumber( std::string_view partNumber )
 {
   partNumberV = partNumber;
 }
 
-void LoadHeaderFile::partNumber( std::string &&partNumber)
+void LoadHeaderFile::partNumber( std::string &&partNumber )
 {
-  partNumberV = std::move( partNumber);
+  partNumberV = std::move( partNumber );
 }
 
 const LoadHeaderFile::TargetHardwareIdPositions&
@@ -129,15 +129,15 @@ LoadHeaderFile::targetHardwareIdPositions()
 }
 
 void LoadHeaderFile::targetHardwareIdPositions(
-  const TargetHardwareIdPositions &targetHardwareIdPositions)
+  const TargetHardwareIdPositions &targetHardwareIdPositions )
 {
   targetHardwareIdPositionsV = targetHardwareIdPositions;
 }
 
 void LoadHeaderFile::targetHardwareIdPositions(
-  TargetHardwareIdPositions &&targetHardwareIdPositions)
+  TargetHardwareIdPositions &&targetHardwareIdPositions )
 {
-  targetHardwareIdPositionsV = std::move( targetHardwareIdPositions);
+  targetHardwareIdPositionsV = std::move( targetHardwareIdPositions );
 }
 
 LoadHeaderFile::TargetHardwareIds LoadHeaderFile::targetHardwareIds() const
