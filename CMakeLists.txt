@@ -89,6 +89,18 @@ endif()
 FetchContent_MakeAvailable( arinc645 )
 
 
+FetchContent_Declare(
+  command_shell
+  GIT_REPOSITORY https://git.thomas-vogt.de/Thomas-Vogt/command_shell.git
+  GIT_TAG        main )
+
+if( IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/command_shell )
+  set( FETCHCONTENT_SOURCE_DIR_COMMAND_SHELL ${CMAKE_CURRENT_SOURCE_DIR}/command_shell )
+endif()
+
+FetchContent_MakeAvailable( command_shell )
+
+
 add_subdirectory( arinc665 )
 add_subdirectory( arinc665_qt )
 add_subdirectory( arinc665_xml )
