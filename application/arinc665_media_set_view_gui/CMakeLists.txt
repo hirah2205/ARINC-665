@@ -21,4 +21,9 @@ target_link_libraries(
   PRIVATE
     arinc665_qt )
 
+set_property(
+  DIRECTORY ${PROJECT_SOURCE_DIR}
+  APPEND
+  PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
+
 install( TARGETS arinc665_media_set_view_gui COMPONENT runtime )

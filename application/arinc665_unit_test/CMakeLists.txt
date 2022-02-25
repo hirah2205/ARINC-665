@@ -20,4 +20,9 @@ target_link_libraries(
 
 add_test( NAME arinc665_unit_test COMMAND arinc665_unit_test )
 
+set_property(
+  DIRECTORY ${PROJECT_SOURCE_DIR}
+  APPEND
+  PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
+
 install( TARGETS arinc665_unit_test COMPONENT runtime )

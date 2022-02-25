@@ -13,6 +13,11 @@ if( NOT DOXYGEN_FOUND )
   return()
 endif()
 
+get_property(
+  ARINC665_DOC_PATHS
+  DIRECTORY ${arinc665_SOURCE_DIR}
+  PROPERTY DOC_PATHS )
+
 set( DOXYGEN_PROJECT_NAME "${arinc665_DESCRIPTION}" )
 set( DOXYGEN_PROJECT_BRIEF "${arinc665_DESCRIPTION}" )
 set( DOXYGEN_PROJECT_NUMBER "${arinc665_VERSION}" )
@@ -33,6 +38,8 @@ set(
   DOXYGEN_STRIP_FROM_PATH
 
   ${helper_SOURCE_DIR}
+  ${arinc645_SOURCE_DIR}
+  ${arinc645_SOURCE_DIR}/application
   ${arinc665_SOURCE_DIR}
   ${arinc665_SOURCE_DIR}/application )
 
@@ -52,19 +59,7 @@ doxygen_add_docs(
 
   ${arinc645_SOURCE_DIR}/arinc645
 
-  ${arinc665_SOURCE_DIR}/arinc665
-  ${arinc665_SOURCE_DIR}/arinc665_qt
-  ${arinc665_SOURCE_DIR}/application/arinc665_applications.md
-  ${arinc665_SOURCE_DIR}/application/arinc665_check
-  ${arinc665_SOURCE_DIR}/application/arinc665_compiler
-  ${arinc665_SOURCE_DIR}/application/arinc665_decompiler
-  ${arinc665_SOURCE_DIR}/application/arinc665_ls
-  ${arinc665_SOURCE_DIR}/application/arinc665_media_set_manager_gui
-  ${arinc665_SOURCE_DIR}/application/arinc665_media_set_view_gui
-  ${arinc665_SOURCE_DIR}/application/arinc665_print_media_set
-  ${arinc665_SOURCE_DIR}/application/arinc665_print_xml
-  ${arinc665_SOURCE_DIR}/application/arinc665_test_media_set_manager
-  ${arinc665_SOURCE_DIR}/application/arinc665_unit_test )
+  ${ARINC665_DOC_PATHS} )
 
 add_dependencies( doc arinc665_api_doc )
 

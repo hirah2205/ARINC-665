@@ -23,4 +23,9 @@ target_link_libraries(
     arinc665
     commands )
 
+set_property(
+  DIRECTORY ${PROJECT_SOURCE_DIR}
+  APPEND
+  PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
+
 install( TARGETS arinc665_media_set_manager COMPONENT runtime )

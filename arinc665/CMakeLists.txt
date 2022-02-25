@@ -125,6 +125,11 @@ add_subdirectory( files )
 add_subdirectory( media )
 add_subdirectory( utils )
 
+set_property(
+  DIRECTORY ${PROJECT_SOURCE_DIR}
+  APPEND
+  PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
+
 install(
   TARGETS arinc665
   RUNTIME_DEPENDENCY_SET runtime-libs

@@ -6,6 +6,12 @@
 
 cmake_minimum_required( VERSION 3.21 )
 
+set_property(
+  DIRECTORY ${PROJECT_SOURCE_DIR}
+  APPEND
+  PROPERTY DOC_PATHS
+  ${CMAKE_CURRENT_SOURCE_DIR}/arinc665_applications.md )
+
 add_subdirectory( arinc665_compiler )
 add_subdirectory( arinc665_decompiler )
 add_subdirectory( arinc665_check )

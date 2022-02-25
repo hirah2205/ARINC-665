@@ -73,6 +73,10 @@ file(
   ${CMAKE_CURRENT_BINARY_DIR}/.clang-tidy
   "Checks: '-*,llvm-twine-local'" )
 
+set_property(
+  DIRECTORY ${PROJECT_SOURCE_DIR}
+  APPEND
+  PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
 
 install(
   TARGETS arinc665_qt
