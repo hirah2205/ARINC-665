@@ -14,6 +14,11 @@ if( NOT DOXYGEN_FOUND )
 endif()
 
 get_property(
+  ARINC645_DOC_PATHS
+  DIRECTORY ${arinc645_SOURCE_DIR}
+  PROPERTY DOC_PATHS )
+
+get_property(
   ARINC665_DOC_PATHS
   DIRECTORY ${arinc665_SOURCE_DIR}
   PROPERTY DOC_PATHS )
@@ -48,6 +53,7 @@ set(
 
   ${Boost_INCLUDE_DIRS}
   ${helper_SOURCE_DIR}
+  ${arinc645_SOURCE_DIR}
   ${arinc665_SOURCE_DIR} )
 
 doxygen_add_docs(
@@ -57,8 +63,7 @@ doxygen_add_docs(
 
   ${helper_SOURCE_DIR}/helper
 
-  ${arinc645_SOURCE_DIR}/arinc645
-
+  ${ARINC645_DOC_PATHS}
   ${ARINC665_DOC_PATHS} )
 
 add_dependencies( doc arinc665_api_doc )
