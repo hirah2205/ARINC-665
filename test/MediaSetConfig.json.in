@@ -1,14 +1,11 @@
-{
-  "media_sets_base" : "./${MEDIA_SET_OUTPUT}",
-  "media_sets" : [
-    {
-      "path" : "CCC",
-      "media" : [
-        {
-          "number" : 1,
-          "path" : "MEDIUM_001"
-        }
-      ]
-    }
-  ]
-}
+[
+  {
+    "path" : "CCC",
+    "media" : [
+      {
+        "number" : 1,
+        "path" : "MEDIUM_001"
+      }
+    ]
+  }
+]

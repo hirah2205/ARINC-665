@@ -215,7 +215,7 @@ int main( int argc, char * argv[] )
     auto xml{ Arinc665::Utils::Arinc665Xml::instance()};
 
     // load XML file
-    auto [mediaSet, fileMapping] = xml->loadFromXml( mediaSetXmlFile);
+    auto [ mediaSet, fileMapping ] = xml->loadFromXml( mediaSetXmlFile );
 
     // Add Media Set Part Number to Output Path
     mediaSetDestinationDirectory /= mediaSet->partNumber();
@@ -337,7 +337,7 @@ static void createDirectory(
 static bool checkFileExistance(
   const std::filesystem::path &mediaSetBase,
   const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
-  Arinc665::Media::ConstFilePtr file)
+  Arinc665::Media::ConstFilePtr file )
 {
   BOOST_LOG_FUNCTION()
 

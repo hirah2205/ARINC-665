@@ -62,10 +62,10 @@ class MediaSetValidator;
 //! ARINC 665 Media Set Validator Instance Pointer.
 using MediaSetValidatorPtr = std::unique_ptr< MediaSetValidator >;
 
-class MediaSetConfiguration;
+class MediaSetManagerConfiguration;
 class MediaSetManager;
 //! ARINC 665 Media Set Manager Instance Pointer.
-using MediaSetManagerPtr = std::shared_ptr< MediaSetManager>;
+using MediaSetManagerPtr = std::shared_ptr< MediaSetManager >;
 
 }
 

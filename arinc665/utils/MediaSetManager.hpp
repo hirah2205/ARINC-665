@@ -54,7 +54,7 @@ class ARINC665_EXPORT MediaSetManager
      * @param[in] basePath
      *   Base Path to use, when configured paths are relative, i.e. base of
      *   configuration file.
-     * @param[in,out] config
+     * @param[in,out] configuration
      *   Media Set Manager Configuration.
      * @param[in] checkFileIntegrity
      *   If set to true additional file integrity steps are performed
@@ -63,7 +63,7 @@ class ARINC665_EXPORT MediaSetManager
      **/
     static MediaSetManagerPtr instance(
       const std::filesystem::path &basePath,
-      MediaSetConfiguration &config,
+      MediaSetManagerConfiguration &configuration,
       bool checkFileIntegrity = true );
 
     /**
@@ -71,7 +71,8 @@ class ARINC665_EXPORT MediaSetManager
      *
      * @return Media Set Manager Configuration.
      **/
-    [[nodiscard]] virtual const MediaSetConfiguration& configuration() const = 0;
+    [[nodiscard]] virtual const MediaSetManagerConfiguration&
+    configuration() const = 0;
 
     /**
      * @brief Returns the Media Set with the given Part Number.

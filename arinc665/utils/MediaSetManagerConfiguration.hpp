@@ -7,11 +7,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Utils::MediaSetConfiguration.
+ * @brief Declaration of Class Arinc665::Utils::MediaSetManagerConfiguration.
  **/
 
-#ifndef ARINC665_UTILS_MEDIASETCONFIGURATION_HPP
-#define ARINC665_UTILS_MEDIASETCONFIGURATION_HPP
+#ifndef ARINC665_UTILS_MEDIASETMANAGERCONFIGURATION_HPP
+#define ARINC665_UTILS_MEDIASETMANAGERCONFIGURATION_HPP
 
 #include <arinc665/utils/Utils.hpp>
 
@@ -26,7 +26,7 @@ namespace Arinc665::Utils {
 /**
  * @brief ARINC 665 %Media Set Configuration.
  **/
-class ARINC665_EXPORT MediaSetConfiguration
+class ARINC665_EXPORT MediaSetManagerConfiguration
 {
   public:
     //! media-to-path mapping (Medium Number -> Path)
@@ -36,7 +36,7 @@ class ARINC665_EXPORT MediaSetConfiguration
       std::list< std::pair< std::filesystem::path, MediaPaths > >;
 
     //! Initialises the configuration with default values.
-    MediaSetConfiguration() = default;
+    MediaSetManagerConfiguration() = default;
 
     /**
      * @brief Loads the configuration via a boost::property_tree::ptree.
@@ -44,7 +44,7 @@ class ARINC665_EXPORT MediaSetConfiguration
      * @param[in] ptree
      *   Stored configuration.
      **/
-    explicit MediaSetConfiguration(
+    explicit MediaSetManagerConfiguration(
       const boost::property_tree::ptree &ptree );
 
     /**
@@ -63,8 +63,6 @@ class ARINC665_EXPORT MediaSetConfiguration
      **/
     [[nodiscard]] boost::property_tree::ptree toProperties() const;
 
-    //! Base directory for all media sets stored.
-    std::filesystem::path mediaSetsBase;
     //! Media Sets
     MediaSets mediaSets;
 };

@@ -17,7 +17,7 @@
 #include <arinc665_qt/MediaSetController.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
-#include <arinc665/utils/MediaSetConfiguration.hpp>
+#include <arinc665/utils/MediaSetManagerConfiguration.hpp>
 
 #include <boost/property_tree/json_parser.hpp>
 
@@ -97,9 +97,12 @@ void MediaSetManagerController::configurationSelected()
 
   boost::property_tree::ptree ptree{};
   boost::property_tree::read_json( jsonFile.string(), ptree );
-  Arinc665::Utils::MediaSetConfiguration config{ ptree };
+  Arinc665::Utils::MediaSetManagerConfiguration configuration{ ptree };
 
-  emit start( Arinc665::Utils::MediaSetManager::instance( baseDir, config, true )  );
+  emit start( Arinc665::Utils::MediaSetManager::instance(
+    baseDir,
+    configuration,
+    true )  );
 }
 
 void MediaSetManagerController::viewMediaSet( const QModelIndex &index )

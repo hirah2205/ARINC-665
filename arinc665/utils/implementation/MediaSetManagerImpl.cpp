@@ -25,14 +25,14 @@ namespace Arinc665::Utils {
 
 MediaSetManagerImpl::MediaSetManagerImpl(
   const std::filesystem::path &basePath,
-  MediaSetConfiguration &config,
+  MediaSetManagerConfiguration &configuration,
   const bool checkFileIntegrity ):
   basePath{ basePath },
-  configurationV{ config }
+  configurationV{ configuration }
 {
   BOOST_LOG_FUNCTION()
 
-  for ( auto const &mediaSet : config.mediaSets )
+  for ( auto const &mediaSet : configuration.mediaSets )
   {
     // NOTE: structured bindings cannot be passed as lambda capture at the moment
     // https://api.csswg.org/bikeshed/#lambda-captures
@@ -105,7 +105,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
   }
 }
 
-const MediaSetConfiguration& MediaSetManagerImpl::configuration() const
+const MediaSetManagerConfiguration & MediaSetManagerImpl::configuration() const
 {
   return configurationV;
 }
@@ -145,7 +145,7 @@ void MediaSetManagerImpl::add(
   // Media Set Base path
   auto mediaSetPath{ mediaSet->partNumber() };
   // List of Medium Paths
-  MediaSetConfiguration::MediaPaths mediaSetMediaPaths{};
+  MediaSetManagerConfiguration::MediaPaths mediaSetMediaPaths{};
 
   // iterate over media
   for ( auto const &[mediumIndex, medium] : mediaSet->media() )
@@ -234,9 +234,7 @@ std::filesystem::path MediaSetManagerImpl::filePath(
 std::filesystem::path MediaSetManagerImpl::absolutePath(
   const std::filesystem::path &filePath ) const
 {
-  return ( configurationV.mediaSetsBase.is_relative() ?
-      basePath / configurationV.mediaSetsBase / filePath :
-      configurationV.mediaSetsBase / filePath ).lexically_normal();
+  return ( basePath / filePath ).lexically_normal();
 }
 
 }

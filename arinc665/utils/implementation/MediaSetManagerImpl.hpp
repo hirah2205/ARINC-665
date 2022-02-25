@@ -15,7 +15,7 @@
 
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/MediaSetManager.hpp>
-#include <arinc665/utils/MediaSetConfiguration.hpp>
+#include <arinc665/utils/MediaSetManagerConfiguration.hpp>
 
 namespace Arinc665::Utils {
 
@@ -29,18 +29,18 @@ class MediaSetManagerImpl final : public MediaSetManager
      * @param[in] basePath
      *   Base Path to use, when configured paths are relative, i.e. base of
      *   configuration file.
-     * @param[in,out] config
-     *   Media Set Configuration.
+     * @param[in,out] configuration
+     *   Media Set Manager Configuration.
      * @param[in] checkFileIntegrity
      *   If set to true additional file integrity steps are performed
      **/
     explicit MediaSetManagerImpl(
       const std::filesystem::path &basePath,
-      MediaSetConfiguration &config,
+      MediaSetManagerConfiguration &configuration,
       bool checkFileIntegrity );
 
     //! @copydoc MediaSetManager::configuration
-    [[nodiscard]] const MediaSetConfiguration& configuration() const final;
+    [[nodiscard]] const MediaSetManagerConfiguration& configuration() const final;
 
     //! @copydoc MediaSetManager::mediaSet(std::string_view) const
     [[nodiscard]] Media::ConstMediaSetPtr mediaSet(
@@ -88,8 +88,8 @@ class MediaSetManagerImpl final : public MediaSetManager
 
     //! Base for Relative Paths
     const std::filesystem::path &basePath;
-    //! Media Set Configuration
-    MediaSetConfiguration &configurationV;
+    //! Media Set Manager Configuration
+    MediaSetManagerConfiguration &configurationV;
     //! Media Sets
     Media::ConstMediaSets mediaSetsV;
     //! Media Paths

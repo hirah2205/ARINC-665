@@ -16,7 +16,7 @@
  **/
 
 #include <arinc665/utils/MediaSetManager.hpp>
-#include <arinc665/utils/MediaSetConfiguration.hpp>
+#include <arinc665/utils/MediaSetManagerConfiguration.hpp>
 #include <arinc665/utils/Printer.hpp>
 
 #include <helper/Logger.hpp>
@@ -50,8 +50,8 @@ int main( int argc, char * argv[] )
   optionsDescription.add_options()
   (
     "media-set-config",
-     boost::program_options::value( &mediaSetConfig )->required(),
-     "Media Set configuration"
+    boost::program_options::value( &mediaSetConfig )->required(),
+    "Media Set Manager configuration"
   )
   (
     "check-file-integrity",
@@ -79,11 +79,11 @@ int main( int argc, char * argv[] )
       mediaSetConfig.has_parent_path() ?
         std::filesystem::absolute( mediaSetConfig.parent_path() ) :
         std::filesystem::current_path() };
-    Arinc665::Utils::MediaSetConfiguration mediaSetConfiguration{ config };
+    Arinc665::Utils::MediaSetManagerConfiguration configuration{ config };
 
     auto mediaSetManager{ Arinc665::Utils::MediaSetManager::instance(
       configDir,
-      mediaSetConfiguration,
+      configuration,
       checkFileIntegrity ) };
 
     for ( const auto &mediaSet : mediaSetManager->mediaSets() )

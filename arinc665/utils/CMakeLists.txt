@@ -14,14 +14,14 @@ target_sources(
     Arinc665Xml.cpp
     FileCreationPolicyDescription.hpp
     FileCreationPolicyDescription.cpp
-    MediaSetConfiguration.hpp
-    MediaSetConfiguration.cpp
     MediaSetExporter.hpp
     MediaSetExporter.cpp
     MediaSetImporter.hpp
     MediaSetImporter.cpp
     MediaSetManager.hpp
     MediaSetManager.cpp
+    MediaSetManagerConfiguration.hpp
+    MediaSetManagerConfiguration.cpp
     MediaSetValidator.hpp
     MediaSetValidator.cpp
     Printer.hpp
