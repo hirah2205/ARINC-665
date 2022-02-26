@@ -56,9 +56,7 @@ void MediaSetManagerConfiguration::fromProperties(
     }
 
     // insert media set configuration
-    mediaSets.emplace_back(
-      std::move( mediaSetPath ),
-      std::move( mediaPaths ) );
+    mediaSets.emplace( std::move( mediaSetPath ), std::move( mediaPaths ) );
   }
 }
 

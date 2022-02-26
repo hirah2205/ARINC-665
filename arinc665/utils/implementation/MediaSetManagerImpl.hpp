@@ -16,6 +16,7 @@
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/MediaSetManagerConfiguration.hpp>
+#include <arinc665/files/Files.hpp>
 
 namespace Arinc665::Utils {
 
@@ -53,12 +54,15 @@ class MediaSetManagerImpl final : public MediaSetManager
       std::string_view partNumber ) const final;
 
     //! @copydoc MediaSetManager::mediaSets() const
-    [[nodiscard]] const Media::ConstMediaSets& mediaSets() const final;
+    [[nodiscard]] const MediaSets& mediaSets() const final;
 
-    //! @copydoc MediaSetManager::add()
-    void add(
-      Media::ConstMediaSetPtr mediaSet,
-      MediumPathHandler mediumPathHandler ) final;
+    //! @copydoc MediaSetManager::registerMediaSet()
+    void registerMediaSet(
+      const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths ) final;
+
+    //! @copydoc MediaSetManager::deregisterMediaSet()
+    MediaSetManagerConfiguration::MediaSetPaths deregisterMediaSet(
+      std::string_view partNumber ) final;
 
     //! @copydoc MediaSetManager::loads() const
     [[nodiscard]] Media::ConstLoads loads() const final;
@@ -85,6 +89,11 @@ class MediaSetManagerImpl final : public MediaSetManager
      **/
     void loadMediaSets( bool checkFileIntegrity );
 
+    Files::RawFile readFileHandler(
+      const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
+      uint8_t mediumNumber,
+      const std::filesystem::path &path );
+
     /**
      * @brief Makes given @p filePath absolute with respect to media set base
      *   path.
@@ -97,17 +106,19 @@ class MediaSetManagerImpl final : public MediaSetManager
     [[nodiscard]] std::filesystem::path absolutePath(
       const std::filesystem::path &filePath ) const;
 
-    //! media path map
-    using MediaPaths = std::map< Media::ConstMediumPtr, std::filesystem::path >;
+    //! Media Set Paths Map
+    using MediaSetsPaths = std::map<
+      Media::ConstMediaSetPtr,
+      MediaSetManagerConfiguration::MediaSetPaths >;
 
     //! Base for Relative Paths
     const std::filesystem::path basePath;
     //! Media Set Manager Configuration
     MediaSetManagerConfiguration configurationV;
     //! Media Sets
-    Media::ConstMediaSets mediaSetsV;
-    //! Media Paths
-    MediaPaths mediaPaths;
+    MediaSets mediaSetsV;
+    //! Media Sets Paths
+    MediaSetsPaths mediaSetsPaths;
 };
 
 }

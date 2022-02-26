@@ -84,7 +84,13 @@ void MediaSetManagerController::start(
   Arinc665::Utils::MediaSetManagerPtr mediaSetManager )
 {
   mediaSetManagerV = std::move( mediaSetManager );
-  mediaSetsModelV->mediaSets( mediaSetManagerV->mediaSets() );
+
+  Arinc665::Media::ConstMediaSets mediaSets{};
+  for ( auto mediaSet : mediaSetManagerV->mediaSets() )
+  {
+    mediaSets.emplace_back( std::move( mediaSet.second ) );
+  }
+  mediaSetsModelV->mediaSets( std::move( mediaSets ) );
   mediaSetManagerDialogV->open();
 }
 

@@ -14,6 +14,7 @@
 #define ARINC665_UTILS_MEDIASETMANAGER_HPP
 
 #include <arinc665/utils/Utils.hpp>
+#include <arinc665/utils/MediaSetManagerConfiguration.hpp>
 
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/MediaSet.hpp>
@@ -40,6 +41,9 @@ namespace Arinc665::Utils {
 class ARINC665_EXPORT MediaSetManager
 {
   public:
+    //! Media Sets Map ( Part Number -> Media Set)
+    using MediaSets = std::map< std::string, Media::ConstMediaSetPtr, std::less<> >;
+
     //! Handler which returns the path to the given medium number
     using MediumPathHandler =
       std::function< std::filesystem::path( Media::ConstMediumPtr medium ) >;
@@ -90,29 +94,13 @@ class ARINC665_EXPORT MediaSetManager
      *
      * @return All media sets.
      **/
-    [[nodiscard]] virtual const Media::ConstMediaSets& mediaSets() const = 0;
+    [[nodiscard]] virtual const MediaSets& mediaSets() const = 0;
 
-    /**
-     * @brief Adds the given media set to the media set manager.
-     *
-     * Copies the media from the source path to its destination paths.
-     * The integrity of the media paths are not checked.
-     * Missing files will be detected on trying to access them.
-     * To much files are not detected.
-     *
-     * @param[in] mediaSet
-     *   Media Set to add.
-     * @param[in] mediumPathHandler
-     *   Medium Path Handler for Import.
-     *
-     * @throw Arinc665Exception
-     *   If media set with this name already exists.
-     * @throw Arinc665Exception
-     *   If media/ files cannot be created/ copied.
-     **/
-    virtual void add(
-      Media::ConstMediaSetPtr mediaSet,
-      MediumPathHandler mediumPathHandler ) = 0;
+    virtual void registerMediaSet(
+      const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths ) = 0;
+
+    virtual MediaSetManagerConfiguration::MediaSetPaths deregisterMediaSet(
+      std::string_view partNumber ) = 0;
 
     /**
      * @brief Get all available Loads from all Media Sets.

@@ -89,7 +89,7 @@ static void createDirectory(
   Arinc665::Media::ConstDirectoryPtr directory );
 
 static bool checkFileExistance(
-  const std::filesystem::path &mediaSetBase,
+  const std::filesystem::path &sourceBase,
   const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
   Arinc665::Media::ConstFilePtr file );
 
@@ -237,7 +237,7 @@ int main( int argc, char * argv[] )
         std::placeholders::_1 ) )
       .checkFileExistenceHandler( std::bind(
         &checkFileExistance,
-        mediaSetDestinationDirectory,
+        mediaSetSourceDirectory,
         fileMapping,
         std::placeholders::_1 ) )
       .createFileHandler( std::bind(
@@ -335,7 +335,7 @@ static void createDirectory(
 }
 
 static bool checkFileExistance(
-  const std::filesystem::path &mediaSetBase,
+  const std::filesystem::path &sourceBase,
   const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
   Arinc665::Media::ConstFilePtr file )
 {
@@ -352,11 +352,7 @@ static bool checkFileExistance(
     return false;
   }
 
-  auto filePath{
-    mediumPath( mediaSetBase, file->medium()->mediumNumber() )
-      / file->path().relative_path() };
-
-  return std::filesystem::is_regular_file( filePath);
+  return std::filesystem::is_regular_file( sourceBase / fileIt->second );
 }
 
 static void createFile(

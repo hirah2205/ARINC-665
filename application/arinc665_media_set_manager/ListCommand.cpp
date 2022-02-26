@@ -61,7 +61,7 @@ void ListCommand::execute( const Commands::Parameters &parameters )
     {
       std::cout << "Media Set:\n";
 
-      Arinc665::Utils::printMediaSet( mediaSet, std::cout, "  ", "  " );
+      Arinc665::Utils::printMediaSet( mediaSet.second, std::cout, "  ", "  " );
 
       std::cout << "\n";
     }

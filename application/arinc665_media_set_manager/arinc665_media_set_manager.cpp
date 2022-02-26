@@ -18,6 +18,7 @@
 #include "CreateMediaSetManagerCommand.hpp"
 #include "ListLoadsCommand.hpp"
 #include "ListCommand.hpp"
+#include "ImportXmlCommand.hpp"
 
 #include <commands/CommandRegistry.hpp>
 #include <commands/CommandUtils.hpp>
@@ -84,6 +85,19 @@ int main( int argc, char * argv[] )
     std::bind(
       &ListCommand::help,
       &listCommand ) );
+
+  ImportXmlCommand importXmlCommand{};
+
+  registry->command(
+    "ImportXml",
+    "Import XML Media Set",
+    std::bind(
+      &ImportXmlCommand::execute,
+      &importXmlCommand,
+      std::placeholders::_1 ),
+    std::bind(
+      &ImportXmlCommand::help,
+      &importXmlCommand ) );
 
   try
   {

@@ -75,6 +75,8 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()()
 
 bool MediaSetImporterImpl::loadMedium( const uint8_t mediumIndex )
 {
+  BOOST_LOG_FUNCTION()
+
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
     << "Medium " << static_cast< unsigned int >( mediumIndex );
 
