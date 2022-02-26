@@ -118,6 +118,12 @@ void ImportXmlCommand::execute( const Commands::Parameters &parameters )
       std::get< 0 >( loadXmlResult )->partNumber(),
       std::move( mediaPaths ) );
 
+    if ( std::filesystem::exists( mediaSetManagerDirectory / mediaSetPaths.first ) )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+        << Helper::AdditionalInfo{ "Media Set Directory already exist" } );
+    }
+
     // create media set directory
     std::filesystem::create_directories(
       mediaSetManagerDirectory / mediaSetPaths.first );

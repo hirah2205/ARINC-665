@@ -254,6 +254,12 @@ int main( int argc, char * argv[] )
     // Add Media Set Part Number to Output Path
     mediaSetDestinationDirectory /= mediaSet->partNumber();
 
+    if ( std::filesystem::exists( mediaSetDestinationDirectory ) )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+        << Helper::AdditionalInfo{ "Media Set Directory already exist" } );
+    }
+
     // create media set directory
     std::filesystem::create_directories( mediaSetDestinationDirectory );
 
