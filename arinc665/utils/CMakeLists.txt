@@ -14,6 +14,8 @@ target_sources(
     Arinc665Xml.cpp
     FileCreationPolicyDescription.hpp
     FileCreationPolicyDescription.cpp
+    JsonMediaSetManager.hpp
+    JsonMediaSetManager.cpp
     MediaSetExporter.hpp
     MediaSetExporter.cpp
     MediaSetImporter.hpp

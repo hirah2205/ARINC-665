@@ -36,7 +36,13 @@ class MediaSetManagerImpl final : public MediaSetManager
      **/
     explicit MediaSetManagerImpl(
       const std::filesystem::path &basePath,
-      MediaSetManagerConfiguration &configuration,
+      const MediaSetManagerConfiguration &configuration,
+      bool checkFileIntegrity );
+
+    //! @copydoc MediaSetManagerImpl(const std::filesystem::path&,const MediaSetManagerConfiguration&,bool)
+    explicit MediaSetManagerImpl(
+      std::filesystem::path &&basePath,
+      MediaSetManagerConfiguration &&configuration,
       bool checkFileIntegrity );
 
     //! @copydoc MediaSetManager::configuration
@@ -72,6 +78,14 @@ class MediaSetManagerImpl final : public MediaSetManager
 
   private:
     /**
+     * @brief Load Media Sets.
+     *
+     * @param[in] checkFileIntegrity
+     *   If set to true additional file integrity steps are performed
+     **/
+    void loadMediaSets( bool checkFileIntegrity );
+
+    /**
      * @brief Makes given @p filePath absolute with respect to media set base
      *   path.
      *
@@ -87,9 +101,9 @@ class MediaSetManagerImpl final : public MediaSetManager
     using MediaPaths = std::map< Media::ConstMediumPtr, std::filesystem::path >;
 
     //! Base for Relative Paths
-    const std::filesystem::path &basePath;
+    const std::filesystem::path basePath;
     //! Media Set Manager Configuration
-    MediaSetManagerConfiguration &configurationV;
+    MediaSetManagerConfiguration configurationV;
     //! Media Sets
     Media::ConstMediaSets mediaSetsV;
     //! Media Paths

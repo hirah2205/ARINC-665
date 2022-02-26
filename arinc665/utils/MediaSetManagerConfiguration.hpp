@@ -24,7 +24,7 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief ARINC 665 %Media Set Configuration.
+ * @brief ARINC 665 %Media Set Manager Configuration.
  **/
 class ARINC665_EXPORT MediaSetManagerConfiguration
 {

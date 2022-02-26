@@ -67,6 +67,10 @@ class MediaSetManager;
 //! ARINC 665 Media Set Manager Instance Pointer.
 using MediaSetManagerPtr = std::shared_ptr< MediaSetManager >;
 
+class JsonMediaSetManager;
+//! ARINC 665 JSON Media Set Manager Instanct Pointer
+using JsonMediaSetManagerPtr = std::shared_ptr< JsonMediaSetManager >;
+
 }
 
 #endif
