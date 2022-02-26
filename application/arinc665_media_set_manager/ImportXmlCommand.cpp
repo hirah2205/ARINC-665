@@ -101,7 +101,7 @@ void ImportXmlCommand::execute( const Commands::Parameters &parameters )
     const auto mediaSetManager{ Arinc665::Utils::JsonMediaSetManager::load( mediaSetManagerDirectory ) };
 
     // ARINC 665 XML instance
-    auto xml{ Arinc665::Utils::Arinc665Xml::instance()};
+    auto xml{ Arinc665::Utils::Arinc665Xml::instance() };
 
     // load XML file
     loadXmlResult = xml->loadFromXml( mediaSetXmlFile );

@@ -72,7 +72,7 @@ static std::vector< std::filesystem::path> mediaSourceDirectories{};
 static std::filesystem::path mediaSetXmlFile{};
 
 //! Check File Integrity
-bool checkFileIntegrity{};
+static bool checkFileIntegrity{};
 
 int main( int argc, char const * argv[])
 {
