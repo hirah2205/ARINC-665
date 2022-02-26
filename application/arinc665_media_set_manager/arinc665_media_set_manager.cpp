@@ -16,6 +16,8 @@
 **/
 
 #include "CreateMediaSetManagerCommand.hpp"
+#include "ListLoadsCommand.hpp"
+#include "ListCommand.hpp"
 
 #include <commands/CommandRegistry.hpp>
 #include <commands/CommandUtils.hpp>
@@ -24,7 +26,6 @@
 
 #include <iostream>
 #include <cstdlib>
-#include <thread>
 #include <functional>
 
 /**
@@ -58,12 +59,48 @@ int main( int argc, char * argv[] )
       &CreateMediaSetManagerCommand::help,
       &createMediaSetManagerCommand ) );
 
+  ListLoadsCommand listLoadsCommand{};
+
+  registry->command(
+    "ListLoads",
+    "List Loads",
+    std::bind(
+      &ListLoadsCommand::execute,
+      &listLoadsCommand,
+      std::placeholders::_1 ),
+    std::bind(
+      &ListLoadsCommand::help,
+      &listLoadsCommand ) );
+
+  ListCommand listCommand{};
+
+  registry->command(
+    "List",
+    "List Media Set Manager",
+    std::bind(
+      &ListCommand::execute,
+      &listCommand,
+      std::placeholders::_1 ),
+    std::bind(
+      &ListCommand::help,
+      &listCommand ) );
+
   try
   {
     const auto result{
       Commands::CommandUtils::commandLineHandler( registry )( argc, argv ) };
 
     return result;
+  }
+  catch ( boost::exception &e )
+  {
+    std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
+    return EXIT_FAILURE;
+  }
+  catch ( std::exception &e )
+  {
+    std::cerr << "Error: " << e.what() << "\n";
+    return EXIT_FAILURE;
   }
   catch (...)
   {

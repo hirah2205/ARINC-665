@@ -22,7 +22,6 @@ add_subdirectory( arinc665_unit_test )
 
 add_subdirectory( arinc665_print_media_set )
 add_subdirectory( arinc665_print_xml )
-add_subdirectory( arinc665_test_media_set_manager )
 
 add_subdirectory( arinc665_media_set_manager_gui )
 add_subdirectory( arinc665_media_set_view_gui )

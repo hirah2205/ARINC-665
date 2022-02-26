@@ -7,11 +7,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class CreateMediaSetManagerCommand.
+ * @brief Declaration of Class ListCommand.
  **/
 
-#ifndef ARINC665_MEDIA_SET_MANAGER_CREATEMEDIASETMANAGERCOMMAND_HPP
-#define ARINC665_MEDIA_SET_MANAGER_CREATEMEDIASETMANAGERCOMMAND_HPP
+#ifndef ARINC665_MEDIA_SET_MANAGER_LISTCOMMAND_HPP
+#define ARINC665_MEDIA_SET_MANAGER_LISTCOMMAND_HPP
 
 #include <commands/Commands.hpp>
 
@@ -19,14 +19,14 @@
 
 #include <filesystem>
 
-//! Create Media Set Manager Command
-class CreateMediaSetManagerCommand
+//! List Command
+class ListCommand
 {
   public:
     /**
-     * @brief Constructs the Command.
+     * @brief Constructs the List Command.
      **/
-    CreateMediaSetManagerCommand();
+    ListCommand();
 
     /**
      * @brief Executes the Operation.
@@ -44,6 +44,8 @@ class CreateMediaSetManagerCommand
     boost::program_options::options_description optionsDescription;
     //! Media Set Manager Directory
     std::filesystem::path mediaSetManagerDirectory;
+    //! Check File Integrity Flag
+    bool checkFileIntegrity;
 };
 
 #endif

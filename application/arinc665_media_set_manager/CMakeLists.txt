@@ -14,7 +14,11 @@ target_sources(
   PRIVATE
     arinc665_media_set_manager.cpp
     CreateMediaSetManagerCommand.hpp
-    CreateMediaSetManagerCommand.cpp )
+    CreateMediaSetManagerCommand.cpp
+    ListCommand.hpp
+    ListCommand.cpp
+    ListLoadsCommand.hpp
+    ListLoadsCommand.cpp )
 
 target_link_libraries(
   arinc665_media_set_manager
