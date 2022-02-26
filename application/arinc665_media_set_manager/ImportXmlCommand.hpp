@@ -49,27 +49,62 @@ class ImportXmlCommand
      * @brief Creates the directory for the given medium.
      *
      * @param[in] medium
-     *   Medium.
+     *   Medium to Create.
      **/
-    void createMediumHandler( Arinc665::Media::ConstMediumPtr medium );
+    void createMediumHandler( const Arinc665::Media::ConstMediumPtr &medium );
 
     /**
      * @brief Creates the directory for the given directory.
      *
      * @param[in] directory
-     *   Directory.
+     *   Directory to Create.
      **/
-    void createDirectoryHandler( Arinc665::Media::ConstDirectoryPtr directory );
+    void createDirectoryHandler(
+      const Arinc665::Media::ConstDirectoryPtr &directory );
 
-    bool checkFileExistanceHandler( Arinc665::Media::ConstFilePtr file );
+    /**
+     * @brief Check File Existence Handler.
+     *
+     * @param[in] file
+     *   File to Check
+     *
+     * @return If file exists
+     **/
+    bool checkFileExistanceHandler( const Arinc665::Media::ConstFilePtr &file );
 
-    void createFileHandler( Arinc665::Media::ConstFilePtr file );
+    /**
+     * @brief Create File Handler.
+     *
+     * @param[in] file
+     *   File to Create
+     **/
+    void createFileHandler( const Arinc665::Media::ConstFilePtr &file );
 
+    /**
+     * @brief Write File Handler
+     *
+     * @param[in] mediumNumber
+     *   Medium Number
+     * @param[in] path
+     *   File Path
+     * @param[in] file
+     *   File Content
+     **/
     void writeFileHandler(
       uint8_t mediumNumber,
       const std::filesystem::path &path,
       const Arinc665::Files::ConstRawFileSpan &file );
 
+    /**
+     * @brief Read File Handler
+     *
+     * @param[in] mediumNumber
+     *   Medium Number
+     * @param[in] path
+     *   File Path
+     *
+     * @return File Content
+     **/
     Arinc665::Files::RawFile readFileHandler(
       uint8_t mediumNumber,
       const std::filesystem::path &path );

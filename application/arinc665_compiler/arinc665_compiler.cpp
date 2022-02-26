@@ -72,39 +72,73 @@ static std::filesystem::path mediumPath(
  * @brief Creates the directory for the given medium.
  *
  * @param[in] medium
- *   Medium.
+ *   Medium to Create.
  **/
 static void createMedium(
   const std::filesystem::path &base,
-  Arinc665::Media::ConstMediumPtr medium );
+  const Arinc665::Media::ConstMediumPtr &medium );
 
 /**
  * @brief Creates the directory for the given directory.
  *
  * @param[in] directory
- *   The directory.
+ *   Directory to Create.
  **/
 static void createDirectory(
   const std::filesystem::path &mediaSetBase,
-  Arinc665::Media::ConstDirectoryPtr directory );
+  const Arinc665::Media::ConstDirectoryPtr &directory );
 
+/**
+ * @brief Check File Existence Handler.
+ *
+ * @param[in] file
+ *   File to Check
+ *
+ * @return If file exists
+ **/
 static bool checkFileExistance(
   const std::filesystem::path &sourceBase,
   const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
-  Arinc665::Media::ConstFilePtr file );
+  const Arinc665::Media::ConstFilePtr &file );
 
+/**
+ * @brief Create File Handler.
+ *
+ * @param[in] file
+ *   File to Create
+ **/
 static void createFile(
   const std::filesystem::path &sourceBase,
   const std::filesystem::path &mediaSetBase,
   const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
-  Arinc665::Media::ConstFilePtr file );
+  const Arinc665::Media::ConstFilePtr &file );
 
+/**
+ * @brief Write File Handler
+ *
+ * @param[in] mediumNumber
+ *   Medium Number
+ * @param[in] path
+ *   File Path
+ * @param[in] file
+ *   File Content
+ **/
 static void writeFile(
   const std::filesystem::path &mediaSetBase,
   uint8_t mediumNumber,
   const std::filesystem::path &path,
   const Arinc665::Files::ConstRawFileSpan &file );
 
+/**
+ * @brief Read File Handler
+ *
+ * @param[in] mediumNumber
+ *   Medium Number
+ * @param[in] path
+ *   File Path
+ *
+ * @return File Content
+ **/
 static Arinc665::Files::RawFile readFile(
   const std::filesystem::path &mediaSetBase,
   uint8_t mediumNumber,
@@ -306,7 +340,7 @@ static std::filesystem::path mediumPath(
 
 static void createMedium(
   const std::filesystem::path &base,
-  Arinc665::Media::ConstMediumPtr medium )
+  const Arinc665::Media::ConstMediumPtr &medium )
 {
   BOOST_LOG_FUNCTION()
 
@@ -320,7 +354,7 @@ static void createMedium(
 
 static void createDirectory(
   const std::filesystem::path &mediaSetBase,
-  Arinc665::Media::ConstDirectoryPtr directory )
+  const Arinc665::Media::ConstDirectoryPtr &directory )
 {
   BOOST_LOG_FUNCTION()
 
@@ -337,7 +371,7 @@ static void createDirectory(
 static bool checkFileExistance(
   const std::filesystem::path &sourceBase,
   const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
-  Arinc665::Media::ConstFilePtr file )
+  const Arinc665::Media::ConstFilePtr &file )
 {
   BOOST_LOG_FUNCTION()
 
@@ -359,7 +393,7 @@ static void createFile(
   const std::filesystem::path &sourceBase,
   const std::filesystem::path &mediaSetBase,
   const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
-  Arinc665::Media::ConstFilePtr file )
+  const Arinc665::Media::ConstFilePtr &file )
 {
   BOOST_LOG_FUNCTION()
 

@@ -90,21 +90,21 @@ MediaSetExporter& MediaSetExporterImpl::readFileHandler(
 }
 
 MediaSetExporter& MediaSetExporterImpl::arinc665Version(
-  SupportedArinc665Version arinc665Version )
+  const SupportedArinc665Version version )
 {
-  arinc665VersionV = std::move( arinc665Version );
+  arinc665VersionV = version;
   return *this;
 }
 
 MediaSetExporter& MediaSetExporterImpl::createBatchFiles(
-  FileCreationPolicy createBatchFiles )
+  const FileCreationPolicy createBatchFiles )
 {
   createBatchFilesV = createBatchFiles ;
   return *this;
 }
 
 MediaSetExporter& MediaSetExporterImpl::createLoadHeaderFiles(
-  FileCreationPolicy createLoadHeaderFiles )
+  const FileCreationPolicy createLoadHeaderFiles )
 {
   createLoadHeaderFilesV = createLoadHeaderFiles;
   return *this;
@@ -117,7 +117,7 @@ void MediaSetExporterImpl::operator()()
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
     << "Media Set " << mediaSetV->partNumber();
 
-  for ( const auto &[mediumNumber, medium] : mediaSetV->media() )
+  for ( const auto &[ mediumNumber, medium ] : mediaSetV->media() )
   {
     exportMedium( medium );
   }

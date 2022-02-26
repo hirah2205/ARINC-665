@@ -22,59 +22,58 @@ namespace Arinc665::Utils {
  **/
 class MediaSetExporterImpl final : public MediaSetExporter
 {
-public:
-  /**
-   * @brief Initialises the ARINC 665 Media Set Importer
-   **/
-  MediaSetExporterImpl();
-
-  //! @copydoc MediaSetExporter::mediaSet()
-  MediaSetExporter& mediaSet( Media::ConstMediaSetPtr mediaSet ) final;
-
-  //! @copydoc MediaSetExporter::createMediumHandler()
-  MediaSetExporter& createMediumHandler(
-    CreateMediumHandler createMediumHandler ) final;
-
-  //! @copydoc MediaSetExporter::createDirectoryHandler()
-  MediaSetExporter& createDirectoryHandler(
-    CreateDirectoryHandler createDirectoryHandler ) final;
-
-  //! @copydoc MediaSetExporter::checkFileExistenceHandler()
-  MediaSetExporter& checkFileExistenceHandler(
-    CheckFileExistenceHandler checkFileExistenceHandler ) final;
-
-  //! @copydoc MediaSetExporter::createFileHandler()
-  MediaSetExporter& createFileHandler(
-    CreateFileHandler createFileHandler ) final;
-
-  //! @copydoc MediaSetExporter::writeFileHandler()
-  MediaSetExporter& writeFileHandler(
-    WriteFileHandler writeFileHandler ) final;
-
-  //! @copydoc MediaSetExporter::readFileHandler()
-  MediaSetExporter& readFileHandler(
-    ReadFileHandler readFileHandler ) final;
-
-  //! @copydoc MediaSetExporter::arinc665Version()
-  MediaSetExporter& arinc665Version(
-    SupportedArinc665Version arinc665Version ) final;
-
-  //! @copydoc MediaSetExporter::createBatchFiles()
-  MediaSetExporter& createBatchFiles(
-    FileCreationPolicy createBatchFiles ) final;
-
-  //! @copydoc MediaSetExporter::createLoadHeaderFiles()
-  MediaSetExporter& createLoadHeaderFiles(
-    FileCreationPolicy createLoadHeaderFiles ) final;
-
-  /**
-   * @brief Entry-point of the ARINC 665 media set exporter.
-   ***/
-  void operator()() final;
-
-private:
+  public:
     /**
-     * @brief Called to export the given medium.
+     * @brief Initialises the ARINC 665 Media Set Importer
+     **/
+    MediaSetExporterImpl();
+
+    //! @copydoc MediaSetExporter::mediaSet()
+    MediaSetExporter& mediaSet( Media::ConstMediaSetPtr mediaSet ) final;
+
+    //! @copydoc MediaSetExporter::createMediumHandler()
+    MediaSetExporter& createMediumHandler(
+      CreateMediumHandler createMediumHandler ) final;
+
+    //! @copydoc MediaSetExporter::createDirectoryHandler()
+    MediaSetExporter& createDirectoryHandler(
+      CreateDirectoryHandler createDirectoryHandler ) final;
+
+    //! @copydoc MediaSetExporter::checkFileExistenceHandler()
+    MediaSetExporter& checkFileExistenceHandler(
+      CheckFileExistenceHandler checkFileExistenceHandler ) final;
+
+    //! @copydoc MediaSetExporter::createFileHandler()
+    MediaSetExporter& createFileHandler(
+      CreateFileHandler createFileHandler ) final;
+
+    //! @copydoc MediaSetExporter::writeFileHandler()
+    MediaSetExporter& writeFileHandler(
+      WriteFileHandler writeFileHandler ) final;
+
+    //! @copydoc MediaSetExporter::readFileHandler()
+    MediaSetExporter& readFileHandler(
+      ReadFileHandler readFileHandler ) final;
+
+    //! @copydoc MediaSetExporter::version()
+    MediaSetExporter& arinc665Version( SupportedArinc665Version version ) final;
+
+    //! @copydoc MediaSetExporter::createBatchFiles()
+    MediaSetExporter& createBatchFiles(
+      FileCreationPolicy createBatchFiles ) final;
+
+    //! @copydoc MediaSetExporter::createLoadHeaderFiles()
+    MediaSetExporter& createLoadHeaderFiles(
+      FileCreationPolicy createLoadHeaderFiles ) final;
+
+    /**
+     * @brief Entry-point of the ARINC 665 Media Set Exporter.
+     ***/
+    void operator()() final;
+
+  private:
+    /**
+     * @brief Called to Export the Given Medium.
      *
      * @param[in] medium
      *   Medium, which is exported.

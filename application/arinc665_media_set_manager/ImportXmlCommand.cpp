@@ -189,7 +189,7 @@ void ImportXmlCommand::help()
 }
 
 void ImportXmlCommand::createMediumHandler(
-  Arinc665::Media::ConstMediumPtr medium )
+  const Arinc665::Media::ConstMediumPtr &medium )
 {
   BOOST_LOG_FUNCTION()
 
@@ -204,7 +204,7 @@ void ImportXmlCommand::createMediumHandler(
 }
 
 void ImportXmlCommand::createDirectoryHandler(
-  Arinc665::Media::ConstDirectoryPtr directory )
+  const Arinc665::Media::ConstDirectoryPtr &directory )
 {
   BOOST_LOG_FUNCTION()
 
@@ -221,7 +221,7 @@ void ImportXmlCommand::createDirectoryHandler(
 }
 
 bool ImportXmlCommand::checkFileExistanceHandler(
-  Arinc665::Media::ConstFilePtr file )
+  const Arinc665::Media::ConstFilePtr &file )
 {
   BOOST_LOG_FUNCTION()
 
@@ -241,7 +241,7 @@ bool ImportXmlCommand::checkFileExistanceHandler(
 }
 
 void ImportXmlCommand::createFileHandler(
-  Arinc665::Media::ConstFilePtr file )
+  const Arinc665::Media::ConstFilePtr &file )
 {
   BOOST_LOG_FUNCTION()
 
