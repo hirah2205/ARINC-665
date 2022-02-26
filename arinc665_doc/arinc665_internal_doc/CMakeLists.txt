@@ -14,6 +14,21 @@ if( NOT DOXYGEN_FOUND )
 endif()
 
 get_property(
+  HELPER_DOC_PATHS
+  DIRECTORY ${helper_SOURCE_DIR}
+  PROPERTY DOC_PATHS )
+
+get_property(
+  COMMAND_SHELL_DOC_PATHS
+  DIRECTORY ${command_shell_SOURCE_DIR}
+  PROPERTY DOC_PATHS )
+
+get_property(
+  ARINC645_DOC_PATHS
+  DIRECTORY ${arinc645_SOURCE_DIR}
+  PROPERTY DOC_PATHS )
+
+get_property(
   ARINC665_DOC_PATHS
   DIRECTORY ${arinc665_SOURCE_DIR}
   PROPERTY DOC_PATHS )
@@ -42,6 +57,7 @@ set(
 
   ${Boost_INCLUDE_DIRS}
   ${helper_SOURCE_DIR}
+  ${arinc645_SOURCE_DIR}
   ${arinc665_SOURCE_DIR} )
 
 doxygen_add_docs(
@@ -49,10 +65,9 @@ doxygen_add_docs(
 
   ../Mainpage.md
 
-  ${helper_SOURCE_DIR}/helper
-
-  ${arinc645_SOURCE_DIR}/arinc645
-
+  ${HELPER_DOC_PATHS}
+  ${COMMAND_SHELL_DOC_PATHS}
+  ${ARINC645_DOC_PATHS}
   ${ARINC665_DOC_PATHS} )
 
 add_dependencies( doc arinc665_internal_doc )

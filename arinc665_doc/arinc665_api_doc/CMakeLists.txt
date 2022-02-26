@@ -14,6 +14,16 @@ if( NOT DOXYGEN_FOUND )
 endif()
 
 get_property(
+  HELPER_DOC_PATHS
+  DIRECTORY ${helper_SOURCE_DIR}
+  PROPERTY DOC_PATHS )
+
+get_property(
+  COMMAND_SHELL_DOC_PATHS
+  DIRECTORY ${command_shell_SOURCE_DIR}
+  PROPERTY DOC_PATHS )
+
+get_property(
   ARINC645_DOC_PATHS
   DIRECTORY ${arinc645_SOURCE_DIR}
   PROPERTY DOC_PATHS )
@@ -61,8 +71,8 @@ doxygen_add_docs(
 
   ../Mainpage.md
 
-  ${helper_SOURCE_DIR}/helper
-
+  ${HELPER_DOC_PATHS}
+  ${COMMAND_SHELL_DOC_PATHS}
   ${ARINC645_DOC_PATHS}
   ${ARINC665_DOC_PATHS} )
 
