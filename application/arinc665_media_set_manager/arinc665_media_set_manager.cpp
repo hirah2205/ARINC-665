@@ -53,7 +53,7 @@ int main( int argc, char * argv[] )
 
   registry->command(
     "Create",
-    "Create Media Set manager",
+    "Create Media Set Manager",
     std::bind(
       &Arinc665Commands::CreateMediaSetManagerCommand::execute,
       &createMediaSetManagerCommand,
@@ -78,8 +78,8 @@ int main( int argc, char * argv[] )
   Arinc665Commands::ListCommand listCommand{};
 
   registry->command(
-    "List",
-    "List Media Set Manager",
+    "ListMediaSets",
+    "List Media Sets",
     std::bind(
       &Arinc665Commands::ListCommand::execute,
       &listCommand,
@@ -142,7 +142,7 @@ int main( int argc, char * argv[] )
     std::cerr << "Error: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
-  catch (...)
+  catch ( ... )
   {
     std::cerr << "unknown error\n";
     return EXIT_FAILURE;

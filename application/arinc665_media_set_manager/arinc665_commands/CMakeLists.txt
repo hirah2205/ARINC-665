@@ -12,6 +12,7 @@ target_sources(
   arinc665_commands
 
   PRIVATE
+    Arinc665Commands.hpp
     CreateMediaSetManagerCommand.hpp
     CreateMediaSetManagerCommand.cpp
     ImportCommand.hpp

@@ -38,7 +38,7 @@ ListCommand::ListCommand() :
   (
     "check-file-integrity",
     boost::program_options::value( &checkFileIntegrity )->default_value( true ),
-    "Check File Integrity during Import"
+    "Check Media Set File Integrity during Import"
   );
 }
 
