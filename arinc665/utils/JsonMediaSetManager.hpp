@@ -37,6 +37,21 @@ class JsonMediaSetManager
     static void create( const std::filesystem::path &directory );
 
     /**
+     * @brief Checks if a Media Set Manager Configuration is available or creates
+     *   it.
+     *
+     * @param[in] directory
+     *   Directory for Media Set Manger.
+     * @param[in] checkFileIntegrity
+     *   If set to true additional file integrity steps are performed
+     *
+     * @return Media Set Manager
+     **/
+    static JsonMediaSetManagerPtr loadOrCreate(
+      const std::filesystem::path &directory,
+      bool checkFileIntegrity = true );
+
+    /**
      * @brief
      *
      * @param[in] directory
@@ -50,12 +65,26 @@ class JsonMediaSetManager
       const std::filesystem::path &directory,
       bool checkFileIntegrity = true );
 
+    //! Destructor
     virtual ~JsonMediaSetManager() = default;
 
+    /**
+     * @brief Returns the Media Set Manager
+     *
+     * @return Media Set Manager
+     **/
     [[nodiscard]] virtual MediaSetManagerPtr manager() = 0;
 
+    /**
+     * @brief Persist the Configuration.
+     **/
     virtual void saveConfiguration() = 0;
 
+    /**
+     * @brief Returns the Media Set Manager Directory
+     *
+     * @return Media Set Manager Directory.
+     **/
     [[nodiscard]] virtual const std::filesystem::path& directory() = 0;
 };
 

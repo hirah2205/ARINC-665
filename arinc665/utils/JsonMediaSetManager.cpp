@@ -21,6 +21,13 @@ void JsonMediaSetManager::create(
   JsonMediaSetManagerImpl::create( directory );
 }
 
+JsonMediaSetManagerPtr JsonMediaSetManager::loadOrCreate(
+  const std::filesystem::path &directory,
+  const bool checkFileIntegrity )
+{
+  return JsonMediaSetManagerImpl::loadOrCreate( directory, checkFileIntegrity );
+}
+
 JsonMediaSetManagerPtr JsonMediaSetManager::load(
   const std::filesystem::path &directory,
   const bool checkFileIntegrity )

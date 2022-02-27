@@ -59,7 +59,7 @@ class ARINC665_QT_EXPORT MediaSetManagerController : public QObject
      * @param[in] mediaSetManager
      *   %Media Set Manager to use
      **/
-    void start( Arinc665::Utils::MediaSetManagerPtr mediaSetManager );
+    void start( Arinc665::Utils::JsonMediaSetManagerPtr mediaSetManager );
 
   signals:
     //! Emitted, when controller is finished.
@@ -69,7 +69,7 @@ class ARINC665_QT_EXPORT MediaSetManagerController : public QObject
     /**
      * @brief Slot called, when user has selected %Media Set Configuration.
      **/
-    void configurationSelected();
+    void directorySelected();
 
     /**
      * @brief User Selects View %Media Set Button
@@ -90,11 +90,11 @@ class ARINC665_QT_EXPORT MediaSetManagerController : public QObject
     std::unique_ptr< Media::MediaSetsModel > mediaSetsModelV;
     //! Media Set Manager Dialog
     std::unique_ptr< MediaSetManagerDialog > mediaSetManagerDialogV;
-    //! Select Media Set File Dialog
-    std::unique_ptr< QFileDialog > selectMediaSetConfigDialogV;
+    //! Select Media Set Manager Directory Dialog
+    std::unique_ptr< QFileDialog > selectMediaSetDirectoryDialogV;
 
     //! Media Set Manager
-    Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV;
+    Arinc665::Utils::JsonMediaSetManagerPtr mediaSetManagerV;
 };
 
 }

@@ -17,7 +17,7 @@
 #include <arinc665_qt/MediaSetController.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
-#include <arinc665/utils/MediaSetManagerConfiguration.hpp>
+#include <arinc665/utils/JsonMediaSetManager.hpp>
 
 #include <boost/property_tree/json_parser.hpp>
 
@@ -28,7 +28,7 @@ MediaSetManagerController::MediaSetManagerController(
   QObject{ parent },
   mediaSetsModelV{ std::make_unique< Media::MediaSetsModel >( this ) },
   mediaSetManagerDialogV{ std::make_unique< MediaSetManagerDialog >( parent ) },
-  selectMediaSetConfigDialogV{ std::make_unique< QFileDialog >(
+  selectMediaSetDirectoryDialogV{ std::make_unique< QFileDialog >(
     parent,
     tr( "Select ARINC 665 Media Set Manager Configuration" ) ) },
   mediaSetManagerV{}
@@ -61,32 +61,34 @@ MediaSetManagerController::MediaSetManagerController(
     this,
     &MediaSetManagerController::removeMediaSet );
 
+  selectMediaSetDirectoryDialogV->setFileMode( QFileDialog::Directory );
+  selectMediaSetDirectoryDialogV->setOption( QFileDialog::ShowDirsOnly );
   connect(
-    selectMediaSetConfigDialogV.get(),
+    selectMediaSetDirectoryDialogV.get(),
     &QFileDialog::rejected,
     this,
     &MediaSetManagerController::finished );
   connect(
-    selectMediaSetConfigDialogV.get(),
+    selectMediaSetDirectoryDialogV.get(),
     &QFileDialog::accepted,
     this,
-    &MediaSetManagerController::configurationSelected );
+    &MediaSetManagerController::directorySelected );
 }
 
 MediaSetManagerController::~MediaSetManagerController() = default;
 
 void MediaSetManagerController::start()
 {
-  selectMediaSetConfigDialogV->open();
+  selectMediaSetDirectoryDialogV->open();
 }
 
 void MediaSetManagerController::start(
-  Arinc665::Utils::MediaSetManagerPtr mediaSetManager )
+  Arinc665::Utils::JsonMediaSetManagerPtr mediaSetManager )
 {
   mediaSetManagerV = std::move( mediaSetManager );
 
   Arinc665::Media::ConstMediaSets mediaSets{};
-  for ( auto mediaSet : mediaSetManagerV->mediaSets() )
+  for ( auto mediaSet : mediaSetManagerV->manager()->mediaSets() )
   {
     mediaSets.emplace_back( std::move( mediaSet.second ) );
   }
@@ -94,20 +96,12 @@ void MediaSetManagerController::start(
   mediaSetManagerDialogV->open();
 }
 
-void MediaSetManagerController::configurationSelected()
+void MediaSetManagerController::directorySelected()
 {
-  auto file{ selectMediaSetConfigDialogV->selectedFiles().first() };
+  auto directory{ selectMediaSetDirectoryDialogV->selectedFiles().first() };
 
-  std::filesystem::path jsonFile{ file.toStdString() };
-  auto baseDir{ jsonFile.parent_path() };
-
-  boost::property_tree::ptree ptree{};
-  boost::property_tree::read_json( jsonFile.string(), ptree );
-  Arinc665::Utils::MediaSetManagerConfiguration configuration{ ptree };
-
-  emit start( Arinc665::Utils::MediaSetManager::instance(
-    baseDir,
-    configuration,
+  emit start( Arinc665::Utils::JsonMediaSetManager::load(
+    directory.toStdString(),
     true )  );
 }
 

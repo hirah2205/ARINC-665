@@ -29,6 +29,21 @@ class JsonMediaSetManagerImpl : public JsonMediaSetManager
     static void create( const std::filesystem::path &directory );
 
     /**
+     * @brief Checks if a Media Set Manager Configuration is available or creates
+     *   it.
+     *
+     * @param[in] directory
+     *   Directory for Media Set Manger.
+     * @param[in] checkFileIntegrity
+     *   If set to true additional file integrity steps are performed
+     *
+     * @return Media Set Manager
+     **/
+    static JsonMediaSetManagerPtr loadOrCreate(
+      const std::filesystem::path &directory,
+      bool checkFileIntegrity );
+
+    /**
      * @brief Instantiates the Media Set Manager.
      *
      * Loads the Configuration and instantiates Media Set Manager.
@@ -42,14 +57,16 @@ class JsonMediaSetManagerImpl : public JsonMediaSetManager
       const std::filesystem::path &directory ,
       bool checkFileIntegrity );
 
+    //! @copydoc JsonMediaSetManager::manager()
     MediaSetManagerPtr manager() final;
 
+    //! @copydoc JsonMediaSetManager::saveConfiguration()
     void saveConfiguration() final;
 
+    //! @copydoc JsonMediaSetManager::directory()
     [[nodiscard]] const std::filesystem::path& directory() final;
 
   private:
-
     //! Configuration Directory
     const std::filesystem::path directoryV;
     //! Media Set Manager Instance

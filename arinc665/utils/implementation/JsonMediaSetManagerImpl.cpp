@@ -40,6 +40,20 @@ void JsonMediaSetManagerImpl::create( const std::filesystem::path &directory )
     configurationPTree );
 }
 
+JsonMediaSetManagerPtr JsonMediaSetManagerImpl::loadOrCreate(
+  const std::filesystem::path &directory,
+  const bool checkFileIntegrity )
+{
+  if ( !std::filesystem::exists( directory ) )
+  {
+    create( directory );
+  }
+
+  return std::make_shared< JsonMediaSetManagerImpl >(
+    directory,
+    checkFileIntegrity );
+}
+
 JsonMediaSetManagerImpl::JsonMediaSetManagerImpl(
   const std::filesystem::path &directory,
   bool checkFileIntegrity ) :
