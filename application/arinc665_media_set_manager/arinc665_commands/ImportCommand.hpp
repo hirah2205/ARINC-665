@@ -7,11 +7,13 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class ImportCommand.
+ * @brief Declaration of Class Arinc665Commands::ImportCommand.
  **/
 
-#ifndef ARINC665_MEDIA_SET_MANAGER_IMPORTCOMMAND_HPP
-#define ARINC665_MEDIA_SET_MANAGER_IMPORTCOMMAND_HPP
+#ifndef ARINC665_COMMANDS_IMPORTCOMMAND_HPP
+#define ARINC665_COMMANDS_IMPORTCOMMAND_HPP
+
+#include <arinc665_commands/Arinc665Commands.hpp>
 
 #include <arinc665/files/Files.hpp>
 
@@ -21,6 +23,8 @@
 
 #include <filesystem>
 #include <vector>
+
+namespace Arinc665Commands {
 
 /**
  * @brief Import Command
@@ -61,9 +65,11 @@ class ImportCommand
     //! Media Set Manager Directory
     std::filesystem::path mediaSetManagerDirectory;
     //! Media source directories
-    std::vector< std::filesystem::path> mediaSourceDirectories;
+    std::vector< std::filesystem::path > mediaSourceDirectories;
     //! Check File Integrity
     bool checkFileIntegrity;
 };
+
+}
 
 #endif

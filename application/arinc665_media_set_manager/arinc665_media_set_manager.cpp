@@ -15,10 +15,10 @@
 * @brief ARINC 665 Media Set Manager Application.
 **/
 
-#include "CreateMediaSetManagerCommand.hpp"
-#include "ListLoadsCommand.hpp"
-#include "ListCommand.hpp"
-#include "ImportXmlCommand.hpp"
+#include <arinc665_commands/CreateMediaSetManagerCommand.hpp>
+#include <arinc665_commands/ListLoadsCommand.hpp>
+#include <arinc665_commands/ListCommand.hpp>
+#include <arinc665_commands/ImportXmlCommand.hpp>
 
 #include <commands/CommandRegistry.hpp>
 #include <commands/CommandUtils.hpp>
@@ -47,56 +47,56 @@ int main( int argc, char * argv[] )
 
   auto registry{ Commands::CommandRegistry::instance() };
 
-  CreateMediaSetManagerCommand createMediaSetManagerCommand{};
+  Arinc665Commands::CreateMediaSetManagerCommand createMediaSetManagerCommand{};
 
   registry->command(
     "Create",
     "Create Media Set manager",
     std::bind(
-      &CreateMediaSetManagerCommand::execute,
+      &Arinc665Commands::CreateMediaSetManagerCommand::execute,
       &createMediaSetManagerCommand,
       std::placeholders::_1 ),
     std::bind(
-      &CreateMediaSetManagerCommand::help,
+      &Arinc665Commands::CreateMediaSetManagerCommand::help,
       &createMediaSetManagerCommand ) );
 
-  ListLoadsCommand listLoadsCommand{};
+  Arinc665Commands::ListLoadsCommand listLoadsCommand{};
 
   registry->command(
     "ListLoads",
     "List Loads",
     std::bind(
-      &ListLoadsCommand::execute,
+      &Arinc665Commands::ListLoadsCommand::execute,
       &listLoadsCommand,
       std::placeholders::_1 ),
     std::bind(
-      &ListLoadsCommand::help,
+      &Arinc665Commands::ListLoadsCommand::help,
       &listLoadsCommand ) );
 
-  ListCommand listCommand{};
+  Arinc665Commands::ListCommand listCommand{};
 
   registry->command(
     "List",
     "List Media Set Manager",
     std::bind(
-      &ListCommand::execute,
+      &Arinc665Commands::ListCommand::execute,
       &listCommand,
       std::placeholders::_1 ),
     std::bind(
-      &ListCommand::help,
+      &Arinc665Commands::ListCommand::help,
       &listCommand ) );
 
-  ImportXmlCommand importXmlCommand{};
+  Arinc665Commands::ImportXmlCommand importXmlCommand{};
 
   registry->command(
     "ImportXml",
     "Import XML Media Set",
     std::bind(
-      &ImportXmlCommand::execute,
+      &Arinc665Commands::ImportXmlCommand::execute,
       &importXmlCommand,
       std::placeholders::_1 ),
     std::bind(
-      &ImportXmlCommand::help,
+      &Arinc665Commands::ImportXmlCommand::help,
       &importXmlCommand ) );
 
   try

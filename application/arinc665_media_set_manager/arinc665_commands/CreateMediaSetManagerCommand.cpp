@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class CreateMediaSetManagerCommand.
+ * @brief Definition of Class Arinc665Commands::CreateMediaSetManagerCommand.
  **/
 
 #include "CreateMediaSetManagerCommand.hpp"
@@ -18,19 +18,23 @@
 
 #include <iostream>
 
-CreateMediaSetManagerCommand::CreateMediaSetManagerCommand():
+namespace Arinc665Commands {
+
+CreateMediaSetManagerCommand::CreateMediaSetManagerCommand() :
   optionsDescription{ "Create Media Set Manager" }
 {
   optionsDescription.add_options()
   (
     "media-set-manager-dir",
-    boost::program_options::value(
-      &mediaSetManagerDirectory )->required()->value_name( "Directory" ),
+    boost::program_options::value( &mediaSetManagerDirectory )
+      ->required()
+      ->value_name( "Directory" ),
     "ARINC 665 Media Set Manager Directory"
   );
 }
 
-void CreateMediaSetManagerCommand::execute( const Commands::Parameters &parameters )
+void CreateMediaSetManagerCommand::execute(
+  const Commands::Parameters &parameters )
 {
   try
   {
@@ -38,8 +42,9 @@ void CreateMediaSetManagerCommand::execute( const Commands::Parameters &paramete
 
     boost::program_options::variables_map vm{};
     boost::program_options::store(
-      boost::program_options::command_line_parser(
-        parameters ).options( optionsDescription ).run(),
+      boost::program_options::command_line_parser( parameters )
+        .options( optionsDescription )
+        .run(),
       vm );
     boost::program_options::notify( vm );
 
@@ -47,8 +52,7 @@ void CreateMediaSetManagerCommand::execute( const Commands::Parameters &paramete
   }
   catch ( boost::exception &e )
   {
-    std::cerr
-      << "Error: " << boost::diagnostic_information( e ) << "\n";
+    std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
   }
   catch ( std::exception &e )
   {
@@ -58,12 +62,11 @@ void CreateMediaSetManagerCommand::execute( const Commands::Parameters &paramete
   {
     std::cerr << "Error: UNKNOWN EXCEPTION\n";
   }
-
 }
 
 void CreateMediaSetManagerCommand::help()
 {
-  std::cout
-    << "Create Media Set Manager\n"
-    << optionsDescription;
+  std::cout << "Create Media Set Manager\n" << optionsDescription;
+}
+
 }

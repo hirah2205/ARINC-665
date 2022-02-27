@@ -7,11 +7,13 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class ImportXmlCommand.
+ * @brief Declaration of Class Arinc665Commands::ImportXmlCommand.
  **/
 
-#ifndef ARINC665_MEDIA_SET_MANAGER_IMPORTXMLCOMMAND_HPP
-#define ARINC665_MEDIA_SET_MANAGER_IMPORTXMLCOMMAND_HPP
+#ifndef ARINC665_COMMANDS_IMPORTXMLCOMMAND_HPP
+#define ARINC665_COMMANDS_IMPORTXMLCOMMAND_HPP
+
+#include <arinc665_commands/Arinc665Commands.hpp>
 
 #include <arinc665/utils/Arinc665Xml.hpp>
 #include <arinc665/utils/MediaSetManagerConfiguration.hpp>
@@ -23,6 +25,8 @@
 #include <boost/program_options.hpp>
 
 #include <filesystem>
+
+namespace Arinc665Commands {
 
 //! Import XML Command
 class ImportXmlCommand
@@ -105,9 +109,8 @@ class ImportXmlCommand
      *
      * @return File Content
      **/
-    Arinc665::Files::RawFile readFileHandler(
-      uint8_t mediumNumber,
-      const std::filesystem::path &path );
+    Arinc665::Files::RawFile
+    readFileHandler( uint8_t mediumNumber, const std::filesystem::path &path );
 
     //! Program Options Description
     boost::program_options::options_description optionsDescription;
@@ -131,5 +134,7 @@ class ImportXmlCommand
     //! Load XML Results
     Arinc665::Utils::Arinc665Xml::LoadXmlResult loadXmlResult;
 };
+
+}
 
 #endif

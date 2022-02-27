@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class ListCommand.
+ * @brief Definition of Class Arinc665Commands::ListCommand.
  **/
 
 #include "ListCommand.hpp"
@@ -22,15 +22,17 @@
 
 #include <iostream>
 
+namespace Arinc665Commands {
+
 ListCommand::ListCommand() :
-  optionsDescription{ "List Media Set Manager" },
-  checkFileIntegrity{}
+  optionsDescription{ "List Media Set Manager" }, checkFileIntegrity{}
 {
   optionsDescription.add_options()
   (
     "media-set-manager-dir",
-    boost::program_options::value(
-      &mediaSetManagerDirectory )->required()->value_name( "Directory" ),
+    boost::program_options::value( &mediaSetManagerDirectory )
+      ->required()
+      ->value_name( "Directory" ),
     "ARINC 665 Media Set Manager Directory"
   )
   (
@@ -48,8 +50,9 @@ void ListCommand::execute( const Commands::Parameters &parameters )
 
     boost::program_options::variables_map vm{};
     boost::program_options::store(
-      boost::program_options::command_line_parser(
-        parameters ).options( optionsDescription ).run(),
+      boost::program_options::command_line_parser( parameters )
+        .options( optionsDescription )
+        .run(),
       vm );
     boost::program_options::notify( vm );
 
@@ -70,12 +73,12 @@ void ListCommand::execute( const Commands::Parameters &parameters )
   {
     std::cout << e.what() << "\n" << optionsDescription << "\n";
   }
-  catch ( boost::exception &e)
+  catch ( boost::exception &e )
   {
     std::cerr
       << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
   }
-  catch ( std::exception &e)
+  catch ( std::exception &e )
   {
     std::cerr << "Operation failed: " << e.what() << "\n";
   }
@@ -87,7 +90,7 @@ void ListCommand::execute( const Commands::Parameters &parameters )
 
 void ListCommand::help()
 {
-  std::cout
-    << "List Media Set Manager\n"
-    << optionsDescription;
+  std::cout << "List Media Set Manager\n" << optionsDescription;
+}
+
 }

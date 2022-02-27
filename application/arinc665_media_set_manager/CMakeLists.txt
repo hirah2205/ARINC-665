@@ -6,30 +6,23 @@
 
 cmake_minimum_required( VERSION 3.21 )
 
+add_subdirectory( arinc665_commands )
+
 add_executable( arinc665_media_set_manager )
 
 target_sources(
   arinc665_media_set_manager
 
   PRIVATE
-    arinc665_media_set_manager.cpp
-    CreateMediaSetManagerCommand.hpp
-    CreateMediaSetManagerCommand.cpp
-    ImportCommand.hpp
-    ImportCommand.cpp
-    ImportXmlCommand.hpp
-    ImportXmlCommand.cpp
-    ListCommand.hpp
-    ListCommand.cpp
-    ListLoadsCommand.hpp
-    ListLoadsCommand.cpp )
+    arinc665_media_set_manager.cpp )
 
 target_link_libraries(
   arinc665_media_set_manager
 
   PRIVATE
-    arinc665
-    commands )
+    arinc665_commands
+    commands
+    helper )
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}

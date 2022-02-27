@@ -1,17 +1,19 @@
 /**
- * @file
- * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
- * @author Thomas Vogt, thomas@thomas-vogt.de
- *
- * @brief Declaration of Class ListCommand.
- **/
+* @file
+* @copyright
+* This Source Code Form is subject to the terms of the Mozilla Public
+* License, v. 2.0. If a copy of the MPL was not distributed with this
+* file, You can obtain one at http://mozilla.org/MPL/2.0/.
+*
+* @author Thomas Vogt, thomas@thomas-vogt.de
+*
+* @brief Declaration of Class Arinc665Commands::ListLoadsCommand.
+**/
 
-#ifndef ARINC665_MEDIA_SET_MANAGER_LISTCOMMAND_HPP
-#define ARINC665_MEDIA_SET_MANAGER_LISTCOMMAND_HPP
+#ifndef ARINC665_COMMANDS_LISTLOADSCOMMAND_HPP
+#define ARINC665_COMMANDS_LISTLOADSCOMMAND_HPP
+
+#include <arinc665_commands/Arinc665Commands.hpp>
 
 #include <commands/Commands.hpp>
 
@@ -19,14 +21,16 @@
 
 #include <filesystem>
 
-//! List Command
-class ListCommand
+namespace Arinc665Commands {
+
+//! List Loads Command
+class ListLoadsCommand
 {
   public:
     /**
-     * @brief Constructs the List Command.
+     * @brief Constructs the List Loads Command.
      **/
-    ListCommand();
+    ListLoadsCommand();
 
     /**
      * @brief Executes the Operation.
@@ -47,5 +51,7 @@ class ListCommand
     //! Check File Integrity Flag
     bool checkFileIntegrity;
 };
+
+}
 
 #endif
