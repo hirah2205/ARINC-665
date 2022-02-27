@@ -13,6 +13,11 @@
 #ifndef ARINC665_COMMANDS_ARINC665COMMANDS_HPP
 #define ARINC665_COMMANDS_ARINC665COMMANDS_HPP
 
+/**
+ * @brief ARINC 665 Commands.
+ *
+ * Commands, which provides ARINC 665 Media Set Manager functionality.
+ **/
 namespace Arinc665Commands {
 
 }
