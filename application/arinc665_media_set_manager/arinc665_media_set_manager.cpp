@@ -20,6 +20,7 @@
 #include <arinc665_commands/ListCommand.hpp>
 #include <arinc665_commands/ImportXmlCommand.hpp>
 #include <arinc665_commands/ImportCommand.hpp>
+#include <arinc665_commands/RemoveMediaSetCommand.hpp>
 
 #include <commands/CommandRegistry.hpp>
 #include <commands/CommandUtils.hpp>
@@ -111,6 +112,18 @@ int main( int argc, char * argv[] )
     std::bind(
       &Arinc665Commands::ImportCommand::help,
       &importCommand ) );
+
+  Arinc665Commands::RemoveMediaSetCommand removeMediaSetCommand{};
+  registry->command(
+    "Remove",
+    "Remove Media Set",
+    std::bind(
+      &Arinc665Commands::RemoveMediaSetCommand::execute,
+      &removeMediaSetCommand,
+      std::placeholders::_1 ),
+    std::bind(
+      &Arinc665Commands::RemoveMediaSetCommand::help,
+      &removeMediaSetCommand ) );
 
   try
   {

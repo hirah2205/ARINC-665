@@ -124,18 +124,22 @@ MediaSetManagerImpl::deregisterMediaSet( std::string_view partNumber )
   mediaSetsV.erase( foundMediaSet );
 
   // Remove Path Configuration
-  auto mediaSetPathConfig{ configurationV.mediaSets.find( mediaSetPath->second.first ) };
+  auto mediaSetPathConfigIt{ configurationV.mediaSets.find( mediaSetPath->second.first ) };
 
-  if ( mediaSetPathConfig == configurationV.mediaSets.end() )
+  if ( mediaSetPathConfigIt == configurationV.mediaSets.end() )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "Media Set Paths Config Not Found" } );
   }
 
+  // save content of iterator (element is not available after removal from map
+  auto mediaSetPathConfig{ *mediaSetPathConfigIt };
+  configurationV.mediaSets.erase( mediaSetPathConfigIt );
+
   // Remove Media Set Path Config
   mediaSetsPaths.erase( mediaSetPath );
 
-  return *mediaSetPathConfig;
+  return mediaSetPathConfig;
 }
 
 Media::ConstLoads MediaSetManagerImpl::loads() const

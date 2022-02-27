@@ -21,7 +21,9 @@ target_sources(
     ListCommand.hpp
     ListCommand.cpp
     ListLoadsCommand.hpp
-    ListLoadsCommand.cpp )
+    ListLoadsCommand.cpp
+    RemoveMediaSetCommand.hpp
+    RemoveMediaSetCommand.cpp )
 
 target_include_directories(
   arinc665_commands

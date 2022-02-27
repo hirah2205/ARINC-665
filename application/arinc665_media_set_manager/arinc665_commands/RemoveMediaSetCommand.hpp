@@ -7,11 +7,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Commands::ListLoadsCommand.
+ * @brief Declaration of Class Arinc665Commands::RemoveMediaSetCommand.
  **/
 
-#ifndef ARINC665_COMMANDS_LISTLOADSCOMMAND_HPP
-#define ARINC665_COMMANDS_LISTLOADSCOMMAND_HPP
+#ifndef ARINC665_COMMANDS_REMOVEMEDIASETCOMMAND_HPP
+#define ARINC665_COMMANDS_REMOVEMEDIASETCOMMAND_HPP
 
 #include <arinc665_commands/Arinc665Commands.hpp>
 
@@ -20,17 +20,18 @@
 #include <boost/program_options.hpp>
 
 #include <filesystem>
+#include <vector>
 
 namespace Arinc665Commands {
 
-//! List Loads Command
-class ListLoadsCommand
+//! Removes a registered Media Set from the Media Set Manager and deletes data.
+class RemoveMediaSetCommand
 {
   public:
     /**
-     * @brief Constructs the List Loads Command.
+     * @brief Constructs the Remove Media Set Command.
      **/
-    ListLoadsCommand();
+    RemoveMediaSetCommand();
 
     /**
      * @brief Executes the Operation.
@@ -48,8 +49,8 @@ class ListLoadsCommand
     boost::program_options::options_description optionsDescription;
     //! Media Set Manager Directory
     std::filesystem::path mediaSetManagerDirectory;
-    //! Check File Integrity Flag
-    bool checkFileIntegrity;
+    //! Media Set Part Number
+    std::string mediaSetPartNumber;
 };
 
 }
