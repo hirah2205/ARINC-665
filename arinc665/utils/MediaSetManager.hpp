@@ -96,9 +96,23 @@ class ARINC665_EXPORT MediaSetManager
      **/
     [[nodiscard]] virtual const MediaSets& mediaSets() const = 0;
 
+    /**
+     * @brief Registers the Media Set by the Media Set Manager.
+     *
+     * @param[in] mediaSetPaths
+     *   Media Set Path Configuration
+     **/
     virtual void registerMediaSet(
       const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths ) = 0;
 
+    /**
+     * @brief De-registers the Media Set from the Media Set Manager.
+     *
+     * @param[in] partNumber
+     *   Part Number of Media Set
+     *
+     * @return Media Set Path Configuration (for removal)
+     **/
     virtual MediaSetManagerConfiguration::MediaSetPaths deregisterMediaSet(
       std::string_view partNumber ) = 0;
 

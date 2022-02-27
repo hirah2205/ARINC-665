@@ -27,7 +27,7 @@ namespace Arinc665Qt::MediaSetManager {
  * @brief %Media Set Manager Controller
  *
  * This controller supports operation by using a predefined media set manager
- * by calling @ref start(Arinc665::Utils::MediaSetManagerPtr).
+ * by calling @ref start(Arinc665::Utils::JsonMediaSetManagerPtr).
  * When calling @ref start(), the user is asked to select a media set
  * configuration to load it.
  **/

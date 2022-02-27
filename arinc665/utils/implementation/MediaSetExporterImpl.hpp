@@ -55,7 +55,7 @@ class MediaSetExporterImpl final : public MediaSetExporter
     MediaSetExporter& readFileHandler(
       ReadFileHandler readFileHandler ) final;
 
-    //! @copydoc MediaSetExporter::version()
+    //! @copydoc MediaSetExporter::arinc665Version()
     MediaSetExporter& arinc665Version( SupportedArinc665Version version ) final;
 
     //! @copydoc MediaSetExporter::createBatchFiles()

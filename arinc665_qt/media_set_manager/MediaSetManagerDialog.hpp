@@ -44,6 +44,12 @@ class ARINC665_QT_EXPORT MediaSetManagerDialog : public QDialog
     //! Destructor
     ~MediaSetManagerDialog() override;
 
+    /**
+     * @brief Assigns the Media Sets Model
+     *
+     * @param[in] model
+     *   Media Sets Model
+     **/
     void mediaSetsModel( Media::MediaSetsModel * model );
 
   signals:

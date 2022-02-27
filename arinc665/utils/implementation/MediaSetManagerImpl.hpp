@@ -89,6 +89,20 @@ class MediaSetManagerImpl final : public MediaSetManager
      **/
     void loadMediaSets( bool checkFileIntegrity );
 
+    /**
+     * @brief Handler Called for reading Files
+     *
+     * Used by the Media Set Importer.
+     *
+     * @param[in] mediaSetPaths
+     *   Media Set Path Configuration.
+     * @param[in] mediumNumber
+     *   Medium Sequence Number.
+     * @param[in] path
+     *   File Path.
+     *
+     * @return Read File Content
+     **/
     Files::RawFile readFileHandler(
       const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
       uint8_t mediumNumber,

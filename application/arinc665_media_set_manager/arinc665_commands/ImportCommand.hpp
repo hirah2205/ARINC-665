@@ -56,6 +56,16 @@ class ImportCommand
     void help();
 
   private:
+    /**
+     * @brief Read File Handler
+     *
+     * @param[in] mediumNumber
+     *   Medium Number
+     * @param[in] path
+     *   File Path
+     *
+     * @return Read File Content
+     **/
     Arinc665::Files::RawFile readFileHandler(
       uint8_t mediumNumber,
       const std::filesystem::path &path );

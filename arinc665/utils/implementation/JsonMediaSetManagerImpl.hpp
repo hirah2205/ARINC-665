@@ -17,6 +17,7 @@
 
 namespace Arinc665::Utils {
 
+//! Implementation of JsonMediaSetManager
 class JsonMediaSetManagerImpl : public JsonMediaSetManager
 {
   public:
