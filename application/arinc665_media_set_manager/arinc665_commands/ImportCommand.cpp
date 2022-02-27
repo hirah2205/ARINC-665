@@ -103,14 +103,11 @@ void ImportCommand::execute( const Commands::Parameters &parameters )
       mediaSetManagerDirectory / mediaSetPaths.first );
 
     // iterate over media
-    for ( auto const &[mediumNumber, mediumPath] : mediaSetPaths.second )
+    for ( auto const &[ mediumNumber, mediumPath ] : mediaSetPaths.second )
     {
-      const auto sourcePath{ mediaSourceDirectories.at( mediumNumber - 1 ) };
-      const auto destinationMediumPath{ mediaSetManagerDirectory / mediumPath };
-
       std::filesystem::copy(
-        sourcePath,
-        destinationMediumPath,
+        mediaSourceDirectories.at( mediumNumber - 1 ),
+        mediaSetManagerDirectory / mediaSetPaths.first / mediumPath,
         std::filesystem::copy_options::recursive );
     }
 
@@ -140,7 +137,6 @@ void ImportCommand::help()
 {
   std::cout << "Import Media Set\n" << optionsDescription;
 }
-
 
 Arinc665::Files::RawFile ImportCommand::readFileHandler(
   uint8_t mediumNumber,
