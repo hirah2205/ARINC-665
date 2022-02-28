@@ -36,7 +36,7 @@ void JsonMediaSetManagerImpl::create( const std::filesystem::path &directory )
   boost::property_tree::ptree configurationPTree{ configuration.toProperties() };
 
   boost::property_tree::write_json(
-    directory / ConfigurationFilename,
+    (directory / ConfigurationFilename).string(),
     configurationPTree );
 }
 
@@ -70,7 +70,7 @@ JsonMediaSetManagerImpl::JsonMediaSetManagerImpl(
   boost::property_tree::ptree configurationPTree{};
 
   boost::property_tree::json_parser::read_json(
-    configurationFile,
+    configurationFile.string(),
     configurationPTree );
 
   mediaSetManagerV = Arinc665::Utils::MediaSetManager::instance(
@@ -91,7 +91,7 @@ void JsonMediaSetManagerImpl::saveConfiguration()
   assert( mediaSetManagerV );
 
   boost::property_tree::write_json(
-    directoryV / ConfigurationFilename,
+    (directoryV / ConfigurationFilename).string(),
     mediaSetManagerV->configuration().toProperties() );
 }
 

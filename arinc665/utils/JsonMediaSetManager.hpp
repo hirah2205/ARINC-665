@@ -21,7 +21,7 @@
 namespace Arinc665::Utils {
 
 //! Media Set Manager JSON Helper
-class JsonMediaSetManager
+class ARINC665_EXPORT JsonMediaSetManager
 {
   public:
     //! Media Set Manager Configuration Filename
