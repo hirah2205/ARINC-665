@@ -10,7 +10,7 @@ project(
   arinc665
   VERSION 0.0.0.0
   DESCRIPTION "ARINC 665 Library and Applications"
-  HOMEPAGE_URL "https://git.thomas-vogt.de/Thomas-Vogt/arinc665" )
+  HOMEPAGE_URL "https://git.thomas-vogt.de/thomas-vogt/arinc665" )
 
 set( PROJECT_VERSION_ADDITION "dev" )
 
@@ -50,7 +50,7 @@ include( FetchContent )
 
 FetchContent_Declare(
   cmake_common
-  GIT_REPOSITORY https://git.thomas-vogt.de/Thomas-Vogt/cmake_common.git
+  GIT_REPOSITORY https://git.thomas-vogt.de/thomas-vogt/cmake_common.git
   GIT_TAG        main )
 
 if( IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cmake_common )
@@ -67,7 +67,7 @@ endif()
 
 FetchContent_Declare(
   helper
-  GIT_REPOSITORY https://git.thomas-vogt.de/Thomas-Vogt/helper.git
+  GIT_REPOSITORY https://git.thomas-vogt.de/thomas-vogt/helper.git
   GIT_TAG        main )
 
 if( IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/helper )
@@ -79,7 +79,7 @@ FetchContent_MakeAvailable( helper )
 
 FetchContent_Declare(
   arinc645
-  GIT_REPOSITORY https://git.thomas-vogt.de/Thomas-Vogt/arinc645.git
+  GIT_REPOSITORY https://git.thomas-vogt.de/thomas-vogt/arinc645.git
   GIT_TAG        main )
 
 if( IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/arinc645 )
@@ -91,7 +91,7 @@ FetchContent_MakeAvailable( arinc645 )
 
 FetchContent_Declare(
   command_shell
-  GIT_REPOSITORY https://git.thomas-vogt.de/Thomas-Vogt/command_shell.git
+  GIT_REPOSITORY https://git.thomas-vogt.de/thomas-vogt/command_shell.git
   GIT_TAG        main )
 
 if( IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/command_shell )
