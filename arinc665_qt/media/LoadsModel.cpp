@@ -47,17 +47,7 @@ int LoadsModel::columnCount( const QModelIndex &parent ) const
 
 QVariant LoadsModel::data( const QModelIndex &index, const int role ) const
 {
-  if ( !index.isValid() )
-  {
-    return {};
-  }
-
-  if ( index.row() < 0 )
-  {
-    return {};
-  }
-
-  auto loadPtr{ constLoad( load( index.row() ) ) };
+  auto loadPtr{ constLoad( load( index ) ) };
 
   // out of range access
   if ( !loadPtr )
@@ -99,6 +89,7 @@ QVariant LoadsModel::headerData(
 
   if ( orientation == Qt::Vertical )
   {
+    // Return section index as header
     return section;
   }
 
@@ -156,11 +147,6 @@ Arinc665::Media::ConstLoads LoadsModel::constLoads(
 Arinc665::Media::LoadVariant LoadsModel::load( const QModelIndex &index ) const
 {
   if ( !index.isValid() )
-  {
-    return {};
-  }
-
-  if ( index.row() < 0 )
   {
     return {};
   }

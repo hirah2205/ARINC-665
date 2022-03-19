@@ -24,7 +24,9 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT Model handling the files, which are part of a load.
+ * @brief QT Table Model of Load Files.
+ *
+ * Lists the files, which are part of a load.
  **/
 class ARINC665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
 {
@@ -34,7 +36,9 @@ class ARINC665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
     //! Columns of Model
     enum class Columns
     {
+      //! Load Filename
       Name,
+      //! Load Part Number
       PartNumber,
 
       ColumnsCount
@@ -52,7 +56,7 @@ class ARINC665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
     ~LoadFilesModel() override;
 
     /**
-     * @brief Returns the number of rows.
+     * @brief Returns the Number of Rows.
      *
      * @param[in] parent
      *   Index-parent - assumed to be the root element (invalid).
@@ -64,12 +68,14 @@ class ARINC665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
     [[nodiscard]] int rowCount( const QModelIndex &parent ) const override;
 
     /**
-     * @brief Returns the number of columns.
+     * @brief Returns the Number of Columns.
      *
      * @param[in] parent
-     *   Index-parent - assumed to be the root element (invalid).
+     *   Index-parent.
      *
-     * @return Always Columns::ColumnsCount.
+     * @return Columns::ColumnsCount.
+     * @retval 0
+     *   If @p is valid (not root element)
      **/
     [[nodiscard]] int columnCount( const QModelIndex &parent ) const override;
 
@@ -112,6 +118,32 @@ class ARINC665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
      *   Load Files, contained by the model.
      **/
     void loadFiles( const Arinc665::Media::ConstLoadFiles &loadFiles );
+
+    /**
+     * @brief Return Load File for given Index.
+     *
+     * @param[in] index
+     *   Model Index.
+     *
+     * @return Load File for given Index.
+     * @retval {}
+     *   If @p index is out of range or invalid.
+     **/
+    [[nodiscard]] std::optional< Arinc665::Media::ConstLoadFile > loadFile(
+      const QModelIndex &index ) const;
+
+    /**
+     * @brief Return Load File for given Index.
+     *
+     * @param[in] index
+     *   Index of Elment.
+     *
+     * @return Load File for given Index.
+     * @retval {}
+     *   If @p index is out of range.
+     **/
+    [[nodiscard]] std::optional< Arinc665::Media::ConstLoadFile > loadFile(
+      size_t index ) const;
 
   private:
     //! Load Files

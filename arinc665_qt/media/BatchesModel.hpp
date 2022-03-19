@@ -24,7 +24,9 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT model of List of Batches.
+ * @brief QT Table Model of List of Batches.
+ *
+ * A List of Batches is shown with Batch Attributes.
  **/
 class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
 {
@@ -34,8 +36,11 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
     //! Columns of Model
     enum class Columns
     {
+      //! Batch Name
       Name,
+      //! Batch Part Number
       PartNumber,
+      //! Comment
       Comment,
 
       ColumnsCount
@@ -58,7 +63,7 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
      * @param[in] parent
      *   Index-parent - assumed to be the root element (invalid).
      *
-     * @return The number of loads.
+     * @return Number of loads.
      * @retval 0
      *   If @p is valid (not root element)
      **/
@@ -70,7 +75,9 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
      * @param[in] parent
      *   Index-parent - assumed to be the root element (invalid).
      *
-     * @return Always Columns::ColumnsCount.
+     * @return Columns::ColumnsCount.
+     * @retval 0
+     *   If @p is valid (not root element)
      **/
     [[nodiscard]] int columnCount( const QModelIndex &parent ) const override;
 
@@ -93,7 +100,7 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
      *   the specified orientation.
      *
      * @param[in] section
-     *   Section number
+     *   Section Number
      * @param[in] orientation
      *   Orientation
      * @param[in] role
@@ -104,7 +111,7 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
     [[nodiscard]] QVariant headerData(
       int section,
       ::Qt::Orientation orientation,
-      int role ) const override;
+      int role = Qt::DisplayRole ) const override;
 
     /**
      * @name Batches

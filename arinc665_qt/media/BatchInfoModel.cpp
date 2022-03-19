@@ -45,22 +45,10 @@ int BatchInfoModel::columnCount( const QModelIndex &parent ) const
   return static_cast< int >( Columns::ColumnsCount );
 }
 
-QVariant BatchInfoModel::data(
-  const QModelIndex &index,
-  const int role ) const
+QVariant BatchInfoModel::data( const QModelIndex &index, const int role ) const
 {
-  if ( !index.isValid() )
-  {
-    return {};
-  }
-
-  if ( index.row() < 0 )
-  {
-    return {};
-  }
-
   auto batchTargetInfo{
-    constBatchTargetInformation( batchTargetInformation( index.row() ) ) };
+    constBatchTargetInformation( batchTargetInformation( index ) ) };
 
   switch ( role )
   {
@@ -93,6 +81,7 @@ QVariant BatchInfoModel::headerData(
 
   if ( orientation == Qt::Vertical )
   {
+    // return section index as header
     return section;
   }
 
@@ -139,11 +128,6 @@ Arinc665::Media::BatchTargetInformationVariant
 BatchInfoModel::batchTargetInformation( const QModelIndex &index ) const
 {
   if ( !index.isValid() )
-  {
-    return {};
-  }
-
-  if ( index.row() < 0 )
   {
     return {};
   }

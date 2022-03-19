@@ -23,7 +23,7 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief Target Hardware IDs / Positions Model.
+ * @brief Target Hardware IDs / Positions Tree Model.
  *
  * Target Hardware IDs and Positions are displayed in a tree view.
  **/

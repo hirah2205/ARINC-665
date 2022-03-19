@@ -45,22 +45,14 @@ int LoadFilesModel::columnCount( const QModelIndex &parent ) const
   return static_cast< int >( Columns::ColumnsCount );
 }
 
-QVariant LoadFilesModel::data(
-  const QModelIndex &index,
-  const int role ) const
+QVariant LoadFilesModel::data( const QModelIndex &index, const int role ) const
 {
-  if ( !index.isValid() )
+  auto loadFileInfo{ loadFile( index ) };
+
+  if ( !loadFileInfo )
   {
     return {};
   }
-
-  // out of range access
-  if ( static_cast< size_t>( index.row() ) >= loadFilesV.size() )
-  {
-    return {};
-  }
-
-  auto loadFile{ std::next( loadFilesV.begin(), index.row() ) };
 
   switch ( role )
   {
@@ -68,10 +60,10 @@ QVariant LoadFilesModel::data(
       switch ( static_cast< Columns>( index.column() ) )
       {
         case Columns::Name:
-          return HelperQt::toQString( std::get< 0 >( *loadFile )->name() );
+          return HelperQt::toQString( std::get< 0 >( *loadFileInfo )->name() );
 
         case Columns::PartNumber:
-          return HelperQt::toQString( std::get< 1 >( *loadFile ) );
+          return HelperQt::toQString( std::get< 1 >( *loadFileInfo ) );
 
         default:
           return {};
@@ -112,11 +104,36 @@ QVariant LoadFilesModel::headerData(
   }
 }
 
-void LoadFilesModel::loadFiles( const Arinc665::Media::ConstLoadFiles &loadFiles )
+void LoadFilesModel::loadFiles(
+  const Arinc665::Media::ConstLoadFiles &loadFiles )
 {
   beginResetModel();
   loadFilesV = loadFiles;
   endResetModel();
+}
+
+std::optional< Arinc665::Media::ConstLoadFile > LoadFilesModel::loadFile(
+  const QModelIndex &index ) const
+{
+  if ( !index.isValid() )
+  {
+    return {};
+  }
+
+  return loadFile( index.row() );
+}
+
+std::optional< Arinc665::Media::ConstLoadFile > LoadFilesModel::loadFile(
+  const size_t index ) const
+{
+  if ( index >= loadFilesV.size() )
+  {
+    return {};
+  }
+
+  return *std::next(
+    loadFilesV.begin(),
+    static_cast< std::ptrdiff_t >( index ) );
 }
 
 }

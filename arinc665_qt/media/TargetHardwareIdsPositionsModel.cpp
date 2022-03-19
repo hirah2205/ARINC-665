@@ -133,7 +133,8 @@ int TargetHardwareIdsPositionsModel::rowCount( const QModelIndex &parent ) const
   return static_cast< int >( thwId->second.size() );
 }
 
-int TargetHardwareIdsPositionsModel::columnCount( const QModelIndex & /*parent*/ ) const
+int TargetHardwareIdsPositionsModel::columnCount(
+  const QModelIndex &parent [[maybe_unused]] ) const
 {
   return static_cast< int>( Columns::Last );
 }

@@ -45,23 +45,11 @@ int BatchesModel::columnCount( const QModelIndex &parent ) const
   return static_cast< int >( Columns::ColumnsCount );
 }
 
-QVariant BatchesModel::data(
-  const QModelIndex &index,
-  const int role ) const
+QVariant BatchesModel::data( const QModelIndex &index, const int role ) const
 {
-  if ( !index.isValid() )
-  {
-    return {};
-  }
+  auto batchPtr{ constBatch( batch( index ) ) };
 
-  if ( index.row() < 0 )
-  {
-    return {};
-  }
-
-  auto batchPtr{ constBatch( batch( index.row() ) ) };
-
-  // out of range access
+  // index not valid
   if ( !batchPtr )
   {
     return {};
@@ -104,6 +92,7 @@ QVariant BatchesModel::headerData(
 
   if ( orientation == Qt::Vertical )
   {
+    // return index as header
     return section;
   }
 
@@ -152,11 +141,6 @@ void BatchesModel::batches( Arinc665::Media::BatchesVariant &&batches )
 Arinc665::Media::BatchVariant BatchesModel::batch( const QModelIndex &index ) const
 {
   if ( !index.isValid() )
-  {
-    return {};
-  }
-
-  if ( index.row() < 0 )
   {
     return {};
   }

@@ -24,7 +24,9 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT model of Batch Information.
+ * @brief QT Table Model of Batch Information.
+ *
+ * Presents the List of Batch Information as Table.
  **/
  class ARINC665_QT_EXPORT BatchInfoModel : public QAbstractTableModel
 {
@@ -34,6 +36,7 @@ namespace Arinc665Qt::Media {
     //! Columns of Model
     enum class Columns
     {
+      //! Target Hardware ID + Position
       TargetHardwareIdPosition,
 
       ColumnsCount
@@ -68,7 +71,9 @@ namespace Arinc665Qt::Media {
      * @param[in] parent
      *   Index-parent - assumed to be the root element (invalid).
      *
-     * @return Always Columns::ColumnsCount.
+     * @return Columns::ColumnsCount.
+     * @retval 0
+     *   If @p is valid (not root element)
      **/
     [[nodiscard]] int columnCount( const QModelIndex &parent ) const override;
 
@@ -114,14 +119,15 @@ namespace Arinc665Qt::Media {
      *
      * @return Number of Batch Information
      **/
-    size_t numberOfBatchInformation() const;
+    [[nodiscard]] size_t numberOfBatchInformation() const;
 
     /**
      * @brief Returns the Batches.
      *
      * @return Batches
      **/
-    const Arinc665::Media::BatchInformationVariant& batchInformation() const;
+    [[nodiscard]] const Arinc665::Media::BatchInformationVariant&
+    batchInformation() const;
 
     /**
      * @brief Updates the Data Model with the given Batch Information.
@@ -147,8 +153,7 @@ namespace Arinc665Qt::Media {
      * @return Batch Target Information for the given index.
      **/
     [[nodiscard]] Arinc665::Media::BatchTargetInformationVariant
-    batchTargetInformation(
-      const QModelIndex &index ) const;
+    batchTargetInformation( const QModelIndex &index ) const;
 
     /**
      * @brief Return Batch Target Information for given Index.
@@ -161,8 +166,7 @@ namespace Arinc665Qt::Media {
      *   If index is invalid
      **/
     [[nodiscard]] Arinc665::Media::BatchTargetInformationVariant
-    batchTargetInformation(
-      std::size_t index ) const;
+    batchTargetInformation( std::size_t index ) const;
 
     /**
      * @brief Converts given Batch Variant to Const Batch Pointer.

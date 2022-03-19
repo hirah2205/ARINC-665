@@ -24,7 +24,7 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT model of list of %Media Sets.
+ * @brief QT Table Model of list of %Media Sets.
  **/
 class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
 {
@@ -34,6 +34,7 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
     //! Columns of Model
     enum class Columns
     {
+      //! Media Set Part Number
       PartNumber,
 
       ColumnsCount
@@ -69,6 +70,8 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      *   Index-parent - assumed to be the root element (invalid).
      *
      * @return Always Columns::ColumnsCount.
+     * @retval 0
+     *   If @p is valid (not root element)
      **/
     [[nodiscard]] int columnCount( const QModelIndex &parent ) const override;
 

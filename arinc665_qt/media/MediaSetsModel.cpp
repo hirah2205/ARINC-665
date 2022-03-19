@@ -47,19 +47,8 @@ int MediaSetsModel::columnCount( const QModelIndex &parent ) const
 
 QVariant MediaSetsModel::data( const QModelIndex &index, const int role ) const
 {
-  if ( !index.isValid() )
-  {
-    return {};
-  }
+  auto mediaSetPtr{ constMediaSet( mediaSet( index ) ) };
 
-  if ( index.row() < 0 )
-  {
-    return {};
-  }
-
-  auto mediaSetPtr{ constMediaSet( mediaSet( index.row() ) ) };
-
-  // out of range access
   if ( !mediaSetPtr )
   {
     return {};
@@ -140,11 +129,6 @@ Arinc665::Media::MediaSetVariant MediaSetsModel::mediaSet(
   const QModelIndex &index ) const
 {
   if ( !index.isValid() )
-  {
-    return {};
-  }
-
-  if ( index.row() < 0 )
   {
     return {};
   }

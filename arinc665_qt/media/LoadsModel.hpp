@@ -22,7 +22,7 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT model of List of Loads.
+ * @brief QT Table Model of List of Loads.
  **/
 class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
 {
@@ -32,7 +32,9 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
     //! Columns of Model
     enum class Columns
     {
+      //! Load Filename
       Name,
+      //! Load Part Number
       PartNumber,
 
       ColumnsCount
@@ -55,7 +57,7 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      * @param[in] parent
      *   Index-parent - assumed to be the root element (invalid).
      *
-     * @return The number of loads.
+     * @return Number of loads.
      * @retval 0
      *   If @p is valid (not root element)
      **/
@@ -67,7 +69,8 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      * @param[in] parent
      *   Index-parent - assumed to be the root element (invalid).
      *
-     * @return Always Columns::ColumnsCount.
+     * @retval 0
+     *   If @p is valid (not root element)
      **/
     [[nodiscard]] int columnCount( const QModelIndex &parent ) const override;
 
@@ -149,6 +152,8 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      *   Index of the requested item.
      *
      * @return Load for the given index.
+     * @retval {}
+     *   If @p index is invalid
      **/
     [[nodiscard]] Arinc665::Media::LoadVariant load(
       const QModelIndex &index ) const;
@@ -161,7 +166,7 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      *
      * @return Load for given Index
      * @retval {}
-     *   If index is invalid
+     *   If @p index is invalid
      **/
     [[nodiscard]] Arinc665::Media::LoadVariant load( std::size_t index ) const;
 
