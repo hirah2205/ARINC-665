@@ -54,7 +54,9 @@ QModelIndex MediaSetModel::index(
 
   if ( !parentBase )
   {
-    // should not happen
+    // Should not happen
+    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+      << "Invalid Element Pointer";
     return {};
   }
 
@@ -62,16 +64,22 @@ QModelIndex MediaSetModel::index(
   {
     case Arinc665::Media::Base::Type::MediaSet:
     {
-      auto mediumParent{
+      auto mediaSetParent{
         std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( parentBase ) };
 
-      assert( mediumParent );
+      if ( !mediaSetParent )
+      {
+        // Should not happen
+        BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+          << "Could not cast to Media Set";
+        return {};
+      }
 
       // all children of media set are media (+1 because media are 1-indexed)
       return createIndex(
         row,
         column,
-        (void*)mediumParent->medium( row + 1U ).get() );
+        (void*)mediaSetParent->medium( row + 1U ).get() );
     }
 
     case Arinc665::Media::Base::Type::Medium:
@@ -81,16 +89,22 @@ QModelIndex MediaSetModel::index(
         std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >(
           parentBase ) };
 
-      assert( containerParent );
+      if ( !containerParent )
+      {
+        // Should not happen
+        BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+          << "Could not cast to Container";
+        return {};
+      }
 
-      if ( static_cast< size_t>( row) < containerParent->numberOfSubDirectories() )
+      if ( static_cast< size_t>( row ) < containerParent->numberOfSubDirectories() )
       {
         auto dirIt{ std::next( containerParent->subDirectories().begin(), row ) };
 
         return createIndex( row, column, (void*)dirIt->get() );
       }
 
-      auto fileIt{std::next(
+      auto fileIt{ std::next(
         containerParent->files( false ).begin(),
         row - static_cast< ptrdiff_t >( containerParent->numberOfSubDirectories() ) ) };
 
@@ -99,6 +113,7 @@ QModelIndex MediaSetModel::index(
 
     case Arinc665::Media::Base::Type::File:
       // file has no children
+      [[fallthrough]];
 
     default:
       // Should not happen
@@ -111,6 +126,9 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
   // invalid index has no parent
   if ( !index.isValid() )
   {
+    // Should not happen
+    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::warning )
+      << "Root Element has no parent";
     return {};
   }
 
@@ -119,14 +137,16 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
 
   if ( !base )
   {
-    // should not happen
+    // Should not happen
+    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+      << "Invalid Element Pointer";
     return {};
   }
 
   switch ( base->type() )
   {
     case Arinc665::Media::Base::Type::MediaSet:
-      // The media set has no parent
+      // Media set has no parent
       return {};
 
     case Arinc665::Media::Base::Type::Medium:
@@ -161,14 +181,20 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
       return createIndex(
         static_cast< int >( std::distance( subDirs.begin(), pos ) ),
         0,
-        (void*)dir->parent().get());
+        (void*)dir->parent().get() );
     }
 
     case Arinc665::Media::Base::Type::File:
     {
       auto file{ std::dynamic_pointer_cast< const Arinc665::Media::File >( base) };
 
-      assert( file );
+      if ( !file )
+      {
+        // Should not happen
+        BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+          << "Could not cast to File";
+        return {};
+      }
 
       if ( Arinc665::Media::Base::Type::Medium == file->parent()->type() )
       {
@@ -216,7 +242,9 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
 
   if ( !base )
   {
-    // should not happen
+    // Should not happen
+    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+      << "Invalid Element Pointer";
     return {};
   }
 
@@ -228,7 +256,13 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
       auto mediaSet{
         std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( base ) };
 
-      assert( mediaSet );
+      if ( !mediaSet )
+      {
+        // Should not happen
+        BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+          << "Invalid Cast to Media Set";
+        return {};
+      }
 
       return ( mediaSet->numberOfMedia() !=0 );
     }
@@ -239,7 +273,13 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
       auto container{
         std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >( base ) };
 
-      assert( container );
+      if ( !container )
+      {
+        // Should not happen
+        BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+          << "Invalid Cast to Container";
+        return {};
+      }
 
       return container->hasChildren();
     }
@@ -270,8 +310,10 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
 
   if ( !base )
   {
-    // should not happen
-    return 0;
+    // Should not happen
+    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+      << "Invalid Element Pointer";
+    return {};
   }
 
   switch ( base->type() )
@@ -281,7 +323,13 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
       auto mediaSet{
         std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( base ) };
 
-      assert( mediaSet );
+      if ( !mediaSet )
+      {
+        // Should not happen
+        BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+          << "Invalid Cast to Media Set";
+        return {};
+      }
 
       // The media set has media
       return mediaSet->numberOfMedia();
@@ -293,7 +341,13 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
       auto container{
         std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >( base ) };
 
-      assert( container );
+      if ( !container )
+      {
+        // Should not happen
+        BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+          << "Invalid Cast to Container";
+        return {};
+      }
 
       // Medium and Directories have subdirectories and files
       return static_cast< int>(
@@ -313,9 +367,10 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
   }
 }
 
-int MediaSetModel::columnCount( const QModelIndex & /*parent*/ ) const
+int MediaSetModel::columnCount(
+  const QModelIndex & parent [[maybe_unused]] ) const
 {
-  return static_cast< int>( Columns::Last );
+  return static_cast< int >( Columns::Last );
 }
 
 QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
@@ -377,7 +432,13 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               auto file{
                 std::dynamic_pointer_cast< const Arinc665::Media::File >( base ) };
 
-              assert( file );
+              if ( !file )
+              {
+                // Should not happen
+                BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+                  << "Invalid Cast to File";
+                return {};
+              }
 
               switch ( file->fileType() )
               {
@@ -438,7 +499,13 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               auto mediaSet{
                 std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( base) };
 
-              assert( mediaSet );
+              if ( !mediaSet )
+              {
+                // Should not happen
+                BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+                  << "Invalid Cast to Media Set";
+                return {};
+              }
 
               return HelperQt::toQString( mediaSet->partNumber() );
             }
@@ -448,7 +515,13 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               auto medium{
                 std::dynamic_pointer_cast< const Arinc665::Media::Medium >( base) };
 
-              assert( medium );
+              if ( !medium )
+              {
+                // Should not happen
+                BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+                  << "Invalid Cast to Medium";
+                return {};
+              }
 
               return medium->mediumNumber();
             }
@@ -458,7 +531,13 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               auto directory{
                 std::dynamic_pointer_cast< const Arinc665::Media::Directory >( base) };
 
-              assert( directory);
+              if ( !directory )
+              {
+                // Should not happen
+                BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+                  << "Invalid Cast to Directory";
+                return {};
+              }
 
               return HelperQt::toQString( directory->name() );
             }
@@ -468,7 +547,13 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               auto file{
                 std::dynamic_pointer_cast< const Arinc665::Media::File >( base) };
 
-              assert( file );
+              if ( !file )
+              {
+                // Should not happen
+                BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+                  << "Invalid Cast to File";
+                return {};
+              }
 
               return HelperQt::toQString( file->name() );
             }
@@ -494,7 +579,13 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               auto file{
                 std::dynamic_pointer_cast< const Arinc665::Media::File >( base ) };
 
-              assert( file );
+              if ( !file )
+              {
+                // Should not happen
+                BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+                  << "Invalid Cast to File";
+                return {};
+              }
 
               switch ( file->fileType() )
               {
@@ -570,7 +661,7 @@ Arinc665::Media::ConstBasePtr MediaSetModel::element(
     BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
       << "Invalid Model Index";
 
-    // invalid model index
+    // empty element
     return {};
   }
 

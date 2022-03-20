@@ -24,8 +24,10 @@ namespace Arinc665Qt::Media {
 /**
  * @brief QT Adaption of ARINC 665 %Media Set.
  *
- * This is an hierarchical model giving access to Media Sets, Media, Directories
- * and Files.
+ * This is an hierarchical model giving access to %Media Sets, %Media,
+ * Directories and Files.
+ *
+ * The Model-Index holds the Pointer to the Arinc665::Media::Base object.
  **/
 class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
 {
@@ -35,7 +37,9 @@ class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
     //! Displayed Columns
     enum class Columns
     {
+      //! Element Name
       Name,
+      //! Element Type
       Type,
 
       Last
