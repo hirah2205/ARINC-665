@@ -21,6 +21,8 @@
 #include <QWidget>
 #include <QFileDialog>
 
+#include <memory>
+
 namespace Arinc665Qt::MediaSetManager {
 
 /**

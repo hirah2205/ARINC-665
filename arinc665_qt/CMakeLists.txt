@@ -63,6 +63,7 @@ target_link_libraries(
 include( GenerateExportHeader )
 generate_export_header( arinc665_qt )
 
+add_subdirectory( import_media_set_xml )
 add_subdirectory( media )
 add_subdirectory( media_set_manager )
 add_subdirectory( resources )

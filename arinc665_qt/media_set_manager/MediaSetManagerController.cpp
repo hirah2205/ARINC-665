@@ -14,6 +14,7 @@
 
 #include <arinc665_qt/media/MediaSetsModel.hpp>
 #include <arinc665_qt/media_set_manager/MediaSetManagerDialog.hpp>
+#include <arinc665_qt/import_media_set_xml/ImportMediaSetXmlController.hpp>
 #include <arinc665_qt/MediaSetController.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
@@ -128,12 +129,17 @@ void MediaSetManagerController::viewMediaSet( const QModelIndex &index )
 
 void MediaSetManagerController::importMediaSet()
 {
-
 }
 
 void MediaSetManagerController::importMediaSetXml()
 {
+  auto controller{ new ImportMediaSetXmlController{ mediaSetManagerDialogV.get() } };
 
+  connect(
+    controller,
+    &ImportMediaSetXmlController::finished,
+    controller,
+    &MediaSetController::deleteLater );
 }
 
 void MediaSetManagerController::removeMediaSet( const QModelIndex &index )

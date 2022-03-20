@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Arinc665Qt::ImportMediaSetXmlWizard</class>
+ <widget class="QWizard" name="Arinc665Qt::ImportMediaSetXmlWizard">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Import Media Set XML</string>
+  </property>
+  <widget class="Arinc665Qt::ImportMediaSetXmlSettingsPage" name="settings"/>
+  <widget class="QWizardPage" name="wizardPage2"/>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Arinc665Qt::ImportMediaSetXmlSettingsPage</class>
+   <extends>QWizardPage</extends>
+   <header location="global">arinc665_qt/import_media_set_xml/ImportMediaSetXmlSettingsPage.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

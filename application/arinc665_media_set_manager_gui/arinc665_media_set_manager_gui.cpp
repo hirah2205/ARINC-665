@@ -24,7 +24,7 @@
 #include <QIcon>
 
 #include <cstdlib>
-#include <filesystem>
+#include <iostream>
 
 /**
  * @brief Entry Point of Application.
@@ -63,13 +63,18 @@ try
 
   return application.exec();
 }
+catch ( boost::exception &e )
+{
+  std::cerr << boost::diagnostic_information( e ) << "\n";
+  return EXIT_FAILURE;
+}
 catch ( std::exception &e )
 {
-  BOOST_LOG_TRIVIAL( error ) << e.what();
+  std::cerr << e.what() << "\n";
   return EXIT_FAILURE;
 }
 catch ( ...)
 {
-  BOOST_LOG_TRIVIAL( error ) << "Unknown exception";
+  std::cerr << "Unknown exception\n";
   return EXIT_FAILURE;
 }
