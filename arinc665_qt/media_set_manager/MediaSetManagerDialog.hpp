@@ -61,15 +61,33 @@ class ARINC665_QT_EXPORT MediaSetManagerDialog : public QDialog
      **/
     void viewMediaSet( const QModelIndex &index );
 
+    /**
+     * @brief Import Media Set Signal
+     **/
     void importMediaSet();
 
+    /**
+     * @brief Import Media Set XML Signal
+     **/
     void importMediaSetXml();
 
+    /**
+     * @brief Remove Media Set XML Signal
+     *
+     * @param[in] index
+     *   Model Index of selected Media Set
+     **/
     void removeMediaSet( const QModelIndex &index );
 
   private slots:
+    /**
+     * @brief Slot handling View Media Set Clicked.
+     **/
     void viewMediaSetClicked();
 
+    /**
+     * @brief Slot handling Remove Media Set Clicked.
+     **/
     void removeMediaSetClicked();
 
   private:

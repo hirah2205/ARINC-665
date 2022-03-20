@@ -72,18 +72,30 @@ class ARINC665_QT_EXPORT MediaSetManagerController : public QObject
     void directorySelected();
 
     /**
-     * @brief User Selects View %Media Set Button
+     * @brief View %Media Set Button
      *
      * @param[in] index
-     *   Model Index of Selected %Media Set
+     *   Model Index of Selected %Media Set.
      **/
     void viewMediaSet( const QModelIndex &index );
 
+    /**
+     * @brief Import Media Set Slot
+     **/
     void importMediaSet();
 
+    /**
+     * @brief Import Media Set XML Slot
+     **/
     void importMediaSetXml();
 
-    void removeMediaSet( const QModelIndex &index);
+    /**
+     * @brief Remove Media Set XML.
+     *
+     * @param[in] index
+     *   Model Index of Selected %Media Set.
+     **/
+    void removeMediaSet( const QModelIndex &index );
 
   private:
     //! Media Sets Model

@@ -53,6 +53,9 @@ set(
   DOXYGEN_STRIP_FROM_PATH
 
   ${helper_SOURCE_DIR}
+  ${helper_SOURCE_DIR}/application
+  ${command_shell_SOURCE_DIR}
+  ${command_shell_SOURCE_DIR}/application
   ${arinc645_SOURCE_DIR}
   ${arinc645_SOURCE_DIR}/application
   ${arinc665_SOURCE_DIR}
@@ -63,6 +66,7 @@ set(
 
   ${Boost_INCLUDE_DIRS}
   ${helper_SOURCE_DIR}
+  ${command_shell_SOURCE_DIR}
   ${arinc645_SOURCE_DIR}
   ${arinc665_SOURCE_DIR} )
 
