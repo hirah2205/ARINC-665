@@ -21,6 +21,7 @@
 
 namespace Arinc665Qt {
 
+//! Import Media Set XML Controller
 class ARINC665_QT_EXPORT ImportMediaSetXmlController : public QObject
 {
     Q_OBJECT
@@ -42,6 +43,7 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlController : public QObject
     void finished();
 
   private:
+    //! Wizard Dialog
     std::unique_ptr< ImportMediaSetXmlWizard> wizard;
 };
 

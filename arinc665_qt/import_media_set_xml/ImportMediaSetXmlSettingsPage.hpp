@@ -26,7 +26,7 @@ namespace Ui{
 class ImportMediaSetXmlSettingsPage;
 }
 
-//! Import Media Set XML Settings Page
+//! Import %Media Set XML Settings Page
 class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsPage : public QWizardPage
 {
     Q_OBJECT
@@ -44,8 +44,10 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsPage : public QWizardPage
     ~ImportMediaSetXmlSettingsPage() override;
 
   private slots:
+    //! Slot Select XML File
     void selectXmlFile();
 
+    //! Slot Select Input Directory
     void selectInputDirectory();
 
   private:
