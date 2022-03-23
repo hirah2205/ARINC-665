@@ -97,7 +97,7 @@ QModelIndex MediaSetModel::index(
         return {};
       }
 
-      if ( static_cast< size_t>( row ) < containerParent->numberOfSubDirectories() )
+      if ( std::cmp_less( row, containerParent->numberOfSubDirectories() ) )
       {
         auto dirIt{ std::next( containerParent->subDirectories().begin(), row ) };
 
