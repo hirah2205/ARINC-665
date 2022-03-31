@@ -43,7 +43,7 @@ class ARINC665_EXPORT SupportedArinc665VersionDescription :
  *
  * @return @p stream for chaining.
  **/
-std::ostream& ARINC665_EXPORT operator<<(
+ARINC665_EXPORT std::ostream& operator<<(
   std::ostream &stream,
   SupportedArinc665Version version );
 
@@ -58,7 +58,7 @@ std::ostream& ARINC665_EXPORT operator<<(
  *
  * @return @p stream for chaining.
  **/
-std::istream& ARINC665_EXPORT operator>>(
+ARINC665_EXPORT std::istream& operator>>(
   std::istream& stream,
   SupportedArinc665Version &version );
 

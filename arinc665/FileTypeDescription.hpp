@@ -42,7 +42,7 @@ class ARINC665_EXPORT FileTypeDescription : public Helper::Description<
  *
  * @return The stream for chaining.
  **/
-std::ostream& ARINC665_EXPORT operator<<(
+ARINC665_EXPORT std::ostream& operator<<(
   std::ostream &stream,
   FileType fileType );
 

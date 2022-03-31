@@ -43,7 +43,7 @@ class ARINC665_EXPORT FileCreationPolicyDescription :
  *
  * @return Output Stream for chaining.
  **/
-std::ostream& ARINC665_EXPORT operator<<(
+ARINC665_EXPORT std::ostream& operator<<(
   std::ostream &stream,
   FileCreationPolicy fileCreationPolicy );
 
@@ -60,7 +60,7 @@ std::ostream& ARINC665_EXPORT operator<<(
  * @throw boost::program_options
  *   When @p stream cannot be decoded to FileCreationPolicy.
  **/
-std::istream& ARINC665_EXPORT operator>>(
+ARINC665_EXPORT std::istream& operator>>(
   std::istream& stream,
   FileCreationPolicy &fileCreationPolicy );
 
