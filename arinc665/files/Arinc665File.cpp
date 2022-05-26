@@ -465,7 +465,7 @@ Arinc665File::Arinc665File(
   const FileType expectedFileType,
   ptrdiff_t checksumPosition ) :
   checksumPosition{ checksumPosition },
-  arinc665VersionV{ Arinc665Version::Invalid }
+  arinc665VersionV{ SupportedArinc665Version::Invalid }
 {
   decodeHeader( rawFile, expectedFileType );
 }
