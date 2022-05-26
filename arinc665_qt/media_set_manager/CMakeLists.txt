@@ -15,4 +15,6 @@ target_sources(
     MediaSetManagerController.cpp
     MediaSetManagerDialog.hpp
     MediaSetManagerDialog.cpp
-    MediaSetManagerDialog.ui )
+    MediaSetManagerDialog.ui
+    RemoveMediaSetController.hpp
+    RemoveMediaSetController.cpp )
