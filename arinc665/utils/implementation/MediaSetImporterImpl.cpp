@@ -29,7 +29,7 @@ MediaSetImporterImpl::MediaSetImporterImpl():
 MediaSetImporter& MediaSetImporterImpl::readFileHandler(
   ReadFileHandler readFileHandler )
 {
-  readFileHandlerV = readFileHandler;
+  readFileHandlerV = std::move( readFileHandler );
   return *this;
 }
 

@@ -61,7 +61,8 @@ class ARINC665_EXPORT MediaSetManager
      * @param[in,out] configuration
      *   Media Set Manager Configuration.
      * @param[in] checkFileIntegrity
-     *   If set to true additional file integrity steps are performed
+     *   If set to true additional file integrity steps are performed, when
+     *   loading the Media Set Manager.
      *
      * @return Media Set Manager Instance.
      **/
@@ -101,9 +102,13 @@ class ARINC665_EXPORT MediaSetManager
      *
      * @param[in] mediaSetPaths
      *   Media Set Path Configuration
+     * @param[in] checkFileIntegrity
+     *   If set to true additional file integrity steps are performed, when
+     *   loading the Media Set Manager.
      **/
     virtual void registerMediaSet(
-      const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths ) = 0;
+      const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
+      bool checkFileIntegrity = true ) = 0;
 
     /**
      * @brief De-registers the Media Set from the Media Set Manager.

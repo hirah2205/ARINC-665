@@ -58,7 +58,8 @@ class MediaSetManagerImpl final : public MediaSetManager
 
     //! @copydoc MediaSetManager::registerMediaSet()
     void registerMediaSet(
-      const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths ) final;
+      const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
+      bool checkFileIntegrity = true ) final;
 
     //! @copydoc MediaSetManager::deregisterMediaSet()
     MediaSetManagerConfiguration::MediaSetPaths deregisterMediaSet(

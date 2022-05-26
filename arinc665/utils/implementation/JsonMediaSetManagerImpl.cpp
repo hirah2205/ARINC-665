@@ -36,7 +36,7 @@ void JsonMediaSetManagerImpl::create( const std::filesystem::path &directory )
   boost::property_tree::ptree configurationPTree{ configuration.toProperties() };
 
   boost::property_tree::write_json(
-    (directory / ConfigurationFilename).string(),
+    ( directory / ConfigurationFilename ).string(),
     configurationPTree );
 }
 
@@ -91,7 +91,7 @@ void JsonMediaSetManagerImpl::saveConfiguration()
   assert( mediaSetManagerV );
 
   boost::property_tree::write_json(
-    (directoryV / ConfigurationFilename).string(),
+    ( directoryV / ConfigurationFilename ).string(),
     mediaSetManagerV->configuration().toProperties() );
 }
 

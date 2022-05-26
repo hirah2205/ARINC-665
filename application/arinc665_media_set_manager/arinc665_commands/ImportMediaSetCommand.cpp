@@ -67,7 +67,9 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 
     // Media Set Manager
     const auto mediaSetManager{
-      Arinc665::Utils::JsonMediaSetManager::load( mediaSetManagerDirectory ) };
+      Arinc665::Utils::JsonMediaSetManager::load(
+        mediaSetManagerDirectory,
+        checkFileIntegrity ) };
 
     auto importer{ Arinc665::Utils::MediaSetImporter::create() };
     importer->checkFileIntegrity( checkFileIntegrity )
@@ -102,7 +104,7 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
     std::filesystem::create_directories(
       mediaSetManagerDirectory / mediaSetPaths.first );
 
-    // iterate over media
+    // iterate over media - copy it to media set manager
     for ( auto const &[ mediumNumber, mediumPath ] : mediaSetPaths.second )
     {
       std::filesystem::copy(
@@ -111,7 +113,9 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
         std::filesystem::copy_options::recursive );
     }
 
-    mediaSetManager->manager()->registerMediaSet( mediaSetPaths );
+    mediaSetManager->manager()->registerMediaSet(
+      mediaSetPaths,
+      checkFileIntegrity );
     mediaSetManager->saveConfiguration();
   }
   catch ( boost::program_options::error &e )

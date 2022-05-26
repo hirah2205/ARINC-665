@@ -69,7 +69,8 @@ const MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::mediaSets() const
 }
 
 void MediaSetManagerImpl::registerMediaSet(
-  const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths )
+  const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
+  const bool checkFileIntegrity )
 {
   // import media set
   auto importer( MediaSetImporter::create() );
@@ -83,7 +84,7 @@ void MediaSetManagerImpl::registerMediaSet(
       std::placeholders::_1,
       std::placeholders::_2 ) );
 
-  //importer->checkFileIntegrity( checkFileIntegrity );
+  importer->checkFileIntegrity( checkFileIntegrity );
 
   // import media set
   auto impMediaSet( (*importer)() );
@@ -197,14 +198,16 @@ std::filesystem::path MediaSetManagerImpl::filePath(
     return {};
   }
 
-  auto mediumIt{ mediaSetIt->second.second.find( file->parent()->medium()->mediumNumber() ) };
+  auto mediumIt{ mediaSetIt->second.second.find(
+    file->parent()->medium()->mediumNumber() ) };
 
   if ( mediumIt == mediaSetIt->second.second.end() )
   {
     return {};
   }
 
-  return absolutePath( mediaSetIt->second.first / mediumIt->second / file->path().relative_path() );
+  return absolutePath(
+    mediaSetIt->second.first / mediumIt->second / file->path().relative_path() );
 }
 
 void MediaSetManagerImpl::loadMediaSets( const bool checkFileIntegrity )
@@ -213,9 +216,6 @@ void MediaSetManagerImpl::loadMediaSets( const bool checkFileIntegrity )
 
   for ( auto const &mediaSetPaths : configurationV.mediaSets )
   {
-    // NOTE: structured bindings cannot be passed as lambda capture at the moment
-    // https://api.csswg.org/bikeshed/#lambda-captures
-
     // import media set
     auto importer( MediaSetImporter::create() );
 
