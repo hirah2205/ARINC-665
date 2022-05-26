@@ -7,11 +7,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Commands::ListCommand.
+ * @brief Declaration of Class Arinc665Commands::ListMediaSetsCommand.
  **/
 
-#ifndef ARINC665_COMMANDS_LISTCOMMAND_HPP
-#define ARINC665_COMMANDS_LISTCOMMAND_HPP
+#ifndef ARINC665_COMMANDS_LISTMEDIASETSCOMMAND_HPP
+#define ARINC665_COMMANDS_LISTMEDIASETSCOMMAND_HPP
 
 #include <arinc665_commands/Arinc665Commands.hpp>
 
@@ -23,14 +23,18 @@
 
 namespace Arinc665Commands {
 
-//! List Command
-class ListCommand
+/**
+ * @brief List Media Sets Command.
+ *
+ * List all registered Media Sets within the given Media Set Manager.
+ **/
+class ListMediaSetsCommand
 {
   public:
     /**
      * @brief Constructs the List Command.
      **/
-    ListCommand();
+    ListMediaSetsCommand();
 
     /**
      * @brief Executes the Operation.

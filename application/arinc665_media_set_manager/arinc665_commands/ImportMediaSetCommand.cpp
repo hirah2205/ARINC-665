@@ -7,10 +7,10 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Commands::ImportCommand.
+ * @brief Declaration of Class Arinc665Commands::ImportMediaSetCommand.
  **/
 
-#include "ImportCommand.hpp"
+#include "ImportMediaSetCommand.hpp"
 
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/JsonMediaSetManager.hpp>
@@ -27,7 +27,7 @@
 
 namespace Arinc665Commands {
 
-ImportCommand::ImportCommand() : optionsDescription{ "Import Media Set" }
+ImportMediaSetCommand::ImportMediaSetCommand() : optionsDescription{ "Import Media Set" }
 {
   optionsDescription.add_options()
   (
@@ -51,7 +51,7 @@ ImportCommand::ImportCommand() : optionsDescription{ "Import Media Set" }
   );
 }
 
-void ImportCommand::execute( const Commands::Parameters &parameters )
+void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 {
   try
   {
@@ -72,7 +72,7 @@ void ImportCommand::execute( const Commands::Parameters &parameters )
     auto importer{ Arinc665::Utils::MediaSetImporter::create() };
     importer->checkFileIntegrity( checkFileIntegrity )
       .readFileHandler( std::bind(
-        &ImportCommand::readFileHandler,
+        &ImportMediaSetCommand::readFileHandler,
         this,
         std::placeholders::_1,
         std::placeholders::_2 ) );
@@ -133,12 +133,12 @@ void ImportCommand::execute( const Commands::Parameters &parameters )
   }
 }
 
-void ImportCommand::help()
+void ImportMediaSetCommand::help()
 {
   std::cout << "Import Media Set\n" << optionsDescription;
 }
 
-Arinc665::Files::RawFile ImportCommand::readFileHandler(
+Arinc665::Files::RawFile ImportMediaSetCommand::readFileHandler(
   uint8_t mediumNumber,
   const std::filesystem::path &path )
 {

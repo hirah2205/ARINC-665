@@ -15,14 +15,14 @@ target_sources(
     Arinc665Commands.hpp
     CreateMediaSetManagerCommand.hpp
     CreateMediaSetManagerCommand.cpp
-    ImportCommand.hpp
-    ImportCommand.cpp
-    ImportXmlCommand.hpp
-    ImportXmlCommand.cpp
-    ListCommand.hpp
-    ListCommand.cpp
+    ImportMediaSetCommand.hpp
+    ImportMediaSetCommand.cpp
+    ImportMediaSetXmlCommand.hpp
+    ImportMediaSetXmlCommand.cpp
     ListLoadsCommand.hpp
     ListLoadsCommand.cpp
+    ListMediaSetsCommand.hpp
+    ListMediaSetsCommand.cpp
     RemoveMediaSetCommand.hpp
     RemoveMediaSetCommand.cpp )
 

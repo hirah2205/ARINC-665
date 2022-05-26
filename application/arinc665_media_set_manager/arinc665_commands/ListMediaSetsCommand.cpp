@@ -7,10 +7,10 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Commands::ListCommand.
+ * @brief Definition of Class Arinc665Commands::ListMediaSetsCommand.
  **/
 
-#include "ListCommand.hpp"
+#include "ListMediaSetsCommand.hpp"
 
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/JsonMediaSetManager.hpp>
@@ -24,7 +24,7 @@
 
 namespace Arinc665Commands {
 
-ListCommand::ListCommand() :
+ListMediaSetsCommand::ListMediaSetsCommand() :
   optionsDescription{ "List Media Set Manager" }, checkFileIntegrity{}
 {
   optionsDescription.add_options()
@@ -42,7 +42,7 @@ ListCommand::ListCommand() :
   );
 }
 
-void ListCommand::execute( const Commands::Parameters &parameters )
+void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
 {
   try
   {
@@ -88,7 +88,7 @@ void ListCommand::execute( const Commands::Parameters &parameters )
   }
 }
 
-void ListCommand::help()
+void ListMediaSetsCommand::help()
 {
   std::cout << "List Media Set Manager\n" << optionsDescription;
 }

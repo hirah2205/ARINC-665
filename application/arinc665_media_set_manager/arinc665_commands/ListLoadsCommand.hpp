@@ -23,7 +23,11 @@
 
 namespace Arinc665Commands {
 
-//! List Loads Command
+/**
+ * @brief List Loads Command.
+ *
+ * List all loads, which are part of the media sets of the Media Set Manager.
+ **/
 class ListLoadsCommand
 {
   public:

@@ -7,11 +7,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Commands::ImportXmlCommand.
+ * @brief Declaration of Class Arinc665Commands::ImportMediaSetXmlCommand.
  **/
 
-#ifndef ARINC665_COMMANDS_IMPORTXMLCOMMAND_HPP
-#define ARINC665_COMMANDS_IMPORTXMLCOMMAND_HPP
+#ifndef ARINC665_COMMANDS_IMPORTMEDIASETXMLCOMMAND_HPP
+#define ARINC665_COMMANDS_IMPORTMEDIASETXMLCOMMAND_HPP
 
 #include <arinc665_commands/Arinc665Commands.hpp>
 
@@ -29,13 +29,13 @@
 namespace Arinc665Commands {
 
 //! Import XML Command
-class ImportXmlCommand
+class ImportMediaSetXmlCommand
 {
   public:
     /**
      * @brief Constructs the Import XML Command.
      **/
-    ImportXmlCommand();
+    ImportMediaSetXmlCommand();
 
     /**
      * @brief Executes the Operation.

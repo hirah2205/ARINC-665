@@ -7,10 +7,10 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Commands::ImportXmlCommand.
+ * @brief Definition of Class Arinc665Commands::ImportMediaSetXmlCommand.
  **/
 
-#include "ImportXmlCommand.hpp"
+#include "ImportMediaSetXmlCommand.hpp"
 
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/JsonMediaSetManager.hpp>
@@ -32,7 +32,7 @@
 
 namespace Arinc665Commands {
 
-ImportXmlCommand::ImportXmlCommand() : optionsDescription{ "Import XML" }
+ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() : optionsDescription{ "Import XML" }
 {
   auto fileCreatPolDes{
     Arinc665::Utils::FileCreationPolicyDescription::instance() };
@@ -100,7 +100,7 @@ ImportXmlCommand::ImportXmlCommand() : optionsDescription{ "Import XML" }
   );
 }
 
-void ImportXmlCommand::execute( const Commands::Parameters &parameters )
+void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 {
   try
   {
@@ -153,29 +153,29 @@ void ImportXmlCommand::execute( const Commands::Parameters &parameters )
     // set exporter parameters
     exporter->mediaSet( std::get< 0 >( loadXmlResult ) )
       .createMediumHandler( std::bind(
-        &ImportXmlCommand::createMediumHandler,
+        &ImportMediaSetXmlCommand::createMediumHandler,
         this,
         std::placeholders::_1 ) )
       .createDirectoryHandler( std::bind(
-        &ImportXmlCommand::createDirectoryHandler,
+        &ImportMediaSetXmlCommand::createDirectoryHandler,
         this,
         std::placeholders::_1 ) )
       .checkFileExistenceHandler( std::bind(
-        &ImportXmlCommand::checkFileExistanceHandler,
+        &ImportMediaSetXmlCommand::checkFileExistanceHandler,
         this,
         std::placeholders::_1 ) )
       .createFileHandler( std::bind(
-        &ImportXmlCommand::createFileHandler,
+        &ImportMediaSetXmlCommand::createFileHandler,
         this,
         std::placeholders::_1 ) )
       .writeFileHandler( std::bind(
-        &ImportXmlCommand::writeFileHandler,
+        &ImportMediaSetXmlCommand::writeFileHandler,
         this,
         std::placeholders::_1,
         std::placeholders::_2,
         std::placeholders::_3 ) )
       .readFileHandler( std::bind(
-        &ImportXmlCommand::readFileHandler,
+        &ImportMediaSetXmlCommand::readFileHandler,
         this,
         std::placeholders::_1,
         std::placeholders::_2 ) )
@@ -207,12 +207,12 @@ void ImportXmlCommand::execute( const Commands::Parameters &parameters )
   }
 }
 
-void ImportXmlCommand::help()
+void ImportMediaSetXmlCommand::help()
 {
   std::cout << "Import XML\n" << optionsDescription;
 }
 
-void ImportXmlCommand::createMediumHandler(
+void ImportMediaSetXmlCommand::createMediumHandler(
   const Arinc665::Media::ConstMediumPtr &medium )
 {
   BOOST_LOG_FUNCTION()
@@ -227,7 +227,7 @@ void ImportXmlCommand::createMediumHandler(
   std::filesystem::create_directory( mPath );
 }
 
-void ImportXmlCommand::createDirectoryHandler(
+void ImportMediaSetXmlCommand::createDirectoryHandler(
   const Arinc665::Media::ConstDirectoryPtr &directory )
 {
   BOOST_LOG_FUNCTION()
@@ -243,7 +243,7 @@ void ImportXmlCommand::createDirectoryHandler(
   std::filesystem::create_directory( directoryPath );
 }
 
-bool ImportXmlCommand::checkFileExistanceHandler(
+bool ImportMediaSetXmlCommand::checkFileExistanceHandler(
   const Arinc665::Media::ConstFilePtr &file )
 {
   BOOST_LOG_FUNCTION()
@@ -263,7 +263,7 @@ bool ImportXmlCommand::checkFileExistanceHandler(
     mediaSetSourceDirectory / fileIt->second );
 }
 
-void ImportXmlCommand::createFileHandler(
+void ImportMediaSetXmlCommand::createFileHandler(
   const Arinc665::Media::ConstFilePtr &file )
 {
   BOOST_LOG_FUNCTION()
@@ -290,7 +290,7 @@ void ImportXmlCommand::createFileHandler(
   std::filesystem::copy( mediaSetSourceDirectory / fileIt->second, filePath );
 }
 
-void ImportXmlCommand::writeFileHandler(
+void ImportMediaSetXmlCommand::writeFileHandler(
   const uint8_t mediumNumber,
   const std::filesystem::path &path,
   const Arinc665::Files::ConstRawFileSpan &file )
@@ -331,7 +331,7 @@ void ImportXmlCommand::writeFileHandler(
     static_cast< std::streamsize >( file.size() ) );
 }
 
-Arinc665::Files::RawFile ImportXmlCommand::readFileHandler(
+Arinc665::Files::RawFile ImportMediaSetXmlCommand::readFileHandler(
   uint8_t mediumNumber,
   const std::filesystem::path &path )
 {

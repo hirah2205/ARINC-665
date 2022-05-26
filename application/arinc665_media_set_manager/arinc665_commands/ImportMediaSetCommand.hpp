@@ -7,11 +7,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Commands::ImportCommand.
+ * @brief Declaration of Class Arinc665Commands::ImportMediaSetCommand.
  **/
 
-#ifndef ARINC665_COMMANDS_IMPORTCOMMAND_HPP
-#define ARINC665_COMMANDS_IMPORTCOMMAND_HPP
+#ifndef ARINC665_COMMANDS_IMPORTMEDIASETCOMMAND_HPP
+#define ARINC665_COMMANDS_IMPORTMEDIASETCOMMAND_HPP
 
 #include <arinc665_commands/Arinc665Commands.hpp>
 
@@ -27,22 +27,22 @@
 namespace Arinc665Commands {
 
 /**
- * @brief Import Command
+ * @brief Import Media Set Command.
  *
  * Adds the given media set to the media set manager.
  *
  * Copies the media from the source path to its destination paths.
  * The integrity of the media paths are not checked.
  * Missing files will be detected on trying to access them.
- * To much files are not detected.
+ * Too many files are not detected.
  **/
-class ImportCommand
+class ImportMediaSetCommand
 {
   public:
     /**
      * @brief Constructs the Import Command.
      **/
-    ImportCommand();
+    ImportMediaSetCommand();
 
     /**
      * @brief Executes the Operation.
