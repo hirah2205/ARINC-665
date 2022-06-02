@@ -25,7 +25,7 @@
 namespace Arinc665Commands {
 
 ListMediaSetsCommand::ListMediaSetsCommand() :
-  optionsDescription{ "List Media Set Manager" }, checkFileIntegrity{}
+  optionsDescription{ "List Media Sets" }, checkFileIntegrity{}
 {
   optionsDescription.add_options()
   (
@@ -46,7 +46,7 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
 {
   try
   {
-    std::cout << "List Media Set Manager \n";
+    std::cout << "List Media Sets \n";
 
     boost::program_options::variables_map vm{};
     boost::program_options::store(

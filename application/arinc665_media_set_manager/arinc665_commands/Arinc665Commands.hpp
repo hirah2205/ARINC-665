@@ -13,12 +13,19 @@
 #ifndef ARINC665_COMMANDS_ARINC665COMMANDS_HPP
 #define ARINC665_COMMANDS_ARINC665COMMANDS_HPP
 
+#include <commands/Commands.hpp>
+
 /**
  * @brief ARINC 665 Commands.
  *
  * Commands, which provides ARINC 665 Media Set Manager functionality.
  **/
 namespace Arinc665Commands {
+
+/**
+ * @brief Registers the ARINC 665 Commands to the registry.
+ **/
+void registerCommands( const Commands::CommandRegistryPtr& registry );
 
 }
 

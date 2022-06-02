@@ -27,7 +27,8 @@
 
 namespace Arinc665Commands {
 
-ImportMediaSetCommand::ImportMediaSetCommand() : optionsDescription{ "Import Media Set" }
+ImportMediaSetCommand::ImportMediaSetCommand() :
+  optionsDescription{ "Import Media Set" }
 {
   optionsDescription.add_options()
   (
@@ -55,7 +56,7 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 {
   try
   {
-    std::cout << "Import XML\n";
+    std::cout << "Import Media Set\n";
 
     boost::program_options::variables_map vm{};
     boost::program_options::store(
