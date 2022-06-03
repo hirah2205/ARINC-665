@@ -24,6 +24,9 @@ namespace Arinc665Commands {
 
 /**
  * @brief Registers the ARINC 665 Commands to the registry.
+ *
+ * @param[in,out] registry
+ *   Registry, where the Commands shall be registered to.
  **/
 void registerCommands( const Commands::CommandRegistryPtr& registry );
 
