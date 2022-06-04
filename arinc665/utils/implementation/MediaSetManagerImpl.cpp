@@ -95,7 +95,7 @@ void MediaSetManagerImpl::registerMediaSet(
       << Helper::AdditionalInfo{ "Media Set Already exist" } );
   }
 
-  // add to media set
+  // add to media sets
   mediaSetsV.emplace( impMediaSet->partNumber(), impMediaSet );
 
   // add to configuration

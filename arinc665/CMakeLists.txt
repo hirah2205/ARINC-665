@@ -25,7 +25,6 @@ target_sources(
 
   PRIVATE
     Arinc665.hpp
-    Arinc665.cpp
     Arinc665Exception.hpp
     Arinc665Logger.hpp
     FileTypeDescription.hpp

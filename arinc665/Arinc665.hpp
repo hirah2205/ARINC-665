@@ -167,20 +167,20 @@ enum class FileType
   Invalid           //!< invalid value
 };
 
-//! Default Filename of the List of Files: "FILES.LUM"
-extern const std::string_view ListOfFilesName;
+//! Default Filename of the List of Files.
+constexpr std::string_view ListOfFilesName{ "FILES.LUM" };
 
-//! Default Filename of the List of Loads: "LOADS.LUM"
-extern const std::string_view ListOfLoadsName;
+//! Default Filename of the List of Loads.
+constexpr std::string_view ListOfLoadsName{ "LOADS.LUM" };
 
-//! Default Filename of the List of Batches: "BATCHES.LUM"
-extern const std::string_view ListOfBatchesName;
+//! Default Filename of the List of Batches.
+constexpr std::string_view ListOfBatchesName{ "BATCHES.LUM" };
 
-//! Default Extension of a Load Upload Header: ".LUH"
-extern const std::string_view LoadUploadHeaderExtension;
+//! Default Extension of a Load Upload Header.
+constexpr std::string_view LoadUploadHeaderExtension{ ".LUH" };
 
-//! Default Extension of a Batch File: ".LUB"
-extern const std::string_view BatchFileExtension;
+//! Default Extension of a Batch File.
+constexpr std::string_view BatchFileExtension{ ".LUB" };
 
 class PartNumber;
 
