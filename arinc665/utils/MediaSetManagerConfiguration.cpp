@@ -20,18 +20,18 @@
 namespace Arinc665::Utils {
 
 MediaSetManagerConfiguration::MediaSetManagerConfiguration(
-  const boost::property_tree::ptree &ptree )
+  const boost::property_tree::ptree &properties )
 {
-  fromProperties( ptree );
+  fromProperties( properties );
 }
 
 void MediaSetManagerConfiguration::fromProperties(
-  const boost::property_tree::ptree &ptree )
+  const boost::property_tree::ptree &properties )
 {
   BOOST_LOG_FUNCTION()
 
   // iterate over media sets
-  for ( auto &mediaSetConfig : ptree )
+  for ( auto &mediaSetConfig : properties )
   {
     auto mediaSetPath{
       mediaSetConfig.second.get< std::filesystem::path >( "path", {} ) };
@@ -62,7 +62,7 @@ void MediaSetManagerConfiguration::fromProperties(
 
 boost::property_tree::ptree MediaSetManagerConfiguration::toProperties() const
 {
-  boost::property_tree::ptree ptree{};
+  boost::property_tree::ptree properties{};
 
   for ( const auto &mediaSet : mediaSets )
   {
@@ -84,10 +84,10 @@ boost::property_tree::ptree MediaSetManagerConfiguration::toProperties() const
 
     mediaSetConfig.add_child( "media", mediaConfig );
 
-    ptree.add_child( "media_set", mediaSetConfig );
+    properties.add_child( "media_set", mediaSetConfig );
   }
 
-  return ptree;
+  return properties;
 }
 
 }

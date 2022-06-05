@@ -41,19 +41,19 @@ class ARINC665_EXPORT MediaSetManagerConfiguration
     /**
      * @brief Loads the configuration via a boost::property_tree::ptree.
      *
-     * @param[in] ptree
+     * @param[in] properties
      *   Stored configuration.
      **/
     explicit MediaSetManagerConfiguration(
-      const boost::property_tree::ptree &ptree );
+      const boost::property_tree::ptree &properties );
 
     /**
      * @brief Loads the media set configuration form the given property tree.
      *
-     * @param[in] ptree
-     *   The ptree to read the config from
+     * @param[in] properties
+     *   Stored Media Set Manager Configuration.
      **/
-    void fromProperties( const boost::property_tree::ptree &ptree );
+    void fromProperties( const boost::property_tree::ptree &properties );
 
     /**
      * @brief Converts the configuration values to a
