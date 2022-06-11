@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author @todo Add author
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief @todo Add brief description
+ * @brief Declaration of Class Arinc665::Utils::JsonMediaSetManagerImpl.
  **/
 
 #ifndef ARINC665_UTILS_IMPLEMENTATION_JSONMEDIASETMANAGERIMPL_HPP

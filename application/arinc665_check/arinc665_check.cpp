@@ -62,16 +62,6 @@ static void printInformation( std::string_view information );
 //! Media Directories
 static std::vector< std::filesystem::path> mediaDirectories;
 
-
-/**
- * tasks:
- * # check integrity of media set
- * # check integrity of all files
- * # check integrity of all loads
- * # check integrity of all batches
- *
- * # verbose options print file-contents
- **/
 int main( int argc, char * argv[] )
 {
   boost::program_options::options_description optionsDescription(

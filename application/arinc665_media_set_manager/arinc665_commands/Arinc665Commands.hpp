@@ -16,7 +16,7 @@
 #include <commands/Commands.hpp>
 
 /**
- * @brief ARINC 665 Commands.
+ * @brief ARINC 665 %Commands.
  *
  * Commands, which provides ARINC 665 Media Set Manager functionality.
  **/
