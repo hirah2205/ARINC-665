@@ -20,7 +20,8 @@
 #include <helper/Logger.hpp>
 
 #include <boost/exception/all.hpp>
-#include <boost/format.hpp>
+
+#include <fmt/format.h>
 
 #include <iostream>
 #include <fstream>
@@ -88,13 +89,13 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
     {
       mediaPaths.emplace(
         medium.first,
-        ( boost::format( "MEDIUM_%03u" ) % (unsigned int)medium.first ).str() );
+        fmt::format( "MEDIUM_{:03d}", (unsigned int)medium.first ) );
     }
     Arinc665::Utils::MediaSetManagerConfiguration::MediaSetPaths mediaSetPaths{
       std::make_pair( mediaSet->partNumber(), std::move( mediaPaths ) ) };
 
     if ( std::filesystem::exists(
-           mediaSetManagerDirectory / mediaSetPaths.first ) )
+      mediaSetManagerDirectory / mediaSetPaths.first ) )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665::Arinc665Exception()

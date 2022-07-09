@@ -26,12 +26,12 @@
 
 #include <helper/SafeCast.hpp>
 
-#include <boost/format.hpp>
+#include <fmt/format.h>
 
 namespace Arinc665::Utils {
 
 /**
- * @brief Converts GLib string to std::string_view
+ * @brief Converts GLib string to std::string_view.
  *
  * @param[in] str
  *   GLib String.
@@ -40,6 +40,14 @@ namespace Arinc665::Utils {
  **/
 static std::string_view toStringView( const Glib::ustring &str );
 
+/**
+ * @brief Converts std::string_view to GLib string.
+ *
+ * @param[in] str
+ *   String
+ *
+ * @return GLib String.
+ **/
 static Glib::ustring toGlibString( std::string_view str );
 
 Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadFromXml(
@@ -907,7 +915,7 @@ void Arinc665XmlImpl::saveLoad(
 
   loadElement.set_attribute(
     "PartFlags",
-    ( boost::format( "0x%04X" ) % load->partFlags() ).str() );
+    fmt::format( "0x{:04X}", load->partFlags() ) );
 
   // Optional Load Type (Description + Type Value)
   if ( const auto &loadType{ load->loadType() }; loadType )
@@ -916,7 +924,7 @@ void Arinc665XmlImpl::saveLoad(
     loadElement.set_attribute( "Description", description );
     loadElement.set_attribute(
       "Type",
-      ( boost::format( "0x%04X" ) % id ).str() );
+      fmt::format( "0x{:04X}", id ) );
   }
 
   // Load Check Value

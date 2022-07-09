@@ -19,13 +19,13 @@ using namespace std::string_view_literals;
 
 namespace Arinc665 {
 
-BOOST_AUTO_TEST_SUITE( Arinc665Test)
-BOOST_AUTO_TEST_SUITE( PartNumberTest)
+BOOST_AUTO_TEST_SUITE( Arinc665Test )
+BOOST_AUTO_TEST_SUITE( PartNumberTest )
 
-//! part number test
-BOOST_AUTO_TEST_CASE( testPartNumber1)
+//! Part Number Test
+BOOST_AUTO_TEST_CASE( testPartNumber1 )
 {
-  PartNumber pn{ "EBE", "54972000"};
+  PartNumber pn{ "EBE", "54972000" };
 
   BOOST_CHECK( pn.manufacturerCode()  == "EBE");
   BOOST_CHECK( pn.productIdentifier() == "54972000");
@@ -53,15 +53,15 @@ BOOST_AUTO_TEST_CASE( testPartNumber1)
 
 }
 
-//! part number test
-BOOST_AUTO_TEST_CASE( testPartNumber2)
+//! Part Number Test
+BOOST_AUTO_TEST_CASE( testPartNumber2 )
 {
-  PartNumber pn{ "EBE4F54972000"};
+  PartNumber pn{ "EBE4F54972000" };
 
-  BOOST_CHECK( pn.manufacturerCode() == "EBE");
-  BOOST_CHECK( pn.productIdentifier() == "54972000");
+  BOOST_CHECK( pn.manufacturerCode() == "EBE" );
+  BOOST_CHECK( pn.productIdentifier() == "54972000" );
 
-  BOOST_CHECK( pn.partNumber() == "EBE4F54972000");
+  BOOST_CHECK( pn.partNumber() == "EBE4F54972000" );
 
   BOOST_CHECK_THROW( (PartNumber{ ""}), Arinc665Exception);
   BOOST_CHECK_THROW( (PartNumber{ "0"}), Arinc665Exception);

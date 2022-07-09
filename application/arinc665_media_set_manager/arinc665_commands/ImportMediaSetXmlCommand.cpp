@@ -25,7 +25,8 @@
 #include <helper/Logger.hpp>
 
 #include <boost/exception/all.hpp>
-#include <boost/format.hpp>
+
+#include <fmt/format.h>
 
 #include <iostream>
 #include <fstream>
@@ -130,7 +131,7 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
     {
       mediaPaths.emplace(
         medium.first,
-        ( boost::format( "MEDIUM_%03u" ) % (unsigned int)medium.first ).str() );
+        fmt::format( "MEDIUM_{:03d}", (unsigned int)medium.first ) );
     }
     mediaSetPaths = std::make_pair(
       std::get< 0 >( loadXmlResult )->partNumber(),

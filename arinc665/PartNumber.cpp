@@ -12,7 +12,7 @@
 
 #include "PartNumber.hpp"
 
-#include <boost/format.hpp>
+#include <fmt/format.h>
 
 namespace Arinc665 {
 
@@ -96,13 +96,12 @@ std::string PartNumber::checkCode() const
     checkCode ^= static_cast< uint8_t >( character );
   }
 
-  return (boost::format( "%02X") % (unsigned int) checkCode).str();
+  return fmt::format( "{:02X}", (unsigned int) checkCode );
 }
 
 std::string PartNumber::partNumber() const
 {
-  return manufacturerCodeV + checkCode()
-    + productIdentifierV;
+  return manufacturerCodeV + checkCode() + productIdentifierV;
 }
 
 void PartNumber::checkManufacturerCode( std::string_view manufacturerCode ) const

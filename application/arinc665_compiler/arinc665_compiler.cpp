@@ -37,7 +37,8 @@
 
 #include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
-#include <boost/format.hpp>
+
+#include <fmt/format.h>
 
 #include <fstream>
 #include <iostream>
@@ -69,7 +70,7 @@ static std::filesystem::path mediumPath(
   uint8_t mediumNumber );
 
 /**
- * @brief Creates the directory for the given medium.
+ * @brief Creates the Directory for the given Medium.
  *
  * @param[in] medium
  *   Medium to Create.
@@ -79,7 +80,7 @@ static void createMedium(
   const Arinc665::Media::ConstMediumPtr &medium );
 
 /**
- * @brief Creates the directory for the given directory.
+ * @brief Creates the given Directory.
  *
  * @param[in] directory
  *   Directory to Create.
@@ -340,8 +341,7 @@ static std::filesystem::path mediumPath(
   const std::filesystem::path &base,
   const uint8_t mediumNumber )
 {
-  return base
-    / (boost::format("MEDIUM_%03u" ) % (unsigned int)mediumNumber).str();
+  return base / fmt::format( "MEDIUM_{:03d}", (unsigned int)mediumNumber );
 }
 
 static void createMedium(

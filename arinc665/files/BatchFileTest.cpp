@@ -31,10 +31,10 @@ BOOST_AUTO_TEST_CASE( constructor1 )
 
   BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2 );
 
-  BOOST_CHECK( file.partNumber().empty());
-  BOOST_CHECK( file.comment().empty());
+  BOOST_CHECK( file.partNumber().empty() );
+  BOOST_CHECK( file.comment().empty() );
 
-  BOOST_CHECK( file.targetsHardware().empty());
+  BOOST_CHECK( file.targetsHardware().empty() );
 }
 
 //! Constructor Test - Raw Decoding
@@ -97,9 +97,9 @@ BOOST_AUTO_TEST_CASE( constructor2 )
 
   // std::cout << std::hex << BatchFile::calculateChecksum( rawFile)<<"\n";
 
-  BatchFile file{ rawFile};
+  BatchFile file{ rawFile };
 
-  BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2);
+  BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2 );
 
   BOOST_CHECK( file.partNumber() == "PN123" );
   BOOST_CHECK( file.comment() == "COMMENT" );
@@ -112,11 +112,11 @@ BOOST_AUTO_TEST_CASE( constructor2 )
   BOOST_CHECK( loads.begin()->headerFilename == "FN_001" );
   BOOST_CHECK( loads.begin()->partNumber == "PN_001" );
 
-  const auto raw2{ static_cast< RawFile>( file)};
+  const auto raw2{ static_cast< RawFile>( file ) };
 
-  // std::cout << Dump( &(*(raw2.begin())), raw2.size());
+  // std::cout << Dump( &(*(raw2.begin())), raw2.size() );
 
-  BOOST_CHECK( rawFile == raw2);
+  BOOST_CHECK( rawFile == raw2 );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

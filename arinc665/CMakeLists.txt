@@ -15,6 +15,8 @@ pkg_search_module(
   IMPORTED_TARGET
   "libxml++-2.6" )
 
+find_package( fmt REQUIRED )
+
 # prepare Version.cpp
 configure_file( Version.cpp.in Version.cpp )
 
@@ -71,6 +73,7 @@ target_link_libraries(
     helper
     arinc645
     Boost::boost
+    fmt::fmt
 
   PRIVATE
     PkgConfig::Libxmlpp )

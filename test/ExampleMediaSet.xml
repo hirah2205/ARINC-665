@@ -41,7 +41,7 @@
 
       <UserDefinedData>TEST</UserDefinedData>
     </Load>
-    <Load NameRef="Load2.LUH" PartNumber="AABBDD" >
+    <Load NameRef="Load2.LUH" PartNumber="AABBDD" PartFlags="0x000D" >
       <TargetHardware ThwId="ABCDEF" />
       <TargetHardware ThwId="GHIJKL" />
 

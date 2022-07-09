@@ -73,10 +73,10 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
     static constexpr std::ptrdiff_t BatchFileHeaderSizeV2{ 16 };
 
     /**
-     * @brief Creates an empty batch file.
+     * @brief Creates an empty Batch File.
      *
      * @param[in] version
-     *   ARINC 665 version.
+     *   ARINC 665 Version.
      **/
     explicit BatchFile( SupportedArinc665Version version );
 

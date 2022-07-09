@@ -45,7 +45,6 @@ enable_testing()
 
 include( GNUInstallDirs )
 
-# get dependencies
 include( FetchContent )
 
 FetchContent_Declare(
@@ -74,8 +73,6 @@ if( IS_DIRECTORY ${CMAKE_SOURCE_DIR}/helper )
   set( FETCHCONTENT_SOURCE_DIR_HELPER ${CMAKE_SOURCE_DIR}/helper )
 endif()
 
-FetchContent_MakeAvailable( helper )
-
 
 FetchContent_Declare(
   arinc645
@@ -85,8 +82,6 @@ FetchContent_Declare(
 if( IS_DIRECTORY ${CMAKE_SOURCE_DIR}/arinc645 )
   set( FETCHCONTENT_SOURCE_DIR_ARINC645 ${CMAKE_SOURCE_DIR}/arinc645 )
 endif()
-
-FetchContent_MakeAvailable( arinc645 )
 
 
 FetchContent_Declare(
@@ -98,7 +93,7 @@ if( IS_DIRECTORY ${CMAKE_SOURCE_DIR}/command_shell )
   set( FETCHCONTENT_SOURCE_DIR_COMMAND_SHELL ${CMAKE_SOURCE_DIR}/command_shell )
 endif()
 
-FetchContent_MakeAvailable( command_shell )
+FetchContent_MakeAvailable( helper arinc645 command_shell )
 
 
 add_subdirectory( arinc665 )
