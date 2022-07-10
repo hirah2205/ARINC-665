@@ -88,12 +88,8 @@ void MediaSetManagerController::start(
 {
   mediaSetManagerV = std::move( mediaSetManager );
 
-  Arinc665::Media::ConstMediaSets mediaSets{};
-  for ( auto mediaSet : mediaSetManagerV->manager()->mediaSets() )
-  {
-    mediaSets.emplace_back( std::move( mediaSet.second ) );
-  }
-  mediaSetsModelV->mediaSets( std::move( mediaSets ) );
+  reloadMediaSetModel();
+
   mediaSetManagerDialogV->open();
 }
 
@@ -101,9 +97,23 @@ void MediaSetManagerController::directorySelected()
 {
   auto directory{ selectMediaSetDirectoryDialogV->selectedFiles().first() };
 
-  emit start( Arinc665::Utils::JsonMediaSetManager::load(
+  mediaSetManagerV = Arinc665::Utils::JsonMediaSetManager::load(
     directory.toStdString(),
-    true )  );
+    true );
+
+  reloadMediaSetModel();
+
+  mediaSetManagerDialogV->open();
+}
+
+void MediaSetManagerController::reloadMediaSetModel()
+{
+  Arinc665::Media::ConstMediaSets mediaSets{};
+  for ( auto mediaSet : mediaSetManagerV->manager()->mediaSets() )
+  {
+    mediaSets.emplace_back( std::move( mediaSet.second ) );
+  }
+  mediaSetsModelV->mediaSets( std::move( mediaSets ) );
 }
 
 void MediaSetManagerController::viewMediaSet( const QModelIndex &index )
@@ -135,6 +145,14 @@ void MediaSetManagerController::importMediaSetXml()
 {
   auto controller{ new ImportMediaSetXmlController{ mediaSetManagerDialogV.get() } };
 
+  // connect to reload media set model slot
+  connect(
+    controller,
+    &ImportMediaSetXmlController::finished,
+    this,
+    &MediaSetManagerController::reloadMediaSetModel );
+
+  // connect to clean up slot
   connect(
     controller,
     &ImportMediaSetXmlController::finished,

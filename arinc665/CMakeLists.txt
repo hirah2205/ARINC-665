@@ -4,7 +4,7 @@
 #
 # Thomas Vogt, thomas@thomas-vogt.de
 
-cmake_minimum_required( VERSION 3.23 )
+cmake_minimum_required( VERSION 3.21 )
 
 find_package( Boost REQUIRED )
 find_package( PkgConfig REQUIRED )
@@ -70,13 +70,13 @@ target_link_libraries(
   arinc665
 
   PUBLIC
+    Boost::boost
     helper
     arinc645
-    Boost::boost
-  PRIVATE
-    PkgConfig::Libxmlpp
-    fmt::fmt )
 
+  PRIVATE
+    fmt::fmt
+    PkgConfig::Libxmlpp )
 
 include( GenerateExportHeader )
 generate_export_header( arinc665 )
