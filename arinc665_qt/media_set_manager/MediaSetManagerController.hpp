@@ -28,6 +28,13 @@ namespace Arinc665Qt::MediaSetManager {
 /**
  * @brief %Media Set Manager Controller
  *
+ * The Media Set Manager Controller provides an dialog listing the Media Sets
+ * within the Media Set manager and provides operations onto the Media Sets:
+ * - View Media Set,
+ * - Importing Media Sets,
+ * - Import Media Set XML Configuration, and
+ * - Removing Media Sets.
+ *
  * This controller supports operation by using a predefined media set manager
  * by calling @ref start(Arinc665::Utils::JsonMediaSetManagerPtr).
  * When calling @ref start(), the user is asked to select a media set
@@ -51,7 +58,10 @@ class ARINC665_QT_EXPORT MediaSetManagerController : public QObject
 
   public slots:
     /**
-     * @brief Querries for %Media Set Configuration,
+     * @brief Querries for %Media Set Configuration.
+     *
+     * Ask the user for the location of the Media Set Manager Configuration and
+     * loads them.
      **/
     void start();
 
@@ -70,8 +80,16 @@ class ARINC665_QT_EXPORT MediaSetManagerController : public QObject
   private slots:
     /**
      * @brief Slot called, when user has selected %Media Set Configuration.
+     *
+     * @sa start(Arinc665::Utils::JsonMediaSetManagerPtr)
      **/
     void directorySelected();
+
+    /**
+     * @brief Reloads the Media Sets from the Media Set manager and updates the
+     *   Media Sets Model.
+     **/
+    void reloadMediaSetModel();
 
     /**
      * @brief View %Media Set Button

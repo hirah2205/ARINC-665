@@ -42,7 +42,8 @@ class ARINC665_EXPORT MediaSetManager
 {
   public:
     //! Media Sets Map ( Part Number -> Media Set)
-    using MediaSets = std::map< std::string, Media::ConstMediaSetPtr, std::less<> >;
+    using MediaSets =
+      std::map< std::string, Media::ConstMediaSetPtr, std::less<> >;
 
     //! Handler which returns the path to the given medium number
     using MediumPathHandler =

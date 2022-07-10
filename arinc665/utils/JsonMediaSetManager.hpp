@@ -20,7 +20,12 @@
 
 namespace Arinc665::Utils {
 
-//! Media Set Manager JSON Helper
+/**
+ * @brief Media Set Manager JSON Helper
+ *
+ * This manager holds the media st manager configuration within a JSON file
+ * within a separate directory.
+ **/
 class ARINC665_EXPORT JsonMediaSetManager
 {
   public:
@@ -43,7 +48,7 @@ class ARINC665_EXPORT JsonMediaSetManager
      * @param[in] directory
      *   Directory for Media Set Manger.
      * @param[in] checkFileIntegrity
-     *   If set to true additional file integrity steps are performed
+     *   If set to true additional file integrity checks are performed
      *
      * @return Media Set Manager
      **/
@@ -57,7 +62,7 @@ class ARINC665_EXPORT JsonMediaSetManager
      * @param[in] directory
      *   Directory for Media Set Manger.
      * @param[in] checkFileIntegrity
-     *   If set to true additional file integrity steps are performed
+     *   If set to true additional file integrity checks are performed
      *
      * @return JSON Media Set Manager Instance.
      **/
