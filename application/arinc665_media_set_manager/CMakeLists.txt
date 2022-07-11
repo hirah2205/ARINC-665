@@ -6,6 +6,8 @@
 
 cmake_minimum_required( VERSION 3.23 )
 
+find_package( fmt REQUIRED )
+
 add_subdirectory( arinc665_commands )
 
 add_executable( arinc665_media_set_manager )
@@ -22,7 +24,8 @@ target_link_libraries(
   PRIVATE
     arinc665_commands
     commands
-    helper )
+    helper
+    fmt::fmt )
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}

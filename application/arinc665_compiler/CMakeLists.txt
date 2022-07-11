@@ -6,11 +6,13 @@
 
 cmake_minimum_required( VERSION 3.23 )
 
-add_executable( arinc665_compiler)
+find_package( fmt REQUIRED )
 
-target_sources( arinc665_compiler PRIVATE arinc665_compiler.cpp)
+add_executable( arinc665_compiler )
 
-target_link_libraries( arinc665_compiler PRIVATE arinc665 )
+target_sources( arinc665_compiler PRIVATE arinc665_compiler.cpp )
+
+target_link_libraries( arinc665_compiler PRIVATE arinc665 fmt::fmt )
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}
