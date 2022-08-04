@@ -107,7 +107,7 @@ std::string PartNumber::partNumber() const
 void PartNumber::checkManufacturerCode( std::string_view manufacturerCode ) const
 {
   // check string length
-  if (manufacturerCode.size()!= ManufacturerCodeLength )
+  if ( manufacturerCode.size() != ManufacturerCodeLength )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "length of manufacturer code string invalid" } );
@@ -129,13 +129,13 @@ void PartNumber::checkCheckCode( std::string_view checkCode ) const
   // check length of string
   if ( checkCode.size() != CheckCodeLength )
   {
-    BOOST_THROW_EXCEPTION(Arinc665Exception()
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "length of check code string invalid" } );
   }
 
   // decode string to integer
   [[maybe_unused]] unsigned long parsedCheckCode{
-    std::stoul( std::string{ checkCode}, 0, 16 ) }; //! @todo check implementation of explicit cast
+    std::stoul( std::string{ checkCode }, nullptr, 16 ) }; //! @todo check implementation of explicit cast
 
   assert( parsedCheckCode <= 255U );
 }
