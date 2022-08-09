@@ -42,11 +42,9 @@ target_compile_options(
 
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>
-    $<$<CXX_COMPILER_ID:GNU>:-Werror>
 
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
-    $<$<CXX_COMPILER_ID:Clang>:-Wextra>
-    $<$<CXX_COMPILER_ID:Clang>:-Werror> )
+    $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
 
 target_link_libraries(
   arinc665_commands
