@@ -72,8 +72,6 @@ class Arinc665XmlImpl final : public Arinc665Xml
     /**
      * @brief Loads the media set section.
      *
-     * @todo Add Loads, and Batches handling.
-     *
      * @param[in] mediaSetElement
      *   Media Set to Load.
      *
@@ -82,16 +80,17 @@ class Arinc665XmlImpl final : public Arinc665Xml
     LoadXmlResult loadMediaSet( const xmlpp::Element &mediaSetElement );
 
     /**
-     * @brief Saves the media set section.
+     * @brief Saves the Media Set section.
      *
-     * @todo Add Loads, and Batches handling.
-     *
-     * @param mediaSet
-     * @param filePathMapping
-     * @param mediaSetNode
+     * @param[in] mediaSet
+     *   Media Set to store.
+     * @param[in] filePathMapping
+     *   File path mapping.
+     * @param[in,out] mediaSetNode
+     *   XML node where to store media set
      **/
     void saveMediaSet(
-      const Media::ConstMediaSetPtr &mediaSet,
+      const Media::MediaSet &mediaSet,
       const FilePathMapping &filePathMapping,
       xmlpp::Element &mediaSetNode );
 
@@ -101,40 +100,44 @@ class Arinc665XmlImpl final : public Arinc665Xml
      * Loads all child elements (Files, Directories) for the given medium, or
      * directory.
      *
-     * @param[in,out] current
-     *   Current Medium, or Directory
-     * @param[in,out] filePathMapping
-     *   File path mapping
      * @param[in] currentNode
      *   XML node representing the directory.
+     * @param[in,out] current
+     *   Current Medium, or Directory.
+     *   Files and directories will be added to this.
+     * @param[in,out] filePathMapping
+     *   File path mappings.
      *
      * @throw Arinc665::Arinc665Exception
      *   When Name Attribute is missing or empty.
      **/
     void loadEntries(
-      const Media::ContainerEntityPtr &current,
-      FilePathMapping &filePathMapping,
-      const xmlpp::Node &currentNode );
+      const xmlpp::Node &currentNode,
+      Media::ContainerEntity &current,
+      FilePathMapping &filePathMapping );
 
     /**
      * @brief Saves file entries.
      *
-     * @param current
-     * @param filePathMapping
-     * @param currentNode
+     * @param[in] current
+     *   Current medium or directory.
+     * @param[in] filePathMapping
+     *   File path mapping.
+     * @param[in,out] currentNode
+     *   XML Node, where to add content.
      */
     void saveEntries(
-      const Media::ConstContainerEntityPtr &current,
+      const Media::ContainerEntity &current,
       const FilePathMapping &filePathMapping,
       xmlpp::Node &currentNode );
 
     /**
-     * @brief Loads the given load-node.
+     * @brief Loads the given Load-node.
      *
-     * @param[in,out] mediaSet
-     *   The media set where the load is stored into.
      * @param[in] loadElement
-     *   The XML-node, where the data is loaded from.
+     *   XML-node, where the data is loaded from.
+     * @param[in,out] mediaSet
+     *   Media Set where the load is stored into.
      *
      * @throw Arinc665::Arinc665Exception
      *   When NameRef attribute is missing or empty.
@@ -144,28 +147,28 @@ class Arinc665XmlImpl final : public Arinc665Xml
      *   When PartNumber attribute is missing or empty.
      **/
     void loadLoad(
-     const  Media::MediaSetPtr &mediaSet,
-      const xmlpp::Element &loadElement );
+      const xmlpp::Element &loadElement,
+      Media::MediaSet &mediaSet );
 
     /**
      * @brief Stores the given load-node.
      *
      * @param[in] load
-     *   The load to store.
+     *   Load to store.
      * @param[in,out] loadElement
-     *   The XML-node where the data is stored to.
+     *   XML-node where the data is stored to.
      **/
     void saveLoad(
-      const Media::ConstLoadPtr &load,
+      const Media::Load &load,
       xmlpp::Element &loadElement );
 
     /**
      * @brief Loads the given batch-node.
      *
-     * @param[in,out] mediaSet
-     *   The media set where the load is stored into.
      * @param[in] batchElement
-     *   The XML-node, where the data is loaded from.
+     *   XML-node, where the data is loaded from.
+     * @param[in,out] mediaSet
+     *   Media set where the load is stored into.
      *
      * @throw Arinc665::Arinc665Exception
      *   When @p Batch element cannot be parsed i.e.:
@@ -177,19 +180,19 @@ class Arinc665XmlImpl final : public Arinc665Xml
      *     - When @p NameRef attribute does not reference load.
      **/
     void loadBatch(
-      const Media::MediaSetPtr &mediaSet,
-      const xmlpp::Element &batchElement );
+      const xmlpp::Element &batchElement,
+      Media::MediaSet &mediaSet );
 
     /**
      * @brief Stores the given batch-node.
      *
      * @param[in] batch
-     *   The batch to store.
+     *   Batch to store.
      * @param[in,out] batchElement
-     *   The XML-node where the data is stored to.
+     *   XML-node where the data is stored to.
      **/
     void saveBatch(
-      const Media::ConstBatchPtr &batch,
+      const Media::Batch &batch,
       xmlpp::Element &batchElement );
 };
 

@@ -27,10 +27,10 @@ namespace Arinc665::Utils {
  * Handles the representation of Media Sets as XML file.
  *
  * The ARINC 665 XML is an XML-Schema, which can be used to describe ARINC 665
- * Media Sets and loads in a human readable manner.
+ * Media Sets and loads in a human-readable manner.
  *
  * Tools can use this representation to "decompile" binary media sets to this
- * representation and "compile" the XML representation to an binary media set.
+ * representation and "compile" the XML representation to a binary media set.
  **/
 class ARINC665_EXPORT Arinc665Xml
 {
@@ -44,7 +44,7 @@ class ARINC665_EXPORT Arinc665Xml
     /**
      * @brief Creates an ARINC 665 XML handler instance.
      *
-     * @return Created ARINC 665 XML Handler Instance.
+     * @return Created ARINC 665 XML handler instance.
      **/
     static Arinc665XmlPtr instance();
 
@@ -68,8 +68,8 @@ class ARINC665_EXPORT Arinc665Xml
      * @param[in] mediaSet
      *   Media Set Information.
      * @param[in] filePathMapping
-     *   File Path Mapping
-     *   (used to insert the correct source path attribute.)
+     *   File Path Mapping.
+     *   Used to insert the correct source path attribute.
      * @param[in] xmlFile
      *   ARINC 665 XML file.
      **/
