@@ -289,7 +289,10 @@
 
   <simpleType name="CheckValueType" final="restriction" >
     <annotation><documentation>
-      Valid Check Values
+      Valid Check Values.
+      There is a difference between 'NotUsed' and omitted attribute.
+      If no check value is given, the parent setting is used.
+      With this handling a check value can be explicitly disabled again.
     </documentation></annotation>
     <restriction base="string" >
       <enumeration value="NotUsed" />

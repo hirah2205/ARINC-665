@@ -87,7 +87,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadFromXml(
 
     return loadMediaSet( *mediaSetElement );
   }
-  catch ( xmlpp::exception &e )
+  catch ( const xmlpp::exception &e )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ e.what() }
@@ -100,7 +100,7 @@ void Arinc665XmlImpl::saveToXml(
   const FilePathMapping &filePathMapping,
   const std::filesystem::path &xmlFile )
 {
-  BOOST_LOG_FUNCTION();
+  BOOST_LOG_FUNCTION()
 
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
     << "Save Media Set " << mediaSet->partNumber() << " to " << xmlFile;
@@ -114,7 +114,7 @@ void Arinc665XmlImpl::saveToXml(
 
     xmlDoc.write_to_file_formatted( xmlFile.string() );
   }
-  catch ( xmlpp::exception &e )
+  catch ( const xmlpp::exception &e )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ e.what() }
@@ -220,10 +220,10 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
     mediaSet->filesCheckValueType( checkValue );
   }
 
-  const auto filesUserDefinedDataNode = dynamic_cast< const xmlpp::Element*>(
-    mediaSetElement.get_first_child( "FilesUserDefinedData" ) );
-
-  if ( nullptr != filesUserDefinedDataNode )
+  if (
+    const auto filesUserDefinedDataNode{ dynamic_cast< const xmlpp::Element*>(
+      mediaSetElement.get_first_child( "FilesUserDefinedData" ) ) };
+    nullptr != filesUserDefinedDataNode )
   {
     const auto userDefinedData{
       filesUserDefinedDataNode->get_child_text()->get_content() };
@@ -233,9 +233,10 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
         userDefinedData.end() } );
   }
 
-  const auto loadsUserDefinedDataNode = dynamic_cast< const xmlpp::Element *>(
-    mediaSetElement.get_first_child( "LoadsUserDefinedData" ) );
-  if ( nullptr != loadsUserDefinedDataNode )
+  if (
+    const auto loadsUserDefinedDataNode{ dynamic_cast< const xmlpp::Element *>(
+      mediaSetElement.get_first_child( "LoadsUserDefinedData" ) ) };
+    nullptr != loadsUserDefinedDataNode )
   {
     const auto userDefinedData{
       loadsUserDefinedDataNode->get_child_text()->get_content() };
@@ -245,9 +246,10 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
         userDefinedData.end() } );
   }
 
-  const auto batchesUserDefinedDataNode = dynamic_cast< const xmlpp::Element*>(
-      mediaSetElement.get_first_child( "BatchesUserDefinedData") );
-  if ( nullptr != batchesUserDefinedDataNode )
+  if (
+    const auto batchesUserDefinedDataNode{ dynamic_cast< const xmlpp::Element*>(
+      mediaSetElement.get_first_child( "BatchesUserDefinedData") ) };
+    nullptr != batchesUserDefinedDataNode )
   {
     const auto userDefinedData{
       batchesUserDefinedDataNode->get_child_text()->get_content() };
@@ -304,9 +306,9 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
   }
 
   // handle Batches (optional)
-  auto batchesNode{ mediaSetElement.get_first_child( "Batches" ) };
-
-  if ( nullptr != batchesNode )
+  if (
+    auto batchesNode{ mediaSetElement.get_first_child( "Batches" ) };
+    nullptr != batchesNode )
   {
     // iterate over loads
     for ( auto batchNode : batchesNode->get_children( "Batch" ) )
@@ -747,9 +749,10 @@ void Arinc665XmlImpl::loadLoad(
 
     //  Check Value
     std::optional< Arinc645::CheckValueType > checkValueType{};
-    const auto checkValueAttr(
-      dataFileElement->get_attribute_value( "CheckValue" ) );
-    if ( !checkValueAttr.empty() )
+    if (
+      const auto checkValueAttr{
+        dataFileElement->get_attribute_value( "CheckValue" ) };
+      !checkValueAttr.empty() )
     {
       auto checkValue{
         Arinc645::CheckValueTypeDescription::instance().enumeration(
@@ -809,9 +812,11 @@ void Arinc665XmlImpl::loadLoad(
 
     //  Check Value
     std::optional< Arinc645::CheckValueType > checkValueType{};
-    const auto checkValueAttr(
-      supportFileElement->get_attribute_value( "CheckValue" ) );
-    if ( !checkValueAttr.empty() )
+
+    if (
+      const auto checkValueAttr{
+        supportFileElement->get_attribute_value( "CheckValue" ) };
+      !checkValueAttr.empty() )
     {
       auto checkValue{
         Arinc645::CheckValueTypeDescription::instance().enumeration(
@@ -839,10 +844,10 @@ void Arinc665XmlImpl::loadLoad(
     load->supportFile( file, filePartNumber, std::move( checkValueType ) );
   }
 
-  const auto userDefinedDataElement{ dynamic_cast< const xmlpp::Element*>(
-    loadElement.get_first_child( "UserDefinedData" ) ) };
-
-  if ( nullptr != userDefinedDataElement )
+  if (
+    const auto userDefinedDataElement{ dynamic_cast< const xmlpp::Element*>(
+      loadElement.get_first_child( "UserDefinedData" ) ) };
+    nullptr != userDefinedDataElement )
   {
     const auto userDefinedData{
       userDefinedDataElement->get_child_text()->get_content() };
