@@ -33,25 +33,25 @@ class ARINC665_EXPORT MediaSetExporter
 {
   public:
     /**
-     * @brief Handler, which is called to generate the given medium.
+     * @brief Handler, which is called to generate the given Medium.
      *
      * @param[in] medium
      *   Medium to Create.
      **/
     using CreateMediumHandler =
-      std::function< void( const Media::ConstMediumPtr& medium )>;
+      std::function< void( const Media::ConstMediumPtr& medium ) >;
 
     /**
-     * @brief Handler, which is called to generate the given directory.
+     * @brief Handler, which is called to generate the given Directory.
      *
      * @param[in] directory
      *   Directory to create.
      **/
     using CreateDirectoryHandler =
-      std::function< void( const Media::ConstDirectoryPtr& directory )>;
+      std::function< void( const Media::ConstDirectoryPtr& directory ) >;
 
     /**
-     * @brief Handler, which checks the existence of a file within the source.
+     * @brief Handler, which checks the existence of a file within the Source.
      *
      * This callback is used, to check if a file exist on sources.
      * This is used for Load Header and Batch Files.
@@ -62,15 +62,21 @@ class ARINC665_EXPORT MediaSetExporter
      * @return if the File exist on sources.
      **/
     using CheckFileExistenceHandler =
-      std::function< bool( const Media::ConstFilePtr& file )>;
+      std::function< bool( const Media::ConstFilePtr& file ) >;
 
-    //! Handler, which is called to generate the given file at the requested position.
+    /**
+     * @brief Handler, which is called to generate the given File from Source.
+     *
+     * How the file is generated is not known to the exporter itself.
+     *
+     * @param[in] file
+     *   File to be created.
+     **/
     using CreateFileHandler =
       std::function< void( const Media::ConstFilePtr& file )>;
 
     /**
-     * @brief Handler, which is called to write the given file at the requested
-     *   position.
+     * @brief Handler, which is called to write the given File on the Target.
      *
      * This handler is also used to write files, which are not represented by
      * Arinc665::Media classes.
@@ -90,11 +96,12 @@ class ARINC665_EXPORT MediaSetExporter
         const Files::ConstRawFileSpan &file )>;
 
     /**
-     * @brief Handler, which is called to read a file form a medium.
+     * @brief Handler, which is called to read a File from the Target.
      *
      * This handler is also used to read files, which are not represented by
      * Arinc665::Media classes.
      * Therefore a basic representation is used.
+     * This operation is used for checksum and check value calculation.
      *
      * @param[in] mediumNumber
      *   Medium Number
