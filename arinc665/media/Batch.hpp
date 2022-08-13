@@ -24,6 +24,11 @@ namespace Arinc665::Media {
 
 /**
  * @brief %Batch of Loads.
+ *
+ * A Batch is used to declare loads for multiple Target Hardware Items at a
+ * time.
+ * For each Target Hardware (identified by its Target Hardware ID - THW ID) a
+ * list of loads is defined.
  **/
 class ARINC665_EXPORT Batch : public File
 {
@@ -90,10 +95,10 @@ class ARINC665_EXPORT Batch : public File
      * @param[in] comment
      *   Comment, which describes the batch.
      **/
-    void comment( std::string_view comment);
+    void comment( std::string_view comment );
 
     //! @copydoc comment(std::string_view)
-    void comment( std::string &&comment);
+    void comment( std::string &&comment );
 
     /** @} **/
 

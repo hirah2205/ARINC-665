@@ -195,7 +195,7 @@ class ARINC665_EXPORT Load : public File
      * @brief Returns the data files.
      *
      * @param[in] effective
-     *   If set to true the effective check value type is returned.
+     *   If set to true the effective check value type is returned for each file.
      *
      * @return Data files.
      **/
@@ -239,7 +239,7 @@ class ARINC665_EXPORT Load : public File
      * @brief Returns the support files.
      *
      * @param[in] effective
-     *   If set to true the effective check value type is returned.
+     *   If set to true the effective check value type is returned for each file.
      *
      * @return Support Files.
      **/
@@ -421,15 +421,14 @@ class ARINC665_EXPORT Load : public File
     /** @} **/
 
   private:
-    //! Weak %Load %File.
+    //! Weak %Load %File ( file, check value type ).
     using WeakLoadFile =
       std::tuple< FilePtr::weak_type, std::string, std::optional< Arinc645::CheckValueType > >;
     //! Weak %Load %File List.
-    using WeakLoadFiles =
-      std::list< WeakLoadFile >;
+    using WeakLoadFiles = std::list< WeakLoadFile >;
 
     //! Part Flags
-    uint16_t partFlagsV;
+    uint16_t partFlagsV{};
     //! Part Number
     std::string partNumberV;
     //! Target Hardware ID/ Positions

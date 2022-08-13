@@ -20,14 +20,12 @@
 namespace Arinc665::Media {
 
 Load::Load( const ContainerEntityPtr& parent, std::string_view name ) :
-  File{ parent, name },
-  partFlagsV{}
+  File{ parent, name }
 {
 }
 
 Load::Load( const ContainerEntityPtr& parent, std::string &&name ) :
-  File{ parent, std::move( name ) },
-  partFlagsV{}
+  File{ parent, std::move( name ) }
 {
 }
 
@@ -87,9 +85,9 @@ Load::TargetHardwareIds Load::targetHardwareIds() const
 {
   TargetHardwareIds thwIds{};
 
-  for ( const auto &item : targetHardwareIdPositionsV )
+  for ( const auto &[ thwId, positions ] : targetHardwareIdPositionsV )
   {
-    thwIds.emplace( item.first );
+    thwIds.emplace( thwId );
   }
 
   return thwIds;
@@ -127,7 +125,7 @@ ConstLoadFiles Load::dataFiles( const bool effective ) const
 {
   ConstLoadFiles files{};
 
-  for ( const auto &[filePtr, partNumber, checkValueType ] : dataFilesV )
+  for ( const auto &[ filePtr, partNumber, checkValueType  ] : dataFilesV )
   {
     if ( effective )
     {
