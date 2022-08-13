@@ -21,11 +21,6 @@
 
 namespace Arinc665::Utils {
 
-MediaSetImporterImpl::MediaSetImporterImpl():
-  checkFileIntegrityV{ true }
-{
-}
-
 MediaSetImporter& MediaSetImporterImpl::readFileHandler(
   ReadFileHandler readFileHandler )
 {
@@ -50,6 +45,7 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()()
     !loadMedium( mediumIndex );
     ++mediumIndex )
   {
+    // noting to do here
   }
 
   // create Media set

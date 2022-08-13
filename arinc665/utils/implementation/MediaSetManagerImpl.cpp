@@ -92,7 +92,7 @@ void MediaSetManagerImpl::registerMediaSet(
   if ( mediaSet( impMediaSet->partNumber() ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Media Set Already exist" } );
+      << Helper::AdditionalInfo{ "Media Set already exist" } );
   }
 
   // add to media sets
@@ -110,7 +110,7 @@ MediaSetManagerImpl::deregisterMediaSet( std::string_view partNumber )
   if ( foundMediaSet == mediaSetsV.end() )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Media Set Not Found" } );
+      << Helper::AdditionalInfo{ "Media Set not found" } );
   }
 
   const auto mediaSetPath{ mediaSetsPaths.find( foundMediaSet->second ) };
@@ -118,7 +118,7 @@ MediaSetManagerImpl::deregisterMediaSet( std::string_view partNumber )
   if ( mediaSetPath == mediaSetsPaths.end() )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Media Set Paths Not Found" } );
+      << Helper::AdditionalInfo{ "Media Set paths not found" } );
   }
 
   // Remove Media Set from Media Sets List
@@ -130,7 +130,7 @@ MediaSetManagerImpl::deregisterMediaSet( std::string_view partNumber )
   if ( mediaSetPathConfigIt == configurationV.mediaSets.end() )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Media Set Paths Config Not Found" } );
+      << Helper::AdditionalInfo{ "Media Set paths configuration not found" } );
   }
 
   // save content of iterator (element is not available after removal from map

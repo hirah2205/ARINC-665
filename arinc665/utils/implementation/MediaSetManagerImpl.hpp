@@ -47,39 +47,41 @@ class MediaSetManagerImpl final : public MediaSetManager
       bool checkFileIntegrity );
 
     //! @copydoc MediaSetManager::configuration
-    [[nodiscard]] const MediaSetManagerConfiguration& configuration() const final;
+    [[nodiscard]] const MediaSetManagerConfiguration&
+    configuration() const override;
 
     //! @copydoc MediaSetManager::mediaSet(std::string_view) const
     [[nodiscard]] Media::ConstMediaSetPtr mediaSet(
-      std::string_view partNumber ) const final;
+      std::string_view partNumber ) const override;
 
     //! @copydoc MediaSetManager::mediaSets() const
-    [[nodiscard]] const MediaSets& mediaSets() const final;
+    [[nodiscard]] const MediaSets& mediaSets() const override;
 
     //! @copydoc MediaSetManager::registerMediaSet()
     void registerMediaSet(
       const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
-      bool checkFileIntegrity = true ) final;
+      bool checkFileIntegrity = true ) override;
 
     //! @copydoc MediaSetManager::deregisterMediaSet()
-    MediaSetManagerConfiguration::MediaSetPaths deregisterMediaSet(
-      std::string_view partNumber ) final;
+    [[nodiscard]] MediaSetManagerConfiguration::MediaSetPaths
+    deregisterMediaSet(
+      std::string_view partNumber ) override;
 
     //! @copydoc MediaSetManager::loads() const
-    [[nodiscard]] Media::ConstLoads loads() const final;
+    [[nodiscard]] Media::ConstLoads loads() const override;
 
     //! @copydoc MediaSetManager::load(std::string_view) const
     [[nodiscard]] Media::ConstLoads load(
-      std::string_view filename ) const final;
+      std::string_view filename ) const override;
 
     //! @copydoc MediaSetManager::load(std::string_view,std::string_view) const
     [[nodiscard]] Media::ConstLoadPtr load(
       std::string_view partNumber,
-      std::string_view filename ) const final;
+      std::string_view filename ) const override;
 
     //! @copydoc MediaSetManager::filePath
     [[nodiscard]] std::filesystem::path filePath(
-      Media::ConstFilePtr file ) const final;
+      Media::ConstFilePtr file ) const override;
 
   private:
     /**
@@ -104,7 +106,7 @@ class MediaSetManagerImpl final : public MediaSetManager
      *
      * @return Read File Content
      **/
-    Files::RawFile readFileHandler(
+    [[nodiscard]] Files::RawFile readFileHandler(
       const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
       uint8_t mediumNumber,
       const std::filesystem::path &path );

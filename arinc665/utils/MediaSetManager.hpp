@@ -101,6 +101,8 @@ class ARINC665_EXPORT MediaSetManager
     /**
      * @brief Registers the Media Set by the Media Set Manager.
      *
+     * Reads the Media Set and imports them to the Media Set Manager.
+     *
      * @param[in] mediaSetPaths
      *   Media Set Path Configuration
      * @param[in] checkFileIntegrity
@@ -113,6 +115,8 @@ class ARINC665_EXPORT MediaSetManager
 
     /**
      * @brief De-registers the Media Set from the Media Set Manager.
+     *
+     * The Media Set data is not deleted from the disk.
      *
      * @param[in] partNumber
      *   Part Number of Media Set

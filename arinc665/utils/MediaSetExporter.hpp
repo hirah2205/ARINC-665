@@ -73,34 +73,34 @@ class ARINC665_EXPORT MediaSetExporter
      *   File to be created.
      **/
     using CreateFileHandler =
-      std::function< void( const Media::ConstFilePtr& file )>;
+      std::function< void( const Media::ConstFilePtr& file ) >;
 
     /**
      * @brief Handler, which is called to write the given File on the Target.
      *
      * This handler is also used to write files, which are not represented by
      * Arinc665::Media classes.
-     * Therefore a basic representation is used.
+     * Therefore, a basic representation is used.
      *
      * @param[in] mediumNumber
-     *   Medium Number
+     *   Medium number
      * @param[in] path
-     *   Relative Path on Medium.
+     *   Relative path on Medium.
      * @param[in] file
-     *   File Data (binary).
+     *   File data (binary).
      **/
     using WriteFileHandler =
       std::function< void(
         uint8_t mediumNumber,
         const std::filesystem::path &path,
-        const Files::ConstRawFileSpan &file )>;
+        const Files::ConstRawFileSpan &file ) >;
 
     /**
      * @brief Handler, which is called to read a File from the Target.
      *
      * This handler is also used to read files, which are not represented by
      * Arinc665::Media classes.
-     * Therefore a basic representation is used.
+     * Therefore, a basic representation is used.
      * This operation is used for checksum and check value calculation.
      *
      * @param[in] mediumNumber

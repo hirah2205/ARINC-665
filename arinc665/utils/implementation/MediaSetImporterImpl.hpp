@@ -39,20 +39,22 @@ class MediaSetImporterImpl final : public MediaSetImporter
     /**
      * @brief Initialises the ARINC 665 Media Set Importer
      **/
-    explicit MediaSetImporterImpl();
+    explicit MediaSetImporterImpl() = default;
 
     //! @copydoc MediaSetImporter::readFileHandler()
-    MediaSetImporter& readFileHandler( ReadFileHandler readFileHandler ) final;
+    [[nodiscard]] MediaSetImporter& readFileHandler(
+      ReadFileHandler readFileHandler ) override;
 
     //! @copydoc MediaSetImporter::checkFileIntegrity()
-    MediaSetImporter& checkFileIntegrity( bool checkFileIntegrity ) final;
+    [[nodiscard]] MediaSetImporter& checkFileIntegrity(
+      bool checkFileIntegrity ) override;
 
     /**
      * @brief Entry-point of the ARINC 665 Media Set Importer.
      *
      * @return Created Media Set Instance.
      **/
-    Media::MediaSetPtr operator()();
+    [[nodiscard]] Media::MediaSetPtr operator()() override;
 
   private:
     //! Container Entity Type
@@ -66,7 +68,7 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *
      * @return If last medium has been read
      **/
-    bool loadMedium( uint8_t mediumIndex );
+    [[nodiscard]] bool loadMedium( uint8_t mediumIndex );
 
     /**
      * @brief Loads the file list file of the given medium.
@@ -172,16 +174,16 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *
      * @return Directory entry.
      *
-     * @throw Arinc665Exception When sub-directory cannot be created
+     * @throw Arinc665Exception When subdirectory cannot be created
      **/
-    ContainerEntityPtr checkCreateDirectory(
+    [[nodiscard]] ContainerEntityPtr checkCreateDirectory(
       uint8_t mediumIndex,
       const std::filesystem::path &directoryPath );
 
     //! Read File Handler
     ReadFileHandler readFileHandlerV;
     //! Check File Integrity
-    bool checkFileIntegrityV;
+    bool checkFileIntegrityV{ true };
 
     //! Media Set
     Media::MediaSetPtr mediaSet;

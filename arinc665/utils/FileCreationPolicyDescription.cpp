@@ -21,24 +21,24 @@ using namespace std::literals;
 
 FileCreationPolicyDescription::FileCreationPolicyDescription():
   Description{
-    { "None"sv,         FileCreationPolicy::None},
-    { "NoneExisting"sv, FileCreationPolicy::NoneExisting},
-    { "All"sv,          FileCreationPolicy::All}
+    { "None"sv,         FileCreationPolicy::None },
+    { "NoneExisting"sv, FileCreationPolicy::NoneExisting },
+    { "All"sv,          FileCreationPolicy::All }
   }
 {
 }
 
 std::ostream& operator<<(
   std::ostream &stream,
-  const FileCreationPolicy fileCreationPolicy)
+  const FileCreationPolicy fileCreationPolicy )
 {
-  return (stream << FileCreationPolicyDescription::instance().name(
-    fileCreationPolicy));
+  return ( stream << FileCreationPolicyDescription::instance().name(
+    fileCreationPolicy ) );
 }
 
 std::istream& operator>>(
   std::istream& stream,
-  FileCreationPolicy &fileCreationPolicy)
+  FileCreationPolicy &fileCreationPolicy )
 {
   std::string str{};
 
@@ -47,9 +47,9 @@ std::istream& operator>>(
 
   // Decode
   fileCreationPolicy =
-    FileCreationPolicyDescription::instance().enumeration( str);
+    FileCreationPolicyDescription::instance().enumeration( str );
 
-  if ( FileCreationPolicy::Invalid == fileCreationPolicy)
+  if ( FileCreationPolicy::Invalid == fileCreationPolicy )
   {
     BOOST_THROW_EXCEPTION(
       boost::program_options::invalid_option_value( str ) );

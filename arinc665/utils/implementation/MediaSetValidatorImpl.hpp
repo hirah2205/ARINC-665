@@ -28,18 +28,19 @@ public:
   MediaSetValidatorImpl();
 
   //! @copydoc MediaSetValidator::readFileHandler()
-  MediaSetValidator& readFileHandler( ReadFileHandler readFileHandler ) final;
+  [[nodiscard]] MediaSetValidator& readFileHandler(
+    ReadFileHandler readFileHandler ) override;
 
   //! @copydoc MediaSetValidator::informationHandler()
-  MediaSetValidator& informationHandler(
-    ValidatorInformationHandler informationHandler ) final;
+  [[nodiscard]] MediaSetValidator& informationHandler(
+    ValidatorInformationHandler informationHandler ) override;
 
   /**
    * @brief Executes the ARINC 665 Media Set Validator.
    *
    * @return Validation Result.
    **/
-  bool operator()();
+  [[nodiscard]] bool operator()();
 
 private:
   //! Read File Handler

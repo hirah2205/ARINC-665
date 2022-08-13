@@ -40,7 +40,7 @@ class JsonMediaSetManagerImpl : public JsonMediaSetManager
      *
      * @return Media Set Manager
      **/
-    static JsonMediaSetManagerPtr loadOrCreate(
+    [[nodiscard]] static JsonMediaSetManagerPtr loadOrCreate(
       const std::filesystem::path &directory,
       bool checkFileIntegrity );
 
@@ -54,12 +54,12 @@ class JsonMediaSetManagerImpl : public JsonMediaSetManager
      * @param[in] checkFileIntegrity
      *   If set to true additional file integrity steps are performed
      **/
-    explicit JsonMediaSetManagerImpl(
-      const std::filesystem::path &directory ,
+    JsonMediaSetManagerImpl(
+      const std::filesystem::path &directory,
       bool checkFileIntegrity );
 
     //! @copydoc JsonMediaSetManager::manager()
-    MediaSetManagerPtr manager() final;
+    [[nodiscard]] MediaSetManagerPtr manager() final;
 
     //! @copydoc JsonMediaSetManager::saveConfiguration()
     void saveConfiguration() final;

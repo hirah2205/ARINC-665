@@ -201,7 +201,7 @@ void MediaSetExporterImpl::exportFile( const Media::ConstFilePtr &file ) const
           break;
 
         case FileCreationPolicy::NoneExisting:
-          if (checkFileExistenceHandlerV( file ) )
+          if ( checkFileExistenceHandlerV( file ) )
           {
             createFileHandlerV( file );
           }

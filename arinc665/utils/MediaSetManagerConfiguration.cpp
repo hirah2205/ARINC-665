@@ -31,32 +31,32 @@ void MediaSetManagerConfiguration::fromProperties(
   BOOST_LOG_FUNCTION()
 
   // iterate over media sets
-  for ( auto &mediaSetConfig : properties )
+  for ( const auto &[ mediaSetPtreeName, mediaSetConfig ] : properties )
   {
     auto mediaSetPath{
-      mediaSetConfig.second.get< std::filesystem::path >( "path", {} ) };
+      mediaSetConfig.get< std::filesystem::path >( "path", {} ) };
 
     MediaPaths mediaPaths{};
 
     // iterate over media
-    if ( const auto mediaConfigs{ mediaSetConfig.second.get_child_optional( "media" ) };
+    if ( const auto mediaConfigs{ mediaSetConfig.get_child_optional( "media" ) };
          mediaConfigs )
     {
-      for ( auto &mediumConfig : *mediaConfigs )
+      for ( const auto &[ mediaPtreeName, mediumConfig ] : *mediaConfigs )
       {
         auto mediumNumber{
-          mediumConfig.second.get< unsigned int >( "number" ) };
+          mediumConfig.get< unsigned int >( "number" ) };
         auto mediumPath{
-          mediumConfig.second.get< std::filesystem::path >( "path" ) };
+          mediumConfig.get< std::filesystem::path >( "path" ) };
 
-        mediaPaths.emplace(
+        mediaPaths.try_emplace(
           static_cast< uint8_t >( mediumNumber ),
           std::move( mediumPath ) );
       }
     }
 
     // insert media set configuration
-    mediaSets.emplace( std::move( mediaSetPath ), std::move( mediaPaths ) );
+    mediaSets.try_emplace( std::move( mediaSetPath ), std::move( mediaPaths ) );
   }
 }
 
@@ -64,15 +64,15 @@ boost::property_tree::ptree MediaSetManagerConfiguration::toProperties() const
 {
   boost::property_tree::ptree properties{};
 
-  for ( const auto &mediaSet : mediaSets )
+  for ( const auto &[ mediaSetPath, media ]  : mediaSets )
   {
     boost::property_tree::ptree mediaSetConfig{};
 
-    mediaSetConfig.add( "path", mediaSet.first );
+    mediaSetConfig.add( "path", mediaSetPath );
 
     boost::property_tree::ptree mediaConfig{};
 
-    for ( const auto &[ mediumNumber, mediumPath ] : mediaSet.second )
+    for ( const auto &[ mediumNumber, mediumPath ] : media )
     {
       boost::property_tree::ptree mediumConfig{};
 

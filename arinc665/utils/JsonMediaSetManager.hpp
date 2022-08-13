@@ -35,6 +35,7 @@ class ARINC665_EXPORT JsonMediaSetManager
 
     /**
      * @brief Creates an empty Media Set Manager (but don't load it)
+     *
      * @param[in] directory
      *   Directory for Media Set Manger.
      *   Must not exist.
@@ -57,7 +58,7 @@ class ARINC665_EXPORT JsonMediaSetManager
       bool checkFileIntegrity = true );
 
     /**
-     * @brief
+     * @brief Loads the Media Set Configuration.
      *
      * @param[in] directory
      *   Directory for Media Set Manger.

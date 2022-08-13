@@ -29,47 +29,48 @@ class MediaSetExporterImpl final : public MediaSetExporter
     MediaSetExporterImpl() = default;
 
     //! @copydoc MediaSetExporter::mediaSet()
-    MediaSetExporter& mediaSet( Media::ConstMediaSetPtr mediaSet ) final;
+    MediaSetExporter& mediaSet( Media::ConstMediaSetPtr mediaSet ) override;
 
     //! @copydoc MediaSetExporter::createMediumHandler()
     MediaSetExporter& createMediumHandler(
-      CreateMediumHandler createMediumHandler ) final;
+      CreateMediumHandler createMediumHandler ) override;
 
     //! @copydoc MediaSetExporter::createDirectoryHandler()
     MediaSetExporter& createDirectoryHandler(
-      CreateDirectoryHandler createDirectoryHandler ) final;
+      CreateDirectoryHandler createDirectoryHandler ) override;
 
     //! @copydoc MediaSetExporter::checkFileExistenceHandler()
     MediaSetExporter& checkFileExistenceHandler(
-      CheckFileExistenceHandler checkFileExistenceHandler ) final;
+      CheckFileExistenceHandler checkFileExistenceHandler ) override;
 
     //! @copydoc MediaSetExporter::createFileHandler()
     MediaSetExporter& createFileHandler(
-      CreateFileHandler createFileHandler ) final;
+      CreateFileHandler createFileHandler ) override;
 
     //! @copydoc MediaSetExporter::writeFileHandler()
     MediaSetExporter& writeFileHandler(
-      WriteFileHandler writeFileHandler ) final;
+      WriteFileHandler writeFileHandler ) override;
 
     //! @copydoc MediaSetExporter::readFileHandler()
     MediaSetExporter& readFileHandler(
-      ReadFileHandler readFileHandler ) final;
+      ReadFileHandler readFileHandler ) override;
 
     //! @copydoc MediaSetExporter::arinc665Version()
-    MediaSetExporter& arinc665Version( SupportedArinc665Version version ) final;
+    MediaSetExporter& arinc665Version(
+      SupportedArinc665Version version ) override;
 
     //! @copydoc MediaSetExporter::createBatchFiles()
     MediaSetExporter& createBatchFiles(
-      FileCreationPolicy createBatchFiles ) final;
+      FileCreationPolicy createBatchFiles ) override;
 
     //! @copydoc MediaSetExporter::createLoadHeaderFiles()
     MediaSetExporter& createLoadHeaderFiles(
-      FileCreationPolicy createLoadHeaderFiles ) final;
+      FileCreationPolicy createLoadHeaderFiles ) override;
 
     /**
      * @brief Entry-point of the ARINC 665 Media Set Exporter.
      ***/
-    void operator()() final;
+    void operator()() override;
 
   private:
     /**
@@ -86,7 +87,7 @@ class MediaSetExporterImpl final : public MediaSetExporter
     /**
      * @brief Called to export the given Directory.
      *
-     * Exports all sub-directories, files, loads and batches.
+     * Exports all subdirectories, files, loads and batches.
      *
      * @param[in] directory
      *   Directory, which is exported.
@@ -94,7 +95,7 @@ class MediaSetExporterImpl final : public MediaSetExporter
     void exportDirectory( const Media::ConstDirectoryPtr &directory );
 
     /**
-     * @brief Called to Export the Given File.
+     * @brief Called to export the given File.
      *
      * @param[in] file
      *   File, which is exported.
@@ -134,7 +135,7 @@ class MediaSetExporterImpl final : public MediaSetExporter
     void createLoadHeaderFile( const Media::ConstFilePtr &loadFile ) const;
 
     /**
-     * @brief Calculate Load file CRC, Check Value and Returns File Information.
+     * @brief Calculate Load file CRC, Check Value and returns File Information.
      *
      * This operation is used to fill in the data and support file information
      * within the load header.
@@ -167,7 +168,8 @@ class MediaSetExporterImpl final : public MediaSetExporter
      *
      * @return CRC16 and Check Value as std::tuple.
      **/
-    [[nodiscard]] std::tuple< uint16_t, Arinc645::CheckValue > fileCrcCheckValue(
+    [[nodiscard]] std::tuple< uint16_t, Arinc645::CheckValue >
+    fileCrcCheckValue(
       const Media::ConstMediumPtr &medium,
       std::optional< Arinc645::CheckValueType > checkValueType,
       const std::filesystem::path &filename ) const;
