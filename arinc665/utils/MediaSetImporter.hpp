@@ -38,7 +38,7 @@ class ARINC665_EXPORT MediaSetImporter
      *
      * This handler is also used to read files, which are not represented by
      * Arinc665::Media classes.
-     * Therefore a basic representation is used.
+     * Therefore, a basic representation is used.
      *
      * @param[in] mediumNumber
      *   Medium Number
@@ -87,7 +87,7 @@ class ARINC665_EXPORT MediaSetImporter
      *
      * All parameters must have been set previously.
      *
-     * @return The imported Media Set
+     * @return Imported Media Set
      *
      * @throw Arinc665Exception
      **/

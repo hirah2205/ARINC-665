@@ -151,7 +151,7 @@ int main( int argc, char * argv[] )
 
   Helper::initLogging( Helper::Severity::info );
 
-  auto fileCreatPolDes{
+  const auto &fileCreatPolDes{
     Arinc665::Utils::FileCreationPolicyDescription::instance() };
 
   const std::string fileCreationPolicyValues{
@@ -159,7 +159,7 @@ int main( int argc, char * argv[] )
     "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::NoneExisting)} + "': Create none-existing\n" +
     "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::All)} + "': Create all" };
 
-  auto versionDes{ Arinc665::SupportedArinc665VersionDescription::instance() };
+  const auto &versionDes{ Arinc665::SupportedArinc665VersionDescription::instance() };
 
   const std::string versionValues{
     "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement2 ) } +   "': ARINC 665-2\n" +

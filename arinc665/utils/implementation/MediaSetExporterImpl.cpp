@@ -430,10 +430,10 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   // calculate load CRC and Check Value
   Arinc645::Arinc645Crc32 loadCrc{};
   const auto loadCheckValueType{ load->loadCheckValueType( true ) };
-  std::optional< Arinc645::CheckValueGenerator > checkValueGenerator{
+  auto checkValueGenerator{
     loadCheckValueType ?
-      Arinc645::CheckValueGenerator{ *loadCheckValueType } :
-      std::optional< Arinc645::CheckValueGenerator >{} };
+      Arinc645::CheckValueGenerator::create( *loadCheckValueType ) :
+      Arinc645::CheckValueGeneratorPtr{} };
 
   // load header load CRC calculation
   const auto rawLoadHeader{ Files::RawFile( loadHeaderFile ) };
@@ -573,8 +573,8 @@ std::tuple< uint16_t, Arinc645::CheckValue > MediaSetExporterImpl::fileCrcCheckV
   const std::filesystem::path &filename ) const
 {
   auto checkValueGenerator{ checkValueType ?
-    Arinc645::CheckValueGenerator{ *checkValueType } :
-    std::optional< Arinc645::CheckValueGenerator >{} };
+    Arinc645::CheckValueGenerator::create( *checkValueType ) :
+    Arinc645::CheckValueGeneratorPtr{} };
 
   const auto rawFile{
     readFileHandlerV(
