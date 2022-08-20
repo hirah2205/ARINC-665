@@ -98,16 +98,13 @@ std::filesystem::path File::path() const
   return parentPtr->path() / nameV;
 }
 
-std::optional< Arinc645::CheckValueType > File::checkValueType(
-  const bool effective ) const
+Arinc645::CheckValueType File::effectiveCheckValueType() const
 {
-  if ( effective )
-  {
-    return checkValueTypeV ?
-      checkValueTypeV :
-      mediaSet()->filesCheckValueType( true );
-  }
+  return checkValueTypeV.value_or( mediaSet()->effectiveFilesCheckValueType() );
+}
 
+std::optional< Arinc645::CheckValueType > File::checkValueType() const
+{
   return checkValueTypeV;
 }
 

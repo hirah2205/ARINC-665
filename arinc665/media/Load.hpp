@@ -214,6 +214,8 @@ class ARINC665_EXPORT Load : public File
      * @param[in] checkValueType
      *   Check Value Type used for this File Entry.
      *   Uf set to {} the inherited value will be used.
+     *
+     * @sa dataFilesCheckValueType
      **/
     void dataFile(
       const FilePtr& file,
@@ -258,6 +260,8 @@ class ARINC665_EXPORT Load : public File
      * @param[in] checkValueType
      *   Check Value Type used for this File Entry.
      *   Uf set to {} the inherited value will be used.
+     *
+     * @sa supportFilesCheckValueType
      **/
     void supportFile(
       const FilePtr &file,
@@ -330,22 +334,30 @@ class ARINC665_EXPORT Load : public File
      *
      * This information is used to determine the Check Value Type used for
      * generation of Load Check Value.
-     *
      * If not provided, the Media Set Check Value is used.
      *
      * @{
      **/
 
     /**
-     * @brief Returns the Load Check Value Type.
+     * @brief Returns the effective Load Check Value Type.
      *
-     * @param[in] effective
-     *   If set to true the effective value is returned.
+     * if no check value is given for Load Check Value Type, the Media Set Check
+     * Value Type is used.
+     *
+     * @return Effective Load Check Value Type
+     *
+     * @sa MediaSet::mediaSetCheckValueType
+     **/
+    [[nodiscard]] Arinc645::CheckValueType effectiveLoadCheckValueType() const;
+
+    /**
+     * @brief Returns the Load Check Value Type.
      *
      * @return Load Check Value Type
      **/
-    std::optional< Arinc645::CheckValueType > loadCheckValueType(
-      bool effective = false ) const;
+    [[nodiscard]] std::optional< Arinc645::CheckValueType >
+    loadCheckValueType() const;
 
     /**
      * @brief Updates the Load Check Value Type
@@ -363,20 +375,31 @@ class ARINC665_EXPORT Load : public File
      *
      * This information is used to determine the Check Value Type used for
      * generation of Data Files Check Value.
+     * If not provided, the Media Set Check Value is used.
      *
      * @{
      **/
 
     /**
-     * @brief Returns the Data Files Check Value Type.
+     * @brief Returns the effective Data Files Check Value Type.
      *
-     * @param[in] effective
-     *   If set to true the effective value is returned.
+     * if no check value is given for Data Files Check Value Type, the Media Set
+     * Check Value Type is used.
+     *
+     * @return Effective Data Files Check Value Type
+     *
+     * @sa MediaSet::mediaSetCheckValueType
+     **/
+    [[nodiscard]] Arinc645::CheckValueType
+    effectiveDataFilesCheckValueType() const;
+
+    /**
+     * @brief Returns the Data Files Check Value Type.
      *
      * @return Data Files Check Value Type
      **/
-    std::optional< Arinc645::CheckValueType > dataFilesCheckValueType(
-      bool effective = false ) const;
+    [[nodiscard]] std::optional< Arinc645::CheckValueType >
+    dataFilesCheckValueType() const;
 
     /**
      * @brief Updates the Data Files Check Value Type
@@ -394,9 +417,23 @@ class ARINC665_EXPORT Load : public File
      *
      * This information is used to determine the Check Value Type used for
      * generation of Support Files Check Value.
+     * If not provided, the Media Set Check Value is used.
      *
      * @{
      **/
+
+    /**
+     * @brief Returns the effective Support Files Check Value Type.
+     *
+     * if no check value is given for Support Files Check Value Type, the Media
+     * Set Check Value Type is used.
+     *
+     * @return Effective Support Files Check Value Type
+     *
+     * @sa MediaSet::mediaSetCheckValueType
+     **/
+    [[nodiscard]] Arinc645::CheckValueType
+    effectiveSupportFilesCheckValueType() const;
 
     /**
      * @brief Returns the Support Files Check Value Type.
@@ -406,8 +443,8 @@ class ARINC665_EXPORT Load : public File
      *
      * @return Support Files Check Value Type
      **/
-    std::optional< Arinc645::CheckValueType > supportFilesCheckValueType(
-      bool effective = false ) const;
+    [[nodiscard]] std::optional< Arinc645::CheckValueType >
+    supportFilesCheckValueType() const;
 
     /**
      * @brief Updates the Support Files Check Value Type
@@ -421,9 +458,11 @@ class ARINC665_EXPORT Load : public File
     /** @} **/
 
   private:
-    //! Weak %Load %File ( file, check value type ).
-    using WeakLoadFile =
-      std::tuple< FilePtr::weak_type, std::string, std::optional< Arinc645::CheckValueType > >;
+    //! Weak %Load %File ( file, Part Number, Check Value Type ).
+    using WeakLoadFile = std::tuple<
+      FilePtr::weak_type,
+      std::string,
+      std::optional< Arinc645::CheckValueType > >;
     //! Weak %Load %File List.
     using WeakLoadFiles = std::list< WeakLoadFile >;
 

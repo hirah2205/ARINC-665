@@ -63,25 +63,25 @@ void printMediaSet(
     << "List of Files Check Value Type: "
     << printCheckValueType( mediaSet->listOfFilesCheckValueType() )
     << " - "
-    << printCheckValueType( mediaSet->listOfFilesCheckValueType( true ) ) << "\n"
+    << printCheckValueType( mediaSet->effectiveListOfFilesCheckValueType() ) << "\n"
 
     << initialIndent
     << "List of Loads Check Value Type: "
     << printCheckValueType( mediaSet->listOfLoadsCheckValueType() )
     << " - "
-    << printCheckValueType( mediaSet->listOfLoadsCheckValueType( true ) ) << "\n"
+    << printCheckValueType( mediaSet->effectiveListOfLoadsCheckValueType() ) << "\n"
 
     << initialIndent
     << "List of Batches Check Value Type: "
     << printCheckValueType( mediaSet->listOfBatchesCheckValueType() )
     << " - "
-    << printCheckValueType( mediaSet->listOfBatchesCheckValueType( true ) ) << "\n"
+    << printCheckValueType( mediaSet->effectiveListOfBatchesCheckValueType() ) << "\n"
 
     << initialIndent
     << "Files Check Value Type: "
     << printCheckValueType( mediaSet->filesCheckValueType() )
     << " - "
-    << printCheckValueType( mediaSet->filesCheckValueType( true ) ) << "\n";
+    << printCheckValueType( mediaSet->effectiveFilesCheckValueType() ) << "\n";
 
   // print files
   outS
@@ -159,7 +159,7 @@ void printFile(
     << "File Check Value Type: "
     << printCheckValueType( file->checkValueType() )
     << " - "
-    << printCheckValueType( file->checkValueType( true ) ) << "\n";
+    << printCheckValueType( file->effectiveCheckValueType() ) << "\n";
 
 }
 
@@ -192,19 +192,19 @@ void printLoad(
     << "Load Check Value Type: '"
     << printCheckValueType( load->loadCheckValueType() )
     << " - "
-    << printCheckValueType( load->loadCheckValueType( true ) ) << "\n"
+    << printCheckValueType( load->effectiveLoadCheckValueType() ) << "\n"
 
     << initialIndent
     << "Data Files Check Value Type: '"
     << printCheckValueType( load->dataFilesCheckValueType() )
     << " - "
-    << printCheckValueType( load->dataFilesCheckValueType( true ) ) << "\n"
+    << printCheckValueType( load->effectiveDataFilesCheckValueType() ) << "\n"
 
     << initialIndent
     << "Support Files Check Value Type: '"
     << printCheckValueType( load->supportFilesCheckValueType() )
     << " - "
-    << printCheckValueType( load->supportFilesCheckValueType( true ) ) << "\n";
+    << printCheckValueType( load->effectiveSupportFilesCheckValueType() ) << "\n";
 
   if ( const auto type{ load->loadType() }; type )
   {

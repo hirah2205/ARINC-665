@@ -333,7 +333,7 @@ void MediaSetExporterImpl::exportListOfFiles(
 
   // add list of loads
   const auto listOfLoadsCheckValueType{
-    medium->mediaSet()->listOfLoadsCheckValueType( true ) };
+    medium->mediaSet()->effectiveListOfLoadsCheckValueType() };
 
   const auto&[  listOfLoadsCrc, listOfLoadsCheckValue ]{ fileCrcCheckValue(
     medium,
@@ -351,7 +351,7 @@ void MediaSetExporterImpl::exportListOfFiles(
   if ( medium->mediaSet()->numberOfBatches() != 0 )
   {
     const auto listOfBatchesCheckValueType{
-      medium->mediaSet()->listOfBatchesCheckValueType( true ) };
+      medium->mediaSet()->effectiveListOfBatchesCheckValueType() };
 
     const auto&[ listOfBatchesFileCrc, listOfBatchesFileCheckValue ]{ fileCrcCheckValue(
       medium,
@@ -369,7 +369,7 @@ void MediaSetExporterImpl::exportListOfFiles(
   /* add all files, load header files, and batch files to file list */
   for ( const auto &file : medium->mediaSet()->files() )
   {
-    const auto fileCheckValueType{ file->checkValueType( true ) };
+    const auto fileCheckValueType{ file->effectiveCheckValueType() };
 
     const auto&[ fileCrc, fileCheckValue ]{ fileCrcCheckValue(
       medium,
@@ -386,7 +386,7 @@ void MediaSetExporterImpl::exportListOfFiles(
 
   fileListFile.userDefinedData( mediaSetV->filesUserDefinedData() );
   fileListFile.checkValueType(
-    medium->mediaSet()->listOfFilesCheckValueType( true ) );
+    medium->mediaSet()->effectiveListOfFilesCheckValueType() );
 
   writeFileHandlerV(
     medium->mediumNumber(),
@@ -429,11 +429,9 @@ void MediaSetExporterImpl::createLoadHeaderFile(
 
   // calculate load CRC and Check Value
   Arinc645::Arinc645Crc32 loadCrc{};
-  const auto loadCheckValueType{ load->loadCheckValueType( true ) };
   auto checkValueGenerator{
-    loadCheckValueType ?
-      Arinc645::CheckValueGenerator::create( *loadCheckValueType ) :
-      Arinc645::CheckValueGeneratorPtr{} };
+    Arinc645::CheckValueGenerator::create( load->effectiveLoadCheckValueType() ) };
+  assert( checkValueGenerator );
 
   // load header load CRC calculation
   const auto rawLoadHeader{ Files::RawFile( loadHeaderFile ) };
@@ -442,10 +440,7 @@ void MediaSetExporterImpl::createLoadHeaderFile(
     std::data( rawLoadHeader ),
     rawLoadHeader.size() - sizeof( uint32_t ) );
 
-  if ( checkValueGenerator )
-  {
-    checkValueGenerator->process( rawLoadHeader );
-  }
+  checkValueGenerator->process( rawLoadHeader );
 
   // load data files for load CRC.
   for ( const auto &[ file, partNumber, checkValueType ] : load->dataFiles() )
@@ -458,10 +453,7 @@ void MediaSetExporterImpl::createLoadHeaderFile(
       std::to_address( rawDataFile.begin() ),
       rawDataFile.size() );
 
-    if ( checkValueGenerator )
-    {
-      checkValueGenerator->process( rawDataFile );
-    }
+    checkValueGenerator->process( rawDataFile );
   }
 
   // load support files for load CRC.
@@ -475,10 +467,7 @@ void MediaSetExporterImpl::createLoadHeaderFile(
       std::to_address( rawSupportFile.begin() ),
       rawSupportFile.size() );
 
-    if ( checkValueGenerator )
-    {
-      checkValueGenerator->process( rawSupportFile );
-    }
+    checkValueGenerator->process( rawSupportFile );
   }
 
   // set load CRC + Check Value

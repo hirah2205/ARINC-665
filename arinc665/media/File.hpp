@@ -115,6 +115,17 @@ class ARINC665_EXPORT File : public Base
      **/
 
     /**
+     * @brief Returns the effective File Check Value Type.
+     *
+     * If value is not set the effetive Media Set File Check Value Type is used.
+     *
+     * @return Effective File Check Value Type.
+     *
+     * @sa MediaSet::effectiveFilesCheckValueType.
+     **/
+    Arinc645::CheckValueType effectiveCheckValueType() const;
+
+    /**
      * @brief Returns the File Check Value Type.
      *
      * @param[in] effective
@@ -122,8 +133,7 @@ class ARINC665_EXPORT File : public Base
      *
      * @return File Check Value Type
      **/
-    std::optional< Arinc645::CheckValueType > checkValueType(
-      bool effective = false ) const;
+    std::optional< Arinc645::CheckValueType > checkValueType() const;
 
     /**
      * @brief Updates the File Check Value Type

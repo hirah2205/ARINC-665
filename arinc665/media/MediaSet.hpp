@@ -414,7 +414,8 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Media Set Check Value Type
      **/
-    std::optional< Arinc645::CheckValueType > mediaSetCheckValueType() const;
+    [[nodiscard]] std::optional< Arinc645::CheckValueType >
+    mediaSetCheckValueType() const;
 
     /**
      * @brief Updates the Media Set Check Value Type.
@@ -439,17 +440,26 @@ class ARINC665_EXPORT MediaSet : public Base
      **/
 
     /**
-     * @brief Returns the List of Files Check Value Type.
+     * @brief Returns the Effective List of Files Check Value Type.
      *
      * If no value is set, the Media Set Check Value Type is used.
      *
-     * @param[in] effective
-     *   If set to true the effective value is returned.
+     * @return Effective List of Files Check Value Type
+     *
+     * @sa mediaSetCheckValueType
+     **/
+    [[nodiscard]] Arinc645::CheckValueType
+    effectiveListOfFilesCheckValueType() const;
+
+    /**
+     * @brief Returns the List of Files Check Value Type.
      *
      * @return List of Files Check Value Type
+     *
+     * @sa mediaSetCheckValueType
      **/
-    std::optional< Arinc645::CheckValueType > listOfFilesCheckValueType(
-      bool effective = false ) const;
+    [[nodiscard]] std::optional< Arinc645::CheckValueType >
+    listOfFilesCheckValueType() const;
 
     /**
      * @brief Updates the List of Files Check Value Type
@@ -474,17 +484,24 @@ class ARINC665_EXPORT MediaSet : public Base
      **/
 
     /**
-     * @brief Returns the List of Loads Check Value Type.
+     * @brief Returns the Effective List of Loads Check Value Type.
      *
      * If no value is set, the Media Set Check Value Type is used.
      *
-     * @param[in] effective
-     *   If set to true the effective value is returned.
+     * @return Effective List of Loads Check Value Type
+     *
+     * @sa mediaSetCheckValueType
+     **/
+    [[nodiscard]] Arinc645::CheckValueType
+    effectiveListOfLoadsCheckValueType() const;
+
+    /**
+     * @brief Returns the List of Loads Check Value Type.
      *
      * @return List of Loads Check Value Type
      **/
-    std::optional< Arinc645::CheckValueType > listOfLoadsCheckValueType(
-      bool effective = false ) const;
+    [[nodiscard]] std::optional< Arinc645::CheckValueType >
+    listOfLoadsCheckValueType() const;
 
     /**
      * @brief Updates the List of Loads Check Value Type
@@ -509,17 +526,24 @@ class ARINC665_EXPORT MediaSet : public Base
      **/
 
     /**
-     * @brief Returns the List of Batches Check Value Type.
+     * @brief Returns the Effective List of Batches Check Value Type.
      *
      * If no value is set, the Media Set Check Value Type is used.
      *
-     * @param[in] effective
-     *   If set to true the effective value is returned.
+     * @return Effective List of Batches Check Value Type
+     *
+     * @sa mediaSetCheckValueType
+     **/
+    [[nodiscard]] Arinc645::CheckValueType
+    effectiveListOfBatchesCheckValueType() const;
+
+    /**
+     * @brief Returns the List of Batches Check Value Type.
      *
      * @return List of Batches Check Value Type
      **/
-    std::optional< Arinc645::CheckValueType > listOfBatchesCheckValueType(
-      bool effective = false ) const;
+    [[nodiscard]] std::optional< Arinc645::CheckValueType >
+    listOfBatchesCheckValueType() const;
 
     /**
      * @brief Updates the List of Batches Check Value Type
@@ -544,6 +568,17 @@ class ARINC665_EXPORT MediaSet : public Base
      **/
 
     /**
+     * @brief Returns the Effective Files Check Value Type.
+     *
+     * If no value is set, the Media Set Check Value Type is used.
+     *
+     * @return Effective Files Check Value Type
+     *
+     * @sa mediaSetCheckValueType
+     **/
+    [[nodiscard]] Arinc645::CheckValueType effectiveFilesCheckValueType() const;
+
+    /**
      * @brief Returns the Files Check Value Type.
      *
      * @param[in] effective
@@ -551,8 +586,8 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Files Check Value Type
      **/
-    std::optional< Arinc645::CheckValueType > filesCheckValueType(
-      bool effective = false ) const;
+    [[nodiscard]] std::optional< Arinc645::CheckValueType >
+    filesCheckValueType() const;
 
     /**
      * @brief Updates the Files Check Value Type
