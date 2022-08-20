@@ -25,11 +25,6 @@ bool LoadInfo::operator ==( const LoadInfo &other) const
     ( targetHardwareIds == other.targetHardwareIds );
 }
 
-bool LoadInfo::operator !=( const LoadInfo &other) const
-{
-  return !(*this == other);
-}
-
 bool LoadInfo::operator ==( const FileInfo &other) const
 {
   return

@@ -49,16 +49,6 @@ struct ARINC665_EXPORT BatchInfo
   bool operator ==( const BatchInfo &other ) const;
 
   /**
-   * @brief Compares batch info against each other to be unequal.
-   *
-   * @param[in] other
-   *   Right-hand side, which should be compared with @p this.
-   *
-   * @return @p this is un-equal to @p other.
-   **/
-  bool operator !=( const BatchInfo &other ) const;
-
-  /**
    * @brief Compares batch info against file info.
    *
    * @param[in] other

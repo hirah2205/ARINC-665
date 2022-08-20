@@ -55,16 +55,6 @@ struct ARINC665_EXPORT LoadInfo
   bool operator ==( const LoadInfo &other ) const;
 
   /**
-   * @brief Compares the other load information against @p this for inequality.
-   *
-   * @param[in] other
-   *   Other load information
-   *
-   * @return if @p this and @p other are unequal.
-   **/
-  bool operator !=( const LoadInfo &other ) const;
-
-  /**
    * @brief Compares the other file information against @p this for equality.
    *
    * @param[in] other

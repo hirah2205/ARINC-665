@@ -53,12 +53,12 @@ struct ARINC665_EXPORT FileInfo
   [[nodiscard]] std::filesystem::path path() const;
 
   /**
-   * @brief Compares the given file info against [this].
+   * @brief Compares the given file info against @p this.
    *
    * @param[in] other
    *  Other file info.
    *
-   * @return if [this] is equal to [other].
+   * @return if @p this is equal to @p other.
    **/
   bool operator==( const FileInfo &other ) const;
 };

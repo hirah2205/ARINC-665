@@ -245,20 +245,20 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      **/
 
     /**
-     * @brief Returns the part flags.
+     * @brief Returns the Part Flags.
      *
      * The part flags exists since ARINC 665-3.
      * It is only encoded/ decoded within such protocol files.
      *
-     * @return The part flags.
+     * @return Part Flags.
      **/
     [[nodiscard]] uint16_t partFlags() const;
 
     /**
-     * @brief Updates the part flags.
+     * @brief Updates the Part Flags.
      *
      * @param[in] partFlags
-     *   The new Part Flags.
+     *   New Part Flags.
      **/
     void partFlags( uint16_t partFlags );
 
@@ -270,14 +270,14 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      **/
 
     /**
-     * @brief Returns the part number of the load header file.
+     * @brief Returns the Part Number of the load header file.
      *
-     * @return Part number of the load header file.
+     * @return Part Number of the load header file.
      **/
     [[nodiscard]] std::string_view partNumber() const;
 
     /**
-     * @brief Updates the part number of the load header file.
+     * @brief Updates the Part Number of the load header file.
      *
      * @param[in] partNumber
      *   New Part Number.

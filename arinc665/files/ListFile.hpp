@@ -38,17 +38,17 @@ class ARINC665_EXPORT ListFile : public Arinc665File
      **/
 
     /**
-     * @brief Returns the Media Set Part Number, where the files belongs to.
+     * @brief Returns the Media Set Part Number, where the files belong to.
      *
      * @return Media Set Part Number.
      **/
     [[nodiscard]] std::string_view mediaSetPn() const;
 
     /**
-     * @brief Sets the Media Part Number, where the files belongs to.
+     * @brief Sets the Media Part Number, where the files belong to.
      *
      * @param[in] mediaSetPn
-     *   Media Set part Number.
+     *   Media Set Part Number.
      **/
     void mediaSetPn( std::string_view mediaSetPn );
 
@@ -65,15 +65,15 @@ class ARINC665_EXPORT ListFile : public Arinc665File
     /**
      * @brief Returns the Media Sequence Number.
      *
-     * @return Media sequence number
+     * @return Media Sequence Number
      **/
     [[nodiscard]] uint8_t mediaSequenceNumber() const;
 
     /**
-     * @brief Updates the media sequence number
+     * @brief Updates the Media Sequence Number.
      *
      * @param[in] mediaSequenceNumber
-     *   New media sequence number
+     *   New Media Sequence Number
      **/
     void mediaSequenceNumber( uint8_t mediaSequenceNumber );
 
@@ -85,17 +85,17 @@ class ARINC665_EXPORT ListFile : public Arinc665File
      **/
 
     /**
-     * @brief Returns the number of media set members.
+     * @brief Returns the number of Media Set members.
      *
-     * @return Number of media set members.
+     * @return Number of Media Set members.
      **/
     [[nodiscard]] uint8_t numberOfMediaSetMembers() const;
 
     /**
-     * @brief Updates the number of media set members.
+     * @brief Updates the number of Media Set members.
      *
      * @param[in] numberOfMediaSetMembers
-     *   New number of media set members
+     *   New number of Media Set members
      **/
     void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers );
 
@@ -144,6 +144,7 @@ class ARINC665_EXPORT ListFile : public Arinc665File
      * @brief Copy Constructor
      *
      * @param[in] other
+     *   Other List File
      **/
     ListFile( const ListFile &other ) = default;
 
@@ -154,7 +155,7 @@ class ARINC665_EXPORT ListFile : public Arinc665File
      * @brief Assignment operator
      *
      * @param[in] other
-     *   The other file.
+     *   Other List File.
      *
      * @return *this
      **/
@@ -186,9 +187,9 @@ class ARINC665_EXPORT ListFile : public Arinc665File
       uint32_t mediaInformationPtr );
 
   private:
-    //! Media Set Part Number
+    //! Media Set Part Number.
     std::string mediaSetPnV;
-    //! Media Sequence Number
+    //! Media Sequence Number.
     uint8_t mediaSequenceNumberV;
     //! Number of Media Set Members.
     uint8_t numberOfMediaSetMembersV;

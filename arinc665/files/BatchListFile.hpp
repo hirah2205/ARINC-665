@@ -207,7 +207,8 @@ class ARINC665_EXPORT BatchListFile : public ListFile
      *
      * @return If the given batch list file belongs to the same media set.
      **/
-    [[nodiscard]] bool belongsToSameMediaSet( const BatchListFile &other ) const;
+    [[nodiscard]] bool belongsToSameMediaSet(
+      const BatchListFile &other ) const;
 
   private:
     //! @copydoc ListFile::encode

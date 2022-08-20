@@ -121,7 +121,7 @@ class ARINC665_EXPORT FileListFile : public ListFile
      *   Media Sequence Number [1..255].
      * @param numberOfMediaSetMembers
      *   Number of Media Set Members [1..255] & mediaSequenceNumber <=
-     *     [numberOfMediaSetMembers]
+     *     @p numberOfMediaSetMembers
      * @param[in] files
      *   Files information.
      * @param[in] userDefinedData
@@ -191,10 +191,10 @@ class ARINC665_EXPORT FileListFile : public ListFile
      * @param[in] file
      *   The file information.
      **/
-    void file( const FileInfo &file);
+    void file( const FileInfo &file );
 
     //! @copydoc file(const FileInfo&)
-    void file( FileInfo &&file);
+    void file( FileInfo &&file );
 
     /** @} **/
 

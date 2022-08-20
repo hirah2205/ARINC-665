@@ -149,7 +149,7 @@ std::string Arinc665File::encodePath( const std::filesystem::path &path )
 {
   std::string convertedPath{ path.string() };
 
-  std::replace( convertedPath.begin(), convertedPath.end(), '/', '\\' );
+  std::ranges::replace( convertedPath, '/', '\\' );
 
   // append final backslash if not present
   if ( !convertedPath.ends_with( '\\' ) )
@@ -569,7 +569,7 @@ void Arinc665File::decodeHeader(
       InvalidArinc665File() << Helper::AdditionalInfo{ "wrong file format" } );
   }
 
-  // Decode checksum field;
+  // Decode checksum field
   uint16_t crc{};
   Helper::getInt< uint16_t>(
     rawFile.begin() + static_cast< ptrdiff_t>( rawFile.size() ) - checksumPosition,

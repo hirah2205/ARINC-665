@@ -31,7 +31,7 @@ class ARINC665_EXPORT Arinc665File
 {
   public:
     //! String List
-    using StringList = std::list< std::string>;
+    using StringList = std::list< std::string >;
 
     //! Base Header Size
     static constexpr ptrdiff_t BaseHeaderSize{
@@ -139,10 +139,10 @@ class ARINC665_EXPORT Arinc665File
      * @param[in] file
      *   Raw ARINC 665 file.
      *
-     * @return The encoded file length.
+     * @return Encoded file length.
      *
      * @throw InvalidArinc665File
-     *   If the file size is to small to represent an valid ARINC 665 file.
+     *   If the file size is too small to represent a valid ARINC 665 file.
      **/
     static uint32_t fileLength( const ConstRawFileSpan &file );
 
@@ -155,7 +155,7 @@ class ARINC665_EXPORT Arinc665File
      * @return Decoded format version.
      *
      * @throw InvalidArinc665File
-     *   If the file size is to small to represent an valid ARINC 665 file.
+     *   If the file size is too small to represent a valid ARINC 665 file.
      **/
     static uint16_t formatVersion( const ConstRawFileSpan &file );
 
@@ -163,7 +163,7 @@ class ARINC665_EXPORT Arinc665File
      * @brief Calculates the checksum over the given file.
      *
      * @param[in] file
-     *   The raw ARINC 665 file.
+     *   Raw ARINC 665 file.
      *
      * @return Calculated checksum.
      **/
@@ -237,13 +237,13 @@ class ARINC665_EXPORT Arinc665File
       uint16_t formatVersionField );
 
     /**
-     * @brief Returns the ARINC 665 version for the given [fileType] and
-     *   [arinc665Version].
+     * @brief Returns the ARINC 665 version for the given @p fileType and
+     *   @p arinc665Version.
      *
      * @param[in] fileType
      *   File type.
      * @param[in] arinc665Version
-     *   The ARINC 665 version.
+     *   ARINC 665 version.
      *
      * @return Format version field of file.
      **/
@@ -259,7 +259,7 @@ class ARINC665_EXPORT Arinc665File
      *
      * @return The file type.
      * @retval FileType::Invalid
-     *   If [filename] is not a ARINC 665 file type.
+     *   If @p filename is not a ARINC 665 file type.
      **/
     static FileType fileType( const std::filesystem::path &filename );
 
@@ -281,7 +281,7 @@ class ARINC665_EXPORT Arinc665File
      *
      * @return the protocol file as raw data.
      **/
-    operator RawFile() const;
+    [[nodiscard]] explicit operator RawFile() const;
 
     /**
      * @brief Returns the ARINC 665 file type.

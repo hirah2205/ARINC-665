@@ -24,11 +24,6 @@ bool BatchInfo::operator ==( const BatchInfo &other) const
     ( memberSequenceNumber == other.memberSequenceNumber );
 }
 
-bool BatchInfo::operator !=( const BatchInfo &other) const
-{
-  return !(*this == other);
-}
-
 bool BatchInfo::operator ==( const FileInfo &other) const
 {
   return
