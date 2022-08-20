@@ -55,6 +55,9 @@ class ARINC665_EXPORT MediaSet : public Base
 
     /**
      * @name Media Set Part Number
+     *
+     * A Media Set is identified by its unique Part Number.
+     *
      * @{
      **/
 
@@ -66,10 +69,10 @@ class ARINC665_EXPORT MediaSet : public Base
     std::string_view partNumber() const;
 
     /**
-     * @brief Set the part number of the entity.
+     * @brief Set the Media Set Part Number.
      *
      * @param[in] partNumber
-     *   Part number
+     *   Media Set Part Number.
      **/
     void partNumber( std::string_view partNumber );
 
@@ -80,13 +83,16 @@ class ARINC665_EXPORT MediaSet : public Base
 
     /**
      * @name Media
+     *
+     * A Media Set consists of 1 up to 255 Media.
+     *
      * @{
      **/
 
     /**
      * @brief Get the Number of Media within the Media Set.
      *
-     * @return Number of media within the media set.
+     * @return Number of Media within the Media Set.
      **/
     uint8_t numberOfMedia() const;
 
@@ -106,9 +112,9 @@ class ARINC665_EXPORT MediaSet : public Base
     void numberOfMedia( uint8_t numberOfMedia, bool deleteFiles = false );
 
     /**
-     * @brief Returns all media.
+     * @brief Returns all Media.
      *
-     * @return All media of the media set.
+     * @return All Media of the Media Set.
      **/
     ConstMedia media() const;
 
@@ -116,27 +122,27 @@ class ARINC665_EXPORT MediaSet : public Base
     Media media();
 
     /**
-     * @brief Return the medium with the requested index.
+     * @brief Return the Medium with the requested Index.
      *
      * @param[in] index
-     *   The medium index.
+     *   Medium Index.
      *
-     * @return Medium with the requested index.
+     * @return Medium with the requested Index.
      **/
     ConstMediumPtr medium( uint8_t index ) const;
 
     /**
-     * @brief Return the medium with the requested index.
+     * @brief Return the medium with the requested Index.
      *
      * @param[in] index
-     *   The medium index.
+     *   Medium Index.
      *
-     * @return Medium with the requested index.
+     * @return Medium with the requested Index.
      **/
     MediumPtr medium( uint8_t index );
 
     /**
-     * @brief Adds a medium to the media set and returns the medium
+     * @brief Adds a Medium to the Media Set and returns the Medium.
      *
      * @return Media index of the new medium.
      * @retval {}
@@ -145,7 +151,7 @@ class ARINC665_EXPORT MediaSet : public Base
     MediumPtr addMedium();
 
     /**
-     * @brief Removes the last medium.
+     * @brief Removes the last Medium.
      *
      * @param[in] deleteFiles
      *   Delete files, which are part of the not existing medium.
@@ -456,7 +462,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Effective List of Files Check Value Type
      *
-     * @sa mediaSetCheckValueType
+     * @sa effectiveMediaSetCheckValueType()
      **/
     [[nodiscard]] Arinc645::CheckValueType
     effectiveListOfFilesCheckValueType() const;
@@ -465,8 +471,6 @@ class ARINC665_EXPORT MediaSet : public Base
      * @brief Returns the List of Files Check Value Type.
      *
      * @return List of Files Check Value Type
-     *
-     * @sa mediaSetCheckValueType
      **/
     [[nodiscard]] std::optional< Arinc645::CheckValueType >
     listOfFilesCheckValueType() const;
@@ -500,7 +504,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Effective List of Loads Check Value Type
      *
-     * @sa mediaSetCheckValueType
+     * @sa effectiveMediaSetCheckValueType()
      **/
     [[nodiscard]] Arinc645::CheckValueType
     effectiveListOfLoadsCheckValueType() const;
@@ -542,7 +546,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Effective List of Batches Check Value Type
      *
-     * @sa mediaSetCheckValueType
+     * @sa effectiveMediaSetCheckValueType()
      **/
     [[nodiscard]] Arinc645::CheckValueType
     effectiveListOfBatchesCheckValueType() const;
@@ -584,7 +588,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Effective Files Check Value Type
      *
-     * @sa mediaSetCheckValueType
+     * @sa effectiveMediaSetCheckValueType()
      **/
     [[nodiscard]] Arinc645::CheckValueType effectiveFilesCheckValueType() const;
 

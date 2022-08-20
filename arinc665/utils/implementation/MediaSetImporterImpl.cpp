@@ -348,7 +348,7 @@ void MediaSetImporterImpl::loadBatchFiles( const uint8_t mediumIndex )
       readFileHandlerV( mediumIndex, batchFileIt->second.path() ) };
 
     // add batch file to batch file list
-    batchFiles.emplace( batchFileIt->second.filename, std::move( batchFile ) );
+    batchFiles.try_emplace( batchFileIt->second.filename, std::move( batchFile ) );
   }
 }
 

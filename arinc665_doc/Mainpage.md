@@ -6,5 +6,6 @@ This tool suite contains the components:
  - @subpage arinc665_applications
 
 Dependencies are:
- - helper,
+ - Arinc645,
+ - Helper,
  - libxml++

@@ -57,7 +57,9 @@ void printMediaSet(
 
     << initialIndent
     << "Media Set Check Value Type: "
-    << printCheckValueType( mediaSet->mediaSetCheckValueType() ) << "\n"
+    << printCheckValueType( mediaSet->mediaSetCheckValueType() )
+    << " - "
+    << printCheckValueType( mediaSet->effectiveMediaSetCheckValueType() ) << "\n"
 
     << initialIndent
     << "List of Files Check Value Type: "
@@ -256,7 +258,10 @@ void printLoad(
 
       << nextIndent
       << "Check Value Type: '"
-      << printCheckValueType( checkValueType ) << "'\n";
+      << printCheckValueType( checkValueType )
+      << " - "
+      << printCheckValueType( checkValueType.value_or(
+        load->effectiveDataFilesCheckValueType() ) ) << "'\n";
 
     outS << "\n";
   }
@@ -283,7 +288,10 @@ void printLoad(
 
       << nextIndent
       << "Check Value Type: '"
-      << printCheckValueType( checkValueType ) << "'\n";
+      << printCheckValueType( checkValueType )
+      << " - "
+      << printCheckValueType( checkValueType.value_or(
+        load->effectiveSupportFilesCheckValueType() ) ) << "'\n";
 
     outS << "\n";
   }

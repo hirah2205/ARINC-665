@@ -49,7 +49,7 @@ int main( int argc, char * argv[] )
   std::cout << "ARINC 665 Media Set XML Printer" << "\n";
 
   boost::program_options::options_description options{
-    "ARINC 665 List options"};
+    "ARINC 665 List options" };
 
   std::filesystem::path xmlPath{};
 
@@ -87,28 +87,26 @@ int main( int argc, char * argv[] )
     auto xml{ Arinc665::Utils::Arinc665Xml::instance() };
 
     // load XML file
-    auto result{ xml->loadFromXml( xmlPath ) };
-
-    auto mediaSet{ std::get< 0>( result ) };
+    const auto [ mediaSet, filePathMapping ]{ xml->loadFromXml( xmlPath ) };
 
     Arinc665::Utils::printMediaSet( mediaSet, std::cout, "  ", "  " );
   }
-  catch ( boost::program_options::error &e)
+  catch ( const boost::program_options::error &e )
   {
     std::cout << "Error parsing command line: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
-  catch ( boost::exception &e)
+  catch ( const boost::exception &e )
   {
     std::cout << "Error: " << boost::diagnostic_information( e) << "\n";
     return EXIT_FAILURE;
   }
-  catch ( std::exception &e)
+  catch ( const std::exception &e )
   {
     std::cout << "Error: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
-  catch ( ...)
+  catch ( ... )
   {
     std::cout << "unknown exception occurred\n";
     return EXIT_FAILURE;
