@@ -20,26 +20,23 @@ namespace Arinc665::Media {
 
 ConstMediaSetPtr File::mediaSet() const
 {
-  auto parentPtr{ parent()};
-
-  if (!parentPtr)
+  if ( const auto parentPtr{ parent() }; parentPtr )
   {
-    return {};
+    return parentPtr->mediaSet();
   }
 
-  return parentPtr->mediaSet();
+  return {};
 }
 
 MediaSetPtr File::mediaSet()
 {
-  auto parentPtr{ parent()};
 
-  if (!parentPtr)
+  if ( const auto parentPtr{ parent() }; parentPtr )
   {
-    return {};
+    return parentPtr->mediaSet();
   }
 
-  return parentPtr->mediaSet();
+  return {};
 }
 
 File::Type File::type() const
@@ -64,38 +61,32 @@ ContainerEntityPtr File::parent()
 
 ConstMediumPtr File::medium() const
 {
-  auto parentPtr{ parent()};
-
-  if (!parentPtr)
+  if ( const auto parentPtr{ parent()}; parentPtr )
   {
-    return {};
+    return parentPtr->medium();
   }
 
-  return parentPtr->medium();
+  return {};
 }
 
 MediumPtr File::medium()
 {
-  auto parentPtr{ parent()};
-
-  if (!parentPtr)
+  if ( const auto parentPtr{ parent()}; parentPtr )
   {
-    return {};
+    return parentPtr->medium();
   }
 
-  return parentPtr->medium();
+  return {};
 }
 
 std::filesystem::path File::path() const
 {
-  auto parentPtr{ parent() };
-
-  if ( !parentPtr)
+  if ( const auto parentPtr{ parent() }; parentPtr )
   {
-    return {};
+    return parentPtr->path() / nameV;
   }
 
-  return parentPtr->path() / nameV;
+  return {};
 }
 
 Arinc645::CheckValueType File::effectiveCheckValueType() const
@@ -114,18 +105,19 @@ void File::checkValueType( std::optional< Arinc645::CheckValueType > type )
 }
 
 File::File( const ContainerEntityPtr& parent, std::string_view name ):
-  parentV{ parent}, nameV{ name}
+  parentV{ parent },
+  nameV{ name }
 {
-  if (!parent)
+  if ( !parent )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "parent must be valid" } );
   }
 }
 
-File::File( const ContainerEntityPtr& parent, std::string &&name):
-  parentV{ parent},
-  nameV{ std::move( name) }
+File::File( const ContainerEntityPtr& parent, std::string &&name ):
+  parentV{ parent },
+  nameV{ std::move( name ) }
 {
   if ( !parent )
   {

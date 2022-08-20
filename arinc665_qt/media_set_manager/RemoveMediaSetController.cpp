@@ -22,7 +22,8 @@ RemoveMediaSetController::RemoveMediaSetController( QWidget * const parent  ) :
 
 RemoveMediaSetController::~RemoveMediaSetController() = default;
 
-void RemoveMediaSetController::start( Arinc665::Media::MediaSetPtr mediaSet )
+void RemoveMediaSetController::start(
+  [[maybe_unused]] Arinc665::Media::MediaSetPtr mediaSet )
 {
 }
 

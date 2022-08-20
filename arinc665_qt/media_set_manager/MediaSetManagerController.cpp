@@ -109,10 +109,12 @@ void MediaSetManagerController::directorySelected()
 void MediaSetManagerController::reloadMediaSetModel()
 {
   Arinc665::Media::ConstMediaSets mediaSets{};
-  for ( auto mediaSet : mediaSetManagerV->manager()->mediaSets() )
+
+  for ( const auto &[ partNumber, mediaSet ] : mediaSetManagerV->manager()->mediaSets() )
   {
-    mediaSets.emplace_back( std::move( mediaSet.second ) );
+    mediaSets.emplace_back( mediaSet );
   }
+
   mediaSetsModelV->mediaSets( std::move( mediaSets ) );
 }
 
@@ -160,7 +162,8 @@ void MediaSetManagerController::importMediaSetXml()
     &MediaSetController::deleteLater );
 }
 
-void MediaSetManagerController::removeMediaSet( const QModelIndex &index )
+void MediaSetManagerController::removeMediaSet(
+  [[maybe_unused]] const QModelIndex &index )
 {
 
 }
