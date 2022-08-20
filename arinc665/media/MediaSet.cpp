@@ -403,6 +403,11 @@ void MediaSet::batchesUserDefinedData( UserDefinedData &&userDefinedData)
   batchesUserDefinedDataV = std::move( userDefinedData);
 }
 
+Arinc645::CheckValueType MediaSet::effectiveMediaSetCheckValueType() const
+{
+  return mediaSetCheckValueTypeV.value_or( Arinc645::CheckValueType::NotUsed );
+}
+
 std::optional< Arinc645::CheckValueType >
 MediaSet::mediaSetCheckValueType() const
 {
@@ -436,9 +441,8 @@ void MediaSet::listOfFilesCheckValueType(
 
 Arinc645::CheckValueType MediaSet::effectiveListOfLoadsCheckValueType() const
 {
-  return listOfLoadsCheckValueTypeV.value_or(
-    mediaSetCheckValueTypeV.value_or(
-      Arinc645::CheckValueType::NotUsed ) );
+  return
+    listOfLoadsCheckValueTypeV.value_or( effectiveMediaSetCheckValueType() );
 }
 
 std::optional< Arinc645::CheckValueType >
@@ -455,9 +459,8 @@ void MediaSet::listOfLoadsCheckValueType(
 
 Arinc645::CheckValueType MediaSet::effectiveListOfBatchesCheckValueType() const
 {
-  return listOfBatchesCheckValueTypeV.value_or(
-    mediaSetCheckValueTypeV.value_or(
-      Arinc645::CheckValueType::NotUsed ) );
+  return
+    listOfBatchesCheckValueTypeV.value_or( effectiveMediaSetCheckValueType() );
 }
 
 std::optional< Arinc645::CheckValueType >
@@ -474,9 +477,7 @@ void MediaSet::listOfBatchesCheckValueType(
 
 Arinc645::CheckValueType MediaSet::effectiveFilesCheckValueType() const
 {
-  return filesCheckValueTypeV.value_or(
-    mediaSetCheckValueTypeV.value_or(
-      Arinc645::CheckValueType::NotUsed ) );
+  return filesCheckValueTypeV.value_or( effectiveMediaSetCheckValueType() );
 }
 
 std::optional< Arinc645::CheckValueType > MediaSet::filesCheckValueType() const

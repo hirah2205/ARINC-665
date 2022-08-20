@@ -410,6 +410,16 @@ class ARINC665_EXPORT MediaSet : public Base
      **/
 
     /**
+     * @brief Returns the effective Media Set Check Value Type.
+     *
+     * If no Media Set Check Value Type is given, CheckValueType::NotUsed is
+     * returned.
+     *
+     * @return Effective Media Set Check Value Type
+     **/
+    Arinc645::CheckValueType effectiveMediaSetCheckValueType() const;
+
+    /**
      * @brief Returns the Media Set Check Value Type.
      *
      * @return Media Set Check Value Type

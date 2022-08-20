@@ -132,9 +132,7 @@ ConstLoadFiles Load::dataFiles( const bool effective ) const
       files.emplace_back(
         filePtr.lock(),
         partNumber,
-        checkValueType ?
-          checkValueType :
-          effectiveDataFilesCheckValueType() );
+        checkValueType.value_or( effectiveDataFilesCheckValueType() ) );
     }
     else
     {
@@ -329,8 +327,7 @@ void Load::loadCheckValueType(
 Arinc645::CheckValueType Load::effectiveDataFilesCheckValueType() const
 {
   return dataFilesCheckValueTypeV.value_or(
-    mediaSet()->mediaSetCheckValueType().value_or(
-      Arinc645::CheckValueType::NotUsed ) );
+    mediaSet()->effectiveMediaSetCheckValueType() );
 }
 
 std::optional< Arinc645::CheckValueType > Load::dataFilesCheckValueType() const
@@ -347,8 +344,7 @@ void Load::dataFilesCheckValueType(
 Arinc645::CheckValueType Load::effectiveSupportFilesCheckValueType() const
 {
   return supportFilesCheckValueTypeV.value_or(
-    mediaSet()->mediaSetCheckValueType().value_or(
-      Arinc645::CheckValueType::NotUsed ) );
+    mediaSet()->effectiveMediaSetCheckValueType() );
 }
 
 std::optional< Arinc645::CheckValueType > Load::supportFilesCheckValueType() const
