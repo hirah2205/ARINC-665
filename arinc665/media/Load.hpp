@@ -443,9 +443,9 @@ class ARINC665_EXPORT Load : public File
     Type typeV;
     //! Load Check Value Type
     std::optional< Arinc645::CheckValueType > loadCheckValueTypeV;
-    //! Data Files Check Value Type
+    //! Data Files Default Check Value Type
     std::optional< Arinc645::CheckValueType > dataFilesCheckValueTypeV;
-    //! Support Files Check Value Type
+    //! Support Files Default Check Value Type
     std::optional< Arinc645::CheckValueType > supportFilesCheckValueTypeV;
 };
 

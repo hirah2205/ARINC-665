@@ -136,9 +136,11 @@ class ARINC665_EXPORT MediaSet : public Base
     MediumPtr medium( uint8_t index );
 
     /**
-     * @brief Adds an medium to the media set and returns the medium
+     * @brief Adds a medium to the media set and returns the medium
      *
      * @return Media index of the new medium.
+     * @retval {}
+     *   If maximum number of media (255) reached.
      **/
     MediumPtr addMedium();
 
@@ -429,7 +431,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @name List of Files Check Value Type
      *
      * This information is used to determine the Check Value Type used for
-     * genration of List of Files (`FILES.LUM`) Check Value.
+     * generation of List of Files (`FILES.LUM`) Check Value.
      *
      * If not provided, the Media Set Check Value is used.
      *
@@ -464,7 +466,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @name List of Loads Check Value Type
      *
      * This information is used to determine the Check Value Type used for
-     * genration of List of Loads (`LOADS.LUM`) Check Value.
+     * generation of List of Loads (`LOADS.LUM`) Check Value.
      *
      * If not provided, the Media Set Check Value is used.
      *
@@ -499,7 +501,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @name List of Batches Check Value Type
      *
      * This information is used to determine the Check Value Type used for
-     * genration of List of Batches (`BATCHES.LUM`) Check Value.
+     * generation of List of Batches (`BATCHES.LUM`) Check Value.
      *
      * If not provided, the Media Set Check Value is used.
      *
@@ -534,8 +536,8 @@ class ARINC665_EXPORT MediaSet : public Base
      * @name Files Check Value Type
      *
      * This information is used to determine the Check Value Type used for
-     * genration of Files Check Value within `FILES.LUM`.
-     * It can be override on per file basis.
+     * generation of Files Check Value within `FILES.LUM`.
+     * It can be overridden on per-file basis.
      *
      * If not provided, the Media Set Check Value is used.
      * @{

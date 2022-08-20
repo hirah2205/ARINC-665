@@ -28,17 +28,17 @@ class ARINC665_EXPORT Medium : public ContainerEntity
      * @brief Creates the medium.
      *
      * @param[in] mediaSet
-     *   The owning the media set
+     *   Owning Media Set
      * @param[in] mediumNumber
-     *   The medium number.
+     *   Medium Number.
      **/
     Medium( MediaSetPtr mediaSet, uint8_t mediumNumber );
 
     //! @copydoc ContainerEntity::mediaSet
-    ConstMediaSetPtr mediaSet() const final;
+    [[nodiscard]] ConstMediaSetPtr mediaSet() const final;
 
     //! @copydoc ContainerEntity::mediaSet
-    MediaSetPtr mediaSet() final;
+    [[nodiscard]] MediaSetPtr mediaSet() final;
 
     /**
      * @copydoc ContainerEntity::type
@@ -46,32 +46,32 @@ class ARINC665_EXPORT Medium : public ContainerEntity
      * @retval Type::Medium
      *   Always
      **/
-    Type type() const final;
+    [[nodiscard]] Type type() const final;
 
     //! @copydoc ContainerEntity::path() const
-    std::filesystem::path path() const final;
+    [[nodiscard]] std::filesystem::path path() const final;
 
     /**
      * @copydoc ContainerEntity::parent() const
      * @retval {} always.
      **/
-    ConstContainerEntityPtr parent() const final;
+    [[nodiscard]] ConstContainerEntityPtr parent() const final;
 
     //! @copydoc ContainerEntity::parent() const
-    ContainerEntityPtr parent() final;
+    [[nodiscard]] ContainerEntityPtr parent() final;
 
     //! @copydoc ContainerEntity::medium() const
-    ConstMediumPtr medium() const final;
+    [[nodiscard]] ConstMediumPtr medium() const final;
 
     //! @copydoc ContainerEntity::medium()
-    MediumPtr medium() final;
+    [[nodiscard]] MediumPtr medium() final;
 
     /**
      * @brief Returns the medium number.
      *
-     * @return The medium number
+     * @return Medium Number
      **/
-    uint8_t mediumNumber() const;
+    [[nodiscard]] uint8_t mediumNumber() const;
 
   private:
     //! Pointer to Media Set

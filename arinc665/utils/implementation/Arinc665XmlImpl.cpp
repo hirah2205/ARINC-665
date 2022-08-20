@@ -474,7 +474,7 @@ void Arinc665XmlImpl::loadEntries(
     // add subdirectory and add content recursively
     if ( entryNode->get_name() == "Directory"s )
     {
-      auto directory{ current.addSubDirectory( static_cast< std::string>( name ) ) };
+      auto directory{ current.addSubdirectory( static_cast< std::string>( name ) ) };
 
       loadEntries( *entryElement, *directory, filePathMapping );
 
@@ -557,7 +557,7 @@ void Arinc665XmlImpl::saveEntries(
   xmlpp::Node &currentNode )
 {
   // iterate over subdirectories within container and add them recursively
-  for ( const auto &dirEntry : current.subDirectories() )
+  for ( const auto &dirEntry : current.subdirectories() )
   {
     auto directoryNode{ currentNode.add_child( "Directory" ) };
 

@@ -127,7 +127,7 @@ void MediaSetExporterImpl::exportMedium( const Media::ConstMediumPtr &medium )
   createMediumHandlerV( medium );
 
   // export sub-directories
-  for ( const auto &directory : medium->subDirectories() )
+  for ( const auto &directory : medium->subdirectories() )
   {
     exportDirectory( directory );
   }
@@ -165,7 +165,7 @@ void MediaSetExporterImpl::exportDirectory(
   createDirectoryHandlerV( directory );
 
   // export sub-directories
-  for ( const auto &subDirectory : directory->subDirectories() )
+  for ( const auto &subDirectory : directory->subdirectories() )
   {
     exportDirectory( subDirectory );
   }

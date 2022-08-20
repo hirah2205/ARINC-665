@@ -51,81 +51,87 @@ class ARINC665_EXPORT ContainerEntity : public Base
     /**
      * @brief Indicates, if the container has child elements.
      *
-     * @return if there are sub-directories or files.
+     * @return if there are subdirectories or files.
      **/
     bool hasChildren() const;
 
     /**
-     * @name Sub-Directories
+     * @name Subdirectories
      * @{
      **/
 
     /**
-     * @brief Return the number of sub-directories.
+     * @brief Return the number of subdirectories.
      *
-     * @return The number of sub-directories.
+     * @return Number of subdirectories.
      **/
-    size_t numberOfSubDirectories() const;
+    size_t numberOfSubdirectories() const;
 
     /**
-     * @brief Returns all sub-directories within the current container.
+     * @brief Returns all subdirectories within the current container.
      *
-     * @return All sub-directories contained in the current container.
+     * @return All subdirectories contained in the current container.
      **/
-    ConstDirectories subDirectories() const;
+    ConstDirectories subdirectories() const;
 
-    //! @copydoc subDirectories() const
-    Directories subDirectories();
+    //! @copydoc subdirectories() const
+    Directories subdirectories();
 
     /**
-     * @brief Returns the sub-directory with the given name.
+     * @brief Returns the subdirectory with the given name.
      *
      * @param[in] name
-     *   The name of the requested sub-directory.
+     *   Name of the requested subdirectory.
      *
-     * @return The sub-directory with the given name.
+     * @return Subdirectory with the given name.
      * @retval {}
-     *   If no such sub-directory exists.
+     *   If no such subdirectory exists.
      **/
-    ConstDirectoryPtr subDirectory( std::string_view name ) const;
+    ConstDirectoryPtr subdirectory( std::string_view name ) const;
 
-    //! @copydoc subDirectory(std::string_view) const
-    DirectoryPtr subDirectory( std::string_view name );
+    //! @copydoc subdirectory(std::string_view) const
+    DirectoryPtr subdirectory( std::string_view name );
 
     /**
-     * @brief Adds a sub-directory with the given name.
+     * @brief Adds a subdirectory with the given name.
      *
      * It is a failure to try to create an already existing directory.
      *
      * @param[in] name
-     *   The name of the requested sub-directory.
+     *   Name of the requested subdirectory.
      *
-     * @return The created sub-directory.
+     * @return Created subdirectory.
+     *
+     * @throw Arinc665Exception()
+     *   If directory or name with this name already exists.
      **/
-    DirectoryPtr addSubDirectory( std::string_view name );
+    DirectoryPtr addSubdirectory( std::string_view name );
 
     /**
-     * @brief Removes the sub-directory with the given name.
+     * @brief Removes the subdirectory with the given name.
      *
      * It is a failure to try to delete a non-existing directory.
      *
      * @param[in] name
-     *   The name of the requested sub-directory to be deleted.
+     *   The name of the requested subdirectory to be deleted.
+     *
+     * @throw Arinc665Exception()
+     *   If directory does not exist.
      **/
-    void removeSubDirectory( std::string_view name );
+    void removeSubdirectory( std::string_view name );
 
     /**
-     * @brief Removes the given sub-directory.
+     * @brief Removes the given subdirectory.
      *
      * It is a failure to try to delete a non-existing directory.
      *
      * @param[in] subDirectory
-     *   Sub-directory to be deleted.
+     *   Subdirectory to be deleted.
      *
      * @throw Arinc665Exception()
-     *   if directory does not exists.
+     *   if directory does not exist.
      **/
-    void removeSubDirectory( const DirectoryPtr& subDirectory );
+    void removeSubdirectory( const DirectoryPtr& subDirectory );
 
     /** @} **/
 
@@ -137,10 +143,10 @@ class ARINC665_EXPORT ContainerEntity : public Base
 
     /**
      * @brief Returns the number of files within this directory and
-     *   sub-directories.
+     *   subdirectories.
      *
      * @param[in] recursive
-     *   If set to true includes files in sub-directories.
+     *   If set to true includes files in subdirectories.
      *
      * @return The number of files within this directory.
      **/
@@ -150,7 +156,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @brief Returns all files present in the given container.
      *
      * @param[in] recursive
-     *   If set to true recursive scan all sub-directories.
+     *   If set to true recursive scan all subdirectories.
      *
      * @return All files of the current container.
      **/
@@ -166,22 +172,26 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * or other file).
      *
      * @note
-     * If a file with the same name exists in multiple sub-directories exists,
+     * If a file with the same name exists in multiple subdirectories exists,
      * only the first one is returned (which is the first is not specified).
      *
      * @param[in] filename
      *   The name of the requested file.
      * @param[in] recursive
-     *   If set to true scans all sub-directories for the file.
+     *   If set to true scans all subdirectories for the file.
      *
      * @return The file with the given name.
      * @retval {}
      *   If no such file exists.
      **/
-    ConstFilePtr file( std::string_view filename, bool recursive = false ) const;
+    [[nodiscard]] ConstFilePtr file(
+      std::string_view filename,
+      bool recursive = false ) const;
 
     //! @copydoc file(const std::string_view,bool) const
-    FilePtr file( std::string_view filename, bool recursive = false );
+    [[nodiscard]] FilePtr file(
+      std::string_view filename,
+      bool recursive = false );
 
     /**
      * @brief Removes the file with the given name.
@@ -220,7 +230,10 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @param[in] filename
      *   Filename of the file to be created.
      *
-     * @return The created file.
+     * @return Created file.
+     *
+     * @throw Arinc665Exception
+     *   When file already exist.
      **/
     RegularFilePtr addRegularFile( std::string_view filename );
 
@@ -239,20 +252,20 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @return The number of loads.
      **/
-    size_t numberOfLoads( bool recursive = false ) const;
+    [[nodiscard]] size_t numberOfLoads( bool recursive = false ) const;
 
     /**
      * @brief Return loads.
      *
      * @param[in] recursive
-     *   If set to true also iterates over sub-directories.
+     *   If set to true also iterates over subdirectories.
      *
      * @return Loads contained within this container.
      **/
-    ConstLoads loads( bool recursive = false ) const;
+    [[nodiscard]] ConstLoads loads( bool recursive = false ) const;
 
     //! @copydoc loads(bool) const
-    Loads loads( bool recursive = false );
+    [[nodiscard]] Loads loads( bool recursive = false );
 
     /**
      * @brief Returns the load with the given filename.
@@ -260,16 +273,20 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @param[in] filename
      *   Load filename
      * @param[in] recursive
-     *   If set to true also iterates over sub-directories.
+     *   If set to true also iterates over subdirectories.
      *
      * @return The load with the given filename.
      * @retval {}
      *   If load does not exists.
      **/
-    ConstLoadPtr load( std::string_view filename, bool recursive = false ) const;
+    [[nodiscard]] ConstLoadPtr load(
+      std::string_view filename,
+      bool recursive = false ) const;
 
     //! @copydoc load(std::string_view,bool) const
-    LoadPtr load( std::string_view filename, bool recursive = false );
+    [[nodiscard]] LoadPtr load(
+      std::string_view filename,
+      bool recursive = false );
 
     /**
      * @brief Creates a load with the given filename.
@@ -277,9 +294,12 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @param[in] filename
      *   Load filename.
      *
-     * @return Created load
+     * @return Created load.
+     *
+     * @throw Arinc665Exception
+     *   When a file with given filename already exist.
      **/
-    LoadPtr addLoad( std::string_view filename );
+    [[nodiscard]] LoadPtr addLoad( std::string_view filename );
 
     /** @} **/
 
@@ -292,24 +312,24 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @brief Return the number of batches.
      *
      * @param[in] recursive
-     *   If set to true also iterates over sub-directories.
+     *   If set to true also iterates over subdirectories.
      *
      * @return The number of loads.
      **/
-    size_t numberOfBatches( bool recursive = false ) const;
+    [[nodiscard]] size_t numberOfBatches( bool recursive = false ) const;
 
     /**
      * @brief Return batches.
      *
      * @param[in] recursive
-     *   If set to true also iterates over sub-directories.
+     *   If set to true also iterates over subdirectories.
      *
      * @return Batches contained within this container.
      **/
-    ConstBatches batches( bool recursive = false ) const;
+    [[nodiscard]] ConstBatches batches( bool recursive = false ) const;
 
     //! @copydoc batches(bool) const
-    Batches batches( bool recursive = false );
+    [[nodiscard]] Batches batches( bool recursive = false );
 
     /**
      * @brief Returns the batch with the given filename.
@@ -317,18 +337,20 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @param[in] filename
      *   Batch filename
      * @param[in] recursive
-     *   If set to true also iterates over sub-directories.
+     *   If set to true also iterates over subdirectories.
      *
      * @return The batch with the given filename.
      * @retval {}
-     *   If batch does not exists.
+     *   If batch does not exist.
      **/
-    ConstBatchPtr batch(
+    [[nodiscard]] ConstBatchPtr batch(
       std::string_view filename,
       bool recursive = false ) const;
 
     //! @copydoc batch(std::string_view,bool) const
-    BatchPtr batch( std::string_view filename, bool recursive = false );
+    [[nodiscard]] BatchPtr batch(
+      std::string_view filename,
+      bool recursive = false );
 
     /**
      * @brief Creates a batch with the given filename.
@@ -337,20 +359,23 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *   Batch filename.
      *
      * @return Created batch.
+     *
+     * @throw Arinc665Exception
+     *   When a file with given filename already exist.
      **/
-    BatchPtr addBatch( std::string_view filename );
+    [[nodiscard]] BatchPtr addBatch( std::string_view filename );
 
     /** @} **/
 
     /**
      * @brief Returns the parent.
      *
-     * @return The parent of this container.
+     * @return Parent of this container.
      **/
-    virtual ConstContainerEntityPtr parent() const = 0;
+    [[nodiscard]] virtual ConstContainerEntityPtr parent() const = 0;
 
     //! @copydoc parent() const
-    virtual ContainerEntityPtr parent() = 0;
+    [[nodiscard]] virtual ContainerEntityPtr parent() = 0;
 
     /**
      * @brief Returns the medium where this container is located.
@@ -359,10 +384,10 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @return The medium where this container is located.
      **/
-    virtual ConstMediumPtr medium() const = 0;
+    [[nodiscard]] virtual ConstMediumPtr medium() const = 0;
 
     //! @copydoc medium() const
-    virtual MediumPtr medium() = 0;
+    [[nodiscard]] virtual MediumPtr medium() = 0;
 
   protected:
     //! File type
@@ -377,14 +402,14 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @return The files (real file, load, batch) with the specified file.
      **/
-    ConstFiles files( FileType fileType ) const;
+    [[nodiscard]] ConstFiles files( FileType fileType ) const;
 
     //! @copydoc files(FileType) const
-    Files files( FileType fileType );
+    [[nodiscard]] Files files( FileType fileType );
 
   private:
-    //! Sub-Directories
-    Directories subDirectoriesV;
+    //! Subdirectories
+    Directories subdirectoriesV;
     //! Files
     Files filesV;
 };

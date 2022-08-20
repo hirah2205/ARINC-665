@@ -60,9 +60,10 @@ ConstBatchInformation Batch::targets() const
 
   for ( const auto &[ targetHardwareId, loads ] : batchesV )
   {
-    batchInfo.emplace(
+    batchInfo.try_emplace(
       targetHardwareId,
-      ConstLoads{ loads.begin(), loads.end() } );
+      loads.begin(),
+      loads.end() );
   }
 
   return batchInfo;
@@ -74,9 +75,10 @@ BatchInformation Batch::targets()
 
   for ( const auto &[ targetHardwareId, loads ] : batchesV )
   {
-    batchInfo.emplace(
+    batchInfo.try_emplace(
       targetHardwareId,
-      Loads{ loads.begin(), loads.end() } );
+      loads.begin(),
+      loads.end() );
   }
 
   return batchInfo;
@@ -84,7 +86,7 @@ BatchInformation Batch::targets()
 
 ConstLoads Batch::target( std::string_view targetHardwareId ) const
 {
-  auto it{ batchesV.find( targetHardwareId ) };
+  const auto it{ batchesV.find( targetHardwareId ) };
 
   if ( it == batchesV.end() )
   {
@@ -109,13 +111,13 @@ Loads Batch::target( std::string_view targetHardwareId )
 void Batch::target( std::string_view targetHardwareId, const Loads &loads )
 {
   WeakLoads weakLoads{ loads.begin(), loads.end() };
-  batchesV.emplace( std::string{ targetHardwareId}, std::move( weakLoads ) );
+  batchesV.try_emplace( std::string{ targetHardwareId }, std::move( weakLoads ) );
 }
 
 void Batch::target( std::string &&targetHardwareId, const Loads &loads )
 {
   WeakLoads weakLoads{ loads.begin(), loads.end() };
-  batchesV.emplace( std::move( targetHardwareId), std::move( weakLoads ) );
+  batchesV.try_emplace( std::move( targetHardwareId) , std::move( weakLoads ) );
 }
 
 }

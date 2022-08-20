@@ -39,7 +39,7 @@ class ARINC665_EXPORT Batch : public File
      * @param[in] parent
      *   Parent element.
      * @param[in] name
-     *   Name of the batch.
+     *   Name of the Batch.
      **/
     Batch( const ContainerEntityPtr& parent, std::string_view name );
 
@@ -55,7 +55,7 @@ class ARINC665_EXPORT Batch : public File
 
     /**
      * @name Part Number
-     * A batch has its own pat number.
+     * A batch has its own Part Number.
      *
      * @{
      **/

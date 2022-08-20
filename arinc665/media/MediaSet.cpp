@@ -25,12 +25,12 @@ namespace Arinc665::Media {
 
 ConstMediaSetPtr MediaSet::mediaSet() const
 {
-  return std::dynamic_pointer_cast< const MediaSet>( shared_from_this());
+  return std::dynamic_pointer_cast< const MediaSet>( shared_from_this() );
 }
 
 MediaSetPtr MediaSet::mediaSet()
 {
-  return std::dynamic_pointer_cast< MediaSet>( shared_from_this());
+  return std::dynamic_pointer_cast< MediaSet>( shared_from_this() );
 }
 
 MediaSet::Type MediaSet::type() const
@@ -43,38 +43,38 @@ std::string_view MediaSet::partNumber() const
   return partNumberV;
 }
 
-void MediaSet::partNumber( std::string_view partNumber)
+void MediaSet::partNumber( std::string_view partNumber )
 {
   partNumberV = partNumber;
 }
 
-void MediaSet::partNumber( std::string &&partNumber)
+void MediaSet::partNumber( std::string &&partNumber )
 {
-  partNumberV = std::move( partNumber);
+  partNumberV = std::move( partNumber );
 }
 
 uint8_t MediaSet::numberOfMedia() const
 {
-  assert( mediaV.size() <= std::numeric_limits< uint8_t>::max());
+  assert( mediaV.size() <= std::numeric_limits< uint8_t>::max() );
 
-  return static_cast< uint8_t>( mediaV.size());
+  return static_cast< uint8_t>( mediaV.size() );
 }
 
 void MediaSet::numberOfMedia(
   const uint8_t numberOfMedia,
-  const bool deleteFiles)
+  const bool deleteFiles )
 {
-  if (numberOfMedia == mediaV.size())
+  if ( numberOfMedia == mediaV.size() )
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info)
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
       << "No actions needed";
     return;
   }
 
-  if (numberOfMedia > mediaV.size())
+  if ( numberOfMedia > mediaV.size() )
   {
     // Add media
-    while (numberOfMedia > mediaV.size())
+    while ( numberOfMedia > mediaV.size() )
     {
       addMedium();
     }
@@ -82,16 +82,16 @@ void MediaSet::numberOfMedia(
   else
   {
     // remove media
-    while (numberOfMedia < mediaV.size())
+    while ( numberOfMedia < mediaV.size() )
     {
-      removeMedium( deleteFiles);
+      removeMedium( deleteFiles );
     }
   }
 }
 
 ConstMedia MediaSet::media() const
 {
-  return ConstMedia( mediaV.begin(), mediaV.end());
+  return ConstMedia{ mediaV.begin(), mediaV.end() };
 }
 
 Media MediaSet::media()
@@ -99,11 +99,11 @@ Media MediaSet::media()
   return mediaV;
 }
 
-ConstMediumPtr MediaSet::medium( const uint8_t index) const
+ConstMediumPtr MediaSet::medium( const uint8_t index ) const
 {
-  auto medium{ mediaV.find( index)};
+  const auto medium{ mediaV.find( index) };
 
-  if (medium == mediaV.end())
+  if ( medium == mediaV.end() )
   {
     return {};
   }
@@ -111,11 +111,11 @@ ConstMediumPtr MediaSet::medium( const uint8_t index) const
   return medium->second;
 }
 
-MediumPtr MediaSet::medium( const uint8_t index)
+MediumPtr MediaSet::medium( const uint8_t index )
 {
-  auto medium{ mediaV.find( index)};
+  const auto medium{ mediaV.find( index ) };
 
-  if (medium == mediaV.end())
+  if ( medium == mediaV.end() )
   {
     return {};
   }
@@ -127,18 +127,18 @@ MediumPtr MediaSet::addMedium()
 {
   if ( mediaV.size() >= 255U )
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning )
       << "Maximum number of media reached";
     return {};
   }
 
-  const auto newIndex{ static_cast< uint8_t>( mediaV.size() + 1U)};
+  const auto newIndex{ static_cast< uint8_t>( mediaV.size() + 1U ) };
 
-  auto medium( std::make_shared< Medium>(
-    std::dynamic_pointer_cast< MediaSet>( shared_from_this()),
-    newIndex ));
+  const auto medium{ std::make_shared< Medium>(
+    std::dynamic_pointer_cast< MediaSet>( shared_from_this() ),
+    newIndex ) };
 
-  mediaV.insert( {newIndex, medium });
+  mediaV.try_emplace( newIndex, medium );
 
   return medium;
 }
@@ -151,11 +151,11 @@ void MediaSet::removeMedium( const bool deleteFiles [[maybe_unused]])
 
 size_t MediaSet::numberOfFiles() const
 {
-  size_t numberOfFiles = 0;
+  size_t numberOfFiles{ 0 };
 
-  for ( const auto &medium : mediaV)
+  for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    numberOfFiles += medium.second->numberOfFiles( true);
+    numberOfFiles += medium->numberOfFiles( true );
   }
 
   return numberOfFiles;
@@ -163,13 +163,14 @@ size_t MediaSet::numberOfFiles() const
 
 ConstFiles MediaSet::files() const
 {
-  ConstFiles files;
+  ConstFiles files{};
 
   // Iterate over all media and add their files to a complete list.
-  for ( const auto &[mediumNumber,medium] : mediaV )
+  for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    auto mediaFiles{ static_cast< const Medium& >( *medium ).files( true) };
-    files.insert( files.end(), mediaFiles.begin(), mediaFiles.end() );
+    files.splice(
+      files.end(),
+      std::const_pointer_cast< const Medium >( medium )->files( true ) );
   }
 
   return files;
@@ -177,13 +178,12 @@ ConstFiles MediaSet::files() const
 
 Files MediaSet::files()
 {
-  Files files;
+  Files files{};
 
   // Iterate over all media and add their files to a complete list.
-  for ( auto &[ mediumNumber, medium ] : mediaV )
+  for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    auto mediaFiles{ medium->files( true ) };
-    files.insert( files.end(), mediaFiles.begin(), mediaFiles.end() );
+    files.splice( files.end(), medium->files( true ) );
   }
 
   return files;
@@ -191,41 +191,37 @@ Files MediaSet::files()
 
 ConstFilePtr MediaSet::file( std::string_view filename ) const
 {
-  for ( auto const &medium : mediaV)
+  for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    ConstFilePtr file( medium.second->file( filename, true ) );
-
-    if ( file)
+    if ( const auto file{ medium->file( filename, true ) }; file )
     {
       return file;
     }
   }
 
-  return ConstFilePtr();
+  return {};
 }
 
 FilePtr MediaSet::file( std::string_view filename )
 {
-  for ( auto &medium : mediaV)
+  for ( const auto &[  mediumNumber, medium ] : mediaV )
   {
-    FilePtr file( medium.second->file( filename, true ) );
-
-    if ( file)
+    if ( const auto file{ medium->file( filename, true ) }; file )
     {
       return file;
     }
   }
 
-  return FilePtr();
+  return {};
 }
 
 size_t MediaSet::numberOfLoads() const
 {
-  size_t numberOfLoads = 0;
+  size_t numberOfLoads{ 0 };
 
-  for ( const auto &medium : mediaV)
+  for ( const auto &[  mediumNumber, medium ] : mediaV )
   {
-    numberOfLoads += medium.second->numberOfLoads( true);
+    numberOfLoads += medium->numberOfLoads( true );
   }
 
   return numberOfLoads;
@@ -235,11 +231,11 @@ ConstLoads MediaSet::loads() const
 {
   ConstLoads loads;
 
-  for (const auto & medium : mediaV)
+  for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    ConstLoads mediaLoads( static_cast< const Medium&>(*medium.second).loads(
-      true));
-    loads.insert( loads.end(), mediaLoads.begin(), mediaLoads.end());
+    loads.splice(
+      loads.end(),
+      std::const_pointer_cast< const Medium >( medium )->loads( true ) );
   }
 
   return loads;
@@ -249,22 +245,19 @@ Loads MediaSet::loads()
 {
   Loads loads;
 
-  for (const auto & medium : mediaV)
+  for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    Loads mediaLoads{ medium.second->loads( true)};
-    loads.insert( loads.end(), mediaLoads.begin(), mediaLoads.end());
+    loads.splice( loads.end(), medium->loads( true ) );
   }
 
   return loads;
 }
 
-ConstLoadPtr MediaSet::load( std::string_view filename) const
+ConstLoadPtr MediaSet::load( std::string_view filename ) const
 {
-  for (const auto & medium : mediaV)
+  for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    auto load( medium.second->load( filename, true));
-
-    if (load)
+    if ( const auto load{ medium->load( filename, true ) }; load )
     {
       return load;
     }
@@ -273,13 +266,11 @@ ConstLoadPtr MediaSet::load( std::string_view filename) const
   return {};
 }
 
-LoadPtr MediaSet::load( std::string_view filename)
+LoadPtr MediaSet::load( std::string_view filename )
 {
-  for (const auto & medium : mediaV)
+  for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    auto load( medium.second->load( filename, true));
-
-    if (load)
+    if ( const auto load{ medium->load( filename, true ) }; load )
     {
       return load;
     }
@@ -290,11 +281,11 @@ LoadPtr MediaSet::load( std::string_view filename)
 
 size_t MediaSet::numberOfBatches() const
 {
-  size_t numberOfBatches = 0;
+  size_t numberOfBatches{ 0 };
 
-  for ( const auto &medium : mediaV)
+  for ( const auto &[ mediumNumber, medium ] : mediaV)
   {
-    numberOfBatches += medium.second->numberOfBatches( true);
+    numberOfBatches += medium->numberOfBatches( true);
   }
 
   return numberOfBatches;
@@ -302,13 +293,13 @@ size_t MediaSet::numberOfBatches() const
 
 ConstBatches MediaSet::batches() const
 {
-  ConstBatches batches;
+  ConstBatches batches{};
 
-  for (const auto & medium : mediaV)
+  for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    auto mediaBatches(
-      std::const_pointer_cast< const Medium>( medium.second)->batches( true));
-    batches.insert( batches.end(), mediaBatches.begin(), mediaBatches.end());
+    batches.splice(
+      batches.end(),
+      std::const_pointer_cast< const Medium>( medium )->batches( true ) );
   }
 
   return batches;
@@ -316,12 +307,11 @@ ConstBatches MediaSet::batches() const
 
 Batches MediaSet::batches()
 {
-  Batches batches;
+  Batches batches{};
 
-  for (const auto & medium : mediaV)
+  for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    auto mediaBatches( medium.second->batches( true));
-    batches.insert( batches.end(), mediaBatches.begin(), mediaBatches.end());
+    batches.splice( batches.end(), medium->batches( true ) );
   }
 
   return batches;
@@ -329,11 +319,9 @@ Batches MediaSet::batches()
 
 ConstBatchPtr MediaSet::batch( std::string_view filename ) const
 {
-  for ( const auto & medium : mediaV)
+  for ( const auto & [ mediumNumber, medium ] : mediaV)
   {
-    auto batch( medium.second->batch( filename, true));
-
-    if (batch)
+    if ( const auto batch{ medium->batch( filename, true ) }; batch )
     {
       return batch;
     }
@@ -342,13 +330,11 @@ ConstBatchPtr MediaSet::batch( std::string_view filename ) const
   return {};
 }
 
-BatchPtr MediaSet::batch( std::string_view filename)
+BatchPtr MediaSet::batch( std::string_view filename )
 {
-  for ( const auto & medium : mediaV)
+  for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    auto batch( medium.second->batch( filename, true));
-
-    if ( batch )
+    if ( const auto batch{ medium->batch( filename, true ) }; batch )
     {
       return batch;
     }

@@ -97,16 +97,16 @@ QModelIndex MediaSetModel::index(
         return {};
       }
 
-      if ( std::cmp_less( row, containerParent->numberOfSubDirectories() ) )
+      if ( std::cmp_less( row, containerParent->numberOfSubdirectories() ) )
       {
-        auto dirIt{ std::next( containerParent->subDirectories().begin(), row ) };
+        auto dirIt{ std::next( containerParent->subdirectories().begin(), row ) };
 
         return createIndex( row, column, (void*)dirIt->get() );
       }
 
       auto fileIt{ std::next(
         containerParent->files( false ).begin(),
-        row - static_cast< ptrdiff_t >( containerParent->numberOfSubDirectories() ) ) };
+        row - static_cast< ptrdiff_t >( containerParent->numberOfSubdirectories() ) ) };
 
       return createIndex( row, column, (void*)fileIt->get() );
     }
@@ -173,7 +173,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
 
       auto grandParent( dir->parent()->parent() );
 
-      auto subDirs( grandParent->subDirectories() );
+      auto subDirs( grandParent->subdirectories() );
 
       // find index of parent in grandparent list
       auto pos( std::find( subDirs.begin(), subDirs.end(), dir->parent() ) );
@@ -209,7 +209,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
 
       auto grandParent{ file->parent()->parent() };
 
-      auto subDirs{ grandParent->subDirectories() };
+      auto subDirs{ grandParent->subdirectories() };
 
       // find index of parent in grandparent list
       auto pos{ std::find( subDirs.begin(), subDirs.end(), file->parent() ) };
@@ -351,7 +351,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
 
       // Medium and Directories have subdirectories and files
       return static_cast< int>(
-        container->numberOfSubDirectories() +
+        container->numberOfSubdirectories() +
         container->numberOfFiles( false ) );
     }
 

@@ -50,7 +50,7 @@ class ARINC665_EXPORT Directory : public ContainerEntity
     /**
      * @brief Returns the name of the directory.
      *
-     * @return The name of the directory.
+     * @return Name of the directory.
      **/
     std::string_view name() const;
 
@@ -79,7 +79,7 @@ class ARINC665_EXPORT Directory : public ContainerEntity
      * @param[in] parent
      *   New parent.
      **/
-    void parent( const ContainerEntityPtr& parent);
+    void parent( const ContainerEntityPtr& parent );
 
   private:
     //! Directory Name

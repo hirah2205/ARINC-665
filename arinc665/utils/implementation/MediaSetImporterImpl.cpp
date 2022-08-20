@@ -666,12 +666,12 @@ MediaSetImporterImpl::checkCreateDirectory(
   // iterate over path elements
   for ( auto &subPath : dirPath )
   {
-    auto subDir{ dir->subDirectory( subPath.string() ) };
+    auto subDir{ dir->subdirectory( subPath.string() ) };
 
     // if subdirectory does not exist - create it
     if ( !subDir )
     {
-      subDir = dir->addSubDirectory( subPath.string() );
+      subDir = dir->addSubdirectory( subPath.string() );
 
       if (!subDir)
       {
