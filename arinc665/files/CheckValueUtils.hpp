@@ -37,17 +37,17 @@ RawFile ARINC665_EXPORT CheckValueUtils_encode(
  *
  * @param[in] rawFile
  *   Raw file data.
- * @param offset
- *   Offset where to start decoding.
  *
  * @return Decoded Check Value.
  *
  * @throw Arinc665Exception
  *   When Check Value is Invalid
+ *   - Invalid Length
+ *   - Invalid Type
+ *   - Check Value Type / Length mismatch
  **/
 Arinc645::CheckValue ARINC665_EXPORT CheckValueUtils_decode(
-  const ConstRawFileSpan &rawFile,
-  ptrdiff_t offset );
+  const ConstRawFileSpan &rawFile );
 
 }
 

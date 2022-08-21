@@ -646,8 +646,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
   if ( decodeV3Data && ( 0U!=loadCheckValuePtr ) )
   {
     loadCheckValueV = CheckValueUtils_decode(
-      rawFile,
-      static_cast< ptrdiff_t >( loadCheckValuePtr ) * 2 );
+      rawFile.subspan( loadCheckValuePtr * 2 ) );
   }
 
 
@@ -916,8 +915,7 @@ void LoadHeaderFile::decodeDataFiles(
 
       // check Value
       checkValue = CheckValueUtils_decode(
-        rawFile,
-        std::distance( rawFile.begin(), listIt ) );
+        rawFile.subspan( std::distance( rawFile.begin(), listIt ) ) );
     }
 
     // set it to begin of next file
@@ -999,8 +997,7 @@ void LoadHeaderFile::decodeSupportFiles(
     {
       // check Value
       checkValue = CheckValueUtils_decode(
-        rawFile,
-        std::distance( rawFile.begin(), listIt ) );
+        rawFile.subspan( std::distance( rawFile.begin(), listIt ) ) );
     }
 
     // set it to begin of next file

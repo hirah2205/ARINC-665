@@ -11,6 +11,7 @@
  **/
 
 #include <arinc665/files/CheckValueUtils.hpp>
+#include <arinc665/Arinc665Exception.hpp>
 
 #include <helper/Dump.hpp>
 
@@ -37,10 +38,31 @@ BOOST_AUTO_TEST_CASE( CheckValueUtils_encode1)
 //! CheckValueUtils_decode Test
 BOOST_AUTO_TEST_CASE( CheckValueUtils_decode1 )
 {
-  BOOST_CHECK( ( CheckValueUtils_decode( RawFile({ 0x00, 0x00 } ), 0) ==
+  const auto cv1{ CheckValueUtils_decode( RawFile{ 0x00, 0x00 } ) };
+
+  BOOST_CHECK( ( cv1 ==
     Arinc645::CheckValue{ Arinc645::CheckValueType::NotUsed, {} } ) );
-  BOOST_CHECK( ( CheckValueUtils_decode( RawFile( { 0x00, 0x06, 0x00, 0x01, 0x12, 0x34 } ), 0 ) ==
-   Arinc645::CheckValue{ Arinc645::CheckValueType::Crc8, RawFile( { 0x12, 0x34 } ) } ) );
+
+  const auto cv2{
+    CheckValueUtils_decode( RawFile{ 0x00, 0x06, 0x00, 0x01, 0x12, 0x34 } ) };
+
+  BOOST_CHECK( ( cv2 ==
+   Arinc645::CheckValue{ Arinc645::CheckValueType::Crc8, RawFile{ 0x12, 0x34 } } ) );
+
+  const auto cv3{
+    CheckValueUtils_decode( RawFile{ 0x00, 0x06, 0x00, 0x02, 0x12, 0x34 } ) };
+
+  BOOST_CHECK( ( cv3 ==
+    Arinc645::CheckValue{ Arinc645::CheckValueType::Crc16, RawFile{ 0x12, 0x34 } } ) );
+
+  BOOST_CHECK_THROW(
+    CheckValueUtils_decode( RawFile{} ),
+    Arinc665Exception );
+
+  BOOST_CHECK_THROW(
+    CheckValueUtils_decode( RawFile{ 0x00, 0x05, 0x00, 0x01, 0x12 } ),
+    Arinc665Exception );
+
 }
 
 BOOST_AUTO_TEST_SUITE_END()

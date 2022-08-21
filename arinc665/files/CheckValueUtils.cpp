@@ -14,6 +14,8 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <arinc645/CheckValueTypeDescription.hpp>
+
 #include <helper/Endianess.hpp>
 #include <helper/SafeCast.hpp>
 
@@ -55,10 +57,15 @@ RawFile CheckValueUtils_encode(
 }
 
 Arinc645::CheckValue CheckValueUtils_decode(
-  const ConstRawFileSpan &rawFile,
-  const ptrdiff_t offset )
+  const ConstRawFileSpan &rawFile )
 {
-  auto it{ rawFile.begin() + offset };
+  if ( rawFile.size() < sizeof( uint16_t ) )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Invalid check value" } );
+  }
+
+  auto it{ rawFile.begin() };
 
   uint16_t checkValueLength{};
   it = Helper::getInt< uint16_t>( it, checkValueLength );
@@ -75,13 +82,28 @@ Arinc645::CheckValue CheckValueUtils_decode(
       << Helper::AdditionalInfo{ "Invalid length field of check value" } );
   }
 
-  uint16_t checkValueType{};
-  it = Helper::getInt< uint16_t>( it, checkValueType );
+  uint16_t rawCheckValueType{};
+  it = Helper::getInt< uint16_t >( it, rawCheckValueType );
 
-  //! @todo Check Check Value Length against Type
+  const auto checkValueType{
+    Arinc645::CheckValueTypeDescription::instance().enumeration(
+      rawCheckValueType ) };
+
+  if ( Arinc645::CheckValueType::Invalid == checkValueType )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Invalid check value type" } );
+  }
+
+  if ( Arinc645::CheckValueSize.find( checkValueType )->second
+    != checkValueLength - ( 2U * sizeof( uint16_t ) ) )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Invalid check value length" } );
+  }
 
   return { std::make_tuple(
-    static_cast< Arinc645::CheckValueType >( checkValueType ),
+    checkValueType,
     std::vector< uint8_t >{
       it,
       it + checkValueLength - ( 2U * sizeof( uint16_t ) ) } ) };

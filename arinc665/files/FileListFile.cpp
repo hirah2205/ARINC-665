@@ -376,8 +376,7 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
   if ( decodeV3Data && ( 0U != fileCheckValuePtr ) )
   {
     const auto checkValue = CheckValueUtils_decode(
-      rawFile,
-      2U * static_cast< ptrdiff_t >( fileCheckValuePtr ) );
+      rawFile.subspan( 2 * fileCheckValuePtr ) );
 
     checkValueTypeV = std::get< 0 >( checkValue );
 
@@ -549,8 +548,7 @@ void FileListFile::decodeFilesInfo(
     {
       // check Value
       checkValue = CheckValueUtils_decode(
-        rawFile,
-        std::distance( rawFile.begin(), listIt ) );
+        rawFile.subspan( std::distance( rawFile.begin(), listIt ) ) );
     }
 
 
