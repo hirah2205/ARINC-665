@@ -106,7 +106,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     fileInfos.clear();
     for ( const auto &fileInfo : currentFileListFile.files() )
     {
-      fileInfos.emplace( fileInfo.filename, fileInfo );
+      fileInfos.try_emplace( fileInfo.filename, fileInfo );
     }
   }
   else
@@ -141,10 +141,10 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
 
     const auto rawFile{ readFileHandlerV( mediumIndex, fileInfo.path() ) };
 
-    const uint16_t crc{ Files::Arinc665File::calculateChecksum( rawFile ) };
-
     // compare checksums
-    if ( crc != fileInfo.crc )
+    if (
+      const auto crc{ Files::Arinc665File::calculateChecksum( rawFile ) };
+      crc != fileInfo.crc )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "CRC of file invalid" }
@@ -152,10 +152,12 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     }
 
     // Check and compare Check Value
-    if ( Arinc645::CheckValueType::NotUsed != std::get< 0 >( fileInfo.checkValue ) )
+    if (
+      const auto &[ checkValueType, checkValue ]{ fileInfo.checkValue };
+      Arinc645::CheckValueType::NotUsed != checkValueType )
     {
       const auto checkValueCalculated{ Arinc645::CheckValueGenerator::checkValue(
-        std::get< 0 >( fileInfo.checkValue ),
+        checkValueType,
         rawFile ) };
 
       if ( fileInfo.checkValue != checkValueCalculated )
@@ -167,7 +169,7 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     }
 
     // remember file size
-    fileSizes.emplace( fileName, rawFile.size() );
+    fileSizes.try_emplace( fileName, rawFile.size() );
   }
 }
 
@@ -314,7 +316,7 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex )
       readFileHandlerV( mediumIndex, loadHeaderFileIt->second.path() ) };
 
     // add load header to global information
-    loadHeaderFiles.emplace(
+    loadHeaderFiles.try_emplace(
       loadHeaderFileIt->second.filename,
       std::move( loadHeaderFile ) );
   }
@@ -632,7 +634,7 @@ void MediaSetImporterImpl::addBatches()
         {
           BOOST_THROW_EXCEPTION(
             Arinc665Exception()
-            << Helper::AdditionalInfo{ "Load part NUmber does not match Batch Info" }
+            << Helper::AdditionalInfo{ "Load part Number does not match Batch Info" }
             << boost::errinfo_file_name{ std::string{ load.headerFilename } } );
         }
 
