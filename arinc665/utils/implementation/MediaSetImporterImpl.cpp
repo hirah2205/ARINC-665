@@ -612,7 +612,7 @@ void MediaSetImporterImpl::addBatches()
     // iterate over target hardware
     for ( const auto &targetHardware : batchFile.targetsHardware() )
     {
-      Media::Loads batchLoads{};
+      Media::ConstLoads batchLoads{};
 
       // iterate over loads
       for ( const auto& load : targetHardware.loads )
