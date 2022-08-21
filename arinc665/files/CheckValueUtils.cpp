@@ -27,7 +27,7 @@ RawFile CheckValueUtils_encode(
   if ( !checkValue
     || ( Arinc645::CheckValueType::NotUsed == std::get< 0 >( *checkValue ) ) )
   {
-    Helper::setInt< uint16_t>( rawCheckValue.begin(), 0U );
+    Helper::setInt< uint16_t >( rawCheckValue.begin(), 0U );
     return rawCheckValue;
   }
 

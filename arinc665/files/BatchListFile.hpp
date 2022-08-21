@@ -93,39 +93,6 @@ class ARINC665_EXPORT BatchListFile : public ListFile
     explicit BatchListFile( SupportedArinc665Version version ) noexcept;
 
     /**
-     * @brief Creates batch list file with the given data.
-     *
-     * @param[in] version
-     *   ARINC 665 Version.
-     * @param[in] mediaSetPn
-     *   Media Set Part Number.
-     * @param[in] mediaSequenceNumber
-     *   Media Set Sequence Number.
-     * @param[in] numberOfMediaSetMembers
-     *   Number of Media Set Members.
-     * @param[in] batches
-     *   Batches Information.
-     * @param[in] userDefinedData
-     *   Additional User Defined Data.
-     **/
-    BatchListFile(
-      SupportedArinc665Version version,
-      std::string_view mediaSetPn,
-      uint8_t mediaSequenceNumber,
-      uint8_t numberOfMediaSetMembers,
-      const BatchesInfo &batches,
-      const UserDefinedData &userDefinedData );
-
-    //! @copydoc BatchListFile(SupportedArinc665Version,std::string_view,uint8_t,uint8_t,const BatchesInfo&,const UserDefinedData&)
-    BatchListFile(
-      SupportedArinc665Version version,
-      std::string &&mediaSetPn,
-      uint8_t mediaSequenceNumber,
-      uint8_t numberOfMediaSetMembers,
-      BatchesInfo &&batches,
-      UserDefinedData &&userDefinedData );
-
-    /**
      * @brief Creates a batch list file from the given raw data.
      *
      * @param[in] rawFile

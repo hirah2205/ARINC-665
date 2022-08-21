@@ -81,31 +81,6 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
     explicit BatchFile( SupportedArinc665Version version );
 
     /**
-     * @brief Creates batch file with the given data.
-     *
-     * @param[in] version
-     *   ARINC 665 Version.
-     * @param[in] partNumber
-     *   Part Number.
-     * @param[in] comment
-     *   Batch Comment.
-     * @param[in] targets
-     *   Targets Information.
-     **/
-    BatchFile(
-      SupportedArinc665Version version,
-      std::string_view partNumber,
-      std::string_view comment,
-      const BatchTargetsInfo &targets );
-
-    //! @copydoc BatchFile::BatchFile(SupportedArinc665Version,std::string_view,std::string_view,const BatchTargetsInfo&)
-    BatchFile(
-      SupportedArinc665Version version,
-      std::string &&partNumber,
-      std::string &&comment,
-      BatchTargetsInfo &&targets );
-
-    /**
      * @brief Creates a batch file from the given raw data.
      *
      * @param[in] rawFile
@@ -121,13 +96,16 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
 
     /**
      * @name Batch Part Number
+     *
+     * A Batchis assigned a Part Number.
+     *
      * @{
      **/
 
     /**
-     * @brief Returns the Part Number of the Batch File.
+     * @brief Returns the Part Number of the Batch.
      *
-     * @return Part number of the batch file.
+     * @return Part Number of the Batch.
      **/
     [[nodiscard]] std::string_view partNumber() const;
 
@@ -135,7 +113,7 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
      * @brief Updates the part number of the batch file.
      *
      * @param[in] partNumber
-     *   The new part number.
+     *   New Batch Part Number.
      **/
     void partNumber( std::string_view partNumber );
 
@@ -229,7 +207,7 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
       const ConstRawFileSpan &rawFile,
       ptrdiff_t offset );
 
-    //! Part number
+    //! Part Number
     std::string partNumberV;
     //! Comment
     std::string commentV;

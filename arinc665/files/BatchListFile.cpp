@@ -25,38 +25,6 @@ BatchListFile::BatchListFile( const SupportedArinc665Version version) noexcept:
 {
 }
 
-BatchListFile::BatchListFile(
-  const SupportedArinc665Version version,
-  std::string_view mediaSetPn,
-  const uint8_t mediaSequenceNumber,
-  const uint8_t numberOfMediaSetMembers,
-  const BatchesInfo &batches,
-  const UserDefinedData &userDefinedData ):
-  ListFile{ version, mediaSetPn, mediaSequenceNumber, numberOfMediaSetMembers },
-  batchesV{ batches },
-  userDefinedDataV{ userDefinedData }
-{
-  checkUserDefinedData();
-}
-
-BatchListFile::BatchListFile(
-  SupportedArinc665Version version,
-  std::string &&mediaSetPn,
-  uint8_t mediaSequenceNumber,
-  uint8_t numberOfMediaSetMembers,
-  BatchesInfo &&batches,
-  UserDefinedData &&userDefinedData ):
-  ListFile{
-    version,
-    std::move( mediaSetPn ),
-    mediaSequenceNumber,
-    numberOfMediaSetMembers },
-  batchesV{ std::move( batches ) },
-  userDefinedDataV{ std::move( userDefinedData ) }
-{
-  checkUserDefinedData();
-}
-
 BatchListFile::BatchListFile( const ConstRawFileSpan &rawFile ):
   ListFile{ rawFile, FileType::BatchList }
 {

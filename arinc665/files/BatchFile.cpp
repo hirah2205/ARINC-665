@@ -25,28 +25,6 @@ BatchFile::BatchFile( const SupportedArinc665Version version):
 {
 }
 
-BatchFile::BatchFile(
-  SupportedArinc665Version version,
-  std::string_view partNumber,
-  std::string_view comment,
-  const BatchTargetsInfo &targets):
-  Arinc665File{ version},
-  partNumberV{ partNumber}, commentV{ comment},
-  targetsHardwareV{ targets}
-{
-}
-
-BatchFile::BatchFile(
-  SupportedArinc665Version version,
-  std::string &&partNumber,
-  std::string &&comment,
-  BatchTargetsInfo &&targets):
-  Arinc665File{ version},
-  partNumberV{ std::move( partNumber)}, commentV{ std::move( comment)},
-  targetsHardwareV{ std::move( targets)}
-{
-}
-
 BatchFile::BatchFile( const ConstRawFileSpan &rawFile):
   Arinc665File{ rawFile, FileType::BatchFile}
 {

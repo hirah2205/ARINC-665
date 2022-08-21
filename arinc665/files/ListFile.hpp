@@ -109,31 +109,6 @@ class ARINC665_EXPORT ListFile : public Arinc665File
       SupportedArinc665Version version,
       ptrdiff_t checksumPosition = DefaultChecksumPosition ) noexcept;
 
-    /**
-     * @copydoc Arinc665File::Arinc665File(SupportedArinc665Version,ptrdiff_t)
-     * @param[in] mediaSetPn
-     *   Media Set Part Number.
-     * @param[in] mediaSequenceNumber
-     *   Media Sequence Number [1..255].
-     * @param[in] numberOfMediaSetMembers
-     *   Number of Media Set Members [1..255] & mediaSequenceNumber <=
-     *     @p numberOfMediaSetMembers
-     **/
-    ListFile(
-      SupportedArinc665Version version,
-      std::string_view mediaSetPn,
-      uint8_t mediaSequenceNumber,
-      uint8_t numberOfMediaSetMembers,
-      ptrdiff_t checksumPosition = DefaultChecksumPosition ) noexcept;
-
-    //! @copydoc ListFile(SupportedArinc665Version,std::string_view,uint8_t,uint8_t,ptrdiff_t)
-    ListFile(
-      SupportedArinc665Version version,
-      std::string &&mediaSetPn,
-      uint8_t mediaSequenceNumber,
-      uint8_t numberOfMediaSetMembers,
-      ptrdiff_t checksumPosition = DefaultChecksumPosition ) noexcept;
-
     //! @copydoc Arinc665File::Arinc665File(const ConstRawFileSpan&,FileType,ptrdiff_t)
     ListFile(
       const ConstRawFileSpan &rawFile,
@@ -190,9 +165,9 @@ class ARINC665_EXPORT ListFile : public Arinc665File
     //! Media Set Part Number.
     std::string mediaSetPnV;
     //! Media Sequence Number.
-    uint8_t mediaSequenceNumberV;
+    uint8_t mediaSequenceNumberV{ 0U };
     //! Number of Media Set Members.
-    uint8_t numberOfMediaSetMembersV;
+    uint8_t numberOfMediaSetMembersV{ 0U };
 };
 
 }

@@ -58,35 +58,7 @@ void ListFile::numberOfMediaSetMembers(
 ListFile::ListFile(
   SupportedArinc665Version version,
   ptrdiff_t checksumPosition ) noexcept:
-  Arinc665File{ version, checksumPosition },
-  mediaSequenceNumberV{ 0 },
-  numberOfMediaSetMembersV{ 0 }
-{
-}
-
-ListFile::ListFile(
-  const SupportedArinc665Version version,
-  std::string_view mediaSetPn,
-  uint8_t mediaSequenceNumber,
-  uint8_t numberOfMediaSetMembers,
-  const ptrdiff_t checksumPosition ) noexcept:
-  Arinc665File{ version, checksumPosition },
-  mediaSetPnV{ mediaSetPn },
-  mediaSequenceNumberV{ mediaSequenceNumber },
-  numberOfMediaSetMembersV{ numberOfMediaSetMembers }
-{
-}
-
-ListFile::ListFile(
-  const SupportedArinc665Version version,
-  std::string &&mediaSetPn,
-  uint8_t mediaSequenceNumber,
-  uint8_t numberOfMediaSetMembers,
-  const ptrdiff_t checksumPosition ) noexcept:
-  Arinc665File{ version, checksumPosition },
-  mediaSetPnV{ std::move( mediaSetPn ) },
-  mediaSequenceNumberV{ mediaSequenceNumber },
-  numberOfMediaSetMembersV{ numberOfMediaSetMembers }
+  Arinc665File{ version, checksumPosition }
 {
 }
 
@@ -94,9 +66,7 @@ ListFile::ListFile(
   const ConstRawFileSpan &rawFile,
   FileType expectedFileType,
   ptrdiff_t checksumPosition ):
-  Arinc665File{ rawFile, expectedFileType, checksumPosition },
-  mediaSequenceNumberV{ 0 },
-  numberOfMediaSetMembersV{ 0 }
+  Arinc665File{ rawFile, expectedFileType, checksumPosition }
 {
 }
 

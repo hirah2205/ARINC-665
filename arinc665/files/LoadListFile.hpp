@@ -96,39 +96,6 @@ class ARINC665_EXPORT LoadListFile : public ListFile
     explicit LoadListFile( SupportedArinc665Version version );
 
     /**
-     * @brief Creates load list file with the given data.
-     *
-     * @param[in] version
-     *   ARINC 665 version.
-     * @param[in] mediaSetPn
-     *   Media set part number.
-     * @param[in] mediaSequenceNumber
-     *   Media sequence number
-     * @param[in] numberOfMediaSetMembers
-     *   Number of media set members
-     * @param[in] loads
-     *   Loads information
-     * @param[in] userDefinedData
-     *   User defined data.
-     **/
-    LoadListFile(
-      SupportedArinc665Version version,
-      std::string_view mediaSetPn,
-      uint8_t mediaSequenceNumber,
-      uint8_t numberOfMediaSetMembers,
-      const LoadsInfo &loads,
-      const UserDefinedData &userDefinedData );
-
-    //! @copydoc LoadListFile(SupportedArinc665Version,std::string_view,uint8_t,uint8_t,const LoadsInfo&,const UserDefinedData&)
-    LoadListFile(
-      SupportedArinc665Version version,
-      std::string &&mediaSetPn,
-      uint8_t mediaSequenceNumber,
-      uint8_t numberOfMediaSetMembers,
-      LoadsInfo &&loads = {},
-      UserDefinedData &&userDefinedData = {} );
-
-    /**
      * @brief Creates a load list file from the given raw data.
      *
      * @param[in] rawFile
@@ -150,19 +117,19 @@ class ARINC665_EXPORT LoadListFile : public ListFile
     /**
      * @brief Returns the number of loads.
      *
-     * @return Number of loads.
+     * @return Number of Loads.
      **/
     [[nodiscard]] size_t numberOfLoads() const;
 
     /**
-     * @brief Returns the loads.
+     * @brief Returns the Loads.
      *
      * @return Loads.
      **/
     [[nodiscard]] const LoadsInfo& loads() const;
 
     /**
-     * @brief Returns the loads.
+     * @brief Returns the Loads.
      *
      * @return Loads.
      **/

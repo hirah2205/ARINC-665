@@ -111,40 +111,6 @@ class ARINC665_EXPORT FileListFile : public ListFile
     explicit FileListFile( SupportedArinc665Version version );
 
     /**
-     * @brief Creates file list file with the given data.
-     *
-     * @param[in] version
-     *   ARINC 665 version.
-     * @param[in] mediaSetPn
-     *   Media Set Part Number.
-     * @param[in] mediaSequenceNumber
-     *   Media Sequence Number [1..255].
-     * @param numberOfMediaSetMembers
-     *   Number of Media Set Members [1..255] & mediaSequenceNumber <=
-     *     @p numberOfMediaSetMembers
-     * @param[in] files
-     *   Files information.
-     * @param[in] userDefinedData
-     *   Additional User Defined Data.
-     **/
-    FileListFile(
-      SupportedArinc665Version version,
-      std::string_view mediaSetPn,
-      uint8_t mediaSequenceNumber,
-      uint8_t numberOfMediaSetMembers,
-      const FilesInfo &files,
-      const UserDefinedData &userDefinedData );
-
-    //! @copydoc FileListFile(SupportedArinc665Version,std::string_view,uint8_t,uint8_t,const FilesInfo&,const UserDefinedData&)
-    FileListFile(
-      SupportedArinc665Version version,
-      std::string &&mediaSetPn,
-      uint8_t mediaSequenceNumber,
-      uint8_t numberOfMediaSetMembers,
-      FilesInfo &&files = {},
-      UserDefinedData &&userDefinedData = {} );
-
-    /**
      * @brief Creates a file list file from the given raw data.
      *
      * @param[in] rawFile

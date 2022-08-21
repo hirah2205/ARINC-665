@@ -19,41 +19,9 @@
 
 namespace Arinc665::Files {
 
-LoadListFile::LoadListFile( SupportedArinc665Version version ):
+LoadListFile::LoadListFile( const SupportedArinc665Version version ):
   ListFile{ version }
 {
-}
-
-LoadListFile::LoadListFile(
-  SupportedArinc665Version version,
-  std::string_view mediaSetPn,
-  uint8_t mediaSequenceNumber,
-  uint8_t numberOfMediaSetMembers,
-  const LoadsInfo &loads,
-  const UserDefinedData &userDefinedData):
-  ListFile{ version, mediaSetPn, mediaSequenceNumber, numberOfMediaSetMembers },
-  loadsV{ loads },
-  userDefinedDataV{ userDefinedData }
-{
-  checkUserDefinedData();
-}
-
-LoadListFile::LoadListFile(
-  SupportedArinc665Version version,
-  std::string &&mediaSetPn,
-  uint8_t mediaSequenceNumber,
-  uint8_t numberOfMediaSetMembers,
-  LoadsInfo &&loads,
-  UserDefinedData &&userDefinedData):
-  ListFile{
-    version,
-    std::move( mediaSetPn ),
-    mediaSequenceNumber,
-    numberOfMediaSetMembers },
-  loadsV{ std::move( loads ) },
-  userDefinedDataV{ std::move( userDefinedData ) }
-{
-  checkUserDefinedData();
 }
 
 LoadListFile::LoadListFile( const ConstRawFileSpan &rawFile ):

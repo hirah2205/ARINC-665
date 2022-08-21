@@ -27,38 +27,6 @@ FileListFile::FileListFile( SupportedArinc665Version version ):
 {
 }
 
-FileListFile::FileListFile(
-  SupportedArinc665Version version,
-  std::string_view mediaSetPn,
-  uint8_t mediaSequenceNumber,
-  uint8_t numberOfMediaSetMembers,
-  const FilesInfo &files,
-  const UserDefinedData &userDefinedData ):
-  ListFile{ version, mediaSetPn, mediaSequenceNumber, numberOfMediaSetMembers },
-  filesV{ files },
-  userDefinedDataV{ userDefinedData }
-{
-  checkUserDefinedData();
-}
-
-FileListFile::FileListFile(
-  SupportedArinc665Version version,
-  std::string &&mediaSetPn,
-  uint8_t mediaSequenceNumber,
-  uint8_t numberOfMediaSetMembers,
-  FilesInfo &&files,
-  UserDefinedData &&userDefinedData ):
-  ListFile{
-    version,
-    std::move( mediaSetPn ),
-    mediaSequenceNumber,
-    numberOfMediaSetMembers },
-  filesV{ std::move( files ) },
-  userDefinedDataV{ std::move( userDefinedData ) }
-{
-  checkUserDefinedData();
-}
-
 FileListFile::FileListFile( const ConstRawFileSpan &rawFile):
   ListFile{ rawFile, FileType::FileList }
 {
