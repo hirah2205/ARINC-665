@@ -54,7 +54,7 @@ class ARINC665_EXPORT Batch : public File
     [[nodiscard]] FileType fileType() const final;
 
     /**
-     * @name Part Number
+     * @name Batch Part Number
      * A batch has its own Part Number.
      *
      * @{
@@ -68,24 +68,29 @@ class ARINC665_EXPORT Batch : public File
     [[nodiscard]] std::string_view partNumber() const;
 
     /**
-     * @brief Updates the Part Number
+     * @brief Updates the Batch Part Number.
      *
      * @param[in] partNumber
-     *   New Part Number
+     *   New Batch Part Number
      **/
     void partNumber( std::string_view partNumber );
 
     /** @} **/
 
     /**
-     * @name Comment
+     * @name Batch Comment
+     *
+     * A Batch can have an addition comment.
+     * This field may be used to include the batch definition design information
+     * or modification history of the Batch File.
+     *
      * @{
      **/
 
     /**
      * @brief Get the comment, which describes the batch.
      *
-     * @return The comment, which describes the batch.
+     * @return Comment, which describes the batch.
      **/
     [[nodiscard]] std::string_view comment() const;
 
@@ -104,6 +109,10 @@ class ARINC665_EXPORT Batch : public File
 
     /**
      * @name Batch Targets Information
+     *
+     * Defines the Target HW ID POS and Loads information, which are loaded by
+     * this batch.
+     *
      * @{
      **/
 
@@ -114,38 +123,50 @@ class ARINC665_EXPORT Batch : public File
      **/
     [[nodiscard]] ConstBatchInformation targets() const;
 
-    //! @copydoc targets() const
-    BatchInformation targets();
-
     /**
-     * @brief Return the Loads for the given Target Hardware ID
+     * @brief Return the Loads for the given Target Hardware ID Position.
      *
-     * @param[in] targetHardwareId
-     *   Target Hardware ID
+     * @param[in] targetHardwareIdPosition
+     *   Target Hardware ID Position
      *
-     * @return Loads corresponding to @p targetHardwareId
+     * @return Loads corresponding to @p targetHardwareIdPosition.
      **/
-    [[nodiscard]] ConstLoads target( std::string_view targetHardwareId ) const;
-
-    //! @copydoc target(std::string_view) const
-    Loads target( std::string_view targetHardwareId );
+    [[nodiscard]] ConstLoads target(
+      std::string_view targetHardwareIdPosition ) const;
 
     /**
-     * @brief Add Loads for the given Target Hardware ID.
+     * @brief Add Loads for the given Target Hardware ID Position.
      *
-     * @param[in] targetHardwareId
-     *   Target Hardware ID
+     * @param[in] targetHardwareIdPosition
+     *   Target Hardware ID Position
      * @param[in] loads
-     *   Loads for @p targetHardwareId.
+     *   Loads for @p targetHardwareIdPosition.
      **/
-    void target( std::string_view targetHardwareId, const Loads &loads );
+    void target(
+      std::string_view targetHardwareIdPosition,
+      const ConstLoads &loads );
 
-    //! @copydoc target(std::string_view,const Loads&)
-    void target( std::string &&targetHardwareId, const Loads &loads );
+    //! @copydoc target(std::string_view,const ConstLoads&)
+    void target(
+      std::string &&targetHardwareIdPosition,
+      const ConstLoads &loads );
+
+    /**
+     * @brief Add the given Load to the Target Hardware ID Position.
+     *
+     * @param[in] targetHardwareIdPosition
+     *   Target Hardware ID Position
+     * @param[in] load
+     *   Load to add.
+     **/
+    void target( std::string_view targetHardwareIdPosition, ConstLoadPtr load );
 
     /** @} **/
 
   private:
+    //! Weak %Loads List
+    using WeakLoads = std::list< ConstLoadPtr::weak_type >;
+
     //! Batch Information (Target Hardware ID -> Weak Loads)
     using WeakBatchInfo = std::map< std::string, WeakLoads, std::less<> >;
 

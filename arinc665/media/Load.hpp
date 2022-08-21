@@ -201,8 +201,13 @@ class ARINC665_EXPORT Load : public File
      **/
     [[nodiscard]] ConstLoadFiles dataFiles( bool effective = false ) const;
 
-    //! @copydoc dataFiles(bool) const
-    [[nodiscard]] LoadFiles dataFiles( bool effective = false );
+    /**
+     * @brief Sets Data Files.
+     *
+     * @param[in] files
+     *   Files to set.
+     **/
+    void dataFiles( const ConstLoadFiles &files );
 
     /**
      * @brief Add the given file as data file.
@@ -218,13 +223,13 @@ class ARINC665_EXPORT Load : public File
      * @sa dataFilesCheckValueType
      **/
     void dataFile(
-      const FilePtr& file,
+      const ConstFilePtr& file,
       std::string_view partNumber,
       const std::optional< Arinc645::CheckValueType >& checkValueType );
 
     //! @copydoc dataFile(const FilePtr&,std::string_view,const std::optional<Arinc645::CheckValueType>&)
     void dataFile(
-      const FilePtr &file,
+      const ConstFilePtr &file,
       std::string &&partNumber,
       std::optional< Arinc645::CheckValueType >&& checkValueType = {} );
 
@@ -238,7 +243,7 @@ class ARINC665_EXPORT Load : public File
      **/
 
     /**
-     * @brief Returns the support files.
+     * @brief Returns the Support Files.
      *
      * @param[in] effective
      *   If set to true the effective check value type is returned for each file.
@@ -247,8 +252,13 @@ class ARINC665_EXPORT Load : public File
      **/
     [[nodiscard]] ConstLoadFiles supportFiles( bool effective = false ) const;
 
-    //! @copydoc supportFiles(bool) const
-    [[nodiscard]] LoadFiles supportFiles( bool effective = false );
+    /**
+     * @brief Sets Support Files.
+     *
+     * @param[in] files
+     *   Files to set.
+     **/
+    void supportFiles( const ConstLoadFiles &files );
 
     /**
      * @brief Add the given file as support file.
@@ -460,7 +470,7 @@ class ARINC665_EXPORT Load : public File
   private:
     //! Weak %Load %File ( file, Part Number, Check Value Type ).
     using WeakLoadFile = std::tuple<
-      FilePtr::weak_type,
+      ConstFilePtr::weak_type,
       std::string,
       std::optional< Arinc645::CheckValueType > >;
     //! Weak %Load %File List.

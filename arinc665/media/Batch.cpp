@@ -69,24 +69,9 @@ ConstBatchInformation Batch::targets() const
   return batchInfo;
 }
 
-BatchInformation Batch::targets()
+ConstLoads Batch::target( std::string_view targetHardwareIdPosition ) const
 {
-  BatchInformation batchInfo{};
-
-  for ( const auto &[ targetHardwareId, loads ] : batchesV )
-  {
-    batchInfo.try_emplace(
-      targetHardwareId,
-      loads.begin(),
-      loads.end() );
-  }
-
-  return batchInfo;
-}
-
-ConstLoads Batch::target( std::string_view targetHardwareId ) const
-{
-  const auto it{ batchesV.find( targetHardwareId ) };
+  const auto it{ batchesV.find( targetHardwareIdPosition ) };
 
   if ( it == batchesV.end() )
   {
@@ -96,28 +81,31 @@ ConstLoads Batch::target( std::string_view targetHardwareId ) const
   return { it->second.begin(), it->second.end() };
 }
 
-Loads Batch::target( std::string_view targetHardwareId )
+void Batch::target(
+  std::string_view targetHardwareIdPosition,
+  const ConstLoads &loads )
 {
-  auto it{ batchesV.find( targetHardwareId ) };
-
-  if (it == batchesV.end())
-  {
-    return {};
-  }
-
-  return { it->second.begin(), it->second.end() };
+  batchesV.try_emplace(
+    std::string{ targetHardwareIdPosition },
+    loads.begin(),
+    loads.end() );
 }
 
-void Batch::target( std::string_view targetHardwareId, const Loads &loads )
+void Batch::target(
+  std::string &&targetHardwareIdPosition,
+  const ConstLoads &loads )
 {
-  WeakLoads weakLoads{ loads.begin(), loads.end() };
-  batchesV.try_emplace( std::string{ targetHardwareId }, std::move( weakLoads ) );
+  batchesV.try_emplace(
+    std::move( targetHardwareIdPosition ),
+    loads.begin(),
+    loads.end() );
 }
 
-void Batch::target( std::string &&targetHardwareId, const Loads &loads )
+void Batch::target(
+  std::string_view targetHardwareIdPosition,
+  ConstLoadPtr load )
 {
-  WeakLoads weakLoads{ loads.begin(), loads.end() };
-  batchesV.try_emplace( std::move( targetHardwareId) , std::move( weakLoads ) );
+  batchesV[ std::string{ targetHardwareIdPosition } ].emplace_back( std::move( load ) );
 }
 
 }

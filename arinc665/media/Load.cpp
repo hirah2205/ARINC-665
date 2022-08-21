@@ -143,32 +143,15 @@ ConstLoadFiles Load::dataFiles( const bool effective ) const
   return files;
 }
 
-LoadFiles Load::dataFiles( const bool effective )
+void Load::dataFiles( const ConstLoadFiles &files )
 {
-  LoadFiles files{};
-
-  for ( const auto &[filePtr, partNumber, checkValueType] : dataFilesV )
-  {
-    if ( effective )
-    {
-      files.emplace_back(
-        filePtr.lock(),
-        partNumber,
-        checkValueType.value_or( effectiveDataFilesCheckValueType() ) );
-    }
-    else
-    {
-      files.emplace_back( filePtr.lock(), partNumber, checkValueType );
-    }
-  }
-
-  return files;
+  dataFilesV.assign( files.begin(), files.end() );
 }
 
 void Load::dataFile(
-  const FilePtr &file,
+  const ConstFilePtr &file,
   std::string_view partNumber,
-  const std::optional< Arinc645::CheckValueType >& checkValueType )
+  const std::optional< Arinc645::CheckValueType > &checkValueType )
 {
   if ( !file || ( file->mediaSet() != mediaSet() ) )
   {
@@ -180,9 +163,9 @@ void Load::dataFile(
 }
 
 void Load::dataFile(
-  const FilePtr &file,
+  const ConstFilePtr &file,
   std::string &&partNumber,
-  std::optional< Arinc645::CheckValueType >&& checkValueType )
+  std::optional< Arinc645::CheckValueType > &&checkValueType )
 {
   if ( !file || ( file->mediaSet() != mediaSet() ) )
   {
@@ -218,26 +201,9 @@ ConstLoadFiles Load::supportFiles( const bool effective ) const
   return files;
 }
 
-LoadFiles Load::supportFiles( const bool effective )
+void Load::supportFiles( const ConstLoadFiles &files )
 {
-  LoadFiles files{};
-
-  for ( const auto &[filePtr, partNumber, checkValueType ] : supportFilesV )
-  {
-    if ( effective )
-    {
-      files.emplace_back(
-        filePtr.lock(),
-        partNumber,
-        checkValueType.value_or( effectiveSupportFilesCheckValueType() ) );
-    }
-    else
-    {
-      files.emplace_back( filePtr.lock(), partNumber, checkValueType );
-    }
-  }
-
-  return files;
+  supportFilesV.assign( files.begin(), files.end() );
 }
 
 void Load::supportFile(

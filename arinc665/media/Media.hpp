@@ -168,8 +168,6 @@ using LoadPtr = std::shared_ptr< Load >;
 using Loads = std::list< LoadPtr >;
 //! Constant %Loads List
 using ConstLoads = std::list< ConstLoadPtr >;
-//! Weak %Loads List
-using WeakLoads = std::list< LoadPtr::weak_type >;
 //! Load Variants
 using LoadVariant = std::variant< LoadPtr, ConstLoadPtr >;
 //! Loads Variant
