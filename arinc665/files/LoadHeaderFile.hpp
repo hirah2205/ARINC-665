@@ -104,7 +104,7 @@ namespace Arinc665::Files {
 class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
 {
   public:
-    //! Positions List
+    //! Positions
     using Positions = std::set< std::string, std::less<> >;
     //! Target Hardware ID / Positions
     using TargetHardwareIdPositions =
@@ -189,43 +189,6 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     explicit LoadHeaderFile( SupportedArinc665Version version );
 
     /**
-     * @brief Creates load header file with the given data.
-     *
-     * @param[in] version
-     *   ARINC 665 version.
-     * @param[in] partNumber
-     *   Load Part Number
-     * @param[in] targetHardwareIdPositions
-     *   Target Hardware ID / Positions
-     * @param[in] dataFilesInfo
-     *   Data Files
-     * @param[in] supportFilesInfo
-     *   Support Files
-     * @param[in] userDefinedData
-     *   User Defined Data
-     * @param[in] loadCrc
-     *   Load CRC
-     **/
-    LoadHeaderFile(
-      SupportedArinc665Version version,
-      std::string_view partNumber,
-      const TargetHardwareIdPositions &targetHardwareIdPositions,
-      const LoadFilesInfo &dataFilesInfo,
-      const LoadFilesInfo &supportFilesInfo,
-      const UserDefinedData &userDefinedData,
-      uint32_t loadCrc );
-
-    //! @copydoc LoadHeaderFile(SupportedArinc665Version,std::string_view,const TargetHardwareIdPositions&,const LoadFilesInfo&,const LoadFilesInfo&,const UserDefinedData&,uint32_t)
-    LoadHeaderFile(
-      SupportedArinc665Version version,
-      std::string &&partNumber,
-      TargetHardwareIdPositions &&targetHardwareIdPositions,
-      LoadFilesInfo &&dataFilesInfo,
-      LoadFilesInfo &&supportFilesInfo,
-      UserDefinedData &&userDefinedData,
-      uint32_t loadCrc );
-
-    /**
      * @brief Creates a load header file from the given raw data.
      *
      * @param[in] rawFile
@@ -252,7 +215,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      *
      * @return Part Flags.
      **/
-    [[nodiscard]] uint16_t partFlags() const;
+    [[nodiscard]] uint16_t partFlags() const noexcept;
 
     /**
      * @brief Updates the Part Flags.
@@ -260,7 +223,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] partFlags
      *   New Part Flags.
      **/
-    void partFlags( uint16_t partFlags );
+    void partFlags( uint16_t partFlags ) noexcept;
 
     /** @} **/
 
@@ -401,10 +364,10 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      *
      * @return Data files information.
      **/
-    [[nodiscard]] const LoadFilesInfo& dataFiles() const;
+    [[nodiscard]] const LoadFilesInfo& dataFiles() const noexcept;
 
     //! @copydoc dataFiles() const
-    LoadFilesInfo& dataFiles();
+    LoadFilesInfo& dataFiles() noexcept;
 
     /**
      * @brief Add Data %File.
@@ -430,10 +393,10 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      *
      * @return Support Files.
      **/
-    [[nodiscard]] const LoadFilesInfo& supportFiles() const;
+    [[nodiscard]] const LoadFilesInfo& supportFiles() const noexcept;
 
     //! @copydoc supportFiles() const
-    LoadFilesInfo& supportFiles();
+    LoadFilesInfo& supportFiles() noexcept;
 
     /**
      * @brief Add Support %File.
@@ -483,7 +446,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      *
      * @return Load CRC
      **/
-    [[nodiscard]] uint32_t loadCrc() const;
+    [[nodiscard]] uint32_t loadCrc() const noexcept;
 
     /**
      * @brief Updates the Load CRC.
@@ -491,7 +454,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] loadCrc
      *   Load CRC
      **/
-    void loadCrc( uint32_t loadCrc );
+    void loadCrc( uint32_t loadCrc ) noexcept;
 
     /** @} **/
 
@@ -515,23 +478,14 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] value
      *   Load Check Value.
      **/
-    void loadCheckValue( const std::optional< Arinc645::CheckValue> &value );
+    void loadCheckValue( const std::optional< Arinc645::CheckValue > &value );
 
     //! @copydoc loadCheckValue(const std::optional<Arinc645::CheckValue>&)
-    void loadCheckValue( std::optional< Arinc645::CheckValue> &&value );
+    void loadCheckValue( std::optional< Arinc645::CheckValue > &&value );
 
     /** @} **/
 
   private:
-    //! File List Type
-    enum class FileListType
-    {
-      //! Data File
-      Data,
-      //! Support File
-      Support
-    };
-
     //! @copydoc Arinc665File::encode
     [[nodiscard]] RawFile encode() const final;
 
@@ -544,47 +498,46 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     void decodeBody( const ConstRawFileSpan &rawFile );
 
     /**
-     * @brief Encodes the Files Information List.
+     * @brief Encodes the Data Files Information List.
      *
-     * @todo split between data and support files - the format differs in later
-     * ARINC 665 supplements.
-     *
-     * @param[in] loadFilesInfo
-     *   The load files information to encode.
-     * @param[in] type
-     *   The file list type (data or support files)
      * @param[in] encodeV3Data
      *   If set to true, additional data as stated in ARINC 665-3 is encoded.
      *
      * @return Raw representation of files information list.
      **/
-    [[nodiscard]] RawFile encodeFileList(
-      const LoadFilesInfo &loadFilesInfo,
-      FileListType type,
-      bool encodeV3Data ) const;
+    [[nodiscard]] RawFile encodeDataFiles( bool encodeV3Data ) const;
 
     /**
-     * @brief Decodes the Files Information List from the raw data.
+     * @brief Encodes the Support Files Information List.
      *
-     * @todo split between data and support files - the format differs in later
-     * ARINC 665 supplements.
+     * @param[in] encodeV3Data
+     *   If set to true, additional data as stated in ARINC 665-3 is encoded.
+     *
+     * @return Raw representation of files information list.
+     **/
+    [[nodiscard]] RawFile encodeSupportFiles( bool encodeV3Data ) const;
+
+    /**
+     * @brief Decodes the Data Files List from the raw data.
      *
      * @param[in] rawFile
      *   Raw Load Header File representation.
-     * @param[in] offset
-     *   Offset of the files information list.
-     * @param[in] type
-     *   The file list type (data or support files)
      * @param[in] decodeV3Data
      *   If set to true, additional data as stated in ARINC 665-3 is decoded.
-     *
-     * @return The decoded load files information.
      **/
-    LoadFilesInfo decodeFileList(
+    void decodeDataFiles( const ConstRawFileSpan &rawFile, bool decodeV3Data );
+
+    /**
+     * @brief Decodes the Support Files List from the raw data.
+     *
+     * @param[in] rawFile
+     *   Raw Load Header File representation.
+     * @param[in] decodeV3Data
+     *   If set to true, additional data as stated in ARINC 665-3 is decoded.
+     **/
+    void decodeSupportFiles(
       const ConstRawFileSpan &rawFile,
-      ptrdiff_t offset,
-      FileListType type,
-      bool decodeV3Data);
+      bool decodeV3Data );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.
@@ -592,21 +545,21 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     void checkUserDefinedData();
 
     //! Part Flags
-    uint16_t partFlagsV;
-    //! Part number of the load
+    uint16_t partFlagsV{ 0U };
+    //! Part Number of the Load
     std::string partNumberV;
     //! List of compatible Target Hardware ID/ Positions
     TargetHardwareIdPositions targetHardwareIdPositionsV;
     //! Load Type
     LoadType typeV;
-    //! List of data files
+    //! List of Data Files
     LoadFilesInfo dataFilesV;
     //! List of Support files
     LoadFilesInfo supportFilesV;
-    //! User defined data
+    //! User Defined Data
     UserDefinedData userDefinedDataV;
-    //! CRC of the complete load
-    uint32_t loadCrcV;
+    //! CRC of the Complete Load
+    uint32_t loadCrcV{ 0U };
     //! Load Check Value (since ARINC 665-3)
     std::optional< Arinc645::CheckValue> loadCheckValueV;
 };
