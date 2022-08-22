@@ -225,20 +225,17 @@ void LoadHeaderFile::loadCrc( const uint32_t loadCrc ) noexcept
   loadCrcV = loadCrc;
 }
 
-const std::optional< Arinc645::CheckValue >&
-LoadHeaderFile::loadCheckValue() const
+const Arinc645::CheckValue& LoadHeaderFile::loadCheckValue() const
 {
   return loadCheckValueV;
 }
 
-void LoadHeaderFile::loadCheckValue(
-  const std::optional< Arinc645::CheckValue > &value)
+void LoadHeaderFile::loadCheckValue( const Arinc645::CheckValue &value)
 {
   loadCheckValueV = value;
 }
 
-void LoadHeaderFile::loadCheckValue(
-  std::optional< Arinc645::CheckValue> &&value )
+void LoadHeaderFile::loadCheckValue( Arinc645::CheckValue &&value )
 {
   loadCheckValueV = std::move( value);
 }
@@ -443,9 +440,10 @@ RawFile LoadHeaderFile::encode() const
 
 
   // Load Check Value (only in V3 mode)
-  if ( encodeV3Data)
+  if ( encodeV3Data )
   {
-    // Alternative implementation set Load Check Pointer to zero
+    // Alternative implementation set Load Check Pointer to zero, when Load
+    // Check Value is not given
 
     const auto rawCheckValue{ CheckValueUtils_encode( loadCheckValueV ) };
     assert( rawCheckValue.size() % 2 == 0 );
@@ -642,7 +640,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
   }
 
   // Load Check Value Field (ARINC 665-3)
-  loadCheckValueV.reset();
+  loadCheckValueV = Arinc645::NoCheckValue;
   if ( decodeV3Data && ( 0U!=loadCheckValuePtr ) )
   {
     loadCheckValueV = CheckValueUtils_decode(

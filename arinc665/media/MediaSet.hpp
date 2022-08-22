@@ -490,9 +490,12 @@ class ARINC665_EXPORT MediaSet : public Base
      * @name List of Loads Check Value Type
      *
      * This information is used to determine the Check Value Type used for
-     * generation of List of Loads (`LOADS.LUM`) Check Value.
+     * generation of List of Loads (`LOADS.LUM`) Check Value which is stored
+     * within the List of Files (`FILES.LUM`).
      *
-     * If not provided, the Media Set Check Value is used.
+     * If not provided, the Files Check Value is used.
+     *
+     * @sa effectiveFilesCheckValueType()
      *
      * @{
      **/
@@ -502,9 +505,9 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * If no value is set, the Media Set Check Value Type is used.
      *
-     * @return Effective List of Loads Check Value Type
+     * @return Effective Files Check Value Type
      *
-     * @sa effectiveMediaSetCheckValueType()
+     * @sa effectiveFilesCheckValueType()
      **/
     [[nodiscard]] Arinc645::CheckValueType
     effectiveListOfLoadsCheckValueType() const;
@@ -534,19 +537,20 @@ class ARINC665_EXPORT MediaSet : public Base
      * This information is used to determine the Check Value Type used for
      * generation of List of Batches (`BATCHES.LUM`) Check Value.
      *
-     * If not provided, the Media Set Check Value is used.
+     * If not provided, the Files Check Value is used.
      *
+     * @sa effectiveFilesCheckValueType()
      * @{
      **/
 
     /**
      * @brief Returns the Effective List of Batches Check Value Type.
      *
-     * If no value is set, the Media Set Check Value Type is used.
+     * If no value is set, the Files Check Value Type is used.
      *
      * @return Effective List of Batches Check Value Type
      *
-     * @sa effectiveMediaSetCheckValueType()
+     * @sa effectiveFilesCheckValueType()
      **/
     [[nodiscard]] Arinc645::CheckValueType
     effectiveListOfBatchesCheckValueType() const;
@@ -574,10 +578,16 @@ class ARINC665_EXPORT MediaSet : public Base
      * @name Files Check Value Type
      *
      * This information is used to determine the Check Value Type used for
-     * generation of Files Check Value within `FILES.LUM`.
+     * generation of Files Check Values within `FILES.LUM`.
      * It can be overridden on per-file basis.
+     * For the List of Loads File and List of Batches File separate functions
+     * are provided.
      *
      * If not provided, the Media Set Check Value is used.
+     *
+     * @sa effectiveMediaSetCheckValueType()
+     * @sa effectiveListOfLoadsCheckValueType()
+     * @sa effectiveListOfBatchesCheckValueType()
      * @{
      **/
 

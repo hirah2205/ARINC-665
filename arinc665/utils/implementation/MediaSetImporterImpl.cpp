@@ -582,9 +582,7 @@ void MediaSetImporterImpl::addLoads()
     loadPtr->userDefinedData( loadHeaderFile.userDefinedData() );
     // Load Check Value
     loadPtr->loadCheckValueType(
-      loadHeaderFile.loadCheckValue() ?
-        std::get< 0 >( *loadHeaderFile.loadCheckValue() ) :
-        std::optional< Arinc645::CheckValueType >{} );
+      std::get< 0>( loadHeaderFile.loadCheckValue() ) );
   }
 }
 

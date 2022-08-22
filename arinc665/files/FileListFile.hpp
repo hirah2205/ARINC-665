@@ -201,8 +201,7 @@ class ARINC665_EXPORT FileListFile : public ListFile
      *
      * @return Check Value.
      **/
-    [[nodiscard]] std::optional< Arinc645::CheckValueType >
-    checkValueType() const;
+    [[nodiscard]] Arinc645::CheckValueType checkValueType() const;
 
     /**
      * @brief Updates the Check Value Type
@@ -210,7 +209,7 @@ class ARINC665_EXPORT FileListFile : public ListFile
      * @param[in] type
      *   Check Value Type.
      **/
-    void checkValueType( std::optional< Arinc645::CheckValueType > type );
+    void checkValueType( Arinc645::CheckValueType type );
 
     /** @} **/
 
@@ -271,7 +270,8 @@ class ARINC665_EXPORT FileListFile : public ListFile
     //! Use Defined Data.
     UserDefinedData userDefinedDataV;
     //! Check Value Type (since ARINC 665-3)
-    std::optional< Arinc645::CheckValueType > checkValueTypeV;
+    Arinc645::CheckValueType checkValueTypeV{
+      Arinc645::CheckValueType::NotUsed };
 };
 
 }

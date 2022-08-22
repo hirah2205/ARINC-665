@@ -95,13 +95,12 @@ void FileListFile::userDefinedData( UserDefinedData &&userDefinedData )
   checkUserDefinedData();
 }
 
-std::optional< Arinc645::CheckValueType > FileListFile::checkValueType() const
+Arinc645::CheckValueType FileListFile::checkValueType() const
 {
   return checkValueTypeV;
 }
 
-void FileListFile::checkValueType(
-  std::optional< Arinc645::CheckValueType > type )
+void FileListFile::checkValueType( Arinc645::CheckValueType type )
 {
   checkValueTypeV = type;
 }
@@ -235,38 +234,19 @@ RawFile FileListFile::encode() const
   // Check Value (only in V3 mode)
   if ( encodeV3Data )
   {
-    if ( checkValueTypeV )
-    {
-      std::vector<uint8_t> rawCheckValue{};
+    auto rawCheckValue{ CheckValueUtils_encode(
+      Arinc645::CheckValueGenerator::checkValue(
+        checkValueTypeV,
+          rawFile ) ) };
 
-      if ( Arinc645::CheckValueType::NotUsed != *checkValueTypeV )
-      {
-        rawCheckValue =
-          CheckValueUtils_encode( Arinc645::CheckValueGenerator::checkValue(
-            *checkValueTypeV,
-            rawFile ) );
-      }
-      else
-      {
-        rawCheckValue = CheckValueUtils_encode( {} );
-      }
+    Helper::setInt< uint32_t >(
+      rawFile.begin() + FileCheckValuePointerFieldOffsetV3,
+      static_cast< uint32_t >( nextFreeOffset / 2U ) );
 
-      Helper::setInt< uint32_t >(
-        rawFile.begin() + FileCheckValuePointerFieldOffsetV3,
-        static_cast< uint32_t >( nextFreeOffset / 2U ) );
-
-      rawFile.insert(
-        rawFile.end(),
-        rawCheckValue.begin(),
-        rawCheckValue.end() );
-    }
-    else
-    {
-      // no Check Value provided - set to 0
-      Helper::setInt< uint32_t >(
-        rawFile.begin() + FileCheckValuePointerFieldOffsetV3,
-        0U );
-    }
+    rawFile.insert(
+      rawFile.end(),
+      rawCheckValue.begin(),
+      rawCheckValue.end() );
   }
 
   // Resize to final size ( File CRC)
@@ -372,18 +352,19 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
   }
 
   // File Check Value Field (ARINC 665-3)
-  checkValueTypeV.reset();
+  checkValueTypeV = Arinc645::CheckValueType::NotUsed;
   if ( decodeV3Data && ( 0U != fileCheckValuePtr ) )
   {
-    const auto checkValue = CheckValueUtils_decode(
-      rawFile.subspan( 2 * fileCheckValuePtr ) );
+    const auto checkValue{ CheckValueUtils_decode(
+      rawFile.subspan( 2U * static_cast< size_t>( fileCheckValuePtr ) ) ) };
 
     checkValueTypeV = std::get< 0 >( checkValue );
 
-    if ( Arinc645::CheckValueType::NotUsed != *checkValueTypeV )
+    if ( Arinc645::CheckValueType::NotUsed != checkValueTypeV )
     {
+      // calculate Check Value
       const auto calcCheckValue{ Arinc645::CheckValueGenerator::checkValue(
-        *checkValueTypeV,
+        checkValueTypeV,
         rawFile.first( 2U * std::size_t{ fileCheckValuePtr } ) ) };
 
       if ( checkValue != calcCheckValue )

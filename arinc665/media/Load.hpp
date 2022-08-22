@@ -220,14 +220,14 @@ class ARINC665_EXPORT Load : public File
      *   Check Value Type used for this File Entry.
      *   Uf set to {} the inherited value will be used.
      *
-     * @sa dataFilesCheckValueType
+     * @sa dataFilesCheckValueType()
      **/
     void dataFile(
       const ConstFilePtr& file,
       std::string_view partNumber,
       const std::optional< Arinc645::CheckValueType >& checkValueType );
 
-    //! @copydoc dataFile(const FilePtr&,std::string_view,const std::optional<Arinc645::CheckValueType>&)
+    //! @copydoc dataFile(const ConstFilePtr&,std::string_view,const std::optional<Arinc645::CheckValueType>&)
     void dataFile(
       const ConstFilePtr &file,
       std::string &&partNumber,
@@ -271,16 +271,16 @@ class ARINC665_EXPORT Load : public File
      *   Check Value Type used for this File Entry.
      *   Uf set to {} the inherited value will be used.
      *
-     * @sa supportFilesCheckValueType
+     * @sa supportFilesCheckValueType()
      **/
     void supportFile(
-      const FilePtr &file,
+      const ConstFilePtr &file,
       std::string_view partNumber,
       const std::optional< Arinc645::CheckValueType >& checkValueType );
 
-    //! @copydoc supportFile(const FilePtr&,std::string_view,const std::optional<Arinc645::CheckValueType>&)
+    //! @copydoc supportFile(const ConstFilePtr&,std::string_view,const std::optional<Arinc645::CheckValueType>&)
     void supportFile(
-      const FilePtr &file,
+      const ConstFilePtr &file,
       std::string &&partNumber,
       std::optional< Arinc645::CheckValueType >&& checkValueType = {} );
 

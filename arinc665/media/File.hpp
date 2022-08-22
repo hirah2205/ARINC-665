@@ -109,7 +109,7 @@ class ARINC665_EXPORT File : public Base
      * This information is used to determine the Check Value Type used for
      * generation of Media Set Files List Check Value.
      * This Value override a common value set by
-     * ref MediaSet::filesCheckValueType().
+     * @ref MediaSet::filesCheckValueType().
      *
      * @{
      **/
@@ -117,7 +117,8 @@ class ARINC665_EXPORT File : public Base
     /**
      * @brief Returns the effective File Check Value Type.
      *
-     * If value is not set the effetive Media Set File Check Value Type is used.
+     * If value is not set the effective Media Set File Check Value Type is
+     * used.
      *
      * @return Effective File Check Value Type.
      *

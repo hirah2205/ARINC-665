@@ -442,7 +442,7 @@ void MediaSet::listOfFilesCheckValueType(
 Arinc645::CheckValueType MediaSet::effectiveListOfLoadsCheckValueType() const
 {
   return
-    listOfLoadsCheckValueTypeV.value_or( effectiveMediaSetCheckValueType() );
+    listOfLoadsCheckValueTypeV.value_or( effectiveFilesCheckValueType() );
 }
 
 std::optional< Arinc645::CheckValueType >
@@ -460,7 +460,7 @@ void MediaSet::listOfLoadsCheckValueType(
 Arinc645::CheckValueType MediaSet::effectiveListOfBatchesCheckValueType() const
 {
   return
-    listOfBatchesCheckValueTypeV.value_or( effectiveMediaSetCheckValueType() );
+    listOfBatchesCheckValueTypeV.value_or( effectiveFilesCheckValueType() );
 }
 
 std::optional< Arinc645::CheckValueType >

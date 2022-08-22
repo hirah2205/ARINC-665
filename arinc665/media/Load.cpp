@@ -207,7 +207,7 @@ void Load::supportFiles( const ConstLoadFiles &files )
 }
 
 void Load::supportFile(
-  const FilePtr &file,
+  const ConstFilePtr &file,
   std::string_view partNumber,
   const std::optional< Arinc645::CheckValueType >& checkValueType )
 {
@@ -221,7 +221,7 @@ void Load::supportFile(
 }
 
 void Load::supportFile(
-  const FilePtr &file,
+  const ConstFilePtr &file,
   std::string &&partNumber,
   std::optional< Arinc645::CheckValueType >&& checkValueType )
 {
