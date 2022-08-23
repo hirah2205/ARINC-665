@@ -22,12 +22,11 @@
 namespace Arinc665::Files {
 
 RawFile CheckValueUtils_encode(
-  const std::optional< Arinc645::CheckValue> &checkValue )
+  const Arinc645::CheckValue &checkValue )
 {
   RawFile rawCheckValue( sizeof( uint16_t ) );
 
-  if ( !checkValue
-    || ( Arinc645::CheckValueType::NotUsed == std::get< 0 >( *checkValue ) ) )
+  if ( Arinc645::CheckValueType::NotUsed == std::get< 0 >( checkValue ) )
   {
     Helper::setInt< uint16_t >( rawCheckValue.begin(), 0U );
     return rawCheckValue;
@@ -38,10 +37,10 @@ RawFile CheckValueUtils_encode(
 
   Helper::setInt< uint16_t>(
     rawCheckValue.begin() + sizeof( uint16_t ),
-    static_cast< uint16_t>( std::get< 0 >( *checkValue ) ) );
+    static_cast< uint16_t>( std::get< 0 >( checkValue ) ) );
 
   // Check Value Data
-  const auto &checkValueData{ std::get< 1 >( *checkValue ) };
+  const auto &checkValueData{ std::get< 1 >( checkValue ) };
 
   rawCheckValue.insert(
     rawCheckValue.end(),

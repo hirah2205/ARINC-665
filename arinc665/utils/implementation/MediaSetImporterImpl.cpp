@@ -478,11 +478,11 @@ void MediaSetImporterImpl::addLoads()
       }
 
       // Check File Check Value
-      if ( dataFile.checkValue )
+      if ( std::get< 0 >( dataFile.checkValue ) != Arinc645::CheckValueType::NotUsed )
       {
-        if ( std::get< 0 >( *dataFile.checkValue ) == std::get< 0 >( dataFileInfo->second.checkValue ) )
+        if ( std::get< 0 >( dataFile.checkValue ) == std::get< 0 >( dataFileInfo->second.checkValue ) )
         {
-          if ( std::get< 1 >( *dataFile.checkValue ) != std::get< 1 >( dataFileInfo->second.checkValue ) )
+          if ( std::get< 1 >( dataFile.checkValue ) != std::get< 1 >( dataFileInfo->second.checkValue ) )
           {
             BOOST_THROW_EXCEPTION( Arinc665Exception()
               << Helper::AdditionalInfo{ "Data File Check Value inconsistent" }
@@ -498,9 +498,7 @@ void MediaSetImporterImpl::addLoads()
       loadPtr->dataFile(
         dataFilePtr,
         dataFile.partNumber,
-        dataFile.checkValue ?
-          std::get< 0 >( *dataFile.checkValue ) :
-          std::optional< Arinc645::CheckValueType >{} );
+        std::get< 0 >( dataFile.checkValue ) );
     }
 
     // iterate over support files
@@ -553,11 +551,11 @@ void MediaSetImporterImpl::addLoads()
       }
 
       // Check File Check Value
-      if ( supportFile.checkValue )
+      if ( std::get< 0 >( supportFile.checkValue ) != Arinc645::CheckValueType::NotUsed )
       {
-        if ( std::get< 0 >( *supportFile.checkValue ) == std::get< 0 >( supportFileInfo->second.checkValue ) )
+        if ( std::get< 0 >( supportFile.checkValue ) == std::get< 0 >( supportFileInfo->second.checkValue ) )
         {
-          if ( std::get< 1 >( *supportFile.checkValue ) != std::get< 1 >( supportFileInfo->second.checkValue ) )
+          if ( std::get< 1 >( supportFile.checkValue ) != std::get< 1 >( supportFileInfo->second.checkValue ) )
           {
             BOOST_THROW_EXCEPTION( Arinc665Exception()
               << Helper::AdditionalInfo{ "Data File Check Value inconsistent" }
@@ -573,9 +571,7 @@ void MediaSetImporterImpl::addLoads()
       loadPtr->supportFile(
         supportFilePtr,
         supportFile.partNumber,
-        supportFile.checkValue ?
-          std::get< 0 >( *supportFile.checkValue ) :
-          std::optional< Arinc645::CheckValueType >{} );
+        std::get< 0 >( supportFile.checkValue ) );
     }
 
     // User Defined Data

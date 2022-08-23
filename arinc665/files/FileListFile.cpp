@@ -234,10 +234,12 @@ RawFile FileListFile::encode() const
   // Check Value (only in V3 mode)
   if ( encodeV3Data )
   {
-    auto rawCheckValue{ CheckValueUtils_encode(
+    // calculate and encode File Load Check Value
+    const auto rawCheckValue{ CheckValueUtils_encode(
       Arinc645::CheckValueGenerator::checkValue(
         checkValueTypeV,
           rawFile ) ) };
+    assert( rawCheckValue.size() % 2 == 0 );
 
     Helper::setInt< uint32_t >(
       rawFile.begin() + FileCheckValuePointerFieldOffsetV3,

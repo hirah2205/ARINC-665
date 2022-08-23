@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_SUITE( CheckValueUtilsTest)
 //! CheckValueUtils_encode Test
 BOOST_AUTO_TEST_CASE( CheckValueUtils_encode1)
 {
-  BOOST_CHECK( CheckValueUtils_encode( {}) == RawFile({ 0x00, 0x00}));
+  BOOST_CHECK( CheckValueUtils_encode( Arinc645::NoCheckValue ) == RawFile({ 0x00, 0x00}));
   BOOST_CHECK( CheckValueUtils_encode(
     std::make_tuple(
       Arinc645::CheckValueType::Crc8,

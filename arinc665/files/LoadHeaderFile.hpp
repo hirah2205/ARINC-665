@@ -563,7 +563,8 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     UserDefinedData userDefinedDataV;
     //! CRC of the Complete Load
     uint32_t loadCrcV{ 0U };
-    //! Load Check Value (since ARINC 665-3)
+    //! Load Check Value (Type) (since ARINC 665-3) - Value is calculated on
+    //! generation.
     Arinc645::CheckValue loadCheckValueV{ Arinc645::NoCheckValue };
 };
 

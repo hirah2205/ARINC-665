@@ -644,7 +644,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
   if ( decodeV3Data && ( 0U!=loadCheckValuePtr ) )
   {
     loadCheckValueV = CheckValueUtils_decode(
-      rawFile.subspan( loadCheckValuePtr * 2 ) );
+      rawFile.subspan( static_cast< size_t >( loadCheckValuePtr ) * 2U ) );
   }
 
 
@@ -890,8 +890,8 @@ void LoadHeaderFile::decodeDataFiles(
     uint16_t crc{};
     listIt = Helper::getInt< uint16_t>( listIt, crc );
 
-    // CheckValue (keep default initialised if not V3 File Info
-    std::optional< Arinc645::CheckValue > checkValue;
+    // CheckValue - if not decoded no check value
+    Arinc645::CheckValue checkValue{ Arinc645::NoCheckValue };
 
     // following fields are available in ARINC 665-3 ff
     if ( decodeV3Data )
@@ -987,8 +987,8 @@ void LoadHeaderFile::decodeSupportFiles(
     uint16_t crc{};
     listIt = Helper::getInt< uint16_t>( listIt, crc );
 
-    // CheckValue (keep default initialised if not V3 File Info
-    std::optional< Arinc645::CheckValue > checkValue;
+    // CheckValue - if not decoded no check value
+   Arinc645::CheckValue checkValue{ Arinc645::NoCheckValue };
 
     // following fields are available in ARINC 665-3 ff
     if ( decodeV3Data )

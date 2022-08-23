@@ -17,12 +17,31 @@
 
 #include <arinc645/Arinc645.hpp>
 
-#include <optional>
-
 namespace Arinc665::Files {
 
 /**
+ * @name Check Value
+ *
+ * Encoding/ decoding of Check Values.
+ *
+ * @par Check Value Encoding
+ *
+ * Field  | Length of Field | Description
+ * -------|-----------------|---------------------------------------------------
+ * Length | 2 Bytes         | Length of Check Value Including Length Field
+ * Type   | 2 Bytes         | Check Value Type
+ * Value  | Variable        | Check Value
+ *
+ * @{
+ **/
+
+/**
  * @brief Encodes the given Check Value.
+ *
+ * There are two alternatives for encoding "No Check Value".
+ * Setting the Length Field to @p 0, or set Length Field to @p 4 and the
+ * Check Value Type to @p 0 (No Check Value).
+ * This implenetation uses the first option.
  *
  * @param[in] checkValue
  *   Check Value to encode.
@@ -30,7 +49,7 @@ namespace Arinc665::Files {
  * @return Check Value as raw data.
  **/
 RawFile ARINC665_EXPORT CheckValueUtils_encode(
-  const std::optional< Arinc645::CheckValue > &checkValue );
+  const Arinc645::CheckValue &checkValue );
 
 /**
  * @brief Decodes the given data as Check Value.
@@ -48,6 +67,8 @@ RawFile ARINC665_EXPORT CheckValueUtils_encode(
  **/
 Arinc645::CheckValue ARINC665_EXPORT CheckValueUtils_decode(
   const ConstRawFileSpan &rawFile );
+
+/** @} **/
 
 }
 

@@ -44,7 +44,7 @@ struct ARINC665_EXPORT LoadFileInfo
   //! File CRC
   uint16_t crc;
   //! Check Value (since ARINC 665-3)
-  std::optional< Arinc645::CheckValue > checkValue;
+  Arinc645::CheckValue checkValue;
 };
 
 }
