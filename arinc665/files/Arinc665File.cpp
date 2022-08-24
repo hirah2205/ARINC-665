@@ -28,14 +28,14 @@ ConstRawFileSpan::iterator Arinc665File::decodeString(
 {
   // determine string length
   uint16_t strLength{};
-  it = Helper::getInt< uint16_t>( it, strLength);
+  it = Helper::getInt< uint16_t>( it, strLength );
 
   // copy string
-  str.assign( it, it + strLength);
+  str.assign( it, it + strLength );
   it += strLength;
 
   // if string is odd skipp filled 0-character
-  if ( strLength % 2 == 1)
+  if ( strLength % 2 == 1 )
   {
     ++it;
   }
@@ -47,13 +47,13 @@ RawFile Arinc665File::encodeString( std::string_view str )
 {
   RawFile rawString( sizeof( uint16_t ) );
 
-  auto it{ rawString.begin() };
-
   // set string length
-  it = Helper::setInt< uint16_t>( it, Helper::safeCast< uint16_t>( str.size() ) );
+  Helper::setInt< uint16_t>(
+    rawString.begin(),
+    Helper::safeCast< uint16_t>( str.size() ) );
 
   // copy string
-  rawString.insert( it, str.begin(), str.end() );
+  rawString.insert( rawString.end(), str.begin(), str.end() );
 
   // fill string if it is odd
   if ( str.size() % 2 == 1 )
@@ -66,13 +66,13 @@ RawFile Arinc665File::encodeString( std::string_view str )
 
 ConstRawFileSpan::iterator Arinc665File::decodeStrings(
   ConstRawFileSpan::iterator it,
-  std::list< std::string > &strings)
+  std::list< std::string > &strings )
 {
   // number of strings
   uint16_t numberOfEntries{};
   it = Helper::getInt< uint16_t>( it, numberOfEntries);
 
-  for ( uint16_t index = 0U; index < numberOfEntries; ++index)
+  for ( uint16_t index = 0U; index < numberOfEntries; ++index )
   {
     // string
     std::string str{};

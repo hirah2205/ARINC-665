@@ -49,6 +49,7 @@ class ARINC665_EXPORT Arinc665File
 
     /**
      * @name ARINC 665 String Handling.
+     *
      * @{
      **/
 

@@ -204,6 +204,24 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
 
     /**
      * @name Load Part Flags
+     *
+     * @par Definition ARINC 665-5
+     * The Part Flags are defined by a 16-bit word.
+     * They are used to indicate extra information to help operators and systems
+     * distinguish and understand the purpose of a part.
+     *
+     * @par Download Flag
+     * The Least Significant Bit is used to indicate an upload/download part.
+     * The value of @p 0 indicates an upload.
+     * The value of @p 1 indicates that the part contains instructions for
+     * download.
+     * A data loader may use this field to help the operator select parts that
+     * correspond with a download operation versus an upload operation.
+     *
+     * @par Spare Flags
+     * The other 15 bits of the 16-bit Part Flags field are reserved for future
+     * use and should be set to binary 0.
+     *
      * @{
      **/
 
@@ -325,6 +343,21 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
 
     /**
      * @name Load Type
+     * The `Load Type Description` string describes the load or the function the
+     * load performs (e.g., "EEC Operational Software," "FMS Navigation Data
+     * Base," etc.).
+     *
+     * The `Load Type ID` is a 16-bit hexadecimal numeric value set by the
+     * manufacturer or system integrator.
+     * The value in this field should correspond with the content of the
+     * `Load Type Description` field.
+     * `Load Type ID` should be unique for each LSP type which is loaded to a
+     * particular target hardware type.
+     *
+     * Load Type ID is used to easily identify the software part type.
+     * This allows the target to identify which load the incoming load replaces
+     * and where to place it in memory.
+     *
      * @sa LoadType
      * @{
      **/

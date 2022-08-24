@@ -35,7 +35,7 @@ struct ARINC665_EXPORT BatchTargetInfo
 {
   //! Target Hardware ID and Position
   std::string targetHardwareIdPosition;
-  //! List of Loads for Batch
+  //! List of Loads for Target Hardware
   BatchLoadsInfo loads;
 };
 

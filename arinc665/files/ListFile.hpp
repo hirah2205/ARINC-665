@@ -25,9 +25,9 @@ namespace Arinc665::Files {
  * This intermediate class is defined to add common methods for all List Files.
  *
  * Children are:
- * - FileListFile
- * - LoadListFile
- * - BatchListFile
+ * - @ref FileListFile
+ * - @ref LoadListFile
+ * - @ref BatchListFile
  **/
 class ARINC665_EXPORT ListFile : public Arinc665File
 {

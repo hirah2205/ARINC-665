@@ -97,7 +97,7 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
     /**
      * @name Batch Part Number
      *
-     * A Batchis assigned a Part Number.
+     * A Batch is assigned a Part Number.
      *
      * @{
      **/
@@ -110,7 +110,7 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
     [[nodiscard]] std::string_view partNumber() const;
 
     /**
-     * @brief Updates the part number of the batch file.
+     * @brief Updates the Part Number of the Batch.
      *
      * @param[in] partNumber
      *   New Batch Part Number.
@@ -124,18 +124,21 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
 
     /**
      * @name Comment
+     *
+     * Comment, which describes the Batch.
+     *
      * @{
      **/
 
     /**
-     * @brief Returns the comment text of the batch file.
+     * @brief Returns the Comment text of the Batch.
      *
      * @return Comment text of the batch file.
      **/
     [[nodiscard]] std::string_view comment() const;
 
     /**
-     * @brief Updates the comment text of the batch file.
+     * @brief Updates the comment text of the Batch.
      *
      * @param[in] comment
      *   The new comment text.
@@ -156,7 +159,7 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
     /**
      * @brief Returns the Targets Hardware Information.
      *
-     * @return Target Hardware Information.
+     * @return Targets Hardware Information.
      **/
     [[nodiscard]] const BatchTargetsInfo& targetsHardware() const;
 
