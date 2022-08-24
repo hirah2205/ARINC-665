@@ -77,7 +77,7 @@ class MediaSetExporterImpl final : public MediaSetExporter
      * @brief Called to Export the Given Medium.
      *
      * Exports all directories, files, loads, and batches.
-     * Create Index files.
+     * Create Index files (List of Files, List of Loads and List of Batches).
      *
      * @param[in] medium
      *   Medium, which is exported.
@@ -96,6 +96,9 @@ class MediaSetExporterImpl final : public MediaSetExporter
 
     /**
      * @brief Called to export the given File.
+     *
+     * Depending on the file type and Load/ Batches File Creation Policy, the
+     * file create callback is called or the load header or batch is created.
      *
      * @param[in] file
      *   File, which is exported.

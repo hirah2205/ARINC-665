@@ -108,7 +108,7 @@ void MediaSetExporterImpl::operator()()
   BOOST_LOG_FUNCTION()
 
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-    << "Media Set " << mediaSetV->partNumber();
+    << "Export Media Set " << mediaSetV->partNumber();
 
   for ( const auto &[ mediumNumber, medium ] : mediaSetV->media() )
   {
@@ -187,13 +187,15 @@ void MediaSetExporterImpl::exportFile( const Media::ConstFilePtr &file ) const
     << "]:"
     << file->path();
 
-  switch (file->fileType())
+  switch ( file->fileType() )
   {
     case Media::RegularFile::FileType::RegularFile:
+      // regular file mus be created by callback
       createFileHandlerV( file );
       break;
 
     case Media::RegularFile::FileType::LoadFile:
+      // check load header creation policy
       switch ( createLoadHeaderFilesV )
       {
         case FileCreationPolicy::None:
@@ -222,6 +224,7 @@ void MediaSetExporterImpl::exportFile( const Media::ConstFilePtr &file ) const
       break;
 
     case Media::RegularFile::FileType::BatchFile:
+      // check batch file creation policy
       switch ( createBatchFilesV )
       {
         case FileCreationPolicy::None:
@@ -229,6 +232,7 @@ void MediaSetExporterImpl::exportFile( const Media::ConstFilePtr &file ) const
           break;
 
         case FileCreationPolicy::NoneExisting:
+          // check batch file creation policy
           if ( checkFileExistenceHandlerV( file ) )
           {
             createFileHandlerV( file );
@@ -332,12 +336,9 @@ void MediaSetExporterImpl::exportListOfFiles(
   fileListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia() );
 
   // add list of loads
-  const auto listOfLoadsCheckValueType{
-    medium->mediaSet()->effectiveListOfLoadsCheckValueType() };
-
-  const auto&[  listOfLoadsCrc, listOfLoadsCheckValue ]{ fileCrcCheckValue(
+  const auto&[ listOfLoadsCrc, listOfLoadsCheckValue ]{ fileCrcCheckValue(
     medium,
-    listOfLoadsCheckValueType,
+    medium->mediaSet()->effectiveListOfLoadsCheckValueType(),
     "/" + std::string{ ListOfLoadsName } ) };
 
   fileListFile.file( {
@@ -350,12 +351,9 @@ void MediaSetExporterImpl::exportListOfFiles(
   // add list of batches - if present
   if ( medium->mediaSet()->numberOfBatches() != 0 )
   {
-    const auto listOfBatchesCheckValueType{
-      medium->mediaSet()->effectiveListOfBatchesCheckValueType() };
-
     const auto&[ listOfBatchesFileCrc, listOfBatchesFileCheckValue ]{ fileCrcCheckValue(
       medium,
-      listOfBatchesCheckValueType,
+      medium->mediaSet()->effectiveListOfBatchesCheckValueType(),
       "/" + std::string{ ListOfBatchesName } ) };
 
     fileListFile.file( {
@@ -369,11 +367,9 @@ void MediaSetExporterImpl::exportListOfFiles(
   /* add all files, load header files, and batch files to file list */
   for ( const auto &file : medium->mediaSet()->files() )
   {
-    const auto fileCheckValueType{ file->effectiveCheckValueType() };
-
     const auto&[ fileCrc, fileCheckValue ]{ fileCrcCheckValue(
       medium,
-      fileCheckValueType,
+      file->effectiveCheckValueType(),
       file->path() ) };
 
     fileListFile.file( {
@@ -421,7 +417,7 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   // Process support files and add info to load header.
   for ( const auto &file: load->supportFiles( true ) )
   {
-     loadHeaderFile.supportFile( loadFileInformation( file ) );
+    loadHeaderFile.supportFile( loadFileInformation( file ) );
   }
 
   // User Defined Data
@@ -497,15 +493,11 @@ Files::LoadFileInfo MediaSetExporterImpl::loadFileInformation(
   const auto fileCrc{
     Files::Arinc665File::calculateChecksum( rawDataFile ) };
 
-  // Calculate Check Value if required
-  Arinc645::CheckValue checkValue{};
-
-  if ( checkValueType )
-  {
-    checkValue = { Arinc645::CheckValueGenerator::checkValue(
-      *checkValueType,
+  // Calculate Check Value
+  auto checkValue{
+    Arinc645::CheckValueGenerator::checkValue(
+      checkValueType.value_or( Arinc645::CheckValueType::NotUsed ),
       rawDataFile ) };
-  }
 
   return Files::LoadFileInfo{
     std::string{ file->name() },
