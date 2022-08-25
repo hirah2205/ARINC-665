@@ -112,22 +112,22 @@ int main( int argc, char const * argv[] )
 
     auto mediaSet{ loadMediaSet( directories, checkFileIntegrity ) };
 
-    Arinc665::Utils::printMediaSet( mediaSet, std::cout, "", "  " );
+    Arinc665::Utils::printMediaSet( *mediaSet, std::cout, "", "  " );
   }
-  catch ( boost::program_options::error &e )
+  catch ( const boost::program_options::error &e )
   {
     std::cout
       << "Error parsing command line: " << e.what() << "\n"
       << "Enter " << argv[0] << " --help for command line description\n";
     return EXIT_FAILURE;
   }
-  catch ( boost::exception &e )
+  catch ( const boost::exception &e )
   {
     std::cout
       << "Boost exception: " << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
-  catch ( std::exception &e )
+  catch ( const std::exception &e )
   {
     std::cout << "std exception: " << e.what() << "\n";
     return EXIT_FAILURE;

@@ -43,13 +43,13 @@ namespace Arinc665::Utils {
  *   Indent for sub-information
  **/
 void ARINC665_EXPORT printMediaSet(
-  const Media::ConstMediaSetPtr &mediaSet,
+  const Media::MediaSet &mediaSet,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
   std::string_view indent = " " );
 
 /**
- * @brief Decodes an Prints the Content of the Media Set File.
+ * @brief Decodes and prints the content of the Media Set File.
  *
  * - File Name
  * - File Path
@@ -62,12 +62,12 @@ void ARINC665_EXPORT printMediaSet(
  *   Initial Indention prepended before each output.
  **/
 void ARINC665_EXPORT printFile(
-  const Media::ConstFilePtr &file,
+  const Media::File &file,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {} );
 
 /**
- * @brief Decodes an Prints the Content of the Load.
+ * @brief Decodes and prints the content of the Load.
  *
  * - Load Name
  * - Load Part Number
@@ -75,7 +75,7 @@ void ARINC665_EXPORT printFile(
  * - Support Files
  *
  * @param[in] load
- *   Media Set to print.
+ *   Load to print.
  * @param[in,out] outS
  *   Output Stream
  * @param[in] initialIndent
@@ -84,13 +84,13 @@ void ARINC665_EXPORT printFile(
  *   Indent for sub-information
  **/
 void ARINC665_EXPORT printLoad(
-  const Media::ConstLoadPtr &load,
+  const Media::Load &load,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
   std::string_view indent = " " );
 
 /**
- * @brief Decodes an Prints the Content of the Batch.
+ * @brief Decodes and prints the content of the Batch.
  *
  * - Batch Name
  * - Batch Part Number
@@ -106,7 +106,7 @@ void ARINC665_EXPORT printLoad(
  *   Indent for sub-information
  **/
 void ARINC665_EXPORT printBatch(
-  const Media::ConstBatchPtr &batch,
+  const Media::Batch &batch,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
   std::string_view indent = " " );

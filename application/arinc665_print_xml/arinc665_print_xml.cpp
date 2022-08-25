@@ -89,7 +89,7 @@ int main( int argc, char * argv[] )
     // load XML file
     const auto [ mediaSet, filePathMapping ]{ xml->loadFromXml( xmlPath ) };
 
-    Arinc665::Utils::printMediaSet( mediaSet, std::cout, "  ", "  " );
+    Arinc665::Utils::printMediaSet( *mediaSet, std::cout, "  ", "  " );
   }
   catch ( const boost::program_options::error &e )
   {

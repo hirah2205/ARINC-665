@@ -13,6 +13,7 @@
 #include "MediaSet.hpp"
 
 #include <arinc665/media/Medium.hpp>
+#include <arinc665/media/Directory.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
@@ -134,7 +135,7 @@ MediumPtr MediaSet::addMedium()
 
   const auto newIndex{ static_cast< uint8_t>( mediaV.size() + 1U ) };
 
-  const auto medium{ std::make_shared< Medium>(
+  auto medium{ std::make_shared< Medium>(
     std::dynamic_pointer_cast< MediaSet>( shared_from_this() ),
     newIndex ) };
 
@@ -168,9 +169,7 @@ ConstFiles MediaSet::files() const
   // Iterate over all media and add their files to a complete list.
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    files.splice(
-      files.end(),
-      std::const_pointer_cast< const Medium >( medium )->files( true ) );
+    files.splice( files.end(), recursiveFiles( *medium ) );
   }
 
   return files;
@@ -183,7 +182,7 @@ Files MediaSet::files()
   // Iterate over all media and add their files to a complete list.
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    files.splice( files.end(), medium->files( true ) );
+    files.splice( files.end(), recursiveFiles( *medium ) );
   }
 
   return files;
@@ -206,7 +205,7 @@ FilePtr MediaSet::file( std::string_view filename )
 {
   for ( const auto &[  mediumNumber, medium ] : mediaV )
   {
-    if ( const auto file{ medium->file( filename, true ) }; file )
+    if ( auto file{ medium->file( filename, true ) }; file )
     {
       return file;
     }
@@ -233,9 +232,7 @@ ConstLoads MediaSet::loads() const
 
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    loads.splice(
-      loads.end(),
-      std::const_pointer_cast< const Medium >( medium )->loads( true ) );
+    loads.splice( loads.end(), recursiveLoads( *medium) );
   }
 
   return loads;
@@ -247,7 +244,7 @@ Loads MediaSet::loads()
 
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    loads.splice( loads.end(), medium->loads( true ) );
+    loads.splice( loads.end(), recursiveLoads( *medium) );
   }
 
   return loads;
@@ -270,7 +267,7 @@ LoadPtr MediaSet::load( std::string_view filename )
 {
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    if ( const auto load{ medium->load( filename, true ) }; load )
+    if ( auto load{ medium->load( filename, true ) }; load )
     {
       return load;
     }
@@ -283,9 +280,9 @@ size_t MediaSet::numberOfBatches() const
 {
   size_t numberOfBatches{ 0 };
 
-  for ( const auto &[ mediumNumber, medium ] : mediaV)
+  for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    numberOfBatches += medium->numberOfBatches( true);
+    numberOfBatches += medium->numberOfBatches( true );
   }
 
   return numberOfBatches;
@@ -297,9 +294,7 @@ ConstBatches MediaSet::batches() const
 
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    batches.splice(
-      batches.end(),
-      std::const_pointer_cast< const Medium>( medium )->batches( true ) );
+    batches.splice( batches.end(), recursiveBatches( *medium ) );
   }
 
   return batches;
@@ -311,7 +306,7 @@ Batches MediaSet::batches()
 
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    batches.splice( batches.end(), medium->batches( true ) );
+    batches.splice( batches.end(), recursiveBatches( *medium ) );
   }
 
   return batches;
@@ -334,7 +329,7 @@ BatchPtr MediaSet::batch( std::string_view filename )
 {
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    if ( const auto batch{ medium->batch( filename, true ) }; batch )
+    if ( auto batch{ medium->batch( filename, true ) }; batch )
     {
       return batch;
     }
@@ -489,6 +484,119 @@ void MediaSet::filesCheckValueType(
   std::optional< Arinc645::CheckValueType > type )
 {
   filesCheckValueTypeV = type;
+}
+
+ConstFiles MediaSet::recursiveFiles( const ContainerEntity &container ) const
+{
+  ConstFiles files{ container.files() };
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    files.splice(
+      files.begin(),
+      recursiveFiles( *subdirectory ) );
+  }
+
+  return files;
+}
+
+Files MediaSet::recursiveFiles( ContainerEntity & container )
+{
+  Files files{ container.files() };
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    files.splice(
+      files.begin(),
+      recursiveFiles( *subdirectory ) );
+  }
+
+  return files;
+}
+
+ConstRegularFiles MediaSet::recursiveRegularFiles(
+  const ContainerEntity &container ) const
+{
+  ConstRegularFiles files{ container.regularFiles() };
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    files.splice(
+      files.begin(),
+      recursiveRegularFiles( *subdirectory ) );
+  }
+
+  return files;
+}
+
+RegularFiles MediaSet::recursiveRegularFiles( ContainerEntity & container )
+{
+  RegularFiles files{ container.regularFiles() };
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    files.splice(
+      files.begin(),
+      recursiveRegularFiles( *subdirectory ) );
+  }
+
+  return files;
+}
+
+ConstLoads MediaSet::recursiveLoads( const ContainerEntity &container ) const
+{
+  ConstLoads loads{ container.loads() };
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    loads.splice(
+      loads.begin(),
+      recursiveLoads( *subdirectory ) );
+  }
+
+  return loads;
+}
+
+Loads MediaSet::recursiveLoads( ContainerEntity & container )
+{
+  Loads loads{ container.loads() };
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    loads.splice(
+      loads.begin(),
+      recursiveLoads( *subdirectory ) );
+  }
+
+  return loads;
+}
+
+ConstBatches MediaSet::recursiveBatches( const ContainerEntity &container ) const
+{
+  ConstBatches batches{ container.batches() };
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    batches.splice(
+      batches.begin(),
+      recursiveBatches( *subdirectory ) );
+  }
+
+  return batches;
+}
+
+Batches MediaSet::recursiveBatches( ContainerEntity & container )
+{
+  Batches batches{ container.batches() };
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    batches.splice(
+      batches.begin(),
+      recursiveBatches( *subdirectory ) );
+  }
+
+  return batches;
 }
 
 }

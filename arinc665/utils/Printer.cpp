@@ -13,6 +13,7 @@
 #include "Printer.hpp"
 
 #include <arinc665/media/MediaSet.hpp>
+#include <arinc665/media/Directory.hpp>
 
 #include <arinc645/CheckValueTypeDescription.hpp>
 
@@ -31,7 +32,13 @@ namespace Arinc665::Utils {
  *   Indent for sub-information
  **/
 static void printMedium(
-  const Media::ConstMediumPtr &medium,
+  const Media::Medium &medium,
+  std::ostream &outS,
+  std::string_view initialIndent,
+  std::string_view indent );
+
+static void printFiles(
+  const Media::ContainerEntity &containerEntity,
   std::ostream &outS,
   std::string_view initialIndent,
   std::string_view indent );
@@ -40,7 +47,7 @@ static std::string printCheckValueType(
   std::optional< Arinc645::CheckValueType > type );
 
 void printMediaSet(
-  const Media::ConstMediaSetPtr &mediaSet,
+  const Media::MediaSet &mediaSet,
   std::ostream &outS,
   std::string_view initialIndent,
   std::string_view indent )
@@ -53,37 +60,37 @@ void printMediaSet(
 
   outS
     << initialIndent
-    << "Media Set Part Number: '" << mediaSet->partNumber() << "'\n"
+    << "Media Set Part Number: '" << mediaSet.partNumber() << "'\n"
 
     << initialIndent
     << "Media Set Check Value Type: "
-    << printCheckValueType( mediaSet->mediaSetCheckValueType() )
+    << printCheckValueType( mediaSet.mediaSetCheckValueType() )
     << " - "
-    << printCheckValueType( mediaSet->effectiveMediaSetCheckValueType() ) << "\n"
+    << printCheckValueType( mediaSet.effectiveMediaSetCheckValueType() ) << "\n"
 
     << initialIndent
     << "List of Files Check Value Type: "
-    << printCheckValueType( mediaSet->listOfFilesCheckValueType() )
+    << printCheckValueType( mediaSet.listOfFilesCheckValueType() )
     << " - "
-    << printCheckValueType( mediaSet->effectiveListOfFilesCheckValueType() ) << "\n"
+    << printCheckValueType( mediaSet.effectiveListOfFilesCheckValueType() ) << "\n"
 
     << initialIndent
     << "List of Loads Check Value Type: "
-    << printCheckValueType( mediaSet->listOfLoadsCheckValueType() )
+    << printCheckValueType( mediaSet.listOfLoadsCheckValueType() )
     << " - "
-    << printCheckValueType( mediaSet->effectiveListOfLoadsCheckValueType() ) << "\n"
+    << printCheckValueType( mediaSet.effectiveListOfLoadsCheckValueType() ) << "\n"
 
     << initialIndent
     << "List of Batches Check Value Type: "
-    << printCheckValueType( mediaSet->listOfBatchesCheckValueType() )
+    << printCheckValueType( mediaSet.listOfBatchesCheckValueType() )
     << " - "
-    << printCheckValueType( mediaSet->effectiveListOfBatchesCheckValueType() ) << "\n"
+    << printCheckValueType( mediaSet.effectiveListOfBatchesCheckValueType() ) << "\n"
 
     << initialIndent
     << "Files Check Value Type: "
-    << printCheckValueType( mediaSet->filesCheckValueType() )
+    << printCheckValueType( mediaSet.filesCheckValueType() )
     << " - "
-    << printCheckValueType( mediaSet->effectiveFilesCheckValueType() ) << "\n";
+    << printCheckValueType( mediaSet.effectiveFilesCheckValueType() ) << "\n";
 
   // print files
   outS
@@ -91,9 +98,9 @@ void printMediaSet(
     << "Media:" << "\n";
 
   // iterate over files
-  for ( auto const &[number, medium] : mediaSet->media() )
+  for ( auto const &[ number, medium ] : mediaSet.media() )
   {
-    printMedium( medium, outS, nextIndent, indent );
+    printMedium( *medium, outS, nextIndent, indent );
     outS << "\n";
   }
 
@@ -103,9 +110,9 @@ void printMediaSet(
     << "Loads:" << "\n";
 
   // iterate over loads
-  for ( auto const &load : mediaSet->loads() )
+  for ( auto const &load : mediaSet.loads() )
   {
-    printLoad( load, outS, nextIndent, indent );
+    printLoad( *load, outS, nextIndent, indent );
     outS << "\n";
   }
 
@@ -115,28 +122,28 @@ void printMediaSet(
     << "Batches:" << "\n";
 
   // iterate over loads
-  for ( auto const &batch : mediaSet->batches() )
+  for ( auto const &batch : mediaSet.batches() )
   {
-    printBatch( batch, outS, nextIndent, indent );
+    printBatch( *batch, outS, nextIndent, indent );
     outS << "\n";
   }
 }
 
 void printFile(
-  const Media::ConstFilePtr &file,
+  const Media::File &file,
   std::ostream &outS,
   std::string_view initialIndent )
 {
   outS
     << initialIndent
     << "File Path: "
-    << file->path().generic_string() << "\n";
+    << file.path().generic_string() << "\n";
 
   outS
     << initialIndent
     << "File Type: ";
 
-  switch ( file->fileType() )
+  switch ( file.fileType() )
   {
     case Arinc665::Media::File::FileType::RegularFile:
       outS << "Regular File";
@@ -159,14 +166,14 @@ void printFile(
   outS
     << initialIndent
     << "File Check Value Type: "
-    << printCheckValueType( file->checkValueType() )
+    << printCheckValueType( file.checkValueType() )
     << " - "
-    << printCheckValueType( file->effectiveCheckValueType() ) << "\n";
+    << printCheckValueType( file.effectiveCheckValueType() ) << "\n";
 
 }
 
 void printLoad(
-  const Media::ConstLoadPtr &load,
+  const Media::Load &load,
   std::ostream &outS,
   std::string_view initialIndent,
   std::string_view indent )
@@ -180,35 +187,35 @@ void printLoad(
   outS
     << initialIndent
     << "Load Name: "
-    << load->name() << "\n"
+    << load.name() << "\n"
 
     << initialIndent
     << "Load Path: "
-    << load->path().generic_string() << "\n"
+    << load.path().generic_string() << "\n"
 
     << initialIndent
     << "Load Part Nummer: '"
-    << load->partNumber() << "'\n"
+    << load.partNumber() << "'\n"
 
     << initialIndent
     << "Load Check Value Type: '"
-    << printCheckValueType( load->loadCheckValueType() )
+    << printCheckValueType( load.loadCheckValueType() )
     << " - "
-    << printCheckValueType( load->effectiveLoadCheckValueType() ) << "\n"
+    << printCheckValueType( load.effectiveLoadCheckValueType() ) << "\n"
 
     << initialIndent
     << "Data Files Check Value Type: '"
-    << printCheckValueType( load->dataFilesCheckValueType() )
+    << printCheckValueType( load.dataFilesCheckValueType() )
     << " - "
-    << printCheckValueType( load->effectiveDataFilesCheckValueType() ) << "\n"
+    << printCheckValueType( load.effectiveDataFilesCheckValueType() ) << "\n"
 
     << initialIndent
     << "Support Files Check Value Type: '"
-    << printCheckValueType( load->supportFilesCheckValueType() )
+    << printCheckValueType( load.supportFilesCheckValueType() )
     << " - "
-    << printCheckValueType( load->effectiveSupportFilesCheckValueType() ) << "\n";
+    << printCheckValueType( load.effectiveSupportFilesCheckValueType() ) << "\n";
 
-  if ( const auto type{ load->loadType() }; type )
+  if ( const auto &type{ load.loadType() }; type )
   {
     outS
       << initialIndent
@@ -221,7 +228,7 @@ void printLoad(
     << "Compatible THW IDs:\n";
 
   // iterate over THW ID list
-  for ( auto const &[ thwId, positions ] : load->targetHardwareIdPositions() )
+  for ( auto const &[ thwId, positions ] : load.targetHardwareIdPositions() )
   {
     outS
       << nextIndent
@@ -241,7 +248,7 @@ void printLoad(
     << "Data Files:\n";
 
   // iterate over Data Files
-  for ( const auto &[ file, partNumber, checkValueType ] : load->dataFiles() )
+  for ( const auto &[ file, partNumber, checkValueType ] : load.dataFiles() )
   {
     outS
       << nextIndent
@@ -261,7 +268,7 @@ void printLoad(
       << printCheckValueType( checkValueType )
       << " - "
       << printCheckValueType( checkValueType.value_or(
-        load->effectiveDataFilesCheckValueType() ) ) << "'\n";
+        load.effectiveDataFilesCheckValueType() ) ) << "'\n";
 
     outS << "\n";
   }
@@ -271,7 +278,7 @@ void printLoad(
     << "Support Files:\n";
 
   // iterate over Support Files
-  for ( const auto &[ file, partNumber, checkValueType ] : load->supportFiles() )
+  for ( const auto &[ file, partNumber, checkValueType ] : load.supportFiles() )
   {
     outS
       << nextIndent
@@ -291,14 +298,14 @@ void printLoad(
       << printCheckValueType( checkValueType )
       << " - "
       << printCheckValueType( checkValueType.value_or(
-        load->effectiveSupportFilesCheckValueType() ) ) << "'\n";
+        load.effectiveSupportFilesCheckValueType() ) ) << "'\n";
 
     outS << "\n";
   }
 }
 
 void printBatch(
-  const Media::ConstBatchPtr &batch,
+  const Media::Batch &batch,
   std::ostream &outS,
   std::string_view initialIndent,
   std::string_view indent )
@@ -311,24 +318,24 @@ void printBatch(
 
   outS
     << initialIndent
-    << "Batch Name: " << batch->name() << "\n"
+    << "Batch Name: " << batch.name() << "\n"
 
     << initialIndent
     << "Batch Path: "
-    << batch->path().generic_string() << "\n"
+    << batch.path().generic_string() << "\n"
 
     << initialIndent
-    << "Batch Part Number: '" << batch->partNumber() << "'\n"
+    << "Batch Part Number: '" << batch.partNumber() << "'\n"
 
     << initialIndent
-    << "Comment: '" << batch->comment() << "'\n";
+    << "Comment: '" << batch.comment() << "'\n";
 
   outS
     << initialIndent
     << "Target Loads:\n";
 
   // iterate over Target list
-  for ( auto const & [target,loads] : batch->targets() )
+  for ( auto const & [target,loads] : batch.targets() )
   {
     outS
       << nextIndent
@@ -352,7 +359,7 @@ void printBatch(
 }
 
 static void printMedium(
-  const Media::ConstMediumPtr &medium,
+  const Media::Medium &medium,
   std::ostream &outS,
   std::string_view initialIndent,
   std::string_view indent )
@@ -363,17 +370,35 @@ static void printMedium(
   outS
     << initialIndent
     << "Medium Number: "
-    << (int)medium->mediumNumber() << "\n";
+    << (int)medium.mediumNumber() << "\n";
 
   outS
     << initialIndent
     << "Files:\n";
 
+  printFiles( medium, outS, initialIndent, indent );
+}
+
+static void printFiles(
+  const Media::ContainerEntity &containerEntity,
+  std::ostream &outS,
+  std::string_view initialIndent,
+  std::string_view indent )
+{
+  std::string nextIndent{ initialIndent };
+  nextIndent += indent;
+
   // iterate over files
-  for ( auto const &file : medium->files( true ) )
+  for ( auto const &file : containerEntity.files() )
   {
-    printFile( file, outS, nextIndent );
+    printFile( *file, outS, nextIndent );
     outS << "\n";
+  }
+
+  // iterate over subdirectories
+  for ( const auto &container : containerEntity.subdirectories() )
+  {
+    printFiles( *container, outS, initialIndent, indent );
   }
 }
 

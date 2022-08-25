@@ -624,6 +624,26 @@ class ARINC665_EXPORT MediaSet : public Base
     /** @} **/
 
   private:
+    [[nodiscard]] ConstFiles recursiveFiles(
+      const ContainerEntity &container ) const;
+
+    [[nodiscard]] Files recursiveFiles( ContainerEntity &container );
+
+    [[nodiscard]] ConstRegularFiles recursiveRegularFiles(
+      const ContainerEntity &container ) const;
+
+    [[nodiscard]] RegularFiles recursiveRegularFiles( ContainerEntity &container );
+
+    [[nodiscard]] ConstLoads recursiveLoads(
+      const ContainerEntity &container ) const;
+
+    [[nodiscard]] Loads recursiveLoads( ContainerEntity &container );
+
+    [[nodiscard]] ConstBatches recursiveBatches(
+      const ContainerEntity &container ) const;
+
+    [[nodiscard]] Batches recursiveBatches( ContainerEntity &container );
+
     //! Media
     Media mediaV;
     //! Part Number

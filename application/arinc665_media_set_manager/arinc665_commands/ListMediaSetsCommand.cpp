@@ -64,21 +64,21 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
     {
       std::cout << "Media Set:\n";
 
-      Arinc665::Utils::printMediaSet( mediaSet.second, std::cout, "  ", "  " );
+      Arinc665::Utils::printMediaSet( *mediaSet.second, std::cout, "  ", "  " );
 
       std::cout << "\n";
     }
   }
-  catch ( boost::program_options::error &e )
+  catch ( const boost::program_options::error &e )
   {
     std::cout << e.what() << "\n" << optionsDescription << "\n";
   }
-  catch ( boost::exception &e )
+  catch ( const boost::exception &e )
   {
     std::cerr
       << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
   }
-  catch ( std::exception &e )
+  catch ( const std::exception &e )
   {
     std::cerr << "Operation failed: " << e.what() << "\n";
   }

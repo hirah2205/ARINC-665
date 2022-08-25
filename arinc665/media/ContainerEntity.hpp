@@ -155,15 +155,12 @@ class ARINC665_EXPORT ContainerEntity : public Base
     /**
      * @brief Returns all files present in the given container.
      *
-     * @param[in] recursive
-     *   If set to true recursive scan all subdirectories.
-     *
      * @return All files of the current container.
      **/
-    ConstFiles files( bool recursive = false ) const;
+    ConstFiles files() const;
 
-    //! @copydoc files(bool) const
-    Files files( bool recursive = false );
+    //! @copydoc files() const
+    Files files();
 
     /**
      * @brief Returns the file with the given name.
@@ -225,6 +222,44 @@ class ARINC665_EXPORT ContainerEntity : public Base
      **/
 
     /**
+     * @brief Return the number of Regular Files.
+     *
+     * @return Number of Regular Files.
+     **/
+    [[nodiscard]] size_t numberOfRegularFiles() const;
+
+    /**
+     * @brief Return Regular Files.
+     *
+     * @return Regular Files contained within this container.
+     **/
+    [[nodiscard]] ConstRegularFiles regularFiles() const;
+
+    //! @copydoc regularFiles() const
+    [[nodiscard]] RegularFiles regularFiles();
+
+    /**
+     * @brief Returns the Regular File with the given filename.
+     *
+     * @param[in] filename
+     *   Load filename
+     * @param[in] recursive
+     *   If set to true also iterates over subdirectories.
+     *
+     * @return The load with the given filename.
+     * @retval {}
+     *   If load does not exists.
+     **/
+    [[nodiscard]] ConstRegularFilePtr regularFile(
+      std::string_view filename,
+      bool recursive = false ) const;
+
+    //! @copydoc regularFile(std::string_view,bool) const
+    [[nodiscard]] RegularFilePtr regularFile(
+      std::string_view filename,
+      bool recursive = false );
+
+    /**
      * @brief Adds a regular file into this directory.
      *
      * @param[in] filename
@@ -248,7 +283,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @brief Return the number of loads.
      *
      * @param[in] recursive
-     *   If set to true also iterates over sub-directories.
+     *   If set to true also iterates over subdirectories.
      *
      * @return The number of loads.
      **/
@@ -257,15 +292,12 @@ class ARINC665_EXPORT ContainerEntity : public Base
     /**
      * @brief Return loads.
      *
-     * @param[in] recursive
-     *   If set to true also iterates over subdirectories.
-     *
      * @return Loads contained within this container.
      **/
-    [[nodiscard]] ConstLoads loads( bool recursive = false ) const;
+    [[nodiscard]] ConstLoads loads() const;
 
-    //! @copydoc loads(bool) const
-    [[nodiscard]] Loads loads( bool recursive = false );
+    //! @copydoc loads() const
+    [[nodiscard]] Loads loads();
 
     /**
      * @brief Returns the load with the given filename.
@@ -321,15 +353,12 @@ class ARINC665_EXPORT ContainerEntity : public Base
     /**
      * @brief Return batches.
      *
-     * @param[in] recursive
-     *   If set to true also iterates over subdirectories.
-     *
      * @return Batches contained within this container.
      **/
-    [[nodiscard]] ConstBatches batches( bool recursive = false ) const;
+    [[nodiscard]] ConstBatches batches() const;
 
-    //! @copydoc batches(bool) const
-    [[nodiscard]] Batches batches( bool recursive = false );
+    //! @copydoc batches() const
+    [[nodiscard]] Batches batches();
 
     /**
      * @brief Returns the batch with the given filename.

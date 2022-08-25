@@ -495,8 +495,8 @@ void Arinc665XmlImpl::saveEntries(
     saveEntries( *dirEntry, filePathMapping, *directoryNode );
   }
 
-  // iterate over files (non-recursive) within container
-  for ( const auto &fileEntry : current.files( false ) )
+  // iterate over files within current container
+  for ( const auto &fileEntry : current.files() )
   {
     xmlpp::Element * fileNode;
 
@@ -795,7 +795,7 @@ Media::ConstLoadFiles Arinc665XmlImpl::loadLoadFiles(
         << boost::errinfo_at_line{ fileNode->get_line() } );
     }
 
-    loadFiles.emplace_back( file, filePartNumber, std::move( checkValueType ) );
+    loadFiles.emplace_back( file, filePartNumber, checkValueType );
   }
 
   return loadFiles;

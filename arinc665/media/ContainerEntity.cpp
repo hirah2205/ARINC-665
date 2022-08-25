@@ -125,40 +125,14 @@ size_t ContainerEntity::numberOfFiles( const bool recursive ) const
   return fileSize;
 }
 
-ConstFiles ContainerEntity::files( const bool recursive ) const
+ConstFiles ContainerEntity::files() const
 {
-  if ( !recursive )
-  {
-    return ConstFiles{ filesV.begin(), filesV.end() };
-  }
-
-  ConstFiles allfiles{ filesV.begin(), filesV.end() };
-
-  for ( const auto &subdirectory : subdirectoriesV )
-  {
-    allfiles.splice(
-      allfiles.begin(),
-      std::const_pointer_cast< const Directory >( subdirectory )->files( true ) );
-  }
-
-  return allfiles;
+  return ConstFiles{ filesV.begin(), filesV.end() };
 }
 
-Files ContainerEntity::files( const bool recursive )
+Files ContainerEntity::files()
 {
-  if ( !recursive )
-  {
-    return filesV;
-  }
-
-  Files allFiles{ filesV };
-
-  for ( const auto &subdirectory : subdirectoriesV )
-  {
-    allFiles.splice( allFiles.begin(), subdirectory->files( true ) );
-  }
-
-  return allFiles;
+  return filesV;
 }
 
 ConstFilePtr ContainerEntity::file(
@@ -205,7 +179,7 @@ FilePtr ContainerEntity::file(
     for ( const auto & subdirectory : subdirectoriesV )
     {
       // if file has been found return immediately
-      if ( const auto file{ subdirectory->file( filename, true ) }; file )
+      if ( auto file{ subdirectory->file( filename, true ) }; file )
       {
         return file;
       }
@@ -246,6 +220,33 @@ void ContainerEntity::removeFile( const ConstFilePtr& file )
 
   filesV.erase( fileIt );
 }
+ConstRegularFiles ContainerEntity::regularFiles() const
+{
+  auto regularFiles{ files( File::FileType::RegularFile ) };
+
+  ConstRegularFiles files{};
+
+  for ( const auto &file : regularFiles )
+  {
+    files.emplace_back( std::dynamic_pointer_cast< const RegularFile >( file ) );
+  }
+
+  return files;
+}
+
+RegularFiles ContainerEntity::regularFiles()
+{
+  auto regularFiles{ files( File::FileType::RegularFile ) };
+
+  RegularFiles files{};
+
+  for ( const auto &file : regularFiles )
+  {
+    files.emplace_back( std::dynamic_pointer_cast< RegularFile >( file ) );
+  }
+
+  return files;
+}
 
 RegularFilePtr ContainerEntity::addRegularFile( std::string_view filename )
 {
@@ -257,7 +258,7 @@ RegularFilePtr ContainerEntity::addRegularFile( std::string_view filename )
   }
 
   // create file
-  const auto file{ std::make_shared< RegularFile >(
+  auto file{ std::make_shared< RegularFile >(
     std::dynamic_pointer_cast< ContainerEntity>( shared_from_this() ),
     filename ) };
 
@@ -284,7 +285,7 @@ size_t ContainerEntity::numberOfLoads( const bool recursive ) const
   return numberOfLoads;
 }
 
-ConstLoads ContainerEntity::loads( const bool recursive ) const
+ConstLoads ContainerEntity::loads() const
 {
   auto loadFiles{ files( File::FileType::LoadFile ) };
 
@@ -295,21 +296,10 @@ ConstLoads ContainerEntity::loads( const bool recursive ) const
     loads.push_back( std::dynamic_pointer_cast< const Load>( loadFile ) );
   }
 
-  if ( recursive )
-  {
-    for ( const auto &subdirectory : subdirectoriesV )
-    {
-      auto subLoads{
-        static_cast< const Directory&>(*subdirectory).loads( true ) };
-
-      loads.insert( loads.end(), subLoads.begin(), subLoads.end() );
-    }
-  }
-
   return loads;
 }
 
-Loads ContainerEntity::loads( const bool recursive )
+Loads ContainerEntity::loads()
 {
   auto loadFiles{ files( File::FileType::LoadFile ) };
 
@@ -318,16 +308,6 @@ Loads ContainerEntity::loads( const bool recursive )
   for ( const auto &loadFile : loadFiles )
   {
     loads.push_back( std::dynamic_pointer_cast< Load>( loadFile ) );
-  }
-
-  if ( recursive )
-  {
-    for ( const auto &subdirectory : subdirectoriesV )
-    {
-      auto subLoads{ subdirectory->loads( true ) };
-
-      loads.insert( loads.end(), subLoads.begin(), subLoads.end() );
-    }
   }
 
   return loads;
@@ -405,7 +385,7 @@ size_t ContainerEntity::numberOfBatches( const bool recursive) const
   return numberOfBatches;
 }
 
-ConstBatches ContainerEntity::batches( const bool recursive) const
+ConstBatches ContainerEntity::batches() const
 {
   const auto batchFiles{ files( File::FileType::BatchFile ) };
 
@@ -419,22 +399,10 @@ ConstBatches ContainerEntity::batches( const bool recursive) const
     batches.push_back( realBatchFile );
   }
 
-  // iterate over subdirectories
-  if ( recursive )
-  {
-    for ( auto &subdirectory : subdirectoriesV )
-    {
-      const auto subBatches{ std::const_pointer_cast< const Directory>(
-        subdirectory )->batches( true ) };
-
-      batches.insert( batches.end(), subBatches.begin(), subBatches.end() );
-    }
-  }
-
   return batches;
 }
 
-Batches ContainerEntity::batches( const bool recursive)
+Batches ContainerEntity::batches()
 {
   const auto batchFiles{ files( File::FileType::BatchFile ) };
 
@@ -446,17 +414,6 @@ Batches ContainerEntity::batches( const bool recursive)
     const auto realBatchFile{ std::dynamic_pointer_cast< Batch>( batchFile ) };
     assert( realBatchFile );
     batches.push_back( realBatchFile );
-  }
-
-  // iterate over subdirectories
-  if ( recursive )
-  {
-    for ( const auto &subdirectory : subdirectoriesV )
-    {
-      const auto subBatches{ subdirectory->batches( true ) };
-
-      batches.insert( batches.end(), subBatches.begin(), subBatches.end() );
-    }
   }
 
   return batches;
@@ -509,7 +466,7 @@ BatchPtr ContainerEntity::addBatch( std::string_view filename )
   }
 
   // create file
-  const auto batch{ std::make_shared< Batch>(
+  auto batch{ std::make_shared< Batch>(
     std::dynamic_pointer_cast< ContainerEntity>( shared_from_this() ),
     filename ) };
 
