@@ -350,29 +350,28 @@ static void list_files_lum( const std::filesystem::path &filesLum )
 
     std::vector< uint8_t> data( std::filesystem::file_size( filesLum ) );
 
-    std::ifstream file{
+    std::ifstream fileStream{
       filesLum.string().c_str(),
       std::ifstream::binary | std::ifstream::in };
 
-    if ( !file.is_open() )
+    if ( !fileStream.is_open() )
     {
       std::cout << "Error opening file: " << filesLum.string() << "\n";
       return;
     }
 
-    file.read( (char*) &data.at( 0), static_cast< std::streamsize>( data.size() ) );
+    fileStream.read( (char*) &data.at( 0), static_cast< std::streamsize >( data.size() ) );
 
-    Arinc665::Files::FileListFile fileList( data);
-
-    std::cout
-      << "media set pn: " << fileList.mediaSetPn() << "\n";
+    Arinc665::Files::FileListFile fileList( data );
 
     std::cout
-      << "media seq no: " << (unsigned int)fileList.mediaSequenceNumber() << "\n";
-
-    std::cout
-      << "no of media set members: "
-      << std::dec << (unsigned int)fileList.numberOfMediaSetMembers() << "\n";
+      << fmt::format(
+        "media set pn: {}\n"
+        "media seq no: {}\n"
+        "no of media set members: {}\n",
+        fileList.mediaSetPn(),
+        (unsigned int)fileList.mediaSequenceNumber(),
+        (unsigned int)fileList.numberOfMediaSetMembers() );
 
     for ( const auto & file : fileList.files() )
     {

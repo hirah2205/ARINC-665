@@ -39,7 +39,7 @@ class ARINC665_EXPORT MediaSetExporter
      *   Medium to Create.
      **/
     using CreateMediumHandler =
-      std::function< void( const Media::ConstMediumPtr& medium ) >;
+      std::function< void( const Media::ConstMediumPtr &medium ) >;
 
     /**
      * @brief Handler, which is called to generate the given Directory.
@@ -48,7 +48,7 @@ class ARINC665_EXPORT MediaSetExporter
      *   Directory to create.
      **/
     using CreateDirectoryHandler =
-      std::function< void( const Media::ConstDirectoryPtr& directory ) >;
+      std::function< void( const Media::ConstDirectoryPtr &directory ) >;
 
     /**
      * @brief Handler, which checks the existence of a file within the Source.
@@ -62,7 +62,7 @@ class ARINC665_EXPORT MediaSetExporter
      * @return if the File exist on sources.
      **/
     using CheckFileExistenceHandler =
-      std::function< bool( const Media::ConstFilePtr& file ) >;
+      std::function< bool( const Media::ConstFilePtr &file ) >;
 
     /**
      * @brief Handler, which is called to generate the given File from Source.
@@ -73,7 +73,7 @@ class ARINC665_EXPORT MediaSetExporter
      *   File to be created.
      **/
     using CreateFileHandler =
-      std::function< void( const Media::ConstFilePtr& file ) >;
+      std::function< void( const Media::ConstFilePtr &file ) >;
 
     /**
      * @brief Handler, which is called to write the given File on the Target.

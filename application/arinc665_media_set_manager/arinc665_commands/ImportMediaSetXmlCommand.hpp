@@ -74,7 +74,7 @@ class ImportMediaSetXmlCommand
      *
      * @return If file exists
      **/
-    bool checkFileExistanceHandler( const Arinc665::Media::ConstFilePtr &file );
+    bool checkFileExistenceHandler( const Arinc665::Media::ConstFilePtr &file );
 
     /**
      * @brief Create File Handler.

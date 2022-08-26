@@ -109,7 +109,7 @@ class MediaSetExporterImpl final : public MediaSetExporter
      * @brief Exports List of Loads File.
      *
      * @param[in] medium
-     *   Medium Information.
+     *   Medium.
      **/
     void exportListOfLoads( const Media::ConstMediumPtr &medium ) const;
 
@@ -163,7 +163,7 @@ class MediaSetExporterImpl final : public MediaSetExporter
      * @brief Calculates CRC16 and Check Value of given file.
      *
      * @param[in] medium
-     *   Medium Information
+     *   Medium
      * @param[in] checkValueType
      *   Desired Check Value Type.
      * @param[in] filename

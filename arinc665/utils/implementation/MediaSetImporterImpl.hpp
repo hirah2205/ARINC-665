@@ -42,7 +42,7 @@ class MediaSetImporterImpl final : public MediaSetImporter
     explicit MediaSetImporterImpl() = default;
 
     //! @copydoc MediaSetImporter::fileSizeHandler()
-    MediaSetImporter &fileSizeHandler(
+    MediaSetImporter& fileSizeHandler(
       FileSizeHandler fileSizeHandler ) override;
 
     //! @copydoc MediaSetImporter::readFileHandler()

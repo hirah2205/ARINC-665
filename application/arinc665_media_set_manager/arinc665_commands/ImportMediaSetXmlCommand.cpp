@@ -35,7 +35,7 @@ namespace Arinc665Commands {
 
 ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() : optionsDescription{ "Import Media Set XML" }
 {
-  auto fileCreatPolDes{
+  const auto &fileCreatPolDes{
     Arinc665::Utils::FileCreationPolicyDescription::instance() };
 
   const std::string fileCreationPolicyValues{
@@ -50,7 +50,8 @@ ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() : optionsDescription{ "Impo
       Arinc665::Utils::FileCreationPolicy::All ) }
     + "': Create all" };
 
-  auto versionDes{ Arinc665::SupportedArinc665VersionDescription::instance() };
+  const auto &versionDes{
+    Arinc665::SupportedArinc665VersionDescription::instance() };
 
   const std::string versionValues{
     "* '"
@@ -153,33 +154,24 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 
     // set exporter parameters
     exporter->mediaSet( std::get< 0 >( loadXmlResult ) )
-      .createMediumHandler( std::bind(
+      .createMediumHandler( std::bind_front(
         &ImportMediaSetXmlCommand::createMediumHandler,
-        this,
-        std::placeholders::_1 ) )
-      .createDirectoryHandler( std::bind(
+        this ) )
+      .createDirectoryHandler( std::bind_front(
         &ImportMediaSetXmlCommand::createDirectoryHandler,
-        this,
-        std::placeholders::_1 ) )
-      .checkFileExistenceHandler( std::bind(
-        &ImportMediaSetXmlCommand::checkFileExistanceHandler,
-        this,
-        std::placeholders::_1 ) )
-      .createFileHandler( std::bind(
+        this ) )
+      .checkFileExistenceHandler( std::bind_front(
+        &ImportMediaSetXmlCommand::checkFileExistenceHandler,
+        this ) )
+      .createFileHandler( std::bind_front(
         &ImportMediaSetXmlCommand::createFileHandler,
-        this,
-        std::placeholders::_1 ) )
-      .writeFileHandler( std::bind(
+        this ) )
+      .writeFileHandler( std::bind_front(
         &ImportMediaSetXmlCommand::writeFileHandler,
-        this,
-        std::placeholders::_1,
-        std::placeholders::_2,
-        std::placeholders::_3 ) )
-      .readFileHandler( std::bind(
+        this ) )
+      .readFileHandler( std::bind_front(
         &ImportMediaSetXmlCommand::readFileHandler,
-        this,
-        std::placeholders::_1,
-        std::placeholders::_2 ) )
+        this ) )
       .arinc665Version( version )
       .createBatchFiles( createBatchFiles )
       .createLoadHeaderFiles( createLoadHeaderFiles );
@@ -189,16 +181,16 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
     mediaSetManager->manager()->registerMediaSet( mediaSetPaths );
     mediaSetManager->saveConfiguration();
   }
-  catch ( boost::program_options::error &e )
+  catch ( const boost::program_options::error &e )
   {
-    std::cout << e.what() << "\n" << optionsDescription << "\n";
+    std::cerr << e.what() << "\n" << optionsDescription << "\n";
   }
-  catch ( boost::exception &e )
+  catch ( const boost::exception &e )
   {
     std::cerr
       << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
   }
-  catch ( std::exception &e )
+  catch ( const std::exception &e )
   {
     std::cerr << "Operation failed: " << e.what() << "\n";
   }
@@ -244,7 +236,7 @@ void ImportMediaSetXmlCommand::createDirectoryHandler(
   std::filesystem::create_directory( directoryPath );
 }
 
-bool ImportMediaSetXmlCommand::checkFileExistanceHandler(
+bool ImportMediaSetXmlCommand::checkFileExistenceHandler(
   const Arinc665::Media::ConstFilePtr &file )
 {
   BOOST_LOG_FUNCTION()
