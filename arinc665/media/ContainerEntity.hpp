@@ -164,27 +164,17 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * The file type is not relevant (file can be load header file, batch file,
      * or other file).
      *
-     * @note
-     * If a file with the same name exists in multiple subdirectories exists,
-     * only the first one is returned (which is the first is not specified).
-     *
      * @param[in] filename
      *   The name of the requested file.
-     * @param[in] recursive
-     *   If set to true scans all subdirectories for the file.
      *
      * @return The file with the given name.
      * @retval {}
      *   If no such file exists.
      **/
-    [[nodiscard]] ConstFilePtr file(
-      std::string_view filename,
-      bool recursive = false ) const;
+    [[nodiscard]] ConstFilePtr file( std::string_view filename ) const;
 
-    //! @copydoc file(const std::string_view,bool) const
-    [[nodiscard]] FilePtr file(
-      std::string_view filename,
-      bool recursive = false );
+    //! @copydoc file(const std::string_view) const
+    [[nodiscard]] FilePtr file( std::string_view filename );
 
     /**
      * @brief Removes the file with the given name.
@@ -239,21 +229,16 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @param[in] filename
      *   Load filename
-     * @param[in] recursive
-     *   If set to true also iterates over subdirectories.
      *
      * @return The load with the given filename.
      * @retval {}
      *   If load does not exists.
      **/
     [[nodiscard]] ConstRegularFilePtr regularFile(
-      std::string_view filename,
-      bool recursive = false ) const;
+      std::string_view filename ) const;
 
-    //! @copydoc regularFile(std::string_view,bool) const
-    [[nodiscard]] RegularFilePtr regularFile(
-      std::string_view filename,
-      bool recursive = false );
+    //! @copydoc regularFile(std::string_view) const
+    [[nodiscard]] RegularFilePtr regularFile( std::string_view filename );
 
     /**
      * @brief Adds a regular file into this directory.
@@ -297,21 +282,15 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @param[in] filename
      *   Load filename
-     * @param[in] recursive
-     *   If set to true also iterates over subdirectories.
      *
      * @return The load with the given filename.
      * @retval {}
      *   If load does not exists.
      **/
-    [[nodiscard]] ConstLoadPtr load(
-      std::string_view filename,
-      bool recursive = false ) const;
+    [[nodiscard]] ConstLoadPtr load( std::string_view filename ) const;
 
-    //! @copydoc load(std::string_view,bool) const
-    [[nodiscard]] LoadPtr load(
-      std::string_view filename,
-      bool recursive = false );
+    //! @copydoc load(std::string_view) const
+    [[nodiscard]] LoadPtr load( std::string_view filename );
 
     /**
      * @brief Creates a load with the given filename.
@@ -355,21 +334,15 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @param[in] filename
      *   Batch filename
-     * @param[in] recursive
-     *   If set to true also iterates over subdirectories.
      *
      * @return The batch with the given filename.
      * @retval {}
      *   If batch does not exist.
      **/
-    [[nodiscard]] ConstBatchPtr batch(
-      std::string_view filename,
-      bool recursive = false ) const;
+    [[nodiscard]] ConstBatchPtr batch( std::string_view filename ) const;
 
-    //! @copydoc batch(std::string_view,bool) const
-    [[nodiscard]] BatchPtr batch(
-      std::string_view filename,
-      bool recursive = false );
+    //! @copydoc batch(std::string_view) const
+    [[nodiscard]] BatchPtr batch( std::string_view filename );
 
     /**
      * @brief Creates a batch with the given filename.
@@ -440,6 +413,27 @@ class ARINC665_EXPORT ContainerEntity : public Base
     //! @copydoc filesPerType() const
     template< typename FilesT, FileType fileType >
     [[nodiscard]] FilesT filesPerType();
+
+    /**
+     * @brief Return the file (real file, load, batch) with the specified file
+     *   type.
+     *
+     * @tparam FilesT
+     *   Files List Type
+     * @tparam fileType
+     *   File type to search for.
+     *
+     * @param[in] filename
+     *   Filename
+     *
+     * @return File (real file, load, batch) with the given filename.
+     **/
+    template< typename FilesT, FileType fileType >
+    [[nodiscard]] FilesT filePerType( std::string_view filename ) const;
+
+    //! @copydoc filePerType(std::string_view) const
+    template< typename FilesT, FileType fileType >
+    [[nodiscard]] FilesT filePerType( std::string_view filename );
 
   private:
     //! Subdirectories

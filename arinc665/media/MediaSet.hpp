@@ -701,6 +701,34 @@ class ARINC665_EXPORT MediaSet : public Base
     [[nodiscard]] Files recursiveFiles( ContainerEntity &container );
 
     /**
+     * @brief Returns the file with the given name.
+     *
+     * The file type is not relevant (file can be load header file, batch file,
+     * or other file).
+     *
+     * @note
+     * If a file with the same name exists in multiple subdirectories exists,
+     * only the first one is returned (which is the first is not specified).
+     *
+     * @param[in] container
+     *   Current Container (Media Set or Directory)
+     * @param[in] filename
+     *   Name of the requested file.
+     *
+     * @return The file with the given name.
+     * @retval {}
+     *   If no such file exists.
+     **/
+    [[nodiscard]] ConstFilePtr recursiveFile(
+      const ContainerEntity &container,
+      std::string_view filename ) const;
+
+    //! @copydoc recursiveFile(const ContainerEntity&,std::string_view) const
+    [[nodiscard]] FilePtr recursiveFile(
+      ContainerEntity &container,
+      std::string_view filename );
+
+    /**
      * @brief Recursively returns number of regular files contained on
      *   @p container.
      *
@@ -724,7 +752,33 @@ class ARINC665_EXPORT MediaSet : public Base
       const ContainerEntity &container ) const;
 
     //! @copydoc recursiveRegularFiles(const ContainerEntity&) const
-    [[nodiscard]] RegularFiles recursiveRegularFiles( ContainerEntity &container );
+    [[nodiscard]] RegularFiles recursiveRegularFiles(
+      ContainerEntity &container );
+
+    /**
+     * @brief Returns the regular file with the given name.
+     *
+     * @note
+     * If a file with the same name exists in multiple subdirectories exists,
+     * only the first one is returned (which is the first is not specified).
+     *
+     * @param[in] container
+     *   Current Container (Media Set or Directory)
+     * @param[in] filename
+     *   Name of the requested regular file.
+     *
+     * @return The regular file with the given name.
+     * @retval {}
+     *   If no such file exists.
+     **/
+    [[nodiscard]] ConstRegularFilePtr recursiveRegularFile(
+      const ContainerEntity &container,
+      std::string_view filename ) const;
+
+    //! @copydoc recursiveRegularFile(const ContainerEntity&,std::string_view) const
+    [[nodiscard]] RegularFilePtr recursiveRegularFile(
+      ContainerEntity &container,
+      std::string_view filename );
 
     /**
      * @brief Recursively returns number of Loads contained on @p container.
@@ -751,6 +805,31 @@ class ARINC665_EXPORT MediaSet : public Base
     [[nodiscard]] Loads recursiveLoads( ContainerEntity &container );
 
     /**
+     * @brief Returns the Load with the given name.
+     *
+     * @note
+     * If a file with the same name exists in multiple subdirectories exists,
+     * only the first one is returned (which is the first is not specified).
+     *
+     * @param[in] container
+     *   Current Container (Media Set or Directory)
+     * @param[in] filename
+     *   Name of the requested Load.
+     *
+     * @return Load with the given name.
+     * @retval {}
+     *   If no such file exists.
+     **/
+    [[nodiscard]] ConstLoadPtr recursiveLoad(
+      const ContainerEntity &container,
+      std::string_view filename ) const;
+
+    //! @copydoc recursiveLoad(const ContainerEntity&,std::string_view) const
+    [[nodiscard]] LoadPtr recursiveLoad(
+      ContainerEntity &container,
+      std::string_view filename );
+
+    /**
      * @brief Recursively returns number of Batches contained on @p container.
      *
      * @param[in] container
@@ -773,6 +852,31 @@ class ARINC665_EXPORT MediaSet : public Base
 
     //! @copydoc recursiveBatches(const ContainerEntity&) const
     [[nodiscard]] Batches recursiveBatches( ContainerEntity &container );
+
+    /**
+     * @brief Returns the Batch with the given name.
+     *
+     * @note
+     * If a file with the same name exists in multiple subdirectories exists,
+     * only the first one is returned (which is the first is not specified).
+     *
+     * @param[in] container
+     *   Current Container (Media Set or Directory)
+     * @param[in] filename
+     *   Name of the requested Batch.
+     *
+     * @return Batch with the given name.
+     * @retval {}
+     *   If no such file exists.
+     **/
+    [[nodiscard]] ConstBatchPtr recursiveBatch(
+      const ContainerEntity &container,
+      std::string_view filename ) const;
+
+    //! @copydoc recursiveBatch(const ContainerEntity&,std::string_view) const
+    [[nodiscard]] BatchPtr recursiveBatch(
+      ContainerEntity &container,
+      std::string_view filename );
 
     //! Media
     Media mediaV;

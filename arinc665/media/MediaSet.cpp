@@ -192,7 +192,7 @@ ConstFilePtr MediaSet::file( std::string_view filename ) const
 {
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    if ( auto file{ medium->file( filename, true ) }; file )
+    if ( auto file{ recursiveFile( *medium, filename ) }; file )
     {
       return file;
     }
@@ -203,9 +203,9 @@ ConstFilePtr MediaSet::file( std::string_view filename ) const
 
 FilePtr MediaSet::file( std::string_view filename )
 {
-  for ( const auto &[  mediumNumber, medium ] : mediaV )
+  for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    if ( auto file{ medium->file( filename, true ) }; file )
+    if ( auto file{ recursiveFile( *medium, filename ) }; file )
     {
       return file;
     }
@@ -254,7 +254,7 @@ ConstRegularFilePtr MediaSet::regularFile( std::string_view filename ) const
 {
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    if ( auto regularFile{ medium->regularFile( filename, true ) }; regularFile )
+    if ( auto regularFile{ recursiveRegularFile( *medium, filename ) }; regularFile )
     {
       return regularFile;
     }
@@ -267,7 +267,7 @@ RegularFilePtr MediaSet::regularFile( std::string_view filename )
 {
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    if ( auto regularFile{ medium->regularFile( filename, true ) }; regularFile )
+    if ( auto regularFile{ recursiveRegularFile( *medium, filename ) }; regularFile )
     {
       return regularFile;
     }
@@ -316,7 +316,7 @@ ConstLoadPtr MediaSet::load( std::string_view filename ) const
 {
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    if ( const auto load{ medium->load( filename, true ) }; load )
+    if ( auto load{ recursiveLoad( *medium, filename ) }; load )
     {
       return load;
     }
@@ -329,7 +329,7 @@ LoadPtr MediaSet::load( std::string_view filename )
 {
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    if ( auto load{ medium->load( filename, true ) }; load )
+    if ( auto load{ recursiveLoad( *medium, filename ) }; load )
     {
       return load;
     }
@@ -376,9 +376,9 @@ Batches MediaSet::batches()
 
 ConstBatchPtr MediaSet::batch( std::string_view filename ) const
 {
-  for ( const auto & [ mediumNumber, medium ] : mediaV)
+  for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    if ( const auto batch{ medium->batch( filename, true ) }; batch )
+    if ( auto batch{ recursiveBatch( *medium, filename ) }; batch )
     {
       return batch;
     }
@@ -391,7 +391,7 @@ BatchPtr MediaSet::batch( std::string_view filename )
 {
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    if ( auto batch{ medium->batch( filename, true ) }; batch )
+    if ( auto batch{ recursiveBatch( *medium, filename ) }; batch )
     {
       return batch;
     }
@@ -588,6 +588,47 @@ Files MediaSet::recursiveFiles( ContainerEntity & container )
   return files;
 }
 
+
+ConstFilePtr MediaSet::recursiveFile(
+  const ContainerEntity &container,
+  std::string_view filename ) const
+{
+  if ( auto file{ container.file( filename ) }; file )
+  {
+    return file;
+  }
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    if ( auto file{ recursiveFile( *subdirectory, filename ) }; file )
+    {
+      return file;
+    }
+  }
+
+  return {};
+}
+
+FilePtr MediaSet::recursiveFile(
+  ContainerEntity &container,
+  std::string_view filename )
+{
+  if ( auto file{ container.file( filename ) }; file )
+  {
+    return file;
+  }
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    if ( auto file{ recursiveFile( *subdirectory, filename ) }; file )
+    {
+      return file;
+    }
+  }
+
+  return {};
+}
+
 size_t MediaSet::recursiveNumberOfRegularFiles(
   const ContainerEntity &container ) const
 {
@@ -628,6 +669,46 @@ RegularFiles MediaSet::recursiveRegularFiles( ContainerEntity & container )
   }
 
   return files;
+}
+
+ConstRegularFilePtr MediaSet::recursiveRegularFile(
+  const ContainerEntity &container,
+  std::string_view filename ) const
+{
+  if ( auto file{ container.regularFile( filename ) }; file )
+  {
+    return file;
+  }
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    if ( auto file{ recursiveRegularFile( *subdirectory, filename ) }; file )
+    {
+      return file;
+    }
+  }
+
+  return {};
+}
+
+RegularFilePtr MediaSet::recursiveRegularFile(
+  ContainerEntity &container,
+  std::string_view filename )
+{
+  if ( auto file{ container.regularFile( filename ) }; file )
+  {
+    return file;
+  }
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    if ( auto file{ recursiveRegularFile( *subdirectory, filename ) }; file )
+    {
+      return file;
+    }
+  }
+
+  return {};
 }
 
 size_t MediaSet::recursiveNumberOfLoads(
@@ -671,6 +752,46 @@ Loads MediaSet::recursiveLoads( ContainerEntity & container )
   return loads;
 }
 
+ConstLoadPtr MediaSet::recursiveLoad(
+  const ContainerEntity &container,
+  std::string_view filename ) const
+{
+  if ( auto load{ container.load( filename ) }; load )
+  {
+    return load;
+  }
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    if ( auto load{ recursiveLoad( *subdirectory, filename ) }; load )
+    {
+      return load;
+    }
+  }
+
+  return {};
+}
+
+LoadPtr MediaSet::recursiveLoad(
+  ContainerEntity &container,
+  std::string_view filename )
+{
+  if ( auto load{ container.load( filename ) }; load )
+  {
+    return load;
+  }
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    if ( auto load{ recursiveLoad( *subdirectory, filename ) }; load )
+    {
+      return load;
+    }
+  }
+
+  return {};
+}
+
 size_t MediaSet::recursiveNumberOfBatches(
   const ContainerEntity &container ) const
 {
@@ -710,6 +831,47 @@ Batches MediaSet::recursiveBatches( ContainerEntity & container )
   }
 
   return batches;
+}
+
+
+ConstBatchPtr MediaSet::recursiveBatch(
+  const ContainerEntity &container,
+  std::string_view filename ) const
+{
+  if ( auto batch{ container.batch( filename ) }; batch )
+  {
+    return batch;
+  }
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    if ( auto batch{ recursiveBatch( *subdirectory, filename ) }; batch )
+    {
+      return batch;
+    }
+  }
+
+  return {};
+}
+
+BatchPtr MediaSet::recursiveBatch(
+  ContainerEntity &container,
+  std::string_view filename )
+{
+  if ( auto batch{ container.batch( filename ) }; batch )
+  {
+    return batch;
+  }
+
+  for ( const auto &subdirectory : container.subdirectories() )
+  {
+    if ( auto batch{ recursiveBatch( *subdirectory, filename ) }; batch )
+    {
+      return batch;
+    }
+  }
+
+  return {};
 }
 
 }

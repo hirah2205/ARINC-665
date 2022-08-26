@@ -124,9 +124,7 @@ Files ContainerEntity::files()
   return filesV;
 }
 
-ConstFilePtr ContainerEntity::file(
-  std::string_view filename,
-  const bool recursive ) const
+ConstFilePtr ContainerEntity::file( std::string_view filename ) const
 {
   for ( auto & file : filesV )
   {
@@ -136,42 +134,16 @@ ConstFilePtr ContainerEntity::file(
     }
   }
 
-  if ( recursive )
-  {
-    for ( const auto & subdirectory : subdirectoriesV )
-    {
-      // if file has been found return immediately
-      if ( const auto file{ subdirectory->file( filename, true ) }; file )
-      {
-        return file;
-      }
-    }
-  }
-
   return {};
 }
 
-FilePtr ContainerEntity::file(
-  std::string_view filename,
-  const bool recursive )
+FilePtr ContainerEntity::file( std::string_view filename )
 {
   for ( const auto &file : filesV )
   {
     if ( file->name() == filename )
     {
       return file;
-    }
-  }
-
-  if ( recursive )
-  {
-    for ( const auto & subdirectory : subdirectoriesV )
-    {
-      // if file has been found return immediately
-      if ( auto file{ subdirectory->file( filename, true ) }; file )
-      {
-        return file;
-      }
     }
   }
 
@@ -226,41 +198,15 @@ RegularFiles ContainerEntity::regularFiles()
 }
 
 ConstRegularFilePtr ContainerEntity::regularFile(
-  std::string_view filename,
-  const bool recursive ) const
+  std::string_view filename ) const
 {
-  const auto filePtr{ file( filename, recursive ) };
-
-  if ( !filePtr )
-  {
-    return {};
-  }
-
-  if ( filePtr->fileType() != File::FileType::RegularFile )
-  {
-    return {};
-  }
-
-  return std::dynamic_pointer_cast< const RegularFile >( filePtr );
+  return
+    filePerType< ConstRegularFilePtr, File::FileType::RegularFile >( filename );
 }
 
-RegularFilePtr ContainerEntity::regularFile(
-  std::string_view filename,
-  const bool recursive )
+RegularFilePtr ContainerEntity::regularFile( std::string_view filename )
 {
-  const auto filePtr{ file( filename, recursive ) };
-
-  if ( !filePtr )
-  {
-    return {};
-  }
-
-  if ( filePtr->fileType() != File::FileType::RegularFile )
-  {
-    return {};
-  }
-
-  return std::dynamic_pointer_cast< RegularFile >( filePtr );
+  return filePerType< RegularFilePtr, File::FileType::RegularFile >( filename );
 }
 
 RegularFilePtr ContainerEntity::addRegularFile( std::string_view filename )
@@ -299,40 +245,14 @@ Loads ContainerEntity::loads()
   return filesPerType< Loads, File::FileType::LoadFile>();
 }
 
-ConstLoadPtr ContainerEntity::load(
-  std::string_view filename,
-  const bool recursive ) const
+ConstLoadPtr ContainerEntity::load( std::string_view filename ) const
 {
-  const auto filePtr{ file( filename, recursive ) };
-
-  if ( !filePtr )
-  {
-    return {};
-  }
-
-  if ( filePtr->fileType() != File::FileType::LoadFile )
-  {
-    return {};
-  }
-
-  return std::dynamic_pointer_cast< const Load>( filePtr );
+  return filePerType< ConstLoadPtr, File::FileType::LoadFile >( filename );
 }
 
-LoadPtr ContainerEntity::load( std::string_view filename, const bool recursive )
+LoadPtr ContainerEntity::load( std::string_view filename )
 {
-  auto filePtr{ file( filename, recursive ) };
-
-  if ( !filePtr )
-  {
-    return {};
-  }
-
-  if ( filePtr->fileType() != File::FileType::LoadFile )
-  {
-    return {};
-  }
-
-  return std::dynamic_pointer_cast< Load>( filePtr );
+  return filePerType< LoadPtr, File::FileType::LoadFile >( filename );
 }
 
 LoadPtr ContainerEntity::addLoad( std::string_view filename )
@@ -370,42 +290,14 @@ Batches ContainerEntity::batches()
   return filesPerType< Batches, File::FileType::BatchFile>();
 }
 
-ConstBatchPtr ContainerEntity::batch(
-  std::string_view filename,
-  const bool recursive ) const
+ConstBatchPtr ContainerEntity::batch( std::string_view filename ) const
 {
-  const auto filePtr{ file( filename, recursive ) };
-
-  if ( !filePtr )
-  {
-    return {};
-  }
-
-  if ( filePtr->fileType() != File::FileType::BatchFile )
-  {
-    return {};
-  }
-
-  return std::dynamic_pointer_cast< const Batch>( filePtr );
+  return filePerType< ConstBatchPtr, File::FileType::BatchFile >( filename );
 }
 
-BatchPtr ContainerEntity::batch(
-  std::string_view filename,
-  const bool recursive )
+BatchPtr ContainerEntity::batch( std::string_view filename )
 {
-  const FilePtr filePtr{ file( filename, recursive ) };
-
-  if ( !filePtr )
-  {
-    return {};
-  }
-
-  if ( filePtr->fileType() != File::FileType::BatchFile )
-  {
-    return {};
-  }
-
-  return std::dynamic_pointer_cast< Batch>( filePtr );
+  return filePerType< BatchPtr, File::FileType::BatchFile >( filename );
 }
 
 BatchPtr ContainerEntity::addBatch( std::string_view filename )
@@ -477,6 +369,42 @@ FilesT ContainerEntity::filesPerType()
   }
 
   return result;
+}
+
+template< typename FilesT, ContainerEntity::FileType fileType >
+FilesT ContainerEntity::filePerType( std::string_view filename ) const
+{
+  const auto filePtr{ file( filename ) };
+
+  if ( !filePtr )
+  {
+    return {};
+  }
+
+  if ( filePtr->fileType() != fileType )
+  {
+    return {};
+  }
+
+  return std::dynamic_pointer_cast< typename FilesT::element_type >( filePtr );
+}
+
+template< typename FilesT, ContainerEntity::FileType fileType >
+FilesT ContainerEntity::filePerType( std::string_view filename )
+{
+  const auto filePtr{ file( filename ) };
+
+  if ( !filePtr )
+  {
+    return {};
+  }
+
+  if ( filePtr->fileType() != fileType )
+  {
+    return {};
+  }
+
+  return std::dynamic_pointer_cast< typename FilesT::element_type >( filePtr );
 }
 
 }
