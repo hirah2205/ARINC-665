@@ -448,9 +448,6 @@ class ARINC665_EXPORT Load : public File
     /**
      * @brief Returns the Support Files Check Value Type.
      *
-     * @param[in] effective
-     *   If set to true the effective value is returned.
-     *
      * @return Support Files Check Value Type
      **/
     [[nodiscard]] std::optional< Arinc645::CheckValueType >

@@ -21,6 +21,13 @@
 
 namespace Arinc665::Utils {
 
+MediaSetImporter& MediaSetImporterImpl::fileSizeHandler(
+  FileSizeHandler fileSizeHandler )
+{
+  fileSizeHandlerV = std::move( fileSizeHandler );
+  return *this;
+}
+
 MediaSetImporter& MediaSetImporterImpl::readFileHandler(
   ReadFileHandler readFileHandler )
 {
@@ -121,56 +128,8 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     }
   }
 
-  // iterate over files
-  for ( const auto &[ fileName, fileInfo ] : fileInfos )
-  {
-    // skip files, which are not part of the current medium
-    if ( fileInfo.memberSequenceNumber != mediumIndex )
-    {
-      continue;
-    }
-
-    // skip file integrity checks if requested
-    if ( !checkFileIntegrityV )
-    {
-      continue;
-    }
-
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
-      << "Check file " << fileInfo.path().generic_string();
-
-    const auto rawFile{ readFileHandlerV( mediumIndex, fileInfo.path() ) };
-
-    // compare checksums
-    if (
-      const auto crc{ Files::Arinc665File::calculateChecksum( rawFile ) };
-      crc != fileInfo.crc )
-    {
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "CRC of file invalid" }
-        << boost::errinfo_file_name{ fileInfo.path().string() } );
-    }
-
-    // Check and compare Check Value
-    if (
-      const auto &[ checkValueType, checkValue ]{ fileInfo.checkValue };
-      Arinc645::CheckValueType::NotUsed != checkValueType )
-    {
-      const auto checkValueCalculated{ Arinc645::CheckValueGenerator::checkValue(
-        checkValueType,
-        rawFile ) };
-
-      if ( fileInfo.checkValue != checkValueCalculated )
-      {
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{ "Check Value of file invalid" }
-          << boost::errinfo_file_name{ fileInfo.path().string() } );
-      }
-    }
-
-    // remember file size
-    fileSizes.try_emplace( fileName, rawFile.size() );
-  }
+  // check file integrity on current medium
+  checkMediumFiles( mediumIndex );
 }
 
 void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
@@ -680,6 +639,62 @@ MediaSetImporterImpl::checkCreateDirectory(
   }
 
   return dir;
+}
+
+void MediaSetImporterImpl::checkMediumFiles( const uint8_t mediumIndex )
+{
+  // iterate over files
+  for ( const auto &[ fileName, fileInfo ] : fileInfos )
+  {
+    // skip files, which are not part of the current medium
+    if ( fileInfo.memberSequenceNumber != mediumIndex )
+    {
+      continue;
+    }
+
+    // check file existence and remember file size
+    fileSizes.try_emplace(
+      fileName,
+      fileSizeHandlerV( mediumIndex, fileInfo.path() ) );
+
+    // skip file integrity checks if requested
+    if ( !checkFileIntegrityV )
+    {
+      continue;
+    }
+
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+      << "Check file " << fileInfo.path().generic_string();
+
+    const auto rawFile{ readFileHandlerV( mediumIndex, fileInfo.path() ) };
+
+    // compare checksums
+    if (
+      const auto crc{ Files::Arinc665File::calculateChecksum( rawFile ) };
+      crc != fileInfo.crc )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ "CRC of file invalid" }
+        << boost::errinfo_file_name{ fileInfo.path().string() } );
+    }
+
+    // Check and compare Check Value
+    if (
+      const auto &[ checkValueType, checkValue ]{ fileInfo.checkValue };
+      Arinc645::CheckValueType::NotUsed != checkValueType )
+    {
+      const auto checkValueCalculated{ Arinc645::CheckValueGenerator::checkValue(
+        checkValueType,
+        rawFile ) };
+
+      if ( fileInfo.checkValue != checkValueCalculated )
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo{ "Check Value of file invalid" }
+          << boost::errinfo_file_name{ fileInfo.path().string() } );
+      }
+    }
+  }
 }
 
 }

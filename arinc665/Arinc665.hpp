@@ -55,6 +55,7 @@ enum class Arinc665Version
   //! ARINC 665 Supplement 5
   Supplement5,
 
+  //! Invalid Value
   Invalid
 };
 
@@ -66,6 +67,7 @@ enum class SupportedArinc665Version
   //! ARINC 665-3/4/5 Compatible
   Supplement345,
 
+  //! Invalid Value
   Invalid
 };
 
@@ -125,7 +127,7 @@ enum class BatchFileFormatVersion : uint16_t
  * Used for:
  * - list of batch file,
  * - list of loads file, and
- * - list of files file
+ * - list of files file.
  **/
 enum class MediaFileFormatVersion : uint16_t
 {
@@ -152,7 +154,8 @@ enum class Arinc665FileFormatVersion : uint16_t
   MediaFileVersion2   = static_cast< uint16_t>( MediaFileFormatVersion::Version2 ),
   MediaFileVersion345 = static_cast< uint16_t>( MediaFileFormatVersion::Version345 ),
 
-  Invalid = 0xFFFFU  //!< invalid value
+  //! Invalid Value
+  Invalid = 0xFFFFU
 };
 
 //! @brief ARINC 665 File Types
@@ -164,7 +167,7 @@ enum class FileType
   BatchList,        //!< ARINC 665 Batch List File
   FileList,         //!< ARINC 665 File List File
 
-  Invalid           //!< invalid value
+  Invalid           //!< Invalid Value
 };
 
 //! Default Filename of the List of Files.

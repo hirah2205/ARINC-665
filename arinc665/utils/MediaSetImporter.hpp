@@ -32,13 +32,34 @@ namespace Arinc665::Utils {
 class ARINC665_EXPORT MediaSetImporter
 {
   public:
-
     /**
-     * @brief Handler, which is called to read a file form a medium.
+     * @brief Handler, which is called to obtain the file size.
      *
      * This handler is also used to read files, which are not represented by
      * Arinc665::Media classes.
      * Therefore, a basic representation is used.
+     *
+     * This Handler shall throw, when the file does not exist.
+     *
+     * @param[in] mediumNumber
+     *   Medium Number
+     * @param[in] path
+     *   Relative Path on Medium.
+     *
+     * @return File Size in Bytes.
+     **/
+    using FileSizeHandler = std::function< size_t(
+      uint8_t mediumNumber,
+      const std::filesystem::path &path ) >;
+
+    /**
+     * @brief Handler, which is called to read a file from a medium.
+     *
+     * This handler is also used to read files, which are not represented by
+     * Arinc665::Media classes.
+     * Therefore, a basic representation is used.
+     *
+     * This Handler shall throw, when the file does not exist.
      *
      * @param[in] mediumNumber
      *   Medium Number
@@ -60,6 +81,17 @@ class ARINC665_EXPORT MediaSetImporter
 
     //! Destructor
     virtual ~MediaSetImporter() = default;
+
+    /**
+     * @brief Sets the File Size Handler.
+     *
+     * @param[in] fileSizeHandler
+     *   Handler which is called to obtain the requested file size the medium.
+     *
+     * @return *this for chaining.
+     **/
+    virtual MediaSetImporter &fileSizeHandler(
+      FileSizeHandler fileSizeHandler ) = 0;
 
     /**
      * @brief Sets the Read File Handler.

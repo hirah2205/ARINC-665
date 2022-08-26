@@ -23,12 +23,10 @@
 #include <arinc665/utils/MediaSetImporter.hpp>
 #include <arinc665/utils/Printer.hpp>
 
-#include <helper/Dump.hpp>
 #include <helper/Logger.hpp>
 
 #include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
-#include <boost/format.hpp>
 
 #include <filesystem>
 #include <fstream>
@@ -63,21 +61,43 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
   const Directories &mediaSetDirectories,
   bool checkFileIntegrity );
 
+static size_t getFileSize(
+  const Directories &mediaSetDirectories,
+  uint8_t mediumNumber,
+  const std::filesystem::path &path );
+
+/**
+ * @brief Reads the give file and returns the data.
+ *
+ * @param[in] mediumNumber
+ *   Medium number
+ * @param[in] path
+ *   Path of file on medium.
+ *
+ * @return THe read file data.
+ *
+ * @throw Arind665Exception
+ *   If file does not exist or cannot be read.
+ **/
+static Arinc665::Files::RawFile readFile(
+  const Directories &mediaSetDirectories,
+  uint8_t mediumNumber,
+  const std::filesystem::path &path );
+
 int main( int argc, char const * argv[] )
 {
+  std::cout << "ARINC 665 Media Set Printer\n";
+
   Helper::initLogging( Helper::Severity::warning, true );
 
-  std::cout
-    << "ARINC 665 Media Set Printer\n";
-
-  boost::program_options::options_description options{
+  boost::program_options::options_description optionsDescription{
     "ARINC 665 Media Set Printer options" };
 
   // directories which contains the medias
   std::vector< std::filesystem::path > directories{};
   bool checkFileIntegrity{ true };
 
-  options.add_options()
+  optionsDescription.add_options()
   (
     "help",
     "Print Help"
@@ -97,14 +117,14 @@ int main( int argc, char const * argv[] )
   {
     boost::program_options::variables_map vm{};
     boost::program_options::store(
-      boost::program_options::parse_command_line( argc, argv, options ),
+      boost::program_options::parse_command_line( argc, argv, optionsDescription ),
       vm );
 
     if ( 0U != vm.count( "help" ) )
     {
       std::cout
         << "Prints the ARINC 665 Media Set located in the given directory\n"
-        << options;
+        << optionsDescription << "\n";
       return EXIT_FAILURE;
     }
 
@@ -116,31 +136,30 @@ int main( int argc, char const * argv[] )
   }
   catch ( const boost::program_options::error &e )
   {
-    std::cout
+    std::cerr
       << "Error parsing command line: " << e.what() << "\n"
       << "Enter " << argv[0] << " --help for command line description\n";
     return EXIT_FAILURE;
   }
   catch ( const boost::exception &e )
   {
-    std::cout
-      << "Boost exception: " << boost::diagnostic_information( e ) << "\n";
+    std::cerr
+      << "Error: " << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
-    std::cout << "std exception: " << e.what() << "\n";
+    std::cerr << "std exception: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( ... )
   {
-    std::cout << "unknown exception occurred\n";
+    std::cerr << "unknown exception occurred\n";
     return EXIT_FAILURE;
   }
 
   return EXIT_SUCCESS;
 }
-
 
 static Arinc665::Media::MediaSetPtr loadMediaSet(
   const Directories &mediaSetDirectories,
@@ -148,48 +167,72 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
 {
   auto importer{ Arinc665::Utils::MediaSetImporter::create() };
 
-  // read file handler
-  importer->readFileHandler(
-    [ &mediaSetDirectories ](
-      const uint8_t mediumNumber,
-      const std::filesystem::path &path)->Arinc665::Files::RawFile {
-        auto filePath{
-          mediaSetDirectories.at( mediumNumber - 1U ) / path.relative_path() };
-
-        if ( !std::filesystem::is_regular_file( filePath ) )
-        {
-          BOOST_THROW_EXCEPTION(
-            Arinc665::Arinc665Exception()
-            << boost::errinfo_file_name{ filePath.string() }
-            << Helper::AdditionalInfo{ "File not found" }
-            << boost::errinfo_file_name{ filePath.string() } );
-        }
-
-        Arinc665::Files::RawFile data( std::filesystem::file_size( filePath ) );
-
-        std::ifstream file(
-          filePath.string().c_str(),
-          std::ifstream::binary | std::ifstream::in );
-
-        if ( !file.is_open() )
-        {
-          BOOST_THROW_EXCEPTION(
-            Arinc665::Arinc665Exception()
-            << Helper::AdditionalInfo{ "Error opening files" }
-            << boost::errinfo_file_name{ filePath.string() } );
-        }
-
-        // read the data to the buffer
-        file.read(
-          (char *)&data.at( 0 ),
-          static_cast< std::streamsize >( data.size() ) );
-
-        // return the buffer
-        return data;
-      } )
-    .checkFileIntegrity( checkFileIntegrity );
+  importer->fileSizeHandler(
+    std::bind_front( &getFileSize, mediaSetDirectories ) )
+  .readFileHandler( std::bind_front( &readFile, mediaSetDirectories ) )
+  .checkFileIntegrity( checkFileIntegrity );
 
   auto mediaSet{ (*importer)() };
 
   return mediaSet;
+}
+
+static size_t getFileSize(
+  const Directories &mediaSetDirectories,
+  const uint8_t mediumNumber,
+  const std::filesystem::path &path )
+{
+  auto filePath{
+    mediaSetDirectories.at( mediumNumber - 1U ) / path.relative_path() };
+
+  if ( !std::filesystem::is_regular_file( filePath ) )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception()
+      << boost::errinfo_file_name{ filePath.string() }
+      << Helper::AdditionalInfo{ "File not found" }
+      << boost::errinfo_file_name{ filePath.string() } );
+  }
+
+  return std::filesystem::file_size( filePath );
+}
+
+static Arinc665::Files::RawFile readFile(
+  const Directories &mediaSetDirectories,
+  const uint8_t mediumNumber,
+  const std::filesystem::path &path )
+{
+  auto filePath{
+    mediaSetDirectories.at( mediumNumber - 1U ) / path.relative_path() };
+
+  if ( !std::filesystem::is_regular_file( filePath ) )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception()
+      << boost::errinfo_file_name{ filePath.string() }
+      << Helper::AdditionalInfo{ "File not found" }
+      << boost::errinfo_file_name{ filePath.string() } );
+  }
+
+  Arinc665::Files::RawFile data( std::filesystem::file_size( filePath ) );
+
+  std::ifstream file{
+    filePath.string().c_str(),
+    std::ifstream::binary | std::ifstream::in };
+
+  if ( !file.is_open() )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "Error opening files" }
+      << boost::errinfo_file_name{ filePath.string() } );
+  }
+
+  // read the data to the buffer
+  file.read(
+    (char *)&data.at( 0 ),
+    static_cast< std::streamsize >( data.size() ) );
+
+  // return the buffer
+  return data;
 }

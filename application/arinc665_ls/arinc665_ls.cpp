@@ -32,6 +32,8 @@
 #include <boost/format.hpp>
 #include <boost/program_options.hpp>
 
+#include <fmt/format.h>
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -51,8 +53,8 @@ int main( int argc, char const * argv[] );
 /**
  * @brief Loads the load upload header file and decodes its content.
  *
- * @param[in] luhFile
- *   The load upload header.
+ * @param[in] lubFile
+ *   Load upload header.
  **/
 static void list_lub( const std::filesystem::path &lubFile );
 
@@ -60,7 +62,7 @@ static void list_lub( const std::filesystem::path &lubFile );
  * @brief Loads the load upload header file and decodes its content.
  *
  * @param[in] luhFile
- *   The load upload header.
+ *   Load upload header.
  **/
 static void list_luh( const std::filesystem::path &luhFile );
 
@@ -68,7 +70,7 @@ static void list_luh( const std::filesystem::path &luhFile );
  * @brief Loads the load list file and decodes its content.
  *
  * @param[in] loadsLum
- *   The load list file.
+ *   Load list file.
  **/
 static void list_loads_lum( const std::filesystem::path &loadsLum );
 
@@ -76,30 +78,30 @@ static void list_loads_lum( const std::filesystem::path &loadsLum );
  * @brief Loads the file list file and decodes its content.
  *
  * @param[in] filesLum
- *   The file list file.
+ *   File list file.
  **/
 static void list_files_lum( const std::filesystem::path &filesLum );
 
 /**
- * @brief Iterates over every file and sub-directory and tries to decodes its
+ * @brief Iterates over every file and subdirectory and tries to decode its
  *   content.
  *
  * @param[in] loadDir
- *   The directory to decode.
+ *   Directory to decode.
  **/
 static void list_files( const std::filesystem::path &loadDir );
 
-int main( int argc, char const * argv[])
+int main( int argc, char const * argv[] )
 {
   std::cout << "ARINC 665 list\n";
 
-  boost::program_options::options_description options{
-    "ARINC 665 List options"};
+  boost::program_options::options_description optionsDescription{
+    "ARINC 665 List options" };
 
   // directory to list
   std::filesystem::path directory{};
 
-  options.add_options()
+  optionsDescription.add_options()
   (
     "help",
     "Print Help"
@@ -114,14 +116,14 @@ int main( int argc, char const * argv[])
   {
     boost::program_options::variables_map vm;
     boost::program_options::store(
-      boost::program_options::parse_command_line( argc, argv, options ),
+      boost::program_options::parse_command_line( argc, argv, optionsDescription ),
       vm);
 
     if ( vm.count( "help") != 0)
     {
       std::cout
         << "Prints the ARINC 665 Media File information located in the given directory\n"
-        << options;
+        << optionsDescription;
       return EXIT_FAILURE;
     }
 
@@ -129,26 +131,26 @@ int main( int argc, char const * argv[])
 
     std::cout << "List files in " << directory << "\n";
 
-    list_files( directory);
+    list_files( directory );
   }
-  catch ( boost::program_options::error &e )
+  catch ( const boost::program_options::error &e )
   {
     std::cout
       << "Error parsing command line: " << e.what() << "\n"
       << "Enter " << argv[0] << " --help for command line description\n";
     return EXIT_FAILURE;
   }
-  catch ( boost::exception &e )
+  catch ( const boost::exception &e )
   {
     std::cout << "Error: " << boost::diagnostic_information( e) << "\n";
     return EXIT_FAILURE;
   }
-  catch ( std::exception &e )
+  catch ( const std::exception &e )
   {
     std::cout << "Error: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
-  catch ( ...)
+  catch ( ... )
   {
     std::cout << "unknown exception occurred" << "\n";
     return EXIT_FAILURE;
@@ -162,8 +164,7 @@ static void list_lub( const std::filesystem::path &lubFile )
   try
   {
     std::cout
-      << "File size is: "
-      << std::dec << std::filesystem::file_size( lubFile ) << "\n";
+      << fmt::format( "File size is: {}\n", std::filesystem::file_size( lubFile ) );
 
     std::vector< uint8_t> data( std::filesystem::file_size( lubFile ) );
 
@@ -205,7 +206,7 @@ static void list_lub( const std::filesystem::path &lubFile )
   {
     std::cout << "std exception: " << e.what() << "\n";
   }
-  catch ( ...)
+  catch ( ... )
   {
     std::cout << "unknown exception occurred\n";
   }
@@ -216,16 +217,15 @@ static void list_luh( const std::filesystem::path &luhFile)
   try
   {
     std::cout
-      << "File size is: "
-      << std::dec << std::filesystem::file_size( luhFile) << "\n";
+      << fmt::format( "File size is: {}\n", std::filesystem::file_size( luhFile ) );
 
-    std::vector< uint8_t> data( std::filesystem::file_size( luhFile));
+    std::vector< uint8_t> data( std::filesystem::file_size( luhFile) );
 
     std::ifstream file{
       luhFile.string().c_str(),
       std::ifstream::binary | std::ifstream::in };
 
-    if ( !file.is_open())
+    if ( !file.is_open() )
     {
       std::cout << "Error opening file: " << luhFile.string() << "\n";
       return;
@@ -237,12 +237,12 @@ static void list_luh( const std::filesystem::path &luhFile)
 
     std::cout << "part number: "<< load.partNumber() << "\n";
 
-    for ( auto const &targetHardwareId : load.targetHardwareIds())
+    for ( auto const &targetHardwareId : load.targetHardwareIds() )
     {
       std::cout << "target HW id: " << targetHardwareId << "\n";
     }
 
-    for ( auto const &dataFile : load.dataFiles())
+    for ( auto const &dataFile : load.dataFiles() )
     {
       std::cout
         << "data file name: " << dataFile.filename << "\n"
@@ -251,7 +251,7 @@ static void list_luh( const std::filesystem::path &luhFile)
         << "data file CRC:  " << std::hex << dataFile.crc << "\n\n";
     }
 
-    for ( auto const &supportFile : load.supportFiles())
+    for ( auto const &supportFile : load.supportFiles() )
     {
       std::cout
         << "support file name: " << supportFile.filename << "\n"
@@ -262,36 +262,35 @@ static void list_luh( const std::filesystem::path &luhFile)
 
     std::cout << "load crc " << std::hex << load.loadCrc() << "\n";
   }
-  catch ( boost::exception &e)
+  catch ( const boost::exception &e )
   {
     std::cout
       << "Boost exception: " << boost::diagnostic_information(e) << "\n";
   }
-  catch ( std::exception &e)
+  catch ( const std::exception &e )
   {
     std::cout << "std exception: " << e.what() << "\n";
   }
-  catch (...)
+  catch ( ... )
   {
     std::cout << "unknown exception occurred\n";
   }
 }
 
-static void list_loads_lum( const std::filesystem::path &loadsLum)
+static void list_loads_lum( const std::filesystem::path &loadsLum )
 {
   try
   {
     std::cout
-      << "File size is: "
-      << std::dec << std::filesystem::file_size( loadsLum) << "\n";
+      << fmt::format( "File size is: {}\n", std::filesystem::file_size( loadsLum ) );
 
-    std::vector< uint8_t> data( std::filesystem::file_size( loadsLum));
+    std::vector< uint8_t> data( std::filesystem::file_size( loadsLum ) );
 
     std::ifstream file(
       loadsLum.string().c_str(),
-      std::ifstream::binary | std::ifstream::in);
+      std::ifstream::binary | std::ifstream::in );
 
-    if ( !file.is_open())
+    if ( !file.is_open() )
     {
       std::cout << "Error opening file: " << loadsLum.string() << "\n";
       return;
@@ -327,36 +326,35 @@ static void list_loads_lum( const std::filesystem::path &loadsLum)
     }
 
   }
-  catch ( boost::exception &e )
+  catch ( const boost::exception &e )
   {
     std::cout
       << "Boost exception: " << boost::diagnostic_information( e ) << "\n";
   }
-  catch ( std::exception &e )
+  catch ( const std::exception &e )
   {
     std::cout << "std exception: " << e.what() << "\n";
   }
-  catch (...)
+  catch ( ... )
   {
     std::cout << "unknown exception occurred\n";
   }
 }
 
-static void list_files_lum( const std::filesystem::path &filesLum)
+static void list_files_lum( const std::filesystem::path &filesLum )
 {
   try
   {
     std::cout
-      << "File size is: "
-      << std::dec << std::filesystem::file_size( filesLum) << "\n";
+      << fmt::format( "File size is: {}\n", std::filesystem::file_size( filesLum ) );
 
-    std::vector< uint8_t> data( std::filesystem::file_size( filesLum));
+    std::vector< uint8_t> data( std::filesystem::file_size( filesLum ) );
 
     std::ifstream file{
       filesLum.string().c_str(),
-      std::ifstream::binary | std::ifstream::in};
+      std::ifstream::binary | std::ifstream::in };
 
-    if ( !file.is_open())
+    if ( !file.is_open() )
     {
       std::cout << "Error opening file: " << filesLum.string() << "\n";
       return;
@@ -376,7 +374,7 @@ static void list_files_lum( const std::filesystem::path &filesLum)
       << "no of media set members: "
       << std::dec << (unsigned int)fileList.numberOfMediaSetMembers() << "\n";
 
-    for ( const auto & file : fileList.files())
+    for ( const auto & file : fileList.files() )
     {
       std::cout << "file file name: " << file.filename << "\n";
       std::cout << "file path name: " << file.pathName << "\n";
@@ -387,25 +385,25 @@ static void list_files_lum( const std::filesystem::path &filesLum)
     }
 
   }
-  catch (boost::exception &e)
+  catch ( const boost::exception &e )
   {
     std::cout
       << "Boost exception: " << boost::diagnostic_information(e) << "\n";
   }
-  catch ( std::exception &e)
+  catch ( const std::exception &e )
   {
     std::cout << "std::exception: " << e.what() << "\n";
   }
-  catch ( ...)
+  catch ( ... )
   {
     std::cout << "unknown exception occurred\n";
   }
 }
 
-static void list_files( const std::filesystem::path &loadDir)
+static void list_files( const std::filesystem::path &loadDir )
 {
-  for ( std::filesystem::directory_iterator itr( loadDir);
-    itr != std::filesystem::directory_iterator(); ++itr)
+  for ( std::filesystem::directory_iterator itr( loadDir );
+    itr != std::filesystem::directory_iterator(); ++itr )
   {
     std::cout << " * " << itr->path().filename() << " - ";
 

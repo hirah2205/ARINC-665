@@ -41,12 +41,16 @@ class MediaSetImporterImpl final : public MediaSetImporter
      **/
     explicit MediaSetImporterImpl() = default;
 
+    //! @copydoc MediaSetImporter::fileSizeHandler()
+    MediaSetImporter &fileSizeHandler(
+      FileSizeHandler fileSizeHandler ) override;
+
     //! @copydoc MediaSetImporter::readFileHandler()
-    [[nodiscard]] MediaSetImporter& readFileHandler(
+    MediaSetImporter& readFileHandler(
       ReadFileHandler readFileHandler ) override;
 
     //! @copydoc MediaSetImporter::checkFileIntegrity()
-    [[nodiscard]] MediaSetImporter& checkFileIntegrity(
+    MediaSetImporter& checkFileIntegrity(
       bool checkFileIntegrity ) override;
 
     /**
@@ -180,6 +184,20 @@ class MediaSetImporterImpl final : public MediaSetImporter
       uint8_t mediumIndex,
       const std::filesystem::path &directoryPath );
 
+    /**
+     * @brief Checks all Files on given Medium.
+     *
+     * Check for file existence and stores file size for later usage.
+     * If file integrity checks is requested read each file and check file CRC
+     * and Check Value.
+     *
+     * @param[in] mediumIndex
+     *   Current Medium Index
+     **/
+    void checkMediumFiles( uint8_t mediumIndex );
+
+    //! File Size Handler
+    FileSizeHandler fileSizeHandlerV;
     //! Read File Handler
     ReadFileHandler readFileHandlerV;
     //! Check File Integrity

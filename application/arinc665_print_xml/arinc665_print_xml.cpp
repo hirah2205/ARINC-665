@@ -48,12 +48,12 @@ int main( int argc, char * argv[] )
 {
   std::cout << "ARINC 665 Media Set XML Printer" << "\n";
 
-  boost::program_options::options_description options{
+  boost::program_options::options_description optionsDescription{
     "ARINC 665 List options" };
 
   std::filesystem::path xmlPath{};
 
-  options.add_options()
+  optionsDescription.add_options()
   (
     "help",
     "Print Help"
@@ -68,14 +68,14 @@ int main( int argc, char * argv[] )
   {
     boost::program_options::variables_map vm{};
     boost::program_options::store(
-      boost::program_options::parse_command_line( argc, argv, options ),
+      boost::program_options::parse_command_line( argc, argv, optionsDescription ),
       vm );
 
     if ( vm.count( "help" ) != 0 )
     {
       std::cout
         << "Prints the ARINC 665 Media Set XML.\n"
-        << options;
+        << optionsDescription;
       return EXIT_FAILURE;
     }
 

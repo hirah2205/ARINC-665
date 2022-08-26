@@ -2,3 +2,5 @@
 
 Decompiles ARINC 665 Media Sets and creates an associated XML Configuration 
 file.
+
+@ref arinc665_decompiler.cpp

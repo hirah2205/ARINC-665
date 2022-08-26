@@ -50,11 +50,11 @@ void CreateMediaSetManagerCommand::execute(
 
     Arinc665::Utils::JsonMediaSetManager::create( mediaSetManagerDirectory );
   }
-  catch ( boost::exception &e )
+  catch ( const boost::exception &e )
   {
     std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
   }
-  catch ( std::exception &e )
+  catch ( const std::exception &e )
   {
     std::cerr << "Error: " << e.what() << "\n";
   }
