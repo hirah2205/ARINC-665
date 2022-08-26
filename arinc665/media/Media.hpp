@@ -173,16 +173,11 @@ using LoadVariant = std::variant< LoadPtr, ConstLoadPtr >;
 //! Loads Variant
 using LoadsVariant = std::variant< Loads, ConstLoads >;
 
-//! %Load %File List (File, Part Number, Check Value Type for this File).
-//! Used for Data and Support Files of Load
-using LoadFile =
-  std::tuple< FilePtr, std::string, std::optional< Arinc645::CheckValueType > >;
 //! Const %Load %File List (File, Part Number, Check Value Type for this File).
+//! Used for Data and Support Files of Load
 using ConstLoadFile =
-  std::tuple< ConstFilePtr, std::string, std::optional< Arinc645::CheckValueType > >;
+  std::tuple< ConstRegularFilePtr, std::string, std::optional< Arinc645::CheckValueType > >;
 
-//! %Load %File List. Used for Data and Support Files of Load
-using LoadFiles = std::list< LoadFile >;
 //! Const %Load %File List. Used for Data and Support Files of Load
 using ConstLoadFiles = std::list< ConstLoadFile >;
 

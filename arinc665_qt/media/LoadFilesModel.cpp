@@ -12,7 +12,7 @@
 
 #include "LoadFilesModel.hpp"
 
-#include <arinc665/media/File.hpp>
+#include <arinc665/media/RegularFile.hpp>
 
 #include <helper_qt/String.hpp>
 

@@ -11,7 +11,7 @@
       Media Set Definition
     </documentation></annotation>
     <key name="FileKey" >
-      <selector xpath="ams:RegularFile|ams:LoadFile|ams:BatchFile" />
+      <selector xpath="ams:RegularFile" />
       <field    xpath="@Name" />
     </key>
     <key name="LoadKey" >
@@ -149,7 +149,7 @@
     </documentation></annotation>
     <sequence>
       <element name="TargetHardware"  type="ams:TargetHardwareType"  minOccurs="1" maxOccurs="unbounded" />
-      <element name="DataFile"        type="ams:FileReferenceType"   minOccurs="0" maxOccurs="unbounded" />
+      <element name="DataFile"        type="ams:FileReferenceType"   minOccurs="1" maxOccurs="unbounded" />
       <element name="SupportFile"     type="ams:FileReferenceType"   minOccurs="0" maxOccurs="unbounded" />
       <element name="UserDefinedData" type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
     </sequence>

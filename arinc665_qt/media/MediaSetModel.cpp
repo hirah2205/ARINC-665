@@ -351,8 +351,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
 
       // Medium and Directories have subdirectories and files
       return static_cast< int>(
-        container->numberOfSubdirectories() +
-        container->numberOfFiles( false ) );
+        container->numberOfSubdirectories() + container->numberOfFiles() );
     }
 
     case Arinc665::Media::Base::Type::File:

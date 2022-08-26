@@ -218,6 +218,58 @@ class ARINC665_EXPORT MediaSet : public Base
     /** @} **/
 
     /**
+     * @name Regular Files
+     * @{
+     **/
+
+    /**
+     * @brief Return the number of Regular Files within the Media Set.
+     *
+     * @return Number of loads within the media set.
+     **/
+    size_t numberOfRegularFiles() const;
+
+    /**
+     * @brief Returns the Regular Files within the media set.
+     *
+     * @return Loads within the media set.
+     **/
+    ConstRegularFiles regularFiles() const;
+
+    /**
+     * @brief Returns the Regular Files within the media set.
+     *
+     * @return Loads within the media set.
+     **/
+    RegularFiles regularFiles();
+
+    /**
+     * @brief return the Regular File with the given filename.
+     *
+     * @todo handle multiple loads with same name.
+     *
+     * @param[in] filename
+     *   The filename of the load.
+     *
+     * @return Load with the given filename.
+     **/
+    ConstRegularFilePtr regularFile( std::string_view filename ) const;
+
+    /**
+     * @brief return the Regular File with the given filename.
+     *
+     * @todo handle multiple loads with same name.
+     *
+     * @param[in] filename
+     *   Filename of the load.
+     *
+     * @return Load with the given filename.
+     **/
+    RegularFilePtr regularFile( std::string_view filename );
+
+    /** @} **/
+
+    /**
      * @name Loads
      * @{
      **/
@@ -624,24 +676,102 @@ class ARINC665_EXPORT MediaSet : public Base
     /** @} **/
 
   private:
+    /**
+     * @brief Recursively returns number of files contained on @p container.
+     *
+     * @param[in] container
+     *   Current Container (Media Set or Directory)
+     *
+     * @return Number of files in @p container and its subdirectories.
+     **/
+    size_t recursiveNumberOfFiles( const ContainerEntity &container ) const;
+
+    /**
+     * @brief Recursively returns all files present on the Media Set.
+     *
+     * @param[in] container
+     *   Current Container (Media Set or Directory)
+     *
+     * @return All files in @p container and its subdirectories.
+     **/
     [[nodiscard]] ConstFiles recursiveFiles(
       const ContainerEntity &container ) const;
 
+    //! @copydoc recursiveFiles(const ContainerEntity&) const
     [[nodiscard]] Files recursiveFiles( ContainerEntity &container );
 
+    /**
+     * @brief Recursively returns number of regular files contained on
+     *   @p container.
+     *
+     * @param[in] container
+     *   Current Container (Media Set or Directory)
+     *
+     * @return Number of regular files in @p container and its subdirectories.
+     **/
+    size_t recursiveNumberOfRegularFiles(
+      const ContainerEntity &container ) const;
+
+    /**
+     * @brief Recursively returns all regular files present on the Media Set.
+     *
+     * @param[in] container
+     *   Current Container (Media Set or Directory)
+     *
+     * @return All regular files in @p container and its subdirectories.
+     **/
     [[nodiscard]] ConstRegularFiles recursiveRegularFiles(
       const ContainerEntity &container ) const;
 
+    //! @copydoc recursiveRegularFiles(const ContainerEntity&) const
     [[nodiscard]] RegularFiles recursiveRegularFiles( ContainerEntity &container );
 
+    /**
+     * @brief Recursively returns number of Loads contained on @p container.
+     *
+     * @param[in] container
+     *   Current Container (Media Set or Directory)
+     *
+     * @return Number of Loads in @p container and its subdirectories.
+     **/
+    size_t recursiveNumberOfLoads( const ContainerEntity &container ) const;
+
+    /**
+     * @brief Recursively returns all Loads present on the Media Set.
+     *
+     * @param[in] container
+     *   Current Container (Media Set or Directory)
+     *
+     * @return All Loads in @p container and its subdirectories.
+     **/
     [[nodiscard]] ConstLoads recursiveLoads(
       const ContainerEntity &container ) const;
 
+    //! @copydoc recursiveLoads(const ContainerEntity&) const
     [[nodiscard]] Loads recursiveLoads( ContainerEntity &container );
 
+    /**
+     * @brief Recursively returns number of Batches contained on @p container.
+     *
+     * @param[in] container
+     *   Current Container (Media Set or Directory)
+     *
+     * @return Number of Batches in @p container and its subdirectories.
+     **/
+    size_t recursiveNumberOfBatches( const ContainerEntity &container ) const;
+
+    /**
+     * @brief Recursively returns all Batches present on the Media Set.
+     *
+     * @param[in] container
+     *   Current Container (Media Set or Directory)
+     *
+     * @return All Batches in @p container and its subdirectories.
+     **/
     [[nodiscard]] ConstBatches recursiveBatches(
       const ContainerEntity &container ) const;
 
+    //! @copydoc recursiveBatches(const ContainerEntity&) const
     [[nodiscard]] Batches recursiveBatches( ContainerEntity &container );
 
     //! Media

@@ -431,7 +431,7 @@ void MediaSetImporterImpl::addLoads()
     // iterate over data files
     for ( const auto &dataFile : loadHeaderFile.dataFiles() )
     {
-      auto dataFilePtr{ mediaSet->file( dataFile.filename ) };
+      auto dataFilePtr{ mediaSet->regularFile( dataFile.filename ) };
 
       if ( !dataFilePtr )
       {
@@ -504,7 +504,7 @@ void MediaSetImporterImpl::addLoads()
     // iterate over support files
     for ( const auto &supportFile : loadHeaderFile.supportFiles() )
     {
-      auto supportFilePtr{ mediaSet->file( supportFile.filename ) };
+      auto supportFilePtr{ mediaSet->regularFile( supportFile.filename ) };
 
       if ( !supportFilePtr )
       {

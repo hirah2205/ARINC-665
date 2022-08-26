@@ -786,7 +786,7 @@ Media::ConstLoadFiles Arinc665XmlImpl::loadLoadFiles(
     auto checkValueType{ loadCheckValue( *fileElement, "CheckValue" ) };
 
     // Find File
-    auto file{ mediaSet.file( toStringView( fileNameRef ) ) };
+    auto file{ mediaSet.regularFile( toStringView( fileNameRef ) ) };
 
     if ( !file )
     {

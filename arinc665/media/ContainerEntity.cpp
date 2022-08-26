@@ -109,20 +109,9 @@ void ContainerEntity::removeSubdirectory( const DirectoryPtr& subdirectory )
    subdirectoriesV.erase( dir );
 }
 
-size_t ContainerEntity::numberOfFiles( const bool recursive ) const
+size_t ContainerEntity::numberOfFiles() const
 {
-  auto fileSize{ filesV.size() };
-
-  // descent to sub directories if requested
-  if ( recursive )
-  {
-    for ( const auto &subdirectory : subdirectoriesV )
-    {
-      fileSize += subdirectory->numberOfFiles( true );
-    }
-  }
-
-  return fileSize;
+  return filesV.size();
 }
 
 ConstFiles ContainerEntity::files() const
@@ -220,6 +209,12 @@ void ContainerEntity::removeFile( const ConstFilePtr& file )
 
   filesV.erase( fileIt );
 }
+
+size_t ContainerEntity::numberOfRegularFiles() const
+{
+  return numberOfFiles( File::FileType::RegularFile );
+}
+
 ConstRegularFiles ContainerEntity::regularFiles() const
 {
   auto regularFiles{ files( File::FileType::RegularFile ) };
@@ -248,6 +243,44 @@ RegularFiles ContainerEntity::regularFiles()
   return files;
 }
 
+ConstRegularFilePtr ContainerEntity::regularFile(
+  std::string_view filename,
+  const bool recursive ) const
+{
+  const auto filePtr{ file( filename, recursive ) };
+
+  if ( !filePtr )
+  {
+    return {};
+  }
+
+  if ( filePtr->fileType() != File::FileType::RegularFile )
+  {
+    return {};
+  }
+
+  return std::dynamic_pointer_cast< const RegularFile >( filePtr );
+}
+
+RegularFilePtr ContainerEntity::regularFile(
+  std::string_view filename,
+  const bool recursive )
+{
+  const auto filePtr{ file( filename, recursive ) };
+
+  if ( !filePtr )
+  {
+    return {};
+  }
+
+  if ( filePtr->fileType() != File::FileType::RegularFile )
+  {
+    return {};
+  }
+
+  return std::dynamic_pointer_cast< RegularFile >( filePtr );
+}
+
 RegularFilePtr ContainerEntity::addRegularFile( std::string_view filename )
 {
   if ( subdirectory( filename ) || file( filename ) )
@@ -269,20 +302,9 @@ RegularFilePtr ContainerEntity::addRegularFile( std::string_view filename )
   return file;
 }
 
-size_t ContainerEntity::numberOfLoads( const bool recursive ) const
+size_t ContainerEntity::numberOfLoads() const
 {
-  auto numberOfLoads{ files( File::FileType::LoadFile ).size() };
-
-  // descent to sub directories if requested
-  if ( recursive )
-  {
-    for ( const auto &subdirectory : subdirectoriesV )
-    {
-      numberOfLoads += subdirectory->numberOfLoads( true );
-    }
-  }
-
-  return numberOfLoads;
+  return numberOfFiles( File::FileType::LoadFile );
 }
 
 ConstLoads ContainerEntity::loads() const
@@ -369,20 +391,9 @@ LoadPtr ContainerEntity::addLoad( std::string_view filename )
   return load;
 }
 
-size_t ContainerEntity::numberOfBatches( const bool recursive) const
+size_t ContainerEntity::numberOfBatches() const
 {
-  size_t numberOfBatches( files( File::FileType::BatchFile).size() );
-
-  // descent to sub directories if requested
-  if ( recursive )
-  {
-    for ( const auto &subdirectory : subdirectoriesV )
-    {
-      numberOfBatches += subdirectory->numberOfBatches( true);
-    }
-  }
-
-  return numberOfBatches;
+  return numberOfFiles( File::FileType::BatchFile );
 }
 
 ConstBatches ContainerEntity::batches() const
@@ -475,6 +486,21 @@ BatchPtr ContainerEntity::addBatch( std::string_view filename )
 
   // return new file
   return batch;
+}
+
+size_t ContainerEntity::numberOfFiles( FileType fileType ) const
+{
+  size_t numberOfFiles{ 0U };
+
+  for ( auto & file : filesV )
+  {
+    if ( file->fileType() == fileType )
+    {
+      numberOfFiles++;
+    }
+  }
+
+  return numberOfFiles;
 }
 
 ConstFiles ContainerEntity::files( FileType fileType ) const

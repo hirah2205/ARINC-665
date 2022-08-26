@@ -223,13 +223,13 @@ class ARINC665_EXPORT Load : public File
      * @sa dataFilesCheckValueType()
      **/
     void dataFile(
-      const ConstFilePtr& file,
+      const ConstRegularFilePtr& file,
       std::string_view partNumber,
       const std::optional< Arinc645::CheckValueType >& checkValueType );
 
-    //! @copydoc dataFile(const ConstFilePtr&,std::string_view,const std::optional<Arinc645::CheckValueType>&)
+    //! @copydoc dataFile(const ConstRegularFilePtr&,std::string_view,const std::optional<Arinc645::CheckValueType>&)
     void dataFile(
-      const ConstFilePtr &file,
+      const ConstRegularFilePtr &file,
       std::string &&partNumber,
       std::optional< Arinc645::CheckValueType >&& checkValueType = {} );
 
@@ -274,13 +274,13 @@ class ARINC665_EXPORT Load : public File
      * @sa supportFilesCheckValueType()
      **/
     void supportFile(
-      const ConstFilePtr &file,
+      const ConstRegularFilePtr &file,
       std::string_view partNumber,
       const std::optional< Arinc645::CheckValueType >& checkValueType );
 
-    //! @copydoc supportFile(const ConstFilePtr&,std::string_view,const std::optional<Arinc645::CheckValueType>&)
+    //! @copydoc supportFile(const ConstRegularFilePtr&,std::string_view,const std::optional<Arinc645::CheckValueType>&)
     void supportFile(
-      const ConstFilePtr &file,
+      const ConstRegularFilePtr &file,
       std::string &&partNumber,
       std::optional< Arinc645::CheckValueType >&& checkValueType = {} );
 
@@ -470,7 +470,7 @@ class ARINC665_EXPORT Load : public File
   private:
     //! Weak %Load %File ( file, Part Number, Check Value Type ).
     using WeakLoadFile = std::tuple<
-      ConstFilePtr::weak_type,
+      ConstRegularFilePtr::weak_type,
       std::string,
       std::optional< Arinc645::CheckValueType > >;
     //! Weak %Load %File List.

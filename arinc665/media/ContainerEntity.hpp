@@ -142,15 +142,11 @@ class ARINC665_EXPORT ContainerEntity : public Base
      **/
 
     /**
-     * @brief Returns the number of files within this directory and
-     *   subdirectories.
+     * @brief Returns the number of files within this directory.
      *
-     * @param[in] recursive
-     *   If set to true includes files in subdirectories.
-     *
-     * @return The number of files within this directory.
+     * @return Number of files within this directory.
      **/
-    size_t numberOfFiles( bool recursive = false ) const;
+    size_t numberOfFiles() const;
 
     /**
      * @brief Returns all files present in the given container.
@@ -280,14 +276,11 @@ class ARINC665_EXPORT ContainerEntity : public Base
      **/
 
     /**
-     * @brief Return the number of loads.
+     * @brief Return the number of Loads.
      *
-     * @param[in] recursive
-     *   If set to true also iterates over subdirectories.
-     *
-     * @return The number of loads.
+     * @return Number of Loads.
      **/
-    [[nodiscard]] size_t numberOfLoads( bool recursive = false ) const;
+    [[nodiscard]] size_t numberOfLoads() const;
 
     /**
      * @brief Return loads.
@@ -341,14 +334,11 @@ class ARINC665_EXPORT ContainerEntity : public Base
      **/
 
     /**
-     * @brief Return the number of batches.
+     * @brief Return the number of Batches.
      *
-     * @param[in] recursive
-     *   If set to true also iterates over subdirectories.
-     *
-     * @return The number of loads.
+     * @return Number of Batches.
      **/
-    [[nodiscard]] size_t numberOfBatches( bool recursive = false ) const;
+    [[nodiscard]] size_t numberOfBatches() const;
 
     /**
      * @brief Return batches.
@@ -423,13 +413,24 @@ class ARINC665_EXPORT ContainerEntity : public Base
     using FileType = File::FileType;
 
     /**
+     * @brief Return the number of files (real file, load, batch) with the
+     *   specified file type.
+     *
+     * @param[in] fileType
+     *   File type to search for.
+     *
+     * @return Number of files of specific type.
+     **/
+    [[nodiscard]] size_t numberOfFiles( FileType fileType ) const;
+
+    /**
      * @brief Return the files (real file, load, batch) with the specified file
      *   type.
      *
      * @param[in] fileType
      *   File type to search for.
      *
-     * @return The files (real file, load, batch) with the specified file.
+     * @return Files (real file, load, batch) with the specified file.
      **/
     [[nodiscard]] ConstFiles files( FileType fileType ) const;
 
