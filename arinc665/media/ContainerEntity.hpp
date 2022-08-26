@@ -427,15 +427,19 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @brief Return the files (real file, load, batch) with the specified file
      *   type.
      *
-     * @param[in] fileType
+     * @tparam FilesT
+     *   Files List Type
+     * @tparam fileType
      *   File type to search for.
      *
      * @return Files (real file, load, batch) with the specified file.
      **/
-    [[nodiscard]] ConstFiles files( FileType fileType ) const;
+    template< typename FilesT, FileType fileType >
+    [[nodiscard]] FilesT filesPerType() const;
 
-    //! @copydoc files(FileType) const
-    [[nodiscard]] Files files( FileType fileType );
+    //! @copydoc filesPerType() const
+    template< typename FilesT, FileType fileType >
+    [[nodiscard]] FilesT filesPerType();
 
   private:
     //! Subdirectories

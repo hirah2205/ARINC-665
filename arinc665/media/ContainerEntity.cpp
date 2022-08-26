@@ -217,30 +217,12 @@ size_t ContainerEntity::numberOfRegularFiles() const
 
 ConstRegularFiles ContainerEntity::regularFiles() const
 {
-  auto regularFiles{ files( File::FileType::RegularFile ) };
-
-  ConstRegularFiles files{};
-
-  for ( const auto &file : regularFiles )
-  {
-    files.emplace_back( std::dynamic_pointer_cast< const RegularFile >( file ) );
-  }
-
-  return files;
+  return filesPerType< ConstRegularFiles, File::FileType::RegularFile>();
 }
 
 RegularFiles ContainerEntity::regularFiles()
 {
-  auto regularFiles{ files( File::FileType::RegularFile ) };
-
-  RegularFiles files{};
-
-  for ( const auto &file : regularFiles )
-  {
-    files.emplace_back( std::dynamic_pointer_cast< RegularFile >( file ) );
-  }
-
-  return files;
+  return filesPerType< RegularFiles, File::FileType::RegularFile>();
 }
 
 ConstRegularFilePtr ContainerEntity::regularFile(
@@ -309,30 +291,12 @@ size_t ContainerEntity::numberOfLoads() const
 
 ConstLoads ContainerEntity::loads() const
 {
-  auto loadFiles{ files( File::FileType::LoadFile ) };
-
-  ConstLoads loads{};
-
-  for ( const auto &loadFile : loadFiles )
-  {
-    loads.push_back( std::dynamic_pointer_cast< const Load>( loadFile ) );
-  }
-
-  return loads;
+  return filesPerType< ConstLoads, File::FileType::LoadFile>();
 }
 
 Loads ContainerEntity::loads()
 {
-  auto loadFiles{ files( File::FileType::LoadFile ) };
-
-  Loads loads{};
-
-  for ( const auto &loadFile : loadFiles )
-  {
-    loads.push_back( std::dynamic_pointer_cast< Load>( loadFile ) );
-  }
-
-  return loads;
+  return filesPerType< Loads, File::FileType::LoadFile>();
 }
 
 ConstLoadPtr ContainerEntity::load(
@@ -398,36 +362,12 @@ size_t ContainerEntity::numberOfBatches() const
 
 ConstBatches ContainerEntity::batches() const
 {
-  const auto batchFiles{ files( File::FileType::BatchFile ) };
-
-  ConstBatches batches;
-
-  // add batch files to list
-  for ( const auto &batchFile : batchFiles )
-  {
-    const auto realBatchFile{ std::dynamic_pointer_cast< const Batch>( batchFile ) };
-    assert( realBatchFile );
-    batches.push_back( realBatchFile );
-  }
-
-  return batches;
+  return filesPerType< ConstBatches, File::FileType::BatchFile>();
 }
 
 Batches ContainerEntity::batches()
 {
-  const auto batchFiles{ files( File::FileType::BatchFile ) };
-
-  Batches batches{};
-
-  // add batch files to list
-  for ( const auto &batchFile : batchFiles )
-  {
-    const auto realBatchFile{ std::dynamic_pointer_cast< Batch>( batchFile ) };
-    assert( realBatchFile );
-    batches.push_back( realBatchFile );
-  }
-
-  return batches;
+  return filesPerType< Batches, File::FileType::BatchFile>();
 }
 
 ConstBatchPtr ContainerEntity::batch(
@@ -503,30 +443,36 @@ size_t ContainerEntity::numberOfFiles( FileType fileType ) const
   return numberOfFiles;
 }
 
-ConstFiles ContainerEntity::files( FileType fileType ) const
+template< typename FilesT, ContainerEntity::FileType fileType >
+FilesT ContainerEntity::filesPerType() const
 {
-  ConstFiles result{};
+  FilesT result{};
 
   for ( auto & file : filesV )
   {
     if ( file->fileType() == fileType )
     {
-      result.push_back( file );
+      result.push_back(
+        std::dynamic_pointer_cast< typename FilesT::value_type::element_type >(
+          file ) );
     }
   }
 
   return result;
 }
 
-Files ContainerEntity::files( FileType fileType )
+template< typename FilesT, ContainerEntity::FileType fileType >
+FilesT ContainerEntity::filesPerType()
 {
-  Files result{};
+  FilesT result{};
 
   for ( const auto &file : filesV )
   {
     if ( file->fileType() == fileType )
     {
-      result.push_back( file );
+      result.push_back(
+        std::dynamic_pointer_cast< typename FilesT::value_type::element_type >(
+          file ) );
     }
   }
 

@@ -41,7 +41,7 @@ namespace Arinc665::Files {
  * There are two alternatives for encoding "No Check Value".
  * Setting the Length Field to @p 0, or set Length Field to @p 4 and the
  * Check Value Type to @p 0 (No Check Value).
- * This implenetation uses the first option.
+ * This implementation uses the first option.
  *
  * @param[in] checkValue
  *   Check Value to encode.
