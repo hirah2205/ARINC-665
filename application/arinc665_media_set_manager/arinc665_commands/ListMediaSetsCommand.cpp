@@ -14,7 +14,7 @@
 
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/JsonMediaSetManager.hpp>
-#include <arinc665/utils/Printer.hpp>
+#include <arinc665/utils/MediaPrinter.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -64,7 +64,11 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
     {
       std::cout << "Media Set:\n";
 
-      Arinc665::Utils::printMediaSet( *mediaSet.second, std::cout, "  ", "  " );
+      Arinc665::Utils::MediaPrinter_printMediaSet(
+        *mediaSet.second,
+        std::cout,
+        "  ",
+        "  " );
 
       std::cout << "\n";
     }

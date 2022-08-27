@@ -14,8 +14,12 @@ target_sources(
     Arinc665Xml.cpp
     FileCreationPolicyDescription.hpp
     FileCreationPolicyDescription.cpp
+    FilePrinter.hpp
+    FilePrinter.cpp
     JsonMediaSetManager.hpp
     JsonMediaSetManager.cpp
+    MediaPrinter.hpp
+    MediaPrinter.cpp
     MediaSetExporter.hpp
     MediaSetExporter.cpp
     MediaSetImporter.hpp
@@ -26,8 +30,6 @@ target_sources(
     MediaSetManagerConfiguration.cpp
     MediaSetValidator.hpp
     MediaSetValidator.cpp
-    Printer.hpp
-    Printer.cpp
     Utils.hpp )
 
 #target_sources(

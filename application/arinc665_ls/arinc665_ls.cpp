@@ -25,6 +25,10 @@
 #include <arinc665/files/LoadHeaderFile.hpp>
 #include <arinc665/files/BatchFile.hpp>
 
+#include <arinc665/utils/FilePrinter.hpp>
+
+#include <arinc665/Arinc665Exception.hpp>
+
 #include <helper/Dump.hpp>
 #include <helper/Logger.hpp>
 
@@ -56,7 +60,7 @@ int main( int argc, char const * argv[] );
  * @param[in] lubFile
  *   Load upload header.
  **/
-static void list_lub( const std::filesystem::path &lubFile );
+static void printBatchFile( const std::filesystem::path &lubFile );
 
 /**
  * @brief Loads the load upload header file and decodes its content.
@@ -64,7 +68,7 @@ static void list_lub( const std::filesystem::path &lubFile );
  * @param[in] luhFile
  *   Load upload header.
  **/
-static void list_luh( const std::filesystem::path &luhFile );
+static void printLoadHeaderFile( const std::filesystem::path &luhFile );
 
 /**
  * @brief Loads the load list file and decodes its content.
@@ -72,7 +76,15 @@ static void list_luh( const std::filesystem::path &luhFile );
  * @param[in] loadsLum
  *   Load list file.
  **/
-static void list_loads_lum( const std::filesystem::path &loadsLum );
+static void printLoadListFile( const std::filesystem::path &loadsLum );
+
+/**
+ * @brief Loads the Batch list file and decodes its content.
+ *
+ * @param[in] filePath
+ *   File Path.
+ **/
+static void printBatchListFile( const std::filesystem::path &filePath );
 
 /**
  * @brief Loads the file list file and decodes its content.
@@ -80,7 +92,7 @@ static void list_loads_lum( const std::filesystem::path &loadsLum );
  * @param[in] filesLum
  *   File list file.
  **/
-static void list_files_lum( const std::filesystem::path &filesLum );
+static void printFileListFile( const std::filesystem::path &filesLum );
 
 /**
  * @brief Iterates over every file and subdirectory and tries to decode its
@@ -90,6 +102,8 @@ static void list_files_lum( const std::filesystem::path &filesLum );
  *   Directory to decode.
  **/
 static void list_files( const std::filesystem::path &loadDir );
+
+static Arinc665::Files::RawFile loadFile( const std::filesystem::path &file );
 
 int main( int argc, char const * argv[] )
 {
@@ -159,28 +173,11 @@ int main( int argc, char const * argv[] )
   return EXIT_SUCCESS;
 }
 
-static void list_lub( const std::filesystem::path &lubFile )
+static void printBatchFile( const std::filesystem::path &lubFile )
 {
   try
   {
-    std::cout
-      << fmt::format( "File size is: {}\n", std::filesystem::file_size( lubFile ) );
-
-    std::vector< uint8_t> data( std::filesystem::file_size( lubFile ) );
-
-    std::ifstream file{
-      lubFile.string().c_str(),
-      std::ifstream::binary | std::ifstream::in };
-
-    if ( !file.is_open() )
-    {
-      std::cout << "Error opening file: " << lubFile.string() << "\n";
-      return;
-    }
-
-    file.read( (char*)&data.at(0), static_cast< std::streamsize>( data.size() ) );
-
-    Arinc665::Files::BatchFile batch( data);
+    Arinc665::Files::BatchFile batch{ loadFile( lubFile ) };
 
     std::cout << "part number: "<< batch.partNumber() << "\n";
     std::cout << "comment: "<< batch.comment() << "\n";
@@ -212,28 +209,11 @@ static void list_lub( const std::filesystem::path &lubFile )
   }
 }
 
-static void list_luh( const std::filesystem::path &luhFile)
+static void printLoadHeaderFile( const std::filesystem::path &luhFile)
 {
   try
   {
-    std::cout
-      << fmt::format( "File size is: {}\n", std::filesystem::file_size( luhFile ) );
-
-    std::vector< uint8_t> data( std::filesystem::file_size( luhFile) );
-
-    std::ifstream file{
-      luhFile.string().c_str(),
-      std::ifstream::binary | std::ifstream::in };
-
-    if ( !file.is_open() )
-    {
-      std::cout << "Error opening file: " << luhFile.string() << "\n";
-      return;
-    }
-
-    file.read( (char*)&data.at(0), static_cast< std::streamsize>( data.size() ) );
-
-    Arinc665::Files::LoadHeaderFile load{ data };
+    Arinc665::Files::LoadHeaderFile load{ loadFile( luhFile ) };
 
     std::cout << "part number: "<< load.partNumber() << "\n";
 
@@ -277,54 +257,14 @@ static void list_luh( const std::filesystem::path &luhFile)
   }
 }
 
-static void list_loads_lum( const std::filesystem::path &loadsLum )
+static void printLoadListFile( const std::filesystem::path &loadsLum )
 {
   try
   {
-    std::cout
-      << fmt::format( "File size is: {}\n", std::filesystem::file_size( loadsLum ) );
-
-    std::vector< uint8_t> data( std::filesystem::file_size( loadsLum ) );
-
-    std::ifstream file(
-      loadsLum.string().c_str(),
-      std::ifstream::binary | std::ifstream::in );
-
-    if ( !file.is_open() )
-    {
-      std::cout << "Error opening file: " << loadsLum.string() << "\n";
-      return;
-    }
-
-    file.read( (char*)&data.at(0), static_cast< std::streamsize>( data.size() ) );
-
-    Arinc665::Files::LoadListFile loadList( data);
-
-    std::cout
-      << "media set pn: " << loadList.mediaSetPn() << "\n";
-
-    std::cout
-      << "media seq no: "
-      << std::dec << (int)loadList.mediaSequenceNumber() << "\n";
-
-    std::cout
-      << "no of media set members: "
-      << (int)loadList.numberOfMediaSetMembers() << "\n";
-
-    for ( const auto & load : loadList.loads())
-    {
-      std::cout
-        << "load load pn: "                << load.partNumber << "\n"
-        << "load header file name: "       << load.headerFilename << "\n"
-        << "load member sequence number: "
-          << std::dec << (int)load.memberSequenceNumber << "\n\n";
-
-      for ( const auto & thw : load.targetHardwareIds )
-      {
-        std::cout << "target hardware id: " << thw << "\n\n";
-      }
-    }
-
+    Arinc665::Utils::FilePrinter_print(
+      Arinc665::Files::LoadListFile{loadFile( loadsLum ) },
+      std::cout,
+      "\t" );
   }
   catch ( const boost::exception &e )
   {
@@ -341,53 +281,43 @@ static void list_loads_lum( const std::filesystem::path &loadsLum )
   }
 }
 
-static void list_files_lum( const std::filesystem::path &filesLum )
+static void printBatchListFile( const std::filesystem::path &filePath )
 {
   try
   {
-    std::cout
-      << fmt::format( "File size is: {}\n", std::filesystem::file_size( filesLum ) );
-
-    std::vector< uint8_t> data( std::filesystem::file_size( filesLum ) );
-
-    std::ifstream fileStream{
-      filesLum.string().c_str(),
-      std::ifstream::binary | std::ifstream::in };
-
-    if ( !fileStream.is_open() )
-    {
-      std::cout << "Error opening file: " << filesLum.string() << "\n";
-      return;
-    }
-
-    fileStream.read( (char*) &data.at( 0), static_cast< std::streamsize >( data.size() ) );
-
-    Arinc665::Files::FileListFile fileList( data );
-
-    std::cout
-      << fmt::format(
-        "media set pn: {}\n"
-        "media seq no: {}\n"
-        "no of media set members: {}\n",
-        fileList.mediaSetPn(),
-        (unsigned int)fileList.mediaSequenceNumber(),
-        (unsigned int)fileList.numberOfMediaSetMembers() );
-
-    for ( const auto & file : fileList.files() )
-    {
-      std::cout << "file file name: " << file.filename << "\n";
-      std::cout << "file path name: " << file.pathName << "\n";
-      std::cout
-        << "file member sequence number: "
-        << std::dec << file.memberSequenceNumber << "\n";
-      std::cout << "file crc: " << std::hex << file.crc << "\n\n";
-    }
-
+    Arinc665::Utils::FilePrinter_print(
+      Arinc665::Files::BatchListFile{ loadFile( filePath ) },
+      std::cout,
+      "\t" );
   }
   catch ( const boost::exception &e )
   {
     std::cout
-      << "Boost exception: " << boost::diagnostic_information(e) << "\n";
+      << "Boost exception: " << boost::diagnostic_information( e ) << "\n";
+  }
+  catch ( const std::exception &e )
+  {
+    std::cout << "std exception: " << e.what() << "\n";
+  }
+  catch ( ... )
+  {
+    std::cout << "unknown exception occurred\n";
+  }
+}
+
+static void printFileListFile( const std::filesystem::path &filesLum )
+{
+  try
+  {
+    Arinc665::Utils::FilePrinter_print(
+      Arinc665::Files::FileListFile{ loadFile( filesLum ) },
+      std::cout,
+      "\t" );
+  }
+  catch ( const boost::exception &e )
+  {
+    std::cout
+      << "Boost exception: " << boost::diagnostic_information( e ) << "\n";
   }
   catch ( const std::exception &e )
   {
@@ -417,26 +347,27 @@ static void list_files( const std::filesystem::path &loadDir )
       {
         case Arinc665::FileType::BatchFile:
           std::cout << "ARINC 665 BATCH file\n";
-          list_lub( itr->path());
+          printBatchFile( itr->path() );
           break;
 
         case Arinc665::FileType::LoadUploadHeader:
           std::cout << "ARINC 665 LOAD UPLOAD HEADER file\n";
-          list_luh( itr->path());
+          printLoadHeaderFile( itr->path() );
           break;
 
         case Arinc665::FileType::LoadList:
           std::cout << "ARINC 665 LOAD LIST file\n";
-          list_loads_lum( itr->path());
+          printLoadListFile( itr->path() );
           break;
 
         case Arinc665::FileType::BatchList:
           std::cout << "ARINC 665 BATCH LIST file\n";
+          printBatchListFile( itr->path() );
           break;
 
         case Arinc665::FileType::FileList:
           std::cout << "ARINC 665 FILE LIST file\n";
-          list_files_lum( itr->path());
+          printFileListFile( itr->path() );
           break;
 
         default:
@@ -445,4 +376,28 @@ static void list_files( const std::filesystem::path &loadDir )
       }
     }
   }
+}
+
+static Arinc665::Files::RawFile loadFile( const std::filesystem::path &file )
+{
+  std::cout
+    << fmt::format( "\tFile size is: {}\n", std::filesystem::file_size( file ) );
+
+  Arinc665::Files::RawFile data( std::filesystem::file_size( file ) );
+
+  std::ifstream fileStream{
+    file,
+    std::ifstream::binary | std::ifstream::in };
+
+  if ( !fileStream.is_open() )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception{}
+        << Helper::AdditionalInfo{ "Error opening file" }
+        << boost::errinfo_file_name{ file.string() } );
+  }
+
+  fileStream.read( (char*) &data.at( 0), static_cast< std::streamsize >( data.size() ) );
+
+  return data;
 }

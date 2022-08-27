@@ -21,7 +21,7 @@
 #include <arinc665/media/MediaSet.hpp>
 
 #include <arinc665/utils/MediaSetImporter.hpp>
-#include <arinc665/utils/Printer.hpp>
+#include <arinc665/utils/MediaPrinter.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -61,6 +61,19 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
   const Directories &mediaSetDirectories,
   bool checkFileIntegrity );
 
+/**
+ * @brief Returns the File Size of the given File.
+ *
+ * @param[in] mediaSetDirectories
+ *
+ * @param[in] mediaSetDirectories
+ *   Media Set Directory Mapping.
+ * @param[in] mediumNumber
+ *   Medium number.
+ * @param[in] path
+ *   Path of file on medium.
+ * @return
+ */
 static size_t getFileSize(
   const Directories &mediaSetDirectories,
   uint8_t mediumNumber,
@@ -69,14 +82,16 @@ static size_t getFileSize(
 /**
  * @brief Reads the give file and returns the data.
  *
+ * @param[in] mediaSetDirectories
+ *   Media Set Directory Mapping.
  * @param[in] mediumNumber
- *   Medium number
+ *   Medium number,
  * @param[in] path
  *   Path of file on medium.
  *
  * @return THe read file data.
  *
- * @throw Arind665Exception
+ * @throw Arinc665Exception
  *   If file does not exist or cannot be read.
  **/
 static Arinc665::Files::RawFile readFile(
@@ -132,7 +147,11 @@ int main( int argc, char const * argv[] )
 
     auto mediaSet{ loadMediaSet( directories, checkFileIntegrity ) };
 
-    Arinc665::Utils::printMediaSet( *mediaSet, std::cout, "", "  " );
+    Arinc665::Utils::MediaPrinter_printMediaSet(
+      *mediaSet,
+      std::cout,
+      "",
+      "  " );
   }
   catch ( const boost::program_options::error &e )
   {

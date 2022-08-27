@@ -10,7 +10,7 @@
  * @brief Defintinion of Module Arinc665::Utils Printer.
  **/
 
-#include "Printer.hpp"
+#include "MediaPrinter.hpp"
 
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/Directory.hpp>
@@ -46,7 +46,7 @@ static void printFiles(
 static std::string printCheckValueType(
   std::optional< Arinc645::CheckValueType > type );
 
-void printMediaSet(
+void MediaPrinter_printMediaSet(
   const Media::MediaSet &mediaSet,
   std::ostream &outS,
   std::string_view initialIndent,
@@ -112,7 +112,7 @@ void printMediaSet(
   // iterate over loads
   for ( auto const &load : mediaSet.loads() )
   {
-    printLoad( *load, outS, nextIndent, indent );
+    MediaPrinter_printLoad( *load, outS, nextIndent, indent );
     outS << "\n";
   }
 
@@ -124,12 +124,12 @@ void printMediaSet(
   // iterate over loads
   for ( auto const &batch : mediaSet.batches() )
   {
-    printBatch( *batch, outS, nextIndent, indent );
+    MediaPrinter_printBatch( *batch, outS, nextIndent, indent );
     outS << "\n";
   }
 }
 
-void printFile(
+void MediaPrinter_printFile(
   const Media::File &file,
   std::ostream &outS,
   std::string_view initialIndent )
@@ -172,7 +172,7 @@ void printFile(
 
 }
 
-void printLoad(
+void MediaPrinter_printLoad(
   const Media::Load &load,
   std::ostream &outS,
   std::string_view initialIndent,
@@ -304,7 +304,7 @@ void printLoad(
   }
 }
 
-void printBatch(
+void MediaPrinter_printBatch(
   const Media::Batch &batch,
   std::ostream &outS,
   std::string_view initialIndent,
@@ -391,7 +391,7 @@ static void printFiles(
   // iterate over files
   for ( auto const &file : containerEntity.files() )
   {
-    printFile( *file, outS, nextIndent );
+    MediaPrinter_printFile( *file, outS, nextIndent );
     outS << "\n";
   }
 
