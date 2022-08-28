@@ -180,14 +180,60 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     //! Download Flag of Part Flag
     static constexpr std::uint16_t PartFlagDownload{ 0x0001U };
 
+    /**
+     * @brief Encodes the Load CRC within the Raw Load Header File.
+     *
+     * @param[in,out] rawFile
+     *   Raw representation of Load Header File
+     * @param[in] crc
+     *   Load CRC
+     **/
     static void encodeLoadCrc( RawFileSpan rawFile, uint32_t crc );
 
+    /**
+     * @name Load CRC
+     * @{
+     **/
+
+    /**
+     * @brief Decodes the Load CRC within the Raw Load Header File.
+     *
+     * @param[in] rawFile
+     *   Raw representation of Load Header File
+     *
+     * @return Load CRC
+     **/
     static uint32_t decodeLoadCrc( ConstRawFileSpan rawFile );
 
+    /**
+     * @brief Encodes the Load Check Value within the Raw Load Header File.
+     *
+     * Also recalculates the Load Header CRC.
+     *
+     * @param[in,out] rawFile
+     *   Raw representation of Load Header File
+     * @param[in] checkValue
+     *   Load Check Value
+     **/
     static void encodeLoadCheckValue(
       RawFileSpan rawFile,
       const Arinc645::CheckValue &checkValue );
 
+    /** @} **/
+
+    /**
+     * @name Load Check Value
+     * @{
+     **/
+
+    /**
+     * @brief Decodes the Load Check Value within the Raw Load Header File.
+     *
+     * @param[in] rawFile
+     *   Raw representation of Load Header File
+     *
+     * @return Load Check Value
+     **/
     static Arinc645::CheckValue decodeLoadCheckValue( ConstRawFileSpan rawFile );
 
     /**
@@ -197,6 +243,8 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      *   ARINC 665 version.
      **/
     explicit LoadHeaderFile( SupportedArinc665Version version );
+
+    /** @} **/
 
     /**
      * @brief Creates a load header file from the given raw data.
@@ -483,11 +531,13 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @name Load Check Value Type
      *
      * Check Value Type for the whole Load.
+     * This information is used to determine the size, which is reserved on
+     * raw file generation.
      *
      * @sa encodeLoadCheckValue()
      * @sa decodeLoadCheckValue()
-     *
      * @sa CheckValue
+     *
      * @{
      **/
 
