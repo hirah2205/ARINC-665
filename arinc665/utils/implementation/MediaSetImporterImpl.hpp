@@ -196,6 +196,22 @@ class MediaSetImporterImpl final : public MediaSetImporter
      **/
     void checkMediumFiles( uint8_t mediumIndex );
 
+    /**
+     * @brief Check File Integrity
+     *
+     * Calculates and compares File CRC and File Check Value against stored
+     * ones.
+     *
+     * @param[in] fileInfo
+     *   File Information.
+     *
+     * @throw Arinc665Exception
+     *   When File CRC does not match.
+     * @throw Arinc665Exception
+     *   When File Check Value does not match.
+     **/
+    void checkFileIntegrity( const Files::FileInfo &fileInfo ) const;
+
     //! File Size Handler
     FileSizeHandler fileSizeHandlerV;
     //! Read File Handler

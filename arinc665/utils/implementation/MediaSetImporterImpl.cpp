@@ -342,15 +342,9 @@ void MediaSetImporterImpl::addFiles()
   // iterate over all files
   for ( const auto &[ fileName, fileInfo ] : fileInfos )
   {
-    if ( loads.contains( fileName ) )
+    if ( loads.contains( fileName ) || batches.contains( fileName ) )
     {
-      // skip load header file
-      continue;
-    }
-
-    if ( batches.contains( fileName ) )
-    {
-      // skip batch file
+      // skip load header and batch files
       continue;
     }
 
@@ -369,12 +363,13 @@ void MediaSetImporterImpl::addFiles()
     }
 
     // get directory, where file will be placed into.
-    ContainerEntityPtr container{ checkCreateDirectory(
+    const auto container{ checkCreateDirectory(
       fileInfo.memberSequenceNumber,
       fileInfo.path().parent_path() ) };
 
     // place file
-    auto filePtr{ container->addRegularFile( fileInfo.filename ) };
+    const auto filePtr{ container->addRegularFile( fileInfo.filename ) };
+    assert( filePtr );
 
     // set check value indicator
     filePtr->checkValueType( std::get< 0 >( fileInfo.checkValue ) );
@@ -395,12 +390,13 @@ void MediaSetImporterImpl::addLoads()
     const auto fileInfoIt{ fileInfos.find( filename ) };
 
     // obtain container (directory, medium), which will contain the load.
-    auto container{ checkCreateDirectory(
+    const auto container{ checkCreateDirectory(
       fileInfoIt->second.memberSequenceNumber,
       fileInfoIt->second.path().parent_path() ) };
 
     // create load
-    auto loadPtr{ container->addLoad( filename ) };
+    const auto loadPtr{ container->addLoad( filename ) };
+    assert( loadPtr );
 
     // set check value indicator
     loadPtr->checkValueType( std::get< 0 >( fileInfoIt->second.checkValue ) );
@@ -574,12 +570,13 @@ void MediaSetImporterImpl::addBatches()
     const auto fileInfoIt{ fileInfos.find( filename ) };
 
     // obtain container (directory, medium), which will contain the batch.
-    auto container{ checkCreateDirectory(
+    const auto container{ checkCreateDirectory(
       fileInfoIt->second.memberSequenceNumber,
       fileInfoIt->second.path().parent_path() ) };
 
     // create batch
-    auto batchPtr{ container->addBatch( filename ) };
+    const auto batchPtr{ container->addBatch( filename ) };
+    assert( batchPtr );
 
     // set check value indicator
     batchPtr->checkValueType( std::get< 0 >( fileInfoIt->second.checkValue  ) );
@@ -629,17 +626,15 @@ MediaSetImporterImpl::checkCreateDirectory(
   const std::filesystem::path &directoryPath )
 {
   // make path relative (remove leading slash)
-  auto dirPath{ directoryPath.relative_path() };
-
-  auto medium( mediaSet->medium( mediumIndex ) );
+  const auto dirPath{ directoryPath.relative_path() };
 
   // we are in root-directory
   if ( dirPath.empty() )
   {
-    return medium;
+    return mediaSet->medium( mediumIndex );
   }
 
-  ContainerEntityPtr dir{ medium };
+  ContainerEntityPtr dir{ mediaSet->medium( mediumIndex ) };
 
   // iterate over path elements
   for ( auto &subPath : dirPath )
@@ -650,12 +645,7 @@ MediaSetImporterImpl::checkCreateDirectory(
     if ( !subDir )
     {
       subDir = dir->addSubdirectory( subPath.string() );
-
-      if (!subDir)
-      {
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{ "Cannot create subdirectory" } );
-      }
+      assert( subDir );
     }
 
     dir = subDir;
@@ -686,36 +676,45 @@ void MediaSetImporterImpl::checkMediumFiles( const uint8_t mediumIndex )
       continue;
     }
 
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
-      << "Check file " << fileInfo.path().generic_string();
+    checkFileIntegrity( fileInfo );
+  }
+}
 
-    const auto rawFile{ readFileHandlerV( mediumIndex, fileInfo.path() ) };
+void MediaSetImporterImpl::checkFileIntegrity(
+  const Files::FileInfo &fileInfo ) const
+{
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+    << "Check file " << fileInfo.path().generic_string();
 
-    // compare checksums
-    if (
-      const auto crc{ Files::Arinc665File::calculateChecksum( rawFile ) };
-      crc != fileInfo.crc )
+  const auto rawFile{
+    readFileHandlerV(
+      fileInfo.memberSequenceNumber,
+      fileInfo.path() ) };
+
+  // compare checksums
+  if (
+    const auto crc{ Files::Arinc665File::calculateChecksum( rawFile ) };
+    crc != fileInfo.crc )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "CRC of file invalid" }
+      << boost::errinfo_file_name{ fileInfo.path().string() } );
+  }
+
+  // Check and compare Check Value
+  if (
+    const auto &[ checkValueType, checkValue ]{ fileInfo.checkValue };
+    Arinc645::CheckValueType::NotUsed != checkValueType )
+  {
+    const auto checkValueCalculated{ Arinc645::CheckValueGenerator::checkValue(
+      checkValueType,
+      rawFile ) };
+
+    if ( fileInfo.checkValue != checkValueCalculated )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "CRC of file invalid" }
+        << Helper::AdditionalInfo{ "Check Value of file invalid" }
         << boost::errinfo_file_name{ fileInfo.path().string() } );
-    }
-
-    // Check and compare Check Value
-    if (
-      const auto &[ checkValueType, checkValue ]{ fileInfo.checkValue };
-      Arinc645::CheckValueType::NotUsed != checkValueType )
-    {
-      const auto checkValueCalculated{ Arinc645::CheckValueGenerator::checkValue(
-        checkValueType,
-        rawFile ) };
-
-      if ( fileInfo.checkValue != checkValueCalculated )
-      {
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{ "Check Value of file invalid" }
-          << boost::errinfo_file_name{ fileInfo.path().string() } );
-      }
     }
   }
 }
