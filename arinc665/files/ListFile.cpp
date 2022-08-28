@@ -12,6 +12,8 @@
 
 #include "ListFile.hpp"
 
+#include <arinc665/files/StringUtils.hpp>
+
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <helper/Endianess.hpp>
@@ -73,7 +75,7 @@ ListFile::ListFile(
 RawFile ListFile::encodeMediaInformation() const
 {
   // media set part number
-  auto rawMediaInformation{ encodeString( mediaSetPn() ) };
+  auto rawMediaInformation{ StringUtils_encodeString( mediaSetPn() ) };
   assert( rawMediaInformation.size() % 2 == 0U );
 
   const auto partNumberSize{
@@ -107,7 +109,7 @@ void ListFile::decodeMediaInformation(
   }
 
   // media set part number
-  auto it{ decodeString(
+  auto it{ StringUtils_decodeString(
     rawFile.begin()
       + static_cast< ConstRawFileSpan::difference_type>( mediaInformationPtr ) * 2,
     mediaSetPnV ) };

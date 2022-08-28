@@ -12,10 +12,11 @@
 
 #include "LoadHeaderFile.hpp"
 
+#include <arinc665/files/CheckValueUtils.hpp>
+#include <arinc665/files/StringUtils.hpp>
+
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
-
-#include <arinc665/files/CheckValueUtils.hpp>
 
 #include <helper/Endianess.hpp>
 #include <helper/SafeCast.hpp>
@@ -278,7 +279,7 @@ RawFile LoadHeaderFile::encode() const
 
 
   // Load Part Number
-  auto rawLoadPn{ encodeString( partNumber() ) };
+  auto rawLoadPn{ StringUtils_encodeString( partNumber() ) };
   assert( rawLoadPn.size() % 2 == 0 );
 
   Helper::setInt< uint32_t>(
@@ -299,7 +300,7 @@ RawFile LoadHeaderFile::encode() const
     {
       loadTypePtr = static_cast< uint32_t >( nextFreeOffset / 2 );
 
-      const auto rawTypeDescription{ encodeString( typeV->first ) };
+      const auto rawTypeDescription{ StringUtils_encodeString( typeV->first ) };
       assert( rawTypeDescription.size() % 2 == 0 );
 
       // description
@@ -322,7 +323,7 @@ RawFile LoadHeaderFile::encode() const
   }
 
   // THW ID list
-  auto rawThwIdsList{ encodeStrings( targetHardwareIds() ) };
+  auto rawThwIdsList{ StringUtils_encodeStrings( targetHardwareIds() ) };
   assert( rawThwIdsList.size() % 2 == 0 );
 
   Helper::setInt< uint32_t>(
@@ -348,7 +349,7 @@ RawFile LoadHeaderFile::encode() const
       }
 
       // THW ID
-      const auto rawThwId{ encodeString( thwId ) };
+      const auto rawThwId{ StringUtils_encodeString( thwId ) };
       assert( rawThwId.size() % 2 == 0 );
 
       rawThwPos.insert(
@@ -357,7 +358,7 @@ RawFile LoadHeaderFile::encode() const
         rawThwId.end() );
 
       // Positions
-      const auto rawPositions{ encodeStrings( positions ) };
+      const auto rawPositions{ StringUtils_encodeStrings( positions ) };
       assert( rawThwId.size() % 2 == 0 );
 
       rawThwPos.insert(
@@ -553,7 +554,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
 
 
   // load part number
-  decodeString(
+  StringUtils_decodeString(
     rawFile.begin() + static_cast< ptrdiff_t >( loadPartNumberPtr ) * 2,
     partNumberV );
 
@@ -562,7 +563,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
   if ( decodeV3Data && ( 0!=loadTypeDescriptionPtr ) )
   {
     std::string loadTypeDescription{};
-    auto it{ decodeString(
+    auto it{ StringUtils_decodeString(
       rawFile.begin() + static_cast< ptrdiff_t >( loadTypeDescriptionPtr ) * 2,
       loadTypeDescription ) };
 
@@ -576,7 +577,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
   // target hardware id list
   TargetHardwareIds targetHardwareIdsValue{};
 
-  decodeStrings(
+  StringUtils_decodeStrings(
     rawFile.begin() + static_cast< ptrdiff_t >( targetHardwareIdListPtr ) * 2,
     targetHardwareIdsValue);
 
@@ -593,10 +594,10 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
     for ( uint16_t thwIdIndex = 0; thwIdIndex < numberOfThwIdsWithPos; ++thwIdIndex )
     {
       std::string thwId{};
-      it = decodeString( it, thwId );
+      it = StringUtils_decodeString( it, thwId );
 
       Positions positions{};
-      it = decodeStrings( it, positions );
+      it = StringUtils_decodeStrings( it, positions );
 
       targetHardwareId( std::move( thwId ), std::move( positions ) );
     }
@@ -681,7 +682,7 @@ RawFile LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
     RawFile rawFileInfo( sizeof( uint16_t ) );
 
     // filename
-    auto const rawFilename{ encodeString( fileInfo.filename ) };
+    auto const rawFilename{ StringUtils_encodeString( fileInfo.filename ) };
     assert( rawFilename.size() % 2 == 0);
     rawFileInfo.insert(
       rawFileInfo.end(),
@@ -689,7 +690,7 @@ RawFile LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
       rawFilename.end() );
 
     // part number
-    auto const rawPartNumber{ encodeString( fileInfo.partNumber ) };
+    auto const rawPartNumber{ StringUtils_encodeString( fileInfo.partNumber ) };
     assert( rawPartNumber.size() % 2 == 0 );
     rawFileInfo.insert(
       rawFileInfo.end(),
@@ -772,7 +773,7 @@ RawFile LoadHeaderFile::encodeSupportFiles( const bool encodeV3Data ) const
     RawFile rawFileInfo( sizeof( uint16_t ) );
 
     // filename
-    auto const rawFilename{ encodeString( fileInfo.filename ) };
+    auto const rawFilename{ StringUtils_encodeString( fileInfo.filename ) };
     assert( rawFilename.size() % 2 == 0 );
     rawFileInfo.insert(
       rawFileInfo.end(),
@@ -780,7 +781,7 @@ RawFile LoadHeaderFile::encodeSupportFiles( const bool encodeV3Data ) const
       rawFilename.end() );
 
     // part number
-    auto const rawPartNumber{ encodeString( fileInfo.partNumber ) };
+    auto const rawPartNumber{ StringUtils_encodeString( fileInfo.partNumber ) };
     assert( rawPartNumber.size() % 2 == 0);
     rawFileInfo.insert(
       rawFileInfo.end(),
@@ -873,11 +874,11 @@ void LoadHeaderFile::decodeDataFiles(
 
     // filename
     std::string name{};
-    listIt = decodeString( listIt, name);
+    listIt = StringUtils_decodeString( listIt, name);
 
     // part number
     std::string partNumber{};
-    listIt = decodeString( listIt, partNumber);
+    listIt = StringUtils_decodeString( listIt, partNumber);
 
     // file length
     uint32_t length{};
@@ -973,11 +974,11 @@ void LoadHeaderFile::decodeSupportFiles(
 
     // filename
     std::string name{};
-    listIt = decodeString( listIt, name);
+    listIt = StringUtils_decodeString( listIt, name);
 
     // part number
     std::string partNumber{};
-    listIt = decodeString( listIt, partNumber);
+    listIt = StringUtils_decodeString( listIt, partNumber);
 
     // file length
     uint32_t length{};

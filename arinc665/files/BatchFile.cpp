@@ -12,6 +12,8 @@
 
 #include "BatchFile.hpp"
 
+#include <arinc665/files/StringUtils.hpp>
+
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <helper/Endianess.hpp>
@@ -108,9 +110,9 @@ RawFile BatchFile::encode() const
 
 
   // batch part number + comment
-  auto rawBatchPn{ encodeString( partNumberV ) };
+  auto rawBatchPn{ StringUtils_encodeString( partNumberV ) };
   assert( rawBatchPn.size() % 2 == 0 );
-  auto rawComment{ encodeString( commentV ) };
+  auto rawComment{ StringUtils_encodeString( commentV ) };
   assert( rawComment.size() % 2 == 0 );
 
   Helper::setInt< uint32_t>(
@@ -166,11 +168,11 @@ void BatchFile::decodeBody( const ConstRawFileSpan &rawFile )
     targetHardwareIdListPtr);
 
   // batch part number
-  auto it{ decodeString(
+  auto it{ StringUtils_decodeString(
     rawFile.begin() + static_cast< ptrdiff_t >( batchPartNumberPtr ) * 2, partNumberV ) };
 
   // comment
-  decodeString( it, commentV );
+  StringUtils_decodeString( it, commentV );
 
   // target hardware ID load list
   decodeBatchTargetsInfo( rawFile, static_cast< ptrdiff_t >( targetHardwareIdListPtr ) * 2 );
@@ -200,17 +202,17 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
     ++thwCounter;
 
     auto const rawThwIdPosition{
-      encodeString( targetHardwareInfo.targetHardwareIdPosition ) };
+      StringUtils_encodeString( targetHardwareInfo.targetHardwareIdPosition ) };
     assert( rawThwIdPosition.size() % 2 == 0);
 
     RawFile rawLoadsInfo{};
     /* iterate over loads */
     for ( auto const &loadInfo : targetHardwareInfo.loads )
     {
-      auto const rawHeaderFilename{ encodeString( loadInfo.headerFilename ) };
+      auto const rawHeaderFilename{ StringUtils_encodeString( loadInfo.headerFilename ) };
       assert( rawHeaderFilename.size() % 2 == 0 );
 
-      auto const rawPartNumber{ encodeString( loadInfo.partNumber ) };
+      auto const rawPartNumber{ StringUtils_encodeString( loadInfo.partNumber ) };
       assert( rawPartNumber.size() % 2 == 0 );
 
       rawLoadsInfo.insert(
@@ -310,7 +312,7 @@ void BatchFile::decodeBatchTargetsInfo(
 
     // THW ID
     std::string thwId{};
-    listIt = decodeString( listIt, thwId);
+    listIt = StringUtils_decodeString( listIt, thwId);
 
     // Loads list
     BatchLoadsInfo batchLoadsInfo{};
@@ -324,11 +326,11 @@ void BatchFile::decodeBatchTargetsInfo(
     {
       // header filename
       std::string filename{};
-      listIt = decodeString( listIt, filename );
+      listIt = StringUtils_decodeString( listIt, filename );
 
       // Load PN
       std::string partNumber{};
-      listIt = decodeString( listIt, partNumber );
+      listIt = StringUtils_decodeString( listIt, partNumber );
 
       // Batch Load info
       batchLoadsInfo.emplace_back( BatchLoadInfo{

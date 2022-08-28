@@ -38,7 +38,9 @@ target_sources(
     LoadInfo.hpp
     LoadInfo.cpp
     LoadListFile.hpp
-    LoadListFile.cpp )
+    LoadListFile.cpp
+    StringUtils.hpp
+    StringUtils.cpp )
 
 target_sources(
   arinc665_test

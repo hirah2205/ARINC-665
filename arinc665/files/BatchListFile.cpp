@@ -12,6 +12,8 @@
 
 #include "BatchListFile.hpp"
 
+#include <arinc665/files/StringUtils.hpp>
+
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
 
@@ -246,10 +248,10 @@ RawFile BatchListFile::encodeBatchesInfo() const
 
     RawFile rawBatchInfo( sizeof( uint16_t ) );
 
-    auto const rawPartNumber{ encodeString( batchInfo.partNumber ) };
+    auto const rawPartNumber{ StringUtils_encodeString( batchInfo.partNumber ) };
     assert( rawPartNumber.size() % 2 == 0 );
 
-    auto const rawFilename{ encodeString( batchInfo.filename ) };
+    auto const rawFilename{ StringUtils_encodeString( batchInfo.filename ) };
     assert( rawFilename.size() % 2 == 0 );
 
     // next pointer
@@ -336,11 +338,11 @@ void BatchListFile::decodeBatchesInfo(
 
     // part number
     std::string partNumber{};
-    listIt = Arinc665File::decodeString( listIt, partNumber );
+    listIt = StringUtils_decodeString( listIt, partNumber );
 
     // batch filename
     std::string filename{};
-    listIt = Arinc665File::decodeString( listIt, filename );
+    listIt = StringUtils_decodeString( listIt, filename );
 
     // member sequence number
     uint16_t memberSequenceNumber{};

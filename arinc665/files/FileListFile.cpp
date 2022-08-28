@@ -12,7 +12,9 @@
 
 #include "FileListFile.hpp"
 
+#include <arinc665/files/StringUtils.hpp>
 #include <arinc665/files/CheckValueUtils.hpp>
+
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
 
@@ -408,7 +410,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
     RawFile rawFileInfo( sizeof( uint16_t));
 
     // filename
-    auto const rawFilename{ encodeString( fileInfo.filename ) };
+    auto const rawFilename{ StringUtils_encodeString( fileInfo.filename ) };
     assert( rawFilename.size() % 2 == 0 );
     rawFileInfo.insert(
       rawFileInfo.end(),
@@ -416,7 +418,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
       rawFilename.end() );
 
     // path name
-    auto const rawPathname{ encodeString( fileInfo.pathName ) };
+    auto const rawPathname{ StringUtils_encodeString( fileInfo.pathName ) };
     assert( rawPathname.size() % 2 == 0);
     rawFileInfo.insert(
       rawFileInfo.end(),
@@ -504,11 +506,11 @@ void FileListFile::decodeFilesInfo(
 
     // filename
     std::string filename{};
-    listIt = decodeString( listIt, filename);
+    listIt = StringUtils_decodeString( listIt, filename);
 
     // path name
     std::string pathName{};
-    listIt = decodeString( listIt, pathName);
+    listIt = StringUtils_decodeString( listIt, pathName);
 
     // member sequence number
     uint16_t memberSequenceNumber{};

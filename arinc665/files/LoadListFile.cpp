@@ -12,6 +12,8 @@
 
 #include "LoadListFile.hpp"
 
+#include <arinc665/files/StringUtils.hpp>
+
 #include <arinc665/Arinc665Logger.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 
@@ -242,13 +244,13 @@ RawFile LoadListFile::encodeLoadsInfo() const
   for ( auto const &loadInfo : loadsV )
   {
     ++loadCounter;
-    auto const rawPartNumber( encodeString( loadInfo.partNumber ) );
+    auto const rawPartNumber( StringUtils_encodeString( loadInfo.partNumber ) );
     assert( rawPartNumber.size() % 2 == 0);
 
-    auto const rawHeaderFilename( encodeString( loadInfo.headerFilename ) );
+    auto const rawHeaderFilename( StringUtils_encodeString( loadInfo.headerFilename ) );
     assert( rawHeaderFilename.size() % 2 == 0);
 
-    auto const rawThwIds( encodeStrings( loadInfo.targetHardwareIds ) );
+    auto const rawThwIds( StringUtils_encodeStrings( loadInfo.targetHardwareIds ) );
     assert( rawThwIds.size() % 2 == 0);
 
     RawFile rawLoadInfo(
@@ -327,11 +329,11 @@ void LoadListFile::decodeLoadsInfo(
 
     // part number
     std::string partNumber{};
-    listIt = Arinc665File::decodeString( listIt, partNumber );
+    listIt = StringUtils_decodeString( listIt, partNumber );
 
     // header filename
     std::string headerFilename{};
-    listIt = Arinc665File::decodeString( listIt, headerFilename );
+    listIt = StringUtils_decodeString( listIt, headerFilename );
 
     // member sequence number
     uint16_t fileMemberSequenceNumber{};
@@ -343,7 +345,7 @@ void LoadListFile::decodeLoadsInfo(
     }
 
     LoadInfo::ThwIds thwIds{};
-    Arinc665File::decodeStrings( listIt, thwIds );
+    StringUtils_decodeStrings( listIt, thwIds );
 
     loadsV.emplace_back( LoadInfo{
       std::move( partNumber ),
