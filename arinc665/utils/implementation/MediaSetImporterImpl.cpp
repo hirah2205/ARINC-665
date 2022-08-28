@@ -46,6 +46,9 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()()
 {
   BOOST_LOG_FUNCTION()
 
+  // create Media set
+  mediaSet = std::make_shared< Media::MediaSet>();
+
   // iterate over media
   for (
     uint8_t mediumIndex = 1U;
@@ -55,20 +58,9 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()()
     // noting to do here
   }
 
-  // create Media set
-  mediaSet = std::make_shared< Media::MediaSet>();
+  // Set Media Set Parameter
   mediaSet->partNumber( fileListFile->mediaSetPn());
   mediaSet->numberOfMedia( fileListFile->numberOfMediaSetMembers() );
-
-  // store list of files user defined data
-  mediaSet->filesUserDefinedData( fileListFile->userDefinedData() );
-  // store list of loads user defined data
-  mediaSet->loadsUserDefinedData( loadListFile->userDefinedData() );
-  // store list of batches user defined data
-  if ( batchListFile )
-  {
-    mediaSet->batchesUserDefinedData( batchListFile->userDefinedData() );
-  }
 
   // finally, add all files (regular, load headers, batches) to the media set
   addFiles();
@@ -115,6 +107,12 @@ void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
     {
       fileInfos.try_emplace( fileInfo.filename, fileInfo );
     }
+
+    // store list of files user defined data
+    mediaSet->filesUserDefinedData( currentFileListFile.userDefinedData() );
+
+    // store file list file check value
+    mediaSet->listOfFilesCheckValueType( currentFileListFile.checkValueType() );
   }
   else
   {
@@ -140,6 +138,14 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
 
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
     << "Load Load List File " << Arinc665::ListOfLoadsName;
+
+  // Check Existence of Load List File within Files Information
+  const auto loadListFileInfo{ fileInfos.find( Arinc665::ListOfLoadsName ) };
+  if ( fileInfos.end() == loadListFileInfo )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Load List not in FILES.LUM" } );
+  }
 
   // Load list of loads file
   Files::LoadListFile currentLoadListFile{
@@ -171,6 +177,13 @@ void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
             << Helper::AdditionalInfo{ "data inconsistency" } );
       }
     }
+
+    // store list of loads user defined data
+    mediaSet->loadsUserDefinedData( currentLoadListFile.userDefinedData() );
+
+    // store load list file check value
+    mediaSet->listOfLoadsCheckValueType(
+      std::get< 0 >( loadListFileInfo->second.checkValue ) );
   }
   else
   {
@@ -192,8 +205,9 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex )
 
   assert( mediumIndex > 0U );
 
-  // Check for optional batch list file
-  if ( !fileInfos.contains( std::string{ ListOfBatchesName } ) )
+  // Check Existence of optional Batch List File within Files Information
+  const auto batchListFileInfo{ fileInfos.find( Arinc665::ListOfBatchesName ) };
+  if ( fileInfos.end() == batchListFileInfo )
   {
     return;
   }
@@ -230,6 +244,13 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex )
           << Helper::AdditionalInfo{ "File inconsistency" } );
       }
     }
+
+    // store list of batches user defined data
+    mediaSet->batchesUserDefinedData( currentBatchListFile.userDefinedData() );
+
+    // store batch list file check value
+    mediaSet->listOfBatchesCheckValueType(
+      std::get< 0 >( batchListFileInfo->second.checkValue ) );
   }
   else
   {

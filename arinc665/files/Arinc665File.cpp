@@ -508,7 +508,7 @@ void Arinc665File::insertHeader( const RawFileSpan &rawFile ) const
   }
 
   // Check file size
-  if ( rawFile.size() % 2 != 0 )
+  if ( rawFile.size() % 2 != 0U )
   {
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << Helper::AdditionalInfo{ "Invalid size" } );
