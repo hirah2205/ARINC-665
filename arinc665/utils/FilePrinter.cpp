@@ -15,6 +15,7 @@
 #include <arinc665/files/FileListFile.hpp>
 #include <arinc665/files/LoadListFile.hpp>
 #include <arinc665/files/BatchListFile.hpp>
+#include <arinc665/files/LoadHeaderFile.hpp>
 
 #include <arinc645/CheckValueTypeDescription.hpp>
 
@@ -130,6 +131,57 @@ void FilePrinter_print(
            batch.partNumber,
            batch.filename,
            batch.memberSequenceNumber );
+  }
+}
+
+void FilePrinter_print(
+  const Arinc665::Files::LoadHeaderFile &loadHeaderFile,
+  std::ostream &outS,
+  std::string_view initialIndent,
+  std::string_view indent )
+{
+  std::string nextIndent{ initialIndent };
+  nextIndent += indent;
+
+  outS << initialIndent << "part number: " << loadHeaderFile.partNumber() << "\n";
+
+  for ( auto const &targetHardwareId : loadHeaderFile.targetHardwareIds() )
+  {
+    outS << initialIndent << "Target HW ID: " << targetHardwareId << "\n";
+  }
+
+  for ( auto const &dataFile : loadHeaderFile.dataFiles() )
+  {
+    outS
+      << fmt::format(
+        "{0}Data File Filename: {1}\n"
+        "{0}Data File PN: {2}\n"
+        "{0}Data File Size: {3}\n"
+        "{0}Data File CRC: 0x{4:02X}\n"
+        "{0}Data File Check Value: {5}\n\n",
+        nextIndent,
+        dataFile.filename,
+        dataFile.partNumber,
+        dataFile.length,
+        dataFile.crc,
+        FilePrinter_checkValue( dataFile.checkValue ) );
+  }
+
+  for ( auto const &supportFile : loadHeaderFile.supportFiles() )
+  {
+    outS
+      << fmt::format(
+        "{0}Support File Filename: {1}\n"
+        "{0}Support File PN: {2}\n"
+        "{0}Support File Size: {3}\n"
+        "{0}Support File CRC: 0x{4:02X}\n"
+        "{0}Support File Check Value: {5}\n\n",
+        nextIndent,
+        supportFile.filename,
+        supportFile.partNumber,
+        supportFile.length,
+        supportFile.crc,
+        FilePrinter_checkValue( supportFile.checkValue ) );
   }
 }
 

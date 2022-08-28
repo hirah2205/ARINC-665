@@ -127,7 +127,7 @@ class ARINC665_EXPORT Arinc665File
      * @param[in] rawFile
      *   Raw file data.
      *
-     * @return The batch file version for [rawFile].
+     * @return Batch file version for @p rawFile.
      * @retval BatchFileFormatVersion::Invalid
      *   When @p rawFile is not a batch file
      **/
@@ -135,7 +135,7 @@ class ARINC665_EXPORT Arinc665File
       const ConstRawFileSpan &rawFile );
 
     /**
-     * @brief Returns the media file version for [rawFile]
+     * @brief Returns the media file version for @p rawFile
      *
      * @param[in] rawFile
      *   Raw file data.
@@ -295,18 +295,18 @@ class ARINC665_EXPORT Arinc665File
     /**
      * @brief Encodes the ARINC 665 file as raw data.
      *
-     * @return The  ARINC 665 file as raw data.
+     * @return ARINC 665 file as raw data.
      **/
     [[nodiscard]] virtual RawFile encode() const = 0;
 
     /**
-     * @brief Inserts the header data into [rawFile].
+     * @brief Inserts the header data and file CRC into @p rawFile.
      *
      * @param[in,out] rawFile
-     *   The raw file, where the header is encoded.
+     *   Raw file, where the header is encoded.
      *
      * @throw InvalidArinc665File
-     *   When file is to small
+     *   When file is too small
      * @throw InvalidArinc665File
      *   When file size is invalid
      **/
@@ -322,7 +322,7 @@ class ARINC665_EXPORT Arinc665File
      *   Expected file type.
      *
      * @throw InvalidArinc665File
-     *   When file is to small
+     *   When file is too small
      * @throw InvalidArinc665File
      *   When file size field is invalid
      * @throw InvalidArinc665File

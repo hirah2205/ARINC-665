@@ -23,6 +23,68 @@
 
 namespace Arinc665::Files {
 
+void LoadHeaderFile::encodeLoadCrc( RawFileSpan rawFile, const uint32_t crc )
+{
+  Helper::setInt< uint32_t>(
+    rawFile.begin() + static_cast< ptrdiff_t>( rawFile.size() ) - LoadCrcOffset,
+    crc );
+}
+
+uint32_t LoadHeaderFile::decodeLoadCrc( ConstRawFileSpan rawFile )
+{
+  uint32_t crc{ 0U };
+  Helper::getInt< uint32_t>( rawFile.end() - LoadCrcOffset, crc );
+  return crc;
+}
+
+void LoadHeaderFile::encodeLoadCheckValue(
+  RawFileSpan rawFile,
+  const Arinc645::CheckValue &checkValue )
+{
+  uint32_t loadCheckValuePtr{ 0U };
+
+  Helper::getInt< uint32_t>(
+    rawFile.begin() + LoadCheckValuePointerFieldOffsetV3,
+    loadCheckValuePtr );
+
+  if ( 0U == loadCheckValuePtr )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Load Check Value Ptr invalid" } );
+  }
+
+  // write load check value to position
+  std::ranges::copy(
+    CheckValueUtils_encode( checkValue ),
+    rawFile.begin() + static_cast< ptrdiff_t >( loadCheckValuePtr ) * 2 );
+
+  // Update File CRC, which is also calculated over Load Check Value
+  const auto calculatedCrc{
+    calculateChecksum( rawFile.first( rawFile.size() - FileCrcOffset ) ) };
+
+  Helper::setInt< uint16_t >(
+    rawFile.begin() + static_cast< ptrdiff_t>( rawFile.size() ) - FileCrcOffset,
+    calculatedCrc );
+}
+
+Arinc645::CheckValue LoadHeaderFile::decodeLoadCheckValue(
+  ConstRawFileSpan rawFile )
+{
+  uint32_t loadCheckValuePtr{ 0U };
+
+  Helper::getInt< uint32_t>(
+    rawFile.begin() + LoadCheckValuePointerFieldOffsetV3,
+    loadCheckValuePtr );
+
+  if ( 0U == loadCheckValuePtr )
+  {
+    return Arinc645::NoCheckValue;
+  }
+
+  return CheckValueUtils_decode(
+    rawFile.subspan( static_cast< size_t >( loadCheckValuePtr ) * 2U ) );
+}
+
 LoadHeaderFile::LoadHeaderFile( const SupportedArinc665Version version ) :
   Arinc665File{ version, FileCrcOffset }
 {
@@ -216,29 +278,14 @@ void LoadHeaderFile::userDefinedData( UserDefinedData &&userDefinedData)
   checkUserDefinedData();
 }
 
-uint32_t LoadHeaderFile::loadCrc() const noexcept
+Arinc645::CheckValueType LoadHeaderFile::loadCheckValueType() const
 {
-  return loadCrcV;
+  return loadCheckValueTypeV;
 }
 
-void LoadHeaderFile::loadCrc( const uint32_t loadCrc ) noexcept
+void LoadHeaderFile::loadCheckValueType( const Arinc645::CheckValueType type )
 {
-  loadCrcV = loadCrc;
-}
-
-const Arinc645::CheckValue& LoadHeaderFile::loadCheckValue() const
-{
-  return loadCheckValueV;
-}
-
-void LoadHeaderFile::loadCheckValue( const Arinc645::CheckValue &value)
-{
-  loadCheckValueV = value;
-}
-
-void LoadHeaderFile::loadCheckValue( Arinc645::CheckValue &&value )
-{
-  loadCheckValueV = std::move( value);
+  loadCheckValueTypeV = type;
 }
 
 RawFile LoadHeaderFile::encode() const
@@ -439,6 +486,8 @@ RawFile LoadHeaderFile::encode() const
     rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
     userDefinedDataPtr );
 
+  // amount of data of Check Values and CRCs
+  uint32_t checkValueCrcSizes{ sizeof( uint16_t ) + sizeof( uint32_t ) };
 
   // Load Check Value (only in V3 mode)
   if ( encodeV3Data )
@@ -446,30 +495,24 @@ RawFile LoadHeaderFile::encode() const
     // Alternative implementation set Load Check Pointer to zero, when Load
     // Check Value is not given
 
-    const auto rawCheckValue{ CheckValueUtils_encode( loadCheckValueV ) };
-    assert( rawCheckValue.size() % 2 == 0 );
+    checkValueCrcSizes += CheckValueUtils_size( loadCheckValueTypeV );
 
+    // Set Pointer to Load Check Value Field
     Helper::setInt< uint32_t >(
       rawFile.begin() + LoadCheckValuePointerFieldOffsetV3,
       static_cast< uint32_t >( nextFreeOffset / 2 ) );
 
-    rawFile.insert(
-      rawFile.end(),
-      rawCheckValue.begin(),
-      rawCheckValue.end() );
+    // actual check value must be encoded by external means
   }
 
 
-  // Resize to final size ( File CRC + Load CRC)
-  rawFile.resize( rawFile.size() + sizeof( uint16_t ) + sizeof( uint32_t ) );
+  // Resize to final size ( Check Value + File CRC + Load CRC)
+  rawFile.resize( rawFile.size() + checkValueCrcSizes );
 
   // set header and crc
   insertHeader( rawFile );
 
-  // load CRC
-  Helper::setInt< uint32_t>(
-    rawFile.begin() + static_cast< ptrdiff_t>( rawFile.size() ) - LoadCrcOffset,
-    loadCrcV );
+  // load CRC must be encoded by external means
 
   return rawFile;
 }
@@ -532,9 +575,9 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
     rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
     userDefinedDataPtr);
 
-  uint32_t loadTypeDescriptionPtr = 0;
-  uint32_t thwIdsPositionPtr = 0;
-  uint32_t loadCheckValuePtr = 0;
+  uint32_t loadTypeDescriptionPtr{ 0U };
+  uint32_t thwIdsPositionPtr{ 0U };
+  uint32_t loadCheckValuePtr{ 0U };
 
   // only decode this pointers in V3 mode
   if ( decodeV3Data )
@@ -640,19 +683,19 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
       rawFile.begin() + endOfUserDefinedData );
   }
 
-  // Load Check Value Field (ARINC 665-3)
-  loadCheckValueV = Arinc645::NoCheckValue;
+  // Load Check Value Field (ARINC 665-3) - Only Type is stored.
+  // Check must be performed by other means
+  loadCheckValueTypeV = Arinc645::CheckValueType::NotUsed;
   if ( decodeV3Data && ( 0U!=loadCheckValuePtr ) )
   {
-    loadCheckValueV = CheckValueUtils_decode(
-      rawFile.subspan( static_cast< size_t >( loadCheckValuePtr ) * 2U ) );
+    loadCheckValueTypeV = std::get< 0 >( CheckValueUtils_decode(
+      rawFile.subspan( static_cast< size_t >( loadCheckValuePtr ) * 2U ) ) );
   }
 
 
   // file crc decoded and checked within base class
 
-  // load crc
-  Helper::getInt< uint32_t>( rawFile.end() - LoadCrcOffset, loadCrcV );
+  // load crc is not decoded - this must be done by other means
 }
 
 RawFile LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
@@ -922,11 +965,11 @@ void LoadHeaderFile::decodeDataFiles(
 
     // file info
     dataFilesV.emplace_back( LoadFileInfo{
-      std::move( name ),
-      std::move( partNumber ),
-      realLength,
-      crc,
-      std::move( checkValue ) } );
+      .filename = std::move( name ),
+      .partNumber = std::move( partNumber ),
+      .length = realLength,
+      .crc = crc,
+      .checkValue = std::move( checkValue ) } );
   }
 }
 

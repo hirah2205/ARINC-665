@@ -153,13 +153,16 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK(
     (file.userDefinedData() == LoadHeaderFile::UserDefinedData{ 0x12, 0x34, 0x56, 0x78}));
 
-  BOOST_CHECK( file.loadCrc() == 0xFEDCBA98);
+  BOOST_CHECK( 0xFEDCBA98 == Arinc665::Files::LoadHeaderFile::decodeLoadCrc( rawFile ) );
 
-  const auto raw2{ static_cast< RawFile>( file)};
+  auto raw2{ static_cast< RawFile>( file ) };
+
+  Arinc665::Files::LoadHeaderFile::encodeLoadCrc( raw2, 0xFEDCBA98 );
+  BOOST_CHECK( 0xFEDCBA98 == Arinc665::Files::LoadHeaderFile::decodeLoadCrc( raw2 ) );
 
   // std::cout << Dump( &(*(raw2.begin())), raw2.size());
 
-  BOOST_CHECK( rawFile == raw2);
+  BOOST_CHECK( rawFile == raw2 );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

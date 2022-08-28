@@ -423,20 +423,53 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   // User Defined Data
   loadHeaderFile.userDefinedData( load->userDefinedData() );
 
-  // calculate load CRC and Check Value
-  Arinc645::Arinc645Crc32 loadCrc{};
-  auto checkValueGenerator{
-    Arinc645::CheckValueGenerator::create( load->effectiveLoadCheckValueType() ) };
-  assert( checkValueGenerator );
+  // Set Check Value Type before Raw File generation (for Space Reserving)
+  loadHeaderFile.loadCheckValueType( load->effectiveLoadCheckValueType() );
 
-  // load header load CRC calculation
-  const auto rawLoadHeader{ Files::RawFile( loadHeaderFile ) };
+  // RAW load header used for load Check Value and CRC calculation
+  auto rawLoadHeader{ Files::RawFile( loadHeaderFile ) };
+
+  // Calculate Load Check Value ( Only for supported version)
+  if ( SupportedArinc665Version::Supplement345 == arinc665VersionV )
+  {
+    auto checkValueGenerator{
+      Arinc645::CheckValueGenerator::create( load->effectiveLoadCheckValueType() ) };
+    assert( checkValueGenerator );
+
+    checkValueGenerator->process( rawLoadHeader );
+
+    // load data files for Load Check Value.
+    for ( const auto &[ file, partNumber, checkValueType ] : load->dataFiles() )
+    {
+      auto rawDataFile{ readFileHandlerV(
+        file->medium()->mediumNumber(),
+        file->path() ) };
+
+      checkValueGenerator->process( rawDataFile );
+    }
+
+    // load support files for Load Check Value.
+    for ( const auto &[ file, partNumber, checkValueType ] : load->supportFiles() )
+    {
+      auto rawSupportFile{ readFileHandlerV(
+        file->medium()->mediumNumber(),
+        file->path() ) };
+
+      checkValueGenerator->process( rawSupportFile );
+    }
+
+    Files::LoadHeaderFile::encodeLoadCheckValue(
+      rawLoadHeader,
+      checkValueGenerator->checkValue() );
+  }
+
+
+  // Calculate load CRC and Check Value
+  Arinc645::Arinc645Crc32 loadCrc{};
 
   loadCrc.process_bytes(
     std::data( rawLoadHeader ),
     rawLoadHeader.size() - sizeof( uint32_t ) );
-
-  checkValueGenerator->process( rawLoadHeader );
 
   // load data files for load CRC.
   for ( const auto &[ file, partNumber, checkValueType ] : load->dataFiles() )
@@ -448,8 +481,6 @@ void MediaSetExporterImpl::createLoadHeaderFile(
     loadCrc.process_bytes(
       std::to_address( rawDataFile.begin() ),
       rawDataFile.size() );
-
-    checkValueGenerator->process( rawDataFile );
   }
 
   // load support files for load CRC.
@@ -462,21 +493,16 @@ void MediaSetExporterImpl::createLoadHeaderFile(
     loadCrc.process_bytes(
       std::to_address( rawSupportFile.begin() ),
       rawSupportFile.size() );
-
-    checkValueGenerator->process( rawSupportFile );
   }
 
   // set load CRC + Check Value
-  loadHeaderFile.loadCrc( loadCrc.checksum() );
-  if ( checkValueGenerator )
-  {
-    loadHeaderFile.loadCheckValue( checkValueGenerator->checkValue() );
-  }
+  Files::LoadHeaderFile::encodeLoadCrc( rawLoadHeader, loadCrc.checksum() );
 
+  // Write Load Header File
   writeFileHandlerV(
     load->medium()->mediumNumber(),
     load->path(),
-    static_cast< Files::RawFile >( loadHeaderFile ) );
+    rawLoadHeader );
 }
 
 Files::LoadFileInfo MediaSetExporterImpl::loadFileInformation(
@@ -533,8 +559,8 @@ void MediaSetExporterImpl::createBatchFile(
     {
       // add load to target batch information
       batchLoadsInfo.emplace_back( Files::BatchLoadInfo{
-        std::string{ load->name() },
-        std::string{ load->partNumber() } } );
+        .headerFilename = std::string{ load->name() },
+        .partNumber = std::string{ load->partNumber() } } );
     }
 
     // add target

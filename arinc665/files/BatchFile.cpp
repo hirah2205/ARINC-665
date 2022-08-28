@@ -22,22 +22,22 @@
 
 namespace Arinc665::Files {
 
-BatchFile::BatchFile( const SupportedArinc665Version version):
-  Arinc665File{ version}
+BatchFile::BatchFile( const SupportedArinc665Version version ):
+  Arinc665File{ version }
 {
 }
 
-BatchFile::BatchFile( const ConstRawFileSpan &rawFile):
-  Arinc665File{ rawFile, FileType::BatchFile}
+BatchFile::BatchFile( const ConstRawFileSpan &rawFile ):
+  Arinc665File{ rawFile, FileType::BatchFile }
 {
-  decodeBody( rawFile);
+  decodeBody( rawFile );
 }
 
-BatchFile& BatchFile::operator=( const ConstRawFileSpan &rawFile)
+BatchFile& BatchFile::operator=( const ConstRawFileSpan &rawFile )
 {
   // call inherited operator
-  Arinc665File::operator =( rawFile);
-  decodeBody( rawFile);
+  Arinc665File::operator =( rawFile );
+  decodeBody( rawFile );
 
   return *this;
 }
@@ -52,14 +52,14 @@ std::string_view BatchFile::partNumber() const
   return partNumberV;
 }
 
-void BatchFile::partNumber( std::string_view partNumber)
+void BatchFile::partNumber( std::string_view partNumber )
 {
   partNumberV = partNumber;
 }
 
-void BatchFile::partNumber( std::string &&partNumber)
+void BatchFile::partNumber( std::string &&partNumber )
 {
-  partNumberV = std::move( partNumber);
+  partNumberV = std::move( partNumber );
 }
 
 std::string_view BatchFile::comment() const
@@ -67,12 +67,12 @@ std::string_view BatchFile::comment() const
   return commentV;
 }
 
-void BatchFile::comment( std::string_view comment)
+void BatchFile::comment( std::string_view comment )
 {
   commentV = comment;
 }
 
-void BatchFile::comment( std::string &&comment)
+void BatchFile::comment( std::string &&comment )
 {
   commentV = std::move( comment);
 }
@@ -92,7 +92,7 @@ void BatchFile::targetHardware( const BatchTargetInfo &targetHardwareInfo )
   targetsHardwareV.push_back( targetHardwareInfo );
 }
 
-void BatchFile::targetHardware( BatchTargetInfo &&targetHardwareInfo)
+void BatchFile::targetHardware( BatchTargetInfo &&targetHardwareInfo )
 {
   targetsHardwareV.push_back( targetHardwareInfo );
 }

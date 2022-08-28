@@ -213,34 +213,19 @@ static void printLoadHeaderFile( const std::filesystem::path &luhFile)
 {
   try
   {
-    Arinc665::Files::LoadHeaderFile load{ loadFile( luhFile ) };
+    const auto rawLoadHeaderFile{ loadFile( luhFile ) };
 
-    std::cout << "part number: "<< load.partNumber() << "\n";
+    Arinc665::Files::LoadHeaderFile load{ rawLoadHeaderFile };
 
-    for ( auto const &targetHardwareId : load.targetHardwareIds() )
-    {
-      std::cout << "target HW id: " << targetHardwareId << "\n";
-    }
+    Arinc665::Utils::FilePrinter_print(
+      load,
+      std::cout,
+      "\t" );
 
-    for ( auto const &dataFile : load.dataFiles() )
-    {
-      std::cout
-        << "data file name: " << dataFile.filename << "\n"
-        << "data file PN:   " << dataFile.partNumber << "\n"
-        << "data file size: " << std::dec << dataFile.length << "\n"
-        << "data file CRC:  " << std::hex << dataFile.crc << "\n\n";
-    }
-
-    for ( auto const &supportFile : load.supportFiles() )
-    {
-      std::cout
-        << "support file name: " << supportFile.filename << "\n"
-        << "support file PN:   " << supportFile.partNumber << "\n"
-        << "support file size: " << std::dec << supportFile.length << "\n"
-        << "support file CRC:  " << std::hex << supportFile.crc << "\n\n";
-    }
-
-    std::cout << "load crc " << std::hex << load.loadCrc() << "\n";
+    std::cout
+      << fmt::format(
+        "\tLoad CRC 0x{:02X}\n",
+        Arinc665::Files::LoadHeaderFile::decodeLoadCrc( rawLoadHeaderFile ) );
   }
   catch ( const boost::exception &e )
   {

@@ -21,20 +21,26 @@
 
 namespace Arinc665::Files {
 
+size_t CheckValueUtils_size( const Arinc645::CheckValueType type )
+{
+  return
+    ( Arinc645::CheckValueType::NotUsed == type ) ?
+    sizeof( uint16_t ) :
+    2U * sizeof( uint16_t ) + Arinc645::CheckValueSize.at( type );
+}
+
 RawFile CheckValueUtils_encode(
   const Arinc645::CheckValue &checkValue )
 {
-  RawFile rawCheckValue( sizeof( uint16_t ) );
-
   if ( Arinc645::CheckValueType::NotUsed == std::get< 0 >( checkValue ) )
   {
-    Helper::setInt< uint16_t >( rawCheckValue.begin(), 0U );
-    return rawCheckValue;
+    return { 0, 0 };
   }
 
-  // Add Check Value Type
-  rawCheckValue.resize( rawCheckValue.size() + sizeof( uint16_t ) );
+  // Length + Type
+  RawFile rawCheckValue( 2 *sizeof( uint16_t ) );
 
+  // Check Value Type Field
   Helper::setInt< uint16_t>(
     rawCheckValue.begin() + sizeof( uint16_t ),
     static_cast< uint16_t>( std::get< 0 >( checkValue ) ) );

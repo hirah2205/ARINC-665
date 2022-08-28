@@ -77,6 +77,24 @@ void FilePrinter_print(
   std::string_view initialIndent = {},
   std::string_view indent = "" );
 
+/**
+ * @brief Prints the Content of the given Load Header File.
+ *
+ * @param[in] loadHeaderFile
+ *   Load Header File
+ * @param[in,out] outS
+ *   Output Stream
+ * @param[in] initialIndent
+ *   Initial Indention prepended before each output.
+ * @param[in] indent
+ *   Indent for sub-information
+ **/
+void FilePrinter_print(
+  const Arinc665::Files::LoadHeaderFile &loadHeaderFile,
+  std::ostream &outS = std::cout,
+  std::string_view initialIndent = {},
+  std::string_view indent = "" );
+
 }
 
 #endif

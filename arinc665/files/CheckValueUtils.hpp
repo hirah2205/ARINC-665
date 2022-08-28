@@ -36,6 +36,16 @@ namespace Arinc665::Files {
  **/
 
 /**
+ * @brief Calculates the Size of the Encoded Check Value.
+ *
+ * @param[in] type
+ *   Check Value Type to encode.
+ *
+ * @return Size of raw representation of @p checkValue.
+ **/
+size_t ARINC665_EXPORT CheckValueUtils_size( Arinc645::CheckValueType type );
+
+/**
  * @brief Encodes the given Check Value.
  *
  * There are two alternatives for encoding "No Check Value".

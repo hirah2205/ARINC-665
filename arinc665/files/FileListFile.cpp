@@ -195,7 +195,7 @@ RawFile FileListFile::encode() const
   rawFile.insert( rawFile.end(), rawMediaInformation.begin(), rawMediaInformation.end() );
 
   // Update Pointer
-  Helper::setInt< uint32_t>(
+  Helper::setInt< uint32_t >(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffsetV2,
     static_cast< uint32_t >( nextFreeOffset / 2U ) );
   nextFreeOffset += static_cast< ptrdiff_t >( rawMediaInformation.size() );
@@ -478,7 +478,7 @@ void FileListFile::decodeFilesInfo(
   it = Helper::getInt< uint16_t>( it, numberOfFiles );
 
   // iterate over index
-  for ( unsigned int fileIndex = 0U; fileIndex < numberOfFiles; ++fileIndex)
+  for ( unsigned int fileIndex = 0U; fileIndex < numberOfFiles; ++fileIndex )
   {
     auto listIt{ it};
 

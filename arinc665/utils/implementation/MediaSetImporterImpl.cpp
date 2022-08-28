@@ -295,6 +295,9 @@ void MediaSetImporterImpl::loadLoadHeaderFiles( const uint8_t mediumIndex )
     Files::LoadHeaderFile loadHeaderFile{
       readFileHandlerV( mediumIndex, loadHeaderFileIt->second.path() ) };
 
+    // TODO Check Load Check Value
+    // TODO Check Load CRC
+
     // add load header to global information
     loadHeaderFiles.try_emplace(
       loadHeaderFileIt->second.filename,
@@ -557,8 +560,7 @@ void MediaSetImporterImpl::addLoads()
     // User Defined Data
     loadPtr->userDefinedData( loadHeaderFile.userDefinedData() );
     // Load Check Value
-    loadPtr->loadCheckValueType(
-      std::get< 0>( loadHeaderFile.loadCheckValue() ) );
+    loadPtr->loadCheckValueType( loadHeaderFile.loadCheckValueType() );
   }
 }
 

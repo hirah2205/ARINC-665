@@ -180,6 +180,16 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     //! Download Flag of Part Flag
     static constexpr std::uint16_t PartFlagDownload{ 0x0001U };
 
+    static void encodeLoadCrc( RawFileSpan rawFile, uint32_t crc );
+
+    static uint32_t decodeLoadCrc( ConstRawFileSpan rawFile );
+
+    static void encodeLoadCheckValue(
+      RawFileSpan rawFile,
+      const Arinc645::CheckValue &checkValue );
+
+    static Arinc645::CheckValue decodeLoadCheckValue( ConstRawFileSpan rawFile );
+
     /**
      * @brief Creates an empty load header file.
      *
@@ -470,54 +480,31 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     /** @} **/
 
     /**
-     * @name Load CRC
-     * @{
-     **/
-
-    /**
-     * @brief Returns the Load CRC.
+     * @name Load Check Value Type
      *
-     * @return Load CRC
-     **/
-    [[nodiscard]] uint32_t loadCrc() const noexcept;
-
-    /**
-     * @brief Updates the Load CRC.
+     * Check Value Type for the whole Load.
      *
-     * @param[in] loadCrc
-     *   Load CRC
-     **/
-    void loadCrc( uint32_t loadCrc ) noexcept;
-
-    /** @} **/
-
-    /**
-     * @name Load Check Value
-     *
-     * Check Value for the whole Load.
-     * If not used set to @ref Arinc645::NoCheckValue.
+     * @sa encodeLoadCheckValue()
+     * @sa decodeLoadCheckValue()
      *
      * @sa CheckValue
      * @{
      **/
 
     /**
-     * @brief Returns the Load Check Value.
+     * @brief Returns the Load Check Value Type.
      *
-     * @return Load Check Value.
+     * @return Load Check Value Type.
      **/
-    [[nodiscard]] const Arinc645::CheckValue& loadCheckValue() const;
+    [[nodiscard]] Arinc645::CheckValueType loadCheckValueType() const;
 
     /**
-     * @brief Updates the Load Check Value
+     * @brief Updates the Load Check Value Type.
      *
-     * @param[in] value
-     *   Load Check Value.
+     * @param[in] type
+     *   Load Check Value Type.
      **/
-    void loadCheckValue( const Arinc645::CheckValue &value );
-
-    //! @copydoc loadCheckValue(const Arinc645::CheckValue&)
-    void loadCheckValue( Arinc645::CheckValue &&value );
+    void loadCheckValueType( Arinc645::CheckValueType type );
 
     /** @} **/
 
@@ -594,11 +581,10 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     LoadFilesInfo supportFilesV;
     //! User Defined Data
     UserDefinedData userDefinedDataV;
-    //! CRC of the Complete Load
-    uint32_t loadCrcV{ 0U };
     //! Load Check Value (Type) (since ARINC 665-3) - Value is calculated on
     //! generation.
-    Arinc645::CheckValue loadCheckValueV{ Arinc645::NoCheckValue };
+    Arinc645::CheckValueType loadCheckValueTypeV{
+      Arinc645::CheckValueType::NotUsed };
 };
 
 }

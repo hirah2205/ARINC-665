@@ -402,10 +402,10 @@ void Arinc665File::insertHeader( const RawFileSpan &rawFile ) const
       formatVersionField( fileType(), arinc665VersionV ) );
 
   // crc
-  const uint16_t calculatedCrc{
+  const auto calculatedCrc{
     calculateChecksum( rawFile.first( rawFile.size() - checksumPosition ) ) };
 
-  Helper::setInt< uint16_t>(
+  Helper::setInt< uint16_t >(
     rawFile.begin() + static_cast< ptrdiff_t>( rawFile.size() ) - checksumPosition,
     calculatedCrc );
 }
@@ -454,7 +454,8 @@ void Arinc665File::decodeHeader(
 
 
   // calculate checksum and compare against stored
-  uint16_t calcCrc = calculateChecksum( rawFile.first( rawFile.size() - checksumPosition ) );
+  const auto calcCrc{
+    calculateChecksum( rawFile.first( rawFile.size() - checksumPosition ) ) };
   if ( crc != calcCrc )
   {
     BOOST_THROW_EXCEPTION(
