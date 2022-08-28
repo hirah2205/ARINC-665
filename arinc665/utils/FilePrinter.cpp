@@ -16,9 +16,14 @@
 #include <arinc665/files/LoadListFile.hpp>
 #include <arinc665/files/BatchListFile.hpp>
 
+#include <arinc645/CheckValueTypeDescription.hpp>
+
 #include <fmt/format.h>
 
 namespace Arinc665::Utils {
+
+static std::string FilePrinter_checkValue(
+  const Arinc645::CheckValue &checkValue );
 
 void FilePrinter_print(
   const Arinc665::Files::FileListFile &fileListFile,
@@ -43,15 +48,17 @@ void FilePrinter_print(
   {
     outS
       << fmt::format(
-        "{0}filename: {1}\n"
-        "{0}file path: {2}\n"
-        "{0}file member sequence number: {3:02d}\n"
-        "{0}file CRC: 0x{4:04X}\n\n",
+        "{0}Filename: {1}\n"
+        "{0}File Path: {2}\n"
+        "{0}File Member Sequence Number: {3:02d}\n"
+        "{0}File CRC: 0x{4:04X}\n"
+        "{0}File Check Value: {5}\n\n",
         nextIndent,
         file.filename,
         file.pathName,
         file.memberSequenceNumber,
-        file.crc );
+        file.crc,
+        FilePrinter_checkValue( file.checkValue ) );
   }
 }
 
@@ -124,6 +131,25 @@ void FilePrinter_print(
            batch.filename,
            batch.memberSequenceNumber );
   }
+}
+
+static std::string FilePrinter_checkValue(
+  const Arinc645::CheckValue &checkValue )
+{
+  const auto& [ checkValueType, checkValueRaw ]{ checkValue };
+
+  std::string checkValueRawString{};
+  checkValueRawString.reserve( checkValueRaw.size() * 2U );
+
+  for ( const auto &checkValueByte : checkValueRaw )
+  {
+    checkValueRawString += fmt::format( "{:02X}", checkValueByte );
+  }
+
+  return fmt::format(
+    "{} {}",
+    Arinc645::CheckValueTypeDescription::instance().name( checkValueType ),
+    checkValueRawString );
 }
 
 }
