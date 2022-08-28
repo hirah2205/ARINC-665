@@ -5,9 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * @author @todo Add author
+ * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief @todo Add brief description
+ * @brief Definition of Module Arinc665::Utils FilePrinter.
  **/
 
 #include "FilePrinter.hpp"
@@ -17,14 +17,11 @@
 #include <arinc665/files/BatchListFile.hpp>
 #include <arinc665/files/LoadHeaderFile.hpp>
 
-#include <arinc645/CheckValueTypeDescription.hpp>
+#include <arinc645/Utils.hpp>
 
 #include <fmt/format.h>
 
 namespace Arinc665::Utils {
-
-static std::string FilePrinter_checkValue(
-  const Arinc645::CheckValue &checkValue );
 
 void FilePrinter_print(
   const Arinc665::Files::FileListFile &fileListFile,
@@ -59,7 +56,7 @@ void FilePrinter_print(
         file.pathName,
         file.memberSequenceNumber,
         file.crc,
-        FilePrinter_checkValue( file.checkValue ) );
+        Arinc645::Utils_toString( file.checkValue ) );
   }
 }
 
@@ -164,7 +161,7 @@ void FilePrinter_print(
         dataFile.partNumber,
         dataFile.length,
         dataFile.crc,
-        FilePrinter_checkValue( dataFile.checkValue ) );
+        Arinc645::Utils_toString( dataFile.checkValue ) );
   }
 
   for ( auto const &supportFile : loadHeaderFile.supportFiles() )
@@ -181,27 +178,8 @@ void FilePrinter_print(
         supportFile.partNumber,
         supportFile.length,
         supportFile.crc,
-        FilePrinter_checkValue( supportFile.checkValue ) );
+        Arinc645::Utils_toString( supportFile.checkValue ) );
   }
-}
-
-static std::string FilePrinter_checkValue(
-  const Arinc645::CheckValue &checkValue )
-{
-  const auto& [ checkValueType, checkValueRaw ]{ checkValue };
-
-  std::string checkValueRawString{};
-  checkValueRawString.reserve( checkValueRaw.size() * 2U );
-
-  for ( const auto &checkValueByte : checkValueRaw )
-  {
-    checkValueRawString += fmt::format( "{:02X}", checkValueByte );
-  }
-
-  return fmt::format(
-    "{} {}",
-    Arinc645::CheckValueTypeDescription::instance().name( checkValueType ),
-    checkValueRawString );
 }
 
 }
