@@ -116,16 +116,17 @@ void MediaPrinter_printMediaSet(
     outS << "\n";
   }
 
-  // iterate over Batches
-  outS
-    << initialIndent
-    << "Batches:" << "\n";
-
-  // iterate over loads
-  for ( auto const &batch : mediaSet.batches() )
+  if ( mediaSet.numberOfBatches() != 0U )
   {
-    MediaPrinter_printBatch( *batch, outS, nextIndent, indent );
-    outS << "\n";
+    // iterate over Batches
+    outS << initialIndent << "Batches:" << "\n";
+
+    // iterate over loads
+    for ( auto const &batch : mediaSet.batches() )
+    {
+      MediaPrinter_printBatch( *batch, outS, nextIndent, indent );
+      outS << "\n";
+    }
   }
 }
 

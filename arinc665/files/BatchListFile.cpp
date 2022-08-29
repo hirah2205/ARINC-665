@@ -147,7 +147,6 @@ RawFile BatchListFile::encode() const
   if ( !userDefinedDataV.empty() )
   {
     userDefinedDataPtr = static_cast< uint32_t >( nextFreeOffset / 2U );
-    // nextFreeOffset += userDefinedDataValue.size();
 
     rawFile.insert(
       rawFile.end(),
@@ -160,11 +159,14 @@ RawFile BatchListFile::encode() const
     userDefinedDataPtr );
 
 
-  // Resize to final size ( File CRC)
+  // set header
+  insertHeader( rawFile );
+
+  // Resize file for file CRC
   rawFile.resize( rawFile.size() + sizeof( uint16_t ) );
 
-  // set header and crc
-  insertHeader( rawFile );
+  // set CRC
+  calculateFileCrc( rawFile );
 
   return rawFile;
 }

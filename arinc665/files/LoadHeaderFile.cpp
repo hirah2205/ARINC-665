@@ -343,7 +343,7 @@ RawFile LoadHeaderFile::encode() const
   BOOST_LOG_FUNCTION()
 
   bool encodeV3Data{ false };
-  std::size_t baseSize{};
+  std::size_t baseSize;
 
   switch ( arincVersion() )
   {
@@ -556,12 +556,14 @@ RawFile LoadHeaderFile::encode() const
     // actual check value must be encoded by external means
   }
 
+  // set header
+  insertHeader( rawFile, checkValueCrcSizes );
 
   // Resize to final size ( Check Value + File CRC + Load CRC)
   rawFile.resize( rawFile.size() + checkValueCrcSizes );
 
-  // set header and crc
-  insertHeader( rawFile );
+  // set CRC
+  calculateFileCrc( rawFile );
 
   // load CRC must be encoded by external means
 

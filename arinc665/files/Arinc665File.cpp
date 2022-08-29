@@ -375,8 +375,12 @@ Arinc665File& Arinc665File::operator=( Arinc665File &&other ) noexcept
   return *this;
 }
 
-void Arinc665File::insertHeader( const RawFileSpan &rawFile ) const
+void Arinc665File::insertHeader(
+  const RawFileSpan &rawFile,
+  const std::size_t additionalSize ) const
 {
+  const auto fileSize{ rawFile.size() + additionalSize };
+
   // Check file size
   if ( rawFile.size() <= ( BaseHeaderSize + sizeof( uint16_t ) ) )
   {
@@ -385,7 +389,7 @@ void Arinc665File::insertHeader( const RawFileSpan &rawFile ) const
   }
 
   // Check file size
-  if ( rawFile.size() % 2 != 0U )
+  if ( fileSize % 2 != 0U )
   {
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << Helper::AdditionalInfo{ "Invalid size" } );
@@ -394,17 +398,21 @@ void Arinc665File::insertHeader( const RawFileSpan &rawFile ) const
   // file size
   Helper::setInt< uint32_t>(
     rawFile.begin() + FileLengthFieldOffset,
-    Helper::safeCast< uint32_t>( rawFile.size() / 2U ) );
+    Helper::safeCast< uint32_t>( fileSize / 2U ) );
 
   // format version
   Helper::setInt< uint16_t>(
     rawFile.begin() + FileFormatVersionFieldOffset,
       formatVersionField( fileType(), arinc665VersionV ) );
+}
 
-  // crc
+void Arinc665File::calculateFileCrc( const RawFileSpan &rawFile ) const
+{
+  // calculate crc
   const auto calculatedCrc{
     calculateChecksum( rawFile.first( rawFile.size() - checksumPosition ) ) };
 
+  // set crc field
   Helper::setInt< uint16_t >(
     rawFile.begin() + static_cast< ptrdiff_t>( rawFile.size() ) - checksumPosition,
     calculatedCrc );

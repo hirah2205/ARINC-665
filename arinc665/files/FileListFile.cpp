@@ -161,7 +161,7 @@ RawFile FileListFile::encode() const
   BOOST_LOG_FUNCTION()
 
   bool encodeV3Data{ false };
-  std::size_t baseSize{};
+  std::size_t baseSize;
 
   switch ( arincVersion() )
   {
@@ -234,19 +234,32 @@ RawFile FileListFile::encode() const
     userDefinedDataPtr );
 
 
-  // Check Value (only in V3 mode)
+  // Update Check Value Pointer (only in V3 mode)
+  // must be done before check value and CRC generation
+  size_t checkValueSize{ 0U };
   if ( encodeV3Data )
   {
-    // Update Check Value Pointer
+    // Check Value Pointer
     Helper::setInt< uint32_t >(
       rawFile.begin() + FileCheckValuePointerFieldOffsetV3,
       static_cast< uint32_t >( nextFreeOffset / 2 ) );
 
+    // Update size
+    checkValueSize = CheckValueUtils_size( checkValueTypeV );
+  }
+
+  // set header ( Check Value and File CRC must be added to size field
+  // must be done before check value and CRC generation
+  insertHeader( rawFile, checkValueSize + sizeof( uint16_t ) );
+
+  // Check Value (only in V3 mode)
+  if ( encodeV3Data )
+  {
     // calculate and encode File Load Check Value
     const auto rawCheckValue{ CheckValueUtils_encode(
       Arinc645::CheckValueGenerator::checkValue(
         checkValueTypeV,
-          rawFile ) ) };
+        rawFile ) ) };
     assert( rawCheckValue.size() % 2 == 0 );
 
     rawFile.insert(
@@ -258,8 +271,8 @@ RawFile FileListFile::encode() const
   // Resize to final size ( File CRC)
   rawFile.resize( rawFile.size() + sizeof( uint16_t ) );
 
-  // set header and crc
-  insertHeader( rawFile );
+  // set CRC
+  calculateFileCrc( rawFile );
 
   return rawFile;
 }
@@ -543,11 +556,11 @@ void FileListFile::decodeFilesInfo(
     it += static_cast< ptrdiff_t >( filePointer ) * 2;
 
     filesV.emplace_back( FileInfo{
-      filename,
-      pathName,
-      static_cast< uint8_t >( memberSequenceNumber ),
-      crc,
-      checkValue } );
+      .filename = filename,
+      .pathName = pathName,
+      .memberSequenceNumber = static_cast< uint8_t >( memberSequenceNumber ),
+      .crc = crc,
+      .checkValue = checkValue } );
   }
 }
 

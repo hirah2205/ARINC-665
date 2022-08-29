@@ -147,7 +147,6 @@ RawFile LoadListFile::encode() const
   if ( !userDefinedDataV.empty() )
   {
     userDefinedDataPtr = static_cast< uint32_t >( nextFreeOffset / 2U );
-    // nextFreeOffset += userDefinedDataValue.size();
 
     rawFile.insert(
       rawFile.end(),
@@ -160,12 +159,14 @@ RawFile LoadListFile::encode() const
     userDefinedDataPtr);
 
 
-  // Resize to final size ( File CRC)
+  // set header
+  insertHeader( rawFile );
+
+  // Resize file for file CRC
   rawFile.resize( rawFile.size() + sizeof( uint16_t ) );
 
-
-  // set header and CRC
-  insertHeader( rawFile);
+  // set CRC
+  calculateFileCrc( rawFile );
 
   return rawFile;
 }
@@ -348,10 +349,10 @@ void LoadListFile::decodeLoadsInfo(
     StringUtils_decodeStrings( listIt, thwIds );
 
     loadsV.emplace_back( LoadInfo{
-      std::move( partNumber ),
-      std::move( headerFilename ),
-      static_cast< uint8_t>( fileMemberSequenceNumber ),
-      std::move( thwIds ) } );
+      .partNumber = std::move( partNumber ),
+      .headerFilename = std::move( headerFilename ),
+      .memberSequenceNumber = static_cast< uint8_t>( fileMemberSequenceNumber ),
+      .targetHardwareIds = std::move( thwIds ) } );
 
     // set it to begin of next load
     it += static_cast< ptrdiff_t >( loadPointer ) * 2;

@@ -94,7 +94,7 @@ void BatchFile::targetHardware( const BatchTargetInfo &targetHardwareInfo )
 
 void BatchFile::targetHardware( BatchTargetInfo &&targetHardwareInfo )
 {
-  targetsHardwareV.push_back( targetHardwareInfo );
+  targetsHardwareV.push_back( std::move( targetHardwareInfo ) );
 }
 
 RawFile BatchFile::encode() const
@@ -117,7 +117,7 @@ RawFile BatchFile::encode() const
 
   Helper::setInt< uint32_t>(
     rawFile.begin() + BatchPartNumberPointerFieldOffsetV2,
-    nextFreeOffset / 2 );
+    static_cast< uint32_t >( nextFreeOffset / 2U ) );
   nextFreeOffset += rawBatchPn.size() + rawComment.size();
 
   rawFile.insert( rawFile.end(), rawBatchPn.begin(), rawBatchPn.end() );
@@ -130,17 +130,18 @@ RawFile BatchFile::encode() const
 
   Helper::setInt< uint32_t>(
     rawFile.begin() + ThwIdsPointerFieldOffsetV2,
-    nextFreeOffset / 2 );
-  // nextFreeOffset += rawThwIdsList.size();
+    static_cast< uint32_t >( nextFreeOffset / 2U ) );
 
   rawFile.insert( rawFile.end(), rawThwIdsList.begin(), rawThwIdsList.end() );
 
+  // set header
+  insertHeader( rawFile );
 
   // Resize file for file CRC
   rawFile.resize( rawFile.size() + sizeof( uint16_t ) );
 
-  // set header and crc
-  insertHeader( rawFile );
+  // set CRC
+  calculateFileCrc( rawFile );
 
   return rawFile;
 }
@@ -334,8 +335,8 @@ void BatchFile::decodeBatchTargetsInfo(
 
       // Batch Load info
       batchLoadsInfo.emplace_back( BatchLoadInfo{
-        std::move( filename ),
-        std::move( partNumber ) } );
+        .headerFilename = std::move( filename ),
+        .partNumber = std::move( partNumber ) } );
     }
 
     // set it to begin of next file
@@ -343,8 +344,8 @@ void BatchFile::decodeBatchTargetsInfo(
 
     // THW ID info
     targetsHardwareV.emplace_back( BatchTargetInfo{
-      std::move( thwId ),
-      std::move( batchLoadsInfo ) } );
+      .targetHardwareIdPosition = std::move( thwId ),
+      .loads = std::move( batchLoadsInfo ) } );
   }
 }
 

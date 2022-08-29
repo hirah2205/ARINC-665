@@ -304,13 +304,26 @@ class ARINC665_EXPORT Arinc665File
      *
      * @param[in,out] rawFile
      *   Raw file, where the header is encoded.
+     * @param[in] additionalSize
+     *   Additional value, which should be added to current raw file size.
+     *   Normally it is the missing file CRC field (16 bit).
      *
      * @throw InvalidArinc665File
      *   When file is too small
      * @throw InvalidArinc665File
      *   When file size is invalid
      **/
-    void insertHeader( const RawFileSpan &rawFile ) const;
+    void insertHeader(
+      const RawFileSpan &rawFile,
+      std::size_t additionalSize = sizeof( uint16_t ) ) const;
+
+    /**
+     * @brief Calculates and updates the File CRC field.
+     *
+     * @param[in,out] rawFile
+     *   Raw file.
+     **/
+    void calculateFileCrc( const RawFileSpan &rawFile ) const;
 
   private:
     /**
