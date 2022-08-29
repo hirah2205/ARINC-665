@@ -734,7 +734,7 @@ void Arinc665XmlImpl::saveLoad(
   saveLoadFiles( load.dataFiles(), "DataFile", loadElement );
 
   // support files
-  saveLoadFiles( load.dataFiles(), "SupportFile", loadElement );
+  saveLoadFiles( load.supportFiles(), "SupportFile", loadElement );
 
   if (
     const auto &userDefinedData{ load.userDefinedData() };
