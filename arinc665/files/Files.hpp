@@ -32,7 +32,7 @@
  * This namespace contains the implementation of the following ARINC 665
  * protocol files:
  * - List files:
- *   - List of Files: FileListFile
+ *   - List of %Files: FileListFile
  *   - List of Loads: LoadListFile
  *   - List of Batches: BatchListFile
  * - Load Header File: LoadHeaderFile
@@ -42,7 +42,8 @@
  * supplements:
  * - Supplement 2
  * - Supplement 3
- * - Supplement 4 (Which actually does not refines the file formats)
+ * - Supplement 4 (Which actually does not refine the file formats)
+ * - Supplement 5 (Which actually does not refine the file formats)
  **/
 namespace Arinc665::Files {
 

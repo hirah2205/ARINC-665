@@ -26,12 +26,16 @@ namespace Arinc665::Files {
  *
  * @par Check Value Encoding
  *
- * Field  | Length of Field | Description
- * -------|-----------------|---------------------------------------------------
- * Length | 2 Bytes         | Length of Check Value Including Length Field
- * Type   | 2 Bytes         | Check Value Type
- * Value  | Variable        | Check Value
+ * Offset | Field  | Length  | Description
+ * -------|--------|---------|--------------------------------------------------
+ * +0     | Length | 2 Bytes | Length of Check Value Including Length Field
+ * +2     | Type   | 2 Bytes | Check Value Type
+ * +4     | Value  | n * 2 B | Check Value (always even number of bytes)
  *
+ * @par No Check Value Encoding
+ *  1. Set `Length` field to `0` and omit `Type` and `Value` field.
+ *  2. Set `Length` field to `4`, set `Type` field to `0` and omit `Value`
+ *     field.
  * @{
  **/
 

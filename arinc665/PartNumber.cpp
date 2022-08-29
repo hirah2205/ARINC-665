@@ -52,7 +52,7 @@ try :
       << Helper::AdditionalInfo{ "calculated and given check code differs" } );
   }
 }
-catch( std::out_of_range &e )
+catch( const std::out_of_range &e )
 {
   BOOST_THROW_EXCEPTION( Arinc665Exception()
     << Helper::AdditionalInfo{ ( e.what() ) } );
@@ -104,7 +104,8 @@ std::string PartNumber::partNumber() const
   return manufacturerCodeV + checkCode() + productIdentifierV;
 }
 
-void PartNumber::checkManufacturerCode( std::string_view manufacturerCode ) const
+void PartNumber::checkManufacturerCode(
+  std::string_view manufacturerCode ) const
 {
   // check string length
   if ( manufacturerCode.size() != ManufacturerCodeLength )
@@ -114,7 +115,8 @@ void PartNumber::checkManufacturerCode( std::string_view manufacturerCode ) cons
   }
 }
 
-void PartNumber::checkProductIdentifier( std::string_view productIdentifier ) const
+void PartNumber::checkProductIdentifier(
+  std::string_view productIdentifier ) const
 {
   // check length of string
   if ( productIdentifier.size() != ProductIdentifierLength )

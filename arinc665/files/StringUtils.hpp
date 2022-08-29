@@ -27,10 +27,11 @@ namespace Arinc665::Files {
  *
  * @par String Encoding
  *
- * Field  | Length of Field | Description
- * -------|-----------------|---------------------------------------------------
- * Length | 2 Bytes         | Length of Check Value Including Length Field
- * Value  | Variable        | String Value (multiple of 2)
+ * Offset | Field   | Length   | Description
+ * -------|---------|----------|------------------------------------------------
+ * +0     | Length  | 2 Bytes  | Length of String
+ * +2     | Value   | Variable | String (`Length` Bytes)
+ * +x     | Padding | 0..1     | If string length is odd, add a `0` fill char
  *
  * @{
  **/
@@ -39,7 +40,7 @@ namespace Arinc665::Files {
  * @brief Decodes the ARINC 665 string from the stream.
  *
  * @param[in] it
- *   current position, where the raw string start.
+ *   Current position, where the raw string start.
  * @param[out] str
  *   Will contain the decoded string.
  *
@@ -63,6 +64,13 @@ RawFile StringUtils_encodeString( std::string_view str );
 
 /**
  * @name ARINC 665 String List Handling.
+ *
+ * Offset | Field          | Length   | Description
+ * -------|----------------|----------|-----------------------------------------
+ * +0     | No. of Strings | 2 Bytes  | Number of Strings following this filed
+ * +x     | String 1       | Variable | Encoded string
+ * +y     | String x       | Variable | Encoded string
+ *
  * @{
  **/
 
