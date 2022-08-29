@@ -228,24 +228,26 @@ RawFile FileListFile::encode() const
       userDefinedDataV.end() );
   }
 
+  // update User Defined Data Pointer
   Helper::setInt< uint32_t>(
     rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
-    userDefinedDataPtr);
+    userDefinedDataPtr );
 
 
   // Check Value (only in V3 mode)
   if ( encodeV3Data )
   {
+    // Update Check Value Pointer
+    Helper::setInt< uint32_t >(
+      rawFile.begin() + FileCheckValuePointerFieldOffsetV3,
+      static_cast< uint32_t >( nextFreeOffset / 2 ) );
+
     // calculate and encode File Load Check Value
     const auto rawCheckValue{ CheckValueUtils_encode(
       Arinc645::CheckValueGenerator::checkValue(
         checkValueTypeV,
           rawFile ) ) };
     assert( rawCheckValue.size() % 2 == 0 );
-
-    Helper::setInt< uint32_t >(
-      rawFile.begin() + FileCheckValuePointerFieldOffsetV3,
-      static_cast< uint32_t >( nextFreeOffset / 2U ) );
 
     rawFile.insert(
       rawFile.end(),
@@ -360,7 +362,7 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
   if ( decodeV3Data && ( 0U != fileCheckValuePtr ) )
   {
     const auto checkValue{ CheckValueUtils_decode(
-      rawFile.subspan( 2U * static_cast< size_t>( fileCheckValuePtr ) ) ) };
+      rawFile.subspan( 2U * static_cast< size_t >( fileCheckValuePtr ) ) ) };
 
     checkValueTypeV = std::get< 0 >( checkValue );
 
@@ -369,7 +371,7 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
       // calculate Check Value
       const auto calcCheckValue{ Arinc645::CheckValueGenerator::checkValue(
         checkValueTypeV,
-        rawFile.first( 2U * std::size_t{ fileCheckValuePtr } ) ) };
+        rawFile.first( 2U * static_cast< std::size_t >( fileCheckValuePtr ) ) ) };
 
       if ( checkValue != calcCheckValue )
       {

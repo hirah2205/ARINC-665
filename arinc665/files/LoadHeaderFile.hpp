@@ -17,7 +17,8 @@
 #include <arinc665/files/Arinc665File.hpp>
 #include <arinc665/files/LoadFileInfo.hpp>
 
-#include <arinc645/Arinc645.hpp>
+#include <arinc645/Arinc645Crc.hpp>
+#include <arinc645/CheckValueGenerator.hpp>
 
 #include <string_view>
 #include <list>
@@ -32,6 +33,9 @@ namespace Arinc665::Files {
 
 /**
  * @brief ARINC 665 Load Header %File (*.LUH).
+ *
+ * An LSP consists of a Header File plus one or more Data Files.
+ * An LSP may also include support files as needed.
  *
  * @par File Format (ARINC 665-4)
  * Name of Field                                    | Field Size (bits)
@@ -100,6 +104,10 @@ namespace Arinc665::Files {
  * Load Check Value                                 | 16
  * Header File CRC                                  | 16
  * Load CRC                                         | 32
+ *
+ * @par Header File CRC
+ * The Header File CRC is a 16-bit CRC covering fields in the Header file,
+ * excluding the Header File CRC and the Load CRC field.
  **/
 class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
 {
@@ -181,6 +189,35 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     static constexpr std::uint16_t PartFlagDownload{ 0x0001U };
 
     /**
+     * @name Load CRC
+     *
+     * The Load CRC is a 32-bit CRC covering the entire Software Load, including
+     * all Data Files, Support Files, and Header File contents excluding the
+     * "Load CRC" itself.
+     * The Load CRC should be calculated in the following order:
+     *  1. Header file contents excluding the `Load CRC` field,
+     *  2. Data files in the sequence they are listed in the header file, and
+     *  3. Support files in the sequence they are listed in the header file
+     *
+     * @{
+     **/
+
+    /**
+     * @brief Processes the Load CRC over the given Load Header Raw
+     *   representation.
+     *
+     * Must be used to determine the correct size of the data to be processed.
+     *
+     * @param[in] rawFile
+     *   Load Header File Raw representation.
+     * @param[in,out] loadCrc
+     *   Processed CRC state.
+     **/
+    static void processLoadCrc(
+      ConstRawFileSpan rawFile,
+      Arinc645::Arinc645Crc32 &loadCrc );
+
+    /**
      * @brief Encodes the Load CRC within the Raw Load Header File.
      *
      * @param[in,out] rawFile
@@ -191,11 +228,6 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     static void encodeLoadCrc( RawFileSpan rawFile, uint32_t crc );
 
     /**
-     * @name Load CRC
-     * @{
-     **/
-
-    /**
      * @brief Decodes the Load CRC within the Raw Load Header File.
      *
      * @param[in] rawFile
@@ -203,7 +235,40 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      *
      * @return Load CRC
      **/
-    static uint32_t decodeLoadCrc( ConstRawFileSpan rawFile );
+    [[nodiscard]] static uint32_t decodeLoadCrc( ConstRawFileSpan rawFile );
+
+    /** @} **/
+
+    /**
+     * @name Load Check Value
+     *
+     * The Load Check Value should be calculated in the following order:
+     *  1. Header file contents excluding the `Load Check Length`, the `Load
+     *     Check Value Type`, the `Load Check Value`, the `Header File CRC`, and
+     *     the `Load CRC`,
+     *  2. Data files in the sequence they are listed in the header file, and
+     *  3. Support files in the sequence they are listed in the header file.
+     *
+     * @{
+     **/
+
+    /**
+     * @brief Processes the Load Check Value over the given Load Header Raw
+     *   representation.
+     *
+     * Must be used to determine the correct size of the data to be processed.
+     *
+     * After Completion the Load Check Value can be set via
+     * encodeLoadCheckValue() or checked via decodeLoadCheckValue().
+     *
+     * @param[in] rawFile
+     *   Load Header File Raw representation.
+     * @param[in,out] checkValueGenerator
+     *   Processed Check Value Generator state.
+     **/
+    static void processLoadCheckValue(
+      ConstRawFileSpan rawFile,
+      Arinc645::CheckValueGenerator &checkValueGenerator );
 
     /**
      * @brief Encodes the Load Check Value within the Raw Load Header File.
@@ -219,13 +284,6 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
       RawFileSpan rawFile,
       const Arinc645::CheckValue &checkValue );
 
-    /** @} **/
-
-    /**
-     * @name Load Check Value
-     * @{
-     **/
-
     /**
      * @brief Decodes the Load Check Value within the Raw Load Header File.
      *
@@ -234,7 +292,10 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      *
      * @return Load Check Value
      **/
-    static Arinc645::CheckValue decodeLoadCheckValue( ConstRawFileSpan rawFile );
+    [[nodiscard]] static Arinc645::CheckValue decodeLoadCheckValue(
+      ConstRawFileSpan rawFile );
+
+    /** @} **/
 
     /**
      * @brief Creates an empty load header file.
@@ -243,8 +304,6 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      *   ARINC 665 version.
      **/
     explicit LoadHeaderFile( SupportedArinc665Version version );
-
-    /** @} **/
 
     /**
      * @brief Creates a load header file from the given raw data.

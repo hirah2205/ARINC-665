@@ -23,6 +23,15 @@
 
 namespace Arinc665::Files {
 
+void LoadHeaderFile::processLoadCrc(
+  ConstRawFileSpan rawFile,
+  Arinc645::Arinc645Crc32 &loadCrc )
+{
+  loadCrc.process_bytes(
+    std::data( rawFile ),
+    rawFile.size() - LoadCrcOffset );
+}
+
 void LoadHeaderFile::encodeLoadCrc( RawFileSpan rawFile, const uint32_t crc )
 {
   Helper::setInt< uint32_t>(
@@ -37,10 +46,45 @@ uint32_t LoadHeaderFile::decodeLoadCrc( ConstRawFileSpan rawFile )
   return crc;
 }
 
+void LoadHeaderFile::processLoadCheckValue(
+  ConstRawFileSpan rawFile,
+  Arinc645::CheckValueGenerator &checkValueGenerator )
+{
+  if ( loadFileFormatVersion( rawFile ) != LoadFileFormatVersion::Version345 )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Invalid file data" } );
+  }
+
+  // Obtain Load Check Value Pointer
+  uint32_t loadCheckValuePtr{ 0U };
+
+  Helper::getInt< uint32_t>(
+    rawFile.begin() + LoadCheckValuePointerFieldOffsetV3,
+    loadCheckValuePtr );
+
+  if ( 0U == loadCheckValuePtr )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Load Check Value Ptr invalid" } );
+  }
+
+  // process check value
+  checkValueGenerator.process(
+    rawFile.first( static_cast< size_t >( loadCheckValuePtr ) * 2U ) );
+}
+
 void LoadHeaderFile::encodeLoadCheckValue(
   RawFileSpan rawFile,
   const Arinc645::CheckValue &checkValue )
 {
+  if ( loadFileFormatVersion( rawFile ) != LoadFileFormatVersion::Version345 )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Invalid file data" } );
+  }
+
+  // Obtain Load Check Value Pointer
   uint32_t loadCheckValuePtr{ 0U };
 
   Helper::getInt< uint32_t>(
@@ -70,6 +114,12 @@ void LoadHeaderFile::encodeLoadCheckValue(
 Arinc645::CheckValue LoadHeaderFile::decodeLoadCheckValue(
   ConstRawFileSpan rawFile )
 {
+  if ( loadFileFormatVersion( rawFile ) != LoadFileFormatVersion::Version345 )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Invalid file data" } );
+  }
+
   uint32_t loadCheckValuePtr{ 0U };
 
   Helper::getInt< uint32_t>(
@@ -487,6 +537,7 @@ RawFile LoadHeaderFile::encode() const
     userDefinedDataPtr );
 
   // amount of data of Check Values and CRCs
+  // by default File CRC (16bit) + load CRC (32 bit)
   uint32_t checkValueCrcSizes{ sizeof( uint16_t ) + sizeof( uint32_t ) };
 
   // Load Check Value (only in V3 mode)

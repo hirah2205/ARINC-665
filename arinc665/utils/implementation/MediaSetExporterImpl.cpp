@@ -436,7 +436,9 @@ void MediaSetExporterImpl::createLoadHeaderFile(
       Arinc645::CheckValueGenerator::create( load->effectiveLoadCheckValueType() ) };
     assert( checkValueGenerator );
 
-    checkValueGenerator->process( rawLoadHeader );
+    Files::LoadHeaderFile::processLoadCheckValue(
+      rawLoadHeader,
+      *checkValueGenerator );
 
     // load data files for Load Check Value.
     for ( const auto &[ file, partNumber, checkValueType ] : load->dataFiles() )
@@ -464,12 +466,10 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   }
 
 
-  // Calculate load CRC and Check Value
+  // Calculate load CRC
   Arinc645::Arinc645Crc32 loadCrc{};
 
-  loadCrc.process_bytes(
-    std::data( rawLoadHeader ),
-    rawLoadHeader.size() - sizeof( uint32_t ) );
+  Files::LoadHeaderFile::processLoadCrc( rawLoadHeader, loadCrc );
 
   // load data files for load CRC.
   for ( const auto &[ file, partNumber, checkValueType ] : load->dataFiles() )
@@ -495,7 +495,7 @@ void MediaSetExporterImpl::createLoadHeaderFile(
       rawSupportFile.size() );
   }
 
-  // set load CRC + Check Value
+  // set load CRC
   Files::LoadHeaderFile::encodeLoadCrc( rawLoadHeader, loadCrc.checksum() );
 
   // Write Load Header File

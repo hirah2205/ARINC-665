@@ -29,6 +29,8 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <arinc645/Utils.hpp>
+
 #include <helper/Dump.hpp>
 #include <helper/Logger.hpp>
 
@@ -226,6 +228,16 @@ static void printLoadHeaderFile( const std::filesystem::path &luhFile)
       << fmt::format(
         "\tLoad CRC 0x{:02X}\n",
         Arinc665::Files::LoadHeaderFile::decodeLoadCrc( rawLoadHeaderFile ) );
+
+    if ( load.loadCheckValueType() != Arinc645::CheckValueType::NotUsed )
+    {
+      std::cout
+        << fmt::format(
+          "\tLoad Check Value {}\n",
+          Arinc645::Utils_toString(
+            Arinc665::Files::LoadHeaderFile::decodeLoadCheckValue(
+                 rawLoadHeaderFile ) ) );
+    }
   }
   catch ( const boost::exception &e )
   {
