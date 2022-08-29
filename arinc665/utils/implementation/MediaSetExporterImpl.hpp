@@ -162,20 +162,24 @@ class MediaSetExporterImpl final : public MediaSetExporter
     /**
      * @brief Calculates CRC16 and Check Value of given file.
      *
-     * @param[in] medium
-     *   Medium
-     * @param[in] checkValueType
-     *   Desired Check Value Type.
+     * The file is read with the @ref readFileHandler() from the output medium.
+     * This operation is alo used for Check Value Generation of Load List and
+     * Batches List.
+     *
+     * @param[in] mediumNumber
+     *   Medium Number
      * @param[in] filename
      *   Filename.
+     * @param[in] checkValueType
+     *   Desired Check Value Type.
      *
      * @return CRC16 and Check Value as std::tuple.
      **/
     [[nodiscard]] std::tuple< uint16_t, Arinc645::CheckValue >
     fileCrcCheckValue(
-      const Media::ConstMediumPtr &medium,
-      std::optional< Arinc645::CheckValueType > checkValueType,
-      const std::filesystem::path &filename ) const;
+      uint8_t mediumNumber,
+      const std::filesystem::path &filename,
+      Arinc645::CheckValueType checkValueType ) const;
 
     //! ARINC 665 Version used for exporting
     SupportedArinc665Version arinc665VersionV{
