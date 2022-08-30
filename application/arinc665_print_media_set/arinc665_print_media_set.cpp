@@ -21,7 +21,7 @@
 #include <arinc665/media/MediaSet.hpp>
 
 #include <arinc665/utils/MediaSetImporter.hpp>
-#include <arinc665/utils/MediaPrinter.hpp>
+#include <arinc665/utils/MediaSetPrinter.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -147,11 +147,7 @@ int main( int argc, char const * argv[] )
 
     auto mediaSet{ loadMediaSet( directories, checkFileIntegrity ) };
 
-    Arinc665::Utils::MediaPrinter_printMediaSet(
-      *mediaSet,
-      std::cout,
-      "",
-      "  " );
+    Arinc665::Utils::MediaSetPrinter_print( *mediaSet, std::cout, "", "  " );
   }
   catch ( const boost::program_options::error &e )
   {

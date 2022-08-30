@@ -21,7 +21,7 @@
 #include <arinc665/media/MediaSet.hpp>
 
 #include <arinc665/utils/Arinc665Xml.hpp>
-#include <arinc665/utils/MediaPrinter.hpp>
+#include <arinc665/utils/MediaSetPrinter.hpp>
 
 #include <helper/Dump.hpp>
 #include <helper/Logger.hpp>
@@ -89,11 +89,7 @@ int main( int argc, char * argv[] )
     // load XML file
     const auto [ mediaSet, filePathMapping ]{ xml->loadFromXml( xmlPath ) };
 
-    Arinc665::Utils::MediaPrinter_printMediaSet(
-      *mediaSet,
-      std::cout,
-      "  ",
-      "  " );
+    Arinc665::Utils::MediaSetPrinter_print( *mediaSet, std::cout, "  ", "  " );
   }
   catch ( const boost::program_options::error &e )
   {

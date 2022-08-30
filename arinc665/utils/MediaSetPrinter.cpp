@@ -7,10 +7,10 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Defintinion of Module Arinc665::Utils Printer.
+ * @brief Definition of Module Arinc665::Utils Media Set Printer.
  **/
 
-#include "MediaPrinter.hpp"
+#include "MediaSetPrinter.hpp"
 
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/Directory.hpp>
@@ -46,7 +46,7 @@ static void printFiles(
 static std::string printCheckValueType(
   std::optional< Arinc645::CheckValueType > type );
 
-void MediaPrinter_printMediaSet(
+void MediaSetPrinter_print(
   const Media::MediaSet &mediaSet,
   std::ostream &outS,
   std::string_view initialIndent,
@@ -112,7 +112,7 @@ void MediaPrinter_printMediaSet(
   // iterate over loads
   for ( auto const &load : mediaSet.loads() )
   {
-    MediaPrinter_printLoad( *load, outS, nextIndent, indent );
+    MediaSetPrinter_print( *load, outS, nextIndent, indent );
     outS << "\n";
   }
 
@@ -124,13 +124,13 @@ void MediaPrinter_printMediaSet(
     // iterate over loads
     for ( auto const &batch : mediaSet.batches() )
     {
-      MediaPrinter_printBatch( *batch, outS, nextIndent, indent );
+      MediaSetPrinter_print( *batch, outS, nextIndent, indent );
       outS << "\n";
     }
   }
 }
 
-void MediaPrinter_printFile(
+void MediaSetPrinter_print(
   const Media::File &file,
   std::ostream &outS,
   std::string_view initialIndent )
@@ -173,7 +173,7 @@ void MediaPrinter_printFile(
 
 }
 
-void MediaPrinter_printLoad(
+void MediaSetPrinter_print(
   const Media::Load &load,
   std::ostream &outS,
   std::string_view initialIndent,
@@ -305,7 +305,7 @@ void MediaPrinter_printLoad(
   }
 }
 
-void MediaPrinter_printBatch(
+void MediaSetPrinter_print(
   const Media::Batch &batch,
   std::ostream &outS,
   std::string_view initialIndent,
@@ -392,7 +392,7 @@ static void printFiles(
   // iterate over files
   for ( auto const &file : containerEntity.files() )
   {
-    MediaPrinter_printFile( *file, outS, nextIndent );
+    MediaSetPrinter_print( *file, outS, nextIndent );
     outS << "\n";
   }
 

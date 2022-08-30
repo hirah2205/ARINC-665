@@ -18,8 +18,6 @@ target_sources(
     FilePrinter.cpp
     JsonMediaSetManager.hpp
     JsonMediaSetManager.cpp
-    MediaPrinter.hpp
-    MediaPrinter.cpp
     MediaSetExporter.hpp
     MediaSetExporter.cpp
     MediaSetImporter.hpp
@@ -28,6 +26,8 @@ target_sources(
     MediaSetManager.cpp
     MediaSetManagerConfiguration.hpp
     MediaSetManagerConfiguration.cpp
+    MediaSetPrinter.hpp
+    MediaSetPrinter.cpp
     MediaSetValidator.hpp
     MediaSetValidator.cpp
     Utils.hpp )

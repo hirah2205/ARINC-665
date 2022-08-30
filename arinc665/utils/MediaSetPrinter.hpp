@@ -7,13 +7,13 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Module Arinc665::Utils MediaPrinter.
+ * @brief Declaration of Module Arinc665::Utils Media Set Printer.
  *
  * This module provides operations to print the content of ARINC 665 Media Sets.
  **/
 
-#ifndef ARINC665_UTILS_MEDIAPRINTER_HPP
-#define ARINC665_UTILS_MEDIAPRINTER_HPP
+#ifndef ARINC665_UTILS_MEDIASETPRINTER_HPP
+#define ARINC665_UTILS_MEDIASETPRINTER_HPP
 
 #include <arinc665/utils/Utils.hpp>
 
@@ -41,7 +41,7 @@ namespace Arinc665::Utils {
  * @param[in] indent
  *   Indent for sub-information
  **/
-void ARINC665_EXPORT MediaPrinter_printMediaSet(
+void ARINC665_EXPORT MediaSetPrinter_print(
   const Media::MediaSet &mediaSet,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
@@ -60,7 +60,7 @@ void ARINC665_EXPORT MediaPrinter_printMediaSet(
  * @param[in] initialIndent
  *   Initial Indention prepended before each output.
  **/
-void ARINC665_EXPORT MediaPrinter_printFile(
+void ARINC665_EXPORT MediaSetPrinter_print(
   const Media::File &file,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {} );
@@ -82,7 +82,7 @@ void ARINC665_EXPORT MediaPrinter_printFile(
  * @param[in] indent
  *   Indent for sub-information
  **/
-void ARINC665_EXPORT MediaPrinter_printLoad(
+void ARINC665_EXPORT MediaSetPrinter_print(
   const Media::Load &load,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
@@ -104,7 +104,7 @@ void ARINC665_EXPORT MediaPrinter_printLoad(
  * @param[in] indent
  *   Indent for sub-information
  **/
-void ARINC665_EXPORT MediaPrinter_printBatch(
+void ARINC665_EXPORT MediaSetPrinter_print(
   const Media::Batch &batch,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
