@@ -77,7 +77,7 @@ void MediaSet::numberOfMedia(
     // Add media
     while ( numberOfMedia > mediaV.size() )
     {
-      addMedium();
+      (void)addMedium();
     }
   }
   else
@@ -338,6 +338,40 @@ LoadPtr MediaSet::load( std::string_view filename )
   return {};
 }
 
+ConstLoads MediaSet::loadsWithFile( const ConstRegularFilePtr &file ) const
+{
+  ConstLoads foundLoads{};
+
+  for ( const auto & load : loads() )
+  {
+    bool loadAdded{ false };
+    for ( const auto &[ dataFile, partNumber, checkValue ] : load->dataFiles() )
+    {
+      if ( dataFile == file )
+      {
+        foundLoads.emplace_back( load );
+        loadAdded = true;
+        break;
+      }
+    }
+
+    if ( loadAdded )
+    {
+      break ;
+    }
+
+    for ( const auto &[ supportFile, partNumber, checkValue ] : load->supportFiles() )
+    {
+      if ( supportFile == file )
+      {
+        foundLoads.emplace_back( load );
+      }
+    }
+  }
+
+  return foundLoads;
+}
+
 size_t MediaSet::numberOfBatches() const
 {
   size_t numberOfBatches{ 0 };
@@ -398,6 +432,24 @@ BatchPtr MediaSet::batch( std::string_view filename )
   }
 
   return {};
+}
+
+ConstBatches MediaSet::batchesWithLoad( const ConstLoadPtr &load ) const
+{
+  ConstBatches foundBatches{};
+
+  for ( const auto & batch : batches() )
+  {
+    for ( const auto &[ thwIdPos, loads ]: batch->targets() )
+    {
+      if ( loads.end() != std::ranges::find( loads, load ) )
+      {
+        foundBatches.emplace_back( batch );
+      }
+    }
+  }
+
+  return foundBatches;
 }
 
 const MediaSet::UserDefinedData& MediaSet::filesUserDefinedData() const

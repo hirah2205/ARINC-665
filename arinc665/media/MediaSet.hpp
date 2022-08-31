@@ -38,20 +38,20 @@ class ARINC665_EXPORT MediaSet : public Base
     using UserDefinedData = std::vector< uint8_t >;
 
     /**
-     * @brief Creates a new media set.
+     * @brief Creates a new Media Set.
      *
      * This media set contains no media, data files, loads nor batches.
      **/
     MediaSet() = default;
 
     //! @copydoc Base::mediaSet() const
-    ConstMediaSetPtr mediaSet() const final;
+    [[nodiscard]] ConstMediaSetPtr mediaSet() const final;
 
     //! @copydoc Base::mediaSet()
-    MediaSetPtr mediaSet() final;
+    [[nodiscard]] MediaSetPtr mediaSet() final;
 
     //! @copydoc Base::type() const
-    Type type() const final;
+    [[nodiscard]] Type type() const final;
 
     /**
      * @name Media Set Part Number
@@ -66,7 +66,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Part Number of the Media Set.
      **/
-    std::string_view partNumber() const;
+    [[nodiscard]] std::string_view partNumber() const;
 
     /**
      * @brief Set the Media Set Part Number.
@@ -94,7 +94,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Number of Media within the Media Set.
      **/
-    uint8_t numberOfMedia() const;
+    [[nodiscard]] uint8_t numberOfMedia() const;
 
     /**
      * @brief Set the Number of Media.
@@ -116,10 +116,10 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return All Media of the Media Set.
      **/
-    ConstMedia media() const;
+    [[nodiscard]] ConstMedia media() const;
 
     //! @copydoc MediaSet::media() const
-    Media media();
+    [[nodiscard]] Media media();
 
     /**
      * @brief Return the Medium with the requested Index.
@@ -129,7 +129,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Medium with the requested Index.
      **/
-    ConstMediumPtr medium( uint8_t index ) const;
+    [[nodiscard]] ConstMediumPtr medium( uint8_t index ) const;
 
     /**
      * @brief Return the medium with the requested Index.
@@ -139,7 +139,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Medium with the requested Index.
      **/
-    MediumPtr medium( uint8_t index );
+    [[nodiscard]] MediumPtr medium( uint8_t index );
 
     /**
      * @brief Adds a Medium to the Media Set and returns the Medium.
@@ -148,7 +148,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @retval {}
      *   If maximum number of media (255) reached.
      **/
-    MediumPtr addMedium();
+    [[nodiscard]] MediumPtr addMedium();
 
     /**
      * @brief Removes the last Medium.
@@ -171,21 +171,21 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Number of files.
      **/
-    size_t numberOfFiles() const;
+    [[nodiscard]] size_t numberOfFiles() const;
 
     /**
      * @brief Returns all files present on the media set.
      *
      * @return All files.
      **/
-    ConstFiles files() const;
+    [[nodiscard]] ConstFiles files() const;
 
     /**
      * @brief Returns all files present on the media set.
      *
      * @return All files.
      **/
-    Files files();
+    [[nodiscard]] Files files();
 
     /**
      * @brief Returns file with the given filename.
@@ -199,7 +199,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @retval ConstFilePtr()
      *   If file is not found.
      **/
-    ConstFilePtr file( std::string_view filename ) const;
+    [[nodiscard]] ConstFilePtr file( std::string_view filename ) const;
 
     /**
      * @brief Returns file with the given filename.
@@ -213,7 +213,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @retval ConstFilePtr()
      *   If file is not found.
      **/
-    FilePtr file( std::string_view filename );
+    [[nodiscard]] FilePtr file( std::string_view filename );
 
     /** @} **/
 
@@ -227,21 +227,21 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Number of loads within the media set.
      **/
-    size_t numberOfRegularFiles() const;
+    [[nodiscard]] size_t numberOfRegularFiles() const;
 
     /**
      * @brief Returns the Regular Files within the media set.
      *
      * @return Loads within the media set.
      **/
-    ConstRegularFiles regularFiles() const;
+    [[nodiscard]] ConstRegularFiles regularFiles() const;
 
     /**
      * @brief Returns the Regular Files within the media set.
      *
      * @return Loads within the media set.
      **/
-    RegularFiles regularFiles();
+    [[nodiscard]] RegularFiles regularFiles();
 
     /**
      * @brief return the Regular File with the given filename.
@@ -253,7 +253,8 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Load with the given filename.
      **/
-    ConstRegularFilePtr regularFile( std::string_view filename ) const;
+    [[nodiscard]] ConstRegularFilePtr regularFile(
+      std::string_view filename ) const;
 
     /**
      * @brief return the Regular File with the given filename.
@@ -265,7 +266,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Load with the given filename.
      **/
-    RegularFilePtr regularFile( std::string_view filename );
+    [[nodiscard]] RegularFilePtr regularFile( std::string_view filename );
 
     /** @} **/
 
@@ -279,21 +280,21 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Number of loads within the media set.
      **/
-    size_t numberOfLoads() const;
+    [[nodiscard]] size_t numberOfLoads() const;
 
     /**
      * @brief Returns the loads within the media set.
      *
      * @return Loads within the media set.
      **/
-    ConstLoads loads() const;
+    [[nodiscard]] ConstLoads loads() const;
 
     /**
      * @brief Returns the loads within the media set.
      *
      * @return Loads within the media set.
      **/
-    Loads loads();
+    [[nodiscard]] Loads loads();
 
     /**
      * @brief return the load with the given filename.
@@ -305,7 +306,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Load with the given filename.
      **/
-    ConstLoadPtr load( std::string_view filename ) const;
+    [[nodiscard]] ConstLoadPtr load( std::string_view filename ) const;
 
     /**
      * @brief return the load with the given filename.
@@ -317,7 +318,20 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Load with the given filename.
      **/
-    LoadPtr load( std::string_view filename );
+    [[nodiscard]] LoadPtr load( std::string_view filename );
+
+    /**
+     * @brief Return all Loads, the @p file is referenced.
+     *
+     * File could be a data or support file.
+     *
+     * @param[in] file
+     *   File to look for.
+     *
+     * @return Loads, which contains @p file.
+     **/
+    [[nodiscard]] ConstLoads loadsWithFile(
+      const ConstRegularFilePtr &file ) const;
 
     /** @} **/
 
@@ -331,21 +345,21 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Number of batches within the media set.
      **/
-    size_t numberOfBatches() const;
+    [[nodiscard]] size_t numberOfBatches() const;
 
     /**
      * @brief Returns the batches within the media set.
      *
      * @return Batches within the media set.
      **/
-    ConstBatches batches() const;
+    [[nodiscard]] ConstBatches batches() const;
 
     /**
      * @brief Returns the batches within the media set.
      *
      * @return Batches within the media set.
      **/
-    Batches batches();
+    [[nodiscard]] Batches batches();
 
     /**
      * @brief return the batch with the given filename.
@@ -357,7 +371,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Batch with the given filename.
      **/
-    ConstBatchPtr batch( std::string_view filename ) const;
+    [[nodiscard]] ConstBatchPtr batch( std::string_view filename ) const;
 
     /**
      * @brief return the batch with the given filename.
@@ -369,7 +383,18 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Batch with the given filename.
      **/
-    BatchPtr batch( std::string_view filename );
+    [[nodiscard]] BatchPtr batch( std::string_view filename );
+
+    /**
+     * @brief Return all Batches, the @p load is referenced.
+     *
+     * @param[in] load
+     *   Load to look for.
+     *
+     * @return Batches, which contains @p load.
+     **/
+    [[nodiscard]] ConstBatches batchesWithLoad(
+      const ConstLoadPtr &load ) const;
 
     /** @} **/
 
@@ -383,10 +408,10 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return The user defined data for file list files.
      **/
-    const UserDefinedData& filesUserDefinedData() const;
+    [[nodiscard]] const UserDefinedData& filesUserDefinedData() const;
 
     //! @copydoc filesUserDefinedData() const
-    UserDefinedData& filesUserDefinedData();
+    [[nodiscard]] UserDefinedData& filesUserDefinedData();
 
     /**
      * @brief Updates the user defined data for file list files.
@@ -411,10 +436,10 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return User defined data for loads list files.
      **/
-    const UserDefinedData& loadsUserDefinedData() const;
+    [[nodiscard]] const UserDefinedData& loadsUserDefinedData() const;
 
     //! @copydoc loadsUserDefinedData() const
-    UserDefinedData& loadsUserDefinedData();
+    [[nodiscard]] UserDefinedData& loadsUserDefinedData();
 
     /**
      * @brief Updates the user defined data for load list files.
@@ -439,10 +464,10 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return User defined data for batch list files.
      **/
-    const UserDefinedData& batchesUserDefinedData() const;
+    [[nodiscard]] const UserDefinedData& batchesUserDefinedData() const;
 
     //! @copydoc batchesUserDefinedData() const
-    UserDefinedData& batchesUserDefinedData();
+    [[nodiscard]] UserDefinedData& batchesUserDefinedData();
 
     /**
      * @brief Updates the user defined data for batch list files.
@@ -475,7 +500,8 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Effective Media Set Check Value Type
      **/
-    Arinc645::CheckValueType effectiveMediaSetCheckValueType() const;
+    [[nodiscard]] Arinc645::CheckValueType
+    effectiveMediaSetCheckValueType() const;
 
     /**
      * @brief Returns the Media Set Check Value Type.
@@ -684,7 +710,8 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Number of files in @p container and its subdirectories.
      **/
-    size_t recursiveNumberOfFiles( const ContainerEntity &container ) const;
+    [[nodiscard]] size_t recursiveNumberOfFiles(
+      const ContainerEntity &container ) const;
 
     /**
      * @brief Recursively returns all files present on the Media Set.
@@ -737,7 +764,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Number of regular files in @p container and its subdirectories.
      **/
-    size_t recursiveNumberOfRegularFiles(
+    [[nodiscard]] size_t recursiveNumberOfRegularFiles(
       const ContainerEntity &container ) const;
 
     /**
@@ -788,7 +815,8 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Number of Loads in @p container and its subdirectories.
      **/
-    size_t recursiveNumberOfLoads( const ContainerEntity &container ) const;
+    [[nodiscard]] size_t recursiveNumberOfLoads(
+      const ContainerEntity &container ) const;
 
     /**
      * @brief Recursively returns all Loads present on the Media Set.
@@ -837,7 +865,8 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Number of Batches in @p container and its subdirectories.
      **/
-    size_t recursiveNumberOfBatches( const ContainerEntity &container ) const;
+    [[nodiscard]] size_t recursiveNumberOfBatches(
+      const ContainerEntity &container ) const;
 
     /**
      * @brief Recursively returns all Batches present on the Media Set.
