@@ -386,178 +386,198 @@ void MediaSetImporterImpl::addLoads()
   // iterate over load headers
   for ( const auto &[ filename, loadHeaderFile ] : loadHeaderFiles )
   {
-    // obtain file information for load header
-    const auto fileInfoIt{ fileInfos.find( filename ) };
+    addLoad( filename, loadHeaderFile );
+  }
+}
 
-    // obtain container (directory, medium), which will contain the load.
-    const auto container{ checkCreateDirectory(
-      fileInfoIt->second.memberSequenceNumber,
-      fileInfoIt->second.path().parent_path() ) };
+void MediaSetImporterImpl::addLoad(
+  std::string_view filename,
+  const Files::LoadHeaderFile &loadHeaderFile )
+{
+  BOOST_LOG_FUNCTION()
 
-    // create load
-    const auto loadPtr{ container->addLoad( filename ) };
-    assert( loadPtr );
+  // obtain file information for load header
+  const auto fileInfoIt{ fileInfos.find( filename ) };
 
-    // set check value indicator
-    loadPtr->checkValueType( std::get< 0 >( fileInfoIt->second.checkValue ) );
+  if ( fileInfos.end() == fileInfoIt )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665Exception()
+      << Helper::AdditionalInfo{ "Load not found" }
+      << boost::errinfo_file_name{ std::string{ filename } } );
+  }
 
-    loadPtr->partFlags( loadHeaderFile.partFlags() );
-    loadPtr->partNumber( loadHeaderFile.partNumber() );
-    loadPtr->loadType( loadHeaderFile.loadType() );
-    loadPtr->targetHardwareIdPositions(
-      loadHeaderFile.targetHardwareIdPositions() );
+  // obtain container (directory, medium), which will contain the load.
+  const auto container{ checkCreateDirectory(
+    fileInfoIt->second.memberSequenceNumber,
+    fileInfoIt->second.path().parent_path() ) };
 
-    // iterate over data files
-    for ( const auto &dataFile : loadHeaderFile.dataFiles() )
+  // create load
+  const auto loadPtr{ container->addLoad( filename ) };
+  assert( loadPtr );
+
+  // set check value indicator
+  loadPtr->checkValueType( std::get< 0 >( fileInfoIt->second.checkValue ) );
+
+  loadPtr->partFlags( loadHeaderFile.partFlags() );
+  loadPtr->partNumber( loadHeaderFile.partNumber() );
+  loadPtr->loadType( loadHeaderFile.loadType() );
+  loadPtr->targetHardwareIdPositions(
+    loadHeaderFile.targetHardwareIdPositions() );
+
+  // iterate over data files
+  for ( const auto &dataFile : loadHeaderFile.dataFiles() )
+  {
+    auto dataFilePtr{ mediaSet->regularFile( dataFile.filename ) };
+
+    if ( !dataFilePtr )
     {
-      auto dataFilePtr{ mediaSet->regularFile( dataFile.filename ) };
-
-      if ( !dataFilePtr )
-      {
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
+      BOOST_THROW_EXCEPTION(
+        Arinc665Exception()
           << Helper::AdditionalInfo{ "Data file not found" }
           << boost::errinfo_file_name{ dataFile.filename } );
-      }
-
-      // get memorised file size (only when file integrity is checked)
-      if ( checkFileIntegrityV )
-      {
-        const auto dataFileSize{ fileSizes.find( dataFile.filename ) };
-        if ( dataFileSize == fileSizes.end() )
-        {
-          BOOST_THROW_EXCEPTION(
-            Arinc665Exception()
-            << Helper::AdditionalInfo{ "No Size Info for Data File" }
-            << boost::errinfo_file_name{ dataFile.filename } );
-        }
-
-        // check load data file size - we divide by 2 to work around 16-bit size
-        // storage within Supplement 2 LUHs (Only Data Files)
-        if ( ( dataFileSize->second / 2 ) != ( dataFile.length / 2 ) )
-        {
-          BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
-            << "Data File Size inconsistent " << dataFile.filename << " "
-            << dataFileSize->second << " " << dataFile.length;
-
-          BOOST_THROW_EXCEPTION(
-            Arinc665Exception()
-            << Helper::AdditionalInfo{ "Data File Size inconsistent" }
-            << boost::errinfo_file_name{ dataFile.filename } );
-        }
-      }
-
-      // Check CRC
-      const auto &dataFileInfo{ fileInfos.find( dataFile.filename ) };
-      assert( dataFileInfo != fileInfos.end() );
-      if ( dataFileInfo->second.crc != dataFile.crc )
-      {
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{ "Data File CRC inconsistent" }
-          << boost::errinfo_file_name{ dataFile.filename } );
-      }
-
-      // Check File Check Value
-      if ( std::get< 0 >( dataFile.checkValue ) != Arinc645::CheckValueType::NotUsed )
-      {
-        if ( std::get< 0 >( dataFile.checkValue ) == std::get< 0 >( dataFileInfo->second.checkValue ) )
-        {
-          if ( std::get< 1 >( dataFile.checkValue ) != std::get< 1 >( dataFileInfo->second.checkValue ) )
-          {
-            BOOST_THROW_EXCEPTION( Arinc665Exception()
-              << Helper::AdditionalInfo{ "Data File Check Value inconsistent" }
-              << boost::errinfo_file_name{ dataFile.filename } );
-          }
-        }
-        else
-        {
-          //! @todo Check Check Type Value
-        }
-      }
-
-      loadPtr->dataFile(
-        dataFilePtr,
-        dataFile.partNumber,
-        std::get< 0 >( dataFile.checkValue ) );
     }
 
-    // iterate over support files
-    for ( const auto &supportFile : loadHeaderFile.supportFiles() )
+    // get memorised file size (only when file integrity is checked)
+    if ( checkFileIntegrityV )
     {
-      auto supportFilePtr{ mediaSet->regularFile( supportFile.filename ) };
-
-      if ( !supportFilePtr )
+      const auto dataFileSize{ fileSizes.find( dataFile.filename ) };
+      if ( dataFileSize == fileSizes.end() )
       {
         BOOST_THROW_EXCEPTION(
           Arinc665Exception()
-            << Helper::AdditionalInfo{ "Support file not found" }
-          << boost::errinfo_file_name{ supportFile.filename } );
+          << Helper::AdditionalInfo{ "No Size Info for Data File" }
+          << boost::errinfo_file_name{ dataFile.filename } );
       }
 
-      // get memorised file size ( only when file integrity is checked)
-      if ( checkFileIntegrityV )
+      // check load data file size - we divide by 2 to work around 16-bit size
+      // storage within Supplement 2 LUHs (Only Data Files)
+      if ( ( dataFileSize->second / 2 ) != ( dataFile.length / 2 ) )
       {
-        const auto dataFileSize{ fileSizes.find( supportFile.filename ) };
-        if ( dataFileSize == fileSizes.end() )
-        {
-          BOOST_THROW_EXCEPTION( Arinc665Exception()
-            << Helper::AdditionalInfo{ "No Size Info for Support File" }
-            << boost::errinfo_file_name{ supportFile.filename } );
-        }
+        BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+          << "Data File Size inconsistent " << dataFile.filename << " "
+          << dataFileSize->second << " " << dataFile.length;
 
-        // check load data file size
-        if ( dataFileSize->second != supportFile.length )
-        {
-          BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
-            << "Support File Size inconsistent "
-              << supportFile.filename << " "
-              << dataFileSize->second << " "
-              << supportFile.length;
-
-          BOOST_THROW_EXCEPTION( Arinc665Exception()
-            << Helper::AdditionalInfo{ "Support File Size inconsistent" }
-            << boost::errinfo_file_name{ supportFile.filename } );
-        }
+        BOOST_THROW_EXCEPTION(
+          Arinc665Exception()
+          << Helper::AdditionalInfo{ "Data File Size inconsistent" }
+          << boost::errinfo_file_name{ dataFile.filename } );
       }
-
-      // Check CRC
-      const auto &supportFileInfo{ fileInfos.find( supportFile.filename ) };
-      assert( supportFileInfo != fileInfos.end() );
-      if ( supportFileInfo->second.crc != supportFile.crc )
-      {
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{ "Support File CRC inconsistent" }
-          << boost::errinfo_file_name{ supportFile.filename } );
-      }
-
-      // Check File Check Value
-      if ( std::get< 0 >( supportFile.checkValue ) != Arinc645::CheckValueType::NotUsed )
-      {
-        if ( std::get< 0 >( supportFile.checkValue ) == std::get< 0 >( supportFileInfo->second.checkValue ) )
-        {
-          if ( std::get< 1 >( supportFile.checkValue ) != std::get< 1 >( supportFileInfo->second.checkValue ) )
-          {
-            BOOST_THROW_EXCEPTION( Arinc665Exception()
-              << Helper::AdditionalInfo{ "Data File Check Value inconsistent" }
-              << boost::errinfo_file_name{ supportFile.filename } );
-          }
-        }
-        else
-        {
-          //! @todo Check Check Type Value
-        }
-      }
-
-      loadPtr->supportFile(
-        supportFilePtr,
-        supportFile.partNumber,
-        std::get< 0 >( supportFile.checkValue ) );
     }
 
-    // User Defined Data
-    loadPtr->userDefinedData( loadHeaderFile.userDefinedData() );
-    // Load Check Value
-    loadPtr->loadCheckValueType( loadHeaderFile.loadCheckValueType() );
+    // Check CRC
+    const auto &dataFileInfo{ fileInfos.find( dataFile.filename ) };
+    assert( dataFileInfo != fileInfos.end() );
+    if ( dataFileInfo->second.crc != dataFile.crc )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ "Data File CRC inconsistent" }
+        << boost::errinfo_file_name{ dataFile.filename } );
+    }
+
+    // Check File Check Value
+    if ( std::get< 0 >( dataFile.checkValue ) != Arinc645::CheckValueType::NotUsed )
+    {
+      if ( std::get< 0 >( dataFile.checkValue ) == std::get< 0 >( dataFileInfo->second.checkValue ) )
+      {
+        if ( std::get< 1 >( dataFile.checkValue ) != std::get< 1 >( dataFileInfo->second.checkValue ) )
+        {
+          BOOST_THROW_EXCEPTION( Arinc665Exception()
+            << Helper::AdditionalInfo{ "Data File Check Value inconsistent" }
+            << boost::errinfo_file_name{ dataFile.filename } );
+        }
+      }
+      else
+      {
+        //! @todo Check Check Type Value
+      }
+    }
+
+    loadPtr->dataFile(
+      dataFilePtr,
+      dataFile.partNumber,
+      std::get< 0 >( dataFile.checkValue ) );
   }
+
+  // iterate over support files
+  for ( const auto &supportFile : loadHeaderFile.supportFiles() )
+  {
+    auto supportFilePtr{ mediaSet->regularFile( supportFile.filename ) };
+
+    if ( !supportFilePtr )
+    {
+      BOOST_THROW_EXCEPTION(
+        Arinc665Exception()
+        << Helper::AdditionalInfo{ "Support file not found" }
+        << boost::errinfo_file_name{ supportFile.filename } );
+    }
+
+    // get memorised file size ( only when file integrity is checked)
+    if ( checkFileIntegrityV )
+    {
+      const auto dataFileSize{ fileSizes.find( supportFile.filename ) };
+      if ( dataFileSize == fileSizes.end() )
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo{ "No Size Info for Support File" }
+          << boost::errinfo_file_name{ supportFile.filename } );
+      }
+
+      // check load data file size
+      if ( dataFileSize->second != supportFile.length )
+      {
+        BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+          << "Support File Size inconsistent "
+          << supportFile.filename << " "
+          << dataFileSize->second << " "
+          << supportFile.length;
+
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo{ "Support File Size inconsistent" }
+          << boost::errinfo_file_name{ supportFile.filename } );
+      }
+    }
+
+    // Check CRC
+    const auto &supportFileInfo{ fileInfos.find( supportFile.filename ) };
+    assert( supportFileInfo != fileInfos.end() );
+    if ( supportFileInfo->second.crc != supportFile.crc )
+    {
+      BOOST_THROW_EXCEPTION(
+        Arinc665Exception()
+          << Helper::AdditionalInfo{ "Support File CRC inconsistent" }
+          << boost::errinfo_file_name{ supportFile.filename } );
+    }
+
+    // Check File Check Value
+    if ( std::get< 0 >( supportFile.checkValue ) != Arinc645::CheckValueType::NotUsed )
+    {
+      if ( std::get< 0 >( supportFile.checkValue ) == std::get< 0 >( supportFileInfo->second.checkValue ) )
+      {
+        if ( std::get< 1 >( supportFile.checkValue ) != std::get< 1 >( supportFileInfo->second.checkValue ) )
+        {
+          BOOST_THROW_EXCEPTION(
+            Arinc665Exception()
+              << Helper::AdditionalInfo{ "Data File Check Value inconsistent" }
+              << boost::errinfo_file_name{ supportFile.filename } );
+        }
+      }
+      else
+      {
+        //! @todo Check Check Type Value
+      }
+    }
+
+    loadPtr->supportFile(
+      supportFilePtr,
+      supportFile.partNumber,
+      std::get< 0 >( supportFile.checkValue ) );
+  }
+
+  // User Defined Data
+  loadPtr->userDefinedData( loadHeaderFile.userDefinedData() );
+  // Load Check Value
+  loadPtr->loadCheckValueType( loadHeaderFile.loadCheckValueType() );
 }
 
 void MediaSetImporterImpl::addBatches()
@@ -567,56 +587,73 @@ void MediaSetImporterImpl::addBatches()
   // iterate over batches
   for ( const auto &[ filename, batchFile ] : batchFiles )
   {
-    const auto fileInfoIt{ fileInfos.find( filename ) };
+    addBatch( filename, batchFile );
+  }
+}
 
-    // obtain container (directory, medium), which will contain the batch.
-    const auto container{ checkCreateDirectory(
-      fileInfoIt->second.memberSequenceNumber,
-      fileInfoIt->second.path().parent_path() ) };
+void MediaSetImporterImpl::addBatch(
+  std::string_view filename,
+  const Files::BatchFile &batchFile )
+{
+  BOOST_LOG_FUNCTION()
 
-    // create batch
-    const auto batchPtr{ container->addBatch( filename ) };
-    assert( batchPtr );
+  const auto fileInfoIt{ fileInfos.find( filename ) };
 
-    // set check value indicator
-    batchPtr->checkValueType( std::get< 0 >( fileInfoIt->second.checkValue  ) );
+  if ( fileInfos.end() == fileInfoIt )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665Exception()
+      << Helper::AdditionalInfo{ "Batch not found" }
+      << boost::errinfo_file_name{ std::string{ filename } } );
+  }
 
-    batchPtr->partNumber( batchFile.partNumber() );
-    batchPtr->comment( batchFile.comment() );
+  // obtain container (directory, medium), which will contain the batch.
+  const auto container{ checkCreateDirectory(
+    fileInfoIt->second.memberSequenceNumber,
+    fileInfoIt->second.path().parent_path() ) };
 
-    // iterate over target hardware
-    for ( const auto &targetHardware : batchFile.targetsHardware() )
+  // create batch
+  const auto batchPtr{ container->addBatch( filename ) };
+  assert( batchPtr );
+
+  // set check value indicator
+  batchPtr->checkValueType( std::get< 0 >( fileInfoIt->second.checkValue  ) );
+
+  batchPtr->partNumber( batchFile.partNumber() );
+  batchPtr->comment( batchFile.comment() );
+
+  // iterate over target hardware
+  for ( const auto &targetHardware : batchFile.targetsHardware() )
+  {
+    Media::ConstLoads batchLoads{};
+
+    // iterate over loads
+    for ( const auto& load : targetHardware.loads )
     {
-      Media::ConstLoads batchLoads{};
+      auto loadPtr{ mediaSet->load( load.headerFilename ) };
 
-      // iterate over loads
-      for ( const auto& load : targetHardware.loads )
+      if ( !loadPtr )
       {
-        auto loadPtr{ mediaSet->load( load.headerFilename ) };
-
-        if ( !loadPtr )
-        {
-          BOOST_THROW_EXCEPTION(
-            Arinc665Exception()
-              << Helper::AdditionalInfo{ "Load not found" }
-              << boost::errinfo_file_name{ std::string{ load.headerFilename } } );
-        }
-
-        // check that Part Number Information matches
-        if ( loadPtr->partNumber() != load.partNumber )
-        {
-          BOOST_THROW_EXCEPTION(
-            Arinc665Exception()
-            << Helper::AdditionalInfo{ "Load part Number does not match Batch Info" }
-            << boost::errinfo_file_name{ std::string{ load.headerFilename } } );
-        }
-
-        batchLoads.emplace_back( std::move( loadPtr ) );
+        BOOST_THROW_EXCEPTION(
+          Arinc665Exception()
+          << Helper::AdditionalInfo{ "Load not found" }
+          << boost::errinfo_file_name{ std::string{ load.headerFilename } } );
       }
 
-      // add Target Hardware/ Position
-      batchPtr->target( targetHardware.targetHardwareIdPosition, batchLoads );
+      // check that Part Number Information matches
+      if ( loadPtr->partNumber() != load.partNumber )
+      {
+        BOOST_THROW_EXCEPTION(
+          Arinc665Exception()
+          << Helper::AdditionalInfo{ "Load part Number does not match Batch Info" }
+          << boost::errinfo_file_name{ std::string{ load.headerFilename } } );
+      }
+
+      batchLoads.emplace_back( std::move( loadPtr ) );
     }
+
+    // add Target Hardware/ Position
+    batchPtr->target( targetHardware.targetHardwareIdPosition, batchLoads );
   }
 }
 

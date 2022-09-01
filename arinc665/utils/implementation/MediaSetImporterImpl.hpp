@@ -158,7 +158,19 @@ class MediaSetImporterImpl final : public MediaSetImporter
     void addLoads();
 
     /**
-     * @brief Adds the batches to the media set.
+     * @brief Adds the Load to the Media Set.
+     *
+     * @param[in] filename
+     *   Load Header Filename.
+     * @param[in] loadHeaderFile
+     *   Load Header File information.
+     **/
+    void addLoad(
+      std::string_view filename,
+      const Files::LoadHeaderFile &loadHeaderFile );
+
+    /**
+     * @brief Adds the Batches to the Media Set.
      *
      * @throw Arinc665Exception
      *   When loads are not existent
@@ -166,6 +178,20 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *   When Load Part Number does not match Batch Information
      **/
     void addBatches();
+
+    /**
+     * @brief Add the batch to the Media Set.
+     *
+     * Generates the Batch and adds the target hardware load information.
+     *
+     * @param[in] filename
+     *   Batch Filename
+     * @param[in] batchFile
+     *   Batch File information
+     **/
+    void addBatch(
+      std::string_view filename,
+      const Files::BatchFile &batchFile );
 
     /**
      * @brief Creates the logical directory entry if not already created and
