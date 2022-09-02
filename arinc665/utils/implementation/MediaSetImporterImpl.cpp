@@ -438,25 +438,30 @@ void MediaSetImporterImpl::addLoad(
           << boost::errinfo_file_name{ dataFile.filename } );
     }
 
+    const auto &dataFileInfo{ fileInfos.find( dataFile.filename ) };
+
+    if ( fileInfos.end() == dataFileInfo )
+    {
+      BOOST_THROW_EXCEPTION(
+        Arinc665Exception()
+        << Helper::AdditionalInfo{ "Data file not found" }
+        << boost::errinfo_file_name{ dataFile.filename } );
+    }
+
     // get memorised file size (only when file integrity is checked)
     if ( checkFileIntegrityV )
     {
-      const auto dataFileSize{ fileSizes.find( dataFile.filename ) };
-      if ( dataFileSize == fileSizes.end() )
-      {
-        BOOST_THROW_EXCEPTION(
-          Arinc665Exception()
-          << Helper::AdditionalInfo{ "No Size Info for Data File" }
-          << boost::errinfo_file_name{ dataFile.filename } );
-      }
+      const auto dataFileSize{ fileSizeHandlerV(
+        dataFileInfo->second.memberSequenceNumber,
+        dataFileInfo->second.path() ) };
 
       // check load data file size - we divide by 2 to work around 16-bit size
       // storage within Supplement 2 LUHs (Only Data Files)
-      if ( ( dataFileSize->second / 2 ) != ( dataFile.length / 2 ) )
+      if ( ( dataFileSize / 2 ) != ( dataFile.length / 2 ) )
       {
         BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
           << "Data File Size inconsistent " << dataFile.filename << " "
-          << dataFileSize->second << " " << dataFile.length;
+          << dataFileSize << " " << dataFile.length;
 
         BOOST_THROW_EXCEPTION(
           Arinc665Exception()
@@ -466,8 +471,6 @@ void MediaSetImporterImpl::addLoad(
     }
 
     // Check CRC
-    const auto &dataFileInfo{ fileInfos.find( dataFile.filename ) };
-    assert( dataFileInfo != fileInfos.end() );
     if ( dataFileInfo->second.crc != dataFile.crc )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -512,24 +515,30 @@ void MediaSetImporterImpl::addLoad(
         << boost::errinfo_file_name{ supportFile.filename } );
     }
 
+    const auto &supportFileInfo{ fileInfos.find( supportFile.filename ) };
+
+    if ( fileInfos.end() == supportFileInfo )
+    {
+      BOOST_THROW_EXCEPTION(
+        Arinc665Exception()
+        << Helper::AdditionalInfo{ "Support file not found" }
+        << boost::errinfo_file_name{ supportFile.filename } );
+    }
+
     // get memorised file size ( only when file integrity is checked)
     if ( checkFileIntegrityV )
     {
-      const auto dataFileSize{ fileSizes.find( supportFile.filename ) };
-      if ( dataFileSize == fileSizes.end() )
-      {
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{ "No Size Info for Support File" }
-          << boost::errinfo_file_name{ supportFile.filename } );
-      }
+      const auto supportFileSize{ fileSizeHandlerV(
+        supportFileInfo->second.memberSequenceNumber,
+        supportFileInfo->second.path() ) };
 
       // check load data file size
-      if ( dataFileSize->second != supportFile.length )
+      if ( supportFileSize != supportFile.length )
       {
         BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
           << "Support File Size inconsistent "
           << supportFile.filename << " "
-          << dataFileSize->second << " "
+          << supportFileSize << " "
           << supportFile.length;
 
         BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -539,8 +548,6 @@ void MediaSetImporterImpl::addLoad(
     }
 
     // Check CRC
-    const auto &supportFileInfo{ fileInfos.find( supportFile.filename ) };
-    assert( supportFileInfo != fileInfos.end() );
     if ( supportFileInfo->second.crc != supportFile.crc )
     {
       BOOST_THROW_EXCEPTION(
@@ -701,11 +708,6 @@ void MediaSetImporterImpl::checkMediumFiles( const uint8_t mediumIndex )
     {
       continue;
     }
-
-    // check file existence and remember file size
-    fileSizes.try_emplace(
-      fileName,
-      fileSizeHandlerV( mediumIndex, fileInfo.path() ) );
 
     // skip file integrity checks if requested
     if ( !checkFileIntegrityV )

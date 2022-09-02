@@ -262,8 +262,6 @@ class MediaSetImporterImpl final : public MediaSetImporter
 
     //! File Information from List of Files ( file name -> file info )
     std::map< std::string, Files::FileInfo, std::less<> > fileInfos;
-    //! File Sizes ( file name -> file size )
-    std::map< std::string, std::size_t, std::less<> > fileSizes;
     //! Loads (file names)
     std::set< std::string, std::less<> > loads;
     //! Batches (file names)
