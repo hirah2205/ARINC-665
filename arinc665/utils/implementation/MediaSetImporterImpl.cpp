@@ -49,18 +49,11 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()()
   // create Media set
   mediaSet = std::make_shared< Media::MediaSet>();
 
-  // iterate over media
-  for (
-    uint8_t mediumIndex = 1U;
-    !loadMedium( mediumIndex );
-    ++mediumIndex )
-  {
-    // noting to do here
-  }
+  // 1st Medium
+  loadFirstMedium();
 
-  // Set Media Set Parameter
-  mediaSet->partNumber( fileListFile->mediaSetPn());
-  mediaSet->numberOfMedia( fileListFile->numberOfMediaSetMembers() );
+  // load further media
+  loadFurtherMedia();
 
   // finally, add all files (regular, load headers, batches) to the media set
   addFiles();
@@ -68,198 +61,203 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()()
   return mediaSet;
 }
 
-bool MediaSetImporterImpl::loadMedium( const uint8_t mediumIndex )
+void MediaSetImporterImpl::loadFirstMedium()
 {
-  BOOST_LOG_FUNCTION()
-
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
-    << "Medium " << static_cast< unsigned int >( mediumIndex );
-
-  loadFileListFile( mediumIndex );
-  loadLoadListFile( mediumIndex );
-  loadBatchListFile( mediumIndex );
-
-  // if current medium Index equals number of media set members -> read finished
-  return mediumIndex == fileListFile->numberOfMediaSetMembers();
-}
-
-void MediaSetImporterImpl::loadFileListFile( const uint8_t mediumIndex )
-{
-  BOOST_LOG_FUNCTION()
-
-  assert( mediumIndex > 0U );
-
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
-    << "Load File List File " << Arinc665::ListOfFilesName;
-
   // Load "list of files" file
-  Files::FileListFile currentFileListFile{
-    readFileHandlerV( mediumIndex, Arinc665::ListOfFilesName ) };
+  fileListFile = readFileHandlerV( 1U, Arinc665::ListOfFilesName );
 
-  // store first list of files for further tests
-  if ( 1U == mediumIndex )
+  bool listOfLoadsFilePresent{ false };
+
+  for ( const auto &fileInfo : fileListFile.files() )
   {
-    fileListFile = currentFileListFile;
-    fileInfos.clear();
-    for ( const auto &fileInfo : currentFileListFile.files() )
+    // get file type
+    // skip list files and handle load headers and batch files separate
+    switch ( Arinc665::Files::Arinc665File::fileType( fileInfo.filename ) )
     {
-      fileInfos.try_emplace( fileInfo.filename, fileInfo );
+      case Arinc665::FileType::FileList:
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo{ "Load List not in FILES.LUM" } );
+
+      case Arinc665::FileType::LoadList:
+        // check that List of Loads is in Root Directory
+        if ( fileInfo.pathName != "\\" )
+        {
+          BOOST_THROW_EXCEPTION( Arinc665Exception()
+            << Helper::AdditionalInfo{ "LOADS.LUM not in Root Directory" } );
+        }
+
+        listOfLoadsFilePresent = true;
+
+        // store load list file check value
+        mediaSet->listOfLoadsCheckValueType( std::get< 0 >( fileInfo.checkValue ) );
+
+        // List of Loads not added to file information
+        continue ;
+
+      case Arinc665::FileType::BatchList:
+        // check that List of Loads is in Root Directory
+        if ( fileInfo.pathName != "\\" )
+        {
+          BOOST_THROW_EXCEPTION( Arinc665Exception()
+            << Helper::AdditionalInfo{ "LOADS.LUM not in Root Directory" } );
+        }
+
+        // set bath list file present indicator
+        batchListFilePresent = true;
+
+        // store batch list file check value
+        mediaSet->listOfBatchesCheckValueType( std::get< 0 >( fileInfo.checkValue ) );
+
+        // List of Batches not added to file information
+        continue ;
+
+      default:
+        break;
     }
 
-    // store list of files user defined data
-    mediaSet->filesUserDefinedData( currentFileListFile.userDefinedData() );
-
-    // store file list file check value
-    mediaSet->listOfFilesCheckValueType( currentFileListFile.checkValueType() );
-  }
-  else
-  {
-    // otherwise, compare current list of files to first one
-    if ( !fileListFile->belongsToSameMediaSet( currentFileListFile )
-      || ( mediumIndex != currentFileListFile.mediaSequenceNumber() ) )
-    {
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "inconsistent file list file" }
-        << boost::errinfo_file_name{ std::string{ Arinc665::ListOfFilesName } } );
-    }
+    filesInfos.try_emplace( fileInfo.filename, fileInfo );
   }
 
-  // check file integrity on current medium
-  checkMediumFiles( mediumIndex );
-}
-
-void MediaSetImporterImpl::loadLoadListFile( const uint8_t mediumIndex )
-{
-  BOOST_LOG_FUNCTION()
-
-  assert( mediumIndex > 0U );
-
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
-    << "Load Load List File " << Arinc665::ListOfLoadsName;
+  // Load List File
 
   // Check Existence of Load List File within Files Information
-  const auto loadListFileInfo{ fileInfos.find( Arinc665::ListOfLoadsName ) };
-  if ( fileInfos.end() == loadListFileInfo )
+  if ( !listOfLoadsFilePresent )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "Load List not in FILES.LUM" } );
   }
 
+  // check file integrity on current medium
+  checkMediumFiles( fileListFile.files(), 1U );
+
+  // store list of files user defined data
+  mediaSet->filesUserDefinedData( fileListFile.userDefinedData() );
+  // store file list file check value
+  mediaSet->listOfFilesCheckValueType( fileListFile.checkValueType() );
+  // Set Media Set Parameter
+  mediaSet->partNumber( fileListFile.mediaSetPn());
+  mediaSet->numberOfMedia( fileListFile.numberOfMediaSetMembers() );
+
+
   // Load list of loads file
-  Files::LoadListFile currentLoadListFile{
-    readFileHandlerV( mediumIndex, Arinc665::ListOfLoadsName ) };
+  loadListFile = readFileHandlerV( 1, Arinc665::ListOfLoadsName );
 
-  if ( 1U == mediumIndex )
+  for ( const auto &load : loadListFile.loads() )
   {
-    loadListFile = currentLoadListFile;
-    loadInfos.clear();
-    for ( const auto &load : currentLoadListFile.loads() )
-    {
-      loadInfos.try_emplace( load.headerFilename, load );
+    // check existence of load header file
+    const auto fileIt{ filesInfos.find( load.headerFilename ) };
 
-      // check existence of load header file
-      const auto fileIt{ fileInfos.find( load.headerFilename ) };
-
-      if ( fileIt == fileInfos.end() )
-      {
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{ "load header file not found" }
-          << boost::errinfo_file_name{ std::string{ load.headerFilename } } );
-      }
-
-      // checks that the load list and file list entry maps to the same file entry
-      if ( load != fileIt->second )
-      {
-        BOOST_THROW_EXCEPTION(
-          Arinc665Exception()
-            << Helper::AdditionalInfo{ "data inconsistency" } );
-      }
-    }
-
-    // store list of loads user defined data
-    mediaSet->loadsUserDefinedData( currentLoadListFile.userDefinedData() );
-
-    // store load list file check value
-    mediaSet->listOfLoadsCheckValueType(
-      std::get< 0 >( loadListFileInfo->second.checkValue ) );
-  }
-  else
-  {
-    // otherwise, check against stored version
-    if ( !this->loadListFile->belongsToSameMediaSet( currentLoadListFile )
-      || ( currentLoadListFile.mediaSequenceNumber() != mediumIndex ) )
+    if ( fileIt == filesInfos.end() )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{
-          std::string{ Arinc665::ListOfLoadsName }
-          + " is not consistent to other loads list" } );
+        << Helper::AdditionalInfo{ "load header file not found" }
+        << boost::errinfo_file_name{ load.headerFilename } );
     }
-  }
-}
 
-void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex )
-{
-  BOOST_LOG_FUNCTION()
+    // checks that the load list and file list entry maps to the same file entry
+    if ( load != fileIt->second )
+    {
+      BOOST_THROW_EXCEPTION(
+        Arinc665Exception()
+        << Helper::AdditionalInfo{ "data inconsistency" }
+        << boost::errinfo_file_name{ load.headerFilename } );
+    }
 
-  assert( mediumIndex > 0U );
-
-  // Check Existence of optional Batch List File within Files Information
-  const auto batchListFileInfo{ fileInfos.find( Arinc665::ListOfBatchesName ) };
-  if ( fileInfos.end() == batchListFileInfo )
-  {
-    return;
+    // add load to loads information
+    loadsInfos.try_emplace( load.headerFilename, load );
   }
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
-    << "Load Batch List File " << Arinc665::ListOfBatchesName;
+  // store list of loads user defined data
+  mediaSet->loadsUserDefinedData( loadListFile.userDefinedData() );
 
   // Load list of batches file
-  Files::BatchListFile currentBatchListFile{
-    readFileHandlerV( mediumIndex, Arinc665::ListOfBatchesName ) };
-
-  if ( 1U == mediumIndex )
+  if ( batchListFilePresent )
   {
-    batchListFile = currentBatchListFile;
-    batchInfos.clear();
-    for ( const auto &batch : currentBatchListFile.batches() )
+    batchListFile = readFileHandlerV( 1, Arinc665::ListOfBatchesName );
+
+    for ( const auto &batch : batchListFile.batches() )
     {
-      batchInfos.try_emplace( batch.filename, batch );
+      // check existence of load header file
+      const auto fileIt{ filesInfos.find( batch.filename ) };
 
-      // check existence of batch file
-      const auto fileIt{ fileInfos.find( batch.filename ) };
-
-      if ( fileIt == fileInfos.end() )
+      if ( fileIt == filesInfos.end() )
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo{ "batch file not found" }
-          << boost::errinfo_file_name( std::string{ batch.filename } ) );
+          << boost::errinfo_file_name{ batch.filename } );
       }
 
-      // checks that the batch list and file list entry maps to the same file entry
+      // checks that the load list and file list entry maps to the same file entry
       if ( batch != fileIt->second )
       {
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{ "File inconsistency" } );
+        BOOST_THROW_EXCEPTION(
+          Arinc665Exception()
+          << Helper::AdditionalInfo{ "data inconsistency" }
+          << boost::errinfo_file_name{ batch.filename } );
       }
+
+      // add batch to batches information
+      batchesInfos.try_emplace( batch.filename, batch );
     }
 
     // store list of batches user defined data
-    mediaSet->batchesUserDefinedData( currentBatchListFile.userDefinedData() );
-
-    // store batch list file check value
-    mediaSet->listOfBatchesCheckValueType(
-      std::get< 0 >( batchListFileInfo->second.checkValue ) );
+    mediaSet->batchesUserDefinedData( batchListFile.userDefinedData() );
   }
-  else
+}
+
+void MediaSetImporterImpl::loadFurtherMedia() const
+{
+  // iterate over media
+  for (
+    uint8_t mediumIndex = 2U;
+    mediumIndex <= mediaSet->numberOfMedia();
+    ++mediumIndex )
   {
-    // otherwise, check against stored version
-    if ( !batchListFile->belongsToSameMediaSet( currentBatchListFile )
-      || ( currentBatchListFile.mediaSequenceNumber() != mediumIndex ) )
+    // Load "list of files" file
+    const Files::FileListFile mediumFileListFile{
+      readFileHandlerV( mediumIndex, Arinc665::ListOfFilesName ) };
+
+    // otherwise, compare current list of files to first one
+    if ( !mediumFileListFile.belongsToSameMediaSet( fileListFile )
+      || ( mediumIndex != mediumFileListFile.mediaSequenceNumber() ) )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{
-          std::string{ Arinc665::ListOfBatchesName }
+        << Helper::AdditionalInfo{ "inconsistent file list file" }
+        << boost::errinfo_file_name{ std::string{ Arinc665::ListOfFilesName } } );
+    }
+
+    // check file integrity on current medium
+    checkMediumFiles( mediumFileListFile.files(), mediumIndex );
+
+    // Load "list of Loads" file
+
+    // check against stored version
+    if (
+      const Files::LoadListFile mediumLoadListFile{
+        readFileHandlerV( mediumIndex, Arinc665::ListOfLoadsName ) };
+      !mediumLoadListFile.belongsToSameMediaSet( loadListFile )
+        || ( mediumIndex != mediumLoadListFile.mediaSequenceNumber() ) )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ std::string{ Arinc665::ListOfLoadsName }
+          + " is not consistent to other loads list" } );
+    }
+
+    // Load "list of Batches" file
+    if ( batchListFilePresent )
+    {
+      // otherwise, check against stored version
+      if (
+        const Files::BatchListFile mediumBatchListFile{
+          readFileHandlerV( mediumIndex, Arinc665::ListOfBatchesName ) };
+        !mediumBatchListFile.belongsToSameMediaSet( batchListFile )
+        || ( mediumIndex != mediumBatchListFile.mediaSequenceNumber() ) )
+      {
+        BOOST_THROW_EXCEPTION(
+          Arinc665Exception() << Helper::AdditionalInfo{
+            std::string{ Arinc665::ListOfBatchesName }
             + " is not consistent to other batches list" } );
+      }
     }
   }
 }
@@ -267,26 +265,12 @@ void MediaSetImporterImpl::loadBatchListFile( const uint8_t mediumIndex )
 void MediaSetImporterImpl::addFiles()
 {
   // iterate over all files
-  for ( const auto &[ fileName, fileInfo ] : fileInfos )
+  for ( const auto &[ fileName, fileInfo ] : filesInfos )
   {
-    if ( loadInfos.contains( fileName ) || batchInfos.contains( fileName ) )
+    if ( loadsInfos.contains( fileName ) || batchesInfos.contains( fileName ) )
     {
       // skip load header and batch files
       continue;
-    }
-
-    // get file type
-    // skip list files and handle load headers and batch files separate
-    switch ( Arinc665::Files::Arinc665File::fileType( fileName ) )
-    {
-      case Arinc665::FileType::FileList:
-      case Arinc665::FileType::LoadList:
-      case Arinc665::FileType::BatchList:
-        // List files are ignored
-        continue;
-
-      default:
-        break;
     }
 
     // get directory, where file will be placed into.
@@ -311,7 +295,7 @@ void MediaSetImporterImpl::addLoads()
   BOOST_LOG_FUNCTION()
 
   // iterate over load headers
-  for ( const auto &[ filename, loadInfo ] : loadInfos )
+  for ( const auto &[ filename, loadInfo ] : loadsInfos )
   {
     addLoad( loadInfo );
   }
@@ -322,7 +306,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   BOOST_LOG_FUNCTION()
 
   // obtain file information for load header
-  const auto &[ filename, fileInfo ]{ fileInformation( loadInfo.headerFilename ) };
+  const auto &fileInfo { fileInformation( loadInfo.headerFilename ) };
 
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
     << "Load Header File " << fileInfo.path().generic_string();
@@ -375,7 +359,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
           << boost::errinfo_file_name{ dataFile.filename } );
     }
 
-    const auto &[ dataFilename, dataFileInfo ]{ fileInformation( dataFile.filename ) };
+    const auto &dataFileInfo{ fileInformation( dataFile.filename ) };
 
     // get memorised file size (only when file integrity is checked)
     if ( checkFileIntegrityV )
@@ -453,7 +437,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
         << boost::errinfo_file_name{ supportFile.filename } );
     }
 
-    const auto &[ supportFilename, supportFileInfo ]{ fileInformation( supportFile.filename ) };
+    const auto &supportFileInfo{ fileInformation( supportFile.filename ) };
 
     // get memorised file size ( only when file integrity is checked)
     if ( checkFileIntegrityV )
@@ -551,7 +535,7 @@ void MediaSetImporterImpl::addBatches()
   BOOST_LOG_FUNCTION()
 
   // iterate over batches
-  for ( const auto &[ filename, batchInfo ] : batchInfos )
+  for ( const auto &[ filename, batchInfo ] : batchesInfos )
   {
     addBatch( batchInfo );
   }
@@ -561,7 +545,7 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
 {
   BOOST_LOG_FUNCTION()
 
-  const auto &[filename, fileInfo ]{ fileInformation( batchInfo.filename ) };
+  const auto &fileInfo{ fileInformation( batchInfo.filename ) };
 
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
     << "Load Batch File " << fileInfo.path().generic_string();
@@ -621,12 +605,12 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
   }
 }
 
-MediaSetImporterImpl::FileInformation::value_type
-MediaSetImporterImpl::fileInformation( std::string_view filename ) const
+const Files::FileInfo& MediaSetImporterImpl::fileInformation(
+  std::string_view filename ) const
 {
-  const auto fileInfoIt{ fileInfos.find( filename ) };
+  const auto fileInfoIt{ filesInfos.find( filename ) };
 
-  if ( fileInfos.end() == fileInfoIt )
+  if ( filesInfos.end() == fileInfoIt )
   {
     BOOST_THROW_EXCEPTION(
       Arinc665Exception()
@@ -634,11 +618,10 @@ MediaSetImporterImpl::fileInformation( std::string_view filename ) const
       << boost::errinfo_file_name{ std::string{ filename } } );
   }
 
-  return *fileInfoIt;
+  return fileInfoIt->second;
 }
 
-MediaSetImporterImpl::ContainerEntityPtr
-MediaSetImporterImpl::checkCreateDirectory(
+Media::ContainerEntityPtr MediaSetImporterImpl::checkCreateDirectory(
   const uint8_t mediumIndex,
   const std::filesystem::path &directoryPath )
 {
@@ -651,7 +634,7 @@ MediaSetImporterImpl::checkCreateDirectory(
     return mediaSet->medium( mediumIndex );
   }
 
-  ContainerEntityPtr dir{ mediaSet->medium( mediumIndex ) };
+  Media::ContainerEntityPtr dir{ mediaSet->medium( mediumIndex ) };
 
   // iterate over path elements
   for ( auto &subPath : dirPath )
@@ -671,10 +654,12 @@ MediaSetImporterImpl::checkCreateDirectory(
   return dir;
 }
 
-void MediaSetImporterImpl::checkMediumFiles( const uint8_t mediumIndex ) const
+void MediaSetImporterImpl::checkMediumFiles(
+  const Files::FilesInfo &filesInfo,
+  const uint8_t mediumIndex ) const
 {
   // iterate over files
-  for ( const auto &[ fileName, fileInfo ] : fileInfos )
+  for ( const auto &fileInfo : filesInfo )
   {
     // skip files, which are not part of the current medium
     if ( fileInfo.memberSequenceNumber != mediumIndex )
@@ -745,8 +730,7 @@ bool MediaSetImporterImpl::checkCheckValues(
   {
     if ( std::get< 1 >( fileListCheckValue ) != std::get< 1 >( loadFileCheckValue ) )
     {
-      BOOST_THROW_EXCEPTION(
-        Arinc665Exception()
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "Load File Check Value inconsistent" } );
     }
 

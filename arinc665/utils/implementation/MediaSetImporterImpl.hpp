@@ -24,7 +24,6 @@
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/MediaSet.hpp>
 
-#include <optional>
 #include <map>
 
 namespace Arinc665::Utils {
@@ -60,73 +59,37 @@ class MediaSetImporterImpl final : public MediaSetImporter
     [[nodiscard]] Media::MediaSetPtr operator()() override;
 
   private:
-    //! File Information (From File List File) (filename -> file information)
-    using FileInformation =
+    //! Files Information (From File List File) (filename -> file information)
+    using FilesInformation =
       std::map< std::string, Files::FileInfo, std::less<> >;
-    //! Load Information from List of Loads (filenames -> Load Information)
-    using LoadInformation =
+    //! Loads Information from List of Loads (filenames -> Load Information)
+    using LoadsInformation =
       std::map< std::string, Files::LoadInfo, std::less<> >;
-    //! Batch Information from List of Batches (filename -> Batch Information)
-    using BatchInformation =
+    //! Batches Information from List of Batches (filename -> Batch Information)
+    using BatchesInformation =
       std::map< std::string, Files::BatchInfo, std::less<> >;
-    //! Container Entity Type
-    using ContainerEntityPtr = std::shared_ptr< Media::ContainerEntity >;
 
     /**
-     * @brief Loads the Information of the Given Medium.
+     * @brief Loads the first Medium of the Media Set.
      *
-     * @param[in] mediumIndex
-     *   Medium Index.
+     * - Loads the List of Files File and checks it for integrity.
+     * - Loads the List of Loads File and checks it for integrity.
+     * - If present, loads the List of Batches and checks it for integrity.
      *
-     * @return If last medium has been read
+     * @throw Arinc665Exception
+     *   When Medium Integrity is not given.
      **/
-    [[nodiscard]] bool loadMedium( uint8_t mediumIndex );
+    void loadFirstMedium();
 
     /**
-     * @brief Loads the file list file of the given medium.
+     * @brief Loads and Checks all further Media.
      *
-     * Also checks the files on the current medium.
-     * Checks File CRCs.
-     *
-     * @param[in] mediumIndex
-     *   Medium Index.
-     *
-     * @throw Arinc665Exception
-     *   FILES.LUM are inconsistent between media.
-     * @throw Arinc665Exception
-     *   File CRCs does not match
+     * for each further Media:
+     * - Loads the List of Files File and checks it for integrity.
+     * - Loads the List of Loads File and checks it for integrity.
+     * - If present, loads the List of Batches and checks it for integrity.
      **/
-    void loadFileListFile( uint8_t mediumIndex );
-
-    /**
-     * @brief Loads the load list file of the given medium.
-     *
-     * @param[in] mediumIndex
-     *   Medium Index.
-     *
-     * @throw Arinc665Exception
-     *   Load header file is not found on the media set.
-     * @throw Arinc665Exception
-     *   LOADS.LUM files are inconsistent between media.
-     * @throw Arinc665Exception
-     *   When load file and list file reference does not match
-     **/
-    void loadLoadListFile( uint8_t mediumIndex );
-
-    /**
-     * @brief Loads the batch list file of the given medium.
-     *
-     * @param[in] mediumIndex
-     *   Medium Index.
-     *
-     * @throw Arinc665Exception
-     *   When BATCHES.LUM files are inconsistent between media.
-     * @throw Arinc665Exception
-     *   When batch file is not found.
-     * @throw Arinc665Exception
-     *   When batch list file and list file reference does not match
-     **/
-    void loadBatchListFile( uint8_t mediumIndex );
+    void loadFurtherMedia() const;
 
     /**
      * @brief Adds all files to the media set representation
@@ -184,7 +147,7 @@ class MediaSetImporterImpl final : public MediaSetImporter
      * @throw Arinc665Exception
      *   When File is not in File List Information
      **/
-    [[nodiscard]] FileInformation::value_type fileInformation(
+    [[nodiscard]] const Files::FileInfo& fileInformation(
       std::string_view filename ) const;
 
     /**
@@ -198,9 +161,10 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *
      * @return Directory entry.
      *
-     * @throw Arinc665Exception When subdirectory cannot be created
+     * @throw Arinc665Exception
+     *   When subdirectory cannot be created
      **/
-    [[nodiscard]] ContainerEntityPtr checkCreateDirectory(
+    [[nodiscard]] Media::ContainerEntityPtr checkCreateDirectory(
       uint8_t mediumIndex,
       const std::filesystem::path &directoryPath );
 
@@ -211,10 +175,14 @@ class MediaSetImporterImpl final : public MediaSetImporter
      * If file integrity checks is requested read each file and check file CRC
      * and Check Value.
      *
+     * @param[in] filesInfo
+     *   File information to use,
      * @param[in] mediumIndex
      *   Current Medium Index
      **/
-    void checkMediumFiles( uint8_t mediumIndex ) const;
+    void checkMediumFiles(
+      const Files::FilesInfo &filesInfo,
+      uint8_t mediumIndex ) const;
 
     /**
      * @brief Check File Integrity
@@ -266,18 +234,20 @@ class MediaSetImporterImpl final : public MediaSetImporter
     Media::MediaSetPtr mediaSet;
 
     //! File List File
-    std::optional< Files::FileListFile > fileListFile;
+    Files::FileListFile fileListFile;
     //! Load List File
-    std::optional< Files::LoadListFile > loadListFile;
+    Files::LoadListFile loadListFile;
     //! Batch List File
-    std::optional< Files::BatchListFile > batchListFile;
+    Files::BatchListFile batchListFile;
+    //! Batch List File present indicator
+    bool batchListFilePresent{ false };
 
     //! File Information from List of File
-    FileInformation fileInfos;
+    FilesInformation filesInfos;
     //! Load Information from List of Loads
-    LoadInformation loadInfos;
+    LoadsInformation loadsInfos;
     //! Batch Information from List of Batches
-    BatchInformation batchInfos;
+    BatchesInformation batchesInfos;
 };
 
 }
