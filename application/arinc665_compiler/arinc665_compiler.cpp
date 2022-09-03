@@ -457,7 +457,7 @@ static void writeFile(
 static Arinc665::Files::RawFile readFile(
   const std::filesystem::path &mediaSetBase,
   const uint8_t mediumNumber,
-  const std::filesystem::path &path)
+  const std::filesystem::path &path )
 {
   BOOST_LOG_FUNCTION()
 

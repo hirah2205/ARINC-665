@@ -157,7 +157,7 @@ int main( int argc, char const * argv[] )
     Arinc665::Utils::Arinc665Xml::FilePathMapping fileMapping{};
 
     // iterate over files
-    for ( const auto &file : result->files())
+    for ( const auto &file : result->files() )
     {
       std::filesystem::path filePath(
         mediaSourceDirectories[ file->medium()->mediumNumber() - 1]

@@ -96,14 +96,15 @@ void LoadListFile::userDefinedData( UserDefinedData &&userDefinedData )
 
 bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
 {
-  return
-    ( mediaSetPn() == other.mediaSetPn() ) &&
-    ( numberOfMediaSetMembers() == other.numberOfMediaSetMembers() ) &&
-    ( loadsV == other.loads() ) &&
-    std::equal(
+  BOOST_LOG_FUNCTION()
+
+  return ( mediaSetPn() == other.mediaSetPn() )
+    && ( numberOfMediaSetMembers() == other.numberOfMediaSetMembers() )
+    && std::equal(
       userDefinedDataV.begin(),
       userDefinedDataV.end(),
-      other.userDefinedData().begin() );
+      other.userDefinedData().begin() )
+    && ( loadsV == other.loads() );
 }
 
 RawFile LoadListFile::encode() const

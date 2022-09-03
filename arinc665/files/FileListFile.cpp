@@ -113,10 +113,10 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
 
   if ( ( mediaSetPn() != other.mediaSetPn() )
     || ( numberOfMediaSetMembers() != other.numberOfMediaSetMembers() )
-    || std::equal(
-         userDefinedDataV.begin(),
-         userDefinedDataV.end(),
-         other.userDefinedData().begin() ) )
+    || !std::equal(
+      userDefinedDataV.begin(),
+      userDefinedDataV.end(),
+      other.userDefinedData().begin() ) )
   {
     return false;
   }

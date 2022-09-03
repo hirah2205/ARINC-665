@@ -96,10 +96,15 @@ void BatchListFile::userDefinedData( UserDefinedData &&userDefinedData )
 
 bool BatchListFile::belongsToSameMediaSet( const BatchListFile &other ) const
 {
-  return
-    ( mediaSetPn() == other.mediaSetPn() ) &&
-    ( numberOfMediaSetMembers() == other.numberOfMediaSetMembers() ) &&
-    ( batchesV == other.batches() );
+  BOOST_LOG_FUNCTION()
+
+  return ( mediaSetPn() == other.mediaSetPn() )
+    && ( numberOfMediaSetMembers() == other.numberOfMediaSetMembers() )
+    && std::equal(
+      userDefinedDataV.begin(),
+      userDefinedDataV.end(),
+      other.userDefinedData().begin() )
+    && ( batchesV == other.batches() );
 }
 
 RawFile BatchListFile::encode() const
