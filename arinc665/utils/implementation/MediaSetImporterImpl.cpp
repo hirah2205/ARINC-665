@@ -359,64 +359,13 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
           << boost::errinfo_file_name{ dataFile.filename } );
     }
 
-    const auto &dataFileInfo{ fileInformation( dataFile.filename ) };
-
-    // get memorised file size (only when file integrity is checked)
-    if ( checkFileIntegrityV )
-    {
-      const auto dataFileSize{
-        fileSizeHandlerV( dataFileInfo.memberSequenceNumber, dataFileInfo.path() ) };
-
-      // check load data file size - we divide by 2 to work around 16-bit size
-      // storage within Supplement 2 LUHs (Only Data Files)
-      if ( ( dataFileSize / 2 ) != ( dataFile.length / 2 ) )
-      {
-        BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
-          << "Data File Size inconsistent " << dataFile.filename << " "
-          << dataFileSize << " " << dataFile.length;
-
-        BOOST_THROW_EXCEPTION(
-          Arinc665Exception()
-          << Helper::AdditionalInfo{ "Data File Size inconsistent" }
-          << boost::errinfo_file_name{ dataFile.filename } );
-      }
-    }
-
-    // Check CRC
-    if ( dataFileInfo.crc != dataFile.crc )
-    {
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "Data File CRC inconsistent" }
-        << boost::errinfo_file_name{ dataFile.filename } );
-    }
-
-    // Check File Check Value
-    const bool fileCheckValueChecked{ checkCheckValues(
-      dataFileInfo.checkValue,
-      dataFile.checkValue ) };
-
-    // Load CRC, Load Check Value and File Check Value Check
-    if ( checkFileIntegrityV )
-    {
-      const auto rawDataFile{ readFileHandlerV(
-        dataFileInfo.memberSequenceNumber,
-        dataFileInfo.path() ) };
-
-      loadCrc.process_bytes( std::data( rawDataFile ), rawDataFile.size() );
-      loadCheckValueGenerator->process( rawDataFile );
-
-      if ( !fileCheckValueChecked
-           && Arinc645::CheckValueGenerator::checkValue(
-            std::get< 0 >( dataFileInfo.checkValue ),
-            rawDataFile )
-          != dataFileInfo.checkValue )
-      {
-        BOOST_THROW_EXCEPTION(
-          Arinc665Exception()
-          << Helper::AdditionalInfo{ "Data File Check Value inconsistent" }
-          << boost::errinfo_file_name{ dataFile.filename } );
-      }
-    }
+    // perform file check
+    // in ARINC 665-2 File Size of Data File is stored as multiple of 16 bit
+    checkLoadFile(
+      loadCrc,
+      *loadCheckValueGenerator,
+      dataFile,
+      loadHeaderFile.arincVersion() == SupportedArinc665Version::Supplement2 );
 
     loadPtr->dataFile(
       dataFilePtr,
@@ -437,66 +386,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
         << boost::errinfo_file_name{ supportFile.filename } );
     }
 
-    const auto &supportFileInfo{ fileInformation( supportFile.filename ) };
-
-    // get memorised file size ( only when file integrity is checked)
-    if ( checkFileIntegrityV )
-    {
-      const auto supportFileSize{ fileSizeHandlerV(
-        supportFileInfo.memberSequenceNumber,
-        supportFileInfo.path() ) };
-
-      // check load data file size
-      if ( supportFileSize != supportFile.length )
-      {
-        BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
-          << "Support File Size inconsistent "
-          << supportFile.filename << " "
-          << supportFileSize << " "
-          << supportFile.length;
-
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{ "Support File Size inconsistent" }
-          << boost::errinfo_file_name{ supportFile.filename } );
-      }
-    }
-
-    // Check CRC
-    if ( supportFileInfo.crc != supportFile.crc )
-    {
-      BOOST_THROW_EXCEPTION(
-        Arinc665Exception()
-          << Helper::AdditionalInfo{ "Support File CRC inconsistent" }
-          << boost::errinfo_file_name{ supportFile.filename } );
-    }
-
-    // Check File Check Value
-    const bool fileCheckValueChecked{ checkCheckValues(
-      supportFileInfo.checkValue,
-      supportFile.checkValue ) };
-
-    // Load CRC, Load Check Value and File Check Value Check
-    if ( checkFileIntegrityV )
-    {
-      const auto rawDataFile{ readFileHandlerV(
-        supportFileInfo.memberSequenceNumber,
-        supportFileInfo.path() ) };
-
-      loadCrc.process_bytes( std::data( rawDataFile ), rawDataFile.size() );
-      loadCheckValueGenerator->process( rawDataFile );
-
-      if ( !fileCheckValueChecked
-           && Arinc645::CheckValueGenerator::checkValue(
-                std::get< 0 >( supportFileInfo.checkValue ),
-                rawDataFile )
-             != supportFileInfo.checkValue )
-      {
-        BOOST_THROW_EXCEPTION(
-          Arinc665Exception()
-          << Helper::AdditionalInfo{ "Support File Check Value inconsistent" }
-          << boost::errinfo_file_name{ supportFile.filename } );
-      }
-    }
+    checkLoadFile( loadCrc, *loadCheckValueGenerator, supportFile, false );
 
     loadPtr->supportFile(
       supportFilePtr,
@@ -712,6 +602,73 @@ void MediaSetImporterImpl::checkFileIntegrity(
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "Check Value of file invalid" }
         << boost::errinfo_file_name{ fileInfo.path().string() } );
+    }
+  }
+}
+
+void MediaSetImporterImpl::checkLoadFile(
+  Arinc645::Arinc645Crc32 &loadCrc,
+  Arinc645::CheckValueGenerator &loadCheckValueGenerator,
+  const Files::LoadFileInfo &loadFile,
+  bool fileSize16Bit ) const
+{
+  const auto &fileInfo{ fileInformation( loadFile.filename ) };
+
+  // get memorised file size ( only when file integrity is checked)
+  if ( checkFileIntegrityV )
+  {
+    const auto fileSize{
+      fileSizeHandlerV( fileInfo.memberSequenceNumber, fileInfo.path() ) };
+
+    // check load data file size - we divide by 2 to work around 16-bit size
+    // storage within Supplement 2 LUHs (Only Data Files)
+    if ( ( fileSize16Bit && ( fileSize / 2 != loadFile.length / 2 ) )
+      || ( !fileSize16Bit && ( fileSize != loadFile.length ) ) )
+    {
+      BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+        << "Load File Size inconsistent "
+        << loadFile.filename << " "
+        << fileSize << " "
+        << loadFile.length;
+
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ "Load File Size inconsistent" }
+        << boost::errinfo_file_name{ loadFile.filename } );
+    }
+  }
+
+  // Check CRC
+  if ( fileInfo.crc != loadFile.crc )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665Exception()
+      << Helper::AdditionalInfo{ "Load File CRC inconsistent" }
+      << boost::errinfo_file_name{ loadFile.filename } );
+  }
+
+  // Check File Check Value
+  const bool fileCheckValueChecked{
+    checkCheckValues( fileInfo.checkValue, loadFile.checkValue ) };
+
+  // Load CRC, Load Check Value and File Check Value Check
+  if ( checkFileIntegrityV )
+  {
+    const auto rawDataFile{
+      readFileHandlerV( fileInfo.memberSequenceNumber, fileInfo.path() ) };
+
+    loadCrc.process_bytes( std::data( rawDataFile ), rawDataFile.size() );
+    loadCheckValueGenerator.process( rawDataFile );
+
+    // Load file Check Value
+    if ( !fileCheckValueChecked
+      && Arinc645::CheckValueGenerator::checkValue(
+        std::get< 0 >( loadFile.checkValue ),
+        rawDataFile ) != loadFile.checkValue )
+    {
+      BOOST_THROW_EXCEPTION(
+        Arinc665Exception()
+          << Helper::AdditionalInfo{ "Load File Check Value inconsistent" }
+          << boost::errinfo_file_name{ loadFile.filename } );
     }
   }
 }

@@ -201,6 +201,32 @@ class MediaSetImporterImpl final : public MediaSetImporter
     void checkFileIntegrity( const Files::FileInfo &fileInfo ) const;
 
     /**
+     * @brief Preform Checks of Load Files (data and support).
+     *
+     * Calculates Load CRC and Load Check Value.
+     * Verifies File Length
+     * Verifies File CRC and File Check Value
+     *
+     * @param[in,out] loadCrc
+     *   Load CRC
+     * @param[in,out] loadCheckValueGenerator
+     *   Load Check Value Generator
+     * @param[in] loadFile
+     *   Load File
+     * @param[in] fileSize16Bit
+     *   If Data Size is stored in multiple of 16bit.
+     *   This is true for data files in ARINC 665-2 Load Header Files.
+     *
+     * @throw Arinc665Exception
+     *   If File Integrity checks failed.
+     **/
+    void checkLoadFile(
+      Arinc645::Arinc645Crc32 &loadCrc,
+      Arinc645::CheckValueGenerator &loadCheckValueGenerator,
+      const Files::LoadFileInfo &loadFile,
+      bool fileSize16Bit ) const;
+
+    /**
      * @brief Compares the Check Values.
      *
      * @param[in] fileListCheckValue
