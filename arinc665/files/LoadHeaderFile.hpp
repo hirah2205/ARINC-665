@@ -119,8 +119,6 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
       std::map< std::string, Positions, std::less<> >;
     //! Target Hardware IDs
     using TargetHardwareIds = std::set< std::string, std::less<> >;
-    //! User Defined Data
-    using UserDefinedData = std::vector< uint8_t>;
     //! Load Type (Description + ID)
     using LoadType =
       std::optional< std::pair< std::string, uint16_t > >;
@@ -573,7 +571,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      *
      * @return User defined data.
      **/
-    [[nodiscard]] const UserDefinedData& userDefinedData() const;
+    [[nodiscard]] ConstUserDefinedDataSpan userDefinedData() const;
 
     /**
      * @brief Updates the User Defined Data.
@@ -581,9 +579,9 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] userDefinedData
      *   User defined data.
      **/
-    void userDefinedData( const UserDefinedData &userDefinedData );
+    void userDefinedData( ConstUserDefinedDataSpan userDefinedData );
 
-    //! @copydoc userDefinedData(const UserDefinedData&)
+    //! @copydoc userDefinedData(ConstUserDefinedDataSpan)
     void userDefinedData( UserDefinedData &&userDefinedData );
 
     /** @} **/

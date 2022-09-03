@@ -29,6 +29,7 @@
 #include <variant>
 #include <optional>
 #include <tuple>
+#include <span>
 
 /**
  * @brief ARINC 665 %Media (Set).
@@ -37,6 +38,21 @@
  * parts like Loads, Batches nad Management Files.
  **/
 namespace Arinc665::Media {
+
+/**
+ * @name User Defined Data
+ * @{
+ **/
+//! User Defined Data
+using UserDefinedData = std::vector< uint8_t >;
+
+//! Const User Defined Data Span Type
+using ConstUserDefinedDataSpan = std::span< const uint8_t >;
+
+//! User Defined Data Span Type
+using UserDefinedDataSpan = std::span< const uint8_t >;
+
+/** @} **/
 
 /**
  * @name %Base Class Declarations

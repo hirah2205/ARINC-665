@@ -127,9 +127,11 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( fileI->memberSequenceNumber == 1 );
   BOOST_CHECK( fileI->crc == 0x0123U );
 
-
-  BOOST_CHECK( (file.userDefinedData() ==
-    FileListFile::UserDefinedData{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06}));
+  BOOST_CHECK( file.userDefinedData().size() == 6 );
+  BOOST_CHECK( std::equal(
+    file.userDefinedData().begin(),
+    file.userDefinedData().end(),
+    std::to_array< uint8_t >( { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 } ).begin() ) );
 
   const auto raw2{ static_cast< RawFile>( file)};
 

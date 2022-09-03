@@ -237,22 +237,22 @@ void Load::supportFile(
     std::move( checkValueType ) );
 }
 
-const Load::UserDefinedData& Load::userDefinedData() const
+ConstUserDefinedDataSpan Load::userDefinedData() const
 {
   return userDefinedDataV;
 }
 
-Load::UserDefinedData& Load::userDefinedData()
+UserDefinedData& Load::userDefinedData()
 {
   return userDefinedDataV;
 }
 
-void Load::userDefinedData( const std::vector< uint8_t> &userDefinedData )
+void Load::userDefinedData( ConstUserDefinedDataSpan userDefinedData )
 {
-  userDefinedDataV = userDefinedData;
+  userDefinedDataV.assign( userDefinedData.begin(), userDefinedData.end() );
 }
 
-void Load::userDefinedData( Load::UserDefinedData &&userDefinedData )
+void Load::userDefinedData( UserDefinedData &&userDefinedData )
 {
   userDefinedDataV = std::move( userDefinedData ) ;
 }

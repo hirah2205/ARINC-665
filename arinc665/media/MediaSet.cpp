@@ -452,19 +452,19 @@ ConstBatches MediaSet::batchesWithLoad( const ConstLoadPtr &load ) const
   return foundBatches;
 }
 
-const MediaSet::UserDefinedData& MediaSet::filesUserDefinedData() const
+ConstUserDefinedDataSpan MediaSet::filesUserDefinedData() const
 {
   return filesUserDefinedDataV;
 }
 
-MediaSet::UserDefinedData& MediaSet::filesUserDefinedData()
+UserDefinedData& MediaSet::filesUserDefinedData()
 {
   return filesUserDefinedDataV;
 }
 
-void MediaSet::filesUserDefinedData( const UserDefinedData &userDefinedData )
+void MediaSet::filesUserDefinedData( ConstUserDefinedDataSpan userDefinedData )
 {
-  filesUserDefinedDataV = userDefinedData;
+  filesUserDefinedDataV.assign( userDefinedData.begin(), userDefinedData.end() );
 }
 
 void MediaSet::filesUserDefinedData( UserDefinedData &&userDefinedData )
@@ -472,19 +472,19 @@ void MediaSet::filesUserDefinedData( UserDefinedData &&userDefinedData )
   filesUserDefinedDataV = std::move( userDefinedData );
 }
 
-const MediaSet::UserDefinedData& MediaSet::loadsUserDefinedData() const
+ConstUserDefinedDataSpan MediaSet::loadsUserDefinedData() const
 {
   return loadsUserDefinedDataV;
 }
 
-MediaSet::UserDefinedData& MediaSet::loadsUserDefinedData()
+UserDefinedData& MediaSet::loadsUserDefinedData()
 {
   return loadsUserDefinedDataV;
 }
 
-void MediaSet::loadsUserDefinedData( const UserDefinedData &userDefinedData )
+void MediaSet::loadsUserDefinedData( ConstUserDefinedDataSpan userDefinedData )
 {
-  loadsUserDefinedDataV = userDefinedData;
+  loadsUserDefinedDataV.assign( userDefinedData.begin(), userDefinedData.end() );
 }
 
 void MediaSet::loadsUserDefinedData( UserDefinedData &&userDefinedData )
@@ -492,19 +492,21 @@ void MediaSet::loadsUserDefinedData( UserDefinedData &&userDefinedData )
   loadsUserDefinedDataV = std::move( userDefinedData);
 }
 
-const MediaSet::UserDefinedData& MediaSet::batchesUserDefinedData() const
+ConstUserDefinedDataSpan MediaSet::batchesUserDefinedData() const
 {
   return batchesUserDefinedDataV;
 }
 
-MediaSet::UserDefinedData& MediaSet::batchesUserDefinedData()
+UserDefinedData& MediaSet::batchesUserDefinedData()
 {
   return batchesUserDefinedDataV;
 }
 
-void MediaSet::batchesUserDefinedData( const UserDefinedData &userDefinedData)
+void MediaSet::batchesUserDefinedData( ConstUserDefinedDataSpan userDefinedData )
 {
-  batchesUserDefinedDataV = userDefinedData;
+  batchesUserDefinedDataV.assign(
+    userDefinedData.begin(),
+    userDefinedData.end() );
 }
 
 void MediaSet::batchesUserDefinedData( UserDefinedData &&userDefinedData)

@@ -20,6 +20,7 @@
 #include <arinc645/Arinc645.hpp>
 
 #include <string_view>
+#include <span>
 #include <optional>
 
 namespace Arinc665::Media {
@@ -27,20 +28,17 @@ namespace Arinc665::Media {
 /**
  * @brief ARINC 665 %Media Set.
  *
- * A media set consists of one or more media.
+ * A %Media Set consists of one or more media.
  *
  * Each media consists of one or more files.
  **/
 class ARINC665_EXPORT MediaSet : public Base
 {
   public:
-    //! User Defined Data
-    using UserDefinedData = std::vector< uint8_t >;
-
     /**
-     * @brief Creates a new Media Set.
+     * @brief Creates a new %Media Set.
      *
-     * This media set contains no media, data files, loads nor batches.
+     * This %Media Set contains no media, data files, loads nor batches.
      **/
     MediaSet() = default;
 
@@ -54,25 +52,25 @@ class ARINC665_EXPORT MediaSet : public Base
     [[nodiscard]] Type type() const final;
 
     /**
-     * @name Media Set Part Number
+     * @name %Media Set Part Number
      *
-     * A Media Set is identified by its unique Part Number.
+     * A %Media Set is identified by its unique Part Number.
      *
      * @{
      **/
 
     /**
-     * @brief Return the Part Number of the Media Set.
+     * @brief Return the Part Number of the %Media Set.
      *
-     * @return Part Number of the Media Set.
+     * @return Part Number of the %Media Set.
      **/
     [[nodiscard]] std::string_view partNumber() const;
 
     /**
-     * @brief Set the Media Set Part Number.
+     * @brief Set the %Media Set Part Number.
      *
      * @param[in] partNumber
-     *   Media Set Part Number.
+     *   %Media Set Part Number.
      **/
     void partNumber( std::string_view partNumber );
 
@@ -84,20 +82,20 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @name Media
      *
-     * A Media Set consists of 1 up to 255 Media.
+     * A %Media Set consists of 1 up to 255 %Media.
      *
      * @{
      **/
 
     /**
-     * @brief Get the Number of Media within the Media Set.
+     * @brief Get the Number of %Media within the %Media Set.
      *
-     * @return Number of Media within the Media Set.
+     * @return Number of %Media within the %Media Set.
      **/
     [[nodiscard]] uint8_t numberOfMedia() const;
 
     /**
-     * @brief Set the Number of Media.
+     * @brief Set the Number of %Media.
      *
      * If there are fewer media than requested, the media are created empty,
      * otherwise the media are deleted.
@@ -112,9 +110,9 @@ class ARINC665_EXPORT MediaSet : public Base
     void numberOfMedia( uint8_t numberOfMedia, bool deleteFiles = false );
 
     /**
-     * @brief Returns all Media.
+     * @brief Returns all %Media.
      *
-     * @return All Media of the Media Set.
+     * @return All %Media of the %Media Set.
      **/
     [[nodiscard]] ConstMedia media() const;
 
@@ -122,12 +120,12 @@ class ARINC665_EXPORT MediaSet : public Base
     [[nodiscard]] Media media();
 
     /**
-     * @brief Return the Medium with the requested Index.
+     * @brief Return the %Medium with the requested Index.
      *
      * @param[in] index
-     *   Medium Index.
+     *   %Medium Index.
      *
-     * @return Medium with the requested Index.
+     * @return %Medium with the requested Index.
      **/
     [[nodiscard]] ConstMediumPtr medium( uint8_t index ) const;
 
@@ -135,23 +133,23 @@ class ARINC665_EXPORT MediaSet : public Base
      * @brief Return the medium with the requested Index.
      *
      * @param[in] index
-     *   Medium Index.
+     *   %Medium Index.
      *
-     * @return Medium with the requested Index.
+     * @return %Medium with the requested Index.
      **/
     [[nodiscard]] MediumPtr medium( uint8_t index );
 
     /**
-     * @brief Adds a Medium to the Media Set and returns the Medium.
+     * @brief Adds a %Medium to the %Media Set and returns the %Medium.
      *
-     * @return Media index of the new medium.
+     * @return %Media index of the new medium.
      * @retval {}
      *   If maximum number of media (255) reached.
      **/
     [[nodiscard]] MediumPtr addMedium();
 
     /**
-     * @brief Removes the last Medium.
+     * @brief Removes the last %Medium.
      *
      * @param[in] deleteFiles
      *   Delete files, which are part of the not existing medium.
@@ -167,21 +165,21 @@ class ARINC665_EXPORT MediaSet : public Base
      **/
 
     /**
-     * @brief Return the total number of files within the media set.
+     * @brief Return the total number of files within the %Media Set.
      *
      * @return Number of files.
      **/
     [[nodiscard]] size_t numberOfFiles() const;
 
     /**
-     * @brief Returns all files present on the media set.
+     * @brief Returns all files present on the %Media Set.
      *
      * @return All files.
      **/
     [[nodiscard]] ConstFiles files() const;
 
     /**
-     * @brief Returns all files present on the media set.
+     * @brief Returns all files present on the %Media Set.
      *
      * @return All files.
      **/
@@ -195,7 +193,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @param[in] filename
      *   Filename.
      *
-     * @return File with the given filename.
+     * @return %File with the given filename.
      * @retval ConstFilePtr()
      *   If file is not found.
      **/
@@ -209,7 +207,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @param[in] filename
      *   Filename.
      *
-     * @return File with the given filename.
+     * @return %File with the given filename.
      * @retval ConstFilePtr()
      *   If file is not found.
      **/
@@ -223,28 +221,28 @@ class ARINC665_EXPORT MediaSet : public Base
      **/
 
     /**
-     * @brief Return the number of Regular Files within the Media Set.
+     * @brief Return the number of Regular %Files within the %Media Set.
      *
-     * @return Number of loads within the media set.
+     * @return Number of loads within the %Media Set.
      **/
     [[nodiscard]] size_t numberOfRegularFiles() const;
 
     /**
-     * @brief Returns the Regular Files within the media set.
+     * @brief Returns the Regular %Files within the %Media Set.
      *
-     * @return Loads within the media set.
+     * @return Loads within the %Media Set.
      **/
     [[nodiscard]] ConstRegularFiles regularFiles() const;
 
     /**
-     * @brief Returns the Regular Files within the media set.
+     * @brief Returns the Regular %Files within the %Media Set.
      *
-     * @return Loads within the media set.
+     * @return Loads within the %Media Set.
      **/
     [[nodiscard]] RegularFiles regularFiles();
 
     /**
-     * @brief return the Regular File with the given filename.
+     * @brief return the Regular %File with the given filename.
      *
      * @todo handle multiple loads with same name.
      *
@@ -257,7 +255,7 @@ class ARINC665_EXPORT MediaSet : public Base
       std::string_view filename ) const;
 
     /**
-     * @brief return the Regular File with the given filename.
+     * @brief return the Regular %File with the given filename.
      *
      * @todo handle multiple loads with same name.
      *
@@ -276,23 +274,23 @@ class ARINC665_EXPORT MediaSet : public Base
      **/
 
     /**
-     * @brief Return the number of loads within the media set.
+     * @brief Return the number of loads within the %Media Set.
      *
-     * @return Number of loads within the media set.
+     * @return Number of loads within the %Media Set.
      **/
     [[nodiscard]] size_t numberOfLoads() const;
 
     /**
-     * @brief Returns the loads within the media set.
+     * @brief Returns the loads within the %Media Set.
      *
-     * @return Loads within the media set.
+     * @return Loads within the %Media Set.
      **/
     [[nodiscard]] ConstLoads loads() const;
 
     /**
-     * @brief Returns the loads within the media set.
+     * @brief Returns the loads within the %Media Set.
      *
-     * @return Loads within the media set.
+     * @return Loads within the %Media Set.
      **/
     [[nodiscard]] Loads loads();
 
@@ -323,10 +321,10 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @brief Return all Loads, the @p file is referenced.
      *
-     * File could be a data or support file.
+     * %File could be a data or support file.
      *
      * @param[in] file
-     *   File to look for.
+     *   %File to look for.
      *
      * @return Loads, which contains @p file.
      **/
@@ -341,23 +339,23 @@ class ARINC665_EXPORT MediaSet : public Base
      **/
 
     /**
-     * @brief Return the number of batches within the media set.
+     * @brief Return the number of batches within the %Media Set.
      *
-     * @return Number of batches within the media set.
+     * @return Number of batches within the %Media Set.
      **/
     [[nodiscard]] size_t numberOfBatches() const;
 
     /**
-     * @brief Returns the batches within the media set.
+     * @brief Returns the batches within the %Media Set.
      *
-     * @return Batches within the media set.
+     * @return Batches within the %Media Set.
      **/
     [[nodiscard]] ConstBatches batches() const;
 
     /**
-     * @brief Returns the batches within the media set.
+     * @brief Returns the batches within the %Media Set.
      *
-     * @return Batches within the media set.
+     * @return Batches within the %Media Set.
      **/
     [[nodiscard]] Batches batches();
 
@@ -406,9 +404,9 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @brief Returns the user defined data for file list files.
      *
-     * @return The user defined data for file list files.
+     * @return User defined data for file list files.
      **/
-    [[nodiscard]] const UserDefinedData& filesUserDefinedData() const;
+    [[nodiscard]] ConstUserDefinedDataSpan filesUserDefinedData() const;
 
     //! @copydoc filesUserDefinedData() const
     [[nodiscard]] UserDefinedData& filesUserDefinedData();
@@ -419,9 +417,9 @@ class ARINC665_EXPORT MediaSet : public Base
      * @param[in] userDefinedData
      *   User defined data.
      **/
-    void filesUserDefinedData( const UserDefinedData &userDefinedData );
+    void filesUserDefinedData( ConstUserDefinedDataSpan userDefinedData );
 
-    //! @copydoc filesUserDefinedData(const UserDefinedData&)
+    //! @copydoc filesUserDefinedData(ConstUserDefinedDataSpan)
     void filesUserDefinedData( UserDefinedData &&userDefinedData );
 
     /** @} **/
@@ -436,7 +434,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return User defined data for loads list files.
      **/
-    [[nodiscard]] const UserDefinedData& loadsUserDefinedData() const;
+    [[nodiscard]] ConstUserDefinedDataSpan loadsUserDefinedData() const;
 
     //! @copydoc loadsUserDefinedData() const
     [[nodiscard]] UserDefinedData& loadsUserDefinedData();
@@ -447,9 +445,9 @@ class ARINC665_EXPORT MediaSet : public Base
      * @param[in] userDefinedData
      *   User defined data.
      **/
-    void loadsUserDefinedData( const UserDefinedData &userDefinedData );
+    void loadsUserDefinedData( ConstUserDefinedDataSpan userDefinedData );
 
-    //! @copydoc loadsUserDefinedData(const UserDefinedData&)
+    //! @copydoc loadsUserDefinedData(ConstUserDefinedDataSpan)
     void loadsUserDefinedData( UserDefinedData &&userDefinedData );
 
     /** @} **/
@@ -464,7 +462,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return User defined data for batch list files.
      **/
-    [[nodiscard]] const UserDefinedData& batchesUserDefinedData() const;
+    [[nodiscard]] ConstUserDefinedDataSpan batchesUserDefinedData() const;
 
     //! @copydoc batchesUserDefinedData() const
     [[nodiscard]] UserDefinedData& batchesUserDefinedData();
@@ -475,9 +473,9 @@ class ARINC665_EXPORT MediaSet : public Base
      * @param[in] userDefinedData
      *   User Defined Data.
      **/
-    void batchesUserDefinedData( const UserDefinedData &userDefinedData );
+    void batchesUserDefinedData( ConstUserDefinedDataSpan userDefinedData );
 
-    //! @copydoc batchesUserDefinedData(const UserDefinedData&)
+    //! @copydoc batchesUserDefinedData(ConstUserDefinedDataSpan)
     void batchesUserDefinedData( UserDefinedData &&userDefinedData );
 
     /** @} **/
@@ -485,7 +483,7 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @name Media Set Check Value Type
      *
-     * This information is used to determine the Check Value Type on the Media
+     * This information is used to determine the Check Value Type on the %Media
      * Set.
      * It can be overridden by specific Check Value Types.
      *
@@ -493,29 +491,29 @@ class ARINC665_EXPORT MediaSet : public Base
      **/
 
     /**
-     * @brief Returns the effective Media Set Check Value Type.
+     * @brief Returns the effective %Media Set Check Value Type.
      *
-     * If no Media Set Check Value Type is given, CheckValueType::NotUsed is
+     * If no %Media Set Check Value Type is given, CheckValueType::NotUsed is
      * returned.
      *
-     * @return Effective Media Set Check Value Type
+     * @return Effective %Media Set Check Value Type
      **/
     [[nodiscard]] Arinc645::CheckValueType
     effectiveMediaSetCheckValueType() const;
 
     /**
-     * @brief Returns the Media Set Check Value Type.
+     * @brief Returns the %Media Set Check Value Type.
      *
-     * @return Media Set Check Value Type
+     * @return %Media Set Check Value Type
      **/
     [[nodiscard]] std::optional< Arinc645::CheckValueType >
     mediaSetCheckValueType() const;
 
     /**
-     * @brief Updates the Media Set Check Value Type.
+     * @brief Updates the %Media Set Check Value Type.
      *
      * @param[in] type
-     *   New Media Set Check Value Type.
+     *   New %Media Set Check Value Type.
      **/
     void mediaSetCheckValueType(
       std::optional< Arinc645::CheckValueType > type );
@@ -528,7 +526,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * This information is used to determine the Check Value Type used for
      * generation of List of Files (`FILES.LUM`) Check Value.
      *
-     * If not provided, the Media Set Check Value is used.
+     * If not provided, the %Media Set Check Value is used.
      *
      * @{
      **/
@@ -536,7 +534,7 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @brief Returns the Effective List of Files Check Value Type.
      *
-     * If no value is set, the Media Set Check Value Type is used.
+     * If no value is set, the %Media Set Check Value Type is used.
      *
      * @return Effective List of Files Check Value Type
      *
@@ -581,7 +579,7 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @brief Returns the Effective List of Loads Check Value Type.
      *
-     * If no value is set, the Media Set Check Value Type is used.
+     * If no value is set, the %Media Set Check Value Type is used.
      *
      * @return Effective Files Check Value Type
      *
@@ -658,10 +656,10 @@ class ARINC665_EXPORT MediaSet : public Base
      * This information is used to determine the Check Value Type used for
      * generation of Files Check Values within `FILES.LUM`.
      * It can be overridden on per-file basis.
-     * For the List of Loads File and List of Batches File separate functions
+     * For the List of Loads %File and List of Batches %File separate functions
      * are provided.
      *
-     * If not provided, the Media Set Check Value is used.
+     * If not provided, the %Media Set Check Value is used.
      *
      * @sa effectiveMediaSetCheckValueType()
      * @sa effectiveListOfLoadsCheckValueType()
@@ -672,7 +670,7 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @brief Returns the Effective Files Check Value Type.
      *
-     * If no value is set, the Media Set Check Value Type is used.
+     * If no value is set, the %Media Set Check Value Type is used.
      *
      * @return Effective Files Check Value Type
      *
@@ -706,7 +704,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @brief Recursively returns number of files contained on @p container.
      *
      * @param[in] container
-     *   Current Container (Media Set or Directory)
+     *   Current Container (%Media Set or Directory)
      *
      * @return Number of files in @p container and its subdirectories.
      **/
@@ -714,10 +712,10 @@ class ARINC665_EXPORT MediaSet : public Base
       const ContainerEntity &container ) const;
 
     /**
-     * @brief Recursively returns all files present on the Media Set.
+     * @brief Recursively returns all files present on the %Media Set.
      *
      * @param[in] container
-     *   Current Container (Media Set or Directory)
+     *   Current Container (%Media Set or Directory)
      *
      * @return All files in @p container and its subdirectories.
      **/
@@ -738,7 +736,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * only the first one is returned (which is the first is not specified).
      *
      * @param[in] container
-     *   Current Container (Media Set or Directory)
+     *   Current Container (%Media Set or Directory)
      * @param[in] filename
      *   Name of the requested file.
      *
@@ -760,7 +758,7 @@ class ARINC665_EXPORT MediaSet : public Base
      *   @p container.
      *
      * @param[in] container
-     *   Current Container (Media Set or Directory)
+     *   Current Container (%Media Set or Directory)
      *
      * @return Number of regular files in @p container and its subdirectories.
      **/
@@ -768,10 +766,10 @@ class ARINC665_EXPORT MediaSet : public Base
       const ContainerEntity &container ) const;
 
     /**
-     * @brief Recursively returns all regular files present on the Media Set.
+     * @brief Recursively returns all regular files present on the %Media Set.
      *
      * @param[in] container
-     *   Current Container (Media Set or Directory)
+     *   Current Container (%Media Set or Directory)
      *
      * @return All regular files in @p container and its subdirectories.
      **/
@@ -790,7 +788,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * only the first one is returned (which is the first is not specified).
      *
      * @param[in] container
-     *   Current Container (Media Set or Directory)
+     *   Current Container (%Media Set or Directory)
      * @param[in] filename
      *   Name of the requested regular file.
      *
@@ -811,7 +809,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @brief Recursively returns number of Loads contained on @p container.
      *
      * @param[in] container
-     *   Current Container (Media Set or Directory)
+     *   Current Container (%Media Set or Directory)
      *
      * @return Number of Loads in @p container and its subdirectories.
      **/
@@ -819,10 +817,10 @@ class ARINC665_EXPORT MediaSet : public Base
       const ContainerEntity &container ) const;
 
     /**
-     * @brief Recursively returns all Loads present on the Media Set.
+     * @brief Recursively returns all Loads present on the %Media Set.
      *
      * @param[in] container
-     *   Current Container (Media Set or Directory)
+     *   Current Container (%Media Set or Directory)
      *
      * @return All Loads in @p container and its subdirectories.
      **/
@@ -840,7 +838,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * only the first one is returned (which is the first is not specified).
      *
      * @param[in] container
-     *   Current Container (Media Set or Directory)
+     *   Current Container (%Media Set or Directory)
      * @param[in] filename
      *   Name of the requested Load.
      *
@@ -861,7 +859,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @brief Recursively returns number of Batches contained on @p container.
      *
      * @param[in] container
-     *   Current Container (Media Set or Directory)
+     *   Current Container (%Media Set or Directory)
      *
      * @return Number of Batches in @p container and its subdirectories.
      **/
@@ -869,10 +867,10 @@ class ARINC665_EXPORT MediaSet : public Base
       const ContainerEntity &container ) const;
 
     /**
-     * @brief Recursively returns all Batches present on the Media Set.
+     * @brief Recursively returns all Batches present on the %Media Set.
      *
      * @param[in] container
-     *   Current Container (Media Set or Directory)
+     *   Current Container (%Media Set or Directory)
      *
      * @return All Batches in @p container and its subdirectories.
      **/
@@ -890,7 +888,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * only the first one is returned (which is the first is not specified).
      *
      * @param[in] container
-     *   Current Container (Media Set or Directory)
+     *   Current Container (%Media Set or Directory)
      * @param[in] filename
      *   Name of the requested Batch.
      *
@@ -907,7 +905,7 @@ class ARINC665_EXPORT MediaSet : public Base
       ContainerEntity &container,
       std::string_view filename );
 
-    //! Media
+    //! %Media
     Media mediaV;
     //! Part Number
     std::string partNumberV;
@@ -917,7 +915,7 @@ class ARINC665_EXPORT MediaSet : public Base
     UserDefinedData loadsUserDefinedDataV;
     //! User Defined Data for Batches List Files
     UserDefinedData batchesUserDefinedDataV;
-    //! ARINC 645 Check Value for Media Set Generation
+    //! ARINC 645 Check Value for %Media Set Generation
     std::optional< Arinc645::CheckValueType > mediaSetCheckValueTypeV;
     //! ARINC 645 Check Value Type for List of Files Generation
     std::optional< Arinc645::CheckValueType > listOfFilesCheckValueTypeV;
@@ -925,7 +923,7 @@ class ARINC665_EXPORT MediaSet : public Base
     std::optional< Arinc645::CheckValueType > listOfLoadsCheckValueTypeV;
     //! ARINC 645 Check Value Type for List of Batches Generation
     std::optional< Arinc645::CheckValueType > listOfBatchesCheckValueTypeV;
-    //! ARINC 645 Check Value for Media Set File List Generation
+    //! ARINC 645 Check Value for %Media Set %File List Generation
     std::optional< Arinc645::CheckValueType > filesCheckValueTypeV;
 };
 

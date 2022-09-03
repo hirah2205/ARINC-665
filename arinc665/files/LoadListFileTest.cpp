@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_SUITE( Arinc665Test )
 BOOST_AUTO_TEST_SUITE( FilesTest )
 BOOST_AUTO_TEST_SUITE( LoadListFileTest )
 
-BOOST_AUTO_TEST_CASE( constructor1)
+BOOST_AUTO_TEST_CASE( constructor1 )
 {
   RawFile rawFile{
     // header file length
@@ -128,9 +128,11 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( load->targetHardwareIds.size() == 1U );
   BOOST_CHECK( *load->targetHardwareIds.begin() == "THWID010" );
 
-
-  BOOST_CHECK( (file.userDefinedData() ==
-    LoadListFile::UserDefinedData{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 } ) );
+  BOOST_CHECK( file.userDefinedData().size() == 6 );
+  BOOST_CHECK( std::equal(
+    file.userDefinedData().begin(),
+    file.userDefinedData().end(),
+    std::to_array< uint8_t >( { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 } ).begin() ) );
 
   const auto raw2{ static_cast< RawFile>( file ) };
 

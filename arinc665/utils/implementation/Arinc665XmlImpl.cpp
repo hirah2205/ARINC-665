@@ -185,9 +185,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
     const auto userDefinedData{
       filesUserDefinedDataNode->get_child_text()->get_content() };
     mediaSet->filesUserDefinedData(
-      Arinc665::Media::MediaSet::UserDefinedData{
-        userDefinedData.begin(),
-        userDefinedData.end() } );
+      Media::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
   }
 
   if (
@@ -198,9 +196,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
     const auto userDefinedData{
       loadsUserDefinedDataNode->get_child_text()->get_content() };
     mediaSet->loadsUserDefinedData(
-      Arinc665::Media::MediaSet::UserDefinedData{
-        userDefinedData.begin(),
-        userDefinedData.end() } );
+      Media::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
   }
 
   if (
@@ -211,9 +207,7 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
     const auto userDefinedData{
       batchesUserDefinedDataNode->get_child_text()->get_content() };
     mediaSet->batchesUserDefinedData(
-      Arinc665::Media::MediaSet::UserDefinedData{
-        userDefinedData.begin(),
-        userDefinedData.end() } );
+      Media::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
   }
 
   // iterate over media
@@ -655,9 +649,7 @@ void Arinc665XmlImpl::loadLoad(
       userDefinedDataElement->get_child_text()->get_content() };
 
     load->userDefinedData(
-      Arinc665::Media::Load::UserDefinedData{
-        userDefinedData.begin(),
-        userDefinedData.end() } );
+      Media::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
   }
 
   // Load Check Value

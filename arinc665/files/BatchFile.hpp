@@ -170,7 +170,7 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
      * @brief Adds the given target hardware information to the batch file.
      *
      * @param[in] targetHardwareInfo
-     *   Target hardware information to add.
+     *   Target Hardware Information to add.
      **/
     void targetHardware( const BatchTargetInfo &targetHardwareInfo );
 

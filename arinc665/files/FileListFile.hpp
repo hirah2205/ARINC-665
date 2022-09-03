@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include <span>
 
 namespace Arinc665::Files {
 
@@ -66,9 +67,6 @@ namespace Arinc665::Files {
 class ARINC665_EXPORT FileListFile : public ListFile
 {
   public:
-    //! User Defined Data Type
-    using UserDefinedData = std::vector< uint8_t>;
-
     //! Offset of the Spare field (Since ARINC 665-2).
     static constexpr ptrdiff_t SpareFieldOffsetV2{ 6 };
 
@@ -170,21 +168,21 @@ class ARINC665_EXPORT FileListFile : public ListFile
      **/
 
     /**
-     * @brief Returns the user defined data.
+     * @brief Returns the User Defined Data.
      *
-     * @return The user defined data.
+     * @return User Defined Data.
      **/
-    [[nodiscard]] const UserDefinedData& userDefinedData() const;
+    [[nodiscard]] ConstUserDefinedDataSpan userDefinedData() const;
 
     /**
      * @brief Updates the user defined data.
      *
      * @param[in] userDefinedData
-     *   The user defined data.
+     *   User Defined Data.
      **/
-    void userDefinedData( const UserDefinedData &userDefinedData );
+    void userDefinedData( const ConstUserDefinedDataSpan userDefinedData );
 
-    //! @copydoc userDefinedData(const UserDefinedData&)
+    //! @copydoc userDefinedData(const ConstUserDefinedDataSpan)
     void userDefinedData( UserDefinedData &&userDefinedData );
 
     /** @} **/

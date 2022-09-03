@@ -54,9 +54,6 @@ namespace Arinc665::Files {
 class ARINC665_EXPORT BatchListFile : public ListFile
 {
   public:
-    //! User Defined Data.
-    using UserDefinedData = std::vector< uint8_t>;
-
     //! Offset of the Spare field (since ARINC 665-2).
     static constexpr std::size_t SpareFieldOffsetV2{ 6U };
 
@@ -151,7 +148,7 @@ class ARINC665_EXPORT BatchListFile : public ListFile
      *
      * @return User Defined Data.
      **/
-    [[nodiscard]] const UserDefinedData& userDefinedData() const;
+    [[nodiscard]] ConstUserDefinedDataSpan userDefinedData() const;
 
     /**
      * @brief Updates the User Defined Data.
@@ -159,9 +156,9 @@ class ARINC665_EXPORT BatchListFile : public ListFile
      * @param[in] userDefinedData
      *   User Defined Data.
      **/
-    void userDefinedData( const UserDefinedData &userDefinedData );
+    void userDefinedData( ConstUserDefinedDataSpan userDefinedData );
 
-    //! @copydoc userDefinedData(const UserDefinedData&)
+    //! @copydoc userDefinedData(ConstUserDefinedDataSpan)
     void userDefinedData( UserDefinedData &&userDefinedData );
 
     /** @} **/

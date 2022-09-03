@@ -42,9 +42,9 @@ class Base : public std::enable_shared_from_this< Base >
     virtual ~Base() noexcept = default;
 
     /**
-     * @brief Returns the Owning Media Set.
+     * @brief Returns the Owning %Media Set.
      *
-     * @return Owning Media Set
+     * @return Owning %Media Set
      **/
     [[nodiscard]] virtual ConstMediaSetPtr mediaSet() const = 0;
 

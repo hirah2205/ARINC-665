@@ -74,16 +74,16 @@ void FileListFile::file( FileInfo &&file )
 }
 
 
-const FileListFile::UserDefinedData& FileListFile::userDefinedData() const
+ConstUserDefinedDataSpan FileListFile::userDefinedData() const
 {
   return userDefinedDataV;
 }
 
-void FileListFile::userDefinedData( const UserDefinedData &userDefinedData )
+void FileListFile::userDefinedData( ConstUserDefinedDataSpan userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 
-  userDefinedDataV = userDefinedData;
+  userDefinedDataV.assign( userDefinedData.begin(), userDefinedData.end() );
 
   checkUserDefinedData();
 }
@@ -92,7 +92,7 @@ void FileListFile::userDefinedData( UserDefinedData &&userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 
-  userDefinedDataV = std::move( userDefinedData);
+  userDefinedDataV = std::move( userDefinedData );
 
   checkUserDefinedData();
 }
@@ -113,7 +113,10 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
 
   if ( ( mediaSetPn() != other.mediaSetPn() )
     || ( numberOfMediaSetMembers() != other.numberOfMediaSetMembers() )
-    || ( userDefinedDataV != other.userDefinedData() ) )
+    || std::equal(
+         userDefinedDataV.begin(),
+         userDefinedDataV.end(),
+         other.userDefinedData().begin() ) )
   {
     return false;
   }

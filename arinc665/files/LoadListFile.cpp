@@ -71,16 +71,16 @@ void LoadListFile::load( LoadInfo &&load)
   loadsV.push_back( std::move( load));
 }
 
-const LoadListFile::UserDefinedData& LoadListFile::userDefinedData() const
+ConstUserDefinedDataSpan LoadListFile::userDefinedData() const
 {
   return userDefinedDataV;
 }
 
-void LoadListFile::userDefinedData( const UserDefinedData &userDefinedData )
+void LoadListFile::userDefinedData( ConstUserDefinedDataSpan userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 
-  userDefinedDataV = userDefinedData;
+  userDefinedDataV.assign( userDefinedData.begin(), userDefinedData.end() );
 
   checkUserDefinedData();
 }
@@ -100,7 +100,10 @@ bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
     ( mediaSetPn() == other.mediaSetPn() ) &&
     ( numberOfMediaSetMembers() == other.numberOfMediaSetMembers() ) &&
     ( loadsV == other.loads() ) &&
-    ( userDefinedDataV == other.userDefinedData() );
+    std::equal(
+      userDefinedDataV.begin(),
+      userDefinedDataV.end(),
+      other.userDefinedData().begin() );
 }
 
 RawFile LoadListFile::encode() const

@@ -57,9 +57,6 @@ namespace Arinc665::Files {
 class ARINC665_EXPORT LoadListFile : public ListFile
 {
   public:
-    //! User Defined Data.
-    using UserDefinedData = std::vector< uint8_t>;
-
     //! Offset of the Spare field (since ARINC 665-2).
     static constexpr ptrdiff_t SpareFieldOffsetV2{ 6U };
 
@@ -156,9 +153,9 @@ class ARINC665_EXPORT LoadListFile : public ListFile
     /**
      * @brief Returns the user defined data.
      *
-     * @return The user defined data.
+     * @return User Defined Data.
      **/
-    [[nodiscard]] const UserDefinedData& userDefinedData() const;
+    [[nodiscard]] ConstUserDefinedDataSpan userDefinedData() const;
 
     /**
      * @brief Updates the user defined data.
@@ -166,11 +163,11 @@ class ARINC665_EXPORT LoadListFile : public ListFile
      * @note The user defined data must be multiple of 2-bytes in size.
      *
      * @param[in] userDefinedData
-     *   The user defined data.
+     *   User Defined Data.
      **/
-    void userDefinedData( const UserDefinedData &userDefinedData );
+    void userDefinedData( ConstUserDefinedDataSpan userDefinedData );
 
-    //! @copydoc userDefinedData(const UserDefinedData&)
+    //! @copydoc userDefinedData(ConstUserDefinedDataSpan)
     void userDefinedData( UserDefinedData &&userDefinedData );
 
     /** @} **/

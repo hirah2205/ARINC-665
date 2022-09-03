@@ -71,16 +71,16 @@ void BatchListFile::batch( BatchInfo &&batch )
   batchesV.push_back( std::move( batch ) );
 }
 
-const BatchListFile::UserDefinedData& BatchListFile::userDefinedData() const
+ConstUserDefinedDataSpan BatchListFile::userDefinedData() const
 {
   return userDefinedDataV;
 }
 
-void BatchListFile::userDefinedData( const UserDefinedData &userDefinedData )
+void BatchListFile::userDefinedData( ConstUserDefinedDataSpan userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 
-  userDefinedDataV = userDefinedData;
+  userDefinedDataV.assign( userDefinedData.begin(), userDefinedData.end() );
 
   checkUserDefinedData();
 }
@@ -94,7 +94,7 @@ void BatchListFile::userDefinedData( UserDefinedData &&userDefinedData )
   checkUserDefinedData();
 }
 
-bool BatchListFile::belongsToSameMediaSet( const BatchListFile &other) const
+bool BatchListFile::belongsToSameMediaSet( const BatchListFile &other ) const
 {
   return
     ( mediaSetPn() == other.mediaSetPn() ) &&

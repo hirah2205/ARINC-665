@@ -304,21 +304,21 @@ void LoadHeaderFile::supportFile( LoadFileInfo &&supportFileInfo )
   supportFilesV.push_back( std::move( supportFileInfo ) );
 }
 
-const LoadHeaderFile::UserDefinedData& LoadHeaderFile::userDefinedData() const
+ConstUserDefinedDataSpan LoadHeaderFile::userDefinedData() const
 {
   return userDefinedDataV;
 }
 
-void LoadHeaderFile::userDefinedData( const UserDefinedData &userDefinedData )
+void LoadHeaderFile::userDefinedData( ConstUserDefinedDataSpan userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 
-  userDefinedDataV = userDefinedData;
+  userDefinedDataV.assign( userDefinedData.begin(), userDefinedData.end() );
 
   checkUserDefinedData();
 }
 
-void LoadHeaderFile::userDefinedData( UserDefinedData &&userDefinedData)
+void LoadHeaderFile::userDefinedData( UserDefinedData &&userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 

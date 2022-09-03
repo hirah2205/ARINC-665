@@ -150,8 +150,11 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( supportFiles.begin()->crc == 0xABCD );
   BOOST_CHECK( supportFiles.begin()->checkValue== Arinc645::NoCheckValue );
 
-  BOOST_CHECK(
-    (file.userDefinedData() == LoadHeaderFile::UserDefinedData{ 0x12, 0x34, 0x56, 0x78}));
+  BOOST_CHECK( file.userDefinedData().size() == 4 );
+  BOOST_CHECK( std::equal(
+    file.userDefinedData().begin(),
+    file.userDefinedData().end(),
+    std::to_array< uint8_t >( { 0x12, 0x34, 0x56, 0x78 } ).begin() ) );
 
   BOOST_CHECK( 0xFEDCBA98 == Arinc665::Files::LoadHeaderFile::decodeLoadCrc( rawFile ) );
 
