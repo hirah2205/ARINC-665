@@ -52,8 +52,8 @@ void LoadHeaderFile::processLoadCheckValue(
 {
   if ( loadFileFormatVersion( rawFile ) != LoadFileFormatVersion::Version345 )
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Invalid file data" } );
+    // load check value can only be processed on ARINC 665-3/4/5 files
+    return;
   }
 
   // Obtain Load Check Value Pointer
@@ -80,8 +80,8 @@ void LoadHeaderFile::encodeLoadCheckValue(
 {
   if ( loadFileFormatVersion( rawFile ) != LoadFileFormatVersion::Version345 )
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Invalid file data" } );
+    // load check value can only be stored on ARINC 665-3/4/5 files
+    return;
   }
 
   // Obtain Load Check Value Pointer
@@ -116,8 +116,7 @@ Arinc645::CheckValue LoadHeaderFile::decodeLoadCheckValue(
 {
   if ( loadFileFormatVersion( rawFile ) != LoadFileFormatVersion::Version345 )
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Invalid file data" } );
+    return Arinc645::NoCheckValue;
   }
 
   uint32_t loadCheckValuePtr{ 0U };

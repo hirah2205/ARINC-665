@@ -291,6 +291,8 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      *   Raw representation of Load Header File
      *
      * @return Load Check Value
+     * @retval Arinc645::NoCheckValue
+     *   When no Load Check Value is stored.
      **/
     [[nodiscard]] static Arinc645::CheckValue decodeLoadCheckValue(
       ConstRawFileSpan rawFile );
