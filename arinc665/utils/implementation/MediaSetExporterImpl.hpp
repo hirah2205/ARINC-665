@@ -74,17 +74,6 @@ class MediaSetExporterImpl final : public MediaSetExporter
 
   private:
     /**
-     * @brief Called to Export the Given Medium.
-     *
-     * Exports all directories, files, loads, and batches.
-     * Create Index files (List of Files, List of Loads and List of Batches).
-     *
-     * @param[in] medium
-     *   Medium, which is exported.
-     **/
-    void exportMedium( const Media::ConstMediumPtr &medium );
-
-    /**
      * @brief Called to export the given Directory.
      *
      * Exports all subdirectories, files, loads and batches.
@@ -95,15 +84,34 @@ class MediaSetExporterImpl final : public MediaSetExporter
     void exportDirectory( const Media::ConstDirectoryPtr &directory );
 
     /**
-     * @brief Called to export the given File.
-     *
-     * Depending on the file type and Load/ Batches File Creation Policy, the
-     * file create callback is called or the load header or batch is created.
+     * @brief Called to export the given Regular File.
      *
      * @param[in] file
      *   File, which is exported.
      **/
-    void exportFile( const Media::ConstFilePtr &file ) const;
+    void exportRegularFile( const Media::ConstRegularFilePtr &file );
+
+    /**
+     * @brief Called to export the given Load Header File.
+     *
+     * Depending on the file type and Load File Creation Policy, the
+     * file create callback is called or the load header is created.
+     *
+     * @param[in] load
+     *   Load, which is exported.
+     **/
+    void exportLoad( const Media::ConstLoadPtr &load );
+
+    /**
+     * @brief Called to export the given Batch File.
+     *
+     * Depending on the file type and Batches File Creation Policy, the
+     * file create callback is called or the batch is created.
+     *
+     * @param[in] batch
+     *   Batch, which is exported.
+     **/
+    void exportBatch( const Media::ConstBatchPtr &batch );
 
     /**
      * @brief Exports List of Loads File.
