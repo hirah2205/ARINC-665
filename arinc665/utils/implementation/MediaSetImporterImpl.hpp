@@ -26,7 +26,6 @@
 
 #include <optional>
 #include <map>
-#include <set>
 
 namespace Arinc665::Utils {
 
@@ -61,6 +60,15 @@ class MediaSetImporterImpl final : public MediaSetImporter
     [[nodiscard]] Media::MediaSetPtr operator()() override;
 
   private:
+    //! File Information (From File List File) (filename -> file information)
+    using FileInformation =
+      std::map< std::string, Files::FileInfo, std::less<> >;
+    //! Load Information from List of Loads (filenames -> Load Information)
+    using LoadInformation =
+      std::map< std::string, Files::LoadInfo, std::less<> >;
+    //! Batch Information from List of Batches (filename -> Batch Information)
+    using BatchInformation =
+      std::map< std::string, Files::BatchInfo, std::less<> >;
     //! Container Entity Type
     using ContainerEntityPtr = std::shared_ptr< Media::ContainerEntity >;
 
@@ -121,25 +129,6 @@ class MediaSetImporterImpl final : public MediaSetImporter
     void loadBatchListFile( uint8_t mediumIndex );
 
     /**
-     * @brief Loads the load header files of the given medium.
-     *
-     * @param[in] mediumIndex
-     *   Medium Index.
-     *
-     * @throw Arinc665Exception
-     *   When is inconsistent.
-     **/
-    void loadLoadHeaderFiles( uint8_t mediumIndex );
-
-    /**
-     * @brief Loads the batch files of the given medium.
-     *
-     * @param[in] mediumIndex
-     *   Medium Index.
-     **/
-    void loadBatchFiles( uint8_t mediumIndex );
-
-    /**
      * @brief Adds all files to the media set representation
      *
      * Iterates over the file information and creates the directories and files.
@@ -160,14 +149,10 @@ class MediaSetImporterImpl final : public MediaSetImporter
     /**
      * @brief Adds the Load to the Media Set.
      *
-     * @param[in] filename
-     *   Load Header Filename.
-     * @param[in] loadHeaderFile
-     *   Load Header File information.
+     * @param[in] loadInfo
+     *   Load Information.
      **/
-    void addLoad(
-      std::string_view filename,
-      const Files::LoadHeaderFile &loadHeaderFile );
+    void addLoad( const Files::LoadInfo &loadInfo );
 
     /**
      * @brief Adds the Batches to the Media Set.
@@ -184,14 +169,23 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *
      * Generates the Batch and adds the target hardware load information.
      *
-     * @param[in] filename
-     *   Batch Filename
-     * @param[in] batchFile
-     *   Batch File information
+     * @param[in] batchInfo
+     *   Batch Information
      **/
-    void addBatch(
-      std::string_view filename,
-      const Files::BatchFile &batchFile );
+    void addBatch( const Files::BatchInfo &batchInfo );
+
+    /**
+     * @brief Returns the File Information from the File List Information
+     *
+     * @param[in] filename
+     *   Filename
+     *
+     * @return File Information from the File List Information.
+     * @throw Arinc665Exception
+     *   When File is not in File List Information
+     **/
+    [[nodiscard]] FileInformation::value_type fileInformation(
+      std::string_view filename ) const;
 
     /**
      * @brief Creates the logical directory entry if not already created and
@@ -220,7 +214,7 @@ class MediaSetImporterImpl final : public MediaSetImporter
      * @param[in] mediumIndex
      *   Current Medium Index
      **/
-    void checkMediumFiles( uint8_t mediumIndex );
+    void checkMediumFiles( uint8_t mediumIndex ) const;
 
     /**
      * @brief Check File Integrity
@@ -237,6 +231,29 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *   When File Check Value does not match.
      **/
     void checkFileIntegrity( const Files::FileInfo &fileInfo ) const;
+
+    /**
+     * @brief Compares the Check Values.
+     *
+     * @param[in] fileListCheckValue
+     *   Check Value from File List
+     * @param[in] loadFileCheckValue
+     *   Check Value from Load File (Data or Support File)
+     *
+     * @return If Checksum Comparison was successful.
+     * @retval true
+     *   Check Value of File List and Load File Information from same type and
+     *   check value are equal or no check value provided for load file.
+     * @retval false
+     *   Check Value could not be compared (different check value types).
+     *   Check Value should be tested separately.
+     *
+     * @throw Arinc665Exception
+     *   When Load File Check Values are inconsistent.
+     **/
+    [[nodiscard]] bool checkCheckValues(
+      const Arinc645::CheckValue &fileListCheckValue,
+      const Arinc645::CheckValue &loadFileCheckValue ) const;
 
     //! File Size Handler
     FileSizeHandler fileSizeHandlerV;
@@ -255,17 +272,12 @@ class MediaSetImporterImpl final : public MediaSetImporter
     //! Batch List File
     std::optional< Files::BatchListFile > batchListFile;
 
-    //! Load Header Files (file name -> load header file)
-    std::map< std::string, Files::LoadHeaderFile, std::less<> > loadHeaderFiles;
-    //! Batch Files (file name -> batch file)
-    std::map< std::string, Files::BatchFile, std::less<> > batchFiles;
-
-    //! File Information from List of Files ( file name -> file info )
-    std::map< std::string, Files::FileInfo, std::less<> > fileInfos;
-    //! Loads (file names)
-    std::set< std::string, std::less<> > loads;
-    //! Batches (file names)
-    std::set< std::string, std::less<> > batches;
+    //! File Information from List of File
+    FileInformation fileInfos;
+    //! Load Information from List of Loads
+    LoadInformation loadInfos;
+    //! Batch Information from List of Batches
+    BatchInformation batchInfos;
 };
 
 }
