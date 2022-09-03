@@ -83,7 +83,7 @@ uint16_t Arinc665File::calculateChecksum( const ConstRawFileSpan &file )
 Arinc665::FileClassType Arinc665File::fileType(
   const ConstRawFileSpan &rawFile )
 {
-  switch (formatVersion( rawFile))
+  switch ( formatVersion( rawFile ) )
   {
     case static_cast< uint16_t>( LoadFileFormatVersion::Version2 ):
     case static_cast< uint16_t>( LoadFileFormatVersion::Version345 ):
@@ -161,7 +161,7 @@ Arinc665::MediaFileFormatVersion Arinc665File::mediaFileFormatVersion(
 
 SupportedArinc665Version Arinc665File::arinc665Version(
   const FileType fileType,
-  const uint16_t formatVersionField )
+  const uint16_t formatVersionField ) noexcept
 {
   switch ( fileType)
   {
@@ -218,7 +218,7 @@ SupportedArinc665Version Arinc665File::arinc665Version(
 
 uint16_t Arinc665File::formatVersionField(
   const FileType fileType,
-  const SupportedArinc665Version arinc665Version )
+  const SupportedArinc665Version arinc665Version ) noexcept
 {
   switch ( fileType)
   {
@@ -319,12 +319,13 @@ Arinc665File::operator RawFile() const
   return encode();
 }
 
-SupportedArinc665Version Arinc665File::arincVersion() const
+SupportedArinc665Version Arinc665File::arincVersion() const noexcept
 {
   return arinc665VersionV;
 }
 
-void Arinc665File::arincVersion( const SupportedArinc665Version version )
+void Arinc665File::arincVersion(
+  const SupportedArinc665Version version ) noexcept
 {
   arinc665VersionV = version;
 }

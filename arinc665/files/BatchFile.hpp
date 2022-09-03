@@ -78,7 +78,9 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
      * @param[in] version
      *   ARINC 665 Version.
      **/
-    explicit BatchFile( SupportedArinc665Version version );
+    explicit BatchFile(
+      SupportedArinc665Version version =
+        SupportedArinc665Version::Supplement345 ) noexcept;
 
     /**
      * @brief Creates a batch file from the given raw data.
@@ -89,7 +91,7 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
     explicit BatchFile( const ConstRawFileSpan &rawFile );
 
     //! @copydoc Arinc665File::operator=
-    BatchFile& operator=( const ConstRawFileSpan &rawFile) final;
+    BatchFile& operator=( const ConstRawFileSpan &rawFile ) final;
 
     //! @copydoc Arinc665File::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept final;
@@ -189,7 +191,7 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
      * @param[in] rawFile
      *   Raw batch file representation.
      **/
-    void decodeBody( const ConstRawFileSpan &rawFile);
+    void decodeBody( const ConstRawFileSpan &rawFile );
 
     /**
      * @brief Encodes the target hardware information list.

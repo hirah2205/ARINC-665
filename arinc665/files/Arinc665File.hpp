@@ -35,8 +35,8 @@ class ARINC665_EXPORT Arinc665File
 
     //! Base Header Size
     static constexpr ptrdiff_t BaseHeaderSize{
-      sizeof( uint32_t ) +  // file length
-      sizeof( uint16_t ) }; // ARINC Version
+      sizeof( uint32_t ) +  // File length field
+      sizeof( uint16_t ) }; // ARINC Version field
 
     //! Default Checksum Position
     static constexpr ptrdiff_t DefaultChecksumPosition{ 2 };
@@ -163,7 +163,7 @@ class ARINC665_EXPORT Arinc665File
      **/
     static SupportedArinc665Version arinc665Version(
       FileType fileType,
-      uint16_t formatVersionField );
+      uint16_t formatVersionField ) noexcept;
 
     /**
      * @brief Returns the ARINC 665 version for the given @p fileType and
@@ -178,7 +178,7 @@ class ARINC665_EXPORT Arinc665File
      **/
     static uint16_t formatVersionField(
       FileType fileType,
-      SupportedArinc665Version arinc665Version );
+      SupportedArinc665Version arinc665Version ) noexcept;
 
     /**
      * @brief Detects the file type for the given filename.
@@ -229,7 +229,7 @@ class ARINC665_EXPORT Arinc665File
      *
      * @return ARINC 665 version of this file.
      **/
-    [[nodiscard]] SupportedArinc665Version arincVersion() const;
+    [[nodiscard]] SupportedArinc665Version arincVersion() const noexcept;
 
     /**
      * @brief Updates the ARINC 665 version of this file.
@@ -237,7 +237,7 @@ class ARINC665_EXPORT Arinc665File
      * @param[in] version
      *   ARINC 665 version.
      **/
-    void arincVersion( SupportedArinc665Version version );
+    void arincVersion( SupportedArinc665Version version ) noexcept;
 
     /** @} **/
 
@@ -251,7 +251,7 @@ class ARINC665_EXPORT Arinc665File
      *   Checksum position.
      **/
     explicit Arinc665File(
-      SupportedArinc665Version version,
+      SupportedArinc665Version version = SupportedArinc665Version::Supplement345,
       ptrdiff_t checksumPosition = DefaultChecksumPosition ) noexcept;
 
     /**

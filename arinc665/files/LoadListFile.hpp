@@ -90,7 +90,9 @@ class ARINC665_EXPORT LoadListFile : public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit LoadListFile( SupportedArinc665Version version );
+    explicit LoadListFile(
+      SupportedArinc665Version version =
+        SupportedArinc665Version::Supplement345 ) noexcept;
 
     /**
      * @brief Creates a load list file from the given raw data.

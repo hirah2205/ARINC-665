@@ -106,7 +106,7 @@ class ARINC665_EXPORT ListFile : public Arinc665File
      * @copydoc Arinc665File::Arinc665File(SupportedArinc665Version,ptrdiff_t)
      **/
     explicit ListFile(
-      SupportedArinc665Version version,
+      SupportedArinc665Version version = SupportedArinc665Version::Supplement345,
       ptrdiff_t checksumPosition = DefaultChecksumPosition ) noexcept;
 
     //! @copydoc Arinc665File::Arinc665File(const ConstRawFileSpan&,FileType,ptrdiff_t)
@@ -134,10 +134,10 @@ class ARINC665_EXPORT ListFile : public Arinc665File
      *
      * @return *this
      **/
-    ListFile& operator=( const ListFile &other) = default;
+    ListFile& operator=( const ListFile &other ) = default;
 
     //! @copydoc operator=(const Arinc665File&)
-    ListFile& operator=( ListFile &&other) = default;
+    ListFile& operator=( ListFile &&other ) = default;
 
     /**
      * @brief Encodes the Media Information.

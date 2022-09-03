@@ -106,7 +106,9 @@ class ARINC665_EXPORT FileListFile : public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit FileListFile( SupportedArinc665Version version );
+    explicit FileListFile(
+      SupportedArinc665Version version =
+        SupportedArinc665Version::Supplement345 ) noexcept;
 
     /**
      * @brief Creates a file list file from the given raw data.

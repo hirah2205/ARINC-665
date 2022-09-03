@@ -87,7 +87,9 @@ class ARINC665_EXPORT BatchListFile : public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit BatchListFile( SupportedArinc665Version version ) noexcept;
+    explicit BatchListFile(
+      SupportedArinc665Version version =
+        SupportedArinc665Version::Supplement345 ) noexcept;
 
     /**
      * @brief Creates a batch list file from the given raw data.
@@ -131,7 +133,7 @@ class ARINC665_EXPORT BatchListFile : public ListFile
      * @param[in] batch
      *   Batch Information.
      **/
-    void batch( const BatchInfo &batch) ;
+    void batch( const BatchInfo &batch ) ;
 
     //! @copydoc batch(const BatchInfo&)
     void batch( BatchInfo &&batch );

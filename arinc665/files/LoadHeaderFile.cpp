@@ -134,7 +134,8 @@ Arinc645::CheckValue LoadHeaderFile::decodeLoadCheckValue(
     rawFile.subspan( static_cast< size_t >( loadCheckValuePtr ) * 2U ) );
 }
 
-LoadHeaderFile::LoadHeaderFile( const SupportedArinc665Version version ) :
+LoadHeaderFile::LoadHeaderFile(
+  const SupportedArinc665Version version ) noexcept :
   Arinc665File{ version, FileCrcOffset }
 {
 }

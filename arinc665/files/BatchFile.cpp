@@ -22,7 +22,7 @@
 
 namespace Arinc665::Files {
 
-BatchFile::BatchFile( const SupportedArinc665Version version ):
+BatchFile::BatchFile( const SupportedArinc665Version version ) noexcept :
   Arinc665File{ version }
 {
 }

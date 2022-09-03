@@ -303,7 +303,9 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit LoadHeaderFile( SupportedArinc665Version version );
+    explicit LoadHeaderFile(
+      SupportedArinc665Version version =
+        SupportedArinc665Version::Supplement345 ) noexcept;
 
     /**
      * @brief Creates a load header file from the given raw data.

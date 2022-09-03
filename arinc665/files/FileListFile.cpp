@@ -24,12 +24,12 @@
 
 namespace Arinc665::Files {
 
-FileListFile::FileListFile( SupportedArinc665Version version ):
+FileListFile::FileListFile( const SupportedArinc665Version version ) noexcept:
   ListFile{ version }
 {
 }
 
-FileListFile::FileListFile( const ConstRawFileSpan &rawFile):
+FileListFile::FileListFile( const ConstRawFileSpan &rawFile ):
   ListFile{ rawFile, FileType::FileList }
 {
   decodeBody( rawFile );
