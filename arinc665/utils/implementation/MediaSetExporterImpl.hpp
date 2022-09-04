@@ -115,27 +115,18 @@ class MediaSetExporterImpl final : public MediaSetExporter
 
     /**
      * @brief Exports List of Loads File.
-     *
-     * @param[in] medium
-     *   Medium.
      **/
-    void exportListOfLoads( const Media::ConstMediumPtr &medium ) const;
+    void exportListOfLoads() const;
 
     /**
      * @brief Exports List of Batches File.
-     *
-     * @param[in] medium
-     *   Medium Information.
      **/
-    void exportListOfBatches( const Media::ConstMediumPtr &medium ) const;
+    void exportListOfBatches() const;
 
     /**
      * @brief Exports List of Files File.
-     *
-     * @param[in] medium
-     *   Medium Information.
      **/
-    void exportListOfFiles( const Media::ConstMediumPtr &medium ) const;
+    void exportListOfFiles() const;
 
     /**
      * @brief Creates the Load Header File.

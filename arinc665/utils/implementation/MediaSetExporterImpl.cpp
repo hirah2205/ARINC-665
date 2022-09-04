@@ -141,21 +141,17 @@ void MediaSetExporterImpl::operator()()
     exportBatch( batch );
   }
 
-  // export list files
-  for ( const auto &[mediumNumber, medium] : mediaSetV->media() )
+  // export list of loads for all media
+  exportListOfLoads();
+
+  // export "list of batches" file (if present) for all media
+  if ( mediaSetV->numberOfBatches() != 0U )
   {
-    // export list of loads
-    exportListOfLoads( medium );
-
-    // export "list of batches" file (if present)
-    if ( medium->mediaSet()->numberOfBatches() != 0U )
-    {
-      exportListOfBatches( medium );
-    }
-
-    // export "list of files"
-    exportListOfFiles( medium );
+    exportListOfBatches();
   }
+
+  // export "list of files" for all media
+  exportListOfFiles();
 }
 
 void MediaSetExporterImpl::exportDirectory(
@@ -276,21 +272,14 @@ void MediaSetExporterImpl::exportBatch( const Media::ConstBatchPtr &batch )
   }
 }
 
-void MediaSetExporterImpl::exportListOfLoads(
-  const Media::ConstMediumPtr &medium ) const
+void MediaSetExporterImpl::exportListOfLoads() const
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-    << "Export List of Loads to ["
-    << (unsigned int)medium->mediumNumber()
-    << "]";
-
   Arinc665::Files::LoadListFile loadListFile{ arinc665VersionV };
 
-  loadListFile.mediaSequenceNumber( medium->mediumNumber() );
-  loadListFile.mediaSetPn( medium->mediaSet()->partNumber() );
-  loadListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia() );
+  loadListFile.mediaSetPn( mediaSetV->partNumber() );
+  loadListFile.numberOfMediaSetMembers( mediaSetV->numberOfMedia() );
 
   /* add all loads to "list of loads" file */
   for ( const auto &load : mediaSetV->loads() )
@@ -304,26 +293,29 @@ void MediaSetExporterImpl::exportListOfLoads(
 
   loadListFile.userDefinedData( mediaSetV->loadsUserDefinedData() );
 
-  writeFileHandlerV(
-    medium->mediumNumber(),
-    "/" + std::string{ ListOfLoadsName },
-    static_cast< Files::RawFile >( loadListFile ) );
+  for ( const auto &[mediumNumber, medium] : mediaSetV->media() )
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+      << "Export List of Loads to ["
+      << (unsigned int)mediumNumber
+      << "]";
+
+    loadListFile.mediaSequenceNumber( mediumNumber );
+
+    writeFileHandlerV(
+      mediumNumber,
+      "/" + std::string{ ListOfLoadsName },
+      static_cast< Files::RawFile >( loadListFile ) );
+  }
 }
 
-void MediaSetExporterImpl::exportListOfBatches(
-  const Media::ConstMediumPtr &medium ) const
+void MediaSetExporterImpl::exportListOfBatches() const
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-    << "Export List of Batches to ["
-    << (unsigned int)medium->mediumNumber()
-    << "]";
-
   Arinc665::Files::BatchListFile batchListFile{ arinc665VersionV };
-  batchListFile.mediaSequenceNumber( medium->mediumNumber() );
-  batchListFile.mediaSetPn( medium->mediaSet()->partNumber() );
-  batchListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia() );
+  batchListFile.mediaSetPn( mediaSetV->partNumber() );
+  batchListFile.numberOfMediaSetMembers( mediaSetV->numberOfMedia() );
 
   /* add all batches to batches list */
   for ( const auto &batch : mediaSetV->batches() )
@@ -336,55 +328,26 @@ void MediaSetExporterImpl::exportListOfBatches(
 
   batchListFile.userDefinedData( mediaSetV->batchesUserDefinedData() );
 
-  writeFileHandlerV(
-    medium->mediumNumber(),
-    "/" + std::string{ ListOfBatchesName },
-    static_cast< Files::RawFile >( batchListFile ) );
+  for ( const auto &[mediumNumber, medium] : mediaSetV->media() )
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+      << "Export List of Batches to [" << (unsigned int)mediumNumber
+      << "]";
+
+    batchListFile.mediaSequenceNumber( mediumNumber );
+
+    writeFileHandlerV(
+      mediumNumber,
+      "/" + std::string{ ListOfBatchesName },
+      static_cast< Files::RawFile >( batchListFile ) );
+  }
 }
 
-void MediaSetExporterImpl::exportListOfFiles(
-  const Media::ConstMediumPtr &medium ) const
+void MediaSetExporterImpl::exportListOfFiles() const
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-    << "Export List of Files to ["
-    << (unsigned int)medium->mediumNumber()
-    << "]";
-
-  Arinc665::Files::FileListFile fileListFile{ arinc665VersionV };
-  fileListFile.mediaSequenceNumber( medium->mediumNumber() );
-  fileListFile.mediaSetPn( medium->mediaSet()->partNumber() );
-  fileListFile.numberOfMediaSetMembers( medium->mediaSet()->numberOfMedia() );
-
-  // add list of loads
-  const auto&[ listOfLoadsCrc, listOfLoadsCheckValue ]{ fileCrcCheckValue(
-    medium->mediumNumber(),
-    "/" + std::string{ ListOfLoadsName },
-    medium->mediaSet()->effectiveListOfLoadsCheckValueType() ) };
-
-  fileListFile.file( {
-    std::string{ ListOfLoadsName },
-    Files::Arinc665File::encodePath( "/" ),
-    medium->mediumNumber(),
-    listOfLoadsCrc,
-    listOfLoadsCheckValue } );
-
-  // add list of batches - if present
-  if ( medium->mediaSet()->numberOfBatches() != 0 )
-  {
-    const auto&[ listOfBatchesFileCrc, listOfBatchesFileCheckValue ]{ fileCrcCheckValue(
-      medium->mediumNumber(),
-      "/" + std::string{ ListOfBatchesName },
-      medium->mediaSet()->effectiveListOfBatchesCheckValueType() ) };
-
-    fileListFile.file( {
-      std::string{ ListOfBatchesName },
-      Files::Arinc665File::encodePath( "/" ),
-      medium->mediumNumber(),
-      listOfBatchesFileCrc,
-      listOfBatchesFileCheckValue } );
-  }
+  Files::FilesInfo filesInfo{};
 
   /* add all files, load header files, and batch files to file list */
   for ( const auto &file :mediaSetV->files() )
@@ -394,22 +357,73 @@ void MediaSetExporterImpl::exportListOfFiles(
       file->path(),
       file->effectiveCheckValueType() ) };
 
-    fileListFile.file( {
-      std::string{ file->name() },
-      Files::Arinc665File::encodePath( file->path().parent_path() ),
-      file->medium()->mediumNumber(),
-      fileCrc,
-      fileCheckValue } );
+    filesInfo.emplace_back( Files::FileInfo{
+      .filename = std::string{ file->name() },
+      .pathName = Files::Arinc665File::encodePath( file->path().parent_path() ),
+      .memberSequenceNumber = file->medium()->mediumNumber(),
+      .crc = fileCrc,
+      .checkValue = fileCheckValue } );
   }
 
+  Arinc665::Files::FileListFile fileListFile{ arinc665VersionV };
+  fileListFile.mediaSetPn( mediaSetV->partNumber() );
+  fileListFile.numberOfMediaSetMembers( mediaSetV->numberOfMedia() );
   fileListFile.userDefinedData( mediaSetV->filesUserDefinedData() );
   fileListFile.checkValueType(
-    medium->mediaSet()->effectiveListOfFilesCheckValueType() );
+    mediaSetV->effectiveListOfFilesCheckValueType() );
 
-  writeFileHandlerV(
-    medium->mediumNumber(),
-    "/" + std::string{ ListOfFilesName },
-    static_cast< Files::RawFile >( fileListFile ) );
+  for ( const auto &[ mediumNumber, medium ] : mediaSetV->media() )
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+      << "Export List of Files to ["
+      << (unsigned int)mediumNumber
+      << "]";
+
+    fileListFile.mediaSequenceNumber( mediumNumber );
+
+    // clear file list
+    fileListFile.files().clear();
+
+    // add list of loads
+    const auto&[ listOfLoadsCrc, listOfLoadsCheckValue ]{ fileCrcCheckValue(
+      medium->mediumNumber(),
+      "/" + std::string{ ListOfLoadsName },
+      medium->mediaSet()->effectiveListOfLoadsCheckValueType() ) };
+
+    fileListFile.file( {
+      std::string{ ListOfLoadsName },
+      Files::Arinc665File::encodePath( "/" ),
+      medium->mediumNumber(),
+      listOfLoadsCrc,
+      listOfLoadsCheckValue } );
+
+    // add list of batches - if present
+    if ( medium->mediaSet()->numberOfBatches() != 0 )
+    {
+      const auto&[ listOfBatchesFileCrc, listOfBatchesFileCheckValue ]{ fileCrcCheckValue(
+        medium->mediumNumber(),
+        "/" + std::string{ ListOfBatchesName },
+        medium->mediaSet()->effectiveListOfBatchesCheckValueType() ) };
+
+      fileListFile.file( {
+        std::string{ ListOfBatchesName },
+        Files::Arinc665File::encodePath( "/" ),
+        medium->mediumNumber(),
+        listOfBatchesFileCrc,
+        listOfBatchesFileCheckValue } );
+    }
+
+    // add Files
+    fileListFile.files().insert(
+      fileListFile.files().end(),
+      filesInfo.begin(),
+      filesInfo.end() );
+
+    writeFileHandlerV(
+      mediumNumber,
+      "/" + std::string{ ListOfFilesName },
+      static_cast< Files::RawFile >( fileListFile ) );
+  }
 }
 
 void MediaSetExporterImpl::createLoadHeaderFile(
@@ -588,7 +602,8 @@ void MediaSetExporterImpl::createBatchFile(
     static_cast< Files::RawFile >( batchFile ) );
 }
 
-std::tuple< uint16_t, Arinc645::CheckValue > MediaSetExporterImpl::fileCrcCheckValue(
+std::tuple< uint16_t, Arinc645::CheckValue >
+MediaSetExporterImpl::fileCrcCheckValue(
   const uint8_t mediumNumber,
   const std::filesystem::path &filename,
   const Arinc645::CheckValueType checkValueType ) const
