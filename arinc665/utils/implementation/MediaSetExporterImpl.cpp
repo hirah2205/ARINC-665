@@ -441,7 +441,13 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   Files::LoadHeaderFile loadHeaderFile{ arinc665VersionV };
   loadHeaderFile.partFlags( load->partFlags() );
   loadHeaderFile.partNumber( load->partNumber() );
-  loadHeaderFile.targetHardwareIdPositions( load->targetHardwareIdPositions() );
+  for ( const auto &[ thwId, positions ] : load->targetHardwareIdPositions() )
+  {
+    loadHeaderFile.targetHardwareId( thwId );
+    loadHeaderFile.targetHardwareIdPositions(
+      thwId,
+      Files::LoadHeaderFile::Positions{ positions.begin(), positions.end() } );
+  }
   loadHeaderFile.loadType( load->loadType() );
 
   // Process data files and add info to load header.

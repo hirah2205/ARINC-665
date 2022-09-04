@@ -22,9 +22,6 @@
 
 #include <string_view>
 #include <list>
-#include <vector>
-#include <set>
-#include <map>
 #include <utility>
 #include <optional>
 #include <cstdint>
@@ -113,12 +110,12 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
 {
   public:
     //! Positions
-    using Positions = std::set< std::string, std::less<> >;
-    //! Target Hardware ID / Positions
-    using TargetHardwareIdPositions =
-      std::map< std::string, Positions, std::less<> >;
+    using Positions = std::list< std::string >;
+    //! Target Hardware IDs / Positions
+    using TargetHardwareIdsPositions =
+      std::list< std::pair< std::string, Positions > >;
     //! Target Hardware IDs
-    using TargetHardwareIds = std::set< std::string, std::less<> >;
+    using TargetHardwareIds = std::list< std::string >;
     //! Load Type (Description + ID)
     using LoadType =
       std::optional< std::pair< std::string, uint16_t > >;
@@ -366,18 +363,20 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
 
     /**
      * @name Load Part Number
+     *
+     * Each Load header File (Load) shall have a unique Part Number.
      * @{
      **/
 
     /**
      * @brief Returns the Part Number of the load header file.
      *
-     * @return Part Number of the load header file.
+     * @return Part Number of the Load Header File.
      **/
     [[nodiscard]] std::string_view partNumber() const;
 
     /**
-     * @brief Updates the Part Number of the load header file.
+     * @brief Updates the Part Number of the Load Header File.
      *
      * @param[in] partNumber
      *   New Part Number.
@@ -386,38 +385,6 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
 
     //! @copydoc partNumber(std::string_view)
     void partNumber( std::string &&partNumber );
-
-    /** @} **/
-
-    /**
-     * @name Target Hardware IDs with Positions
-     * @sa TargetHardwareIdPositions
-     * @{
-     **/
-
-    /**
-     * @brief Returns the Target Hardware ID/ Positions.
-     *
-     * @return The Target Hardware IDs
-     **/
-    [[nodiscard]] const TargetHardwareIdPositions&
-    targetHardwareIdPositions() const;
-
-    //! @copydoc targetHardwareIdPositions() const
-    TargetHardwareIdPositions& targetHardwareIdPositions();
-
-    /**
-     * @brief Sets the Target Hardware ID/ Positions.
-     *
-     * @param[in] targetHardwareIdPositions
-     *   Target Hardware ID/ Positions.
-     **/
-    void targetHardwareIdPositions(
-      const TargetHardwareIdPositions &targetHardwareIdPositions );
-
-    //! @copydoc targetHardwareIdPositions(const TargetHardwareIdPositions&)
-    void targetHardwareIdPositions(
-      TargetHardwareIdPositions &&targetHardwareIdPositions );
 
     /** @} **/
 
@@ -431,7 +398,10 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      *
      * @return Target Hardware IDs.
      **/
-    [[nodiscard]] TargetHardwareIds targetHardwareIds() const;
+    [[nodiscard]] const TargetHardwareIds& targetHardwareIds() const;
+
+    //! @copydoc targetHardwareIds() const
+    [[nodiscard]] TargetHardwareIds& targetHardwareIds();
 
     /**
      * @brief Add Target Hardware IDs without position information.
@@ -439,7 +409,58 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] targetHardwareIds
      *   Target Hardware IDs.
      **/
-    void targetHardwareIds( const TargetHardwareIds& targetHardwareIds );
+    void targetHardwareIds( const TargetHardwareIds &targetHardwareIds );
+
+    //! @copydoc targetHardwareIds(const TargetHardwareIds&)
+    void targetHardwareIds( TargetHardwareIds &&targetHardwareIds );
+
+    /**
+     * @brief Add Target Hardware ID.
+     *
+     * @param[in] targetHardwareId
+     *   Target Hardware ID.
+     **/
+    void targetHardwareId( std::string_view targetHardwareId );
+
+    //! @copydoc targetHardwareId(std::string_view)
+    void targetHardwareId( std::string &&targetHardwareId );
+
+    /** @} **/
+
+    /**
+     * @name Target Hardware IDs with Positions
+     *
+     * Target HW ID with Position is not intended to replace the Target HW ID,
+     * which remains mandatory.
+     * Target HW ID with Positions is only used to restrict the LSP upload into
+     * a specific position of a Target HW ID.
+     *
+     * @{
+     **/
+
+    /**
+     * @brief Returns the Target Hardware ID/ Positions.
+     *
+     * @return Target Hardware IDs
+     **/
+    [[nodiscard]] const TargetHardwareIdsPositions&
+    targetHardwareIdsPositions() const;
+
+    //! @copydoc targetHardwareIdsPositions() const
+    TargetHardwareIdsPositions& targetHardwareIdsPositions();
+
+    /**
+     * @brief Sets the Target Hardware ID/ Positions.
+     *
+     * @param[in] targetHardwareIdsPositions
+     *   Target Hardware ID/ Positions.
+     **/
+    void targetHardwareIdsPositions(
+      const TargetHardwareIdsPositions &targetHardwareIdsPositions );
+
+    //! @copydoc targetHardwareIdsPositions(const TargetHardwareIdsPositions&)
+    void targetHardwareIdsPositions(
+      TargetHardwareIdsPositions &&targetHardwareIdsPositions );
 
     /**
      * @brief Add Target Hardware ID/ Positions.
@@ -449,14 +470,14 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] positions
      *   Positions (can be empty)
      **/
-    void targetHardwareId(
+    void targetHardwareIdPositions(
       std::string_view targetHardwareId,
-      const Positions &positions = {} );
+      const Positions &positions );
 
-    //! @copydoc targetHardwareId(std::string_view,const Positions&)
-    void targetHardwareId(
+    //! @copydoc targetHardwareIdPositions(std::string_view,const Positions&)
+    void targetHardwareIdPositions(
       std::string &&targetHardwareId,
-      Positions &&positions = {} );
+      Positions &&positions );
 
     /** @} **/
 
@@ -682,8 +703,10 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     uint16_t partFlagsV{ 0U };
     //! Part Number of the Load
     std::string partNumberV;
-    //! List of compatible Target Hardware ID/ Positions
-    TargetHardwareIdPositions targetHardwareIdPositionsV;
+    //! List of compatible Target Hardware IDs
+    TargetHardwareIds targetHardwareIdsV;
+    //! List of compatible Target Hardware IDs with Positions
+    TargetHardwareIdsPositions targetHardwareIdsPositionsV;
     //! Load Type
     LoadType typeV;
     //! List of Data Files

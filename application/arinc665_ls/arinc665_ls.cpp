@@ -181,20 +181,12 @@ static void printBatchFile( const std::filesystem::path &lubFile )
   {
     Arinc665::Files::BatchFile batch{ loadFile( lubFile ) };
 
-    std::cout << "part number: "<< batch.partNumber() << "\n";
-    std::cout << "comment: "<< batch.comment() << "\n";
+    Arinc665::Utils::FilePrinter_print(
+      batch,
+      std::cout,
+      "\t",
+      "\t" );
 
-    for ( auto const &targetHardware : batch.targetsHardware())
-    {
-      std::cout
-        << "target HW: " << targetHardware.targetHardwareIdPosition << "\n";
-      for ( auto const &load : targetHardware.loads )
-      {
-        std::cout
-          << "  load: " << load.headerFilename
-          << " - " << load.partNumber << "\n";
-      }
-    }
   }
   catch ( const boost::exception &e )
   {
@@ -222,6 +214,7 @@ static void printLoadHeaderFile( const std::filesystem::path &luhFile)
     Arinc665::Utils::FilePrinter_print(
       load,
       std::cout,
+      "\t",
       "\t" );
 
     std::cout
@@ -261,6 +254,7 @@ static void printLoadListFile( const std::filesystem::path &loadsLum )
     Arinc665::Utils::FilePrinter_print(
       Arinc665::Files::LoadListFile{loadFile( loadsLum ) },
       std::cout,
+      "\t",
       "\t" );
   }
   catch ( const boost::exception &e )
@@ -285,6 +279,7 @@ static void printBatchListFile( const std::filesystem::path &filePath )
     Arinc665::Utils::FilePrinter_print(
       Arinc665::Files::BatchListFile{ loadFile( filePath ) },
       std::cout,
+      "\t",
       "\t" );
   }
   catch ( const boost::exception &e )
@@ -309,6 +304,7 @@ static void printFileListFile( const std::filesystem::path &filesLum )
     Arinc665::Utils::FilePrinter_print(
       Arinc665::Files::FileListFile{ loadFile( filesLum ) },
       std::cout,
+      "\t",
       "\t" );
   }
   catch ( const boost::exception &e )
@@ -331,7 +327,7 @@ static void list_files( const std::filesystem::path &loadDir )
   for ( std::filesystem::directory_iterator itr( loadDir );
     itr != std::filesystem::directory_iterator(); ++itr )
   {
-    std::cout << " * " << itr->path().filename() << " - ";
+    std::cout << itr->path() << " - ";
 
     if ( std::filesystem::is_directory( itr->path() ) )
     {

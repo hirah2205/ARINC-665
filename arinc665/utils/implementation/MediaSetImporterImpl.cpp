@@ -331,8 +331,17 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   loadPtr->partFlags( loadHeaderFile.partFlags() );
   loadPtr->partNumber( loadHeaderFile.partNumber() );
   loadPtr->loadType( loadHeaderFile.loadType() );
-  loadPtr->targetHardwareIdPositions(
-    loadHeaderFile.targetHardwareIdPositions() );
+  Media::Load::TargetHardwareIdPositions thwIdsPositions{};
+  for ( const auto &[ thwId, positions ] : loadHeaderFile.targetHardwareIdsPositions() )
+  {
+    thwIdsPositions.try_emplace( thwId, positions.begin(), positions.end() );
+  }
+  for ( const auto &thwId : loadHeaderFile.targetHardwareIds() )
+  {
+    // if not previously added - add it now with empty positions
+    thwIdsPositions.try_emplace( thwId );
+  }
+  loadPtr->targetHardwareIdPositions( std::move( thwIdsPositions ) );
 
   // Load Check CRC and Load Check Value
   Arinc645::Arinc645Crc32 loadCrc{};

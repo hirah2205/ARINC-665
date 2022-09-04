@@ -185,67 +185,76 @@ void LoadHeaderFile::partNumber( std::string &&partNumber )
   partNumberV = std::move( partNumber );
 }
 
-const LoadHeaderFile::TargetHardwareIdPositions&
-LoadHeaderFile::targetHardwareIdPositions() const
+const LoadHeaderFile::TargetHardwareIds&
+LoadHeaderFile::targetHardwareIds() const
 {
-  return targetHardwareIdPositionsV;
+  return targetHardwareIdsV;
 }
 
-LoadHeaderFile::TargetHardwareIdPositions&
-LoadHeaderFile::targetHardwareIdPositions()
+LoadHeaderFile::TargetHardwareIds& LoadHeaderFile::targetHardwareIds()
 {
-  return targetHardwareIdPositionsV;
-}
-
-void LoadHeaderFile::targetHardwareIdPositions(
-  const TargetHardwareIdPositions &targetHardwareIdPositions )
-{
-  targetHardwareIdPositionsV = targetHardwareIdPositions;
-}
-
-void LoadHeaderFile::targetHardwareIdPositions(
-  TargetHardwareIdPositions &&targetHardwareIdPositions )
-{
-  targetHardwareIdPositionsV = std::move( targetHardwareIdPositions );
-}
-
-LoadHeaderFile::TargetHardwareIds LoadHeaderFile::targetHardwareIds() const
-{
-  BOOST_LOG_FUNCTION()
-
-  TargetHardwareIds targetHardwareIds{};
-
-  for ( const auto &[ targetHardwareId, positions ] : targetHardwareIdPositionsV )
-  {
-    targetHardwareIds.emplace( targetHardwareId );
-  }
-
-  return targetHardwareIds;
+  return targetHardwareIdsV;
 }
 
 void LoadHeaderFile::targetHardwareIds(
   const TargetHardwareIds &targetHardwareIds )
 {
-  for ( const auto &thwId : targetHardwareIds )
-  {
-    targetHardwareId( thwId );
-  }
+  targetHardwareIdsV = targetHardwareIds;
 }
 
-void LoadHeaderFile::targetHardwareId(
+void LoadHeaderFile::targetHardwareIds( TargetHardwareIds &&targetHardwareIds )
+{
+  targetHardwareIdsV = std::move( targetHardwareIds );
+}
+
+void LoadHeaderFile::targetHardwareId( std::string_view targetHardwareId )
+{
+  targetHardwareIdsV.emplace_back( targetHardwareId );
+}
+
+void LoadHeaderFile::targetHardwareId( std::string &&targetHardwareId )
+{
+  targetHardwareIdsV.emplace_back( std::move( targetHardwareId ) );
+}
+
+const LoadHeaderFile::TargetHardwareIdsPositions&
+LoadHeaderFile::targetHardwareIdsPositions() const
+{
+  return targetHardwareIdsPositionsV;
+}
+
+LoadHeaderFile::TargetHardwareIdsPositions&
+LoadHeaderFile::targetHardwareIdsPositions()
+{
+  return targetHardwareIdsPositionsV;
+}
+
+void LoadHeaderFile::targetHardwareIdsPositions(
+  const TargetHardwareIdsPositions &targetHardwareIdsPositions )
+{
+  targetHardwareIdsPositionsV = targetHardwareIdsPositions;
+}
+
+void LoadHeaderFile::targetHardwareIdsPositions(
+  TargetHardwareIdsPositions &&targetHardwareIdsPositions )
+{
+  targetHardwareIdsPositionsV = std::move( targetHardwareIdsPositions );
+}
+
+void LoadHeaderFile::targetHardwareIdPositions(
   std::string_view targetHardwareId,
   const Positions &positions )
 {
-  targetHardwareIdPositionsV.insert_or_assign(
-    TargetHardwareIdPositions::key_type{ targetHardwareId },
+  targetHardwareIdsPositionsV.emplace_back(
+    TargetHardwareIdsPositions::value_type::first_type{ targetHardwareId },
     positions );
 }
 
-void LoadHeaderFile::targetHardwareId(
+void LoadHeaderFile::targetHardwareIdPositions(
   std::string &&targetHardwareId,
   Positions &&positions )
 {
-  targetHardwareIdPositionsV.insert_or_assign(
+  targetHardwareIdsPositionsV.emplace_back(
     std::move( targetHardwareId ),
     std::move( positions ) );
 }
@@ -420,7 +429,7 @@ RawFile LoadHeaderFile::encode() const
   }
 
   // THW ID list
-  auto rawThwIdsList{ StringUtils_encodeStrings( targetHardwareIds() ) };
+  auto rawThwIdsList{ StringUtils_encodeStrings( targetHardwareIdsV ) };
   assert( rawThwIdsList.size() % 2 == 0 );
 
   Helper::setInt< uint32_t>(
@@ -437,7 +446,7 @@ RawFile LoadHeaderFile::encode() const
     uint16_t thwIdPosCount{ 0 };
     RawFile rawThwPos( sizeof( uint16_t ) );
 
-    for ( const auto &[ thwId, positions ] : targetHardwareIdPositionsV )
+    for ( const auto &[ thwId, positions ] : targetHardwareIdsPositionsV )
     {
       // skip if no positions are stored
       if ( positions.empty() )
@@ -656,6 +665,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
 
 
   // Load Type Description Field (ARINC 665-3)
+  typeV.reset();
   if ( decodeV3Data && ( 0!=loadTypeDescriptionPtr ) )
   {
     std::string loadTypeDescription{};
@@ -670,16 +680,17 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
   }
 
 
-  // target hardware id list
+  // Target Hardware ID list
   TargetHardwareIds targetHardwareIdsValue{};
 
   StringUtils_decodeStrings(
     rawFile.begin() + static_cast< ptrdiff_t >( targetHardwareIdListPtr ) * 2,
-    targetHardwareIdsValue);
+    targetHardwareIdsValue );
 
-  targetHardwareIds( targetHardwareIdsValue );
+  targetHardwareIds( std::move( targetHardwareIdsValue ) );
 
   // THW IDs with Positions Field (ARINC 665-3)
+  targetHardwareIdsPositionsV.clear();
   if ( decodeV3Data && ( 0U != thwIdsPositionPtr ) )
   {
     uint16_t numberOfThwIdsWithPos{};
@@ -695,7 +706,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
       Positions positions{};
       it = StringUtils_decodeStrings( it, positions );
 
-      targetHardwareId( std::move( thwId ), std::move( positions ) );
+      targetHardwareIdPositions( std::move( thwId ), std::move( positions ) );
     }
   }
 
@@ -716,6 +727,7 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
 
 
   // user defined data
+  userDefinedDataV.clear();
   if ( 0U != userDefinedDataPtr )
   {
     ptrdiff_t endOfUserDefinedData{ static_cast< ptrdiff_t>( rawFile.size() ) - FileCrcOffset };

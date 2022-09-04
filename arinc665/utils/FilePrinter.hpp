@@ -95,6 +95,24 @@ void FilePrinter_print(
   std::string_view initialIndent = {},
   std::string_view indent = "" );
 
+/**
+ * @brief Prints the Content of the given Batch File.
+ *
+ * @param[in] batchFile
+ *   Batch File
+ * @param[in,out] outS
+ *   Output Stream
+ * @param[in] initialIndent
+ *   Initial Indention prepended before each output.
+ * @param[in] indent
+ *   Indent for sub-information
+ **/
+void FilePrinter_print(
+  const Arinc665::Files::BatchFile &batchFile,
+  std::ostream &outS = std::cout,
+  std::string_view initialIndent = {},
+  std::string_view indent = "" );
+
 }
 
 #endif

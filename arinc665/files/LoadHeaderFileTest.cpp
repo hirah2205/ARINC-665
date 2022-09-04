@@ -126,29 +126,31 @@ BOOST_AUTO_TEST_CASE( constructor1)
 
   LoadHeaderFile file{ rawFile};
 
-  BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2);
+  BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2 );
 
-  BOOST_CHECK( file.partNumber() == "PN123");
+  BOOST_CHECK( file.partNumber() == "PN123" );
 
-  const auto& targetHardwareIds{ file.targetHardwareIdPositions()};
-  BOOST_CHECK( targetHardwareIds.size() == 1);
-  BOOST_CHECK( targetHardwareIds.begin()->first == "THW0");
+  const auto& targetHardwareIds{ file.targetHardwareIds() };
+  BOOST_CHECK( targetHardwareIds.size() == 1 );
+  BOOST_CHECK( *targetHardwareIds.begin() == "THW0" );
 
-  const auto &dataFiles{ file.dataFiles()};
-  BOOST_CHECK( dataFiles.size() == 1);
-  BOOST_CHECK( dataFiles.begin()->filename == "FILE1");
-  BOOST_CHECK( dataFiles.begin()->partNumber == "PN0001");
-  BOOST_CHECK( dataFiles.begin()->length == 32);
-  BOOST_CHECK( dataFiles.begin()->crc == 0xABCD);
+  BOOST_CHECK( file.targetHardwareIdsPositions().empty() );
+
+  const auto &dataFiles{ file.dataFiles() };
+  BOOST_CHECK( dataFiles.size() == 1 );
+  BOOST_CHECK( dataFiles.begin()->filename == "FILE1" );
+  BOOST_CHECK( dataFiles.begin()->partNumber == "PN0001" );
+  BOOST_CHECK( dataFiles.begin()->length == 32 );
+  BOOST_CHECK( dataFiles.begin()->crc == 0xABCD );
   BOOST_CHECK( dataFiles.begin()->checkValue == Arinc645::NoCheckValue );
 
-  const auto &supportFiles{ file.supportFiles()};
-  BOOST_CHECK( supportFiles.size() == 1);
+  const auto &supportFiles{ file.supportFiles() };
+  BOOST_CHECK( supportFiles.size() == 1 );
   BOOST_CHECK( supportFiles.begin()->filename == "FILE2" );
   BOOST_CHECK( supportFiles.begin()->partNumber == "PN0002" );
   BOOST_CHECK( supportFiles.begin()->length == 16 );
   BOOST_CHECK( supportFiles.begin()->crc == 0xABCD );
-  BOOST_CHECK( supportFiles.begin()->checkValue== Arinc645::NoCheckValue );
+  BOOST_CHECK( supportFiles.begin()->checkValue == Arinc645::NoCheckValue );
 
   BOOST_CHECK( file.userDefinedData().size() == 4 );
   BOOST_CHECK( std::equal(
