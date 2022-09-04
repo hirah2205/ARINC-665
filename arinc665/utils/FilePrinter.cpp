@@ -123,7 +123,7 @@ void FilePrinter_print(
       << fmt::format(
            "{0}Batch PN: {1}\n"
            "{0}Batch filename: {2}\n"
-           "{0}Batch member sequence number: {3}\n\n",
+           "{0}Batch member sequence number: {3:02d}\n\n",
            nextIndent,
            batch.partNumber,
            batch.filename,

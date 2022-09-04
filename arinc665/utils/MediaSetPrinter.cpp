@@ -63,6 +63,9 @@ void MediaSetPrinter_print(
     << "Media Set Part Number: '" << mediaSet.partNumber() << "'\n"
 
     << initialIndent
+    << "Number of Media: " << (int)mediaSet.numberOfMedia() << "\n"
+
+    << initialIndent
     << "Media Set Check Value Type: "
     << printCheckValueType( mediaSet.mediaSetCheckValueType() )
     << " - "
@@ -192,6 +195,7 @@ void MediaSetPrinter_print(
 
     << initialIndent
     << "Load Path: "
+    << "[" << (int)load.medium()->mediumNumber() << "]:"
     << load.path().generic_string() << "\n"
 
     << initialIndent
@@ -258,6 +262,7 @@ void MediaSetPrinter_print(
 
       << nextIndent
       << "File Path: "
+      << "[" << (int)file->medium()->mediumNumber() << "]:"
       << file->path().generic_string() << "\n"
 
       << nextIndent
@@ -288,6 +293,7 @@ void MediaSetPrinter_print(
 
       << nextIndent
       << "File Path: "
+      << "[" << (int)file->medium()->mediumNumber() << "]:"
       << file->path().generic_string() << "\n"
 
       << nextIndent
@@ -323,6 +329,7 @@ void MediaSetPrinter_print(
 
     << initialIndent
     << "Batch Path: "
+    << "[" << (int)batch.medium()->mediumNumber() << "]:"
     << batch.path().generic_string() << "\n"
 
     << initialIndent
@@ -350,6 +357,7 @@ void MediaSetPrinter_print(
 
         << nextNextIndent
         << "Load Path: "
+        << "[" << (int)load->medium()->mediumNumber() << "]:"
         << load->path().generic_string() << "\n";
 
       outS << "\n";
