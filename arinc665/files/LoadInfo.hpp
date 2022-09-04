@@ -16,7 +16,6 @@
 #include <arinc665/files/Files.hpp>
 
 #include <string>
-#include <set>
 #include <vector>
 #include <cstdint>
 
@@ -33,7 +32,7 @@ namespace Arinc665::Files {
 struct ARINC665_EXPORT LoadInfo
 {
   //! Target Hardware IDs.
-  using ThwIds = std::set< std::string, std::less<> >;
+  using ThwIds = std::list< std::string >;
 
   //! Load Part Number
   std::string partNumber;

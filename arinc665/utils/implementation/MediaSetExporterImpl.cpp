@@ -284,16 +284,17 @@ void MediaSetExporterImpl::exportListOfLoads() const
   /* add all loads to "list of loads" file */
   for ( const auto &load : mediaSetV->loads() )
   {
+    auto thwIds{ load->targetHardwareIds() };
     loadListFile.load( Files::LoadInfo{
       std::string{ load->partNumber() },
       std::string{ load->name() },
       load->medium()->mediumNumber(),
-      load->targetHardwareIds() } );
+      Files::LoadInfo::ThwIds{ thwIds.begin(), thwIds.end() } } );
   }
 
   loadListFile.userDefinedData( mediaSetV->loadsUserDefinedData() );
 
-  for ( const auto &[mediumNumber, medium] : mediaSetV->media() )
+  for ( const auto &[ mediumNumber, medium ] : mediaSetV->media() )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
       << "Export List of Loads to ["

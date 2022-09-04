@@ -251,7 +251,8 @@ class ARINC665_EXPORT Arinc665File
      *   Checksum position.
      **/
     explicit Arinc665File(
-      SupportedArinc665Version version = SupportedArinc665Version::Supplement345,
+      SupportedArinc665Version version =
+        SupportedArinc665Version::Supplement345,
       ptrdiff_t checksumPosition = DefaultChecksumPosition ) noexcept;
 
     /**
