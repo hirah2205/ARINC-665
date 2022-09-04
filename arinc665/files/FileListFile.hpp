@@ -149,7 +149,18 @@ class ARINC665_EXPORT FileListFile : public ListFile
      *
      * @return List of files
      **/
-    FilesInfo& files();
+    [[nodiscard]] FilesInfo& files();
+
+    /**
+     * @brief Replaces the List of Files with @p files.
+     *
+     * @param[in] files
+     *   New File List
+     **/
+    void files( const FilesInfo &files );
+
+    //! @copydoc files(const FilesInfo&)
+    void files( FilesInfo &&files );
 
     /**
      * @brief Adds the given file information.

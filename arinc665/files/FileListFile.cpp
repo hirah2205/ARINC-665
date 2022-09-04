@@ -63,9 +63,19 @@ FilesInfo& FileListFile::files()
   return filesV;
 }
 
+void FileListFile::files( const FilesInfo &files )
+{
+  filesV = files;
+}
+
+void FileListFile::files( FilesInfo &&files )
+{
+  filesV = std::move( files );
+}
+
 void FileListFile::file( const FileInfo &file )
 {
-  filesV.push_back( file);
+  filesV.push_back( file );
 }
 
 void FileListFile::file( FileInfo &&file )
@@ -128,16 +138,17 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
     return false;
   }
 
+  auto fileIt{ filesV.begin() };
+  auto otherFileIt{ otherFileList.begin() };
   for ( size_t i = 0; i < filesV.size(); ++i )
   {
-    if (
-      ( filesV[i].filename != otherFileList[i].filename ) ||
-      ( filesV[i].pathName != otherFileList[i].pathName ) )
+    if ( ( fileIt->filename != otherFileIt->filename )
+      || ( fileIt->pathName != otherFileIt->pathName ) )
     {
       return false;
     }
 
-    switch ( Arinc665File::fileType( filesV[i].filename ) )
+    switch ( Arinc665File::fileType( fileIt->filename ) )
     {
       case FileType::LoadList:
       case FileType::BatchList:
@@ -145,15 +156,18 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
         break;
 
       default:
-        if ( ( filesV[i].crc != otherFileList[i].crc )
-          || ( filesV[i].checkValue != otherFileList[i].checkValue )
-          || ( filesV[i].memberSequenceNumber != otherFileList[i].memberSequenceNumber ) )
+        if ( ( fileIt->crc != otherFileIt->crc )
+          || ( fileIt->checkValue != otherFileIt->checkValue )
+          || ( fileIt->memberSequenceNumber != otherFileIt->memberSequenceNumber ) )
         {
           return false;
         }
 
         break;
     }
+
+    ++fileIt;
+    ++otherFileIt;
   }
 
   return true;

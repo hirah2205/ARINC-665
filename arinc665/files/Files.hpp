@@ -88,7 +88,7 @@ class LoadListFile;
 
 struct FileInfo;
 //! Files Information.
-using FilesInfo = std::vector< FileInfo >;
+using FilesInfo = std::list< FileInfo >;
 class FileListFile;
 
 }
