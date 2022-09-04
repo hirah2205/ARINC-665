@@ -1,4 +1,4 @@
-# ARINC 665 XML Printer {#arinc665_print_xml_main}
+# ARINC 665 XML Print Application {#arinc665_print_xml_main}
 
 Loads the given XML and prints the Loaded Media Set to console
 

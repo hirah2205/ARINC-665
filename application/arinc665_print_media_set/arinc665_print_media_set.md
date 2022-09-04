@@ -1,4 +1,4 @@
-# ARINC 665 Media Set Printer {#arinc665_print_media_set_main}
+# ARINC 665 Media Set Print Application {#arinc665_print_media_set_main}
 
 Loads the given Media Set and prints the content to the console.
 

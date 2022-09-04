@@ -219,12 +219,12 @@ void MediaSetExporterImpl::exportLoad( const Media::ConstLoadPtr &load )
       }
       else
       {
-        createLoadHeaderFile( load );
+        createLoadHeaderFile( *load );
       }
       break;
 
     case FileCreationPolicy::All:
-      createLoadHeaderFile( load );
+      createLoadHeaderFile( *load );
       break;
 
     default:
@@ -258,12 +258,12 @@ void MediaSetExporterImpl::exportBatch( const Media::ConstBatchPtr &batch )
       }
       else
       {
-        createBatchFile( batch );
+        createBatchFile( *batch );
       }
       break;
 
     case FileCreationPolicy::All:
-      createBatchFile( batch );
+      createBatchFile( *batch );
       break;
 
     default:
@@ -426,47 +426,37 @@ void MediaSetExporterImpl::exportListOfFiles() const
   }
 }
 
-void MediaSetExporterImpl::createLoadHeaderFile(
-  const Media::ConstFilePtr &loadFile ) const
+void MediaSetExporterImpl::createLoadHeaderFile( const Media::Load &load ) const
 {
-  // up-cast load file
-  auto load{ std::dynamic_pointer_cast< const Media::Load>( loadFile ) };
-
-  if ( !load )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Cannot cast file to load" } );
-  }
-
   Files::LoadHeaderFile loadHeaderFile{ arinc665VersionV };
-  loadHeaderFile.partFlags( load->partFlags() );
-  loadHeaderFile.partNumber( load->partNumber() );
-  for ( const auto &[ thwId, positions ] : load->targetHardwareIdPositions() )
+  loadHeaderFile.partFlags( load.partFlags() );
+  loadHeaderFile.partNumber( load.partNumber() );
+  for ( const auto &[ thwId, positions ] : load.targetHardwareIdPositions() )
   {
     loadHeaderFile.targetHardwareId( thwId );
     loadHeaderFile.targetHardwareIdPositions(
       thwId,
       Files::LoadHeaderFile::Positions{ positions.begin(), positions.end() } );
   }
-  loadHeaderFile.loadType( load->loadType() );
+  loadHeaderFile.loadType( load.loadType() );
 
   // Process data files and add info to load header.
-  for ( const auto &file : load->dataFiles( true ) )
+  for ( const auto &file : load.dataFiles( true ) )
   {
     loadHeaderFile.dataFile( loadFileInformation( file ) );
   }
 
   // Process support files and add info to load header.
-  for ( const auto &file: load->supportFiles( true ) )
+  for ( const auto &file: load.supportFiles( true ) )
   {
     loadHeaderFile.supportFile( loadFileInformation( file ) );
   }
 
   // User Defined Data
-  loadHeaderFile.userDefinedData( load->userDefinedData() );
+  loadHeaderFile.userDefinedData( load.userDefinedData() );
 
   // Set Check Value Type before Raw File generation (for Space Reserving)
-  loadHeaderFile.loadCheckValueType( load->effectiveLoadCheckValueType() );
+  loadHeaderFile.loadCheckValueType( load.effectiveLoadCheckValueType() );
 
   // RAW load header used for load Check Value and CRC calculation
   auto rawLoadHeader{ Files::RawFile( loadHeaderFile ) };
@@ -475,7 +465,7 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   if ( SupportedArinc665Version::Supplement345 == arinc665VersionV )
   {
     auto checkValueGenerator{
-      Arinc645::CheckValueGenerator::create( load->effectiveLoadCheckValueType() ) };
+      Arinc645::CheckValueGenerator::create( load.effectiveLoadCheckValueType() ) };
     assert( checkValueGenerator );
 
     Files::LoadHeaderFile::processLoadCheckValue(
@@ -483,7 +473,7 @@ void MediaSetExporterImpl::createLoadHeaderFile(
       *checkValueGenerator );
 
     // load data files for Load Check Value.
-    for ( const auto &[ file, partNumber, checkValueType ] : load->dataFiles() )
+    for ( const auto &[ file, partNumber, checkValueType ] : load.dataFiles() )
     {
       auto rawDataFile{ readFileHandlerV(
         file->medium()->mediumNumber(),
@@ -493,7 +483,7 @@ void MediaSetExporterImpl::createLoadHeaderFile(
     }
 
     // load support files for Load Check Value.
-    for ( const auto &[ file, partNumber, checkValueType ] : load->supportFiles() )
+    for ( const auto &[ file, partNumber, checkValueType ] : load.supportFiles() )
     {
       auto rawSupportFile{ readFileHandlerV(
         file->medium()->mediumNumber(),
@@ -514,7 +504,7 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   Files::LoadHeaderFile::processLoadCrc( rawLoadHeader, loadCrc );
 
   // load data files for load CRC.
-  for ( const auto &[ file, partNumber, checkValueType ] : load->dataFiles() )
+  for ( const auto &[ file, partNumber, checkValueType ] : load.dataFiles() )
   {
     auto rawDataFile{ readFileHandlerV(
       file->medium()->mediumNumber(),
@@ -526,7 +516,7 @@ void MediaSetExporterImpl::createLoadHeaderFile(
   }
 
   // load support files for load CRC.
-  for ( const auto &[ file, partNumber, checkValueType ] : load->supportFiles() )
+  for ( const auto &[ file, partNumber, checkValueType ] : load.supportFiles() )
   {
     auto rawSupportFile{ readFileHandlerV(
       file->medium()->mediumNumber(),
@@ -542,8 +532,8 @@ void MediaSetExporterImpl::createLoadHeaderFile(
 
   // Write Load Header File
   writeFileHandlerV(
-    load->medium()->mediumNumber(),
-    load->path(),
+    load.medium()->mediumNumber(),
+    load.path(),
     rawLoadHeader );
 }
 
@@ -567,24 +557,14 @@ Files::LoadFileInfo MediaSetExporterImpl::loadFileInformation(
       rawDataFile ) };
 }
 
-void MediaSetExporterImpl::createBatchFile(
-  const Media::ConstFilePtr &file ) const
+void MediaSetExporterImpl::createBatchFile( const Media::Batch &batch ) const
 {
-  // up-cast batch file
-  const auto batch{ std::dynamic_pointer_cast< const Media::Batch>( file ) };
-
-  if ( !batch )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Cannot cast file to batch" } );
-  }
-
   Files::BatchFile batchFile{ arinc665VersionV };
-  batchFile.partNumber( batch->partNumber() );
-  batchFile.comment( batch->comment() );
+  batchFile.partNumber( batch.partNumber() );
+  batchFile.comment( batch.comment() );
 
   // iterate over targets
-  for ( const auto &[ targetHwId, loads ] : batch->targets() )
+  for ( const auto &[ targetHwId, loads ] : batch.targets() )
   {
     Files::BatchLoadsInfo batchLoadsInfo{};
 
@@ -603,8 +583,8 @@ void MediaSetExporterImpl::createBatchFile(
   }
 
   writeFileHandlerV(
-    batch->medium()->mediumNumber(),
-    batch->path(),
+    batch.medium()->mediumNumber(),
+    batch.path(),
     static_cast< Files::RawFile >( batchFile ) );
 }
 

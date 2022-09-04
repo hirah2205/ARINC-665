@@ -43,8 +43,8 @@ class ARINC665_EXPORT JsonMediaSetManager
     static void create( const std::filesystem::path &directory );
 
     /**
-     * @brief Checks if a Media Set Manager Configuration is available or creates
-     *   it.
+     * @brief Checks if a Media Set Manager Configuration is available or
+     *   creates it.
      *
      * @param[in] directory
      *   Directory for Media Set Manger.

@@ -131,10 +131,10 @@ class MediaSetExporterImpl final : public MediaSetExporter
     /**
      * @brief Creates the Load Header File.
      *
-     * @param[in] loadFile
+     * @param[in] load
      *   Load header file.
      **/
-    void createLoadHeaderFile( const Media::ConstFilePtr &loadFile ) const;
+    void createLoadHeaderFile( const Media::Load &load ) const;
 
     /**
      * @brief Calculate Load file CRC, Check Value and returns File Information.
@@ -153,10 +153,10 @@ class MediaSetExporterImpl final : public MediaSetExporter
     /**
      * @brief Creates the Batch File.
      *
-     * @param[in] file
+     * @param[in] batch
      *   Batch file.
      **/
-    void createBatchFile( const Media::ConstFilePtr &file ) const;
+    void createBatchFile( const Media::Batch &batch ) const;
 
     /**
      * @brief Calculates CRC16 and Check Value of given file.

@@ -1,4 +1,4 @@
-# ARINC 665 Decompiler {#arinc665_decompiler_main}
+# ARINC 665 Decompiler Application {#arinc665_decompiler_main}
 
 Decompiles ARINC 665 Media Sets and creates an associated XML Configuration 
 file.

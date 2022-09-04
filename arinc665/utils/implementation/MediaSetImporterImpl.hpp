@@ -259,11 +259,11 @@ class MediaSetImporterImpl final : public MediaSetImporter
     //! Media Set
     Media::MediaSetPtr mediaSet;
 
-    //! File List File
+    //! File List File (Load by loadFirstMedium(), used by loadFurtherMedia() )
     Files::FileListFile fileListFile;
-    //! Load List File
+    //! Load List File (Load by loadFirstMedium(), used by loadFurtherMedia() )
     Files::LoadListFile loadListFile;
-    //! Batch List File
+    //! Batch List File (Load by loadFirstMedium(), used by loadFurtherMedia() )
     Files::BatchListFile batchListFile;
     //! Batch List File present indicator
     bool batchListFilePresent{ false };

@@ -78,7 +78,7 @@ enum class FileClassType
   LoadFile,
   //! ARINC 665 Batch file
   BatchFile,
-  //! ARINC 665 Media files (List files)
+  //! ARINC 665 %Media files (List files)
   MediaFile,
 
   //! None ARINC 665 File (Not specified through standard)
@@ -92,11 +92,11 @@ enum class FileClassType
  **/
 enum class LoadFileFormatVersion : uint16_t
 {
-  //! ARINC 665-1 version of load file
+  //! ARINC 665-1 load file
   Version1 = 0x8002U,
-  //! ARINC 665-2 version of load file
+  //! ARINC 665-2 load file
   Version2 = 0x8003U,
-  //! ARINC 665-3/4/5 version of load file
+  //! ARINC 665-3/4/5 load file
   Version345 = 0x8004U,
 
   //! invalid value
@@ -110,11 +110,11 @@ enum class LoadFileFormatVersion : uint16_t
  **/
 enum class BatchFileFormatVersion : uint16_t
 {
-  //! ARINC 665-1 version of batch file
+  //! ARINC 665-1 batch file
   Version1 = 0x8002U,
-  //! ARINC 665-2 version of batch file
+  //! ARINC 665-2 batch file
   Version2 = 0x9003U,
-  //! ARINC 665-3/4/5 version of batch file
+  //! ARINC 665-3/4/5 batch file
   Version345 = 0x9004U,
 
   //! invalid value
@@ -131,11 +131,11 @@ enum class BatchFileFormatVersion : uint16_t
  **/
 enum class MediaFileFormatVersion : uint16_t
 {
-  //! ARINC 665-1 Version of Media File
+  //! ARINC 665-1 %Media File
   Version1 = 0x8002U,
-  //! ARINC 665-2 Version of Media File
+  //! ARINC 665-2 %Media File
   Version2 = 0xA003U,
-  //! ARINC 665-3/4/5 Version of Media File
+  //! ARINC 665-3/4/5 %Media File
   Version345 = 0xA004U,
 
   //! invalid value

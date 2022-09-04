@@ -217,7 +217,7 @@ void MediaSetImporterImpl::loadFurtherMedia() const
     const Files::FileListFile mediumFileListFile{
       readFileHandlerV( mediumIndex, Arinc665::ListOfFilesName ) };
 
-    // otherwise, compare current list of files to first one
+    // compare current list of files to first one
     if ( !mediumFileListFile.belongsToSameMediaSet( fileListFile )
       || ( mediumIndex != mediumFileListFile.mediaSequenceNumber() ) )
     {
@@ -229,7 +229,7 @@ void MediaSetImporterImpl::loadFurtherMedia() const
     // check file integrity on current medium
     checkMediumFiles( mediumFileListFile.files(), mediumIndex );
 
-    // Load "list of Loads" file
+    // Load "List of Loads" file
 
     // check against stored version
     if (
@@ -243,10 +243,10 @@ void MediaSetImporterImpl::loadFurtherMedia() const
           + " is not consistent to other loads list" } );
     }
 
-    // Load "list of Batches" file
+    // Load "List of Batches" file
     if ( batchListFilePresent )
     {
-      // otherwise, check against stored version
+      // check against stored version
       if (
         const Files::BatchListFile mediumBatchListFile{
           readFileHandlerV( mediumIndex, Arinc665::ListOfBatchesName ) };

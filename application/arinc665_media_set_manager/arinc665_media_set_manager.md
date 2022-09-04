@@ -1,4 +1,4 @@
-# ARINC 665 Media Set Manager {#arinc665_media_set_manager_main}
+# ARINC 665 Media Set Manager Application {#arinc665_media_set_manager_main}
 
  - Create Media Set
  - List Loads
