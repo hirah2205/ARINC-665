@@ -316,13 +316,27 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
     readFileHandlerV( fileInfo.memberSequenceNumber, fileInfo.path() ) };
   const Files::LoadHeaderFile loadHeaderFile{ rawLoadHeaderFile };
 
-  // validate load part number to batch information
+  // validate load part number to load information
   if ( loadInfo.partNumber != loadHeaderFile.partNumber() )
   {
     BOOST_THROW_EXCEPTION(
       Arinc665Exception()
       << Helper::AdditionalInfo{ "Load part number inconsistent" }
-      << boost::errinfo_file_name{ std::string{ loadInfo.partNumber } } );
+      << boost::errinfo_file_name{ std::string{ loadInfo.headerFilename } } );
+  }
+
+  // validate THW IDs of load header against list of loads
+  if ( std::multiset< std::string >{
+      loadInfo.targetHardwareIds.begin(),
+      loadInfo.targetHardwareIds.end() }
+    != std::multiset< std::string >{
+      loadHeaderFile.targetHardwareIds().begin(),
+      loadHeaderFile.targetHardwareIds().end() } )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665Exception()
+      << Helper::AdditionalInfo{ "Load THW IDs inconsistent" }
+      << boost::errinfo_file_name{ std::string{ loadInfo.headerFilename } } );
   }
 
   // obtain container (directory, medium), which will contain the load.
@@ -469,7 +483,7 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
     BOOST_THROW_EXCEPTION(
       Arinc665Exception()
       << Helper::AdditionalInfo{ "Batch part number inconsistent" }
-      << boost::errinfo_file_name{ std::string{ batchInfo.partNumber } } );
+      << boost::errinfo_file_name{ std::string{ batchInfo.filename } } );
   }
 
   // obtain container (directory, medium), which will contain the batch.
