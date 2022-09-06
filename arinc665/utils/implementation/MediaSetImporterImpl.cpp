@@ -316,6 +316,15 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
     readFileHandlerV( fileInfo.memberSequenceNumber, fileInfo.path() ) };
   const Files::LoadHeaderFile loadHeaderFile{ rawLoadHeaderFile };
 
+  // validate load part number to batch information
+  if ( loadInfo.partNumber != loadHeaderFile.partNumber() )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665Exception()
+      << Helper::AdditionalInfo{ "Load part number inconsistent" }
+      << boost::errinfo_file_name{ std::string{ loadInfo.partNumber } } );
+  }
+
   // obtain container (directory, medium), which will contain the load.
   const auto container{ checkCreateDirectory(
     fileInfo.memberSequenceNumber,
@@ -453,6 +462,15 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
   Files::BatchFile batchFile{ readFileHandlerV(
     fileInfo.memberSequenceNumber,
     fileInfo.path() ) };
+
+  // validate batch part number to batch information
+  if ( batchInfo.partNumber != batchFile.partNumber() )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665Exception()
+      << Helper::AdditionalInfo{ "Batch part number inconsistent" }
+      << boost::errinfo_file_name{ std::string{ batchInfo.partNumber } } );
+  }
 
   // obtain container (directory, medium), which will contain the batch.
   const auto container{ checkCreateDirectory(
