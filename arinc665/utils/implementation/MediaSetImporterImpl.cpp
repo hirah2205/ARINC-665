@@ -163,7 +163,7 @@ void MediaSetImporterImpl::loadFirstMedium()
         << boost::errinfo_file_name{ load.headerFilename } );
     }
 
-    // add load to loads information
+    // add load to "loads information"
     loadsInfos.try_emplace( load.headerFilename, load );
   }
 
@@ -196,7 +196,7 @@ void MediaSetImporterImpl::loadFirstMedium()
           << boost::errinfo_file_name{ batch.filename } );
       }
 
-      // add batch to batches information
+      // add batch to "batches information"
       batchesInfos.try_emplace( batch.filename, batch );
     }
 

@@ -17,8 +17,8 @@
 #include <arinc665/files/Arinc665File.hpp>
 #include <arinc665/files/LoadFileInfo.hpp>
 
+#include <arinc645/Arinc645.hpp>
 #include <arinc645/Arinc645Crc.hpp>
-#include <arinc645/CheckValueGenerator.hpp>
 
 #include <string_view>
 #include <list>

@@ -18,6 +18,8 @@
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
 
+#include <arinc645/CheckValueGenerator.hpp>
+
 #include <helper/Endianess.hpp>
 #include <helper/SafeCast.hpp>
 
