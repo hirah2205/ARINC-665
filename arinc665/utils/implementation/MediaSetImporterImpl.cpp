@@ -381,14 +381,22 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   // iterate over data files
   for ( const auto &dataFile : loadHeaderFile.dataFiles() )
   {
-    auto dataFilePtr{ mediaSet->regularFile( dataFile.filename ) };
+    const auto dataFiles{ mediaSet->regularFiles( dataFile.filename ) };
 
-    if ( !dataFilePtr )
+    if ( dataFiles.empty() )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665Exception()
           << Helper::AdditionalInfo{ "Data file not found" }
           << boost::errinfo_file_name{ dataFile.filename } );
+    }
+
+    if ( dataFiles.size() > 1U )
+    {
+      BOOST_THROW_EXCEPTION(
+        Arinc665Exception()
+        << Helper::AdditionalInfo{ "Data file not unique" }
+        << boost::errinfo_file_name{ dataFile.filename } );
     }
 
     // perform file check
@@ -400,7 +408,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
       loadHeaderFile.arincVersion() == SupportedArinc665Version::Supplement2 );
 
     loadPtr->dataFile(
-      dataFilePtr,
+      dataFiles.front(),
       dataFile.partNumber,
       std::get< 0 >( dataFile.checkValue ) );
   }
@@ -408,9 +416,9 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   // iterate over support files
   for ( const auto &supportFile : loadHeaderFile.supportFiles() )
   {
-    auto supportFilePtr{ mediaSet->regularFile( supportFile.filename ) };
+    auto supportFiles{ mediaSet->regularFiles( supportFile.filename ) };
 
-    if ( !supportFilePtr )
+    if ( supportFiles.empty() )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665Exception()
@@ -418,10 +426,18 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
         << boost::errinfo_file_name{ supportFile.filename } );
     }
 
+    if ( supportFiles.size() > 1U )
+    {
+      BOOST_THROW_EXCEPTION(
+        Arinc665Exception()
+        << Helper::AdditionalInfo{ "Support file not unique" }
+        << boost::errinfo_file_name{ supportFile.filename } );
+    }
+
     checkLoadFile( loadCrc, *loadCheckValueGenerator, supportFile, false );
 
     loadPtr->supportFile(
-      supportFilePtr,
+      supportFiles.front(),
       supportFile.partNumber,
       std::get< 0 >( supportFile.checkValue ) );
   }
@@ -509,9 +525,9 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
     // iterate over loads
     for ( const auto& load : targetHardware.loads )
     {
-      auto loadPtr{ mediaSet->load( load.headerFilename ) };
+      const auto loads{ mediaSet->loads( load.headerFilename ) };
 
-      if ( !loadPtr )
+      if ( loads.empty() )
       {
         BOOST_THROW_EXCEPTION(
           Arinc665Exception()
@@ -519,8 +535,16 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
           << boost::errinfo_file_name{ std::string{ load.headerFilename } } );
       }
 
+      if ( loads.size() > 1U )
+      {
+        BOOST_THROW_EXCEPTION(
+          Arinc665Exception()
+          << Helper::AdditionalInfo{ "Load not unique" }
+          << boost::errinfo_file_name{ std::string{ load.headerFilename } } );
+      }
+
       // check that Part Number Information matches
-      if ( loadPtr->partNumber() != load.partNumber )
+      if ( loads.front()->partNumber() != load.partNumber )
       {
         BOOST_THROW_EXCEPTION(
           Arinc665Exception()
@@ -528,7 +552,7 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
           << boost::errinfo_file_name{ std::string{ load.headerFilename } } );
       }
 
-      batchLoads.emplace_back( std::move( loadPtr ) );
+      batchLoads.emplace_back( loads.front() );
     }
 
     // add Target Hardware/ Position

@@ -147,34 +147,27 @@ Media::ConstLoads MediaSetManagerImpl::loads() const
 {
   Media::ConstLoads loads{};
 
-  for ( const auto &mediaSet : mediaSetsV )
+  for ( const auto &[ partNumber, mediaSet ] : mediaSetsV )
   {
-    auto mediaSetLoads{ mediaSet.second->loads() };
-
-    loads.insert( loads.end(), mediaSetLoads.begin(), mediaSetLoads.end() );
+    loads.splice( loads.end(), mediaSet->loads() );
   }
 
   return loads;
 }
 
-Media::ConstLoads MediaSetManagerImpl::load( std::string_view filename ) const
+Media::ConstLoads MediaSetManagerImpl::loads( std::string_view filename ) const
 {
   Media::ConstLoads loads{};
 
-  for ( const auto &mediaSet : mediaSetsV )
+  for ( const auto &[ partNumber, mediaSet ] : mediaSetsV )
   {
-    auto mediaSetLoad{ mediaSet.second->load( filename ) };
-
-    if ( mediaSetLoad )
-    {
-      loads.push_back( mediaSetLoad );
-    }
+    loads.splice( loads.end(), mediaSet->loads( filename ) );
   }
 
   return loads;
 }
 
-Media::ConstLoadPtr MediaSetManagerImpl::load(
+Media::ConstLoads MediaSetManagerImpl::loads(
   std::string_view partNumber,
   std::string_view filename ) const
 {
@@ -185,7 +178,7 @@ Media::ConstLoadPtr MediaSetManagerImpl::load(
     return {};
   }
 
-  return mediaSetFound->load( filename );
+  return mediaSetFound->loads( filename );
 }
 
 std::filesystem::path MediaSetManagerImpl::filePath(
@@ -221,12 +214,10 @@ void MediaSetManagerImpl::loadMediaSets( const bool checkFileIntegrity )
 
     // the read file handler
     importer->readFileHandler(
-      std::bind(
+      std::bind_front(
         &MediaSetManagerImpl::readFileHandler,
         this,
-        mediaSetPaths,
-        std::placeholders::_1,
-        std::placeholders::_2 ) );
+        mediaSetPaths ) );
 
     importer->checkFileIntegrity( checkFileIntegrity );
 

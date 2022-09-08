@@ -108,12 +108,12 @@ class ARINC665_EXPORT ContainerEntity : public Base
     DirectoryPtr addSubdirectory( std::string_view name );
 
     /**
-     * @brief Removes the subdirectory with the given name.
+     * @brief Removes the subdirectory with the given name within this entity.
      *
      * It is a failure to try to delete a non-existing directory.
      *
      * @param[in] name
-     *   The name of the requested subdirectory to be deleted.
+     *   name of the requested subdirectory to be deleted.
      *
      * @throw Arinc665Exception()
      *   If directory does not exist.
@@ -121,7 +121,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
     void removeSubdirectory( std::string_view name );
 
     /**
-     * @brief Removes the given subdirectory.
+     * @brief Removes the given subdirectory within this entity.
      *
      * It is a failure to try to delete a non-existing directory.
      *
@@ -165,7 +165,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * or other file).
      *
      * @param[in] filename
-     *   The name of the requested file.
+     *   Name of the requested file.
      *
      * @return The file with the given name.
      * @retval {}
@@ -182,7 +182,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * A non-existing file is handled as failure.
      *
      * @param[in] filename
-     *   The filename of the file to be deleted.
+     *   Filename of the file to be deleted.
      *
      * @throw Arinc665Exception() if file does not exists.
      **/
@@ -230,7 +230,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @param[in] filename
      *   Load filename
      *
-     * @return The load with the given filename.
+     * @return Load with the given filename.
      * @retval {}
      *   If load does not exists.
      **/

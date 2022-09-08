@@ -120,24 +120,19 @@ class ARINC665_EXPORT MediaSet : public Base
     [[nodiscard]] Media media();
 
     /**
-     * @brief Return the %Medium with the requested Index.
+     * @brief Return the %Medium with the requested Medium Number.
      *
-     * @param[in] index
-     *   %Medium Index.
+     * @param[in] number
+     *   %Medium Number [1..255].
      *
-     * @return %Medium with the requested Index.
+     * @return %Medium with the requested number.
+     * @retval {}
+     *   if @p number is invalid
      **/
-    [[nodiscard]] ConstMediumPtr medium( uint8_t index ) const;
+    [[nodiscard]] ConstMediumPtr medium( uint8_t number ) const;
 
-    /**
-     * @brief Return the medium with the requested Index.
-     *
-     * @param[in] index
-     *   %Medium Index.
-     *
-     * @return %Medium with the requested Index.
-     **/
-    [[nodiscard]] MediumPtr medium( uint8_t index );
+    //! @copydoc medium(uint8_t) const
+    [[nodiscard]] MediumPtr medium( uint8_t number );
 
     /**
      * @brief Adds a %Medium to the %Media Set and returns the %Medium.
@@ -186,32 +181,19 @@ class ARINC665_EXPORT MediaSet : public Base
     [[nodiscard]] Files files();
 
     /**
-     * @brief Returns file with the given filename.
-     *
-     * @todo handle multiple files with same name.
+     * @brief Returns files with the given filename.
      *
      * @param[in] filename
      *   Filename.
      *
-     * @return %File with the given filename.
-     * @retval ConstFilePtr()
-     *   If file is not found.
+     * @return Files with the given filename.
+     * @retval {}
+     *   If no file with @p filename is found.
      **/
-    [[nodiscard]] ConstFilePtr file( std::string_view filename ) const;
+    [[nodiscard]] ConstFiles files( std::string_view filename ) const;
 
-    /**
-     * @brief Returns file with the given filename.
-     *
-     * @todo handle multiple files with same name.
-     *
-     * @param[in] filename
-     *   Filename.
-     *
-     * @return %File with the given filename.
-     * @retval ConstFilePtr()
-     *   If file is not found.
-     **/
-    [[nodiscard]] FilePtr file( std::string_view filename );
+    //! @copydoc files(std::string_view) const
+    [[nodiscard]] Files files( std::string_view filename );
 
     /** @} **/
 
@@ -251,20 +233,11 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return Load with the given filename.
      **/
-    [[nodiscard]] ConstRegularFilePtr regularFile(
+    [[nodiscard]] ConstRegularFiles regularFiles(
       std::string_view filename ) const;
 
-    /**
-     * @brief return the Regular %File with the given filename.
-     *
-     * @todo handle multiple loads with same name.
-     *
-     * @param[in] filename
-     *   Filename of the load.
-     *
-     * @return Load with the given filename.
-     **/
-    [[nodiscard]] RegularFilePtr regularFile( std::string_view filename );
+    //! @copydoc regularFiles(std::string_view) const
+    [[nodiscard]] RegularFiles regularFiles( std::string_view filename );
 
     /** @} **/
 
@@ -297,26 +270,15 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @brief return the load with the given filename.
      *
-     * @todo handle multiple loads with same name.
-     *
      * @param[in] filename
      *   The filename of the load.
      *
      * @return Load with the given filename.
      **/
-    [[nodiscard]] ConstLoadPtr load( std::string_view filename ) const;
+    [[nodiscard]] ConstLoads loads( std::string_view filename ) const;
 
-    /**
-     * @brief return the load with the given filename.
-     *
-     * @todo handle multiple loads with same name.
-     *
-     * @param[in] filename
-     *   Filename of the load.
-     *
-     * @return Load with the given filename.
-     **/
-    [[nodiscard]] LoadPtr load( std::string_view filename );
+    //! @copydoc loads(std::string_view) const
+    [[nodiscard]] Loads loads( std::string_view filename );
 
     /**
      * @brief Return all Loads, the @p file is referenced.
@@ -362,26 +324,15 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @brief return the batch with the given filename.
      *
-     * @todo handle multiple batches with same name.
-     *
      * @param[in] filename
      *   Filename of the batch.
      *
-     * @return Batch with the given filename.
+     * @return Batches with the given filename.
      **/
-    [[nodiscard]] ConstBatchPtr batch( std::string_view filename ) const;
+    [[nodiscard]] ConstBatches batches( std::string_view filename ) const;
 
-    /**
-     * @brief return the batch with the given filename.
-     *
-     * @todo handle multiple batches with same name.
-     *
-     * @param[in] filename
-     *   Filename of the batch.
-     *
-     * @return Batch with the given filename.
-     **/
-    [[nodiscard]] BatchPtr batch( std::string_view filename );
+    //! @copydoc batches(std::string_view) const
+    [[nodiscard]] Batches batches( std::string_view filename );
 
     /**
      * @brief Return all Batches, the @p load is referenced.
@@ -402,9 +353,9 @@ class ARINC665_EXPORT MediaSet : public Base
      **/
 
     /**
-     * @brief Returns the user defined data for file list files.
+     * @brief Returns the User Defined Data for List of Files.
      *
-     * @return User defined data for file list files.
+     * @return User Defined Data for List of Files.
      **/
     [[nodiscard]] ConstUserDefinedDataSpan filesUserDefinedData() const;
 
@@ -412,10 +363,10 @@ class ARINC665_EXPORT MediaSet : public Base
     [[nodiscard]] UserDefinedData& filesUserDefinedData();
 
     /**
-     * @brief Updates the user defined data for file list files.
+     * @brief Updates the User Defined Data for List of Files.
      *
      * @param[in] userDefinedData
-     *   User defined data.
+     *   User Defined Data.
      **/
     void filesUserDefinedData( ConstUserDefinedDataSpan userDefinedData );
 
@@ -740,16 +691,16 @@ class ARINC665_EXPORT MediaSet : public Base
      * @param[in] filename
      *   Name of the requested file.
      *
-     * @return The file with the given name.
+     * @return Files with the given name.
      * @retval {}
-     *   If no such file exists.
+     *   If no such files exists.
      **/
-    [[nodiscard]] ConstFilePtr recursiveFile(
+    [[nodiscard]] ConstFiles recursiveFiles(
       const ContainerEntity &container,
       std::string_view filename ) const;
 
-    //! @copydoc recursiveFile(const ContainerEntity&,std::string_view) const
-    [[nodiscard]] FilePtr recursiveFile(
+    //! @copydoc recursiveFiles(const ContainerEntity&,std::string_view) const
+    [[nodiscard]] Files recursiveFiles(
       ContainerEntity &container,
       std::string_view filename );
 
@@ -794,14 +745,14 @@ class ARINC665_EXPORT MediaSet : public Base
      *
      * @return The regular file with the given name.
      * @retval {}
-     *   If no such file exists.
+     *   If no such files exists.
      **/
-    [[nodiscard]] ConstRegularFilePtr recursiveRegularFile(
+    [[nodiscard]] ConstRegularFiles recursiveRegularFiles(
       const ContainerEntity &container,
       std::string_view filename ) const;
 
-    //! @copydoc recursiveRegularFile(const ContainerEntity&,std::string_view) const
-    [[nodiscard]] RegularFilePtr recursiveRegularFile(
+    //! @copydoc recursiveRegularFiles(const ContainerEntity&,std::string_view) const
+    [[nodiscard]] RegularFiles recursiveRegularFiles(
       ContainerEntity &container,
       std::string_view filename );
 
@@ -846,12 +797,12 @@ class ARINC665_EXPORT MediaSet : public Base
      * @retval {}
      *   If no such file exists.
      **/
-    [[nodiscard]] ConstLoadPtr recursiveLoad(
+    [[nodiscard]] ConstLoads recursiveLoads(
       const ContainerEntity &container,
       std::string_view filename ) const;
 
-    //! @copydoc recursiveLoad(const ContainerEntity&,std::string_view) const
-    [[nodiscard]] LoadPtr recursiveLoad(
+    //! @copydoc recursiveLoads(const ContainerEntity&,std::string_view) const
+    [[nodiscard]] Loads recursiveLoads(
       ContainerEntity &container,
       std::string_view filename );
 
@@ -896,12 +847,12 @@ class ARINC665_EXPORT MediaSet : public Base
      * @retval {}
      *   If no such file exists.
      **/
-    [[nodiscard]] ConstBatchPtr recursiveBatch(
+    [[nodiscard]] ConstBatches recursiveBatches(
       const ContainerEntity &container,
       std::string_view filename ) const;
 
-    //! @copydoc recursiveBatch(const ContainerEntity&,std::string_view) const
-    [[nodiscard]] BatchPtr recursiveBatch(
+    //! @copydoc recursiveBatches(const ContainerEntity&,std::string_view) const
+    [[nodiscard]] Batches recursiveBatches(
       ContainerEntity &container,
       std::string_view filename );
 

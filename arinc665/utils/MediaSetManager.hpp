@@ -144,7 +144,7 @@ class ARINC665_EXPORT MediaSetManager
      *
      * @return Loads with the given filename.
      **/
-    [[nodiscard]] virtual Media::ConstLoads load(
+    [[nodiscard]] virtual Media::ConstLoads loads(
       std::string_view filename ) const = 0;
 
     /**
@@ -157,7 +157,7 @@ class ARINC665_EXPORT MediaSetManager
      *
      * @return Load with the given filename.
      **/
-    [[nodiscard]] virtual Media::ConstLoadPtr load(
+    [[nodiscard]] virtual Media::ConstLoads loads(
       std::string_view partNumber,
       std::string_view filename ) const = 0;
 

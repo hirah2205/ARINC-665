@@ -70,12 +70,12 @@ class MediaSetManagerImpl final : public MediaSetManager
     //! @copydoc MediaSetManager::loads() const
     [[nodiscard]] Media::ConstLoads loads() const override;
 
-    //! @copydoc MediaSetManager::load(std::string_view) const
-    [[nodiscard]] Media::ConstLoads load(
+    //! @copydoc MediaSetManager::loads(std::string_view) const
+    [[nodiscard]] Media::ConstLoads loads(
       std::string_view filename ) const override;
 
-    //! @copydoc MediaSetManager::load(std::string_view,std::string_view) const
-    [[nodiscard]] Media::ConstLoadPtr load(
+    //! @copydoc MediaSetManager::loads(std::string_view,std::string_view) const
+    [[nodiscard]] Media::ConstLoads loads(
       std::string_view partNumber,
       std::string_view filename ) const override;
 

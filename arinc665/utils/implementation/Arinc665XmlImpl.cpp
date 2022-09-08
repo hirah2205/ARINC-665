@@ -550,12 +550,19 @@ void Arinc665XmlImpl::loadLoad(
       << boost::errinfo_at_line{ loadElement.get_line() } );
   }
 
-  const auto load{ mediaSet.load( toStringView( nameRef ) ) };
+  const auto loads{ mediaSet.loads( toStringView( nameRef ) ) };
 
-  if ( !load )
+  if ( loads.empty() )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "NameRef attribute does not reference load" }
+      << boost::errinfo_at_line{ loadElement.get_line() } );
+  }
+
+  if ( loads.size() > 1U )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "More than 1 load with same name" }
       << boost::errinfo_at_line{ loadElement.get_line() } );
   }
 
@@ -567,7 +574,7 @@ void Arinc665XmlImpl::loadLoad(
       << Helper::AdditionalInfo{ "PartNumber attribute missing or empty" }
       << boost::errinfo_at_line{ loadElement.get_line() } );
   }
-  load->partNumber( toStringView( partNumber ) );
+  loads.front()->partNumber( toStringView( partNumber ) );
 
   // Part Flags
   if (
@@ -577,7 +584,7 @@ void Arinc665XmlImpl::loadLoad(
     uint16_t partFlagsValue{
       Helper::safeCast< uint16_t >( std::stoul( partFlags, nullptr, 0 ) ) };
 
-    load->partFlags( partFlagsValue );
+    loads.front()->partFlags( partFlagsValue );
   }
 
   // Load Type (Description + Type Value)
@@ -590,7 +597,7 @@ void Arinc665XmlImpl::loadLoad(
     const uint16_t typeValue{
       Helper::safeCast< uint16_t >( std::stoul( type, nullptr, 0 ) ) };
 
-    load->loadType( { std::make_pair( description, typeValue ) } );
+    loads.front()->loadType( { std::make_pair( description, typeValue ) } );
   }
 
   Media::Load::TargetHardwareIdPositions thwIds{};
@@ -632,13 +639,13 @@ void Arinc665XmlImpl::loadLoad(
     thwIds.try_emplace( thwId, std::move( positions ) );
   }
 
-  load->targetHardwareIdPositions( std::move( thwIds ) );
+  loads.front()->targetHardwareIdPositions( std::move( thwIds ) );
 
   // data files
-  load->dataFiles( loadLoadFiles( loadElement, "DataFile", mediaSet ) );
+  loads.front()->dataFiles( loadLoadFiles( loadElement, "DataFile", mediaSet ) );
 
   // support files
-  load->supportFiles( loadLoadFiles( loadElement, "SupportFile", mediaSet ) );
+  loads.front()->supportFiles( loadLoadFiles( loadElement, "SupportFile", mediaSet ) );
 
   if (
     const auto userDefinedDataElement{ dynamic_cast< const xmlpp::Element*>(
@@ -648,7 +655,7 @@ void Arinc665XmlImpl::loadLoad(
     const auto userDefinedData{
       userDefinedDataElement->get_child_text()->get_content() };
 
-    load->userDefinedData(
+    loads.front()->userDefinedData(
       Media::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
   }
 
@@ -657,7 +664,7 @@ void Arinc665XmlImpl::loadLoad(
     const auto checkValue{ loadCheckValue( loadElement, "LoadCheckValue" ) };
     checkValue )
   {
-    load->loadCheckValueType( checkValue );
+    loads.front()->loadCheckValueType( checkValue );
   }
 
   // Data Files Check Value
@@ -665,7 +672,7 @@ void Arinc665XmlImpl::loadLoad(
     const auto checkValue{ loadCheckValue( loadElement, "DataFilesCheckValue" ) };
     checkValue )
   {
-    load->dataFilesCheckValueType( checkValue );
+    loads.front()->dataFilesCheckValueType( checkValue );
   }
 
   // Support Files Check Value
@@ -673,7 +680,7 @@ void Arinc665XmlImpl::loadLoad(
     const auto checkValue{ loadCheckValue( loadElement, "SupportFilesCheckValue" ) };
     checkValue )
   {
-    load->supportFilesCheckValueType( checkValue );
+    loads.front()->supportFilesCheckValueType( checkValue );
   }
 }
 
@@ -778,16 +785,23 @@ Media::ConstLoadFiles Arinc665XmlImpl::loadLoadFiles(
     auto checkValueType{ loadCheckValue( *fileElement, "CheckValue" ) };
 
     // Find File
-    auto file{ mediaSet.regularFile( toStringView( fileNameRef ) ) };
+    auto files{ mediaSet.regularFiles( toStringView( fileNameRef ) ) };
 
-    if ( !file )
+    if ( files.empty() )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "NameRef attribute does not reference file" }
         << boost::errinfo_at_line{ fileNode->get_line() } );
     }
 
-    loadFiles.emplace_back( file, filePartNumber, checkValueType );
+    if ( files.size() > 1U )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ "file name references more than one file" }
+        << boost::errinfo_at_line{ fileNode->get_line() } );
+    }
+
+    loadFiles.emplace_back( files.front(), filePartNumber, checkValueType );
   }
 
   return loadFiles;
@@ -840,17 +854,24 @@ void Arinc665XmlImpl::loadBatch(
       << boost::errinfo_at_line{ batchElement.get_line() } );
   }
 
-  auto batch{ mediaSet.batch( toStringView( nameRef ) ) };
+  auto batches{ mediaSet.batches( toStringView( nameRef ) ) };
 
-  if ( !batch )
+  if ( batches.empty() )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo( "NameRef attribute does not reference batch" )
       << boost::errinfo_at_line{ batchElement.get_line() } );
   }
 
-  batch->partNumber( toStringView( partNumber ) );
-  batch->comment( comment );
+  if ( batches.size() > 1U )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo( "NameRef attribute does reference more than one batch" )
+      << boost::errinfo_at_line{ batchElement.get_line() } );
+  }
+
+  batches.front()->partNumber( toStringView( partNumber ) );
+  batches.front()->comment( comment );
 
   // iterate over targets
   for ( auto targetNode : batchElement.get_children( "Target" ) )
@@ -865,7 +886,7 @@ void Arinc665XmlImpl::loadBatch(
 
     const auto thwIdPos{ targetElement->get_attribute_value( "ThwIdPos" ) };
 
-    Media::ConstLoads loads{};
+    Media::ConstLoads targetLoads{};
 
     // iterate over loads
     for ( auto LoadNode : targetNode->get_children( "Load" ) )
@@ -887,20 +908,27 @@ void Arinc665XmlImpl::loadBatch(
           << boost::errinfo_at_line{ loadElement->get_line() } );
       }
 
-      auto load{ mediaSet.load( toStringView( loadNameRef ) ) };
+      auto loads{ mediaSet.loads( toStringView( loadNameRef ) ) };
 
-      if ( !load )
+      if ( loads.empty() )
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo{ "NameRef attribute does not reference load" }
           << boost::errinfo_at_line{ loadElement->get_line() } );
       }
 
-      loads.push_back( load);
+      if ( loads.size() > 1U )
+      {
+        BOOST_THROW_EXCEPTION( Arinc665Exception()
+          << Helper::AdditionalInfo{ "NameRef attribute does reference more than one load" }
+          << boost::errinfo_at_line{ loadElement->get_line() } );
+      }
+
+      targetLoads.push_back( loads.front() );
     }
 
     // add THW ID POS with Loads
-    batch->target( thwIdPos, loads );
+    batches.front()->target( thwIdPos, targetLoads );
   }
 }
 
