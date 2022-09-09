@@ -114,6 +114,18 @@ size_t ContainerEntity::numberOfFiles() const
   return filesV.size();
 }
 
+size_t ContainerEntity::recursiveNumberOfFiles() const
+{
+  size_t numberOfFilesRecursive{ numberOfFiles() };
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    numberOfFilesRecursive += subdirectory->recursiveNumberOfFiles();
+  }
+
+  return numberOfFilesRecursive;
+}
+
 ConstFiles ContainerEntity::files() const
 {
   return ConstFiles{ filesV.begin(), filesV.end() };
@@ -122,6 +134,72 @@ ConstFiles ContainerEntity::files() const
 Files ContainerEntity::files()
 {
   return filesV;
+}
+
+ConstFiles ContainerEntity::recursiveFiles() const
+{
+  ConstFiles filesRecursive{ files() };
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    filesRecursive.splice(
+      filesRecursive.begin(),
+      subdirectory->recursiveFiles() );
+  }
+
+  return filesRecursive;
+}
+
+Files ContainerEntity::recursiveFiles()
+{
+  Files filesRecursive{ files() };
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    filesRecursive.splice(
+      filesRecursive.begin(),
+      subdirectory->recursiveFiles() );
+  }
+
+  return filesRecursive;
+}
+
+ConstFiles ContainerEntity::recursiveFiles( std::string_view filename ) const
+{
+  ConstFiles filesRecursive{};
+
+  if ( auto fileFound{ file( filename ) }; fileFound )
+  {
+    filesRecursive.emplace_back( std::move( fileFound ) );
+  }
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    filesRecursive.splice(
+      filesRecursive.end(),
+      subdirectory->recursiveFiles( filename ) );
+  }
+
+  return filesRecursive;
+}
+
+Files ContainerEntity::recursiveFiles( std::string_view filename )
+{
+  Files filesRecursive{};
+
+  if ( auto fileFound{ file( filename ) }; fileFound )
+  {
+    filesRecursive.emplace_back( std::move( fileFound ) );
+  }
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    filesRecursive.splice(
+      filesRecursive.end(),
+      subdirectory->recursiveFiles( filename ) );
+  }
+
+  return filesRecursive;
 }
 
 ConstFilePtr ContainerEntity::file( std::string_view filename ) const
@@ -187,6 +265,19 @@ size_t ContainerEntity::numberOfRegularFiles() const
   return numberOfFiles( File::FileType::RegularFile );
 }
 
+size_t ContainerEntity::recursiveNumberOfRegularFiles() const
+{
+  size_t numberOfRegularFilesRecursive{ numberOfRegularFiles() };
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    numberOfRegularFilesRecursive +=
+      subdirectory->recursiveNumberOfRegularFiles();
+  }
+
+  return numberOfRegularFilesRecursive;
+}
+
 ConstRegularFiles ContainerEntity::regularFiles() const
 {
   return filesPerType< ConstRegularFiles, File::FileType::RegularFile>();
@@ -195,6 +286,75 @@ ConstRegularFiles ContainerEntity::regularFiles() const
 RegularFiles ContainerEntity::regularFiles()
 {
   return filesPerType< RegularFiles, File::FileType::RegularFile>();
+}
+
+ConstRegularFiles ContainerEntity::recursiveRegularFiles() const
+{
+  ConstRegularFiles regularFilesRecursive{ regularFiles() };
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    regularFilesRecursive.splice(
+      regularFilesRecursive.begin(),
+      subdirectory->recursiveRegularFiles() );
+  }
+
+  return regularFilesRecursive;
+}
+
+RegularFiles ContainerEntity::recursiveRegularFiles()
+{
+  RegularFiles regularFilesRecursive{ regularFiles() };
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    regularFilesRecursive.splice(
+      regularFilesRecursive.begin(),
+      subdirectory->recursiveRegularFiles() );
+  }
+
+  return regularFilesRecursive;
+}
+
+ConstRegularFiles ContainerEntity::recursiveRegularFiles(
+  std::string_view filename ) const
+{
+  ConstRegularFiles regularFilesRecursive{};
+
+  if ( auto foundRegularFiles{ regularFile( filename ) };
+    foundRegularFiles )
+  {
+    regularFilesRecursive.emplace_back( std::move( foundRegularFiles ) );
+  }
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    regularFilesRecursive.splice(
+      regularFilesRecursive.end(),
+      subdirectory->recursiveRegularFiles( filename ) );
+  }
+
+  return regularFilesRecursive;
+}
+
+RegularFiles ContainerEntity::recursiveRegularFiles( std::string_view filename )
+{
+  RegularFiles regularFilesRecursive{};
+
+  if ( auto foundRegularFiles{ regularFile( filename ) };
+    foundRegularFiles )
+  {
+    regularFilesRecursive.emplace_back( std::move( foundRegularFiles ) );
+  }
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    regularFilesRecursive.splice(
+      regularFilesRecursive.end(),
+      subdirectory->recursiveRegularFiles( filename ) );
+  }
+
+  return regularFilesRecursive;
 }
 
 ConstRegularFilePtr ContainerEntity::regularFile(
@@ -235,6 +395,18 @@ size_t ContainerEntity::numberOfLoads() const
   return numberOfFiles( File::FileType::LoadFile );
 }
 
+size_t ContainerEntity::recursiveNumberOfLoads() const
+{
+  size_t numberOfLoadsRecursive{ numberOfLoads() };
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    numberOfLoadsRecursive += subdirectory->recursiveNumberOfLoads();
+  }
+
+  return numberOfLoadsRecursive;
+}
+
 ConstLoads ContainerEntity::loads() const
 {
   return filesPerType< ConstLoads, File::FileType::LoadFile>();
@@ -243,6 +415,72 @@ ConstLoads ContainerEntity::loads() const
 Loads ContainerEntity::loads()
 {
   return filesPerType< Loads, File::FileType::LoadFile>();
+}
+
+ConstLoads ContainerEntity::recursiveLoads() const
+{
+  ConstLoads loadsRecursive{ loads() };
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    loadsRecursive.splice(
+      loadsRecursive.begin(),
+      subdirectory->recursiveLoads() );
+  }
+
+  return loadsRecursive;
+}
+
+Loads ContainerEntity::recursiveLoads()
+{
+  Loads loadsRecursive{ loads() };
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    loadsRecursive.splice(
+      loadsRecursive.begin(),
+      subdirectory->recursiveLoads() );
+  }
+
+  return loadsRecursive;
+}
+
+ConstLoads ContainerEntity::recursiveLoads( std::string_view filename ) const
+{
+  ConstLoads loadsRecursive{};
+
+  if ( auto foundLoad{ load( filename ) }; foundLoad )
+  {
+    loadsRecursive.emplace_back( std::move( foundLoad ) );
+  }
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    loadsRecursive.splice(
+      loadsRecursive.end(),
+      subdirectory->recursiveLoads( filename ) );
+  }
+
+  return loadsRecursive;
+}
+
+Loads ContainerEntity::recursiveLoads( std::string_view filename )
+{
+  Loads loadsRecursive{};
+
+  if ( auto foundLoad{ load( filename ) }; foundLoad )
+  {
+    loadsRecursive.emplace_back( std::move( foundLoad ) );
+  }
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    loadsRecursive.splice(
+      loadsRecursive.end(),
+      subdirectory->recursiveLoads( filename ) );
+  }
+
+  return loadsRecursive;
 }
 
 ConstLoadPtr ContainerEntity::load( std::string_view filename ) const
@@ -280,6 +518,18 @@ size_t ContainerEntity::numberOfBatches() const
   return numberOfFiles( File::FileType::BatchFile );
 }
 
+size_t ContainerEntity::recursiveNumberOfBatches() const
+{
+  size_t numberOfBatchesRecursive{ numberOfBatches() };
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    numberOfBatchesRecursive += subdirectory->recursiveNumberOfBatches();
+  }
+
+  return numberOfBatchesRecursive;
+}
+
 ConstBatches ContainerEntity::batches() const
 {
   return filesPerType< ConstBatches, File::FileType::BatchFile>();
@@ -288,6 +538,73 @@ ConstBatches ContainerEntity::batches() const
 Batches ContainerEntity::batches()
 {
   return filesPerType< Batches, File::FileType::BatchFile>();
+}
+
+ConstBatches ContainerEntity::recursiveBatches() const
+{
+  ConstBatches batchesRecursive{ batches() };
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    batchesRecursive.splice(
+      batchesRecursive.begin(),
+      subdirectory->recursiveBatches() );
+  }
+
+  return batchesRecursive;
+}
+
+Batches ContainerEntity::recursiveBatches()
+{
+  Batches batchesRecursive{ batches() };
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    batchesRecursive.splice(
+      batchesRecursive.begin(),
+      subdirectory->recursiveBatches() );
+  }
+
+  return batchesRecursive;
+}
+
+ConstBatches ContainerEntity::recursiveBatches(
+  std::string_view filename ) const
+{
+  ConstBatches batchesRecursive{};
+
+  if ( auto foundBatch{ batch( filename ) }; foundBatch )
+  {
+    batchesRecursive.emplace_back( std::move( foundBatch ) );
+  }
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    batchesRecursive.splice(
+      batchesRecursive.end(),
+      subdirectory->recursiveBatches( filename ) );
+  }
+
+  return batchesRecursive;
+}
+
+Batches ContainerEntity::recursiveBatches( std::string_view filename )
+{
+  Batches batchesRecursive{};
+
+  if ( auto foundBatch{ batch( filename ) }; foundBatch )
+  {
+    batchesRecursive.emplace_back( std::move( foundBatch ) );
+  }
+
+  for ( const auto &subdirectory : subdirectories() )
+  {
+    batchesRecursive.splice(
+      batchesRecursive.end(),
+      subdirectory->recursiveBatches( filename ) );
+  }
+
+  return batchesRecursive;
 }
 
 ConstBatchPtr ContainerEntity::batch( std::string_view filename ) const
@@ -320,7 +637,7 @@ BatchPtr ContainerEntity::addBatch( std::string_view filename )
   return batch;
 }
 
-size_t ContainerEntity::numberOfFiles( FileType fileType ) const
+size_t ContainerEntity::numberOfFiles( const FileType fileType ) const
 {
   size_t numberOfFiles{ 0U };
 

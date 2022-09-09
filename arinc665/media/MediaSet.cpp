@@ -156,7 +156,7 @@ size_t MediaSet::numberOfFiles() const
 
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    numberOfFiles += recursiveNumberOfFiles( *medium );
+    numberOfFiles += medium->recursiveNumberOfFiles();
   }
 
   return numberOfFiles;
@@ -169,7 +169,9 @@ ConstFiles MediaSet::files() const
   // Iterate over all media and add their files to a complete list.
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    files.splice( files.end(), recursiveFiles( *medium ) );
+    files.splice(
+      files.end(),
+      std::const_pointer_cast< const Medium >( medium )->recursiveFiles() );
   }
 
   return files;
@@ -182,7 +184,7 @@ Files MediaSet::files()
   // Iterate over all media and add their files to a complete list.
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    files.splice( files.end(), recursiveFiles( *medium ) );
+    files.splice( files.end(), medium->recursiveFiles() );
   }
 
   return files;
@@ -194,7 +196,10 @@ ConstFiles MediaSet::files( std::string_view filename ) const
 
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    files.splice( files.end(), recursiveFiles( *medium, filename ) );
+    files.splice(
+      files.end(),
+      std::const_pointer_cast< const Medium >( medium )->recursiveFiles(
+        filename ) );
   }
 
   return files;
@@ -206,7 +211,7 @@ Files MediaSet::files( std::string_view filename )
 
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    files.splice( files.end(), recursiveFiles( *medium, filename ) );
+    files.splice( files.end(), medium->recursiveFiles( filename ) );
   }
 
   return files;
@@ -218,7 +223,7 @@ size_t MediaSet::numberOfRegularFiles() const
 
   for ( const auto &[  mediumNumber, medium ] : mediaV )
   {
-    numberOfRegularFiles += recursiveNumberOfRegularFiles( *medium );
+    numberOfRegularFiles += medium->recursiveNumberOfRegularFiles();
   }
 
   return numberOfRegularFiles;
@@ -230,7 +235,10 @@ ConstRegularFiles MediaSet::regularFiles() const
 
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    regularFiles.splice( regularFiles.end(), recursiveRegularFiles( *medium) );
+    regularFiles.splice(
+      regularFiles.end(),
+      std::const_pointer_cast< const Medium >(
+        medium )->recursiveRegularFiles() );
   }
 
   return regularFiles;
@@ -242,7 +250,7 @@ RegularFiles MediaSet::regularFiles()
 
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    regularFiles.splice( regularFiles.end(), recursiveRegularFiles( *medium) );
+    regularFiles.splice( regularFiles.end(), medium->recursiveRegularFiles() );
   }
 
   return regularFiles;
@@ -254,7 +262,10 @@ ConstRegularFiles MediaSet::regularFiles( std::string_view filename ) const
 
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    files.splice( files.end(), recursiveRegularFiles( *medium, filename ) );
+    files.splice(
+      files.end(),
+      std::const_pointer_cast< const Medium >( medium )->recursiveRegularFiles(
+        filename ) );
   }
 
   return files;
@@ -266,7 +277,7 @@ RegularFiles MediaSet::regularFiles( std::string_view filename )
 
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    files.splice( files.end(), recursiveRegularFiles( *medium, filename ) );
+    files.splice( files.end(), medium->recursiveRegularFiles( filename ) );
   }
 
   return files;
@@ -278,7 +289,7 @@ size_t MediaSet::numberOfLoads() const
 
   for ( const auto &[  mediumNumber, medium ] : mediaV )
   {
-    numberOfLoads += recursiveNumberOfLoads( *medium );
+    numberOfLoads += medium->recursiveNumberOfLoads();
   }
 
   return numberOfLoads;
@@ -290,7 +301,9 @@ ConstLoads MediaSet::loads() const
 
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    loads.splice( loads.end(), recursiveLoads( *medium) );
+    loads.splice(
+      loads.end(),
+      std::const_pointer_cast< const Medium >( medium )->recursiveLoads() );
   }
 
   return loads;
@@ -302,7 +315,7 @@ Loads MediaSet::loads()
 
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    loads.splice( loads.end(), recursiveLoads( *medium) );
+    loads.splice( loads.end(), medium->recursiveLoads() );
   }
 
   return loads;
@@ -314,7 +327,10 @@ ConstLoads MediaSet::loads( std::string_view filename ) const
 
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    loads.splice( loads.end(), recursiveLoads( *medium, filename ) );
+    loads.splice(
+      loads.end(),
+      std::const_pointer_cast< const Medium >( medium )->recursiveLoads(
+        filename ) );
   }
 
   return loads;
@@ -326,7 +342,7 @@ Loads MediaSet::loads( std::string_view filename )
 
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    loads.splice( loads.end(), recursiveLoads( *medium, filename ) );
+    loads.splice( loads.end(), medium->recursiveLoads( filename ) );
   }
 
   return loads;
@@ -372,7 +388,7 @@ size_t MediaSet::numberOfBatches() const
 
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    numberOfBatches += recursiveNumberOfBatches( *medium );
+    numberOfBatches += medium->recursiveNumberOfBatches();
   }
 
   return numberOfBatches;
@@ -384,7 +400,9 @@ ConstBatches MediaSet::batches() const
 
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    batches.splice( batches.end(), recursiveBatches( *medium ) );
+    batches.splice(
+      batches.end(),
+      std::const_pointer_cast< const Medium >( medium )->recursiveBatches() );
   }
 
   return batches;
@@ -396,7 +414,7 @@ Batches MediaSet::batches()
 
   for ( const auto & [ mediumNumber, medium ] : mediaV )
   {
-    batches.splice( batches.end(), recursiveBatches( *medium ) );
+    batches.splice( batches.end(), medium->recursiveBatches() );
   }
 
   return batches;
@@ -408,7 +426,10 @@ ConstBatches MediaSet::batches( std::string_view filename ) const
 
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    batches.splice( batches.end(), recursiveBatches( *medium, filename ) );
+    batches.splice(
+      batches.end(),
+      std::const_pointer_cast< const Medium >( medium )->recursiveBatches(
+        filename ) );
   }
 
   return batches;
@@ -420,7 +441,7 @@ Batches MediaSet::batches( std::string_view filename )
 
   for ( const auto &[ mediumNumber, medium ] : mediaV )
   {
-    batches.splice( batches.end(), recursiveBatches( *medium, filename ) );
+    batches.splice( batches.end(), medium->recursiveBatches( filename ) );
   }
 
   return batches;
@@ -592,324 +613,6 @@ void MediaSet::filesCheckValueType(
   std::optional< Arinc645::CheckValueType > type )
 {
   filesCheckValueTypeV = type;
-}
-
-size_t MediaSet::recursiveNumberOfFiles( const ContainerEntity &container ) const
-{
-  size_t numberOfFiles{ container.numberOfFiles() };
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    numberOfFiles += recursiveNumberOfFiles( *subdirectory );
-  }
-
-  return numberOfFiles;
-}
-
-ConstFiles MediaSet::recursiveFiles( const ContainerEntity &container ) const
-{
-  ConstFiles files{ container.files() };
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    files.splice(
-      files.begin(),
-      recursiveFiles( *subdirectory ) );
-  }
-
-  return files;
-}
-
-Files MediaSet::recursiveFiles( ContainerEntity & container )
-{
-  Files files{ container.files() };
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    files.splice(
-      files.begin(),
-      recursiveFiles( *subdirectory ) );
-  }
-
-  return files;
-}
-
-
-ConstFiles MediaSet::recursiveFiles(
-  const ContainerEntity &container,
-  std::string_view filename ) const
-{
-  ConstFiles files{};
-
-  if ( auto file{ container.file( filename ) }; file )
-  {
-    files.emplace_back( std::move( file ) );
-  }
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    files.splice( files.end(), recursiveFiles( *subdirectory, filename ) );
-  }
-
-  return files;
-}
-
-Files MediaSet::recursiveFiles(
-  ContainerEntity &container,
-  std::string_view filename )
-{
-  Files files{};
-
-  if ( auto file{ container.file( filename ) }; file )
-  {
-    files.emplace_back( std::move( file ) );
-  }
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    files.splice( files.end(), recursiveFiles( *subdirectory, filename ) );
-  }
-
-  return files;
-}
-
-size_t MediaSet::recursiveNumberOfRegularFiles(
-  const ContainerEntity &container ) const
-{
-  size_t numberOfRegularFiles{ container.numberOfRegularFiles() };
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    numberOfRegularFiles += recursiveNumberOfRegularFiles( *subdirectory );
-  }
-
-  return numberOfRegularFiles;
-}
-
-ConstRegularFiles MediaSet::recursiveRegularFiles(
-  const ContainerEntity &container ) const
-{
-  ConstRegularFiles files{ container.regularFiles() };
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    files.splice(
-      files.begin(),
-      recursiveRegularFiles( *subdirectory ) );
-  }
-
-  return files;
-}
-
-RegularFiles MediaSet::recursiveRegularFiles( ContainerEntity & container )
-{
-  RegularFiles files{ container.regularFiles() };
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    files.splice(
-      files.begin(),
-      recursiveRegularFiles( *subdirectory ) );
-  }
-
-  return files;
-}
-
-ConstRegularFiles MediaSet::recursiveRegularFiles(
-  const ContainerEntity &container,
-  std::string_view filename ) const
-{
-  ConstRegularFiles files{};
-
-  if ( auto file{ container.regularFile( filename ) }; file )
-  {
-    files.emplace_back( std::move( file ) );
-  }
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    files.splice( files.end(), recursiveRegularFiles( *subdirectory, filename ) );
-  }
-
-  return files;
-}
-
-RegularFiles MediaSet::recursiveRegularFiles(
-  ContainerEntity &container,
-  std::string_view filename )
-{
-  RegularFiles files{};
-
-  if ( auto file{ container.regularFile( filename ) }; file )
-  {
-    files.emplace_back( std::move( file ) );
-  }
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    files.splice( files.end(), recursiveRegularFiles( *subdirectory, filename ) );
-  }
-
-  return files;
-}
-
-size_t MediaSet::recursiveNumberOfLoads(
-  const ContainerEntity &container ) const
-{
-  size_t numberOfLoads{ container.numberOfLoads() };
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    numberOfLoads += recursiveNumberOfLoads( *subdirectory );
-  }
-
-  return numberOfLoads;
-}
-
-ConstLoads MediaSet::recursiveLoads( const ContainerEntity &container ) const
-{
-  ConstLoads loads{ container.loads() };
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    loads.splice(
-      loads.begin(),
-      recursiveLoads( *subdirectory ) );
-  }
-
-  return loads;
-}
-
-Loads MediaSet::recursiveLoads( ContainerEntity & container )
-{
-  Loads loads{ container.loads() };
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    loads.splice(
-      loads.begin(),
-      recursiveLoads( *subdirectory ) );
-  }
-
-  return loads;
-}
-
-ConstLoads MediaSet::recursiveLoads(
-  const ContainerEntity &container,
-  std::string_view filename ) const
-{
-  ConstLoads loads{};
-
-  if ( auto load{ container.load( filename ) }; load )
-  {
-    loads.emplace_back( std::move( load ) );
-  }
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    loads.splice( loads.end(), recursiveLoads( *subdirectory, filename ) );
-  }
-
-  return loads;
-}
-
-Loads MediaSet::recursiveLoads(
-  ContainerEntity &container,
-  std::string_view filename )
-{
-  Loads loads{};
-
-  if ( auto load{ container.load( filename ) }; load )
-  {
-    loads.emplace_back( std::move( load ) );
-  }
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    loads.splice( loads.end(), recursiveLoads( *subdirectory, filename ) );
-  }
-
-  return loads;
-}
-
-size_t MediaSet::recursiveNumberOfBatches(
-  const ContainerEntity &container ) const
-{
-  size_t numberOfBatches{ container.numberOfBatches() };
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    numberOfBatches += recursiveNumberOfBatches( *subdirectory );
-  }
-
-  return numberOfBatches;
-}
-
-ConstBatches MediaSet::recursiveBatches( const ContainerEntity &container ) const
-{
-  ConstBatches batches{ container.batches() };
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    batches.splice(
-      batches.begin(),
-      recursiveBatches( *subdirectory ) );
-  }
-
-  return batches;
-}
-
-Batches MediaSet::recursiveBatches( ContainerEntity & container )
-{
-  Batches batches{ container.batches() };
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    batches.splice(
-      batches.begin(),
-      recursiveBatches( *subdirectory ) );
-  }
-
-  return batches;
-}
-
-
-ConstBatches MediaSet::recursiveBatches(
-  const ContainerEntity &container,
-  std::string_view filename ) const
-{
-  ConstBatches batches{};
-
-  if ( auto batch{ container.batch( filename ) }; batch )
-  {
-    batches.emplace_back( std::move( batch ) );
-  }
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    batches.splice( batches.end(), recursiveBatches( *subdirectory, filename ) );
-  }
-
-  return batches;
-}
-
-Batches MediaSet::recursiveBatches(
-  ContainerEntity &container,
-  std::string_view filename )
-{
-  Batches batches{};
-
-  if ( auto batch{ container.batch( filename ) }; batch )
-  {
-    batches.emplace_back( std::move( batch ) );
-  }
-
-  for ( const auto &subdirectory : container.subdirectories() )
-  {
-    batches.splice( batches.end(), recursiveBatches( *subdirectory, filename ) );
-  }
-
-  return batches;
 }
 
 }

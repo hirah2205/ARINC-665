@@ -149,6 +149,13 @@ class ARINC665_EXPORT ContainerEntity : public Base
     size_t numberOfFiles() const;
 
     /**
+     * @brief Recursively returns number of files.
+     *
+     * @return Number of files in container and its subdirectories.
+     **/
+    [[nodiscard]] size_t recursiveNumberOfFiles() const;
+
+    /**
      * @brief Returns all files present in the given container.
      *
      * @return All files of the current container.
@@ -157,6 +164,34 @@ class ARINC665_EXPORT ContainerEntity : public Base
 
     //! @copydoc files() const
     Files files();
+
+    /**
+     * @brief Recursively returns all files.
+     *
+     * @return All files in @p container and its subdirectories.
+     **/
+    [[nodiscard]] ConstFiles recursiveFiles() const;
+
+    //! @copydoc recursiveFiles() const
+    [[nodiscard]] Files recursiveFiles();
+
+    /**
+     * @brief Returns the files with the given name.
+     *
+     * The file type is not relevant (file can be load header file, batch file,
+     * or other file).
+     *
+     * @param[in] filename
+     *   Name of the requested file.
+     *
+     * @return Files with the given name.
+     * @retval {}
+     *   If no such files exists.
+     **/
+    [[nodiscard]] ConstFiles recursiveFiles( std::string_view filename ) const;
+
+    //! @copydoc recursiveFiles(std::string_view) const
+    [[nodiscard]] Files recursiveFiles( std::string_view filename );
 
     /**
      * @brief Returns the file with the given name.
@@ -215,6 +250,13 @@ class ARINC665_EXPORT ContainerEntity : public Base
     [[nodiscard]] size_t numberOfRegularFiles() const;
 
     /**
+     * @brief Recursively returns number of regular files.
+     *
+     * @return Number of regular files in container and its subdirectories.
+     **/
+    [[nodiscard]] size_t recursiveNumberOfRegularFiles() const;
+
+    /**
      * @brief Return Regular Files.
      *
      * @return Regular Files contained within this container.
@@ -223,6 +265,33 @@ class ARINC665_EXPORT ContainerEntity : public Base
 
     //! @copydoc regularFiles() const
     [[nodiscard]] RegularFiles regularFiles();
+
+    /**
+     * @brief Recursively returns all regular files.
+     *
+     * @return All regular files in @p container and its subdirectories.
+     **/
+    [[nodiscard]] ConstRegularFiles recursiveRegularFiles() const;
+
+    //! @copydoc recursiveRegularFiles() const
+    [[nodiscard]] RegularFiles recursiveRegularFiles();
+
+    /**
+     * @brief Returns the regular files with the given name.
+     *
+     * @param[in] filename
+     *   Name of the requested regular file.
+     *
+     * @return The regular files with the given name.
+     * @retval {}
+     *   If no such files exists.
+     **/
+    [[nodiscard]] ConstRegularFiles recursiveRegularFiles(
+      std::string_view filename ) const;
+
+    //! @copydoc recursiveRegularFiles(std::string_view) const
+    [[nodiscard]] RegularFiles recursiveRegularFiles(
+      std::string_view filename );
 
     /**
      * @brief Returns the Regular File with the given filename.
@@ -241,7 +310,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
     [[nodiscard]] RegularFilePtr regularFile( std::string_view filename );
 
     /**
-     * @brief Adds a regular file into this directory.
+     * @brief Adds a Regular File into this container.
      *
      * @param[in] filename
      *   Filename of the file to be created.
@@ -268,6 +337,13 @@ class ARINC665_EXPORT ContainerEntity : public Base
     [[nodiscard]] size_t numberOfLoads() const;
 
     /**
+     * @brief Recursively returns number of Loads.
+     *
+     * @return Number of Loads in container and its subdirectories.
+     **/
+    [[nodiscard]] size_t recursiveNumberOfLoads() const;
+
+    /**
      * @brief Return loads.
      *
      * @return Loads contained within this container.
@@ -276,6 +352,32 @@ class ARINC665_EXPORT ContainerEntity : public Base
 
     //! @copydoc loads() const
     [[nodiscard]] Loads loads();
+
+    /**
+     * @brief Recursively returns all Loads.
+     *
+     * @return All Loads in container and its subdirectories.
+     **/
+    [[nodiscard]] ConstLoads recursiveLoads() const;
+
+    //! @copydoc recursiveLoads() const
+    [[nodiscard]] Loads recursiveLoads();
+
+    /**
+     * @brief Returns the Loads with the given name.
+     *
+     * @param[in] filename
+     *   Name of the requested Load.
+     *
+     * @return Loads with the given name.
+     * @retval {}
+     *   If no such loads exists.
+     **/
+    [[nodiscard]] ConstLoads recursiveLoads(
+      std::string_view filename ) const;
+
+    //! @copydoc recursiveLoads(std::string_view) const
+    [[nodiscard]] Loads recursiveLoads( std::string_view filename );
 
     /**
      * @brief Returns the load with the given filename.
@@ -320,6 +422,13 @@ class ARINC665_EXPORT ContainerEntity : public Base
     [[nodiscard]] size_t numberOfBatches() const;
 
     /**
+     * @brief Recursively returns number of Batches.
+     *
+     * @return Number of Batches in container and its subdirectories.
+     **/
+    [[nodiscard]] size_t recursiveNumberOfBatches() const;
+
+    /**
      * @brief Return batches.
      *
      * @return Batches contained within this container.
@@ -328,6 +437,32 @@ class ARINC665_EXPORT ContainerEntity : public Base
 
     //! @copydoc batches() const
     [[nodiscard]] Batches batches();
+
+    /**
+     * @brief Recursively returns all Batches.
+     *
+     * @return All Batches in container and its subdirectories.
+     **/
+    [[nodiscard]] ConstBatches recursiveBatches() const;
+
+    //! @copydoc recursiveBatches() const
+    [[nodiscard]] Batches recursiveBatches();
+
+    /**
+     * @brief Returns the Batches with the given name.
+     *
+     * @param[in] filename
+     *   Name of the requested Batch.
+     *
+     * @return Batches with the given name.
+     * @retval {}
+     *   If no such batches exists.
+     **/
+    [[nodiscard]] ConstBatches recursiveBatches(
+      std::string_view filename ) const;
+
+    //! @copydoc recursiveBatches(std::string_view) const
+    [[nodiscard]] Batches recursiveBatches( std::string_view filename );
 
     /**
      * @brief Returns the batch with the given filename.
