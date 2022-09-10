@@ -42,7 +42,7 @@ MediaSetImporter& MediaSetImporterImpl::checkFileIntegrity(
   return *this;
 }
 
-Media::MediaSetPtr MediaSetImporterImpl::operator()()
+MediaSetImporterImpl::Result MediaSetImporterImpl::operator()()
 {
   BOOST_LOG_FUNCTION()
 
@@ -58,7 +58,7 @@ Media::MediaSetPtr MediaSetImporterImpl::operator()()
   // finally, add all files (regular, load headers, batches) to the media set
   addFiles();
 
-  return mediaSet;
+  return { std::move( mediaSet ), std::move( checkValues ) };
 }
 
 void MediaSetImporterImpl::loadFirstMedium()
@@ -115,6 +115,7 @@ void MediaSetImporterImpl::loadFirstMedium()
         break;
     }
 
+    // update files information
     filesInfos.try_emplace( fileInfo.filename, fileInfo );
   }
 
@@ -209,17 +210,17 @@ void MediaSetImporterImpl::loadFurtherMedia() const
 {
   // iterate over media
   for (
-    uint8_t mediumIndex = 2U;
-    mediumIndex <= mediaSet->numberOfMedia();
-    ++mediumIndex )
+    uint8_t mediumNumber = 2U;
+    mediumNumber <= mediaSet->numberOfMedia();
+    ++mediumNumber )
   {
     // Load "list of files" file
     const Files::FileListFile mediumFileListFile{
-      readFileHandlerV( mediumIndex, Arinc665::ListOfFilesName ) };
+      readFileHandlerV( mediumNumber, Arinc665::ListOfFilesName ) };
 
     // compare current list of files to first one
     if ( !mediumFileListFile.belongsToSameMediaSet( fileListFile )
-      || ( mediumIndex != mediumFileListFile.mediaSequenceNumber() ) )
+      || ( mediumNumber != mediumFileListFile.mediaSequenceNumber() ) )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "inconsistent file list file" }
@@ -227,16 +228,16 @@ void MediaSetImporterImpl::loadFurtherMedia() const
     }
 
     // check file integrity on current medium
-    checkMediumFiles( mediumFileListFile.files(), mediumIndex );
+    checkMediumFiles( mediumFileListFile.files(), mediumNumber );
 
     // Load "List of Loads" file
 
     // check against stored version
     if (
       const Files::LoadListFile mediumLoadListFile{
-        readFileHandlerV( mediumIndex, Arinc665::ListOfLoadsName ) };
+        readFileHandlerV( mediumNumber, Arinc665::ListOfLoadsName ) };
       !mediumLoadListFile.belongsToSameMediaSet( loadListFile )
-        || ( mediumIndex != mediumLoadListFile.mediaSequenceNumber() ) )
+        || ( mediumNumber != mediumLoadListFile.mediaSequenceNumber() ) )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ std::string{ Arinc665::ListOfLoadsName }
@@ -249,9 +250,9 @@ void MediaSetImporterImpl::loadFurtherMedia() const
       // check against stored version
       if (
         const Files::BatchListFile mediumBatchListFile{
-          readFileHandlerV( mediumIndex, Arinc665::ListOfBatchesName ) };
+          readFileHandlerV( mediumNumber, Arinc665::ListOfBatchesName ) };
         !mediumBatchListFile.belongsToSameMediaSet( batchListFile )
-        || ( mediumIndex != mediumBatchListFile.mediaSequenceNumber() ) )
+        || ( mediumNumber != mediumBatchListFile.mediaSequenceNumber() ) )
       {
         BOOST_THROW_EXCEPTION(
           Arinc665Exception() << Helper::AdditionalInfo{
@@ -284,6 +285,9 @@ void MediaSetImporterImpl::addFiles()
 
     // set check value indicator
     filePtr->checkValueType( std::get< 0 >( fileInfo.checkValue ) );
+
+    // update check values
+    checkValues.try_emplace( filePtr, fileInfo.checkValue );
   }
 
   addLoads();
@@ -466,6 +470,9 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   loadPtr->userDefinedData( loadHeaderFile.userDefinedData() );
   // Load Check Value
   loadPtr->loadCheckValueType( loadHeaderFile.loadCheckValueType() );
+
+  // update check values
+  checkValues.try_emplace( loadPtr, fileInfo.checkValue );
 }
 
 void MediaSetImporterImpl::addBatches()
@@ -558,6 +565,9 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
     // add Target Hardware/ Position
     batchPtr->target( targetHardware.targetHardwareIdPosition, batchLoads );
   }
+
+  // update check values
+  checkValues.try_emplace( batchPtr, fileInfo.checkValue );
 }
 
 const Files::FileInfo& MediaSetImporterImpl::fileInformation(
@@ -577,7 +587,7 @@ const Files::FileInfo& MediaSetImporterImpl::fileInformation(
 }
 
 Media::ContainerEntityPtr MediaSetImporterImpl::checkCreateDirectory(
-  const uint8_t mediumIndex,
+  const uint8_t mediumNumber,
   const std::filesystem::path &directoryPath )
 {
   // make path relative (remove leading slash)
@@ -586,10 +596,10 @@ Media::ContainerEntityPtr MediaSetImporterImpl::checkCreateDirectory(
   // we are in root-directory
   if ( dirPath.empty() )
   {
-    return mediaSet->medium( mediumIndex );
+    return mediaSet->medium( mediumNumber );
   }
 
-  Media::ContainerEntityPtr dir{ mediaSet->medium( mediumIndex ) };
+  Media::ContainerEntityPtr dir{ mediaSet->medium( mediumNumber ) };
 
   // iterate over path elements
   for ( auto &subPath : dirPath )
@@ -611,13 +621,13 @@ Media::ContainerEntityPtr MediaSetImporterImpl::checkCreateDirectory(
 
 void MediaSetImporterImpl::checkMediumFiles(
   const Files::FilesInfo &filesInfo,
-  const uint8_t mediumIndex ) const
+  const uint8_t mediumNumber ) const
 {
   // iterate over files
   for ( const auto &fileInfo : filesInfo )
   {
     // skip files, which are not part of the current medium
-    if ( fileInfo.memberSequenceNumber != mediumIndex )
+    if ( fileInfo.memberSequenceNumber != mediumNumber )
     {
       continue;
     }

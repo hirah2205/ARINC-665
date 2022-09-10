@@ -56,7 +56,7 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *
      * @return Created Media Set Instance.
      **/
-    [[nodiscard]] Media::MediaSetPtr operator()() override;
+    [[nodiscard]] Result operator()() override;
 
   private:
     //! Files Information (From File List File) (filename -> file information)
@@ -154,8 +154,8 @@ class MediaSetImporterImpl final : public MediaSetImporter
      * @brief Creates the logical directory entry if not already created and
      *   return its representation.
      *
-     * @param[in] mediumIndex
-     *   Medium Index.
+     * @param[in] mediumNumber
+     *   Medium Number.
      * @param[in] directoryPath
      *   Directory Path.
      *
@@ -165,7 +165,7 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *   When subdirectory cannot be created
      **/
     [[nodiscard]] Media::ContainerEntityPtr checkCreateDirectory(
-      uint8_t mediumIndex,
+      uint8_t mediumNumber,
       const std::filesystem::path &directoryPath );
 
     /**
@@ -177,12 +177,12 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *
      * @param[in] filesInfo
      *   File information to use,
-     * @param[in] mediumIndex
-     *   Current Medium Index
+     * @param[in] mediumNumber
+     *   Current Medium Number
      **/
     void checkMediumFiles(
       const Files::FilesInfo &filesInfo,
-      uint8_t mediumIndex ) const;
+      uint8_t mediumNumber ) const;
 
     /**
      * @brief Check File Integrity
@@ -258,6 +258,8 @@ class MediaSetImporterImpl final : public MediaSetImporter
 
     //! Media Set
     Media::MediaSetPtr mediaSet;
+    //! Check Values
+    CheckValues checkValues;
 
     //! File List File (Load by loadFirstMedium(), used by loadFurtherMedia() )
     Files::FileListFile fileListFile;

@@ -189,7 +189,7 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
 
   auto mediaSet{ (*importer)() };
 
-  return mediaSet;
+  return mediaSet.first;
 }
 
 static size_t getFileSize(

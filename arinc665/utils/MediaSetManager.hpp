@@ -23,6 +23,8 @@
 #include <list>
 #include <string>
 #include <functional>
+#include <optional>
+#include <map>
 
 namespace Arinc665::Utils {
 
@@ -41,9 +43,15 @@ namespace Arinc665::Utils {
 class ARINC665_EXPORT MediaSetManager
 {
   public:
+    //! Check Values
+    using CheckValues =
+      std::map< Media::ConstFilePtr, Arinc645::CheckValue, std::less< > >;
+    //! Media Set Information
+    using MediaSet =
+      std::pair< Media::ConstMediaSetPtr, CheckValues >;
     //! Media Sets Map ( Part Number -> Media Set)
     using MediaSets =
-      std::map< std::string, Media::ConstMediaSetPtr, std::less<> >;
+      std::map< std::string, MediaSet, std::less<> >;
 
     //! Handler which returns the path to the given medium number
     using MediumPathHandler =
@@ -87,8 +95,10 @@ class ARINC665_EXPORT MediaSetManager
      *   Media Set Part Number.
      *
      * @return Media Set with the given Part Number.
+     * @retval {}
+     *   If no Media Set with partNumber exist.
      **/
-    [[nodiscard]] virtual Media::ConstMediaSetPtr mediaSet(
+    [[nodiscard]] virtual std::optional< MediaSet > mediaSet(
       std::string_view partNumber ) const = 0;
 
     /**
@@ -170,7 +180,7 @@ class ARINC665_EXPORT MediaSetManager
      * @return Path to the given file.
      **/
     [[nodiscard]] virtual std::filesystem::path filePath(
-      Media::ConstFilePtr file ) const = 0;
+      const Media::ConstFilePtr &file ) const = 0;
 };
 
 }

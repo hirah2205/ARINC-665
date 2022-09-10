@@ -152,12 +152,12 @@ int main( int argc, char const * argv[] )
       .checkFileIntegrity( checkFileIntegrity );
 
     // perform import
-    auto result{ (*importer)() };
+    const auto &[ mediaSet, checkValues ]{ (*importer)() };
 
     Arinc665::Utils::Arinc665Xml::FilePathMapping fileMapping{};
 
     // iterate over files
-    for ( const auto &file : result->files() )
+    for ( const auto &file : mediaSet->files() )
     {
       std::filesystem::path filePath(
         mediaSourceDirectories[ file->medium()->mediumNumber() - 1]
@@ -170,7 +170,7 @@ int main( int argc, char const * argv[] )
     const auto xml{ Arinc665::Utils::Arinc665Xml::instance() };
 
     // export the XML file
-    xml->saveToXml( result, fileMapping, mediaSetXmlFile );
+    xml->saveToXml( mediaSet, fileMapping, mediaSetXmlFile );
   }
   catch ( const boost::program_options::error &e )
   {

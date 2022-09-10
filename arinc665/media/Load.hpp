@@ -70,6 +70,7 @@ class ARINC665_EXPORT Load : public File
      * @name Part Flags.
      * @{
      **/
+
     /**
      * @brief Obtains the Part Flags Field.
      *
@@ -93,14 +94,14 @@ class ARINC665_EXPORT Load : public File
      **/
 
     /**
-     * @brief Return the Part Number of the Media Set.
+     * @brief Return the Part Number of the Load.
      *
      * @return Part Number of the Media Set.
      **/
     [[nodiscard]] std::string_view partNumber() const;
 
     /**
-     * @brief Updates the Part Number
+     * @brief Updates the Part Number of the Load.
      *
      * @param[in] partNumber
      *   New Part number
@@ -184,7 +185,7 @@ class ARINC665_EXPORT Load : public File
 
     /**
      * @name Data Files
-     * A (data) file is a pair of file and part number.
+     * A (data) file is a tuple of filename, part number and check value type.
      *
      * @{
      **/
@@ -216,7 +217,7 @@ class ARINC665_EXPORT Load : public File
      *   Part Number.
      * @param[in] checkValueType
      *   Check Value Type used for this File Entry.
-     *   Uf set to {} the inherited value will be used.
+     *   If set to {} the inherited value will be used.
      *
      * @sa dataFilesCheckValueType()
      **/
@@ -235,7 +236,8 @@ class ARINC665_EXPORT Load : public File
 
     /**
      * @name Support Files
-     * A (Support) file is a pair of file and part number.
+     * A (support) file is a tuple of filename, part number and check value
+     * type.
      *
      * @{
      **/
@@ -244,7 +246,8 @@ class ARINC665_EXPORT Load : public File
      * @brief Returns the Support Files.
      *
      * @param[in] effective
-     *   If set to true the effective check value type is returned for each file.
+     *   If set to true the effective check value type is returned for each
+     *   file.
      *
      * @return Support Files.
      **/

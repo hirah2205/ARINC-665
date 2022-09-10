@@ -156,6 +156,9 @@ class ARINC665_EXPORT MediaSet : public Base
 
     /**
      * @name Files
+     *
+     * All files regardless of file type (regular file, load, batch).
+     *
      * @{
      **/
 
@@ -199,6 +202,9 @@ class ARINC665_EXPORT MediaSet : public Base
 
     /**
      * @name Regular Files
+     *
+     * Files, which are not Load or Batch.
+     *
      * @{
      **/
 
@@ -226,10 +232,8 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @brief return the Regular %File with the given filename.
      *
-     * @todo handle multiple loads with same name.
-     *
      * @param[in] filename
-     *   The filename of the load.
+     *   Filename of the load.
      *
      * @return Load with the given filename.
      **/

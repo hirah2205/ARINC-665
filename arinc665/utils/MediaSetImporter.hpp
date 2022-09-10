@@ -32,11 +32,17 @@ namespace Arinc665::Utils {
 class ARINC665_EXPORT MediaSetImporter
 {
   public:
+    //! Check Values of Media Set Files
+    using CheckValues =
+      std::map< Media::ConstFilePtr, Arinc645::CheckValue, std::less< > >;
+    //! Return Type of Operation
+    using Result = std::pair< Media::MediaSetPtr, CheckValues >;
+
     /**
      * @brief Handler, which is called to obtain the file size.
      *
-     * This handler is also used to read files, which are not represented by
-     * Arinc665::Media classes.
+     * This handler is also used to access files, which are not represented by
+     * Arinc665::Media classes (i.e. List of Files, Loads, and Batches).
      * Therefore, a basic representation is used.
      *
      * This Handler shall throw, when the file does not exist.
@@ -46,7 +52,7 @@ class ARINC665_EXPORT MediaSetImporter
      * @param[in] path
      *   Relative Path on Medium.
      *
-     * @return File Size in Bytes.
+     * @return File size in Bytes.
      **/
     using FileSizeHandler = std::function< size_t(
       uint8_t mediumNumber,
@@ -90,7 +96,7 @@ class ARINC665_EXPORT MediaSetImporter
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetImporter &fileSizeHandler(
+    virtual MediaSetImporter& fileSizeHandler(
       FileSizeHandler fileSizeHandler ) = 0;
 
     /**
@@ -123,7 +129,7 @@ class ARINC665_EXPORT MediaSetImporter
      *
      * @throw Arinc665Exception
      **/
-    virtual Media::MediaSetPtr operator()() = 0;
+    virtual Result operator()() = 0;
 };
 
 }

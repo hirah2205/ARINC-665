@@ -112,7 +112,7 @@ void MediaSetManagerController::reloadMediaSetModel()
 
   for ( const auto &[ partNumber, mediaSet ] : mediaSetManagerV->manager()->mediaSets() )
   {
-    mediaSets.emplace_back( mediaSet );
+    mediaSets.emplace_back( mediaSet.first );
   }
 
   mediaSetsModelV->mediaSets( std::move( mediaSets ) );

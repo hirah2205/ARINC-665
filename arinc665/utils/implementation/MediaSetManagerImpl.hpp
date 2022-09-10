@@ -36,14 +36,8 @@ class MediaSetManagerImpl final : public MediaSetManager
      *   If set to true additional file integrity steps are performed
      **/
     explicit MediaSetManagerImpl(
-      const std::filesystem::path &basePath,
-      const MediaSetManagerConfiguration &configuration,
-      bool checkFileIntegrity );
-
-    //! @copydoc MediaSetManagerImpl(const std::filesystem::path&,const MediaSetManagerConfiguration&,bool)
-    explicit MediaSetManagerImpl(
-      std::filesystem::path &&basePath,
-      MediaSetManagerConfiguration &&configuration,
+      std::filesystem::path basePath,
+      MediaSetManagerConfiguration configuration,
       bool checkFileIntegrity );
 
     //! @copydoc MediaSetManager::configuration
@@ -51,7 +45,7 @@ class MediaSetManagerImpl final : public MediaSetManager
     configuration() const override;
 
     //! @copydoc MediaSetManager::mediaSet(std::string_view) const
-    [[nodiscard]] Media::ConstMediaSetPtr mediaSet(
+    [[nodiscard]] std::optional< MediaSet > mediaSet(
       std::string_view partNumber ) const override;
 
     //! @copydoc MediaSetManager::mediaSets() const
@@ -81,7 +75,7 @@ class MediaSetManagerImpl final : public MediaSetManager
 
     //! @copydoc MediaSetManager::filePath
     [[nodiscard]] std::filesystem::path filePath(
-      Media::ConstFilePtr file ) const override;
+      const Media::ConstFilePtr &file ) const override;
 
   private:
     /**
@@ -109,7 +103,7 @@ class MediaSetManagerImpl final : public MediaSetManager
     [[nodiscard]] Files::RawFile readFileHandler(
       const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
       uint8_t mediumNumber,
-      const std::filesystem::path &path );
+      const std::filesystem::path &path ) const;
 
     /**
      * @brief Makes given @p filePath absolute with respect to media set base

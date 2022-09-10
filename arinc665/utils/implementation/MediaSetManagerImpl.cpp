@@ -20,24 +20,14 @@
 #include <boost/format.hpp>
 
 #include <fstream>
+#include <utility>
 
 namespace Arinc665::Utils {
 
 MediaSetManagerImpl::MediaSetManagerImpl(
-  const std::filesystem::path &basePath,
-  const MediaSetManagerConfiguration &configuration,
+  std::filesystem::path basePath,
+  MediaSetManagerConfiguration configuration,
   const bool checkFileIntegrity ) :
-  basePath{ basePath },
-  configurationV{ configuration }
-{
-  BOOST_LOG_FUNCTION()
-  loadMediaSets( checkFileIntegrity );
-}
-
-MediaSetManagerImpl::MediaSetManagerImpl(
-  std::filesystem::path &&basePath,
-  MediaSetManagerConfiguration &&configuration,
-  bool checkFileIntegrity ) :
   basePath{ std::move( basePath ) },
   configurationV{ std::move( configuration ) }
 {
@@ -50,7 +40,7 @@ const MediaSetManagerConfiguration & MediaSetManagerImpl::configuration() const
   return configurationV;
 }
 
-Media::ConstMediaSetPtr MediaSetManagerImpl::mediaSet(
+std::optional< MediaSetManagerImpl::MediaSet > MediaSetManagerImpl::mediaSet(
   std::string_view partNumber ) const
 {
   auto mediaSet{ mediaSetsV.find( partNumber ) };
@@ -77,17 +67,16 @@ void MediaSetManagerImpl::registerMediaSet(
 
   // the read file handler
   importer->readFileHandler(
-    std::bind(
+    std::bind_front(
       &MediaSetManagerImpl::readFileHandler,
       this,
-      mediaSetPaths,
-      std::placeholders::_1,
-      std::placeholders::_2 ) );
+      mediaSetPaths ) );
 
   importer->checkFileIntegrity( checkFileIntegrity );
 
   // import media set
-  auto impMediaSet( (*importer)() );
+  auto [ impMediaSet, checkValues ]{ (*importer)() };
+  assert( impMediaSet );
 
   if ( mediaSet( impMediaSet->partNumber() ) )
   {
@@ -96,10 +85,13 @@ void MediaSetManagerImpl::registerMediaSet(
   }
 
   // add to media sets
-  mediaSetsV.emplace( impMediaSet->partNumber(), impMediaSet );
+  mediaSetsV.try_emplace(
+    std::string{ impMediaSet->partNumber() },
+    std::move( impMediaSet ),
+    std::move( checkValues ) );
 
   // add to configuration
-  configurationV.mediaSets.emplace( mediaSetPaths.first, mediaSetPaths.second );
+  configurationV.mediaSets.try_emplace( mediaSetPaths.first, mediaSetPaths.second );
 }
 
 MediaSetManagerConfiguration::MediaSetPaths
@@ -113,7 +105,8 @@ MediaSetManagerImpl::deregisterMediaSet( std::string_view partNumber )
       << Helper::AdditionalInfo{ "Media Set not found" } );
   }
 
-  const auto mediaSetPath{ mediaSetsPaths.find( foundMediaSet->second ) };
+  // find media set paths for media set
+  const auto mediaSetPath{ mediaSetsPaths.find( foundMediaSet->second.first ) };
 
   if ( mediaSetPath == mediaSetsPaths.end() )
   {
@@ -149,7 +142,7 @@ Media::ConstLoads MediaSetManagerImpl::loads() const
 
   for ( const auto &[ partNumber, mediaSet ] : mediaSetsV )
   {
-    loads.splice( loads.end(), mediaSet->loads() );
+    loads.splice( loads.end(), mediaSet.first->loads() );
   }
 
   return loads;
@@ -161,7 +154,7 @@ Media::ConstLoads MediaSetManagerImpl::loads( std::string_view filename ) const
 
   for ( const auto &[ partNumber, mediaSet ] : mediaSetsV )
   {
-    loads.splice( loads.end(), mediaSet->loads( filename ) );
+    loads.splice( loads.end(), mediaSet.first->loads( filename ) );
   }
 
   return loads;
@@ -178,12 +171,14 @@ Media::ConstLoads MediaSetManagerImpl::loads(
     return {};
   }
 
-  return mediaSetFound->loads( filename );
+  return mediaSetFound->first->loads( filename );
 }
 
 std::filesystem::path MediaSetManagerImpl::filePath(
-  Media::ConstFilePtr file ) const
+  const Media::ConstFilePtr &file ) const
 {
+  BOOST_LOG_FUNCTION()
+
   auto mediaSetIt{ mediaSetsPaths.find( file->mediaSet() ) };
 
   if ( mediaSetIt == mediaSetsPaths.end() )
@@ -222,20 +217,23 @@ void MediaSetManagerImpl::loadMediaSets( const bool checkFileIntegrity )
     importer->checkFileIntegrity( checkFileIntegrity );
 
     // import media set
-    auto impMediaSet( (*importer)() );
+    auto [ impMediaSet, checkValues ]{ (*importer)() };
     assert( impMediaSet );
 
     // add media set
-    mediaSetsV.emplace( impMediaSet->partNumber(), impMediaSet );
+    mediaSetsV.try_emplace(
+      std::string{ impMediaSet->partNumber() },
+      std::move( impMediaSet ),
+      std::move( checkValues ) );
     // Add media set paths
-    mediaSetsPaths.emplace( impMediaSet, mediaSetPaths );
+    mediaSetsPaths.try_emplace( impMediaSet, mediaSetPaths );
   }
 }
 
 Files::RawFile MediaSetManagerImpl::readFileHandler(
   const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
   uint8_t mediumNumber,
-  const std::filesystem::path &path )
+  const std::filesystem::path &path ) const
 {
   // make structure binding here instead
   const auto &[ mediaSetPath, mediaPaths ]{ mediaSetPaths };
@@ -270,7 +268,7 @@ Files::RawFile MediaSetManagerImpl::readFileHandler(
 
   // read the data to the buffer
   file.read(
-    (char*) &data.at( 0),
+    (char*) std::data( data ),
     static_cast< std::streamsize >( data.size() ) );
 
   // return the buffer

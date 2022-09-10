@@ -37,7 +37,7 @@ class ARINC665_EXPORT MediaSetValidator
      *
      * This handler is also used to read files, which are not represented by
      * Arinc665::Media classes.
-     * Therefore a basic representation is used.
+     * Therefore, a basic representation is used.
      *
      * @param[in] mediumNumber
      *   Medium Number

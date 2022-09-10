@@ -60,12 +60,13 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
       mediaSetManagerDirectory,
       checkFileIntegrity ) };
 
-    for ( const auto &mediaSet : mediaSetManager->manager()->mediaSets() )
+    for ( const auto &[ partNumber, mediaSet ] :
+      mediaSetManager->manager()->mediaSets() )
     {
       std::cout << "Media Set:\n";
 
       Arinc665::Utils::MediaSetPrinter_print(
-        *mediaSet.second,
+        *mediaSet.first,
         std::cout,
         "  ",
         "  " );

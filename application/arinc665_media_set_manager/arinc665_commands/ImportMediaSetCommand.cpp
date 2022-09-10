@@ -75,21 +75,20 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 
     auto importer{ Arinc665::Utils::MediaSetImporter::create() };
     importer->checkFileIntegrity( checkFileIntegrity )
-      .readFileHandler( std::bind(
+      .readFileHandler( std::bind_front(
         &ImportMediaSetCommand::readFileHandler,
-        this,
-        std::placeholders::_1,
-        std::placeholders::_2 ) );
+        this ) );
+    assert( importer );
 
-    auto mediaSet{ ( *importer )() };
+    const auto &[ mediaSet, checkValues]{ ( *importer )() };
 
     // Add Media Set Part Number to Output Path
     Arinc665::Utils::MediaSetManagerConfiguration::MediaPaths mediaPaths{};
-    for ( const auto &medium : mediaSet->media() )
+    for ( const auto &[ mediumNumber, medium ] : mediaSet->media() )
     {
-      mediaPaths.emplace(
-        medium.first,
-        fmt::format( "MEDIUM_{:03d}", (unsigned int)medium.first ) );
+      mediaPaths.try_emplace(
+        mediumNumber,
+        fmt::format( "MEDIUM_{:03d}", mediumNumber ) );
     }
     Arinc665::Utils::MediaSetManagerConfiguration::MediaSetPaths mediaSetPaths{
       std::make_pair( mediaSet->partNumber(), std::move( mediaPaths ) ) };
@@ -120,16 +119,16 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
       checkFileIntegrity );
     mediaSetManager->saveConfiguration();
   }
-  catch ( boost::program_options::error &e )
+  catch ( const boost::program_options::error &e )
   {
     std::cout << e.what() << "\n" << optionsDescription << "\n";
   }
-  catch ( boost::exception &e )
+  catch ( const boost::exception &e )
   {
     std::cerr
       << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
   }
-  catch ( std::exception &e )
+  catch ( const std::exception &e )
   {
     std::cerr << "Operation failed: " << e.what() << "\n";
   }
