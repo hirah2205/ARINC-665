@@ -65,7 +65,7 @@ DirectoryPtr ContainerEntity::subdirectory( std::string_view name )
   return {};
 }
 
-DirectoryPtr ContainerEntity::addSubdirectory( std::string_view name )
+DirectoryPtr ContainerEntity::addSubdirectory( std::string name )
 {
   if ( subdirectory( name ) || file( name ) )
   {
@@ -76,7 +76,7 @@ DirectoryPtr ContainerEntity::addSubdirectory( std::string_view name )
   // create, emplace and return directory
   return subdirectoriesV.emplace_back( std::make_shared< Directory >(
     std::dynamic_pointer_cast< ContainerEntity >( shared_from_this() ),
-    name ) );
+    std::move( name ) ) );
 }
 
 void ContainerEntity::removeSubdirectory( std::string_view name )
@@ -369,19 +369,19 @@ RegularFilePtr ContainerEntity::regularFile( std::string_view filename )
   return filePerType< RegularFilePtr, File::FileType::RegularFile >( filename );
 }
 
-RegularFilePtr ContainerEntity::addRegularFile( std::string_view filename )
+RegularFilePtr ContainerEntity::addRegularFile( std::string filename )
 {
   if ( subdirectory( filename ) || file( filename ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo{ "File or directory with name already exists" }
-      << boost::errinfo_file_name{ std::string{ filename } } );
+      << boost::errinfo_file_name{ filename } );
   }
 
   // create file
   auto file{ std::make_shared< RegularFile >(
     std::dynamic_pointer_cast< ContainerEntity>( shared_from_this() ),
-    filename ) };
+    std::move( filename ) ) };
 
   // create, emplace and return file
   filesV.push_back( file );
@@ -493,7 +493,7 @@ LoadPtr ContainerEntity::load( std::string_view filename )
   return filePerType< LoadPtr, File::FileType::LoadFile >( filename );
 }
 
-LoadPtr ContainerEntity::addLoad( std::string_view filename )
+LoadPtr ContainerEntity::addLoad( std::string filename )
 {
   if ( subdirectory( filename ) || file( filename ) )
   {
@@ -504,7 +504,7 @@ LoadPtr ContainerEntity::addLoad( std::string_view filename )
   // create file
   auto load{ std::make_shared< Load>(
     std::dynamic_pointer_cast< ContainerEntity>( shared_from_this() ),
-    filename ) };
+    std::move( filename ) ) };
 
   // insert into map
   filesV.push_back( load );
@@ -617,7 +617,7 @@ BatchPtr ContainerEntity::batch( std::string_view filename )
   return filePerType< BatchPtr, File::FileType::BatchFile >( filename );
 }
 
-BatchPtr ContainerEntity::addBatch( std::string_view filename )
+BatchPtr ContainerEntity::addBatch( std::string filename )
 {
   if ( subdirectory( filename ) || file( filename ) )
   {
@@ -628,7 +628,7 @@ BatchPtr ContainerEntity::addBatch( std::string_view filename )
   // create file
   auto batch{ std::make_shared< Batch>(
     std::dynamic_pointer_cast< ContainerEntity>( shared_from_this() ),
-    filename ) };
+    std::move( filename ) ) };
 
   // insert into map
   filesV.push_back( batch );

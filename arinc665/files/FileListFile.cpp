@@ -63,22 +63,12 @@ FilesInfo& FileListFile::files()
   return filesV;
 }
 
-void FileListFile::files( const FilesInfo &files )
-{
-  filesV = files;
-}
-
-void FileListFile::files( FilesInfo &&files )
+void FileListFile::files( FilesInfo files )
 {
   filesV = std::move( files );
 }
 
-void FileListFile::file( const FileInfo &file )
-{
-  filesV.push_back( file );
-}
-
-void FileListFile::file( FileInfo &&file )
+void FileListFile::file( FileInfo file )
 {
   filesV.push_back( std::move( file ) );
 }

@@ -381,10 +381,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] partNumber
      *   New Part Number.
      **/
-    void partNumber( std::string_view partNumber );
-
-    //! @copydoc partNumber(std::string_view)
-    void partNumber( std::string &&partNumber );
+    void partNumber( std::string partNumber );
 
     /** @} **/
 
@@ -404,15 +401,12 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     [[nodiscard]] TargetHardwareIds& targetHardwareIds();
 
     /**
-     * @brief Add Target Hardware IDs without position information.
+     * @brief Updates Target Hardware IDs without position information.
      *
      * @param[in] targetHardwareIds
      *   Target Hardware IDs.
      **/
-    void targetHardwareIds( const TargetHardwareIds &targetHardwareIds );
-
-    //! @copydoc targetHardwareIds(const TargetHardwareIds&)
-    void targetHardwareIds( TargetHardwareIds &&targetHardwareIds );
+    void targetHardwareIds( TargetHardwareIds targetHardwareIds );
 
     /**
      * @brief Add Target Hardware ID.
@@ -420,10 +414,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] targetHardwareId
      *   Target Hardware ID.
      **/
-    void targetHardwareId( std::string_view targetHardwareId );
-
-    //! @copydoc targetHardwareId(std::string_view)
-    void targetHardwareId( std::string &&targetHardwareId );
+    void targetHardwareId( std::string targetHardwareId );
 
     /** @} **/
 
@@ -456,11 +447,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      *   Target Hardware ID/ Positions.
      **/
     void targetHardwareIdsPositions(
-      const TargetHardwareIdsPositions &targetHardwareIdsPositions );
-
-    //! @copydoc targetHardwareIdsPositions(const TargetHardwareIdsPositions&)
-    void targetHardwareIdsPositions(
-      TargetHardwareIdsPositions &&targetHardwareIdsPositions );
+      TargetHardwareIdsPositions targetHardwareIdsPositions );
 
     /**
      * @brief Add Target Hardware ID/ Positions.
@@ -468,16 +455,11 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] targetHardwareId
      *   Target Hardware ID.
      * @param[in] positions
-     *   Positions (can be empty)
+     *   Positions
      **/
     void targetHardwareIdPositions(
-      std::string_view targetHardwareId,
-      const Positions &positions );
-
-    //! @copydoc targetHardwareIdPositions(std::string_view,const Positions&)
-    void targetHardwareIdPositions(
-      std::string &&targetHardwareId,
-      Positions &&positions );
+      std::string targetHardwareId,
+      Positions positions );
 
     /** @} **/
 
@@ -519,10 +501,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] type
      *   Load Type Information.
      **/
-    void loadType( const LoadType &type );
-
-    //! @copydoc loadType(const LoadType&)
-    void loadType( LoadType &&type );
+    void loadType( LoadType type );
 
     /** @} **/
 
@@ -543,15 +522,20 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     LoadFilesInfo& dataFiles() noexcept;
 
     /**
+     * @brief Updates the Data Files Information.
+     *
+     * @param[in] filesInformation
+     *   Data Files Information.
+     **/
+    void dataFiles( LoadFilesInfo filesInformation );
+
+    /**
      * @brief Add Data %File.
      *
      * @param[in] dataFileInfo
      *   Data file information.
      **/
-    void dataFile( const LoadFileInfo &dataFileInfo );
-
-    //! @copydoc dataFile(const LoadFileInfo&)
-    void dataFile( LoadFileInfo &&dataFileInfo );
+    void dataFile( LoadFileInfo dataFileInfo );
 
     /** @} **/
 
@@ -572,15 +556,20 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
     LoadFilesInfo& supportFiles() noexcept;
 
     /**
+     * @brief Updates the Support Files Information.
+     *
+     * @param[in] filesInformation
+     *   Support Files Information.
+     **/
+    void supportFiles( LoadFilesInfo filesInformation );
+
+    /**
      * @brief Add Support %File.
      *
      * @param[in] supportFileInfo
      *   Support File.
      **/
-    void supportFile( const LoadFileInfo &supportFileInfo );
-
-    //! @copydoc supportFile(const LoadFileInfo&)
-    void supportFile( LoadFileInfo &&supportFileInfo );
+    void supportFile( LoadFileInfo supportFileInfo );
 
     /** @} **/
 

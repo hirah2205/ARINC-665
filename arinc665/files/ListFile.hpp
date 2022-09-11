@@ -50,10 +50,7 @@ class ARINC665_EXPORT ListFile : public Arinc665File
      * @param[in] mediaSetPn
      *   Media Set Part Number.
      **/
-    void mediaSetPn( std::string_view mediaSetPn );
-
-    //! @copydoc mediaSetPn(std::string_view)
-    void mediaSetPn( std::string &&mediaSetPn );
+    void mediaSetPn( std::string mediaSetPn );
 
     /** @} **/
 

@@ -41,10 +41,7 @@ class ARINC665_EXPORT Batch : public File
      * @param[in] name
      *   Name of the Batch.
      **/
-    Batch( const ContainerEntityPtr& parent, std::string_view name );
-
-    //! @copydoc Batch(const ContainerEntityPtr&,std::string_view)
-    Batch( const ContainerEntityPtr& parent, std::string &&name );
+    Batch( const ContainerEntityPtr& parent, std::string name );
 
     /**
      * @copydoc File::fileType()
@@ -73,7 +70,7 @@ class ARINC665_EXPORT Batch : public File
      * @param[in] partNumber
      *   New Batch Part Number
      **/
-    void partNumber( std::string_view partNumber );
+    void partNumber( std::string partNumber );
 
     /** @} **/
 
@@ -100,10 +97,7 @@ class ARINC665_EXPORT Batch : public File
      * @param[in] comment
      *   Comment, which describes the batch.
      **/
-    void comment( std::string_view comment );
-
-    //! @copydoc comment(std::string_view)
-    void comment( std::string &&comment );
+    void comment( std::string comment );
 
     /** @} **/
 
@@ -137,29 +131,32 @@ class ARINC665_EXPORT Batch : public File
     /**
      * @brief Add Loads for the given Target Hardware ID Position.
      *
+     * @note
+     * As loads are stored as weak references, the parameters are not moved.
+     *
      * @param[in] targetHardwareIdPosition
      *   Target Hardware ID Position
      * @param[in] loads
      *   Loads for @p targetHardwareIdPosition.
      **/
     void target(
-      std::string_view targetHardwareIdPosition,
-      const ConstLoads &loads );
-
-    //! @copydoc target(std::string_view,const ConstLoads&)
-    void target(
-      std::string &&targetHardwareIdPosition,
+      std::string targetHardwareIdPosition,
       const ConstLoads &loads );
 
     /**
      * @brief Add the given Load to the Target Hardware ID Position.
+     *
+     * @note
+     * As loads are stored as weak references, the parameters are not moved.
      *
      * @param[in] targetHardwareIdPosition
      *   Target Hardware ID Position
      * @param[in] load
      *   Load to add.
      **/
-    void target( std::string_view targetHardwareIdPosition, ConstLoadPtr load );
+    void target(
+      std::string_view targetHardwareIdPosition,
+      const ConstLoadPtr &load );
 
     /** @} **/
 

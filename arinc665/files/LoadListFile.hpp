@@ -135,15 +135,20 @@ class ARINC665_EXPORT LoadListFile : public ListFile
     [[nodiscard]] LoadsInfo& loads();
 
     /**
+     * @brief Updates the Loads Information.
+     *
+     * @param[in] loadsInformation
+     *   Loads Information.
+     **/
+    void loads( LoadsInfo loadsInformation );
+
+    /**
      * @brief Adds the given load information.
      *
      * @param[in] load
      *   Load information.
      **/
-    void load( const LoadInfo &load );
-
-    //! @copydoc load(const LoadInfo&)
-    void load( LoadInfo &&load );
+    void load( LoadInfo load );
 
     /** @} **/
 

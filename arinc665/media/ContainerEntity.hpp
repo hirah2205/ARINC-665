@@ -105,7 +105,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @throw Arinc665Exception()
      *   If directory or name with this name already exists.
      **/
-    DirectoryPtr addSubdirectory( std::string_view name );
+    DirectoryPtr addSubdirectory( std::string name );
 
     /**
      * @brief Removes the subdirectory with the given name within this entity.
@@ -320,7 +320,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @throw Arinc665Exception
      *   When file already exist.
      **/
-    RegularFilePtr addRegularFile( std::string_view filename );
+    RegularFilePtr addRegularFile( std::string filename );
 
     /** @} **/
 
@@ -405,7 +405,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @throw Arinc665Exception
      *   When a file with given filename already exist.
      **/
-    [[nodiscard]] LoadPtr addLoad( std::string_view filename );
+    [[nodiscard]] LoadPtr addLoad( std::string filename );
 
     /** @} **/
 
@@ -490,7 +490,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @throw Arinc665Exception
      *   When a file with given filename already exist.
      **/
-    [[nodiscard]] BatchPtr addBatch( std::string_view filename );
+    [[nodiscard]] BatchPtr addBatch( std::string filename );
 
     /** @} **/
 

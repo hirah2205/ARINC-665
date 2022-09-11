@@ -15,15 +15,21 @@
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/MediaSet.hpp>
 
+#include <arinc665/Arinc665Exception.hpp>
+
 #include <cassert>
 
 namespace Arinc665::Media {
 
-Medium::Medium( MediaSetPtr mediaSet, const uint8_t mediumNumber):
-  mediaSetV{ mediaSet},
-  mediumNumberV{ mediumNumber}
+Medium::Medium( const MediaSetPtr &mediaSet, const uint8_t mediumNumber ):
+  mediaSetV{ mediaSet },
+  mediumNumberV{ mediumNumber }
 {
-  assert( mediaSet && (mediumNumber > 0));
+  if ( !mediaSet || ( mediumNumber == 0U )  )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "parent must be valid and medium number != 0" } );
+  }
 }
 
 ConstMediaSetPtr Medium::mediaSet() const
@@ -58,12 +64,12 @@ ContainerEntityPtr Medium::parent()
 
 ConstMediumPtr Medium::medium() const
 {
-  return std::dynamic_pointer_cast< const Medium>( shared_from_this());
+  return std::dynamic_pointer_cast< const Medium >( shared_from_this() );
 }
 
 MediumPtr Medium::medium()
 {
-  return std::dynamic_pointer_cast< Medium>( shared_from_this());
+  return std::dynamic_pointer_cast< Medium >( shared_from_this() );
 }
 
 uint8_t Medium::mediumNumber() const

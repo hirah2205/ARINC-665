@@ -72,10 +72,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @param[in] partNumber
      *   %Media Set Part Number.
      **/
-    void partNumber( std::string_view partNumber );
-
-    //! @copydoc partNumber(std::string_view)
-    void partNumber( std::string &&partNumber );
+    void partNumber( std::string partNumber );
 
     /** @} **/
 

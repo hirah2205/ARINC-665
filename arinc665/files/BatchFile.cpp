@@ -52,12 +52,7 @@ std::string_view BatchFile::partNumber() const
   return partNumberV;
 }
 
-void BatchFile::partNumber( std::string_view partNumber )
-{
-  partNumberV = partNumber;
-}
-
-void BatchFile::partNumber( std::string &&partNumber )
+void BatchFile::partNumber( std::string partNumber )
 {
   partNumberV = std::move( partNumber );
 }
@@ -67,12 +62,7 @@ std::string_view BatchFile::comment() const
   return commentV;
 }
 
-void BatchFile::comment( std::string_view comment )
-{
-  commentV = comment;
-}
-
-void BatchFile::comment( std::string &&comment )
+void BatchFile::comment( std::string comment )
 {
   commentV = std::move( comment);
 }
@@ -87,12 +77,7 @@ BatchTargetsInfo& BatchFile::targetsHardware()
   return targetsHardwareV;
 }
 
-void BatchFile::targetHardware( const BatchTargetInfo &targetHardwareInfo )
-{
-  targetsHardwareV.push_back( targetHardwareInfo );
-}
-
-void BatchFile::targetHardware( BatchTargetInfo &&targetHardwareInfo )
+void BatchFile::targetHardware( BatchTargetInfo targetHardwareInfo )
 {
   targetsHardwareV.push_back( std::move( targetHardwareInfo ) );
 }

@@ -16,22 +16,22 @@
 
 namespace Arinc665::Media {
 
-Directory::Directory( ContainerEntityPtr parent, std::string_view name ):
-  nameV{ name},
-  parentV{ std::move( parent)}
+Directory::Directory( const ContainerEntityPtr &parent, std::string name ):
+  nameV{ std::move( name ) },
+  parentV{ parent }
 {
-  if ( !parent)
+  if ( !parent )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo( "parent must be valid"));
+      << Helper::AdditionalInfo{ "parent must be valid" } );
   }
 }
 
 ConstMediaSetPtr Directory::mediaSet() const
 {
-  auto parentPtr{ parent()};
+  auto parentPtr{ parent() };
 
-  if ( !parentPtr)
+  if ( !parentPtr )
   {
     return {};
   }
@@ -43,7 +43,7 @@ MediaSetPtr Directory::mediaSet()
 {
   auto parentPtr{ parent()};
 
-  if ( !parentPtr)
+  if ( !parentPtr )
   {
     return {};
   }

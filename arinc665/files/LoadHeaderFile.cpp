@@ -177,12 +177,7 @@ std::string_view LoadHeaderFile::partNumber() const
   return partNumberV;
 }
 
-void LoadHeaderFile::partNumber( std::string_view partNumber )
-{
-  partNumberV = partNumber;
-}
-
-void LoadHeaderFile::partNumber( std::string &&partNumber )
+void LoadHeaderFile::partNumber( std::string partNumber )
 {
   partNumberV = std::move( partNumber );
 }
@@ -198,23 +193,12 @@ LoadHeaderFile::TargetHardwareIds& LoadHeaderFile::targetHardwareIds()
   return targetHardwareIdsV;
 }
 
-void LoadHeaderFile::targetHardwareIds(
-  const TargetHardwareIds &targetHardwareIds )
-{
-  targetHardwareIdsV = targetHardwareIds;
-}
-
-void LoadHeaderFile::targetHardwareIds( TargetHardwareIds &&targetHardwareIds )
+void LoadHeaderFile::targetHardwareIds( TargetHardwareIds targetHardwareIds )
 {
   targetHardwareIdsV = std::move( targetHardwareIds );
 }
 
-void LoadHeaderFile::targetHardwareId( std::string_view targetHardwareId )
-{
-  targetHardwareIdsV.emplace_back( targetHardwareId );
-}
-
-void LoadHeaderFile::targetHardwareId( std::string &&targetHardwareId )
+void LoadHeaderFile::targetHardwareId( std::string targetHardwareId )
 {
   targetHardwareIdsV.emplace_back( std::move( targetHardwareId ) );
 }
@@ -232,29 +216,14 @@ LoadHeaderFile::targetHardwareIdsPositions()
 }
 
 void LoadHeaderFile::targetHardwareIdsPositions(
-  const TargetHardwareIdsPositions &targetHardwareIdsPositions )
-{
-  targetHardwareIdsPositionsV = targetHardwareIdsPositions;
-}
-
-void LoadHeaderFile::targetHardwareIdsPositions(
-  TargetHardwareIdsPositions &&targetHardwareIdsPositions )
+  TargetHardwareIdsPositions targetHardwareIdsPositions )
 {
   targetHardwareIdsPositionsV = std::move( targetHardwareIdsPositions );
 }
 
 void LoadHeaderFile::targetHardwareIdPositions(
-  std::string_view targetHardwareId,
-  const Positions &positions )
-{
-  targetHardwareIdsPositionsV.emplace_back(
-    TargetHardwareIdsPositions::value_type::first_type{ targetHardwareId },
-    positions );
-}
-
-void LoadHeaderFile::targetHardwareIdPositions(
-  std::string &&targetHardwareId,
-  Positions &&positions )
+  std::string targetHardwareId,
+  Positions positions )
 {
   targetHardwareIdsPositionsV.emplace_back(
     std::move( targetHardwareId ),
@@ -266,14 +235,9 @@ const LoadHeaderFile::LoadType& LoadHeaderFile::loadType() const
   return typeV;
 }
 
-void LoadHeaderFile::loadType( const LoadType &type )
+void LoadHeaderFile::loadType( LoadType type )
 {
-  typeV = type;
-}
-
-void LoadHeaderFile::loadType( LoadType &&type )
-{
-  typeV = std::move( type);
+  typeV = std::move( type );
 }
 
 const LoadFilesInfo& LoadHeaderFile::dataFiles() const noexcept
@@ -286,12 +250,12 @@ LoadFilesInfo& LoadHeaderFile::dataFiles() noexcept
   return dataFilesV;
 }
 
-void LoadHeaderFile::dataFile( const LoadFileInfo &dataFileInfo )
+void LoadHeaderFile::dataFiles( LoadFilesInfo filesInformation )
 {
-  dataFilesV.push_back( dataFileInfo);
+  dataFilesV = std::move( filesInformation );
 }
 
-void LoadHeaderFile::dataFile( LoadFileInfo &&dataFileInfo )
+void LoadHeaderFile::dataFile( LoadFileInfo dataFileInfo )
 {
   dataFilesV.push_back( std::move( dataFileInfo ) );
 }
@@ -306,12 +270,12 @@ LoadFilesInfo& LoadHeaderFile::supportFiles() noexcept
   return supportFilesV;
 }
 
-void LoadHeaderFile::supportFile( const LoadFileInfo &supportFileInfo )
+void LoadHeaderFile::supportFiles( LoadFilesInfo filesInformation )
 {
-  supportFilesV.push_back( supportFileInfo );
+  supportFilesV = std::move( filesInformation );
 }
 
-void LoadHeaderFile::supportFile( LoadFileInfo &&supportFileInfo )
+void LoadHeaderFile::supportFile( LoadFileInfo supportFileInfo )
 {
   supportFilesV.push_back( std::move( supportFileInfo ) );
 }

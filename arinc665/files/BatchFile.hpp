@@ -117,10 +117,7 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
      * @param[in] partNumber
      *   New Batch Part Number.
      **/
-    void partNumber( std::string_view partNumber );
-
-    //! @copydoc partNumber(std::string_view)
-    void partNumber( std::string &&partNumber );
+    void partNumber( std::string partNumber );
 
     /** @} **/
 
@@ -143,12 +140,9 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
      * @brief Updates the comment text of the Batch.
      *
      * @param[in] comment
-     *   The new comment text.
+     *   New comment text.
      **/
-    void comment( std::string_view comment );
-
-    //! @copydoc comment(std::string_view)
-    void comment( std::string &&comment );
+    void comment( std::string comment );
 
     /** @} **/
 
@@ -174,10 +168,7 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
      * @param[in] targetHardwareInfo
      *   Target Hardware Information to add.
      **/
-    void targetHardware( const BatchTargetInfo &targetHardwareInfo );
-
-    //! @copydoc targetHardware(const BatchTargetInfo&)
-    void targetHardware( BatchTargetInfo &&targetHardwareInfo );
+    void targetHardware( BatchTargetInfo targetHardwareInfo );
 
     /** @} **/
 

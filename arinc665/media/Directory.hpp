@@ -36,7 +36,7 @@ class ARINC665_EXPORT Directory : public ContainerEntity
      * @throw Arinc665::Arinc665Exception
      *   When parent is not valid
      **/
-    Directory( ContainerEntityPtr parent, std::string_view name );
+    Directory( const ContainerEntityPtr &parent, std::string name );
 
     //! @copydoc ContainerEntity::mediaSet
     ConstMediaSetPtr mediaSet() const final;

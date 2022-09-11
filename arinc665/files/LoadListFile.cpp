@@ -61,14 +61,14 @@ LoadsInfo& LoadListFile::loads()
   return loadsV;
 }
 
-void LoadListFile::load( const LoadInfo &load)
+void LoadListFile::loads( LoadsInfo loadsInformation )
 {
-  loadsV.push_back( load);
+  loadsV = std::move( loadsInformation );
 }
 
-void LoadListFile::load( LoadInfo &&load)
+void LoadListFile::load( LoadInfo load )
 {
-  loadsV.push_back( std::move( load));
+  loadsV.push_back( std::move( load ) );
 }
 
 ConstUserDefinedDataSpan LoadListFile::userDefinedData() const

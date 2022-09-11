@@ -136,7 +136,7 @@ void MediaSetImporterImpl::loadFirstMedium()
   // store file list file check value
   mediaSet->listOfFilesCheckValueType( fileListFile.checkValueType() );
   // Set Media Set Parameter
-  mediaSet->partNumber( fileListFile.mediaSetPn());
+  mediaSet->partNumber( std::string{ fileListFile.mediaSetPn() } );
   mediaSet->numberOfMedia( fileListFile.numberOfMediaSetMembers() );
 
 
@@ -356,7 +356,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   loadPtr->checkValueType( std::get< 0 >( fileInfo.checkValue ) );
 
   loadPtr->partFlags( loadHeaderFile.partFlags() );
-  loadPtr->partNumber( loadHeaderFile.partNumber() );
+  loadPtr->partNumber( std::string{ loadHeaderFile.partNumber() } );
   loadPtr->loadType( loadHeaderFile.loadType() );
   Media::Load::TargetHardwareIdPositions thwIdsPositions{};
   for ( const auto &[ thwId, positions ] : loadHeaderFile.targetHardwareIdsPositions() )
@@ -521,8 +521,8 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
   // set check value indicator
   batchPtr->checkValueType( std::get< 0 >( fileInfo.checkValue  ) );
 
-  batchPtr->partNumber( batchFile.partNumber() );
-  batchPtr->comment( batchFile.comment() );
+  batchPtr->partNumber( std::string{ batchFile.partNumber() } );
+  batchPtr->comment( std::string{ batchFile.comment() } );
 
   // iterate over target hardware
   for ( const auto &targetHardware : batchFile.targetsHardware() )

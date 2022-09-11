@@ -61,12 +61,12 @@ BatchesInfo& BatchListFile::batches()
   return batchesV;
 }
 
-void BatchListFile::batch( const BatchInfo &batch )
+void BatchListFile:: batches( BatchesInfo batches )
 {
-  batchesV.push_back( batch );
+  batchesV = std::move( batches );
 }
 
-void BatchListFile::batch( BatchInfo &&batch )
+void BatchListFile::batch( BatchInfo batch )
 {
   batchesV.push_back( std::move( batch ) );
 }

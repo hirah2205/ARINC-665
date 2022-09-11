@@ -27,12 +27,16 @@ class ARINC665_EXPORT Medium : public ContainerEntity
     /**
      * @brief Creates the medium.
      *
+     * @note
+     * Parent %Media Set is stored as weak reference.
+     * Therefore, @p mediaSet is not moved.
+     *
      * @param[in] mediaSet
      *   Owning Media Set
      * @param[in] mediumNumber
      *   Medium Number.
      **/
-    Medium( MediaSetPtr mediaSet, uint8_t mediumNumber );
+    Medium( const MediaSetPtr &mediaSet, uint8_t mediumNumber );
 
     //! @copydoc ContainerEntity::mediaSet
     [[nodiscard]] ConstMediaSetPtr mediaSet() const final;

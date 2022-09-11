@@ -104,19 +104,8 @@ void File::checkValueType( std::optional< Arinc645::CheckValueType > type )
   checkValueTypeV = type;
 }
 
-File::File( const ContainerEntityPtr& parent, std::string_view name ):
-  parentV{ parent },
-  nameV{ name }
-{
-  if ( !parent )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "parent must be valid" } );
-  }
-}
-
-File::File( const ContainerEntityPtr& parent, std::string &&name ):
-  parentV{ parent },
+File::File( const ContainerEntityPtr &parent, std::string name ):
+  parentV{  parent },
   nameV{ std::move( name ) }
 {
   if ( !parent )

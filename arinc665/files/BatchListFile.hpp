@@ -125,18 +125,22 @@ class ARINC665_EXPORT BatchListFile : public ListFile
     [[nodiscard]] const BatchesInfo& batches() const;
 
     //! @copydoc batches() const
-    BatchesInfo& batches();
+    [[nodiscard]] BatchesInfo& batches();
 
+    /**
+     * @brief Sets the Batches Information.
+     *
+     * @param[in] batches
+     *   Batches Information
+     **/
+    void batches( BatchesInfo batches );
     /**
      * @brief Adds the given Batch Information.
      *
      * @param[in] batch
      *   Batch Information.
      **/
-    void batch( const BatchInfo &batch ) ;
-
-    //! @copydoc batch(const BatchInfo&)
-    void batch( BatchInfo &&batch );
+    void batch( BatchInfo batch );
 
     /** @} **/
 

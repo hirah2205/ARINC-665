@@ -54,10 +54,7 @@ class ARINC665_EXPORT Load : public File
      * @param[in] name
      *   Name of the Load
      **/
-    Load( const ContainerEntityPtr& parent, std::string_view name );
-
-    //! @copydoc Load()
-    Load( const ContainerEntityPtr& parent, std::string &&name );
+    Load( const ContainerEntityPtr &parent, std::string name );
 
     /**
      * @copydoc File::fileType()
@@ -106,10 +103,7 @@ class ARINC665_EXPORT Load : public File
      * @param[in] partNumber
      *   New Part number
      **/
-    void partNumber( std::string_view partNumber );
-
-    //! @copydoc partNumber( std::string_view)
-    void partNumber( std::string &&partNumber );
+    void partNumber( std::string partNumber );
 
     /** @} **/
 
@@ -221,16 +215,10 @@ class ARINC665_EXPORT Load : public File
      *
      * @sa dataFilesCheckValueType()
      **/
-    void dataFile(
-      const ConstRegularFilePtr& file,
-      std::string_view partNumber,
-      const std::optional< Arinc645::CheckValueType >& checkValueType );
-
-    //! @copydoc dataFile(const ConstRegularFilePtr&,std::string_view,const std::optional<Arinc645::CheckValueType>&)
-    void dataFile(
+   void dataFile(
       const ConstRegularFilePtr &file,
-      std::string &&partNumber,
-      std::optional< Arinc645::CheckValueType >&& checkValueType = {} );
+      std::string partNumber,
+      std::optional< Arinc645::CheckValueType > checkValueType = {} );
 
     /** @} **/
 
@@ -276,14 +264,8 @@ class ARINC665_EXPORT Load : public File
      **/
     void supportFile(
       const ConstRegularFilePtr &file,
-      std::string_view partNumber,
-      const std::optional< Arinc645::CheckValueType >& checkValueType );
-
-    //! @copydoc supportFile(const ConstRegularFilePtr&,std::string_view,const std::optional<Arinc645::CheckValueType>&)
-    void supportFile(
-      const ConstRegularFilePtr &file,
-      std::string &&partNumber,
-      std::optional< Arinc645::CheckValueType >&& checkValueType = {} );
+      std::string partNumber,
+      std::optional< Arinc645::CheckValueType > checkValueType = {} );
 
     /** @} **/
 

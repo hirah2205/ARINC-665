@@ -278,7 +278,7 @@ void MediaSetExporterImpl::exportListOfLoads() const
 
   Arinc665::Files::LoadListFile loadListFile{ arinc665VersionV };
 
-  loadListFile.mediaSetPn( mediaSetV->partNumber() );
+  loadListFile.mediaSetPn( std::string{ mediaSetV->partNumber() } );
   loadListFile.numberOfMediaSetMembers( mediaSetV->numberOfMedia() );
 
   /* add all loads to "list of loads" file */
@@ -315,7 +315,7 @@ void MediaSetExporterImpl::exportListOfBatches() const
   BOOST_LOG_FUNCTION()
 
   Arinc665::Files::BatchListFile batchListFile{ arinc665VersionV };
-  batchListFile.mediaSetPn( mediaSetV->partNumber() );
+  batchListFile.mediaSetPn( std::string{ mediaSetV->partNumber() } );
   batchListFile.numberOfMediaSetMembers( mediaSetV->numberOfMedia() );
 
   /* add all batches to batches list */
@@ -367,7 +367,7 @@ void MediaSetExporterImpl::exportListOfFiles() const
   }
 
   Arinc665::Files::FileListFile fileListFile{ arinc665VersionV };
-  fileListFile.mediaSetPn( mediaSetV->partNumber() );
+  fileListFile.mediaSetPn( std::string{ mediaSetV->partNumber() } );
   fileListFile.numberOfMediaSetMembers( mediaSetV->numberOfMedia() );
   fileListFile.userDefinedData( mediaSetV->filesUserDefinedData() );
   fileListFile.checkValueType(
@@ -431,7 +431,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( const Media::Load &load ) const
 {
   Files::LoadHeaderFile loadHeaderFile{ arinc665VersionV };
   loadHeaderFile.partFlags( load.partFlags() );
-  loadHeaderFile.partNumber( load.partNumber() );
+  loadHeaderFile.partNumber( std::string{ load.partNumber() } );
   for ( const auto &[ thwId, positions ] : load.targetHardwareIdPositions() )
   {
     loadHeaderFile.targetHardwareId( thwId );
@@ -561,8 +561,8 @@ Files::LoadFileInfo MediaSetExporterImpl::loadFileInformation(
 void MediaSetExporterImpl::createBatchFile( const Media::Batch &batch ) const
 {
   Files::BatchFile batchFile{ arinc665VersionV };
-  batchFile.partNumber( batch.partNumber() );
-  batchFile.comment( batch.comment() );
+  batchFile.partNumber( std::string{ batch.partNumber() } );
+  batchFile.comment( std::string{ batch.comment() } );
 
   // iterate over targets
   for ( const auto &[ targetHwId, loads ] : batch.targets() )

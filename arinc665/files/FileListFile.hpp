@@ -157,21 +157,15 @@ class ARINC665_EXPORT FileListFile : public ListFile
      * @param[in] files
      *   New File List
      **/
-    void files( const FilesInfo &files );
-
-    //! @copydoc files(const FilesInfo&)
-    void files( FilesInfo &&files );
+    void files( FilesInfo files );
 
     /**
      * @brief Adds the given file information.
      *
      * @param[in] file
-     *   The file information.
+     *   File information.
      **/
-    void file( const FileInfo &file );
-
-    //! @copydoc file(const FileInfo&)
-    void file( FileInfo &&file );
+    void file( FileInfo file );
 
     /** @} **/
 

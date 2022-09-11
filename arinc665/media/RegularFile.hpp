@@ -42,10 +42,7 @@ class ARINC665_EXPORT RegularFile : public File
      * @param[in] name
      *   Name of the file.
      **/
-    RegularFile( const ContainerEntityPtr& parent, std::string_view name );
-
-    //! @copydoc RegularFile()
-    RegularFile( const ContainerEntityPtr& parent, std::string &&name );
+    RegularFile( const ContainerEntityPtr &parent, std::string name );
 
     /**
      * @copydoc File::fileType

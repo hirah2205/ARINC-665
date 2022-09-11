@@ -31,11 +31,11 @@ BOOST_AUTO_TEST_CASE( constructor)
 {
   MediaSet mediaSet;
 
-  BOOST_CHECK( mediaSet.partNumber() == "");
-  BOOST_CHECK( mediaSet.numberOfMedia() == 0);
-  BOOST_CHECK( mediaSet.type() == MediaSet::Type::MediaSet);
+  BOOST_CHECK( mediaSet.partNumber().empty() );
+  BOOST_CHECK( mediaSet.numberOfMedia() == 0 );
+  BOOST_CHECK( mediaSet.type() == MediaSet::Type::MediaSet );
 
-  BOOST_CHECK_THROW( auto ptr( mediaSet.shared_from_this()), std::bad_weak_ptr);
+  BOOST_CHECK_THROW( auto ptr( mediaSet.shared_from_this()), std::bad_weak_ptr );
 
   BOOST_CHECK( mediaSet.numberOfFiles() == 0);
   BOOST_CHECK( mediaSet.files().empty());
@@ -51,27 +51,27 @@ BOOST_AUTO_TEST_CASE( constructor)
 BOOST_AUTO_TEST_CASE( partNumber)
 {
   MediaSet mediaSet;
-  BOOST_CHECK( mediaSet.partNumber() == "");
+  BOOST_CHECK( mediaSet.partNumber().empty() );
 
-  mediaSet.partNumber( "YYY"sv);
+  mediaSet.partNumber( "YYY" );
 
-  BOOST_CHECK( mediaSet.partNumber() == "YYY");
+  BOOST_CHECK( mediaSet.partNumber() == "YYY" );
 }
 
 //! medium test
 BOOST_AUTO_TEST_CASE( medium)
 {
-  MediaSetPtr mediaSet = std::make_shared< MediaSet>();
-  BOOST_CHECK( mediaSet->numberOfMedia() == 0);
+  auto mediaSet{ std::make_shared< MediaSet >() };
+  BOOST_CHECK( mediaSet->numberOfMedia() == 0 );
 
-  BOOST_CHECK( mediaSet->addMedium());
-  BOOST_CHECK( mediaSet->numberOfMedia() == 1);
+  BOOST_CHECK( mediaSet->addMedium() );
+  BOOST_CHECK( mediaSet->numberOfMedia() == 1 );
 
-  BOOST_CHECK( mediaSet->addMedium());
-  BOOST_CHECK( mediaSet->numberOfMedia() == 2);
+  BOOST_CHECK( mediaSet->addMedium() );
+  BOOST_CHECK( mediaSet->numberOfMedia() == 2 );
 
-  BOOST_CHECK_NO_THROW( mediaSet->numberOfMedia( 5, false));
-  BOOST_CHECK( mediaSet->numberOfMedia() == 5);
+  BOOST_CHECK_NO_THROW( mediaSet->numberOfMedia( 5, false ) );
+  BOOST_CHECK( mediaSet->numberOfMedia() == 5 );
 
 #if 0
   BOOST_CHECK_NO_THROW( mediaSet->setNumberOfMedia( 1, false));

@@ -30,6 +30,8 @@ namespace Arinc665::Media {
  *  - regular files (File),
  *  - load header files (Load), and
  *  - batch files (Batch).
+ *
+ * The parent stored within this class is held as weak reference.
  **/
 class ARINC665_EXPORT File : public Base
 {
@@ -73,7 +75,7 @@ class ARINC665_EXPORT File : public Base
     /**
      * @brief Returns the Parent Container.
      *
-     * @return The parent container element
+     * @return Parent container element
      **/
     [[nodiscard]] ConstContainerEntityPtr parent() const;
 
@@ -158,10 +160,7 @@ class ARINC665_EXPORT File : public Base
      * @throw Arinc665Exception
      *   If parent is invalid
      **/
-    File( const ContainerEntityPtr& parent, std::string_view name );
-
-    //! @copydoc File::File(const ContainerEntityPtr&,std::string_view)
-    File( const ContainerEntityPtr& parent, std::string &&name );
+    File( const ContainerEntityPtr &parent, std::string name );
 
     /**
      * @brief Sets the parent element.

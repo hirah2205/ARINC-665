@@ -19,12 +19,7 @@
 
 namespace Arinc665::Media {
 
-Load::Load( const ContainerEntityPtr& parent, std::string_view name ) :
-  File{ parent, name }
-{
-}
-
-Load::Load( const ContainerEntityPtr& parent, std::string &&name ) :
+Load::Load( const ContainerEntityPtr &parent, std::string name ) :
   File{ parent, std::move( name ) }
 {
 }
@@ -49,12 +44,7 @@ std::string_view Load::partNumber() const
   return partNumberV;
 }
 
-void Load::partNumber( std::string_view partNumber )
-{
-  partNumberV = partNumber;
-}
-
-void Load::partNumber( std::string &&partNumber )
+void Load::partNumber( std::string partNumber )
 {
   partNumberV = std::move( partNumber );
 }
@@ -150,22 +140,8 @@ void Load::dataFiles( const ConstLoadFiles &files )
 
 void Load::dataFile(
   const ConstRegularFilePtr &file,
-  std::string_view partNumber,
-  const std::optional< Arinc645::CheckValueType > &checkValueType )
-{
-  if ( !file || ( file->mediaSet() != mediaSet() ) )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665Exception{}
-      << Helper::AdditionalInfo{ "invalid File" } );
-  }
-
-  dataFilesV.emplace_back( file, partNumber, checkValueType );
-}
-
-void Load::dataFile(
-  const ConstRegularFilePtr &file,
-  std::string &&partNumber,
-  std::optional< Arinc645::CheckValueType > &&checkValueType )
+  std::string partNumber,
+  std::optional< Arinc645::CheckValueType > checkValueType )
 {
   if ( !file || ( file->mediaSet() != mediaSet() ) )
   {
@@ -176,7 +152,7 @@ void Load::dataFile(
   dataFilesV.emplace_back(
     file,
     std::move( partNumber ),
-    std::move( checkValueType ) );
+    checkValueType );
 }
 
 ConstLoadFiles Load::supportFiles( const bool effective ) const
@@ -208,22 +184,8 @@ void Load::supportFiles( const ConstLoadFiles &files )
 
 void Load::supportFile(
   const ConstRegularFilePtr &file,
-  std::string_view partNumber,
-  const std::optional< Arinc645::CheckValueType >& checkValueType )
-{
-  if ( !file || ( file->mediaSet() != mediaSet() ) )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665Exception{}
-      << Helper::AdditionalInfo{ "invalid File" } );
-  }
-
-  supportFilesV.emplace_back( file, partNumber, checkValueType );
-}
-
-void Load::supportFile(
-  const ConstRegularFilePtr &file,
-  std::string &&partNumber,
-  std::optional< Arinc645::CheckValueType >&& checkValueType )
+  std::string partNumber,
+  std::optional< Arinc645::CheckValueType > checkValueType )
 {
   if ( !file || ( file->mediaSet() != mediaSet() ) )
   {
@@ -234,7 +196,7 @@ void Load::supportFile(
   supportFilesV.emplace_back(
     file,
     std::move( partNumber ),
-    std::move( checkValueType ) );
+    checkValueType );
 }
 
 ConstUserDefinedDataSpan Load::userDefinedData() const

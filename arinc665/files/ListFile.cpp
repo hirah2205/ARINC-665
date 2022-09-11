@@ -25,12 +25,7 @@ std::string_view ListFile::mediaSetPn() const
   return mediaSetPnV;
 }
 
-void ListFile::mediaSetPn( std::string_view mediaSetPn )
-{
-  mediaSetPnV = mediaSetPn;
-}
-
-void ListFile::mediaSetPn( std::string &&mediaSetPn )
+void ListFile::mediaSetPn( std::string mediaSetPn )
 {
   mediaSetPnV = std::move( mediaSetPn );
 }

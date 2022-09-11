@@ -426,7 +426,7 @@ void Arinc665XmlImpl::loadEntries(
 
     if ( entryNode->get_name() == "File"s )
     {
-      auto file{ current.addRegularFile( toStringView( name ) ) };
+      auto file{ current.addRegularFile( name ) };
 
       file->checkValueType( checkValue );
 
@@ -441,7 +441,7 @@ void Arinc665XmlImpl::loadEntries(
 
     if ( entryNode->get_name() == "LoadFile"s )
     {
-      auto load{ current.addLoad( toStringView( name ) ) };
+      auto load{ current.addLoad( name ) };
 
       load->checkValueType( checkValue );
 
@@ -456,7 +456,7 @@ void Arinc665XmlImpl::loadEntries(
 
     if ( entryNode->get_name() == "BatchFile"s )
     {
-      auto batch{ current.addBatch( toStringView( name ) ) };
+      auto batch{ current.addBatch( name ) };
 
       batch->checkValueType( checkValue );
 
@@ -567,14 +567,14 @@ void Arinc665XmlImpl::loadLoad(
   }
 
   // Part Number
-  const auto partNumber{ loadElement.get_attribute_value( "PartNumber" ) };
+  auto partNumber{ loadElement.get_attribute_value( "PartNumber" ) };
   if ( partNumber.empty() )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "PartNumber attribute missing or empty" }
       << boost::errinfo_at_line{ loadElement.get_line() } );
   }
-  loads.front()->partNumber( toStringView( partNumber ) );
+  loads.front()->partNumber( std::move( partNumber ) );
 
   // Part Flags
   if (
@@ -837,9 +837,6 @@ void Arinc665XmlImpl::loadBatch(
   Media::MediaSet &mediaSet ) const
 {
   const auto nameRef{ batchElement.get_attribute_value( "NameRef" ) };
-  const auto partNumber{ batchElement.get_attribute_value( "PartNumber" ) };
-  const auto comment{ batchElement.get_attribute_value( "Comment" ) };
-
   if ( nameRef.empty() )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -847,12 +844,15 @@ void Arinc665XmlImpl::loadBatch(
       << boost::errinfo_at_line{ batchElement.get_line() } );
   }
 
+  auto partNumber{ batchElement.get_attribute_value( "PartNumber" ) };
   if ( partNumber.empty() )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "PartNumber attribute missing or empty" }
       << boost::errinfo_at_line{ batchElement.get_line() } );
   }
+
+  auto comment{ batchElement.get_attribute_value( "Comment" ) };
 
   auto batches{ mediaSet.batches( toStringView( nameRef ) ) };
 
@@ -870,13 +870,13 @@ void Arinc665XmlImpl::loadBatch(
       << boost::errinfo_at_line{ batchElement.get_line() } );
   }
 
-  batches.front()->partNumber( toStringView( partNumber ) );
-  batches.front()->comment( comment );
+  batches.front()->partNumber( std::move( partNumber ) );
+  batches.front()->comment( std::move( comment ) );
 
   // iterate over targets
   for ( auto targetNode : batchElement.get_children( "Target" ) )
   {
-    auto targetElement{ dynamic_cast< xmlpp::Element*>( targetNode ) };
+    auto targetElement{ dynamic_cast< xmlpp::Element* >( targetNode ) };
     if ( nullptr == targetElement )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -891,7 +891,7 @@ void Arinc665XmlImpl::loadBatch(
     // iterate over loads
     for ( auto LoadNode : targetNode->get_children( "Load" ) )
     {
-      auto loadElement{ dynamic_cast< xmlpp::Element*>( LoadNode ) };
+      auto loadElement{ dynamic_cast< xmlpp::Element* >( LoadNode ) };
       if ( nullptr == loadElement)
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()

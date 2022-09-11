@@ -44,12 +44,7 @@ std::string_view MediaSet::partNumber() const
   return partNumberV;
 }
 
-void MediaSet::partNumber( std::string_view partNumber )
-{
-  partNumberV = partNumber;
-}
-
-void MediaSet::partNumber( std::string &&partNumber )
+void MediaSet::partNumber( std::string partNumber )
 {
   partNumberV = std::move( partNumber );
 }

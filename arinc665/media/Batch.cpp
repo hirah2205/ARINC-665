@@ -14,12 +14,7 @@
 
 namespace Arinc665::Media {
 
-Batch::Batch( const ContainerEntityPtr& parent, std::string_view name ) :
-  File{ parent, name }
-{
-}
-
-Batch::Batch( const ContainerEntityPtr& parent, std::string &&name ) :
+Batch::Batch( const ContainerEntityPtr& parent, std::string name ) :
   File{ parent, std::move( name ) }
 {
 }
@@ -34,9 +29,9 @@ std::string_view Batch::partNumber() const
   return partNumberV;
 }
 
-void Batch::partNumber( std::string_view partNumber )
+void Batch::partNumber( std::string partNumber )
 {
-  partNumberV = partNumber;
+  partNumberV = std::move( partNumber );
 }
 
 std::string_view Batch::comment() const
@@ -44,14 +39,9 @@ std::string_view Batch::comment() const
   return commentV;
 }
 
-void Batch::comment( std::string_view comment )
+void Batch::comment( std::string comment )
 {
-  commentV = comment;
-}
-
-void Batch::comment( std::string &&comment )
-{
-  commentV = std::move( comment);
+  commentV = std::move( comment );
 }
 
 ConstBatchInformation Batch::targets() const
@@ -82,17 +72,7 @@ ConstLoads Batch::target( std::string_view targetHardwareIdPosition ) const
 }
 
 void Batch::target(
-  std::string_view targetHardwareIdPosition,
-  const ConstLoads &loads )
-{
-  batchesV.try_emplace(
-    std::string{ targetHardwareIdPosition },
-    loads.begin(),
-    loads.end() );
-}
-
-void Batch::target(
-  std::string &&targetHardwareIdPosition,
+  std::string targetHardwareIdPosition,
   const ConstLoads &loads )
 {
   batchesV.try_emplace(
@@ -103,9 +83,9 @@ void Batch::target(
 
 void Batch::target(
   std::string_view targetHardwareIdPosition,
-  ConstLoadPtr load )
+  const ConstLoadPtr &load )
 {
-  batchesV[ std::string{ targetHardwareIdPosition } ].emplace_back( std::move( load ) );
+  batchesV[ std::string{ targetHardwareIdPosition } ].emplace_back( load );
 }
 
 }
