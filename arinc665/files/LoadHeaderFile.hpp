@@ -591,10 +591,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] userDefinedData
      *   User defined data.
      **/
-    void userDefinedData( ConstUserDefinedDataSpan userDefinedData );
-
-    //! @copydoc userDefinedData(ConstUserDefinedDataSpan)
-    void userDefinedData( UserDefinedData &&userDefinedData );
+    void userDefinedData( UserDefinedData userDefinedData );
 
     /** @} **/
 

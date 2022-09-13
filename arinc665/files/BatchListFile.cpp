@@ -76,16 +76,7 @@ ConstUserDefinedDataSpan BatchListFile::userDefinedData() const
   return userDefinedDataV;
 }
 
-void BatchListFile::userDefinedData( ConstUserDefinedDataSpan userDefinedData )
-{
-  BOOST_LOG_FUNCTION()
-
-  userDefinedDataV.assign( userDefinedData.begin(), userDefinedData.end() );
-
-  checkUserDefinedData();
-}
-
-void BatchListFile::userDefinedData( UserDefinedData &&userDefinedData )
+void BatchListFile::userDefinedData( UserDefinedData userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 

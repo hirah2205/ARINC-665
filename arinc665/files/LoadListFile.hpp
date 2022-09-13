@@ -172,10 +172,7 @@ class ARINC665_EXPORT LoadListFile : public ListFile
      * @param[in] userDefinedData
      *   User Defined Data.
      **/
-    void userDefinedData( ConstUserDefinedDataSpan userDefinedData );
-
-    //! @copydoc userDefinedData(ConstUserDefinedDataSpan)
-    void userDefinedData( UserDefinedData &&userDefinedData );
+    void userDefinedData( UserDefinedData userDefinedData );
 
     /** @} **/
 

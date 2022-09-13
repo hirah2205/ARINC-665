@@ -187,10 +187,7 @@ class ARINC665_EXPORT FileListFile : public ListFile
      * @param[in] userDefinedData
      *   User Defined Data.
      **/
-    void userDefinedData( ConstUserDefinedDataSpan userDefinedData );
-
-    //! @copydoc userDefinedData(const ConstUserDefinedDataSpan)
-    void userDefinedData( UserDefinedData &&userDefinedData );
+    void userDefinedData( UserDefinedData userDefinedData );
 
     /** @} **/
 

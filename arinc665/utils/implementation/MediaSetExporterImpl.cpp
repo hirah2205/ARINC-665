@@ -29,6 +29,8 @@
 #include <arinc645/Arinc645Crc.hpp>
 #include <arinc645/CheckValueGenerator.hpp>
 
+#include <fmt/format.h>
+
 #include <utility>
 
 namespace Arinc665::Utils {
@@ -292,7 +294,9 @@ void MediaSetExporterImpl::exportListOfLoads() const
       Files::LoadInfo::ThwIds{ thwIds.begin(), thwIds.end() } } );
   }
 
-  loadListFile.userDefinedData( mediaSetV->loadsUserDefinedData() );
+  auto userDefinedData{ mediaSetV->loadsUserDefinedData() };
+  loadListFile.userDefinedData(
+    Files::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
 
   for ( const auto &[ mediumNumber, medium ] : mediaSetV->media() )
   {
@@ -327,13 +331,14 @@ void MediaSetExporterImpl::exportListOfBatches() const
       batch->medium()->mediumNumber() } );
   }
 
-  batchListFile.userDefinedData( mediaSetV->batchesUserDefinedData() );
+  auto userDefinedData{ mediaSetV->batchesUserDefinedData() };
+  batchListFile.userDefinedData(
+    Files::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
 
-  for ( const auto &[mediumNumber, medium] : mediaSetV->media() )
+  for ( const auto &[ mediumNumber, medium ] : mediaSetV->media() )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-      << "Export List of Batches to [" << (unsigned int)mediumNumber
-      << "]";
+      << fmt::format( "Export List of Batches to [{}]", mediumNumber );
 
     batchListFile.mediaSequenceNumber( mediumNumber );
 
@@ -369,7 +374,9 @@ void MediaSetExporterImpl::exportListOfFiles() const
   Arinc665::Files::FileListFile fileListFile{ arinc665VersionV };
   fileListFile.mediaSetPn( std::string{ mediaSetV->partNumber() } );
   fileListFile.numberOfMediaSetMembers( mediaSetV->numberOfMedia() );
-  fileListFile.userDefinedData( mediaSetV->filesUserDefinedData() );
+  auto userDefinedData{ mediaSetV->filesUserDefinedData() };
+  fileListFile.userDefinedData(
+    Files::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
   fileListFile.checkValueType(
     mediaSetV->effectiveListOfFilesCheckValueType() );
 
@@ -454,7 +461,9 @@ void MediaSetExporterImpl::createLoadHeaderFile( const Media::Load &load ) const
   }
 
   // User Defined Data
-  loadHeaderFile.userDefinedData( load.userDefinedData() );
+  auto userDefinedData{ load.userDefinedData() };
+  loadHeaderFile.userDefinedData(
+    Files::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
 
   // Set Check Value Type before Raw File generation (for Space Reserving)
   loadHeaderFile.loadCheckValueType( load.effectiveLoadCheckValueType() );

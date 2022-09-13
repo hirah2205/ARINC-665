@@ -76,16 +76,7 @@ ConstUserDefinedDataSpan LoadListFile::userDefinedData() const
   return userDefinedDataV;
 }
 
-void LoadListFile::userDefinedData( ConstUserDefinedDataSpan userDefinedData )
-{
-  BOOST_LOG_FUNCTION()
-
-  userDefinedDataV.assign( userDefinedData.begin(), userDefinedData.end() );
-
-  checkUserDefinedData();
-}
-
-void LoadListFile::userDefinedData( UserDefinedData &&userDefinedData )
+void LoadListFile::userDefinedData( UserDefinedData userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 

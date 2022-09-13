@@ -285,16 +285,7 @@ ConstUserDefinedDataSpan LoadHeaderFile::userDefinedData() const
   return userDefinedDataV;
 }
 
-void LoadHeaderFile::userDefinedData( ConstUserDefinedDataSpan userDefinedData )
-{
-  BOOST_LOG_FUNCTION()
-
-  userDefinedDataV.assign( userDefinedData.begin(), userDefinedData.end() );
-
-  checkUserDefinedData();
-}
-
-void LoadHeaderFile::userDefinedData( UserDefinedData &&userDefinedData )
+void LoadHeaderFile::userDefinedData( UserDefinedData userDefinedData )
 {
   BOOST_LOG_FUNCTION()
 
