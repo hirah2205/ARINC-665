@@ -109,6 +109,15 @@ void MediaSetExporterImpl::operator()()
 {
   BOOST_LOG_FUNCTION()
 
+  if (
+    !mediaSetV || !createMediumHandlerV || !createDirectoryHandlerV
+    || !checkFileExistenceHandlerV || !createFileHandlerV || !writeFileHandlerV
+    || !readFileHandlerV )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Invalid state of exporter" } );
+  }
+
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
     << "Export Media Set " << mediaSetV->partNumber();
 

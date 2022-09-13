@@ -46,6 +46,12 @@ MediaSetImporterImpl::Result MediaSetImporterImpl::operator()()
 {
   BOOST_LOG_FUNCTION()
 
+  if ( !fileSizeHandlerV || !readFileHandlerV )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Invalid state of importer" } );
+  }
+
   // create Media set
   mediaSet = std::make_shared< Media::MediaSet>();
 
