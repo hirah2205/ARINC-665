@@ -39,6 +39,7 @@ target_sources(
     LoadInfo.cpp
     LoadListFile.hpp
     LoadListFile.cpp
+    MediaSetInformation.hpp
     StringUtils.hpp
     StringUtils.cpp )
 

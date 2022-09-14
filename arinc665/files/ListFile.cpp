@@ -13,6 +13,7 @@
 #include "ListFile.hpp"
 
 #include <arinc665/files/StringUtils.hpp>
+#include <arinc665/files/MediaSetInformation.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 
@@ -50,6 +51,14 @@ void ListFile::numberOfMediaSetMembers(
   const uint8_t numberOfMediaSetMembers )
 {
   numberOfMediaSetMembersV = numberOfMediaSetMembers;
+}
+
+MediaSetInformation ListFile::mediaSetInformation() const
+{
+  return {
+    .partNumber = mediaSetPnV,
+    .mediaSequenceNumber = mediaSequenceNumberV,
+    .numberOfMediaSetMembers = numberOfMediaSetMembersV };
 }
 
 ListFile::ListFile(

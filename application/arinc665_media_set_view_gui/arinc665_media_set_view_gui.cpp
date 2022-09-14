@@ -61,14 +61,14 @@ int main( int argc, char * argv[] )
 
     emit mediaSetController.start();
 
-    return application.exec();
+    return QApplication::exec();
   }
-  catch ( std::exception &e )
+  catch ( const std::exception &e )
   {
     BOOST_LOG_TRIVIAL( error ) << e.what();
     return EXIT_FAILURE;
   }
-  catch ( ...)
+  catch ( ... )
   {
     BOOST_LOG_TRIVIAL( error ) << "Unknown exception";
     return EXIT_FAILURE;

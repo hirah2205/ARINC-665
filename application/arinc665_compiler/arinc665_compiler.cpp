@@ -303,7 +303,7 @@ int main( int argc, char * argv[] )
   {
     std::cerr
       << "Arinc665Exception in compiler: "
-      << boost::diagnostic_information( e) << "\n";
+      << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( const boost::exception &e )

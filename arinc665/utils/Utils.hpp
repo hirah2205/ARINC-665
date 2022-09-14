@@ -20,7 +20,11 @@
 
 #include <arinc665/Arinc665.hpp>
 
+#include <arinc665/files/Files.hpp>
+
 #include <memory>
+#include <optional>
+#include <filesystem>
 
 /**
  * @brief ARINC 665 Utilities.
@@ -68,8 +72,24 @@ class MediaSetManager;
 using MediaSetManagerPtr = std::shared_ptr< MediaSetManager >;
 
 class JsonMediaSetManager;
-//! ARINC 665 JSON Media Set Manager Instanct Pointer
+//! ARINC 665 JSON Media Set Manager Instance Pointer
 using JsonMediaSetManagerPtr = std::shared_ptr< JsonMediaSetManager >;
+
+/**
+ * @brief Tries to decode the given directory as ARINC 665 Medium.
+ *
+ * Tries to access the `List of Files` within @p directory and decodes it.
+ * If the decoding is successful, the Medium Information is returned.
+ *
+ * @param[in] directory
+ *   Medium directory
+ *
+ * @return Medium Information for @p directory.
+ * @retval {}
+ *   If @p directory is not a valid directory or ARINC 665 Medium
+ **/
+std::optional< Files::MediaSetInformation > getMediumInformation(
+  const std::filesystem::path &directory );
 
 }
 

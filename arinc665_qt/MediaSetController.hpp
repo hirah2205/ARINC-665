@@ -69,6 +69,8 @@ class ARINC665_QT_EXPORT MediaSetController : public QObject
     void start( Arinc665::Media::ConstMediaSetPtr mediaSet );
 
   private slots:
+    void directoryEntered( const QString &path );
+
     /**
      * @brief Called, when the user has selected a dialog
      **/

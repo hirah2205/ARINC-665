@@ -98,6 +98,13 @@ class ARINC665_EXPORT ListFile : public Arinc665File
 
     /** @} **/
 
+    /**
+     * @brief Returns the Media Set Information.
+     *
+     * @return Media Set Information
+     **/
+    [[nodiscard]] MediaSetInformation mediaSetInformation() const;
+
   protected:
     /**
      * @copydoc Arinc665File::Arinc665File(SupportedArinc665Version,ptrdiff_t)

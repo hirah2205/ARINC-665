@@ -30,7 +30,8 @@ target_sources(
     MediaSetPrinter.cpp
     MediaSetValidator.hpp
     MediaSetValidator.cpp
-    Utils.hpp )
+    Utils.hpp
+    Utils.cpp )
 
 #target_sources(
 #  arinc665_test

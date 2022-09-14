@@ -61,6 +61,8 @@ using ConstUserDefinedDataSpan = std::span< const uint8_t >;
 //! User Defined Data Span Type
 using UserDefinedDataSpan = std::span< const uint8_t >;
 
+struct MediaSetInformation;
+
 class Arinc665File;
 
 struct LoadFileInfo;

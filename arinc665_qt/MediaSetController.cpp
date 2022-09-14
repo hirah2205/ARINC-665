@@ -16,10 +16,14 @@
 #include <arinc665_qt/media/LoadsModel.hpp>
 #include <arinc665_qt/media/BatchesModel.hpp>
 #include <arinc665_qt/MediaSetDialog.hpp>
+#include <arinc665_qt/Arinc665QtLogger.hpp>
 
 #include <arinc665/utils/MediaSetImporter.hpp>
+#include <arinc665/utils/Utils.hpp>
 
 #include <arinc665/media/MediaSet.hpp>
+
+#include <arinc665/files/MediaSetInformation.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 
@@ -42,6 +46,7 @@ MediaSetController::MediaSetController( QWidget * const parent ):
     tr( "Select ARINC 665 Medium" ) ) },
   mediaSetDialog{ std::make_unique< MediaSetDialog >( parent ) }
 {
+  selectDirectoryDialog->setOption( QFileDialog::Option::DontUseNativeDialog );
   selectDirectoryDialog->setFileMode( QFileDialog::Directory );
   selectDirectoryDialog->setOption( QFileDialog::ShowDirsOnly );
 
@@ -50,6 +55,11 @@ MediaSetController::MediaSetController( QWidget * const parent ):
     &QFileDialog::rejected,
     this,
     &MediaSetController::finished );
+  connect(
+    selectDirectoryDialog.get(),
+    &QFileDialog::directoryEntered,
+    this,
+    &MediaSetController::directoryEntered );
   connect(
     selectDirectoryDialog.get(),
     &QFileDialog::accepted,
@@ -81,6 +91,24 @@ void MediaSetController::start( Arinc665::Media::ConstMediaSetPtr mediaSet )
     HelperQt::toQString( mediaSet->partNumber() ) );
 
   mediaSetDialog->open();
+}
+
+void MediaSetController::directoryEntered( const QString &path )
+{
+  const auto mediumInformation{
+    Arinc665::Utils::getMediumInformation( path.toStdString() ) };
+  if ( !mediumInformation )
+  {
+    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::info )
+      << path.toStdString() << " is not a ARIN 665 medium";
+    return;
+  }
+
+  BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::info )
+    << path.toStdString() << " Medium "
+    << mediumInformation->partNumber << " "
+    << (unsigned int)mediumInformation->mediaSequenceNumber << "/"
+    << (unsigned int)mediumInformation->numberOfMediaSetMembers;
 }
 
 void MediaSetController::directorySelected()
@@ -119,7 +147,7 @@ void MediaSetController::directorySelected()
       description = QString::fromStdString( *info );
     }
 
-    BOOST_LOG_TRIVIAL( error) << boost::diagnostic_information( e, true);
+    BOOST_LOG_TRIVIAL( error ) << boost::diagnostic_information( e, true );
 
     QMessageBox::critical(
       nullptr,
