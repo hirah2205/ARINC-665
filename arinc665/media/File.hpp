@@ -56,14 +56,23 @@ class ARINC665_EXPORT File : public Base
     //! @copydoc Base::type
     [[nodiscard]] Type type() const final;
 
-   //void setName( void);
-
     /**
      * @brief Returns the Name of the File.
      *
      * @return Name of the file.
      **/
     [[nodiscard]] std::string_view name() const;
+
+
+    /**
+     * @brief Renames the file.
+     *
+     * Checks if a directory or file exist with this name.
+     *
+     * @param[in] name
+     *   New filename.
+     **/
+    void rename( std::string name );
 
     /**
      * @brief Returns the File Type.
@@ -171,13 +180,13 @@ class ARINC665_EXPORT File : public Base
      * @throw Arinc665Exception
      *   If parent is invalid
      **/
-    void parent( const ContainerEntityPtr& parent );
+    void parent( const ContainerEntityPtr &parent );
 
   private:
-    //! Parent
+    //! Parent Container
     ContainerEntityPtr::weak_type parentV;
-    //! File Name
-    const std::string nameV;
+    //! Filename
+    std::string nameV;
     //! Check Value Type
     std::optional< Arinc645::CheckValueType > checkValueTypeV;
 };

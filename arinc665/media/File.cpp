@@ -49,6 +49,21 @@ std::string_view File::name() const
   return nameV;
 }
 
+void File::rename( std::string name )
+{
+  if ( const auto parentPtr{ parent() }; parentPtr )
+  {
+    if ( parentPtr->subdirectory( name ) || parentPtr->file( name ) )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+        << Helper::AdditionalInfo{ "directory or file with given names exist" }
+        << boost::errinfo_file_name{ name } );
+    }
+  }
+
+  nameV = std::move( name );
+}
+
 ConstContainerEntityPtr File::parent() const
 {
   return parentV.lock();
@@ -71,7 +86,7 @@ ConstMediumPtr File::medium() const
 
 MediumPtr File::medium()
 {
-  if ( const auto parentPtr{ parent()}; parentPtr )
+  if ( const auto parentPtr{ parent() }; parentPtr )
   {
     return parentPtr->medium();
   }

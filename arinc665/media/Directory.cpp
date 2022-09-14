@@ -61,11 +61,26 @@ std::string_view Directory::name() const
   return nameV;
 }
 
+void Directory::rename( std::string name )
+{
+  if ( const auto parentPtr{ parent() }; parentPtr )
+  {
+    if ( parentPtr->subdirectory( name ) || parentPtr->file( name ) )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+        << Helper::AdditionalInfo{ "directory or file with given names exist" }
+        << boost::errinfo_file_name{ name } );
+    }
+  }
+
+  nameV = std::move( name );
+}
+
 std::filesystem::path Directory::path() const
 {
-  auto parentPtr{ parent()};
+  auto parentPtr{ parent() };
 
-  if ( !parentPtr)
+  if ( !parentPtr )
   {
     return {};
   }
@@ -85,9 +100,9 @@ ContainerEntityPtr Directory::parent()
 
 ConstMediumPtr Directory::medium() const
 {
-  auto parentPtr{ parent()};
+  auto parentPtr{ parent() };
 
-  if ( !parentPtr)
+  if ( !parentPtr )
   {
     return {};
   }
@@ -112,13 +127,13 @@ void Directory::parent( const ContainerEntityPtr& parent)
   if ( !parent)
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "parent must be valid"));
+      << Helper::AdditionalInfo{ "parent must be valid" } );
   }
 
   if ( shared_from_this() == parent)
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "Recursion not allowed"));
+      << Helper::AdditionalInfo{ "Recursion not allowed" } );
   }
 
   if ( this->parent() == parent)

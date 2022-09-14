@@ -54,8 +54,15 @@ class ARINC665_EXPORT Directory : public ContainerEntity
      **/
     std::string_view name() const;
 
-
-    // void rename( const string& name);
+    /**
+     * @brief Renames the directory.
+     *
+     * Checks if a directory or file exist with this name.
+     *
+     * @param[in] name
+     *   New directory name.
+     **/
+    void rename( std::string name );
 
     //! @copydoc ContainerEntity::path() const
     std::filesystem::path path() const final;
@@ -83,7 +90,7 @@ class ARINC665_EXPORT Directory : public ContainerEntity
 
   private:
     //! Directory Name
-    const std::string nameV;
+    std::string nameV;
     //! Parent
     ContainerEntityPtr::weak_type parentV;
 };
