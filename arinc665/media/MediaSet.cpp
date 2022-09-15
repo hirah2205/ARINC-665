@@ -56,35 +56,6 @@ uint8_t MediaSet::numberOfMedia() const
   return static_cast< uint8_t>( mediaV.size() );
 }
 
-void MediaSet::numberOfMedia(
-  const uint8_t numberOfMedia,
-  const bool deleteFiles )
-{
-  if ( numberOfMedia == mediaV.size() )
-  {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-      << "No actions needed";
-    return;
-  }
-
-  if ( numberOfMedia > mediaV.size() )
-  {
-    // Add media
-    while ( numberOfMedia > mediaV.size() )
-    {
-      (void)addMedium();
-    }
-  }
-  else
-  {
-    // remove media
-    while ( numberOfMedia < mediaV.size() )
-    {
-      removeMedium( deleteFiles );
-    }
-  }
-}
-
 ConstMedia MediaSet::media() const
 {
   return ConstMedia{ mediaV.begin(), mediaV.end() };
@@ -93,6 +64,21 @@ ConstMedia MediaSet::media() const
 Media MediaSet::media()
 {
   return mediaV;
+}
+
+void MediaSet::addMedia( const uint8_t numberOfMedia )
+{
+  if ( mediaV.size() + numberOfMedia > 255 )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Number of media exceeds limit " } );
+  }
+
+  for ( uint8_t count{ 0 }; count < numberOfMedia; ++count )
+  {
+    // Add media
+    (void)addMedium();
+  }
 }
 
 ConstMediumPtr MediaSet::medium( const uint8_t number ) const
@@ -139,10 +125,22 @@ MediumPtr MediaSet::addMedium()
   return medium;
 }
 
-void MediaSet::removeMedium( const bool deleteFiles [[maybe_unused]])
+void MediaSet::removeMedium()
 {
-  //! @todo implement
-  BOOST_THROW_EXCEPTION( std::exception() );
+  const auto lastMedium{ medium( numberOfMedia() ) };
+  assert( lastMedium );
+
+  if ( lastMedium->hasChildren() )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Medium not empty" } );
+  }
+
+  if ( 1 != mediaV.erase( lastMedium->mediumNumber() ) )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "Error erasing medium" } );
+  }
 }
 
 size_t MediaSet::numberOfFiles() const

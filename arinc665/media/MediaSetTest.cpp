@@ -70,13 +70,14 @@ BOOST_AUTO_TEST_CASE( medium)
   BOOST_CHECK( mediaSet->addMedium() );
   BOOST_CHECK( mediaSet->numberOfMedia() == 2 );
 
-  BOOST_CHECK_NO_THROW( mediaSet->numberOfMedia( 5, false ) );
-  BOOST_CHECK( mediaSet->numberOfMedia() == 5 );
+  BOOST_CHECK_NO_THROW( mediaSet->addMedia( 0 ) );
+  BOOST_CHECK( mediaSet->numberOfMedia() == 2 );
 
-#if 0
-  BOOST_CHECK_NO_THROW( mediaSet->setNumberOfMedia( 1, false));
-  BOOST_CHECK( mediaSet->getNumberOfMedia() == 1);
-#endif
+  BOOST_CHECK_NO_THROW( mediaSet->addMedia( 4 ) );
+  BOOST_CHECK( mediaSet->numberOfMedia() == 6 );
+
+  BOOST_CHECK_NO_THROW( mediaSet->removeMedium() );
+  BOOST_CHECK( mediaSet->numberOfMedia() == 5 );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

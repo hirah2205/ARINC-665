@@ -92,21 +92,6 @@ class ARINC665_EXPORT MediaSet : public Base
     [[nodiscard]] uint8_t numberOfMedia() const;
 
     /**
-     * @brief Set the Number of %Media.
-     *
-     * If there are fewer media than requested, the media are created empty,
-     * otherwise the media are deleted.
-     *
-     * @param[in] numberOfMedia
-     *   The new number of media.
-     *   Must be bigger or equal to 1.
-     * @param[in] deleteFiles
-     *   Delete files, which are part of the not existing media.
-     *   Otherwise, they are moved to the first media.
-     **/
-    void numberOfMedia( uint8_t numberOfMedia, bool deleteFiles = false );
-
-    /**
      * @brief Returns all %Media.
      *
      * @return All %Media of the %Media Set.
@@ -115,6 +100,14 @@ class ARINC665_EXPORT MediaSet : public Base
 
     //! @copydoc MediaSet::media() const
     [[nodiscard]] Media media();
+
+    /**
+     * @brief Set the Number of %Media.
+     *
+     * @param[in] numberOfMedia
+     *   Number of media add.
+     **/
+    void addMedia( uint8_t numberOfMedia );
 
     /**
      * @brief Return the %Medium with the requested Medium Number.
@@ -142,12 +135,8 @@ class ARINC665_EXPORT MediaSet : public Base
 
     /**
      * @brief Removes the last %Medium.
-     *
-     * @param[in] deleteFiles
-     *   Delete files, which are part of the not existing medium.
-     *   Otherwise, they are moved to the first media.
      **/
-    void removeMedium( bool deleteFiles = false );
+    void removeMedium();
 
     /** @} **/
 

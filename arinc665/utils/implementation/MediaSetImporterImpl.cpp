@@ -143,8 +143,8 @@ void MediaSetImporterImpl::loadFirstMedium()
   mediaSet->listOfFilesCheckValueType( fileListFile.checkValueType() );
   // Set Media Set Parameter
   mediaSet->partNumber( std::string{ fileListFile.mediaSetPn() } );
-  mediaSet->numberOfMedia( fileListFile.numberOfMediaSetMembers() );
-
+  // Add media
+  mediaSet->addMedia( fileListFile.numberOfMediaSetMembers() );
 
   // Load list of loads file
   loadListFile = readFileHandlerV( 1, Arinc665::ListOfLoadsName );
@@ -606,6 +606,7 @@ Media::ContainerEntityPtr MediaSetImporterImpl::checkCreateDirectory(
   }
 
   Media::ContainerEntityPtr dir{ mediaSet->medium( mediumNumber ) };
+  assert( dir );
 
   // iterate over path elements
   for ( auto &subPath : dirPath )
