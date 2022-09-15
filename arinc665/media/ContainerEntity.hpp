@@ -233,7 +233,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @throw Arinc665Exception() if file does not exists.
      **/
-    void removeFile( const ConstFilePtr& file );
+    void removeFile( const ConstFilePtr &file );
 
     /** @} **/
 

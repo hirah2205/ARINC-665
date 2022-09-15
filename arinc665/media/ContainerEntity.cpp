@@ -14,6 +14,7 @@
 
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/Medium.hpp>
+#include <arinc665/media/MediaSet.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 
@@ -90,7 +91,15 @@ void ContainerEntity::removeSubdirectory( std::string_view name )
   if ( subdirectoriesV.end() == dir )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "subdirectory does not exists" } );
+      << Helper::AdditionalInfo{ "subdirectory does not exists" }
+      << boost::errinfo_file_name{ std::string{ name } } );
+  }
+
+  if ( (*dir)->hasChildren() )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "subdirectory is not empty" }
+      << boost::errinfo_file_name{ std::string{ name } } );
   }
 
   subdirectoriesV.erase( dir );
@@ -103,7 +112,15 @@ void ContainerEntity::removeSubdirectory( const DirectoryPtr& subdirectory )
   if ( subdirectoriesV.end() == dir )
    {
      BOOST_THROW_EXCEPTION( Arinc665Exception()
-       << Helper::AdditionalInfo{ "subdirectory does not exists" } );
+       << Helper::AdditionalInfo{ "subdirectory does not exists" }
+       << boost::errinfo_file_name{ std::string{ subdirectory->name() } } );
+   }
+
+   if ( (*dir)->hasChildren() )
+   {
+     BOOST_THROW_EXCEPTION( Arinc665Exception()
+       << Helper::AdditionalInfo{ "subdirectory is not empty" }
+       << boost::errinfo_file_name{ std::string{ subdirectory->name() } } );
    }
 
    subdirectoriesV.erase( dir );
@@ -243,6 +260,26 @@ void ContainerEntity::removeFile( std::string_view filename )
       << boost::errinfo_file_name{ std::string{ filename } } );
   }
 
+  // check when file is load, if it is part of batch
+  if ( ( File::FileType::LoadFile == (*file)->fileType() )
+    && !mediaSet()->batchesWithLoad(
+      std::dynamic_pointer_cast< const Load >( *file) ).empty() )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "Load is part of Batch" }
+      << boost::errinfo_file_name{ std::string{ filename } } );
+  }
+
+  // check when file is regular file, if it is part of load
+  if ( ( File::FileType::RegularFile == (*file)->fileType() )
+    && !mediaSet()->loadsWithFile(
+      std::dynamic_pointer_cast< const RegularFile >( *file ) ).empty() )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "Regular File is part of Load" }
+      << boost::errinfo_file_name{ std::string{ filename } } );
+  }
+
   filesV.erase( file );
 }
 
@@ -254,6 +291,26 @@ void ContainerEntity::removeFile( const ConstFilePtr& file )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo{ "File not found" }
+      << boost::errinfo_file_name{ std::string{ file->name() } } );
+  }
+
+  // check when file is load, if it is part of batch
+  if ( ( File::FileType::LoadFile == (*fileIt)->fileType() )
+    && !mediaSet()->batchesWithLoad(
+      std::dynamic_pointer_cast< const Load >( *fileIt ) ).empty() )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "Load is part of Batch" }
+      << boost::errinfo_file_name{ std::string{ file->name() } } );
+  }
+
+  // check when file is regular file, if it is part of load
+  if ( ( File::FileType::RegularFile == (*fileIt)->fileType() )
+    && !mediaSet()->loadsWithFile(
+      std::dynamic_pointer_cast< const RegularFile >( *fileIt ) ).empty() )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "Regular File is part of Load" }
       << boost::errinfo_file_name{ std::string{ file->name() } } );
   }
 
