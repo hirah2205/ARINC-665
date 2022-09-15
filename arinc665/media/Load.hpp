@@ -290,10 +290,7 @@ class ARINC665_EXPORT Load : public File
      * @param[in] userDefinedData
      *   Updated user-defined data.
      **/
-    void userDefinedData( ConstUserDefinedDataSpan userDefinedData );
-
-    //! @copydoc Load::userDefinedData(ConstUserDefinedDataSpan)
-    void userDefinedData( UserDefinedData &&userDefinedData );
+    void userDefinedData( UserDefinedData userDefinedData );
 
     /** @} **/
 

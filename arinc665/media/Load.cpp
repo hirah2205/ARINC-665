@@ -209,12 +209,7 @@ UserDefinedData& Load::userDefinedData()
   return userDefinedDataV;
 }
 
-void Load::userDefinedData( ConstUserDefinedDataSpan userDefinedData )
-{
-  userDefinedDataV.assign( userDefinedData.begin(), userDefinedData.end() );
-}
-
-void Load::userDefinedData( UserDefinedData &&userDefinedData )
+void Load::userDefinedData( UserDefinedData userDefinedData )
 {
   userDefinedDataV = std::move( userDefinedData ) ;
 }

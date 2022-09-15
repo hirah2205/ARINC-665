@@ -138,7 +138,9 @@ void MediaSetImporterImpl::loadFirstMedium()
   checkMediumFiles( fileListFile.files(), 1U );
 
   // store list of files user defined data
-  mediaSet->filesUserDefinedData( fileListFile.userDefinedData() );
+  auto filesUserDefinedData{ fileListFile.userDefinedData() };
+  mediaSet->filesUserDefinedData(
+    Media::UserDefinedData{ filesUserDefinedData.begin(), filesUserDefinedData.end() } );
   // store file list file check value
   mediaSet->listOfFilesCheckValueType( fileListFile.checkValueType() );
   // Set Media Set Parameter
@@ -175,7 +177,9 @@ void MediaSetImporterImpl::loadFirstMedium()
   }
 
   // store list of loads user defined data
-  mediaSet->loadsUserDefinedData( loadListFile.userDefinedData() );
+  auto loadsUserDefinedData{ loadListFile.userDefinedData() };
+  mediaSet->loadsUserDefinedData(
+    Media::UserDefinedData{ loadsUserDefinedData.begin(), loadsUserDefinedData.end() } );
 
   // Load list of batches file
   if ( batchListFilePresent )
@@ -208,7 +212,9 @@ void MediaSetImporterImpl::loadFirstMedium()
     }
 
     // store list of batches user defined data
-    mediaSet->batchesUserDefinedData( batchListFile.userDefinedData() );
+    auto batchesUserDefinedData{ batchListFile.userDefinedData() };
+    mediaSet->batchesUserDefinedData(
+      Media::UserDefinedData{ batchesUserDefinedData.begin(), batchesUserDefinedData.end() } );
   }
 }
 
@@ -473,7 +479,9 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   }
 
   // User Defined Data
-  loadPtr->userDefinedData( loadHeaderFile.userDefinedData() );
+  auto loadUserDefinedData{ loadHeaderFile.userDefinedData() };
+  loadPtr->userDefinedData(
+    Media::UserDefinedData{ loadUserDefinedData.begin(), loadUserDefinedData.end() } );
   // Load Check Value
   loadPtr->loadCheckValueType( loadHeaderFile.loadCheckValueType() );
 

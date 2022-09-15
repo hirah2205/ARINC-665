@@ -468,12 +468,7 @@ UserDefinedData& MediaSet::filesUserDefinedData()
   return filesUserDefinedDataV;
 }
 
-void MediaSet::filesUserDefinedData( ConstUserDefinedDataSpan userDefinedData )
-{
-  filesUserDefinedDataV.assign( userDefinedData.begin(), userDefinedData.end() );
-}
-
-void MediaSet::filesUserDefinedData( UserDefinedData &&userDefinedData )
+void MediaSet::filesUserDefinedData( UserDefinedData userDefinedData )
 {
   filesUserDefinedDataV = std::move( userDefinedData );
 }
@@ -488,14 +483,9 @@ UserDefinedData& MediaSet::loadsUserDefinedData()
   return loadsUserDefinedDataV;
 }
 
-void MediaSet::loadsUserDefinedData( ConstUserDefinedDataSpan userDefinedData )
+void MediaSet::loadsUserDefinedData( UserDefinedData userDefinedData )
 {
-  loadsUserDefinedDataV.assign( userDefinedData.begin(), userDefinedData.end() );
-}
-
-void MediaSet::loadsUserDefinedData( UserDefinedData &&userDefinedData )
-{
-  loadsUserDefinedDataV = std::move( userDefinedData);
+  loadsUserDefinedDataV = std::move( userDefinedData );
 }
 
 ConstUserDefinedDataSpan MediaSet::batchesUserDefinedData() const
@@ -508,16 +498,9 @@ UserDefinedData& MediaSet::batchesUserDefinedData()
   return batchesUserDefinedDataV;
 }
 
-void MediaSet::batchesUserDefinedData( ConstUserDefinedDataSpan userDefinedData )
+void MediaSet::batchesUserDefinedData( UserDefinedData userDefinedData )
 {
-  batchesUserDefinedDataV.assign(
-    userDefinedData.begin(),
-    userDefinedData.end() );
-}
-
-void MediaSet::batchesUserDefinedData( UserDefinedData &&userDefinedData)
-{
-  batchesUserDefinedDataV = std::move( userDefinedData);
+  batchesUserDefinedDataV = std::move( userDefinedData );
 }
 
 Arinc645::CheckValueType MediaSet::effectiveMediaSetCheckValueType() const

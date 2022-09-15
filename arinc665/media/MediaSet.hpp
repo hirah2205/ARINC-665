@@ -358,10 +358,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @param[in] userDefinedData
      *   User Defined Data.
      **/
-    void filesUserDefinedData( ConstUserDefinedDataSpan userDefinedData );
-
-    //! @copydoc filesUserDefinedData(ConstUserDefinedDataSpan)
-    void filesUserDefinedData( UserDefinedData &&userDefinedData );
+    void filesUserDefinedData( UserDefinedData userDefinedData );
 
     /** @} **/
 
@@ -386,10 +383,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @param[in] userDefinedData
      *   User defined data.
      **/
-    void loadsUserDefinedData( ConstUserDefinedDataSpan userDefinedData );
-
-    //! @copydoc loadsUserDefinedData(ConstUserDefinedDataSpan)
-    void loadsUserDefinedData( UserDefinedData &&userDefinedData );
+    void loadsUserDefinedData( UserDefinedData userDefinedData );
 
     /** @} **/
 
@@ -414,10 +408,7 @@ class ARINC665_EXPORT MediaSet : public Base
      * @param[in] userDefinedData
      *   User Defined Data.
      **/
-    void batchesUserDefinedData( ConstUserDefinedDataSpan userDefinedData );
-
-    //! @copydoc batchesUserDefinedData(ConstUserDefinedDataSpan)
-    void batchesUserDefinedData( UserDefinedData &&userDefinedData );
+    void batchesUserDefinedData( UserDefinedData userDefinedData );
 
     /** @} **/
 
