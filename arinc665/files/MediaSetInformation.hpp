@@ -17,6 +17,7 @@
 
 namespace Arinc665::Files {
 
+//! Media Set Information as provided by List Files
 struct MediaSetInformation
 {
   //! Media Set Part Number
