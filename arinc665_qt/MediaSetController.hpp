@@ -69,6 +69,12 @@ class ARINC665_QT_EXPORT MediaSetController : public QObject
     void start( Arinc665::Media::ConstMediaSetPtr mediaSet );
 
   private slots:
+    /**
+     * @brief Handler Called, when directory is entered.
+     *
+     * @param[in] path
+     *   Directory Path
+     **/
     void directoryEntered( const QString &path );
 
     /**

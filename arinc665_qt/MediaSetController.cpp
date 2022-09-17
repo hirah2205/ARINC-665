@@ -46,7 +46,6 @@ MediaSetController::MediaSetController( QWidget * const parent ):
     tr( "Select ARINC 665 Medium" ) ) },
   mediaSetDialog{ std::make_unique< MediaSetDialog >( parent ) }
 {
-  selectDirectoryDialog->setOption( QFileDialog::Option::DontUseNativeDialog );
   selectDirectoryDialog->setFileMode( QFileDialog::Directory );
   selectDirectoryDialog->setOption( QFileDialog::ShowDirsOnly );
 
