@@ -44,7 +44,7 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlController : public QObject
 
   private:
     //! Wizard Dialog
-    std::unique_ptr< ImportMediaSetXmlWizard> wizard;
+    std::unique_ptr< ImportMediaSetXmlWizard > wizard;
 };
 
 }

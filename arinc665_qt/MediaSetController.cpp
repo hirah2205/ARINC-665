@@ -116,7 +116,11 @@ void MediaSetController::directorySelected()
   {
     auto importer{ Arinc665::Utils::MediaSetImporter::create() };
 
-    importer->readFileHandler( std::bind_front(
+    importer->fileSizeHandler(
+      std::bind_front(
+        &MediaSetController::fileSize,
+        this ) )
+      .readFileHandler( std::bind_front(
       &MediaSetController::loadFile,
       this ) );
 
@@ -156,6 +160,30 @@ void MediaSetController::directorySelected()
     emit finished();
     return;
   }
+}
+
+size_t MediaSetController::fileSize(
+  uint8_t mediumNumber,
+  const std::filesystem::path &path )
+{
+  if ( 1U != mediumNumber )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "Multi Medium Media Sets not supported" } );
+  }
+
+  auto filePath{
+    selectDirectoryDialog->directory().absolutePath().toStdString() / path.relative_path() };
+
+  if ( !std::filesystem::is_regular_file( filePath ) )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception()
+      << boost::errinfo_file_name{ filePath.string() }
+      << Helper::AdditionalInfo{ "File not found" } );
+  }
+
+  return std::filesystem::file_size( filePath );
 }
 
 Arinc665::Files::RawFile MediaSetController::loadFile(

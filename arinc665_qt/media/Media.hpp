@@ -22,6 +22,8 @@
 
 /**
  * @brief ARINC 665 %Media QT Classes.
+ *
+ * Provides Models and Widgets for @ref Arinc665::Media classes.
  **/
 namespace Arinc665Qt::Media {
 
