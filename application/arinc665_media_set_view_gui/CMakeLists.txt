@@ -4,7 +4,7 @@
 #
 # Thomas Vogt, thomas@thomas-vogt.de
 
-cmake_minimum_required( VERSION 3.23 )
+cmake_minimum_required( VERSION 3.24 )
 
 # skip app when arinc665_qt is not available
 if( NOT TARGET arinc665_qt )
