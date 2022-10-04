@@ -14,15 +14,13 @@
 
 namespace Arinc665 {
 
-using namespace std::literals;
-
 FileTypeDescription::FileTypeDescription():
   Description{
-    { "BatchFile"sv,        FileType::BatchFile },
-    { "LoadUploadHeader"sv, FileType::LoadUploadHeader },
-    { "LoadList"sv,         FileType::LoadList },
-    { "BatchList"sv,        FileType::BatchList },
-    { "FileList"sv,         FileType::FileList },
+    { "BatchFile",        FileType::BatchFile },
+    { "LoadUploadHeader", FileType::LoadUploadHeader },
+    { "LoadList",         FileType::LoadList },
+    { "BatchList",        FileType::BatchList },
+    { "FileList",         FileType::FileList },
   }
 {
 }

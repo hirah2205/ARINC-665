@@ -17,13 +17,11 @@
 
 namespace Arinc665::Utils {
 
-using namespace std::literals;
-
 FileCreationPolicyDescription::FileCreationPolicyDescription():
   Description{
-    { "None"sv,         FileCreationPolicy::None },
-    { "NoneExisting"sv, FileCreationPolicy::NoneExisting },
-    { "All"sv,          FileCreationPolicy::All }
+    { "None",         FileCreationPolicy::None },
+    { "NoneExisting", FileCreationPolicy::NoneExisting },
+    { "All",          FileCreationPolicy::All }
   }
 {
 }

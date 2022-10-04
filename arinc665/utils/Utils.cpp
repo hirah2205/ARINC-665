@@ -17,6 +17,8 @@
 
 #include <arinc665/Arinc665Logger.hpp>
 
+#include <boost/exception/diagnostic_information.hpp>
+
 #include <fstream>
 
 namespace Arinc665::Utils {

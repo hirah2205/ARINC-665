@@ -22,6 +22,8 @@
 
 #include <helper/Logger.hpp>
 
+#include <boost/exception/diagnostic_information.hpp>
+
 #include <iostream>
 #include <cstdlib>
 

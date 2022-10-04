@@ -23,6 +23,8 @@
 #include <QApplication>
 #include <QIcon>
 
+#include <boost/exception/diagnostic_information.hpp>
+
 #include <cstdlib>
 #include <iostream>
 
@@ -61,7 +63,7 @@ try
 
   mediaSetManagerController.start();
 
-  return application.exec();
+  return QApplication::exec();
 }
 catch ( boost::exception &e )
 {
