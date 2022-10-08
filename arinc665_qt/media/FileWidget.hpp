@@ -61,7 +61,7 @@ class ARINC665_QT_EXPORT FileWidget : public QWidget
     //! UI (designer)
     std::unique_ptr< Ui::FileWidget> ui;
     //! Media Set Model
-    MediaSetModel * modelV;
+    MediaSetModel * modelV{ nullptr };
     //! File
     Arinc665::Media::ConstFilePtr fileV;
 };

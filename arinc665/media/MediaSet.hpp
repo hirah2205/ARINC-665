@@ -15,7 +15,6 @@
 
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/Base.hpp>
-#include <arinc665/media/Medium.hpp>
 
 #include <arinc645/Arinc645.hpp>
 

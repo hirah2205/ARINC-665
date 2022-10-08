@@ -12,10 +12,14 @@
 
 #include "MediaSetManagerImpl.hpp"
 
-#include <arinc665/Arinc665Exception.hpp>
-#include <arinc665/Arinc665Logger.hpp>
+#include <arinc665/media/MediaSet.hpp>
+#include <arinc665/media/Medium.hpp>
+#include <arinc665/media/File.hpp>
 
 #include <arinc665/utils/MediaSetImporter.hpp>
+
+#include <arinc665/Arinc665Exception.hpp>
+#include <arinc665/Arinc665Logger.hpp>
 
 #include <boost/format.hpp>
 
@@ -91,7 +95,9 @@ void MediaSetManagerImpl::registerMediaSet(
     std::move( checkValues ) );
 
   // add to configuration
-  configurationV.mediaSets.try_emplace( mediaSetPaths.first, mediaSetPaths.second );
+  configurationV.mediaSets.try_emplace(
+    mediaSetPaths.first,
+    mediaSetPaths.second );
 }
 
 MediaSetManagerConfiguration::MediaSetPaths
@@ -118,7 +124,8 @@ MediaSetManagerImpl::deregisterMediaSet( std::string_view partNumber )
   mediaSetsV.erase( foundMediaSet );
 
   // Remove Path Configuration
-  auto mediaSetPathConfigIt{ configurationV.mediaSets.find( mediaSetPath->second.first ) };
+  auto mediaSetPathConfigIt{
+    configurationV.mediaSets.find( mediaSetPath->second.first ) };
 
   if ( mediaSetPathConfigIt == configurationV.mediaSets.end() )
   {

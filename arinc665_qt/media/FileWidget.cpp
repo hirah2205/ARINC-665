@@ -21,10 +21,9 @@
 
 namespace Arinc665Qt::Media {
 
-FileWidget::FileWidget( QWidget * const parent):
+FileWidget::FileWidget( QWidget * const parent ):
   QWidget{ parent},
-  ui{ std::make_unique< Ui::FileWidget>()},
-  modelV{ nullptr}
+  ui{ std::make_unique< Ui::FileWidget >() }
 {
   ui->setupUi( this );
 }
@@ -47,20 +46,20 @@ void FileWidget::selectedFile(
 
   switch ( fileV->fileType())
   {
-    case Arinc665::Media::File::FileType::RegularFile:
+    case Arinc665::Media::FileType::RegularFile:
       ui->detailsStackedWidget->setCurrentIndex( 0 );
       ui->regularFilePage->selectedFile(
         modelV,
         std::dynamic_pointer_cast< const Arinc665::Media::RegularFile >( fileV ) );
       break;
 
-    case Arinc665::Media::File::FileType::LoadFile:
+    case Arinc665::Media::FileType::LoadFile:
       ui->detailsStackedWidget->setCurrentIndex( 1 );
       ui->loadPage->selectedLoad(
         std::dynamic_pointer_cast< const Arinc665::Media::Load >( fileV ) );
       break;
 
-    case Arinc665::Media::File::FileType::BatchFile:
+    case Arinc665::Media::FileType::BatchFile:
       ui->detailsStackedWidget->setCurrentIndex( 2 );
       ui->batchPage->selectedBatch(
         std::dynamic_pointer_cast< const Arinc665::Media::Batch >( fileV ) );

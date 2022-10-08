@@ -16,6 +16,7 @@
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/MediaSetManagerConfiguration.hpp>
+
 #include <arinc665/files/Files.hpp>
 
 namespace Arinc665::Utils {

@@ -12,6 +12,10 @@
 
 #include "ListLoadsCommand.hpp"
 
+#include <arinc665/media/MediaSet.hpp>
+#include <arinc665/media/Medium.hpp>
+#include <arinc665/media/Load.hpp>
+
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/JsonMediaSetManager.hpp>
 
@@ -24,7 +28,8 @@
 namespace Arinc665Commands {
 
 ListLoadsCommand::ListLoadsCommand() :
-  optionsDescription{ "List Loads" }, checkFileIntegrity{}
+  optionsDescription{ "List Loads" },
+  checkFileIntegrity{}
 {
   optionsDescription.add_options()
   (
@@ -77,11 +82,11 @@ void ListLoadsCommand::execute( const Commands::Parameters &parameters )
       std::cout << "\n";
     }
   }
-  catch ( boost::exception &e )
+  catch ( const boost::exception &e )
   {
     std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
   }
-  catch ( std::exception &e )
+  catch ( const std::exception &e )
   {
     std::cerr << "Error: " << e.what() << "\n";
   }

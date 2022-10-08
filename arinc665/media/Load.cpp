@@ -13,6 +13,8 @@
 #include "Load.hpp"
 
 #include <arinc665/media/MediaSet.hpp>
+#include <arinc665/media/RegularFile.hpp>
+
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <utility>
@@ -24,7 +26,7 @@ Load::Load( const ContainerEntityPtr &parent, std::string name ) :
 {
 }
 
-Load::FileType Load::fileType() const
+FileType Load::fileType() const
 {
   return FileType::LoadFile;
 }

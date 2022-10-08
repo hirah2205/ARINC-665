@@ -12,9 +12,12 @@
 
 #include "ImportMediaSetCommand.hpp"
 
+#include <arinc665/media/MediaSet.hpp>
+
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/JsonMediaSetManager.hpp>
 #include <arinc665/utils/MediaSetImporter.hpp>
+
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <helper/Logger.hpp>

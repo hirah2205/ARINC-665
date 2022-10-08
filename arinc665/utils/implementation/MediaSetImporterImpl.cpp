@@ -13,6 +13,11 @@
 #include "MediaSetImporterImpl.hpp"
 
 #include <arinc665/media/Directory.hpp>
+#include <arinc665/media/Medium.hpp>
+#include <arinc665/media/Load.hpp>
+#include <arinc665/media/Batch.hpp>
+#include <arinc665/media/RegularFile.hpp>
+
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
 

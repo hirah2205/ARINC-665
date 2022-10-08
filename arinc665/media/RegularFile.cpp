@@ -21,7 +21,7 @@ RegularFile::RegularFile(
 {
 }
 
-RegularFile::FileType RegularFile::fileType() const
+FileType RegularFile::fileType() const
 {
   return FileType::RegularFile;
 }

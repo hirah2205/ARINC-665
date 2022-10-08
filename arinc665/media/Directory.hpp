@@ -13,8 +13,10 @@
 #ifndef ARINC665_MEDIA_DIRECTORY_HPP
 #define ARINC665_MEDIA_DIRECTORY_HPP
 
+#include <arinc665/media/Media.hpp>
 #include <arinc665/media/ContainerEntity.hpp>
 
+#include <string>
 #include <string_view>
 
 namespace Arinc665::Media {

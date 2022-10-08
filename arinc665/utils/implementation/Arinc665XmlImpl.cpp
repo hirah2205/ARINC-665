@@ -496,15 +496,15 @@ void Arinc665XmlImpl::saveEntries(
 
     switch ( fileEntry->fileType() )
     {
-      case Media::File::FileType::RegularFile:
+      case Media::FileType::RegularFile:
         fileNode = currentNode.add_child( "File" );
         break;
 
-      case Media::File::FileType::LoadFile:
+      case Media::FileType::LoadFile:
         fileNode = currentNode.add_child( "LoadFile" );
         break;
 
-      case Media::File::FileType::BatchFile:
+      case Media::FileType::BatchFile:
         fileNode = currentNode.add_child( "BatchFile" );
         break;
 

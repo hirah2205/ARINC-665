@@ -13,7 +13,11 @@
 #include "MediaSetPrinter.hpp"
 
 #include <arinc665/media/MediaSet.hpp>
+#include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
+#include <arinc665/media/Load.hpp>
+#include <arinc665/media/Batch.hpp>
+#include <arinc665/media/RegularFile.hpp>
 
 #include <arinc645/CheckValueTypeDescription.hpp>
 
@@ -149,15 +153,15 @@ void MediaSetPrinter_print(
 
   switch ( file.fileType() )
   {
-    case Arinc665::Media::File::FileType::RegularFile:
+    case Arinc665::Media::FileType::RegularFile:
       outS << "Regular File";
       break;
 
-    case Arinc665::Media::File::FileType::BatchFile:
+    case Arinc665::Media::FileType::BatchFile:
       outS << "Batch File";
       break;
 
-    case Arinc665::Media::File::FileType::LoadFile:
+    case Arinc665::Media::FileType::LoadFile:
       outS << "Load Header File";
       break;
 

@@ -14,12 +14,7 @@
 #define ARINC665_MEDIA_CONTAINERENTITY_HPP
 
 #include <arinc665/media/Media.hpp>
-
 #include <arinc665/media/Base.hpp>
-
-#include <arinc665/media/RegularFile.hpp>
-#include <arinc665/media/Load.hpp>
-#include <arinc665/media/Batch.hpp>
 
 #include <filesystem>
 #include <string>
@@ -517,9 +512,6 @@ class ARINC665_EXPORT ContainerEntity : public Base
     [[nodiscard]] virtual MediumPtr medium() = 0;
 
   protected:
-    //! File type
-    using FileType = File::FileType;
-
     /**
      * @brief Return the number of files (real file, load, batch) with the
      *   specified file type.

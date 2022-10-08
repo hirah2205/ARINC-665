@@ -13,11 +13,10 @@
 #ifndef ARINC665_UTILS_MEDIASETMANAGER_HPP
 #define ARINC665_UTILS_MEDIASETMANAGER_HPP
 
+#include <arinc665/media/Media.hpp>
+
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/MediaSetManagerConfiguration.hpp>
-
-#include <arinc665/media/Media.hpp>
-#include <arinc665/media/MediaSet.hpp>
 
 #include <filesystem>
 #include <list>

@@ -36,14 +36,6 @@ namespace Arinc665::Media {
 class ARINC665_EXPORT File : public Base
 {
   public:
-    //! File Type
-    enum class FileType
-    {
-      RegularFile,
-      LoadFile,
-      BatchFile
-    };
-
     //! Destructor
     ~File() override = default;
 

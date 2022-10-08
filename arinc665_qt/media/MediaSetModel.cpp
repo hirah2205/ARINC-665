@@ -441,7 +441,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
 
               switch ( file->fileType() )
               {
-                case Arinc665::Media::File::FileType::RegularFile:
+                case Arinc665::Media::FileType::RegularFile:
                   icon.addFile(
                     QString::fromUtf8(
                       ":/media_set/arinc665_file.svg" ),
@@ -450,7 +450,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
                     QIcon::Off );
                   break;
 
-                case Arinc665::Media::File::FileType::LoadFile:
+                case Arinc665::Media::FileType::LoadFile:
                   icon.addFile(
                     QString::fromUtf8(
                       ":/media_set/arinc665_load.svg" ),
@@ -459,7 +459,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
                     QIcon::Off );
                   break;
 
-                case Arinc665::Media::File::FileType::BatchFile:
+                case Arinc665::Media::FileType::BatchFile:
                   icon.addFile(
                     QString::fromUtf8(
                       ":/media_set/arinc665_batch.svg" ),
@@ -588,13 +588,13 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
 
               switch ( file->fileType() )
               {
-                case Arinc665::Media::File::FileType::RegularFile:
+                case Arinc665::Media::FileType::RegularFile:
                   return tr( "Regular File" );
 
-                case Arinc665::Media::File::FileType::LoadFile:
+                case Arinc665::Media::FileType::LoadFile:
                   return tr( "Load" );
 
-                case Arinc665::Media::File::FileType::BatchFile:
+                case Arinc665::Media::FileType::BatchFile:
                   return tr( "Batch" );
 
                 default:

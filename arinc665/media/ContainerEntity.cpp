@@ -15,6 +15,9 @@
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/Medium.hpp>
 #include <arinc665/media/MediaSet.hpp>
+#include <arinc665/media/RegularFile.hpp>
+#include <arinc665/media/Load.hpp>
+#include <arinc665/media/Batch.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 
@@ -261,7 +264,7 @@ void ContainerEntity::removeFile( std::string_view filename )
   }
 
   // check when file is load, if it is part of batch
-  if ( ( File::FileType::LoadFile == (*file)->fileType() )
+  if ( ( FileType::LoadFile == (*file)->fileType() )
     && !mediaSet()->batchesWithLoad(
       std::dynamic_pointer_cast< const Load >( *file) ).empty() )
   {
@@ -271,7 +274,7 @@ void ContainerEntity::removeFile( std::string_view filename )
   }
 
   // check when file is regular file, if it is part of load
-  if ( ( File::FileType::RegularFile == (*file)->fileType() )
+  if ( ( FileType::RegularFile == (*file)->fileType() )
     && !mediaSet()->loadsWithFile(
       std::dynamic_pointer_cast< const RegularFile >( *file ) ).empty() )
   {
@@ -295,7 +298,7 @@ void ContainerEntity::removeFile( const ConstFilePtr& file )
   }
 
   // check when file is load, if it is part of batch
-  if ( ( File::FileType::LoadFile == (*fileIt)->fileType() )
+  if ( ( FileType::LoadFile == (*fileIt)->fileType() )
     && !mediaSet()->batchesWithLoad(
       std::dynamic_pointer_cast< const Load >( *fileIt ) ).empty() )
   {
@@ -305,7 +308,7 @@ void ContainerEntity::removeFile( const ConstFilePtr& file )
   }
 
   // check when file is regular file, if it is part of load
-  if ( ( File::FileType::RegularFile == (*fileIt)->fileType() )
+  if ( ( FileType::RegularFile == (*fileIt)->fileType() )
     && !mediaSet()->loadsWithFile(
       std::dynamic_pointer_cast< const RegularFile >( *fileIt ) ).empty() )
   {
@@ -319,7 +322,7 @@ void ContainerEntity::removeFile( const ConstFilePtr& file )
 
 size_t ContainerEntity::numberOfRegularFiles() const
 {
-  return numberOfFiles( File::FileType::RegularFile );
+  return numberOfFiles( FileType::RegularFile );
 }
 
 size_t ContainerEntity::recursiveNumberOfRegularFiles() const
@@ -337,12 +340,12 @@ size_t ContainerEntity::recursiveNumberOfRegularFiles() const
 
 ConstRegularFiles ContainerEntity::regularFiles() const
 {
-  return filesPerType< ConstRegularFiles, File::FileType::RegularFile>();
+  return filesPerType< ConstRegularFiles, FileType::RegularFile>();
 }
 
 RegularFiles ContainerEntity::regularFiles()
 {
-  return filesPerType< RegularFiles, File::FileType::RegularFile>();
+  return filesPerType< RegularFiles, FileType::RegularFile>();
 }
 
 ConstRegularFiles ContainerEntity::recursiveRegularFiles() const
@@ -418,12 +421,12 @@ ConstRegularFilePtr ContainerEntity::regularFile(
   std::string_view filename ) const
 {
   return
-    filePerType< ConstRegularFilePtr, File::FileType::RegularFile >( filename );
+    filePerType< ConstRegularFilePtr, FileType::RegularFile >( filename );
 }
 
 RegularFilePtr ContainerEntity::regularFile( std::string_view filename )
 {
-  return filePerType< RegularFilePtr, File::FileType::RegularFile >( filename );
+  return filePerType< RegularFilePtr, FileType::RegularFile >( filename );
 }
 
 RegularFilePtr ContainerEntity::addRegularFile( std::string filename )
@@ -449,7 +452,7 @@ RegularFilePtr ContainerEntity::addRegularFile( std::string filename )
 
 size_t ContainerEntity::numberOfLoads() const
 {
-  return numberOfFiles( File::FileType::LoadFile );
+  return numberOfFiles( FileType::LoadFile );
 }
 
 size_t ContainerEntity::recursiveNumberOfLoads() const
@@ -466,12 +469,12 @@ size_t ContainerEntity::recursiveNumberOfLoads() const
 
 ConstLoads ContainerEntity::loads() const
 {
-  return filesPerType< ConstLoads, File::FileType::LoadFile>();
+  return filesPerType< ConstLoads, FileType::LoadFile>();
 }
 
 Loads ContainerEntity::loads()
 {
-  return filesPerType< Loads, File::FileType::LoadFile>();
+  return filesPerType< Loads, FileType::LoadFile>();
 }
 
 ConstLoads ContainerEntity::recursiveLoads() const
@@ -542,12 +545,12 @@ Loads ContainerEntity::recursiveLoads( std::string_view filename )
 
 ConstLoadPtr ContainerEntity::load( std::string_view filename ) const
 {
-  return filePerType< ConstLoadPtr, File::FileType::LoadFile >( filename );
+  return filePerType< ConstLoadPtr, FileType::LoadFile >( filename );
 }
 
 LoadPtr ContainerEntity::load( std::string_view filename )
 {
-  return filePerType< LoadPtr, File::FileType::LoadFile >( filename );
+  return filePerType< LoadPtr, FileType::LoadFile >( filename );
 }
 
 LoadPtr ContainerEntity::addLoad( std::string filename )
@@ -572,7 +575,7 @@ LoadPtr ContainerEntity::addLoad( std::string filename )
 
 size_t ContainerEntity::numberOfBatches() const
 {
-  return numberOfFiles( File::FileType::BatchFile );
+  return numberOfFiles( FileType::BatchFile );
 }
 
 size_t ContainerEntity::recursiveNumberOfBatches() const
@@ -589,12 +592,12 @@ size_t ContainerEntity::recursiveNumberOfBatches() const
 
 ConstBatches ContainerEntity::batches() const
 {
-  return filesPerType< ConstBatches, File::FileType::BatchFile>();
+  return filesPerType< ConstBatches, FileType::BatchFile>();
 }
 
 Batches ContainerEntity::batches()
 {
-  return filesPerType< Batches, File::FileType::BatchFile>();
+  return filesPerType< Batches, FileType::BatchFile>();
 }
 
 ConstBatches ContainerEntity::recursiveBatches() const
@@ -666,12 +669,12 @@ Batches ContainerEntity::recursiveBatches( std::string_view filename )
 
 ConstBatchPtr ContainerEntity::batch( std::string_view filename ) const
 {
-  return filePerType< ConstBatchPtr, File::FileType::BatchFile >( filename );
+  return filePerType< ConstBatchPtr, FileType::BatchFile >( filename );
 }
 
 BatchPtr ContainerEntity::batch( std::string_view filename )
 {
-  return filePerType< BatchPtr, File::FileType::BatchFile >( filename );
+  return filePerType< BatchPtr, FileType::BatchFile >( filename );
 }
 
 BatchPtr ContainerEntity::addBatch( std::string filename )
@@ -709,7 +712,7 @@ size_t ContainerEntity::numberOfFiles( const FileType fileType ) const
   return numberOfFiles;
 }
 
-template< typename FilesT, ContainerEntity::FileType fileType >
+template< typename FilesT, FileType fileType >
 FilesT ContainerEntity::filesPerType() const
 {
   FilesT result{};
@@ -727,7 +730,7 @@ FilesT ContainerEntity::filesPerType() const
   return result;
 }
 
-template< typename FilesT, ContainerEntity::FileType fileType >
+template< typename FilesT, FileType fileType >
 FilesT ContainerEntity::filesPerType()
 {
   FilesT result{};
@@ -745,7 +748,7 @@ FilesT ContainerEntity::filesPerType()
   return result;
 }
 
-template< typename FilesT, ContainerEntity::FileType fileType >
+template< typename FilesT, FileType fileType >
 FilesT ContainerEntity::filePerType( std::string_view filename ) const
 {
   const auto filePtr{ file( filename ) };
@@ -763,7 +766,7 @@ FilesT ContainerEntity::filePerType( std::string_view filename ) const
   return std::dynamic_pointer_cast< typename FilesT::element_type >( filePtr );
 }
 
-template< typename FilesT, ContainerEntity::FileType fileType >
+template< typename FilesT, FileType fileType >
 FilesT ContainerEntity::filePerType( std::string_view filename )
 {
   const auto filePtr{ file( filename ) };

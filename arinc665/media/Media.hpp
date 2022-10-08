@@ -39,6 +39,14 @@
  **/
 namespace Arinc665::Media {
 
+//! File Type
+enum class FileType
+{
+  RegularFile,
+  LoadFile,
+  BatchFile
+};
+
 /**
  * @name User Defined Data
  * @{

@@ -19,7 +19,7 @@ Batch::Batch( const ContainerEntityPtr& parent, std::string name ) :
 {
 }
 
-Batch::FileType Batch::fileType() const
+FileType Batch::fileType() const
 {
   return FileType::BatchFile;
 }

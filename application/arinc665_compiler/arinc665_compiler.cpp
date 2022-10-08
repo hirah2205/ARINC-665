@@ -27,6 +27,7 @@
 #include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/MediaSet.hpp>
+#include <arinc665/media/File.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/SupportedArinc665VersionDescription.hpp>

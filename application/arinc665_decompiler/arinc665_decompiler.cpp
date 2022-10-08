@@ -15,13 +15,14 @@
  * @brief ARINC 665 Media Set Decompiler Application.
  **/
 
-#include <arinc665/Arinc665Exception.hpp>
-
 #include <arinc665/media/MediaSet.hpp>
+#include <arinc665/media/Medium.hpp>
 #include <arinc665/media/RegularFile.hpp>
 
 #include <arinc665/utils/MediaSetImporter.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
+
+#include <arinc665/Arinc665Exception.hpp>
 
 #include <helper/Logger.hpp>
 
