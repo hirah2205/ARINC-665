@@ -54,4 +54,5 @@ target_sources(
     FileListFileTest.cpp
     LoadFileInfoTest.cpp
     LoadHeaderFileTest.cpp
-    LoadListFileTest.cpp )
+    LoadListFileTest.cpp
+    StringUtilsTest.cpp )

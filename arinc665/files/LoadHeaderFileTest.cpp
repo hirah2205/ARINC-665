@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_SUITE( Arinc665Test)
 BOOST_AUTO_TEST_SUITE( FilesTest)
 BOOST_AUTO_TEST_SUITE( LoadHeaderFileTest)
 
-BOOST_AUTO_TEST_CASE( constructor1)
+BOOST_AUTO_TEST_CASE( constructor1 )
 {
   RawFile rawFile{
     // header file length
