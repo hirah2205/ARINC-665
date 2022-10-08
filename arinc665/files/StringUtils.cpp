@@ -23,7 +23,7 @@ ConstRawFileSpan::iterator StringUtils_decodeString(
 {
   // determine string length
   uint16_t strLength{};
-  it = Helper::getInt< uint16_t>( it, strLength );
+  it = Helper::getInt< uint16_t >( it, strLength );
 
   // copy string
   str.assign( it, it + strLength );
@@ -63,6 +63,9 @@ ConstRawFileSpan::iterator StringUtils_decodeStrings(
   ConstRawFileSpan::iterator it,
   std::list< std::string > &strings )
 {
+  // empty strings
+  strings.clear();
+
   // number of strings
   uint16_t numberOfEntries{};
   it = Helper::getInt< uint16_t>( it, numberOfEntries);
@@ -78,25 +81,6 @@ ConstRawFileSpan::iterator StringUtils_decodeStrings(
   return it;
 }
 
-ConstRawFileSpan::iterator StringUtils_decodeStrings(
-  ConstRawFileSpan::iterator it,
-  std::set< std::string, std::less<> > &strings )
-{
-  // number of strings
-  uint16_t numberOfEntries{};
-  it = Helper::getInt< uint16_t>( it, numberOfEntries );
-
-  for ( uint16_t index = 0U; index < numberOfEntries; ++index )
-  {
-    // string
-    std::string str{};
-    it = StringUtils_decodeString( it, str);
-    strings.emplace( std::move( str) );
-  }
-
-  return it;
-}
-
 RawFile StringUtils_encodeStrings( const std::list< std::string > &strings )
 {
   RawFile rawStrings( sizeof( uint16_t ) );
@@ -105,28 +89,6 @@ RawFile StringUtils_encodeStrings( const std::list< std::string > &strings )
   Helper::setInt< uint16_t >(
     rawStrings.begin(),
     static_cast< uint16_t>( strings.size()));
-
-  for ( const auto &str : strings )
-  {
-    auto rawStr{ StringUtils_encodeString( str ) };
-    assert( rawStr.size() % 2 == 0 );
-
-    // append string
-    rawStrings.insert( rawStrings.end(), rawStr.begin(), rawStr.end() );
-  }
-
-  return rawStrings;
-}
-
-RawFile StringUtils_encodeStrings(
-  const std::set< std::string, std::less<> > &strings )
-{
-  RawFile rawStrings( sizeof( uint16_t ) );
-
-  // set number of strings
-  Helper::setInt< uint16_t>(
-    rawStrings.begin(),
-    static_cast< uint16_t>( strings.size() ) );
 
   for ( const auto &str : strings )
   {

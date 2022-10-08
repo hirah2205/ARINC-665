@@ -88,11 +88,6 @@ ConstRawFileSpan::iterator StringUtils_decodeStrings(
   ConstRawFileSpan::iterator it,
   std::list< std::string > &strings );
 
-//! @copydoc StringUtils_decodeStrings(ConstRawFileSpan::iterator,std::list<std::string>&)
-ConstRawFileSpan::iterator StringUtils_decodeStrings(
-  ConstRawFileSpan::iterator it,
-  std::set< std::string, std::less<> > &strings );
-
 /**
  * @brief Encodes the ARINC 665 String List to the Stream.
  *
@@ -102,10 +97,6 @@ ConstRawFileSpan::iterator StringUtils_decodeStrings(
  * @return Encoded raw string list.
  **/
 RawFile StringUtils_encodeStrings( const std::list< std::string > &strings );
-
-//! @copydoc StringUtils_encodeStrings(const std::list<std::string>&)
-RawFile StringUtils_encodeStrings(
-  const std::set< std::string, std::less<> > &strings );
 
 /** @} **/
 
