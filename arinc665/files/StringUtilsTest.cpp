@@ -20,6 +20,7 @@ BOOST_AUTO_TEST_SUITE( Arinc665Test )
 BOOST_AUTO_TEST_SUITE( FilesTest )
 BOOST_AUTO_TEST_SUITE( SringUtilsTest )
 
+//! Decode String Test
 BOOST_AUTO_TEST_CASE( decodeString )
 {
   std::string out{};
@@ -43,6 +44,7 @@ BOOST_AUTO_TEST_CASE( decodeString )
   BOOST_CHECK( out == "Test1" );
 }
 
+//! Encode String Test
 BOOST_AUTO_TEST_CASE( encodeString )
 {
   BOOST_CHECK( ( StringUtils_encodeString( "Test" ) == RawFile{ { 0x00, 0x04, 'T', 'e', 's', 't' } } ) );
@@ -50,6 +52,7 @@ BOOST_AUTO_TEST_CASE( encodeString )
   BOOST_CHECK( ( StringUtils_encodeString( "" ) ==  RawFile{ { 0x00, 0x00 } } ) );
 }
 
+//! Decode Strings Test
 BOOST_AUTO_TEST_CASE( decodeStrings )
 {
   std::list< std::string > out{};
@@ -76,6 +79,7 @@ BOOST_AUTO_TEST_CASE( decodeStrings )
   BOOST_CHECK( out.empty() );
 }
 
+//! Encode Strings Test
 BOOST_AUTO_TEST_CASE( encodeStrings )
 {
   BOOST_CHECK( ( StringUtils_encodeStrings( {} ) == RawFile{ { 0x00, 0x00 } } ) );
