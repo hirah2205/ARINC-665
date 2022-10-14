@@ -88,7 +88,7 @@ using JsonMediaSetManagerPtr = std::shared_ptr< JsonMediaSetManager >;
  * @retval {}
  *   If @p directory is not a valid directory or ARINC 665 Medium
  **/
-std::optional< Files::MediaSetInformation > getMediumInformation(
+ARINC665_EXPORT std::optional< Files::MediaSetInformation > getMediumInformation(
   const std::filesystem::path &directory );
 
 }
