@@ -15,7 +15,7 @@
 
 #include <arinc665/files/Files.hpp>
 
-#include <arinc645/Arinc645.hpp>
+#include <arinc645/CheckValue.hpp>
 
 #include <filesystem>
 #include <string>

@@ -18,7 +18,8 @@
 #include <arinc665/files/LoadHeaderFile.hpp>
 #include <arinc665/files/BatchFile.hpp>
 
-#include <arinc645/Utils.hpp>
+#include <arinc645/CheckValue.hpp>
+#include <arinc645/CheckValueTypeDescription.hpp>
 
 #include <fmt/format.h>
 
@@ -51,13 +52,15 @@ void FilePrinter_print(
         "{0}File Path: {2}\n"
         "{0}File Member Sequence Number: {3:02d}\n"
         "{0}File CRC: 0x{4:04X}\n"
-        "{0}File Check Value: {5}\n\n",
+        "{0}File Check Value: {5} {6}\n\n",
         nextIndent,
         file.filename,
         file.pathName,
         file.memberSequenceNumber,
         file.crc,
-        Arinc645::Utils_toString( file.checkValue ) );
+        Arinc645::CheckValueTypeDescription::instance().name(
+          std::get< 0 >( file.checkValue ) ),
+        Arinc645::CheckValue_toString( file.checkValue ) );
   }
 }
 
@@ -167,13 +170,15 @@ void FilePrinter_print(
         "{0}Data File PN: {2}\n"
         "{0}Data File Size: {3}\n"
         "{0}Data File CRC: 0x{4:02X}\n"
-        "{0}Data File Check Value: {5}\n\n",
+        "{0}Data File Check Value: {5} {6}\n\n",
         initialIndent,
         dataFile.filename,
         dataFile.partNumber,
         dataFile.length,
         dataFile.crc,
-        Arinc645::Utils_toString( dataFile.checkValue ) );
+        Arinc645::CheckValueTypeDescription::instance().name(
+          std::get< 0 >( dataFile.checkValue ) ),
+        Arinc645::CheckValue_toString( dataFile.checkValue ) );
   }
 
   for ( const auto &supportFile : loadHeaderFile.supportFiles() )
@@ -184,13 +189,15 @@ void FilePrinter_print(
         "{0}Support File PN: {2}\n"
         "{0}Support File Size: {3}\n"
         "{0}Support File CRC: 0x{4:02X}\n"
-        "{0}Support File Check Value: {5}\n\n",
+        "{0}Support File Check Value: {5} {6}\n\n",
         initialIndent,
         supportFile.filename,
         supportFile.partNumber,
         supportFile.length,
         supportFile.crc,
-        Arinc645::Utils_toString( supportFile.checkValue ) );
+        Arinc645::CheckValueTypeDescription::instance().name(
+          std::get< 0 >( supportFile.checkValue ) ),
+        Arinc645::CheckValue_toString( supportFile.checkValue ) );
   }
 }
 

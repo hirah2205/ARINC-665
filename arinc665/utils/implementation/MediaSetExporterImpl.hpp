@@ -15,6 +15,8 @@
 
 #include <arinc665/utils/MediaSetExporter.hpp>
 
+#include <arinc645/CheckValue.hpp>
+
 namespace Arinc665::Utils {
 
 /**

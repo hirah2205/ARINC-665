@@ -29,7 +29,7 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
-#include <arinc645/Utils.hpp>
+#include <arinc645/CheckValue.hpp>
 
 #include <helper/Dump.hpp>
 #include <helper/Logger.hpp>
@@ -227,7 +227,7 @@ static void printLoadHeaderFile( const std::filesystem::path &luhFile)
       std::cout
         << fmt::format(
           "\tLoad Check Value {}\n",
-          Arinc645::Utils_toString(
+          Arinc645::CheckValue_toString(
             Arinc665::Files::LoadHeaderFile::decodeLoadCheckValue(
                  rawLoadHeaderFile ) ) );
     }

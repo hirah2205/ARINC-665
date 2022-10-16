@@ -24,7 +24,11 @@
 
 namespace Arinc665Commands {
 
-//! Removes a registered Media Set from the Media Set Manager and deletes data.
+/**
+ * @brief Remove Media Set Command
+ *
+ * Removes a registered Media Set from the Media Set Manager and deletes data.
+ **/
 class RemoveMediaSetCommand
 {
   public:

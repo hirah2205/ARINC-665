@@ -18,6 +18,8 @@
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/MediaSetManagerConfiguration.hpp>
 
+#include <arinc645/CheckValue.hpp>
+
 #include <filesystem>
 #include <list>
 #include <string>
