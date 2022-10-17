@@ -19,6 +19,8 @@
 
 #include <arinc665/files/Files.hpp>
 
+#include <arinc645/CheckValue.hpp>
+
 namespace Arinc665::Utils {
 
 //! Implementation of MediaSetManager

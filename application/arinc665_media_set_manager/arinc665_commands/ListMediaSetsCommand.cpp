@@ -16,7 +16,7 @@
 #include <arinc665/utils/JsonMediaSetManager.hpp>
 #include <arinc665/utils/MediaSetPrinter.hpp>
 
-#include <helper/Logger.hpp>
+#include <arinc645/CheckValue.hpp>
 
 #include <boost/exception/all.hpp>
 

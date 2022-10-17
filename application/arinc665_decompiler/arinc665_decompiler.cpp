@@ -24,6 +24,8 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <arinc645/CheckValue.hpp>
+
 #include <helper/Logger.hpp>
 
 #include <boost/program_options.hpp>

@@ -225,10 +225,7 @@ static void printLoadHeaderFile( const std::filesystem::path &luhFile)
     if ( load.loadCheckValueType() != Arinc645::CheckValueType::NotUsed )
     {
       std::cout
-        << fmt::format(
-          "\tLoad Check Value {}\n",
-            Arinc665::Files::LoadHeaderFile::decodeLoadCheckValue(
-                 rawLoadHeaderFile ).toString() );
+        << Arinc665::Files::LoadHeaderFile::decodeLoadCheckValue( rawLoadHeaderFile );
     }
   }
   catch ( const boost::exception &e )

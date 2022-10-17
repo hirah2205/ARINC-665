@@ -14,6 +14,7 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <arinc645/CheckValue.hpp>
 #include <arinc645/CheckValueTypeDescription.hpp>
 
 #include <helper/Endianess.hpp>

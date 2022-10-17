@@ -27,6 +27,8 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <arinc645/CheckValue.hpp>
+
 #include <helper_qt/String.hpp>
 
 #include <QMessageBox>

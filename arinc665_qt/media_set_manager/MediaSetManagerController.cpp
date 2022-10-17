@@ -20,6 +20,8 @@
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/JsonMediaSetManager.hpp>
 
+#include <arinc645/CheckValue.hpp>
+
 #include <boost/property_tree/json_parser.hpp>
 
 namespace Arinc665Qt::MediaSetManager {

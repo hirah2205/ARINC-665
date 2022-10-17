@@ -23,6 +23,8 @@
 #include <arinc665/utils/MediaSetImporter.hpp>
 #include <arinc665/utils/MediaSetPrinter.hpp>
 
+#include <arinc645/CheckValue.hpp>
+
 #include <helper/Logger.hpp>
 
 #include <boost/program_options.hpp>
