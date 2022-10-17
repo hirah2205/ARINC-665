@@ -227,9 +227,8 @@ static void printLoadHeaderFile( const std::filesystem::path &luhFile)
       std::cout
         << fmt::format(
           "\tLoad Check Value {}\n",
-          Arinc645::CheckValue_toString(
             Arinc665::Files::LoadHeaderFile::decodeLoadCheckValue(
-                 rawLoadHeaderFile ) ) );
+                 rawLoadHeaderFile ).toString() );
     }
   }
   catch ( const boost::exception &e )
@@ -338,27 +337,28 @@ static void list_files( const std::filesystem::path &loadDir )
     {
       switch ( Arinc665::Files::Arinc665File::fileType( itr->path().filename()))
       {
-        case Arinc665::FileType::BatchFile:
+        using enum Arinc665::FileType;
+        case BatchFile:
           std::cout << "ARINC 665 BATCH file\n";
           printBatchFile( itr->path() );
           break;
 
-        case Arinc665::FileType::LoadUploadHeader:
+        case LoadUploadHeader:
           std::cout << "ARINC 665 LOAD UPLOAD HEADER file\n";
           printLoadHeaderFile( itr->path() );
           break;
 
-        case Arinc665::FileType::LoadList:
+        case LoadList:
           std::cout << "ARINC 665 LOAD LIST file\n";
           printLoadListFile( itr->path() );
           break;
 
-        case Arinc665::FileType::BatchList:
+        case BatchList:
           std::cout << "ARINC 665 BATCH LIST file\n";
           printBatchListFile( itr->path() );
           break;
 
-        case Arinc665::FileType::FileList:
+        case FileList:
           std::cout << "ARINC 665 FILE LIST file\n";
           printFileListFile( itr->path() );
           break;

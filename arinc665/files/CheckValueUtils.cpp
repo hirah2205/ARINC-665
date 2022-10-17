@@ -26,13 +26,13 @@ size_t CheckValueUtils_size( const Arinc645::CheckValueType type )
   return
     ( Arinc645::CheckValueType::NotUsed == type ) ?
     sizeof( uint16_t ) :
-    2U * sizeof( uint16_t ) + Arinc645::CheckValueSize.at( type );
+    2U * sizeof( uint16_t ) + Arinc645::CheckValue::Sizes.at( type );
 }
 
 RawFile CheckValueUtils_encode(
   const Arinc645::CheckValue &checkValue )
 {
-  if ( Arinc645::CheckValueType::NotUsed == std::get< 0 >( checkValue ) )
+  if ( Arinc645::CheckValueType::NotUsed == checkValue.type() )
   {
     return { 0, 0 };
   }
@@ -43,10 +43,10 @@ RawFile CheckValueUtils_encode(
   // Check Value Type Field
   Helper::setInt< uint16_t>(
     rawCheckValue.begin() + sizeof( uint16_t ),
-    static_cast< uint16_t>( std::get< 0 >( checkValue ) ) );
+    static_cast< uint16_t>( checkValue.type() ) );
 
   // Check Value Data
-  const auto &checkValueData{ std::get< 1 >( checkValue ) };
+  const auto &checkValueData{ checkValue.value() };
 
   rawCheckValue.insert(
     rawCheckValue.end(),
@@ -78,7 +78,7 @@ Arinc645::CheckValue CheckValueUtils_decode(
   if ( 0U == checkValueLength )
   {
     // empty check value
-    return { Arinc645::CheckValueType::NotUsed, {} };
+    return Arinc645::CheckValue::NoCheckValue;
   }
 
   if ( checkValueLength <= ( 2U * sizeof( uint16_t ) ) )
@@ -100,18 +100,17 @@ Arinc645::CheckValue CheckValueUtils_decode(
       << Helper::AdditionalInfo{ "Invalid check value type" } );
   }
 
-  if ( Arinc645::CheckValueSize.find( checkValueType )->second
+  if ( Arinc645::CheckValue::Sizes.find( checkValueType )->second
     != checkValueLength - ( 2U * sizeof( uint16_t ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "Invalid check value length" } );
   }
 
-  return { std::make_tuple(
-    checkValueType,
+  return { checkValueType,
     std::vector< uint8_t >{
       it,
-      it + checkValueLength - ( 2U * sizeof( uint16_t ) ) } ) };
+      it + checkValueLength - ( 2U * sizeof( uint16_t ) ) } };
 }
 
 }

@@ -100,7 +100,7 @@ void MediaSetImporterImpl::loadFirstMedium()
         listOfLoadsFilePresent = true;
 
         // store load list file check value
-        mediaSet->listOfLoadsCheckValueType( std::get< 0 >( fileInfo.checkValue ) );
+        mediaSet->listOfLoadsCheckValueType( fileInfo.checkValue.type() );
 
         // List of Loads not added to file information
         continue ;
@@ -117,7 +117,7 @@ void MediaSetImporterImpl::loadFirstMedium()
         batchListFilePresent = true;
 
         // store batch list file check value
-        mediaSet->listOfBatchesCheckValueType( std::get< 0 >( fileInfo.checkValue ) );
+        mediaSet->listOfBatchesCheckValueType( fileInfo.checkValue.type() );
 
         // List of Batches not added to file information
         continue ;
@@ -301,7 +301,7 @@ void MediaSetImporterImpl::addFiles()
     assert( filePtr );
 
     // set check value indicator
-    filePtr->checkValueType( std::get< 0 >( fileInfo.checkValue ) );
+    filePtr->checkValueType( fileInfo.checkValue.type() );
 
     // update check values
     checkValues.try_emplace( filePtr, fileInfo.checkValue );
@@ -370,7 +370,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   assert( loadPtr );
 
   // set check value indicator
-  loadPtr->checkValueType( std::get< 0 >( fileInfo.checkValue ) );
+  loadPtr->checkValueType( fileInfo.checkValue.type() );
 
   loadPtr->partFlags( loadHeaderFile.partFlags() );
   loadPtr->partNumber( std::string{ loadHeaderFile.partNumber() } );
@@ -431,7 +431,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
     loadPtr->dataFile(
       dataFiles.front(),
       dataFile.partNumber,
-      std::get< 0 >( dataFile.checkValue ) );
+      dataFile.checkValue.type() );
   }
 
   // iterate over support files
@@ -460,7 +460,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
     loadPtr->supportFile(
       supportFiles.front(),
       supportFile.partNumber,
-      std::get< 0 >( supportFile.checkValue ) );
+      supportFile.checkValue.type() );
   }
 
   // Check Load CRC and Load Check Value
@@ -538,7 +538,7 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
   assert( batchPtr );
 
   // set check value indicator
-  batchPtr->checkValueType( std::get< 0 >( fileInfo.checkValue  ) );
+  batchPtr->checkValueType( fileInfo.checkValue.type() );
 
   batchPtr->partNumber( std::string{ batchFile.partNumber() } );
   batchPtr->comment( std::string{ batchFile.comment() } );
@@ -685,11 +685,10 @@ void MediaSetImporterImpl::checkFileIntegrity(
 
   // Check and compare Check Value
   if (
-    const auto &[ checkValueType, checkValue ]{ fileInfo.checkValue };
-    Arinc645::CheckValueType::NotUsed != checkValueType )
+    Arinc645::CheckValueType::NotUsed != fileInfo.checkValue.type() )
   {
     const auto checkValueCalculated{ Arinc645::CheckValueGenerator::checkValue(
-      checkValueType,
+      fileInfo.checkValue.type(),
       rawFile ) };
 
     if ( fileInfo.checkValue != checkValueCalculated )
@@ -757,7 +756,7 @@ void MediaSetImporterImpl::checkLoadFile(
     // Load file Check Value
     if ( !fileCheckValueChecked
       && Arinc645::CheckValueGenerator::checkValue(
-        std::get< 0 >( loadFile.checkValue ),
+        loadFile.checkValue.type(),
         rawDataFile ) != loadFile.checkValue )
     {
       BOOST_THROW_EXCEPTION(
@@ -772,15 +771,15 @@ bool MediaSetImporterImpl::checkCheckValues(
   const Arinc645::CheckValue &fileListCheckValue,
   const Arinc645::CheckValue &loadFileCheckValue ) const
 {
-  if ( std::get< 0 >( loadFileCheckValue ) == Arinc645::CheckValueType::NotUsed )
+  if ( loadFileCheckValue.type() == Arinc645::CheckValueType::NotUsed )
   {
     // no load file check value provided
     return true;
   }
 
-  if ( std::get< 0 >( fileListCheckValue ) == std::get< 0 >( loadFileCheckValue ) )
+  if ( fileListCheckValue.type() == loadFileCheckValue.type() )
   {
-    if ( std::get< 1 >( fileListCheckValue ) != std::get< 1 >( loadFileCheckValue ) )
+    if ( fileListCheckValue != loadFileCheckValue )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "Load File Check Value inconsistent" } );

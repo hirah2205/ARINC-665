@@ -118,7 +118,7 @@ Arinc645::CheckValue LoadHeaderFile::decodeLoadCheckValue(
 {
   if ( loadFileFormatVersion( rawFile ) != LoadFileFormatVersion::Version345 )
   {
-    return Arinc645::NoCheckValue;
+    return Arinc645::CheckValue::NoCheckValue;
   }
 
   uint32_t loadCheckValuePtr{ 0U };
@@ -129,7 +129,7 @@ Arinc645::CheckValue LoadHeaderFile::decodeLoadCheckValue(
 
   if ( 0U == loadCheckValuePtr )
   {
-    return Arinc645::NoCheckValue;
+    return Arinc645::CheckValue::NoCheckValue;
   }
 
   return CheckValueUtils_decode(
@@ -710,8 +710,8 @@ void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
   loadCheckValueTypeV = Arinc645::CheckValueType::NotUsed;
   if ( decodeV3Data && ( 0U!=loadCheckValuePtr ) )
   {
-    loadCheckValueTypeV = std::get< 0 >( CheckValueUtils_decode(
-      rawFile.subspan( static_cast< size_t >( loadCheckValuePtr ) * 2U ) ) );
+    loadCheckValueTypeV = CheckValueUtils_decode(
+      rawFile.subspan( static_cast< size_t >( loadCheckValuePtr ) * 2U ) ).type();
   }
 
 
@@ -957,7 +957,7 @@ void LoadHeaderFile::decodeDataFiles(
     listIt = Helper::getInt< uint16_t>( listIt, crc );
 
     // CheckValue - if not decoded no check value
-    Arinc645::CheckValue checkValue{ Arinc645::NoCheckValue };
+    Arinc645::CheckValue checkValue{ Arinc645::CheckValue::NoCheckValue };
 
     // following fields are available in ARINC 665-3 ff
     if ( decodeV3Data )
@@ -1054,7 +1054,7 @@ void LoadHeaderFile::decodeSupportFiles(
     listIt = Helper::getInt< uint16_t>( listIt, crc );
 
     // CheckValue - if not decoded no check value
-   Arinc645::CheckValue checkValue{ Arinc645::NoCheckValue };
+   Arinc645::CheckValue checkValue{ Arinc645::CheckValue::NoCheckValue };
 
     // following fields are available in ARINC 665-3 ff
     if ( decodeV3Data )

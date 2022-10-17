@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE( constructor1 )
   BOOST_CHECK( dataFiles.begin()->partNumber == "PN0001" );
   BOOST_CHECK( dataFiles.begin()->length == 32 );
   BOOST_CHECK( dataFiles.begin()->crc == 0xABCD );
-  BOOST_CHECK( dataFiles.begin()->checkValue == Arinc645::NoCheckValue );
+  BOOST_CHECK( dataFiles.begin()->checkValue == Arinc645::CheckValue::NoCheckValue );
 
   const auto &supportFiles{ file.supportFiles() };
   BOOST_CHECK( supportFiles.size() == 1 );
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE( constructor1 )
   BOOST_CHECK( supportFiles.begin()->partNumber == "PN0002" );
   BOOST_CHECK( supportFiles.begin()->length == 16 );
   BOOST_CHECK( supportFiles.begin()->crc == 0xABCD );
-  BOOST_CHECK( supportFiles.begin()->checkValue == Arinc645::NoCheckValue );
+  BOOST_CHECK( supportFiles.begin()->checkValue == Arinc645::CheckValue::NoCheckValue );
 
   BOOST_CHECK( file.userDefinedData().size() == 4 );
   BOOST_CHECK( std::equal(

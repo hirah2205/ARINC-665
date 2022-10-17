@@ -59,8 +59,8 @@ void FilePrinter_print(
         file.memberSequenceNumber,
         file.crc,
         Arinc645::CheckValueTypeDescription::instance().name(
-          std::get< 0 >( file.checkValue ) ),
-        Arinc645::CheckValue_toString( file.checkValue ) );
+          file.checkValue.type() ),
+        file.checkValue.toString() );
   }
 }
 
@@ -177,8 +177,8 @@ void FilePrinter_print(
         dataFile.length,
         dataFile.crc,
         Arinc645::CheckValueTypeDescription::instance().name(
-          std::get< 0 >( dataFile.checkValue ) ),
-        Arinc645::CheckValue_toString( dataFile.checkValue ) );
+          dataFile.checkValue.type() ),
+        dataFile.checkValue.toString() );
   }
 
   for ( const auto &supportFile : loadHeaderFile.supportFiles() )
@@ -196,8 +196,8 @@ void FilePrinter_print(
         supportFile.length,
         supportFile.crc,
         Arinc645::CheckValueTypeDescription::instance().name(
-          std::get< 0 >( supportFile.checkValue ) ),
-        Arinc645::CheckValue_toString( supportFile.checkValue ) );
+          supportFile.checkValue.type() ),
+        supportFile.checkValue.toString() );
   }
 }
 

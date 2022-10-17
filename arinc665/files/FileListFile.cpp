@@ -375,7 +375,7 @@ void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
     const auto checkValue{ CheckValueUtils_decode(
       rawFile.subspan( 2U * static_cast< size_t >( fileCheckValuePtr ) ) ) };
 
-    checkValueTypeV = std::get< 0 >( checkValue );
+    checkValueTypeV = checkValue.type();
 
     if ( Arinc645::CheckValueType::NotUsed != checkValueTypeV )
     {
@@ -539,7 +539,7 @@ void FileListFile::decodeFilesInfo(
     listIt = Helper::getInt< uint16_t>( listIt, crc);
 
     // CheckValue (keep default initialised if not V3 File Info
-    Arinc645::CheckValue checkValue{ Arinc645::CheckValueType::NotUsed, {} };
+    Arinc645::CheckValue checkValue{ Arinc645::CheckValue::NoCheckValue };
 
     // following fields are available in ARINC 665-3 ff
     if ( decodeV3Data )
