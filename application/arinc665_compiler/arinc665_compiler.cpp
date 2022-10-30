@@ -10,11 +10,6 @@
  * @brief ARINC 665 Media Set Compiler Application.
  **/
 
-/**
- * @dir
- * @brief ARINC 665 Media Set Compiler Application.
- **/
-
 #include <arinc665/media/Media.hpp>
 
 #include <arinc665/files/Files.hpp>
@@ -151,19 +146,19 @@ int main( int argc, char * argv[] )
 
   Helper::initLogging( Helper::Severity::info );
 
-  const auto &fileCreatPolDes{
+  const auto &fileCreatePolDesc{
     Arinc665::Utils::FileCreationPolicyDescription::instance() };
 
   const std::string fileCreationPolicyValues{
-    "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::None)} + "': Create never\n" +
-    "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::NoneExisting)} + "': Create none-existing\n" +
-    "* '" + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::All)} + "': Create all" };
+    "* '" + std::string{ fileCreatePolDesc.name( Arinc665::Utils::FileCreationPolicy::None)} + "': Create never\n" +
+    "* '" + std::string{ fileCreatePolDesc.name( Arinc665::Utils::FileCreationPolicy::NoneExisting)} + "': Create none-existing\n" +
+    "* '" + std::string{ fileCreatePolDesc.name( Arinc665::Utils::FileCreationPolicy::All)} + "': Create all" };
 
-  const auto &versionDes{ Arinc665::SupportedArinc665VersionDescription::instance() };
+  const auto &versionDesc{ Arinc665::SupportedArinc665VersionDescription::instance() };
 
   const std::string versionValues{
-    "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement2 ) } +   "': ARINC 665-2\n" +
-    "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement345 ) } +  "': ARINC 665-3/4/5" };
+    "* '" + std::string{ versionDesc.name( Arinc665::SupportedArinc665Version::Supplement2 ) } +   "': ARINC 665-2\n" +
+    "* '" + std::string{ versionDesc.name( Arinc665::SupportedArinc665Version::Supplement345 ) } +  "': ARINC 665-3/4/5" };
 
   // Media Set XML file
   std::filesystem::path mediaSetXmlFile;
@@ -238,7 +233,7 @@ int main( int argc, char * argv[] )
         optionsDescription ),
       options );
 
-    if ( options.count( "help") != 0 )
+    if ( options.count( "help" ) != 0 )
     {
       std::cout << optionsDescription << "\n";
       return EXIT_FAILURE;
@@ -311,7 +306,7 @@ int main( int argc, char * argv[] )
   {
     std::cerr
       << "BOOST Error in compiler: "
-      << boost::diagnostic_information( e) << "\n";
+      << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
@@ -411,9 +406,7 @@ static void createFile(
   BOOST_LOG_TRIVIAL( severity_level::trace ) << "Copy file " << filePath;
 
   // copy file
-  std::filesystem::copy(
-    sourceBase / fileIt->second,
-    filePath );
+  std::filesystem::copy( sourceBase / fileIt->second, filePath );
 }
 
 static void writeFile(

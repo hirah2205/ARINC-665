@@ -7,3 +7,8 @@ Tasks:
  - check integrity of all batches
  - 
  - verbose options print file-contents
+
+@sa @ref arinc665_check.cpp
+
+@dir
+@brief ARINC 665 Media Set Validator Application.

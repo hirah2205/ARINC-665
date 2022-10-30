@@ -3,4 +3,7 @@
 Traverses through the given directory and tries to decode the ARINC 665 Media 
 Set.
 
-@ref arinc665_ls.cpp
+@sa @ref arinc665_ls.cpp
+
+@dir
+@brief ARINC 665 List Application.

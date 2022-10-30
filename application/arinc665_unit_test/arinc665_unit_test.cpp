@@ -10,11 +10,6 @@
  * @brief ARINC 665 Unit Tests Application.
  **/
 
-/**
- * @dir
- * @brief ARINC 665 Unit Tests Application.
- **/
-
 //! ARINC 665 Unit Test module
 #define BOOST_TEST_MODULE ARINC 665 Unit Tests
 #include <boost/test/included/unit_test.hpp>

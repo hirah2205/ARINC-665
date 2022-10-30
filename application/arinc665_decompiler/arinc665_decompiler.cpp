@@ -10,11 +10,6 @@
  * @brief ARINC 665 Media Set Decompiler Application.
  **/
 
-/**
- * @dir
- * @brief ARINC 665 Media Set Decompiler Application.
- **/
-
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/Medium.hpp>
 #include <arinc665/media/RegularFile.hpp>
