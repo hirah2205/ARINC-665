@@ -33,11 +33,10 @@ void registerCommands( const Commands::CommandRegistryPtr& registry )
   registry->command(
     "Create",
     "Create Media Set Manager",
-    std::bind(
+    std::bind_front(
       &Arinc665Commands::CreateMediaSetManagerCommand::execute,
-      createMediaSetManagerCommand,
-      std::placeholders::_1 ),
-    std::bind(
+      createMediaSetManagerCommand ),
+    std::bind_front(
       &Arinc665Commands::CreateMediaSetManagerCommand::help,
       createMediaSetManagerCommand ) );
 
@@ -45,11 +44,10 @@ void registerCommands( const Commands::CommandRegistryPtr& registry )
   registry->command(
     "ListLoads",
     "List Loads of contained on all Media Sets",
-    std::bind(
+    std::bind_front(
       &Arinc665Commands::ListLoadsCommand::execute,
-      listLoadsCommand,
-      std::placeholders::_1 ),
-    std::bind(
+      listLoadsCommand ),
+    std::bind_front(
       &Arinc665Commands::ListLoadsCommand::help,
       listLoadsCommand ) );
 
@@ -57,11 +55,10 @@ void registerCommands( const Commands::CommandRegistryPtr& registry )
   registry->command(
     "ListMediaSets",
     "List Media Sets",
-    std::bind(
+    std::bind_front(
       &Arinc665Commands::ListMediaSetsCommand::execute,
-      listCommand,
-      std::placeholders::_1 ),
-    std::bind(
+      listCommand ),
+    std::bind_front(
       &Arinc665Commands::ListMediaSetsCommand::help,
       listCommand ) );
 
@@ -69,11 +66,10 @@ void registerCommands( const Commands::CommandRegistryPtr& registry )
   registry->command(
     "ImportMediaSetXml",
     "Import Media Set XML",
-    std::bind(
+    std::bind_front(
       &Arinc665Commands::ImportMediaSetXmlCommand::execute,
-      importXmlCommand,
-      std::placeholders::_1 ),
-    std::bind(
+      importXmlCommand ),
+    std::bind_front(
       &Arinc665Commands::ImportMediaSetXmlCommand::help,
       importXmlCommand ) );
 
@@ -81,11 +77,10 @@ void registerCommands( const Commands::CommandRegistryPtr& registry )
   registry->command(
     "ImportMediaSet",
     "Import Media Set",
-    std::bind(
+    std::bind_front(
       &Arinc665Commands::ImportMediaSetCommand::execute,
-      importCommand,
-      std::placeholders::_1 ),
-    std::bind(
+      importCommand ),
+    std::bind_front(
       &Arinc665Commands::ImportMediaSetCommand::help,
       importCommand ) );
 
@@ -93,11 +88,10 @@ void registerCommands( const Commands::CommandRegistryPtr& registry )
   registry->command(
     "RemoveMediaSet",
     "Remove Media Set",
-    std::bind(
+    std::bind_front(
       &Arinc665Commands::RemoveMediaSetCommand::execute,
-      removeMediaSetCommand,
-      std::placeholders::_1 ),
-    std::bind(
+      removeMediaSetCommand ),
+    std::bind_front(
       &Arinc665Commands::RemoveMediaSetCommand::help,
       removeMediaSetCommand ) );
 }

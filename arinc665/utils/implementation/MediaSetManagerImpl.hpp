@@ -90,6 +90,25 @@ class MediaSetManagerImpl final : public MediaSetManager
     void loadMediaSets( bool checkFileIntegrity );
 
     /**
+     * @brief Handler Called for files sizes
+     *
+     * Used by the Media Set Importer.
+     *
+     * @param[in] mediaSetPaths
+     *   Media Set Path Configuration.
+     * @param[in] mediumNumber
+     *   Medium Sequence Number.
+     * @param[in] path
+     *   File Path.
+     *
+     * @return File size
+     **/
+    [[nodiscard]] size_t fileSizeHandler(
+      const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
+      uint8_t mediumNumber,
+      const std::filesystem::path &path ) const;
+
+    /**
      * @brief Handler Called for reading Files
      *
      * Used by the Media Set Importer.
@@ -132,7 +151,7 @@ class MediaSetManagerImpl final : public MediaSetManager
     //! Media Sets
     MediaSets mediaSetsV;
     //! Media Sets Paths
-    MediaSetsPaths mediaSetsPaths;
+    MediaSetsPaths mediaSetsPathsV;
 };
 
 }
