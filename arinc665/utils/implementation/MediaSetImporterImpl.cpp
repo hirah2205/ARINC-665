@@ -54,7 +54,7 @@ MediaSetImporterImpl::Result MediaSetImporterImpl::operator()()
   if ( !fileSizeHandlerV || !readFileHandlerV )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Invalid state of importer" } );
+      << Helper::AdditionalInfo{ "Missing file size or read file handler" } );
   }
 
   // create Media set
@@ -145,7 +145,9 @@ void MediaSetImporterImpl::loadFirstMedium()
   // store list of files user defined data
   auto filesUserDefinedData{ fileListFile.userDefinedData() };
   mediaSet->filesUserDefinedData(
-    Media::UserDefinedData{ filesUserDefinedData.begin(), filesUserDefinedData.end() } );
+    Media::UserDefinedData{
+      filesUserDefinedData.begin(),
+      filesUserDefinedData.end() } );
   // store file list file check value
   mediaSet->listOfFilesCheckValueType( fileListFile.checkValueType() );
   // Set Media Set Parameter

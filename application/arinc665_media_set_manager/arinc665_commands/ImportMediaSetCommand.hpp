@@ -57,6 +57,20 @@ class ImportMediaSetCommand
 
   private:
     /**
+     * @brief File Size Handler
+     *
+     * @param[in] mediumNumber
+     *   Medium Number
+     * @param[in] path
+     *   File Path
+     *
+     * @return File Size
+     **/
+    size_t fileSizeHandler(
+      uint8_t mediumNumber,
+      const std::filesystem::path &path ) const;
+
+    /**
      * @brief Read File Handler
      *
      * @param[in] mediumNumber

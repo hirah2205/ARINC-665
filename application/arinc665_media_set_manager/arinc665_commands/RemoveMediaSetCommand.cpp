@@ -25,7 +25,7 @@
 namespace Arinc665Commands {
 
 RemoveMediaSetCommand::RemoveMediaSetCommand() :
-  optionsDescription{ "Remove Media Set" }
+  optionsDescription{ "Remove ARINC 665 Media Set Options" }
 {
   optionsDescription.add_options()
   (
@@ -48,7 +48,7 @@ void RemoveMediaSetCommand::execute( const Commands::Parameters &parameters )
 {
   try
   {
-    std::cout << "Remove Media Set\n";
+    std::cout << "Remove ARINC 665 Media Set\n";
 
     boost::program_options::variables_map vm{};
     boost::program_options::store(
@@ -72,7 +72,8 @@ void RemoveMediaSetCommand::execute( const Commands::Parameters &parameters )
         << Helper::AdditionalInfo{ "Media Set does not exist" } );
     }
 
-    auto mediaSetPaths{ mediaSetManager->manager()->deregisterMediaSet( mediaSetPartNumber ) };
+    auto mediaSetPaths{
+      mediaSetManager->manager()->deregisterMediaSet( mediaSetPartNumber ) };
 
     // iterate over media - remove media directories
     for ( auto const &[ mediumNumber, mediumPath ] : mediaSetPaths.second )
@@ -108,7 +109,9 @@ void RemoveMediaSetCommand::execute( const Commands::Parameters &parameters )
 
 void RemoveMediaSetCommand::help()
 {
-  std::cout << "Remove Media Set\n" << optionsDescription;
+  std::cout
+    << "Remove Media Set from the Media Set Manager\n"
+    << optionsDescription;
 }
 
 }

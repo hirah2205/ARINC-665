@@ -34,7 +34,7 @@
 namespace Arinc665Commands {
 
 ImportMediaSetCommand::ImportMediaSetCommand() :
-  optionsDescription{ "Import Media Set" }
+  optionsDescription{ "Import ARINC 665 Media Set Options" }
 {
   optionsDescription.add_options()
   (
@@ -62,7 +62,7 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 {
   try
   {
-    std::cout << "Import Media Set\n";
+    std::cout << "Import ARINC 665 Media Set\n";
 
     boost::program_options::variables_map vm{};
     boost::program_options::store(
@@ -79,10 +79,12 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
         checkFileIntegrity ) };
 
     auto importer{ Arinc665::Utils::MediaSetImporter::create() };
-    importer->checkFileIntegrity( checkFileIntegrity )
-      .readFileHandler( std::bind_front(
-        &ImportMediaSetCommand::readFileHandler,
-        this ) );
+    importer
+      ->checkFileIntegrity( checkFileIntegrity )
+      .fileSizeHandler(
+        std::bind_front( &ImportMediaSetCommand::fileSizeHandler, this ) )
+      .readFileHandler(
+        std::bind_front( &ImportMediaSetCommand::readFileHandler, this ) );
     assert( importer );
 
     const auto &[ mediaSet, checkValues]{ ( *importer )() };
@@ -145,7 +147,35 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 
 void ImportMediaSetCommand::help()
 {
-  std::cout << "Import Media Set\n" << optionsDescription;
+  std::cout << "Import ARINC 665 Media Set\n" << optionsDescription;
+}
+
+size_t ImportMediaSetCommand::fileSizeHandler(
+  uint8_t mediumNumber,
+  const std::filesystem::path &path ) const
+{
+  BOOST_LOG_FUNCTION()
+
+  // check medium number
+  if ( mediumNumber > mediaSourceDirectories.size() )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception()
+        << Helper::AdditionalInfo{ "Media Set not found" } );
+  }
+
+  const auto filePath{
+    mediaSourceDirectories.at( mediumNumber - 1 ) / path.relative_path() };
+
+  // check existence of file
+  if ( !std::filesystem::is_regular_file( filePath ) )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665::Arinc665Exception() << Helper::AdditionalInfo{
+        "File not found" } << boost::errinfo_file_name{ filePath.string() } );
+  }
+
+  return std::filesystem::file_size( filePath );
 }
 
 Arinc665::Files::RawFile ImportMediaSetCommand::readFileHandler(

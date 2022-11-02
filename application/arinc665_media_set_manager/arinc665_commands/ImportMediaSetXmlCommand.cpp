@@ -37,7 +37,7 @@
 namespace Arinc665Commands {
 
 ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
-  optionsDescription{ "Import Media Set XML" }
+  optionsDescription{ "Import ARINC 665 Media Set XML Options" }
 {
   const auto &fileCreatPolDes{
     Arinc665::Utils::FileCreationPolicyDescription::instance() };
@@ -110,7 +110,7 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 {
   try
   {
-    std::cout << "Import Media Set XML\n";
+    std::cout << "Import ARINC 665 Media Set XML\n";
 
     boost::program_options::variables_map vm{};
     boost::program_options::store(
@@ -206,7 +206,9 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 
 void ImportMediaSetXmlCommand::help()
 {
-  std::cout << "Import XML\n" << optionsDescription;
+  std::cout
+    << "Compiles Media Set given by XML description and registers it to the Media Set Manager\n"
+    << optionsDescription;
 }
 
 void ImportMediaSetXmlCommand::createMediumHandler(

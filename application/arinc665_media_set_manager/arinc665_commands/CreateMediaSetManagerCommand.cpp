@@ -21,7 +21,7 @@
 namespace Arinc665Commands {
 
 CreateMediaSetManagerCommand::CreateMediaSetManagerCommand() :
-  optionsDescription{ "Create Media Set Manager" }
+  optionsDescription{ "Create ARINC 665 Media Set Manager Options" }
 {
   optionsDescription.add_options()
   (
@@ -38,7 +38,7 @@ void CreateMediaSetManagerCommand::execute(
 {
   try
   {
-    std::cout << "Create Media Set Manager\n";
+    std::cout << "Create ARINC 665 Media Set Manager\n";
 
     boost::program_options::variables_map vm{};
     boost::program_options::store(
@@ -66,7 +66,7 @@ void CreateMediaSetManagerCommand::execute(
 
 void CreateMediaSetManagerCommand::help()
 {
-  std::cout << "Create Media Set Manager\n" << optionsDescription;
+  std::cout << "Create ARINC 665 Media Set Manager\n" << optionsDescription;
 }
 
 }

@@ -144,8 +144,9 @@ int main( int argc, char const * argv[] )
     // create importer
     auto importer{ Arinc665::Utils::MediaSetImporter::create() };
 
-    importer->fileSizeHandler(
-      std::bind_front( &getFileSize, mediaSourceDirectories ) )
+    importer
+      ->fileSizeHandler(
+        std::bind_front( &getFileSize, mediaSourceDirectories ) )
       .readFileHandler( std::bind_front( &readFile, mediaSourceDirectories ) )
       .checkFileIntegrity( checkFileIntegrity );
 

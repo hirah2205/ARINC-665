@@ -44,8 +44,8 @@ const MediaSetManagerConfiguration & MediaSetManagerImpl::configuration() const
   return configurationV;
 }
 
-std::optional< MediaSetManagerImpl::MediaSet > MediaSetManagerImpl::mediaSet(
-  std::string_view partNumber ) const
+std::optional< MediaSetManagerImpl::MediaSetInformation >
+MediaSetManagerImpl::mediaSet( std::string_view partNumber ) const
 {
   auto mediaSet{ mediaSetsV.find( partNumber ) };
 
@@ -57,7 +57,8 @@ std::optional< MediaSetManagerImpl::MediaSet > MediaSetManagerImpl::mediaSet(
   return mediaSet->second;
 }
 
-const MediaSetManagerImpl::MediaSets& MediaSetManagerImpl::mediaSets() const
+const MediaSetManagerImpl::MediaSetsInformation&
+MediaSetManagerImpl::mediaSets() const
 {
   return mediaSetsV;
 }
@@ -69,13 +70,12 @@ void MediaSetManagerImpl::registerMediaSet(
   // import media set
   auto importer( MediaSetImporter::create() );
 
-  // the read file handler
+  // configure importer
   importer
-    ->fileSizeHandler(
-      std::bind_front(
-        &MediaSetManagerImpl::fileSizeHandler,
-        this,
-        mediaSetPaths ) )
+    ->fileSizeHandler( std::bind_front(
+      &MediaSetManagerImpl::fileSizeHandler,
+      this,
+      mediaSetPaths ) )
     .readFileHandler(
       std::bind_front(
         &MediaSetManagerImpl::readFileHandler,
@@ -229,7 +229,7 @@ void MediaSetManagerImpl::loadMediaSets( const bool checkFileIntegrity )
     // import media set
     auto importer( MediaSetImporter::create() );
 
-    // the read file handler
+    // configure importer
     importer
       ->fileSizeHandler( std::bind_front(
         &MediaSetManagerImpl::fileSizeHandler,

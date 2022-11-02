@@ -184,10 +184,10 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
 {
   auto importer{ Arinc665::Utils::MediaSetImporter::create() };
 
-  importer->fileSizeHandler(
-    std::bind_front( &getFileSize, mediaSetDirectories ) )
-  .readFileHandler( std::bind_front( &readFile, mediaSetDirectories ) )
-  .checkFileIntegrity( checkFileIntegrity );
+  importer
+    ->fileSizeHandler( std::bind_front( &getFileSize, mediaSetDirectories ) )
+    .readFileHandler( std::bind_front( &readFile, mediaSetDirectories ) )
+    .checkFileIntegrity( checkFileIntegrity );
 
   auto mediaSet{ (*importer)() };
 

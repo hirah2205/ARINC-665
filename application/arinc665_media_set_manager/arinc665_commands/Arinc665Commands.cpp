@@ -32,7 +32,7 @@ void registerCommands( const Commands::CommandRegistryPtr& registry )
     std::make_shared< CreateMediaSetManagerCommand >() };
   registry->command(
     "Create",
-    "Create Media Set Manager",
+    "Create ARINC 665 Media Set Manager",
     std::bind_front(
       &Arinc665Commands::CreateMediaSetManagerCommand::execute,
       createMediaSetManagerCommand ),
@@ -43,7 +43,7 @@ void registerCommands( const Commands::CommandRegistryPtr& registry )
   auto listLoadsCommand{ std::make_shared< ListLoadsCommand >() };
   registry->command(
     "ListLoads",
-    "List Loads of contained on all Media Sets",
+    "List Loads contained on all ARINC 665 Media Sets",
     std::bind_front(
       &Arinc665Commands::ListLoadsCommand::execute,
       listLoadsCommand ),
@@ -54,7 +54,7 @@ void registerCommands( const Commands::CommandRegistryPtr& registry )
   auto listCommand{ std::make_shared< ListMediaSetsCommand >() };
   registry->command(
     "ListMediaSets",
-    "List Media Sets",
+    "List ARINC 665 Media Sets",
     std::bind_front(
       &Arinc665Commands::ListMediaSetsCommand::execute,
       listCommand ),
@@ -65,7 +65,7 @@ void registerCommands( const Commands::CommandRegistryPtr& registry )
   auto importXmlCommand{ std::make_shared< ImportMediaSetXmlCommand >() };
   registry->command(
     "ImportMediaSetXml",
-    "Import Media Set XML",
+    "Import ARINC Media Set XML",
     std::bind_front(
       &Arinc665Commands::ImportMediaSetXmlCommand::execute,
       importXmlCommand ),
@@ -76,7 +76,7 @@ void registerCommands( const Commands::CommandRegistryPtr& registry )
   auto importCommand{ std::make_shared< ImportMediaSetCommand >() };
   registry->command(
     "ImportMediaSet",
-    "Import Media Set",
+    "Import ARINC 665 Media Set",
     std::bind_front(
       &Arinc665Commands::ImportMediaSetCommand::execute,
       importCommand ),
@@ -87,7 +87,7 @@ void registerCommands( const Commands::CommandRegistryPtr& registry )
   auto removeMediaSetCommand{ std::make_shared< RemoveMediaSetCommand >() };
   registry->command(
     "RemoveMediaSet",
-    "Remove Media Set",
+    "Remove ARINC 665 Media Set",
     std::bind_front(
       &Arinc665Commands::RemoveMediaSetCommand::execute,
       removeMediaSetCommand ),

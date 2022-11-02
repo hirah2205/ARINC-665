@@ -48,11 +48,11 @@ class MediaSetManagerImpl final : public MediaSetManager
     configuration() const override;
 
     //! @copydoc MediaSetManager::mediaSet(std::string_view) const
-    [[nodiscard]] std::optional< MediaSet > mediaSet(
+    [[nodiscard]] std::optional< MediaSetInformation > mediaSet(
       std::string_view partNumber ) const override;
 
     //! @copydoc MediaSetManager::mediaSets() const
-    [[nodiscard]] const MediaSets& mediaSets() const override;
+    [[nodiscard]] const MediaSetsInformation& mediaSets() const override;
 
     //! @copydoc MediaSetManager::registerMediaSet()
     void registerMediaSet(
@@ -149,7 +149,7 @@ class MediaSetManagerImpl final : public MediaSetManager
     //! Media Set Manager Configuration
     MediaSetManagerConfiguration configurationV;
     //! Media Sets
-    MediaSets mediaSetsV;
+    MediaSetsInformation mediaSetsV;
     //! Media Sets Paths
     MediaSetsPaths mediaSetsPathsV;
 };

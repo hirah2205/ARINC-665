@@ -118,13 +118,11 @@ void MediaSetController::directorySelected()
   {
     auto importer{ Arinc665::Utils::MediaSetImporter::create() };
 
-    importer->fileSizeHandler(
-      std::bind_front(
-        &MediaSetController::fileSize,
-        this ) )
-      .readFileHandler( std::bind_front(
-      &MediaSetController::loadFile,
-      this ) );
+    importer
+      ->fileSizeHandler(
+        std::bind_front( &MediaSetController::fileSize, this ) )
+      .readFileHandler(
+        std::bind_front( &MediaSetController::loadFile, this ) );
 
     const auto &[ mediaSet, checkValues ]{ (*importer)() };
 

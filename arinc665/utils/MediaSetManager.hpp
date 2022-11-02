@@ -47,12 +47,12 @@ class ARINC665_EXPORT MediaSetManager
     //! Check Values
     using CheckValues =
       std::map< Media::ConstFilePtr, Arinc645::CheckValue, std::less< > >;
-    //! Media Set Information
-    using MediaSet =
+    //! Media Set Information (Media Set + Check Values)
+    using MediaSetInformation =
       std::pair< Media::ConstMediaSetPtr, CheckValues >;
-    //! Media Sets Map ( Part Number -> Media Set)
-    using MediaSets =
-      std::map< std::string, MediaSet, std::less<> >;
+    //! Media Sets Information (Part Number -> Media Set)
+    using MediaSetsInformation =
+      std::map< std::string, MediaSetInformation, std::less<> >;
 
     //! Handler which returns the path to the given medium number
     using MediumPathHandler =
@@ -99,7 +99,7 @@ class ARINC665_EXPORT MediaSetManager
      * @retval {}
      *   If no Media Set with partNumber exist.
      **/
-    [[nodiscard]] virtual std::optional< MediaSet > mediaSet(
+    [[nodiscard]] virtual std::optional< MediaSetInformation > mediaSet(
       std::string_view partNumber ) const = 0;
 
     /**
@@ -107,7 +107,7 @@ class ARINC665_EXPORT MediaSetManager
      *
      * @return All media sets.
      **/
-    [[nodiscard]] virtual const MediaSets& mediaSets() const = 0;
+    [[nodiscard]] virtual const MediaSetsInformation& mediaSets() const = 0;
 
     /**
      * @brief Registers the Media Set by the Media Set Manager.

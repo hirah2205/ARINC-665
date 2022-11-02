@@ -28,7 +28,7 @@
 namespace Arinc665Commands {
 
 ListLoadsCommand::ListLoadsCommand() :
-  optionsDescription{ "List Loads" },
+  optionsDescription{ "List ARINC 665 Loads Options" },
   checkFileIntegrity{}
 {
   optionsDescription.add_options()
@@ -50,7 +50,7 @@ void ListLoadsCommand::execute( const Commands::Parameters &parameters )
 {
   try
   {
-    std::cout << "List Loads\n";
+    std::cout << "List ARINC 665 Loads\n";
 
     boost::program_options::variables_map vm{};
     boost::program_options::store(
@@ -98,7 +98,9 @@ void ListLoadsCommand::execute( const Commands::Parameters &parameters )
 
 void ListLoadsCommand::help()
 {
-  std::cout << "ARINC 665 List Loads\n" << optionsDescription;
+  std::cout
+    << "List all Loads contained with the Media Set Manager\n"
+    << optionsDescription;
 }
 
 }
