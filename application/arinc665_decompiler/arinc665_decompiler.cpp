@@ -169,7 +169,7 @@ int main( int argc, char const * argv[] )
     const auto xml{ Arinc665::Utils::Arinc665Xml::instance() };
 
     // export the XML file
-    xml->saveToXml( mediaSet, fileMapping, mediaSetXmlFile );
+    xml->saveToXml( *mediaSet, fileMapping, mediaSetXmlFile );
   }
   catch ( const boost::program_options::error &e )
   {

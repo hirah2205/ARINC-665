@@ -47,7 +47,8 @@ class Arinc665XmlImpl final : public Arinc665Xml
      * @throw Arinc665::Arinc665Exception
      *   When Loading of XML fails.
      **/
-    LoadXmlResult loadFromXml( const std::filesystem::path &xmlFile ) override;
+    [[nodiscard]] LoadXmlResult loadFromXml(
+      const std::filesystem::path &xmlFile ) override;
 
     /**
      * @brief Saves the given Media Set information to the given XML file.
@@ -64,7 +65,7 @@ class Arinc665XmlImpl final : public Arinc665Xml
      *   When XML file cannot be written.
      **/
     void saveToXml(
-      Media::ConstMediaSetPtr mediaSet,
+      const Media::MediaSet &mediaSet,
       const FilePathMapping &filePathMapping,
       const std::filesystem::path &xmlFile ) override;
 

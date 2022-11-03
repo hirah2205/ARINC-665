@@ -96,21 +96,21 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadFromXml(
 }
 
 void Arinc665XmlImpl::saveToXml(
-  Media::ConstMediaSetPtr mediaSet,
+  const Media::MediaSet &mediaSet,
   const FilePathMapping &filePathMapping,
   const std::filesystem::path &xmlFile )
 {
   BOOST_LOG_FUNCTION()
 
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-    << "Save Media Set " << mediaSet->partNumber() << " to " << xmlFile;
+    << "Save Media Set " << mediaSet.partNumber() << " to " << xmlFile;
 
   try
   {
     xmlpp::Document xmlDoc{};
     auto mediaSetNode{ xmlDoc.create_root_node( "MediaSet" ) };
 
-    saveMediaSet( *mediaSet, filePathMapping, *mediaSetNode );
+    saveMediaSet( mediaSet, filePathMapping, *mediaSetNode );
 
     xmlDoc.write_to_file_formatted( xmlFile.string() );
   }
@@ -496,15 +496,17 @@ void Arinc665XmlImpl::saveEntries(
 
     switch ( fileEntry->fileType() )
     {
-      case Media::FileType::RegularFile:
+      using enum Media::FileType;
+
+      case RegularFile:
         fileNode = currentNode.add_child( "File" );
         break;
 
-      case Media::FileType::LoadFile:
+      case LoadFile:
         fileNode = currentNode.add_child( "LoadFile" );
         break;
 
-      case Media::FileType::BatchFile:
+      case BatchFile:
         fileNode = currentNode.add_child( "BatchFile" );
         break;
 

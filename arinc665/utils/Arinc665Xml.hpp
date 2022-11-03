@@ -46,7 +46,7 @@ class ARINC665_EXPORT Arinc665Xml
      *
      * @return Created ARINC 665 XML handler instance.
      **/
-    static Arinc665XmlPtr instance();
+    [[nodiscard]] static Arinc665XmlPtr instance();
 
     /**
      * @brief Loads the Media Set information from the given XML file.
@@ -59,7 +59,7 @@ class ARINC665_EXPORT Arinc665Xml
      * @throw Arinc665Exception
      *   If file cannot be loaded or is invalid.
      **/
-    virtual LoadXmlResult loadFromXml(
+    [[nodiscard]] virtual LoadXmlResult loadFromXml(
       const std::filesystem::path &xmlFile ) = 0;
 
     /**
@@ -74,7 +74,7 @@ class ARINC665_EXPORT Arinc665Xml
      *   ARINC 665 XML file.
      **/
     virtual void saveToXml(
-      Media::ConstMediaSetPtr mediaSet,
+      const Media::MediaSet &mediaSet,
       const FilePathMapping &filePathMapping,
       const std::filesystem::path &xmlFile ) = 0;
 
