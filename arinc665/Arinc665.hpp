@@ -32,6 +32,8 @@
  * - Supplement 2
  * - Supplement 3/4/5
  *
+ * Supplement 1 is not supported.
+ *
  * @par Referenced Documents
  * - ARINC Report 665-1: Loadable Software Standards; 2001-01-12
  * - ARINC Report 665-2: Loadable Software Standards; 2002-08-30
