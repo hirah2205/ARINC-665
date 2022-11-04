@@ -306,9 +306,7 @@ void MediaSetImporterImpl::addFiles()
     filePtr->checkValueType( fileInfo.checkValue.type() );
 
     // update check values (CRC and Check Value if provided)
-    checkValues.emplace(
-      filePtr,
-      Arinc645::CheckValueGenerator::crc16( fileInfo.crc ) );
+    checkValues.emplace( filePtr, Arinc645::CheckValue::crc16( fileInfo.crc ) );
 
     if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
     {
@@ -442,7 +440,8 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
       dataFile.partNumber,
       dataFile.checkValue.type() );
 
-    // Add check value if provided
+    // Add check value if provided - CRC 16 is not added, as it is handled
+    // within addFiles
     if ( Arinc645::CheckValue::NoCheckValue != dataFile.checkValue )
     {
       checkValues.emplace( dataFiles.front(), dataFile.checkValue );
@@ -477,7 +476,8 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
       supportFile.partNumber,
       supportFile.checkValue.type() );
 
-    // Add check value if provided
+    // Add check value if provided - CRC 16 is not added, as it is handled
+    // within addFiles
     if ( Arinc645::CheckValue::NoCheckValue != supportFile.checkValue )
     {
       checkValues.emplace( supportFiles.front(), supportFile.checkValue );
@@ -512,9 +512,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   loadPtr->loadCheckValueType( loadHeaderFile.loadCheckValueType() );
 
   // update check values (CRC and Check Value if provided)
-  checkValues.emplace(
-    loadPtr,
-    Arinc645::CheckValueGenerator::crc16( fileInfo.crc ) );
+  checkValues.emplace( loadPtr, Arinc645::CheckValue::crc16( fileInfo.crc ) );
 
   if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
   {
@@ -614,9 +612,7 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
   }
 
   // update check values (CRC and Check Value if provided)
-  checkValues.emplace(
-    batchPtr,
-    Arinc645::CheckValueGenerator::crc16( fileInfo.crc ) );
+  checkValues.emplace( batchPtr, Arinc645::CheckValue::crc16( fileInfo.crc ) );
 
   if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
   {
