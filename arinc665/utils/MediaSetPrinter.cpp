@@ -372,18 +372,26 @@ void MediaSetPrinter_print(
   }
 }
 
-void ARINC665_EXPORT MediaSetPrinter_print(
+void MediaSetPrinter_print(
   const CheckValues &checkValues,
   std::ostream &outS,
-  std::string_view initialIndent )
+  std::string_view initialIndent,
+  std::string_view indent )
 {
-  for ( const auto &[ file, checkValue ] : checkValues )
+  for ( const auto &[ file, checkValuesSet ] : checkValues )
   {
     outS
       << initialIndent
-      << file->path() << " : "
-      << checkValue
+      << file->path()
       << "\n";
+
+    for ( const auto &checkValue : checkValuesSet )
+    {
+      outS
+        << initialIndent << indent
+        << checkValue
+        << "\n";
+    }
   }
 }
 

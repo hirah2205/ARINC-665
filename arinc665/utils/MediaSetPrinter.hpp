@@ -122,11 +122,14 @@ void ARINC665_EXPORT MediaSetPrinter_print(
  *   Output Stream
  * @param[in] initialIndent
  *   Initial Indention prepended before each output.
+ * @param[in] indent
+ *   Indent for sub-information
  **/
 void ARINC665_EXPORT MediaSetPrinter_print(
   const CheckValues &checkValues,
   std::ostream &outS = std::cout,
-  std::string_view initialIndent = {} );
+  std::string_view initialIndent = {},
+  std::string_view indent = " " );
 
 }
 

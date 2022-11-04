@@ -21,7 +21,6 @@
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
 
-#include <arinc645/Arinc645Crc.hpp>
 #include <arinc645/CheckValueGenerator.hpp>
 
 namespace Arinc665::Utils {
@@ -306,11 +305,11 @@ void MediaSetImporterImpl::addFiles()
     filePtr->checkValueType( fileInfo.checkValue.type() );
 
     // update check values (CRC and Check Value if provided)
-    checkValues.emplace( filePtr, Arinc645::CheckValue::crc16( fileInfo.crc ) );
+    checkValues[ filePtr ].emplace( Arinc645::CheckValue::crc16( fileInfo.crc ) );
 
     if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
     {
-      checkValues.emplace( filePtr, fileInfo.checkValue );
+      checkValues[ filePtr ].emplace( fileInfo.checkValue );
     }
   }
 
@@ -444,7 +443,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
     // within addFiles
     if ( Arinc645::CheckValue::NoCheckValue != dataFile.checkValue )
     {
-      checkValues.emplace( dataFiles.front(), dataFile.checkValue );
+      checkValues[ dataFiles.front() ].emplace( dataFile.checkValue );
     }
   }
 
@@ -480,7 +479,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
     // within addFiles
     if ( Arinc645::CheckValue::NoCheckValue != supportFile.checkValue )
     {
-      checkValues.emplace( supportFiles.front(), supportFile.checkValue );
+      checkValues[ supportFiles.front() ].emplace( supportFile.checkValue );
     }
   }
 
@@ -512,11 +511,11 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   loadPtr->loadCheckValueType( loadHeaderFile.loadCheckValueType() );
 
   // update check values (CRC and Check Value if provided)
-  checkValues.emplace( loadPtr, Arinc645::CheckValue::crc16( fileInfo.crc ) );
+  checkValues[ loadPtr ].emplace( Arinc645::CheckValue::crc16( fileInfo.crc ) );
 
   if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
   {
-    checkValues.emplace( loadPtr, fileInfo.checkValue );
+    checkValues[ loadPtr ].emplace( fileInfo.checkValue );
   }
 }
 
@@ -612,11 +611,11 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
   }
 
   // update check values (CRC and Check Value if provided)
-  checkValues.emplace( batchPtr, Arinc645::CheckValue::crc16( fileInfo.crc ) );
+  checkValues[ batchPtr ].emplace( Arinc645::CheckValue::crc16( fileInfo.crc ) );
 
   if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
   {
-    checkValues.emplace( batchPtr, fileInfo.checkValue );
+    checkValues[ batchPtr ].emplace( fileInfo.checkValue );
   }
 }
 

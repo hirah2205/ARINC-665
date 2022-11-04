@@ -202,25 +202,20 @@ Media::ConstLoads MediaSetManagerImpl::loads(
   // iterate over found loads
   for ( const auto &load : loads )
   {
-    // get all check values for load
-    const auto [ checkValueStart, checkValueEnd ]{
-      mediaSetInfo->second.equal_range( load ) };
+    // get check values for load
+    const auto checkValueIt{ mediaSetInfo->second.find( load ) };
 
-    if ( checkValueStart ==  mediaSetInfo->second.end() )
+    if ( checkValueIt == mediaSetInfo->second.end() )
     {
-      // no check value found -> remove from list
+      // file not found within check values -> remove from list
       loads.remove( load );
       continue;
     }
 
-    if ( std::none_of(
-      checkValueStart,
-      checkValueEnd,
-      [&checkValue]( const auto &loadCheckValue ){
-         return checkValue == loadCheckValue.second;
-       } ) )
+    // check for correct check value
+    if ( !checkValueIt->second.contains( checkValue ) )
     {
-      // No Check value found -> remove from list
+      // No Check value found within set -> remove from list
       loads.remove( load );
       continue;
     }
@@ -253,25 +248,20 @@ Media::ConstFiles MediaSetManagerImpl::files(
   // iterate over found files
   for ( const auto &file : files )
   {
-    // get all check values for file
-    const auto [ checkValueStart, checkValueEnd ]{
-      mediaSetInfo->second.equal_range( file ) };
+    // get check values for file
+    const auto checkValueIt{ mediaSetInfo->second.find( file ) };
 
-    if ( checkValueStart ==  mediaSetInfo->second.end() )
+    if ( checkValueIt ==  mediaSetInfo->second.end() )
     {
-      // no check value found -> remove from list
+      // file not found within check values -> remove from list
       files.remove( file );
       continue;
     }
 
-    if ( std::none_of(
-           checkValueStart,
-           checkValueEnd,
-           [&checkValue]( const auto &loadCheckValue ){
-             return checkValue == loadCheckValue.second;
-           } ) )
+    // check for correct check value
+    if ( !checkValueIt->second.contains( checkValue ) )
     {
-      // No Check value found -> remove from list
+      // No Check value found within set -> remove from list
       files.remove( file );
       continue;
     }

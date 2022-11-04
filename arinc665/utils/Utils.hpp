@@ -30,6 +30,7 @@
 #include <optional>
 #include <filesystem>
 #include <map>
+#include <set>
 
 /**
  * @brief ARINC 665 Utilities.
@@ -80,9 +81,8 @@ class JsonMediaSetManager;
 using JsonMediaSetManagerPtr = std::shared_ptr< JsonMediaSetManager >;
 
 //! Check Values of Media Set Files
-//! @todo maybe change to std::map< Media::ConstFilePtr, std::set< Arinc645::CheckValue > >
 using CheckValues =
-  std::multimap< Media::ConstFilePtr, Arinc645::CheckValue, std::less< > >;
+  std::map< Media::ConstFilePtr, std::set< Arinc645::CheckValue >, std::less< > >;
 
 /**
  * @brief Tries to decode the given directory as ARINC 665 Medium.

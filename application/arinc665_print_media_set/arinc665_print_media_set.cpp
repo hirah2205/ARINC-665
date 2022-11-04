@@ -154,7 +154,7 @@ int main( int argc, char const * argv[] )
     Arinc665::Utils::MediaSetPrinter_print( *mediaSet, std::cout, "", "  " );
 
     std::cout << "Check Values: \n";
-    Arinc665::Utils::MediaSetPrinter_print( checkValues, std::cout, "" );
+    Arinc665::Utils::MediaSetPrinter_print( checkValues, std::cout, "", "  " );
   }
   catch ( const boost::program_options::error &e )
   {
