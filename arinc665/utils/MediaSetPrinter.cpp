@@ -20,6 +20,7 @@
 #include <arinc665/media/RegularFile.hpp>
 
 #include <arinc645/CheckValueTypeDescription.hpp>
+#include <arinc645/CheckValue.hpp>
 
 namespace Arinc665::Utils {
 
@@ -368,6 +369,21 @@ void MediaSetPrinter_print(
     }
 
     outS << "\n";
+  }
+}
+
+void ARINC665_EXPORT MediaSetPrinter_print(
+  const CheckValues &checkValues,
+  std::ostream &outS,
+  std::string_view initialIndent )
+{
+  for ( const auto &[ file, checkValue ] : checkValues )
+  {
+    outS
+      << initialIndent
+      << file->path() << " : "
+      << checkValue
+      << "\n";
   }
 }
 

@@ -18,7 +18,7 @@
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/MediaSetManagerConfiguration.hpp>
 
-#include <arinc645/Arinc645.hpp>
+#include <arinc645/CheckValue.hpp>
 
 #include <filesystem>
 #include <list>
@@ -44,19 +44,12 @@ namespace Arinc665::Utils {
 class ARINC665_EXPORT MediaSetManager
 {
   public:
-    //! Check Values
-    using CheckValues =
-      std::map< Media::ConstFilePtr, Arinc645::CheckValue, std::less< > >;
     //! Media Set Information (Media Set + Check Values)
     using MediaSetInformation =
       std::pair< Media::ConstMediaSetPtr, CheckValues >;
-    //! Media Sets Information (Part Number -> Media Set)
+    //! Media Sets Information (Part Number -> Media Set Information)
     using MediaSetsInformation =
       std::map< std::string, MediaSetInformation, std::less<> >;
-
-    //! Handler which returns the path to the given medium number
-    using MediumPathHandler =
-      std::function< std::filesystem::path( Media::ConstMediumPtr medium ) >;
 
     //! Destructor
     virtual ~MediaSetManager() noexcept = default;
@@ -88,6 +81,23 @@ class ARINC665_EXPORT MediaSetManager
      **/
     [[nodiscard]] virtual const MediaSetManagerConfiguration&
     configuration() const = 0;
+
+    /**
+     * @name Media Set Management
+     * @{
+     **/
+
+    /**
+     * @brief Returns true, if the Media Set with the given Part Number is
+     *   registered to the Media Set Manager.
+     *
+     * @param[in] partNumber
+     *   Media Set Part Number.
+     *
+     * @return If the media set with the given part number is registered
+     **/
+    [[nodiscard]] virtual bool hasMediaSet(
+      std::string_view partNumber ) const = 0;
 
     /**
      * @brief Returns the Media Set with the given Part Number.
@@ -137,6 +147,13 @@ class ARINC665_EXPORT MediaSetManager
     virtual MediaSetManagerConfiguration::MediaSetPaths deregisterMediaSet(
       std::string_view partNumber ) = 0;
 
+    /** @} **/
+
+    /**
+     * @name Load Handling
+     * @{
+     **/
+
     /**
      * @brief Get all available Loads from all Media Sets.
      *
@@ -159,18 +176,58 @@ class ARINC665_EXPORT MediaSetManager
       std::string_view filename ) const = 0;
 
     /**
-     * @brief Returns the loads with the given filename from the given Media Set.
+     * @brief Returns the loads with the given filename and optional check value
+     *   from the given Media Set.
      *
      * @param[in] partNumber
      *   Media Set Part Number.
      * @param[in] filename
      *   Load Filename
+     * @param[in] checkValue
+     *   Additional filter the results for files having the check value.
+     *   If @p Arinc645::CheckValue::NoCheckValue is given, no filtering for
+     *   check value is performed.
      *
-     * @return Load with the given filename.
+     * @return Load with the given filename and optional check value.
+     * @retval {}
+     *   If No load with specified criteria has been found.
      **/
     [[nodiscard]] virtual Media::ConstLoads loads(
       std::string_view partNumber,
-      std::string_view filename ) const = 0;
+      std::string_view filename,
+      const Arinc645::CheckValue &checkValue =
+        Arinc645::CheckValue::NoCheckValue ) const = 0;
+
+    /** @} **/
+
+    /**
+     * @name File Handling
+     * @{
+     **/
+
+
+    /**
+     * @brief Returns the files with the given filename and optional check value
+     *   from the given Media Set.
+     *
+     * @param[in] partNumber
+     *   Media Set Part Number.
+     * @param[in] filename
+     *   Filename
+     * @param[in] checkValue
+     *   Additional filter the results for files having the check value.
+     *   If @p Arinc645::CheckValue::NoCheckValue is given, no filtering for
+     *   check value is performed.
+     *
+     * @return Load with the given filename and optional check value.
+     * @retval {}
+     *   If No load with specified criteria has been found.
+     **/
+    [[nodiscard]] virtual Media::ConstFiles files(
+      std::string_view partNumber,
+      std::string_view filename,
+      const Arinc645::CheckValue &checkValue =
+        Arinc645::CheckValue::NoCheckValue ) const = 0;
 
     /**
      * @brief Returns the path to the given file.
@@ -182,6 +239,8 @@ class ARINC665_EXPORT MediaSetManager
      **/
     [[nodiscard]] virtual std::filesystem::path filePath(
       const Media::ConstFilePtr &file ) const = 0;
+
+    /** @} **/
 };
 
 }

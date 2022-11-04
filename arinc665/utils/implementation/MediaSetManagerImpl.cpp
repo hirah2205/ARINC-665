@@ -15,6 +15,7 @@
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/Medium.hpp>
 #include <arinc665/media/File.hpp>
+#include <arinc665/media/Load.hpp>
 
 #include <arinc665/utils/MediaSetImporter.hpp>
 
@@ -42,6 +43,11 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 const MediaSetManagerConfiguration & MediaSetManagerImpl::configuration() const
 {
   return configurationV;
+}
+
+bool MediaSetManagerImpl::hasMediaSet( std::string_view partNumber ) const
+{
+  return mediaSetsV.contains( partNumber );
 }
 
 std::optional< MediaSetManagerImpl::MediaSetInformation >
@@ -174,16 +180,104 @@ Media::ConstLoads MediaSetManagerImpl::loads( std::string_view filename ) const
 
 Media::ConstLoads MediaSetManagerImpl::loads(
   std::string_view partNumber,
-  std::string_view filename ) const
+  std::string_view filename,
+  const Arinc645::CheckValue &checkValue ) const
 {
-  const auto mediaSetFound{ mediaSet( partNumber ) };
+  // Get Media Set with given Part Number
+  const auto mediaSetInfo{ mediaSet( partNumber ) };
 
-  if ( !mediaSetFound )
+  if ( !mediaSetInfo )
   {
     return {};
   }
 
-  return mediaSetFound->first->loads( filename );
+  auto loads{ mediaSetInfo->first->loads( filename ) };
+
+  // if no check value has been provided -> return directly
+  if ( Arinc645::CheckValue::NoCheckValue != checkValue )
+  {
+    return loads;
+  }
+
+  // iterate over found loads
+  for ( const auto &load : loads )
+  {
+    // get all check values for load
+    const auto [ checkValueStart, checkValueEnd ]{
+      mediaSetInfo->second.equal_range( load ) };
+
+    if ( checkValueStart ==  mediaSetInfo->second.end() )
+    {
+      // no check value found -> remove from list
+      loads.remove( load );
+      continue;
+    }
+
+    if ( std::none_of(
+      checkValueStart,
+      checkValueEnd,
+      [&checkValue]( const auto &loadCheckValue ){
+         return checkValue == loadCheckValue.second;
+       } ) )
+    {
+      // No Check value found -> remove from list
+      loads.remove( load );
+      continue;
+    }
+  }
+
+  return loads;
+}
+
+Media::ConstFiles MediaSetManagerImpl::files(
+  std::string_view partNumber,
+  std::string_view filename,
+  const Arinc645::CheckValue &checkValue ) const
+{
+  // Get Media Set with given Part Number
+  const auto mediaSetInfo{ mediaSet( partNumber ) };
+
+  if ( !mediaSetInfo )
+  {
+    return {};
+  }
+
+  auto files{ mediaSetInfo->first->files( filename ) };
+
+  // if no check value has been provided -> return directly
+  if ( Arinc645::CheckValue::NoCheckValue != checkValue )
+  {
+    return files;
+  }
+
+  // iterate over found files
+  for ( const auto &file : files )
+  {
+    // get all check values for file
+    const auto [ checkValueStart, checkValueEnd ]{
+      mediaSetInfo->second.equal_range( file ) };
+
+    if ( checkValueStart ==  mediaSetInfo->second.end() )
+    {
+      // no check value found -> remove from list
+      files.remove( file );
+      continue;
+    }
+
+    if ( std::none_of(
+           checkValueStart,
+           checkValueEnd,
+           [&checkValue]( const auto &loadCheckValue ){
+             return checkValue == loadCheckValue.second;
+           } ) )
+    {
+      // No Check value found -> remove from list
+      files.remove( file );
+      continue;
+    }
+  }
+
+  return files;
 }
 
 std::filesystem::path MediaSetManagerImpl::filePath(

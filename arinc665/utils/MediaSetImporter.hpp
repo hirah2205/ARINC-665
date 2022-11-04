@@ -34,9 +34,6 @@ namespace Arinc665::Utils {
 class ARINC665_EXPORT MediaSetImporter
 {
   public:
-    //! Check Values of Media Set Files
-    using CheckValues =
-      std::map< Media::ConstFilePtr, Arinc645::CheckValue, std::less< > >;
     //! Return Type of Operation
     using Result = std::pair< Media::MediaSetPtr, CheckValues >;
 
@@ -120,7 +117,7 @@ class ARINC665_EXPORT MediaSetImporter
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetImporter &checkFileIntegrity( bool checkFileIntegrity ) = 0;
+    virtual MediaSetImporter& checkFileIntegrity( bool checkFileIntegrity ) = 0;
 
     /**
      * @brief Executes the ARINC 665 Media Set Importer.

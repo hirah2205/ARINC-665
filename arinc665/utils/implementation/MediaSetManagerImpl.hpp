@@ -47,6 +47,10 @@ class MediaSetManagerImpl final : public MediaSetManager
     [[nodiscard]] const MediaSetManagerConfiguration&
     configuration() const override;
 
+    //! @copydoc MediaSetManager::hasMediaSet(std::string_view) const
+    [[nodiscard]] bool hasMediaSet(
+      std::string_view partNumber ) const override;
+
     //! @copydoc MediaSetManager::mediaSet(std::string_view) const
     [[nodiscard]] std::optional< MediaSetInformation > mediaSet(
       std::string_view partNumber ) const override;
@@ -71,12 +75,21 @@ class MediaSetManagerImpl final : public MediaSetManager
     [[nodiscard]] Media::ConstLoads loads(
       std::string_view filename ) const override;
 
-    //! @copydoc MediaSetManager::loads(std::string_view,std::string_view) const
+    //! @copydoc MediaSetManager::loads(std::string_view,std::string_view,const Arinc645::CheckValue&) const
     [[nodiscard]] Media::ConstLoads loads(
       std::string_view partNumber,
-      std::string_view filename ) const override;
+      std::string_view filename,
+      const Arinc645::CheckValue &checkValue =
+        Arinc645::CheckValue::NoCheckValue ) const override;
 
-    //! @copydoc MediaSetManager::filePath
+    //! @copydoc MediaSetManager::files(std::string_view,std::string_view,const Arinc645::CheckValue&) const
+    [[nodiscard]] Media::ConstFiles files(
+      std::string_view partNumber,
+      std::string_view filename,
+      const Arinc645::CheckValue &checkValue =
+        Arinc645::CheckValue::NoCheckValue ) const override;
+
+      //! @copydoc MediaSetManager::filePath
     [[nodiscard]] std::filesystem::path filePath(
       const Media::ConstFilePtr &file ) const override;
 

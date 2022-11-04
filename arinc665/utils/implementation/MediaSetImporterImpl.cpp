@@ -305,8 +305,15 @@ void MediaSetImporterImpl::addFiles()
     // set check value indicator
     filePtr->checkValueType( fileInfo.checkValue.type() );
 
-    // update check values
-    checkValues.try_emplace( filePtr, fileInfo.checkValue );
+    // update check values (CRC and Check Value if provided)
+    checkValues.emplace(
+      filePtr,
+      Arinc645::CheckValueGenerator::crc16( fileInfo.crc ) );
+
+    if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
+    {
+      checkValues.emplace( filePtr, fileInfo.checkValue );
+    }
   }
 
   addLoads();
@@ -434,6 +441,12 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
       dataFiles.front(),
       dataFile.partNumber,
       dataFile.checkValue.type() );
+
+    // Add check value if provided
+    if ( Arinc645::CheckValue::NoCheckValue != dataFile.checkValue )
+    {
+      checkValues.emplace( dataFiles.front(), dataFile.checkValue );
+    }
   }
 
   // iterate over support files
@@ -463,6 +476,12 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
       supportFiles.front(),
       supportFile.partNumber,
       supportFile.checkValue.type() );
+
+    // Add check value if provided
+    if ( Arinc645::CheckValue::NoCheckValue != supportFile.checkValue )
+    {
+      checkValues.emplace( supportFiles.front(), supportFile.checkValue );
+    }
   }
 
   // Check Load CRC and Load Check Value
@@ -492,8 +511,15 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   // Load Check Value
   loadPtr->loadCheckValueType( loadHeaderFile.loadCheckValueType() );
 
-  // update check values
-  checkValues.try_emplace( loadPtr, fileInfo.checkValue );
+  // update check values (CRC and Check Value if provided)
+  checkValues.emplace(
+    loadPtr,
+    Arinc645::CheckValueGenerator::crc16( fileInfo.crc ) );
+
+  if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
+  {
+    checkValues.emplace( loadPtr, fileInfo.checkValue );
+  }
 }
 
 void MediaSetImporterImpl::addBatches()
@@ -587,8 +613,15 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
     batchPtr->target( targetHardware.targetHardwareIdPosition, batchLoads );
   }
 
-  // update check values
-  checkValues.try_emplace( batchPtr, fileInfo.checkValue );
+  // update check values (CRC and Check Value if provided)
+  checkValues.emplace(
+    batchPtr,
+    Arinc645::CheckValueGenerator::crc16( fileInfo.crc ) );
+
+  if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
+  {
+    checkValues.emplace( batchPtr, fileInfo.checkValue );
+  }
 }
 
 const Files::FileInfo& MediaSetImporterImpl::fileInformation(

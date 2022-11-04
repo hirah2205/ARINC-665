@@ -59,7 +59,7 @@ int main( int argc, char const * argv[] );
  *
  * @return Loaded Media Set.
  **/
-static Arinc665::Media::MediaSetPtr loadMediaSet(
+static Arinc665::Utils::MediaSetImporter::Result loadMediaSet(
   const Directories &mediaSetDirectories,
   bool checkFileIntegrity );
 
@@ -147,9 +147,14 @@ int main( int argc, char const * argv[] )
 
     boost::program_options::notify( vm );
 
-    auto mediaSet{ loadMediaSet( directories, checkFileIntegrity ) };
+    const auto [mediaSet,checkValues]{
+      loadMediaSet( directories, checkFileIntegrity ) };
 
+    std::cout << "Media Set: \n";
     Arinc665::Utils::MediaSetPrinter_print( *mediaSet, std::cout, "", "  " );
+
+    std::cout << "Check Values: \n";
+    Arinc665::Utils::MediaSetPrinter_print( checkValues, std::cout, "" );
   }
   catch ( const boost::program_options::error &e )
   {
@@ -178,7 +183,7 @@ int main( int argc, char const * argv[] )
   return EXIT_SUCCESS;
 }
 
-static Arinc665::Media::MediaSetPtr loadMediaSet(
+static Arinc665::Utils::MediaSetImporter::Result loadMediaSet(
   const Directories &mediaSetDirectories,
   const bool checkFileIntegrity )
 {
@@ -189,9 +194,9 @@ static Arinc665::Media::MediaSetPtr loadMediaSet(
     .readFileHandler( std::bind_front( &readFile, mediaSetDirectories ) )
     .checkFileIntegrity( checkFileIntegrity );
 
-  auto mediaSet{ (*importer)() };
+  auto result{ (*importer)() };
 
-  return mediaSet.first;
+  return result;
 }
 
 static size_t getFileSize(

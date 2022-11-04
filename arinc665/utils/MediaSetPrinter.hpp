@@ -110,6 +110,24 @@ void ARINC665_EXPORT MediaSetPrinter_print(
   std::string_view initialIndent = {},
   std::string_view indent = " " );
 
+/**
+ * @brief Decodes and prints the Check Values.
+ *
+ * - File Path
+ * - Check Value
+ *
+ * @param[in] checkValues
+ *   Check Values to print.
+ * @param[in,out] outS
+ *   Output Stream
+ * @param[in] initialIndent
+ *   Initial Indention prepended before each output.
+ **/
+void ARINC665_EXPORT MediaSetPrinter_print(
+  const CheckValues &checkValues,
+  std::ostream &outS = std::cout,
+  std::string_view initialIndent = {} );
+
 }
 
 #endif
