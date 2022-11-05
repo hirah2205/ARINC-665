@@ -510,7 +510,7 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @brief Returns the Effective List of Loads Check Value Type.
      *
-     * If no value is set, the %Media Set Check Value Type is used.
+     * If not provided, the Files Check Value is used.
      *
      * @return Effective Files Check Value Type
      *

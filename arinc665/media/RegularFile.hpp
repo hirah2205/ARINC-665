@@ -28,7 +28,7 @@ class ARINC665_EXPORT RegularFile : public File
 {
   public:
     /**
-     * @brief Creates a file, which is part of an media within a media set
+     * @brief Creates a file, which is part of a media within a media set
      *
      * The list of files does not handle the protocol files like:
      * - List of files file

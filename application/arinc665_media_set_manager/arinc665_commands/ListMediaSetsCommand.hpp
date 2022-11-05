@@ -24,7 +24,7 @@
 namespace Arinc665Commands {
 
 /**
- * @brief List Media Sets Command.
+ * @brief List Media Sets within Media Set Manager %Command.
  *
  * List all registered Media Sets within the given Media Set Manager.
  **/

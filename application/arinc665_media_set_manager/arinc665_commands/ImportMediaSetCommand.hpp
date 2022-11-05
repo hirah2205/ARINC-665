@@ -27,7 +27,7 @@
 namespace Arinc665Commands {
 
 /**
- * @brief Import Media Set Command.
+ * @brief Import Media Set to Media Set Manager %Command.
  *
  * Adds the given media set to the media set manager.
  *

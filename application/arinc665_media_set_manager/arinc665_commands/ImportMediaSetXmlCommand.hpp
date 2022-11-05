@@ -28,7 +28,12 @@
 
 namespace Arinc665Commands {
 
-//! Import XML Command
+/**
+ * @brief Import Media Set XML into Media Set Manager %Command
+ *
+ * Creates a Media Set based on the given XML description and imports them to
+ * the media set manager.
+ **/
 class ImportMediaSetXmlCommand
 {
   public:

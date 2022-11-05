@@ -25,7 +25,7 @@
 namespace Arinc665Commands {
 
 /**
- * @brief Remove Media Set Command
+ * @brief Remove Media Set from Media Set Manager %Command.
  *
  * Removes a registered Media Set from the Media Set Manager and deletes data.
  **/

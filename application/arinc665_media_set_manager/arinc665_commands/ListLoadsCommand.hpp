@@ -24,7 +24,7 @@
 namespace Arinc665Commands {
 
 /**
- * @brief List Loads Command.
+ * @brief List Loads within Media Set Manager %Command.
  *
  * List all loads, which are part of the media sets of the Media Set Manager.
  **/

@@ -23,7 +23,11 @@
 
 namespace Arinc665Commands {
 
-//! Create Media Set Manager Command
+/**
+ * @brief Create Media Set Manager %Command
+ *
+ * Creates a Media Set Manager Configuration with a specified directory.
+ **/
 class CreateMediaSetManagerCommand
 {
   public:

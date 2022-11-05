@@ -1,9 +1,9 @@
-# ARINC 665 Tool-Suite
+# ARINC 665 Tool Suite
 
 Provides library and applications for generating, reading and handling ARINC 665
 Media Sets.
 
-This tool-suite supports the generation and interpretation of media sets 
+This tool suite supports the generation and interpretation of media sets 
 according to ARINC 665-2, ARINC 665-3, ARINC 665-4, and ARINC 665-5.
 
 A library is provided for:
