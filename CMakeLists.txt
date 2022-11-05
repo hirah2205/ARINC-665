@@ -80,15 +80,15 @@ endif()
 
 
 FetchContent_Declare(
-  command_shell
-  GIT_REPOSITORY https://git.thomas-vogt.de/thomas-vogt/command_shell.git
+  commands
+  GIT_REPOSITORY https://git.thomas-vogt.de/thomas-vogt/commands.git
   GIT_TAG        main )
 
-if( IS_DIRECTORY ${CMAKE_SOURCE_DIR}/command_shell )
-  set( FETCHCONTENT_SOURCE_DIR_COMMAND_SHELL ${CMAKE_SOURCE_DIR}/command_shell )
+if( IS_DIRECTORY ${CMAKE_SOURCE_DIR}/commands )
+  set( FETCHCONTENT_SOURCE_DIR_COMMANDS ${CMAKE_SOURCE_DIR}/commands )
 endif()
 
-FetchContent_MakeAvailable( helper arinc645 command_shell )
+FetchContent_MakeAvailable( helper arinc645 commands )
 
 
 add_subdirectory( arinc665 )

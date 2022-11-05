@@ -19,8 +19,8 @@ get_property(
   PROPERTY DOC_PATHS )
 
 get_property(
-  COMMAND_SHELL_DOC_PATHS
-  DIRECTORY ${command_shell_SOURCE_DIR}
+  COMMANDS_DOC_PATHS
+  DIRECTORY ${commands_SOURCE_DIR}
   PROPERTY DOC_PATHS )
 
 get_property(
@@ -55,8 +55,8 @@ set(
 
   ${helper_SOURCE_DIR}
   ${helper_SOURCE_DIR}/application
-  ${command_shell_SOURCE_DIR}
-  ${command_shell_SOURCE_DIR}/application
+  ${commands_SOURCE_DIR}
+  ${commands_SOURCE_DIR}/application
   ${arinc645_SOURCE_DIR}
   ${arinc645_SOURCE_DIR}/application
   ${arinc665_SOURCE_DIR}
@@ -67,7 +67,7 @@ set(
 
   ${Boost_INCLUDE_DIRS}
   ${helper_SOURCE_DIR}
-  ${command_shell_SOURCE_DIR}
+  ${commands_SOURCE_DIR}
   ${arinc645_SOURCE_DIR}
   ${arinc665_SOURCE_DIR} )
 
@@ -77,7 +77,7 @@ doxygen_add_docs(
   ../Mainpage.md
 
   ${HELPER_DOC_PATHS}
-  ${COMMAND_SHELL_DOC_PATHS}
+  ${COMMANDS_DOC_PATHS}
   ${ARINC645_DOC_PATHS}
   ${ARINC665_DOC_PATHS} )
 
