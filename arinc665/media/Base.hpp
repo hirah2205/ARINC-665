@@ -49,7 +49,7 @@ class Base : public std::enable_shared_from_this< Base >
     [[nodiscard]] virtual ConstMediaSetPtr mediaSet() const = 0;
 
     //! @copydoc mediaSet() const
-    virtual MediaSetPtr mediaSet() = 0;
+    [[nodiscard]] virtual MediaSetPtr mediaSet() = 0;
 
     /**
      * @brief Returns the Item Type.

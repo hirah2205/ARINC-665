@@ -41,13 +41,13 @@ class ARINC665_EXPORT Directory : public ContainerEntity
     Directory( const ContainerEntityPtr &parent, std::string name );
 
     //! @copydoc ContainerEntity::mediaSet
-    ConstMediaSetPtr mediaSet() const final;
+    [[nodiscard]] ConstMediaSetPtr mediaSet() const final;
 
     //! @copydoc ContainerEntity::mediaSet
-    MediaSetPtr mediaSet() final;
+    [[nodiscard]] MediaSetPtr mediaSet() final;
 
     //! @copydoc ContainerEntity::type
-    Type type() const final;
+    [[nodiscard]] Type type() const final;
 
     /**
      * @brief Returns the name of the directory.
@@ -67,19 +67,19 @@ class ARINC665_EXPORT Directory : public ContainerEntity
     void rename( std::string name );
 
     //! @copydoc ContainerEntity::path() const
-    std::filesystem::path path() const final;
+    [[nodiscard]] std::filesystem::path path() const final;
 
     //! @copydoc ContainerEntity::parent() const
-    ConstContainerEntityPtr parent() const final;
+    [[nodiscard]] ConstContainerEntityPtr parent() const final;
 
     //! @copydoc ContainerEntity::parent()
-    ContainerEntityPtr parent() final;
+    [[nodiscard]] ContainerEntityPtr parent() final;
 
     //! @copydoc ContainerEntity::medium() const
-    ConstMediumPtr medium() const final;
+    [[nodiscard]] ConstMediumPtr medium() const final;
 
     //! @copydoc ContainerEntity::medium()
-    MediumPtr medium() final;
+    [[nodiscard]] MediumPtr medium() final;
 
   protected:
     /**

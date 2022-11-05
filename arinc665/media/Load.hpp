@@ -72,7 +72,7 @@ class ARINC665_EXPORT Load : public File
      *
      * @return The part Flags Field.
      **/
-    uint16_t partFlags() const;
+    [[nodiscard]] uint16_t partFlags() const;
 
     /**
      * @brief Updates the Part Flags Field
@@ -214,7 +214,7 @@ class ARINC665_EXPORT Load : public File
      *
      * @sa dataFilesCheckValueType()
      **/
-   void dataFile(
+    void dataFile(
       const ConstRegularFilePtr &file,
       std::string partNumber,
       std::optional< Arinc645::CheckValueType > checkValueType = {} );

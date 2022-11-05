@@ -41,14 +41,14 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @return The path up to the medium root.
      **/
-    virtual std::filesystem::path path() const = 0;
+    [[nodiscard]] virtual std::filesystem::path path() const = 0;
 
     /**
      * @brief Indicates, if the container has child elements.
      *
      * @return if there are subdirectories or files.
      **/
-    bool hasChildren() const;
+    [[nodiscard]] bool hasChildren() const;
 
     /**
      * @name Subdirectories
@@ -60,17 +60,17 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @return Number of subdirectories.
      **/
-    size_t numberOfSubdirectories() const;
+    [[nodiscard]] size_t numberOfSubdirectories() const;
 
     /**
      * @brief Returns all subdirectories within the current container.
      *
      * @return All subdirectories contained in the current container.
      **/
-    ConstDirectories subdirectories() const;
+    [[nodiscard]] ConstDirectories subdirectories() const;
 
     //! @copydoc subdirectories() const
-    Directories subdirectories();
+    [[nodiscard]] Directories subdirectories();
 
     /**
      * @brief Returns the subdirectory with the given name.
@@ -82,10 +82,10 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @retval {}
      *   If no such subdirectory exists.
      **/
-    ConstDirectoryPtr subdirectory( std::string_view name ) const;
+    [[nodiscard]] ConstDirectoryPtr subdirectory( std::string_view name ) const;
 
     //! @copydoc subdirectory(std::string_view) const
-    DirectoryPtr subdirectory( std::string_view name );
+    [[nodiscard]] DirectoryPtr subdirectory( std::string_view name );
 
     /**
      * @brief Adds a subdirectory with the given name.
@@ -100,7 +100,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @throw Arinc665Exception()
      *   If directory or name with this name already exists.
      **/
-    DirectoryPtr addSubdirectory( std::string name );
+    [[nodiscard]] DirectoryPtr addSubdirectory( std::string name );
 
     /**
      * @brief Removes the subdirectory with the given name within this entity.
@@ -155,10 +155,10 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @return All files of the current container.
      **/
-    ConstFiles files() const;
+    [[nodiscard]] ConstFiles files() const;
 
     //! @copydoc files() const
-    Files files();
+    [[nodiscard]] Files files();
 
     /**
      * @brief Recursively returns all files.
@@ -315,7 +315,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @throw Arinc665Exception
      *   When file already exist.
      **/
-    RegularFilePtr addRegularFile( std::string filename );
+    [[nodiscard]] RegularFilePtr addRegularFile( std::string filename );
 
     /** @} **/
 

@@ -43,7 +43,7 @@ class ARINC665_EXPORT File : public Base
     [[nodiscard]] ConstMediaSetPtr mediaSet() const final;
 
     //! @copydoc Base::mediaSet
-    MediaSetPtr mediaSet() final;
+    [[nodiscard]] MediaSetPtr mediaSet() final;
 
     //! @copydoc Base::type
     [[nodiscard]] Type type() const final;
@@ -127,7 +127,7 @@ class ARINC665_EXPORT File : public Base
      *
      * @sa MediaSet::effectiveFilesCheckValueType.
      **/
-    Arinc645::CheckValueType effectiveCheckValueType() const;
+    [[nodiscard]] Arinc645::CheckValueType effectiveCheckValueType() const;
 
     /**
      * @brief Returns the File Check Value Type.
@@ -137,7 +137,8 @@ class ARINC665_EXPORT File : public Base
      *
      * @return File Check Value Type
      **/
-    std::optional< Arinc645::CheckValueType > checkValueType() const;
+    [[nodiscard]] std::optional< Arinc645::CheckValueType >
+    checkValueType() const;
 
     /**
      * @brief Updates the File Check Value Type
