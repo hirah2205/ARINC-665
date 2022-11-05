@@ -34,7 +34,7 @@ namespace Arinc665Commands {
  * Creates a Media Set based on the given XML description and imports them to
  * the media set manager.
  **/
-class ImportMediaSetXmlCommand
+class ARINC665_COMMANDS_EXPORT ImportMediaSetXmlCommand
 {
   public:
     /**

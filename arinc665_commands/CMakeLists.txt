@@ -6,7 +6,7 @@
 
 cmake_minimum_required( VERSION 3.24 )
 
-add_library( arinc665_commands STATIC )
+add_library( arinc665_commands )
 
 target_sources(
   arinc665_commands
@@ -30,7 +30,8 @@ target_sources(
 target_include_directories(
   arinc665_commands
   PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> )
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..> )
 
 target_compile_features( arinc665_commands PUBLIC cxx_std_20 )
 
@@ -53,6 +54,9 @@ target_link_libraries(
     arinc665
     commands )
 
+include( GenerateExportHeader )
+generate_export_header( arinc665_commands )
+
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}
   APPEND
@@ -60,5 +64,26 @@ set_property(
 
 install(
   TARGETS arinc665_commands
+  RUNTIME_DEPENDENCY_SET runtime-libs
+  EXPORT arinc665_commands-config
   COMPONENT runtime
   ARCHIVE COMPONENT development )
+
+install(
+  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  TYPE INCLUDE
+  COMPONENT development
+  FILES_MATCHING
+    PATTERN "*.hpp"
+    PATTERN "*Test.*" EXCLUDE
+    PATTERN "implementation" EXCLUDE )
+
+install(
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/arinc665_commands_export.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/arinc665
+  COMPONENT development )
+
+install(
+  EXPORT arinc665_commands-config
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
+  COMPONENT development )

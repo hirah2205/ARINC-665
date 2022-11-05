@@ -28,7 +28,7 @@ namespace Arinc665Commands {
  *
  * Creates a Media Set Manager Configuration with a specified directory.
  **/
-class CreateMediaSetManagerCommand
+class ARINC665_COMMANDS_EXPORT CreateMediaSetManagerCommand
 {
   public:
     /**

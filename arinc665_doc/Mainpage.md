@@ -18,7 +18,10 @@ For building graphical applications an QT based library is provided which
 consist ow models, dialogs, and wizards to work with ARINC 665 media sets.
 
 This tool suite contains the components:
- - Namespaces @ref Arinc665 and @ref Arinc665Qt.
+ - Library with namespaces:
+   - @ref Arinc665,
+   - @ref Arinc665Commands, and 
+   - @ref Arinc665Qt.
  - @subpage arinc665_applications
 
 Dependencies are:

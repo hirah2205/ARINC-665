@@ -13,6 +13,8 @@
 #ifndef ARINC665_COMMANDS_ARINC665COMMANDS_HPP
 #define ARINC665_COMMANDS_ARINC665COMMANDS_HPP
 
+#include <arinc665_commands/arinc665_commands_export.h>
+
 #include <commands/Commands.hpp>
 
 /**
@@ -28,7 +30,8 @@ namespace Arinc665Commands {
  * @param[in,out] registry
  *   Registry, where the Commands shall be registered to.
  **/
-void registerCommands( const Commands::CommandRegistryPtr& registry );
+void ARINC665_COMMANDS_EXPORT registerCommands(
+  const Commands::CommandRegistryPtr& registry );
 
 }
 

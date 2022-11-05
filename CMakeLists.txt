@@ -92,6 +92,7 @@ FetchContent_MakeAvailable( helper arinc645 command_shell )
 
 
 add_subdirectory( arinc665 )
+add_subdirectory( arinc665_commands )
 add_subdirectory( arinc665_qt )
 add_subdirectory( arinc665_xml )
 

@@ -8,8 +8,6 @@ cmake_minimum_required( VERSION 3.24 )
 
 find_package( fmt REQUIRED )
 
-add_subdirectory( arinc665_commands )
-
 add_executable( arinc665_media_set_manager )
 
 target_sources(

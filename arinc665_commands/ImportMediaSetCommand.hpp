@@ -36,7 +36,7 @@ namespace Arinc665Commands {
  * Missing files will be detected on trying to access them.
  * Too many files are not detected.
  **/
-class ImportMediaSetCommand
+class ARINC665_COMMANDS_EXPORT ImportMediaSetCommand
 {
   public:
     /**
