@@ -38,10 +38,4 @@ target_sources(
 #
 #  PRIVATE)
 
-install(
-  FILES
-    MediaSetConfiguration.template.json
-  TYPE DOC
-  COMPONENT runtime )
-
 add_subdirectory( implementation )
