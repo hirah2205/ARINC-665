@@ -6,6 +6,8 @@
 
 cmake_minimum_required( VERSION 3.24 )
 
+find_package( fmt REQUIRED )
+
 add_library( arinc665_commands )
 
 target_sources(
@@ -52,7 +54,10 @@ target_link_libraries(
 
   PUBLIC
     arinc665
-    commands )
+    commands
+
+  PRIVATE
+    fmt::fmt )
 
 include( GenerateExportHeader )
 generate_export_header( arinc665_commands )
