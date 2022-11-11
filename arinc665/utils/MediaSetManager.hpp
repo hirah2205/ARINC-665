@@ -79,7 +79,7 @@ class ARINC665_EXPORT MediaSetManager
      *
      * @return Media Set Manager Configuration.
      **/
-    [[nodiscard]] virtual const MediaSetManagerConfiguration&
+    [[nodiscard]] virtual MediaSetManagerConfiguration
     configuration() const = 0;
 
     /**

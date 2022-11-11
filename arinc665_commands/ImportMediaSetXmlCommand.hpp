@@ -17,7 +17,9 @@
 
 #include <arinc665/utils/Arinc665Xml.hpp>
 #include <arinc665/utils/MediaSetManagerConfiguration.hpp>
+
 #include <arinc665/media/Media.hpp>
+
 #include <arinc665/files/Files.hpp>
 
 #include <commands/Commands.hpp>

@@ -18,7 +18,8 @@
 #include <boost/property_tree/ptree_fwd.hpp>
 
 #include <filesystem>
-#include <map>
+#include <list>
+#include <utility>
 
 namespace Arinc665::Utils {
 
@@ -30,10 +31,10 @@ class ARINC665_EXPORT MediaSetManagerConfiguration
   public:
     //! media-to-path mapping (Medium Number -> Path)
     using MediaPaths = std::map< uint8_t, std::filesystem::path > ;
-    //! Map of Media Sets Paths ( Media Set Path, @ref MediaPaths)
-    using MediaSetsPaths = std::map< std::filesystem::path, MediaPaths >;
-    //! Media Set Paths
+    //! Media Set Paths (Media Set Base Path + Media Paths)
     using MediaSetPaths = std::pair< std::filesystem::path, MediaPaths >;
+    //! Media Sets Paths ( List of Media Set Path, @ref MediaPaths)
+    using MediaSetsPaths = std::list< MediaSetPaths >;
 
     //! Initialises the configuration with default values.
     MediaSetManagerConfiguration() = default;

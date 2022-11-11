@@ -31,31 +31,37 @@ namespace Arinc665::Utils {
 
 MediaSetManagerImpl::MediaSetManagerImpl(
   std::filesystem::path basePath,
-  MediaSetManagerConfiguration configuration,
+  const MediaSetManagerConfiguration &configuration,
   const bool checkFileIntegrity ) :
-  basePath{ std::move( basePath ) },
-  configurationV{ std::move( configuration ) }
+  basePath{ std::move( basePath ) }
 {
   BOOST_LOG_FUNCTION()
-  loadMediaSets( checkFileIntegrity );
+  loadMediaSets( configuration, checkFileIntegrity );
 }
 
-const MediaSetManagerConfiguration & MediaSetManagerImpl::configuration() const
+MediaSetManagerConfiguration MediaSetManagerImpl::configuration() const
 {
-  return configurationV;
+  MediaSetManagerConfiguration configuration{};
+
+  for ( const auto &[ partNumber, mediaSetPaths ] : mediaSetsPathsV )
+  {
+    configuration.mediaSets.emplace_back( mediaSetPaths );
+  }
+
+  return configuration;
 }
 
 bool MediaSetManagerImpl::hasMediaSet( std::string_view partNumber ) const
 {
-  return mediaSetsV.contains( partNumber );
+  return mediaSetsInformationV.contains( partNumber );
 }
 
 std::optional< MediaSetManagerImpl::MediaSetInformation >
 MediaSetManagerImpl::mediaSet( std::string_view partNumber ) const
 {
-  auto mediaSet{ mediaSetsV.find( partNumber ) };
+  auto mediaSet{ mediaSetsInformationV.find( partNumber ) };
 
-  if ( mediaSet == mediaSetsV.end() )
+  if ( mediaSet == mediaSetsInformationV.end() )
   {
     return {};
   }
@@ -66,7 +72,7 @@ MediaSetManagerImpl::mediaSet( std::string_view partNumber ) const
 const MediaSetManagerImpl::MediaSetsInformation&
 MediaSetManagerImpl::mediaSets() const
 {
-  return mediaSetsV;
+  return mediaSetsInformationV;
 }
 
 void MediaSetManagerImpl::registerMediaSet(
@@ -82,11 +88,10 @@ void MediaSetManagerImpl::registerMediaSet(
       &MediaSetManagerImpl::fileSizeHandler,
       this,
       mediaSetPaths ) )
-    .readFileHandler(
-      std::bind_front(
-        &MediaSetManagerImpl::readFileHandler,
-        this,
-        mediaSetPaths ) )
+    .readFileHandler( std::bind_front(
+      &MediaSetManagerImpl::readFileHandler,
+      this,
+      mediaSetPaths ) )
     .checkFileIntegrity( checkFileIntegrity );
 
   // import media set
@@ -99,14 +104,16 @@ void MediaSetManagerImpl::registerMediaSet(
       << Helper::AdditionalInfo{ "Media Set already exist" } );
   }
 
-  // add to media sets
-  mediaSetsV.try_emplace(
-    std::string{ impMediaSet->partNumber() },
+  std::string partNumber{ impMediaSet->partNumber() };
+  // add to media sets information
+  mediaSetsInformationV.try_emplace(
+    partNumber,
     std::move( impMediaSet ),
     std::move( checkValues ) );
 
-  // add to configuration
-  configurationV.mediaSets.try_emplace(
+  // add to media sets paths
+  mediaSetsPathsV.try_emplace(
+    partNumber,
     mediaSetPaths.first,
     mediaSetPaths.second );
 }
@@ -114,51 +121,34 @@ void MediaSetManagerImpl::registerMediaSet(
 MediaSetManagerConfiguration::MediaSetPaths
 MediaSetManagerImpl::deregisterMediaSet( std::string_view partNumber )
 {
-  const auto foundMediaSet{ mediaSetsV.find( partNumber ) };
+  auto mediaSetInformation{
+    mediaSetsInformationV.extract( std::string{ partNumber } ) };
 
-  if ( foundMediaSet == mediaSetsV.end() )
+  // extract from media sets information
+  if ( !mediaSetInformation )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "Media Set not found" } );
   }
 
-  // find media set paths for media set
-  const auto mediaSetPath{ mediaSetsPathsV.find( foundMediaSet->second.first ) };
+  // extract from media sets paths
+  auto mediaSetPaths{ mediaSetsPathsV.extract( std::string{ partNumber } ) };
 
-  if ( mediaSetPath == mediaSetsPathsV.end() )
+  if ( !mediaSetPaths )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "Media Set paths not found" } );
   }
 
-  // Remove Media Set from Media Sets List
-  mediaSetsV.erase( foundMediaSet );
-
-  // Remove Path Configuration
-  auto mediaSetPathConfigIt{
-    configurationV.mediaSets.find( mediaSetPath->second.first ) };
-
-  if ( mediaSetPathConfigIt == configurationV.mediaSets.end() )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Media Set paths configuration not found" } );
-  }
-
-  // save content of iterator (element is not available after removal from map
-  auto mediaSetPathConfig{ *mediaSetPathConfigIt };
-  configurationV.mediaSets.erase( mediaSetPathConfigIt );
-
-  // Remove Media Set Path Config
-  mediaSetsPathsV.erase( mediaSetPath );
-
-  return mediaSetPathConfig;
+  // return the extracted paths information
+  return mediaSetPaths.mapped();
 }
 
 Media::ConstLoads MediaSetManagerImpl::loads() const
 {
   Media::ConstLoads loads{};
 
-  for ( const auto &[ partNumber, mediaSet ] : mediaSetsV )
+  for ( const auto &[ partNumber, mediaSet ] : mediaSetsInformationV )
   {
     loads.splice( loads.end(), mediaSet.first->loads() );
   }
@@ -170,7 +160,7 @@ Media::ConstLoads MediaSetManagerImpl::loads( std::string_view filename ) const
 {
   Media::ConstLoads loads{};
 
-  for ( const auto &[ partNumber, mediaSet ] : mediaSetsV )
+  for ( const auto &[ partNumber, mediaSet ] : mediaSetsInformationV )
   {
     loads.splice( loads.end(), mediaSet.first->loads( filename ) );
   }
@@ -281,7 +271,7 @@ std::filesystem::path MediaSetManagerImpl::filePath(
       << "Given file is empty";
   }
 
-  auto mediaSetIt{ mediaSetsPathsV.find( file->mediaSet() ) };
+  auto mediaSetIt{ mediaSetsPathsV.find( file->mediaSet()->partNumber() ) };
 
   if ( mediaSetIt == mediaSetsPathsV.end() )
   {
@@ -304,11 +294,13 @@ std::filesystem::path MediaSetManagerImpl::filePath(
     mediaSetIt->second.first / mediumIt->second / file->path().relative_path() );
 }
 
-void MediaSetManagerImpl::loadMediaSets( const bool checkFileIntegrity )
+void MediaSetManagerImpl::loadMediaSets(
+  const MediaSetManagerConfiguration &configuration,
+  const bool checkFileIntegrity )
 {
   BOOST_LOG_FUNCTION()
 
-  for ( auto const &mediaSetPaths : configurationV.mediaSets )
+  for ( auto const &mediaSetPaths : configuration.mediaSets )
   {
     // import media set
     auto importer( MediaSetImporter::create() );
@@ -329,13 +321,16 @@ void MediaSetManagerImpl::loadMediaSets( const bool checkFileIntegrity )
     auto [ impMediaSet, checkValues ]{ (*importer)() };
     assert( impMediaSet );
 
-    // Add media set paths
-    mediaSetsPathsV.try_emplace( impMediaSet, mediaSetPaths );
-    // add media set
-    mediaSetsV.try_emplace(
-      std::string{ impMediaSet->partNumber() },
+    std::string partNumber{ impMediaSet->partNumber() };
+    // add to media sets information
+    mediaSetsInformationV.try_emplace(
+      partNumber,
       std::move( impMediaSet ),
       std::move( checkValues ) );
+    // add to media sets paths
+    mediaSetsPathsV.try_emplace(
+      partNumber,
+      mediaSetPaths );
   }
 }
 
@@ -383,8 +378,7 @@ Files::RawFile MediaSetManagerImpl::readFileHandler(
 
   // concatenate file path
   auto filePath{
-    absolutePath(
-      mediaSetPath / medium->second / path.relative_path() ) };
+    absolutePath( mediaSetPath / medium->second / path.relative_path() ) };
 
   // read file
   Files::RawFile data( std::filesystem::file_size( filePath ) );

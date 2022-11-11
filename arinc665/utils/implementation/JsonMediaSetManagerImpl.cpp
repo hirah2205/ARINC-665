@@ -26,7 +26,8 @@ void JsonMediaSetManagerImpl::create( const std::filesystem::path &directory )
   if ( std::filesystem::exists( directory ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception{}
-      << Helper::AdditionalInfo{ "Media Set Manger Directory must not exists" } );
+      << Helper::AdditionalInfo{ "Media Set Manger Directory must not exists" }
+      << boost::errinfo_file_name{ directory.string() } );
   }
 
   std::filesystem::create_directories( directory );
@@ -64,7 +65,8 @@ JsonMediaSetManagerImpl::JsonMediaSetManagerImpl(
   if ( !std::filesystem::is_regular_file( configurationFile ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception{}
-      << Helper::AdditionalInfo{ "Media Set Configuration file does not exists" } );
+      << Helper::AdditionalInfo{ "Media Set Configuration file does not exists" }
+      << boost::errinfo_file_name{ configurationFile.string() } );
   }
 
   boost::property_tree::ptree configurationPTree{};

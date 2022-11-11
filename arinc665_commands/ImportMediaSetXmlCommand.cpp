@@ -132,18 +132,18 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 
     // Add Media Set Part Number to Output Path
     Arinc665::Utils::MediaSetManagerConfiguration::MediaPaths mediaPaths{};
-    for ( const auto &medium : std::get< 0 >( loadXmlResult )->media() )
+    for ( const auto &[mediumNumber, medium] : std::get< 0 >( loadXmlResult )->media() )
     {
-      mediaPaths.emplace(
-        medium.first,
-        fmt::format( "MEDIUM_{:03d}", (unsigned int)medium.first ) );
+      mediaPaths.try_emplace(
+        mediumNumber,
+        fmt::format( "MEDIUM_{:03d}", mediumNumber ) );
     }
     mediaSetPaths = std::make_pair(
       std::get< 0 >( loadXmlResult )->partNumber(),
       std::move( mediaPaths ) );
 
     if ( std::filesystem::exists(
-           mediaSetManagerDirectory / mediaSetPaths.first ) )
+      mediaSetManagerDirectory / mediaSetPaths.first ) )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665::Arinc665Exception()
@@ -326,7 +326,7 @@ void ImportMediaSetXmlCommand::writeFileHandler(
 
   // write the data to the buffer
   fileStream.write(
-    (char *)file.data(),
+    (char const *)file.data(),
     static_cast< std::streamsize >( file.size() ) );
 }
 

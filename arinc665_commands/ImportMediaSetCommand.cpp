@@ -97,11 +97,10 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
         mediumNumber,
         fmt::format( "MEDIUM_{:03d}", mediumNumber ) );
     }
-    Arinc665::Utils::MediaSetManagerConfiguration::MediaSetPaths mediaSetPaths{
-      std::make_pair( mediaSet->partNumber(), std::move( mediaPaths ) ) };
 
-    if ( std::filesystem::exists(
-      mediaSetManagerDirectory / mediaSetPaths.first ) )
+    std::filesystem::path mediaSetPath{ mediaSet->partNumber() };
+
+    if ( std::filesystem::exists( mediaSetManagerDirectory / mediaSetPath ) )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665::Arinc665Exception()
@@ -110,19 +109,19 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 
     // create media set directory
     std::filesystem::create_directories(
-      mediaSetManagerDirectory / mediaSetPaths.first );
+      mediaSetManagerDirectory / mediaSetPath );
 
     // iterate over media - copy it to media set manager
-    for ( auto const &[ mediumNumber, mediumPath ] : mediaSetPaths.second )
+    for ( auto const &[ mediumNumber, mediumPath ] : mediaPaths )
     {
       std::filesystem::copy(
         mediaSourceDirectories.at( mediumNumber - 1 ),
-        mediaSetManagerDirectory / mediaSetPaths.first / mediumPath,
+        mediaSetManagerDirectory / mediaSetPath / mediumPath,
         std::filesystem::copy_options::recursive );
     }
 
     mediaSetManager->manager()->registerMediaSet(
-      mediaSetPaths,
+      { std::move( mediaSetPath ), std::move( mediaPaths ) },
       checkFileIntegrity );
     mediaSetManager->saveConfiguration();
   }

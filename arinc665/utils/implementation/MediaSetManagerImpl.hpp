@@ -33,19 +33,18 @@ class MediaSetManagerImpl final : public MediaSetManager
      * @param[in] basePath
      *   Base Path to use, when configured paths are relative, i.e. base of
      *   configuration file.
-     * @param[in,out] configuration
+     * @param[in] configuration
      *   Media Set Manager Configuration.
      * @param[in] checkFileIntegrity
      *   If set to true additional file integrity steps are performed
      **/
     explicit MediaSetManagerImpl(
       std::filesystem::path basePath,
-      MediaSetManagerConfiguration configuration,
+      const MediaSetManagerConfiguration &configuration,
       bool checkFileIntegrity );
 
     //! @copydoc MediaSetManager::configuration
-    [[nodiscard]] const MediaSetManagerConfiguration&
-    configuration() const override;
+    [[nodiscard]] MediaSetManagerConfiguration configuration() const override;
 
     //! @copydoc MediaSetManager::hasMediaSet(std::string_view) const
     [[nodiscard]] bool hasMediaSet(
@@ -65,8 +64,7 @@ class MediaSetManagerImpl final : public MediaSetManager
 
     //! @copydoc MediaSetManager::deregisterMediaSet()
     [[nodiscard]] MediaSetManagerConfiguration::MediaSetPaths
-    deregisterMediaSet(
-      std::string_view partNumber ) override;
+    deregisterMediaSet( std::string_view partNumber ) override;
 
     //! @copydoc MediaSetManager::loads() const
     [[nodiscard]] Media::ConstLoads loads() const override;
@@ -97,10 +95,14 @@ class MediaSetManagerImpl final : public MediaSetManager
     /**
      * @brief Load Media Sets.
      *
+     * @param[in] configuration
+     *   Media Set Manager Configuration.
      * @param[in] checkFileIntegrity
      *   If set to true additional file integrity steps are performed
      **/
-    void loadMediaSets( bool checkFileIntegrity );
+    void loadMediaSets(
+      const MediaSetManagerConfiguration &configuration,
+      bool checkFileIntegrity );
 
     /**
      * @brief Handler Called for files sizes
@@ -108,7 +110,7 @@ class MediaSetManagerImpl final : public MediaSetManager
      * Used by the Media Set Importer.
      *
      * @param[in] mediaSetPaths
-     *   Media Set Path Configuration.
+     *   Media Set Paths Configuration.
      * @param[in] mediumNumber
      *   Medium Sequence Number.
      * @param[in] path
@@ -127,7 +129,7 @@ class MediaSetManagerImpl final : public MediaSetManager
      * Used by the Media Set Importer.
      *
      * @param[in] mediaSetPaths
-     *   Media Set Path Configuration.
+     *   Media Set Paths Configuration.
      * @param[in] mediumNumber
      *   Medium Sequence Number.
      * @param[in] path
@@ -154,15 +156,14 @@ class MediaSetManagerImpl final : public MediaSetManager
 
     //! Media Set Paths Map
     using MediaSetsPaths = std::map<
-      Media::ConstMediaSetPtr,
-      MediaSetManagerConfiguration::MediaSetPaths >;
+      std::string,
+      MediaSetManagerConfiguration::MediaSetPaths,
+      std::less< > >;
 
     //! Base for Relative Paths
     const std::filesystem::path basePath;
-    //! Media Set Manager Configuration
-    MediaSetManagerConfiguration configurationV;
-    //! Media Sets
-    MediaSetsInformation mediaSetsV;
+    //! Media Sets Information
+    MediaSetsInformation mediaSetsInformationV;
     //! Media Sets Paths
     MediaSetsPaths mediaSetsPathsV;
 };
