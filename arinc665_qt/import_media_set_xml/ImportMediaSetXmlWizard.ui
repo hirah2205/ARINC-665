@@ -9,12 +9,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>600</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Import Media Set XML</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/arinc665_qt_resources.qrc">
+    <normaloff>:/media_set_manager/arinc665_media_set_import_xml.svg</normaloff>:/media_set_manager/arinc665_media_set_import_xml.svg</iconset>
+  </property>
+  <property name="wizardStyle">
+   <enum>QWizard::ModernStyle</enum>
   </property>
   <widget class="Arinc665Qt::ImportMediaSetXmlSettingsPage" name="settings"/>
   <widget class="QWizardPage" name="wizardPage2"/>
@@ -27,6 +34,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources/arinc665_qt_resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

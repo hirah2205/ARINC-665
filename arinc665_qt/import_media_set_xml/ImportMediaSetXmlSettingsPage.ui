@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string>Settings</string>
   </property>
+  <property name="title">
+   <string>Import ARINC 665 Media Set XML</string>
+  </property>
+  <property name="subTitle">
+   <string>Settings for importing ARINC 665 Media Set</string>
+  </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">
     <widget class="QLabel" name="xmlFileLabel">
@@ -45,7 +51,8 @@
       <item>
        <widget class="QPushButton" name="selectXmlFile">
         <property name="icon">
-         <iconset theme="document-open"/>
+         <iconset theme="document-open">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -83,7 +90,8 @@
       <item>
        <widget class="QPushButton" name="selectInputDirectory">
         <property name="icon">
-         <iconset theme="document-open"/>
+         <iconset theme="document-open">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -140,6 +148,8 @@
   <tabstop>loadHeaderCreation</tabstop>
   <tabstop>batchFileCreation</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../resources/arinc665_qt_resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
