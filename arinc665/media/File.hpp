@@ -132,9 +132,6 @@ class ARINC665_EXPORT File : public Base
     /**
      * @brief Returns the File Check Value Type.
      *
-     * @param[in] effective
-     *   If set to true the effective value is returned.
-     *
      * @return File Check Value Type
      **/
     [[nodiscard]] std::optional< Arinc645::CheckValueType >

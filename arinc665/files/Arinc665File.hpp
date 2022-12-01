@@ -274,6 +274,7 @@ class ARINC665_EXPORT Arinc665File
      * @brief Copy Constructor
      *
      * @param[in] other
+     *   Other ARINC 665 file.
      **/
     Arinc665File( const Arinc665File &other ) noexcept = default;
 

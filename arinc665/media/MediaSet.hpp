@@ -612,9 +612,6 @@ class ARINC665_EXPORT MediaSet : public Base
     /**
      * @brief Returns the Files Check Value Type.
      *
-     * @param[in] effective
-     *   If set to true the effective value is returned.
-     *
      * @return Files Check Value Type
      **/
     [[nodiscard]] std::optional< Arinc645::CheckValueType >
