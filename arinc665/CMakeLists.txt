@@ -88,8 +88,8 @@ target_sources(
   arinc665_test
 
   PRIVATE
-    PartNumberTest.cpp
-    VersionTest.cpp )
+    test/PartNumberTest.cpp
+    test/VersionTest.cpp )
 
 target_include_directories(
   arinc665_test
@@ -143,7 +143,7 @@ install(
   COMPONENT development
   FILES_MATCHING
     PATTERN "*.hpp"
-    PATTERN "*Test.*" EXCLUDE
+    PATTERN "*/test/*" EXCLUDE
     PATTERN "implementation" EXCLUDE )
 
 install(

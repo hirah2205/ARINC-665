@@ -47,12 +47,12 @@ target_sources(
   arinc665_test
 
   PRIVATE
-    BatchFileTest.cpp
-    BatchListFileTest.cpp
-    BatchLoadInfoTest.cpp
-    CheckValueUtilsTest.cpp
-    FileListFileTest.cpp
-    LoadFileInfoTest.cpp
-    LoadHeaderFileTest.cpp
-    LoadListFileTest.cpp
-    StringUtilsTest.cpp )
+    test/BatchFileTest.cpp
+    test/BatchListFileTest.cpp
+    test/BatchLoadInfoTest.cpp
+    test/CheckValueUtilsTest.cpp
+    test/FileListFileTest.cpp
+    test/LoadFileInfoTest.cpp
+    test/LoadHeaderFileTest.cpp
+    test/LoadListFileTest.cpp
+    test/StringUtilsTest.cpp )

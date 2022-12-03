@@ -40,14 +40,14 @@ set( DOXYGEN_PROJECT_NUMBER "${arinc665_VERSION}" )
 set( DOXYGEN_EXTRACT_PRIVATE YES )
 set( DOXYGEN_EXTRACT_PACKAGE YES )
 set( DOXYGEN_QUIET YES )
-set( DOXYGEN_WARN_NO_PARAMDOC YES )
+#set( DOXYGEN_WARN_NO_PARAMDOC YES )
 set( DOXYGEN_HTML_DYNAMIC_SECTIONS YES )
 set( DOXYGEN_GENERATE_TREEVIEW YES )
 
 set(
   DOXYGEN_EXCLUDE_PATTERNS
 
-  *Test.*
+  */test/*
   */implementation/* )
 
 set(
@@ -75,7 +75,6 @@ doxygen_add_docs(
   arinc665_api_doc
 
   ../Mainpage.md
-
   ${HELPER_DOC_PATHS}
   ${COMMANDS_DOC_PATHS}
   ${ARINC645_DOC_PATHS}
