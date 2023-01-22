@@ -85,7 +85,7 @@ install(
 
 install(
   FILES ${CMAKE_CURRENT_BINARY_DIR}/arinc665_commands_export.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/arinc665
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/arinc665_commands
   COMPONENT development )
 
 install(
