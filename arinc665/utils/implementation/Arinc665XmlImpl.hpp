@@ -10,8 +10,8 @@
  * @brief Declaration of Class Arinc665::Utils::Arinc665XmlImpl.
  **/
 
-#ifndef ARINC665_UTILS_ARINC665XMLPUGIXMLIMPL_HPP
-#define ARINC665_UTILS_ARINC665XMLPUGIXMLIMPL_HPP
+#ifndef ARINC665_UTILS_ARINC665XMLIMPL_HPP
+#define ARINC665_UTILS_ARINC665XMLIMPL_HPP
 
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
