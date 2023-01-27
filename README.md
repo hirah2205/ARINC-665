@@ -18,7 +18,7 @@ For building graphical applications an QT based library is provided which
 consist ow models, dialogs, and wizards to work with ARINC 665 media sets.
 
 ## Changes
-This section only contains changes within the standards, which are respected 
+This section only contains changes within the standards, which are respected
 within this library.
 
 ### ARINC 665-1
