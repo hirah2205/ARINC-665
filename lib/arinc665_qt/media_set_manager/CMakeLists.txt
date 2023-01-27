@@ -9,12 +9,16 @@ cmake_minimum_required( VERSION 3.24 )
 target_sources(
   arinc665_qt
 
+  PUBLIC
+    FILE_SET HEADERS
+      FILES
+        MediaSetManager.hpp
+        MediaSetManagerController.hpp
+        MediaSetManagerDialog.hpp
+        RemoveMediaSetController.hpp
+
   PRIVATE
-    MediaSetManager.hpp
-    MediaSetManagerController.hpp
     MediaSetManagerController.cpp
-    MediaSetManagerDialog.hpp
     MediaSetManagerDialog.cpp
     MediaSetManagerDialog.ui
-    RemoveMediaSetController.hpp
     RemoveMediaSetController.cpp )

@@ -9,25 +9,29 @@ cmake_minimum_required( VERSION 3.24 )
 target_sources(
   arinc665
 
+  PUBLIC
+    FILE_SET HEADERS
+      FILES
+        Base.hpp
+        Batch.hpp
+        ContainerEntity.hpp
+        Directory.hpp
+        File.hpp
+        Load.hpp
+        Media.hpp
+        MediaSet.hpp
+        Medium.hpp
+        RegularFile.hpp
+
   PRIVATE
-    Base.hpp
-    File.hpp
-    File.cpp
-    Batch.hpp
     Batch.cpp
-    ContainerEntity.hpp
     ContainerEntity.cpp
-    Directory.hpp
     Directory.cpp
-    RegularFile.hpp
-    RegularFile.cpp
-    Load.hpp
+    File.cpp
     Load.cpp
-    Media.hpp
-    MediaSet.hpp
     MediaSet.cpp
-    Medium.hpp
-    Medium.cpp )
+    Medium.cpp
+    RegularFile.cpp )
 
 target_sources(
   arinc665_test

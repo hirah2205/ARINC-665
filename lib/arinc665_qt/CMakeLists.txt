@@ -18,23 +18,27 @@ set( CMAKE_AUTORCC ON )
 
 add_library( arinc665_qt )
 
+include( GenerateExportHeader )
+generate_export_header( arinc665_qt )
+
 target_sources(
   arinc665_qt
 
+  PUBLIC
+    FILE_SET HEADERS
+      BASE_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/..
+        ${CMAKE_CURRENT_BINARY_DIR}/..
+      FILES
+        Arinc665Qt.hpp
+        Arinc665QtLogger.hpp
+        MediaSetController.hpp
+        ${CMAKE_CURRENT_BINARY_DIR}/arinc665_qt_export.h
   PRIVATE
-    Arinc665Qt.hpp
-    Arinc665QtLogger.hpp
-    MediaSetController.hpp
     MediaSetController.cpp
     MediaSetDialog.hpp
     MediaSetDialog.cpp
     MediaSetDialog.ui )
-
-target_include_directories(
-  arinc665_qt
-  PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..> )
 
 target_compile_features( arinc665_qt PUBLIC cxx_std_20 )
 
@@ -60,8 +64,6 @@ target_link_libraries(
   PRIVATE
     helper_qt )
 
-include( GenerateExportHeader )
-generate_export_header( arinc665_qt )
 
 add_subdirectory( import_media_set_xml )
 add_subdirectory( media )
@@ -79,24 +81,14 @@ set_property(
   APPEND
   PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
 
+
 install(
   TARGETS arinc665_qt
   RUNTIME_DEPENDENCY_SET runtime-libs
   EXPORT arinc665_qt-config
   COMPONENT runtime
-  ARCHIVE COMPONENT development )
-
-install(
-  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  TYPE INCLUDE
-  COMPONENT development
-  FILES_MATCHING
-    PATTERN "*.hpp" )
-
-install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/arinc665_qt_export.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/arinc665_qt
-  COMPONENT development )
+  ARCHIVE COMPONENT development
+  FILE_SET HEADERS COMPONENT development )
 
 install(
   EXPORT arinc665_qt-config

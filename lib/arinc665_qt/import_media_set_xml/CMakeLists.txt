@@ -9,13 +9,17 @@ cmake_minimum_required( VERSION 3.24 )
 target_sources(
   arinc665_qt
 
+  PUBLIC
+    FILE_SET HEADERS
+      FILES
+        ImportMediaSetXml.hpp
+        ImportMediaSetXmlController.hpp
+        ImportMediaSetXmlSettingsPage.hpp
+        ImportMediaSetXmlWizard.hpp
+
   PRIVATE
-    ImportMediaSetXml.hpp
-    ImportMediaSetXmlController.hpp
     ImportMediaSetXmlController.cpp
-    ImportMediaSetXmlSettingsPage.hpp
     ImportMediaSetXmlSettingsPage.cpp
     ImportMediaSetXmlSettingsPage.ui
-    ImportMediaSetXmlWizard.hpp
     ImportMediaSetXmlWizard.cpp
     ImportMediaSetXmlWizard.ui )

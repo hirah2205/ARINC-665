@@ -9,7 +9,11 @@ cmake_minimum_required( VERSION 3.24 )
 target_sources(
   arinc665_qt
 
+  PUBLIC
+    FILE_SET HEADERS
+      FILES
+        Resources.hpp
+
   PRIVATE
-    Resources.hpp
     Resources.cpp
     arinc665_qt_resources.qrc )

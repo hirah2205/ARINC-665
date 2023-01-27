@@ -90,16 +90,11 @@ endif()
 
 FetchContent_MakeAvailable( helper arinc645 commands )
 
+add_subdirectory( lib )
+add_subdirectory( app )
+add_subdirectory( doc )
 
-add_subdirectory( arinc665 )
-add_subdirectory( arinc665_commands )
-add_subdirectory( arinc665_qt )
 add_subdirectory( arinc665_xml )
-
-add_subdirectory( application )
-
-add_subdirectory( arinc665_doc )
-
 add_subdirectory( test )
 
 install(

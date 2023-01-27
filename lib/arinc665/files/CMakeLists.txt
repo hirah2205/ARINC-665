@@ -9,38 +9,42 @@ cmake_minimum_required( VERSION 3.24 )
 target_sources(
   arinc665
 
+  PUBLIC
+    FILE_SET HEADERS
+      FILES
+        Arinc665File.hpp
+        BatchFile.hpp
+        BatchInfo.hpp
+        BatchListFile.hpp
+        BatchLoadInfo.hpp
+        BatchTargetInfo.hpp
+        CheckValueUtils.hpp
+        FileInfo.hpp
+        FileListFile.hpp
+        Files.hpp
+        ListFile.hpp
+        LoadFileInfo.hpp
+        LoadHeaderFile.hpp
+        LoadInfo.hpp
+        LoadListFile.hpp
+        MediaSetInformation.hpp
+        StringUtils.hpp
+
   PRIVATE
-    Arinc665File.hpp
     Arinc665File.cpp
-    BatchFile.hpp
     BatchFile.cpp
-    BatchInfo.hpp
     BatchInfo.cpp
-    BatchListFile.hpp
     BatchListFile.cpp
-    BatchLoadInfo.hpp
     BatchLoadInfo.cpp
-    BatchTargetInfo.hpp
     BatchTargetInfo.cpp
     CheckValueUtils.cpp
-    CheckValueUtils.hpp
-    FileInfo.hpp
     FileInfo.cpp
-    FileListFile.hpp
     FileListFile.cpp
-    Files.hpp
-    ListFile.hpp
     ListFile.cpp
-    LoadFileInfo.hpp
     LoadFileInfo.cpp
-    LoadHeaderFile.hpp
     LoadHeaderFile.cpp
-    LoadInfo.hpp
     LoadInfo.cpp
-    LoadListFile.hpp
     LoadListFile.cpp
-    MediaSetInformation.hpp
-    StringUtils.hpp
     StringUtils.cpp )
 
 target_sources(

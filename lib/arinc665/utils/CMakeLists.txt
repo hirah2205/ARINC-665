@@ -9,28 +9,32 @@ cmake_minimum_required( VERSION 3.24 )
 target_sources(
   arinc665
 
+  PUBLIC
+    FILE_SET HEADERS
+      FILES
+        Arinc665Xml.hpp
+        FileCreationPolicyDescription.hpp
+        FilePrinter.hpp
+        JsonMediaSetManager.hpp
+        MediaSetExporter.hpp
+        MediaSetImporter.hpp
+        MediaSetManager.hpp
+        MediaSetManagerConfiguration.hpp
+        MediaSetPrinter.hpp
+        MediaSetValidator.hpp
+        Utils.hpp
+
   PRIVATE
-    Arinc665Xml.hpp
     Arinc665Xml.cpp
-    FileCreationPolicyDescription.hpp
     FileCreationPolicyDescription.cpp
-    FilePrinter.hpp
     FilePrinter.cpp
-    JsonMediaSetManager.hpp
     JsonMediaSetManager.cpp
-    MediaSetExporter.hpp
     MediaSetExporter.cpp
-    MediaSetImporter.hpp
     MediaSetImporter.cpp
-    MediaSetManager.hpp
     MediaSetManager.cpp
-    MediaSetManagerConfiguration.hpp
     MediaSetManagerConfiguration.cpp
-    MediaSetPrinter.hpp
     MediaSetPrinter.cpp
-    MediaSetValidator.hpp
     MediaSetValidator.cpp
-    Utils.hpp
     Utils.cpp )
 
 #target_sources(

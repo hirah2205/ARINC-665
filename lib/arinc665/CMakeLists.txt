@@ -22,27 +22,32 @@ configure_file( Version.cpp.in Version.cpp )
 
 add_library( arinc665 )
 
+include( GenerateExportHeader )
+generate_export_header( arinc665 )
+
 target_sources(
   arinc665
 
+  PUBLIC
+    FILE_SET HEADERS
+      BASE_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/..
+        ${CMAKE_CURRENT_BINARY_DIR}/..
+      FILES
+        Arinc665.hpp
+        Arinc665Exception.hpp
+        Arinc665Logger.hpp
+        FileTypeDescription.hpp
+        PartNumber.hpp
+        SupportedArinc665VersionDescription.hpp
+        Version.hpp
+        ${CMAKE_CURRENT_BINARY_DIR}/arinc665_export.h
+
   PRIVATE
-    Arinc665.hpp
-    Arinc665Exception.hpp
-    Arinc665Logger.hpp
-    FileTypeDescription.hpp
     FileTypeDescription.cpp
-    PartNumber.hpp
     PartNumber.cpp
     SupportedArinc665VersionDescription.cpp
-    SupportedArinc665VersionDescription.hpp
-    Version.hpp
     ${CMAKE_CURRENT_BINARY_DIR}/Version.cpp )
-
-target_include_directories(
-  arinc665
-  PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..> )
 
 target_compile_features( arinc665 PUBLIC cxx_std_20 )
 
@@ -77,9 +82,6 @@ target_link_libraries(
   PRIVATE
     fmt::fmt
     PkgConfig::Libxmlpp )
-
-include( GenerateExportHeader )
-generate_export_header( arinc665 )
 
 
 add_library( arinc665_test OBJECT )
@@ -117,39 +119,26 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
 
-target_link_libraries(
-  arinc665_test
-  PUBLIC arinc665 )
+target_link_libraries( arinc665_test PUBLIC arinc665 )
 
 add_subdirectory( files )
 add_subdirectory( media )
 add_subdirectory( utils )
+
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}
   APPEND
   PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
 
+
 install(
   TARGETS arinc665
   RUNTIME_DEPENDENCY_SET runtime-libs
   EXPORT arinc665-config
   COMPONENT runtime
-  ARCHIVE COMPONENT development )
-
-install(
-  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  TYPE INCLUDE
-  COMPONENT development
-  FILES_MATCHING
-    PATTERN "*.hpp"
-    PATTERN "*/test/*" EXCLUDE
-    PATTERN "implementation" EXCLUDE )
-
-install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/arinc665_export.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/arinc665
-  COMPONENT development )
+  ARCHIVE COMPONENT development
+  FILE_SET HEADERS COMPONENT development )
 
 install(
   EXPORT arinc665-config

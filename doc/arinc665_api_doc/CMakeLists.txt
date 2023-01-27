@@ -53,23 +53,23 @@ set(
 set(
   DOXYGEN_STRIP_FROM_PATH
 
-  ${helper_SOURCE_DIR}
-  ${helper_SOURCE_DIR}/application
-  ${commands_SOURCE_DIR}
-  ${commands_SOURCE_DIR}/application
-  ${arinc645_SOURCE_DIR}
-  ${arinc645_SOURCE_DIR}/application
-  ${arinc665_SOURCE_DIR}
-  ${arinc665_SOURCE_DIR}/application )
+  ${helper_SOURCE_DIR}/lib
+  ${helper_SOURCE_DIR}/app
+  ${commands_SOURCE_DIR}/lib
+  ${commands_SOURCE_DIR}/app
+  ${arinc645_SOURCE_DIR}/lib
+  ${arinc645_SOURCE_DIR}/app
+  ${arinc665_SOURCE_DIR}/lib
+  ${arinc665_SOURCE_DIR}/app )
 
 set(
   DOXYGEN_INCLUDE_PATH
 
   ${Boost_INCLUDE_DIRS}
-  ${helper_SOURCE_DIR}
-  ${commands_SOURCE_DIR}
-  ${arinc645_SOURCE_DIR}
-  ${arinc665_SOURCE_DIR} )
+  ${helper_SOURCE_DIR}/lib
+  ${commands_SOURCE_DIR}/lib
+  ${arinc645_SOURCE_DIR}/lib
+  ${arinc665_SOURCE_DIR}/lib )
 
 doxygen_add_docs(
   arinc665_api_doc

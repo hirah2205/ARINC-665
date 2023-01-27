@@ -10,30 +10,35 @@ find_package( fmt REQUIRED )
 
 add_library( arinc665_commands )
 
+include( GenerateExportHeader )
+generate_export_header( arinc665_commands )
+
 target_sources(
   arinc665_commands
 
-  PRIVATE
-    Arinc665Commands.hpp
-    Arinc665Commands.cpp
-    CreateMediaSetManagerCommand.hpp
-    CreateMediaSetManagerCommand.cpp
-    ImportMediaSetCommand.hpp
-    ImportMediaSetCommand.cpp
-    ImportMediaSetXmlCommand.hpp
-    ImportMediaSetXmlCommand.cpp
-    ListLoadsCommand.hpp
-    ListLoadsCommand.cpp
-    ListMediaSetsCommand.hpp
-    ListMediaSetsCommand.cpp
-    RemoveMediaSetCommand.hpp
-    RemoveMediaSetCommand.cpp )
-
-target_include_directories(
-  arinc665_commands
   PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..> )
+    FILE_SET HEADERS
+      BASE_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/..
+        ${CMAKE_CURRENT_BINARY_DIR}/..
+      FILES
+        Arinc665Commands.hpp
+        CreateMediaSetManagerCommand.hpp
+        ImportMediaSetCommand.hpp
+        ImportMediaSetXmlCommand.hpp
+        ListLoadsCommand.hpp
+        ListMediaSetsCommand.hpp
+        RemoveMediaSetCommand.hpp
+
+  PRIVATE
+    Arinc665Commands.cpp
+    CreateMediaSetManagerCommand.cpp
+    ImportMediaSetCommand.cpp
+    ImportMediaSetXmlCommand.cpp
+    ListLoadsCommand.cpp
+    ListMediaSetsCommand.cpp
+    RemoveMediaSetCommand.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/arinc665_commands_export.h )
 
 target_compile_features( arinc665_commands PUBLIC cxx_std_20 )
 
@@ -59,34 +64,20 @@ target_link_libraries(
   PRIVATE
     fmt::fmt )
 
-include( GenerateExportHeader )
-generate_export_header( arinc665_commands )
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}
   APPEND
   PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
 
+
 install(
   TARGETS arinc665_commands
   RUNTIME_DEPENDENCY_SET runtime-libs
   EXPORT arinc665_commands-config
   COMPONENT runtime
-  ARCHIVE COMPONENT development )
-
-install(
-  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  TYPE INCLUDE
-  COMPONENT development
-  FILES_MATCHING
-    PATTERN "*.hpp"
-    PATTERN "*Test.*" EXCLUDE
-    PATTERN "implementation" EXCLUDE )
-
-install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/arinc665_commands_export.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/arinc665_commands
-  COMPONENT development )
+  ARCHIVE COMPONENT development
+  FILE_SET HEADERS COMPONENT development )
 
 install(
   EXPORT arinc665_commands-config

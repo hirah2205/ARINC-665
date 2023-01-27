@@ -9,40 +9,44 @@ cmake_minimum_required( VERSION 3.24 )
 target_sources(
   arinc665_qt
 
+  PUBLIC
+    FILE_SET HEADERS
+      FILES
+        BatchesModel.hpp
+        BatchInfoModel.hpp
+        BatchWidget.hpp
+        DirectoryWidget.hpp
+        FileWidget.hpp
+        LoadFilesModel.hpp
+        LoadsModel.hpp
+        LoadWidget.hpp
+        Media.hpp
+        MediaSetModel.hpp
+        MediaSetsModel.hpp
+        MediaSetWidget.hpp
+        MediumWidget.hpp
+        RegularFileWidget.hpp
+        TargetHardwareIdsPositionsModel.hpp
+
   PRIVATE
-    BatchesModel.hpp
     BatchesModel.cpp
-    BatchInfoModel.hpp
     BatchInfoModel.cpp
-    BatchWidget.hpp
     BatchWidget.cpp
     BatchWidget.ui
-    DirectoryWidget.hpp
     DirectoryWidget.cpp
     DirectoryWidget.ui
-    FileWidget.hpp
     FileWidget.cpp
     FileWidget.ui
-    LoadFilesModel.hpp
     LoadFilesModel.cpp
-    LoadsModel.hpp
     LoadsModel.cpp
-    LoadWidget.hpp
     LoadWidget.cpp
     LoadWidget.ui
-    Media.hpp
-    MediaSetModel.hpp
     MediaSetModel.cpp
-    MediaSetsModel.hpp
     MediaSetsModel.cpp
-    MediaSetWidget.hpp
     MediaSetWidget.cpp
     MediaSetWidget.ui
-    MediumWidget.hpp
     MediumWidget.cpp
     MediumWidget.ui
-    RegularFileWidget.hpp
     RegularFileWidget.cpp
     RegularFileWidget.ui
-    TargetHardwareIdsPositionsModel.hpp
     TargetHardwareIdsPositionsModel.cpp )
