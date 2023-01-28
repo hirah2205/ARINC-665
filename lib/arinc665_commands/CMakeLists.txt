@@ -29,6 +29,7 @@ target_sources(
         ListLoadsCommand.hpp
         ListMediaSetsCommand.hpp
         RemoveMediaSetCommand.hpp
+        ${CMAKE_CURRENT_BINARY_DIR}/arinc665_commands_export.h
 
   PRIVATE
     Arinc665Commands.cpp
