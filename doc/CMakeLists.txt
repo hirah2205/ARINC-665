@@ -4,7 +4,7 @@
 #
 # Thomas Vogt, thomas@thomas-vogt.de
 
-cmake_minimum_required( VERSION 3.24 )
+cmake_minimum_required( VERSION 3.25 )
 
 if( NOT TARGET doc )
   add_custom_target( doc COMMENT "Generate Documentation" )
