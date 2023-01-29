@@ -17,4 +17,7 @@ set_property(
   APPEND
   PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
 
-install( TARGETS arinc665_print_xml COMPONENT runtime )
+install(
+  TARGETS arinc665_print_xml
+  RUNTIME_DEPENDENCY_SET arinc665-runtime-deps
+  COMPONENT runtime )

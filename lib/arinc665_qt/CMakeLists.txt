@@ -84,7 +84,7 @@ set_property(
 
 install(
   TARGETS arinc665_qt
-  RUNTIME_DEPENDENCY_SET runtime-libs
+  RUNTIME_DEPENDENCY_SET arinc665-runtime-deps
   EXPORT arinc665_qt-config
   COMPONENT runtime
   ARCHIVE COMPONENT development
