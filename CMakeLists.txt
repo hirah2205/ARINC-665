@@ -40,6 +40,11 @@ enable_testing()
 
 include( GNUInstallDirs )
 
+# Activate Dynamic Libraries for Boost on Windows Platform
+if( WIN32 )
+  set( Boost_USE_STATIC_LIBS OFF )
+endif()
+
 include( FetchContent )
 
 FetchContent_Declare(
