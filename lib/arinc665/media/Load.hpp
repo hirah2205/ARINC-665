@@ -32,7 +32,7 @@ namespace Arinc665::Media {
 /**
  * @brief %Load within %Media Set.
  **/
-class ARINC665_EXPORT Load : public File
+class ARINC665_EXPORT Load final : public File
 {
   public:
     //! Positions List
@@ -60,7 +60,7 @@ class ARINC665_EXPORT Load : public File
      *
      * @return FileType::LoadFile always.
      **/
-    [[nodiscard]] FileType fileType() const final;
+    [[nodiscard]] FileType fileType() const override;
 
     /**
      * @name Part Flags.

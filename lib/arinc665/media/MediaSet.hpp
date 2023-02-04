@@ -31,7 +31,7 @@ namespace Arinc665::Media {
  *
  * Each media consists of one or more files.
  **/
-class ARINC665_EXPORT MediaSet : public Base
+class ARINC665_EXPORT MediaSet final : public Base
 {
   public:
     /**
@@ -42,13 +42,13 @@ class ARINC665_EXPORT MediaSet : public Base
     MediaSet() = default;
 
     //! @copydoc Base::mediaSet() const
-    [[nodiscard]] ConstMediaSetPtr mediaSet() const final;
+    [[nodiscard]] ConstMediaSetPtr mediaSet() const override;
 
     //! @copydoc Base::mediaSet()
-    [[nodiscard]] MediaSetPtr mediaSet() final;
+    [[nodiscard]] MediaSetPtr mediaSet() override;
 
     //! @copydoc Base::type() const
-    [[nodiscard]] Type type() const final;
+    [[nodiscard]] Type type() const override;
 
     /**
      * @name %Media Set Part Number

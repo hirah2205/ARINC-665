@@ -30,7 +30,7 @@ namespace Arinc665::Media {
  * For each Target Hardware (identified by its Target Hardware ID - THW ID) a
  * list of loads is defined.
  **/
-class ARINC665_EXPORT Batch : public File
+class ARINC665_EXPORT Batch final : public File
 {
   public:
     /**
@@ -48,7 +48,7 @@ class ARINC665_EXPORT Batch : public File
      *
      * @return FileType::BatchFile always.
      **/
-    [[nodiscard]] FileType fileType() const final;
+    [[nodiscard]] FileType fileType() const override;
 
     /**
      * @name Batch Part Number

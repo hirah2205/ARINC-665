@@ -24,7 +24,7 @@ namespace Arinc665::Media {
 /**
  * @brief Regular %File within %Media Set.
  **/
-class ARINC665_EXPORT RegularFile : public File
+class ARINC665_EXPORT RegularFile final : public File
 {
   public:
     /**
@@ -49,7 +49,7 @@ class ARINC665_EXPORT RegularFile : public File
      * @retval FileType::RegularFile
      *   Always
      **/
-    [[nodiscard]] FileType fileType() const final;
+    [[nodiscard]] FileType fileType() const override;
 };
 
 }
