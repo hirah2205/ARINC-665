@@ -12,3 +12,5 @@ Tasks:
 
 @dir
 @brief ARINC 665 Media Set Validator Application.
+
+@sa @ref arinc665_check_main

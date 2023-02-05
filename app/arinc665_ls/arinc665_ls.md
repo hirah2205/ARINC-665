@@ -7,3 +7,5 @@ Set.
 
 @dir
 @brief ARINC 665 List Application.
+
+@sa @ref arinc665_ls_main

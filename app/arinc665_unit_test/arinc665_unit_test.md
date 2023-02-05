@@ -6,3 +6,5 @@ Executes the ARINC 665 Unit Tests.
 
 @dir
 @brief ARINC 665 Unit Tests Application.
+
+@sa @ref arinc665_unit_test_main

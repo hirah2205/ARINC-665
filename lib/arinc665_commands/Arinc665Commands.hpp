@@ -10,6 +10,13 @@
  * @brief Declaration of Namespace Arinc665Commands.
  **/
 
+/**
+ * @dir
+ * @brief Declaration/ Definition of Namespace Arinc665Commands
+ *
+ * @sa @ref Arinc665Commands
+ **/
+
 #ifndef ARINC665_COMMANDS_ARINC665COMMANDS_HPP
 #define ARINC665_COMMANDS_ARINC665COMMANDS_HPP
 
@@ -20,7 +27,8 @@
 /**
  * @brief ARINC 665 %Commands.
  *
- * Commands, which provides ARINC 665 Media Set Manager functionality.
+ * Commands, which provides ARINC 665 Media Set Manager functionality by using
+ * the @ref Commands library.
  **/
 namespace Arinc665Commands {
 

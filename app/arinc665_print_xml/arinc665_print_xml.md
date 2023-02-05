@@ -3,3 +3,8 @@
 Loads the given XML and prints the Loaded Media Set to console
 
 @ref arinc665_print_xml.cpp
+
+@dir
+@brief ARINC 665 XML Print Application
+
+@sa @ref arinc665_print_xml_main

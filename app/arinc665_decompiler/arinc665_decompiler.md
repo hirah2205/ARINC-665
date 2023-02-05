@@ -7,3 +7,5 @@ file.
 
 @dir
 @brief ARINC 665 Media Set Decompiler Application.
+
+@sa @ref arinc665_decompiler_main

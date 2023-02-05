@@ -6,3 +6,5 @@ Compiles ARINC 665 Media Sets based on an XML Configuration file.
 
 @dir
 @brief ARINC 665 Media Set Compiler Application.
+
+@sa @ref arinc665_compiler_main
