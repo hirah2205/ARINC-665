@@ -54,7 +54,8 @@ class ARINC665_EXPORT MediaSetExporter
      * @brief Handler, which checks the existence of a file within the Source.
      *
      * This callback is used, to check if a file exist on sources.
-     * This is used for Load Header and Batch Files.
+     * This is used for Load Header and Batch Files when the file creation
+     * policy is set to FileCreationPolicy::NoneExisting.
      *
      * @param[in] file
      *   File to check existence for.
