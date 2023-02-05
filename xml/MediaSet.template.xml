@@ -3,7 +3,7 @@
 <MediaSet
   xmlns="http://www.thomas-vogt.de/Arinc665MediaSet"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.thomas-vogt.de/Arinc665MediaSet ../arinc665_xml/Arinc665MediaSet.xsd"
+  xsi:schemaLocation="http://www.thomas-vogt.de/Arinc665MediaSet Arinc665MediaSet.xsd"
 
   PartNumber="CCC" MediaSetCheckValue="Crc64" >
 

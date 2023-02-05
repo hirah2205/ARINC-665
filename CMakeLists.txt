@@ -99,7 +99,7 @@ add_subdirectory( lib )
 add_subdirectory( app )
 add_subdirectory( doc )
 
-add_subdirectory( arinc665_xml )
+add_subdirectory( xml )
 add_subdirectory( test )
 
 install(
