@@ -43,7 +43,7 @@ int main( int argc, char * argv[] );
  * @param[in] path
  *   Path of file on medium.
  *
- * @return THe read file data.
+ * @return The read file data.
  *
  * @throw Arinc665Exception
  *   If file does not exist or cannot be read.
@@ -63,17 +63,18 @@ int main( int argc, char * argv[] )
     "ARINC 665 Media Set Validator Options");
 
   optionsDescription.add_options()
-    (
-      "help",
-      "print this help screen"
-    )
-    (
-      "medium-directory",
-      boost::program_options::value(
-        &mediaDirectories)->required()->composing(),
-      "ARINC 665 medium source directory.\n"
-      "For more media, repeat this parameter."
-    );
+  (
+    "help",
+    "print this help screen"
+  )
+  (
+    "medium-directory",
+    boost::program_options::value( &mediaDirectories )
+      ->required()
+      ->composing(),
+    "ARINC 665 medium source directory.\n"
+    "For more media, repeat this parameter."
+  );
 
   Helper::initLogging( Helper::Severity::info);
 
@@ -100,9 +101,8 @@ int main( int argc, char * argv[] )
     // create validator
     auto validator{ Arinc665::Utils::MediaSetValidator::create() };
 
-    validator->readFileHandler(
-      std::bind( &readFile, std::placeholders::_1, std::placeholders::_2 ) )
-      .informationHandler( std::bind( &printInformation, std::placeholders::_1 ) );
+    validator->readFileHandler( std::bind_front( &readFile ) )
+      .informationHandler( std::bind_front( &printInformation ) );
 
     // perform validation
     auto result{ (*validator)()};
@@ -134,7 +134,7 @@ int main( int argc, char * argv[] )
   catch ( boost::exception &e)
   {
     std::cerr
-      << "Error in validation: " << boost::diagnostic_information( e) << "\n";
+      << "Error in validation: " << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( ...)
@@ -152,20 +152,20 @@ static Arinc665::Files::RawFile readFile(
   const std::filesystem::path &path)
 {
   // check medium number
-  if ( mediumNumber > mediaDirectories.size())
+  if ( mediumNumber > mediaDirectories.size() )
   {
     return {};
   }
 
-  auto filePath{ mediaDirectories[ mediumNumber-1] / path.relative_path()};
+  auto filePath{ mediaDirectories[ mediumNumber-1] / path.relative_path() };
 
   // check existence of file
   if ( !std::filesystem::is_regular_file( filePath))
   {
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception()
-        << boost::errinfo_file_name( filePath.string())
-        << Helper::AdditionalInfo( "File not found"));
+        << boost::errinfo_file_name{ filePath.string() }
+        << Helper::AdditionalInfo{ "File not found" } );
   }
 
   Arinc665::Files::RawFile data( std::filesystem::file_size( filePath ) );
@@ -175,10 +175,10 @@ static Arinc665::Files::RawFile readFile(
     filePath.string().c_str(),
     std::ifstream::binary | std::ifstream::in };
 
-  if ( !file.is_open())
+  if ( !file.is_open() )
   {
-    BOOST_THROW_EXCEPTION(Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo( "Error opening files"));
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "Error opening files" } );
   }
 
   // read the data to the buffer
@@ -190,7 +190,7 @@ static Arinc665::Files::RawFile readFile(
   return data;
 }
 
-static void printInformation( std::string_view information)
+static void printInformation( std::string_view information )
 {
   std::cout << "Validation: " << information << "\n";
 }
