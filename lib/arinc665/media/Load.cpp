@@ -93,20 +93,7 @@ void Load::targetHardwareIds( const TargetHardwareIds &thwIds )
   }
 }
 
-void Load::targetHardwareId(
-  std::string_view targetHardwareId,
-  const Positions &positions )
-{
-  // as long there is no override with key like std::map::find we have to
-  // manually cast to key_type
-  targetHardwareIdPositionsV.insert_or_assign(
-    TargetHardwareIdPositions::key_type{ targetHardwareId },
-    positions );
-}
-
-void Load::targetHardwareId(
-  std::string &&targetHardwareId,
-  Positions &&positions )
+void Load::targetHardwareId( std::string targetHardwareId, Positions positions )
 {
   targetHardwareIdPositionsV.insert_or_assign(
     std::move( targetHardwareId ),

@@ -166,13 +166,8 @@ class ARINC665_EXPORT Load final : public File
      *   Optional additional Position specification.
      **/
     void targetHardwareId(
-      std::string_view targetHardwareId,
-      const Positions &positions = {} );
-
-    //! @copydoc targetHardwareId(std::string_view,const Positions&)
-    void targetHardwareId(
-      std::string &&targetHardwareId,
-      Positions &&positions = {} );
+      std::string targetHardwareId,
+      Positions positions = {} );
 
     /** @} **/
 
