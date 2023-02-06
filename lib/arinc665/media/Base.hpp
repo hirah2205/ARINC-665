@@ -29,15 +29,6 @@ namespace Arinc665::Media {
 class Base : public std::enable_shared_from_this< Base >
 {
   public:
-    //! Item Type
-    enum class Type
-    {
-      MediaSet,
-      Medium,
-      Directory,
-      File
-    };
-
     //! Destructor
     virtual ~Base() noexcept = default;
 

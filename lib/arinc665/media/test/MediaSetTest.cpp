@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE( constructor)
 
   BOOST_CHECK( mediaSet.partNumber().empty() );
   BOOST_CHECK( mediaSet.numberOfMedia() == 0 );
-  BOOST_CHECK( mediaSet.type() == MediaSet::Type::MediaSet );
+  BOOST_CHECK( mediaSet.type() == Type::MediaSet );
 
   BOOST_CHECK_THROW( auto ptr( mediaSet.shared_from_this()), std::bad_weak_ptr );
 

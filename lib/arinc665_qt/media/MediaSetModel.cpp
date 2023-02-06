@@ -62,7 +62,7 @@ QModelIndex MediaSetModel::index(
 
   switch ( parentBase->type() )
   {
-    case Arinc665::Media::Base::Type::MediaSet:
+    case Arinc665::Media::Type::MediaSet:
     {
       auto mediaSetParent{
         std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( parentBase ) };
@@ -82,8 +82,8 @@ QModelIndex MediaSetModel::index(
         (void*)mediaSetParent->medium( row + 1U ).get() );
     }
 
-    case Arinc665::Media::Base::Type::Medium:
-    case Arinc665::Media::Base::Type::Directory:
+    case Arinc665::Media::Type::Medium:
+    case Arinc665::Media::Type::Directory:
     {
       auto containerParent{
         std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >(
@@ -111,7 +111,7 @@ QModelIndex MediaSetModel::index(
       return createIndex( row, column, (void*)fileIt->get() );
     }
 
-    case Arinc665::Media::Base::Type::File:
+    case Arinc665::Media::Type::File:
       // file has no children
       [[fallthrough]];
 
@@ -145,22 +145,22 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
 
   switch ( base->type() )
   {
-    case Arinc665::Media::Base::Type::MediaSet:
+    case Arinc665::Media::Type::MediaSet:
       // Media set has no parent
       return {};
 
-    case Arinc665::Media::Base::Type::Medium:
+    case Arinc665::Media::Type::Medium:
       // A medium has the single media set as parent.
       return createIndex( 0, 0, (void*)base->mediaSet().get() );
 
-    case Arinc665::Media::Base::Type::Directory:
+    case Arinc665::Media::Type::Directory:
     {
       auto dir{
         std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >( base ) };
 
       assert( dir );
 
-      if ( Arinc665::Media::Base::Type::Medium == dir->parent()->type() )
+      if ( Arinc665::Media::Type::Medium == dir->parent()->type() )
       {
         auto parent{ std::dynamic_pointer_cast< const Arinc665::Media::Medium >(
           dir->parent() ) };
@@ -184,7 +184,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
         (void*)dir->parent().get() );
     }
 
-    case Arinc665::Media::Base::Type::File:
+    case Arinc665::Media::Type::File:
     {
       auto file{ std::dynamic_pointer_cast< const Arinc665::Media::File >( base) };
 
@@ -196,7 +196,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
         return {};
       }
 
-      if ( Arinc665::Media::Base::Type::Medium == file->parent()->type() )
+      if ( Arinc665::Media::Type::Medium == file->parent()->type() )
       {
         auto parent( std::dynamic_pointer_cast< const Arinc665::Media::Medium>(
           file->parent() ) );
@@ -250,7 +250,7 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
 
   switch ( base->type() )
   {
-    case Arinc665::Media::Base::Type::MediaSet:
+    case Arinc665::Media::Type::MediaSet:
     {
       // The media set has media
       auto mediaSet{
@@ -267,8 +267,8 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
       return ( mediaSet->numberOfMedia() !=0 );
     }
 
-    case Arinc665::Media::Base::Type::Medium:
-    case Arinc665::Media::Base::Type::Directory:
+    case Arinc665::Media::Type::Medium:
+    case Arinc665::Media::Type::Directory:
     {
       auto container{
         std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >( base ) };
@@ -284,7 +284,7 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
       return container->hasChildren();
     }
 
-    case Arinc665::Media::Base::Type::File:
+    case Arinc665::Media::Type::File:
       // A file has no children.
       return false;
 
@@ -318,7 +318,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
 
   switch ( base->type() )
   {
-    case Arinc665::Media::Base::Type::MediaSet:
+    case Arinc665::Media::Type::MediaSet:
     {
       auto mediaSet{
         std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( base ) };
@@ -335,8 +335,8 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
       return mediaSet->numberOfMedia();
     }
 
-    case Arinc665::Media::Base::Type::Medium:
-    case Arinc665::Media::Base::Type::Directory:
+    case Arinc665::Media::Type::Medium:
+    case Arinc665::Media::Type::Directory:
     {
       auto container{
         std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >( base ) };
@@ -354,7 +354,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
         container->numberOfSubdirectories() + container->numberOfFiles() );
     }
 
-    case Arinc665::Media::Base::Type::File:
+    case Arinc665::Media::Type::File:
       // A file has no children.
       return 0;
 
@@ -399,7 +399,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
 
           switch ( base->type() )
           {
-            case Arinc665::Media::Base::Type::MediaSet:
+            case Arinc665::Media::Type::MediaSet:
               icon.addFile(
                 QString::fromUtf8(
                   ":/media_set/arinc665_media_set.svg" ),
@@ -408,7 +408,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
                 QIcon::Off );
               break;
 
-            case Arinc665::Media::Base::Type::Medium:
+            case Arinc665::Media::Type::Medium:
               icon.addFile(
                 QString::fromUtf8(
                   ":/media_set/arinc665_medium.svg" ),
@@ -417,7 +417,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
                 QIcon::Off );
               break;
 
-            case Arinc665::Media::Base::Type::Directory:
+            case Arinc665::Media::Type::Directory:
               icon.addFile(
                 QString::fromUtf8(
                   ":/media_set/arinc665_directory.svg" ),
@@ -426,7 +426,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
                 QIcon::Off );
               break;
 
-            case Arinc665::Media::Base::Type::File:
+            case Arinc665::Media::Type::File:
             {
               auto file{
                 std::dynamic_pointer_cast< const Arinc665::Media::File >( base ) };
@@ -493,7 +493,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
         case Columns::Name:
           switch ( base->type() )
           {
-            case Arinc665::Media::Base::Type::MediaSet:
+            case Arinc665::Media::Type::MediaSet:
             {
               auto mediaSet{
                 std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( base) };
@@ -509,7 +509,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               return HelperQt::toQString( mediaSet->partNumber() );
             }
 
-            case Arinc665::Media::Base::Type::Medium:
+            case Arinc665::Media::Type::Medium:
             {
               auto medium{
                 std::dynamic_pointer_cast< const Arinc665::Media::Medium >( base) };
@@ -525,7 +525,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               return medium->mediumNumber();
             }
 
-            case Arinc665::Media::Base::Type::Directory:
+            case Arinc665::Media::Type::Directory:
             {
               auto directory{
                 std::dynamic_pointer_cast< const Arinc665::Media::Directory >( base) };
@@ -541,7 +541,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               return HelperQt::toQString( directory->name() );
             }
 
-            case Arinc665::Media::Base::Type::File:
+            case Arinc665::Media::Type::File:
             {
               auto file{
                 std::dynamic_pointer_cast< const Arinc665::Media::File >( base) };
@@ -564,16 +564,16 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
         case Columns::Type:
           switch ( base->type())
           {
-            case Arinc665::Media::Base::Type::MediaSet:
+            case Arinc665::Media::Type::MediaSet:
               return tr( "Media Set" );
 
-            case Arinc665::Media::Base::Type::Medium:
+            case Arinc665::Media::Type::Medium:
               return tr(  "Medium" );
 
-            case Arinc665::Media::Base::Type::Directory:
+            case Arinc665::Media::Type::Directory:
               return tr(  "Directory" );
 
-            case Arinc665::Media::Base::Type::File:
+            case Arinc665::Media::Type::File:
             {
               auto file{
                 std::dynamic_pointer_cast< const Arinc665::Media::File >( base ) };

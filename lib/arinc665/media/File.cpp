@@ -39,7 +39,7 @@ MediaSetPtr File::mediaSet()
   return {};
 }
 
-File::Type File::type() const
+Type File::type() const
 {
   return Type::File;
 }

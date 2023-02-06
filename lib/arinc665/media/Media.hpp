@@ -39,6 +39,15 @@
  **/
 namespace Arinc665::Media {
 
+//! Item Type
+enum class Type
+{
+  MediaSet,
+  Medium,
+  Directory,
+  File
+};
+
 //! File Type
 enum class FileType
 {
@@ -247,9 +256,9 @@ using BatchTargetInformationVariant =
  * @{
  **/
 
-//! Tuple of directory an const file
+//! Tuple of directory a const file
 using ConstDirectoryFileTuple  = std::tuple< const Directory&, ConstFilePtr>;
-//! Tuple of directory an file
+//! Tuple of directory a file
 using DirectoryFileTuple = std::tuple< Directory&, FilePtr>;
 
 /** @} **/

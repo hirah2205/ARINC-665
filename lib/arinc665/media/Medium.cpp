@@ -42,7 +42,7 @@ MediaSetPtr Medium::mediaSet()
   return mediaSetV.lock();
 }
 
-Medium::Type Medium::type() const
+Type Medium::type() const
 {
   return Type::Medium;
 }

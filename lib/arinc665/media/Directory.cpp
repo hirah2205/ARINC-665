@@ -51,7 +51,7 @@ MediaSetPtr Directory::mediaSet()
   return parentPtr->mediaSet();
 }
 
-Directory::Type Directory::type() const
+Type Directory::type() const
 {
   return Type::Directory;
 }

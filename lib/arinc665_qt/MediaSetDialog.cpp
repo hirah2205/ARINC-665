@@ -27,7 +27,7 @@
 namespace Arinc665Qt {
 
 MediaSetDialog::MediaSetDialog( QWidget * const parent ):
-  QDialog{ parent},
+  QDialog{ parent },
   ui{ std::make_unique< Ui::MediaSetDialog>() },
   mediaSetModelV{ nullptr }
 {
@@ -84,7 +84,7 @@ void MediaSetDialog::itemSelected( const QModelIndex &index )
 
   switch ( element->type() )
   {
-    case Arinc665::Media::Base::Type::MediaSet:
+    case Arinc665::Media::Type::MediaSet:
     {
       const auto mediaSet{
         std::dynamic_pointer_cast< const Arinc665::Media::MediaSet>( element ) };
@@ -94,21 +94,21 @@ void MediaSetDialog::itemSelected( const QModelIndex &index )
       break;
     }
 
-    case Arinc665::Media::Base::Type::Medium:
+    case Arinc665::Media::Type::Medium:
       ui->detailsStackedWidget->setCurrentIndex( 1 );
       ui->mediumWidget->selectedMedium( index );
       ui->mediumWidget->selectedMedium(
         std::dynamic_pointer_cast< const Arinc665::Media::Medium>( element ) );
       break;
 
-    case Arinc665::Media::Base::Type::Directory:
+    case Arinc665::Media::Type::Directory:
       ui->detailsStackedWidget->setCurrentIndex( 2 );
       ui->directoryWidget->selectedDirectory( index );
       ui->directoryWidget->selectedDirectory(
         std::dynamic_pointer_cast< const Arinc665::Media::Directory>( element ) );
       break;
 
-    case Arinc665::Media::Base::Type::File:
+    case Arinc665::Media::Type::File:
       ui->detailsStackedWidget->setCurrentIndex( 3 );
       ui->fileWidget->selectedFile(
         mediaSetModelV,
