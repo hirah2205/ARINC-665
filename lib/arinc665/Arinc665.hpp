@@ -17,6 +17,7 @@
 
 #include <string_view>
 #include <vector>
+#include <optional>
 #include <cstdint>
 
 /**
@@ -187,7 +188,11 @@ constexpr std::string_view LoadUploadHeaderExtension{ ".LUH" };
 //! Default Extension of a Batch File.
 constexpr std::string_view BatchFileExtension{ ".LUB" };
 
+class MediumNumber;
 class PartNumber;
+
+//! Optional Medium Number
+using OptionalMediumNumber = std::optional< MediumNumber >;
 
 }
 

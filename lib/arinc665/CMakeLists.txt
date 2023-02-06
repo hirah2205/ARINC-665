@@ -38,6 +38,7 @@ target_sources(
         Arinc665Exception.hpp
         Arinc665Logger.hpp
         FileTypeDescription.hpp
+        MediumNumber.hpp
         PartNumber.hpp
         SupportedArinc665VersionDescription.hpp
         Version.hpp
@@ -45,6 +46,7 @@ target_sources(
 
   PRIVATE
     FileTypeDescription.cpp
+    MediumNumber.cpp
     PartNumber.cpp
     SupportedArinc665VersionDescription.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/Version.cpp )
@@ -90,6 +92,7 @@ target_sources(
   arinc665_test
 
   PRIVATE
+    test/MediumNumberTest.cpp
     test/PartNumberTest.cpp
     test/VersionTest.cpp )
 
