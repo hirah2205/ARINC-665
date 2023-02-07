@@ -36,12 +36,10 @@
     </keyref>
   </element>
 
-  <element name="Medium"   type="ams:MediumType" >
-  </element>
+  <element name="Content"   type="ams:ContentType" />
 
   <element name="Loads"    type="ams:LoadsType" />
-  <element name="Load"     type="ams:LoadType" >
-  </element>
+  <element name="Load"     type="ams:LoadType" />
 
   <element name="Batches"  type="ams:BatchesType" />
   <element name="Batch"    type="ams:BatchType" />
@@ -55,7 +53,7 @@
       <element name="LoadsUserDefinedData"   type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
       <element name="BatchesUserDefinedData" type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
 
-      <element ref="ams:Medium"  minOccurs="1" maxOccurs="unbounded" />
+      <element ref="ams:Content" minOccurs="1" maxOccurs="1" />
       <element ref="ams:Loads"   minOccurs="1" maxOccurs="1" />
       <element ref="ams:Batches" minOccurs="0" maxOccurs="1" />
     </sequence>
@@ -67,22 +65,24 @@
     <attribute name="FilesCheckValue"         type="ams:CheckValueType" use="optional" />
   </complexType>
 
-  <complexType name="MediumType" >
+  <complexType name="ContentType" >
     <annotation><documentation>
-      Medium
+      Content
     </documentation></annotation>
     <sequence>
       <group ref="ams:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
+    <attribute name="DefaultMedium" type="ams:MediumType" use="optional" default="1" />
   </complexType>
 
   <complexType name="FileType" abstract="true" >
     <annotation><documentation>
       Base of all Files
     </documentation></annotation>
-    <attribute name="Name"       type="ams:NameType"       use="required" />
+    <attribute name="Name"       type="ams:FilenameType"   use="required" />
     <attribute name="CheckValue" type="ams:CheckValueType" use="optional" />
     <attribute name="SourcePath" type="string"             use="optional" />
+    <attribute name="Medium"     type="ams:MediumType"     use="optional" />
   </complexType>
 
   <complexType name="RegularFileType" >
@@ -91,9 +91,10 @@
     </documentation></annotation>
     <complexContent>
       <restriction base="ams:FileType" >
-        <attribute name="Name"       type="ams:NameType"       use="required" />
+        <attribute name="Name"       type="ams:FilenameType"   use="required" />
         <attribute name="CheckValue" type="ams:CheckValueType" use="optional" />
         <attribute name="SourcePath" type="string"             use="optional" />
+        <attribute name="Medium"     type="ams:MediumType"     use="optional"  />
       </restriction>
     </complexContent>
   </complexType>
@@ -104,9 +105,10 @@
     </documentation></annotation>
     <complexContent>
       <restriction base="ams:FileType" >
-        <attribute name="Name"       type="ams:NameType"       use="required" />
+        <attribute name="Name"       type="ams:FilenameType"   use="required" />
         <attribute name="CheckValue" type="ams:CheckValueType" use="optional" />
         <attribute name="SourcePath" type="string"             use="optional" />
+        <attribute name="Medium"     type="ams:MediumType"     use="optional" />
       </restriction>
     </complexContent>
   </complexType>
@@ -117,9 +119,10 @@
     </documentation></annotation>
     <complexContent>
       <restriction base="ams:FileType" >
-        <attribute name="Name"       type="ams:NameType"       use="required" />
+        <attribute name="Name"       type="ams:FilenameType"   use="required" />
         <attribute name="CheckValue" type="ams:CheckValueType" use="optional" />
         <attribute name="SourcePath" type="string"             use="optional" />
+        <attribute name="Medium"     type="ams:MediumType"     use="optional" />
       </restriction>
     </complexContent>
   </complexType>
@@ -131,7 +134,8 @@
     <sequence>
       <group ref="ams:DirectoryFileGroup" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
-    <attribute name="Name" type="ams:NameType" use="required" />
+    <attribute name="Name"          type="ams:FilenameType" use="required" />
+    <attribute name="DefaultMedium" type="ams:MediumType"   use="optional" />
   </complexType>
 
   <complexType name="LoadsType" >
@@ -153,7 +157,7 @@
       <element name="SupportFile"     type="ams:FileReferenceType"   minOccurs="0" maxOccurs="unbounded" />
       <element name="UserDefinedData" type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
     </sequence>
-    <attribute name="NameRef"     type="ams:NameRefType"    use="required" />
+    <attribute name="FilePath"    type="ams:FilePathType"   use="required" />
     <attribute name="PartNumber"  type="ams:PartNumberType" use="required" />
     <attribute name="PartFlags"   type="ams:HexValueType"   use="optional" default="0x0000" />
     <attribute name="Description" type="ams:StringType"     use="optional" />
@@ -184,7 +188,7 @@
     <annotation><documentation>
       File Reference (part of Load)
     </documentation></annotation>
-    <attribute name="NameRef"    type="ams:StringType"     use="required" />
+    <attribute name="FilePath"   type="ams:FilePathType"   use="required" />
     <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
     <attribute name="CheckValue" type="ams:CheckValueType" use="optional" />
   </complexType>
@@ -206,7 +210,7 @@
     <sequence>
       <element name="Target" type="ams:BatchTargetType" minOccurs="1" maxOccurs="unbounded" />
     </sequence>
-    <attribute name="NameRef"    type="ams:NameRefType"    use="required" />
+    <attribute name="FilePath"   type="ams:FilePathType"   use="required" />
     <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
     <attribute name="Comment"    type="ams:StringType"     use="optional" />
   </complexType>
@@ -225,7 +229,7 @@
     <annotation><documentation>
       References a Load contained in the Media Set
     </documentation></annotation>
-    <attribute name="NameRef" type="ams:NameRefType" use="required" />
+    <attribute name="FilePath" type="ams:FilePathType" use="required" />
   </complexType>
 
   <simpleType name="UserDefinedDataType" >
@@ -234,6 +238,13 @@
       Additionally, it can be added to File, Batches and Load Lists.
     </documentation></annotation>
     <restriction base="string" />
+  </simpleType>
+
+  <simpleType name="MediumType" >
+    <annotation><documentation>
+      Medium Number allowed 1..255.
+    </documentation></annotation>
+    <restriction base="unsignedByte" />
   </simpleType>
 
   <simpleType name="PartNumberType" >
@@ -250,19 +261,27 @@
     <restriction base="string" />
   </simpleType>
 
-  <simpleType name="NameType" >
+  <simpleType name="FilenameType" >
     <annotation><documentation>
-      File Name
+      File Name.
+      Restricted to Characters A-Z, a-z, 0-9, '.', '_', '-'.
+      Not allowed, but not checked: "." and ".."
     </documentation></annotation>
-    <restriction base="ams:StringType" >
+    <restriction base="string" >
+      <minLength value="1" />
+      <pattern value="[A-Za-z0-9._-]+" />
     </restriction>
   </simpleType>
 
-  <simpleType name="NameRefType" >
+  <simpleType name="FilePathType" >
     <annotation><documentation>
-      File Name Reference
+      File Path Reference separated by "/"
+      Restricted to Characters.
+      Not allowed, but not checked: "." and ".."
     </documentation></annotation>
-    <restriction base="ams:StringType" >
+    <restriction base="string" >
+      <minLength value="2" />
+      <pattern value="(/[A-Za-z0-9._-]+)+" />
     </restriction>
   </simpleType>
 
@@ -282,7 +301,8 @@
 
   <simpleType name="TargetHardwareIdPosType" >
     <annotation><documentation>
-      Target Hardware ID - Position Information
+      Target Hardware ID - Position Information.
+      Target Hardware ID with Position is available since ARINC 665-3.
     </documentation></annotation>
     <restriction base="string" />
   </simpleType>
@@ -293,6 +313,7 @@
       There is a difference between 'NotUsed' and omitted attribute.
       If no check value is given, the parent setting is used.
       With this handling a check value can be explicitly disabled again.
+      Load Check Values are used since ARINC 665-3.
     </documentation></annotation>
     <restriction base="string" >
       <enumeration value="NotUsed" />
@@ -319,7 +340,7 @@
 
   <group name="DirectoryFileGroup" >
     <annotation>
-      <documentation>Contents of media and directories</documentation>
+      <documentation>Contents of media-set and directories</documentation>
     </annotation>
     <choice>
       <element name="Directory" type="ams:DirectoryType" />
