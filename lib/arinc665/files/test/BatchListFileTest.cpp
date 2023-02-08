@@ -104,8 +104,8 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2);
 
   BOOST_CHECK( file.mediaSetPn() == "PN123");
-  BOOST_CHECK( file.mediaSequenceNumber() == 1);
-  BOOST_CHECK( file.numberOfMediaSetMembers() == 1);
+  BOOST_CHECK( file.mediaSequenceNumber() == MediumNumber{ 1U } );
+  BOOST_CHECK( file.numberOfMediaSetMembers() == MediumNumber{ 1U } );
 
   const auto& batches{ file.batches()};
   BOOST_CHECK( batches.size() == 2);
@@ -113,12 +113,12 @@ BOOST_AUTO_TEST_CASE( constructor1)
   auto batch{ batches.begin()};
   BOOST_CHECK( batch->partNumber == "PN001" );
   BOOST_CHECK( batch->filename == "FN_001" );
-  BOOST_CHECK( batch->memberSequenceNumber == 1U );
+  BOOST_CHECK( batch->memberSequenceNumber == MediumNumber{ 1U } );
 
   ++batch;
   BOOST_CHECK( batch->partNumber == "PN002" );
   BOOST_CHECK( batch->filename == "FN_002" );
-  BOOST_CHECK( batch->memberSequenceNumber == 1U );
+  BOOST_CHECK( batch->memberSequenceNumber == MediumNumber{ 1U } );
 
   BOOST_CHECK( file.userDefinedData().size() == 6 );
   BOOST_CHECK( std::equal(

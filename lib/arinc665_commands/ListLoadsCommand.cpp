@@ -13,7 +13,6 @@
 #include "ListLoadsCommand.hpp"
 
 #include <arinc665/media/MediaSet.hpp>
-#include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Load.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
@@ -64,23 +63,37 @@ void ListLoadsCommand::execute( const Commands::Parameters &parameters )
       mediaSetManagerDirectory,
       checkFileIntegrity ) };
 
-    for ( const auto &load : mediaSetManager->manager()->loads() )
-    {
-      std::cout
-        << "Media Set P/N:         " << load->mediaSet()->partNumber()
-        << "\n"
-        << "Load Header File Name: " << load->name() << "\n"
-        << "Load P/N:              " << load->partNumber() << "\n";
+    const auto loads{ mediaSetManager->manager()->loads() };
 
-      if ( const auto loadType{ load->loadType() }; loadType )
+    if ( loads.empty() )
+    {
+      std::cout << "*** No loads within media set manger ***\n";
+    }
+    else
+    {
+      for ( const auto &load : loads )
       {
         std::cout
-          << "Load Type:             " << loadType->first << " ("
-          << Helper::to_hexstring( loadType->second ) << ")\n";
-      }
+          << "Media Set P/N:         " << load->mediaSet()->partNumber()
+          << "\n"
+          << "Load Header File Name: " << load->name() << "\n"
+          << "Load P/N:              " << load->partNumber() << "\n";
 
-      std::cout << "\n";
+        if ( const auto loadType{ load->loadType() }; loadType )
+        {
+          std::cout
+            << "Load Type:             " << loadType->first << " ("
+            << Helper::to_hexstring( loadType->second ) << ")\n";
+        }
+
+        std::cout << "\n";
+      }
     }
+  }
+  catch ( const boost::program_options::error & )
+  {
+    // parsing errors are handled by command handler
+    throw;
   }
   catch ( const boost::exception &e )
   {

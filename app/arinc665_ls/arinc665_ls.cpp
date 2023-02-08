@@ -104,7 +104,9 @@ static Arinc665::Files::RawFile loadFile( const std::filesystem::path &file );
 
 int main( int argc, char const * argv[] )
 {
-  std::cout << "ARINC 665 list\n";
+  BOOST_LOG_FUNCTION()
+
+  Helper::initLogging( Helper::Severity::info );
 
   boost::program_options::options_description optionsDescription{
     "ARINC 665 List options" };
@@ -125,16 +127,21 @@ int main( int argc, char const * argv[] )
 
   try
   {
-    boost::program_options::variables_map vm;
-    boost::program_options::store(
-      boost::program_options::parse_command_line( argc, argv, optionsDescription ),
-      vm);
+    std::cout << "ARINC 665 list\n";
 
-    if ( vm.count( "help") != 0)
+    boost::program_options::variables_map vm{};
+    boost::program_options::store(
+      boost::program_options::parse_command_line(
+        argc,
+        argv,
+        optionsDescription ),
+      vm );
+
+    if ( 0U != vm.count( "help" ) )
     {
       std::cout
         << "Prints the ARINC 665 Media File information located in the given directory\n"
-        << optionsDescription;
+        << optionsDescription << "\n";
       return EXIT_FAILURE;
     }
 
@@ -146,24 +153,26 @@ int main( int argc, char const * argv[] )
   }
   catch ( const boost::program_options::error &e )
   {
-    std::cout
+    std::cerr
       << "Error parsing command line: " << e.what() << "\n"
       << "Enter " << argv[0] << " --help for command line description\n";
     return EXIT_FAILURE;
   }
   catch ( const boost::exception &e )
   {
-    std::cout << "Error: " << boost::diagnostic_information( e) << "\n";
+    std::cerr
+      << "Error: "
+      << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
-    std::cout << "Error: " << e.what() << "\n";
+    std::cerr << "Error: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( ... )
   {
-    std::cout << "unknown exception occurred" << "\n";
+    std::cerr << "unknown exception occurred\n";
     return EXIT_FAILURE;
   }
 

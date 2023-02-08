@@ -43,7 +43,6 @@ namespace Arinc665::Media {
 enum class Type
 {
   MediaSet,
-  Medium,
   Directory,
   File
 };
@@ -115,23 +114,6 @@ class ContainerEntity;
 using ConstContainerEntityPtr = std::shared_ptr< const ContainerEntity>;
 //! %Container Entity Pointer
 using ContainerEntityPtr = std::shared_ptr< ContainerEntity>;
-
-/** @} **/
-
-/**
- * @name Medium Declarations
- * @{
- **/
-
-class Medium;
-//! Constant %Medium Pointer
-using ConstMediumPtr = std::shared_ptr< const Medium >;
-//! %Medium Pointer
-using MediumPtr = std::shared_ptr< Medium >;
-//! List of %Media
-using Media = std::map< uint8_t, MediumPtr >;
-//! List of Constant %Media
-using ConstMedia = std::map< uint8_t, ConstMediumPtr >;
 
 /** @} **/
 

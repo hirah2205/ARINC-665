@@ -59,18 +59,21 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetXmlCommand
     /**
      * @brief Creates the directory for the given medium.
      *
-     * @param[in] medium
+     * @param[in] mediumNumber
      *   Medium to Create.
      **/
-    void createMediumHandler( const Arinc665::Media::ConstMediumPtr &medium );
+    void createMediumHandler( const Arinc665::MediumNumber &mediumNumber );
 
     /**
      * @brief Creates the directory for the given directory.
      *
+     * @param[in] mediumNumber
+     *   Medium number, on which the directory shall be created.
      * @param[in] directory
      *   Directory to Create.
      **/
     void createDirectoryHandler(
+      const Arinc665::MediumNumber &mediumNumber,
       const Arinc665::Media::ConstDirectoryPtr &directory );
 
     /**
@@ -102,7 +105,7 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetXmlCommand
      *   File Content
      **/
     void writeFileHandler(
-      uint8_t mediumNumber,
+      const Arinc665::MediumNumber &mediumNumber,
       const std::filesystem::path &path,
       const Arinc665::Files::ConstRawFileSpan &file );
 
@@ -116,8 +119,9 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetXmlCommand
      *
      * @return File Content
      **/
-    Arinc665::Files::RawFile
-    readFileHandler( uint8_t mediumNumber, const std::filesystem::path &path );
+    [[nodiscard]] Arinc665::Files::RawFile readFileHandler(
+      const Arinc665::MediumNumber &mediumNumber,
+      const std::filesystem::path &path );
 
     //! Program Options Description
     boost::program_options::options_description optionsDescription;

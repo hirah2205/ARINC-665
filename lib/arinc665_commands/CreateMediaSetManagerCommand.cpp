@@ -48,7 +48,14 @@ void CreateMediaSetManagerCommand::execute(
       vm );
     boost::program_options::notify( vm );
 
+    std::cout << " within " << mediaSetManagerDirectory << "\n";
+
     Arinc665::Utils::JsonMediaSetManager::create( mediaSetManagerDirectory );
+  }
+  catch ( const boost::program_options::error & )
+  {
+    // parsing errors are handled by command handler
+    throw;
   }
   catch ( const boost::exception &e )
   {

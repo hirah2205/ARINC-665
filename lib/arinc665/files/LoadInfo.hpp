@@ -15,6 +15,8 @@
 
 #include <arinc665/files/Files.hpp>
 
+#include <arinc665/MediumNumber.hpp>
+
 #include <string>
 #include <vector>
 #include <cstdint>
@@ -39,7 +41,7 @@ struct ARINC665_EXPORT LoadInfo
   //! Header Filename
   std::string headerFilename;
   //! Member Sequence Number
-  uint8_t memberSequenceNumber;
+  MediumNumber memberSequenceNumber;
   //! Target Hardware IDs (list)
   ThwIds targetHardwareIds;
 

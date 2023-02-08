@@ -107,8 +107,8 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2 );
 
   BOOST_CHECK( file.mediaSetPn() == "PN123");
-  BOOST_CHECK( file.mediaSequenceNumber() == 1);
-  BOOST_CHECK( file.numberOfMediaSetMembers() == 1);
+  BOOST_CHECK( file.mediaSequenceNumber() == MediumNumber{ 1U } );
+  BOOST_CHECK( file.numberOfMediaSetMembers() == MediumNumber{ 1U } );
 
   const auto& files{ file.files()};
   BOOST_CHECK( files.size() == 2);
@@ -117,14 +117,14 @@ BOOST_AUTO_TEST_CASE( constructor1)
   BOOST_CHECK( fileI->filename == "FN_001");
   BOOST_CHECK( fileI->pathName == "\\");
   BOOST_CHECK( fileI->path() == "/FN_001");
-  BOOST_CHECK( fileI->memberSequenceNumber == 1);
+  BOOST_CHECK( fileI->memberSequenceNumber == MediumNumber{ 1U } );
   BOOST_CHECK( fileI->crc == 0xABCDU );
 
   ++fileI;
   BOOST_CHECK( fileI->filename == "FN_002" );
   BOOST_CHECK( fileI->pathName == "\\A\\" );
   BOOST_CHECK( fileI->path() == "/A/FN_002" );
-  BOOST_CHECK( fileI->memberSequenceNumber == 1 );
+  BOOST_CHECK( fileI->memberSequenceNumber == MediumNumber{ 1U } );
   BOOST_CHECK( fileI->crc == 0x0123U );
 
   BOOST_CHECK( file.userDefinedData().size() == 6 );

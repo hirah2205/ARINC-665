@@ -39,7 +39,6 @@
        <enum>QFrame::Raised</enum>
       </property>
       <widget class="Arinc665Qt::Media::MediaSetWidget" name="mediaSetWidget"/>
-      <widget class="Arinc665Qt::Media::MediumWidget" name="mediumWidget"/>
       <widget class="Arinc665Qt::Media::DirectoryWidget" name="directoryWidget"/>
       <widget class="Arinc665Qt::Media::FileWidget" name="fileWidget"/>
      </widget>
@@ -52,12 +51,6 @@
    <class>Arinc665Qt::Media::MediaSetWidget</class>
    <extends>QWidget</extends>
    <header location="global">arinc665_qt/media/MediaSetWidget.hpp</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Arinc665Qt::Media::MediumWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">arinc665_qt/media/MediumWidget.hpp</header>
    <container>1</container>
   </customwidget>
   <customwidget>

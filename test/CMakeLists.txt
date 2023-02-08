@@ -43,7 +43,7 @@ add_test(
   NAME arinc665_decompile_media_set_v2
   COMMAND
     arinc665_decompiler
-    --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSet.xml
+    --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSet_V2.xml
     --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet_V2/CCC/MEDIUM_001 )
 
 
@@ -74,5 +74,5 @@ add_test(
   NAME arinc665_decompile_media_set_v3
   COMMAND
   arinc665_decompiler
-  --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSetV3.xml
+  --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSet_V3.xml
   --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet_V3/CCC/MEDIUM_001 )

@@ -37,16 +37,22 @@ class ARINC665_EXPORT Batch final : public File
      * @brief Initialises the batch with the given data.
      *
      * @param[in] parent
-     *   Parent element.
+     *   Parent of this file.
      * @param[in] name
      *   Name of the Batch.
+     * @param[in] mediumNumber
+     *   Medium Number, where the file is located on.
      **/
-    Batch( const ContainerEntityPtr& parent, std::string name );
+    Batch(
+      const ContainerEntityPtr &parent,
+      std::string name,
+      const OptionalMediumNumber &mediumNumber );
 
     /**
      * @copydoc File::fileType()
      *
-     * @return FileType::BatchFile always.
+     * @return FileType::BatchFile
+     *   Always
      **/
     [[nodiscard]] FileType fileType() const override;
 

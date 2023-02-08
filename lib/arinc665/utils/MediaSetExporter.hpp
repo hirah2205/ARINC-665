@@ -35,11 +35,11 @@ class ARINC665_EXPORT MediaSetExporter
     /**
      * @brief Handler, which is called to generate the given Medium.
      *
-     * @param[in] medium
-     *   Medium to Create.
+     * @param[in] mediumNumber
+     *   Medium Number to Create.
      **/
     using CreateMediumHandler =
-      std::function< void( const Media::ConstMediumPtr &medium ) >;
+      std::function< void( const MediumNumber &mediumNumber ) >;
 
     /**
      * @brief Handler, which is called to generate the given Directory.
@@ -48,7 +48,9 @@ class ARINC665_EXPORT MediaSetExporter
      *   Directory to create.
      **/
     using CreateDirectoryHandler =
-      std::function< void( const Media::ConstDirectoryPtr &directory ) >;
+      std::function< void(
+        const MediumNumber &mediumNumber,
+        const Media::ConstDirectoryPtr &directory ) >;
 
     /**
      * @brief Handler, which checks the existence of a file within the Source.
@@ -92,7 +94,7 @@ class ARINC665_EXPORT MediaSetExporter
      **/
     using WriteFileHandler =
       std::function< void(
-        uint8_t mediumNumber,
+        const MediumNumber &mediumNumber,
         const std::filesystem::path &path,
         const Files::ConstRawFileSpan &file ) >;
 
@@ -113,7 +115,7 @@ class ARINC665_EXPORT MediaSetExporter
      **/
     using ReadFileHandler =
       std::function< Files::RawFile(
-        uint8_t mediumNumber,
+        const MediumNumber &mediumNumber,
         const std::filesystem::path &path ) >;
 
     /**

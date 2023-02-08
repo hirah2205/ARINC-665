@@ -101,8 +101,8 @@ class Arinc665XmlImpl final : public Arinc665Xml
      * Loads all child elements (Files, Directories) for the given medium, or
      * directory.
      *
-     * @param[in] currentNode
-     *   XML node representing the directory.
+     * @param[in] currentElement
+     *   XML Element representing the container (root or directory).
      * @param[in,out] current
      *   Current Medium, or Directory.
      *   Files and directories will be added to this.
@@ -113,7 +113,7 @@ class Arinc665XmlImpl final : public Arinc665Xml
      *   When Name Attribute is missing or empty.
      **/
     void loadEntries(
-      const xmlpp::Node &currentNode,
+      const xmlpp::Element &currentElement,
       Media::ContainerEntity &current,
       FilePathMapping &filePathMapping );
 
@@ -124,13 +124,13 @@ class Arinc665XmlImpl final : public Arinc665Xml
      *   Current medium or directory.
      * @param[in] filePathMapping
      *   File path mapping.
-     * @param[in,out] currentNode
-     *   XML Node, where to add content.
+     * @param[in,out] currentElement
+     *   XML Element, where to add content.
      */
     void saveEntries(
       const Media::ContainerEntity &current,
       const FilePathMapping &filePathMapping,
-      xmlpp::Node &currentNode );
+      xmlpp::Element &currentElement );
 
     /**
      * @brief Loads the given Load-node.

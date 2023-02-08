@@ -22,8 +22,8 @@
 
 namespace Arinc665Qt::Media {
 
-DirectoryWidget::DirectoryWidget( QWidget * const parent):
-  QWidget{ parent},
+DirectoryWidget::DirectoryWidget( QWidget * const parent ):
+  QWidget{ parent },
   ui{ std::make_unique< Ui::DirectoryWidget >() },
   mediaSetModelV{ nullptr }
 {

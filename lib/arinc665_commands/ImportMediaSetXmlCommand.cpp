@@ -13,7 +13,6 @@
 #include "ImportMediaSetXmlCommand.hpp"
 
 #include <arinc665/media/MediaSet.hpp>
-#include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/File.hpp>
 
@@ -132,11 +131,14 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 
     // Add Media Set Part Number to Output Path
     Arinc665::Utils::MediaSetManagerConfiguration::MediaPaths mediaPaths{};
-    for ( const auto &[mediumNumber, medium] : std::get< 0 >( loadXmlResult )->media() )
+    for (
+      Arinc665::MediumNumber mediumNumber{ 1U };
+      mediumNumber <= std::get< 0 >( loadXmlResult )->lastMediumNumber();
+      ++mediumNumber )
     {
       mediaPaths.try_emplace(
         mediumNumber,
-        fmt::format( "MEDIUM_{:03d}", mediumNumber ) );
+        fmt::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) ) );
     }
     mediaSetPaths = std::make_pair(
       std::get< 0 >( loadXmlResult )->partNumber(),
@@ -212,13 +214,13 @@ void ImportMediaSetXmlCommand::help()
 }
 
 void ImportMediaSetXmlCommand::createMediumHandler(
-  const Arinc665::Media::ConstMediumPtr &medium )
+  const Arinc665::MediumNumber &mediumNumber )
 {
   BOOST_LOG_FUNCTION()
 
   auto mPath{
     mediaSetManagerDirectory / mediaSetPaths.first
-    / mediaSetPaths.second.at( medium->mediumNumber() ) };
+    / mediaSetPaths.second.at( mediumNumber ) };
 
   BOOST_LOG_TRIVIAL( severity_level::trace )
     << "Create medium directory " << mPath;
@@ -227,13 +229,14 @@ void ImportMediaSetXmlCommand::createMediumHandler(
 }
 
 void ImportMediaSetXmlCommand::createDirectoryHandler(
+  const Arinc665::MediumNumber &mediumNumber,
   const Arinc665::Media::ConstDirectoryPtr &directory )
 {
   BOOST_LOG_FUNCTION()
 
   auto directoryPath{
     mediaSetManagerDirectory / mediaSetPaths.first
-    / mediaSetPaths.second.at( directory->medium()->mediumNumber() )
+    / mediaSetPaths.second.at( mediumNumber )
     / directory->path().relative_path() };
 
   BOOST_LOG_TRIVIAL( severity_level::trace )
@@ -280,7 +283,7 @@ void ImportMediaSetXmlCommand::createFileHandler(
 
   auto filePath{
     mediaSetManagerDirectory / mediaSetPaths.first
-    / mediaSetPaths.second.at( file->medium()->mediumNumber() )
+    / mediaSetPaths.second.at( file->effectiveMediumNumber() )
     / file->path().relative_path() };
 
   BOOST_LOG_TRIVIAL( severity_level::trace ) << "Copy file " << filePath;
@@ -290,7 +293,7 @@ void ImportMediaSetXmlCommand::createFileHandler(
 }
 
 void ImportMediaSetXmlCommand::writeFileHandler(
-  const uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path,
   const Arinc665::Files::ConstRawFileSpan &file )
 {
@@ -298,7 +301,8 @@ void ImportMediaSetXmlCommand::writeFileHandler(
 
   const auto filePath{
     mediaSetManagerDirectory / mediaSetPaths.first
-    / mediaSetPaths.second.at( mediumNumber ) / path.relative_path() };
+    / mediaSetPaths.second.at( mediumNumber )
+    / path.relative_path() };
 
   BOOST_LOG_TRIVIAL( severity_level::trace ) << "Write file " << filePath;
 
@@ -331,7 +335,7 @@ void ImportMediaSetXmlCommand::writeFileHandler(
 }
 
 Arinc665::Files::RawFile ImportMediaSetXmlCommand::readFileHandler(
-  uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {
   BOOST_LOG_FUNCTION()
@@ -339,7 +343,8 @@ Arinc665::Files::RawFile ImportMediaSetXmlCommand::readFileHandler(
   // check medium number
   const auto filePath{
     mediaSetManagerDirectory / mediaSetPaths.first
-    / mediaSetPaths.second.at( mediumNumber ) / path.relative_path() };
+    / mediaSetPaths.second.at( mediumNumber )
+    / path.relative_path() };
 
   BOOST_LOG_TRIVIAL( severity_level::trace ) << "Read file " << filePath;
 

@@ -61,18 +61,27 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
       mediaSetManagerDirectory,
       checkFileIntegrity ) };
 
-    for ( const auto &[ partNumber, mediaSet ] :
-      mediaSetManager->manager()->mediaSets() )
+    const auto mediaSets{ mediaSetManager->manager()->mediaSets() };
+
+    if ( mediaSets.empty() )
     {
-      std::cout << "Media Set:\n";
+      std::cout << "*** No media sets within media set manger ***\n";
+    }
+    else
+    {
+      for ( const auto &[partNumber, mediaSet] :
+            mediaSetManager->manager()->mediaSets() )
+      {
+        std::cout << "Media Set:\n";
 
-      Arinc665::Utils::MediaSetPrinter_print(
-        *mediaSet.first,
-        std::cout,
-        "  ",
-        "  " );
+        Arinc665::Utils::MediaSetPrinter_print(
+          *mediaSet.first,
+          std::cout,
+          "  ",
+          "  " );
 
-      std::cout << "\n";
+        std::cout << "\n";
+      }
     }
   }
   catch ( const boost::program_options::error &e )
@@ -82,15 +91,15 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
   catch ( const boost::exception &e )
   {
     std::cerr
-      << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
+      << "Error: " << boost::diagnostic_information( e ) << "\n";
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "Operation failed: " << e.what() << "\n";
+    std::cerr << "Error: " << e.what() << "\n";
   }
   catch ( ... )
   {
-    std::cerr << "Operation failed: UNKNOWN EXCEPTION\n";
+    std::cerr << "Error: UNKNOWN EXCEPTION\n";
   }
 }
 

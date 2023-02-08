@@ -17,6 +17,8 @@
 #include <arinc665/files/Files.hpp>
 #include <arinc665/files/Arinc665File.hpp>
 
+#include <arinc665/MediumNumber.hpp>
+
 namespace Arinc665::Files {
 
 /**
@@ -64,7 +66,7 @@ class ARINC665_EXPORT ListFile : public Arinc665File
      *
      * @return Media Sequence Number
      **/
-    [[nodiscard]] uint8_t mediaSequenceNumber() const;
+    [[nodiscard]] MediumNumber mediaSequenceNumber() const;
 
     /**
      * @brief Updates the Media Sequence Number.
@@ -72,7 +74,7 @@ class ARINC665_EXPORT ListFile : public Arinc665File
      * @param[in] mediaSequenceNumber
      *   New Media Sequence Number
      **/
-    void mediaSequenceNumber( uint8_t mediaSequenceNumber );
+    void mediaSequenceNumber( MediumNumber mediaSequenceNumber );
 
     /** @} **/
 
@@ -86,7 +88,7 @@ class ARINC665_EXPORT ListFile : public Arinc665File
      *
      * @return Number of Media Set members.
      **/
-    [[nodiscard]] uint8_t numberOfMediaSetMembers() const;
+    [[nodiscard]] MediumNumber numberOfMediaSetMembers() const;
 
     /**
      * @brief Updates the number of Media Set members.
@@ -94,7 +96,7 @@ class ARINC665_EXPORT ListFile : public Arinc665File
      * @param[in] numberOfMediaSetMembers
      *   New number of Media Set members
      **/
-    void numberOfMediaSetMembers( uint8_t numberOfMediaSetMembers );
+    void numberOfMediaSetMembers( MediumNumber numberOfMediaSetMembers );
 
     /** @} **/
 
@@ -169,9 +171,9 @@ class ARINC665_EXPORT ListFile : public Arinc665File
     //! Media Set Part Number.
     std::string mediaSetPnV;
     //! Media Sequence Number.
-    uint8_t mediaSequenceNumberV{ 0U };
+    MediumNumber mediaSequenceNumberV{ 0U };
     //! Number of Media Set Members.
-    uint8_t numberOfMediaSetMembersV{ 0U };
+    MediumNumber numberOfMediaSetMembersV{ 0U };
 };
 
 }

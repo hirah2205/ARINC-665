@@ -17,6 +17,8 @@
 
 #include <arinc665_commands/Arinc665Commands.hpp>
 
+#include <arinc665/Version.hpp>
+
 #include <commands/CommandRegistry.hpp>
 #include <commands/CommandUtils.hpp>
 
@@ -49,6 +51,10 @@ int main( int argc, char * argv[] )
 
   try
   {
+    std::cout
+      << "ARINC 665 Media Set Manager - "
+      << Arinc665::Version::VersionInformation << "\n";
+
     const auto result{
       Commands::CommandUtils::commandLineHandler( registry )( argc, argv ) };
 

@@ -13,7 +13,6 @@
 #include "MediaSetManagerImpl.hpp"
 
 #include <arinc665/media/MediaSet.hpp>
-#include <arinc665/media/Medium.hpp>
 #include <arinc665/media/File.hpp>
 #include <arinc665/media/Load.hpp>
 
@@ -150,7 +149,7 @@ Media::ConstLoads MediaSetManagerImpl::loads() const
 
   for ( const auto &[ partNumber, mediaSet ] : mediaSetsInformationV )
   {
-    loads.splice( loads.end(), mediaSet.first->loads() );
+    loads.splice( loads.end(), mediaSet.first->recursiveLoads() );
   }
 
   return loads;
@@ -162,7 +161,7 @@ Media::ConstLoads MediaSetManagerImpl::loads( std::string_view filename ) const
 
   for ( const auto &[ partNumber, mediaSet ] : mediaSetsInformationV )
   {
-    loads.splice( loads.end(), mediaSet.first->loads( filename ) );
+    loads.splice( loads.end(), mediaSet.first->recursiveLoads( filename ) );
   }
 
   return loads;
@@ -181,7 +180,7 @@ Media::ConstLoads MediaSetManagerImpl::loads(
     return {};
   }
 
-  auto loads{ mediaSetInfo->first->loads( filename ) };
+  auto loads{ mediaSetInfo->first->recursiveLoads( filename ) };
 
   // if no check value has been provided -> return directly
   if ( Arinc645::CheckValue::NoCheckValue != checkValue )
@@ -227,7 +226,7 @@ Media::ConstFiles MediaSetManagerImpl::files(
     return {};
   }
 
-  auto files{ mediaSetInfo->first->files( filename ) };
+  auto files{ mediaSetInfo->first->recursiveFiles( filename ) };
 
   // if no check value has been provided -> return directly
   if ( Arinc645::CheckValue::NoCheckValue != checkValue )
@@ -280,8 +279,8 @@ std::filesystem::path MediaSetManagerImpl::filePath(
     return {};
   }
 
-  auto mediumIt{ mediaSetIt->second.second.find(
-    file->parent()->medium()->mediumNumber() ) };
+  auto mediumIt{
+    mediaSetIt->second.second.find( file->effectiveMediumNumber() ) };
 
   if ( mediumIt == mediaSetIt->second.second.end() )
   {
@@ -336,7 +335,7 @@ void MediaSetManagerImpl::loadMediaSets(
 
 size_t MediaSetManagerImpl::fileSizeHandler(
   const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
-  uint8_t mediumNumber,
+  const MediumNumber &mediumNumber,
   const std::filesystem::path &path ) const
 {
   // make structure binding here instead
@@ -360,7 +359,7 @@ size_t MediaSetManagerImpl::fileSizeHandler(
 
 Files::RawFile MediaSetManagerImpl::readFileHandler(
   const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
-  uint8_t mediumNumber,
+  const MediumNumber &mediumNumber,
   const std::filesystem::path &path ) const
 {
   // make structure binding here instead

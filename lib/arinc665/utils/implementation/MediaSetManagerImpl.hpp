@@ -120,7 +120,7 @@ class MediaSetManagerImpl final : public MediaSetManager
      **/
     [[nodiscard]] size_t fileSizeHandler(
       const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
-      uint8_t mediumNumber,
+      const MediumNumber &mediumNumber,
       const std::filesystem::path &path ) const;
 
     /**
@@ -139,7 +139,7 @@ class MediaSetManagerImpl final : public MediaSetManager
      **/
     [[nodiscard]] Files::RawFile readFileHandler(
       const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
-      uint8_t mediumNumber,
+      const MediumNumber &mediumNumber,
       const std::filesystem::path &path ) const;
 
     /**

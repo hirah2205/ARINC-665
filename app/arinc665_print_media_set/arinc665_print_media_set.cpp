@@ -67,8 +67,6 @@ static Arinc665::Utils::MediaSetImporter::Result loadMediaSet(
  * @brief Returns the File Size of the given File.
  *
  * @param[in] mediaSetDirectories
- *
- * @param[in] mediaSetDirectories
  *   Media Set Directory Mapping.
  * @param[in] mediumNumber
  *   Medium number.
@@ -78,7 +76,7 @@ static Arinc665::Utils::MediaSetImporter::Result loadMediaSet(
  */
 static size_t getFileSize(
   const Directories &mediaSetDirectories,
-  uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path );
 
 /**
@@ -98,12 +96,12 @@ static size_t getFileSize(
  **/
 static Arinc665::Files::RawFile readFile(
   const Directories &mediaSetDirectories,
-  uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path );
 
 int main( int argc, char const * argv[] )
 {
-  std::cout << "ARINC 665 Media Set Printer\n";
+  BOOST_LOG_FUNCTION()
 
   Helper::initLogging( Helper::Severity::warning, true );
 
@@ -132,9 +130,14 @@ int main( int argc, char const * argv[] )
 
   try
   {
+    std::cout << "ARINC 665 Media Set Printer\n";
+
     boost::program_options::variables_map vm{};
     boost::program_options::store(
-      boost::program_options::parse_command_line( argc, argv, optionsDescription ),
+      boost::program_options::parse_command_line(
+        argc,
+        argv,
+        optionsDescription ),
       vm );
 
     if ( 0U != vm.count( "help" ) )
@@ -166,12 +169,15 @@ int main( int argc, char const * argv[] )
   catch ( const boost::exception &e )
   {
     std::cerr
-      << "Error: " << boost::diagnostic_information( e ) << "\n";
+      << "Error: "
+      << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "std exception: " << e.what() << "\n";
+    std::cerr
+      << "Error: "
+      << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( ... )
@@ -201,19 +207,20 @@ static Arinc665::Utils::MediaSetImporter::Result loadMediaSet(
 
 static size_t getFileSize(
   const Directories &mediaSetDirectories,
-  const uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {
   auto filePath{
-    mediaSetDirectories.at( mediumNumber - 1U ) / path.relative_path() };
+    mediaSetDirectories.at( static_cast< uint8_t >( mediumNumber ) - 1U )
+      / path.relative_path() };
 
   if ( !std::filesystem::is_regular_file( filePath ) )
   {
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception()
-      << boost::errinfo_file_name{ filePath.string() }
-      << Helper::AdditionalInfo{ "File not found" }
-      << boost::errinfo_file_name{ filePath.string() } );
+        << boost::errinfo_file_name{ filePath.string() }
+        << Helper::AdditionalInfo{ "File not found" }
+        << boost::errinfo_file_name{ filePath.string() } );
   }
 
   return std::filesystem::file_size( filePath );
@@ -221,19 +228,20 @@ static size_t getFileSize(
 
 static Arinc665::Files::RawFile readFile(
   const Directories &mediaSetDirectories,
-  const uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {
   auto filePath{
-    mediaSetDirectories.at( mediumNumber - 1U ) / path.relative_path() };
+    mediaSetDirectories.at( static_cast< uint8_t >( mediumNumber ) - 1U )
+      / path.relative_path() };
 
   if ( !std::filesystem::is_regular_file( filePath ) )
   {
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception()
-      << boost::errinfo_file_name{ filePath.string() }
-      << Helper::AdditionalInfo{ "File not found" }
-      << boost::errinfo_file_name{ filePath.string() } );
+        << boost::errinfo_file_name{ filePath.string() }
+        << Helper::AdditionalInfo{ "File not found" }
+        << boost::errinfo_file_name{ filePath.string() } );
   }
 
   Arinc665::Files::RawFile data( std::filesystem::file_size( filePath ) );
@@ -252,7 +260,7 @@ static Arinc665::Files::RawFile readFile(
 
   // read the data to the buffer
   file.read(
-    (char *)&data.at( 0 ),
+    (char *) &data.at( 0 ),
     static_cast< std::streamsize >( data.size() ) );
 
   // return the buffer

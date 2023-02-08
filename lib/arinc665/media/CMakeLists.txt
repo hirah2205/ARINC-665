@@ -20,7 +20,6 @@ target_sources(
         Load.hpp
         Media.hpp
         MediaSet.hpp
-        Medium.hpp
         RegularFile.hpp
 
   PRIVATE
@@ -30,7 +29,6 @@ target_sources(
     File.cpp
     Load.cpp
     MediaSet.cpp
-    Medium.cpp
     RegularFile.cpp )
 
 target_sources(

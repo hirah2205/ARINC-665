@@ -20,7 +20,6 @@
 
 #include <arinc665/media/Base.hpp>
 #include <arinc665/media/MediaSet.hpp>
-#include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/File.hpp>
 
@@ -46,7 +45,7 @@ void MediaSetDialog::mediaSetModel( Media::MediaSetModel * const model )
 {
   if ( mediaSetModelV != nullptr )
   {
-    // disconnect old model
+    // TODO disconnect old model
   }
 
   mediaSetModelV = model;
@@ -54,7 +53,6 @@ void MediaSetDialog::mediaSetModel( Media::MediaSetModel * const model )
   ui->mediaSetTreeView->setModel( mediaSetModelV );
 
   ui->mediaSetWidget->mediaSetModel( mediaSetModelV );
-  ui->mediumWidget->mediaSetModel( mediaSetModelV );
   ui->directoryWidget->mediaSetModel( mediaSetModelV );
 
   if ( nullptr != mediaSetModelV )
@@ -69,6 +67,9 @@ void MediaSetDialog::mediaSetModel( Media::MediaSetModel * const model )
           mediaSetModelV->index( 0, 0 ),
           true );
         ui->mediaSetTreeView->resizeColumnToContents( 0 );
+
+        // initiate update
+        emit( itemSelected( mediaSetModelV->index( 0, 0 ) ) );
       } );
   }
 }
@@ -94,22 +95,15 @@ void MediaSetDialog::itemSelected( const QModelIndex &index )
       break;
     }
 
-    case Arinc665::Media::Type::Medium:
-      ui->detailsStackedWidget->setCurrentIndex( 1 );
-      ui->mediumWidget->selectedMedium( index );
-      ui->mediumWidget->selectedMedium(
-        std::dynamic_pointer_cast< const Arinc665::Media::Medium>( element ) );
-      break;
-
     case Arinc665::Media::Type::Directory:
-      ui->detailsStackedWidget->setCurrentIndex( 2 );
+      ui->detailsStackedWidget->setCurrentIndex( 1 );
       ui->directoryWidget->selectedDirectory( index );
       ui->directoryWidget->selectedDirectory(
         std::dynamic_pointer_cast< const Arinc665::Media::Directory>( element ) );
       break;
 
     case Arinc665::Media::Type::File:
-      ui->detailsStackedWidget->setCurrentIndex( 3 );
+      ui->detailsStackedWidget->setCurrentIndex( 2 );
       ui->fileWidget->selectedFile(
         mediaSetModelV,
         std::dynamic_pointer_cast< const Arinc665::Media::File>( element ) );

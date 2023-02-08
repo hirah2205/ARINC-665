@@ -13,22 +13,27 @@
 #include "MediaSetPrinter.hpp"
 
 #include <arinc665/media/MediaSet.hpp>
-#include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/Batch.hpp>
 #include <arinc665/media/RegularFile.hpp>
 
+#include <arinc665/MediumNumber.hpp>
+
 #include <arinc645/CheckValueTypeDescription.hpp>
 #include <arinc645/CheckValue.hpp>
+
+#include <fmt/format.h>
 
 namespace Arinc665::Utils {
 
 /**
  * @brief Print Medium
  *
- * @param[in] medium
- *   ARINC 665 Medium
+ * @param[in] mediaSet
+ *   ARINC 665 Media Set
+ * @param[in] mediumNumber
+ *   Medium Number
  * @param[in,out] outS
  *   Output Stream
  * @param[in] initialIndent
@@ -37,13 +42,30 @@ namespace Arinc665::Utils {
  *   Indent for sub-information
  **/
 static void printMedium(
-  const Media::Medium &medium,
+  const Media::MediaSet &mediaSet,
+  const MediumNumber &mediumNumber,
   std::ostream &outS,
   std::string_view initialIndent,
   std::string_view indent );
 
+/**
+ * Print Files of given Container (Media Set Root or Directory) filtered to
+ *   given Medium Number.
+ *
+ * @param[in] containerEntity
+ *   Container to print the content from
+ * @param[in] mediumNumber
+ *   Medium Number filter
+ * @param[in,out] outS
+ *   Output Stream
+ * @param[in] initialIndent
+ *   Initial Indention prepended before each output.
+ * @param[in] indent
+ *   Indent for sub-information
+ **/
 static void printFiles(
   const Media::ContainerEntity &containerEntity,
+  const MediumNumber &mediumNumber,
   std::ostream &outS,
   std::string_view initialIndent,
   std::string_view indent );
@@ -68,7 +90,7 @@ void MediaSetPrinter_print(
     << "Media Set Part Number: '" << mediaSet.partNumber() << "'\n"
 
     << initialIndent
-    << "Number of Media: " << (int)mediaSet.numberOfMedia() << "\n"
+    << "Number of Media: " << mediaSet.lastMediumNumber() << "\n"
 
     << initialIndent
     << "Media Set Check Value Type: "
@@ -105,10 +127,18 @@ void MediaSetPrinter_print(
     << initialIndent
     << "Media:" << "\n";
 
-  // iterate over files
-  for ( auto const &[ number, medium ] : mediaSet.media() )
+  // iterate over media
+  for (
+    MediumNumber mediumNumber{ 1U };
+    mediumNumber <= mediaSet.lastMediumNumber();
+    ++mediumNumber )
   {
-    printMedium( *medium, outS, nextIndent, indent );
+    printMedium(
+      mediaSet,
+      mediumNumber,
+      outS,
+      nextIndent,
+      indent );
     outS << "\n";
   }
 
@@ -118,7 +148,7 @@ void MediaSetPrinter_print(
     << "Loads:" << "\n";
 
   // iterate over loads
-  for ( auto const &load : mediaSet.loads() )
+  for ( auto const &load : mediaSet.recursiveLoads() )
   {
     MediaSetPrinter_print( *load, outS, nextIndent, indent );
     outS << "\n";
@@ -130,7 +160,7 @@ void MediaSetPrinter_print(
     outS << initialIndent << "Batches:" << "\n";
 
     // iterate over loads
-    for ( auto const &batch : mediaSet.batches() )
+    for ( auto const &batch : mediaSet.recursiveBatches() )
     {
       MediaSetPrinter_print( *batch, outS, nextIndent, indent );
       outS << "\n";
@@ -146,6 +176,7 @@ void MediaSetPrinter_print(
   outS
     << initialIndent
     << "File Path: "
+    << "[" << file.effectiveMediumNumber() << "]:"
     << file.path().generic_string() << "\n";
 
   outS
@@ -200,7 +231,7 @@ void MediaSetPrinter_print(
 
     << initialIndent
     << "Load Path: "
-    << "[" << (int)load.medium()->mediumNumber() << "]:"
+    << "[" << load.effectiveMediumNumber() << "]:"
     << load.path().generic_string() << "\n"
 
     << initialIndent
@@ -229,8 +260,8 @@ void MediaSetPrinter_print(
   {
     outS
       << initialIndent
-      << "Load Type: '" << type->first
-      << "' 0x" << std::hex << type->second << std::dec << "\n";
+      << "Load Type: '" << type->first << "'"
+      << fmt::format( "0x{:04X}", type->second ) << "\n";
   }
 
   outS
@@ -267,7 +298,7 @@ void MediaSetPrinter_print(
 
       << nextIndent
       << "File Path: "
-      << "[" << (int)file->medium()->mediumNumber() << "]:"
+      << "[" << file->effectiveMediumNumber() << "]:"
       << file->path().generic_string() << "\n"
 
       << nextIndent
@@ -298,7 +329,7 @@ void MediaSetPrinter_print(
 
       << nextIndent
       << "File Path: "
-      << "[" << (int)file->medium()->mediumNumber() << "]:"
+      << "[" << file->effectiveMediumNumber() << "]:"
       << file->path().generic_string() << "\n"
 
       << nextIndent
@@ -334,7 +365,7 @@ void MediaSetPrinter_print(
 
     << initialIndent
     << "Batch Path: "
-    << "[" << (int)batch.medium()->mediumNumber() << "]:"
+    << "[" << batch.effectiveMediumNumber() << "]:"
     << batch.path().generic_string() << "\n"
 
     << initialIndent
@@ -362,7 +393,7 @@ void MediaSetPrinter_print(
 
         << nextNextIndent
         << "Load Path: "
-        << "[" << (int)load->medium()->mediumNumber() << "]:"
+        << "[" << load->effectiveMediumNumber() << "]:"
         << load->path().generic_string() << "\n";
 
       outS << "\n";
@@ -396,7 +427,8 @@ void MediaSetPrinter_print(
 }
 
 static void printMedium(
-  const Media::Medium &medium,
+  const Media::MediaSet &mediaSet,
+  const MediumNumber &mediumNumber,
   std::ostream &outS,
   std::string_view initialIndent,
   std::string_view indent )
@@ -407,17 +439,18 @@ static void printMedium(
   outS
     << initialIndent
     << "Medium Number: "
-    << (int)medium.mediumNumber() << "\n";
+    << mediumNumber << "\n";
 
   outS
     << initialIndent
     << "Files:\n";
 
-  printFiles( medium, outS, initialIndent, indent );
+  printFiles( mediaSet, mediumNumber, outS, initialIndent, indent );
 }
 
 static void printFiles(
   const Media::ContainerEntity &containerEntity,
+  const MediumNumber &mediumNumber,
   std::ostream &outS,
   std::string_view initialIndent,
   std::string_view indent )
@@ -426,16 +459,16 @@ static void printFiles(
   nextIndent += indent;
 
   // iterate over files
-  for ( auto const &file : containerEntity.files() )
+  for ( auto const &file : containerEntity.files( mediumNumber ) )
   {
     MediaSetPrinter_print( *file, outS, nextIndent );
     outS << "\n";
   }
 
   // iterate over subdirectories
-  for ( const auto &container : containerEntity.subdirectories() )
+  for ( const auto &container : containerEntity.subdirectories( mediumNumber ) )
   {
-    printFiles( *container, outS, initialIndent, indent );
+    printFiles( *container, mediumNumber, outS, initialIndent, indent );
   }
 }
 
@@ -443,8 +476,8 @@ static std::string printCheckValueType(
   std::optional< Arinc645::CheckValueType > type )
 {
   return ( type ?
-      std::string( Arinc645::CheckValueTypeDescription::instance().name( * type ) ) :
-      "***Undefined***" );
+    std::string( Arinc645::CheckValueTypeDescription::instance().name( * type ) ) :
+    "***Undefined***" );
 }
 
 }

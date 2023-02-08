@@ -44,26 +44,6 @@ Type File::type() const
   return Type::File;
 }
 
-std::string_view File::name() const
-{
-  return nameV;
-}
-
-void File::rename( std::string name )
-{
-  if ( const auto parentPtr{ parent() }; parentPtr )
-  {
-    if ( parentPtr->subdirectory( name ) || parentPtr->file( name ) )
-    {
-      BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-        << Helper::AdditionalInfo{ "directory or file with given names exist" }
-        << boost::errinfo_file_name{ name } );
-    }
-  }
-
-  nameV = std::move( name );
-}
-
 ConstContainerEntityPtr File::parent() const
 {
   return parentV.lock();
@@ -74,26 +54,6 @@ ContainerEntityPtr File::parent()
   return parentV.lock();
 }
 
-ConstMediumPtr File::medium() const
-{
-  if ( const auto parentPtr{ parent()}; parentPtr )
-  {
-    return parentPtr->medium();
-  }
-
-  return {};
-}
-
-MediumPtr File::medium()
-{
-  if ( const auto parentPtr{ parent() }; parentPtr )
-  {
-    return parentPtr->medium();
-  }
-
-  return {};
-}
-
 std::filesystem::path File::path() const
 {
   if ( const auto parentPtr{ parent() }; parentPtr )
@@ -101,7 +61,43 @@ std::filesystem::path File::path() const
     return parentPtr->path() / nameV;
   }
 
-  return {};
+  return nameV;
+}
+
+std::string_view File::name() const
+{
+  return nameV;
+}
+
+void File::rename( std::string name )
+{
+  if ( const auto parentPtr{ parent() }; parentPtr )
+  {
+    if ( parentPtr->subdirectory( std::string_view( name ) )
+      || parentPtr->file( std::string_view( name ) ) )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+        << Helper::AdditionalInfo{ "directory or file with given names exist" }
+        << boost::errinfo_file_name{ name } );
+    }
+  }
+
+  nameV = std::move( name );
+}
+
+MediumNumber File::effectiveMediumNumber() const
+{
+  return mediumNumberV.value_or( parent()->effectiveDefaultMediumNumber() );
+}
+
+OptionalMediumNumber File::mediumNumber() const
+{
+  return mediumNumberV;
+}
+
+void File::mediumNumber( const OptionalMediumNumber &mediumNumber )
+{
+  mediumNumberV = mediumNumber;
 }
 
 Arinc645::CheckValueType File::effectiveCheckValueType() const
@@ -119,9 +115,13 @@ void File::checkValueType( std::optional< Arinc645::CheckValueType > type )
   checkValueTypeV = type;
 }
 
-File::File( const ContainerEntityPtr &parent, std::string name ):
+File::File(
+  const ContainerEntityPtr &parent,
+  std::string name,
+  const OptionalMediumNumber &mediumNumber ) :
   parentV{  parent },
-  nameV{ std::move( name ) }
+  nameV{ std::move( name ) },
+  mediumNumberV{ mediumNumber }
 {
   if ( !parent )
   {

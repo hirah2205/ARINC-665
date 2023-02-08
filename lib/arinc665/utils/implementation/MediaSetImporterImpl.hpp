@@ -154,8 +154,6 @@ class MediaSetImporterImpl final : public MediaSetImporter
      * @brief Creates the logical directory entry if not already created and
      *   return its representation.
      *
-     * @param[in] mediumNumber
-     *   Medium Number.
      * @param[in] directoryPath
      *   Directory Path.
      *
@@ -165,7 +163,6 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *   When subdirectory cannot be created
      **/
     [[nodiscard]] Media::ContainerEntityPtr checkCreateDirectory(
-      uint8_t mediumNumber,
       const std::filesystem::path &directoryPath );
 
     /**
@@ -175,14 +172,14 @@ class MediaSetImporterImpl final : public MediaSetImporter
      * If file integrity checks is requested read each file and check file CRC
      * and Check Value.
      *
-     * @param[in] filesInfo
-     *   File information to use,
      * @param[in] mediumNumber
      *   Current Medium Number
+     * @param[in] filesInfo
+     *   File information to use,
      **/
     void checkMediumFiles(
-      const Files::FilesInfo &filesInfo,
-      uint8_t mediumNumber ) const;
+      const MediumNumber &mediumNumber,
+      const Files::FilesInfo &filesInfo ) const;
 
     /**
      * @brief Check File Integrity

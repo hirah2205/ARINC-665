@@ -12,12 +12,14 @@
 
 #include "MediaSetWidget.hpp"
 
-#include <arinc665/media/MediaSet.hpp>
 
 #include "ui_MediaSetWidget.h"
 
 #include <arinc665_qt/media/LoadsModel.hpp>
 #include <arinc665_qt/media/BatchesModel.hpp>
+#include <arinc665_qt/media/MediaSetModel.hpp>
+
+#include <arinc665/media/MediaSet.hpp>
 
 namespace Arinc665Qt::Media {
 
@@ -40,6 +42,7 @@ void MediaSetWidget::mediaSetModel(
   Arinc665Qt::Media::MediaSetModel * const model )
 {
   mediaSetModelV = model;
+  ui->content->setModel( model );
 }
 
 void MediaSetWidget::selectedMediaSet(
@@ -53,10 +56,13 @@ void MediaSetWidget::selectedMediaSet(
       mediaSetV->partNumber().data(),
       static_cast< int >( mediaSetV->partNumber().length() ) ) );
 
-    loadsModelV->loads( mediaSetV->loads() );
+    ui->content->setRootIndex( mediaSetModelV->index( 0, 0 ) );
+    ui->content->resizeColumnsToContents();
+
+    loadsModelV->loads( mediaSetV->recursiveLoads() );
     ui->loads->resizeColumnsToContents();
 
-    batchesModelV->batches( mediaSetV->batches() );
+    batchesModelV->batches( mediaSetV->recursiveBatches() );
     ui->batches->resizeColumnsToContents();
   }
 }

@@ -15,6 +15,8 @@
 
 #include <arinc665/files/Files.hpp>
 
+#include <arinc665/MediumNumber.hpp>
+
 #include <vector>
 #include <string>
 #include <string_view>
@@ -36,7 +38,7 @@ struct ARINC665_EXPORT BatchInfo
   //! File Name
   std::string filename;
   //! Member Sequence Number
-  uint8_t memberSequenceNumber;
+  MediumNumber memberSequenceNumber;
 
   /**
    * @brief Compares batch info against each other

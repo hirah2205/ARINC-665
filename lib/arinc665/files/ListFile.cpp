@@ -32,23 +32,23 @@ void ListFile::mediaSetPn( std::string mediaSetPn )
 }
 
 
-uint8_t ListFile::mediaSequenceNumber() const
+MediumNumber ListFile::mediaSequenceNumber() const
 {
   return mediaSequenceNumberV;
 }
 
-void ListFile::mediaSequenceNumber( const uint8_t mediaSequenceNumber )
+void ListFile::mediaSequenceNumber( const MediumNumber mediaSequenceNumber )
 {
   mediaSequenceNumberV = mediaSequenceNumber;
 }
 
-uint8_t ListFile::numberOfMediaSetMembers() const
+MediumNumber ListFile::numberOfMediaSetMembers() const
 {
   return numberOfMediaSetMembersV;
 }
 
 void ListFile::numberOfMediaSetMembers(
-  const uint8_t numberOfMediaSetMembers )
+  const MediumNumber numberOfMediaSetMembers )
 {
   numberOfMediaSetMembersV = numberOfMediaSetMembers;
 }
@@ -90,19 +90,19 @@ RawFile ListFile::encodeMediaInformation() const
   // media sequence number
   Helper::setInt< uint8_t>(
     rawMediaInformation.begin() + partNumberSize,
-    mediaSequenceNumberV );
+    static_cast< uint8_t >( mediaSequenceNumberV ) );
 
   // number of media set members
   Helper::setInt< uint8_t>(
     rawMediaInformation.begin() + partNumberSize + sizeof( uint8_t ),
-    numberOfMediaSetMembers() );
+    static_cast< uint8_t >( numberOfMediaSetMembers() ) );
 
   return rawMediaInformation;
 }
 
 void ListFile::decodeMediaInformation(
   const ConstRawFileSpan &rawFile,
-  uint32_t mediaInformationPtr )
+  const uint32_t mediaInformationPtr )
 {
   if ( static_cast< size_t >( mediaInformationPtr ) * 2U >= rawFile.size() )
   {
@@ -119,10 +119,14 @@ void ListFile::decodeMediaInformation(
     mediaSetPnV ) };
 
   // media sequence number
-  it = Helper::getInt< uint8_t>( it, mediaSequenceNumberV );
+  uint8_t mediaSequenceNumber{};
+  it = Helper::getInt< uint8_t >( it, mediaSequenceNumber );
+  mediaSequenceNumberV = mediaSequenceNumber;
 
   // number of media set members
-  Helper::getInt< uint8_t>( it, numberOfMediaSetMembersV );
+  uint8_t numberOfMediaSetMembers{};
+  Helper::getInt< uint8_t >( it, numberOfMediaSetMembers );
+  numberOfMediaSetMembersV = numberOfMediaSetMembers;
 }
 
 }

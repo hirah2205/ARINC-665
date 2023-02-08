@@ -14,8 +14,11 @@
 
 namespace Arinc665::Media {
 
-Batch::Batch( const ContainerEntityPtr& parent, std::string name ) :
-  File{ parent, std::move( name ) }
+Batch::Batch(
+  const ContainerEntityPtr& parent,
+  std::string name,
+  const OptionalMediumNumber &mediumNumber ) :
+  File{ parent, std::move( name ), mediumNumber }
 {
 }
 

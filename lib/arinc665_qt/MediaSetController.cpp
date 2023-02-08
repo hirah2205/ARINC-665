@@ -26,6 +26,7 @@
 #include <arinc665/files/MediaSetInformation.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
+#include <arinc665/MediumNumber.hpp>
 
 #include <arinc645/CheckValue.hpp>
 
@@ -108,8 +109,8 @@ void MediaSetController::directoryEntered( const QString &path )
   BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::info )
     << path.toStdString() << " Medium "
     << mediumInformation->partNumber << " "
-    << (unsigned int)mediumInformation->mediaSequenceNumber << "/"
-    << (unsigned int)mediumInformation->numberOfMediaSetMembers;
+    << mediumInformation->mediaSequenceNumber << "/"
+    << mediumInformation->numberOfMediaSetMembers;
 }
 
 void MediaSetController::directorySelected()
@@ -163,10 +164,10 @@ void MediaSetController::directorySelected()
 }
 
 size_t MediaSetController::fileSize(
-  uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {
-  if ( 1U != mediumNumber )
+  if ( Arinc665::MediumNumber{ 1U } != mediumNumber )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo{ "Multi Medium Media Sets not supported" } );
@@ -187,17 +188,18 @@ size_t MediaSetController::fileSize(
 }
 
 Arinc665::Files::RawFile MediaSetController::loadFile(
-  const uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path& path )
 {
-  if ( 1U != mediumNumber )
+  if ( Arinc665::MediumNumber{ 1U } != mediumNumber )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo{ "Multi Medium Media Sets not supported" } );
   }
 
   auto filePath{
-    selectDirectoryDialog->directory().absolutePath().toStdString() / path.relative_path() };
+    selectDirectoryDialog->directory().absolutePath().toStdString()
+      / path.relative_path() };
 
   if ( !std::filesystem::is_regular_file( filePath))
   {

@@ -14,7 +14,7 @@
 #define ARINC665_MEDIA_MEDIASET_HPP
 
 #include <arinc665/media/Media.hpp>
-#include <arinc665/media/Base.hpp>
+#include <arinc665/media/ContainerEntity.hpp>
 
 #include <arinc645/Arinc645.hpp>
 
@@ -26,12 +26,8 @@ namespace Arinc665::Media {
 
 /**
  * @brief ARINC 665 %Media Set.
- *
- * A %Media Set consists of one or more media.
- *
- * Each media consists of one or more files.
  **/
-class ARINC665_EXPORT MediaSet final : public Base
+class ARINC665_EXPORT MediaSet final : public ContainerEntity
 {
   public:
     /**
@@ -39,7 +35,7 @@ class ARINC665_EXPORT MediaSet final : public Base
      *
      * This %Media Set contains no media, data files, loads nor batches.
      **/
-    MediaSet() = default;
+    MediaSet();
 
     //! @copydoc Base::mediaSet() const
     [[nodiscard]] ConstMediaSetPtr mediaSet() const override;
@@ -49,6 +45,18 @@ class ARINC665_EXPORT MediaSet final : public Base
 
     //! @copydoc Base::type() const
     [[nodiscard]] Type type() const override;
+
+    /**
+     * @copydoc ContainerEntity::parent() const
+     * @retval {} always.
+     **/
+    [[nodiscard]] ConstContainerEntityPtr parent() const override;
+
+    //! @copydoc ContainerEntity::parent() const
+    [[nodiscard]] ContainerEntityPtr parent() override;
+
+    //! @copydoc ContainerEntity::path() const
+    [[nodiscard]] std::filesystem::path path() const override;
 
     /**
      * @name %Media Set Part Number
@@ -76,198 +84,9 @@ class ARINC665_EXPORT MediaSet final : public Base
     /** @} **/
 
     /**
-     * @name Media
-     *
-     * A %Media Set consists of 1 up to 255 %Media.
-     *
-     * @{
-     **/
-
-    /**
-     * @brief Get the Number of %Media within the %Media Set.
-     *
-     * @return Number of %Media within the %Media Set.
-     **/
-    [[nodiscard]] uint8_t numberOfMedia() const;
-
-    /**
-     * @brief Returns all %Media.
-     *
-     * @return All %Media of the %Media Set.
-     **/
-    [[nodiscard]] ConstMedia media() const;
-
-    //! @copydoc MediaSet::media() const
-    [[nodiscard]] Media media();
-
-    /**
-     * @brief Set the Number of %Media.
-     *
-     * @param[in] numberOfMedia
-     *   Number of media add.
-     **/
-    void addMedia( uint8_t numberOfMedia );
-
-    /**
-     * @brief Return the %Medium with the requested Medium Number.
-     *
-     * @param[in] number
-     *   %Medium Number [1..255].
-     *
-     * @return %Medium with the requested number.
-     * @retval {}
-     *   if @p number is invalid
-     **/
-    [[nodiscard]] ConstMediumPtr medium( uint8_t number ) const;
-
-    //! @copydoc medium(uint8_t) const
-    [[nodiscard]] MediumPtr medium( uint8_t number );
-
-    /**
-     * @brief Adds a %Medium to the %Media Set and returns the %Medium.
-     *
-     * @return %Media index of the new medium.
-     * @retval {}
-     *   If maximum number of media (255) reached.
-     **/
-    [[nodiscard]] MediumPtr addMedium();
-
-    /**
-     * @brief Removes the last %Medium.
-     **/
-    void removeMedium();
-
-    /** @} **/
-
-    /**
-     * @name Files
-     *
-     * All files regardless of file type (regular file, load, batch).
-     *
-     * @{
-     **/
-
-    /**
-     * @brief Return the total number of files within the %Media Set.
-     *
-     * @return Number of files.
-     **/
-    [[nodiscard]] size_t numberOfFiles() const;
-
-    /**
-     * @brief Returns all files present on the %Media Set.
-     *
-     * @return All files.
-     **/
-    [[nodiscard]] ConstFiles files() const;
-
-    /**
-     * @brief Returns all files present on the %Media Set.
-     *
-     * @return All files.
-     **/
-    [[nodiscard]] Files files();
-
-    /**
-     * @brief Returns files with the given filename.
-     *
-     * @param[in] filename
-     *   Filename.
-     *
-     * @return Files with the given filename.
-     * @retval {}
-     *   If no file with @p filename is found.
-     **/
-    [[nodiscard]] ConstFiles files( std::string_view filename ) const;
-
-    //! @copydoc files(std::string_view) const
-    [[nodiscard]] Files files( std::string_view filename );
-
-    /** @} **/
-
-    /**
-     * @name Regular Files
-     *
-     * Files, which are not Load or Batch.
-     *
-     * @{
-     **/
-
-    /**
-     * @brief Return the number of Regular %Files within the %Media Set.
-     *
-     * @return Number of loads within the %Media Set.
-     **/
-    [[nodiscard]] size_t numberOfRegularFiles() const;
-
-    /**
-     * @brief Returns the Regular %Files within the %Media Set.
-     *
-     * @return Loads within the %Media Set.
-     **/
-    [[nodiscard]] ConstRegularFiles regularFiles() const;
-
-    /**
-     * @brief Returns the Regular %Files within the %Media Set.
-     *
-     * @return Loads within the %Media Set.
-     **/
-    [[nodiscard]] RegularFiles regularFiles();
-
-    /**
-     * @brief return the Regular %File with the given filename.
-     *
-     * @param[in] filename
-     *   Filename of the load.
-     *
-     * @return Load with the given filename.
-     **/
-    [[nodiscard]] ConstRegularFiles regularFiles(
-      std::string_view filename ) const;
-
-    //! @copydoc regularFiles(std::string_view) const
-    [[nodiscard]] RegularFiles regularFiles( std::string_view filename );
-
-    /** @} **/
-
-    /**
      * @name Loads
      * @{
      **/
-
-    /**
-     * @brief Return the number of loads within the %Media Set.
-     *
-     * @return Number of loads within the %Media Set.
-     **/
-    [[nodiscard]] size_t numberOfLoads() const;
-
-    /**
-     * @brief Returns the loads within the %Media Set.
-     *
-     * @return Loads within the %Media Set.
-     **/
-    [[nodiscard]] ConstLoads loads() const;
-
-    /**
-     * @brief Returns the loads within the %Media Set.
-     *
-     * @return Loads within the %Media Set.
-     **/
-    [[nodiscard]] Loads loads();
-
-    /**
-     * @brief return the load with the given filename.
-     *
-     * @param[in] filename
-     *   The filename of the load.
-     *
-     * @return Load with the given filename.
-     **/
-    [[nodiscard]] ConstLoads loads( std::string_view filename ) const;
-
-    //! @copydoc loads(std::string_view) const
-    [[nodiscard]] Loads loads( std::string_view filename );
 
     /**
      * @brief Return all Loads, the @p file is referenced.
@@ -288,40 +107,6 @@ class ARINC665_EXPORT MediaSet final : public Base
      * @name Batches
      * @{
      **/
-
-    /**
-     * @brief Return the number of batches within the %Media Set.
-     *
-     * @return Number of batches within the %Media Set.
-     **/
-    [[nodiscard]] size_t numberOfBatches() const;
-
-    /**
-     * @brief Returns the batches within the %Media Set.
-     *
-     * @return Batches within the %Media Set.
-     **/
-    [[nodiscard]] ConstBatches batches() const;
-
-    /**
-     * @brief Returns the batches within the %Media Set.
-     *
-     * @return Batches within the %Media Set.
-     **/
-    [[nodiscard]] Batches batches();
-
-    /**
-     * @brief return the batch with the given filename.
-     *
-     * @param[in] filename
-     *   Filename of the batch.
-     *
-     * @return Batches with the given filename.
-     **/
-    [[nodiscard]] ConstBatches batches( std::string_view filename ) const;
-
-    //! @copydoc batches(std::string_view) const
-    [[nodiscard]] Batches batches( std::string_view filename );
 
     /**
      * @brief Return all Batches, the @p load is referenced.
@@ -628,8 +413,6 @@ class ARINC665_EXPORT MediaSet final : public Base
     /** @} **/
 
   private:
-    //! %Media
-    Media mediaV;
     //! Part Number
     std::string partNumberV;
     //! User Defined Data for Files List Files

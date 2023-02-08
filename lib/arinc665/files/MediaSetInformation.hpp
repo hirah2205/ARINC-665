@@ -15,6 +15,8 @@
 
 #include <arinc665/files/Files.hpp>
 
+#include <arinc665/MediumNumber.hpp>
+
 namespace Arinc665::Files {
 
 //! Media Set Information as provided by List Files
@@ -23,9 +25,9 @@ struct MediaSetInformation
   //! Media Set Part Number
   std::string partNumber;
   //! Media Sequence Number
-  uint8_t mediaSequenceNumber;
+  MediumNumber mediaSequenceNumber;
   //! Number of Media Set Members
-  uint8_t numberOfMediaSetMembers;
+  MediumNumber numberOfMediaSetMembers;
 };
 
 }

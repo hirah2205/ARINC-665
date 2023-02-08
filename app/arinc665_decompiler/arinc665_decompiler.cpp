@@ -11,7 +11,6 @@
  **/
 
 #include <arinc665/media/MediaSet.hpp>
-#include <arinc665/media/Medium.hpp>
 #include <arinc665/media/RegularFile.hpp>
 
 #include <arinc665/utils/MediaSetImporter.hpp>
@@ -33,7 +32,7 @@
 #include <iostream>
 
 /**
- * @brief Program entry point
+ * @brief Entry point of application.
  *
  * @param[in] argc
  *   Number of arguments.
@@ -58,7 +57,7 @@ int main( int argc, char const * argv[] );
  **/
 static size_t getFileSize(
   const std::vector< std::filesystem::path > &mediaSourceDirectories,
-  uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path );
 
 /**
@@ -71,21 +70,21 @@ static size_t getFileSize(
  * @param[in] path
  *   Path of file on Medium.
  *
- * @return THe read file data.
+ * @return Read file data.
  *
  * @throw Arinc665Exception
  *   If file does not exist or cannot be read.
  **/
 static Arinc665::Files::RawFile readFile(
   const std::vector< std::filesystem::path > &mediaSourceDirectories,
-  uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path );
 
 int main( int argc, char const * argv[] )
 {
-  std::cout << "ARINC 665 Media Set Decompiler" << "\n";
+  BOOST_LOG_FUNCTION()
 
-  Helper::initLogging( Helper::Severity::info);
+  Helper::initLogging( Helper::Severity::info );
 
   boost::program_options::options_description optionsDescription{
     "ARINC 665 Media Set Decompiler Options" };
@@ -123,6 +122,8 @@ int main( int argc, char const * argv[] )
 
   try
   {
+    std::cout << "ARINC 665 Media Set Decompiler" << "\n";
+
     boost::program_options::variables_map vm{};
     boost::program_options::store(
       boost::program_options::parse_command_line(
@@ -155,12 +156,12 @@ int main( int argc, char const * argv[] )
 
     Arinc665::Utils::Arinc665Xml::FilePathMapping fileMapping{};
 
-    // iterate over files
-    for ( const auto &file : mediaSet->files() )
+    // iterate over all files to add file-mapping
+    for ( const auto &file : mediaSet->recursiveFiles() )
     {
       std::filesystem::path filePath(
-        mediaSourceDirectories[ file->medium()->mediumNumber() - 1]
-          / file->path().relative_path());
+        mediaSourceDirectories[ static_cast< uint8_t >( file->effectiveMediumNumber() ) - 1]
+          / file->path().relative_path() );
 
       fileMapping.try_emplace( file, filePath );
     }
@@ -181,12 +182,15 @@ int main( int argc, char const * argv[] )
   catch ( const boost::exception &e )
   {
     std::cerr
-      << "Error in decompiler: " << boost::diagnostic_information( e ) << "\n";
+      << "Error in decompiler: "
+      << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "std exception: " << e.what() << "\n";
+    std::cerr
+      << "Error in decompiler: "
+      << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( ... )
@@ -200,19 +204,20 @@ int main( int argc, char const * argv[] )
 
 static size_t getFileSize(
   const std::vector< std::filesystem::path > &mediaSourceDirectories,
-  const uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {
   auto filePath{
-    mediaSourceDirectories.at( mediumNumber - 1U ) / path.relative_path() };
+    mediaSourceDirectories.at( static_cast< uint8_t >( mediumNumber ) - 1U )
+      / path.relative_path() };
 
   if ( !std::filesystem::is_regular_file( filePath ) )
   {
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception()
-      << boost::errinfo_file_name{ filePath.string() }
-      << Helper::AdditionalInfo{ "File not found" }
-      << boost::errinfo_file_name{ filePath.string() } );
+        << boost::errinfo_file_name{ filePath.string() }
+        << Helper::AdditionalInfo{ "File not found" }
+        << boost::errinfo_file_name{ filePath.string() } );
   }
 
   return std::filesystem::file_size( filePath );
@@ -220,20 +225,22 @@ static size_t getFileSize(
 
 static Arinc665::Files::RawFile readFile(
   const std::vector< std::filesystem::path > &mediaSourceDirectories,
-  const uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {
   // check medium number
-  if ( mediumNumber > mediaSourceDirectories.size() )
+  if ( static_cast< uint8_t >( mediumNumber ) > mediaSourceDirectories.size() )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo{ "Medium number unknown" } );
   }
 
-  auto filePath{ mediaSourceDirectories[ mediumNumber-1] / path.relative_path() };
+  auto filePath{
+    mediaSourceDirectories[ static_cast< uint8_t >( mediumNumber ) - 1]
+      / path.relative_path() };
 
   // check existence of file
-  if ( !std::filesystem::is_regular_file( filePath))
+  if ( !std::filesystem::is_regular_file( filePath ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << boost::errinfo_file_name{ filePath.string() }
@@ -257,7 +264,7 @@ static Arinc665::Files::RawFile readFile(
 
   // read the data to the buffer
   file.read(
-    (char *)&data.at( 0 ),
+    (char *) &data.at( 0 ),
     static_cast< std::streamsize >( data.size() ) );
 
   // return the buffer

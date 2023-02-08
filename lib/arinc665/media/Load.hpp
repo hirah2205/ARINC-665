@@ -52,13 +52,19 @@ class ARINC665_EXPORT Load final : public File
      *   Parent of this Load.
      * @param[in] name
      *   Name of the Load
+     * @param[in] mediumNumber
+     *   Medium Number, where the file is located on.
      **/
-    Load( const ContainerEntityPtr &parent, std::string name );
+    Load(
+      const ContainerEntityPtr &parent,
+      std::string name,
+      const OptionalMediumNumber &mediumNumber );
 
     /**
      * @copydoc File::fileType()
      *
-     * @return FileType::LoadFile always.
+     * @return FileType::LoadFile
+     *   Always
      **/
     [[nodiscard]] FileType fileType() const override;
 
@@ -100,7 +106,7 @@ class ARINC665_EXPORT Load final : public File
      * @brief Updates the Part Number of the Load.
      *
      * @param[in] partNumber
-     *   New Part number
+     *   New Load Part Number
      **/
     void partNumber( std::string partNumber );
 

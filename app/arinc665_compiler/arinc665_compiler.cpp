@@ -19,7 +19,6 @@
 #include <arinc665/utils/MediaSetExporter.hpp>
 #include <arinc665/utils/FileCreationPolicyDescription.hpp>
 
-#include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/File.hpp>
@@ -62,7 +61,7 @@ int main( int argc, char * argv[] );
  **/
 static std::filesystem::path mediumPath(
   const std::filesystem::path &base,
-  uint8_t mediumNumber );
+  const Arinc665::MediumNumber &mediumNumber );
 
 /**
  * @brief Creates the Directory for the given Medium.
@@ -72,7 +71,7 @@ static std::filesystem::path mediumPath(
  **/
 static void createMedium(
   const std::filesystem::path &base,
-  const Arinc665::Media::ConstMediumPtr &medium );
+  const Arinc665::MediumNumber &mediumNumber );
 
 /**
  * @brief Creates the given Directory.
@@ -82,6 +81,7 @@ static void createMedium(
  **/
 static void createDirectory(
   const std::filesystem::path &mediaSetBase,
+  const Arinc665::MediumNumber &mediumNumber,
   const Arinc665::Media::ConstDirectoryPtr &directory );
 
 /**
@@ -121,7 +121,7 @@ static void createFile(
  **/
 static void writeFile(
   const std::filesystem::path &mediaSetBase,
-  uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path,
   const Arinc665::Files::ConstRawFileSpan &file );
 
@@ -129,7 +129,7 @@ static void writeFile(
  * @brief Read File Handler
  *
  * @param[in] mediumNumber
- *   Medium Number
+ *   Medium number.
  * @param[in] path
  *   File Path
  *
@@ -137,7 +137,7 @@ static void writeFile(
  **/
 static Arinc665::Files::RawFile readFile(
   const std::filesystem::path &mediaSetBase,
-  uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path );
 
 int main( int argc, char * argv[] )
@@ -187,7 +187,7 @@ int main( int argc, char * argv[] )
   (
     "xml-file",
     boost::program_options::value( &mediaSetXmlFile )->required(),
-    "ARINC 665 media set description file"
+    "ARINC 665 media set description XML"
   )
   (
     "source-directory",
@@ -224,22 +224,23 @@ int main( int argc, char * argv[] )
       << "ARINC 665 Media Set Compiler - "
       << Arinc665::Version::VersionInformation << "\n";
 
-    boost::program_options::variables_map options{};
-
+    boost::program_options::variables_map vm{};
     boost::program_options::store(
       boost::program_options::parse_command_line(
         argc,
         argv,
         optionsDescription ),
-      options );
+      vm );
 
-    if ( options.count( "help" ) != 0 )
+    if ( 0U != vm.count( "help" ) )
     {
-      std::cout << optionsDescription << "\n";
+      std::cout
+        << "Compiles an ARINC 665 Media Set\n"
+        << optionsDescription << "\n";
       return EXIT_FAILURE;
     }
 
-    boost::program_options::notify( options );
+    boost::program_options::notify( vm );
 
     // ARINC 665 XML instance
     auto xml{ Arinc665::Utils::Arinc665Xml::instance() };
@@ -292,7 +293,9 @@ int main( int argc, char * argv[] )
   }
   catch ( const boost::program_options::error &e )
   {
-    std::cout << e.what() << "\n";
+    std::cerr
+      << "Error parsing command line: " << e.what() << "\n"
+      << "Enter " << argv[0] << " --help for command line description\n";
     return EXIT_FAILURE;
   }
   catch ( const Arinc665::Arinc665Exception &e )
@@ -305,18 +308,20 @@ int main( int argc, char * argv[] )
   catch ( const boost::exception &e )
   {
     std::cerr
-      << "BOOST Error in compiler: "
+      << "Error in compiler: "
       << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "std Error in compiler: " << e.what() << "\n";
+    std::cerr
+      << "Error in compiler: "
+      << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( ... )
   {
-    std::cerr << "Error in compiler: UNKNOWN EXCEPTION\n";
+    std::cerr << "unknown exception occurred\n";
     return EXIT_FAILURE;
   }
 
@@ -325,18 +330,18 @@ int main( int argc, char * argv[] )
 
 static std::filesystem::path mediumPath(
   const std::filesystem::path &base,
-  const uint8_t mediumNumber )
+  const Arinc665::MediumNumber &mediumNumber )
 {
-  return base / fmt::format( "MEDIUM_{:03d}", (unsigned int)mediumNumber );
+  return base / fmt::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) );
 }
 
 static void createMedium(
   const std::filesystem::path &base,
-  const Arinc665::Media::ConstMediumPtr &medium )
+  const Arinc665::MediumNumber &mediumNumber )
 {
   BOOST_LOG_FUNCTION()
 
-  auto mPath{ mediumPath( base, medium->mediumNumber() ) };
+  auto mPath{ mediumPath( base, mediumNumber ) };
 
   BOOST_LOG_TRIVIAL( severity_level::trace )
     << "Create medium directory " << mPath;
@@ -346,16 +351,17 @@ static void createMedium(
 
 static void createDirectory(
   const std::filesystem::path &mediaSetBase,
+  const Arinc665::MediumNumber &mediumNumber,
   const Arinc665::Media::ConstDirectoryPtr &directory )
 {
   BOOST_LOG_FUNCTION()
 
   auto directoryPath{
-    mediumPath( mediaSetBase, directory->medium()->mediumNumber() )
-      / directory->path().relative_path()};
+    mediumPath( mediaSetBase, mediumNumber )
+      / directory->path().relative_path() };
 
   BOOST_LOG_TRIVIAL( severity_level::trace )
-    << "Create directory " << directoryPath;
+    << "Create directory " << "[" << mediumNumber << "] " << directoryPath;
 
   std::filesystem::create_directory( directoryPath );
 }
@@ -400,7 +406,7 @@ static void createFile(
   }
 
   auto filePath{
-    mediumPath( mediaSetBase, file->medium()->mediumNumber() )
+    mediumPath( mediaSetBase, file->effectiveMediumNumber() )
       / file->path().relative_path() };
 
   BOOST_LOG_TRIVIAL( severity_level::trace ) << "Copy file " << filePath;
@@ -411,7 +417,7 @@ static void createFile(
 
 static void writeFile(
   const std::filesystem::path &mediaSetBase,
-  const uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path,
   const Arinc665::Files::ConstRawFileSpan &file )
 {
@@ -420,7 +426,8 @@ static void writeFile(
   auto filePath{
     mediumPath( mediaSetBase, mediumNumber) / path.relative_path() };
 
-  BOOST_LOG_TRIVIAL( severity_level::trace ) << "Write file " << filePath;
+  BOOST_LOG_TRIVIAL( severity_level::trace )
+    << "Write file " << "[" << mediumNumber << "] " << filePath;
 
   // check existence of file
   if ( std::filesystem::exists( filePath) )
@@ -450,7 +457,7 @@ static void writeFile(
 
 static Arinc665::Files::RawFile readFile(
   const std::filesystem::path &mediaSetBase,
-  const uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {
   BOOST_LOG_FUNCTION()
@@ -459,12 +466,14 @@ static Arinc665::Files::RawFile readFile(
   auto filePath{
     mediumPath( mediaSetBase, mediumNumber ) / path.relative_path() };
 
-  BOOST_LOG_TRIVIAL( severity_level::trace ) << "Read file " << filePath;
+  BOOST_LOG_TRIVIAL( severity_level::trace )
+    << "Read file " << "[" << mediumNumber << "] " << filePath;
 
   // check existence of file
   if ( !std::filesystem::is_regular_file( filePath ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << boost::errinfo_file_name{ filePath.string() }
       << Helper::AdditionalInfo{ "File not found" }
       << boost::errinfo_file_name{ filePath.string() } );
   }
@@ -472,9 +481,9 @@ static Arinc665::Files::RawFile readFile(
   Arinc665::Files::RawFile data( std::filesystem::file_size( filePath ) );
 
   // load file
-  std::ifstream file(
+  std::ifstream file{
     filePath.string().c_str(),
-    std::ifstream::binary | std::ifstream::in );
+    std::ifstream::binary | std::ifstream::in };
 
   if ( !file.is_open() )
   {
@@ -485,7 +494,7 @@ static Arinc665::Files::RawFile readFile(
 
   // read the data to the buffer
   file.read(
-    (char*) &data.at( 0),
+    (char *) &data.at( 0 ),
     static_cast< std::streamsize >( data.size() ) );
 
   // return the buffer

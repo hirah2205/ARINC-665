@@ -12,7 +12,6 @@
 
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/MediaSet.hpp>
-#include <arinc665/media/Medium.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -32,7 +31,7 @@ BOOST_AUTO_TEST_CASE( constructor)
   MediaSet mediaSet;
 
   BOOST_CHECK( mediaSet.partNumber().empty() );
-  BOOST_CHECK( mediaSet.numberOfMedia() == 0 );
+  BOOST_CHECK( mediaSet.lastMediumNumber() == MediumNumber{ 1U } );
   BOOST_CHECK( mediaSet.type() == Type::MediaSet );
 
   BOOST_CHECK_THROW( auto ptr( mediaSet.shared_from_this()), std::bad_weak_ptr );
@@ -62,22 +61,22 @@ BOOST_AUTO_TEST_CASE( partNumber)
 BOOST_AUTO_TEST_CASE( medium)
 {
   auto mediaSet{ std::make_shared< MediaSet >() };
-  BOOST_CHECK( mediaSet->numberOfMedia() == 0 );
+  BOOST_CHECK( mediaSet->lastMediumNumber() == MediumNumber{ 1U } );
 
-  BOOST_CHECK( mediaSet->addMedium() );
-  BOOST_CHECK( mediaSet->numberOfMedia() == 1 );
+  BOOST_CHECK( mediaSet->addRegularFile( "Medium1File", Arinc665::MediumNumber{ 1U } ) );
+  BOOST_CHECK( mediaSet->lastMediumNumber() == MediumNumber{ 1U } );
 
-  BOOST_CHECK( mediaSet->addMedium() );
-  BOOST_CHECK( mediaSet->numberOfMedia() == 2 );
+  BOOST_CHECK( mediaSet->addRegularFile( "Medium2File", Arinc665::MediumNumber{ 2U } ) );
+  BOOST_CHECK( mediaSet->lastMediumNumber() == MediumNumber{ 2U } );
 
-  BOOST_CHECK_NO_THROW( mediaSet->addMedia( 0 ) );
-  BOOST_CHECK( mediaSet->numberOfMedia() == 2 );
+  BOOST_CHECK( mediaSet->addRegularFile( "Medium2aFile", Arinc665::MediumNumber{ 2U } ) );
+  BOOST_CHECK( mediaSet->lastMediumNumber() == MediumNumber{ 2U } );
 
-  BOOST_CHECK_NO_THROW( mediaSet->addMedia( 4 ) );
-  BOOST_CHECK( mediaSet->numberOfMedia() == 6 );
+  BOOST_CHECK( mediaSet->addRegularFile( "Medium6File", Arinc665::MediumNumber{ 6U } ) );
+  BOOST_CHECK( mediaSet->lastMediumNumber() == MediumNumber{ 6U } );
 
-  BOOST_CHECK_NO_THROW( mediaSet->removeMedium() );
-  BOOST_CHECK( mediaSet->numberOfMedia() == 5 );
+  BOOST_CHECK_NO_THROW( mediaSet->removeFile( "Medium6File") );
+  BOOST_CHECK( mediaSet->lastMediumNumber() == MediumNumber{ 2U } );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -80,8 +80,12 @@ class MediaSetExporterImpl final : public MediaSetExporter
      *
      * @param[in] directory
      *   Directory, which is exported.
+     * @param[in] mediumNumber
+     *   Medium Number.
      **/
-    void exportDirectory( const Media::ConstDirectoryPtr &directory );
+    void exportDirectory(
+      const MediumNumber &mediumNumber,
+      const Media::ConstDirectoryPtr &directory );
 
     /**
      * @brief Called to export the given Regular File.
@@ -176,7 +180,7 @@ class MediaSetExporterImpl final : public MediaSetExporter
      **/
     [[nodiscard]] std::tuple< uint16_t, Arinc645::CheckValue >
     fileCrcCheckValue(
-      uint8_t mediumNumber,
+      const MediumNumber mediumNumber,
       const std::filesystem::path &filename,
       Arinc645::CheckValueType checkValueType ) const;
 

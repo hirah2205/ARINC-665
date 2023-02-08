@@ -66,8 +66,8 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetCommand
      *
      * @return File Size
      **/
-    size_t fileSizeHandler(
-      uint8_t mediumNumber,
+    [[nodiscard]] size_t fileSizeHandler(
+      const Arinc665::MediumNumber &mediumNumber,
       const std::filesystem::path &path ) const;
 
     /**
@@ -80,8 +80,8 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetCommand
      *
      * @return Read File Content
      **/
-    Arinc665::Files::RawFile readFileHandler(
-      uint8_t mediumNumber,
+    [[nodiscard]] Arinc665::Files::RawFile readFileHandler(
+      const Arinc665::MediumNumber &mediumNumber,
       const std::filesystem::path &path );
 
     //! Program Options Description

@@ -24,7 +24,6 @@ target_sources(
         MediaSetModel.hpp
         MediaSetsModel.hpp
         MediaSetWidget.hpp
-        MediumWidget.hpp
         RegularFileWidget.hpp
         TargetHardwareIdsPositionsModel.hpp
 
@@ -45,8 +44,6 @@ target_sources(
     MediaSetsModel.cpp
     MediaSetWidget.cpp
     MediaSetWidget.ui
-    MediumWidget.cpp
-    MediumWidget.ui
     RegularFileWidget.cpp
     RegularFileWidget.ui
     TargetHardwareIdsPositionsModel.cpp )

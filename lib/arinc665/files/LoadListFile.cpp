@@ -18,6 +18,7 @@
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <helper/Endianess.hpp>
+#include <helper/SafeCast.hpp>
 
 namespace Arinc665::Files {
 
@@ -272,7 +273,9 @@ RawFile LoadListFile::encodeLoadsInfo() const
     loadInfoIt = std::copy( rawHeaderFilename.begin(), rawHeaderFilename.end(), loadInfoIt );
 
     // member sequence number
-    loadInfoIt = Helper::setInt< uint16_t>( loadInfoIt, loadInfo.memberSequenceNumber );
+    loadInfoIt = Helper::setInt< uint16_t>(
+      loadInfoIt,
+      static_cast< uint8_t >( loadInfo.memberSequenceNumber ) );
 
     // THW IDs list
     std::copy( rawThwIds.begin(), rawThwIds.end(), loadInfoIt );
@@ -346,7 +349,8 @@ void LoadListFile::decodeLoadsInfo(
     loadsV.emplace_back( LoadInfo{
       .partNumber = std::move( partNumber ),
       .headerFilename = std::move( headerFilename ),
-      .memberSequenceNumber = static_cast< uint8_t>( fileMemberSequenceNumber ),
+      .memberSequenceNumber =
+        MediumNumber{ Helper::safeCast< uint8_t>( fileMemberSequenceNumber ) },
       .targetHardwareIds = std::move( thwIds ) } );
 
     // set it to begin of next load
@@ -358,7 +362,7 @@ void LoadListFile::checkUserDefinedData()
 {
   BOOST_LOG_FUNCTION()
 
-  if ( userDefinedDataV.size() % 2U != 0U)
+  if ( userDefinedDataV.size() % 2U != 0U )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning)
       << "User defined data must be 2-byte aligned. - extending range";

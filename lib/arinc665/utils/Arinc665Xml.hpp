@@ -35,7 +35,7 @@ namespace Arinc665::Utils {
 class ARINC665_EXPORT Arinc665Xml
 {
   public:
-    //! File Path Mapping
+    //! File (Source) Path Mapping (File to path)
     using FilePathMapping =
       std::map< Media::ConstFilePtr, std::filesystem::path >;
     //! Load XML Result (Media Set Pointer and corresponding File Path Mapping)

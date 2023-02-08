@@ -13,7 +13,6 @@
 #include "MediaSetImporterImpl.hpp"
 
 #include <arinc665/media/Directory.hpp>
-#include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/Batch.hpp>
 #include <arinc665/media/RegularFile.hpp>
@@ -74,7 +73,7 @@ MediaSetImporterImpl::Result MediaSetImporterImpl::operator()()
 void MediaSetImporterImpl::loadFirstMedium()
 {
   // Load "list of files" file
-  fileListFile = readFileHandlerV( 1U, Arinc665::ListOfFilesName );
+  fileListFile = readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfFilesName );
 
   bool listOfLoadsFilePresent{ false };
 
@@ -139,7 +138,7 @@ void MediaSetImporterImpl::loadFirstMedium()
   }
 
   // check file integrity on current medium
-  checkMediumFiles( fileListFile.files(), 1U );
+  checkMediumFiles( MediumNumber{ 1U }, fileListFile.files() );
 
   // store list of files user defined data
   auto filesUserDefinedData{ fileListFile.userDefinedData() };
@@ -151,11 +150,10 @@ void MediaSetImporterImpl::loadFirstMedium()
   mediaSet->listOfFilesCheckValueType( fileListFile.checkValueType() );
   // Set Media Set Parameter
   mediaSet->partNumber( std::string{ fileListFile.mediaSetPn() } );
-  // Add media
-  mediaSet->addMedia( fileListFile.numberOfMediaSetMembers() );
 
   // Load list of loads file
-  loadListFile = readFileHandlerV( 1, Arinc665::ListOfLoadsName );
+  loadListFile =
+    readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfLoadsName );
 
   for ( const auto &load : loadListFile.loads() )
   {
@@ -190,7 +188,8 @@ void MediaSetImporterImpl::loadFirstMedium()
   // Load list of batches file
   if ( batchListFilePresent )
   {
-    batchListFile = readFileHandlerV( 1, Arinc665::ListOfBatchesName );
+    batchListFile =
+      readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfBatchesName );
 
     for ( const auto &batch : batchListFile.batches() )
     {
@@ -228,8 +227,8 @@ void MediaSetImporterImpl::loadFurtherMedia() const
 {
   // iterate over media
   for (
-    uint8_t mediumNumber = 2U;
-    mediumNumber <= mediaSet->numberOfMedia();
+    MediumNumber mediumNumber{ 2U };
+    mediumNumber <= fileListFile.numberOfMediaSetMembers();
     ++mediumNumber )
   {
     // Load "list of files" file
@@ -246,7 +245,7 @@ void MediaSetImporterImpl::loadFurtherMedia() const
     }
 
     // check file integrity on current medium
-    checkMediumFiles( mediumFileListFile.files(), mediumNumber );
+    checkMediumFiles( mediumNumber, mediumFileListFile.files() );
 
     // Load "List of Loads" file
 
@@ -293,12 +292,13 @@ void MediaSetImporterImpl::addFiles()
     }
 
     // get directory, where file will be placed into.
-    const auto container{ checkCreateDirectory(
-      fileInfo.memberSequenceNumber,
-      fileInfo.path().parent_path() ) };
+    const auto container{
+      checkCreateDirectory( fileInfo.path().parent_path() ) };
 
     // place file
-    const auto filePtr{ container->addRegularFile( fileInfo.filename ) };
+    const auto filePtr{ container->addRegularFile(
+      fileInfo.filename,
+      fileInfo.memberSequenceNumber ) };
     assert( filePtr );
 
     // set check value indicator
@@ -367,12 +367,12 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   }
 
   // obtain container (directory, medium), which will contain the load.
-  const auto container{ checkCreateDirectory(
-    fileInfo.memberSequenceNumber,
-    fileInfo.path().parent_path() ) };
+  const auto container{ checkCreateDirectory( fileInfo.path().parent_path() ) };
 
   // create load
-  const auto loadPtr{ container->addLoad( loadInfo.headerFilename ) };
+  const auto loadPtr{ container->addLoad(
+    loadInfo.headerFilename,
+    loadInfo.memberSequenceNumber ) };
   assert( loadPtr );
 
   // set check value indicator
@@ -408,7 +408,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   // iterate over data files
   for ( const auto &dataFile : loadHeaderFile.dataFiles() )
   {
-    const auto dataFiles{ mediaSet->regularFiles( dataFile.filename ) };
+    const auto dataFiles{ mediaSet->recursiveRegularFiles( dataFile.filename ) };
 
     if ( dataFiles.empty() )
     {
@@ -450,7 +450,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   // iterate over support files
   for ( const auto &supportFile : loadHeaderFile.supportFiles() )
   {
-    auto supportFiles{ mediaSet->regularFiles( supportFile.filename ) };
+    auto supportFiles{ mediaSet->recursiveRegularFiles( supportFile.filename ) };
 
     if ( supportFiles.empty() )
     {
@@ -554,12 +554,12 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
   }
 
   // obtain container (directory, medium), which will contain the batch.
-  const auto container{ checkCreateDirectory(
-    fileInfo.memberSequenceNumber,
-    fileInfo.path().parent_path() ) };
+  const auto container{ checkCreateDirectory( fileInfo.path().parent_path() ) };
 
   // create batch
-  const auto batchPtr{ container->addBatch( batchInfo.filename ) };
+  const auto batchPtr{ container->addBatch(
+    batchInfo.filename,
+    batchInfo.memberSequenceNumber ) };
   assert( batchPtr );
 
   // set check value indicator
@@ -576,7 +576,7 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
     // iterate over loads
     for ( const auto& load : targetHardware.loads )
     {
-      const auto loads{ mediaSet->loads( load.headerFilename ) };
+      const auto loads{ mediaSet->recursiveLoads( load.headerFilename ) };
 
       if ( loads.empty() )
       {
@@ -636,7 +636,6 @@ const Files::FileInfo& MediaSetImporterImpl::fileInformation(
 }
 
 Media::ContainerEntityPtr MediaSetImporterImpl::checkCreateDirectory(
-  const uint8_t mediumNumber,
   const std::filesystem::path &directoryPath )
 {
   // make path relative (remove leading slash)
@@ -645,16 +644,16 @@ Media::ContainerEntityPtr MediaSetImporterImpl::checkCreateDirectory(
   // we are in root-directory
   if ( dirPath.empty() )
   {
-    return mediaSet->medium( mediumNumber );
+    return mediaSet;
   }
 
-  Media::ContainerEntityPtr dir{ mediaSet->medium( mediumNumber ) };
+  Media::ContainerEntityPtr dir{ mediaSet };
   assert( dir );
 
   // iterate over path elements
   for ( auto &subPath : dirPath )
   {
-    auto subDir{ dir->subdirectory( subPath.string() ) };
+    auto subDir{ dir->subdirectory( std::string_view{ subPath.string() } ) };
 
     // if subdirectory does not exist - create it
     if ( !subDir )
@@ -670,8 +669,8 @@ Media::ContainerEntityPtr MediaSetImporterImpl::checkCreateDirectory(
 }
 
 void MediaSetImporterImpl::checkMediumFiles(
-  const Files::FilesInfo &filesInfo,
-  const uint8_t mediumNumber ) const
+  const MediumNumber &mediumNumber,
+  const Files::FilesInfo &filesInfo ) const
 {
   // iterate over files
   for ( const auto &fileInfo : filesInfo )

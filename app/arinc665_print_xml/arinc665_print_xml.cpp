@@ -46,7 +46,9 @@ int main( int argc, char * argv[] );
 
 int main( int argc, char * argv[] )
 {
-  std::cout << "ARINC 665 Media Set XML Printer" << "\n";
+  BOOST_LOG_FUNCTION()
+
+  Helper::initLogging( Helper::Severity::info );
 
   boost::program_options::options_description optionsDescription{
     "ARINC 665 List options" };
@@ -59,23 +61,28 @@ int main( int argc, char * argv[] )
     "Print Help"
   )
   (
-    "xml",
+    "xml-file",
     boost::program_options::value( &xmlPath )->required(),
-    "XML File"
+    "ARINC 665 media set description XML"
   );
 
   try
   {
+    std::cout << "ARINC 665 Media Set XML Printer" << "\n";
+
     boost::program_options::variables_map vm{};
     boost::program_options::store(
-      boost::program_options::parse_command_line( argc, argv, optionsDescription ),
+      boost::program_options::parse_command_line(
+        argc,
+        argv,
+        optionsDescription ),
       vm );
 
-    if ( vm.count( "help" ) != 0 )
+    if ( 0U != vm.count( "help" ) )
     {
       std::cout
         << "Prints the ARINC 665 Media Set XML.\n"
-        << optionsDescription;
+        << optionsDescription << "\n";
       return EXIT_FAILURE;
     }
 
@@ -93,22 +100,26 @@ int main( int argc, char * argv[] )
   }
   catch ( const boost::program_options::error &e )
   {
-    std::cout << "Error parsing command line: " << e.what() << "\n";
+    std::cerr
+      << "Error parsing command line: " << e.what() << "\n"
+      << "Enter " << argv[0] << " --help for command line description\n";
     return EXIT_FAILURE;
   }
   catch ( const boost::exception &e )
   {
-    std::cout << "Error: " << boost::diagnostic_information( e) << "\n";
+    std::cerr
+      << "Error: " << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
-    std::cout << "Error: " << e.what() << "\n";
+    std::cerr
+      << "Error: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( ... )
   {
-    std::cout << "unknown exception occurred\n";
+    std::cerr << "unknown exception occurred\n";
     return EXIT_FAILURE;
   }
 

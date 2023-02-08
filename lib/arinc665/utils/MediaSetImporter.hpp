@@ -54,7 +54,7 @@ class ARINC665_EXPORT MediaSetImporter
      * @return File size in Bytes.
      **/
     using FileSizeHandler = std::function< size_t(
-      uint8_t mediumNumber,
+      const MediumNumber &mediumNumber,
       const std::filesystem::path &path ) >;
 
     /**
@@ -74,7 +74,7 @@ class ARINC665_EXPORT MediaSetImporter
      * @return File Data (Read as binary).
      **/
     using ReadFileHandler = std::function< Files::RawFile(
-      uint8_t mediumNumber,
+      const MediumNumber &mediumNumber,
       const std::filesystem::path &path ) >;
 
     /**

@@ -94,7 +94,7 @@ class ARINC665_QT_EXPORT MediaSetController : public QObject
      * @return Size of file.
      **/
     size_t fileSize(
-      uint8_t mediumNumber,
+      const Arinc665::MediumNumber &mediumNumber,
       const std::filesystem::path &path );
 
     /**
@@ -110,7 +110,7 @@ class ARINC665_QT_EXPORT MediaSetController : public QObject
      * @return Loaded file data.
      **/
     Arinc665::Files::RawFile loadFile(
-      uint8_t mediumNumber,
+      const Arinc665::MediumNumber &mediumNumber,
       const std::filesystem::path &path );
 
     //! Media Set Model

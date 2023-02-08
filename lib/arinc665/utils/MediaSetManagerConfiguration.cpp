@@ -50,7 +50,7 @@ void MediaSetManagerConfiguration::fromProperties(
           mediumConfig.get< std::filesystem::path >( "path" ) };
 
         mediaPaths.try_emplace(
-          static_cast< uint8_t >( mediumNumber ),
+          MediumNumber{ static_cast< uint8_t >( mediumNumber ) },
           std::move( mediumPath ) );
       }
     }
@@ -76,7 +76,9 @@ boost::property_tree::ptree MediaSetManagerConfiguration::toProperties() const
     {
       boost::property_tree::ptree mediumConfig{};
 
-      mediumConfig.add( "number", mediumNumber );
+      mediumConfig.add(
+        "number",
+        static_cast< uint8_t >( mediumNumber ) );
       mediumConfig.add( "path", mediumPath.string() );
 
       mediaConfig.add_child( "medium", mediumConfig );

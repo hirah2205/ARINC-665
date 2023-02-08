@@ -16,6 +16,8 @@
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/Base.hpp>
 
+#include <arinc665/MediumNumber.hpp>
+
 #include <filesystem>
 #include <string>
 #include <string_view>
@@ -27,28 +29,62 @@ namespace Arinc665::Media {
  *
  * Contains common operations needed for containers.
  * Direct children are:
- * - Media, and
- * - Directory.
+ * - @ref MediaSet, and
+ * - @ref Directory.
  **/
 class ARINC665_EXPORT ContainerEntity : public Base
 {
   public:
-    //! Constructor
-    ContainerEntity() = default;
+    /**
+     * @name Medium Number
+     *
+     * A %Media Set consists of 1 up to 255 %Media.
+     * The  default medium number when a child does not define any.
+     * @{
+     **/
 
     /**
-     * @brief Returns the path up to the medium root.
+     * @brief Effective default medium number.
      *
-     * @return The path up to the medium root.
+     * @return effective default medium number
      **/
-    [[nodiscard]] virtual std::filesystem::path path() const = 0;
+    [[nodiscard]] MediumNumber effectiveDefaultMediumNumber() const;
+
+    /**
+     * @brief Returns the Default Medium Number, where the file is located on.
+     *
+     * @return Medium Number, where the file is located on.
+     **/
+    [[nodiscard]] OptionalMediumNumber defaultMediumNumber() const;
+
+    /**
+     * @brief Updates the default medium number
+     *
+     * @param[in] defaultMediumNumber
+     *   Default medium number.
+     *   If not provided, the default medium number of the parent container will
+     *   be used.
+     **/
+    void defaultMediumNumber( OptionalMediumNumber defaultMediumNumber );
+
+    /**
+     * @brief Get the Number of the last Medium within the container.
+     *
+     * if the container is the Media Set, this value is the number of media.
+     *
+     * @return Last medium within container.
+     **/
+    [[nodiscard]] MediumNumber lastMediumNumber() const;
+
+    /** @} **/
 
     /**
      * @brief Indicates, if the container has child elements.
      *
      * @return if there are subdirectories or files.
      **/
-    [[nodiscard]] bool hasChildren() const;
+    [[nodiscard]] bool hasChildren(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
     /**
      * @name Subdirectories
@@ -58,22 +94,33 @@ class ARINC665_EXPORT ContainerEntity : public Base
     /**
      * @brief Return the number of subdirectories.
      *
+     * @param[in] mediumNumber
+     *   Medium number, to filter.
+     *   If not priveded no filtering is performed.
+     *
      * @return Number of subdirectories.
      **/
-    [[nodiscard]] size_t numberOfSubdirectories() const;
+    [[nodiscard]] size_t numberOfSubdirectories(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
     /**
      * @brief Returns all subdirectories within the current container.
      *
+     * @param[in] mediumNumber
+     *   Medium number, to filter.
+     *   If not priveded no filtering is performed.
+     *
      * @return All subdirectories contained in the current container.
      **/
-    [[nodiscard]] ConstDirectories subdirectories() const;
+    [[nodiscard]] ConstDirectories subdirectories(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
-    //! @copydoc subdirectories() const
-    [[nodiscard]] Directories subdirectories();
+    //! @copydoc subdirectories(OptionalMediumNumber) const
+    [[nodiscard]] Directories subdirectories(
+      OptionalMediumNumber mediumNumber = {} );
 
     /**
-     * @brief Returns the subdirectory with the given name.
+     * @brief Returns the subdirectory with the given name within this container.
      *
      * @param[in] name
      *   Name of the requested subdirectory.
@@ -86,6 +133,24 @@ class ARINC665_EXPORT ContainerEntity : public Base
 
     //! @copydoc subdirectory(std::string_view) const
     [[nodiscard]] DirectoryPtr subdirectory( std::string_view name );
+
+    /**
+     * @brief Returns the subdirectory at given path
+     *
+     * The path `/` will return the media set.
+     * @param[in] path
+     *   Path of directory.
+     *
+     * @return Directory at @p path
+     * @retval {}
+     *   If path does not reference a directory
+     **/
+    [[nodiscard]] ConstContainerEntityPtr subdirectory(
+      const std::filesystem::path &path ) const;
+
+    //! @copydoc subdirectory(const std::filesystem::path&) const
+    [[nodiscard]] ContainerEntityPtr subdirectory(
+      const std::filesystem::path &path );
 
     /**
      * @brief Adds a subdirectory with the given name.
@@ -139,36 +204,52 @@ class ARINC665_EXPORT ContainerEntity : public Base
     /**
      * @brief Returns the number of files within this directory.
      *
+     * @param[in] mediumNumber
+     *   Medium number, to filter.
+     *   If not priveded no filtering is performed.
+     *
      * @return Number of files within this directory.
      **/
-    size_t numberOfFiles() const;
+    size_t numberOfFiles( OptionalMediumNumber mediumNumber = {} ) const;
 
     /**
      * @brief Recursively returns number of files.
      *
+     * @param[in] mediumNumber
+     *   Medium number, to filter.
+     *   If not priveded no filtering is performed.
+     *
      * @return Number of files in container and its subdirectories.
      **/
-    [[nodiscard]] size_t recursiveNumberOfFiles() const;
+    [[nodiscard]] size_t recursiveNumberOfFiles(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
     /**
      * @brief Returns all files present in the given container.
      *
+     * @param[in] mediumNumber
+     *   Medium number, to filter.
+     *   If not priveded no filtering is performed.
+     *
      * @return All files of the current container.
      **/
-    [[nodiscard]] ConstFiles files() const;
+    [[nodiscard]] ConstFiles files(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
-    //! @copydoc files() const
-    [[nodiscard]] Files files();
+    //! @copydoc files(OptionalMediumNumber) const
+    [[nodiscard]] Files files( OptionalMediumNumber mediumNumber = {} );
 
     /**
      * @brief Recursively returns all files.
      *
      * @return All files in @p container and its subdirectories.
      **/
-    [[nodiscard]] ConstFiles recursiveFiles() const;
+    [[nodiscard]] ConstFiles recursiveFiles(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
-    //! @copydoc recursiveFiles() const
-    [[nodiscard]] Files recursiveFiles();
+    //! @copydoc recursiveFiles(OptionalMediumNumber) const
+    [[nodiscard]] Files recursiveFiles(
+      OptionalMediumNumber mediumNumber = {} );
 
     /**
      * @brief Returns the files with the given name.
@@ -178,15 +259,22 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @param[in] filename
      *   Name of the requested file.
+     * @param[in] mediumNumber
+     *   Medium number, to filter.
+     *   If not priveded no filtering is performed.
      *
      * @return Files with the given name.
      * @retval {}
      *   If no such files exists.
      **/
-    [[nodiscard]] ConstFiles recursiveFiles( std::string_view filename ) const;
+    [[nodiscard]] ConstFiles recursiveFiles(
+      std::string_view filename,
+      OptionalMediumNumber mediumNumber = {} ) const;
 
-    //! @copydoc recursiveFiles(std::string_view) const
-    [[nodiscard]] Files recursiveFiles( std::string_view filename );
+    //! @copydoc recursiveFiles(std::string_view,OptionalMediumNumber) const
+    [[nodiscard]] Files recursiveFiles(
+      std::string_view filename,
+      OptionalMediumNumber mediumNumber = {} );
 
     /**
      * @brief Returns the file with the given name.
@@ -205,6 +293,21 @@ class ARINC665_EXPORT ContainerEntity : public Base
 
     //! @copydoc file(const std::string_view) const
     [[nodiscard]] FilePtr file( std::string_view filename );
+
+    /**
+     * @brief Returns the file at given path.
+     *
+     * @param[in] path
+     *   Path of file.
+     *
+     * @return File at @p path
+     * @retval {}
+     *   If path does not reference a directory
+     **/
+    [[nodiscard]] ConstFilePtr file( const std::filesystem::path &path ) const;
+
+    //! @copydoc file(const std::filesystem::path&) const
+    [[nodiscard]] FilePtr file( const std::filesystem::path &path );
 
     /**
      * @brief Removes the file with the given name.
@@ -242,51 +345,70 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @return Number of Regular Files.
      **/
-    [[nodiscard]] size_t numberOfRegularFiles() const;
+    [[nodiscard]] size_t numberOfRegularFiles(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
     /**
      * @brief Recursively returns number of regular files.
      *
      * @return Number of regular files in container and its subdirectories.
      **/
-    [[nodiscard]] size_t recursiveNumberOfRegularFiles() const;
+    [[nodiscard]] size_t recursiveNumberOfRegularFiles(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
     /**
      * @brief Return Regular Files.
      *
+     * @param[in] mediumNumber
+     *   Medium number, to filter.
+     *   If not priveded no filtering is performed.
+     *
      * @return Regular Files contained within this container.
      **/
-    [[nodiscard]] ConstRegularFiles regularFiles() const;
+    [[nodiscard]] ConstRegularFiles regularFiles(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
-    //! @copydoc regularFiles() const
-    [[nodiscard]] RegularFiles regularFiles();
+    //! @copydoc regularFiles(OptionalMediumNumber) const
+    [[nodiscard]] RegularFiles regularFiles(
+      OptionalMediumNumber mediumNumber = {} );
 
     /**
      * @brief Recursively returns all regular files.
      *
+     * @param[in] mediumNumber
+     *   Medium number, to filter.
+     *   If not priveded no filtering is performed.
+     *
      * @return All regular files in @p container and its subdirectories.
      **/
-    [[nodiscard]] ConstRegularFiles recursiveRegularFiles() const;
+    [[nodiscard]] ConstRegularFiles recursiveRegularFiles(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
-    //! @copydoc recursiveRegularFiles() const
-    [[nodiscard]] RegularFiles recursiveRegularFiles();
+    //! @copydoc recursiveRegularFiles(OptionalMediumNumber) const
+    [[nodiscard]] RegularFiles recursiveRegularFiles(
+      OptionalMediumNumber mediumNumber = {} );
 
     /**
      * @brief Returns the regular files with the given name.
      *
      * @param[in] filename
      *   Name of the requested regular file.
+     * @param[in] mediumNumber
+     *   Medium number, to filter.
+     *   If not priveded no filtering is performed.
      *
      * @return The regular files with the given name.
      * @retval {}
      *   If no such files exists.
      **/
     [[nodiscard]] ConstRegularFiles recursiveRegularFiles(
-      std::string_view filename ) const;
+      std::string_view filename,
+      OptionalMediumNumber mediumNumber = {} ) const;
 
-    //! @copydoc recursiveRegularFiles(std::string_view) const
+    //! @copydoc recursiveRegularFiles(std::string_view,OptionalMediumNumber) const
     [[nodiscard]] RegularFiles recursiveRegularFiles(
-      std::string_view filename );
+      std::string_view filename,
+      OptionalMediumNumber mediumNumber = {} );
 
     /**
      * @brief Returns the Regular File with the given filename.
@@ -305,17 +427,40 @@ class ARINC665_EXPORT ContainerEntity : public Base
     [[nodiscard]] RegularFilePtr regularFile( std::string_view filename );
 
     /**
+     * @brief Returns the regular file at given path.
+     *
+     * @param[in] path
+     *   Path of file.
+     *
+     * @return File at @p path
+     * @retval {}
+     *   If path does not reference a directory
+     **/
+    [[nodiscard]] ConstRegularFilePtr regularFile(
+      const std::filesystem::path &path ) const;
+
+    //! @copydoc regularFile(const std::filesystem::path&) const
+    [[nodiscard]] RegularFilePtr regularFile(
+      const std::filesystem::path &path );
+
+    /**
      * @brief Adds a Regular File into this container.
      *
      * @param[in] filename
      *   Filename of the file to be created.
+     * @param[in] mediumNumber
+     *   Medium number, where the file is located onto.
+     *   If not priveded the default medium number of the owning container is
+     *   used.
      *
      * @return Created file.
      *
      * @throw Arinc665Exception
      *   When file already exist.
      **/
-    [[nodiscard]] RegularFilePtr addRegularFile( std::string filename );
+    [[nodiscard]] RegularFilePtr addRegularFile(
+      std::string filename,
+      OptionalMediumNumber mediumNumber = {} );
 
     /** @} **/
 
@@ -329,50 +474,72 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @return Number of Loads.
      **/
-    [[nodiscard]] size_t numberOfLoads() const;
+    [[nodiscard]] size_t numberOfLoads(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
     /**
      * @brief Recursively returns number of Loads.
      *
      * @return Number of Loads in container and its subdirectories.
      **/
-    [[nodiscard]] size_t recursiveNumberOfLoads() const;
+    [[nodiscard]] size_t recursiveNumberOfLoads(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
     /**
-     * @brief Return loads.
+     * @brief Return loads within container.
+     *
+     * No subdirectories are entered.
+     * The lookup can be restricted to a specific medium.
+     *
+     * @param[in] mediumNumber
+     *   Medium Number to restrict the lookup
      *
      * @return Loads contained within this container.
      **/
-    [[nodiscard]] ConstLoads loads() const;
+    [[nodiscard]] ConstLoads loads(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
-    //! @copydoc loads() const
-    [[nodiscard]] Loads loads();
+    //! @copydoc loads(OptionalMediumNumber) const
+    [[nodiscard]] Loads loads( OptionalMediumNumber mediumNumber = {} );
 
     /**
      * @brief Recursively returns all Loads.
      *
+     * The lookup can be restricted to a specific medium.
+     *
+     * @param[in] mediumNumber
+     *   Medium Number to restrict the lookup
+     *
      * @return All Loads in container and its subdirectories.
      **/
-    [[nodiscard]] ConstLoads recursiveLoads() const;
+    [[nodiscard]] ConstLoads recursiveLoads(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
-    //! @copydoc recursiveLoads() const
-    [[nodiscard]] Loads recursiveLoads();
+    //! @copydoc recursiveLoads(OptionalMediumNumber) const
+    [[nodiscard]] Loads recursiveLoads(
+      OptionalMediumNumber mediumNumber = {} );
 
     /**
      * @brief Returns the Loads with the given name.
      *
      * @param[in] filename
      *   Name of the requested Load.
+     * @param[in] mediumNumber
+     *   Medium number, to filter.
+     *   If not priveded no filtering is performed.
      *
      * @return Loads with the given name.
      * @retval {}
      *   If no such loads exists.
      **/
     [[nodiscard]] ConstLoads recursiveLoads(
-      std::string_view filename ) const;
+      std::string_view filename,
+      OptionalMediumNumber mediumNumber = {} ) const;
 
-    //! @copydoc recursiveLoads(std::string_view) const
-    [[nodiscard]] Loads recursiveLoads( std::string_view filename );
+    //! @copydoc recursiveLoads(std::string_view,OptionalMediumNumber) const
+    [[nodiscard]] Loads recursiveLoads(
+      std::string_view filename,
+      OptionalMediumNumber mediumNumber = {} );
 
     /**
      * @brief Returns the load with the given filename.
@@ -380,7 +547,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @param[in] filename
      *   Load filename
      *
-     * @return The load with the given filename.
+     * @return Load with the given filename.
      * @retval {}
      *   If load does not exists.
      **/
@@ -390,17 +557,38 @@ class ARINC665_EXPORT ContainerEntity : public Base
     [[nodiscard]] LoadPtr load( std::string_view filename );
 
     /**
+     * @brief Returns the load at given path.
+     *
+     * @param[in] path
+     *   Path of file.
+     *
+     * @return File at @p path
+     * @retval {}
+     *   If path does not reference a directory
+     **/
+    [[nodiscard]] ConstLoadPtr load( const std::filesystem::path &path ) const;
+
+    //! @copydoc file(const std::filesystem::path&) const
+    [[nodiscard]] LoadPtr load( const std::filesystem::path &path );
+
+    /**
      * @brief Creates a load with the given filename.
      *
      * @param[in] filename
      *   Load filename.
+     * @param[in] mediumNumber
+     *   Medium number, where the file is located onto.
+     *   If not priveded the default medium number of the owning container is
+     *   used.
      *
      * @return Created load.
      *
      * @throw Arinc665Exception
      *   When a file with given filename already exist.
      **/
-    [[nodiscard]] LoadPtr addLoad( std::string filename );
+    [[nodiscard]] LoadPtr addLoad(
+      std::string filename,
+      OptionalMediumNumber mediumNumber = {} );
 
     /** @} **/
 
@@ -414,50 +602,65 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @return Number of Batches.
      **/
-    [[nodiscard]] size_t numberOfBatches() const;
+    [[nodiscard]] size_t numberOfBatches(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
     /**
      * @brief Recursively returns number of Batches.
      *
      * @return Number of Batches in container and its subdirectories.
      **/
-    [[nodiscard]] size_t recursiveNumberOfBatches() const;
+    [[nodiscard]] size_t recursiveNumberOfBatches(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
     /**
      * @brief Return batches.
      *
      * @return Batches contained within this container.
      **/
-    [[nodiscard]] ConstBatches batches() const;
+    [[nodiscard]] ConstBatches batches(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
-    //! @copydoc batches() const
-    [[nodiscard]] Batches batches();
+    //! @copydoc batches(OptionalMediumNumber) const
+    [[nodiscard]] Batches batches( OptionalMediumNumber mediumNumber = {} );
 
     /**
      * @brief Recursively returns all Batches.
      *
+     * @param[in] mediumNumber
+     *   Medium number, to filter.
+     *   If not priveded no filtering is performed.
+     *
      * @return All Batches in container and its subdirectories.
      **/
-    [[nodiscard]] ConstBatches recursiveBatches() const;
+    [[nodiscard]] ConstBatches recursiveBatches(
+      OptionalMediumNumber mediumNumber = {} ) const;
 
-    //! @copydoc recursiveBatches() const
-    [[nodiscard]] Batches recursiveBatches();
+    //! @copydoc recursiveBatches(OptionalMediumNumber) const
+    [[nodiscard]] Batches recursiveBatches(
+      OptionalMediumNumber mediumNumber = {} );
 
     /**
      * @brief Returns the Batches with the given name.
      *
      * @param[in] filename
      *   Name of the requested Batch.
+     * @param[in] mediumNumber
+     *   Medium number, to filter.
+     *   If not priveded no filtering is performed.
      *
      * @return Batches with the given name.
      * @retval {}
      *   If no such batches exists.
      **/
     [[nodiscard]] ConstBatches recursiveBatches(
-      std::string_view filename ) const;
+      std::string_view filename,
+      OptionalMediumNumber mediumNumber = {} ) const;
 
-    //! @copydoc recursiveBatches(std::string_view) const
-    [[nodiscard]] Batches recursiveBatches( std::string_view filename );
+    //! @copydoc recursiveBatches(std::string_view,OptionalMediumNumber) const
+    [[nodiscard]] Batches recursiveBatches(
+      std::string_view filename,
+      OptionalMediumNumber mediumNumber = {} );
 
     /**
      * @brief Returns the batch with the given filename.
@@ -475,53 +678,67 @@ class ARINC665_EXPORT ContainerEntity : public Base
     [[nodiscard]] BatchPtr batch( std::string_view filename );
 
     /**
+     * @brief Returns the batch at given path.
+     *
+     * @param[in] path
+     *   Path of file.
+     *
+     * @return File at @p path
+     * @retval {}
+     *   If path does not reference a directory
+     **/
+    [[nodiscard]] ConstBatchPtr batch(
+      const std::filesystem::path &path ) const;
+
+    //! @copydoc file(const std::filesystem::path&) const
+    [[nodiscard]] BatchPtr batch( const std::filesystem::path &path );
+
+    /**
      * @brief Creates a batch with the given filename.
      *
      * @param[in] filename
      *   Batch filename.
+     * @param[in] mediumNumber
+     *   Medium number, where the file is located onto.
+     *   If not priveded the default medium number of the owning container is
+     *   used.
      *
      * @return Created batch.
      *
      * @throw Arinc665Exception
      *   When a file with given filename already exist.
      **/
-    [[nodiscard]] BatchPtr addBatch( std::string filename );
+    [[nodiscard]] BatchPtr addBatch(
+      std::string filename,
+      OptionalMediumNumber mediumNumber = {} );
 
     /** @} **/
 
-    /**
-     * @brief Returns the parent.
-     *
-     * @return Parent of this container.
-     **/
-    [[nodiscard]] virtual ConstContainerEntityPtr parent() const = 0;
-
-    //! @copydoc parent() const
-    [[nodiscard]] virtual ContainerEntityPtr parent() = 0;
-
-    /**
-     * @brief Returns the medium where this container is located.
-     *
-     * The returned medium could be the container itself.
-     *
-     * @return The medium where this container is located.
-     **/
-    [[nodiscard]] virtual ConstMediumPtr medium() const = 0;
-
-    //! @copydoc medium() const
-    [[nodiscard]] virtual MediumPtr medium() = 0;
-
   protected:
+    /**
+     * @brief Constructs Container
+     *
+     * @param[in] defaultMediumNumber
+     *   Default Medium Number
+     **/
+    explicit ContainerEntity( OptionalMediumNumber defaultMediumNumber = {} );
+
     /**
      * @brief Return the number of files (real file, load, batch) with the
      *   specified file type.
      *
      * @param[in] fileType
      *   File type to search for.
+     * @param[in] mediumNumber
+     *   Medium number, where the file is located onto.
+     *   If not priveded the default medium number of the owning container is
+     *   used.
      *
      * @return Number of files of specific type.
      **/
-    [[nodiscard]] size_t numberOfFiles( FileType fileType ) const;
+    [[nodiscard]] size_t numberOfFiles(
+      FileType fileType,
+      OptionalMediumNumber mediumNumber ) const;
 
     /**
      * @brief Return the files (real file, load, batch) with the specified file
@@ -535,11 +752,12 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @return Files (real file, load, batch) with the specified file.
      **/
     template< typename FilesT, FileType fileType >
-    [[nodiscard]] FilesT filesPerType() const;
+    [[nodiscard]] FilesT filesPerType(
+      OptionalMediumNumber mediumNumber ) const;
 
-    //! @copydoc filesPerType() const
+    //! @copydoc filesPerType(OptionalMediumNumber) const
     template< typename FilesT, FileType fileType >
-    [[nodiscard]] FilesT filesPerType();
+    [[nodiscard]] FilesT filesPerType( OptionalMediumNumber mediumNumber );
 
     /**
      * @brief Return the file (real file, load, batch) with the specified file
@@ -562,7 +780,27 @@ class ARINC665_EXPORT ContainerEntity : public Base
     template< typename FilesT, FileType fileType >
     [[nodiscard]] FilesT filePerType( std::string_view filename );
 
+    /**
+     * @brief Return the file (real file, load, batch) with the specified file
+     *   type at the given path.
+     *
+     * @param[in] path
+     *   Path of file.
+     *
+     * @return File at @p path
+     * @retval {}
+     *   If path does not reference a directory
+     **/
+    template< typename FilesT, FileType fileType >
+    [[nodiscard]] FilesT filePerType( const std::filesystem::path &path ) const;
+
+    //! @copydoc filePerType(const std::filesystem::path&) const
+    template< typename FilesT, FileType fileType >
+    [[nodiscard]] FilesT filePerType( const std::filesystem::path &path );
+
   private:
+    //! Default Medium Number
+    OptionalMediumNumber defaultMediumNumberV;
     //! Subdirectories
     Directories subdirectoriesV;
     //! Files

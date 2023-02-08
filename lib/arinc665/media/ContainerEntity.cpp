@@ -13,7 +13,6 @@
 #include "ContainerEntity.hpp"
 
 #include <arinc665/media/Directory.hpp>
-#include <arinc665/media/Medium.hpp>
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/RegularFile.hpp>
 #include <arinc665/media/Load.hpp>
@@ -23,24 +22,132 @@
 
 namespace Arinc665::Media {
 
-bool ContainerEntity::hasChildren() const
+MediumNumber ContainerEntity::effectiveDefaultMediumNumber() const
 {
-  return !subdirectoriesV.empty() || !filesV.empty();
+  if ( defaultMediumNumberV )
+  {
+    return *defaultMediumNumberV;
+  }
+
+  if ( const auto &parentV{ parent() }; parentV )
+  {
+    return parentV->effectiveDefaultMediumNumber();
+  }
+
+  return MediumNumber{ 1U };
 }
 
-size_t ContainerEntity::numberOfSubdirectories() const
+OptionalMediumNumber ContainerEntity::defaultMediumNumber() const
 {
-  return subdirectoriesV.size();
+  return defaultMediumNumberV;
 }
 
-ConstDirectories ContainerEntity::subdirectories() const
+void ContainerEntity::defaultMediumNumber(
+  OptionalMediumNumber defaultMediumNumber )
 {
-  return ConstDirectories{ subdirectoriesV.begin(), subdirectoriesV.end() };
+  defaultMediumNumberV = defaultMediumNumber;
 }
 
-Directories ContainerEntity::subdirectories()
+MediumNumber ContainerEntity::lastMediumNumber() const
 {
-  return subdirectoriesV;
+  MediumNumber dirMax{ 1U };
+  std::ranges::for_each(
+    subdirectoriesV,
+    [&dirMax]( const auto &dir )
+    {
+      dirMax = std::max( dirMax, dir->lastMediumNumber() );
+    } );
+
+  MediumNumber fileMax{ 1U };
+  std::ranges::for_each(
+    filesV,
+    [&fileMax]( const auto &file  )
+    {
+      fileMax = std::max( fileMax, file->effectiveMediumNumber() );
+    } );
+
+  return std::max( dirMax, fileMax );
+}
+
+bool ContainerEntity::hasChildren( OptionalMediumNumber mediumNumber ) const
+{
+  if ( !mediumNumber )
+  {
+    return !subdirectoriesV.empty() || !filesV.empty();
+  }
+
+  const auto subdirsEmpty{
+    std::ranges::all_of(
+      subdirectoriesV,
+      [ mediumNumber ]( const auto &subdir )
+      {
+        return subdir->hasChildren( mediumNumber );
+      } ) };
+
+  const auto filesEmpty{
+    std::ranges::all_of(
+      filesV,
+      [ mediumNumber ]( const auto &file )
+      {
+        return file->effectiveMediumNumber() != mediumNumber;
+      } ) };
+
+  return !subdirsEmpty || !filesEmpty;
+}
+
+size_t ContainerEntity::numberOfSubdirectories(
+  OptionalMediumNumber mediumNumber ) const
+{
+  if ( !mediumNumber )
+  {
+    return subdirectoriesV.size();
+  }
+
+  return std::ranges::count_if(
+    subdirectoriesV,
+    [ mediumNumber ]( const auto &subdir )
+    {
+      return subdir->hasChildren( mediumNumber );
+    } );
+}
+
+ConstDirectories ContainerEntity::subdirectories(
+  OptionalMediumNumber mediumNumber ) const
+{
+  if ( !mediumNumber )
+  {
+    return ConstDirectories{ subdirectoriesV.begin(), subdirectoriesV.end() };
+  }
+
+  ConstDirectories directories{};
+  for ( const auto &subdirectory : subdirectoriesV )
+  {
+    if ( subdirectory->hasChildren( mediumNumber ) )
+    {
+      directories.emplace_back( subdirectory );
+    }
+  }
+
+  return directories;
+}
+
+Directories ContainerEntity::subdirectories( OptionalMediumNumber mediumNumber )
+{
+  if ( !mediumNumber )
+  {
+    return subdirectoriesV;
+  }
+
+  Directories directories{};
+  for ( const auto &subdirectory : subdirectoriesV )
+  {
+    if ( subdirectory->hasChildren( mediumNumber ) )
+    {
+      directories.emplace_back( subdirectory );
+    }
+  }
+
+  return directories;
 }
 
 ConstDirectoryPtr ContainerEntity::subdirectory( std::string_view name ) const
@@ -69,9 +176,84 @@ DirectoryPtr ContainerEntity::subdirectory( std::string_view name )
   return {};
 }
 
+ConstContainerEntityPtr ContainerEntity::subdirectory(
+  const std::filesystem::path &path ) const
+{
+  if ( path.empty() )
+  {
+    return {};
+  }
+
+  // handle absolute paths
+  // we cannot use 'is_absolute' under windows (other meaning)
+  if ( path.has_root_directory() )
+  {
+    auto relativePath{ path.relative_path() };
+
+    if ( relativePath.empty() )
+    {
+      return mediaSet();
+    }
+
+    return mediaSet()->subdirectory( relativePath );
+  }
+
+  auto subDir{
+    std::dynamic_pointer_cast< const ContainerEntity >( shared_from_this() ) };
+  assert( subDir );
+  for ( const auto &subPath : path )
+  {
+    subDir = subDir->subdirectory( std::string_view{ subPath.string() } );
+    if ( !subDir )
+    {
+      return {};
+    }
+  }
+
+  return subDir;
+}
+
+ContainerEntityPtr ContainerEntity::subdirectory(
+  const std::filesystem::path &path )
+{
+  if ( path.empty() )
+  {
+    return {};
+  }
+
+  // handle absolute paths
+  // we cannot use 'is_absolute' under windows (other meaning)
+  if ( path.has_root_directory() )
+  {
+    auto relativePath{ path.relative_path() };
+
+    if ( relativePath.empty() )
+    {
+      return mediaSet();
+    }
+
+    return mediaSet()->subdirectory( relativePath );
+  }
+
+  auto subDir{
+    std::dynamic_pointer_cast< ContainerEntity >( shared_from_this() ) };
+  assert( subDir );
+  for ( const auto &subPath : path )
+  {
+    subDir = subDir->subdirectory( std::string_view{ subPath.string() } );
+    if ( !subDir )
+    {
+      return {};
+    }
+  }
+
+  return subDir;
+}
+
 DirectoryPtr ContainerEntity::addSubdirectory( std::string name )
 {
-  if ( subdirectory( name ) || file( name ) )
+  if ( subdirectory( std::string_view( name ) )
+    || file( std::string_view( name ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "subdirectory or file with name already exists" } );
@@ -129,94 +311,149 @@ void ContainerEntity::removeSubdirectory( const DirectoryPtr& subdirectory )
    subdirectoriesV.erase( dir );
 }
 
-size_t ContainerEntity::numberOfFiles() const
+size_t ContainerEntity::numberOfFiles( OptionalMediumNumber mediumNumber ) const
 {
-  return filesV.size();
+  if ( !mediumNumber )
+  {
+    return filesV.size();
+  }
+
+  return std::ranges::count_if(
+    filesV,
+    [&mediumNumber]( const auto &file )
+    {
+      return ( file->effectiveMediumNumber() == mediumNumber );
+    } );
 }
 
-size_t ContainerEntity::recursiveNumberOfFiles() const
+size_t ContainerEntity::recursiveNumberOfFiles(
+  OptionalMediumNumber mediumNumber ) const
 {
-  size_t numberOfFilesRecursive{ numberOfFiles() };
+  size_t numberOfFilesRecursive{ numberOfFiles( mediumNumber ) };
 
   for ( const auto &subdirectory : subdirectories() )
   {
-    numberOfFilesRecursive += subdirectory->recursiveNumberOfFiles();
+    numberOfFilesRecursive +=
+      subdirectory->recursiveNumberOfFiles( mediumNumber );
   }
 
   return numberOfFilesRecursive;
 }
 
-ConstFiles ContainerEntity::files() const
+ConstFiles ContainerEntity::files( OptionalMediumNumber mediumNumber ) const
 {
-  return ConstFiles{ filesV.begin(), filesV.end() };
+  if ( !mediumNumber )
+  {
+    return ConstFiles{ filesV.begin(), filesV.end() };
+  }
+
+  ConstFiles files{};
+  for ( const auto &file : filesV )
+  {
+    if ( mediumNumber == file->effectiveMediumNumber() )
+    {
+      files.emplace_back( file );
+    }
+  }
+
+  return files;
 }
 
-Files ContainerEntity::files()
+Files ContainerEntity::files( OptionalMediumNumber mediumNumber )
 {
-  return filesV;
+  if ( !mediumNumber )
+  {
+    return filesV;
+  }
+
+  Files files{};
+  for ( const auto &file : filesV )
+  {
+    if ( mediumNumber == file->effectiveMediumNumber() )
+    {
+      files.emplace_back( file );
+    }
+  }
+
+  return files;
 }
 
-ConstFiles ContainerEntity::recursiveFiles() const
+ConstFiles ContainerEntity::recursiveFiles(
+  OptionalMediumNumber mediumNumber ) const
 {
-  ConstFiles filesRecursive{ files() };
+  ConstFiles filesRecursive{ files( mediumNumber ) };
 
   for ( const auto &subdirectory : subdirectories() )
   {
     filesRecursive.splice(
       filesRecursive.begin(),
-      subdirectory->recursiveFiles() );
+      subdirectory->recursiveFiles( mediumNumber ) );
   }
 
   return filesRecursive;
 }
 
-Files ContainerEntity::recursiveFiles()
+Files ContainerEntity::recursiveFiles( OptionalMediumNumber mediumNumber )
 {
-  Files filesRecursive{ files() };
+  Files filesRecursive{ files( mediumNumber ) };
 
   for ( const auto &subdirectory : subdirectories() )
   {
     filesRecursive.splice(
       filesRecursive.begin(),
-      subdirectory->recursiveFiles() );
+      subdirectory->recursiveFiles( mediumNumber ) );
   }
 
   return filesRecursive;
 }
 
-ConstFiles ContainerEntity::recursiveFiles( std::string_view filename ) const
+ConstFiles ContainerEntity::recursiveFiles(
+  std::string_view filename,
+  [[maybe_unused]] OptionalMediumNumber mediumNumber ) const
 {
   ConstFiles filesRecursive{};
 
   if ( auto fileFound{ file( filename ) }; fileFound )
   {
-    filesRecursive.emplace_back( std::move( fileFound ) );
+    // respect found file, when no medium number is provided or the medium
+    // numbers are equal
+    if ( !mediumNumber || mediumNumber == fileFound->effectiveMediumNumber() )
+    {
+      filesRecursive.emplace_back( std::move( fileFound ) );
+    }
   }
 
   for ( const auto &subdirectory : subdirectories() )
   {
     filesRecursive.splice(
       filesRecursive.end(),
-      subdirectory->recursiveFiles( filename ) );
+      subdirectory->recursiveFiles( filename, mediumNumber ) );
   }
 
   return filesRecursive;
 }
 
-Files ContainerEntity::recursiveFiles( std::string_view filename )
+Files ContainerEntity::recursiveFiles(
+  std::string_view filename,
+  OptionalMediumNumber mediumNumber )
 {
   Files filesRecursive{};
 
   if ( auto fileFound{ file( filename ) }; fileFound )
   {
-    filesRecursive.emplace_back( std::move( fileFound ) );
+    // respect found file, when no medium number is provided or the medium
+    // numbers are equal
+    if ( !mediumNumber || mediumNumber == fileFound->effectiveMediumNumber() )
+    {
+      filesRecursive.emplace_back( std::move( fileFound ) );
+    }
   }
 
   for ( const auto &subdirectory : subdirectories() )
   {
     filesRecursive.splice(
       filesRecursive.end(),
-      subdirectory->recursiveFiles( filename ) );
+      subdirectory->recursiveFiles( filename, mediumNumber ) );
   }
 
   return filesRecursive;
@@ -246,6 +483,42 @@ FilePtr ContainerEntity::file( std::string_view filename )
   }
 
   return {};
+}
+
+ConstFilePtr ContainerEntity::file( const std::filesystem::path &path ) const
+{
+  if ( path.empty() )
+  {
+    return {};
+  }
+
+  auto dir{
+    std::dynamic_pointer_cast< const ContainerEntity >( shared_from_this() ) };
+  assert( dir );
+  if ( path.has_parent_path() )
+  {
+    dir = subdirectory( path.parent_path() );
+  }
+
+  return file( std::string_view{ path.filename().string() } );
+}
+
+FilePtr ContainerEntity::file( const std::filesystem::path &path )
+{
+  if ( path.empty() )
+  {
+    return {};
+  }
+
+  auto dir{
+    std::dynamic_pointer_cast< const ContainerEntity >( shared_from_this() ) };
+  assert( dir );
+  if ( path.has_parent_path() )
+  {
+    dir = subdirectory( path.parent_path() );
+  }
+
+  return file( std::string_view{ path.filename().string() } );
 }
 
 void ContainerEntity::removeFile( std::string_view filename )
@@ -320,101 +593,124 @@ void ContainerEntity::removeFile( const ConstFilePtr& file )
   filesV.erase( fileIt );
 }
 
-size_t ContainerEntity::numberOfRegularFiles() const
+size_t ContainerEntity::numberOfRegularFiles(
+  OptionalMediumNumber mediumNumber ) const
 {
-  return numberOfFiles( FileType::RegularFile );
+  return numberOfFiles( FileType::RegularFile, mediumNumber );
 }
 
-size_t ContainerEntity::recursiveNumberOfRegularFiles() const
+size_t ContainerEntity::recursiveNumberOfRegularFiles(
+  OptionalMediumNumber mediumNumber ) const
 {
-  size_t numberOfRegularFilesRecursive{ numberOfRegularFiles() };
+  size_t numberOfRegularFilesRecursive{ numberOfRegularFiles( mediumNumber ) };
 
   for ( const auto &subdirectory : subdirectories() )
   {
     numberOfRegularFilesRecursive +=
-      subdirectory->recursiveNumberOfRegularFiles();
+      subdirectory->recursiveNumberOfRegularFiles( mediumNumber );
   }
 
   return numberOfRegularFilesRecursive;
 }
 
-ConstRegularFiles ContainerEntity::regularFiles() const
+ConstRegularFiles ContainerEntity::regularFiles(
+  OptionalMediumNumber mediumNumber ) const
 {
-  return filesPerType< ConstRegularFiles, FileType::RegularFile>();
+  return
+    filesPerType< ConstRegularFiles, FileType::RegularFile >( mediumNumber );
 }
 
-RegularFiles ContainerEntity::regularFiles()
+RegularFiles ContainerEntity::regularFiles(
+  OptionalMediumNumber mediumNumber )
 {
-  return filesPerType< RegularFiles, FileType::RegularFile>();
+  return filesPerType< RegularFiles, FileType::RegularFile >( mediumNumber );
 }
 
-ConstRegularFiles ContainerEntity::recursiveRegularFiles() const
+ConstRegularFiles ContainerEntity::recursiveRegularFiles(
+  OptionalMediumNumber mediumNumber ) const
 {
-  ConstRegularFiles regularFilesRecursive{ regularFiles() };
+  ConstRegularFiles regularFilesRecursive{ regularFiles( mediumNumber ) };
 
   for ( const auto &subdirectory : subdirectories() )
   {
     regularFilesRecursive.splice(
       regularFilesRecursive.begin(),
-      subdirectory->recursiveRegularFiles() );
+      subdirectory->recursiveRegularFiles( mediumNumber ) );
   }
 
   return regularFilesRecursive;
 }
 
-RegularFiles ContainerEntity::recursiveRegularFiles()
+RegularFiles ContainerEntity::recursiveRegularFiles(
+  OptionalMediumNumber mediumNumber )
 {
-  RegularFiles regularFilesRecursive{ regularFiles() };
+  RegularFiles regularFilesRecursive{ regularFiles( mediumNumber ) };
 
   for ( const auto &subdirectory : subdirectories() )
   {
     regularFilesRecursive.splice(
       regularFilesRecursive.begin(),
-      subdirectory->recursiveRegularFiles() );
+      subdirectory->recursiveRegularFiles( mediumNumber ) );
   }
 
   return regularFilesRecursive;
 }
 
 ConstRegularFiles ContainerEntity::recursiveRegularFiles(
-  std::string_view filename ) const
+  std::string_view filename,
+  OptionalMediumNumber mediumNumber ) const
 {
-  ConstRegularFiles regularFilesRecursive{};
+  ConstRegularFiles regularFiles{};
 
-  if ( auto foundRegularFiles{ regularFile( filename ) };
-    foundRegularFiles )
+  // file within current directory
+  if ( auto foundRegularFile{ regularFile( filename ) };
+    foundRegularFile )
   {
-    regularFilesRecursive.emplace_back( std::move( foundRegularFiles ) );
+    // respect found files, when no medium number is provided or the medium
+    // numbers are equal
+    if ( !mediumNumber || mediumNumber == foundRegularFile->effectiveMediumNumber() )
+    {
+      regularFiles.emplace_back( std::move( foundRegularFile ) );
+    }
   }
 
+  // files within subdirectories
   for ( const auto &subdirectory : subdirectories() )
   {
-    regularFilesRecursive.splice(
-      regularFilesRecursive.end(),
-      subdirectory->recursiveRegularFiles( filename ) );
+    regularFiles.splice(
+      regularFiles.end(),
+      subdirectory->recursiveRegularFiles( filename, mediumNumber ) );
   }
 
-  return regularFilesRecursive;
+  return regularFiles;
 }
 
-RegularFiles ContainerEntity::recursiveRegularFiles( std::string_view filename )
+RegularFiles ContainerEntity::recursiveRegularFiles(
+  std::string_view filename,
+  OptionalMediumNumber mediumNumber )
 {
-  RegularFiles regularFilesRecursive{};
+  RegularFiles regularFiles{};
 
-  if ( auto foundRegularFiles{ regularFile( filename ) };
-    foundRegularFiles )
+  if ( auto foundRegularFile{ regularFile( filename ) };
+    foundRegularFile )
   {
-    regularFilesRecursive.emplace_back( std::move( foundRegularFiles ) );
+    // respect found files, when no medium number is provided or the medium
+    // numbers are equal
+    if ( !mediumNumber
+      || mediumNumber == foundRegularFile->effectiveMediumNumber() )
+    {
+      regularFiles.emplace_back( std::move( foundRegularFile ) );
+    }
   }
 
   for ( const auto &subdirectory : subdirectories() )
   {
-    regularFilesRecursive.splice(
-      regularFilesRecursive.end(),
-      subdirectory->recursiveRegularFiles( filename ) );
+    regularFiles.splice(
+      regularFiles.end(),
+      subdirectory->recursiveRegularFiles( filename, mediumNumber ) );
   }
 
-  return regularFilesRecursive;
+  return regularFiles;
 }
 
 ConstRegularFilePtr ContainerEntity::regularFile(
@@ -429,9 +725,24 @@ RegularFilePtr ContainerEntity::regularFile( std::string_view filename )
   return filePerType< RegularFilePtr, FileType::RegularFile >( filename );
 }
 
-RegularFilePtr ContainerEntity::addRegularFile( std::string filename )
+ConstRegularFilePtr ContainerEntity::regularFile(
+  const std::filesystem::path &path ) const
 {
-  if ( subdirectory( filename ) || file( filename ) )
+  return filePerType< ConstRegularFilePtr, FileType::RegularFile >( path );
+}
+
+RegularFilePtr ContainerEntity::regularFile(
+  const std::filesystem::path &path )
+{
+  return filePerType< RegularFilePtr, FileType::RegularFile >( path );
+}
+
+RegularFilePtr ContainerEntity::addRegularFile(
+  std::string filename,
+  OptionalMediumNumber mediumNumber )
+{
+  if ( subdirectory(  std::string_view( filename ) )
+    || file( std::string_view( filename ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo{ "File or directory with name already exists" }
@@ -441,7 +752,8 @@ RegularFilePtr ContainerEntity::addRegularFile( std::string filename )
   // create file
   auto file{ std::make_shared< RegularFile >(
     std::dynamic_pointer_cast< ContainerEntity>( shared_from_this() ),
-    std::move( filename ) ) };
+    std::move( filename ),
+    mediumNumber ) };
 
   // create, emplace and return file
   filesV.push_back( file );
@@ -450,12 +762,14 @@ RegularFilePtr ContainerEntity::addRegularFile( std::string filename )
   return file;
 }
 
-size_t ContainerEntity::numberOfLoads() const
+size_t ContainerEntity::numberOfLoads(
+  OptionalMediumNumber mediumNumber ) const
 {
-  return numberOfFiles( FileType::LoadFile );
+  return numberOfFiles( FileType::LoadFile, mediumNumber );
 }
 
-size_t ContainerEntity::recursiveNumberOfLoads() const
+size_t ContainerEntity::recursiveNumberOfLoads(
+  [[maybe_unused]] OptionalMediumNumber mediumNumber ) const
 {
   size_t numberOfLoadsRecursive{ numberOfLoads() };
 
@@ -467,77 +781,92 @@ size_t ContainerEntity::recursiveNumberOfLoads() const
   return numberOfLoadsRecursive;
 }
 
-ConstLoads ContainerEntity::loads() const
+ConstLoads ContainerEntity::loads( OptionalMediumNumber mediumNumber ) const
 {
-  return filesPerType< ConstLoads, FileType::LoadFile>();
+  return filesPerType< ConstLoads, FileType::LoadFile>( mediumNumber );
 }
 
-Loads ContainerEntity::loads()
+Loads ContainerEntity::loads( OptionalMediumNumber mediumNumber )
 {
-  return filesPerType< Loads, FileType::LoadFile>();
+  return filesPerType< Loads, FileType::LoadFile>( mediumNumber );
 }
 
-ConstLoads ContainerEntity::recursiveLoads() const
+ConstLoads ContainerEntity::recursiveLoads(
+  OptionalMediumNumber mediumNumber ) const
 {
-  ConstLoads loadsRecursive{ loads() };
+  ConstLoads loadsRecursive{ loads( mediumNumber ) };
 
   for ( const auto &subdirectory : subdirectories() )
   {
     loadsRecursive.splice(
       loadsRecursive.begin(),
-      subdirectory->recursiveLoads() );
+      subdirectory->recursiveLoads( mediumNumber ) );
   }
 
   return loadsRecursive;
 }
 
-Loads ContainerEntity::recursiveLoads()
+Loads ContainerEntity::recursiveLoads( OptionalMediumNumber mediumNumber )
 {
-  Loads loadsRecursive{ loads() };
+  Loads loadsRecursive{ loads( mediumNumber ) };
 
   for ( const auto &subdirectory : subdirectories() )
   {
     loadsRecursive.splice(
       loadsRecursive.begin(),
-      subdirectory->recursiveLoads() );
+      subdirectory->recursiveLoads( mediumNumber ) );
   }
 
   return loadsRecursive;
 }
 
-ConstLoads ContainerEntity::recursiveLoads( std::string_view filename ) const
+ConstLoads ContainerEntity::recursiveLoads(
+  std::string_view filename,
+  OptionalMediumNumber mediumNumber ) const
 {
   ConstLoads loadsRecursive{};
 
   if ( auto foundLoad{ load( filename ) }; foundLoad )
   {
-    loadsRecursive.emplace_back( std::move( foundLoad ) );
+    // respect found load, when no medium number is provided or the medium
+    // numbers are equal
+    if ( !mediumNumber || mediumNumber == foundLoad->effectiveMediumNumber() )
+    {
+      loadsRecursive.emplace_back( std::move( foundLoad ) );
+    }
   }
 
   for ( const auto &subdirectory : subdirectories() )
   {
     loadsRecursive.splice(
       loadsRecursive.end(),
-      subdirectory->recursiveLoads( filename ) );
+      subdirectory->recursiveLoads( filename, mediumNumber ) );
   }
 
   return loadsRecursive;
 }
 
-Loads ContainerEntity::recursiveLoads( std::string_view filename )
+Loads ContainerEntity::recursiveLoads(
+  std::string_view filename,
+  OptionalMediumNumber mediumNumber )
 {
   Loads loadsRecursive{};
 
   if ( auto foundLoad{ load( filename ) }; foundLoad )
   {
-    loadsRecursive.emplace_back( std::move( foundLoad ) );
+    // respect found load, when no medium number is provided or the medium
+    // numbers are equal
+    if ( !mediumNumber || mediumNumber == foundLoad->effectiveMediumNumber() )
+    {
+      loadsRecursive.emplace_back( std::move( foundLoad ) );
+    }
   }
 
   for ( const auto &subdirectory : subdirectories() )
   {
     loadsRecursive.splice(
       loadsRecursive.end(),
-      subdirectory->recursiveLoads( filename ) );
+      subdirectory->recursiveLoads( filename, mediumNumber ) );
   }
 
   return loadsRecursive;
@@ -553,9 +882,22 @@ LoadPtr ContainerEntity::load( std::string_view filename )
   return filePerType< LoadPtr, FileType::LoadFile >( filename );
 }
 
-LoadPtr ContainerEntity::addLoad( std::string filename )
+ConstLoadPtr ContainerEntity::load( const std::filesystem::path &path ) const
 {
-  if ( subdirectory( filename ) || file( filename ) )
+  return filePerType< ConstLoadPtr, FileType::LoadFile >( path );
+}
+
+LoadPtr ContainerEntity::load( const std::filesystem::path &path )
+{
+  return filePerType< LoadPtr, FileType::LoadFile >( path );
+}
+
+LoadPtr ContainerEntity::addLoad(
+  std::string filename,
+  OptionalMediumNumber mediumNumber )
+{
+  if ( subdirectory( std::string_view( filename ) )
+    || file( std::string_view( filename ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo{ "File or directory with this name already exists" } );
@@ -564,7 +906,8 @@ LoadPtr ContainerEntity::addLoad( std::string filename )
   // create file
   auto load{ std::make_shared< Load>(
     std::dynamic_pointer_cast< ContainerEntity>( shared_from_this() ),
-    std::move( filename ) ) };
+    std::move( filename ),
+    mediumNumber ) };
 
   // insert into map
   filesV.push_back( load );
@@ -573,12 +916,14 @@ LoadPtr ContainerEntity::addLoad( std::string filename )
   return load;
 }
 
-size_t ContainerEntity::numberOfBatches() const
+size_t ContainerEntity::numberOfBatches(
+  OptionalMediumNumber mediumNumber ) const
 {
-  return numberOfFiles( FileType::BatchFile );
+  return numberOfFiles( FileType::BatchFile, mediumNumber );
 }
 
-size_t ContainerEntity::recursiveNumberOfBatches() const
+size_t ContainerEntity::recursiveNumberOfBatches(
+  [[maybe_unused]] OptionalMediumNumber mediumNumber ) const
 {
   size_t numberOfBatchesRecursive{ numberOfBatches() };
 
@@ -590,78 +935,92 @@ size_t ContainerEntity::recursiveNumberOfBatches() const
   return numberOfBatchesRecursive;
 }
 
-ConstBatches ContainerEntity::batches() const
+ConstBatches ContainerEntity::batches( OptionalMediumNumber mediumNumber ) const
 {
-  return filesPerType< ConstBatches, FileType::BatchFile>();
+  return filesPerType< ConstBatches, FileType::BatchFile>( mediumNumber );
 }
 
-Batches ContainerEntity::batches()
+Batches ContainerEntity::batches( OptionalMediumNumber mediumNumber )
 {
-  return filesPerType< Batches, FileType::BatchFile>();
+  return filesPerType< Batches, FileType::BatchFile>( mediumNumber );
 }
 
-ConstBatches ContainerEntity::recursiveBatches() const
+ConstBatches ContainerEntity::recursiveBatches(
+  OptionalMediumNumber mediumNumber ) const
 {
-  ConstBatches batchesRecursive{ batches() };
+  ConstBatches batchesRecursive{ batches( mediumNumber ) };
 
   for ( const auto &subdirectory : subdirectories() )
   {
     batchesRecursive.splice(
       batchesRecursive.begin(),
-      subdirectory->recursiveBatches() );
+      subdirectory->recursiveBatches( mediumNumber ) );
   }
 
   return batchesRecursive;
 }
 
-Batches ContainerEntity::recursiveBatches()
+Batches ContainerEntity::recursiveBatches( OptionalMediumNumber mediumNumber )
 {
-  Batches batchesRecursive{ batches() };
+  Batches batchesRecursive{ batches( mediumNumber ) };
 
   for ( const auto &subdirectory : subdirectories() )
   {
     batchesRecursive.splice(
       batchesRecursive.begin(),
-      subdirectory->recursiveBatches() );
+      subdirectory->recursiveBatches( mediumNumber ) );
   }
 
   return batchesRecursive;
 }
 
 ConstBatches ContainerEntity::recursiveBatches(
-  std::string_view filename ) const
+  std::string_view filename,
+  OptionalMediumNumber mediumNumber ) const
 {
   ConstBatches batchesRecursive{};
 
   if ( auto foundBatch{ batch( filename ) }; foundBatch )
   {
-    batchesRecursive.emplace_back( std::move( foundBatch ) );
+    // respect found batch, when no medium number is provided or the medium
+    // numbers are equal
+    if ( !mediumNumber || mediumNumber == foundBatch->effectiveMediumNumber() )
+    {
+      batchesRecursive.emplace_back( std::move( foundBatch ) );
+    }
   }
 
   for ( const auto &subdirectory : subdirectories() )
   {
     batchesRecursive.splice(
       batchesRecursive.end(),
-      subdirectory->recursiveBatches( filename ) );
+      subdirectory->recursiveBatches( filename, mediumNumber ) );
   }
 
   return batchesRecursive;
 }
 
-Batches ContainerEntity::recursiveBatches( std::string_view filename )
+Batches ContainerEntity::recursiveBatches(
+  std::string_view filename,
+  OptionalMediumNumber mediumNumber )
 {
   Batches batchesRecursive{};
 
   if ( auto foundBatch{ batch( filename ) }; foundBatch )
   {
-    batchesRecursive.emplace_back( std::move( foundBatch ) );
+    // respect found batch, when no medium number is provided or the medium
+    // numbers are equal
+    if ( !mediumNumber || mediumNumber == foundBatch->effectiveMediumNumber() )
+    {
+      batchesRecursive.emplace_back( std::move( foundBatch ) );
+    }
   }
 
   for ( const auto &subdirectory : subdirectories() )
   {
     batchesRecursive.splice(
       batchesRecursive.end(),
-      subdirectory->recursiveBatches( filename ) );
+      subdirectory->recursiveBatches( filename, mediumNumber ) );
   }
 
   return batchesRecursive;
@@ -677,9 +1036,22 @@ BatchPtr ContainerEntity::batch( std::string_view filename )
   return filePerType< BatchPtr, FileType::BatchFile >( filename );
 }
 
-BatchPtr ContainerEntity::addBatch( std::string filename )
+ConstBatchPtr ContainerEntity::batch( const std::filesystem::path &path ) const
 {
-  if ( subdirectory( filename ) || file( filename ) )
+  return filePerType< ConstBatchPtr, FileType::BatchFile >( path );
+}
+
+BatchPtr ContainerEntity::batch( const std::filesystem::path &path )
+{
+  return filePerType< BatchPtr, FileType::BatchFile >( path );
+}
+
+BatchPtr ContainerEntity::addBatch(
+  std::string filename,
+  OptionalMediumNumber mediumNumber )
+{
+  if ( subdirectory( std::string_view( filename ) )
+    || file( std::string_view( filename ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo{ "File or directory with this name already exists" } );
@@ -688,7 +1060,8 @@ BatchPtr ContainerEntity::addBatch( std::string filename )
   // create file
   auto batch{ std::make_shared< Batch>(
     std::dynamic_pointer_cast< ContainerEntity>( shared_from_this() ),
-    std::move( filename ) ) };
+    std::move( filename ),
+    mediumNumber ) };
 
   // insert into map
   filesV.push_back( batch );
@@ -697,29 +1070,33 @@ BatchPtr ContainerEntity::addBatch( std::string filename )
   return batch;
 }
 
-size_t ContainerEntity::numberOfFiles( const FileType fileType ) const
+ContainerEntity::ContainerEntity( OptionalMediumNumber defaultMediumNumber ) :
+  defaultMediumNumberV{ defaultMediumNumber }
 {
-  size_t numberOfFiles{ 0U };
+}
 
-  for ( auto & file : filesV )
-  {
-    if ( file->fileType() == fileType )
+size_t ContainerEntity::numberOfFiles(
+  const FileType fileType,
+  OptionalMediumNumber mediumNumber ) const
+{
+  return std::ranges::count_if(
+    filesV,
+    [fileType, &mediumNumber]( const auto &file )
     {
-      numberOfFiles++;
-    }
-  }
-
-  return numberOfFiles;
+      return ( file->fileType() == fileType )
+        && ( !mediumNumber || ( mediumNumber == file->effectiveMediumNumber() ) );
+    } );
 }
 
 template< typename FilesT, FileType fileType >
-FilesT ContainerEntity::filesPerType() const
+FilesT ContainerEntity::filesPerType( OptionalMediumNumber mediumNumber ) const
 {
   FilesT result{};
 
   for ( auto & file : filesV )
   {
-    if ( file->fileType() == fileType )
+    if ( ( file->fileType() == fileType )
+      && ( !mediumNumber || ( mediumNumber == file->effectiveMediumNumber() ) ) )
     {
       result.push_back(
         std::dynamic_pointer_cast< typename FilesT::value_type::element_type >(
@@ -731,13 +1108,14 @@ FilesT ContainerEntity::filesPerType() const
 }
 
 template< typename FilesT, FileType fileType >
-FilesT ContainerEntity::filesPerType()
+FilesT ContainerEntity::filesPerType( OptionalMediumNumber mediumNumber )
 {
   FilesT result{};
 
   for ( const auto &file : filesV )
   {
-    if ( file->fileType() == fileType )
+    if ( ( file->fileType() == fileType )
+      && ( !mediumNumber || ( mediumNumber == file->effectiveMediumNumber() ) ) )
     {
       result.push_back(
         std::dynamic_pointer_cast< typename FilesT::value_type::element_type >(
@@ -782,6 +1160,46 @@ FilesT ContainerEntity::filePerType( std::string_view filename )
   }
 
   return std::dynamic_pointer_cast< typename FilesT::element_type >( filePtr );
+}
+
+template< typename FilesT, FileType fileType >
+FilesT ContainerEntity::filePerType( const std::filesystem::path &path ) const
+{
+  if ( path.empty() )
+  {
+    return {};
+  }
+
+  auto dir{
+    std::dynamic_pointer_cast< const ContainerEntity >( shared_from_this() ) };
+  assert( dir );
+  if ( path.has_parent_path() )
+  {
+    dir = subdirectory( path.parent_path() );
+  }
+
+  return dir->filePerType< FilesT, fileType >(
+    std::string_view{ path.filename().string() } );
+}
+
+template< typename FilesT, FileType fileType >
+FilesT ContainerEntity::filePerType( const std::filesystem::path &path )
+{
+  if ( path.empty() )
+  {
+    return {};
+  }
+
+  auto dir{
+    std::dynamic_pointer_cast< ContainerEntity >( shared_from_this() ) };
+  assert( dir );
+  if ( path.has_parent_path() )
+  {
+    dir = subdirectory( path.parent_path() );
+  }
+
+  return dir->filePerType< FilesT, fileType >(
+    std::string_view{ path.filename().string() } );
 }
 
 }

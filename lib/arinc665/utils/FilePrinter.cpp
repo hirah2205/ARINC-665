@@ -37,12 +37,12 @@ void FilePrinter_print(
   outS
     << fmt::format(
       "{0}media set PN: {1}\n"
-      "{0}media seq no: {2:02d}\n"
-      "{0}no of media set members: {3:02d}\n",
+      "{0}media seq no: {2}\n"
+      "{0}no of media set members: {3}\n",
       initialIndent,
       fileListFile.mediaSetPn(),
-      fileListFile.mediaSequenceNumber(),
-      fileListFile.numberOfMediaSetMembers() );
+      static_cast< std::string >( fileListFile.mediaSequenceNumber() ),
+      static_cast< std::string >( fileListFile.numberOfMediaSetMembers() ) );
 
   for ( const auto &file : fileListFile.files() )
   {
@@ -50,13 +50,13 @@ void FilePrinter_print(
       << fmt::format(
         "{0}Filename: {1}\n"
         "{0}File Path: {2}\n"
-        "{0}File Member Sequence Number: {3:02d}\n"
+        "{0}File Member Sequence Number: {3}\n"
         "{0}File CRC: 0x{4:04X}\n"
         "{0}File Check Value: {5} {6}\n\n",
         nextIndent,
         file.filename,
         file.pathName,
-        file.memberSequenceNumber,
+        static_cast< std::string >( file.memberSequenceNumber ),
         file.crc,
         Arinc645::CheckValueTypeDescription::instance().name(
           file.checkValue.type() ),
@@ -76,12 +76,12 @@ void FilePrinter_print(
   outS
     << fmt::format(
       "{0}Media Set PN: {1}\n"
-      "{0}Media seq no: {2:02d}\n"
-      "{0}no of media set members: {3:02d}\n",
+      "{0}Media seq no: {2}\n"
+      "{0}no of media set members: {3}\n",
       initialIndent,
       loadListFile.mediaSetPn(),
-      loadListFile.mediaSequenceNumber(),
-      loadListFile.numberOfMediaSetMembers() );
+      static_cast< std::string >( loadListFile.mediaSequenceNumber() ),
+      static_cast< std::string >( loadListFile.numberOfMediaSetMembers() ) );
 
   for ( const auto & load : loadListFile.loads() )
   {
@@ -89,11 +89,11 @@ void FilePrinter_print(
       << fmt::format(
         "\n{0}Load PN: {1}\n"
         "{0}Load Header filename: {2}\n"
-        "{0}Load member sequence number: {3:02d}\n",
+        "{0}Load member sequence number: {3}\n",
         nextIndent,
         load.partNumber,
         load.headerFilename,
-        load.memberSequenceNumber );
+        static_cast< std::string >( load.memberSequenceNumber ) );
 
     for ( const auto & thw : load.targetHardwareIds )
     {
@@ -114,12 +114,12 @@ void FilePrinter_print(
   outS
     << fmt::format(
          "{0}Media Set PN: {1}\n"
-         "{0}Media Seq no: {2:02d}\n"
-         "{0}no of media set members: {3:02d}\n\n",
+         "{0}Media Seq no: {2}\n"
+         "{0}no of media set members: {3}\n\n",
          initialIndent,
          batchListFile.mediaSetPn(),
-         batchListFile.mediaSequenceNumber(),
-         batchListFile.numberOfMediaSetMembers() );
+         static_cast< std::string >( batchListFile.mediaSequenceNumber() ),
+         static_cast< std::string >( batchListFile.numberOfMediaSetMembers() ) );
 
   for ( const auto & batch : batchListFile.batches() )
   {
@@ -127,11 +127,11 @@ void FilePrinter_print(
       << fmt::format(
            "{0}Batch PN: {1}\n"
            "{0}Batch filename: {2}\n"
-           "{0}Batch member sequence number: {3:02d}\n\n",
+           "{0}Batch member sequence number: {3}\n\n",
            nextIndent,
            batch.partNumber,
            batch.filename,
-           batch.memberSequenceNumber );
+           static_cast< std::string >( batch.memberSequenceNumber ) );
   }
 }
 

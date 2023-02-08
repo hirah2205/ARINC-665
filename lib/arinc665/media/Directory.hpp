@@ -22,9 +22,9 @@
 namespace Arinc665::Media {
 
 /**
- * @brief %Directory within a %Medium.
+ * @brief %Directory within a %Media Set.
  **/
-class ARINC665_EXPORT Directory : public ContainerEntity
+class ARINC665_EXPORT Directory final : public ContainerEntity
 {
   public:
     /**
@@ -41,13 +41,22 @@ class ARINC665_EXPORT Directory : public ContainerEntity
     Directory( const ContainerEntityPtr &parent, std::string name );
 
     //! @copydoc ContainerEntity::mediaSet
-    [[nodiscard]] ConstMediaSetPtr mediaSet() const final;
+    [[nodiscard]] ConstMediaSetPtr mediaSet() const override;
 
     //! @copydoc ContainerEntity::mediaSet
-    [[nodiscard]] MediaSetPtr mediaSet() final;
+    [[nodiscard]] MediaSetPtr mediaSet() override;
 
     //! @copydoc ContainerEntity::type
-    [[nodiscard]] Type type() const final;
+    [[nodiscard]] Type type() const override;
+
+    //! @copydoc ContainerEntity::parent() const
+    [[nodiscard]] ConstContainerEntityPtr parent() const override;
+
+    //! @copydoc ContainerEntity::parent()
+    [[nodiscard]] ContainerEntityPtr parent() override;
+
+    //! @copydoc ContainerEntity::path() const
+    [[nodiscard]] std::filesystem::path path() const override;
 
     /**
      * @brief Returns the name of the directory.
@@ -66,31 +75,15 @@ class ARINC665_EXPORT Directory : public ContainerEntity
      **/
     void rename( std::string name );
 
-    //! @copydoc ContainerEntity::path() const
-    [[nodiscard]] std::filesystem::path path() const final;
-
-    //! @copydoc ContainerEntity::parent() const
-    [[nodiscard]] ConstContainerEntityPtr parent() const final;
-
-    //! @copydoc ContainerEntity::parent()
-    [[nodiscard]] ContainerEntityPtr parent() final;
-
-    //! @copydoc ContainerEntity::medium() const
-    [[nodiscard]] ConstMediumPtr medium() const final;
-
-    //! @copydoc ContainerEntity::medium()
-    [[nodiscard]] MediumPtr medium() final;
-
-  protected:
+  private:
     /**
      * @brief Updates the parent.
      *
      * @param[in] parent
      *   New parent.
      **/
-    void parent( const ContainerEntityPtr& parent );
+    void parent( const ContainerEntityPtr &parent );
 
-  private:
     //! Directory Name
     std::string nameV;
     //! Parent

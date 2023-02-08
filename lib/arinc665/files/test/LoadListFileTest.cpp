@@ -108,8 +108,8 @@ BOOST_AUTO_TEST_CASE( constructor1 )
   BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2 );
 
   BOOST_CHECK( file.mediaSetPn() == "PN123" );
-  BOOST_CHECK( file.mediaSequenceNumber() == 1 );
-  BOOST_CHECK( file.numberOfMediaSetMembers() == 1 );
+  BOOST_CHECK( file.mediaSequenceNumber() == MediumNumber{ 1U } );
+  BOOST_CHECK( file.numberOfMediaSetMembers() == MediumNumber{ 1U } );
 
   const auto& loads{ file.loads() };
   BOOST_CHECK( loads.size() == 2 );
@@ -117,14 +117,14 @@ BOOST_AUTO_TEST_CASE( constructor1 )
   auto load{ loads.begin()};
   BOOST_CHECK( load->partNumber == "PN001" );
   BOOST_CHECK( load->headerFilename == "FN_001" );
-  BOOST_CHECK( load->memberSequenceNumber == 1 );
+  BOOST_CHECK( load->memberSequenceNumber == MediumNumber{ 1U } );
   BOOST_CHECK( load->targetHardwareIds.size() == 1 );
   BOOST_CHECK( *load->targetHardwareIds.begin() == "THWID010" );
 
   ++load;
   BOOST_CHECK( load->partNumber == "PN002" );
   BOOST_CHECK( load->headerFilename == "FN_002" );
-  BOOST_CHECK( load->memberSequenceNumber == 1U );
+  BOOST_CHECK( load->memberSequenceNumber == MediumNumber{ 1U } );
   BOOST_CHECK( load->targetHardwareIds.size() == 1U );
   BOOST_CHECK( *load->targetHardwareIds.begin() == "THWID010" );
 

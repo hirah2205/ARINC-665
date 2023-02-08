@@ -91,11 +91,14 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 
     // Add Media Set Part Number to Output Path
     Arinc665::Utils::MediaSetManagerConfiguration::MediaPaths mediaPaths{};
-    for ( const auto &[ mediumNumber, medium ] : mediaSet->media() )
+    for (
+      Arinc665::MediumNumber mediumNumber{ 1U };
+      mediumNumber <= mediaSet->lastMediumNumber();
+      ++mediumNumber )
     {
       mediaPaths.try_emplace(
         mediumNumber,
-        fmt::format( "MEDIUM_{:03d}", mediumNumber ) );
+        fmt::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) ) );
     }
 
     std::filesystem::path mediaSetPath{ mediaSet->partNumber() };
@@ -115,7 +118,7 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
     for ( auto const &[ mediumNumber, mediumPath ] : mediaPaths )
     {
       std::filesystem::copy(
-        mediaSourceDirectories.at( mediumNumber - 1 ),
+        mediaSourceDirectories.at( static_cast< uint8_t >( mediumNumber ) - 1 ),
         mediaSetManagerDirectory / mediaSetPath / mediumPath,
         std::filesystem::copy_options::recursive );
     }
@@ -150,13 +153,13 @@ void ImportMediaSetCommand::help()
 }
 
 size_t ImportMediaSetCommand::fileSizeHandler(
-  uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path ) const
 {
   BOOST_LOG_FUNCTION()
 
   // check medium number
-  if ( mediumNumber > mediaSourceDirectories.size() )
+  if ( static_cast< uint8_t >( mediumNumber ) > mediaSourceDirectories.size() )
   {
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception()
@@ -164,7 +167,8 @@ size_t ImportMediaSetCommand::fileSizeHandler(
   }
 
   const auto filePath{
-    mediaSourceDirectories.at( mediumNumber - 1 ) / path.relative_path() };
+    mediaSourceDirectories.at( static_cast< uint8_t >( mediumNumber )- 1 )
+      / path.relative_path() };
 
   // check existence of file
   if ( !std::filesystem::is_regular_file( filePath ) )
@@ -178,19 +182,20 @@ size_t ImportMediaSetCommand::fileSizeHandler(
 }
 
 Arinc665::Files::RawFile ImportMediaSetCommand::readFileHandler(
-  uint8_t mediumNumber,
+  const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {
   BOOST_LOG_FUNCTION()
 
   // check medium number
-  if ( mediumNumber > mediaSourceDirectories.size() )
+  if ( static_cast< uint8_t >( mediumNumber ) > mediaSourceDirectories.size() )
   {
     return {};
   }
 
   const auto filePath{
-    mediaSourceDirectories.at( mediumNumber - 1 ) / path.relative_path() };
+    mediaSourceDirectories.at( static_cast< uint8_t >( mediumNumber ) - 1 )
+      / path.relative_path() };
 
   BOOST_LOG_TRIVIAL( severity_level::trace ) << "Read file " << filePath;
 

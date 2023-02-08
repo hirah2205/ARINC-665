@@ -15,6 +15,8 @@
 
 #include <arinc665/files/Files.hpp>
 
+#include <arinc665/MediumNumber.hpp>
+
 #include <arinc645/CheckValue.hpp>
 
 #include <filesystem>
@@ -39,7 +41,7 @@ struct ARINC665_EXPORT FileInfo
   //! Path Name
   std::string pathName;
   //! Member Sequence Number
-  uint8_t memberSequenceNumber;
+  MediumNumber memberSequenceNumber;
   //! CRC
   uint16_t crc;
   //! Check Value (since ARINC 665-3)

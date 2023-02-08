@@ -41,11 +41,17 @@ class ARINC665_EXPORT RegularFile final : public File
      *   Parent of this file.
      * @param[in] name
      *   Name of the file.
+     * @param[in] mediumNumber
+     *   Medium Number, where the file is located on.
      **/
-    RegularFile( const ContainerEntityPtr &parent, std::string name );
+    RegularFile(
+      const ContainerEntityPtr &parent,
+      std::string name,
+      const OptionalMediumNumber &mediumNumber );
 
     /**
      * @copydoc File::fileType
+     *
      * @retval FileType::RegularFile
      *   Always
      **/

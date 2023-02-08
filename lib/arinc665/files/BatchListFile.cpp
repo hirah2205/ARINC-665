@@ -278,9 +278,9 @@ RawFile BatchListFile::encodeBatchesInfo() const
     auto oldSize{ rawBatchInfo.size() };
     rawBatchInfo.resize( oldSize + sizeof( uint16_t ) );
 
-    Helper::setInt< uint16_t>(
+    Helper::setInt< uint16_t >(
       rawBatchInfo.begin() + static_cast< ptrdiff_t >( oldSize ),
-      batchInfo.memberSequenceNumber );
+      static_cast< uint8_t >( batchInfo.memberSequenceNumber ) );
 
     // add file info to files info
     rawBatchesInfo.insert(
@@ -357,7 +357,7 @@ void BatchListFile::decodeBatchesInfo(
     batchesV.emplace_back( BatchInfo{
       std::move( partNumber ),
       std::move( filename ),
-      static_cast< uint8_t >( memberSequenceNumber ) } );
+      MediumNumber{ static_cast< uint8_t >( memberSequenceNumber ) } } );
   }
 }
 

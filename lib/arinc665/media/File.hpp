@@ -16,6 +16,8 @@
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/Base.hpp>
 
+#include <arinc665/MediumNumber.hpp>
+
 #include <arinc645/Arinc645.hpp>
 
 #include <filesystem>
@@ -48,13 +50,30 @@ class ARINC665_EXPORT File : public Base
     //! @copydoc Base::type
     [[nodiscard]] Type type() const final;
 
+    //! @copydoc Base::parent() const
+    [[nodiscard]] ConstContainerEntityPtr parent() const final;
+
+    //! @copydoc Base::parent() const
+    [[nodiscard]] ContainerEntityPtr parent() final;
+
+    /**
+     * @copydoc Base::path() const
+     *
+     * This also contains the filename.
+     * The path is an absolute path originate in the medium root directory.
+     *
+     * @return The path up to the medium root.
+     * @retval {}
+     *   If parent is not available. (Should never happen)
+     **/
+    [[nodiscard]] std::filesystem::path path() const final;
+
     /**
      * @brief Returns the Name of the File.
      *
      * @return Name of the file.
      **/
     [[nodiscard]] std::string_view name() const;
-
 
     /**
      * @brief Renames the file.
@@ -67,44 +86,46 @@ class ARINC665_EXPORT File : public Base
     void rename( std::string name );
 
     /**
+     * @name Medium Number
+     *
+     * Each file is placed on a medium.
+     * @{
+     **/
+
+    /**
+     * @brief Returns the effective medium number.
+     *
+     * If the medium number is not defined, the parent effective medium number
+     * is returned.
+     *
+     * @return effecive medium number.
+     */
+    [[nodiscard]] MediumNumber effectiveMediumNumber() const;
+
+    /**
+     * @brief Returns the Medium Number, where the file is located on.
+     *
+     * @return Medium Number, where the file is located on.
+     **/
+    [[nodiscard]] OptionalMediumNumber mediumNumber() const;
+
+    /**
+     * @brief Updates the Medium Number of the file,
+     *
+     * @param[in] mediumNumber
+     *   New Medium Number.
+     *   If empty it is not defined on this level
+     **/
+    void mediumNumber( const OptionalMediumNumber &mediumNumber );
+
+    /** @} **/
+
+    /**
      * @brief Returns the File Type.
      *
      * @return File type
      **/
     [[nodiscard]] virtual FileType fileType() const = 0;
-
-    /**
-     * @brief Returns the Parent Container.
-     *
-     * @return Parent container element
-     **/
-    [[nodiscard]] ConstContainerEntityPtr parent() const;
-
-    //! @copydoc parent() const
-    [[nodiscard]] ContainerEntityPtr parent();
-
-    /**
-     * @brief Returns the Medium where this file is Located.
-     *
-     * @return Medium where this file is located.
-     **/
-    [[nodiscard]] ConstMediumPtr medium() const;
-
-    //! @copydoc medium() const
-    [[nodiscard]] MediumPtr medium();
-
-    /**
-     * @brief Returns the file path up to the medium root.
-     *
-     * This also contains the filename.
-     * The path is an absolute path originate in the medium root directory.
-     *
-     * @return The path up to the medium root.
-     * @retval {}
-     *   If parent is not available. (Should never happen)
-     **/
-    [[nodiscard]] std::filesystem::path path() const;
-
 
     /**
      * @name File Check Value Type
@@ -155,11 +176,16 @@ class ARINC665_EXPORT File : public Base
      *   Parent container.
      * @param[in] name
      *   Name of the element.
+     * @param[in] mediumNumber
+     *   Medium Number, where the file is located on.
      *
      * @throw Arinc665Exception
      *   If parent is invalid
      **/
-    File( const ContainerEntityPtr &parent, std::string name );
+    File(
+      const ContainerEntityPtr &parent,
+      std::string name,
+      const OptionalMediumNumber &mediumNumber );
 
     /**
      * @brief Sets the parent element.
@@ -177,6 +203,8 @@ class ARINC665_EXPORT File : public Base
     ContainerEntityPtr::weak_type parentV;
     //! Filename
     std::string nameV;
+    //! Medium Number
+    OptionalMediumNumber mediumNumberV;
     //! Check Value Type
     std::optional< Arinc645::CheckValueType > checkValueTypeV;
 };

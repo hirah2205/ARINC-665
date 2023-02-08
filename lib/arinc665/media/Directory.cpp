@@ -56,70 +56,9 @@ Type Directory::type() const
   return Type::Directory;
 }
 
-std::string_view Directory::name() const
-{
-  return nameV;
-}
-
-void Directory::rename( std::string name )
-{
-  if ( const auto parentPtr{ parent() }; parentPtr )
-  {
-    if ( parentPtr->subdirectory( name ) || parentPtr->file( name ) )
-    {
-      BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-        << Helper::AdditionalInfo{ "directory or file with given names exist" }
-        << boost::errinfo_file_name{ name } );
-    }
-  }
-
-  nameV = std::move( name );
-}
-
-std::filesystem::path Directory::path() const
-{
-  auto parentPtr{ parent() };
-
-  if ( !parentPtr )
-  {
-    return {};
-  }
-
-  return parentPtr->path() / nameV;
-}
-
-ConstContainerEntityPtr Directory::parent() const
-{
-  return parentV.lock();
-}
-
 ContainerEntityPtr Directory::parent()
 {
   return parentV.lock();
-}
-
-ConstMediumPtr Directory::medium() const
-{
-  auto parentPtr{ parent() };
-
-  if ( !parentPtr )
-  {
-    return {};
-  }
-
-  return parentPtr->medium();
-}
-
-MediumPtr Directory::medium()
-{
-  auto parentPtr( parent());
-
-  if (!parentPtr)
-  {
-    return {};
-  }
-
-  return parentPtr->medium();
 }
 
 void Directory::parent( const ContainerEntityPtr& parent)
@@ -142,6 +81,42 @@ void Directory::parent( const ContainerEntityPtr& parent)
   }
 
   parentV = parent;
+}
+
+std::filesystem::path Directory::path() const
+{
+  if ( auto parentPtr{ parent() }; parentPtr )
+  {
+    return parentPtr->path() / nameV;
+  }
+
+  return nameV;
+}
+
+std::string_view Directory::name() const
+{
+  return nameV;
+}
+
+void Directory::rename( std::string name )
+{
+  if ( const auto parentPtr{ parent() }; parentPtr )
+  {
+    if ( parentPtr->subdirectory( std::string_view( name ) )
+      || parentPtr->file( std::string_view( name ) ) )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+        << Helper::AdditionalInfo{ "directory or file with given names exist" }
+        << boost::errinfo_file_name{ name } );
+    }
+  }
+
+  nameV = std::move( name );
+}
+
+ConstContainerEntityPtr Directory::parent() const
+{
+  return parentV.lock();
 }
 
 }

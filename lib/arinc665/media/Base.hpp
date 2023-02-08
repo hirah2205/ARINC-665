@@ -15,6 +15,7 @@
 
 #include <arinc665/media/Media.hpp>
 
+#include <filesystem>
 #include <string>
 #include <string_view>
 
@@ -48,6 +49,30 @@ class Base : public std::enable_shared_from_this< Base >
      * @return Item Type
      **/
     [[nodiscard]] virtual Type type() const = 0;
+
+    /**
+     * @name Parent
+     * @{
+     **/
+
+    /**
+     * @brief Returns the parent.
+     *
+     * @return Parent of this container.
+     **/
+    [[nodiscard]] virtual ConstContainerEntityPtr parent() const = 0;
+
+    //! @copydoc parent() const
+    [[nodiscard]] virtual ContainerEntityPtr parent() = 0;
+
+    /** @} **/
+
+    /**
+     * @brief Returns the path up to the media set root.
+     *
+     * @return The path up to the media set root.
+     **/
+    [[nodiscard]] virtual std::filesystem::path path() const = 0;
 };
 
 }

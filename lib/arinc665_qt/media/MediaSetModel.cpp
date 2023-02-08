@@ -15,7 +15,6 @@
 #include <arinc665_qt/Arinc665QtLogger.hpp>
 
 #include <arinc665/media/MediaSet.hpp>
-#include <arinc665/media/Medium.hpp>
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/File.hpp>
 
@@ -63,26 +62,6 @@ QModelIndex MediaSetModel::index(
   switch ( parentBase->type() )
   {
     case Arinc665::Media::Type::MediaSet:
-    {
-      auto mediaSetParent{
-        std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( parentBase ) };
-
-      if ( !mediaSetParent )
-      {
-        // Should not happen
-        BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
-          << "Could not cast to Media Set";
-        return {};
-      }
-
-      // all children of media set are media (+1 because media are 1-indexed)
-      return createIndex(
-        row,
-        column,
-        (void*)mediaSetParent->medium( row + 1U ).get() );
-    }
-
-    case Arinc665::Media::Type::Medium:
     case Arinc665::Media::Type::Directory:
     {
       auto containerParent{
@@ -149,10 +128,6 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
       // Media set has no parent
       return {};
 
-    case Arinc665::Media::Type::Medium:
-      // A medium has the single media set as parent.
-      return createIndex( 0, 0, (void*)base->mediaSet().get() );
-
     case Arinc665::Media::Type::Directory:
     {
       auto dir{
@@ -160,15 +135,15 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
 
       assert( dir );
 
-      if ( Arinc665::Media::Type::Medium == dir->parent()->type() )
+      if ( Arinc665::Media::Type::MediaSet == dir->parent()->type() )
       {
-        auto parent{ std::dynamic_pointer_cast< const Arinc665::Media::Medium >(
+        auto parent{ std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >(
           dir->parent() ) };
 
         assert( parent );
 
-        // the medium number is the row index
-        return createIndex( parent->mediumNumber()-1, 0, (void*)parent.get() );
+        // Media-Set is root element
+        return createIndex( 0, 0, (void*)parent.get() );
       }
 
       auto grandParent( dir->parent()->parent() );
@@ -196,15 +171,15 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
         return {};
       }
 
-      if ( Arinc665::Media::Type::Medium == file->parent()->type() )
+      if ( Arinc665::Media::Type::MediaSet == file->parent()->type() )
       {
-        auto parent( std::dynamic_pointer_cast< const Arinc665::Media::Medium>(
+        auto parent( std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >(
           file->parent() ) );
 
         assert( parent );
 
-        // the medium number is the row index
-         return createIndex( parent->mediumNumber()-1, 0, (void*)parent.get() );
+        // the media set
+         return createIndex( 0, 0, (void*)parent.get() );
       }
 
       auto grandParent{ file->parent()->parent() };
@@ -251,23 +226,6 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
   switch ( base->type() )
   {
     case Arinc665::Media::Type::MediaSet:
-    {
-      // The media set has media
-      auto mediaSet{
-        std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( base ) };
-
-      if ( !mediaSet )
-      {
-        // Should not happen
-        BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
-          << "Invalid Cast to Media Set";
-        return {};
-      }
-
-      return ( mediaSet->numberOfMedia() !=0 );
-    }
-
-    case Arinc665::Media::Type::Medium:
     case Arinc665::Media::Type::Directory:
     {
       auto container{
@@ -319,23 +277,6 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
   switch ( base->type() )
   {
     case Arinc665::Media::Type::MediaSet:
-    {
-      auto mediaSet{
-        std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( base ) };
-
-      if ( !mediaSet )
-      {
-        // Should not happen
-        BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
-          << "Invalid Cast to Media Set";
-        return {};
-      }
-
-      // The media set has media
-      return mediaSet->numberOfMedia();
-    }
-
-    case Arinc665::Media::Type::Medium:
     case Arinc665::Media::Type::Directory:
     {
       auto container{
@@ -403,15 +344,6 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               icon.addFile(
                 QString::fromUtf8(
                   ":/media_set/arinc665_media_set.svg" ),
-                QSize{},
-                QIcon::Normal,
-                QIcon::Off );
-              break;
-
-            case Arinc665::Media::Type::Medium:
-              icon.addFile(
-                QString::fromUtf8(
-                  ":/media_set/arinc665_medium.svg" ),
                 QSize{},
                 QIcon::Normal,
                 QIcon::Off );
@@ -509,22 +441,6 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               return HelperQt::toQString( mediaSet->partNumber() );
             }
 
-            case Arinc665::Media::Type::Medium:
-            {
-              auto medium{
-                std::dynamic_pointer_cast< const Arinc665::Media::Medium >( base) };
-
-              if ( !medium )
-              {
-                // Should not happen
-                BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
-                  << "Invalid Cast to Medium";
-                return {};
-              }
-
-              return medium->mediumNumber();
-            }
-
             case Arinc665::Media::Type::Directory:
             {
               auto directory{
@@ -567,9 +483,6 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
             case Arinc665::Media::Type::MediaSet:
               return tr( "Media Set" );
 
-            case Arinc665::Media::Type::Medium:
-              return tr(  "Medium" );
-
             case Arinc665::Media::Type::Directory:
               return tr(  "Directory" );
 
@@ -588,13 +501,15 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
 
               switch ( file->fileType() )
               {
-                case Arinc665::Media::FileType::RegularFile:
+                using enum Arinc665::Media::FileType;
+
+                case RegularFile:
                   return tr( "Regular File" );
 
-                case Arinc665::Media::FileType::LoadFile:
+                case LoadFile:
                   return tr( "Load" );
 
-                case Arinc665::Media::FileType::BatchFile:
+                case BatchFile:
                   return tr( "Batch" );
 
                 default:

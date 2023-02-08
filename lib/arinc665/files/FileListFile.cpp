@@ -443,7 +443,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
     // member sequence number
     auto fileInfoIt{ Helper::setInt< uint16_t>(
       rawFileInfo.begin() + static_cast< ptrdiff_t>( rawFileInfo.size() ) - ( 2 * sizeof( uint16_t ) ),
-      fileInfo.memberSequenceNumber ) };
+      static_cast< uint8_t >( fileInfo.memberSequenceNumber ) ) };
 
     // crc
     Helper::setInt< uint16_t>( fileInfoIt, fileInfo.crc );
@@ -556,7 +556,8 @@ void FileListFile::decodeFilesInfo(
     filesV.emplace_back( FileInfo{
       .filename = filename,
       .pathName = pathName,
-      .memberSequenceNumber = static_cast< uint8_t >( memberSequenceNumber ),
+      .memberSequenceNumber =
+        MediumNumber{ static_cast< uint8_t >( memberSequenceNumber ) },
       .crc = crc,
       .checkValue = checkValue } );
   }
