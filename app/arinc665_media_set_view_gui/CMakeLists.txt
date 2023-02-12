@@ -13,7 +13,23 @@ endif()
 
 add_executable( arinc665_media_set_view_gui WIN32 )
 
-target_sources( arinc665_media_set_view_gui PRIVATE arinc665_media_set_view_gui.cpp )
+target_sources(
+  arinc665_media_set_view_gui
+  PRIVATE arinc665_media_set_view_gui.cpp )
+
+target_compile_features( arinc665_media_set_view_gui PUBLIC cxx_std_20 )
+
+target_compile_options(
+  arinc665_media_set_view_gui
+
+  PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:-W4>
+
+    $<$<CXX_COMPILER_ID:GNU>:-Wall>
+    $<$<CXX_COMPILER_ID:GNU>:-Wextra>
+
+    $<$<CXX_COMPILER_ID:Clang>:-Wall>
+    $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
 
 target_link_libraries(
   arinc665_media_set_view_gui
