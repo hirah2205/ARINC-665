@@ -15,6 +15,8 @@
 #include <helper/Endianess.hpp>
 #include <helper/SafeCast.hpp>
 
+#include <cassert>
+
 namespace Arinc665::Files {
 
 ConstRawFileSpan::iterator StringUtils_decodeString(

@@ -25,7 +25,7 @@ namespace Ui{
 class ImportMediaSetXmlWizard;
 }
 
-//! Import Media Set XML Wizard
+//! Import %Media Set XML Wizard
 class ARINC665_QT_EXPORT ImportMediaSetXmlWizard : public QWizard
 {
     Q_OBJECT

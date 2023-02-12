@@ -29,7 +29,7 @@
 namespace Arinc665Qt {
 
 /**
- * @brief Media Set Load and Display Controller.
+ * @brief %Media Set Load and Display Controller.
  **/
 class ARINC665_QT_EXPORT MediaSetController : public QObject
 {

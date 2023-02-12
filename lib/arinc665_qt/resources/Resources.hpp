@@ -19,7 +19,7 @@
 namespace Arinc665Qt::Resources {
 
 /**
- * @brief Initialises the ARINC 615A DLA QT Resources.
+ * @brief Initialises the ARINC 615A DLA QT %Resources.
  **/
 ARINC665_QT_EXPORT void initialise();
 
