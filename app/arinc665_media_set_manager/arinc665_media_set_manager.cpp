@@ -1,19 +1,14 @@
 /**
-* @file
-* @copyright
-* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this
-* file, You can obtain one at http://mozilla.org/MPL/2.0/.
-*
-* @author Thomas Vogt, thomas@thomas-vogt.de
-*
-* @brief ARINC 665 Media Set Manager.
-**/
-
-/**
-* @dir
-* @brief ARINC 665 Media Set Manager Application.
-**/
+ * @file
+ * @copyright
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * @author Thomas Vogt, thomas@thomas-vogt.de
+ *
+ * @brief ARINC 665 Media Set Manager.
+ **/
 
 #include <arinc665_commands/Arinc665Commands.hpp>
 
@@ -43,17 +38,19 @@ int main( int argc, char * argv[] );
 
 int main( int argc, char * argv[] )
 {
+  BOOST_LOG_FUNCTION()
+
   Helper::initLogging( Helper::Severity::warning, false );
-
-  auto registry{ Commands::CommandRegistry::instance() };
-
-  Arinc665Commands::registerCommands( registry );
 
   try
   {
     std::cout
       << "ARINC 665 Media Set Manager - "
       << Arinc665::Version::VersionInformation << "\n";
+
+    auto registry{ Commands::CommandRegistry::instance() };
+
+    Arinc665Commands::registerCommands( registry );
 
     const auto result{
       Commands::CommandUtils::commandLineHandler( registry )( argc, argv ) };
@@ -62,12 +59,16 @@ int main( int argc, char * argv[] )
   }
   catch ( const boost::exception &e )
   {
-    std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
+    std::cerr
+      << "Error: "
+      << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "Error: " << e.what() << "\n";
+    std::cerr
+      << "Error: "
+      << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( ... )

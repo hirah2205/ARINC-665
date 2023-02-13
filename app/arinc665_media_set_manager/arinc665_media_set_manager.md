@@ -10,6 +10,6 @@
 @sa @ref arinc665_media_set_manager.cpp
 
 @dir
-@brief ARINC 665 Media Set Manager Application
+@brief ARINC 665 Media Set Manager Application.
 
 @sa @ref arinc665_media_set_manager_main

@@ -16,6 +16,20 @@ target_sources(
   PRIVATE
     arinc665_media_set_manager.cpp )
 
+target_compile_features( arinc665_media_set_manager PUBLIC cxx_std_20 )
+
+target_compile_options(
+  arinc665_media_set_manager
+
+  PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:-W3>
+
+    $<$<CXX_COMPILER_ID:GNU>:-Wall>
+    $<$<CXX_COMPILER_ID:GNU>:-Wextra>
+
+    $<$<CXX_COMPILER_ID:Clang>:-Wall>
+    $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
+
 target_link_libraries(
   arinc665_media_set_manager
 

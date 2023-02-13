@@ -10,11 +10,6 @@
  * @brief ARINC 665 Media Set XML Printer Application.
  **/
 
-/**
- * @dir
- * @brief ARINC 665 Media Set XML Printer Application.
- **/
-
 #include <arinc665/Arinc665.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 
@@ -50,25 +45,25 @@ int main( int argc, char * argv[] )
 
   Helper::initLogging( Helper::Severity::info );
 
-  boost::program_options::options_description optionsDescription{
-    "ARINC 665 List options" };
-
-  std::filesystem::path xmlPath{};
-
-  optionsDescription.add_options()
-  (
-    "help",
-    "Print Help"
-  )
-  (
-    "xml-file",
-    boost::program_options::value( &xmlPath )->required(),
-    "ARINC 665 media set description XML"
-  );
-
   try
   {
     std::cout << "ARINC 665 Media Set XML Printer" << "\n";
+
+    boost::program_options::options_description optionsDescription{
+      "ARINC 665 List options" };
+
+    std::filesystem::path xmlPath{};
+
+    optionsDescription.add_options()
+    (
+      "help",
+      "Print Help"
+    )
+    (
+      "xml-file",
+      boost::program_options::value( &xmlPath )->required(),
+      "ARINC 665 media set description XML"
+    );
 
     boost::program_options::variables_map vm{};
     boost::program_options::store(
@@ -108,13 +103,15 @@ int main( int argc, char * argv[] )
   catch ( const boost::exception &e )
   {
     std::cerr
-      << "Error: " << boost::diagnostic_information( e ) << "\n";
+      << "Error: "
+      << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
     std::cerr
-      << "Error: " << e.what() << "\n";
+      << "Error: "
+      << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( ... )

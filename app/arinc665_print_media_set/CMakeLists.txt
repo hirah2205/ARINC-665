@@ -10,6 +10,20 @@ add_executable( arinc665_print_media_set )
 
 target_sources( arinc665_print_media_set PRIVATE arinc665_print_media_set.cpp )
 
+target_compile_features( arinc665_print_media_set PUBLIC cxx_std_20 )
+
+target_compile_options(
+  arinc665_print_media_set
+
+  PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:-W3>
+
+    $<$<CXX_COMPILER_ID:GNU>:-Wall>
+    $<$<CXX_COMPILER_ID:GNU>:-Wextra>
+
+    $<$<CXX_COMPILER_ID:Clang>:-Wall>
+    $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
+
 target_link_libraries( arinc665_print_media_set arinc665 )
 
 set_property(

@@ -24,15 +24,15 @@
 #include <fstream>
 
 /**
-* @brief Program entry point
-*
-* @param[in] argc
-*   Number of arguments.
-* @param[in] argv
-*   The arguments
-*
-* @return The success state of this operation.
-**/
+ * @brief Program entry point
+ *
+ * @param[in] argc
+ *   Number of arguments.
+ * @param[in] argv
+ *   Arguments
+ *
+ * @return Success state of this operation.
+ **/
 int main( int argc, char * argv[] );
 
 /**
@@ -43,7 +43,7 @@ int main( int argc, char * argv[] );
  * @param[in] path
  *   Path of file on medium.
  *
- * @return The read file data.
+ * @return Read file data.
  *
  * @throw Arinc665Exception
  *   If file does not exist or cannot be read.
@@ -59,44 +59,47 @@ static std::vector< std::filesystem::path> mediaDirectories;
 
 int main( int argc, char * argv[] )
 {
-  boost::program_options::options_description optionsDescription(
-    "ARINC 665 Media Set Validator Options");
+  BOOST_LOG_FUNCTION()
 
-  optionsDescription.add_options()
-  (
-    "help",
-    "print this help screen"
-  )
-  (
-    "medium-directory",
-    boost::program_options::value( &mediaDirectories )
-      ->required()
-      ->composing(),
-    "ARINC 665 medium source directory.\n"
-    "For more media, repeat this parameter."
-  );
-
-  Helper::initLogging( Helper::Severity::info);
+  Helper::initLogging( Helper::Severity::info, true );
 
   try
   {
     std::cout << "ARINC 665 Media Set Validator\n";
 
-    boost::program_options::variables_map options;
+    boost::program_options::options_description optionsDescription{
+      "ARINC 665 Media Set Validator Options" };
+
+    optionsDescription.add_options()
+    (
+      "help",
+      "print this help screen"
+    )
+    (
+      "medium-directory",
+      boost::program_options::value( &mediaDirectories )
+        ->required()
+        ->composing(),
+      "ARINC 665 medium source directory.\n"
+      "For more media, repeat this parameter."
+    );
+
+    boost::program_options::variables_map vm{};
     boost::program_options::store(
       boost::program_options::parse_command_line(
         argc,
         argv,
-        optionsDescription),
-      options);
+        optionsDescription ),
+      vm );
 
-    if ( options.count( "help") != 0)
+    if ( 0U != vm.count( "help" ) )
     {
-      std::cout << optionsDescription << "\n";
+      std::cout
+        << optionsDescription << "\n";
       return EXIT_FAILURE;
     }
 
-    boost::program_options::notify( options);
+    boost::program_options::notify( vm );
 
     // create validator
     auto validator{ Arinc665::Utils::MediaSetValidator::create() };
@@ -105,21 +108,22 @@ int main( int argc, char * argv[] )
       .informationHandler( std::bind_front( &printInformation ) );
 
     // perform validation
-    auto result{ (*validator)()};
+    auto result{ (*validator)() };
 
-    if ( !result)
+    if ( !result )
     {
       std::cerr << "Validation FAILED\n";
       return EXIT_FAILURE;
     }
   }
-  catch ( boost::program_options::error &e)
+  catch ( const boost::program_options::error &e )
   {
-    std::cerr << e.what()
-      << "\nEnter " << argv[0] << " --help to get help\n";
+    std::cerr
+      << "Error parsing command line: " << e.what() << "\n"
+      << "Enter " << argv[0] << " --help for command line description\n";
     return EXIT_FAILURE;
   }
-  catch ( Arinc665::Arinc665Exception &e)
+  catch ( const Arinc665::Arinc665Exception &e )
   {
     std::string const * const info =
       boost::get_error_info< Helper::AdditionalInfo>( e);
@@ -131,19 +135,21 @@ int main( int argc, char * argv[] )
 
     return EXIT_FAILURE;
   }
-  catch ( boost::exception &e)
+  catch ( const boost::exception &e )
   {
     std::cerr
-      << "Error in validation: " << boost::diagnostic_information( e ) << "\n";
+      << "Error: "
+      << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
-  catch ( ...)
+  catch ( ... )
   {
     std::cerr << "Error in validation: UNKNOWN EXCEPTION\n";
     return EXIT_FAILURE;
   }
 
   std::cout << "Validation Successfully completed\n";
+
   return EXIT_SUCCESS;
 }
 

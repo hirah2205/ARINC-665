@@ -108,26 +108,26 @@ int main( int argc, char const * argv[] )
 
   Helper::initLogging( Helper::Severity::info );
 
-  boost::program_options::options_description optionsDescription{
-    "ARINC 665 List options" };
-
-  // directory to list
-  std::filesystem::path directory{};
-
-  optionsDescription.add_options()
-  (
-    "help",
-    "Print Help"
-  )
-  (
-    "directory",
-    boost::program_options::value( &directory)->required(),
-    "start directory"
-  );
-
   try
   {
     std::cout << "ARINC 665 list\n";
+
+    boost::program_options::options_description optionsDescription{
+      "ARINC 665 List options" };
+
+    // directory to list
+    std::filesystem::path directory{};
+
+    optionsDescription.add_options()
+    (
+      "help",
+      "Print Help"
+    )
+    (
+      "directory",
+      boost::program_options::value( &directory)->required(),
+      "start directory"
+    );
 
     boost::program_options::variables_map vm{};
     boost::program_options::store(
@@ -167,7 +167,9 @@ int main( int argc, char const * argv[] )
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "Error: " << e.what() << "\n";
+    std::cerr
+      << "Error: "
+      << e.what() << "\n";
     return EXIT_FAILURE;
   }
   catch ( ... )

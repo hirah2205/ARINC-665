@@ -10,6 +10,20 @@ add_executable( arinc665_print_xml )
 
 target_sources( arinc665_print_xml PRIVATE arinc665_print_xml.cpp )
 
+target_compile_features( arinc665_print_xml PUBLIC cxx_std_20 )
+
+target_compile_options(
+  arinc665_print_xml
+
+  PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:-W3>
+
+    $<$<CXX_COMPILER_ID:GNU>:-Wall>
+    $<$<CXX_COMPILER_ID:GNU>:-Wextra>
+
+    $<$<CXX_COMPILER_ID:Clang>:-Wall>
+    $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
+
 target_link_libraries( arinc665_print_xml arinc665 )
 
 set_property(

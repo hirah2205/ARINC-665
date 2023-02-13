@@ -10,18 +10,13 @@
  * @brief ARINC 665 Media Set Print Application.
  **/
 
-/**
- * @dir
- * @brief ARINC 665 Media Set Print Application.
- **/
-
-#include <arinc665/Arinc665.hpp>
-#include <arinc665/Arinc665Exception.hpp>
-
 #include <arinc665/media/MediaSet.hpp>
 
 #include <arinc665/utils/MediaSetImporter.hpp>
 #include <arinc665/utils/MediaSetPrinter.hpp>
+
+#include <arinc665/Arinc665Exception.hpp>
+#include <arinc665/Version.hpp>
 
 #include <arinc645/CheckValue.hpp>
 
@@ -105,32 +100,35 @@ int main( int argc, char const * argv[] )
 
   Helper::initLogging( Helper::Severity::warning, true );
 
-  boost::program_options::options_description optionsDescription{
-    "ARINC 665 Media Set Printer options" };
-
-  // directories which contains the medias
-  std::vector< std::filesystem::path > directories{};
-  bool checkFileIntegrity{ true };
-
-  optionsDescription.add_options()
-  (
-    "help",
-    "Print Help"
-  )
-  (
-    "directory",
-    boost::program_options::value( &directories)->required()->multitoken(),
-    "media directories (can be passed multiple times)"
-  )
-  (
-    "check-file-integrity",
-    boost::program_options::value( &checkFileIntegrity )->default_value( true ),
-    "Check File Integrity during Import"
-  );
-
   try
   {
-    std::cout << "ARINC 665 Media Set Printer\n";
+    std::cout
+      << "ARINC 665 Media Set Printer - "
+      << Arinc665::Version::VersionInformation << "\n";
+
+    boost::program_options::options_description optionsDescription{
+      "ARINC 665 Media Set Printer options" };
+
+    // directories which contains the medias
+    std::vector< std::filesystem::path > directories{};
+    bool checkFileIntegrity{ true };
+
+    optionsDescription.add_options()
+    (
+      "help",
+      "Print Help"
+    )
+    (
+      "directory",
+      boost::program_options::value( &directories)->required()->multitoken(),
+      "media directories (can be passed multiple times)"
+    )
+    (
+      "check-file-integrity",
+      boost::program_options::value( &checkFileIntegrity )
+        ->default_value( true ),
+      "Check File Integrity during Import"
+    );
 
     boost::program_options::variables_map vm{};
     boost::program_options::store(

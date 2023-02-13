@@ -17,6 +17,7 @@
 #include <arinc665/utils/Arinc665Xml.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
+#include <arinc665/Version.hpp>
 
 #include <arinc645/CheckValue.hpp>
 
@@ -86,43 +87,46 @@ int main( int argc, char const * argv[] )
 
   Helper::initLogging( Helper::Severity::info );
 
-  boost::program_options::options_description optionsDescription{
-    "ARINC 665 Media Set Decompiler Options" };
-
-  // Media source directories
-  std::vector< std::filesystem::path > mediaSourceDirectories{};
-
-  // Media Set XML file
-  std::filesystem::path mediaSetXmlFile{};
-
-  // Check File Integrity
-  bool checkFileIntegrity{};
-
-  optionsDescription.add_options()
-  (
-    "help",
-    "print this help screen"
-  )
-  (
-    "source-directory",
-    boost::program_options::value(
-      &mediaSourceDirectories )->required()->composing(),
-    "ARINC 665 media source directories"
-  )
-  (
-    "xml-file",
-    boost::program_options::value( &mediaSetXmlFile )->required(),
-    "Output ARINC 665 media set description XML"
-  )
-  (
-    "check-file-integrity",
-    boost::program_options::value( &checkFileIntegrity )->default_value( true ),
-    "Check File Integrity during Import"
-  );
-
   try
   {
-    std::cout << "ARINC 665 Media Set Decompiler" << "\n";
+    std::cout
+      << "ARINC 665 Media Set Decompiler - "
+      << Arinc665::Version::VersionInformation << "\n";
+
+    boost::program_options::options_description optionsDescription{
+      "ARINC 665 Media Set Decompiler Options" };
+
+    // Media source directories
+    std::vector< std::filesystem::path > mediaSourceDirectories{};
+
+    // Media Set XML file
+    std::filesystem::path mediaSetXmlFile{};
+
+    // Check File Integrity
+    bool checkFileIntegrity{};
+
+    optionsDescription.add_options()
+    (
+      "help",
+      "print this help screen"
+    )
+    (
+      "source-directory",
+      boost::program_options::value(
+        &mediaSourceDirectories )->required()->composing(),
+      "ARINC 665 media source directories"
+    )
+    (
+      "xml-file",
+      boost::program_options::value( &mediaSetXmlFile )->required(),
+      "Output ARINC 665 media set description XML"
+    )
+    (
+      "check-file-integrity",
+      boost::program_options::value( &checkFileIntegrity )
+        ->default_value( true ),
+      "Check File Integrity during Import"
+    );
 
     boost::program_options::variables_map vm{};
     boost::program_options::store(

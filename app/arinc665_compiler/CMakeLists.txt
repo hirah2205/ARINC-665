@@ -12,6 +12,20 @@ add_executable( arinc665_compiler )
 
 target_sources( arinc665_compiler PRIVATE arinc665_compiler.cpp )
 
+target_compile_features( arinc665_compiler PUBLIC cxx_std_20 )
+
+target_compile_options(
+  arinc665_compiler
+
+  PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:-W3>
+
+    $<$<CXX_COMPILER_ID:GNU>:-Wall>
+    $<$<CXX_COMPILER_ID:GNU>:-Wextra>
+
+    $<$<CXX_COMPILER_ID:Clang>:-Wall>
+    $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
+
 target_link_libraries( arinc665_compiler PRIVATE arinc665 fmt::fmt )
 
 set_property(
