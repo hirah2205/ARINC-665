@@ -593,7 +593,7 @@ void Arinc665XmlImpl::loadLoad(
       << boost::errinfo_at_line{ loadElement.get_line() } );
   }
 
-  const auto load{ mediaSet.load( std::filesystem::path{ filePath } ) };
+  const auto load{ mediaSet.load( std::filesystem::path{ filePath.raw(), std::locale{} } ) };
 
   if ( !load )
   {
@@ -821,7 +821,8 @@ Media::ConstLoadFiles Arinc665XmlImpl::loadLoadFiles(
     auto checkValueType{ loadCheckValue( *fileElement, "CheckValue" ) };
 
     // Find File
-    auto file{ mediaSet.regularFile( std::filesystem::path{ filePath } ) };
+    auto file{ mediaSet.regularFile(
+      std::filesystem::path{ filePath.raw(), std::locale{} } ) };
 
     if ( !file )
     {
@@ -883,7 +884,8 @@ void Arinc665XmlImpl::loadBatch(
 
   auto comment{ batchElement.get_attribute_value( "Comment" ) };
 
-  auto batch{ mediaSet.batch( std::filesystem::path{ filePath } ) };
+  auto batch{
+    mediaSet.batch( std::filesystem::path{ filePath.raw(), std::locale{} } ) };
 
   if ( !batch )
   {
@@ -930,7 +932,8 @@ void Arinc665XmlImpl::loadBatch(
           << boost::errinfo_at_line{ loadElement->get_line() } );
       }
 
-      auto load{ mediaSet.load( std::filesystem::path{ loadFilePath } ) };
+      auto load{ mediaSet.load(
+        std::filesystem::path{ loadFilePath.raw(), std::locale{} } ) };
 
       if ( !load )
       {

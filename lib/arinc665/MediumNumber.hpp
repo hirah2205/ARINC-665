@@ -21,11 +21,11 @@
 namespace Arinc665 {
 
 /**
- * @brief Medium Number
+ * @brief ARINC 665 Medium Number
  *
- * The Medium Number is used to provide a Medium Number.
+ * The Medium Number is used to provide a Medium Number @p [0..255].
  **/
-class MediumNumber
+class ARINC665_EXPORT MediumNumber
 {
   public:
     /**
@@ -103,13 +103,13 @@ class MediumNumber
  * @brief @p std::ostream output operator.
  *
  * @param[in,out] ostream
- *   output stream.
+ *   Output stream.
  * @param[in] mediumNumber
- *   Medium Number.
+ *   Medium number.
  *
- * @return output stream
+ * @return Output stream
  **/
-std::ostream &operator<<(
+ARINC665_EXPORT std::ostream& operator<<(
   std::ostream &ostream,
   const MediumNumber &mediumNumber );
 
