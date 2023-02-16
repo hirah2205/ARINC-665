@@ -10,7 +10,7 @@ add_executable( arinc665_decompiler )
 
 target_sources( arinc665_decompiler PRIVATE arinc665_decompiler.cpp )
 
-target_compile_features( arinc665_decompiler PUBLIC cxx_std_20 )
+target_compile_features( arinc665_decompiler PRIVATE cxx_std_20 )
 
 target_compile_options(
   arinc665_decompiler

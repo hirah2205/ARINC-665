@@ -10,7 +10,7 @@ add_executable( arinc665_check )
 
 target_sources( arinc665_check PRIVATE arinc665_check.cpp )
 
-target_compile_features( arinc665_check PUBLIC cxx_std_20 )
+target_compile_features( arinc665_check PRIVATE cxx_std_20 )
 
 target_compile_options(
   arinc665_check

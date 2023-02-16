@@ -10,7 +10,7 @@ add_executable( arinc665_print_media_set )
 
 target_sources( arinc665_print_media_set PRIVATE arinc665_print_media_set.cpp )
 
-target_compile_features( arinc665_print_media_set PUBLIC cxx_std_20 )
+target_compile_features( arinc665_print_media_set PRIVATE cxx_std_20 )
 
 target_compile_options(
   arinc665_print_media_set

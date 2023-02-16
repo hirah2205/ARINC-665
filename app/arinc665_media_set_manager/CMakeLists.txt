@@ -16,7 +16,7 @@ target_sources(
   PRIVATE
     arinc665_media_set_manager.cpp )
 
-target_compile_features( arinc665_media_set_manager PUBLIC cxx_std_20 )
+target_compile_features( arinc665_media_set_manager PRIVATE cxx_std_20 )
 
 target_compile_options(
   arinc665_media_set_manager

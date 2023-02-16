@@ -12,7 +12,7 @@ add_executable( arinc665_ls )
 
 target_sources( arinc665_ls PRIVATE arinc665_ls.cpp )
 
-target_compile_features( arinc665_ls PUBLIC cxx_std_20 )
+target_compile_features( arinc665_ls PRIVATE cxx_std_20 )
 
 target_compile_options(
   arinc665_ls
