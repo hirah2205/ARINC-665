@@ -17,6 +17,8 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <arinc645/CheckValue.hpp>
+
 #include <utility>
 
 namespace Arinc665::Media {
@@ -101,6 +103,40 @@ void Load::targetHardwareId( std::string targetHardwareId, Positions positions )
   targetHardwareIdPositionsV.insert_or_assign(
     std::move( targetHardwareId ),
     std::move( positions ) );
+}
+
+ConstRegularFilePtr Load::file(
+  std::string_view filename,
+  std::string_view partNumber ) const
+{
+  ConstRegularFiles files{};
+
+  for ( const auto &[file, filePartNumber, checkValueType] : dataFilesV )
+  {
+    if ( auto regularFile{ file.lock() };
+      regularFile && ( regularFile->name() == filename )
+      && ( partNumber.empty() || ( partNumber == filePartNumber ) ) )
+    {
+      files.emplace_back( regularFile );
+    }
+  }
+
+  for ( const auto &[file, filePartNumber, checkValueType] : supportFilesV )
+  {
+    if ( auto regularFile{ file.lock() };
+         regularFile && ( regularFile->name() == filename )
+         && ( partNumber.empty() || ( partNumber == filePartNumber ) ) )
+    {
+      files.emplace_back( regularFile );
+    }
+  }
+
+  if ( 1U == files.size() )
+  {
+    return files.front();
+  }
+
+  return {};
 }
 
 ConstLoadFiles Load::dataFiles( const bool effective ) const
@@ -271,6 +307,103 @@ void Load::supportFilesCheckValueType(
   std::optional< Arinc645::CheckValueType > checkValueType )
 {
   supportFilesCheckValueTypeV = checkValueType;
+}
+
+ConstRegularFilePtr Load_file(
+  const Load &load,
+  std::string_view filename,
+  std::string_view partNumber )
+{
+  return load.file( filename, partNumber );
+}
+
+ConstRegularFilePtr Load_file(
+  const Load &load,
+  const CheckValues &checkValues,
+  std::string_view filename,
+  const Arinc645::CheckValue &checkValue )
+{
+  ConstRegularFiles files{};
+
+  for ( const auto &[file, filePartNumber, checkValueType] : load.dataFiles() )
+  {
+    if ( file && ( file->name() == filename ) )
+    {
+      if (
+        auto fileCheckValues{ checkValues.find( file ) };
+        ( fileCheckValues != checkValues.end() ) &&
+        fileCheckValues->second.contains( checkValue ) )
+      {
+        files.emplace_back( file );
+      }
+    }
+  }
+
+  for ( const auto &[file, filePartNumber, checkValueType] : load.supportFiles() )
+  {
+    if ( file && ( file->name() == filename ) )
+    {
+      auto fileCheckValues{ checkValues.find( file ) };
+      if ( fileCheckValues->second.contains( checkValue ) )
+      {
+        files.emplace_back( file );
+      }
+    }
+  }
+
+  if ( 1U == files.size() )
+  {
+    return files.front();
+  }
+
+  return {};
+}
+
+ConstRegularFilePtr Loads_file(
+  const ConstLoads &loads,
+  std::string_view filename,
+  std::string_view partNumber )
+{
+  ConstRegularFiles files{};
+
+  for ( const auto &load : loads )
+  {
+    if ( auto file{ Load_file( *load, filename, partNumber ) }; file )
+    {
+      files.emplace_back( std::move( file ) );
+    }
+  }
+
+  if ( 1U == files.size() )
+  {
+    return files.front();
+  }
+
+  return {};
+}
+
+ConstRegularFilePtr Loads_file(
+  const ConstLoads &loads,
+  const CheckValues &checkValues,
+  std::string_view filename,
+  const Arinc645::CheckValue &checkValue )
+{
+  ConstRegularFiles files{};
+
+  for ( const auto &load : loads )
+  {
+    if ( auto file{ Load_file( *load, checkValues, filename, checkValue ) }; file )
+    {
+      files.emplace_back( std::move( file ) );
+    }
+  }
+
+  if ( 1U == files.size() )
+  {
+    return files.front();
+  }
+
+  return {};
 }
 
 }

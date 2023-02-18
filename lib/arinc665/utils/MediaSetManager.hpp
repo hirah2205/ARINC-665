@@ -46,7 +46,7 @@ class ARINC665_EXPORT MediaSetManager
   public:
     //! Media Set Information (Media Set + Check Values)
     using MediaSetInformation =
-      std::pair< Media::ConstMediaSetPtr, CheckValues >;
+      std::pair< Media::ConstMediaSetPtr, Media::CheckValues >;
     //! Media Sets Information (Part Number -> Media Set Information)
     using MediaSetsInformation =
       std::map< std::string, MediaSetInformation, std::less<> >;

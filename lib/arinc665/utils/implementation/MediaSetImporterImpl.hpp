@@ -256,7 +256,7 @@ class MediaSetImporterImpl final : public MediaSetImporter
     //! Media Set
     Media::MediaSetPtr mediaSet;
     //! Check Values
-    CheckValues checkValues;
+    Media::CheckValues checkValues;
 
     //! File List File (Load by loadFirstMedium(), used by loadFurtherMedia() )
     Files::FileListFile fileListFile;

@@ -25,6 +25,7 @@
 #include <map>
 #include <vector>
 #include <list>
+#include <set>
 #include <memory>
 #include <variant>
 #include <optional>
@@ -34,8 +35,8 @@
 /**
  * @brief ARINC 665 %Media (Set).
  *
- * This namespace provides classes to represent a ARINC 665 Media Set and their
- * parts like Loads, Batches nad Management Files.
+ * This namespace provides classes to represent a ARINC 665 %Media Set and their
+ * parts like Loads, Batches and other %Files.
  **/
 namespace Arinc665::Media {
 
@@ -244,6 +245,10 @@ using ConstDirectoryFileTuple  = std::tuple< const Directory&, ConstFilePtr>;
 using DirectoryFileTuple = std::tuple< Directory&, FilePtr>;
 
 /** @} **/
+
+//! Check Values of Media Set Files
+using CheckValues =
+  std::map< ConstFilePtr, std::set< Arinc645::CheckValue >, std::less< > >;
 
 }
 

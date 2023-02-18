@@ -178,6 +178,33 @@ class ARINC665_EXPORT Load final : public File
     /** @} **/
 
     /**
+     * @name Files Lookup
+     *
+     * @{
+     **/
+
+    /**
+     * @brief Returns file with given filename and optional part number.
+     *
+     * If more than one file is found with the given attributes no file is
+     * returned.
+     *
+     * @param[in] filename
+     *   Filename
+     * @param[in] partNumber
+     *   Part Number
+     *
+     * @return File with filename and part number if provided.
+     * @retval {}
+     *   No file or more than on file found within data and support files.
+     **/
+    ConstRegularFilePtr file(
+      std::string_view filename,
+      std::string_view partNumber = {} ) const;
+
+    /** @} **/
+
+    /**
      * @name Data Files
      * A (data) file is a tuple of filename, part number and check value type.
      *
@@ -474,6 +501,107 @@ class ARINC665_EXPORT Load final : public File
     //! Support Files Default Check Value Type
     std::optional< Arinc645::CheckValueType > supportFilesCheckValueTypeV;
 };
+
+/**
+ * @name Load File lookup.
+ * @{
+ **/
+
+/**
+ * @brief Returns file with given filename and part number.
+ *
+ * If more than one file is found with the given attributes no file is
+ * returned.
+ *
+ * @param[in] load
+ *   Load
+ * @param[in] filename
+ *   Filename
+ * @param[in] partNumber
+ *   Part Number
+ *
+ * @return File with filename and part number if provided.
+ * @retval {}
+ *   No file or more than on file found within data and support files.
+ **/
+ConstRegularFilePtr Load_file(
+  const Load &load,
+  std::string_view filename,
+  std::string_view partNumber );
+
+/**
+ * @brief Returns file with given filename and Check Value.
+ *
+ * If more than one file is found with the given attributes no file is
+ * returned.
+ *
+ * @param[in] load
+ *   Load
+ * @param[in] checkValues
+ *   Check Values
+ * @param[in] filename
+ *   Filename
+ * @param[in] checkValue
+ *   Check Value
+ *
+ * @return File with filename and part number if provided.
+ * @retval {}
+ *   No file or more than on file found within data and support files.
+ **/
+ConstRegularFilePtr Load_file(
+  const Load &load,
+  const CheckValues &checkValues,
+  std::string_view filename,
+  const Arinc645::CheckValue &checkValue );
+
+/**
+ * @brief Returns file with given filename and part number.
+ *
+ * If more than one file is found with the given attributes no file is
+ * returned.
+ *
+ * @param[in] loads
+ *   Loads
+ * @param[in] filename
+ *   Filename
+ * @param[in] partNumber
+ *   Part Number
+ *
+ * @return File with filename and part number if provided.
+ * @retval {}
+ *   No file or more than on file found within data and support files.
+ **/
+ConstRegularFilePtr Loads_file(
+  const ConstLoads &loads,
+  std::string_view filename,
+  std::string_view partNumber );
+
+/**
+ * @brief Returns file with given filename and Check Value.
+ *
+ * If more than one file is found with the given attributes no file is
+ * returned.
+ *
+ * @param[in] loads
+ *   Loads
+ * @param[in] checkValues
+ *   Check Values
+ * @param[in] filename
+ *   Filename
+ * @param[in] checkValue
+ *   Check Value
+ *
+ * @return File with filename and part number if provided.
+ * @retval {}
+ *   No file or more than on file found within data and support files.
+ **/
+ConstRegularFilePtr Loads_file(
+  const ConstLoads &loads,
+  const CheckValues &checkValues,
+  std::string_view filename,
+  const Arinc645::CheckValue &checkValue );
+
+/** @} **/
 
 }
 

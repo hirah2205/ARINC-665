@@ -404,7 +404,7 @@ void MediaSetPrinter_print(
 }
 
 void MediaSetPrinter_print(
-  const CheckValues &checkValues,
+  const Media::CheckValues &checkValues,
   std::ostream &outS,
   std::string_view initialIndent,
   std::string_view indent )

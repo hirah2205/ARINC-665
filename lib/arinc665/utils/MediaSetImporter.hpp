@@ -35,7 +35,7 @@ class ARINC665_EXPORT MediaSetImporter
 {
   public:
     //! Return Type of Operation
-    using Result = std::pair< Media::MediaSetPtr, CheckValues >;
+    using Result = std::pair< Media::MediaSetPtr, Media::CheckValues >;
 
     /**
      * @brief Handler, which is called to obtain the file size.

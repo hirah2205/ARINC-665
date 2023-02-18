@@ -126,7 +126,7 @@ void ARINC665_EXPORT MediaSetPrinter_print(
  *   Indent for sub-information
  **/
 void ARINC665_EXPORT MediaSetPrinter_print(
-  const CheckValues &checkValues,
+  const Media::CheckValues &checkValues,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
   std::string_view indent = " " );
