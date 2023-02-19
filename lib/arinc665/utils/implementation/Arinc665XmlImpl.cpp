@@ -49,6 +49,30 @@ static std::string_view toStringView( const Glib::ustring &str );
  **/
 static Glib::ustring toGlibString( std::string_view str );
 
+/**
+ * @brief Returns the Common Name attribute for directories and files.
+ *
+ * @param[in] element
+ *   XML Element
+ *
+ * @return Content of the name attribute.
+ **/
+static std::string name( const xmlpp::Element &element );
+
+/**
+ * @brief Return Common Medium attribute for files
+ *
+ * @param[in] element
+ *   XML Element
+ *
+ * @return Content of the Medium attriubte.
+ * @retval {}
+ *   If Medium is not set.
+ **/
+static OptionalMediumNumber mediumNumber( const xmlpp::Element &element );
+
+static Media::FileType fileType( const xmlpp::Element &element );
+
 Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadFromXml(
   const std::filesystem::path &xmlFile )
 {
@@ -61,7 +85,8 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadFromXml(
   if ( !std::filesystem::is_regular_file( xmlFile ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "XML File does not exist" } );
+      << Helper::AdditionalInfo{ "XML File does not exist" }
+      << boost::errinfo_file_name{ xmlFile } );
   }
 
   try
@@ -106,10 +131,12 @@ void Arinc665XmlImpl::saveToXml(
 
   try
   {
+    filePathMappingV = filePathMapping;
+
     xmlpp::Document xmlDoc{};
     auto mediaSetNode{ xmlDoc.create_root_node( "MediaSet" ) };
 
-    saveMediaSet( mediaSet, filePathMapping, *mediaSetNode );
+    saveMediaSet( mediaSet, *mediaSetNode );
 
     xmlDoc.write_to_file_formatted( xmlFile.string() );
   }
@@ -126,19 +153,24 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
 {
   auto mediaSet{ std::make_shared< Media::MediaSet>() };
 
+  filePathMappingV.clear();
+  deferredLoadInfoV.clear();
+  deferredBatchInfoV.clear();
+
   // Part Number
   const auto partNumber{ mediaSetElement.get_attribute_value( "PartNumber" ) };
   if ( partNumber.empty() )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "No Part Number given" }
+      << Helper::AdditionalInfo{ "'PartNumber' attribute missing" }
       << boost::errinfo_at_line{ mediaSetElement.get_line() } );
   }
   mediaSet->partNumber( partNumber );
 
   // Media Set Check Value
   if (
-    const auto checkValue{ loadCheckValue( mediaSetElement, "MediaSetCheckValue" ) };
+    const auto checkValue{
+      loadCheckValue( mediaSetElement, "MediaSetCheckValue" ) };
     checkValue )
   {
     mediaSet->mediaSetCheckValueType( checkValue );
@@ -146,7 +178,8 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
 
   // List of Files Check Value
   if (
-    const auto checkValue{ loadCheckValue( mediaSetElement, "ListOfFilesCheckValue" ) };
+    const auto checkValue{
+      loadCheckValue( mediaSetElement, "ListOfFilesCheckValue" ) };
     checkValue )
   {
     mediaSet->listOfFilesCheckValueType( checkValue );
@@ -154,7 +187,8 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
 
   // List of Loads Check Value
   if (
-    const auto checkValue{ loadCheckValue( mediaSetElement, "ListOfLoadsCheckValue" ) };
+    const auto checkValue{
+      loadCheckValue( mediaSetElement, "ListOfLoadsCheckValue" ) };
     checkValue )
   {
     mediaSet->listOfLoadsCheckValueType( checkValue );
@@ -162,7 +196,8 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
 
   // List of Batches Check Value
   if (
-    const auto checkValue{ loadCheckValue( mediaSetElement, "ListOfBatchesCheckValue" ) };
+    const auto checkValue{
+      loadCheckValue( mediaSetElement, "ListOfBatchesCheckValue" ) };
     checkValue )
   {
     mediaSet->listOfBatchesCheckValueType( checkValue );
@@ -170,7 +205,8 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
 
   // Files Check Value
   if (
-    const auto checkValue{ loadCheckValue( mediaSetElement, "FilesCheckValue" ) };
+    const auto checkValue{
+      loadCheckValue( mediaSetElement, "FilesCheckValue" ) };
     checkValue )
   {
     mediaSet->filesCheckValueType( checkValue );
@@ -220,65 +256,25 @@ Arinc665XmlImpl::LoadXmlResult Arinc665XmlImpl::loadMediaSet(
   }
 
   // load files
-  FilePathMapping filePathMapping{};
-  loadEntries( *contentNode, *mediaSet, filePathMapping );
+  loadEntries( *contentNode, *mediaSet );
 
-  // handle Loads
-  const auto loadsNode{ mediaSetElement.get_first_child( "Loads" ) };
-
-  if ( nullptr == loadsNode )
+#if 1
+  // deferred loading of loads and batches
+  for ( const auto &[ loadElement, load ] : deferredLoadInfoV )
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Loads XML Element missing" } );
+    loadLoadDeferred( *loadElement, *load );
   }
-
-  // iterate over loads
-  auto loadNodes{ loadsNode->get_children( "Load" ) };
-
-  if ( loadNodes.empty() )
+  for ( const auto &[ batchElement, batch ] : deferredBatchInfoV )
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Load XML Elements missing" } );
+    loadBatchDeferred( *batchElement, *batch );
   }
+#endif
 
-  for ( const auto * const loadNode : loadNodes )
-  {
-    const auto loadElement{ dynamic_cast< const xmlpp::Element * >( loadNode ) };
-    if ( nullptr == loadElement )
-    {
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "Invalid Load XML Element" } );
-    }
-
-    loadLoad( *loadElement, *mediaSet );
-  }
-
-  // handle Batches (optional)
-  if (
-    const auto batchesNode{ mediaSetElement.get_first_child( "Batches" ) };
-    nullptr != batchesNode )
-  {
-    // iterate over loads
-    for ( const auto * const batchNode : batchesNode->get_children( "Batch" ) )
-    {
-      const auto batchElement{ dynamic_cast< const xmlpp::Element * >( batchNode ) };
-      if ( nullptr == batchElement )
-      {
-        BOOST_THROW_EXCEPTION(
-          Arinc665Exception()
-          << Helper::AdditionalInfo{ "Invalid Batch XML Element" } );
-      }
-
-      loadBatch( *batchElement, *mediaSet );
-    }
-  }
-
-  return std::make_tuple( std::move( mediaSet ), std::move( filePathMapping ) );
+  return std::make_tuple( std::move( mediaSet ), std::move( filePathMappingV ) );
 }
 
 void Arinc665XmlImpl::saveMediaSet(
   const Media::MediaSet &mediaSet,
-  const FilePathMapping &filePathMapping,
   xmlpp::Element &mediaSetElement )
 {
   mediaSetElement.set_attribute( "PartNumber", mediaSet.partNumber().data() );
@@ -344,33 +340,12 @@ void Arinc665XmlImpl::saveMediaSet(
 
   // Content
   auto contentNode{ mediaSetElement.add_child( "Content" ) };
-  saveEntries( mediaSet, filePathMapping, *contentNode );
-
-  // handle Loads
-  const auto loadsElement{ mediaSetElement.add_child( "Loads" ) };
-
-  // iterate over loads
-  for ( const auto &load : mediaSet.loads() )
-  {
-    const auto loadElement{ loadsElement->add_child( "Load" ) };
-    saveLoad( *load, *loadElement );
-  }
-
-  // handle Batches
-  const auto batchesElement{ mediaSetElement.add_child( "Batches" ) };
-
-  // iterate over batches
-  for ( const auto &batch : mediaSet.batches() )
-  {
-    const auto batchElement{ batchesElement->add_child( "Batch" ) };
-    saveBatch( *batch, *batchElement );
-  }
+  saveEntries( mediaSet, *contentNode );
 }
 
 void Arinc665XmlImpl::loadEntries(
   const xmlpp::Element &currentElement,
-  Media::ContainerEntity &current,
-  FilePathMapping &filePathMapping )
+  Media::ContainerEntity &current )
 {
   // Common Default Medium attribute for directories and Contents root
   if ( const auto defaultMedium{
@@ -403,103 +378,38 @@ void Arinc665XmlImpl::loadEntries(
       continue;
     }
 
-    // Common Name attribute for directories and files
-    const auto name{ entryElement->get_attribute_value( "Name" ) };
-
-    if ( name.empty() )
-    {
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "Name attribute missing or empty" }
-        << boost::errinfo_at_line{ currentElement.get_line() } );
-    }
-
     // add subdirectory and add content recursively
     if ( entryNode->get_name() == "Directory"s )
     {
-      auto directory{ current.addSubdirectory( static_cast< std::string>( name ) ) };
-
-      loadEntries( *entryElement, *directory, filePathMapping );
-
+      auto directory{ current.addSubdirectory( name( *entryElement ) ) };
+      loadEntries( *entryElement, *directory );
       continue;
     }
 
-    // File Check Value
-    const auto checkValue{ loadCheckValue( *entryElement, "CheckValue" ) };
-
-    // common medium attribute for files
-    OptionalMediumNumber mediumNumber{};
-    if (
-      const auto medium{ entryElement->get_attribute_value( "Medium" ) };
-      !medium.empty() )
+    switch ( fileType( *entryElement ) )
     {
-      const auto mediumValue{ std::stoull( medium ) };
+      using enum Arinc665::Media::FileType;
 
-      if ( !std::in_range< uint8_t >( mediumValue ) )
-      {
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{ "Invalid tMedium value" }
-          << boost::errinfo_at_line{ entryNode->get_line() } );
-      }
+      case RegularFile:
+        loadRegularFile( *entryElement, current );
+        break;
 
-      mediumNumber = MediumNumber{ static_cast< uint8_t >( mediumValue ) };
+      case LoadFile:
+        loadLoad( *entryElement, current );
+        break;
+
+      case BatchFile:
+        loadBatch( *entryElement, current );
+        break;
+
+      default:
+        break;
     }
-
-    // common source path attribute for files
-    const auto sourcePath{ entryElement->get_attribute_value( "SourcePath" ) };
-
-    if ( entryNode->get_name() == "File"s )
-    {
-      auto file{ current.addRegularFile( name, mediumNumber ) };
-
-      file->checkValueType( checkValue );
-
-      // set source path if attribute is present
-      if ( !sourcePath.empty() )
-      {
-        filePathMapping.try_emplace( file, toStringView( sourcePath ) );
-      }
-
-      continue;
-    }
-
-    if ( entryNode->get_name() == "LoadFile"s )
-    {
-      auto load{ current.addLoad( name, mediumNumber ) };
-
-      load->checkValueType( checkValue );
-
-      // set source path if attribute is present
-      if ( !sourcePath.empty() )
-      {
-        filePathMapping.try_emplace(  load, toStringView( sourcePath ) );
-      }
-
-      continue;
-    }
-
-    if ( entryNode->get_name() == "BatchFile"s )
-    {
-      auto batch{ current.addBatch( name, mediumNumber ) };
-
-      batch->checkValueType( checkValue );
-
-      // set source path if attribute is present
-      if ( !sourcePath.empty() )
-      {
-        filePathMapping.try_emplace( batch, toStringView( sourcePath ) );
-      }
-
-      continue;
-    }
-
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning )
-      << "Ignore element " << entryNode->get_name();
   }
 }
 
 void Arinc665XmlImpl::saveEntries(
   const Media::ContainerEntity &current,
-  const FilePathMapping &filePathMapping,
   xmlpp::Element &currentElement )
 {
   // set default medium if provided
@@ -518,28 +428,26 @@ void Arinc665XmlImpl::saveEntries(
 
     directoryNode->set_attribute( "Name", toGlibString( dirEntry->name() ) );
 
-    saveEntries( *dirEntry, filePathMapping, *directoryNode );
+    saveEntries( *dirEntry, *directoryNode );
   }
 
   // iterate over files within current container
   for ( const auto &fileEntry : current.files() )
   {
-    xmlpp::Element * fileNode;
-
     switch ( fileEntry->fileType() )
     {
       using enum Media::FileType;
 
       case RegularFile:
-        fileNode = currentElement.add_child( "File" );
+        saveRegularFile( fileEntry, currentElement );
         break;
 
       case LoadFile:
-        fileNode = currentElement.add_child( "LoadFile" );
+        saveLoad( fileEntry, currentElement );
         break;
 
       case BatchFile:
-        fileNode = currentElement.add_child( "BatchFile" );
+        saveBatch( fileEntry, currentElement );
         break;
 
       default:
@@ -547,60 +455,36 @@ void Arinc665XmlImpl::saveEntries(
         BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo{ "Invalid file type" } );
     }
-
-    assert( nullptr != fileNode );
-
-    // Add name attribute
-    fileNode->set_attribute( "Name", toGlibString( fileEntry->name() ) );
-
-    // Check Value Type
-    if ( const auto checkValue{ fileEntry->checkValueType() }; checkValue )
-    {
-      fileNode->set_attribute(
-        "CheckValue",
-        toGlibString(
-          Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) ) );
-    }
-
-    // Add source path attribute (optional)
-    if (
-      auto filePathIt{ filePathMapping.find( fileEntry ) };
-      filePathIt != filePathMapping.end() )
-    {
-      fileNode->set_attribute( "SourcePath", filePathIt->second.string() );
-    }
-
-    // Add medium if provided
-    if ( const auto mediumNumber{ fileEntry->mediumNumber() };
-      mediumNumber )
-    {
-      fileNode->set_attribute(
-        "Medium",
-        std::to_string( static_cast< uint8_t >( *mediumNumber )) );
-    }
   }
+}
+
+void Arinc665XmlImpl::loadRegularFile(
+  const xmlpp::Element &fileElement,
+  Media::ContainerEntity &parent )
+{
+  auto file{
+    parent.addRegularFile( name( fileElement ), mediumNumber( fileElement ) ) };
+
+  loadBaseFile( fileElement, file );
+}
+
+void Arinc665XmlImpl::saveRegularFile(
+  const Media::ConstFilePtr &file,
+  xmlpp::Element &parentElement )
+{
+  xmlpp::Element * const fileElement{ parentElement.add_child( "File" ) };
+  assert( nullptr != fileElement );
+  saveBaseFile( file, *fileElement );
 }
 
 void Arinc665XmlImpl::loadLoad(
   const xmlpp::Element &loadElement,
-  Media::MediaSet &mediaSet ) const
+  Media::ContainerEntity &current )
 {
-  const auto filePath{ loadElement.get_attribute_value( "FilePath" ) };
-  if ( filePath.empty() )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "FilePath attribute missing or empty" }
-      << boost::errinfo_at_line{ loadElement.get_line() } );
-  }
+  auto load{
+    current.addLoad( name( loadElement ), mediumNumber( loadElement ) ) };
 
-  const auto load{ mediaSet.load( std::filesystem::path{ filePath.raw(), std::locale{} } ) };
-
-  if ( !load )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "NameRef attribute does not reference load" }
-      << boost::errinfo_at_line{ loadElement.get_line() } );
-  }
+  loadBaseFile( loadElement, load );
 
   // Part Number
   auto partNumber{ loadElement.get_attribute_value( "PartNumber" ) };
@@ -677,11 +561,7 @@ void Arinc665XmlImpl::loadLoad(
 
   load->targetHardwareIdPositions( std::move( thwIds ) );
 
-  // data files
-  load->dataFiles( loadLoadFiles( loadElement, "DataFile", mediaSet ) );
-
-  // support files
-  load->supportFiles( loadLoadFiles( loadElement, "SupportFile", mediaSet ) );
+  //  handle data and support files later in defferd loading
 
   if (
     const auto userDefinedDataElement{ dynamic_cast< const xmlpp::Element*>(
@@ -703,7 +583,7 @@ void Arinc665XmlImpl::loadLoad(
     load->loadCheckValueType( checkValue );
   }
 
-  // Data Files Check Value
+  // Data Files Check Value (optional)
   if (
     const auto checkValue{ loadCheckValue( loadElement, "DataFilesCheckValue" ) };
     checkValue )
@@ -711,51 +591,83 @@ void Arinc665XmlImpl::loadLoad(
     load->dataFilesCheckValueType( checkValue );
   }
 
-  // Support Files Check Value
+  // Support Files Check Value (optional)
   if (
-    const auto checkValue{ loadCheckValue( loadElement, "SupportFilesCheckValue" ) };
+    const auto checkValue{
+      loadCheckValue( loadElement, "SupportFilesCheckValue" ) };
     checkValue )
   {
     load->supportFilesCheckValueType( checkValue );
   }
+
+  // add load to deferred load list
+  deferredLoadInfoV.emplace_back( &loadElement, load );
+}
+
+void Arinc665XmlImpl::loadLoadDeferred(
+  const xmlpp::Element &loadElement,
+  Media::Load &load )
+{
+  const auto &mediaSet{ *load.mediaSet() };
+
+  // data files
+  load.dataFiles( loadLoadFiles( loadElement, "DataFile", mediaSet ) );
+
+  // support files
+  load.supportFiles( loadLoadFiles( loadElement, "SupportFile", mediaSet ) );
 }
 
 void Arinc665XmlImpl::saveLoad(
-  const Media::Load &load,
-  xmlpp::Element &loadElement ) const
+  const Media::ConstFilePtr &file,
+  xmlpp::Element &parentElement ) const
 {
-  loadElement.set_attribute( "FilePath", load.path().string() );
+  xmlpp::Element * const loadElement{ parentElement.add_child( "Load" ) };
+  assert( nullptr != loadElement );
+  saveBaseFile( file, *loadElement );
 
-  loadElement.set_attribute( "PartNumber", load.partNumber().data() );
+  const auto load{ std::dynamic_pointer_cast< const Media::Load >( file ) };
+  assert( load );
 
-  loadElement.set_attribute(
+  loadElement->set_attribute( "PartNumber", load->partNumber().data() );
+
+  loadElement->set_attribute(
     "PartFlags",
-    fmt::format( "0x{:04X}", load.partFlags() ) );
+    fmt::format( "0x{:04X}", load->partFlags() ) );
 
   // Optional Load Type (Description + Type Value)
-  if ( const auto &loadType{ load.loadType() }; loadType )
+  if ( const auto &loadType{ load->loadType() }; loadType )
   {
     const auto &[ description, id ]{ *loadType };
-    loadElement.set_attribute( "Description", description );
-    loadElement.set_attribute(
+    loadElement->set_attribute( "Description", description );
+    loadElement->set_attribute(
       "Type",
       fmt::format( "0x{:04X}", id ) );
   }
 
   // Load Check Value
-  saveCheckValue( loadElement, "LoadCheckValue", load.loadCheckValueType() );
+  saveCheckValue(
+    *loadElement,
+    "LoadCheckValue",
+    load->loadCheckValueType() );
 
   // Data Files Check Value
-  saveCheckValue( loadElement, "DataFilesCheckValue", load.dataFilesCheckValueType() );
+  saveCheckValue(
+    *loadElement,
+    "DataFilesCheckValue",
+    load->dataFilesCheckValueType() );
 
   // Support Files Check Value
-  saveCheckValue( loadElement, "SupportFilesCheckValue", load.supportFilesCheckValueType() );
+  saveCheckValue(
+    *loadElement,
+    "SupportFilesCheckValue",
+    load->supportFilesCheckValueType() );
 
   // iterate over target hardware
   for ( const auto &[ targetHardwareId, positions ] :
-    load.targetHardwareIdPositions() )
+    load->targetHardwareIdPositions() )
   {
-    auto * const targetHardwareElement{ loadElement.add_child( "TargetHardware" ) };
+    auto * const targetHardwareElement{
+      loadElement->add_child( "TargetHardware" ) };
     targetHardwareElement->set_attribute( "ThwId", targetHardwareId );
 
     for( const auto &position : positions )
@@ -766,16 +678,16 @@ void Arinc665XmlImpl::saveLoad(
   }
 
   // data files
-  saveLoadFiles( load.dataFiles(), "DataFile", loadElement );
+  saveLoadFiles( load->dataFiles(), "DataFile", *loadElement );
 
   // support files
-  saveLoadFiles( load.supportFiles(), "SupportFile", loadElement );
+  saveLoadFiles( load->supportFiles(), "SupportFile", *loadElement );
 
   if (
-    const auto &userDefinedData{ load.userDefinedData() };
+    const auto &userDefinedData{ load->userDefinedData() };
     !userDefinedData.empty() )
   {
-    loadElement.add_child( "UserDefinedData" )->add_child_text(
+    loadElement->add_child( "UserDefinedData" )->add_child_text(
       std::string{ userDefinedData.begin(), userDefinedData.end() } );
   }
 }
@@ -788,7 +700,8 @@ Media::ConstLoadFiles Arinc665XmlImpl::loadLoadFiles(
   Media::ConstLoadFiles loadFiles{};
 
   // iterate over files
-  for ( auto fileNode : loadElement.get_children( toGlibString( fileElementName ) ) )
+  for ( auto fileNode :
+    loadElement.get_children( toGlibString( fileElementName ) ) )
   {
     auto fileElement{ dynamic_cast< xmlpp::Element*>( fileNode ) };
 
@@ -804,7 +717,7 @@ Media::ConstLoadFiles Arinc665XmlImpl::loadLoadFiles(
     if ( filePath.empty() )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "FilePath attribute missing or empty" }
+        << Helper::AdditionalInfo{ "'FilePath' attribute missing or empty" }
         << boost::errinfo_at_line{ fileNode->get_line() } );
     }
 
@@ -813,7 +726,7 @@ Media::ConstLoadFiles Arinc665XmlImpl::loadLoadFiles(
     if ( filePartNumber.empty() )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "PartNumber attribute missing or empty" }
+        << Helper::AdditionalInfo{ "'PartNumber' attribute missing or empty" }
         << boost::errinfo_at_line{ fileNode->get_line() } );
     }
 
@@ -827,7 +740,7 @@ Media::ConstLoadFiles Arinc665XmlImpl::loadLoadFiles(
     if ( !file )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "FilePath attribute does not reference file" }
+        << Helper::AdditionalInfo{ "'FilePath' attribute does not reference file" }
         << boost::errinfo_at_line{ fileNode->get_line() } );
     }
 
@@ -864,15 +777,12 @@ void Arinc665XmlImpl::saveLoadFiles(
 
 void Arinc665XmlImpl::loadBatch(
   const xmlpp::Element &batchElement,
-  Media::MediaSet &mediaSet ) const
+  Media::ContainerEntity &current )
 {
-  const auto filePath{ batchElement.get_attribute_value( "FilePath" ) };
-  if ( filePath.empty() )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "FilePath attribute missing or empty" }
-      << boost::errinfo_at_line{ batchElement.get_line() } );
-  }
+  auto batch{
+    current.addBatch( name( batchElement ), mediumNumber( batchElement ) ) };
+
+  loadBaseFile( batchElement, batch );
 
   auto partNumber{ batchElement.get_attribute_value( "PartNumber" ) };
   if ( partNumber.empty() )
@@ -881,22 +791,21 @@ void Arinc665XmlImpl::loadBatch(
       << Helper::AdditionalInfo{ "PartNumber attribute missing or empty" }
       << boost::errinfo_at_line{ batchElement.get_line() } );
   }
+  batch->partNumber( std::move( partNumber ) );
 
   auto comment{ batchElement.get_attribute_value( "Comment" ) };
-
-  auto batch{
-    mediaSet.batch( std::filesystem::path{ filePath.raw(), std::locale{} } ) };
-
-  if ( !batch )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo( "FilePath attribute does not reference batch" )
-      << boost::errinfo_at_line{ batchElement.get_line() } );
-  }
-
-  batch->partNumber( std::move( partNumber ) );
   batch->comment( std::move( comment ) );
 
+  // handle batch load file handling in deferred batch loading
+
+  // add load to deferred load list
+  deferredBatchInfoV.emplace_back( &batchElement, batch );
+}
+
+void Arinc665XmlImpl::loadBatchDeferred(
+  const xmlpp::Element &batchElement,
+  Media::Batch &batch )
+{
   // iterate over targets
   for ( auto targetNode : batchElement.get_children( "Target" ) )
   {
@@ -932,7 +841,7 @@ void Arinc665XmlImpl::loadBatch(
           << boost::errinfo_at_line{ loadElement->get_line() } );
       }
 
-      auto load{ mediaSet.load(
+      auto load{ batch.mediaSet()->load(
         std::filesystem::path{ loadFilePath.raw(), std::locale{} } ) };
 
       if ( !load )
@@ -946,28 +855,33 @@ void Arinc665XmlImpl::loadBatch(
     }
 
     // add THW ID POS with Loads
-    batch->target( thwIdPos, targetLoads );
+    batch.target( thwIdPos, targetLoads );
   }
 }
 
 void Arinc665XmlImpl::saveBatch(
-  const Media::Batch &batch,
-  xmlpp::Element &batchElement ) const
+  const Media::ConstFilePtr &file,
+  xmlpp::Element &parentElement ) const
 {
-  batchElement.set_attribute( "FilePath", batch.path().string() );
+  xmlpp::Element * const batchElement{ parentElement.add_child( "Batch" ) };
+  assert( nullptr != batchElement );
+  saveBaseFile( file, *batchElement );
 
-  batchElement.set_attribute( "PartNumber", batch.partNumber().data() );
+  const auto batch{ std::dynamic_pointer_cast< const Media::Batch >( file ) };
+  assert( batch );
+
+  batchElement->set_attribute( "PartNumber", batch->partNumber().data() );
 
   // set optional comment
-  if ( const auto comment{ batch.comment() }; !comment.empty() )
+  if ( const auto comment{ batch->comment() }; !comment.empty() )
   {
-    batchElement.set_attribute( "Comment", comment.data() );
+    batchElement->set_attribute( "Comment", comment.data() );
   }
 
   // Iterate over batch information
-  for ( const auto &[ thwIdPos, loads ] : batch.targets() )
+  for ( const auto &[ thwIdPos, loads ] : batch->targets() )
   {
-    auto targetElement{ batchElement.add_child( "Target" ) };
+    auto targetElement{ batchElement->add_child( "Target" ) };
 
     targetElement->set_attribute( "ThwIdPos", thwIdPos );
 
@@ -978,6 +892,59 @@ void Arinc665XmlImpl::saveBatch(
 
       loadNode->set_attribute( "FilePath", load->path().string() );
     }
+  }
+}
+
+void Arinc665XmlImpl::loadBaseFile(
+  const xmlpp::Element &fileElement,
+  const Media::FilePtr &file )
+{
+  // File Check Value
+  const auto checkValue{ loadCheckValue( fileElement, "CheckValue" ) };
+
+  file->checkValueType( checkValue );
+
+  // common source path attribute for files
+  const auto sourcePath{ fileElement.get_attribute_value( "SourcePath" ) };
+
+  // set source path if attribute is present
+  if ( !sourcePath.empty() )
+  {
+    filePathMappingV.try_emplace( file, toStringView( sourcePath ) );
+  }
+}
+
+void Arinc665XmlImpl::saveBaseFile(
+  const Media::ConstFilePtr &file,
+  xmlpp::Element &fileElement ) const
+{
+  // Add name attribute
+  fileElement.set_attribute( "Name", toGlibString( file->name() ) );
+
+  // Check Value Type
+  if ( const auto checkValue{ file->checkValueType() }; checkValue )
+  {
+    fileElement.set_attribute(
+      "CheckValue",
+      toGlibString(
+        Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) ) );
+  }
+
+  // Add source path attribute (optional)
+  if (
+    auto filePathIt{ filePathMappingV.find( file ) };
+    filePathIt != filePathMappingV.end() )
+  {
+    fileElement.set_attribute( "SourcePath", filePathIt->second.string() );
+  }
+
+  // Add medium if provided
+  if ( const auto mediumNumber{ file->mediumNumber() };
+       mediumNumber )
+  {
+    fileElement.set_attribute(
+      "Medium",
+      std::to_string( static_cast< uint8_t >( *mediumNumber )) );
   }
 }
 
@@ -1029,6 +996,66 @@ static std::string_view toStringView( const Glib::ustring &str )
 static Glib::ustring toGlibString( std::string_view str )
 {
   return Glib::ustring{ str.data(), str.size() };
+}
+
+static std::string name( const xmlpp::Element &element )
+{
+  const auto name{ element.get_attribute_value( "Name" ) };
+
+  if ( name.empty() )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "'Name' attribute missing or empty" }
+      << boost::errinfo_at_line{ element.get_line() } );
+  }
+
+  return name;
+}
+
+static OptionalMediumNumber mediumNumber( const xmlpp::Element &element )
+{
+  if (
+    const auto medium{ element.get_attribute_value( "Medium" ) };
+    !medium.empty() )
+  {
+    const auto mediumValue{ std::stoull( medium ) };
+
+    if ( !std::in_range< uint8_t >( mediumValue ) )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ "Invalid 'Medium' attribute value" }
+        << boost::errinfo_at_line{ element.get_line() } );
+    }
+
+    return MediumNumber{ static_cast< uint8_t >( mediumValue ) };
+  }
+
+  return {};
+}
+
+static Media::FileType fileType( const xmlpp::Element &element )
+{
+  using namespace std::string_literals;
+
+  if ( element.get_name() == "File"s )
+  {
+    return Media::FileType::RegularFile;
+  }
+
+  if ( element.get_name() == "Load"s )
+  {
+    return Media::FileType::LoadFile;
+  }
+
+  if ( element.get_name() == "Batch"s )
+  {
+    return Media::FileType::BatchFile;
+  }
+
+  BOOST_THROW_EXCEPTION( Arinc665Exception()
+    << Helper::AdditionalInfo{ "Invalid XML Element" }
+    << boost::errinfo_at_line{ element.get_line() }
+    << boost::errinfo_type_info_name{ element.get_name() } );
 }
 
 }

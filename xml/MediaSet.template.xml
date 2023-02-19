@@ -13,17 +13,7 @@
 
   <Content>
     <File Name="File1" SourcePath="File1" />
-    <LoadFile Name="Load1.LUH" />
-    <LoadFile Name="Load2.LUH" />
-    <Directory Name="Directory1" >
-      <File Name="File2" SourcePath="File2" />
-    </Directory>
-    <File Name="Readme.txt" SourcePath="Readme.txt" />
-    <BatchFile Name="Batch1.LUB" />
-  </Content>
-
-  <Loads>
-    <Load FilePath="/Load1.LUH" PartNumber="AABBCC" PartFlags="0x0000" Description="Test Load Description" Type="0x0501" LoadCheckValue="Crc64" >
+    <Load Name="Load1.LUH" PartNumber="AABBCC" PartFlags="0x0000" Description="Test Load Description" Type="0x0501" LoadCheckValue="Crc64" >
       <TargetHardware ThwId="ABCDEF" >
         <Position Pos="123" />
         <Position Pos="456" />
@@ -35,21 +25,22 @@
 
       <UserDefinedData>TEST</UserDefinedData>
     </Load>
-    <Load FilePath="/Load2.LUH" PartNumber="AABBDD" PartFlags="0x0000" >
+    <Load Name="Load2.LUH" PartNumber="AABBDD" PartFlags="0x0000" >
       <TargetHardware ThwId="ABCDEF" />
       <TargetHardware ThwId="GHIJKL" />
 
       <DataFile    FilePath="/File1" PartNumber="AABBCC1" />
       <SupportFile FilePath="/Directory1/File2" PartNumber="AABBCC2" />
     </Load>
-  </Loads>
-
-  <Batches>
-    <Batch FilePath="/Batch1.LUB" PartNumber="AABBEE" Comment="Comment Text" >
+    <Directory Name="Directory1" >
+      <File Name="File2" SourcePath="File2" />
+    </Directory>
+    <File Name="Readme.txt" SourcePath="Readme.txt" />
+    <Batch Name="Batch1.LUB" PartNumber="AABBEE" Comment="Comment Text" >
       <Target ThwIdPos="ABCDEF_123" >
         <Load FilePath="/Load1.LUH" />
         <Load FilePath="/Load2.LUH" />
       </Target>
     </Batch>
-  </Batches>
+  </Content>
 </MediaSet>

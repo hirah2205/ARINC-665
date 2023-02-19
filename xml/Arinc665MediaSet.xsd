@@ -38,12 +38,6 @@
 
   <element name="Content"   type="ams:ContentType" />
 
-  <element name="Loads"    type="ams:LoadsType" />
-  <element name="Load"     type="ams:LoadType" />
-
-  <element name="Batches"  type="ams:BatchesType" />
-  <element name="Batch"    type="ams:BatchType" />
-
   <complexType name="MediaSetType" >
     <annotation><documentation>
       Media Set
@@ -54,8 +48,6 @@
       <element name="BatchesUserDefinedData" type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
 
       <element ref="ams:Content" minOccurs="1" maxOccurs="1" />
-      <element ref="ams:Loads"   minOccurs="1" maxOccurs="1" />
-      <element ref="ams:Batches" minOccurs="0" maxOccurs="1" />
     </sequence>
     <attribute name="PartNumber"              type="ams:PartNumberType" use="required" />
     <attribute name="MediaSetCheckValue"      type="ams:CheckValueType" use="optional" />
@@ -90,40 +82,47 @@
       Regular Data File.
     </documentation></annotation>
     <complexContent>
-      <restriction base="ams:FileType" >
-        <attribute name="Name"       type="ams:FilenameType"   use="required" />
-        <attribute name="CheckValue" type="ams:CheckValueType" use="optional" />
-        <attribute name="SourcePath" type="string"             use="optional" />
-        <attribute name="Medium"     type="ams:MediumType"     use="optional"  />
-      </restriction>
+      <extension base="ams:FileType" />
     </complexContent>
   </complexType>
 
-  <complexType name="LoadFileType" >
+  <complexType name="LoadType" >
     <annotation><documentation>
-      Load Header File
+      Load Header File and Load description
     </documentation></annotation>
     <complexContent>
-      <restriction base="ams:FileType" >
-        <attribute name="Name"       type="ams:FilenameType"   use="required" />
-        <attribute name="CheckValue" type="ams:CheckValueType" use="optional" />
-        <attribute name="SourcePath" type="string"             use="optional" />
-        <attribute name="Medium"     type="ams:MediumType"     use="optional" />
-      </restriction>
+      <extension base="ams:FileType" >
+        <sequence>
+          <element name="TargetHardware"  type="ams:TargetHardwareType"  minOccurs="1" maxOccurs="unbounded" />
+          <element name="DataFile"        type="ams:FileReferenceType"   minOccurs="1" maxOccurs="unbounded" />
+          <element name="SupportFile"     type="ams:FileReferenceType"   minOccurs="0" maxOccurs="unbounded" />
+          <element name="UserDefinedData" type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
+        </sequence>
+
+        <attribute name="PartNumber"  type="ams:PartNumberType" use="required" />
+        <attribute name="PartFlags"   type="ams:HexValueType"   use="optional" default="0x0000" />
+        <attribute name="Description" type="ams:StringType"     use="optional" />
+        <attribute name="Type"        type="ams:HexValueType"   use="optional" default="0x0000" />
+        <attribute name="LoadCheckValue"         type="ams:CheckValueType" use="optional" />
+        <attribute name="DataFilesCheckValue"    type="ams:CheckValueType" use="optional" />
+        <attribute name="SupportFilesCheckValue" type="ams:CheckValueType" use="optional" />
+      </extension>
     </complexContent>
   </complexType>
 
-  <complexType name="BatchFileType" >
+  <complexType name="BatchType" >
     <annotation><documentation>
-      Batch File
+      Batch File and Batch description
     </documentation></annotation>
     <complexContent>
-      <restriction base="ams:FileType" >
-        <attribute name="Name"       type="ams:FilenameType"   use="required" />
-        <attribute name="CheckValue" type="ams:CheckValueType" use="optional" />
-        <attribute name="SourcePath" type="string"             use="optional" />
-        <attribute name="Medium"     type="ams:MediumType"     use="optional" />
-      </restriction>
+      <extension base="ams:FileType" >
+        <sequence>
+          <element name="Target" type="ams:BatchTargetType" minOccurs="1" maxOccurs="unbounded" />
+        </sequence>
+
+        <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
+        <attribute name="Comment"    type="ams:StringType"     use="optional" />
+      </extension>
     </complexContent>
   </complexType>
 
@@ -136,35 +135,6 @@
     </sequence>
     <attribute name="Name"          type="ams:FilenameType" use="required" />
     <attribute name="DefaultMedium" type="ams:MediumType"   use="optional" />
-  </complexType>
-
-  <complexType name="LoadsType" >
-    <annotation><documentation>
-      Loads Definition (all contained Loads)
-    </documentation></annotation>
-    <sequence>
-      <element ref="ams:Load" minOccurs="0" maxOccurs="unbounded" />
-    </sequence>
-  </complexType>
-
-  <complexType name="LoadType" >
-    <annotation><documentation>
-      Load Definition
-    </documentation></annotation>
-    <sequence>
-      <element name="TargetHardware"  type="ams:TargetHardwareType"  minOccurs="1" maxOccurs="unbounded" />
-      <element name="DataFile"        type="ams:FileReferenceType"   minOccurs="1" maxOccurs="unbounded" />
-      <element name="SupportFile"     type="ams:FileReferenceType"   minOccurs="0" maxOccurs="unbounded" />
-      <element name="UserDefinedData" type="ams:UserDefinedDataType" minOccurs="0" maxOccurs="1" />
-    </sequence>
-    <attribute name="FilePath"    type="ams:FilePathType"   use="required" />
-    <attribute name="PartNumber"  type="ams:PartNumberType" use="required" />
-    <attribute name="PartFlags"   type="ams:HexValueType"   use="optional" default="0x0000" />
-    <attribute name="Description" type="ams:StringType"     use="optional" />
-    <attribute name="Type"        type="ams:HexValueType"   use="optional" default="0x0000" />
-    <attribute name="LoadCheckValue"         type="ams:CheckValueType" use="optional" />
-    <attribute name="DataFilesCheckValue"    type="ams:CheckValueType" use="optional" />
-    <attribute name="SupportFilesCheckValue" type="ams:CheckValueType" use="optional" />
   </complexType>
 
   <complexType name="TargetHardwareType" >
@@ -191,28 +161,6 @@
     <attribute name="FilePath"   type="ams:FilePathType"   use="required" />
     <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
     <attribute name="CheckValue" type="ams:CheckValueType" use="optional" />
-  </complexType>
-
-
-  <complexType name="BatchesType" >
-    <annotation><documentation>
-      Batches Definition
-    </documentation></annotation>
-    <sequence>
-      <element ref="ams:Batch" minOccurs="0" maxOccurs="unbounded" />
-    </sequence>
-  </complexType>
-
-  <complexType name="BatchType" >
-    <annotation><documentation>
-      Batch Definition
-    </documentation></annotation>
-    <sequence>
-      <element name="Target" type="ams:BatchTargetType" minOccurs="1" maxOccurs="unbounded" />
-    </sequence>
-    <attribute name="FilePath"   type="ams:FilePathType"   use="required" />
-    <attribute name="PartNumber" type="ams:PartNumberType" use="required" />
-    <attribute name="Comment"    type="ams:StringType"     use="optional" />
   </complexType>
 
   <complexType name="BatchTargetType" >
@@ -345,8 +293,8 @@
     <choice>
       <element name="Directory" type="ams:DirectoryType" />
       <element name="File"      type="ams:RegularFileType" />
-      <element name="LoadFile"  type="ams:LoadFileType" />
-      <element name="BatchFile" type="ams:BatchFileType" />
+      <element name="Load"      type="ams:LoadType" />
+      <element name="Batch"     type="ams:BatchType" />
     </choice>
   </group>
 </schema>
