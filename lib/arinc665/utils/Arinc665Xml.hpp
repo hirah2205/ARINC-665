@@ -22,7 +22,7 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief ARINC 665 %Media Set XML Representation Handling.
+ * @name ARINC 665 %Media Set XML Representation Handling.
  *
  * Handles the representation of Media Sets as XML file.
  *
@@ -31,60 +31,46 @@ namespace Arinc665::Utils {
  *
  * Tools can use this representation to "decompile" binary media sets to this
  * representation and "compile" the XML representation to a binary media set.
+ *
+ * @{
  **/
-class ARINC665_EXPORT Arinc665Xml
-{
-  public:
-    //! File (Source) Path Mapping (File to path)
-    using FilePathMapping =
-      std::map< Media::ConstFilePtr, std::filesystem::path >;
-    //! Load XML Result (Media Set Pointer and corresponding File Path Mapping)
-    using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping >;
 
-    /**
-     * @brief Creates an ARINC 665 XML handler instance.
-     *
-     * @return Created ARINC 665 XML handler instance.
-     **/
-    [[nodiscard]] static Arinc665XmlPtr instance();
+//! File (Source) Path Mapping (File to path)
+using FilePathMapping = std::map< Media::ConstFilePtr, std::filesystem::path >;
+//! Load XML Result (Media Set Pointer and corresponding File Path Mapping)
+using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping >;
 
-    /**
-     * @brief Loads the Media Set information from the given XML file.
-     *
-     * @param[in] xmlFile
-     *   ARINC 665 XML file.
-     *
-     * @return The loaded Media Set information.
-     *
-     * @throw Arinc665Exception
-     *   If file cannot be loaded or is invalid.
-     **/
-    [[nodiscard]] virtual LoadXmlResult loadFromXml(
-      const std::filesystem::path &xmlFile ) = 0;
+/**
+ * @brief Loads the Media Set information from the given XML file.
+ *
+ * @param[in] xmlFile
+ *   ARINC 665 XML file.
+ *
+ * @return Load Media Set information.
+ *
+ * @throw Arinc665Exception
+ *   If file cannot be loaded or is invalid.
+ **/
+[[nodiscard]] ARINC665_EXPORT LoadXmlResult Arinc665Xml_load(
+  const std::filesystem::path &xmlFile );
 
-    /**
-     * @brief Saves the given Media Set information to the given XML file.
-     *
-     * @param[in] mediaSet
-     *   Media Set Information.
-     * @param[in] filePathMapping
-     *   File Path Mapping.
-     *   Used to insert the correct source path attribute.
-     * @param[in] xmlFile
-     *   ARINC 665 XML file.
-     **/
-    virtual void saveToXml(
-      const Media::MediaSet &mediaSet,
-      const FilePathMapping &filePathMapping,
-      const std::filesystem::path &xmlFile ) = 0;
+/**
+ * @brief Saves the given Media Set information to the given XML file.
+ *
+ * @param[in] mediaSet
+ *   Media Set Information.
+ * @param[in] filePathMapping
+ *   File Path Mapping.
+ *   Used to insert the correct source path attribute.
+ * @param[in] xmlFile
+ *   ARINC 665 XML file.
+ **/
+ARINC665_EXPORT void Arinc665Xml_save(
+  const Media::MediaSet &mediaSet,
+  const FilePathMapping &filePathMapping,
+  const std::filesystem::path &xmlFile );
 
-    //! Destructor
-    virtual ~Arinc665Xml() = default;
-
-  protected:
-    //! Constructor
-    Arinc665Xml() = default;
-};
+/** @} **/
 
 }
 

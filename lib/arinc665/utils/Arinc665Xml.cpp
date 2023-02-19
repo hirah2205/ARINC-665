@@ -12,13 +12,23 @@
 
 #include "Arinc665Xml.hpp"
 
-#include <arinc665/utils/implementation/Arinc665XmlImpl.hpp>
+#include <arinc665/utils/implementation/Arinc665XmlLoadImpl.hpp>
+#include <arinc665/utils/implementation/Arinc665XmlSaveImpl.hpp>
 
 namespace Arinc665::Utils {
 
-Arinc665XmlPtr Arinc665Xml::instance()
+LoadXmlResult Arinc665Xml_load( const std::filesystem::path &xmlFile )
 {
-  return std::make_unique< Arinc665XmlImpl >();
+  Arinc665XmlLoadImpl load{ xmlFile };
+  return load();
+}
+void Arinc665Xml_save(
+  const Media::MediaSet &mediaSet,
+  const FilePathMapping &filePathMapping,
+  const std::filesystem::path &xmlFile )
+{
+  Arinc665XmlSaveImpl save{ mediaSet, filePathMapping, xmlFile };
+  save();
 }
 
 }

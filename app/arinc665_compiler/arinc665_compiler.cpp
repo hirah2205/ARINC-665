@@ -94,7 +94,7 @@ static void createDirectory(
  **/
 static bool checkFileExistence(
   const std::filesystem::path &sourceBase,
-  const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
+  const Arinc665::Utils::FilePathMapping &filePathMapping,
   const Arinc665::Media::ConstFilePtr &file );
 
 /**
@@ -106,7 +106,7 @@ static bool checkFileExistence(
 static void createFile(
   const std::filesystem::path &sourceBase,
   const std::filesystem::path &mediaSetBase,
-  const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
+  const Arinc665::Utils::FilePathMapping &filePathMapping,
   const Arinc665::Media::ConstFilePtr &file );
 
 /**
@@ -242,11 +242,9 @@ int main( int argc, char * argv[] )
 
     boost::program_options::notify( vm );
 
-    // ARINC 665 XML instance
-    auto xml{ Arinc665::Utils::Arinc665Xml::instance() };
-
-    // load XML file
-    auto [ mediaSet, fileMapping ] = xml->loadFromXml( mediaSetXmlFile );
+    // load ARINC 665 XML file
+    auto [ mediaSet, fileMapping ] =
+      Arinc665::Utils::Arinc665Xml_load( mediaSetXmlFile );
 
     // Add Media Set Part Number to Output Path
     mediaSetDestinationDirectory /= mediaSet->partNumber();
@@ -368,7 +366,7 @@ static void createDirectory(
 
 static bool checkFileExistence(
   const std::filesystem::path &sourceBase,
-  const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
+  const Arinc665::Utils::FilePathMapping &filePathMapping,
   const Arinc665::Media::ConstFilePtr &file )
 {
   BOOST_LOG_FUNCTION()
@@ -390,7 +388,7 @@ static bool checkFileExistence(
 static void createFile(
   const std::filesystem::path &sourceBase,
   const std::filesystem::path &mediaSetBase,
-  const Arinc665::Utils::Arinc665Xml::FilePathMapping &filePathMapping,
+  const Arinc665::Utils::FilePathMapping &filePathMapping,
   const Arinc665::Media::ConstFilePtr &file )
 {
   BOOST_LOG_FUNCTION()

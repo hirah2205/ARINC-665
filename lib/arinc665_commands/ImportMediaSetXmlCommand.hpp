@@ -143,7 +143,7 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetXmlCommand
     //! Media Set Output Paths
     Arinc665::Utils::MediaSetManagerConfiguration::MediaSetPaths mediaSetPaths;
     //! Load XML Results
-    Arinc665::Utils::Arinc665Xml::LoadXmlResult loadXmlResult;
+    Arinc665::Utils::LoadXmlResult loadXmlResult;
 };
 
 }

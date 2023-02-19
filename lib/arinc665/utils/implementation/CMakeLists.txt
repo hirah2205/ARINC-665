@@ -10,8 +10,10 @@ target_sources(
   arinc665
 
   PRIVATE
-    Arinc665XmlImpl.hpp
-    Arinc665XmlImpl.cpp
+    Arinc665XmlLoadImpl.hpp
+    Arinc665XmlLoadImpl.cpp
+    Arinc665XmlSaveImpl.hpp
+    Arinc665XmlSaveImpl.cpp
     JsonMediaSetManagerImpl.hpp
     JsonMediaSetManagerImpl.cpp
     MediaSetExporterImpl.hpp

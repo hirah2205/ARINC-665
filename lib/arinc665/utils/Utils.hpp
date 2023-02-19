@@ -24,10 +24,13 @@
 
 #include <arinc665/files/Files.hpp>
 
+#include <arinc645/Arinc645.hpp>
+
 #include <memory>
 #include <optional>
 #include <filesystem>
 #include <map>
+#include <set>
 
 /**
  * @brief ARINC 665 Utilities.
@@ -52,10 +55,6 @@ enum class FileCreationPolicy
   Invalid
 };
 
-class Arinc665Xml;
-//! ARINC 665 XML Instance Pointer.
-using Arinc665XmlPtr = std::unique_ptr< Arinc665Xml>;
-
 class MediaSetExporter;
 //! ARINC 665 Media Set Exporter Instance Pointer.
 using MediaSetExporterPtr = std::unique_ptr< MediaSetExporter >;
@@ -77,6 +76,10 @@ class JsonMediaSetManager;
 //! ARINC 665 JSON Media Set Manager Instance Pointer
 using JsonMediaSetManagerPtr = std::shared_ptr< JsonMediaSetManager >;
 
+//! Check Values of Media Set Files
+using CheckValues =
+  std::map< Media::ConstFilePtr, std::set< Arinc645::CheckValue >, std::less< > >;
+
 /**
  * @brief Tries to decode the given directory as ARINC 665 Medium.
  *
@@ -90,8 +93,8 @@ using JsonMediaSetManagerPtr = std::shared_ptr< JsonMediaSetManager >;
  * @retval {}
  *   If @p directory is not a valid directory or ARINC 665 Medium
  **/
-ARINC665_EXPORT std::optional< Files::MediaSetInformation >
-getMediumInformation( const std::filesystem::path &directory );
+ARINC665_EXPORT std::optional< Files::MediaSetInformation > getMediumInformation(
+  const std::filesystem::path &directory );
 
 }
 

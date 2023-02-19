@@ -85,11 +85,9 @@ int main( int argc, char * argv[] )
 
     std::cout << "List XML" << "\n";
 
-    // ARINC 665 XML instance
-    auto xml{ Arinc665::Utils::Arinc665Xml::instance() };
-
-    // load XML file
-    const auto [ mediaSet, filePathMapping ]{ xml->loadFromXml( xmlPath ) };
+    // load ARINC 665 XML file
+    const auto [ mediaSet, filePathMapping ]{
+      Arinc665::Utils::Arinc665Xml_load( xmlPath ) };
 
     Arinc665::Utils::MediaSetPrinter_print( *mediaSet, std::cout, "  ", "  " );
   }

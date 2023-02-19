@@ -158,7 +158,7 @@ int main( int argc, char const * argv[] )
     // perform import
     const auto &[ mediaSet, checkValues ]{ (*importer)() };
 
-    Arinc665::Utils::Arinc665Xml::FilePathMapping fileMapping{};
+    Arinc665::Utils::FilePathMapping fileMapping{};
 
     // iterate over all files to add file-mapping
     for ( const auto &file : mediaSet->recursiveFiles() )
@@ -170,11 +170,11 @@ int main( int argc, char const * argv[] )
       fileMapping.try_emplace( file, filePath );
     }
 
-    // XML exporter
-    const auto xml{ Arinc665::Utils::Arinc665Xml::instance() };
-
-    // export the XML file
-    xml->saveToXml( *mediaSet, fileMapping, mediaSetXmlFile );
+    // export to ARINC 665 XML file
+    Arinc665::Utils::Arinc665Xml_save(
+      *mediaSet,
+      fileMapping,
+      mediaSetXmlFile );
   }
   catch ( const boost::program_options::error &e )
   {

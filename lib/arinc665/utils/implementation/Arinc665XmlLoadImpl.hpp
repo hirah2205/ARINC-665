@@ -7,11 +7,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Utils::Arinc665XmlImpl.
+ * @brief Declaration of Class Arinc665::Utils::Arinc665XmlLoadImpl.
  **/
 
-#ifndef ARINC665_UTILS_ARINC665XMLIMPL_HPP
-#define ARINC665_UTILS_ARINC665XMLIMPL_HPP
+#ifndef ARINC665_UTILS_ARINC665XMLLOADIMPL_HPP
+#define ARINC665_UTILS_ARINC665XMLLOADIMPL_HPP
 
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
@@ -23,22 +23,21 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief Handles the representation of Media Sets as XML file.
+ * @brief ARINC 665 Media Sets XML File Importer.
  **/
-class Arinc665XmlImpl final : public Arinc665Xml
+class Arinc665XmlLoadImpl final
 {
   public:
-    //! Constructor
-    Arinc665XmlImpl() = default;
-
-    //! Destructor
-    ~Arinc665XmlImpl() override = default;
-
     /**
-     * @brief Loads the Media Set information from the given XML file.
+     * @brief Constructs the ARINC 665 Importer
      *
      * @param[in] xmlFile
      *   ARINC 665 XML file.
+     **/
+    Arinc665XmlLoadImpl( const std::filesystem::path &xmlFile ) noexcept;
+
+    /**
+     * @brief Loads the Media Set information from the given XML file.
      *
      * @return Loaded Media Set information.
      *
@@ -47,27 +46,7 @@ class Arinc665XmlImpl final : public Arinc665Xml
      * @throw Arinc665::Arinc665Exception
      *   When Loading of XML fails.
      **/
-    [[nodiscard]] LoadXmlResult loadFromXml(
-      const std::filesystem::path &xmlFile ) override;
-
-    /**
-     * @brief Saves the given Media Set information to the given XML file.
-     *
-     * @param[in] mediaSet
-     *   Media Set Information.
-     * @param[in] filePathMapping
-     *   File Path Mapping
-     *   (used to insert the correct source path attribute.)
-     * @param[in] xmlFile
-     *   ARINC 665 XML file.
-     *
-     * @throw Arinc665Exception
-     *   When XML file cannot be written.
-     **/
-    void saveToXml(
-      const Media::MediaSet &mediaSet,
-      const FilePathMapping &filePathMapping,
-      const std::filesystem::path &xmlFile ) override;
+    [[nodiscard]] LoadXmlResult operator()();
 
   private:
     /**
@@ -75,22 +54,8 @@ class Arinc665XmlImpl final : public Arinc665Xml
      *
      * @param[in] mediaSetElement
      *   Media Set to Load.
-     *
-     * @return Representation of Media Set
      **/
-    LoadXmlResult loadMediaSet( const xmlpp::Element &mediaSetElement );
-
-    /**
-     * @brief Saves the Media Set section.
-     *
-     * @param[in] mediaSet
-     *   Media Set to store.
-     * @param[in,out] mediaSetElement
-     *   XML Element where to store media set
-     **/
-    void saveMediaSet(
-      const Media::MediaSet &mediaSet,
-      xmlpp::Element &mediaSetElement );
+    void loadMediaSet( const xmlpp::Element &mediaSetElement );
 
     /**
      * @brief Loads file entries.
@@ -112,18 +77,6 @@ class Arinc665XmlImpl final : public Arinc665Xml
       Media::ContainerEntity &current );
 
     /**
-     * @brief Saves file entries.
-     *
-     * @param[in] current
-     *   Current medium or directory.
-     * @param[in,out] currentElement
-     *   XML Element, where to add content.
-     */
-    void saveEntries(
-      const Media::ContainerEntity &current,
-      xmlpp::Element &currentElement );
-
-    /**
      * @brief Loads the Regular File.
      *
      * A regular file is added to the @p parent container and initialised to its
@@ -137,18 +90,6 @@ class Arinc665XmlImpl final : public Arinc665Xml
     void loadRegularFile(
       const xmlpp::Element &fileElement,
       Media::ContainerEntity &parent );
-
-    /**
-     * @brief Saves the Regular File to the XML DOM.
-     *
-     * @param[in] file
-     *   File
-     * @param[in,out] parentElement
-     *   Parent XML Element
-     **/
-    void saveRegularFile(
-      const Media::ConstFilePtr &file,
-      xmlpp::Element &parentElement );
 
     /**
      * @brief Loads the given Load-node.
@@ -185,18 +126,6 @@ class Arinc665XmlImpl final : public Arinc665Xml
       Media::Load &load );
 
     /**
-     * @brief Stores the given load-node.
-     *
-     * @param[in] file
-     *   Load File to store.
-     * @param[in,out] parentElement
-     *   Parent XML Element
-     **/
-    void saveLoad(
-      const Media::ConstFilePtr &file,
-      xmlpp::Element &parentElement ) const;
-
-    /**
      * @brief Load Data/ Support Files.
      *
      * @param[in] loadElement
@@ -212,21 +141,6 @@ class Arinc665XmlImpl final : public Arinc665Xml
       const xmlpp::Element &loadElement,
       std::string_view fileElementName,
       const Media::MediaSet &mediaSet ) const;
-
-    /**
-     * @brief Save Load Files Information to XML.
-     *
-     * @param[in] files
-     *   Files to store
-     * @param[in] fileElementName
-     *   XML Element Name
-     * @param[in,out] loadElement
-     *   XML Load Element
-     */
-    void saveLoadFiles(
-      const Media::ConstLoadFiles &files,
-      std::string_view fileElementName,
-      xmlpp::Element &loadElement ) const;
 
     /**
      * @brief Loads the given batch-node.
@@ -265,18 +179,6 @@ class Arinc665XmlImpl final : public Arinc665Xml
       Media::Batch &batch );
 
     /**
-     * @brief Stores the given batch-node.
-     *
-     * @param[in] file
-     *   Batch to store.
-     * @param[in,out] parentElement
-     *   Parent XML Element
-     **/
-    void saveBatch(
-      const Media::ConstFilePtr &file,
-      xmlpp::Element &parentElement ) const;
-
-    /**
      * @brief Load Base File Attributes.
      *
      * Handles attributes:
@@ -291,18 +193,6 @@ class Arinc665XmlImpl final : public Arinc665Xml
     void loadBaseFile(
       const xmlpp::Element &fileElement,
       const Media::FilePtr &file );
-
-    /**
-     * @brief Stores the Base File Attributes.
-     *
-     * @param[in] file
-     *   File
-     * @param[in,out] fileElement
-     *   XML ELement
-     **/
-    void saveBaseFile(
-      const Media::ConstFilePtr &file,
-      xmlpp::Element &fileElement ) const;
 
     /**
      * @brief Decodes the attribute as Check Value Type.
@@ -321,21 +211,10 @@ class Arinc665XmlImpl final : public Arinc665Xml
       const xmlpp::Element &element,
       std::string_view attribute ) const;
 
-    /**
-     * @brief Encodes the Check Value and stores it as attribute.
-     *
-     * @param[in,out] element
-     *   XML Element
-     * @param[in] attribute
-     *   XML Attribute Name of Check Value
-     * @param[in] checkValue
-     *   CheckValue
-     **/
-    void saveCheckValue(
-      xmlpp::Element &element,
-      std::string_view attribute,
-      std::optional< Arinc645::CheckValueType > checkValue ) const;
-
+    //! XML File path
+    const std::filesystem::path &xmlFileV;
+    //! Media Set
+    Media::MediaSetPtr mediaSetV;
     //! File path mappings.
     FilePathMapping filePathMappingV{};
     //! Deferred Load Loading Info
