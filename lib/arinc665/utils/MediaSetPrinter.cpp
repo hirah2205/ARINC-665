@@ -175,9 +175,14 @@ void MediaSetPrinter_print(
 {
   outS
     << initialIndent
+    << "File Name: "
+    << "'" << file.name() << "'\n";
+
+  outS
+    << initialIndent
     << "File Path: "
     << "[" << file.effectiveMediumNumber() << "]:"
-    << file.path().generic_string() << "\n";
+    << "'" << file.path().generic_string() << "'\n";
 
   outS
     << initialIndent
@@ -185,15 +190,17 @@ void MediaSetPrinter_print(
 
   switch ( file.fileType() )
   {
-    case Arinc665::Media::FileType::RegularFile:
+    using enum Arinc665::Media::FileType;
+
+    case RegularFile:
       outS << "Regular File";
       break;
 
-    case Arinc665::Media::FileType::BatchFile:
+    case BatchFile:
       outS << "Batch File";
       break;
 
-    case Arinc665::Media::FileType::LoadFile:
+    case LoadFile:
       outS << "Load Header File";
       break;
 
