@@ -75,6 +75,7 @@ void MediaSetImporterImpl::loadFirstMedium()
   // Load "list of files" file
   fileListFile = readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfFilesName );
 
+  // indicator, that LOADS.LUM present in FILES.LUM
   bool listOfLoadsFilePresent{ false };
 
   for ( const auto &fileInfo : fileListFile.files() )
@@ -85,7 +86,8 @@ void MediaSetImporterImpl::loadFirstMedium()
     {
       case Arinc665::FileType::FileList:
         BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{ "Load List not in FILES.LUM" } );
+          << Helper::AdditionalInfo{
+            "File List File not expected to be in FILES.LUM" } );
 
       case Arinc665::FileType::LoadList:
         // check that List of Loads is in Root Directory
@@ -108,10 +110,10 @@ void MediaSetImporterImpl::loadFirstMedium()
         if ( fileInfo.pathName != "\\" )
         {
           BOOST_THROW_EXCEPTION( Arinc665Exception()
-            << Helper::AdditionalInfo{ "LOADS.LUM not in Root Directory" } );
+            << Helper::AdditionalInfo{ "BATCHES.LUM not in Root Directory" } );
         }
 
-        // set bath list file present indicator
+        // set batch list file present indicator
         batchListFilePresent = true;
 
         // store batch list file check value

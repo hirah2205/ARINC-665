@@ -38,8 +38,7 @@ target_sources(
     ImportMediaSetXmlCommand.cpp
     ListLoadsCommand.cpp
     ListMediaSetsCommand.cpp
-    RemoveMediaSetCommand.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/arinc665_commands_export.h )
+    RemoveMediaSetCommand.cpp )
 
 target_compile_features( arinc665_commands PUBLIC cxx_std_20 )
 
