@@ -30,6 +30,18 @@ namespace Arinc665::Media {
 class Base : public std::enable_shared_from_this< Base >
 {
   public:
+    //! Default Constructor
+    Base() noexcept = default;
+
+    //! Copy Constructor (deleted)
+    Base( const Base& ) = delete;
+    //! Move Constructor (deleted)
+    Base( Base&& ) = delete;
+    //! Copy Assignment Operator (deleted)
+    Base& operator =( const Base& ) = delete;
+    //! Move Assignment Operator (deleted)
+    Base& operator =( Base&& ) = delete;
+
     //! Destructor
     virtual ~Base() noexcept = default;
 
