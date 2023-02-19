@@ -50,34 +50,34 @@ class Arinc665XmlLoadImpl final
 
   private:
     /**
-     * @brief Loads the media set section.
+     * @brief Import the media set from the XML DOM.
      *
      * @param[in] mediaSetElement
      *   Media Set to Load.
      **/
-    void loadMediaSet( const xmlpp::Element &mediaSetElement );
+    void mediaSet( const xmlpp::Element &mediaSetElement );
 
     /**
-     * @brief Loads file entries.
+     * @brief Import Container from the XML DOM.
      *
      * Loads all child elements (Files, Directories) for the given medium, or
      * directory.
      *
-     * @param[in] currentElement
+     * @param[in] currentContainerElement
      *   XML Element representing the container (root or directory).
-     * @param[in,out] current
+     * @param[in,out] currentContainer
      *   Current Medium, or Directory.
      *   Files and directories will be added to this.
      *
      * @throw Arinc665::Arinc665Exception
      *   When Name Attribute is missing or empty.
      **/
-    void loadEntries(
-      const xmlpp::Element &currentElement,
-      Media::ContainerEntity &current );
+    void entries(
+      const xmlpp::Element &currentContainerElement,
+      Media::ContainerEntity &currentContainer );
 
     /**
-     * @brief Loads the Regular File.
+     * @brief Import Regular File from the XML DOM.
      *
      * A regular file is added to the @p parent container and initialised to its
      * decoded values.
@@ -87,17 +87,17 @@ class Arinc665XmlLoadImpl final
      * @param parent
      *   Owning parent Containter
      **/
-    void loadRegularFile(
+    void regularFile(
       const xmlpp::Element &fileElement,
       Media::ContainerEntity &parent );
 
     /**
-     * @brief Loads the given Load-node.
+     * @brief Import Load from the XML DOM.
      *
      * @param[in] loadElement
      *   XML-node, where the data is loaded from.
-     * @param[in,out] current
-     *   Current medium or directory.
+     * @param[in,out] parent
+     *   Owning parent Containter.
      *
      * @throw Arinc665::Arinc665Exception
      *   When NameRef attribute is missing or empty.
@@ -106,9 +106,9 @@ class Arinc665XmlLoadImpl final
      * @throw Arinc665::Arinc665Exception
      *   When PartNumber attribute is missing or empty.
      **/
-    void loadLoad(
+    void load(
       const xmlpp::Element &loadElement,
-      Media::ContainerEntity &current );
+      Media::ContainerEntity &parent );
 
     /**
      * @brief Deferred Loading of Load Element
@@ -121,12 +121,12 @@ class Arinc665XmlLoadImpl final
      * @param[in,out] load
      *   Load
      **/
-    void loadLoadDeferred(
+    void loadDeferred(
       const xmlpp::Element &loadElement,
       Media::Load &load );
 
     /**
-     * @brief Load Data/ Support Files.
+     * @brief Import Load Data/ Support Files from XML DOM.
      *
      * @param[in] loadElement
      *   XML Element Representing the Load
@@ -137,18 +137,18 @@ class Arinc665XmlLoadImpl final
      *
      * @return List of Files.
      **/
-    [[nodiscard]] Media::ConstLoadFiles loadLoadFiles(
+    [[nodiscard]] Media::ConstLoadFiles loadFiles(
       const xmlpp::Element &loadElement,
       std::string_view fileElementName,
       const Media::MediaSet &mediaSet ) const;
 
     /**
-     * @brief Loads the given batch-node.
+     * @brief Import Batch from XML DOM.
      *
      * @param[in] batchElement
      *   XML-node, where the data is loaded from.
-     * @param[in,out] current
-     *   Current medium or directory.
+     * @param[in,out] parent
+     *   Owning parent Containter.
      *
      * @throw Arinc665::Arinc665Exception
      *   When @p Batch element cannot be parsed i.e.:
@@ -159,9 +159,9 @@ class Arinc665XmlLoadImpl final
      *     - When @p NameRef attribute is missing or empty.
      *     - When @p NameRef attribute does not reference load.
      **/
-    void loadBatch(
+    void batch(
       const xmlpp::Element &batchElement,
-      Media::ContainerEntity &current );
+      Media::ContainerEntity &parent );
 
     /**
      * @brief Deferred Loading of Batch Element
@@ -179,7 +179,7 @@ class Arinc665XmlLoadImpl final
       Media::Batch &batch );
 
     /**
-     * @brief Load Base File Attributes.
+     * @brief Import Base File Attributes from the XML DOM.
      *
      * Handles attributes:
      *  - `CheckValue`, and
@@ -207,7 +207,7 @@ class Arinc665XmlLoadImpl final
      * @throw Arinc665Exception
      *   When Attribute value is invalid.
      **/
-    [[nodiscard]] std::optional< Arinc645::CheckValueType > loadCheckValue(
+    [[nodiscard]] std::optional< Arinc645::CheckValueType > checkValue(
       const xmlpp::Element &element,
       std::string_view attribute ) const;
 

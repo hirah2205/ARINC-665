@@ -59,7 +59,7 @@ void Arinc665XmlSaveImpl::operator()()
     xmlpp::Document xmlDoc{};
     auto mediaSetNode{ xmlDoc.create_root_node( "MediaSet" ) };
 
-    saveMediaSet( *mediaSetNode );
+    mediaSet( *mediaSetNode );
 
     xmlDoc.write_to_file_formatted( xmlFileV.string() );
   }
@@ -71,36 +71,36 @@ void Arinc665XmlSaveImpl::operator()()
   }
 }
 
-void Arinc665XmlSaveImpl::saveMediaSet( xmlpp::Element &mediaSetElement )
+void Arinc665XmlSaveImpl::mediaSet( xmlpp::Element &mediaSetElement ) const
 {
   mediaSetElement.set_attribute( "PartNumber", mediaSetV.partNumber().data() );
 
   // Media Set Check Value
-  saveCheckValue(
+  checkValue(
     mediaSetElement,
     "MediaSetCheckValue",
     mediaSetV.mediaSetCheckValueType() );
 
   // List of Files Check Value
-  saveCheckValue(
+  checkValue(
     mediaSetElement,
     "ListOfFilesCheckValue",
     mediaSetV.listOfFilesCheckValueType() );
 
   // List of Loads Check Value
-  saveCheckValue(
+  checkValue(
     mediaSetElement,
     "ListOfLoadsCheckValue",
     mediaSetV.listOfLoadsCheckValueType() );
 
   // List of Batches Check Value
-  saveCheckValue(
+  checkValue(
     mediaSetElement,
     "ListOfBatchesCheckValue",
     mediaSetV.listOfBatchesCheckValueType() );
 
   // Files Check Value
-  saveCheckValue(
+  checkValue(
     mediaSetElement,
     "FilesCheckValue",
     mediaSetV.filesCheckValueType() );
@@ -136,49 +136,49 @@ void Arinc665XmlSaveImpl::saveMediaSet( xmlpp::Element &mediaSetElement )
 
   // Content
   auto contentNode{ mediaSetElement.add_child( "Content" ) };
-  saveEntries( mediaSetV, *contentNode );
+  entries( mediaSetV, *contentNode );
 }
 
-void Arinc665XmlSaveImpl::saveEntries(
-  const Media::ContainerEntity &current,
-  xmlpp::Element &currentElement )
+void Arinc665XmlSaveImpl::entries(
+  const Media::ContainerEntity &currentContainer,
+  xmlpp::Element &currentContainerElement ) const
 {
   // set default medium if provided
-  if ( const auto defaultMedium{ current.defaultMediumNumber() };
+  if ( const auto defaultMedium{ currentContainer.defaultMediumNumber() };
     defaultMedium )
   {
-    currentElement.set_attribute(
+    currentContainerElement.set_attribute(
       "DefaultMedium",
       std::to_string( static_cast< uint8_t >( *defaultMedium )) );
   }
 
   // iterate over subdirectories within container and add them recursively
-  for ( const auto &dirEntry : current.subdirectories() )
+  for ( const auto &dirEntry : currentContainer.subdirectories() )
   {
-    auto directoryNode{ currentElement.add_child( "Directory" ) };
+    auto directoryNode{ currentContainerElement.add_child( "Directory" ) };
 
     directoryNode->set_attribute( "Name", toGlibString( dirEntry->name() ) );
 
-    saveEntries( *dirEntry, *directoryNode );
+    entries( *dirEntry, *directoryNode );
   }
 
   // iterate over files within current container
-  for ( const auto &fileEntry : current.files() )
+  for ( const auto &fileEntry : currentContainer.files() )
   {
     switch ( fileEntry->fileType() )
     {
       using enum Media::FileType;
 
       case RegularFile:
-        saveRegularFile( fileEntry, currentElement );
+        regularFile( fileEntry, currentContainerElement );
         break;
 
       case LoadFile:
-        saveLoad( fileEntry, currentElement );
+        load( fileEntry, currentContainerElement );
         break;
 
       case BatchFile:
-        saveBatch( fileEntry, currentElement );
+        batch( fileEntry, currentContainerElement );
         break;
 
       default:
@@ -189,22 +189,22 @@ void Arinc665XmlSaveImpl::saveEntries(
   }
 }
 
-void Arinc665XmlSaveImpl::saveRegularFile(
+void Arinc665XmlSaveImpl::regularFile(
   const Media::ConstFilePtr &file,
-  xmlpp::Element &parentElement )
+  xmlpp::Element &parentElement ) const
 {
   xmlpp::Element * const fileElement{ parentElement.add_child( "File" ) };
   assert( nullptr != fileElement );
-  saveBaseFile( file, *fileElement );
+  baseFile( file, *fileElement );
 }
 
-void Arinc665XmlSaveImpl::saveLoad(
+void Arinc665XmlSaveImpl::load(
   const Media::ConstFilePtr &file,
   xmlpp::Element &parentElement ) const
 {
   xmlpp::Element * const loadElement{ parentElement.add_child( "Load" ) };
   assert( nullptr != loadElement );
-  saveBaseFile( file, *loadElement );
+  baseFile( file, *loadElement );
 
   const auto load{ std::dynamic_pointer_cast< const Media::Load >( file ) };
   assert( load );
@@ -226,19 +226,16 @@ void Arinc665XmlSaveImpl::saveLoad(
   }
 
   // Load Check Value
-  saveCheckValue(
-    *loadElement,
-    "LoadCheckValue",
-    load->loadCheckValueType() );
+  checkValue( *loadElement, "LoadCheckValue", load->loadCheckValueType() );
 
   // Data Files Check Value
-  saveCheckValue(
+  checkValue(
     *loadElement,
     "DataFilesCheckValue",
     load->dataFilesCheckValueType() );
 
   // Support Files Check Value
-  saveCheckValue(
+  checkValue(
     *loadElement,
     "SupportFilesCheckValue",
     load->supportFilesCheckValueType() );
@@ -259,10 +256,10 @@ void Arinc665XmlSaveImpl::saveLoad(
   }
 
   // data files
-  saveLoadFiles( load->dataFiles(), "DataFile", *loadElement );
+  loadFiles( load->dataFiles(), "DataFile", *loadElement );
 
   // support files
-  saveLoadFiles( load->supportFiles(), "SupportFile", *loadElement );
+  loadFiles( load->supportFiles(), "SupportFile", *loadElement );
 
   if (
     const auto &userDefinedData{ load->userDefinedData() };
@@ -273,7 +270,7 @@ void Arinc665XmlSaveImpl::saveLoad(
   }
 }
 
-void Arinc665XmlSaveImpl::saveLoadFiles(
+void Arinc665XmlSaveImpl::loadFiles(
   const Media::ConstLoadFiles &files,
   std::string_view fileElementName,
   xmlpp::Element &loadElement ) const
@@ -298,13 +295,13 @@ void Arinc665XmlSaveImpl::saveLoadFiles(
   }
 }
 
-void Arinc665XmlSaveImpl::saveBatch(
+void Arinc665XmlSaveImpl::batch(
   const Media::ConstFilePtr &file,
   xmlpp::Element &parentElement ) const
 {
   xmlpp::Element * const batchElement{ parentElement.add_child( "Batch" ) };
   assert( nullptr != batchElement );
-  saveBaseFile( file, *batchElement );
+  baseFile( file, *batchElement );
 
   const auto batch{ std::dynamic_pointer_cast< const Media::Batch >( file ) };
   assert( batch );
@@ -334,7 +331,7 @@ void Arinc665XmlSaveImpl::saveBatch(
   }
 }
 
-void Arinc665XmlSaveImpl::saveBaseFile(
+void Arinc665XmlSaveImpl::baseFile(
   const Media::ConstFilePtr &file,
   xmlpp::Element &fileElement ) const
 {
@@ -368,7 +365,7 @@ void Arinc665XmlSaveImpl::saveBaseFile(
   }
 }
 
-void Arinc665XmlSaveImpl::saveCheckValue(
+void Arinc665XmlSaveImpl::checkValue(
   xmlpp::Element &element,
   std::string_view attribute,
   std::optional< Arinc645::CheckValueType > checkValue ) const

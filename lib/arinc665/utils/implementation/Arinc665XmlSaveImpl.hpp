@@ -54,85 +54,92 @@ class Arinc665XmlSaveImpl final
 
   private:
     /**
-     * @brief Exports the Media Set section.
+     * @brief Export the Media Set section to the XML DOM.
      *
      * @param[in,out] mediaSetElement
-     *   XML Element where to store media set
+     *   XML Element where to store media set information
      **/
-    void saveMediaSet( xmlpp::Element &mediaSetElement );
+    void mediaSet( xmlpp::Element &mediaSetElement ) const;
 
     /**
-     * @brief Saves file entries.
+     * @brief Export container to XML DOM.
      *
-     * @param[in] current
+     * Adds subdirectories and files.
+     *
+     * @param[in] currentContainer
      *   Current medium or directory.
-     * @param[in,out] currentElement
+     * @param[in,out] currentContainerElement
      *   XML Element, where to add content.
      */
-    void saveEntries(
-      const Media::ContainerEntity &current,
-      xmlpp::Element &currentElement );
+    void entries(
+      const Media::ContainerEntity &currentContainer,
+      xmlpp::Element &currentContainerElement ) const;
 
     /**
-     * @brief Saves the Regular File to the XML DOM.
+     * @brief Export Regular File to the XML DOM.
      *
      * @param[in] file
      *   File
      * @param[in,out] parentElement
      *   Parent XML Element
      **/
-    void saveRegularFile(
-      const Media::ConstFilePtr &file,
-      xmlpp::Element &parentElement );
-
-    /**
-     * @brief Stores the given load-node.
-     *
-     * @param[in] file
-     *   Load File to store.
-     * @param[in,out] parentElement
-     *   Parent XML Element
-     **/
-    void saveLoad(
+    void regularFile(
       const Media::ConstFilePtr &file,
       xmlpp::Element &parentElement ) const;
 
     /**
-     * @brief Save Load Files Information to XML.
+     * @brief Export Load to the XML DOM.
+     *
+     * @param[in] file
+     *   Load.
+     * @param[in,out] parentElement
+     *   Parent XML Element
+     **/
+    void load(
+      const Media::ConstFilePtr &file,
+      xmlpp::Element &parentElement ) const;
+
+    /**
+     * @brief Export Load Files to the XML DOM.
+     *
+     * Load files are data or support files.
      *
      * @param[in] files
-     *   Files to store
+     *   Load Files
      * @param[in] fileElementName
      *   XML Element Name
      * @param[in,out] loadElement
-     *   XML Load Element
+     *   Parent XML Load Element
      */
-    void saveLoadFiles(
+    void loadFiles(
       const Media::ConstLoadFiles &files,
       std::string_view fileElementName,
       xmlpp::Element &loadElement ) const;
 
     /**
-     * @brief Stores the given batch-node.
+     * @brief Export Batch to the XML DOM.
      *
      * @param[in] file
-     *   Batch to store.
+     *   Batch.
      * @param[in,out] parentElement
      *   Parent XML Element
      **/
-    void saveBatch(
+    void batch(
       const Media::ConstFilePtr &file,
       xmlpp::Element &parentElement ) const;
 
     /**
-     * @brief Stores the Base File Attributes.
+     * @brief Export Base File Attributes to the XML DOM.
+     *
+     * Is called by regularFile(), lod(), and batch() to export common
+     * attributes.
      *
      * @param[in] file
      *   File
      * @param[in,out] fileElement
      *   XML ELement
      **/
-    void saveBaseFile(
+    void baseFile(
       const Media::ConstFilePtr &file,
       xmlpp::Element &fileElement ) const;
 
@@ -146,7 +153,7 @@ class Arinc665XmlSaveImpl final
      * @param[in] checkValue
      *   CheckValue
      **/
-    void saveCheckValue(
+    void checkValue(
       xmlpp::Element &element,
       std::string_view attribute,
       std::optional< Arinc645::CheckValueType > checkValue ) const;
