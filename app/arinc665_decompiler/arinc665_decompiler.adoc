@@ -15,7 +15,7 @@ file.
 // tag::options[]
 *--source-directory* _Source_::
  ARINC 665 Media Set _Medium Directory_.
- Can be repeated multiple times for multi media media sets
+ Must be repeated foreach medium of media set.
 
 *--xml-file* _XML File_::
  Path to ARINC 665 Media Set description XML file, which will be created.
