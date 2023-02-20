@@ -39,7 +39,7 @@ MediaSetImporter& MediaSetImporterImpl::readFileHandler(
 }
 
 MediaSetImporter& MediaSetImporterImpl::checkFileIntegrity(
-  const bool checkFileIntegrity )
+  const bool checkFileIntegrity ) noexcept
 {
   checkFileIntegrityV = checkFileIntegrity;
   return *this;

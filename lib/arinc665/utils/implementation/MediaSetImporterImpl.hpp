@@ -49,7 +49,7 @@ class MediaSetImporterImpl final : public MediaSetImporter
 
     //! @copydoc MediaSetImporter::checkFileIntegrity()
     MediaSetImporter& checkFileIntegrity(
-      bool checkFileIntegrity ) override;
+      bool checkFileIntegrity ) noexcept override;
 
     /**
      * @brief Entry-point of the ARINC 665 Media Set Importer.

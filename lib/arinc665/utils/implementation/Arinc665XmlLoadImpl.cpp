@@ -97,7 +97,7 @@ LoadXmlResult Arinc665XmlLoadImpl::operator()()
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "XML File does not exist" }
-      << boost::errinfo_file_name{ xmlFileV } );
+      << boost::errinfo_file_name{ xmlFileV.string() } );
   }
 
   try
@@ -585,21 +585,22 @@ void Arinc665XmlLoadImpl::loadBatchDeferred(
 
       const auto loadFilePath{ loadElement->get_attribute_value( "FilePath" ) };
 
-      if ( loadFilePath.empty())
+      if ( loadFilePath.empty() )
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo{ "FilePath attribute missing or empty" }
           << boost::errinfo_at_line{ loadElement->get_line() } );
       }
 
-      auto load{ batch.mediaSet()->load(
+      auto load{ mediaSetV->load(
         std::filesystem::path{ loadFilePath.raw(), std::locale{} } ) };
 
       if ( !load )
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo{ "FilePath attribute does not reference load" }
-          << boost::errinfo_at_line{ loadElement->get_line() } );
+          << boost::errinfo_at_line{ loadElement->get_line() }
+          << boost::errinfo_file_name{ loadFilePath.raw() } );
       }
 
       targetLoads.push_back( load );
@@ -631,7 +632,7 @@ void Arinc665XmlLoadImpl::loadBaseFile(
 
 std::optional< Arinc645::CheckValueType > Arinc665XmlLoadImpl::checkValue(
   const xmlpp::Element &element,
-  std::string_view attribute ) const
+  std::string_view attribute )
 {
   if (
     const auto checkValueString{

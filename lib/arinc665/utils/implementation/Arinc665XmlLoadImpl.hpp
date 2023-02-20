@@ -208,9 +208,9 @@ class Arinc665XmlLoadImpl final
      * @throw Arinc665Exception
      *   When Attribute value is invalid.
      **/
-    [[nodiscard]] std::optional< Arinc645::CheckValueType > checkValue(
+    [[nodiscard]] static std::optional< Arinc645::CheckValueType > checkValue(
       const xmlpp::Element &element,
-      std::string_view attribute ) const;
+      std::string_view attribute );
 
     //! XML File path
     const std::filesystem::path &xmlFileV;
