@@ -69,16 +69,6 @@ static std::string name( const xmlpp::Element &element );
  **/
 static OptionalMediumNumber mediumNumber( const xmlpp::Element &element );
 
-/**
- * Return file type of element.
- *
- * @param[in] element
- *   XML Element
- *
- * @return File Type
- **/
-static Media::FileType fileType( const xmlpp::Element &element );
-
 Arinc665XmlLoadImpl::Arinc665XmlLoadImpl(
   const std::filesystem::path &xmlFile ) noexcept :
   xmlFileV{ xmlFile }
@@ -286,18 +276,16 @@ void Arinc665XmlLoadImpl::entries(
       continue;
     }
 
-    // add subdirectory and add content recursively
-    if ( entryNode->get_name() == "Directory"s )
+    switch ( entryType( *entryElement ) )
     {
-      auto directory{
-        currentContainer.addSubdirectory( name( *entryElement ) ) };
-      entries( *entryElement, *directory );
-      continue;
-    }
+      using enum EntryType;
 
-    switch ( fileType( *entryElement ) )
-    {
-      using enum Arinc665::Media::FileType;
+      case EntryType::Directory:
+        // add subdirectory and add content recursively
+        entries(
+          *entryElement,
+          *(currentContainer.addSubdirectory( name( *entryElement ) ) ) );
+        break;
 
       case RegularFile:
         regularFile( *entryElement, currentContainer );
@@ -656,6 +644,37 @@ std::optional< Arinc645::CheckValueType > Arinc665XmlLoadImpl::checkValue(
   return {};
 }
 
+Arinc665XmlLoadImpl::EntryType Arinc665XmlLoadImpl::entryType(
+  const xmlpp::Element &element )
+{
+  using namespace std::string_literals;
+
+  if ( element.get_name() == "Directory"s )
+  {
+    return EntryType::Directory;
+  }
+
+  if ( element.get_name() == "File"s )
+  {
+    return EntryType::RegularFile;
+  }
+
+  if ( element.get_name() == "Load"s )
+  {
+    return EntryType::LoadFile;
+  }
+
+  if ( element.get_name() == "Batch"s )
+  {
+    return EntryType::BatchFile;
+  }
+
+  BOOST_THROW_EXCEPTION( Arinc665Exception()
+    << Helper::AdditionalInfo{ "Invalid XML Element" }
+    << boost::errinfo_at_line{ element.get_line() }
+    << boost::errinfo_type_info_name{ element.get_name() } );
+}
+
 static std::string_view toStringView( const Glib::ustring &str )
 {
   return std::string_view{ str.data(), str.length() };
@@ -699,31 +718,6 @@ static OptionalMediumNumber mediumNumber( const xmlpp::Element &element )
   }
 
   return {};
-}
-
-static Media::FileType fileType( const xmlpp::Element &element )
-{
-  using namespace std::string_literals;
-
-  if ( element.get_name() == "File"s )
-  {
-    return Media::FileType::RegularFile;
-  }
-
-  if ( element.get_name() == "Load"s )
-  {
-    return Media::FileType::LoadFile;
-  }
-
-  if ( element.get_name() == "Batch"s )
-  {
-    return Media::FileType::BatchFile;
-  }
-
-  BOOST_THROW_EXCEPTION( Arinc665Exception()
-    << Helper::AdditionalInfo{ "Invalid XML Element" }
-    << boost::errinfo_at_line{ element.get_line() }
-    << boost::errinfo_type_info_name{ element.get_name() } );
 }
 
 }

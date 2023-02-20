@@ -256,7 +256,8 @@ DirectoryPtr ContainerEntity::addSubdirectory( std::string name )
     || file( std::string_view( name ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "subdirectory or file with name already exists" } );
+      << Helper::AdditionalInfo{
+        "subdirectory or file with name already exists" } );
   }
 
   // create, emplace and return directory

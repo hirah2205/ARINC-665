@@ -50,6 +50,15 @@ class Arinc665XmlLoadImpl final
     [[nodiscard]] LoadXmlResult operator()();
 
   private:
+    //! Container Entry Type
+    enum class EntryType
+    {
+      Directory,
+      RegularFile,
+      LoadFile,
+      BatchFile
+    };
+
     /**
      * @brief Import the media set from the XML DOM.
      *
@@ -211,6 +220,18 @@ class Arinc665XmlLoadImpl final
     [[nodiscard]] static std::optional< Arinc645::CheckValueType > checkValue(
       const xmlpp::Element &element,
       std::string_view attribute );
+
+    /**
+     * Return container entry type of element.
+     *
+     * @param[in] element
+     *   XML Element
+     *
+     * @return Entry Type
+     * @throw Arinc665Exception
+     *   When @p element is not of expected type
+     **/
+    [[nodiscard]] static EntryType entryType( const xmlpp::Element &element );
 
     //! XML File path
     const std::filesystem::path &xmlFileV;
