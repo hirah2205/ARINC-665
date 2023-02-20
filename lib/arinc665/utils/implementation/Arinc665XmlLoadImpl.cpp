@@ -63,12 +63,20 @@ static std::string name( const xmlpp::Element &element );
  * @param[in] element
  *   XML Element
  *
- * @return Content of the Medium attriubte.
+ * @return Content of the Medium attribute.
  * @retval {}
  *   If Medium is not set.
  **/
 static OptionalMediumNumber mediumNumber( const xmlpp::Element &element );
 
+/**
+ * Return file type of element.
+ *
+ * @param[in] element
+ *   XML Element
+ *
+ * @return File Type
+ **/
 static Media::FileType fileType( const xmlpp::Element &element );
 
 Arinc665XmlLoadImpl::Arinc665XmlLoadImpl(
@@ -403,7 +411,7 @@ void Arinc665XmlLoadImpl::load(
 
   load->targetHardwareIdPositions( std::move( thwIds ) );
 
-  //  handle data and support files later in defferd loading
+  //  handle data and support files later in deferred loading
 
   if (
     const auto userDefinedDataElement{ dynamic_cast< const xmlpp::Element*>(

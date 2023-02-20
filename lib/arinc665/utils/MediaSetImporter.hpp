@@ -29,7 +29,14 @@ namespace Arinc665::Utils {
 /**
  * @brief ARINC 665 %Media Set Importer
  *
- * Imports the Media Set given by the provided properties.
+ * Imports the %Media Set given by the provided properties.
+ *
+ * @par Check File Integrity
+ * When the *check file integrity* flag is set to `true` the checksum and check
+ * values of all media set member files and the load checksum and load check
+ * values of all loads are verified.
+ * The file checksum of ARINC 665 files (list of files, loads, batches;
+ * load header and batch file) are always verified.
  **/
 class ARINC665_EXPORT MediaSetImporter
 {
@@ -78,9 +85,9 @@ class ARINC665_EXPORT MediaSetImporter
       const std::filesystem::path &path ) >;
 
     /**
-     * @brief Creates the ARINC 665 Media Set Importer Instance.
+     * @brief Creates the ARINC 665 %Media Set Importer Instance.
      *
-     * @return ARINC 665 Importer Instance
+     * @return ARINC 665 %Media Set Importer Instance
      **/
     static MediaSetImporterPtr create();
 
@@ -93,7 +100,7 @@ class ARINC665_EXPORT MediaSetImporter
      * @param[in] fileSizeHandler
      *   Handler which is called to obtain the requested file size the medium.
      *
-     * @return *this for chaining.
+     * @return @p *this for chaining.
      **/
     virtual MediaSetImporter& fileSizeHandler(
       FileSizeHandler fileSizeHandler ) = 0;
@@ -104,7 +111,7 @@ class ARINC665_EXPORT MediaSetImporter
      * @param[in] readFileHandler
      *   Handler which is called to obtain the requested file from the medium.
      *
-     * @return *this for chaining.
+     * @return @p *this for chaining.
      **/
     virtual MediaSetImporter& readFileHandler(
       ReadFileHandler readFileHandler ) = 0;
@@ -115,16 +122,17 @@ class ARINC665_EXPORT MediaSetImporter
      * @param[in] checkFileIntegrity
      *   If set to true additional file integrity steps are performed
      *
-     * @return *this for chaining.
+     * @return @p *this for chaining.
      **/
-    virtual MediaSetImporter& checkFileIntegrity( bool checkFileIntegrity ) = 0;
+    virtual MediaSetImporter& checkFileIntegrity(
+      bool checkFileIntegrity ) noexcept = 0;
 
     /**
-     * @brief Executes the ARINC 665 Media Set Importer.
+     * @brief Executes the ARINC 665 %Media Set Importer.
      *
      * All parameters must have been set previously.
      *
-     * @return Imported Media Set
+     * @return Imported %Media Set
      *
      * @throw Arinc665Exception
      **/

@@ -1,0 +1,24 @@
+= arinc665_decompiler(1)
+Thomas Vogt
+
+== Name
+
+arinc665_decompiler - decompiles ARINC 665 Media Sets and creates an associated XML Configuration
+file.
+
+== Synopsis
+
+*arinc665_decompiler* {--source-directory _Source_}... --xml-file _XML File_ [--check-file-integrity true|false]
+
+== Options
+
+// tag::options[]
+*--source-directory* _Source_::
+ ARINC 665 Media Set _Medium Directory_.
+ Can be repeated multiple times for multi media media sets
+
+*--xml-file* _XML File_::
+ Path to ARINC 665 Media Set description XML file, which will be created.
+
+*--check-file-integrity* _true|false_::
+ If set to `true`, the integrity of the media set is checked.

@@ -34,7 +34,8 @@ class Arinc665XmlLoadImpl final
      * @param[in] xmlFile
      *   ARINC 665 XML file.
      **/
-    Arinc665XmlLoadImpl( const std::filesystem::path &xmlFile ) noexcept;
+    explicit Arinc665XmlLoadImpl(
+      const std::filesystem::path &xmlFile ) noexcept;
 
     /**
      * @brief Loads the Media Set information from the given XML file.
@@ -85,7 +86,7 @@ class Arinc665XmlLoadImpl final
      * @param[in] fileElement
      *   XML Element representing the file.
      * @param parent
-     *   Owning parent Containter
+     *   Owning parent Container
      **/
     void regularFile(
       const xmlpp::Element &fileElement,
@@ -97,7 +98,7 @@ class Arinc665XmlLoadImpl final
      * @param[in] loadElement
      *   XML-node, where the data is loaded from.
      * @param[in,out] parent
-     *   Owning parent Containter.
+     *   Owning parent Container.
      *
      * @throw Arinc665::Arinc665Exception
      *   When NameRef attribute is missing or empty.
@@ -113,11 +114,11 @@ class Arinc665XmlLoadImpl final
     /**
      * @brief Deferred Loading of Load Element
      *
-     * The data and support files are added here to assoure that all possible
+     * The data and support files are added here to assure that all possible
      * files has been added to the Media Set previously.
      *
      * @param[in] loadElement
-     *   XML Element represetning the load.
+     *   XML Element representing the load.
      * @param[in,out] load
      *   Load
      **/
@@ -148,7 +149,7 @@ class Arinc665XmlLoadImpl final
      * @param[in] batchElement
      *   XML-node, where the data is loaded from.
      * @param[in,out] parent
-     *   Owning parent Containter.
+     *   Owning parent Container.
      *
      * @throw Arinc665::Arinc665Exception
      *   When @p Batch element cannot be parsed i.e.:
@@ -166,11 +167,11 @@ class Arinc665XmlLoadImpl final
     /**
      * @brief Deferred Loading of Batch Element
      *
-     * The Target Hardware Information are added here to assoure that all
+     * The Target Hardware Information are added here to assure that all
      * possible loads has been added to the Media Set previously.
      *
      * @param[in] batchElement
-     *   XML Element represetning the batch.
+     *   XML Element representing the batch.
      * @param[in,out] batch
      *   Load
      **/
