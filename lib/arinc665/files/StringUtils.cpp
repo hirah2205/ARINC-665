@@ -12,6 +12,8 @@
 
 #include "StringUtils.hpp"
 
+#include <arinc665/Arinc665Exception.hpp>
+
 #include <helper/Endianess.hpp>
 #include <helper/SafeCast.hpp>
 
@@ -31,9 +33,15 @@ ConstRawFileSpan::iterator StringUtils_decodeString(
   str.assign( it, it + strLength );
   it += strLength;
 
-  // if string is odd skipp filled 0-character
+  // if string is odd skip filled 0-character
   if ( strLength % 2 == 1 )
   {
+    // check fill-character
+    if ( 0U != *it )
+    {
+      BOOST_THROW_EXCEPTION( Arinc665Exception()
+        << Helper::AdditionalInfo{ "Fill character not '0'" } );
+    }
     ++it;
   }
 
@@ -82,14 +90,14 @@ ConstRawFileSpan::iterator StringUtils_decodeStrings(
 
   // number of strings
   uint16_t numberOfEntries{};
-  it = Helper::getInt< uint16_t>( it, numberOfEntries);
+  it = Helper::getInt< uint16_t>( it, numberOfEntries );
 
   for ( uint16_t index = 0U; index < numberOfEntries; ++index )
   {
     // string
     std::string str{};
-    it = StringUtils_decodeString( it, str);
-    strings.emplace_back( std::move( str) );
+    it = StringUtils_decodeString( it, str );
+    strings.emplace_back( std::move( str ) );
   }
 
   return it;
@@ -102,7 +110,7 @@ RawFile StringUtils_encodeStrings( const std::list< std::string > &strings )
   // set number of strings
   Helper::setInt< uint16_t >(
     rawStrings.begin(),
-    static_cast< uint16_t>( strings.size()));
+    static_cast< uint16_t>( strings.size() ) );
 
   for ( const auto &str : strings )
   {

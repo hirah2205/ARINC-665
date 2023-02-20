@@ -12,6 +12,8 @@
 
 #include <arinc665/files/StringUtils.hpp>
 
+#include <arinc665/Arinc665Exception.hpp>
+
 #include <boost/test/unit_test.hpp>
 
 namespace Arinc665::Files {
@@ -42,6 +44,11 @@ BOOST_AUTO_TEST_CASE( decodeString )
       ConstRawFileSpan{ { 0x00, 0x05, 'T', 'e', 's', 't', '1', 0x00 } }.begin(),
       out ) );
   BOOST_CHECK( out == "Test1" );
+
+  BOOST_CHECK_THROW(
+    StringUtils_decodeString(
+      ConstRawFileSpan{ { 0x00, 0x05, 'T', 'e', 's', 't', '1', 1U } }.begin(),
+      out ), Arinc665Exception );
 }
 
 //! Encode String Test
