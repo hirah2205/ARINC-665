@@ -140,17 +140,18 @@ class Arinc665XmlLoadImpl final
      *
      * @param[in] loadElement
      *   XML Element Representing the Load
-     * @param[in] fileElementName
-     *   XML Files Element Name
-     * @param[in] mediaSet
-     *   Media Set
+     * @param[in] fileElementsName
+     *   "File" XML Elements Name.
+     *   "DataFile" for data files, "SupportFile" for support files.
+     * @param[in] parent
+     *   Container, which contains the Load
      *
      * @return List of Files.
      **/
     [[nodiscard]] Media::ConstLoadFiles loadFiles(
       const xmlpp::Element &loadElement,
-      std::string_view fileElementName,
-      const Media::MediaSet &mediaSet ) const;
+      std::string_view fileElementsName,
+      const Media::ContainerEntity &parent ) const;
 
     /**
      * @brief Import Batch from XML DOM.

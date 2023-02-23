@@ -447,25 +447,25 @@ void Arinc665XmlLoadImpl::loadDeferred(
   const xmlpp::Element &loadElement,
   Media::Load &load )
 {
-  const auto &mediaSet{ *load.mediaSet() };
+  const auto &loadParent{ *load.parent() };
 
   // data files
-  load.dataFiles( loadFiles( loadElement, "DataFile", mediaSet ) );
+  load.dataFiles( loadFiles( loadElement, "DataFile", loadParent ) );
 
   // support files
-  load.supportFiles( loadFiles( loadElement, "SupportFile", mediaSet ) );
+  load.supportFiles( loadFiles( loadElement, "SupportFile", loadParent ) );
 }
 
 Media::ConstLoadFiles Arinc665XmlLoadImpl::loadFiles(
   const xmlpp::Element &loadElement,
-  std::string_view fileElementName,
-  const Media::MediaSet &mediaSet ) const
+  std::string_view fileElementsName,
+  const Media::ContainerEntity &parent ) const
 {
   Media::ConstLoadFiles loadFiles{};
 
-  // iterate over files
+  // iterate over file elements
   for ( auto fileNode :
-    loadElement.get_children( toGlibString( fileElementName ) ) )
+    loadElement.get_children( toGlibString( fileElementsName ) ) )
   {
     auto fileElement{ dynamic_cast< xmlpp::Element*>( fileNode ) };
 
@@ -498,7 +498,7 @@ Media::ConstLoadFiles Arinc665XmlLoadImpl::loadFiles(
     auto checkValueType{ checkValue( *fileElement, "CheckValue" ) };
 
     // Find File
-    auto file{ mediaSet.regularFile(
+    auto file{ parent.regularFile(
       std::filesystem::path{ filePath.raw(), std::locale{} } ) };
 
     if ( !file )
@@ -580,7 +580,7 @@ void Arinc665XmlLoadImpl::loadBatchDeferred(
           << boost::errinfo_at_line{ loadElement->get_line() } );
       }
 
-      auto load{ mediaSetV->load(
+      auto load{ batch.parent()->load(
         std::filesystem::path{ loadFilePath.raw(), std::locale{} } ) };
 
       if ( !load )

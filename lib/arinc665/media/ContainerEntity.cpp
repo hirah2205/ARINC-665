@@ -179,30 +179,44 @@ DirectoryPtr ContainerEntity::subdirectory( std::string_view name )
 ConstContainerEntityPtr ContainerEntity::subdirectory(
   const std::filesystem::path &path ) const
 {
+  // normalise path
+  const auto normalPath{ path.lexically_normal() };
+
   // handle empty path
-  if ( path.empty() )
+  if ( normalPath.empty() )
   {
     return {};
   }
 
   // handle absolute paths
   // we cannot use 'is_absolute' under windows (other meaning)
-  if ( path.has_root_directory() )
+  if ( normalPath.has_root_directory() )
   {
-    auto relativePath{ path.relative_path() };
+    auto relativePath{ normalPath.relative_path() };
 
     if ( relativePath.empty() )
     {
       return mediaSet();
     }
 
-    return mediaSet()->subdirectory( relativePath.lexically_normal() );
+    return mediaSet()->subdirectory( relativePath );
   }
 
   auto subDir{
     std::dynamic_pointer_cast< const ContainerEntity >( shared_from_this() ) };
   assert( subDir );
-  for ( const auto &subPath : path.lexically_normal() )
+
+  if ( normalPath == "." )
+  {
+    return subDir;
+  }
+
+  if ( normalPath == ".." )
+  {
+    return subDir->parent();
+  }
+
+  for ( const auto &subPath : normalPath )
   {
     subDir = subDir->subdirectory( std::string_view{ subPath.string() } );
     if ( !subDir )
@@ -217,30 +231,34 @@ ConstContainerEntityPtr ContainerEntity::subdirectory(
 ContainerEntityPtr ContainerEntity::subdirectory(
   const std::filesystem::path &path )
 {
+  // normalise path
+  const auto normalPath{ path.lexically_normal() };
+
   // handle empty path
-  if ( path.empty() )
+  if ( normalPath.empty() )
   {
     return {};
   }
 
   // handle absolute paths
   // we cannot use 'is_absolute' under windows (other meaning)
-  if ( path.has_root_directory() )
+  if ( normalPath.has_root_directory() )
   {
-    auto relativePath{ path.relative_path() };
+    auto relativePath{ normalPath.relative_path() };
 
     if ( relativePath.empty() )
     {
       return mediaSet();
     }
 
-    return mediaSet()->subdirectory( relativePath.lexically_normal() );
+    return mediaSet()->subdirectory( relativePath );
   }
 
   auto subDir{
     std::dynamic_pointer_cast< ContainerEntity >( shared_from_this() ) };
   assert( subDir );
-  for ( const auto &subPath : path.lexically_normal() )
+
+  for ( const auto &subPath : normalPath )
   {
     subDir = subDir->subdirectory( std::string_view{ subPath.string() } );
     if ( !subDir )
@@ -254,6 +272,11 @@ ContainerEntityPtr ContainerEntity::subdirectory(
 
 DirectoryPtr ContainerEntity::addSubdirectory( std::string name )
 {
+  if ( ( "." == name ) || ( ".." == name ) )
+  {
+    return {};
+  }
+
   if ( subdirectory( std::string_view( name ) )
     || file( std::string_view( name ) ) )
   {
@@ -412,7 +435,7 @@ Files ContainerEntity::recursiveFiles( OptionalMediumNumber mediumNumber )
 
 ConstFiles ContainerEntity::recursiveFiles(
   std::string_view filename,
-  [[maybe_unused]] OptionalMediumNumber mediumNumber ) const
+  OptionalMediumNumber mediumNumber ) const
 {
   ConstFiles filesRecursive{};
 
@@ -503,7 +526,7 @@ ConstFilePtr ContainerEntity::file( const std::filesystem::path &path ) const
     dir = subdirectory( path.parent_path() );
   }
 
-  return file( std::string_view{ path.filename().string() } );
+  return dir->file( std::string_view{ path.filename().string() } );
 }
 
 FilePtr ContainerEntity::file( const std::filesystem::path &path )
@@ -514,14 +537,14 @@ FilePtr ContainerEntity::file( const std::filesystem::path &path )
   }
 
   auto dir{
-    std::dynamic_pointer_cast< const ContainerEntity >( shared_from_this() ) };
+    std::dynamic_pointer_cast< ContainerEntity >( shared_from_this() ) };
   assert( dir );
   if ( path.has_parent_path() )
   {
     dir = subdirectory( path.parent_path() );
   }
 
-  return file( std::string_view{ path.filename().string() } );
+  return dir->file( std::string_view{ path.filename().string() } );
 }
 
 void ContainerEntity::removeFile( std::string_view filename )
@@ -671,7 +694,8 @@ ConstRegularFiles ContainerEntity::recursiveRegularFiles(
   {
     // respect found files, when no medium number is provided or the medium
     // numbers are equal
-    if ( !mediumNumber || mediumNumber == foundRegularFile->effectiveMediumNumber() )
+    if ( !mediumNumber
+      || mediumNumber == foundRegularFile->effectiveMediumNumber() )
     {
       regularFiles.emplace_back( std::move( foundRegularFile ) );
     }
@@ -744,6 +768,11 @@ RegularFilePtr ContainerEntity::addRegularFile(
   std::string filename,
   OptionalMediumNumber mediumNumber )
 {
+  if ( ( "." == filename ) || ( ".." == filename ) )
+  {
+    return {};
+  }
+
   if ( subdirectory(  std::string_view( filename ) )
     || file( std::string_view( filename ) ) )
   {
@@ -772,13 +801,14 @@ size_t ContainerEntity::numberOfLoads(
 }
 
 size_t ContainerEntity::recursiveNumberOfLoads(
-  [[maybe_unused]] OptionalMediumNumber mediumNumber ) const
+  OptionalMediumNumber mediumNumber ) const
 {
-  size_t numberOfLoadsRecursive{ numberOfLoads() };
+  size_t numberOfLoadsRecursive{ numberOfLoads( mediumNumber ) };
 
   for ( const auto &subdirectory : subdirectories() )
   {
-    numberOfLoadsRecursive += subdirectory->recursiveNumberOfLoads();
+    numberOfLoadsRecursive +=
+      subdirectory->recursiveNumberOfLoads( mediumNumber );
   }
 
   return numberOfLoadsRecursive;
@@ -899,11 +929,17 @@ LoadPtr ContainerEntity::addLoad(
   std::string filename,
   OptionalMediumNumber mediumNumber )
 {
+  if ( ( "." == filename ) || ( ".." == filename ) )
+  {
+    return {};
+  }
+
   if ( subdirectory( std::string_view( filename ) )
     || file( std::string_view( filename ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "File or directory with this name already exists" } );
+      << Helper::AdditionalInfo{
+        "File or directory with this name already exists" } );
   }
 
   // create file
@@ -926,13 +962,14 @@ size_t ContainerEntity::numberOfBatches(
 }
 
 size_t ContainerEntity::recursiveNumberOfBatches(
-  [[maybe_unused]] OptionalMediumNumber mediumNumber ) const
+  OptionalMediumNumber mediumNumber ) const
 {
-  size_t numberOfBatchesRecursive{ numberOfBatches() };
+  size_t numberOfBatchesRecursive{ numberOfBatches( mediumNumber ) };
 
   for ( const auto &subdirectory : subdirectories() )
   {
-    numberOfBatchesRecursive += subdirectory->recursiveNumberOfBatches();
+    numberOfBatchesRecursive +=
+      subdirectory->recursiveNumberOfBatches( mediumNumber );
   }
 
   return numberOfBatchesRecursive;
@@ -1053,11 +1090,17 @@ BatchPtr ContainerEntity::addBatch(
   std::string filename,
   OptionalMediumNumber mediumNumber )
 {
+  if ( ( "." == filename ) || ( ".." == filename ) )
+  {
+    return {};
+  }
+
   if ( subdirectory( std::string_view( filename ) )
     || file( std::string_view( filename ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "File or directory with this name already exists" } );
+      << Helper::AdditionalInfo{
+        "File or directory with this name already exists" } );
   }
 
   // create file

@@ -229,7 +229,7 @@
     </documentation></annotation>
     <restriction base="string" >
       <minLength value="2" />
-      <pattern value="(/[A-Za-z0-9._-]+)+" />
+      <pattern value="/?([A-Za-z0-9._-]+/)*[A-Za-z0-9._-]+" />
     </restriction>
   </simpleType>
 
