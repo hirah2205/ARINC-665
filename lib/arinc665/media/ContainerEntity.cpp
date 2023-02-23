@@ -179,6 +179,7 @@ DirectoryPtr ContainerEntity::subdirectory( std::string_view name )
 ConstContainerEntityPtr ContainerEntity::subdirectory(
   const std::filesystem::path &path ) const
 {
+  // handle empty path
   if ( path.empty() )
   {
     return {};
@@ -195,13 +196,13 @@ ConstContainerEntityPtr ContainerEntity::subdirectory(
       return mediaSet();
     }
 
-    return mediaSet()->subdirectory( relativePath );
+    return mediaSet()->subdirectory( relativePath.lexically_normal() );
   }
 
   auto subDir{
     std::dynamic_pointer_cast< const ContainerEntity >( shared_from_this() ) };
   assert( subDir );
-  for ( const auto &subPath : path )
+  for ( const auto &subPath : path.lexically_normal() )
   {
     subDir = subDir->subdirectory( std::string_view{ subPath.string() } );
     if ( !subDir )
@@ -216,6 +217,7 @@ ConstContainerEntityPtr ContainerEntity::subdirectory(
 ContainerEntityPtr ContainerEntity::subdirectory(
   const std::filesystem::path &path )
 {
+  // handle empty path
   if ( path.empty() )
   {
     return {};
@@ -232,13 +234,13 @@ ContainerEntityPtr ContainerEntity::subdirectory(
       return mediaSet();
     }
 
-    return mediaSet()->subdirectory( relativePath );
+    return mediaSet()->subdirectory( relativePath.lexically_normal() );
   }
 
   auto subDir{
     std::dynamic_pointer_cast< ContainerEntity >( shared_from_this() ) };
   assert( subDir );
-  for ( const auto &subPath : path )
+  for ( const auto &subPath : path.lexically_normal() )
   {
     subDir = subDir->subdirectory( std::string_view{ subPath.string() } );
     if ( !subDir )
