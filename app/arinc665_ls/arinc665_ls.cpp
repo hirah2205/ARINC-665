@@ -28,6 +28,7 @@
 
 #include <helper/Dump.hpp>
 #include <helper/Logger.hpp>
+#include <helper/Exception.hpp>
 
 #include <boost/exception/all.hpp>
 #include <boost/format.hpp>
@@ -403,7 +404,9 @@ static Arinc665::Files::RawFile loadFile( const std::filesystem::path &file )
         << boost::errinfo_file_name{ file.string() } );
   }
 
-  fileStream.read( (char*) &data.at( 0), static_cast< std::streamsize >( data.size() ) );
+  fileStream.read(
+    (char *)&data.at( 0 ),
+    static_cast< std::streamsize >( data.size() ) );
 
   return data;
 }

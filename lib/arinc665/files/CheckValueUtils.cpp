@@ -17,8 +17,11 @@
 #include <arinc645/CheckValue.hpp>
 #include <arinc645/CheckValueTypeDescription.hpp>
 
-#include <helper/Endianess.hpp>
+#include <helper/Endianness.hpp>
+#include <helper/Exception.hpp>
 #include <helper/SafeCast.hpp>
+
+#include <boost/exception/all.hpp>
 
 namespace Arinc665::Files {
 

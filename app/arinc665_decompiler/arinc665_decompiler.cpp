@@ -22,6 +22,7 @@
 #include <arinc645/CheckValue.hpp>
 
 #include <helper/Logger.hpp>
+#include <helper/Exception.hpp>
 
 #include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
@@ -219,7 +220,6 @@ static size_t getFileSize(
   {
     BOOST_THROW_EXCEPTION(
       Arinc665::Arinc665Exception()
-        << boost::errinfo_file_name{ filePath.string() }
         << Helper::AdditionalInfo{ "File not found" }
         << boost::errinfo_file_name{ filePath.string() } );
   }
@@ -247,7 +247,6 @@ static Arinc665::Files::RawFile readFile(
   if ( !std::filesystem::is_regular_file( filePath ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << boost::errinfo_file_name{ filePath.string() }
       << Helper::AdditionalInfo{ "File not found" }
       << boost::errinfo_file_name{ filePath.string() } );
   }

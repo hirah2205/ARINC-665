@@ -23,6 +23,7 @@
 #include <arinc645/CheckValue.hpp>
 
 #include <helper/Logger.hpp>
+#include <helper/Exception.hpp>
 
 #include <boost/exception/all.hpp>
 

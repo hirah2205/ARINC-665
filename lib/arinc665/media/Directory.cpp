@@ -14,6 +14,10 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <helper/Exception.hpp>
+
+#include <boost/exception/all.hpp>
+
 namespace Arinc665::Media {
 
 Directory::Directory( const ContainerEntityPtr &parent, std::string name ):

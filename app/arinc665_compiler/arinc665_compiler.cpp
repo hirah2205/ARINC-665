@@ -28,6 +28,7 @@
 #include <arinc665/Version.hpp>
 
 #include <helper/Logger.hpp>
+#include <helper/Exception.hpp>
 
 #include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>

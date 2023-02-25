@@ -20,6 +20,13 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <helper/Exception.hpp>
+
+#include <boost/exception/all.hpp>
+
+#include <algorithm>
+#include <cassert>
+
 namespace Arinc665::Media {
 
 MediumNumber ContainerEntity::effectiveDefaultMediumNumber() const

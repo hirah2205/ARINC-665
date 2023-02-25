@@ -30,11 +30,13 @@
 
 #include <arinc645/CheckValue.hpp>
 
-#include <helper_qt/String.hpp>
+#include <helper/Exception.hpp>
 
+#include <helper_qt/String.hpp>
 #include <QMessageBox>
 
 #include <boost/log/trivial.hpp>
+#include <boost/exception/all.hpp>
 
 #include <fstream>
 #include <iostream>
@@ -42,7 +44,7 @@
 namespace Arinc665Qt {
 
 MediaSetController::MediaSetController( QWidget * const parent ):
-  QObject{ parent},
+  QObject{ parent },
   mediaSetModel{ std::make_unique< Media::MediaSetModel >( this ) },
   selectDirectoryDialog{ std::make_unique< QFileDialog>(
     parent,

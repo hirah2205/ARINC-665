@@ -21,6 +21,9 @@
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
 
+#include <helper/Exception.hpp>
+
+#include <boost/exception/all.hpp>
 #include <boost/format.hpp>
 
 #include <fstream>

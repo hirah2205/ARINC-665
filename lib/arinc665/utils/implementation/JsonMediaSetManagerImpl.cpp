@@ -16,8 +16,12 @@
 #include <arinc665/utils/MediaSetManagerConfiguration.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <helper/Exception.hpp>
+
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+
+#include <boost/exception/all.hpp>
 
 namespace Arinc665::Utils {
 

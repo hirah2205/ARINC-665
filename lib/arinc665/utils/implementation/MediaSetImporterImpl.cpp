@@ -22,6 +22,10 @@
 
 #include <arinc645/CheckValueGenerator.hpp>
 
+#include <helper/Exception.hpp>
+
+#include <boost/exception/all.hpp>
+
 namespace Arinc665::Utils {
 
 MediaSetImporter& MediaSetImporterImpl::fileSizeHandler(

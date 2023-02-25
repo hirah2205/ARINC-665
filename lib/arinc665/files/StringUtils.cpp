@@ -14,8 +14,11 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
-#include <helper/Endianess.hpp>
+#include <helper/Endianness.hpp>
+#include <helper/Exception.hpp>
 #include <helper/SafeCast.hpp>
+
+#include <boost/exception/all.hpp>
 
 #include <cassert>
 

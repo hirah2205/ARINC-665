@@ -16,8 +16,11 @@
 
 #include <arinc645/Arinc645Crc.hpp>
 
-#include <helper/Endianess.hpp>
+#include <helper/Endianness.hpp>
+#include <helper/Exception.hpp>
 #include <helper/SafeCast.hpp>
+
+#include <boost/exception/all.hpp>
 
 namespace Arinc665::Files {
 

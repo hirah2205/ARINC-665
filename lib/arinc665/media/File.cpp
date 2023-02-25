@@ -13,8 +13,13 @@
 #include "File.hpp"
 
 #include <arinc665/Arinc665Exception.hpp>
+
 #include <arinc665/media/ContainerEntity.hpp>
 #include <arinc665/media/MediaSet.hpp>
+
+#include <helper/Exception.hpp>
+
+#include <boost/exception/all.hpp>
 
 namespace Arinc665::Media {
 

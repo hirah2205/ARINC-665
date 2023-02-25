@@ -14,9 +14,12 @@
 
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/JsonMediaSetManager.hpp>
+
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <arinc645/CheckValue.hpp>
+
+#include <helper/Exception.hpp>
 
 #include <boost/exception/all.hpp>
 

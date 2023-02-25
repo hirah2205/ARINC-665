@@ -17,7 +17,10 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
-#include <helper/Endianess.hpp>
+#include <helper/Endianness.hpp>
+#include <helper/Exception.hpp>
+
+#include <boost/exception/all.hpp>
 
 namespace Arinc665::Files {
 
@@ -30,7 +33,6 @@ void ListFile::mediaSetPn( std::string mediaSetPn )
 {
   mediaSetPnV = std::move( mediaSetPn );
 }
-
 
 MediumNumber ListFile::mediaSequenceNumber() const
 {

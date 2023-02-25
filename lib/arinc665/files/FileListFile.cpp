@@ -20,7 +20,10 @@
 
 #include <arinc645/CheckValueGenerator.hpp>
 
-#include <helper/Endianess.hpp>
+#include <helper/Endianness.hpp>
+#include <helper/Exception.hpp>
+
+#include <boost/exception/all.hpp>
 
 namespace Arinc665::Files {
 

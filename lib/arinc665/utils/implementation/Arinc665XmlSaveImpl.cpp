@@ -23,7 +23,11 @@
 
 #include <arinc645/CheckValueTypeDescription.hpp>
 
+#include <helper/Exception.hpp>
+
 #include <fmt/format.h>
+
+#include <boost/exception/all.hpp>
 
 namespace Arinc665::Utils {
 

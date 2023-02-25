@@ -15,10 +15,9 @@
 
 #include <arinc665/Arinc665.hpp>
 
-#include <helper/Exception.hpp>
+#include <boost/exception/exception.hpp>
 
 #include <exception>
-#include <string>
 
 namespace Arinc665 {
 
@@ -32,7 +31,7 @@ class ARINC665_EXPORT Arinc665Exception :
      * @brief Returns the exception description.
      * @return The exception description.
      **/
-    const char* what() const noexcept override
+    [[nodiscard]] const char* what() const noexcept override
     {
       return "ARINC 665 Exception";
     }
@@ -46,7 +45,7 @@ class ARINC665_EXPORT InvalidArinc665File : public Arinc665Exception
      * @brief Returns the exception description.
      * @return The exception description.
      **/
-    const char* what() const noexcept override
+    [[nodiscard]] const char* what() const noexcept override
     {
       return "Invalid ARINC 665 File Exception";
     }

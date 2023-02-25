@@ -17,8 +17,11 @@
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
 
-#include <helper/Endianess.hpp>
+#include <helper/Endianness.hpp>
+#include <helper/Exception.hpp>
 #include <helper/SafeCast.hpp>
+
+#include <boost/exception/all.hpp>
 
 namespace Arinc665::Files {
 

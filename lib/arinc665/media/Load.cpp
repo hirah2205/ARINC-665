@@ -19,6 +19,10 @@
 
 #include <arinc645/CheckValue.hpp>
 
+#include <helper/Exception.hpp>
+
+#include <boost/exception/all.hpp>
+
 #include <utility>
 
 namespace Arinc665::Media {

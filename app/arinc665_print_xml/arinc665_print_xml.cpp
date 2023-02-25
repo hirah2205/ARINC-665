@@ -21,6 +21,8 @@
 #include <helper/Dump.hpp>
 #include <helper/Logger.hpp>
 
+#include <boost/exception/all.hpp>
+
 #include <boost/program_options.hpp>
 
 #include <filesystem>

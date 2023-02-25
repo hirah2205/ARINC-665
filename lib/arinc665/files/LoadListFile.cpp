@@ -17,8 +17,11 @@
 #include <arinc665/Arinc665Logger.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 
-#include <helper/Endianess.hpp>
+#include <helper/Endianness.hpp>
+#include <helper/Exception.hpp>
 #include <helper/SafeCast.hpp>
+
+#include <boost/exception/all.hpp>
 
 namespace Arinc665::Files {
 
@@ -178,7 +181,7 @@ void LoadListFile::decodeBody( const ConstRawFileSpan &rawFile )
   if ( 0U != spare )
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << Helper::AdditionalInfo( "Spare is not 0"));
+      << Helper::AdditionalInfo{ "Spare is not 0" } );
   }
 
   // media information pointer

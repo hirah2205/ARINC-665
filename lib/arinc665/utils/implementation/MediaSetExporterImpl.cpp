@@ -30,11 +30,15 @@
 #include <arinc645/Arinc645Crc.hpp>
 #include <arinc645/CheckValueGenerator.hpp>
 
+#include <helper/Exception.hpp>
+
 #include <fmt/format.h>
+
+#include <boost/exception/all.hpp>
 
 #include <utility>
 
-//! @todo Within GCC Std C++ lib an warning on string concatenation is
+//! @todo Within GCC Std C++ lib a warning on string concatenation is
 //!   generated in GCC 12 - Check on future version
 #if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic ignored "-Wrestrict"
