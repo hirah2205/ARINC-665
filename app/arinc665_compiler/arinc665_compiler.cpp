@@ -174,13 +174,13 @@ int main( int argc, char * argv[] )
     std::filesystem::path mediaSetDestinationDirectory;
     // Create batch file policy
     Arinc665::Utils::FileCreationPolicy createBatchFiles{
-      Arinc665::Utils::FileCreationPolicy::Invalid };
+      Arinc665::Utils::FileCreationPolicy::None };
     // Create Load Header file policy
     Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles{
-      Arinc665::Utils::FileCreationPolicy::Invalid };
+      Arinc665::Utils::FileCreationPolicy::None };
     // ARINC 665 Version
     Arinc665::SupportedArinc665Version version{
-      Arinc665::SupportedArinc665Version::Invalid };
+      Arinc665::SupportedArinc665Version::Supplement2 };
 
     boost::program_options::options_description optionsDescription{
       "ARINC 665 Media Set Compiler Options" };

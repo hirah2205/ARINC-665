@@ -29,13 +29,13 @@ std::ostream& operator<<(
   std::ostream &stream,
   const SupportedArinc665Version version)
 {
-  return (stream << SupportedArinc665VersionDescription::instance().name(
-    version));
+  return ( stream << SupportedArinc665VersionDescription::instance().name(
+    version ) );
 }
 
 std::istream& operator>>(
   std::istream& stream,
-  SupportedArinc665Version &version)
+  SupportedArinc665Version &version )
 {
   std::string versionStr{};
 
@@ -43,14 +43,16 @@ std::istream& operator>>(
   stream >> versionStr;
 
   // Decode
-  version = SupportedArinc665VersionDescription::instance().enumeration(
-    versionStr);
+  const auto optionalVersion{
+    SupportedArinc665VersionDescription::instance().enumeration( versionStr ) };
 
-  if ( SupportedArinc665Version::Invalid == version)
+  if ( !optionalVersion )
   {
     BOOST_THROW_EXCEPTION(
       boost::program_options::invalid_option_value( versionStr ) );
   }
+
+  version = *optionalVersion;
 
   return stream;
 }

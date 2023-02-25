@@ -62,8 +62,7 @@ RawFile CheckValueUtils_encode(
   return rawCheckValue;
 }
 
-Arinc645::CheckValue CheckValueUtils_decode(
-  const ConstRawFileSpan &rawFile )
+Arinc645::CheckValue CheckValueUtils_decode( const ConstRawFileSpan &rawFile )
 {
   if ( rawFile.size() < sizeof( uint16_t ) )
   {
@@ -95,20 +94,20 @@ Arinc645::CheckValue CheckValueUtils_decode(
     Arinc645::CheckValueTypeDescription::instance().enumeration(
       rawCheckValueType ) };
 
-  if ( Arinc645::CheckValueType::Invalid == checkValueType )
+  if ( !checkValueType )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "Invalid check value type" } );
   }
 
-  if ( Arinc645::CheckValue::Sizes.find( checkValueType )->second
+  if ( Arinc645::CheckValue::Sizes.find( *checkValueType )->second
     != checkValueLength - ( 2U * sizeof( uint16_t ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "Invalid check value length" } );
   }
 
-  return { checkValueType,
+  return { *checkValueType,
     std::vector< uint8_t >{
       it,
       it + checkValueLength - ( 2U * sizeof( uint16_t ) ) } };

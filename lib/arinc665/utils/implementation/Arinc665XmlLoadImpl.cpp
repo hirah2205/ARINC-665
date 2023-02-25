@@ -631,7 +631,7 @@ std::optional< Arinc645::CheckValueType > Arinc665XmlLoadImpl::checkValue(
       Arinc645::CheckValueTypeDescription::instance().enumeration(
         static_cast< std::string >( checkValueString ) ) };
 
-    if ( Arinc645::CheckValueType::Invalid == checkValue )
+    if ( !checkValue )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "Invalid Check Value" }

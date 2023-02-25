@@ -44,15 +44,16 @@ std::istream& operator>>(
   stream >> str;
 
   // Decode
-  fileCreationPolicy =
-    FileCreationPolicyDescription::instance().enumeration( str );
+  const auto optionalFileCreationPolicy{
+    FileCreationPolicyDescription::instance().enumeration( str ) };
 
-  if ( FileCreationPolicy::Invalid == fileCreationPolicy )
+  if ( !optionalFileCreationPolicy )
   {
     BOOST_THROW_EXCEPTION(
       boost::program_options::invalid_option_value( str ) );
   }
 
+  fileCreationPolicy = *optionalFileCreationPolicy;
   return stream;
 }
 

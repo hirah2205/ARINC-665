@@ -25,8 +25,7 @@ namespace Arinc665 {
 class ARINC665_EXPORT SupportedArinc665VersionDescription :
   public Helper::Description<
     SupportedArinc665VersionDescription,
-    SupportedArinc665Version,
-    SupportedArinc665Version::Invalid >
+    SupportedArinc665Version >
 {
   public:
     //! Initialises Description Values

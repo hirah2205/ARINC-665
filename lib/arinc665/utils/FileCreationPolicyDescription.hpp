@@ -25,8 +25,7 @@ namespace Arinc665::Utils {
 class ARINC665_EXPORT FileCreationPolicyDescription :
   public Helper::Description<
     FileCreationPolicyDescription,
-    FileCreationPolicy,
-    FileCreationPolicy::Invalid >
+    FileCreationPolicy >
 {
   public:
     //! Constructs and adds the entries

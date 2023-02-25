@@ -338,37 +338,47 @@ static void list_files( const std::filesystem::path &loadDir )
     }
     else if ( is_regular_file( itr->status()))
     {
-      switch ( Arinc665::Files::Arinc665File::fileType( itr->path().filename()))
+      if (
+        const auto fileType{ Arinc665::Files::Arinc665File::fileType( itr->path().filename() ) };
+        fileType )
       {
-        using enum Arinc665::FileType;
-        case BatchFile:
-          std::cout << "ARINC 665 BATCH file\n";
-          printBatchFile( itr->path() );
-          break;
+        switch ( *fileType )
+        {
+          using enum Arinc665::FileType;
 
-        case LoadUploadHeader:
-          std::cout << "ARINC 665 LOAD UPLOAD HEADER file\n";
-          printLoadHeaderFile( itr->path() );
-          break;
+          case BatchFile:
+            std::cout << "ARINC 665 BATCH file\n";
+            printBatchFile( itr->path() );
+            break;
 
-        case LoadList:
-          std::cout << "ARINC 665 LOAD LIST file\n";
-          printLoadListFile( itr->path() );
-          break;
+          case LoadUploadHeader:
+            std::cout << "ARINC 665 LOAD UPLOAD HEADER file\n";
+            printLoadHeaderFile( itr->path() );
+            break;
 
-        case BatchList:
-          std::cout << "ARINC 665 BATCH LIST file\n";
-          printBatchListFile( itr->path() );
-          break;
+          case LoadList:
+            std::cout << "ARINC 665 LOAD LIST file\n";
+            printLoadListFile( itr->path() );
+            break;
 
-        case FileList:
-          std::cout << "ARINC 665 FILE LIST file\n";
-          printFileListFile( itr->path() );
-          break;
+          case BatchList:
+            std::cout << "ARINC 665 BATCH LIST file\n";
+            printBatchListFile( itr->path() );
+            break;
 
-        default:
-          std::cout << "No special ARINC 665 file\n";
-          break;
+          case FileList:
+            std::cout << "ARINC 665 FILE LIST file\n";
+            printFileListFile( itr->path() );
+            break;
+
+          default:
+            std::cout << "INVALID VALUE\n";
+            break;
+        }
+      }
+      else
+      {
+        std::cout << "No special ARINC 665 file\n";
       }
     }
   }

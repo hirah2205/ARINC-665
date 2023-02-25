@@ -18,7 +18,6 @@
 
 #include <helper/Endianess.hpp>
 #include <helper/SafeCast.hpp>
-#include <helper/Logger.hpp>
 
 namespace Arinc665::Files {
 
@@ -80,7 +79,7 @@ uint16_t Arinc665File::calculateChecksum( const ConstRawFileSpan &file )
   return arincCrc16.checksum();
 }
 
-Arinc665::FileClassType Arinc665File::fileType(
+std::optional< FileClassType > Arinc665File::fileType(
   const ConstRawFileSpan &rawFile )
 {
   switch ( formatVersion( rawFile ) )
@@ -98,11 +97,11 @@ Arinc665::FileClassType Arinc665File::fileType(
       return FileClassType::MediaFile;
 
     default:
-      return FileClassType::Invalid;
+      return {};
   }
 }
 
-Arinc665::LoadFileFormatVersion Arinc665File::loadFileFormatVersion(
+std::optional< LoadFileFormatVersion > Arinc665File::loadFileFormatVersion(
   const ConstRawFileSpan &rawFile )
 {
   const LoadFileFormatVersion formatVersion{
@@ -115,13 +114,13 @@ Arinc665::LoadFileFormatVersion Arinc665File::loadFileFormatVersion(
       break;
 
     default:
-      return LoadFileFormatVersion::Invalid;
+      return {};
   }
 
   return formatVersion;
 }
 
-Arinc665::BatchFileFormatVersion Arinc665File::batchFileFormatVersion(
+std::optional< BatchFileFormatVersion > Arinc665File::batchFileFormatVersion(
   const ConstRawFileSpan &rawFile )
 {
   const BatchFileFormatVersion formatVersion{
@@ -134,13 +133,13 @@ Arinc665::BatchFileFormatVersion Arinc665File::batchFileFormatVersion(
       break;
 
     default:
-      return BatchFileFormatVersion::Invalid;
+      return {};
   }
 
   return formatVersion;
 }
 
-Arinc665::MediaFileFormatVersion Arinc665File::mediaFileFormatVersion(
+std::optional< MediaFileFormatVersion > Arinc665File::mediaFileFormatVersion(
   const ConstRawFileSpan &rawFile )
 {
   const MediaFileFormatVersion formatVersion{
@@ -153,13 +152,13 @@ Arinc665::MediaFileFormatVersion Arinc665File::mediaFileFormatVersion(
       break;
 
     default:
-      return MediaFileFormatVersion::Invalid;
+      return {};
   }
 
   return formatVersion;
 }
 
-SupportedArinc665Version Arinc665File::arinc665Version(
+std::optional< SupportedArinc665Version > Arinc665File::arinc665Version(
   const FileType fileType,
   const uint16_t formatVersionField ) noexcept
 {
@@ -213,7 +212,7 @@ SupportedArinc665Version Arinc665File::arinc665Version(
       break;
   }
 
-  return SupportedArinc665Version::Invalid;
+  return {};
 }
 
 uint16_t Arinc665File::formatVersionField(
@@ -273,7 +272,7 @@ uint16_t Arinc665File::formatVersionField(
   return 0xFFFFU;
 }
 
-Arinc665::FileType Arinc665File::fileType(
+std::optional< FileType > Arinc665File::fileType(
   const std::filesystem::path &filename )
 {
   const auto filenameN{ filename.filename().string() };
@@ -305,7 +304,7 @@ Arinc665::FileType Arinc665File::fileType(
     return FileType::BatchFile;
   }
 
-  return FileType::Invalid;
+  return {};
 }
 
 Arinc665File& Arinc665File::operator=( const ConstRawFileSpan &rawFile )
@@ -343,7 +342,7 @@ Arinc665File::Arinc665File(
   const FileType expectedFileType,
   ptrdiff_t checksumPosition ) :
   checksumPosition{ checksumPosition },
-  arinc665VersionV{ SupportedArinc665Version::Invalid }
+  arinc665VersionV{ SupportedArinc665Version::Supplement2 }
 {
   decodeHeader( rawFile, expectedFileType );
 }
@@ -446,14 +445,17 @@ void Arinc665File::decodeHeader(
     rawFile.begin() + FileFormatVersionFieldOffset,
     formatVersion );
 
-  arinc665VersionV = arinc665Version( expectedFileType, formatVersion );
+  const auto optionalArinc665Version{
+    arinc665Version( expectedFileType, formatVersion ) };
 
   // check format field version
-  if ( arinc665VersionV == SupportedArinc665Version::Invalid )
+  if ( !optionalArinc665Version )
   {
     BOOST_THROW_EXCEPTION(
       InvalidArinc665File() << Helper::AdditionalInfo{ "wrong file format" } );
   }
+
+  arinc665VersionV = *optionalArinc665Version;
 
   // Decode checksum field
   uint16_t crc{};

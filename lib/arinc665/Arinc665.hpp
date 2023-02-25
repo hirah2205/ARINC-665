@@ -10,6 +10,11 @@
  * @brief Declaration of Namespace Arinc665.
  **/
 
+/**
+ * @dir
+ * @brief Declaration/ Definition of Namespace Arinc665.
+ **/
+
 #ifndef ARINC665_ARINC665_HPP
 #define ARINC665_ARINC665_HPP
 
@@ -19,11 +24,6 @@
 #include <vector>
 #include <optional>
 #include <cstdint>
-
-/**
- * @dir
- * @brief Declaration/ Definition of Namespace Arinc665.
- **/
 
 /**
  * @brief ARINC 665 Specification.
@@ -56,10 +56,7 @@ enum class Arinc665Version
   //! ARINC 665 Supplement 4
   Supplement4,
   //! ARINC 665 Supplement 5
-  Supplement5,
-
-  //! Invalid Value
-  Invalid
+  Supplement5
 };
 
 //! Enumeration used for Feature Selection of this Library.
@@ -69,9 +66,6 @@ enum class SupportedArinc665Version
   Supplement2,
   //! ARINC 665-3/4/5 Compatible
   Supplement345,
-
-  //! Invalid Value
-  Invalid
 };
 
 //! Enumeration of file types.
@@ -82,10 +76,7 @@ enum class FileClassType
   //! ARINC 665 Batch file
   BatchFile,
   //! ARINC 665 %Media files (List files)
-  MediaFile,
-
-  //! None ARINC 665 File (Not specified through standard)
-  Invalid
+  MediaFile
 };
 
 /**
@@ -100,10 +91,7 @@ enum class LoadFileFormatVersion : uint16_t
   //! ARINC 665-2 load file
   Version2 = 0x8003U,
   //! ARINC 665-3/4/5 load file
-  Version345 = 0x8004U,
-
-  //! invalid value
-  Invalid  = 0xFFFFU
+  Version345 = 0x8004U
 };
 
 /**
@@ -118,10 +106,7 @@ enum class BatchFileFormatVersion : uint16_t
   //! ARINC 665-2 batch file
   Version2 = 0x9003U,
   //! ARINC 665-3/4/5 batch file
-  Version345 = 0x9004U,
-
-  //! invalid value
-  Invalid  = 0xFFFFU
+  Version345 = 0x9004U
 };
 
 /**
@@ -139,10 +124,7 @@ enum class MediaFileFormatVersion : uint16_t
   //! ARINC 665-2 %Media File
   Version2 = 0xA003U,
   //! ARINC 665-3/4/5 %Media File
-  Version345 = 0xA004U,
-
-  //! invalid value
-  Invalid  = 0xFFFFU
+  Version345 = 0xA004U
 };
 
 //! All ARINC 665 file types combined
@@ -155,10 +137,7 @@ enum class Arinc665FileFormatVersion : uint16_t
   BatchFileVersion345 = static_cast< uint16_t>( BatchFileFormatVersion::Version345 ),
 
   MediaFileVersion2   = static_cast< uint16_t>( MediaFileFormatVersion::Version2 ),
-  MediaFileVersion345 = static_cast< uint16_t>( MediaFileFormatVersion::Version345 ),
-
-  //! Invalid Value
-  Invalid = 0xFFFFU
+  MediaFileVersion345 = static_cast< uint16_t>( MediaFileFormatVersion::Version345 )
 };
 
 //! @brief ARINC 665 File Types
@@ -168,9 +147,7 @@ enum class FileType
   LoadUploadHeader, //!< ARINC 665 Load Upload Header File
   LoadList,         //!< ARINC 665 Load List File
   BatchList,        //!< ARINC 665 Batch List File
-  FileList,         //!< ARINC 665 File List File
-
-  Invalid           //!< Invalid Value
+  FileList          //!< ARINC 665 File List File
 };
 
 //! Default Filename of the List of Files.

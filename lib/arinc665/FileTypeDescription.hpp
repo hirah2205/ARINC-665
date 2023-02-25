@@ -22,10 +22,8 @@
 namespace Arinc665{
 
 //! ARINC 665 %File Type Description.
-class ARINC665_EXPORT FileTypeDescription : public Helper::Description<
-  FileTypeDescription,
-  FileType,
-  FileType::Invalid >
+class ARINC665_EXPORT FileTypeDescription :
+  public Helper::Description< FileTypeDescription, FileType >
 {
   public:
     //! Initialises Description
@@ -36,11 +34,11 @@ class ARINC665_EXPORT FileTypeDescription : public Helper::Description<
  * @brief Streaming operator to output ARINC 665 file type as string
  *
  * @param[in,out] stream
- *   The output stream
+ *   Output stream
  * @param[in] fileType
- *   The ARINC 665 file type.
+ *   ARINC 665 file type.
  *
- * @return The stream for chaining.
+ * @return @p stream for chaining.
  **/
 ARINC665_EXPORT std::ostream& operator<<(
   std::ostream &stream,

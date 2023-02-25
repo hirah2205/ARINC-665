@@ -21,6 +21,7 @@
 #include <list>
 #include <set>
 #include <cstdint>
+#include <optional>
 
 namespace Arinc665::Files {
 
@@ -105,8 +106,11 @@ class ARINC665_EXPORT Arinc665File
      *   Raw file data.
      *
      * @return ARINC 665 file class type.
+     * @retval{}
+     *   When @p rawFile does not map to an ARINC 665 File Type
      **/
-    static FileClassType fileType( const ConstRawFileSpan &rawFile );
+    static std::optional< FileClassType > fileType(
+      const ConstRawFileSpan &rawFile );
 
     /**
      * @brief Returns the load header file version for @p rawFile.
@@ -118,7 +122,7 @@ class ARINC665_EXPORT Arinc665File
      * @retval LoadFileFormatVersion::Invalid
      *   When @p rawFile is not a load header file
      **/
-    static LoadFileFormatVersion loadFileFormatVersion(
+    static std::optional< LoadFileFormatVersion > loadFileFormatVersion(
       const ConstRawFileSpan &rawFile );
 
     /**
@@ -128,10 +132,10 @@ class ARINC665_EXPORT Arinc665File
      *   Raw file data.
      *
      * @return Batch file version for @p rawFile.
-     * @retval BatchFileFormatVersion::Invalid
+     * @retval {}
      *   When @p rawFile is not a batch file
      **/
-    static BatchFileFormatVersion batchFileFormatVersion(
+    static std::optional< BatchFileFormatVersion > batchFileFormatVersion(
       const ConstRawFileSpan &rawFile );
 
     /**
@@ -141,10 +145,10 @@ class ARINC665_EXPORT Arinc665File
      *   Raw file data.
      *
      * @return The media file version for [rawFile].
-     * @retval MediaFileFormatVersion::Invalid
+     * @retval {}
      *   When @p rawFile is not a media file
      **/
-    static MediaFileFormatVersion mediaFileFormatVersion(
+    static std::optional< MediaFileFormatVersion > mediaFileFormatVersion(
       const ConstRawFileSpan &rawFile );
 
     /**
@@ -156,12 +160,12 @@ class ARINC665_EXPORT Arinc665File
      * @param[in] formatVersionField
      *   Format version field of file.
      *
-     * @return The Supported ARINC 665 version.
-     * @retval SupportedArinc665Version::Invalid
+     * @return Supported ARINC 665 version.
+     * @retval {}
      *   If the given information are inconsistent or the Version is not
      *   supported.
      **/
-    static SupportedArinc665Version arinc665Version(
+    static std::optional< SupportedArinc665Version > arinc665Version(
       FileType fileType,
       uint16_t formatVersionField ) noexcept;
 
@@ -186,11 +190,12 @@ class ARINC665_EXPORT Arinc665File
      * @param[in] filename
      *   filename.
      *
-     * @return The file type.
-     * @retval FileType::Invalid
+     * @return File type of @p filename.
+     * @retval {}
      *   If @p filename is not a ARINC 665 file type.
      **/
-    static FileType fileType( const std::filesystem::path &filename );
+    static std::optional< FileType > fileType(
+      const std::filesystem::path &filename );
 
     //! Destructor
     virtual ~Arinc665File() noexcept = default;

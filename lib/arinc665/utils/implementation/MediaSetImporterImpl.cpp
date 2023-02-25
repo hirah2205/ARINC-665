@@ -82,48 +82,55 @@ void MediaSetImporterImpl::loadFirstMedium()
   {
     // get file type
     // skip list files and handle load headers and batch files separate
-    switch ( Arinc665::Files::Arinc665File::fileType( fileInfo.filename ) )
+    if(
+      const auto fileType{ Arinc665::Files::Arinc665File::fileType( fileInfo.filename ) };
+      fileType )
     {
-      case Arinc665::FileType::FileList:
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{
-            "File List File not expected to be in FILES.LUM" } );
+      switch ( *fileType )
+      {
+        using enum Arinc665::FileType;
 
-      case Arinc665::FileType::LoadList:
-        // check that List of Loads is in Root Directory
-        if ( fileInfo.pathName != "\\" )
-        {
+        case FileList:
           BOOST_THROW_EXCEPTION( Arinc665Exception()
-            << Helper::AdditionalInfo{ "LOADS.LUM not in Root Directory" } );
-        }
+            << Helper::AdditionalInfo{
+              "File List File not expected to be in FILES.LUM" } );
 
-        listOfLoadsFilePresent = true;
+        case LoadList:
+          // check that List of Loads is in Root Directory
+          if ( fileInfo.pathName != "\\" )
+          {
+            BOOST_THROW_EXCEPTION( Arinc665Exception()
+              << Helper::AdditionalInfo{ "LOADS.LUM not in Root Directory" } );
+          }
 
-        // store load list file check value
-        mediaSet->listOfLoadsCheckValueType( fileInfo.checkValue.type() );
+          listOfLoadsFilePresent = true;
 
-        // List of Loads not added to file information
-        continue ;
+          // store load list file check value
+          mediaSet->listOfLoadsCheckValueType( fileInfo.checkValue.type() );
 
-      case Arinc665::FileType::BatchList:
-        // check that List of Loads is in Root Directory
-        if ( fileInfo.pathName != "\\" )
-        {
-          BOOST_THROW_EXCEPTION( Arinc665Exception()
-            << Helper::AdditionalInfo{ "BATCHES.LUM not in Root Directory" } );
-        }
+          // List of Loads not added to file information
+          continue ;
 
-        // set batch list file present indicator
-        batchListFilePresent = true;
+        case BatchList:
+          // check that List of Loads is in Root Directory
+          if ( fileInfo.pathName != "\\" )
+          {
+            BOOST_THROW_EXCEPTION( Arinc665Exception()
+              << Helper::AdditionalInfo{ "BATCHES.LUM not in Root Directory" } );
+          }
 
-        // store batch list file check value
-        mediaSet->listOfBatchesCheckValueType( fileInfo.checkValue.type() );
+          // set batch list file present indicator
+          batchListFilePresent = true;
 
-        // List of Batches not added to file information
-        continue ;
+          // store batch list file check value
+          mediaSet->listOfBatchesCheckValueType( fileInfo.checkValue.type() );
 
-      default:
-        break;
+          // List of Batches not added to file information
+          continue ;
+
+        default:
+          break;
+      }
     }
 
     // update files information

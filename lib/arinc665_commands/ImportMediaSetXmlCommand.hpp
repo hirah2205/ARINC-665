@@ -133,13 +133,13 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetXmlCommand
     std::filesystem::path mediaSetSourceDirectory;
     //! Create Batch File Policy
     Arinc665::Utils::FileCreationPolicy createBatchFiles{
-      Arinc665::Utils::FileCreationPolicy::Invalid };
+      Arinc665::Utils::FileCreationPolicy::None };
     //! Create Load Header File Policy
     Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles{
-      Arinc665::Utils::FileCreationPolicy::Invalid };
+      Arinc665::Utils::FileCreationPolicy::None };
     //! ARINC 665 Version
     Arinc665::SupportedArinc665Version version{
-      Arinc665::SupportedArinc665Version::Invalid };
+      Arinc665::SupportedArinc665Version::Supplement2 };
     //! Media Set Output Paths
     Arinc665::Utils::MediaSetManagerConfiguration::MediaSetPaths mediaSetPaths;
     //! Load XML Results

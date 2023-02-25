@@ -100,6 +100,8 @@ void FileListFile::checkValueType( Arinc645::CheckValueType type )
 
 bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
 {
+  //! @todo rework
+
   BOOST_LOG_FUNCTION()
 
   if ( ( mediaSetPn() != other.mediaSetPn() )
@@ -123,28 +125,42 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
   auto otherFileIt{ otherFileList.begin() };
   for ( size_t i = 0; i < filesV.size(); ++i )
   {
-    if ( ( fileIt->filename != otherFileIt->filename )
+    if (
+      ( fileIt->filename != otherFileIt->filename )
       || ( fileIt->pathName != otherFileIt->pathName ) )
     {
       return false;
     }
 
-    switch ( Arinc665File::fileType( fileIt->filename ) )
+    if ( const auto fileType{ Arinc665File::fileType( fileIt->filename ) };
+         fileType )
     {
-      case FileType::LoadList:
-      case FileType::BatchList:
-        // skip test of CRC and Member Sequence Number
-        break;
+      switch ( *fileType )
+      {
+        case FileType::LoadList:
+        case FileType::BatchList:
+          // skip test of CRC and Member Sequence Number
+          break;
 
-      default:
-        if ( ( fileIt->crc != otherFileIt->crc )
-          || ( fileIt->checkValue != otherFileIt->checkValue )
-          || ( fileIt->memberSequenceNumber != otherFileIt->memberSequenceNumber ) )
-        {
-          return false;
-        }
+        default:
+          if ( ( fileIt->crc != otherFileIt->crc )
+            || ( fileIt->checkValue != otherFileIt->checkValue )
+            || ( fileIt->memberSequenceNumber != otherFileIt->memberSequenceNumber ) )
+          {
+            return false;
+          }
 
-        break;
+          break;
+      }
+    }
+    else
+    {
+      if ( ( fileIt->crc != otherFileIt->crc )
+           || ( fileIt->checkValue != otherFileIt->checkValue )
+           || ( fileIt->memberSequenceNumber != otherFileIt->memberSequenceNumber ) )
+      {
+        return false;
+      }
     }
 
     ++fileIt;

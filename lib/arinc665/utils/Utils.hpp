@@ -50,9 +50,7 @@ enum class FileCreationPolicy
   //! Only non-existing files are created by the exporter itself.
   NoneExisting,
   //! All files are created by the exporter itself - even if already existing in source.
-  All,
-  //! Invalid value
-  Invalid
+  All
 };
 
 class MediaSetExporter;
