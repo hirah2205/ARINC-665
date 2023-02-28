@@ -60,10 +60,52 @@ class Arinc665XmlLoadImpl final
     };
 
     /**
-     * @brief Import the media set from the XML DOM.
+     * @brief Converts GLib string to std::string_view.
+     *
+     * @param[in] str
+     *   GLib String.
+     *
+     * @return string view of @p str.
+     **/
+    static std::string_view toStringView( const Glib::ustring &str );
+
+    /**
+     * @brief Converts std::string_view to GLib string.
+     *
+     * @param[in] str
+     *   String
+     *
+     * @return GLib String.
+     **/
+    static Glib::ustring toGlibString( std::string_view str );
+
+    /**
+     * @brief Returns the Common Name attribute for directories and files.
+     *
+     * @param[in] element
+     *   XML Element
+     *
+     * @return Content of the name attribute.
+     **/
+    static std::string name( const xmlpp::Element &element );
+
+    /**
+     * @brief Return Common Medium attribute for files
+     *
+     * @param[in] element
+     *   XML Element
+     *
+     * @return Content of the Medium attribute.
+     * @retval {}
+     *   If Medium is not set.
+     **/
+    static OptionalMediumNumber mediumNumber( const xmlpp::Element &element );
+
+    /**
+     * @brief Import the Media Set from the XML DOM.
      *
      * @param[in] mediaSetElement
-     *   Media Set to Load.
+     *   XML Element of Media Set.
      **/
     void mediaSet( const xmlpp::Element &mediaSetElement );
 
@@ -74,10 +116,10 @@ class Arinc665XmlLoadImpl final
      * directory.
      *
      * @param[in] currentContainerElement
-     *   XML Element representing the container (root or directory).
+     *   XML Element representing the container (content-root or directory).
      * @param[in,out] currentContainer
-     *   Current Medium, or Directory.
-     *   Files and directories will be added to this.
+     *   Current Container.
+     *   Files and directories will be added to this container.
      *
      * @throw Arinc665::Arinc665Exception
      *   When Name Attribute is missing or empty.
@@ -136,7 +178,7 @@ class Arinc665XmlLoadImpl final
       Media::Load &load );
 
     /**
-     * @brief Import Load Data/ Support Files from XML DOM.
+     * @brief Import Load Data/ Support %Files from XML DOM.
      *
      * @param[in] loadElement
      *   XML Element Representing the Load
@@ -195,13 +237,15 @@ class Arinc665XmlLoadImpl final
      * Handles attributes:
      *  - `CheckValue`, and
      *  - `SourcePath`.
+     * The common attributes `Name` and `MediumNumber` is handled by @ref name()
+     * and @ref mediumNumber().
      *
      * @param[in] fileElement
      *   XML Element
      * @param[in,out] file
      *   File
      **/
-    void loadBaseFile(
+    void baseFile(
       const xmlpp::Element &fileElement,
       const Media::FilePtr &file );
 

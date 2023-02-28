@@ -133,6 +133,11 @@ class Arinc665XmlSaveImpl final
      *
      * Is called by regularFile(), lod(), and batch() to export common
      * attributes.
+     * Stores:
+     *  - `Name`,
+     *  - `CheckValue`,
+     *  - `SourcePath`, and
+     *  - `Medium`.
      *
      * @param[in] file
      *   File
