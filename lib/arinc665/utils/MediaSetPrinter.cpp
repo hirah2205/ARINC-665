@@ -390,7 +390,9 @@ void MediaSetPrinter_print(
   {
     outS
       << nextIndent
-      << "Loads: " << target << "\n";
+      << "Target: " << target << "\n"
+      << nextIndent
+      << "Loads: " << "\n";
 
     for ( const auto &load : loads )
     {

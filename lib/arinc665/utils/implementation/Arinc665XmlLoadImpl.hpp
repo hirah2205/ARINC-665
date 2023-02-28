@@ -24,6 +24,8 @@ namespace Arinc665::Utils {
 
 /**
  * @brief ARINC 665 Media Sets XML File Importer.
+ *
+ * Loads a given XML file and generates the appropriate MediaSet representation.
  **/
 class Arinc665XmlLoadImpl final
 {

@@ -46,7 +46,7 @@ namespace Arinc665::Files {
  *
  * @return New iterator position.
  **/
-ARINC665_EXPORT ConstRawFileSpan::iterator StringUtils_decodeString(
+ConstRawFileSpan::iterator ARINC665_EXPORT StringUtils_decodeString(
   ConstRawFileSpan::iterator it,
   std::string &str );
 
@@ -58,7 +58,7 @@ ARINC665_EXPORT ConstRawFileSpan::iterator StringUtils_decodeString(
  *
  * @return Encoded raw string.
  **/
-ARINC665_EXPORT RawFile StringUtils_encodeString( std::string_view str );
+RawFile ARINC665_EXPORT StringUtils_encodeString( std::string_view str );
 
 /** @} **/
 
@@ -84,7 +84,7 @@ ARINC665_EXPORT RawFile StringUtils_encodeString( std::string_view str );
  *
  * @return New iterator position.
  **/
-ARINC665_EXPORT ConstRawFileSpan::iterator StringUtils_decodeStrings(
+ConstRawFileSpan::iterator ARINC665_EXPORT StringUtils_decodeStrings(
   ConstRawFileSpan::iterator it,
   std::list< std::string > &strings );
 
@@ -96,7 +96,7 @@ ARINC665_EXPORT ConstRawFileSpan::iterator StringUtils_decodeStrings(
  *
  * @return Encoded raw string list.
  **/
-ARINC665_EXPORT RawFile StringUtils_encodeStrings(
+RawFile ARINC665_EXPORT StringUtils_encodeStrings(
   const std::list< std::string > &strings );
 
 /** @} **/
