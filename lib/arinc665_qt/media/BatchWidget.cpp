@@ -23,7 +23,7 @@
 
 namespace Arinc665Qt::Media {
 
-BatchWidget::BatchWidget( QWidget * const parent):
+BatchWidget::BatchWidget( QWidget * const parent ) :
   QWidget{ parent},
   ui{ std::make_unique< Ui::BatchWidget>() },
   batchInfoModel{ std::make_unique< BatchInfoModel >( this ) },
@@ -58,15 +58,17 @@ void BatchWidget::selectedBatch(
     targetLoadsModel->loads( {} );
 
     ui->targets->resizeColumnsToContents();
+    ui->targets->selectRow( 0 );
+    emit ui->targets->activated( batchInfoModel->index( 0, 0 ) );
   }
 }
 
 void BatchWidget::activatedTarget( const QModelIndex &index )
 {
-  auto batchTagetInformation{ batchInfoModel->batchTargetInformation( index ) };
+  auto batchTargetInformation{ batchInfoModel->batchTargetInformation( index ) };
 
   targetLoadsModel->loads(
-    batchInfoModel->constBatchTargetInformation( batchTagetInformation ).second );
+    batchInfoModel->constBatchTargetInformation( batchTargetInformation ).second );
 
   ui->loads->resizeColumnsToContents();
 }
