@@ -135,6 +135,7 @@ class ARINC665_EXPORT MediaSetImporter
      * @return Imported %Media Set
      *
      * @throw Arinc665Exception
+     *   When the media set cannot be imported.
      **/
     virtual Result operator()() = 0;
 };

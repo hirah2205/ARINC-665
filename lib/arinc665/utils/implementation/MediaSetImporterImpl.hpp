@@ -61,7 +61,7 @@ class MediaSetImporterImpl final : public MediaSetImporter
   private:
     //! Files Information (From File List File) (filename -> file information)
     using FilesInformation =
-      std::map< std::string, Files::FileInfo, std::less<> >;
+      std::multimap< std::string, Files::FileInfo, std::less<> >;
     //! Loads Information from List of Loads (filenames -> Load Information)
     using LoadsInformation =
       std::map< std::string, Files::LoadInfo, std::less<> >;
@@ -96,18 +96,11 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *
      * Iterates over the file information and creates the directories and files.
      *
-     * @sa addLoads
-     * @sa addBatches
+     * @sa addLoad
+     * @sa addBatch
      * @sa checkCreateDirectory
      **/
     void addFiles();
-
-    /**
-     * @brief Adds the loads to the media set.
-     *
-     * @throw Arinc665Exception When files are not existent
-     **/
-    void addLoads();
 
     /**
      * @brief Adds the Load to the Media Set.
@@ -116,16 +109,6 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *   Load Information.
      **/
     void addLoad( const Files::LoadInfo &loadInfo );
-
-    /**
-     * @brief Adds the Batches to the Media Set.
-     *
-     * @throw Arinc665Exception
-     *   When loads are not existent
-     * @throw Arinc665Exception
-     *   When Load Part Number does not match Batch Information
-     **/
-    void addBatches();
 
     /**
      * @brief Add the batch to the Media Set.

@@ -138,7 +138,7 @@ void MediaSetImporterImpl::loadFirstMedium()
     }
 
     // update files information
-    filesInfos.try_emplace( fileInfo.filename, fileInfo );
+    filesInfos.emplace( fileInfo.filename, fileInfo );
   }
 
   // Load List File
@@ -164,7 +164,7 @@ void MediaSetImporterImpl::loadFirstMedium()
   // Set Media Set Parameter
   mediaSet->partNumber( std::string{ fileListFile.mediaSetPn() } );
 
-  // Load list of loads file
+  // Load "list of loads" file
   loadListFile =
     readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfLoadsName );
 
@@ -198,7 +198,7 @@ void MediaSetImporterImpl::loadFirstMedium()
   mediaSet->loadsUserDefinedData(
     Media::UserDefinedData{ loadsUserDefinedData.begin(), loadsUserDefinedData.end() } );
 
-  // Load list of batches file
+  // Load "list of batches" file
   if ( batchListFilePresent )
   {
     batchListFile =
@@ -326,18 +326,16 @@ void MediaSetImporterImpl::addFiles()
     }
   }
 
-  addLoads();
-  addBatches();
-}
-
-void MediaSetImporterImpl::addLoads()
-{
-  BOOST_LOG_FUNCTION()
-
   // iterate over load headers
   for ( const auto &[ filename, loadInfo ] : loadsInfos )
   {
     addLoad( loadInfo );
+  }
+
+  // iterate over batches
+  for ( const auto &[ filename, batchInfo ] : batchesInfos )
+  {
+    addBatch( batchInfo );
   }
 }
 
@@ -366,10 +364,10 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   }
 
   // validate THW IDs of load header against list of loads
-  if ( std::multiset< std::string >{
+  if ( std::multiset< std::string, std::less<> >{
       loadInfo.targetHardwareIds.begin(),
       loadInfo.targetHardwareIds.end() }
-    != std::multiset< std::string >{
+    != std::multiset< std::string, std::less<> >{
       loadHeaderFile.targetHardwareIds().begin(),
       loadHeaderFile.targetHardwareIds().end() } )
   {
@@ -532,16 +530,6 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   }
 }
 
-void MediaSetImporterImpl::addBatches()
-{
-  BOOST_LOG_FUNCTION()
-
-  // iterate over batches
-  for ( const auto &[ filename, batchInfo ] : batchesInfos )
-  {
-    addBatch( batchInfo );
-  }
-}
 
 void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
 {
@@ -635,17 +623,22 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
 const Files::FileInfo& MediaSetImporterImpl::fileInformation(
   std::string_view filename ) const
 {
-  const auto fileInfoIt{ filesInfos.find( filename ) };
+  // search for all known files with given filename
+  const auto [fileInfoFirstIt, fileInfoLastIt]{
+    filesInfos.equal_range( filename ) };
 
-  if ( filesInfos.end() == fileInfoIt )
+  // at the momen check for unique filename
+  //! @todo handle files with same name in different directories
+  if ( ( filesInfos.end() == fileInfoFirstIt )
+    || ( std::distance( fileInfoFirstIt, fileInfoLastIt ) != 1 ) )
   {
     BOOST_THROW_EXCEPTION(
       Arinc665Exception()
-      << Helper::AdditionalInfo{ "File not found" }
+      << Helper::AdditionalInfo{ "File not found or too many" }
       << boost::errinfo_file_name{ std::string{ filename } } );
   }
 
-  return fileInfoIt->second;
+  return fileInfoFirstIt->second;
 }
 
 Media::ContainerEntityPtr MediaSetImporterImpl::checkCreateDirectory(
@@ -797,9 +790,9 @@ void MediaSetImporterImpl::checkLoadFile(
 
     // Load file Check Value
     if ( !fileCheckValueChecked
-      && Arinc645::CheckValueGenerator::checkValue(
+      && ( Arinc645::CheckValueGenerator::checkValue(
         loadFile.checkValue.type(),
-        rawDataFile ) != loadFile.checkValue )
+        rawDataFile ) != loadFile.checkValue ) )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665Exception()
