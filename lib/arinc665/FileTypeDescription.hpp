@@ -31,7 +31,7 @@ class ARINC665_EXPORT FileTypeDescription :
 };
 
 /**
- * @brief Streaming operator to output ARINC 665 file type as string
+ * @brief ARINC 665 File Type @p std::ostream output operator.
  *
  * @param[in,out] stream
  *   Output stream

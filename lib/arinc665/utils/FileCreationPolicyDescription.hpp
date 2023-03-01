@@ -33,7 +33,7 @@ class ARINC665_EXPORT FileCreationPolicyDescription :
 };
 
 /**
- * @brief Streaming operator to output File creation policy as string
+ * @brief File Creation Policy @p std::ostream output operator.
  *
  * @param[in,out] stream
  *   Output Stream
@@ -47,7 +47,7 @@ ARINC665_EXPORT std::ostream& operator<<(
   FileCreationPolicy fileCreationPolicy );
 
 /**
- * @brief Streaming operator for parsing a string as file creation policy.
+ * @brief File Creation Policy @p std::istream input operator.
  *
  * @param[in,out] stream
  *   Input stream

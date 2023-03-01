@@ -27,7 +27,7 @@
 #include <cstdint>
 
 /**
- * @brief ARINC 665 %Files.
+ * @brief ARINC 665 %Media Set %Files.
  *
  * This namespace contains the implementation of the following ARINC 665
  * protocol files:
@@ -47,12 +47,28 @@
  **/
 namespace Arinc665::Files {
 
+/**
+ * @name Raw File
+ *
+ * Representation of raw file data.
+ * @{
+ **/
+
 //! Raw File
 using RawFile = std::vector< uint8_t>;
 //! Const Raw File Span
 using ConstRawFileSpan = std::span< const uint8_t>;
 //! Raw File Span
 using RawFileSpan = std::span< uint8_t>;
+
+/** @} **/
+
+/**
+ * @name User Defined Data
+ *
+ * Representation of user defined data.
+ * @{
+ **/
 
 //! User Defined Data Type
 using UserDefinedData = std::vector< uint8_t >;
@@ -61,14 +77,30 @@ using ConstUserDefinedDataSpan = std::span< const uint8_t >;
 //! User Defined Data Span Type
 using UserDefinedDataSpan = std::span< const uint8_t >;
 
+/** @} **/
+
 struct MediaSetInformation;
 
 class Arinc665File;
+
+/**
+ * @name Load File Information
+ *
+ * @{
+ **/
 
 struct LoadFileInfo;
 //! Load Files Information.
 using LoadFilesInfo = std::list< LoadFileInfo >;
 class LoadHeaderFile;
+
+/** @} **/
+
+/**
+ * @name Batch File Information
+ *
+ * @{
+ **/
 
 struct BatchTargetInfo;
 //! Batch Targets Information.
@@ -78,20 +110,46 @@ struct BatchLoadInfo;
 using BatchLoadsInfo = std::list< BatchLoadInfo >;
 class BatchFile;
 
+/** @} **/
+
+/**
+ * @name batch List File Information
+ *
+ * @{
+ **/
+
 struct BatchInfo;
 //! Batches Information.
 using BatchesInfo = std::list< BatchInfo >;
 class BatchListFile;
+
+/** @} **/
+
+/**
+ * @name Load List File Information
+ *
+ * @{
+ **/
 
 struct LoadInfo;
 //! Loads Information.
 using LoadsInfo = std::list< LoadInfo >;
 class LoadListFile;
 
+/** @} **/
+
+/**
+ * @name File List File Information
+ *
+ * @{
+ **/
+
 struct FileInfo;
 //! Files Information.
 using FilesInfo = std::list< FileInfo >;
 class FileListFile;
+
+/** @} **/
 
 }
 

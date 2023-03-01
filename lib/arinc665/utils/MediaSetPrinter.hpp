@@ -26,7 +26,15 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief Decodes and prints the Content of the Media Set.
+ * @name ARINC 665 %Media Set Printer
+ *
+ * Can be used to dump the content of a %Media Set to the console.
+ *
+ * @{
+ **/
+
+/**
+ * @brief Decodes and prints the Content of the %Media Set.
  *
  * - Prints files
  * - Prints loads
@@ -48,7 +56,7 @@ void ARINC665_EXPORT MediaSetPrinter_print(
   std::string_view indent = " " );
 
 /**
- * @brief Decodes and prints the content of the Media Set File.
+ * @brief Decodes and prints the content of the %Media Set File.
  *
  * - File Name
  * - File Path
@@ -70,8 +78,8 @@ void ARINC665_EXPORT MediaSetPrinter_print(
  *
  * - Load Name
  * - Load Part Number
- * - Data Files
- * - Support Files
+ * - Data files
+ * - Support files
  *
  * @param[in] load
  *   Load to print.
@@ -131,6 +139,7 @@ void ARINC665_EXPORT MediaSetPrinter_print(
   std::string_view initialIndent = {},
   std::string_view indent = " " );
 
+/** @} **/
 }
 
 #endif

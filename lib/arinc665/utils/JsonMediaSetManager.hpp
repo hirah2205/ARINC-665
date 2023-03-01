@@ -21,9 +21,9 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief Media Set Manager JSON Helper
+ * @brief %Media Set Manager JSON %Helper.
  *
- * This manager holds the media st manager configuration within a JSON file
+ * This manager holds the media set manager configuration within a JSON file
  * within a separate directory.
  **/
 class ARINC665_EXPORT JsonMediaSetManager

@@ -28,17 +28,17 @@ class ARINC665_EXPORT Version
     // delete constructors
     Version() = delete;
 
-    //! Major Version
+    //! Major %Version
     static const uint32_t Major;
-    //! Minor Version
+    //! Minor %Version
     static const uint32_t Minor;
-    //! Patch Version
+    //! Patch %Version
     static const uint32_t Patch;
 
-    //! Additional Version Information
+    //! Additional %Version Information
     static const std::string_view Addition;
 
-    //! Version Information as String.
+    //! %Version Information as String.
     static const std::string_view VersionInformation;
 };
 

@@ -72,14 +72,14 @@ class ARINC665_EXPORT PartNumber
      *   string.
      *
      * @param[in] partNumber
-     *   The part number as string
+     *   Part number as string
      *
      * @throw Arinc665Exception
      *   If string size is invalid
      * @throw Arinc665Exception
      *   when calculated check code differs from current
      **/
-    PartNumber( std::string_view partNumber );
+    explicit PartNumber( std::string_view partNumber );
 
     /**
      * @name Manufacturer Code
@@ -111,7 +111,7 @@ class ARINC665_EXPORT PartNumber
     /**
      * @brief Returns the product identifier.
      *
-     * @return The product identifier.
+     * @return Product identifier.
      **/
     [[nodiscard]] std::string_view productIdentifier() const;
 
@@ -119,7 +119,7 @@ class ARINC665_EXPORT PartNumber
      * @brief Sets the product identifier.
      *
      * @param[in] productIdentifier
-     *   The product identifier.
+     *   Product identifier.
      **/
     void productIdentifier( std::string_view productIdentifier );
 

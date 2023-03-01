@@ -24,6 +24,11 @@
 namespace Arinc665::Utils {
 
 /**
+ * @name ARINC 665 File Printer
+ * @{
+ **/
+
+/**
  * @brief Prints the Content of the given File List File.
  *
  * @param[in] fileListFile
@@ -112,6 +117,8 @@ void ARINC665_EXPORT FilePrinter_print(
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
   std::string_view indent = "" );
+
+/** @} **/
 
 }
 

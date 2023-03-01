@@ -33,26 +33,32 @@
 #include <span>
 
 /**
- * @brief ARINC 665 %Media (Set).
+ * @brief ARINC 665 %Media Set Model.
  *
  * This namespace provides classes to represent a ARINC 665 %Media Set and their
- * parts like Loads, Batches and other %Files.
+ * parts like Directories, Loads, Batches and other %Files.
  **/
 namespace Arinc665::Media {
 
 //! Item Type
 enum class Type
 {
+  //! Media Set
   MediaSet,
+  //! Directory within Media Set
   Directory,
+  //! File within Media Set / Directory (Refined by @ref FileType)
   File
 };
 
 //! File Type
 enum class FileType
 {
+  //! Regular File (can be part of Load)
   RegularFile,
+  //! Load Header File
   LoadFile,
+  //! Batch File
   BatchFile
 };
 
@@ -60,6 +66,7 @@ enum class FileType
  * @name User Defined Data
  * @{
  **/
+
 //! User Defined Data
 using UserDefinedData = std::vector< uint8_t >;
 

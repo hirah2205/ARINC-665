@@ -33,7 +33,7 @@ class ARINC665_EXPORT SupportedArinc665VersionDescription :
 };
 
 /**
- * @brief Streaming operator to output ARINC 665 Version as string
+ * @brief Supported ARINC 665 %Version @p std::ostream output operator.
  *
  * @param[in,out] stream
  *   Output Stream
@@ -47,8 +47,7 @@ ARINC665_EXPORT std::ostream& operator<<(
   SupportedArinc665Version version );
 
 /**
- * @brief Streaming operator for parsing a version string as ARINC 665 version
- *   type.
+ * @brief Supported ARINC 665 %Version @p std::istream input operator.
  *
  * @param[in,out] stream
  *   Input Stream

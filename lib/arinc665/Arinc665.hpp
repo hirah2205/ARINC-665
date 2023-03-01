@@ -150,7 +150,7 @@ enum class FileType
   FileList          //!< ARINC 665 File List File
 };
 
-//! Default Filename of the List of Files.
+//! Default Filename of the List of %Files.
 constexpr std::string_view ListOfFilesName{ "FILES.LUM" };
 
 //! Default Filename of the List of Loads.

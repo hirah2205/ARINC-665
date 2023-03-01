@@ -15,7 +15,7 @@ An XML format and corresponding tools are provided to ease generation of media
 sets.
 
 For building graphical applications an QT based library is provided which
-consist ow models, dialogs, and wizards to work with ARINC 665 media sets.
+consist of models, dialogs, and wizards to work with ARINC 665 media sets.
 
 This tool suite contains the components:
  - Library with namespaces:
