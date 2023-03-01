@@ -157,12 +157,8 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *
      * @param[in] mediumNumber
      *   Current Medium Number
-     * @param[in] filesInfo
-     *   File information to use,
      **/
-    void checkMediumFiles(
-      const MediumNumber &mediumNumber,
-      const Files::FilesInfo &filesInfo ) const;
+    void checkMediumFiles( const MediumNumber &mediumNumber ) const;
 
     /**
      * @brief Check File Integrity
@@ -237,25 +233,25 @@ class MediaSetImporterImpl final : public MediaSetImporter
     bool checkFileIntegrityV{ true };
 
     //! Media Set
-    Media::MediaSetPtr mediaSet;
+    Media::MediaSetPtr mediaSetV;
     //! Check Values
-    Media::CheckValues checkValues;
+    Media::CheckValues checkValuesV;
 
     //! File List File (Load by loadFirstMedium(), used by loadFurtherMedia() )
-    Files::FileListFile fileListFile;
+    Files::FileListFile fileListFileV;
     //! Load List File (Load by loadFirstMedium(), used by loadFurtherMedia() )
-    Files::LoadListFile loadListFile;
+    Files::LoadListFile loadListFileV;
     //! Batch List File (Load by loadFirstMedium(), used by loadFurtherMedia() )
-    Files::BatchListFile batchListFile;
+    Files::BatchListFile batchListFileV;
     //! Batch List File present indicator
-    bool batchListFilePresent{ false };
+    bool batchListFilePresentV{ false };
 
     //! File Information from List of File
-    FilesInformation filesInfos;
+    FilesInformation filesInfosV;
     //! Load Information from List of Loads
-    LoadsInformation loadsInfos;
+    LoadsInformation loadsInfosV;
     //! Batch Information from List of Batches
-    BatchesInformation batchesInfos;
+    BatchesInformation batchesInfosV;
 };
 
 }

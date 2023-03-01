@@ -60,7 +60,7 @@ MediaSetImporterImpl::Result MediaSetImporterImpl::operator()()
   }
 
   // create Media set
-  mediaSet = std::make_shared< Media::MediaSet>();
+  mediaSetV = std::make_shared< Media::MediaSet>();
 
   // 1st Medium
   loadFirstMedium();
@@ -71,18 +71,19 @@ MediaSetImporterImpl::Result MediaSetImporterImpl::operator()()
   // finally, add all files (regular, load headers, batches) to the media set
   addFiles();
 
-  return { std::move( mediaSet ), std::move( checkValues ) };
+  return { std::move( mediaSetV ), std::move( checkValuesV ) };
 }
 
 void MediaSetImporterImpl::loadFirstMedium()
 {
   // Load "list of files" file
-  fileListFile = readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfFilesName );
+  fileListFileV =
+    readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfFilesName );
 
   // indicator, that LOADS.LUM present in FILES.LUM
   bool listOfLoadsFilePresent{ false };
 
-  for ( const auto &fileInfo : fileListFile.files() )
+  for ( const auto &fileInfo : fileListFileV.files() )
   {
     // get file type
     // skip list files and handle load headers and batch files separate
@@ -110,7 +111,7 @@ void MediaSetImporterImpl::loadFirstMedium()
           listOfLoadsFilePresent = true;
 
           // store load list file check value
-          mediaSet->listOfLoadsCheckValueType( fileInfo.checkValue.type() );
+          mediaSetV->listOfLoadsCheckValueType( fileInfo.checkValue.type() );
 
           // List of Loads not added to file information
           continue ;
@@ -124,10 +125,10 @@ void MediaSetImporterImpl::loadFirstMedium()
           }
 
           // set batch list file present indicator
-          batchListFilePresent = true;
+          batchListFilePresentV = true;
 
           // store batch list file check value
-          mediaSet->listOfBatchesCheckValueType( fileInfo.checkValue.type() );
+          mediaSetV->listOfBatchesCheckValueType( fileInfo.checkValue.type() );
 
           // List of Batches not added to file information
           continue ;
@@ -138,7 +139,7 @@ void MediaSetImporterImpl::loadFirstMedium()
     }
 
     // update files information
-    filesInfos.emplace( fileInfo.filename, fileInfo );
+    filesInfosV.emplace( fileInfo.filename, fileInfo );
   }
 
   // Load List File
@@ -151,29 +152,29 @@ void MediaSetImporterImpl::loadFirstMedium()
   }
 
   // check file integrity on current medium
-  checkMediumFiles( MediumNumber{ 1U }, fileListFile.files() );
+  checkMediumFiles( MediumNumber{ 1U } );
 
   // store list of files user defined data
-  auto filesUserDefinedData{ fileListFile.userDefinedData() };
-  mediaSet->filesUserDefinedData(
+  auto filesUserDefinedData{ fileListFileV.userDefinedData() };
+  mediaSetV->filesUserDefinedData(
     Media::UserDefinedData{
       filesUserDefinedData.begin(),
       filesUserDefinedData.end() } );
   // store file list file check value
-  mediaSet->listOfFilesCheckValueType( fileListFile.checkValueType() );
+  mediaSetV->listOfFilesCheckValueType( fileListFileV.checkValueType() );
   // Set Media Set Parameter
-  mediaSet->partNumber( std::string{ fileListFile.mediaSetPn() } );
+  mediaSetV->partNumber( std::string{ fileListFileV.mediaSetPn() } );
 
   // Load "list of loads" file
-  loadListFile =
+  loadListFileV =
     readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfLoadsName );
 
-  for ( const auto &load : loadListFile.loads() )
+  for ( const auto &load : loadListFileV.loads() )
   {
     // check existence of load header file
-    const auto fileIt{ filesInfos.find( load.headerFilename ) };
+    const auto fileIt{ filesInfosV.find( load.headerFilename ) };
 
-    if ( fileIt == filesInfos.end() )
+    if ( fileIt == filesInfosV.end() )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "load header file not found" }
@@ -190,26 +191,26 @@ void MediaSetImporterImpl::loadFirstMedium()
     }
 
     // add load to "loads information"
-    loadsInfos.try_emplace( load.headerFilename, load );
+    loadsInfosV.try_emplace( load.headerFilename, load );
   }
 
   // store list of loads user defined data
-  auto loadsUserDefinedData{ loadListFile.userDefinedData() };
-  mediaSet->loadsUserDefinedData(
+  auto loadsUserDefinedData{ loadListFileV.userDefinedData() };
+  mediaSetV->loadsUserDefinedData(
     Media::UserDefinedData{ loadsUserDefinedData.begin(), loadsUserDefinedData.end() } );
 
   // Load "list of batches" file
-  if ( batchListFilePresent )
+  if ( batchListFilePresentV )
   {
-    batchListFile =
+    batchListFileV =
       readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfBatchesName );
 
-    for ( const auto &batch : batchListFile.batches() )
+    for ( const auto &batch : batchListFileV.batches() )
     {
       // check existence of load header file
-      const auto fileIt{ filesInfos.find( batch.filename ) };
+      const auto fileIt{ filesInfosV.find( batch.filename ) };
 
-      if ( fileIt == filesInfos.end() )
+      if ( fileIt == filesInfosV.end() )
       {
         BOOST_THROW_EXCEPTION( Arinc665Exception()
           << Helper::AdditionalInfo{ "batch file not found" }
@@ -226,12 +227,12 @@ void MediaSetImporterImpl::loadFirstMedium()
       }
 
       // add batch to "batches information"
-      batchesInfos.try_emplace( batch.filename, batch );
+      batchesInfosV.try_emplace( batch.filename, batch );
     }
 
     // store list of batches user defined data
-    auto batchesUserDefinedData{ batchListFile.userDefinedData() };
-    mediaSet->batchesUserDefinedData(
+    auto batchesUserDefinedData{ batchListFileV.userDefinedData() };
+    mediaSetV->batchesUserDefinedData(
       Media::UserDefinedData{ batchesUserDefinedData.begin(), batchesUserDefinedData.end() } );
   }
 }
@@ -241,7 +242,7 @@ void MediaSetImporterImpl::loadFurtherMedia() const
   // iterate over media
   for (
     MediumNumber mediumNumber{ 2U };
-    mediumNumber <= fileListFile.numberOfMediaSetMembers();
+    mediumNumber <= fileListFileV.numberOfMediaSetMembers();
     ++mediumNumber )
   {
     // Load "list of files" file
@@ -249,7 +250,7 @@ void MediaSetImporterImpl::loadFurtherMedia() const
       readFileHandlerV( mediumNumber, Arinc665::ListOfFilesName ) };
 
     // compare current list of files to first one
-    if ( !mediumFileListFile.belongsToSameMediaSet( fileListFile )
+    if ( !mediumFileListFile.belongsToSameMediaSet( fileListFileV )
       || ( mediumNumber != mediumFileListFile.mediaSequenceNumber() ) )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -258,7 +259,7 @@ void MediaSetImporterImpl::loadFurtherMedia() const
     }
 
     // check file integrity on current medium
-    checkMediumFiles( mediumNumber, mediumFileListFile.files() );
+    checkMediumFiles( mediumNumber );
 
     // Load "List of Loads" file
 
@@ -266,7 +267,7 @@ void MediaSetImporterImpl::loadFurtherMedia() const
     if (
       const Files::LoadListFile mediumLoadListFile{
         readFileHandlerV( mediumNumber, Arinc665::ListOfLoadsName ) };
-      !mediumLoadListFile.belongsToSameMediaSet( loadListFile )
+      !mediumLoadListFile.belongsToSameMediaSet( loadListFileV )
         || ( mediumNumber != mediumLoadListFile.mediaSequenceNumber() ) )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -275,13 +276,13 @@ void MediaSetImporterImpl::loadFurtherMedia() const
     }
 
     // Load "List of Batches" file
-    if ( batchListFilePresent )
+    if ( batchListFilePresentV )
     {
       // check against stored version
       if (
         const Files::BatchListFile mediumBatchListFile{
           readFileHandlerV( mediumNumber, Arinc665::ListOfBatchesName ) };
-        !mediumBatchListFile.belongsToSameMediaSet( batchListFile )
+        !mediumBatchListFile.belongsToSameMediaSet( batchListFileV )
         || ( mediumNumber != mediumBatchListFile.mediaSequenceNumber() ) )
       {
         BOOST_THROW_EXCEPTION(
@@ -296,9 +297,10 @@ void MediaSetImporterImpl::loadFurtherMedia() const
 void MediaSetImporterImpl::addFiles()
 {
   // iterate over all files
-  for ( const auto &[ fileName, fileInfo ] : filesInfos )
+  for ( const auto &[ fileName, fileInfo ] : filesInfosV )
   {
-    if ( loadsInfos.contains( fileName ) || batchesInfos.contains( fileName ) )
+    if ( loadsInfosV.contains( fileName )
+      || batchesInfosV.contains( fileName ) )
     {
       // skip load header and batch files
       continue;
@@ -318,22 +320,23 @@ void MediaSetImporterImpl::addFiles()
     filePtr->checkValueType( fileInfo.checkValue.type() );
 
     // update check values (CRC and Check Value if provided)
-    checkValues[ filePtr ].emplace( Arinc645::CheckValue::crc16( fileInfo.crc ) );
+    checkValuesV[ filePtr ].emplace(
+      Arinc645::CheckValue::crc16( fileInfo.crc ) );
 
     if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
     {
-      checkValues[ filePtr ].emplace( fileInfo.checkValue );
+      checkValuesV[ filePtr ].emplace( fileInfo.checkValue );
     }
   }
 
   // iterate over load headers
-  for ( const auto &[ filename, loadInfo ] : loadsInfos )
+  for ( const auto &[ filename, loadInfo ] : loadsInfosV )
   {
     addLoad( loadInfo );
   }
 
   // iterate over batches
-  for ( const auto &[ filename, batchInfo ] : batchesInfos )
+  for ( const auto &[ filename, batchInfo ] : batchesInfosV )
   {
     addBatch( batchInfo );
   }
@@ -419,7 +422,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   // iterate over data files
   for ( const auto &dataFile : loadHeaderFile.dataFiles() )
   {
-    const auto dataFiles{ mediaSet->recursiveRegularFiles( dataFile.filename ) };
+    const auto dataFiles{ mediaSetV->recursiveRegularFiles( dataFile.filename ) };
 
     if ( dataFiles.empty() )
     {
@@ -436,6 +439,8 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
         << Helper::AdditionalInfo{ "Data file not unique" }
         << boost::errinfo_file_name{ dataFile.filename } );
     }
+
+    //! @todo handle files with same filename according ARINC-5
 
     // perform file check
     // in ARINC 665-2 File Size of Data File is stored as multiple of 16 bit
@@ -454,14 +459,14 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
     // within addFiles
     if ( Arinc645::CheckValue::NoCheckValue != dataFile.checkValue )
     {
-      checkValues[ dataFiles.front() ].emplace( dataFile.checkValue );
+      checkValuesV[ dataFiles.front() ].emplace( dataFile.checkValue );
     }
   }
 
   // iterate over support files
   for ( const auto &supportFile : loadHeaderFile.supportFiles() )
   {
-    auto supportFiles{ mediaSet->recursiveRegularFiles( supportFile.filename ) };
+    auto supportFiles{ mediaSetV->recursiveRegularFiles( supportFile.filename ) };
 
     if ( supportFiles.empty() )
     {
@@ -479,6 +484,8 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
         << boost::errinfo_file_name{ supportFile.filename } );
     }
 
+    //! @todo handle files with same filename according ARINC-5
+
     checkLoadFile( loadCrc, *loadCheckValueGenerator, supportFile, false );
 
     loadPtr->supportFile(
@@ -490,7 +497,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
     // within addFiles
     if ( Arinc645::CheckValue::NoCheckValue != supportFile.checkValue )
     {
-      checkValues[ supportFiles.front() ].emplace( supportFile.checkValue );
+      checkValuesV[ supportFiles.front() ].emplace( supportFile.checkValue );
     }
   }
 
@@ -522,11 +529,11 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   loadPtr->loadCheckValueType( loadHeaderFile.loadCheckValueType() );
 
   // update check values (CRC and Check Value if provided)
-  checkValues[ loadPtr ].emplace( Arinc645::CheckValue::crc16( fileInfo.crc ) );
+  checkValuesV[ loadPtr ].emplace( Arinc645::CheckValue::crc16( fileInfo.crc ) );
 
   if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
   {
-    checkValues[ loadPtr ].emplace( fileInfo.checkValue );
+    checkValuesV[ loadPtr ].emplace( fileInfo.checkValue );
   }
 }
 
@@ -577,7 +584,7 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
     // iterate over loads
     for ( const auto& load : targetHardware.loads )
     {
-      const auto loads{ mediaSet->recursiveLoads( load.headerFilename ) };
+      const auto loads{ mediaSetV->recursiveLoads( load.headerFilename ) };
 
       if ( loads.empty() )
       {
@@ -612,11 +619,11 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
   }
 
   // update check values (CRC and Check Value if provided)
-  checkValues[ batchPtr ].emplace( Arinc645::CheckValue::crc16( fileInfo.crc ) );
+  checkValuesV[ batchPtr ].emplace( Arinc645::CheckValue::crc16( fileInfo.crc ) );
 
   if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
   {
-    checkValues[ batchPtr ].emplace( fileInfo.checkValue );
+    checkValuesV[ batchPtr ].emplace( fileInfo.checkValue );
   }
 }
 
@@ -625,11 +632,10 @@ const Files::FileInfo& MediaSetImporterImpl::fileInformation(
 {
   // search for all known files with given filename
   const auto [fileInfoFirstIt, fileInfoLastIt]{
-    filesInfos.equal_range( filename ) };
+    filesInfosV.equal_range( filename ) };
 
   // at the momen check for unique filename
-  //! @todo handle files with same name in different directories
-  if ( ( filesInfos.end() == fileInfoFirstIt )
+  if ( ( filesInfosV.end() == fileInfoFirstIt )
     || ( std::distance( fileInfoFirstIt, fileInfoLastIt ) != 1 ) )
   {
     BOOST_THROW_EXCEPTION(
@@ -650,10 +656,10 @@ Media::ContainerEntityPtr MediaSetImporterImpl::checkCreateDirectory(
   // we are in root-directory
   if ( dirPath.empty() )
   {
-    return mediaSet;
+    return mediaSetV;
   }
 
-  Media::ContainerEntityPtr dir{ mediaSet };
+  Media::ContainerEntityPtr dir{ mediaSetV };
   assert( dir );
 
   // iterate over path elements
@@ -675,11 +681,10 @@ Media::ContainerEntityPtr MediaSetImporterImpl::checkCreateDirectory(
 }
 
 void MediaSetImporterImpl::checkMediumFiles(
-  const MediumNumber &mediumNumber,
-  const Files::FilesInfo &filesInfo ) const
+  const MediumNumber &mediumNumber ) const
 {
   // iterate over files
-  for ( const auto &fileInfo : filesInfo )
+  for ( const auto &[ filename, fileInfo ] : filesInfosV )
   {
     // skip files, which are not part of the current medium
     if ( fileInfo.memberSequenceNumber != mediumNumber )
