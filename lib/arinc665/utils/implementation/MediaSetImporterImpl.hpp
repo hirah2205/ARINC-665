@@ -96,6 +96,9 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *
      * Iterates over the file information and creates the directories and files.
      *
+     * @sa regularFile
+     * @sa loadFile
+     * @sa batchFile
      * @sa addLoad
      * @sa addBatch
      * @sa checkCreateDirectory
@@ -103,35 +106,82 @@ class MediaSetImporterImpl final : public MediaSetImporter
     void addFiles();
 
     /**
-     * @brief Adds the Load to the Media Set.
+     * @brief Add Regular File
      *
-     * @param[in] loadInfo
-     *   Load Information.
+     * @param[in,out] parent
+     *   Parent Container
+     * @param[in] fileInfo
+     *   File information
      **/
-    void addLoad( const Files::LoadInfo &loadInfo );
+    void regularFile(
+      Media::ContainerEntity &parent,
+      const Files::FileInfo &fileInfo );
 
     /**
-     * @brief Add the batch to the Media Set.
+     * @brief Add Load Header File
      *
-     * Generates the Batch and adds the target hardware load information.
+     * @param[in,out] parent
+     *   Parent Container
+     * @param[in] fileInfo
+     *   File information
+     * @param[in] loadInfo
+     *   Load Information
+     **/
+    void loadFile(
+      Media::ContainerEntity &parent,
+      const Files::FileInfo &fileInfo,
+      const Files::LoadInfo &loadInfo );
+
+    /**
+     * @brief Add Batch File
      *
+     * @param[in,out] parent
+     *   Parent Container
+     * @param[in] fileInfo
+     *   File information
      * @param[in] batchInfo
      *   Batch Information
      **/
-    void addBatch( const Files::BatchInfo &batchInfo );
+    void batchFile(
+      Media::ContainerEntity &parent,
+      const Files::FileInfo &fileInfo,
+      const Files::BatchInfo &batchInfo );
 
     /**
-     * @brief Returns the File Information from the File List Information
+     * @brief Adds Load information to Load.
      *
-     * @param[in] filename
-     *   Filename
+     * The load information can only be updated when all files are loaded and
+     * known to the media set.
      *
-     * @return File Information from the File List Information.
-     * @throw Arinc665Exception
-     *   When File is not in File List Information
+     * @param[in,out] load
+     *   Load
+     * @param[in] fileInfo
+     *   File information
+     * @param[in] loadInfo
+     *   Load Information.
      **/
-    [[nodiscard]] const Files::FileInfo& fileInformation(
-      std::string_view filename ) const;
+    void addLoad(
+      Media::Load &load,
+      const Files::FileInfo &fileInfo,
+      const Files::LoadInfo &loadInfo );
+
+    /**
+     * @brief Add the batch information to the Batch.
+     *
+     * The batch information can only be updated when all files are loaded and
+     * known to the media set.
+     *
+     * @param[in,out] batch
+     *   Batch
+     * @param[in] fileInfo
+     *   File information
+     * @param[in] batchInfo
+     *   Batch Information
+     **/
+    void addBatch(
+      Media::Batch &batch,
+      const Files::FileInfo &fileInfo,
+      const Files::BatchInfo &batchInfo );
 
     /**
      * @brief Creates the logical directory entry if not already created and
@@ -187,8 +237,10 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *   Load CRC
      * @param[in,out] loadCheckValueGenerator
      *   Load Check Value Generator
-     * @param[in] loadFile
-     *   Load File
+     * @param[in] fileInfo
+     *   File Information
+     * @param[in] loadFileInfo
+     *   Load File Information
      * @param[in] fileSize16Bit
      *   If Data Size is stored in multiple of 16bit.
      *   This is true for data files in ARINC 665-2 Load Header Files.
@@ -199,7 +251,8 @@ class MediaSetImporterImpl final : public MediaSetImporter
     void checkLoadFile(
       Arinc645::Arinc645Crc32 &loadCrc,
       Arinc645::CheckValueGenerator &loadCheckValueGenerator,
-      const Files::LoadFileInfo &loadFile,
+      const Files::FileInfo &fileInfo,
+      const Files::LoadFileInfo &loadFileInfo,
       bool fileSize16Bit ) const;
 
     /**
@@ -252,6 +305,13 @@ class MediaSetImporterImpl final : public MediaSetImporter
     LoadsInformation loadsInfosV;
     //! Batch Information from List of Batches
     BatchesInformation batchesInfosV;
+
+    //! Regular Files
+    std::map< Media::RegularFilePtr, Files::FileInfo, std::less< > > regularFilesV;
+    //! Loads
+    std::map< Media::LoadPtr, std::pair< Files::FileInfo, Files::LoadInfo >, std::less< > > loadsV;
+    //! Batches
+    std::map< Media::BatchPtr, std::pair< Files::FileInfo, Files::BatchInfo >, std::less< > > batchesV;
 };
 
 }

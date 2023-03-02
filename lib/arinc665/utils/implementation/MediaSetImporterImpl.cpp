@@ -299,58 +299,151 @@ void MediaSetImporterImpl::addFiles()
   // iterate over all files
   for ( const auto &[ fileName, fileInfo ] : filesInfosV )
   {
-    if ( loadsInfosV.contains( fileName )
-      || batchesInfosV.contains( fileName ) )
-    {
-      // skip load header and batch files
-      continue;
-    }
-
     // get directory, where file will be placed into.
-    const auto container{
+    const auto parent{
       checkCreateDirectory( fileInfo.path().parent_path() ) };
 
-    // place file
-    const auto filePtr{ container->addRegularFile(
-      fileInfo.filename,
-      fileInfo.memberSequenceNumber ) };
-    assert( filePtr );
+    const auto loadInfo{ loadsInfosV.find( fileName ) };
+    const auto batchInfo{ batchesInfosV.find( fileName ) };
 
-    // set check value indicator
-    filePtr->checkValueType( fileInfo.checkValue.type() );
-
-    // update check values (CRC and Check Value if provided)
-    checkValuesV[ filePtr ].emplace(
-      Arinc645::CheckValue::crc16( fileInfo.crc ) );
-
-    if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
+    if ( loadInfo != loadsInfosV.end() )
     {
-      checkValuesV[ filePtr ].emplace( fileInfo.checkValue );
+      // check that load is not present in batches
+      if ( batchInfo != batchesInfosV.end() )
+      {
+      BOOST_THROW_EXCEPTION(
+        Arinc665Exception()
+          << Helper::AdditionalInfo{ "Load file also in batch list present"}
+          << boost::errinfo_file_name{ fileName } );
+      }
+
+      loadFile( *parent, fileInfo, loadInfo->second );
+    }
+    else if ( batchesInfosV.contains( fileName ) )
+    {
+      batchFile( *parent, fileInfo, batchInfo->second );
+    }
+    else
+    {
+      regularFile( *parent, fileInfo );
     }
   }
 
+  // finally fill loads and batches with data
+
   // iterate over load headers
-  for ( const auto &[ filename, loadInfo ] : loadsInfosV )
+  for ( const auto &[ file, loadInfo ] : loadsV )
   {
-    addLoad( loadInfo );
+    addLoad( *file, loadInfo.first, loadInfo.second );
   }
 
   // iterate over batches
-  for ( const auto &[ filename, batchInfo ] : batchesInfosV )
+  for ( const auto &[ file, batchInfo ] : batchesV )
   {
-    addBatch( batchInfo );
+    addBatch( *file, batchInfo.first, batchInfo.second );
   }
 }
 
-void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
+void MediaSetImporterImpl::regularFile(
+  Media::ContainerEntity &parent,
+  const Files::FileInfo &fileInfo)
 {
   BOOST_LOG_FUNCTION()
 
-  // obtain file information for load header
-  const auto &fileInfo { fileInformation( loadInfo.headerFilename ) };
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+    << "Regular File " << fileInfo.path().generic_string();
+
+  // create file
+  auto file{ parent.addRegularFile(
+    fileInfo.filename,
+    fileInfo.memberSequenceNumber ) };
+  assert( file );
+
+  // set check value indicator
+  file->checkValueType( fileInfo.checkValue.type() );
+
+  // update check values (CRC and Check Value if provided)
+  checkValuesV[ file ].emplace(
+    Arinc645::CheckValue::crc16( fileInfo.crc ) );
+
+  if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
+  {
+    checkValuesV[ file ].emplace( fileInfo.checkValue );
+  }
+
+  // add to deferred load handling
+  regularFilesV.try_emplace( std::move( file ), fileInfo );
+}
+
+void MediaSetImporterImpl::loadFile(
+  Media::ContainerEntity &parent,
+  const Files::FileInfo &fileInfo,
+  const Files::LoadInfo &loadInfo )
+{
+  BOOST_LOG_FUNCTION()
 
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
     << "Load Header File " << fileInfo.path().generic_string();
+
+  // create load
+  auto load{ parent.addLoad(
+    loadInfo.headerFilename,
+    loadInfo.memberSequenceNumber ) };
+  assert( load );
+
+  // set check value indicator
+  load->checkValueType( fileInfo.checkValue.type() );
+
+  // update check values (CRC and Check Value if provided)
+  checkValuesV[ load ].emplace(
+    Arinc645::CheckValue::crc16( fileInfo.crc ) );
+
+  if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
+  {
+    checkValuesV[ load ].emplace( fileInfo.checkValue );
+  }
+
+  // add to deferred load handling
+  loadsV.try_emplace( std::move( load ), std::make_pair( fileInfo, loadInfo ) );
+}
+
+void MediaSetImporterImpl::batchFile(
+  Media::ContainerEntity &parent,
+  const Files::FileInfo &fileInfo,
+  const Files::BatchInfo &batchInfo )
+{
+  BOOST_LOG_FUNCTION()
+
+  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+    << "Batch File " << fileInfo.path().generic_string();
+
+  // create batch
+  auto batch{ parent.addBatch(
+    batchInfo.filename,
+    batchInfo.memberSequenceNumber ) };
+  assert( batch );
+
+  // set check value indicator
+  batch->checkValueType( fileInfo.checkValue.type() );
+
+  // update check values (CRC and Check Value if provided)
+  checkValuesV[ batch ].emplace( Arinc645::CheckValue::crc16( fileInfo.crc ) );
+
+  if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
+  {
+    checkValuesV[ batch ].emplace( fileInfo.checkValue );
+  }
+
+  // add to deferred batch handling
+  batchesV.try_emplace( std::move( batch ), std::make_pair( fileInfo, batchInfo ) );
+}
+
+void MediaSetImporterImpl::addLoad(
+  Media::Load &load,
+  const Files::FileInfo &fileInfo,
+  const Files::LoadInfo &loadInfo )
+{
+  BOOST_LOG_FUNCTION()
 
   // decode load header
   const auto rawLoadHeaderFile{
@@ -380,21 +473,9 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
       << boost::errinfo_file_name{ std::string{ loadInfo.headerFilename } } );
   }
 
-  // obtain container (directory, medium), which will contain the load.
-  const auto container{ checkCreateDirectory( fileInfo.path().parent_path() ) };
-
-  // create load
-  const auto loadPtr{ container->addLoad(
-    loadInfo.headerFilename,
-    loadInfo.memberSequenceNumber ) };
-  assert( loadPtr );
-
-  // set check value indicator
-  loadPtr->checkValueType( fileInfo.checkValue.type() );
-
-  loadPtr->partFlags( loadHeaderFile.partFlags() );
-  loadPtr->partNumber( std::string{ loadHeaderFile.partNumber() } );
-  loadPtr->loadType( loadHeaderFile.loadType() );
+  load.partFlags( loadHeaderFile.partFlags() );
+  load.partNumber( std::string{ loadHeaderFile.partNumber() } );
+  load.loadType( loadHeaderFile.loadType() );
   Media::Load::TargetHardwareIdPositions thwIdsPositions{};
   for ( const auto &[ thwId, positions ] : loadHeaderFile.targetHardwareIdsPositions() )
   {
@@ -405,7 +486,7 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
     // if not previously added - add it now with empty positions
     thwIdsPositions.try_emplace( thwId );
   }
-  loadPtr->targetHardwareIdPositions( std::move( thwIdsPositions ) );
+  load.targetHardwareIdPositions( std::move( thwIdsPositions ) );
 
   // Load Check CRC and Load Check Value
   Arinc645::Arinc645Crc32 loadCrc{};
@@ -420,16 +501,16 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
   }
 
   // iterate over data files
-  for ( const auto &dataFile : loadHeaderFile.dataFiles() )
+  for ( const auto &loadFileInfo : loadHeaderFile.dataFiles() )
   {
-    const auto dataFiles{ mediaSetV->recursiveRegularFiles( dataFile.filename ) };
+    const auto dataFiles{ mediaSetV->recursiveRegularFiles( loadFileInfo.filename ) };
 
     if ( dataFiles.empty() )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665Exception()
           << Helper::AdditionalInfo{ "Data file not found" }
-          << boost::errinfo_file_name{ dataFile.filename } );
+          << boost::errinfo_file_name{ loadFileInfo.filename } );
     }
 
     if ( dataFiles.size() > 1U )
@@ -437,43 +518,47 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
       BOOST_THROW_EXCEPTION(
         Arinc665Exception()
         << Helper::AdditionalInfo{ "Data file not unique" }
-        << boost::errinfo_file_name{ dataFile.filename } );
+        << boost::errinfo_file_name{ loadFileInfo.filename } );
     }
 
     //! @todo handle files with same filename according ARINC-5
+
+    const auto dataFileInfo{ regularFilesV.find( dataFiles.front() ) };
+    assert( dataFileInfo != regularFilesV.end() );
 
     // perform file check
     // in ARINC 665-2 File Size of Data File is stored as multiple of 16 bit
     checkLoadFile(
       loadCrc,
       *loadCheckValueGenerator,
-      dataFile,
+      dataFileInfo->second,
+      loadFileInfo,
       loadHeaderFile.arincVersion() == SupportedArinc665Version::Supplement2 );
 
-    loadPtr->dataFile(
+    load.dataFile(
       dataFiles.front(),
-      dataFile.partNumber,
-      dataFile.checkValue.type() );
+      loadFileInfo.partNumber,
+      loadFileInfo.checkValue.type() );
 
     // Add check value if provided - CRC 16 is not added, as it is handled
     // within addFiles
-    if ( Arinc645::CheckValue::NoCheckValue != dataFile.checkValue )
+    if ( Arinc645::CheckValue::NoCheckValue != loadFileInfo.checkValue )
     {
-      checkValuesV[ dataFiles.front() ].emplace( dataFile.checkValue );
+      checkValuesV[ dataFiles.front() ].emplace( loadFileInfo.checkValue );
     }
   }
 
   // iterate over support files
-  for ( const auto &supportFile : loadHeaderFile.supportFiles() )
+  for ( const auto &loadFileInfo : loadHeaderFile.supportFiles() )
   {
-    auto supportFiles{ mediaSetV->recursiveRegularFiles( supportFile.filename ) };
+    auto supportFiles{ mediaSetV->recursiveRegularFiles( loadFileInfo.filename ) };
 
     if ( supportFiles.empty() )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665Exception()
         << Helper::AdditionalInfo{ "Support file not found" }
-        << boost::errinfo_file_name{ supportFile.filename } );
+        << boost::errinfo_file_name{ loadFileInfo.filename } );
     }
 
     if ( supportFiles.size() > 1U )
@@ -481,23 +566,31 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
       BOOST_THROW_EXCEPTION(
         Arinc665Exception()
         << Helper::AdditionalInfo{ "Support file not unique" }
-        << boost::errinfo_file_name{ supportFile.filename } );
+        << boost::errinfo_file_name{ loadFileInfo.filename } );
     }
 
     //! @todo handle files with same filename according ARINC-5
 
-    checkLoadFile( loadCrc, *loadCheckValueGenerator, supportFile, false );
+    const auto supportFileInfo{ regularFilesV.find( supportFiles.front() ) };
+    assert( supportFileInfo != regularFilesV.end() );
 
-    loadPtr->supportFile(
+    checkLoadFile(
+      loadCrc,
+      *loadCheckValueGenerator,
+      supportFileInfo->second,
+      loadFileInfo,
+      false );
+
+    load.supportFile(
       supportFiles.front(),
-      supportFile.partNumber,
-      supportFile.checkValue.type() );
+      loadFileInfo.partNumber,
+      loadFileInfo.checkValue.type() );
 
     // Add check value if provided - CRC 16 is not added, as it is handled
     // within addFiles
-    if ( Arinc645::CheckValue::NoCheckValue != supportFile.checkValue )
+    if ( Arinc645::CheckValue::NoCheckValue != loadFileInfo.checkValue )
     {
-      checkValuesV[ supportFiles.front() ].emplace( supportFile.checkValue );
+      checkValuesV[ supportFiles.front() ].emplace( loadFileInfo.checkValue );
     }
   }
 
@@ -523,29 +616,19 @@ void MediaSetImporterImpl::addLoad( const Files::LoadInfo &loadInfo )
 
   // User Defined Data
   auto loadUserDefinedData{ loadHeaderFile.userDefinedData() };
-  loadPtr->userDefinedData(
+  load.userDefinedData(
     Media::UserDefinedData{ loadUserDefinedData.begin(), loadUserDefinedData.end() } );
   // Load Check Value
-  loadPtr->loadCheckValueType( loadHeaderFile.loadCheckValueType() );
-
-  // update check values (CRC and Check Value if provided)
-  checkValuesV[ loadPtr ].emplace( Arinc645::CheckValue::crc16( fileInfo.crc ) );
-
-  if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
-  {
-    checkValuesV[ loadPtr ].emplace( fileInfo.checkValue );
-  }
+  load.loadCheckValueType( loadHeaderFile.loadCheckValueType() );
 }
 
 
-void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
+void MediaSetImporterImpl::addBatch(
+  Media::Batch &batch,
+  const Files::FileInfo &fileInfo,
+  const Files::BatchInfo &batchInfo )
 {
   BOOST_LOG_FUNCTION()
-
-  const auto &fileInfo{ fileInformation( batchInfo.filename ) };
-
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
-    << "Load Batch File " << fileInfo.path().generic_string();
 
   // Decode batch File
   Files::BatchFile batchFile{ readFileHandlerV(
@@ -561,20 +644,8 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
       << boost::errinfo_file_name{ std::string{ batchInfo.filename } } );
   }
 
-  // obtain container (directory, medium), which will contain the batch.
-  const auto container{ checkCreateDirectory( fileInfo.path().parent_path() ) };
-
-  // create batch
-  const auto batchPtr{ container->addBatch(
-    batchInfo.filename,
-    batchInfo.memberSequenceNumber ) };
-  assert( batchPtr );
-
-  // set check value indicator
-  batchPtr->checkValueType( fileInfo.checkValue.type() );
-
-  batchPtr->partNumber( std::string{ batchFile.partNumber() } );
-  batchPtr->comment( std::string{ batchFile.comment() } );
+  batch.partNumber( std::string{ batchFile.partNumber() } );
+  batch.comment( std::string{ batchFile.comment() } );
 
   // iterate over target hardware
   for ( const auto &targetHardware : batchFile.targetsHardware() )
@@ -615,36 +686,8 @@ void MediaSetImporterImpl::addBatch( const Files::BatchInfo &batchInfo )
     }
 
     // add Target Hardware/ Position
-    batchPtr->target( targetHardware.targetHardwareIdPosition, batchLoads );
+    batch.target( targetHardware.targetHardwareIdPosition, batchLoads );
   }
-
-  // update check values (CRC and Check Value if provided)
-  checkValuesV[ batchPtr ].emplace( Arinc645::CheckValue::crc16( fileInfo.crc ) );
-
-  if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
-  {
-    checkValuesV[ batchPtr ].emplace( fileInfo.checkValue );
-  }
-}
-
-const Files::FileInfo& MediaSetImporterImpl::fileInformation(
-  std::string_view filename ) const
-{
-  // search for all known files with given filename
-  const auto [fileInfoFirstIt, fileInfoLastIt]{
-    filesInfosV.equal_range( filename ) };
-
-  // at the momen check for unique filename
-  if ( ( filesInfosV.end() == fileInfoFirstIt )
-    || ( std::distance( fileInfoFirstIt, fileInfoLastIt ) != 1 ) )
-  {
-    BOOST_THROW_EXCEPTION(
-      Arinc665Exception()
-      << Helper::AdditionalInfo{ "File not found or too many" }
-      << boost::errinfo_file_name{ std::string{ filename } } );
-  }
-
-  return fileInfoFirstIt->second;
 }
 
 Media::ContainerEntityPtr MediaSetImporterImpl::checkCreateDirectory(
@@ -743,11 +786,10 @@ void MediaSetImporterImpl::checkFileIntegrity(
 void MediaSetImporterImpl::checkLoadFile(
   Arinc645::Arinc645Crc32 &loadCrc,
   Arinc645::CheckValueGenerator &loadCheckValueGenerator,
-  const Files::LoadFileInfo &loadFile,
+  const Files::FileInfo &fileInfo,
+  const Files::LoadFileInfo &loadFileInfo,
   bool fileSize16Bit ) const
 {
-  const auto &fileInfo{ fileInformation( loadFile.filename ) };
-
   // get memorised file size ( only when file integrity is checked)
   if ( checkFileIntegrityV )
   {
@@ -756,33 +798,33 @@ void MediaSetImporterImpl::checkLoadFile(
 
     // check load data file size - we divide by 2 to work around 16-bit size
     // storage within Supplement 2 LUHs (Only Data Files)
-    if ( ( fileSize16Bit && ( fileSize / 2 != loadFile.length / 2 ) )
-      || ( !fileSize16Bit && ( fileSize != loadFile.length ) ) )
+    if ( ( fileSize16Bit && ( fileSize / 2 != loadFileInfo.length / 2 ) )
+      || ( !fileSize16Bit && ( fileSize != loadFileInfo.length ) ) )
     {
       BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
         << "Load File Size inconsistent "
-        << loadFile.filename << " "
+        << loadFileInfo.filename << " "
         << fileSize << " "
-        << loadFile.length;
+        << loadFileInfo.length;
 
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "Load File Size inconsistent" }
-        << boost::errinfo_file_name{ loadFile.filename } );
+        << boost::errinfo_file_name{ loadFileInfo.filename } );
     }
   }
 
   // Check CRC
-  if ( fileInfo.crc != loadFile.crc )
+  if ( fileInfo.crc != loadFileInfo.crc )
   {
     BOOST_THROW_EXCEPTION(
       Arinc665Exception()
       << Helper::AdditionalInfo{ "Load File CRC inconsistent" }
-      << boost::errinfo_file_name{ loadFile.filename } );
+      << boost::errinfo_file_name{ loadFileInfo.filename } );
   }
 
   // Check File Check Value
   const bool fileCheckValueChecked{
-    checkCheckValues( fileInfo.checkValue, loadFile.checkValue ) };
+    checkCheckValues( fileInfo.checkValue, loadFileInfo.checkValue ) };
 
   // Load CRC, Load Check Value and File Check Value Check
   if ( checkFileIntegrityV )
@@ -796,13 +838,13 @@ void MediaSetImporterImpl::checkLoadFile(
     // Load file Check Value
     if ( !fileCheckValueChecked
       && ( Arinc645::CheckValueGenerator::checkValue(
-        loadFile.checkValue.type(),
-        rawDataFile ) != loadFile.checkValue ) )
+        loadFileInfo.checkValue.type(),
+        rawDataFile ) != loadFileInfo.checkValue ) )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665Exception()
           << Helper::AdditionalInfo{ "Load File Check Value inconsistent" }
-          << boost::errinfo_file_name{ loadFile.filename } );
+          << boost::errinfo_file_name{ loadFileInfo.filename } );
     }
   }
 }
