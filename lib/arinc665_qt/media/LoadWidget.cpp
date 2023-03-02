@@ -49,6 +49,15 @@ void LoadWidget::selectedLoad(
   if ( loadV )
   {
     ui->partNumber->setText( HelperQt::toQString( loadV->partNumber() ) );
+
+    ui->partFlags->setText( QString::number( loadV->partFlags(), 16 ) );
+
+    if ( const auto loadType{ loadV->loadType() }; loadType )
+    {
+      ui->loadTypeDescription->setText(
+        QString::fromStdString( loadType->first ) );
+      ui->loadTypeId->setText( QString::number( loadType->second ) );
+    }
     targetHardwareIdsPositionsModel->targetHardwareIdsPositions(
       loadV->targetHardwareIdPositions() );
     dataFilesModelV->loadFiles( loadV->dataFiles() );

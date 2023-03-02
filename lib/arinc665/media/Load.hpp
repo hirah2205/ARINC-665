@@ -70,13 +70,45 @@ class ARINC665_EXPORT Load final : public File
 
     /**
      * @name Part Flags.
+     *
+     * The Part Flags are defined by a 16-bit word.
+     * They are used to indicate extra information to help operators and systems
+     * distinguish and understand the purpose of a part.
+     *
+     * @par Download Flag
+     * The Least Significant Bit is used to indicate an upload/download part.
+     * The value of 0 indicates an upload.
+     * The value of 1 indicates that the part contains instructions for
+     * download.
+     * A data loader may use this field to help the operator select parts that
+     * correspond with a download operation versus an upload operation.
+     *
+     * @note
+     * In an upload operation, a data loader uses information from the LSP to
+     * cause a transfer of specific information from the LSP to the target.
+     * In a download operation, a data loader uses information from the LSP to
+     * cause a transfer of specific information from the target to the data
+     * loader.
+     *
+     * The purpose of assigning a PN to a download LSP is to identify, control,
+     * and provide integrity for the files in the LSP which describe to the data
+     * loader how to perform the specific download operation.
+     * The PN of the download LSP only pertains to the files that are provided
+     * to the data loader which cause the download.
+     * The download PN does not provide configuration data for the data
+     * downloaded from the target.
+     *
+     * @par Spare Flags
+     * The other 15 bits of the 16-bit Part Flags field are reserved for future
+     * use and should be set to binary 0.
+     *
      * @{
      **/
 
     /**
      * @brief Obtains the Part Flags Field.
      *
-     * @return The part Flags Field.
+     * @return Part Flags Field.
      **/
     [[nodiscard]] uint16_t partFlags() const;
 

@@ -34,7 +34,7 @@
       <item row="0" column="1">
        <widget class="QLineEdit" name="nameLineEdit"/>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="QTableView" name="content">
         <property name="alternatingRowColors">
          <bool>true</bool>
@@ -53,10 +53,30 @@
         </attribute>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="lblContent">
         <property name="text">
          <string>Content</string>
+        </property>
+        <property name="buddy">
+         <cstring>content</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblDefaultMediumNumber">
+        <property name="text">
+         <string>Default Medium Number</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="defaultMediumNumber">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>255</number>
         </property>
        </widget>
       </item>
@@ -67,6 +87,7 @@
  </widget>
  <tabstops>
   <tabstop>nameLineEdit</tabstop>
+  <tabstop>content</tabstop>
  </tabstops>
  <resources/>
  <connections/>

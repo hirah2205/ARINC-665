@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>486</width>
+    <height>337</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,6 +32,26 @@
       </item>
       <item row="0" column="1">
        <widget class="QLineEdit" name="nameLineEdit"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblMediumNumber">
+        <property name="text">
+         <string>Medium Number</string>
+        </property>
+        <property name="buddy">
+         <cstring>mediumNumber</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="mediumNumber">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>255</number>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
