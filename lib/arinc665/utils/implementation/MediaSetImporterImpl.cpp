@@ -69,7 +69,7 @@ MediaSetImporterImpl::Result MediaSetImporterImpl::operator()()
   loadFurtherMedia();
 
   // finally, add all files (regular, load headers, batches) to the media set
-  addFiles();
+  files();
 
   return { std::move( mediaSetV ), std::move( checkValuesV ) };
 }
@@ -246,11 +246,12 @@ void MediaSetImporterImpl::loadFurtherMedia() const
     ++mediumNumber )
   {
     // Load "list of files" file
-    const Files::FileListFile mediumFileListFile{
-      readFileHandlerV( mediumNumber, Arinc665::ListOfFilesName ) };
 
     // compare current list of files to first one
-    if ( !mediumFileListFile.belongsToSameMediaSet( fileListFileV )
+    if (
+      const Files::FileListFile mediumFileListFile{
+        readFileHandlerV( mediumNumber, Arinc665::ListOfFilesName ) };
+       !mediumFileListFile.belongsToSameMediaSet( fileListFileV )
       || ( mediumNumber != mediumFileListFile.mediaSequenceNumber() ) )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -294,7 +295,7 @@ void MediaSetImporterImpl::loadFurtherMedia() const
   }
 }
 
-void MediaSetImporterImpl::addFiles()
+void MediaSetImporterImpl::files()
 {
   // iterate over all files
   for ( const auto &[ fileName, fileInfo ] : filesInfosV )
@@ -306,6 +307,7 @@ void MediaSetImporterImpl::addFiles()
     const auto loadInfo{ loadsInfosV.find( fileName ) };
     const auto batchInfo{ batchesInfosV.find( fileName ) };
 
+    // is file a load header file?
     if ( loadInfo != loadsInfosV.end() )
     {
       // check that load is not present in batches
@@ -319,7 +321,8 @@ void MediaSetImporterImpl::addFiles()
 
       loadFile( *parent, fileInfo, loadInfo->second );
     }
-    else if ( batchesInfosV.contains( fileName ) )
+    // is file a batch file
+    else if ( batchInfo != batchesInfosV.end() )
     {
       batchFile( *parent, fileInfo, batchInfo->second );
     }
@@ -503,27 +506,10 @@ void MediaSetImporterImpl::addLoad(
   // iterate over data files
   for ( const auto &loadFileInfo : loadHeaderFile.dataFiles() )
   {
-    const auto dataFiles{ mediaSetV->recursiveRegularFiles( loadFileInfo.filename ) };
+    const auto dataFilePtr{
+      loadFile( *load.parent(), loadFileInfo.filename, loadFileInfo.crc ) };
 
-    if ( dataFiles.empty() )
-    {
-      BOOST_THROW_EXCEPTION(
-        Arinc665Exception()
-          << Helper::AdditionalInfo{ "Data file not found" }
-          << boost::errinfo_file_name{ loadFileInfo.filename } );
-    }
-
-    if ( dataFiles.size() > 1U )
-    {
-      BOOST_THROW_EXCEPTION(
-        Arinc665Exception()
-        << Helper::AdditionalInfo{ "Data file not unique" }
-        << boost::errinfo_file_name{ loadFileInfo.filename } );
-    }
-
-    //! @todo handle files with same filename according ARINC-5
-
-    const auto dataFileInfo{ regularFilesV.find( dataFiles.front() ) };
+    const auto dataFileInfo{ regularFilesV.find( dataFilePtr ) };
     assert( dataFileInfo != regularFilesV.end() );
 
     // perform file check
@@ -536,7 +522,7 @@ void MediaSetImporterImpl::addLoad(
       loadHeaderFile.arincVersion() == SupportedArinc665Version::Supplement2 );
 
     load.dataFile(
-      dataFiles.front(),
+      dataFilePtr,
       loadFileInfo.partNumber,
       loadFileInfo.checkValue.type() );
 
@@ -544,34 +530,17 @@ void MediaSetImporterImpl::addLoad(
     // within addFiles
     if ( Arinc645::CheckValue::NoCheckValue != loadFileInfo.checkValue )
     {
-      checkValuesV[ dataFiles.front() ].emplace( loadFileInfo.checkValue );
+      checkValuesV[ dataFilePtr ].emplace( loadFileInfo.checkValue );
     }
   }
 
   // iterate over support files
   for ( const auto &loadFileInfo : loadHeaderFile.supportFiles() )
   {
-    auto supportFiles{ mediaSetV->recursiveRegularFiles( loadFileInfo.filename ) };
+    auto supportFilePtr{
+      loadFile( *load.parent(), loadFileInfo.filename, loadFileInfo.crc ) };
 
-    if ( supportFiles.empty() )
-    {
-      BOOST_THROW_EXCEPTION(
-        Arinc665Exception()
-        << Helper::AdditionalInfo{ "Support file not found" }
-        << boost::errinfo_file_name{ loadFileInfo.filename } );
-    }
-
-    if ( supportFiles.size() > 1U )
-    {
-      BOOST_THROW_EXCEPTION(
-        Arinc665Exception()
-        << Helper::AdditionalInfo{ "Support file not unique" }
-        << boost::errinfo_file_name{ loadFileInfo.filename } );
-    }
-
-    //! @todo handle files with same filename according ARINC-5
-
-    const auto supportFileInfo{ regularFilesV.find( supportFiles.front() ) };
+    const auto supportFileInfo{ regularFilesV.find( supportFilePtr ) };
     assert( supportFileInfo != regularFilesV.end() );
 
     checkLoadFile(
@@ -582,7 +551,7 @@ void MediaSetImporterImpl::addLoad(
       false );
 
     load.supportFile(
-      supportFiles.front(),
+      supportFilePtr,
       loadFileInfo.partNumber,
       loadFileInfo.checkValue.type() );
 
@@ -590,7 +559,7 @@ void MediaSetImporterImpl::addLoad(
     // within addFiles
     if ( Arinc645::CheckValue::NoCheckValue != loadFileInfo.checkValue )
     {
-      checkValuesV[ supportFiles.front() ].emplace( loadFileInfo.checkValue );
+      checkValuesV[ supportFilePtr ].emplace( loadFileInfo.checkValue );
     }
   }
 
@@ -622,6 +591,64 @@ void MediaSetImporterImpl::addLoad(
   load.loadCheckValueType( loadHeaderFile.loadCheckValueType() );
 }
 
+Media::RegularFilePtr MediaSetImporterImpl::loadFile(
+  Media::ContainerEntity &parent,
+  std::string_view filename,
+  uint16_t crc ) const
+{
+  auto files{ mediaSetV->recursiveRegularFiles( filename ) };
+
+  // no file found is a failure
+  if ( files.empty() )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665Exception()
+      << Helper::AdditionalInfo{ "File not found" }
+      << boost::errinfo_file_name{ std::string{ filename } } );
+  }
+
+  // only one file present on disk
+  if ( 1U == files.size() )
+  {
+    return files.front();
+  }
+
+  // search for files only in parent container
+
+  files = parent.recursiveRegularFiles( filename );
+
+  // no file found is a failure
+  if ( files.empty() )
+  {
+    BOOST_THROW_EXCEPTION(
+      Arinc665Exception()
+      << Helper::AdditionalInfo{ "File not found" }
+      << boost::errinfo_file_name{ std::string{ filename } } );
+  }
+
+  // only one file present in container
+  if ( 1U == files.size() )
+  {
+    return files.front();
+  }
+
+  // find file with same CRC
+  for ( const auto &file : files )
+  {
+    for ( const auto &checkValue : checkValuesV.at( file ) )
+    {
+      if ( ( Arinc645::CheckValueType::Crc16 == checkValue.type() )
+        && ( crc == Arinc645::CheckValue::crc16( checkValue ) ) )
+      {
+        // CRC matches
+        return file;
+      }
+    }
+  }
+
+  // choose first found file
+  return files.front();
+}
 
 void MediaSetImporterImpl::addBatch(
   Media::Batch &batch,

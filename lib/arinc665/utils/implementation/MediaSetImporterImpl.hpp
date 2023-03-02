@@ -103,7 +103,7 @@ class MediaSetImporterImpl final : public MediaSetImporter
      * @sa addBatch
      * @sa checkCreateDirectory
      **/
-    void addFiles();
+    void files();
 
     /**
      * @brief Add Regular File
@@ -164,6 +164,26 @@ class MediaSetImporterImpl final : public MediaSetImporter
       Media::Load &load,
       const Files::FileInfo &fileInfo,
       const Files::LoadInfo &loadInfo );
+
+    /**
+     * @brief Returns a load file (data or support file) according to ARINC 665
+     *   rules.
+     *
+     * @param[in] parent
+     *   Parent Container of Load
+     * @param[in] filename
+     *   Filename of file to search for
+     * @param[in] crc
+     *   CRC-16 of File
+     *
+     * @return Found file
+     * @throw Arinc665Exception
+     *   If no file can be found.
+     **/
+    Media::RegularFilePtr loadFile(
+      Media::ContainerEntity &parent,
+      std::string_view filename,
+      uint16_t crc ) const;
 
     /**
      * @brief Add the batch information to the Batch.
