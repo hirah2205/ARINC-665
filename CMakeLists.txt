@@ -36,6 +36,13 @@ if( CLANG_TIDY_EXE )
   set( CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE} )
 endif()
 
+# find iwyu and add options to execute
+find_program( CLANG_IWYU_EXE NAMES iwyu )
+
+if( CLANG_IWYU_EXE )
+  #set( CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${CLANG_IWYU_EXE} )
+endif()
+
 enable_testing()
 
 include( GNUInstallDirs )
