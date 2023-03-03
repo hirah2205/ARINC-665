@@ -18,6 +18,7 @@
 #include <filesystem>
 #include <string>
 #include <string_view>
+#include <memory>
 
 namespace Arinc665::Media {
 
