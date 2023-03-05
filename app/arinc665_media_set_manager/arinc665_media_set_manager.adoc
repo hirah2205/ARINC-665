@@ -1,0 +1,16 @@
+= arinc665_media_set_manager(1)
+Thomas Vogt
+
+== Name
+
+arinc665_media_set_manager - ARINC 665 Media Sets Manager Command Line Utility.
+
+== Synopsis
+
+*arinc665_media_set_manager* --command _Command_ ...
+
+== Options
+
+// tag::options[]
+*--command* _Command_::
+ ARINC 665 Media Set management command.
