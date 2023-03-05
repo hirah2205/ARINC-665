@@ -74,15 +74,15 @@ void ListLoadsCommand::execute( const Commands::Parameters &parameters )
       for ( const auto &load : loads )
       {
         std::cout
-          << "Media Set P/N:         " << load->mediaSet()->partNumber()
+          << "Media Set P/N:        " << load->mediaSet()->partNumber()
           << "\n"
-          << "Load Header File Name: " << load->name() << "\n"
-          << "Load P/N:              " << load->partNumber() << "\n";
+          << "Load Header Filename: " << load->name() << "\n"
+          << "Load P/N:             " << load->partNumber() << "\n";
 
         if ( const auto loadType{ load->loadType() }; loadType )
         {
           std::cout
-            << "Load Type:             " << loadType->first << " ("
+            << "Load Type:            " << loadType->first << " ("
             << Helper::to_hexstring( loadType->second ) << ")\n";
         }
 
