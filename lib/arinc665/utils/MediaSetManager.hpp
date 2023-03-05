@@ -161,73 +161,12 @@ class ARINC665_EXPORT MediaSetManager
      **/
     [[nodiscard]] virtual Media::ConstLoads loads() const = 0;
 
-    /**
-     * @brief Returns the loads with the given filename.
-     *
-     * This operation returns a list of loads, because the specific load could
-     * be localised on more than one media set.
-     *
-     * @param[in] filename
-     *   Load Filename
-     *
-     * @return Loads with the given filename.
-     **/
-    [[nodiscard]] virtual Media::ConstLoads loads(
-      std::string_view filename ) const = 0;
-
-    /**
-     * @brief Returns the loads with the given filename and optional check value
-     *   from the given Media Set.
-     *
-     * @param[in] partNumber
-     *   Media Set Part Number.
-     * @param[in] filename
-     *   Load Filename
-     * @param[in] checkValue
-     *   Additional filter the results for files having the check value.
-     *   If @p Arinc645::CheckValue::NoCheckValue is given, no filtering for
-     *   check value is performed.
-     *
-     * @return Load with the given filename and optional check value.
-     * @retval {}
-     *   If No load with specified criteria has been found.
-     **/
-    [[nodiscard]] virtual Media::ConstLoads loads(
-      std::string_view partNumber,
-      std::string_view filename,
-      const Arinc645::CheckValue &checkValue =
-        Arinc645::CheckValue::NoCheckValue ) const = 0;
-
     /** @} **/
 
     /**
      * @name File Handling
      * @{
      **/
-
-
-    /**
-     * @brief Returns the files with the given filename and optional check value
-     *   from the given Media Set.
-     *
-     * @param[in] partNumber
-     *   Media Set Part Number.
-     * @param[in] filename
-     *   Filename
-     * @param[in] checkValue
-     *   Additional filter the results for files having the check value.
-     *   If @p Arinc645::CheckValue::NoCheckValue is given, no filtering for
-     *   check value is performed.
-     *
-     * @return Load with the given filename and optional check value.
-     * @retval {}
-     *   If No load with specified criteria has been found.
-     **/
-    [[nodiscard]] virtual Media::ConstFiles files(
-      std::string_view partNumber,
-      std::string_view filename,
-      const Arinc645::CheckValue &checkValue =
-        Arinc645::CheckValue::NoCheckValue ) const = 0;
 
     /**
      * @brief Returns the path to the given file.

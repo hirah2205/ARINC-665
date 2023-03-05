@@ -542,6 +542,8 @@ class ARINC665_EXPORT Load final : public File
 /**
  * @brief Returns file with given filename and part number.
  *
+ * It also verifies the filename and part number against the load header file.
+ *
  * If more than one file is found with the given attributes no file is
  * returned.
  *
@@ -556,13 +558,15 @@ class ARINC665_EXPORT Load final : public File
  * @retval {}
  *   No file or more than on file found within data and support files.
  **/
-ConstRegularFilePtr Load_file(
-  const Load &load,
+ConstFilePtr Load_file(
+  const ConstLoadPtr &load,
   std::string_view filename,
-  std::string_view partNumber );
+  std::string_view partNumber = {} );
 
 /**
  * @brief Returns file with given filename and Check Value.
+ *
+ * It also verifies the filename and part number against the load header file.
  *
  * If more than one file is found with the given attributes no file is
  * returned.
@@ -580,8 +584,8 @@ ConstRegularFilePtr Load_file(
  * @retval {}
  *   No file or more than on file found within data and support files.
  **/
-ConstRegularFilePtr Load_file(
-  const Load &load,
+ConstFilePtr Load_file(
+  const ConstLoadPtr &load,
   const CheckValues &checkValues,
   std::string_view filename,
   const Arinc645::CheckValue &checkValue );
@@ -603,10 +607,10 @@ ConstRegularFilePtr Load_file(
  * @retval {}
  *   No file or more than on file found within data and support files.
  **/
-ConstRegularFilePtr Loads_file(
+ConstFilePtr Loads_file(
   const ConstLoads &loads,
   std::string_view filename,
-  std::string_view partNumber );
+  std::string_view partNumber = {} );
 
 /**
  * @brief Returns file with given filename and Check Value.
@@ -627,7 +631,7 @@ ConstRegularFilePtr Loads_file(
  * @retval {}
  *   No file or more than on file found within data and support files.
  **/
-ConstRegularFilePtr Loads_file(
+ConstFilePtr Loads_file(
   const ConstLoads &loads,
   const CheckValues &checkValues,
   std::string_view filename,

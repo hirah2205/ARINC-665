@@ -69,25 +69,7 @@ class MediaSetManagerImpl final : public MediaSetManager
     //! @copydoc MediaSetManager::loads() const
     [[nodiscard]] Media::ConstLoads loads() const override;
 
-    //! @copydoc MediaSetManager::loads(std::string_view) const
-    [[nodiscard]] Media::ConstLoads loads(
-      std::string_view filename ) const override;
-
-    //! @copydoc MediaSetManager::loads(std::string_view,std::string_view,const Arinc645::CheckValue&) const
-    [[nodiscard]] Media::ConstLoads loads(
-      std::string_view partNumber,
-      std::string_view filename,
-      const Arinc645::CheckValue &checkValue =
-        Arinc645::CheckValue::NoCheckValue ) const override;
-
-    //! @copydoc MediaSetManager::files(std::string_view,std::string_view,const Arinc645::CheckValue&) const
-    [[nodiscard]] Media::ConstFiles files(
-      std::string_view partNumber,
-      std::string_view filename,
-      const Arinc645::CheckValue &checkValue =
-        Arinc645::CheckValue::NoCheckValue ) const override;
-
-      //! @copydoc MediaSetManager::filePath
+    //! @copydoc MediaSetManager::filePath
     [[nodiscard]] std::filesystem::path filePath(
       const Media::ConstFilePtr &file ) const override;
 

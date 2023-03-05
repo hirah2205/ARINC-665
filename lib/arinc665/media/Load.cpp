@@ -313,23 +313,40 @@ void Load::supportFilesCheckValueType(
   supportFilesCheckValueTypeV = checkValueType;
 }
 
-ConstRegularFilePtr Load_file(
-  const Load &load,
+ConstFilePtr Load_file(
+  const ConstLoadPtr &load,
   std::string_view filename,
   std::string_view partNumber )
 {
-  return load.file( filename, partNumber );
+  if ( !load )
+  {
+    return {};
+  }
+
+  // check load header filename
+  if ( ( filename == load->name() )
+    && ( partNumber.empty() || ( partNumber == load->partNumber() ) ) )
+  {
+    return load;
+  }
+
+  return load->file( filename, partNumber );
 }
 
-ConstRegularFilePtr Load_file(
-  const Load &load,
+ConstFilePtr Load_file(
+  const ConstLoadPtr &load,
   const CheckValues &checkValues,
   std::string_view filename,
   const Arinc645::CheckValue &checkValue )
 {
+  if ( !load )
+  {
+    return {};
+  }
+
   ConstRegularFiles files{};
 
-  for ( const auto &[file, filePartNumber, checkValueType] : load.dataFiles() )
+  for ( const auto &[file, filePartNumber, checkValueType] : load->dataFiles() )
   {
     if ( file && ( file->name() == filename ) )
     {
@@ -343,7 +360,7 @@ ConstRegularFilePtr Load_file(
     }
   }
 
-  for ( const auto &[file, filePartNumber, checkValueType] : load.supportFiles() )
+  for ( const auto &[file, filePartNumber, checkValueType] : load->supportFiles() )
   {
     if ( file && ( file->name() == filename ) )
     {
@@ -363,16 +380,17 @@ ConstRegularFilePtr Load_file(
   return {};
 }
 
-ConstRegularFilePtr Loads_file(
+ConstFilePtr Loads_file(
   const ConstLoads &loads,
   std::string_view filename,
   std::string_view partNumber )
 {
-  ConstRegularFiles files{};
+  ConstFiles files{};
 
   for ( const auto &load : loads )
   {
-    if ( auto file{ Load_file( *load, filename, partNumber ) }; file )
+    assert( load );
+    if ( auto file{ Load_file( load, filename, partNumber ) }; file )
     {
       files.emplace_back( std::move( file ) );
     }
@@ -386,17 +404,18 @@ ConstRegularFilePtr Loads_file(
   return {};
 }
 
-ConstRegularFilePtr Loads_file(
+ConstFilePtr Loads_file(
   const ConstLoads &loads,
   const CheckValues &checkValues,
   std::string_view filename,
   const Arinc645::CheckValue &checkValue )
 {
-  ConstRegularFiles files{};
+  ConstFiles files{};
 
   for ( const auto &load : loads )
   {
-    if ( auto file{ Load_file( *load, checkValues, filename, checkValue ) }; file )
+    assert( load );
+    if ( auto file{ Load_file( load, checkValues, filename, checkValue ) }; file )
     {
       files.emplace_back( std::move( file ) );
     }

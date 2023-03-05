@@ -450,7 +450,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *   Filename of the file to be created.
      * @param[in] mediumNumber
      *   Medium number, where the file is located onto.
-     *   If not priveded the default medium number of the owning container is
+     *   If not provided the default medium number of the owning container is
      *   used.
      *
      * @return Created file.
@@ -647,7 +647,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *   Name of the requested Batch.
      * @param[in] mediumNumber
      *   Medium number, to filter.
-     *   If not priveded no filtering is performed.
+     *   If not provided, no filtering is performed.
      *
      * @return Batches with the given name.
      * @retval {}
@@ -668,7 +668,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @param[in] filename
      *   Batch filename
      *
-     * @return The batch with the given filename.
+     * @return Batch with the given filename.
      * @retval {}
      *   If batch does not exist.
      **/
