@@ -558,7 +558,7 @@ class ARINC665_EXPORT Load final : public File
  * @retval {}
  *   No file or more than on file found within data and support files.
  **/
-ConstFilePtr Load_file(
+ConstFilePtr ARINC665_EXPORT Load_file(
   const ConstLoadPtr &load,
   std::string_view filename,
   std::string_view partNumber = {} );
@@ -584,7 +584,7 @@ ConstFilePtr Load_file(
  * @retval {}
  *   No file or more than on file found within data and support files.
  **/
-ConstFilePtr Load_file(
+ConstFilePtr ARINC665_EXPORT Load_file(
   const ConstLoadPtr &load,
   const CheckValues &checkValues,
   std::string_view filename,
@@ -607,7 +607,7 @@ ConstFilePtr Load_file(
  * @retval {}
  *   No file or more than on file found within data and support files.
  **/
-ConstFilePtr Loads_file(
+ConstFilePtr ARINC665_EXPORT Loads_file(
   const ConstLoads &loads,
   std::string_view filename,
   std::string_view partNumber = {} );
@@ -631,7 +631,7 @@ ConstFilePtr Loads_file(
  * @retval {}
  *   No file or more than on file found within data and support files.
  **/
-ConstFilePtr Loads_file(
+ConstFilePtr ARINC665_EXPORT Loads_file(
   const ConstLoads &loads,
   const CheckValues &checkValues,
   std::string_view filename,
