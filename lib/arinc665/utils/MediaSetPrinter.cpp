@@ -249,19 +249,19 @@ void MediaSetPrinter_print(
     << "Load Check Value Type: '"
     << printCheckValueType( load.loadCheckValueType() )
     << " - "
-    << printCheckValueType( load.effectiveLoadCheckValueType() ) << "\n"
+    << printCheckValueType( load.effectiveLoadCheckValueType() ) << "'\n"
 
     << initialIndent
     << "Data Files Check Value Type: '"
     << printCheckValueType( load.dataFilesCheckValueType() )
     << " - "
-    << printCheckValueType( load.effectiveDataFilesCheckValueType() ) << "\n"
+    << printCheckValueType( load.effectiveDataFilesCheckValueType() ) << "'\n"
 
     << initialIndent
     << "Support Files Check Value Type: '"
     << printCheckValueType( load.supportFilesCheckValueType() )
     << " - "
-    << printCheckValueType( load.effectiveSupportFilesCheckValueType() ) << "\n";
+    << printCheckValueType( load.effectiveSupportFilesCheckValueType() ) << "'\n";
 
   if ( const auto &type{ load.loadType() }; type )
   {
