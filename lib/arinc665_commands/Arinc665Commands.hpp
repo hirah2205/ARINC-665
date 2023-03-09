@@ -27,16 +27,16 @@
 /**
  * @brief ARINC 665 %Commands.
  *
- * Commands, which provides ARINC 665 Media Set Manager functionality by using
+ * %Commands, which provides ARINC 665 Media Set Manager functionality by using
  * the @ref Commands library.
  **/
 namespace Arinc665Commands {
 
 /**
- * @brief Registers the ARINC 665 Commands to the registry.
+ * @brief Registers the ARINC 665 %Commands to the Registry.
  *
  * @param[in,out] registry
- *   Registry, where the Commands shall be registered to.
+ *   Registry, where the commands shall be registered to.
  **/
 void ARINC665_COMMANDS_EXPORT registerCommands(
   const Commands::CommandRegistryPtr& registry );
