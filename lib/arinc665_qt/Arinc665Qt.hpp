@@ -10,21 +10,22 @@
  * @brief Declaration of Namespace Arinc665Qt.
  **/
 
+/**
+ * @dir
+ * @brief Declaration/ Definition of Namespace Arinc665Qt.
+ **/
+
 #ifndef ARINC665_QT_ARINC665QT_HPP
 #define ARINC665_QT_ARINC665QT_HPP
 
 #include <arinc665_qt/arinc665_qt_export.h>
 
 /**
- * @dir
- * @brief Declaration/ Definition of Namespace Arinc665Qt.
- **/
-
-/**
  * @brief ARINC 665 Specification QT.
  **/
 namespace Arinc665Qt {
 
+class MediaPathsModel;
 class MediaSetController;
 class MediaSetDialog;
 

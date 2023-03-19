@@ -32,11 +32,13 @@ target_sources(
       FILES
         Arinc665Qt.hpp
         Arinc665QtLogger.hpp
+        MediaPathsModel.hpp
         MediaSetController.hpp
+        MediaSetDialog.hpp
         ${CMAKE_CURRENT_BINARY_DIR}/arinc665_qt_export.h
   PRIVATE
+    MediaPathsModel.cpp
     MediaSetController.cpp
-    MediaSetDialog.hpp
     MediaSetDialog.cpp
     MediaSetDialog.ui )
 
