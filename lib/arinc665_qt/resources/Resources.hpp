@@ -10,6 +10,11 @@
  * @brief Declaration of Namespace Arinc665Qt::Resources.
  **/
 
+/**
+ * @dir
+ * @brief ARINC 665 QT Resources
+ **/
+
 #ifndef ARINC665_QT_RESOURCES_RESOURCES_HPP
 #define ARINC665_QT_RESOURCES_RESOURCES_HPP
 

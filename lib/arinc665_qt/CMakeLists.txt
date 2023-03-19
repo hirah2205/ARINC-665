@@ -33,11 +33,14 @@ target_sources(
         Arinc665Qt.hpp
         Arinc665QtLogger.hpp
         MediaPathsModel.hpp
+        MediaPathsPage.hpp
         MediaSetController.hpp
         MediaSetDialog.hpp
         ${CMAKE_CURRENT_BINARY_DIR}/arinc665_qt_export.h
   PRIVATE
     MediaPathsModel.cpp
+    MediaPathsPage.cpp
+    MediaPathsPage.ui
     MediaSetController.cpp
     MediaSetDialog.cpp
     MediaSetDialog.ui )
@@ -66,7 +69,9 @@ target_link_libraries(
   PRIVATE
     helper_qt )
 
-
+add_subdirectory( compile_media_set )
+add_subdirectory( decompile_media_set )
+add_subdirectory( import_media_set )
 add_subdirectory( import_media_set_xml )
 add_subdirectory( media )
 add_subdirectory( media_set_manager )

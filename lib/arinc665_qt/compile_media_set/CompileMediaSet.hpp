@@ -12,20 +12,20 @@
 
 /**
  * @dir
- * @brief Media Set XML Importer
+ * @brief Media Set Compiler
  *
- * Compiles and imports an ARINC 665 Media Set XML to the Media Set Manager.
+ * Compiles ARINC 665 Media Set XML to Media Set.
  **/
 
-#ifndef ARINC665_QT_IMPORT_MEDIA_SET_XML_IMPORTMEDIASETXML_HPP
-#define ARINC665_QT_IMPORT_MEDIA_SET_XML_IMPORTMEDIASETXML_HPP
+#ifndef ARINC665_QT_COMPILE_MEDIA_SET_COMPILEMEDIASET_HPP
+#define ARINC665_QT_COMPILE_MEDIA_SET_COMPILEMEDIASET_HPP
 
 #include <arinc665_qt/Arinc665Qt.hpp>
 
 namespace Arinc665Qt {
 
-class ImportMediaSetXmlController;
-class ImportMediaSetXmlWizard;
+class CompileMediaSetController;
+class CompileMediaSetWizard;
 
 }
 
