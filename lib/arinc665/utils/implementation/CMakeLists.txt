@@ -14,6 +14,8 @@ target_sources(
     Arinc665XmlLoadImpl.cpp
     Arinc665XmlSaveImpl.hpp
     Arinc665XmlSaveImpl.cpp
+    FilesystemMediaSetImporterImpl.hpp
+    FilesystemMediaSetImporterImpl.cpp
     JsonMediaSetManagerImpl.hpp
     JsonMediaSetManagerImpl.cpp
     MediaSetExporterImpl.hpp

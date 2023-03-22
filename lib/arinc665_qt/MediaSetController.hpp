@@ -83,36 +83,6 @@ class ARINC665_QT_EXPORT MediaSetController : public QObject
     void directorySelected();
 
   private:
-    /**
-     * @brief File Size Handler
-     *
-     * @param[in] mediumNumber
-     *   Medium Number
-     * @param[in] path
-     *   Path of File
-     *
-     * @return Size of file.
-     **/
-    size_t fileSize(
-      const Arinc665::MediumNumber &mediumNumber,
-      const std::filesystem::path &path );
-
-    /**
-     * @brief Loads the requested file.
-     *
-     * Is a callback od the media set importer.
-     *
-     * @param[in] mediumNumber
-     *   Medium Number.
-     * @param[in] path
-     *   Path of file.
-     *
-     * @return Loaded file data.
-     **/
-    Arinc665::Files::RawFile loadFile(
-      const Arinc665::MediumNumber &mediumNumber,
-      const std::filesystem::path &path );
-
     //! Media Set Model
     std::unique_ptr< Media::MediaSetModel > mediaSetModel;
 

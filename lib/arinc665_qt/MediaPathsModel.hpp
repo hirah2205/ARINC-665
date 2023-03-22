@@ -15,12 +15,11 @@
 
 #include <arinc665_qt/Arinc665Qt.hpp>
 
+#include <arinc665/utils/Utils.hpp>
+
 #include <arinc665/MediumNumber.hpp>
 
 #include <QAbstractTableModel>
-
-#include <filesystem>
-#include <map>
 
 namespace Arinc665Qt {
 
@@ -32,11 +31,8 @@ namespace Arinc665Qt {
 class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
 {
     Q_OBJECT
-  public:
-    //! Media Paths
-    using MediaPaths =
-      std::map< Arinc665::MediumNumber, std::filesystem::path >;
 
+  public:
     //! Columns of Model
     enum class Columns
     {
@@ -120,7 +116,7 @@ class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
      *
      * @return Media Paths.
      **/
-    [[nodiscard]] const MediaPaths& mediaPaths() const;
+    [[nodiscard]] const Arinc665::Utils::MediaPaths& mediaPaths() const;
 
     /**
      * @brief Return Medium Path for Medium Number.
@@ -151,7 +147,7 @@ class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
 
   private:
     //! Media Paths
-    MediaPaths mediaPathsV;
+    Arinc665::Utils::MediaPaths mediaPathsV;
 };
 
 }

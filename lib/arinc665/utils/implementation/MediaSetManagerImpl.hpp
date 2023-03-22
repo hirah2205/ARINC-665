@@ -23,7 +23,11 @@
 
 namespace Arinc665::Utils {
 
-//! Implementation of MediaSetManager
+/**
+ * @brief Implementation of MediaSetManager.
+ *
+ * Uses the FilesystemMediaSetManager to import the Media Sets from the disk.
+ **/
 class MediaSetManagerImpl final : public MediaSetManager
 {
   public:
@@ -87,63 +91,27 @@ class MediaSetManagerImpl final : public MediaSetManager
       bool checkFileIntegrity );
 
     /**
-     * @brief Handler Called for files sizes
+     * @brief Converts the given Media Set Paths to absolute Media Paths.
      *
-     * Used by the Media Set Importer.
-     *
-     * @param[in] mediaSetPaths
-     *   Media Set Paths Configuration.
-     * @param[in] mediumNumber
-     *   Medium Sequence Number.
-     * @param[in] path
-     *   File Path.
-     *
-     * @return File size
-     **/
-    [[nodiscard]] size_t fileSizeHandler(
-      const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
-      const MediumNumber &mediumNumber,
-      const std::filesystem::path &path ) const;
-
-    /**
-     * @brief Handler Called for reading Files
-     *
-     * Used by the Media Set Importer.
+     * Uses the base path, media set path and media paths to convert it to
+     * absolute paths.
      *
      * @param[in] mediaSetPaths
-     *   Media Set Paths Configuration.
-     * @param[in] mediumNumber
-     *   Medium Sequence Number.
-     * @param[in] path
-     *   File Path.
+     *   Media Set Paths information.
      *
-     * @return Read File Content
+     * @return Absolute Media Paths.
      **/
-    [[nodiscard]] Files::RawFile readFileHandler(
-      const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
-      const MediumNumber &mediumNumber,
-      const std::filesystem::path &path ) const;
+    [[nodiscard]] MediaPaths absoluteMediaPaths(
+      const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths ) const;
 
-    /**
-     * @brief Makes given @p filePath absolute with respect to media set base
-     *   path.
-     *
-     * @param[in] filePath
-     *   Relative file path.
-     *
-     * @return Absolute path of @p filePath.
-     **/
-    [[nodiscard]] std::filesystem::path absolutePath(
-      const std::filesystem::path &filePath ) const;
-
-    //! Media Set Paths Map
+    //! Media Set Paths Map ( Part Number -> Media Set Paths )
     using MediaSetsPaths = std::map<
       std::string,
       MediaSetManagerConfiguration::MediaSetPaths,
       std::less< > >;
 
     //! Base for Relative Paths
-    const std::filesystem::path basePath;
+    const std::filesystem::path basePathV;
     //! Media Sets Information
     MediaSetsInformation mediaSetsInformationV;
     //! Media Sets Paths

@@ -42,6 +42,10 @@
  **/
 namespace Arinc665::Utils {
 
+//! Media Paths
+using MediaPaths =
+  std::map< Arinc665::MediumNumber, std::filesystem::path >;
+
 /**
  * @name Media Set Exporter
  *
@@ -71,9 +75,18 @@ using MediaSetExporterPtr = std::unique_ptr< MediaSetExporter >;
  * @{
  **/
 
+//! Media Set Import Result Type
+using MediaSetImportResult =
+  std::pair< Media::MediaSetPtr, Media::CheckValues >;
+
 class MediaSetImporter;
 //! ARINC 665 %Media Set Importer Instance Pointer.
 using MediaSetImporterPtr = std::unique_ptr< MediaSetImporter >;
+
+class FilesystemMediaSetImporter;
+//! Filesystem ARINC 665 %Media Set Importer Instance Pointer.
+using FilesystemMediaSetImporterPtr =
+  std::unique_ptr< FilesystemMediaSetImporter >;
 
 /** @} **/
 

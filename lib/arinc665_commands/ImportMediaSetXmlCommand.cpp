@@ -128,7 +128,7 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
     loadXmlResult = Arinc665::Utils::Arinc665Xml_load( mediaSetXmlFile );
 
     // Add Media Set Part Number to Output Path
-    Arinc665::Utils::MediaSetManagerConfiguration::MediaPaths mediaPaths{};
+    Arinc665::Utils::MediaPaths mediaPaths{};
     for (
       Arinc665::MediumNumber mediumNumber{ 1U };
       mediumNumber <= std::get< 0 >( loadXmlResult )->lastMediumNumber();

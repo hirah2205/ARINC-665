@@ -16,7 +16,7 @@
 #include <arinc665/media/File.hpp>
 #include <arinc665/media/Load.hpp>
 
-#include <arinc665/utils/MediaSetImporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetImporter.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
@@ -26,7 +26,6 @@
 #include <boost/exception/all.hpp>
 #include <boost/format.hpp>
 
-#include <fstream>
 #include <utility>
 
 namespace Arinc665::Utils {
@@ -35,7 +34,7 @@ MediaSetManagerImpl::MediaSetManagerImpl(
   std::filesystem::path basePath,
   const MediaSetManagerConfiguration &configuration,
   const bool checkFileIntegrity ) :
-  basePath{ std::move( basePath ) }
+  basePathV{ std::move( basePath ) }
 {
   BOOST_LOG_FUNCTION()
   loadMediaSets( configuration, checkFileIntegrity );
@@ -81,23 +80,16 @@ void MediaSetManagerImpl::registerMediaSet(
   const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
   const bool checkFileIntegrity )
 {
-  // import media set
-  auto importer( MediaSetImporter::create() );
+  auto importer( FilesystemMediaSetImporter::create() );
+  assert( importer );
 
   // configure importer
   importer
-    ->fileSizeHandler( std::bind_front(
-      &MediaSetManagerImpl::fileSizeHandler,
-      this,
-      mediaSetPaths ) )
-    .readFileHandler( std::bind_front(
-      &MediaSetManagerImpl::readFileHandler,
-      this,
-      mediaSetPaths ) )
-    .checkFileIntegrity( checkFileIntegrity );
+    ->checkFileIntegrity( checkFileIntegrity )
+    .mediaPaths( absoluteMediaPaths( mediaSetPaths ) );
 
   // import media set
-  auto [ impMediaSet, checkValues ]{ (*importer)() };
+  auto [ impMediaSet, checkValues ]{ ( *importer )() };
   assert( impMediaSet );
 
   if ( mediaSet( impMediaSet->partNumber() ) )
@@ -107,6 +99,7 @@ void MediaSetManagerImpl::registerMediaSet(
   }
 
   std::string partNumber{ impMediaSet->partNumber() };
+
   // add to media sets information
   mediaSetsInformationV.try_emplace(
     partNumber,
@@ -114,10 +107,7 @@ void MediaSetManagerImpl::registerMediaSet(
     std::move( checkValues ) );
 
   // add to media sets paths
-  mediaSetsPathsV.try_emplace(
-    partNumber,
-    mediaSetPaths.first,
-    mediaSetPaths.second );
+  mediaSetsPathsV.try_emplace( partNumber, mediaSetPaths );
 }
 
 MediaSetManagerConfiguration::MediaSetPaths
@@ -188,8 +178,8 @@ std::filesystem::path MediaSetManagerImpl::filePath(
     return {};
   }
 
-  return absolutePath(
-    mediaSetIt->second.first / mediumIt->second / file->path().relative_path() );
+  return ( basePathV / mediaSetIt->second.first / mediumIt->second
+    / file->path().relative_path() ).lexically_normal();
 }
 
 void MediaSetManagerImpl::loadMediaSets(
@@ -200,110 +190,43 @@ void MediaSetManagerImpl::loadMediaSets(
 
   for ( auto const &mediaSetPaths : configuration.mediaSets )
   {
-    // import media set
-    auto importer( MediaSetImporter::create() );
+    auto importer{ FilesystemMediaSetImporter::create() };
+    assert( importer );
 
     // configure importer
     importer
-      ->fileSizeHandler( std::bind_front(
-        &MediaSetManagerImpl::fileSizeHandler,
-        this,
-        mediaSetPaths ) )
-      .readFileHandler( std::bind_front(
-        &MediaSetManagerImpl::readFileHandler,
-        this,
-        mediaSetPaths ) )
-      .checkFileIntegrity( checkFileIntegrity );
+      ->checkFileIntegrity( checkFileIntegrity )
+      .mediaPaths( absoluteMediaPaths( mediaSetPaths ) );
 
     // import media set
     auto [ impMediaSet, checkValues ]{ (*importer)() };
     assert( impMediaSet );
 
     std::string partNumber{ impMediaSet->partNumber() };
+
     // add to media sets information
     mediaSetsInformationV.try_emplace(
       partNumber,
       std::move( impMediaSet ),
       std::move( checkValues ) );
+
     // add to media sets paths
-    mediaSetsPathsV.try_emplace(
-      partNumber,
-      mediaSetPaths );
+    mediaSetsPathsV.try_emplace( partNumber, mediaSetPaths );
   }
 }
 
-size_t MediaSetManagerImpl::fileSizeHandler(
-  const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
-  const MediumNumber &mediumNumber,
-  const std::filesystem::path &path ) const
+MediaPaths MediaSetManagerImpl::absoluteMediaPaths(
+  const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths ) const
 {
-  // make structure binding here instead
-  const auto &[ mediaSetPath, mediaPaths ]{ mediaSetPaths };
-
-  auto medium{ mediaPaths.find( mediumNumber ) };
-
-  if ( mediaPaths.end() == medium )
+  MediaPaths absoluteMediaPaths{};
+  for ( const auto &[ mediumNumber, mediumPath ] : mediaSetPaths.second )
   {
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "Medium not found" } );
+    absoluteMediaPaths.try_emplace(
+      mediumNumber,
+      ( basePathV / mediaSetPaths.first / mediumPath ).lexically_normal() );
   }
 
-  // concatenate file path
-  auto filePath{
-    absolutePath(
-      mediaSetPath / medium->second / path.relative_path() ) };
-
-  return std::filesystem::file_size( filePath );
-}
-
-Files::RawFile MediaSetManagerImpl::readFileHandler(
-  const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
-  const MediumNumber &mediumNumber,
-  const std::filesystem::path &path ) const
-{
-  // make structure binding here instead
-  const auto &[ mediaSetPath, mediaPaths ]{ mediaSetPaths };
-
-  auto medium{ mediaPaths.find( mediumNumber ) };
-
-  if ( mediaPaths.end() == medium )
-  {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning )
-      << "Medium not found";
-
-    return {};
-  }
-
-  // concatenate file path
-  auto filePath{
-    absolutePath( mediaSetPath / medium->second / path.relative_path() ) };
-
-  // read file
-  Files::RawFile data( std::filesystem::file_size( filePath ) );
-
-  std::ifstream file{
-    filePath.string().c_str(),
-    std::ifstream::binary | std::ifstream::in };
-
-  if ( !file.is_open() )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Error opening files" } );
-  }
-
-  // read the data to the buffer
-  file.read(
-    (char*) std::data( data ),
-    static_cast< std::streamsize >( data.size() ) );
-
-  // return the buffer
-  return data;
-}
-
-std::filesystem::path MediaSetManagerImpl::absolutePath(
-  const std::filesystem::path &filePath ) const
-{
-  return ( basePath / filePath ).lexically_normal();
+  return absoluteMediaPaths;
 }
 
 }

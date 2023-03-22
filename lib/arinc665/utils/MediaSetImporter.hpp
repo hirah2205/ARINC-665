@@ -41,9 +41,6 @@ namespace Arinc665::Utils {
 class ARINC665_EXPORT MediaSetImporter
 {
   public:
-    //! Return Type of Operation
-    using Result = std::pair< Media::MediaSetPtr, Media::CheckValues >;
-
     /**
      * @brief Handler, which is called to obtain the file size.
      *
@@ -137,7 +134,7 @@ class ARINC665_EXPORT MediaSetImporter
      * @throw Arinc665Exception
      *   When the media set cannot be imported.
      **/
-    virtual Result operator()() = 0;
+    virtual MediaSetImportResult operator()() = 0;
 };
 
 }

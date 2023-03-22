@@ -49,7 +49,7 @@ MediaSetImporter& MediaSetImporterImpl::checkFileIntegrity(
   return *this;
 }
 
-MediaSetImporterImpl::Result MediaSetImporterImpl::operator()()
+MediaSetImportResult MediaSetImporterImpl::operator()()
 {
   BOOST_LOG_FUNCTION()
 

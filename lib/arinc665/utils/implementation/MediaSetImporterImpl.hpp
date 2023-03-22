@@ -10,8 +10,8 @@
  * @brief Declaration of Class Arinc665::Utils::MediaSetImporterImpl.
  **/
 
-#ifndef ARINC665_UTILS_MEDIASETIMPORTERIMPL_HPP
-#define ARINC665_UTILS_MEDIASETIMPORTERIMPL_HPP
+#ifndef ARINC665_UTILS_IMPLEMENTATION_MEDIASETIMPORTERIMPL_HPP
+#define ARINC665_UTILS_IMPLEMENTATION_MEDIASETIMPORTERIMPL_HPP
 
 #include <arinc665/utils/MediaSetImporter.hpp>
 
@@ -30,7 +30,7 @@ namespace Arinc665::Utils {
 
 /**
  * @brief Implementation of a ARINC 665 Media Set Importer.
- */
+ **/
 class MediaSetImporterImpl final : public MediaSetImporter
 {
   public:
@@ -56,7 +56,7 @@ class MediaSetImporterImpl final : public MediaSetImporter
      *
      * @return Created Media Set Instance.
      **/
-    [[nodiscard]] Result operator()() override;
+    [[nodiscard]] MediaSetImportResult operator()() override;
 
   private:
     //! Files Information (From File List File) (filename -> file information)

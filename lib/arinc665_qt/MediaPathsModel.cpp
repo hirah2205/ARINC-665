@@ -105,7 +105,7 @@ QVariant MediaPathsModel::headerData(
   }
 }
 
-const MediaPathsModel::MediaPaths& MediaPathsModel::mediaPaths() const
+const Arinc665::Utils::MediaPaths& MediaPathsModel::mediaPaths() const
 {
   return mediaPathsV;
 }

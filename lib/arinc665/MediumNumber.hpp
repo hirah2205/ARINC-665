@@ -29,15 +29,22 @@ class ARINC665_EXPORT MediumNumber
 {
   public:
     /**
+     * @brief Default Constructor.
+     *
+     * Initialises the Medium Number to @p 1.
+     **/
+    explicit MediumNumber() noexcept = default;
+
+    /**
      * @brief Constructs the Medium Number
      *
      * @param[in] mediumNumber
      *   Medium Number
      **/
-    explicit MediumNumber( uint8_t mediumNumber );
+    explicit MediumNumber( uint8_t mediumNumber ) noexcept;
 
     /**
-     * @brief Plus Operator
+     * @brief Binary Plus Operator with @p uin8_t.
      *
      * @param[in] increment
      *   Increment Value.
@@ -47,14 +54,14 @@ class ARINC665_EXPORT MediumNumber
     MediumNumber operator+( uint8_t increment );
 
     /**
-     * @brief Prefix increment operator.
+     * @brief Prefix increment operator (@p ++mediumNumber).
      *
      * @return *this
      **/
     MediumNumber operator++();
 
     /**
-     * @brief Postfix increment operator.
+     * @brief Postfix increment operator (@p mediumNumber++).
      *
      * @return *this before increment
      **/

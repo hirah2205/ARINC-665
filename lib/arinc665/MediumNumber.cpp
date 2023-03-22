@@ -16,7 +16,7 @@
 
 namespace Arinc665 {
 
-MediumNumber::MediumNumber( const uint8_t mediumNumber ) :
+MediumNumber::MediumNumber( const uint8_t mediumNumber ) noexcept :
   mediumNumberV{ mediumNumber }
 {
 }
