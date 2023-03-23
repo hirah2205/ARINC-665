@@ -63,9 +63,17 @@ enum class FileCreationPolicy
   All
 };
 
+//! File (Source) Path Mapping (File to path)
+using FilePathMapping = std::map< Media::ConstFilePtr, std::filesystem::path >;
+
 class MediaSetExporter;
-//! ARINC 665 %Media Set Exporter Instance Pointer.
+//! ARINC 665 %Media Set Exporter Instance.
 using MediaSetExporterPtr = std::unique_ptr< MediaSetExporter >;
+
+class FilesystemMediaSetExporter;
+//! Filesystem ARINC 665 %Media Set Exporter Instance.
+using FilesystemMediaSetExporterPtr =
+  std::unique_ptr< FilesystemMediaSetExporter >;
 
 /** @} **/
 

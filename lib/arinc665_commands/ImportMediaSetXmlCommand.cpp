@@ -19,7 +19,7 @@
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/JsonMediaSetManager.hpp>
 #include <arinc665/utils/FileCreationPolicyDescription.hpp>
-#include <arinc665/utils/MediaSetExporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetExporter.hpp>
 
 #include <arinc665/SupportedArinc665VersionDescription.hpp>
 #include <arinc665/Arinc665Exception.hpp>
@@ -29,10 +29,7 @@
 
 #include <boost/exception/all.hpp>
 
-#include <fmt/format.h>
-
 #include <iostream>
-#include <fstream>
 
 namespace Arinc665Commands {
 
@@ -125,25 +122,13 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
       Arinc665::Utils::JsonMediaSetManager::load( mediaSetManagerDirectory ) };
 
     // load ARINC 665 XML file
-    loadXmlResult = Arinc665::Utils::Arinc665Xml_load( mediaSetXmlFile );
+    auto [ mediaSet, filePathMapping ] =
+      Arinc665::Utils::Arinc665Xml_load( mediaSetXmlFile );
 
-    // Add Media Set Part Number to Output Path
-    Arinc665::Utils::MediaPaths mediaPaths{};
-    for (
-      Arinc665::MediumNumber mediumNumber{ 1U };
-      mediumNumber <= std::get< 0 >( loadXmlResult )->lastMediumNumber();
-      ++mediumNumber )
-    {
-      mediaPaths.try_emplace(
-        mediumNumber,
-        fmt::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) ) );
-    }
-    mediaSetPaths = std::make_pair(
-      std::get< 0 >( loadXmlResult )->partNumber(),
-      std::move( mediaPaths ) );
+    std::filesystem::path mediaSetPath{ mediaSet->partNumber() };
 
     if ( std::filesystem::exists(
-      mediaSetManagerDirectory / mediaSetPaths.first ) )
+      mediaSetManagerDirectory / mediaSetPath ) )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665::Arinc665Exception()
@@ -152,37 +137,24 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 
     // create media set directory
     std::filesystem::create_directories(
-      mediaSetManagerDirectory / mediaSetPaths.first );
+      mediaSetManagerDirectory / mediaSetPath );
 
-    auto exporter{ Arinc665::Utils::MediaSetExporter::create() };
+    auto exporter{ Arinc665::Utils::FilesystemMediaSetExporter::create() };
 
     // set exporter parameters
-    exporter->mediaSet( std::get< 0 >( loadXmlResult ) )
-      .createMediumHandler( std::bind_front(
-        &ImportMediaSetXmlCommand::createMediumHandler,
-        this ) )
-      .createDirectoryHandler( std::bind_front(
-        &ImportMediaSetXmlCommand::createDirectoryHandler,
-        this ) )
-      .checkFileExistenceHandler( std::bind_front(
-        &ImportMediaSetXmlCommand::checkFileExistenceHandler,
-        this ) )
-      .createFileHandler( std::bind_front(
-        &ImportMediaSetXmlCommand::createFileHandler,
-        this ) )
-      .writeFileHandler( std::bind_front(
-        &ImportMediaSetXmlCommand::writeFileHandler,
-        this ) )
-      .readFileHandler( std::bind_front(
-        &ImportMediaSetXmlCommand::readFileHandler,
-        this ) )
+    exporter
+      ->mediaSet( mediaSet )
       .arinc665Version( version )
       .createBatchFiles( createBatchFiles )
-      .createLoadHeaderFiles( createLoadHeaderFiles );
+      .createLoadHeaderFiles( createLoadHeaderFiles )
+      .mediaSetBasePath( mediaSetManagerDirectory / mediaSetPath )
+      .sourceBasePath( mediaSetSourceDirectory )
+      .filePathMapping( std::move( filePathMapping ) );
 
-    ( *exporter )();
+    auto mediaPaths{ ( *exporter )() };
 
-    mediaSetManager->manager()->registerMediaSet( mediaSetPaths );
+    mediaSetManager->manager()->registerMediaSet(
+      { std::move( mediaSetPath ), std::move( mediaPaths ) } );
     mediaSetManager->saveConfiguration();
   }
   catch ( const boost::program_options::error &e )
@@ -209,173 +181,6 @@ void ImportMediaSetXmlCommand::help()
   std::cout
     << "Compiles Media Set given by XML description and registers it to the Media Set Manager\n"
     << optionsDescription;
-}
-
-void ImportMediaSetXmlCommand::createMediumHandler(
-  const Arinc665::MediumNumber &mediumNumber )
-{
-  BOOST_LOG_FUNCTION()
-
-  auto mPath{
-    mediaSetManagerDirectory / mediaSetPaths.first
-    / mediaSetPaths.second.at( mediumNumber ) };
-
-  BOOST_LOG_TRIVIAL( severity_level::trace )
-    << "Create medium directory " << mPath;
-
-  std::filesystem::create_directory( mPath );
-}
-
-void ImportMediaSetXmlCommand::createDirectoryHandler(
-  const Arinc665::MediumNumber &mediumNumber,
-  const Arinc665::Media::ConstDirectoryPtr &directory )
-{
-  BOOST_LOG_FUNCTION()
-
-  auto directoryPath{
-    mediaSetManagerDirectory / mediaSetPaths.first
-    / mediaSetPaths.second.at( mediumNumber )
-    / directory->path().relative_path() };
-
-  BOOST_LOG_TRIVIAL( severity_level::trace )
-    << "Create directory " << directoryPath;
-
-  std::filesystem::create_directory( directoryPath );
-}
-
-bool ImportMediaSetXmlCommand::checkFileExistenceHandler(
-  const Arinc665::Media::ConstFilePtr &file )
-{
-  BOOST_LOG_FUNCTION()
-
-  BOOST_LOG_TRIVIAL( severity_level::trace )
-    << "check existence of " << file->path();
-
-  // search for file
-  auto fileIt{ std::get< 1 >( loadXmlResult ).find( file ) };
-
-  if ( fileIt == std::get< 1 >( loadXmlResult ).end() )
-  {
-    return false;
-  }
-
-  return std::filesystem::is_regular_file(
-    mediaSetSourceDirectory / fileIt->second );
-}
-
-void ImportMediaSetXmlCommand::createFileHandler(
-  const Arinc665::Media::ConstFilePtr &file )
-{
-  BOOST_LOG_FUNCTION()
-
-  // search for file
-  auto fileIt{ std::get< 1 >( loadXmlResult ).find( file ) };
-
-  if ( fileIt == std::get< 1 >( loadXmlResult ).end() )
-  {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "file mapping not found" }
-      << boost::errinfo_file_name( std::string{ file->name() } ) );
-  }
-
-  auto filePath{
-    mediaSetManagerDirectory / mediaSetPaths.first
-    / mediaSetPaths.second.at( file->effectiveMediumNumber() )
-    / file->path().relative_path() };
-
-  BOOST_LOG_TRIVIAL( severity_level::trace ) << "Copy file " << filePath;
-
-  // copy file
-  std::filesystem::copy( mediaSetSourceDirectory / fileIt->second, filePath );
-}
-
-void ImportMediaSetXmlCommand::writeFileHandler(
-  const Arinc665::MediumNumber &mediumNumber,
-  const std::filesystem::path &path,
-  const Arinc665::Files::ConstRawFileSpan &file )
-{
-  BOOST_LOG_FUNCTION()
-
-  const auto filePath{
-    mediaSetManagerDirectory / mediaSetPaths.first
-    / mediaSetPaths.second.at( mediumNumber )
-    / path.relative_path() };
-
-  BOOST_LOG_TRIVIAL( severity_level::trace ) << "Write file " << filePath;
-
-  // check existence of file
-  if ( std::filesystem::exists( filePath ) )
-  {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "File already exists" }
-      << boost::errinfo_file_name{ filePath.string() } );
-  }
-
-  // save file
-  std::ofstream fileStream{
-    filePath.string(),
-    std::ofstream::binary | std::ofstream::out | std::ofstream::trunc };
-
-  if ( !fileStream.is_open() )
-  {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "Error opening files" }
-      << boost::errinfo_file_name{ filePath.string() } );
-  }
-
-  // write the data to the buffer
-  fileStream.write(
-    (char const *)file.data(),
-    static_cast< std::streamsize >( file.size() ) );
-}
-
-Arinc665::Files::RawFile ImportMediaSetXmlCommand::readFileHandler(
-  const Arinc665::MediumNumber &mediumNumber,
-  const std::filesystem::path &path )
-{
-  BOOST_LOG_FUNCTION()
-
-  // check medium number
-  const auto filePath{
-    mediaSetManagerDirectory / mediaSetPaths.first
-    / mediaSetPaths.second.at( mediumNumber )
-    / path.relative_path() };
-
-  BOOST_LOG_TRIVIAL( severity_level::trace ) << "Read file " << filePath;
-
-  // check existence of file
-  if ( !std::filesystem::is_regular_file( filePath ) )
-  {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() << Helper::AdditionalInfo{
-        "File not found" } << boost::errinfo_file_name{ filePath.string() } );
-  }
-
-  Arinc665::Files::RawFile data( std::filesystem::file_size( filePath ) );
-
-  // load file
-  std::ifstream file(
-    filePath.string().c_str(),
-    std::ifstream::binary | std::ifstream::in );
-
-  if ( !file.is_open() )
-  {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "Error opening files" }
-      << boost::errinfo_file_name{ filePath.string() } );
-  }
-
-  // read the data to the buffer
-  file.read(
-    (char *)&data.at( 0 ),
-    static_cast< std::streamsize >( data.size() ) );
-
-  // return the buffer
-  return data;
 }
 
 }

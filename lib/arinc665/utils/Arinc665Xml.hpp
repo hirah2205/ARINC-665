@@ -35,8 +35,6 @@ namespace Arinc665::Utils {
  * @{
  **/
 
-//! File (Source) Path Mapping (File to path)
-using FilePathMapping = std::map< Media::ConstFilePtr, std::filesystem::path >;
 //! Load XML Result (Media Set Pointer and corresponding File Path Mapping)
 using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping >;
 

@@ -15,6 +15,7 @@ target_sources(
         Arinc665Xml.hpp
         FileCreationPolicyDescription.hpp
         FilePrinter.hpp
+        FilesystemMediaSetExporter.hpp
         FilesystemMediaSetImporter.hpp
         JsonMediaSetManager.hpp
         MediaSetExporter.hpp
@@ -29,6 +30,7 @@ target_sources(
     Arinc665Xml.cpp
     FileCreationPolicyDescription.cpp
     FilePrinter.cpp
+    FilesystemMediaSetExporter.cpp
     FilesystemMediaSetImporter.cpp
     JsonMediaSetManager.cpp
     MediaSetExporter.cpp

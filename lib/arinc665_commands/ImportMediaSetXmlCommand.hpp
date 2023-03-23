@@ -56,73 +56,6 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetXmlCommand
     void help();
 
   private:
-    /**
-     * @brief Creates the directory for the given medium.
-     *
-     * @param[in] mediumNumber
-     *   Medium to Create.
-     **/
-    void createMediumHandler( const Arinc665::MediumNumber &mediumNumber );
-
-    /**
-     * @brief Creates the directory for the given directory.
-     *
-     * @param[in] mediumNumber
-     *   Medium number, on which the directory shall be created.
-     * @param[in] directory
-     *   Directory to Create.
-     **/
-    void createDirectoryHandler(
-      const Arinc665::MediumNumber &mediumNumber,
-      const Arinc665::Media::ConstDirectoryPtr &directory );
-
-    /**
-     * @brief Check File Existence Handler.
-     *
-     * @param[in] file
-     *   File to Check
-     *
-     * @return If file exists
-     **/
-    bool checkFileExistenceHandler( const Arinc665::Media::ConstFilePtr &file );
-
-    /**
-     * @brief Create File Handler.
-     *
-     * @param[in] file
-     *   File to Create
-     **/
-    void createFileHandler( const Arinc665::Media::ConstFilePtr &file );
-
-    /**
-     * @brief Write File Handler
-     *
-     * @param[in] mediumNumber
-     *   Medium Number
-     * @param[in] path
-     *   File Path
-     * @param[in] file
-     *   File Content
-     **/
-    void writeFileHandler(
-      const Arinc665::MediumNumber &mediumNumber,
-      const std::filesystem::path &path,
-      const Arinc665::Files::ConstRawFileSpan &file );
-
-    /**
-     * @brief Read File Handler
-     *
-     * @param[in] mediumNumber
-     *   Medium Number
-     * @param[in] path
-     *   File Path
-     *
-     * @return File Content
-     **/
-    [[nodiscard]] Arinc665::Files::RawFile readFileHandler(
-      const Arinc665::MediumNumber &mediumNumber,
-      const std::filesystem::path &path );
-
     //! Program Options Description
     boost::program_options::options_description optionsDescription;
     //! Media Set Manager Directory
@@ -140,10 +73,6 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetXmlCommand
     //! ARINC 665 Version
     Arinc665::SupportedArinc665Version version{
       Arinc665::SupportedArinc665Version::Supplement2 };
-    //! Media Set Output Paths
-    Arinc665::Utils::MediaSetManagerConfiguration::MediaSetPaths mediaSetPaths;
-    //! Load XML Results
-    Arinc665::Utils::LoadXmlResult loadXmlResult;
 };
 
 }
