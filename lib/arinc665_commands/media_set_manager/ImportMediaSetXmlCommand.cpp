@@ -7,7 +7,8 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Commands::ImportMediaSetXmlCommand.
+ * @brief Definition of Class
+ *   Arinc665Commands::MediaSetManager::ImportMediaSetXmlCommand.
  **/
 
 #include "ImportMediaSetXmlCommand.hpp"
@@ -31,7 +32,7 @@
 
 #include <iostream>
 
-namespace Arinc665Commands {
+namespace Arinc665Commands::MediaSetManager {
 
 ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
   optionsDescription{ "Import ARINC 665 Media Set XML Options" }

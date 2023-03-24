@@ -7,7 +7,8 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Commands::ListMediaSetsCommand.
+ * @brief Definition of Class
+ *   Arinc665Commands::MediaSetManager::ListMediaSetsCommand.
  **/
 
 #include "ListMediaSetsCommand.hpp"
@@ -22,7 +23,7 @@
 
 #include <iostream>
 
-namespace Arinc665Commands {
+namespace Arinc665Commands::MediaSetManager {
 
 ListMediaSetsCommand::ListMediaSetsCommand() :
   optionsDescription{ "List ARINC 665 Media Sets Options" },

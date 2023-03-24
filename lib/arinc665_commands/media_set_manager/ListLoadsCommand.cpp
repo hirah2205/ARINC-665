@@ -7,7 +7,8 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Commands::ListLoadsCommand.
+ * @brief Definition of Class
+ *   Arinc665Commands::MediaSetManager::ListLoadsCommand.
  **/
 
 #include "ListLoadsCommand.hpp"
@@ -24,7 +25,7 @@
 
 #include <iostream>
 
-namespace Arinc665Commands {
+namespace Arinc665Commands::MediaSetManager {
 
 ListLoadsCommand::ListLoadsCommand() :
   optionsDescription{ "List ARINC 665 Loads Options" },

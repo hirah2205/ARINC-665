@@ -7,13 +7,14 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Commands::ImportMediaSetCommand.
+ * @brief Declaration of Class
+ *   Arinc665Commands::MediaSetManager::ImportMediaSetCommand.
  **/
 
-#ifndef ARINC665_COMMANDS_IMPORTMEDIASETCOMMAND_HPP
-#define ARINC665_COMMANDS_IMPORTMEDIASETCOMMAND_HPP
+#ifndef ARINC665_COMMANDS_MEDIA_SET_MANAGER_IMPORTMEDIASETCOMMAND_HPP
+#define ARINC665_COMMANDS_MEDIA_SET_MANAGER_IMPORTMEDIASETCOMMAND_HPP
 
-#include <arinc665_commands/Arinc665Commands.hpp>
+#include <arinc665_commands/media_set_manager/MediaSetManager.hpp>
 
 #include <arinc665/files/Files.hpp>
 
@@ -24,7 +25,7 @@
 #include <filesystem>
 #include <vector>
 
-namespace Arinc665Commands {
+namespace Arinc665Commands::MediaSetManager {
 
 /**
  * @brief Import Media Set to Media Set Manager %Command.

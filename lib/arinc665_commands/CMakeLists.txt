@@ -23,22 +23,10 @@ target_sources(
         ${CMAKE_CURRENT_BINARY_DIR}/..
       FILES
         Arinc665Commands.hpp
-        CreateMediaSetManagerCommand.hpp
-        ImportMediaSetCommand.hpp
-        ImportMediaSetXmlCommand.hpp
-        ListLoadsCommand.hpp
-        ListMediaSetsCommand.hpp
-        RemoveMediaSetCommand.hpp
         ${CMAKE_CURRENT_BINARY_DIR}/arinc665_commands_export.h
 
   PRIVATE
-    Arinc665Commands.cpp
-    CreateMediaSetManagerCommand.cpp
-    ImportMediaSetCommand.cpp
-    ImportMediaSetXmlCommand.cpp
-    ListLoadsCommand.cpp
-    ListMediaSetsCommand.cpp
-    RemoveMediaSetCommand.cpp )
+    Arinc665Commands.cpp )
 
 target_compile_features( arinc665_commands PUBLIC cxx_std_20 )
 
@@ -64,6 +52,7 @@ target_link_libraries(
   PRIVATE
     fmt::fmt )
 
+add_subdirectory( media_set_manager )
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}

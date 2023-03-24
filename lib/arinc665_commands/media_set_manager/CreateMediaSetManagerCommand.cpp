@@ -7,7 +7,8 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Commands::CreateMediaSetManagerCommand.
+ * @brief Definition of Class
+ *   Arinc665Commands::MediaSetManager::CreateMediaSetManagerCommand.
  **/
 
 #include "CreateMediaSetManagerCommand.hpp"
@@ -18,7 +19,7 @@
 
 #include <iostream>
 
-namespace Arinc665Commands {
+namespace Arinc665Commands::MediaSetManager {
 
 CreateMediaSetManagerCommand::CreateMediaSetManagerCommand() :
   optionsDescription{ "Create ARINC 665 Media Set Manager Options" }

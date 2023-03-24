@@ -7,7 +7,8 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Commands::ImportMediaSetCommand.
+ * @brief Declaration of Class
+ *   Arinc665Commands::MediaSetManager::ImportMediaSetCommand.
  **/
 
 #include "ImportMediaSetCommand.hpp"
@@ -33,7 +34,7 @@
 
 #include <iostream>
 
-namespace Arinc665Commands {
+namespace Arinc665Commands::MediaSetManager {
 
 ImportMediaSetCommand::ImportMediaSetCommand() :
   optionsDescription{ "Import ARINC 665 Media Set Options" }

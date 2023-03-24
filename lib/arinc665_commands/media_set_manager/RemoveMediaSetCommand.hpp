@@ -7,13 +7,14 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Commands::RemoveMediaSetCommand.
+ * @brief Declaration of Class
+ *   Arinc665Commands::MediaSetManager::RemoveMediaSetCommand.
  **/
 
-#ifndef ARINC665_COMMANDS_REMOVEMEDIASETCOMMAND_HPP
-#define ARINC665_COMMANDS_REMOVEMEDIASETCOMMAND_HPP
+#ifndef ARINC665_COMMANDS_MEDIA_SET_MANAGER_REMOVEMEDIASETCOMMAND_HPP
+#define ARINC665_COMMANDS_MEDIA_SET_MANAGER_REMOVEMEDIASETCOMMAND_HPP
 
-#include <arinc665_commands/Arinc665Commands.hpp>
+#include <arinc665_commands/media_set_manager/MediaSetManager.hpp>
 
 #include <commands/Commands.hpp>
 
@@ -22,7 +23,7 @@
 #include <filesystem>
 #include <vector>
 
-namespace Arinc665Commands {
+namespace Arinc665Commands::MediaSetManager {
 
 /**
  * @brief Remove Media Set from Media Set Manager %Command.

@@ -7,7 +7,8 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Commands::RemoveMediaSetCommand.
+ * @brief Definition of Class
+ *   Arinc665Commands::MediaSetManager::RemoveMediaSetCommand.
  **/
 
 #include "RemoveMediaSetCommand.hpp"
@@ -25,7 +26,7 @@
 
 #include <iostream>
 
-namespace Arinc665Commands {
+namespace Arinc665Commands::MediaSetManager {
 
 RemoveMediaSetCommand::RemoveMediaSetCommand() :
   optionsDescription{ "Remove ARINC 665 Media Set Options" }

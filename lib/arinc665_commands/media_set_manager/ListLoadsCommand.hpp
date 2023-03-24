@@ -7,13 +7,14 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Commands::ListMediaSetsCommand.
+ * @brief Declaration of Class
+ *   Arinc665Commands::MediaSetManager::ListLoadsCommand.
  **/
 
-#ifndef ARINC665_COMMANDS_LISTMEDIASETSCOMMAND_HPP
-#define ARINC665_COMMANDS_LISTMEDIASETSCOMMAND_HPP
+#ifndef ARINC665_COMMANDS_MEDIA_SET_MANAGER_LISTLOADSCOMMAND_HPP
+#define ARINC665_COMMANDS_MEDIA_SET_MANAGER_LISTLOADSCOMMAND_HPP
 
-#include <arinc665_commands/Arinc665Commands.hpp>
+#include <arinc665_commands/media_set_manager/MediaSetManager.hpp>
 
 #include <commands/Commands.hpp>
 
@@ -21,20 +22,20 @@
 
 #include <filesystem>
 
-namespace Arinc665Commands {
+namespace Arinc665Commands::MediaSetManager {
 
 /**
- * @brief List Media Sets within Media Set Manager %Command.
+ * @brief List Loads within Media Set Manager %Command.
  *
- * List all registered Media Sets within the given Media Set Manager.
+ * List all loads, which are part of the media sets of the Media Set Manager.
  **/
-class ARINC665_COMMANDS_EXPORT ListMediaSetsCommand
+class ARINC665_COMMANDS_EXPORT ListLoadsCommand
 {
   public:
     /**
-     * @brief Constructs the List Command.
+     * @brief Constructs the List Loads Command.
      **/
-    ListMediaSetsCommand();
+    ListLoadsCommand();
 
     /**
      * @brief Executes the Operation.
