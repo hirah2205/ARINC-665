@@ -14,9 +14,11 @@
 
 #include <arinc665/media/MediaSet.hpp>
 
+#include <arinc665/files/MediaSetInformation.hpp>
+
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/JsonMediaSetManager.hpp>
-#include <arinc665/utils/MediaSetImporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetImporter.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 
@@ -30,7 +32,6 @@
 #include <fmt/format.h>
 
 #include <iostream>
-#include <fstream>
 
 namespace Arinc665Commands {
 
@@ -79,14 +80,30 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
         mediaSetManagerDirectory,
         checkFileIntegrity ) };
 
-    auto importer{ Arinc665::Utils::MediaSetImporter::create() };
+    // Fill Media Paths list
+    Arinc665::Utils::MediaPaths sourceMediaPaths{};
+    for ( const auto &mediumSourceDirectory : mediaSourceDirectories )
+    {
+      const auto mediumInformation{
+        Arinc665::Utils::getMediumInformation( mediumSourceDirectory ) };
+
+      if ( !mediumInformation )
+      {
+        BOOST_THROW_EXCEPTION(
+          boost::program_options::invalid_option_value( mediumSourceDirectory ) );
+      }
+
+      sourceMediaPaths.try_emplace(
+        mediumInformation->mediaSequenceNumber,
+        mediumSourceDirectory );
+    }
+
+    auto importer{ Arinc665::Utils::FilesystemMediaSetImporter::create() };
+    assert( importer );
+
     importer
       ->checkFileIntegrity( checkFileIntegrity )
-      .fileSizeHandler(
-        std::bind_front( &ImportMediaSetCommand::fileSizeHandler, this ) )
-      .readFileHandler(
-        std::bind_front( &ImportMediaSetCommand::readFileHandler, this ) );
-    assert( importer );
+      .mediaPaths( sourceMediaPaths );
 
     const auto &[ mediaSet, checkValues]{ ( *importer )() };
 
@@ -108,7 +125,7 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665::Arinc665Exception()
-        << Helper::AdditionalInfo{ "Media Set Directory already exist" } );
+          << Helper::AdditionalInfo{ "Media Set Directory already exist" } );
     }
 
     // create media set directory
@@ -119,7 +136,7 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
     for ( auto const &[ mediumNumber, mediumPath ] : mediaPaths )
     {
       std::filesystem::copy(
-        mediaSourceDirectories.at( static_cast< uint8_t >( mediumNumber ) - 1 ),
+        sourceMediaPaths[ mediumNumber ],
         mediaSetManagerDirectory / mediaSetPath / mediumPath,
         std::filesystem::copy_options::recursive );
     }
@@ -131,7 +148,7 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
   }
   catch ( const boost::program_options::error &e )
   {
-    std::cout << e.what() << "\n" << optionsDescription << "\n";
+    std::cerr << e.what() << "\n" << optionsDescription << "\n";
   }
   catch ( const boost::exception &e )
   {
@@ -151,85 +168,6 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 void ImportMediaSetCommand::help()
 {
   std::cout << "Import ARINC 665 Media Set\n" << optionsDescription;
-}
-
-size_t ImportMediaSetCommand::fileSizeHandler(
-  const Arinc665::MediumNumber &mediumNumber,
-  const std::filesystem::path &path ) const
-{
-  BOOST_LOG_FUNCTION()
-
-  // check medium number
-  if ( static_cast< uint8_t >( mediumNumber ) > mediaSourceDirectories.size() )
-  {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception()
-        << Helper::AdditionalInfo{ "Media Set not found" } );
-  }
-
-  const auto filePath{
-    mediaSourceDirectories.at( static_cast< uint8_t >( mediumNumber )- 1 )
-      / path.relative_path() };
-
-  // check existence of file
-  if ( !std::filesystem::is_regular_file( filePath ) )
-  {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() << Helper::AdditionalInfo{
-        "File not found" } << boost::errinfo_file_name{ filePath.string() } );
-  }
-
-  return std::filesystem::file_size( filePath );
-}
-
-Arinc665::Files::RawFile ImportMediaSetCommand::readFileHandler(
-  const Arinc665::MediumNumber &mediumNumber,
-  const std::filesystem::path &path )
-{
-  BOOST_LOG_FUNCTION()
-
-  // check medium number
-  if ( static_cast< uint8_t >( mediumNumber ) > mediaSourceDirectories.size() )
-  {
-    return {};
-  }
-
-  const auto filePath{
-    mediaSourceDirectories.at( static_cast< uint8_t >( mediumNumber ) - 1 )
-      / path.relative_path() };
-
-  BOOST_LOG_TRIVIAL( severity_level::trace ) << "Read file " << filePath;
-
-  // check existence of file
-  if ( !std::filesystem::is_regular_file( filePath ) )
-  {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception() << Helper::AdditionalInfo{
-        "File not found" } << boost::errinfo_file_name{ filePath.string() } );
-  }
-
-  Arinc665::Files::RawFile data( std::filesystem::file_size( filePath ) );
-
-  // load file
-  std::ifstream file(
-    filePath.string().c_str(),
-    std::ifstream::binary | std::ifstream::in );
-
-  if ( !file.is_open() )
-  {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "Error opening files" }
-      << boost::errinfo_file_name{ filePath.string() } );
-  }
-
-  // read the data to the buffer
-  file.read(
-    (char *)&data.at( 0 ),
-    static_cast< std::streamsize >( data.size() ) );
-
-  // return the buffer
-  return data;
 }
 
 }

@@ -24,7 +24,7 @@ class MediaSetExporterImpl final : public MediaSetExporter
 {
   public:
     /**
-     * @brief Initialises the ARINC 665 Media Set Importer
+     * @brief Initialises the ARINC 665 Media Set Exporter
      **/
     MediaSetExporterImpl() = default;
 

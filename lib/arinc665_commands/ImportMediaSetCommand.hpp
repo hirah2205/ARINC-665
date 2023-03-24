@@ -56,42 +56,14 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetCommand
     void help();
 
   private:
-    /**
-     * @brief File Size Handler
-     *
-     * @param[in] mediumNumber
-     *   Medium Number
-     * @param[in] path
-     *   File Path
-     *
-     * @return File Size
-     **/
-    [[nodiscard]] size_t fileSizeHandler(
-      const Arinc665::MediumNumber &mediumNumber,
-      const std::filesystem::path &path ) const;
-
-    /**
-     * @brief Read File Handler
-     *
-     * @param[in] mediumNumber
-     *   Medium Number
-     * @param[in] path
-     *   File Path
-     *
-     * @return Read File Content
-     **/
-    [[nodiscard]] Arinc665::Files::RawFile readFileHandler(
-      const Arinc665::MediumNumber &mediumNumber,
-      const std::filesystem::path &path );
-
     //! Program Options Description
     boost::program_options::options_description optionsDescription;
     //! Media Set Manager Directory
-    std::filesystem::path mediaSetManagerDirectory;
+    std::filesystem::path mediaSetManagerDirectory{};
     //! Media source directories
-    std::vector< std::filesystem::path > mediaSourceDirectories;
+    std::vector< std::filesystem::path > mediaSourceDirectories{};
     //! Check File Integrity
-    bool checkFileIntegrity;
+    bool checkFileIntegrity{ true };
 };
 
 }

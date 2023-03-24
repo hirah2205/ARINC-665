@@ -98,7 +98,7 @@ class ARINC665_EXPORT File : public Base
      * If the medium number is not defined, the parent effective medium number
      * is returned.
      *
-     * @return effecive medium number.
+     * @return effective medium number.
      */
     [[nodiscard]] MediumNumber effectiveMediumNumber() const;
 

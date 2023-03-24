@@ -24,7 +24,7 @@ class FilesystemMediaSetImporterImpl final : public FilesystemMediaSetImporter
 {
   public:
     /**
-     * @brief Initialises the ARINC 665 Media Set Importer
+     * @brief Initialises the ARINC 665 Media Set Importer.
      **/
     explicit FilesystemMediaSetImporterImpl();
 
@@ -49,9 +49,9 @@ class FilesystemMediaSetImporterImpl final : public FilesystemMediaSetImporter
      * @brief Returns File Size of given File.
      *
      * @param[in] mediumNumber
-     *   Medium number.
+     *   Medium Number.
      * @param[in] path
-     *   Path of file on Medium.
+     *   Path of file on %Medium.
      *
      * @return File Size
      **/

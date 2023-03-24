@@ -13,6 +13,8 @@
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/RegularFile.hpp>
 
+#include <arinc665/files/MediaSetInformation.hpp>
+
 #include <arinc665/utils/FilesystemMediaSetImporter.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
 
@@ -109,24 +111,33 @@ int main( int argc, char const * argv[] )
 
     boost::program_options::notify( vm );
 
+    // Fill Media Paths list
     Arinc665::Utils::MediaPaths mediaPaths{};
-    for (
-      Arinc665::MediumNumber mediumNumber{};
-      const auto &mediaSourceDirectory : mediaSourceDirectories )
+    for ( const auto &mediumSourceDirectory : mediaSourceDirectories )
     {
-      mediaPaths.try_emplace( mediumNumber, mediaSourceDirectory );
-      ++mediumNumber;
+      const auto mediumInformation{
+        Arinc665::Utils::getMediumInformation( mediumSourceDirectory ) };
+
+      if ( !mediumInformation )
+      {
+        BOOST_THROW_EXCEPTION(
+          boost::program_options::invalid_option_value( mediumSourceDirectory ) );
+      }
+
+      mediaPaths.try_emplace(
+        mediumInformation->mediaSequenceNumber,
+        mediumSourceDirectory );
     }
 
-    // create importer
     auto importer{ Arinc665::Utils::FilesystemMediaSetImporter::create() };
+    assert( importer );
 
     importer
       ->checkFileIntegrity( checkFileIntegrity )
       .mediaPaths( std::move( mediaPaths ) );
 
     // perform import
-    const auto &[ mediaSet, checkValues ]{ (*importer)() };
+    const auto &[ mediaSet, checkValues ]{ ( *importer )() };
 
     Arinc665::Utils::FilePathMapping fileMapping{};
 

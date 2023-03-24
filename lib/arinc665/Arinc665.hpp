@@ -150,19 +150,19 @@ enum class FileType
   FileList          //!< ARINC 665 File List File
 };
 
-//! Default Filename of the List of %Files.
+//! Filename of the List of %Files.
 constexpr std::string_view ListOfFilesName{ "FILES.LUM" };
 
-//! Default Filename of the List of Loads.
+//! Filename of the List of Loads.
 constexpr std::string_view ListOfLoadsName{ "LOADS.LUM" };
 
-//! Default Filename of the List of Batches.
+//! Filename of the List of Batches.
 constexpr std::string_view ListOfBatchesName{ "BATCHES.LUM" };
 
-//! Default Extension of a Load Upload Header.
+//! Extension of a Load Upload Header.
 constexpr std::string_view LoadUploadHeaderExtension{ ".LUH" };
 
-//! Default Extension of a Batch File.
+//! Extension of a Batch File.
 constexpr std::string_view BatchFileExtension{ ".LUB" };
 
 class MediumNumber;
