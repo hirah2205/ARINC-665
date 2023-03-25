@@ -13,6 +13,7 @@ set_property(
   ${CMAKE_CURRENT_SOURCE_DIR}/arinc665_applications.md )
 
 add_subdirectory( arinc665_compiler )
+add_subdirectory( arinc665_compiler_gui )
 add_subdirectory( arinc665_decompiler )
 add_subdirectory( arinc665_check )
 add_subdirectory( arinc665_ls )

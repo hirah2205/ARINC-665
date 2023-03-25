@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Module Arinc665Qt.
+ * @brief Declaration of Namespace Arinc665Qt.
  **/
 
 /**
@@ -15,6 +15,8 @@
  * @brief Media Set Compiler
  *
  * Compiles ARINC 665 Media Set XML to Media Set.
+ *
+ * @sa @ref Arinc665Qt::CompileMediaSetAction
  **/
 
 #ifndef ARINC665_QT_COMPILE_MEDIA_SET_COMPILEMEDIASET_HPP
@@ -24,7 +26,7 @@
 
 namespace Arinc665Qt {
 
-class CompileMediaSetController;
+class CompileMediaSetAction;
 class CompileMediaSetWizard;
 
 }

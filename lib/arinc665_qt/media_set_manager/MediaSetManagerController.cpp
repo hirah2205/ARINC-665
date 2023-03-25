@@ -14,7 +14,7 @@
 
 #include <arinc665_qt/media/MediaSetsModel.hpp>
 #include <arinc665_qt/media_set_manager/MediaSetManagerDialog.hpp>
-#include <arinc665_qt/import_media_set_xml/ImportMediaSetXmlController.hpp>
+#include <arinc665_qt/import_media_set_xml/ImportMediaSetXmlAction.hpp>
 #include <arinc665_qt/MediaSetController.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
@@ -147,19 +147,21 @@ void MediaSetManagerController::importMediaSet()
 
 void MediaSetManagerController::importMediaSetXml()
 {
-  auto controller{ new ImportMediaSetXmlController{ mediaSetManagerDialogV.get() } };
+  auto controller{ new ImportMediaSetXmlAction{
+    mediaSetManagerV,
+    mediaSetManagerDialogV.get() } };
 
   // connect to reload media set model slot
   connect(
     controller,
-    &ImportMediaSetXmlController::finished,
+    &ImportMediaSetXmlAction::finished,
     this,
     &MediaSetManagerController::reloadMediaSetModel );
 
   // connect to clean up slot
   connect(
     controller,
-    &ImportMediaSetXmlController::finished,
+    &ImportMediaSetXmlAction::finished,
     controller,
     &MediaSetController::deleteLater );
 }

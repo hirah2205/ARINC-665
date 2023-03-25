@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <author>Thomas Vogt</author>
- <class>Arinc665Qt::ImportMediaSetXmlSettingsPage</class>
- <widget class="QWizardPage" name="Arinc665Qt::ImportMediaSetXmlSettingsPage">
+ <class>Arinc665Qt::CompileMediaSetSettingsPage</class>
+ <widget class="QWizardPage" name="Arinc665Qt::CompileMediaSetSettingsPage">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,10 +12,10 @@
    </rect>
   </property>
   <property name="title">
-   <string>Import ARINC 665 Media Set XML</string>
+   <string>ARINC 665 XML Compiler Settings</string>
   </property>
   <property name="subTitle">
-   <string>Settings for importing ARINC 665 Media Set</string>
+   <string>Configures the operation.</string>
   </property>
   <attribute name="pageId">
    <string notr="true">0</string>
@@ -35,6 +35,30 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QGroupBox" name="mediaSetOutputPath">
+     <property name="title">
+      <string>ARINC 665 Media Set Output Path</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLineEdit" name="outputBasePath">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="selectOutputBasePath">
+        <property name="icon">
+         <iconset theme="document-open">
+          <normaloff>../import_media_set_xml</normaloff>../import_media_set_xml</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -51,8 +75,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../resources/arinc665_qt_resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

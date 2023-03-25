@@ -1,53 +1,55 @@
-/**
- * @file
- * @copyright
+/*
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
- * @author Thomas Vogt, thomas@thomas-vogt.de
- *
- * @brief Declaration of Class Arinc665Qt::ImportMediaSetXmlWizard.
- **/
+ */
 
-#ifndef ARINC665_QT_IMPORT_MEDIA_SET_XML_IMPORTMEDIASETXMLWIZARD_HPP
-#define ARINC665_QT_IMPORT_MEDIA_SET_XML_IMPORTMEDIASETXMLWIZARD_HPP
+#ifndef ARINC665_QT_IMPORT_MEDIA_SET_XML_IMPORTMEDIASETXMLACTION_HPP
+#define ARINC665_QT_IMPORT_MEDIA_SET_XML_IMPORTMEDIASETXMLACTION_HPP
 
 #include <arinc665_qt/import_media_set_xml/ImportMediaSetXml.hpp>
 
 #include <arinc665/utils/Utils.hpp>
 
-#include <QWizard>
+#include <QWidget>
 
 #include <memory>
-#include <filesystem>
 
 namespace Arinc665Qt {
 
-namespace Ui{
-class ImportMediaSetXmlWizard;
-}
-
-//! Import %Media Set XML Wizard
-class ARINC665_QT_EXPORT ImportMediaSetXmlWizard : public QWizard
+/**
+ * @brief Import %Media Set XML Controller.
+ *
+ * This class Compiles an ARINC 665 Media Set XML to an ARINC 665 Media Set and
+ * imports it to the Media Set Manager.
+ **/
+class ARINC665_QT_EXPORT ImportMediaSetXmlAction final : public QObject
 {
     Q_OBJECT
 
   public:
     /**
-     * @brief Initialises the Import Media Set XML Wizard.
+     * @brief Initialises the %Media Set Import XML Controller.
      *
+     * @param[in] mediaSetManager
+     *   Media Set Manager
      * @param[in] parent
-     *   Widget parent.
+     *   Parent Widget
      **/
-    explicit ImportMediaSetXmlWizard( QWidget * parent = nullptr );
+    explicit ImportMediaSetXmlAction(
+      Arinc665::Utils::JsonMediaSetManagerPtr mediaSetManager,
+      QWidget * parent = nullptr );
 
     //! Destructor
-    ~ImportMediaSetXmlWizard() override;
+    ~ImportMediaSetXmlAction() override;
 
   signals:
+    //! Emitted, when action is finished.
+    void finished();
+
+  private slots:
     /**
-     * @brief Emitted when a ARINC 665 Media Set XML file has been selected.
+     * @brief Called when a ARINC 665 Media Set XML file has been selected.
      *
      * @param[in] xmlFile
      *   Selected ARINC 665 Media Set XML file.
@@ -55,7 +57,7 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlWizard : public QWizard
     void xmlFile( std::filesystem::path xmlFile );
 
     /**
-     * @brief Emitted when an input directory has been selected.
+     * @brief Called when an input directory has been selected.
      *
      * @param[in] directory
      *   Selected input directory.
@@ -63,7 +65,7 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlWizard : public QWizard
     void inputDirectory( std::filesystem::path directory );
 
     /**
-     * @brief Emitted the ARINC 665 Version Flag.
+     * @brief Called the ARINC 665 Version Flag.
      *
      * @param[in] version
      *   ARINC 665 version used for exporting.
@@ -71,7 +73,7 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlWizard : public QWizard
     void arinc665Version( Arinc665::SupportedArinc665Version version );
 
     /**
-     * @brief Emitted the Create Batch Files Flag.
+     * @brief Called the Create Batch Files Flag.
      *
      * @param[in] createBatchFiles
      *   Defines, if Batch Files are created by exporter or pre-existing ones
@@ -81,7 +83,7 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlWizard : public QWizard
       Arinc665::Utils::FileCreationPolicy createBatchFiles );
 
     /**
-     * @brief Emitted the Create Load Header Files Flag.
+     * @brief Called the Create Load Header Files Flag.
      *
      * @param[in] createLoadHeaderFiles
      *   Defines, if Load Header Files are created by exporter or pre-existing
@@ -90,21 +92,20 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlWizard : public QWizard
     void createLoadHeaderFiles(
       Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles );
 
-    //! Signal emitted when operation should be started.
+    /**
+     * @brief Slot for conversion.
+     **/
     void start();
 
-  private slots:
-    /**
-     * @brief Slot for currentIdChanged() signal.
-     *
-     * @param[in] id
-     *   new current ID
-     **/
-    void pageChanged( int id );
-
   private:
-    //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetXmlWizard > ui;
+    //! Wizard Dialog
+    std::unique_ptr< ImportMediaSetXmlWizard > wizard;
+    //! Media Set Manager
+    Arinc665::Utils::JsonMediaSetManagerPtr mediaSetManagerV;
+    //! ARINC 665 Media Set Exporter
+    Arinc665::Utils::FilesystemMediaSetExporterPtr exporter;
+    //! XML File
+    std::filesystem::path xmlFileV;
 };
 
 }

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author>Thomas Vogt</author>
- <class>Arinc665Qt::ImportMediaSetXmlWizard</class>
- <widget class="QWizard" name="Arinc665Qt::ImportMediaSetXmlWizard">
+ <class>Arinc665Qt::CompileMediaSetWizard</class>
+ <widget class="QWizard" name="Arinc665Qt::CompileMediaSetWizard">
   <property name="windowModality">
    <enum>Qt::ApplicationModal</enum>
   </property>
@@ -15,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Import Media Set XML</string>
+   <string>Compile ARINC 665 Media Set</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/arinc665_qt_resources.qrc">
@@ -24,20 +23,20 @@
   <property name="wizardStyle">
    <enum>QWizard::ModernStyle</enum>
   </property>
-  <widget class="Arinc665Qt::ImportMediaSetXmlSettingsPage" name="settings"/>
-  <widget class="Arinc665Qt::ImportMediaSetXmlFinalPage" name="finish"/>
+  <widget class="Arinc665Qt::CompileMediaSetSettingsPage" name="settings"/>
+  <widget class="Arinc665Qt::CompileMediaSetFinalPage" name="finish"/>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Arinc665Qt::ImportMediaSetXmlSettingsPage</class>
+   <class>Arinc665Qt::CompileMediaSetSettingsPage</class>
    <extends>QWizardPage</extends>
-   <header location="global">arinc665_qt/import_media_set_xml/ImportMediaSetXmlSettingsPage.hpp</header>
+   <header location="global">arinc665_qt/compile_media_set/CompileMediaSetSettingsPage.hpp</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>Arinc665Qt::ImportMediaSetXmlFinalPage</class>
+   <class>Arinc665Qt::CompileMediaSetFinalPage</class>
    <extends>QWizardPage</extends>
-   <header location="global">arinc665_qt/import_media_set_xml/ImportMediaSetXmlFinalPage.hpp</header>
+   <header location="global">arinc665_qt/compile_media_set/CompileMediaSetFinalPage.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

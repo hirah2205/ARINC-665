@@ -32,12 +32,19 @@ target_sources(
       FILES
         Arinc665Qt.hpp
         Arinc665QtLogger.hpp
+        ExportMediaSetSettingsWidget.hpp
+        ImportMediaSetXmlSettingsWidget.hpp
         MediaPathsModel.hpp
         MediaPathsPage.hpp
         MediaSetController.hpp
         MediaSetDialog.hpp
         ${CMAKE_CURRENT_BINARY_DIR}/arinc665_qt_export.h
+
   PRIVATE
+    ExportMediaSetSettingsWidget.cpp
+    ExportMediaSetSettingsWidget.ui
+    ImportMediaSetXmlSettingsWidget.cpp
+    ImportMediaSetXmlSettingsWidget.ui
     MediaPathsModel.cpp
     MediaPathsPage.cpp
     MediaPathsPage.ui

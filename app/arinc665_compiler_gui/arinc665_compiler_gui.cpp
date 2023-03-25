@@ -7,11 +7,12 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- *  @brief ARINC 665 Media Set Manager QT Application.
+ * @brief ARINC 665 Media Set Compiler QT Application.
  **/
 
 #include <arinc665_qt/resources/Resources.hpp>
-#include <arinc665_qt/media_set_manager/MediaSetManagerController.hpp>
+
+#include <arinc665_qt/compile_media_set/CompileMediaSetAction.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -24,7 +25,7 @@
 #include <iostream>
 
 /**
- * @brief Entry Point of Application.
+ * @brief Program entry point
  *
  * @param[in] argc
  *   Number of arguments.
@@ -45,20 +46,18 @@ try
   Arinc665Qt::Resources::initialise();
 
   QApplication application{ argc, argv };
-  QApplication::setApplicationName( "ARINC 665 Media Set Manager" );
-  QApplication::setApplicationDisplayName( "ARINC 665 Media Set Manager" );
+  QApplication::setApplicationName( "ARINC 665 Media Set Compiler" );
+  QApplication::setApplicationDisplayName( "ARINC 665 Media Set Compiler" );
   QApplication::setWindowIcon( QIcon(
     ":/media_set_manager/arinc665_media_set_manager.svg" ) );
 
-  Arinc665Qt::MediaSetManager::MediaSetManagerController mediaSetManagerController{};
+  Arinc665Qt::CompileMediaSetAction compileMediaSetAction{};
 
   QObject::connect(
-    &mediaSetManagerController,
-    &Arinc665Qt::MediaSetManager::MediaSetManagerController::finished,
+    &compileMediaSetAction,
+    &Arinc665Qt::CompileMediaSetAction::finished,
     &application,
     &QApplication::quit );
-
-  mediaSetManagerController.start();
 
   return QApplication::exec();
 }

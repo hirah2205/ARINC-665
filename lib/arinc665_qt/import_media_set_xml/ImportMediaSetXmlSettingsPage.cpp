@@ -14,54 +14,79 @@
 
 #include "ui_ImportMediaSetXmlSettingsPage.h"
 
-#include <arinc665/SupportedArinc665VersionDescription.hpp>
-#include <arinc665/utils/FileCreationPolicyDescription.hpp>
-
 namespace Arinc665Qt {
 
 ImportMediaSetXmlSettingsPage::ImportMediaSetXmlSettingsPage(
   QWidget * const parent ) :
   QWizardPage{ parent },
-  ui{ std::make_unique< Ui::ImportMediaSetXmlSettingsPage >() },
-  selectXmlFileDialog{ std::make_unique< QFileDialog >( this ) },
-  selectInputDirectoryDialog{ std::make_unique< QFileDialog >( this ) }
+  ui{ std::make_unique< Ui::ImportMediaSetXmlSettingsPage >() }
 {
   ui->setupUi( this );
 
   connect(
-    ui->selectXmlFile,
-    &QPushButton::clicked,
+    ui->mediaSetXmlSettings,
+    &ImportMediaSetXmlSettingsWidget::xmlFile,
     this,
-    &ImportMediaSetXmlSettingsPage::selectXmlFile );
+    &ImportMediaSetXmlSettingsPage::xmlFile );
+  connect(
+    ui->mediaSetXmlSettings,
+    &ImportMediaSetXmlSettingsWidget::xmlFile,
+    this,
+    &QWizardPage::completeChanged );
 
   connect(
-    ui->selectInputDirectory,
-    &QPushButton::clicked,
+    ui->mediaSetXmlSettings,
+    &ImportMediaSetXmlSettingsWidget::inputDirectory,
     this,
-    &ImportMediaSetXmlSettingsPage::selectInputDirectory );
+    &ImportMediaSetXmlSettingsPage::inputDirectory );
+  connect(
+    ui->mediaSetXmlSettings,
+    &ImportMediaSetXmlSettingsWidget::inputDirectory,
+    this,
+    &ImportMediaSetXmlSettingsPage::completeChanged );
 
-  for ( const auto &versionInfo : Arinc665::SupportedArinc665VersionDescription::instance() )
-  {
-    ui->arinc665Version->addItem( QString::fromStdString( versionInfo.name ) );
-  }
+  connect(
+    ui->mediaSetOutputSettings,
+    &ExportMediaSetSettingsWidget::arinc665Version,
+    this,
+    &ImportMediaSetXmlSettingsPage::arinc665Version );
+  connect(
+    ui->mediaSetOutputSettings,
+    &ExportMediaSetSettingsWidget::arinc665Version,
+    this,
+    &ImportMediaSetXmlSettingsPage::completeChanged );
 
-  for ( const auto &creationPolicy : Arinc665::Utils::FileCreationPolicyDescription::instance() )
-  {
-    ui->loadHeaderCreation->addItem( QString::fromStdString( creationPolicy.name ) );
-    ui->batchFileCreation->addItem( QString::fromStdString( creationPolicy.name ) );
-  }
+  connect(
+    ui->mediaSetOutputSettings,
+    &ExportMediaSetSettingsWidget::createBatchFiles,
+    this,
+    &ImportMediaSetXmlSettingsPage::createBatchFiles );
+  connect(
+    ui->mediaSetOutputSettings,
+    &ExportMediaSetSettingsWidget::createBatchFiles,
+    this,
+    &ImportMediaSetXmlSettingsPage::completeChanged );
+
+  connect(
+    ui->mediaSetOutputSettings,
+    &ExportMediaSetSettingsWidget::createLoadHeaderFiles,
+    this,
+    &ImportMediaSetXmlSettingsPage::createLoadHeaderFiles );
+  connect(
+    ui->mediaSetOutputSettings,
+    &ExportMediaSetSettingsWidget::createLoadHeaderFiles,
+    this,
+    &ImportMediaSetXmlSettingsPage::completeChanged );
+
 }
 
 ImportMediaSetXmlSettingsPage::~ImportMediaSetXmlSettingsPage() = default;
 
-void ImportMediaSetXmlSettingsPage::selectXmlFile()
+bool ImportMediaSetXmlSettingsPage::isComplete() const
 {
-  selectXmlFileDialog->exec();
-}
-
-void ImportMediaSetXmlSettingsPage::selectInputDirectory()
-{
-  selectInputDirectoryDialog->exec();
+  return QWizardPage::isComplete()
+    && ui->mediaSetXmlSettings->completed()
+    && ui->mediaSetOutputSettings->completed();
 }
 
 }

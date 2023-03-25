@@ -7,18 +7,17 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::ImportMediaSetXmlSettingsPage.
+ * @brief Declaration of Class Arinc665Qt::CompileMediaSetWizard.
  **/
 
-#ifndef ARINC665_QT_IMPORT_MEDIA_SET_XML_IMPORTMEDIASETXMLSETTINGSPAGE_HPP
-#define ARINC665_QT_IMPORT_MEDIA_SET_XML_IMPORTMEDIASETXMLSETTINGSPAGE_HPP
+#ifndef ARINC665_QT_COMPILE_MEDIA_SET_COMPILEMEDIASETWIZARD_HPP
+#define ARINC665_QT_COMPILE_MEDIA_SET_COMPILEMEDIASETWIZARD_HPP
 
-#include <arinc665_qt/import_media_set_xml/ImportMediaSetXml.hpp>
+#include <arinc665_qt/compile_media_set/CompileMediaSet.hpp>
 
 #include <arinc665/utils/Utils.hpp>
 
-#include <QWizardPage>
-#include <QFileDialog>
+#include <QWizard>
 
 #include <memory>
 #include <filesystem>
@@ -26,34 +25,25 @@
 namespace Arinc665Qt {
 
 namespace Ui{
-class ImportMediaSetXmlSettingsPage;
+class CompileMediaSetWizard;
 }
 
-//! Import %Media Set XML Settings Page
-class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsPage final : public QWizardPage
+//! Compile ARINC 665 %Media Set Wizard
+class ARINC665_QT_EXPORT CompileMediaSetWizard final : public QWizard
 {
     Q_OBJECT
 
   public:
     /**
-     * @brief Initialises the Page.
+     * @brief Initialises the Compile Media Set Wizard.
      *
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit ImportMediaSetXmlSettingsPage( QWidget * parent = nullptr );
+    explicit CompileMediaSetWizard( QWidget * parent = nullptr );
 
     //! Destructor
-    ~ImportMediaSetXmlSettingsPage() override;
-
-    /**
-     * @brief Indicates if the page is completed.
-     *
-     * checks all input fields for validity.
-     *
-     * @return if page is completed
-     **/
-    bool isComplete() const override;
+    ~CompileMediaSetWizard() override;
 
   signals:
     /**
@@ -100,11 +90,29 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsPage final : public QWizardPag
     void createLoadHeaderFiles(
       Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles );
 
+    /**
+     * @brief Emitted when an output directory has been selected.
+     *
+     * @param[in] directory
+     *   Selected output directory.
+     **/
+    void outputDirectory( std::filesystem::path directory );
+
+    //! Signal emitted when operation should be started.
+    void start();
+
   private slots:
+    /**
+     * @brief Slot for currentIdChanged() signal.
+     *
+     * @param[in] id
+     *   new current ID
+     **/
+    void pageChanged( int id );
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetXmlSettingsPage > ui;
+    std::unique_ptr< Ui::CompileMediaSetWizard > ui;
 };
 
 }

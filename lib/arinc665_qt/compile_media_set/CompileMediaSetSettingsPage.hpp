@@ -7,13 +7,13 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::ImportMediaSetXmlSettingsPage.
+ * @brief Declaration of Class Arinc665Qt::CompileMediaSetSettingsPage.
  **/
 
-#ifndef ARINC665_QT_IMPORT_MEDIA_SET_XML_IMPORTMEDIASETXMLSETTINGSPAGE_HPP
-#define ARINC665_QT_IMPORT_MEDIA_SET_XML_IMPORTMEDIASETXMLSETTINGSPAGE_HPP
+#ifndef ARINC665_QT_COMPILE_MEDIA_SET_COMPILEMEDIASETSETTINGSPAGE_HPP
+#define ARINC665_QT_COMPILE_MEDIA_SET_COMPILEMEDIASETSETTINGSPAGE_HPP
 
-#include <arinc665_qt/import_media_set_xml/ImportMediaSetXml.hpp>
+#include <arinc665_qt/compile_media_set/CompileMediaSet.hpp>
 
 #include <arinc665/utils/Utils.hpp>
 
@@ -26,11 +26,11 @@
 namespace Arinc665Qt {
 
 namespace Ui{
-class ImportMediaSetXmlSettingsPage;
+class CompileMediaSetSettingsPage;
 }
 
-//! Import %Media Set XML Settings Page
-class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsPage final : public QWizardPage
+//! Compile %Media Set Settings Page
+class ARINC665_QT_EXPORT CompileMediaSetSettingsPage final : public QWizardPage
 {
     Q_OBJECT
 
@@ -41,10 +41,10 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsPage final : public QWizardPag
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit ImportMediaSetXmlSettingsPage( QWidget * parent = nullptr );
+    explicit CompileMediaSetSettingsPage( QWidget * parent = nullptr );
 
     //! Destructor
-    ~ImportMediaSetXmlSettingsPage() override;
+    ~CompileMediaSetSettingsPage() override;
 
     /**
      * @brief Indicates if the page is completed.
@@ -100,11 +100,26 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsPage final : public QWizardPag
     void createLoadHeaderFiles(
       Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles );
 
+    /**
+     * @brief Emitted when an output directory has been selected.
+     *
+     * @param[in] directory
+     *   Selected output directory.
+     **/
+    void outputDirectory( std::filesystem::path directory );
+
   private slots:
+    //! Slot Select Output Directory
+    void selectOutputDirectory();
+
+    //! Slot called, when output directory has been selected.
+    void outputDirectorySelected( const QString &file );
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetXmlSettingsPage > ui;
+    std::unique_ptr< Ui::CompileMediaSetSettingsPage > ui;
+    //! Select Output Directory Dialog
+    std::unique_ptr< QFileDialog > selectOutputDirectoryDialog;
 };
 
 }

@@ -2,6 +2,7 @@
 
  - @subpage arinc665_check_main
  - @subpage arinc665_compiler_main
+ - @subpage arinc665_compiler_gui_main
  - @subpage arinc665_decompiler_main
  - @subpage arinc665_ls_main
  - @subpage arinc665_media_set_manager_main

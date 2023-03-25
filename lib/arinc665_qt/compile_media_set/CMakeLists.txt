@@ -13,5 +13,15 @@ target_sources(
     FILE_SET HEADERS
       FILES
         CompileMediaSet.hpp
-
-  PRIVATE )
+        CompileMediaSetAction.hpp
+        CompileMediaSetFinalPage.hpp
+        CompileMediaSetSettingsPage.hpp
+        CompileMediaSetWizard.hpp
+  PRIVATE
+    CompileMediaSetAction.cpp
+    CompileMediaSetFinalPage.cpp
+    CompileMediaSetFinalPage.ui
+    CompileMediaSetSettingsPage.cpp
+    CompileMediaSetSettingsPage.ui
+    CompileMediaSetWizard.cpp
+    CompileMediaSetWizard.ui )

@@ -24,7 +24,7 @@
 
 namespace Arinc665Qt {
 
-class ImportMediaSetXmlController;
+class ImportMediaSetXmlAction;
 class ImportMediaSetXmlWizard;
 
 }
