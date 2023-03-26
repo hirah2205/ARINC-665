@@ -11,3 +11,4 @@
  - @subpage arinc665_print_media_set_main
  - @subpage arinc665_print_xml_main
  - @subpage arinc665_unit_test_main
+ - @subpage arinc665_xml_gui_main

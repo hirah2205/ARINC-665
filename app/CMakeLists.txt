@@ -26,3 +26,4 @@ add_subdirectory( arinc665_print_xml )
 
 add_subdirectory( arinc665_media_set_manager_gui )
 add_subdirectory( arinc665_media_set_view_gui )
+add_subdirectory( arinc665_xml_gui )
