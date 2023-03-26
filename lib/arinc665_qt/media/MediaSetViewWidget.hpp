@@ -54,6 +54,13 @@ class ARINC665_QT_EXPORT MediaSetViewWidget : public QWidget
      **/
     void mediaSetModel( MediaSetModel * model );
 
+    /**
+     * @brief Returns the part number of the model root.
+     *
+     * @return Part Number
+     **/
+    [[nodiscard]] std::string_view partNumber() const;
+
   private slots:
     /**
      * @brief Called when a selection has been made within tree-view.

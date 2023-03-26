@@ -26,7 +26,7 @@ ImportMediaSetXmlSettingsWidget::ImportMediaSetXmlSettingsWidget(
   ui->setupUi( this );
 
   selectXmlFileDialog->setWindowTitle( tr( "Select ARINC 665 Media Set XML" ) );
-  selectXmlFileDialog->setNameFilter(tr("ARINC 665 Media Set XML (*.xml)" ) );
+  selectXmlFileDialog->setNameFilter(tr( "ARINC 665 Media Set XML (*.xml)" ) );
   selectXmlFileDialog->setFileMode( QFileDialog::FileMode::ExistingFile );
 
   connect(

@@ -13,5 +13,10 @@ target_sources(
     FILE_SET HEADERS
       FILES
         DecompileMediaSet.hpp
+        DecompileMediaSetAction.hpp
+        DecompileMediaSetWizard.hpp
 
-  PRIVATE )
+  PRIVATE
+    DecompileMediaSetAction.cpp
+    DecompileMediaSetWizard.cpp
+    DecompileMediaSetWizard.ui )

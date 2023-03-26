@@ -15,6 +15,7 @@ set_property(
 add_subdirectory( arinc665_compiler )
 add_subdirectory( arinc665_compiler_gui )
 add_subdirectory( arinc665_decompiler )
+add_subdirectory( arinc665_decompiler_gui )
 add_subdirectory( arinc665_check )
 add_subdirectory( arinc665_ls )
 add_subdirectory( arinc665_media_set_manager )

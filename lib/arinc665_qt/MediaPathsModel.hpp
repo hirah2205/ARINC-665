@@ -141,7 +141,14 @@ class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
       Arinc665::MediumNumber mediumNumber,
       std::filesystem::path path );
 
+    /**
+     * @brief Removes Medium with given @p index.
+     *
+     * @param[in] index
+     *   Index identifying the medium
+     **/
     void remove( const QModelIndex &index );
+
   private:
     //! Media Paths
     Arinc665::Utils::MediaPaths mediaPathsV;

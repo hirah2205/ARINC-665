@@ -595,4 +595,9 @@ void MediaSetModel::root( Arinc665::Media::ConstBasePtr root )
   endResetModel();
 }
 
+const Arinc665::Media::ConstBasePtr& MediaSetModel::root() const
+{
+  return rootV;
+}
+
 }

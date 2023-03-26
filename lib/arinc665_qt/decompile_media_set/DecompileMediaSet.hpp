@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Module Arinc665Qt.
+ * @brief Declaration of Namespace Arinc665Qt.
  **/
 
 /**
@@ -16,6 +16,8 @@
  *
  * Decompiles ARINC 665 Media Set.
  * The output is stored within an ARINC 665 Media Set XML description.
+ *
+ * @sa @ref Arinc665Qt::DecompileMediaSetAction
  **/
 
 #ifndef ARINC665_QT_DECOMPILE_MEDIA_SET_DECOMPILEMEDIASET_HPP
@@ -25,7 +27,7 @@
 
 namespace Arinc665Qt {
 
-class DecompileMediaSetController;
+class DecompileMediaSetAction;
 class DecompileMediaSetWizard;
 
 }

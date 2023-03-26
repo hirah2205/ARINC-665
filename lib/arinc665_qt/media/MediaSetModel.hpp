@@ -164,7 +164,14 @@ class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
      * @param[in] root
      *   New Root Element.
      **/
-    void root( Arinc665::Media::ConstBasePtr root = {} );
+    void root( Arinc665::Media::ConstBasePtr root );
+
+    /**
+     * @brief Returns Root Element
+     *
+     * @return Model Root element.
+     **/
+    [[nodiscard]] const Arinc665::Media::ConstBasePtr& root() const;
 
   private:
     //! Root Element

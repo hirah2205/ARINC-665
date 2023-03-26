@@ -43,6 +43,12 @@ class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
     //! Destructor
     ~MediaPathsWidget() override;
 
+    /**
+     * @brief Sets the Media Paths Model.
+     *
+     * @param[in] model
+     *   Media Paths Model
+     **/
     void mediaPathsModel( MediaPathsModel * model );
 
   private slots:

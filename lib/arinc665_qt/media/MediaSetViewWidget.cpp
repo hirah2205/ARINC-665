@@ -72,6 +72,18 @@ void MediaSetViewWidget::mediaSetModel( Media::MediaSetModel * const model )
   }
 }
 
+std::string_view MediaSetViewWidget::partNumber() const
+{
+  const auto root{ mediaSetModelV->root() };
+
+  if ( !root )
+  {
+    return {};
+  }
+
+  return root->mediaSet()->partNumber();
+}
+
 void MediaSetViewWidget::itemSelected( const QModelIndex &index )
 {
   auto element{ mediaSetModelV->element( index ) };
