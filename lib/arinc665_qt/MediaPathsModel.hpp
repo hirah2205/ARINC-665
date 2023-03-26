@@ -129,10 +129,6 @@ class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
     [[nodiscard]] const std::filesystem::path& mediumPath(
       Arinc665::MediumNumber mediumNumber ) const;
 
-    //! @copydoc mediumPath(Arinc665::MediumNumber) const
-    [[nodiscard]] std::filesystem::path& mediumPath(
-      Arinc665::MediumNumber mediumNumber );
-
     /**
      * @brief Assigns Medium Path
      *
@@ -145,6 +141,7 @@ class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
       Arinc665::MediumNumber mediumNumber,
       std::filesystem::path path );
 
+    void remove( const QModelIndex &index );
   private:
     //! Media Paths
     Arinc665::Utils::MediaPaths mediaPathsV;

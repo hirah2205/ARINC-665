@@ -47,6 +47,11 @@ int MediaPathsModel::columnCount( const QModelIndex &parent ) const
 
 QVariant MediaPathsModel::data( const QModelIndex &index, const int role ) const
 {
+  if ( !index.isValid() )
+  {
+    return {};
+  }
+
   auto medium{ std::next( mediaPathsV.begin(), index.row() ) };
   if ( mediaPathsV.end() == medium )
   {
@@ -122,23 +127,27 @@ const std::filesystem::path& MediaPathsModel::mediumPath(
   return medium->second;
 }
 
-std::filesystem::path& MediaPathsModel::mediumPath(
-  Arinc665::MediumNumber mediumNumber )
-{
-  auto medium{ mediaPathsV.find( mediumNumber ) };
-  if ( mediaPathsV.end() == medium )
-  {
-    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() );
-  }
-
-  return medium->second;
-}
-
 void MediaPathsModel::mediumPath(
   Arinc665::MediumNumber mediumNumber,
   std::filesystem::path path )
 {
+  beginResetModel();
   mediaPathsV.insert_or_assign( mediumNumber, std::move( path ) );
+  endResetModel();
+}
+
+void MediaPathsModel::remove( const QModelIndex &index )
+{
+  if ( !index.isValid()
+    || std::cmp_greater_equal( index.row(), mediaPathsV.size() ) )
+  {
+    return;
+  }
+
+  beginResetModel();
+  auto pos{ std::next( mediaPathsV.begin(), index.row() ) };
+  mediaPathsV.erase( pos );
+  endResetModel();
 }
 
 }

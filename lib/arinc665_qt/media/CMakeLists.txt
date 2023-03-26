@@ -23,6 +23,7 @@ target_sources(
         Media.hpp
         MediaSetModel.hpp
         MediaSetsModel.hpp
+        MediaSetViewWidget.hpp
         MediaSetWidget.hpp
         RegularFileWidget.hpp
         TargetHardwareIdsPositionsModel.hpp
@@ -42,6 +43,8 @@ target_sources(
     LoadWidget.ui
     MediaSetModel.cpp
     MediaSetsModel.cpp
+    MediaSetViewWidget.cpp
+    MediaSetViewWidget.ui
     MediaSetWidget.cpp
     MediaSetWidget.ui
     RegularFileWidget.cpp

@@ -24,7 +24,7 @@ namespace Arinc665Qt::Media {
 /**
  * @brief QT Adaption of ARINC 665 %Media Set.
  *
- * This is an hierarchical model giving access to %Media Sets, %Media,
+ * This is a hierarchical model giving access to %Media Sets, %Media,
  * Directories and Files.
  *
  * The Model-Index holds the Pointer to the Arinc665::Media::Base object.

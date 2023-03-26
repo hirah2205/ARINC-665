@@ -27,6 +27,8 @@
  **/
 namespace Arinc665Qt::Media {
 
+class MediaSetViewWidget;
+
 class MediaSetWidget;
 
 class DirectoryWidget;

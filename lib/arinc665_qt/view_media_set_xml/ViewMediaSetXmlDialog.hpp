@@ -60,22 +60,9 @@ class ARINC665_QT_EXPORT ViewMediaSetXmlDialog : public QDialog
      **/
     void filePathMappingModel( FilePathMappingModel * model );
 
-  private slots:
-    /**
-     * @brief Called when a selection has been made within tree-view.
-     *
-     * @param[in] index
-     *   Index of selected element.
-     **/
-    void itemSelected( const QModelIndex &index );
-
   private:
     //! UI (designer)
     std::unique_ptr< Ui::ViewMediaSetXmlDialog > ui;
-    //! Media Set Model
-    Media::MediaSetModel * mediaSetModelV{ nullptr };
-    //! File Path Mapping Model
-    FilePathMappingModel * filePathMappingModelV{ nullptr };
 };
 
 }

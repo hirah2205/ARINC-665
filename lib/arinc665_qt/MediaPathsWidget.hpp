@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::MediaPathsPage.
+ * @brief Declaration of Class Arinc665Qt::MediaPathsWidget.
  **/
 
 #ifndef ARINC665_QT_MEDIAPATHSPAGE_HPP
@@ -15,7 +15,7 @@
 
 #include <arinc665_qt/Arinc665Qt.hpp>
 
-#include <QWizardPage>
+#include <QGroupBox>
 #include <QFileDialog>
 
 #include <memory>
@@ -23,33 +23,45 @@
 namespace Arinc665Qt {
 
 namespace Ui{
-class MediaPathsPage;
+class MediaPathsWidget;
 }
 
 //! Import %Media Set XML Settings Page
-class ARINC665_QT_EXPORT MediaPathsPage final : public QWizardPage
+class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
 {
     Q_OBJECT
 
   public:
     /**
-     * @brief Initialises the Import Media Set XML Settings Page.
+     * @brief Initialises the Widget.
      *
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit MediaPathsPage( QWidget * parent = nullptr );
+    explicit MediaPathsWidget( QWidget * parent = nullptr );
 
     //! Destructor
-    ~MediaPathsPage() override;
+    ~MediaPathsWidget() override;
+
+    void mediaPathsModel( MediaPathsModel * model );
 
   private slots:
+    //! Slot Select Input Directory
+    void addMediumDirectory();
+
+    //! Slot Select Input Directory
+    void removeMediumDirectory();
+
+    //! Slot called, when input directory has been selected.
+    void mediumDirectorySelected( const QString &file );
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaPathsPage > ui;
+    std::unique_ptr< Ui::MediaPathsWidget > ui;
     //! Select XML File Dialog
     std::unique_ptr< QFileDialog > selectMediaPathDialog;
+    //! Media Paths Model
+    MediaPathsModel * mediaPathsModelV{ nullptr };
 };
 
 }

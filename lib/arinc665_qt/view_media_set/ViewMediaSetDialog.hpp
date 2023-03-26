@@ -52,20 +52,9 @@ class ARINC665_QT_EXPORT ViewMediaSetDialog : public QDialog
      **/
     void mediaSetModel( Media::MediaSetModel * model );
 
-  private slots:
-    /**
-     * @brief Called when a selection has been made within tree-view.
-     *
-     * @param[in] index
-     *   Index of selected element.
-     **/
-    void itemSelected( const QModelIndex &index );
-
   private:
     //! UI (designer)
     std::unique_ptr< Ui::ViewMediaSetDialog > ui;
-    //! Media Set Model
-    Media::MediaSetModel * mediaSetModelV;
 };
 
 }

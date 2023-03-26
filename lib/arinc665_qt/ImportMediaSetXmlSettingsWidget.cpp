@@ -40,7 +40,7 @@ ImportMediaSetXmlSettingsWidget::ImportMediaSetXmlSettingsWidget(
     this,
     &ImportMediaSetXmlSettingsWidget::xmlFileSelected );
 
-  selectInputDirectoryDialog->setWindowTitle( "Select Input Base Directory" );
+  selectInputDirectoryDialog->setWindowTitle( tr( "Select Input Base Directory" ) );
   selectInputDirectoryDialog->setFileMode( QFileDialog::FileMode::Directory );
   selectInputDirectoryDialog->setOptions( QFileDialog::Option::ShowDirsOnly );
 
