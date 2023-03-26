@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Qt::MediaSetController.
+ * @brief Definition of Class Arinc665Qt::MediaSetManagerController.
  **/
 
 #include "MediaSetManagerController.hpp"
@@ -15,7 +15,7 @@
 #include <arinc665_qt/media/MediaSetsModel.hpp>
 #include <arinc665_qt/media_set_manager/MediaSetManagerDialog.hpp>
 #include <arinc665_qt/import_media_set_xml/ImportMediaSetXmlAction.hpp>
-#include <arinc665_qt/MediaSetController.hpp>
+#include <arinc665_qt/view_media_set/ViewMediaSetAction.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/JsonMediaSetManager.hpp>
@@ -130,15 +130,15 @@ void MediaSetManagerController::viewMediaSet( const QModelIndex &index )
     return;
   }
 
-  auto controller{ new MediaSetController{ mediaSetManagerDialogV.get() } };
+  auto action{ new ViewMediaSetAction{ mediaSetManagerDialogV.get() } };
 
   connect(
-    controller,
-    &MediaSetController::finished,
-    controller,
-    &MediaSetController::deleteLater );
+    action,
+    &ViewMediaSetAction::finished,
+    action,
+    &ViewMediaSetAction::deleteLater );
 
-  controller->start( mediaSet );
+  action->start( mediaSet );
 }
 
 void MediaSetManagerController::importMediaSet()
@@ -163,7 +163,7 @@ void MediaSetManagerController::importMediaSetXml()
     controller,
     &ImportMediaSetXmlAction::finished,
     controller,
-    &MediaSetController::deleteLater );
+    &ViewMediaSetAction::deleteLater );
 }
 
 void MediaSetManagerController::removeMediaSet(

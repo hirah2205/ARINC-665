@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Arinc665Qt::MediaSetDialog</class>
- <widget class="QDialog" name="Arinc665Qt::MediaSetDialog">
+ <author>Thomas Vogt</author>
+ <class>Arinc665Qt::ViewMediaSetDialog</class>
+ <widget class="QDialog" name="Arinc665Qt::ViewMediaSetDialog">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -17,7 +18,7 @@
    <string>Media Set</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources/arinc665_qt_resources.qrc">
+   <iconset resource="../resources/arinc665_qt_resources.qrc">
     <normaloff>:/media_set/arinc665_media_set.svg</normaloff>:/media_set/arinc665_media_set.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -67,7 +68,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="resources/arinc665_qt_resources.qrc"/>
+  <include location="../resources/arinc665_qt_resources.qrc"/>
  </resources>
  <connections/>
 </ui>

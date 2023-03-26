@@ -71,7 +71,12 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsWidget final : public QGroupBo
     //! Slot Select XML File
     void selectXmlFile();
 
-    //! Slot called, when XML file has been selected.
+    /**
+     * @brief Slot called, when XML file has been selected.
+     *
+     * @param[in] file
+     *   Selected file.
+     **/
     void xmlFileSelected( const QString &file );
 
     //! Slot Select Input Directory

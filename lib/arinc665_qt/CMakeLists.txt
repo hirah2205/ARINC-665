@@ -36,8 +36,6 @@ target_sources(
         ImportMediaSetXmlSettingsWidget.hpp
         MediaPathsModel.hpp
         MediaPathsPage.hpp
-        MediaSetController.hpp
-        MediaSetDialog.hpp
         ${CMAKE_CURRENT_BINARY_DIR}/arinc665_qt_export.h
 
   PRIVATE
@@ -47,10 +45,7 @@ target_sources(
     ImportMediaSetXmlSettingsWidget.ui
     MediaPathsModel.cpp
     MediaPathsPage.cpp
-    MediaPathsPage.ui
-    MediaSetController.cpp
-    MediaSetDialog.cpp
-    MediaSetDialog.ui )
+    MediaPathsPage.ui )
 
 target_compile_features( arinc665_qt PUBLIC cxx_std_20 )
 
@@ -83,6 +78,7 @@ add_subdirectory( import_media_set_xml )
 add_subdirectory( media )
 add_subdirectory( media_set_manager )
 add_subdirectory( resources )
+add_subdirectory( view_media_set )
 
 # disable clang tidy in binary dir by placing dummy .clang-tidy file
 file(

@@ -7,15 +7,17 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Qt::MediaSetController.
+ * @brief Definition of Class Arinc665Qt::ViewMediaSetAction.
  **/
 
-#include "MediaSetController.hpp"
+#include "ViewMediaSetAction.hpp"
+
+#include <arinc665_qt/view_media_set/ViewMediaSetDialog.hpp>
 
 #include <arinc665_qt/media/MediaSetModel.hpp>
 #include <arinc665_qt/media/LoadsModel.hpp>
 #include <arinc665_qt/media/BatchesModel.hpp>
-#include <arinc665_qt/MediaSetDialog.hpp>
+
 #include <arinc665_qt/Arinc665QtLogger.hpp>
 
 #include <arinc665/utils/FilesystemMediaSetImporter.hpp>
@@ -40,61 +42,61 @@
 
 namespace Arinc665Qt {
 
-MediaSetController::MediaSetController( QWidget * const parent ):
+ViewMediaSetAction::ViewMediaSetAction( QWidget * const parent ):
   QObject{ parent },
-  mediaSetModel{ std::make_unique< Media::MediaSetModel >( this ) },
-  selectDirectoryDialog{ std::make_unique< QFileDialog>(
+  mediaSetModelV{ std::make_unique< Media::MediaSetModel >( this ) },
+  selectDirectoryDialogV{ std::make_unique< QFileDialog>(
     parent,
     tr( "Select ARINC 665 Medium" ) ) },
-  mediaSetDialog{ std::make_unique< MediaSetDialog >( parent ) }
+  viewMediaSetDialogV{ std::make_unique< ViewMediaSetDialog >( parent ) }
 {
-  selectDirectoryDialog->setFileMode( QFileDialog::Directory );
-  selectDirectoryDialog->setOption( QFileDialog::ShowDirsOnly );
+  selectDirectoryDialogV->setFileMode( QFileDialog::Directory );
+  selectDirectoryDialogV->setOption( QFileDialog::ShowDirsOnly );
 
   connect(
-    selectDirectoryDialog.get(),
+    selectDirectoryDialogV.get(),
     &QFileDialog::rejected,
     this,
-    &MediaSetController::finished );
+    &ViewMediaSetAction::finished );
   connect(
-    selectDirectoryDialog.get(),
+    selectDirectoryDialogV.get(),
     &QFileDialog::directoryEntered,
     this,
-    &MediaSetController::directoryEntered );
+    &ViewMediaSetAction::directoryEntered );
   connect(
-    selectDirectoryDialog.get(),
+    selectDirectoryDialogV.get(),
     &QFileDialog::accepted,
     this,
-    &MediaSetController::directorySelected );
+    &ViewMediaSetAction::directorySelected );
 
-  mediaSetDialog->mediaSetModel( mediaSetModel.get() );
+  viewMediaSetDialogV->mediaSetModel( mediaSetModelV.get() );
 
   connect(
-    mediaSetDialog.get(),
-    &MediaSetDialog::finished,
+    viewMediaSetDialogV.get(),
+    &ViewMediaSetDialog::finished,
     this,
-    &MediaSetController::finished );
+    &ViewMediaSetAction::finished );
 }
 
-MediaSetController::~MediaSetController() = default;
+ViewMediaSetAction::~ViewMediaSetAction() = default;
 
-void MediaSetController::start()
+void ViewMediaSetAction::start()
 {
-  selectDirectoryDialog->open();
+  selectDirectoryDialogV->open();
 }
 
-void MediaSetController::start( Arinc665::Media::ConstMediaSetPtr mediaSet )
+void ViewMediaSetAction::start( Arinc665::Media::ConstMediaSetPtr mediaSet )
 {
-  mediaSetModel->root( mediaSet );
+  mediaSetModelV->root( mediaSet );
 
   // Set window title
-  mediaSetDialog->setWindowTitle(
+  viewMediaSetDialogV->setWindowTitle(
     HelperQt::toQString( mediaSet->partNumber() ) );
 
-  mediaSetDialog->open();
+  viewMediaSetDialogV->open();
 }
 
-void MediaSetController::directoryEntered( const QString &path )
+void ViewMediaSetAction::directoryEntered( const QString &path )
 {
   const auto mediumInformation{
     Arinc665::Utils::getMediumInformation( path.toStdString() ) };
@@ -112,7 +114,7 @@ void MediaSetController::directoryEntered( const QString &path )
     << mediumInformation->numberOfMediaSetMembers;
 }
 
-void MediaSetController::directorySelected()
+void ViewMediaSetAction::directorySelected()
 {
   try
   {
@@ -122,18 +124,18 @@ void MediaSetController::directorySelected()
     importer
       ->mediaPaths( { {
         Arinc665::MediumNumber{ 1 },
-        selectDirectoryDialog->directory().absolutePath().toStdString() } } );
+        selectDirectoryDialogV->directory().absolutePath().toStdString() } } );
 
     const auto &[ mediaSet, checkValues ]{ (*importer)() };
 
-    mediaSetModel->root( mediaSet );
+    mediaSetModelV->root( mediaSet );
 
     // Set window title
-    mediaSetDialog->setWindowTitle(
-      selectDirectoryDialog->directory().absolutePath() );
+    viewMediaSetDialogV->setWindowTitle(
+      selectDirectoryDialogV->directory().absolutePath() );
 
     // Open Dialog
-    mediaSetDialog->open();
+    viewMediaSetDialogV->open();
   }
   catch ( Arinc665::Arinc665Exception &e )
   {

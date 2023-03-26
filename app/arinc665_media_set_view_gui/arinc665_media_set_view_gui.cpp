@@ -16,7 +16,8 @@
  **/
 
 #include <arinc665_qt/resources/Resources.hpp>
-#include <arinc665_qt/MediaSetController.hpp>
+
+#include <arinc665_qt/view_media_set/ViewMediaSetAction.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -51,11 +52,11 @@ int main( int argc, char * argv[] )
     QApplication::setWindowIcon( QIcon(
       ":/media_set_manager/arinc665_media_set_manager.svg" ) );
 
-    Arinc665Qt::MediaSetController mediaSetController{};
+    Arinc665Qt::ViewMediaSetAction mediaSetController{};
 
     QObject::connect(
       &mediaSetController,
-      &Arinc665Qt::MediaSetController::finished,
+      &Arinc665Qt::ViewMediaSetAction::finished,
       &application,
       &QApplication::quit );
 

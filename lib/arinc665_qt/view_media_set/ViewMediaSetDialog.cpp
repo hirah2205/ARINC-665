@@ -7,12 +7,12 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Qt::MediaSetDialog.
+ * @brief Definition of Class Arinc665Qt::ViewMediaSetDialog.
  **/
 
-#include "MediaSetDialog.hpp"
+#include "ViewMediaSetDialog.hpp"
 
-#include "ui_MediaSetDialog.h"
+#include "ui_ViewMediaSetDialog.h"
 
 #include <arinc665_qt/media/MediaSetModel.hpp>
 #include <arinc665_qt/media/LoadsModel.hpp>
@@ -25,9 +25,9 @@
 
 namespace Arinc665Qt {
 
-MediaSetDialog::MediaSetDialog( QWidget * const parent ):
+ViewMediaSetDialog::ViewMediaSetDialog( QWidget * const parent ):
   QDialog{ parent },
-  ui{ std::make_unique< Ui::MediaSetDialog>() },
+  ui{ std::make_unique< Ui::ViewMediaSetDialog >() },
   mediaSetModelV{ nullptr }
 {
   ui->setupUi( this );
@@ -36,12 +36,12 @@ MediaSetDialog::MediaSetDialog( QWidget * const parent ):
     ui->mediaSetTreeView,
     &QTreeView::activated,
     this,
-    &MediaSetDialog::itemSelected );
+    &ViewMediaSetDialog::itemSelected );
 }
 
-MediaSetDialog::~MediaSetDialog() = default;
+ViewMediaSetDialog::~ViewMediaSetDialog() = default;
 
-void MediaSetDialog::mediaSetModel( Media::MediaSetModel * const model )
+void ViewMediaSetDialog::mediaSetModel( Media::MediaSetModel * const model )
 {
   if ( mediaSetModelV != nullptr )
   {
@@ -74,7 +74,7 @@ void MediaSetDialog::mediaSetModel( Media::MediaSetModel * const model )
   }
 }
 
-void MediaSetDialog::itemSelected( const QModelIndex &index )
+void ViewMediaSetDialog::itemSelected( const QModelIndex &index )
 {
   auto element{ mediaSetModelV->element( index ) };
 

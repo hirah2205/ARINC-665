@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::MediaSetController.
+ * @brief Declaration of Class Arinc665Qt::MediaSetManagerController.
  **/
 
 #ifndef ARINC665_QT_MEDIA_SET_MANAGER_MEDIASETMANAGERCONTROLLER_HPP

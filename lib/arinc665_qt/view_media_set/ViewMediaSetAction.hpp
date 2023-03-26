@@ -7,13 +7,14 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::MediaSetController.
+ * @brief Declaration of Class Arinc665Qt::ViewMediaSetAction.
  **/
 
-#ifndef ARINC665_QT_MEDIASETCONTROLLER_HPP
-#define ARINC665_QT_MEDIASETCONTROLLER_HPP
+#ifndef ARINC665_QT_VIEW_MEDIA_SET_VIEWMEDIASETACTION_HPP
+#define ARINC665_QT_VIEW_MEDIA_SET_VIEWMEDIASETACTION_HPP
 
-#include <arinc665_qt/Arinc665Qt.hpp>
+#include <arinc665_qt/view_media_set/ViewMediaSet.hpp>
+
 #include <arinc665_qt/media/Media.hpp>
 
 #include <arinc665/media/Media.hpp>
@@ -31,7 +32,7 @@ namespace Arinc665Qt {
 /**
  * @brief %Media Set Load and Display Controller.
  **/
-class ARINC665_QT_EXPORT MediaSetController : public QObject
+class ARINC665_QT_EXPORT ViewMediaSetAction : public QObject
 {
     Q_OBJECT
 
@@ -42,10 +43,10 @@ class ARINC665_QT_EXPORT MediaSetController : public QObject
      * @param[in] parent
      *   Parent Widget.
      **/
-    explicit MediaSetController( QWidget * parent = nullptr );
+    explicit ViewMediaSetAction( QWidget * parent = nullptr );
 
     //! Destructor
-    ~MediaSetController() override;
+    ~ViewMediaSetAction() override;
 
   signals:
     /**
@@ -84,12 +85,12 @@ class ARINC665_QT_EXPORT MediaSetController : public QObject
 
   private:
     //! Media Set Model
-    std::unique_ptr< Media::MediaSetModel > mediaSetModel;
+    std::unique_ptr< Media::MediaSetModel > mediaSetModelV;
 
     //! Select Media Set directory dialog
-    std::unique_ptr< QFileDialog > selectDirectoryDialog;
+    std::unique_ptr< QFileDialog > selectDirectoryDialogV;
     //! Media Set Dialog
-    std::unique_ptr< MediaSetDialog > mediaSetDialog;
+    std::unique_ptr< ViewMediaSetDialog > viewMediaSetDialogV;
 };
 
 }

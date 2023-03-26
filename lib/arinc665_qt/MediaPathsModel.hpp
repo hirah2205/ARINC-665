@@ -26,7 +26,7 @@ namespace Arinc665Qt {
 /**
  * @brief QT Media Paths Model.
  *
- * This Model Provides a Media Paths Model for
+ * This Model Provides a Media Paths Model for QT
  **/
 class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
 {

@@ -12,20 +12,20 @@
 
 /**
  * @dir
- * @brief Declaration/ Definition of Namespace Arinc665Qt.
+ * @brief Media Set Viewer
+ *
+ * @sa @ref Arinc665Qt::ViewMediaSetAction
  **/
 
-#ifndef ARINC665_QT_ARINC665QT_HPP
-#define ARINC665_QT_ARINC665QT_HPP
+#ifndef ARINC665_QT_VIEW_MEDIA_SET_VIEWMEDIASET_HPP
+#define ARINC665_QT_VIEW_MEDIA_SET_VIEWMEDIASET_HPP
 
-#include <arinc665_qt/arinc665_qt_export.h>
+#include <arinc665_qt/Arinc665Qt.hpp>
 
-/**
- * @brief ARINC 665 Specification QT.
- **/
 namespace Arinc665Qt {
 
-class MediaPathsModel;
+class ViewMediaSetAction;
+class ViewMediaSetDialog;
 
 }
 
