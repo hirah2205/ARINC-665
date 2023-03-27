@@ -24,19 +24,20 @@
    <enum>QWizard::ModernStyle</enum>
   </property>
   <widget class="Arinc665Qt::CompileMediaSetSettingsPage" name="settings"/>
-  <widget class="Arinc665Qt::CompileMediaSetFinalPage" name="finish"/>
+  <widget class="QWizardPage" name="finish">
+   <property name="title">
+    <string>Operation Completed</string>
+   </property>
+   <property name="subTitle">
+    <string>Finished Compilation</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
    <class>Arinc665Qt::CompileMediaSetSettingsPage</class>
    <extends>QWizardPage</extends>
    <header location="global">arinc665_qt/compile_media_set/CompileMediaSetSettingsPage.hpp</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Arinc665Qt::CompileMediaSetFinalPage</class>
-   <extends>QWizardPage</extends>
-   <header location="global">arinc665_qt/compile_media_set/CompileMediaSetFinalPage.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

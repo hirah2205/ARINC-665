@@ -14,14 +14,11 @@ target_sources(
       FILES
         ImportMediaSetXml.hpp
         ImportMediaSetXmlAction.hpp
-        ImportMediaSetXmlFinalPage.hpp
         ImportMediaSetXmlSettingsPage.hpp
         ImportMediaSetXmlWizard.hpp
 
   PRIVATE
     ImportMediaSetXmlAction.cpp
-    ImportMediaSetXmlFinalPage.cpp
-    ImportMediaSetXmlFinalPage.ui
     ImportMediaSetXmlSettingsPage.cpp
     ImportMediaSetXmlSettingsPage.ui
     ImportMediaSetXmlWizard.cpp

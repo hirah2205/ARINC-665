@@ -14,13 +14,11 @@ target_sources(
       FILES
         CompileMediaSet.hpp
         CompileMediaSetAction.hpp
-        CompileMediaSetFinalPage.hpp
         CompileMediaSetSettingsPage.hpp
         CompileMediaSetWizard.hpp
+
   PRIVATE
     CompileMediaSetAction.cpp
-    CompileMediaSetFinalPage.cpp
-    CompileMediaSetFinalPage.ui
     CompileMediaSetSettingsPage.cpp
     CompileMediaSetSettingsPage.ui
     CompileMediaSetWizard.cpp

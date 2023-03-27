@@ -25,19 +25,20 @@
    <enum>QWizard::ModernStyle</enum>
   </property>
   <widget class="Arinc665Qt::ImportMediaSetXmlSettingsPage" name="settings"/>
-  <widget class="Arinc665Qt::ImportMediaSetXmlFinalPage" name="finish"/>
+  <widget class="QWizardPage" name="finish">
+   <property name="title">
+    <string>Operation Completed</string>
+   </property>
+   <property name="subTitle">
+    <string>Finished Import</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
    <class>Arinc665Qt::ImportMediaSetXmlSettingsPage</class>
    <extends>QWizardPage</extends>
    <header location="global">arinc665_qt/import_media_set_xml/ImportMediaSetXmlSettingsPage.hpp</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Arinc665Qt::ImportMediaSetXmlFinalPage</class>
-   <extends>QWizardPage</extends>
-   <header location="global">arinc665_qt/import_media_set_xml/ImportMediaSetXmlFinalPage.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
