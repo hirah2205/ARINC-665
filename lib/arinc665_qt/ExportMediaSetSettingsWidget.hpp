@@ -27,7 +27,14 @@ namespace Ui{
 class ExportMediaSetSettingsWidget;
 }
 
-//! Export ARINC 665 Media Set Settings Widget
+/**
+ * @brief Export ARINC 665 Media Set Settings Widget.
+ *
+ * Provides a Widget where the user can select:
+ *  - ARINC 665 Generator Version
+ *  - Create Batch Files policy, and
+ *  - Create Load Header Files policy.
+ */
 class ARINC665_QT_EXPORT ExportMediaSetSettingsWidget final : public QGroupBox
 {
     Q_OBJECT
@@ -46,6 +53,7 @@ class ARINC665_QT_EXPORT ExportMediaSetSettingsWidget final : public QGroupBox
 
     /**
      * @brief Returns if the widget inputs are valid and completed.
+     *
      * @return if the widget inputs are valid and completed.
      **/
     [[nodiscard]] bool completed() const;
@@ -113,6 +121,8 @@ class ARINC665_QT_EXPORT ExportMediaSetSettingsWidget final : public QGroupBox
   private:
     //! UI (designer)
     std::unique_ptr< Ui::ExportMediaSetSettingsWidget > ui;
+    //! File Creation Policy Model
+    std::unique_ptr< FileCreationPolicyModel > fileCreationPolicyModel;
 };
 
 }

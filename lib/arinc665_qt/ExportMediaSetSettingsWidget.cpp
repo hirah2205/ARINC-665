@@ -12,7 +12,7 @@
 
 #include "ExportMediaSetSettingsWidget.hpp"
 
-#include <arinc665/utils/FileCreationPolicyDescription.hpp>
+#include <arinc665_qt/FileCreationPolicyModel.hpp>
 
 #include <arinc665/SupportedArinc665VersionDescription.hpp>
 
@@ -23,7 +23,8 @@ namespace Arinc665Qt {
 ExportMediaSetSettingsWidget::ExportMediaSetSettingsWidget(
   QWidget * const parent ) :
   QGroupBox{ parent },
-  ui{ std::make_unique< Ui::ExportMediaSetSettingsWidget >() }
+  ui{ std::make_unique< Ui::ExportMediaSetSettingsWidget >() },
+  fileCreationPolicyModel{ std::make_unique< FileCreationPolicyModel >( this ) }
 {
   ui->setupUi( this );
 
@@ -49,11 +50,8 @@ ExportMediaSetSettingsWidget::ExportMediaSetSettingsWidget(
     this,
     &ExportMediaSetSettingsWidget::createLoadHeadersFilesIndexSelected );
 
-  for ( const auto &creationPolicy : Arinc665::Utils::FileCreationPolicyDescription::instance() )
-  {
-    ui->loadHeaderCreation->addItem( QString::fromStdString( creationPolicy.name ) );
-    ui->batchFileCreation->addItem( QString::fromStdString( creationPolicy.name ) );
-  }
+  ui->batchFileCreation->setModel( fileCreationPolicyModel.get() );
+  ui->loadHeaderCreation->setModel( fileCreationPolicyModel.get() );
 }
 
 ExportMediaSetSettingsWidget::~ExportMediaSetSettingsWidget() = default;

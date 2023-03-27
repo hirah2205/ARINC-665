@@ -26,7 +26,9 @@ namespace Arinc665Qt {
 /**
  * @brief QT Media Paths Model.
  *
- * This Model Provides a Media Paths Model for QT
+ * This model is used to manage a list of @ref Arinc665::Utils::MediaPaths.
+ *
+ * @sa Arinc665::Utils::MediaPaths
  **/
 class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
 {
@@ -143,6 +145,9 @@ class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
 
     /**
      * @brief Removes Medium with given @p index.
+     *
+     * If @p index is invalid or out of range, the operation returns without
+     * modifying the model.
      *
      * @param[in] index
      *   Index identifying the medium

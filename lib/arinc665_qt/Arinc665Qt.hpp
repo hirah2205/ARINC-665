@@ -27,7 +27,10 @@ namespace Arinc665Qt {
 
 class MediaPathsModel;
 class MediaPathsWidget;
+
 class FilePathMappingModel;
+
+class FileCreationPolicyModel;
 
 }
 

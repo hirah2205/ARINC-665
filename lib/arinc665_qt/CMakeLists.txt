@@ -33,6 +33,7 @@ target_sources(
         Arinc665Qt.hpp
         Arinc665QtLogger.hpp
         ExportMediaSetSettingsWidget.hpp
+        FileCreationPolicyModel.hpp
         FilePathMappingModel.hpp
         ImportMediaSetXmlSettingsWidget.hpp
         MediaPathsModel.hpp
@@ -42,6 +43,7 @@ target_sources(
   PRIVATE
     ExportMediaSetSettingsWidget.cpp
     ExportMediaSetSettingsWidget.ui
+    FileCreationPolicyModel.cpp
     FilePathMappingModel.cpp
     ImportMediaSetXmlSettingsWidget.cpp
     ImportMediaSetXmlSettingsWidget.ui

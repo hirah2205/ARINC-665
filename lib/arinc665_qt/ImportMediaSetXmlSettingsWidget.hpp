@@ -27,7 +27,13 @@ namespace Ui{
 class ImportMediaSetXmlSettingsWidget;
 }
 
-//! Import ARINC 665 Media Set XML Settings Widget
+/**
+ * @brief Import ARINC 665 Media Set XML Settings Widget
+ *
+ * Provides a Widget where the user can select:
+ *  - ARINC 665 Media Set XML, and
+ *  - Base Path for files.
+ **/
 class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsWidget final : public QGroupBox
 {
     Q_OBJECT

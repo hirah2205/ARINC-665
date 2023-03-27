@@ -26,7 +26,12 @@ namespace Ui{
 class MediaPathsWidget;
 }
 
-//! Import %Media Set XML Settings Page
+/**
+ * @brief Media Paths Widget.
+ *
+ * This Widget provides a dialog to add and remove medias.
+ * The media are held by a @ref MediaPathsModel.
+ **/
 class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
 {
     Q_OBJECT
@@ -52,13 +57,32 @@ class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
     void mediaPathsModel( MediaPathsModel * model );
 
   private slots:
-    //! Slot Select Input Directory
+    /**
+     * @brief Slot when user wants to add medium directory.
+     *
+     * This slot is connected to the add-button QPushButton::pressed signal.
+     * The select directory dilaog is shown.
+     **/
     void addMediumDirectory();
 
-    //! Slot Select Input Directory
+    /**
+     * @brief Slot when user wants to delete selcted medium directory.
+     *
+     * This slot is connected to the delete-button QPushButton::pressed signal.
+     * The selected medium is removed from the model.
+     **/
     void removeMediumDirectory();
 
-    //! Slot called, when input directory has been selected.
+    /**
+     * @brief Slot called, when input directory has been selected.
+     *
+     * This slot is connected to the QFileDialog::fileSelected signal.
+     * This slot checks if the selcted directory is a media directory and adds
+     * it to the model.
+     *
+     * @param[in] file
+     *   Selected File
+     **/
     void mediumDirectorySelected( const QString &file );
 
   private:
