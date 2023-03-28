@@ -10,9 +10,6 @@
     <height>300</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>GroupBox</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTableView" name="mediaPaths">
@@ -33,14 +30,16 @@
       <item>
        <widget class="QPushButton" name="add">
         <property name="icon">
-         <iconset theme="list-add"/>
+         <iconset theme="list-add">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="remove">
         <property name="icon">
-         <iconset theme="list-remove"/>
+         <iconset theme="list-remove">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>

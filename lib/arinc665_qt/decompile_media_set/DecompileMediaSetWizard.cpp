@@ -29,6 +29,8 @@ DecompileMediaSetWizard::DecompileMediaSetWizard( QWidget * const parent ) :
   selectXmlFileDialog->setWindowTitle( tr( "Select ARINC 665 Media Set XML" ) );
   selectXmlFileDialog->setNameFilter(tr( "ARINC 665 Media Set XML (*.xml)" ) );
   selectXmlFileDialog->setFileMode( QFileDialog::FileMode::AnyFile );
+  selectXmlFileDialog->setAcceptMode( QFileDialog::AcceptMode::AcceptSave );
+  selectXmlFileDialog->setDefaultSuffix( "xml" );
 
   connect(
     ui->save,

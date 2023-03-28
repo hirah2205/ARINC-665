@@ -38,6 +38,7 @@ target_sources(
         ImportMediaSetXmlSettingsWidget.hpp
         MediaPathsModel.hpp
         MediaPathsWidget.hpp
+        SupportedArinc665VersionModel.hpp
         ${CMAKE_CURRENT_BINARY_DIR}/arinc665_qt_export.h
 
   PRIVATE
@@ -49,7 +50,8 @@ target_sources(
     ImportMediaSetXmlSettingsWidget.ui
     MediaPathsModel.cpp
     MediaPathsWidget.cpp
-    MediaPathsWidget.ui )
+    MediaPathsWidget.ui
+    SupportedArinc665VersionModel.cpp )
 
 target_compile_features( arinc665_qt PUBLIC cxx_std_20 )
 

@@ -7,24 +7,24 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::FileCreationPolicyModel.
+ * @brief Declaration of Class Arinc665Qt::SupportedArinc665VersionModel.
  **/
 
-#ifndef ARINC665_QT_FILECREATIONPOLICYMODEL_H
-#define ARINC665_QT_FILECREATIONPOLICYMODEL_H
+#ifndef ARINC665_QT_SUPPORTEDARINC665VERSIONMODEL_HPP
+#define ARINC665_QT_SUPPORTEDARINC665VERSIONMODEL_HPP
 
 #include <arinc665_qt/Arinc665Qt.hpp>
 
-#include <arinc665/utils/Utils.hpp>
+#include <arinc665/Arinc665.hpp>
 
 #include <QAbstractListModel>
 
 namespace Arinc665Qt {
 
 /**
- * @brief QT File Creation Policy Model.
+ * @brief QT File Aupported ARINC 665 Version Model.
  **/
-class ARINC665_QT_EXPORT FileCreationPolicyModel final :
+ class ARINC665_QT_EXPORT SupportedArinc665VersionModel final :
   public QAbstractListModel
 {
     Q_OBJECT
@@ -36,10 +36,10 @@ class ARINC665_QT_EXPORT FileCreationPolicyModel final :
      * @param[in] parent
      *   Parent QObject.
      **/
-    explicit FileCreationPolicyModel( QObject * parent = nullptr );
+    explicit SupportedArinc665VersionModel( QObject * parent = nullptr );
 
     //! Destructor
-    ~FileCreationPolicyModel() override;
+    ~SupportedArinc665VersionModel() override;
 
     /**
      * @brief Returns the number of rows.
@@ -68,7 +68,7 @@ class ARINC665_QT_EXPORT FileCreationPolicyModel final :
       int role ) const override;
 
     /**
-     * @brief Return File Creation Policy for @p index.
+     * @brief Return Supported ARINC 665 Version for @p index.
      *
      * @param[in] index
      *   Model Index
@@ -77,11 +77,11 @@ class ARINC665_QT_EXPORT FileCreationPolicyModel final :
      * @retval {}
      *   If @p index is out of range.
      **/
-    [[nodiscard]] std::optional< Arinc665::Utils::FileCreationPolicy >
-    fileCreationPolicy( const QModelIndex &index ) const;
+    [[nodiscard]] std::optional< Arinc665::SupportedArinc665Version >
+    supportedArinc665Version( const QModelIndex &index ) const;
 
     /**
-     * @brief Return File Creation Policy for @p index.
+     * @brief Return Supported ARINC 665 Version for @p index.
      *
      * @param[in] index
      *   Row Index
@@ -90,8 +90,8 @@ class ARINC665_QT_EXPORT FileCreationPolicyModel final :
      * @retval {}
      *   If @p index is out of range.
      **/
-    [[nodiscard]] std::optional< Arinc665::Utils::FileCreationPolicy >
-    fileCreationPolicy( int index ) const;
+    [[nodiscard]] std::optional< Arinc665::SupportedArinc665Version >
+    supportedArinc665Version( int index ) const;
 };
 
 }

@@ -23,11 +23,29 @@
   <property name="wizardStyle">
    <enum>QWizard::ModernStyle</enum>
   </property>
+  <property name="options">
+   <set>QWizard::NoCancelButtonOnLastPage</set>
+  </property>
   <widget class="QWizardPage" name="settings">
    <property name="title">
+    <string>Settings</string>
+   </property>
+   <property name="subTitle">
     <string>Select Media Directories</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <widget class="Arinc665Qt::MediaPathsWidget" name="mediaPaths">
       <property name="title">
@@ -41,6 +59,9 @@
    <property name="title">
     <string>Completed</string>
    </property>
+   <property name="subTitle">
+    <string>View Media Set and save ARINC 665 Media SET XML description.</string>
+   </property>
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
      <widget class="QWidget" name="mediaSet" native="true">
@@ -51,7 +72,23 @@
           <enum>Qt::Vertical</enum>
          </property>
          <widget class="Arinc665Qt::Media::MediaSetViewWidget" name="mediaSetView" native="true"/>
-         <widget class="QTableView" name="filePathMapping"/>
+         <widget class="QTableView" name="filePathMapping">
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SingleSelection</enum>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+         </widget>
         </widget>
        </item>
       </layout>

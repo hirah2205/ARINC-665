@@ -31,6 +31,7 @@ class MediaPathsWidget;
 class FilePathMappingModel;
 
 class FileCreationPolicyModel;
+class SupportedArinc665VersionModel;
 
 }
 

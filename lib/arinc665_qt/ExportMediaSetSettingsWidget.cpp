@@ -12,9 +12,8 @@
 
 #include "ExportMediaSetSettingsWidget.hpp"
 
+#include <arinc665_qt/SupportedArinc665VersionModel.hpp>
 #include <arinc665_qt/FileCreationPolicyModel.hpp>
-
-#include <arinc665/SupportedArinc665VersionDescription.hpp>
 
 #include "ui_ExportMediaSetSettingsWidget.h"
 
@@ -24,7 +23,9 @@ ExportMediaSetSettingsWidget::ExportMediaSetSettingsWidget(
   QWidget * const parent ) :
   QGroupBox{ parent },
   ui{ std::make_unique< Ui::ExportMediaSetSettingsWidget >() },
-  fileCreationPolicyModel{ std::make_unique< FileCreationPolicyModel >( this ) }
+  supportedArinc665VersionModelV{
+    std::make_unique< SupportedArinc665VersionModel >( this ) },
+  fileCreationPolicyModelV{ std::make_unique< FileCreationPolicyModel >( this ) }
 {
   ui->setupUi( this );
 
@@ -33,11 +34,7 @@ ExportMediaSetSettingsWidget::ExportMediaSetSettingsWidget(
     QOverload< int >::of( &QComboBox::currentIndexChanged ),
     this,
     &ExportMediaSetSettingsWidget::arinc665VersionIndexSelected );
-
-  for ( const auto &versionInfo : Arinc665::SupportedArinc665VersionDescription::instance() )
-  {
-    ui->arinc665Version->addItem( QString::fromStdString( versionInfo.name ) );
-  }
+  ui->arinc665Version->setModel( supportedArinc665VersionModelV.get() );
 
   connect(
     ui->batchFileCreation,
@@ -50,8 +47,8 @@ ExportMediaSetSettingsWidget::ExportMediaSetSettingsWidget(
     this,
     &ExportMediaSetSettingsWidget::createLoadHeadersFilesIndexSelected );
 
-  ui->batchFileCreation->setModel( fileCreationPolicyModel.get() );
-  ui->loadHeaderCreation->setModel( fileCreationPolicyModel.get() );
+  ui->batchFileCreation->setModel( fileCreationPolicyModelV.get() );
+  ui->loadHeaderCreation->setModel( fileCreationPolicyModelV.get() );
 }
 
 ExportMediaSetSettingsWidget::~ExportMediaSetSettingsWidget() = default;
@@ -63,21 +60,34 @@ bool ExportMediaSetSettingsWidget::completed() const
 
 void ExportMediaSetSettingsWidget::arinc665VersionIndexSelected( int index )
 {
-  emit arinc665Version(
-    static_cast< Arinc665::SupportedArinc665Version >( index ) );
+  if (
+    const auto version{
+      supportedArinc665VersionModelV->supportedArinc665Version( index ) };
+    version )
+  {
+    emit arinc665Version( *version );
+  }
 }
 
 void ExportMediaSetSettingsWidget::createBatchFilesIndexSelected( int index )
 {
-  emit createBatchFiles(
-    static_cast< Arinc665::Utils::FileCreationPolicy >( index ) );
+  if (
+    const auto policy{ fileCreationPolicyModelV->fileCreationPolicy( index ) };
+    policy )
+  {
+    emit createBatchFiles( *policy );
+  }
 }
 
 void ExportMediaSetSettingsWidget::createLoadHeadersFilesIndexSelected(
   int index )
 {
-  emit createLoadHeaderFiles(
-    static_cast< Arinc665::Utils::FileCreationPolicy >( index ) );
+  if (
+    const auto policy{ fileCreationPolicyModelV->fileCreationPolicy( index ) };
+    policy )
+  {
+    emit createLoadHeaderFiles( *policy );
+  }
 }
 
 }
