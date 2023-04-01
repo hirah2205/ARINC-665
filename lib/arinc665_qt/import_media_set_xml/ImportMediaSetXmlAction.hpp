@@ -37,7 +37,7 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlAction final : public QObject
      *   Parent Widget
      **/
     explicit ImportMediaSetXmlAction(
-      Arinc665::Utils::JsonMediaSetManagerPtr mediaSetManager,
+      Arinc665::Utils::MediaSetManagerPtr mediaSetManager,
       QWidget * parent = nullptr );
 
     //! Destructor
@@ -101,7 +101,7 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlAction final : public QObject
     //! Wizard Dialog
     std::unique_ptr< ImportMediaSetXmlWizard > wizard;
     //! Media Set Manager
-    Arinc665::Utils::JsonMediaSetManagerPtr mediaSetManagerV;
+    Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV;
     //! ARINC 665 Media Set Exporter
     Arinc665::Utils::FilesystemMediaSetExporterPtr exporter;
     //! XML File

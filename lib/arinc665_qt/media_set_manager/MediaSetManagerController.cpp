@@ -18,7 +18,6 @@
 #include <arinc665_qt/view_media_set/ViewMediaSetAction.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
-#include <arinc665/utils/JsonMediaSetManager.hpp>
 
 #include <arinc645/CheckValue.hpp>
 
@@ -86,12 +85,10 @@ void MediaSetManagerController::start()
 }
 
 void MediaSetManagerController::start(
-  Arinc665::Utils::JsonMediaSetManagerPtr mediaSetManager )
+  Arinc665::Utils::MediaSetManagerPtr mediaSetManager )
 {
   mediaSetManagerV = std::move( mediaSetManager );
-
   reloadMediaSetModel();
-
   mediaSetManagerDialogV->open();
 }
 
@@ -99,7 +96,7 @@ void MediaSetManagerController::directorySelected()
 {
   auto directory{ selectMediaSetDirectoryDialogV->selectedFiles().first() };
 
-  mediaSetManagerV = Arinc665::Utils::JsonMediaSetManager::load(
+  mediaSetManagerV = Arinc665::Utils::MediaSetManager::load(
     directory.toStdString(),
     true );
 
@@ -112,7 +109,7 @@ void MediaSetManagerController::reloadMediaSetModel()
 {
   Arinc665::Media::ConstMediaSets mediaSets{};
 
-  for ( const auto &[ partNumber, mediaSet ] : mediaSetManagerV->manager()->mediaSets() )
+  for ( const auto &[ partNumber, mediaSet ] : mediaSetManagerV->mediaSets() )
   {
     mediaSets.emplace_back( mediaSet.first );
   }

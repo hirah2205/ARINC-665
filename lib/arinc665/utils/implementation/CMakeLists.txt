@@ -18,8 +18,6 @@ target_sources(
     FilesystemMediaSetExporterImpl.cpp
     FilesystemMediaSetImporterImpl.hpp
     FilesystemMediaSetImporterImpl.cpp
-    JsonMediaSetManagerImpl.hpp
-    JsonMediaSetManagerImpl.cpp
     MediaSetExporterImpl.hpp
     MediaSetExporterImpl.cpp
     MediaSetImporterImpl.hpp

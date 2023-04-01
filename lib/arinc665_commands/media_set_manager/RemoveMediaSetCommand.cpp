@@ -14,7 +14,6 @@
 #include "RemoveMediaSetCommand.hpp"
 
 #include <arinc665/utils/MediaSetManager.hpp>
-#include <arinc665/utils/JsonMediaSetManager.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 
@@ -64,10 +63,10 @@ void RemoveMediaSetCommand::execute( const Commands::Parameters &parameters )
 
     // Media Set Manager
     const auto mediaSetManager{
-      Arinc665::Utils::JsonMediaSetManager::load( mediaSetManagerDirectory ) };
+      Arinc665::Utils::MediaSetManager::load( mediaSetManagerDirectory ) };
 
     auto mediaSet{
-      mediaSetManager->manager()->mediaSet( mediaSetPartNumber ) };
+      mediaSetManager->mediaSet( mediaSetPartNumber ) };
 
     if ( !mediaSet )
     {
@@ -77,7 +76,7 @@ void RemoveMediaSetCommand::execute( const Commands::Parameters &parameters )
     }
 
     auto mediaSetPaths{
-      mediaSetManager->manager()->deregisterMediaSet( mediaSetPartNumber ) };
+      mediaSetManager->deregisterMediaSet( mediaSetPartNumber ) };
 
     // iterate over media - remove media directories
     for ( auto const &[ mediumNumber, mediumPath ] : mediaSetPaths.second )

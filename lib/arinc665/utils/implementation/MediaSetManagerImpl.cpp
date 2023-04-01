@@ -23,21 +23,51 @@
 
 #include <helper/Exception.hpp>
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
 #include <boost/exception/all.hpp>
-#include <boost/format.hpp>
 
 #include <utility>
 
 namespace Arinc665::Utils {
 
 MediaSetManagerImpl::MediaSetManagerImpl(
-  std::filesystem::path basePath,
-  const MediaSetManagerConfiguration &configuration,
+  std::filesystem::path directory,
   const bool checkFileIntegrity ) :
-  basePathV{ std::move( basePath ) }
+  directoryV{ std::move( directory ) }
 {
   BOOST_LOG_FUNCTION()
-  loadMediaSets( configuration, checkFileIntegrity );
+
+  const auto configurationFile{ directoryV / ConfigurationFilename };
+
+  if ( !std::filesystem::is_regular_file( configurationFile ) )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception{}
+      << Helper::AdditionalInfo{ "Media Set Configuration file does not exists" }
+      << boost::errinfo_file_name{ configurationFile.string() } );
+  }
+
+  boost::property_tree::ptree configurationPTree{};
+
+  boost::property_tree::json_parser::read_json(
+    configurationFile.string(),
+    configurationPTree );
+
+  loadMediaSets(
+    Arinc665::Utils::MediaSetManagerConfiguration{ configurationPTree },
+    checkFileIntegrity );
+}
+
+MediaSetManagerImpl::~MediaSetManagerImpl()
+{
+  try
+  {
+    saveConfiguration();
+  }
+  catch ( ... )
+  {
+  }
 }
 
 MediaSetManagerConfiguration MediaSetManagerImpl::configuration() const
@@ -50,6 +80,18 @@ MediaSetManagerConfiguration MediaSetManagerImpl::configuration() const
   }
 
   return configuration;
+}
+
+void MediaSetManagerImpl::saveConfiguration()
+{
+  boost::property_tree::write_json(
+    ( directoryV / ConfigurationFilename ).string(),
+    configuration().toProperties() );
+}
+
+const std::filesystem::path& MediaSetManagerImpl::directory() const
+{
+  return directoryV;
 }
 
 bool MediaSetManagerImpl::hasMediaSet( std::string_view partNumber ) const
@@ -178,7 +220,7 @@ std::filesystem::path MediaSetManagerImpl::filePath(
     return {};
   }
 
-  return ( basePathV / mediaSetIt->second.first / mediumIt->second
+  return ( directoryV / mediaSetIt->second.first / mediumIt->second
     / file->path().relative_path() ).lexically_normal();
 }
 
@@ -223,7 +265,7 @@ MediaPaths MediaSetManagerImpl::absoluteMediaPaths(
   {
     absoluteMediaPaths.try_emplace(
       mediumNumber,
-      ( basePathV / mediaSetPaths.first / mediumPath ).lexically_normal() );
+      ( directoryV / mediaSetPaths.first / mediumPath ).lexically_normal() );
   }
 
   return absoluteMediaPaths;

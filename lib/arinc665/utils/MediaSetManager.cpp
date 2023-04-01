@@ -14,16 +14,68 @@
 
 #include <arinc665/utils/implementation/MediaSetManagerImpl.hpp>
 
+#include <arinc665/Arinc665Exception.hpp>
+
+#include <helper/Exception.hpp>
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
+#include <boost/exception/all.hpp>
+
 namespace Arinc665::Utils {
 
-MediaSetManagerPtr MediaSetManager::instance(
-  const std::filesystem::path &basePath,
-  const MediaSetManagerConfiguration &configuration,
+MediaSetManagerPtr MediaSetManager::create( std::filesystem::path directory )
+{
+  if ( std::filesystem::exists( directory ) )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception{}
+      << Helper::AdditionalInfo{ "Media Set Manger Directory must not exists" }
+      << boost::errinfo_file_name{ directory.string() } );
+  }
+
+  std::filesystem::create_directories( directory );
+
+  Arinc665::Utils::MediaSetManagerConfiguration configuration{};
+
+  boost::property_tree::ptree configurationPTree{ configuration.toProperties() };
+
+  boost::property_tree::write_json(
+    ( directory / ConfigurationFilename ).string(),
+    configurationPTree );
+
+  return std::make_shared< MediaSetManagerImpl >(
+    std::move( directory ),
+    false );
+}
+
+MediaSetManagerPtr MediaSetManager::load(
+  std::filesystem::path directory,
   const bool checkFileIntegrity )
 {
+  if ( !std::filesystem::exists( directory ) )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception{}
+      << Helper::AdditionalInfo{ "Media Set Manger Directory must exists" }
+      << boost::errinfo_file_name{ directory.string() } );
+  }
+
   return std::make_shared< MediaSetManagerImpl >(
-    basePath,
-    configuration,
+    std::move( directory ),
+    checkFileIntegrity );
+}
+
+MediaSetManagerPtr MediaSetManager::loadOrCreate(
+  std::filesystem::path directory,
+  const bool checkFileIntegrity )
+{
+  if ( !std::filesystem::exists( directory ) )
+  {
+    return create( std::move( directory ) );
+  }
+
+  return std::make_shared< MediaSetManagerImpl >(
+    std::move( directory ),
     checkFileIntegrity );
 }
 

@@ -18,7 +18,6 @@
 #include <arinc665/files/MediaSetInformation.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
-#include <arinc665/utils/JsonMediaSetManager.hpp>
 #include <arinc665/utils/FilesystemMediaSetImporter.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
@@ -77,7 +76,7 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 
     // Media Set Manager
     const auto mediaSetManager{
-      Arinc665::Utils::JsonMediaSetManager::load(
+      Arinc665::Utils::MediaSetManager::load(
         mediaSetManagerDirectory,
         checkFileIntegrity ) };
 
@@ -142,7 +141,7 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
         std::filesystem::copy_options::recursive );
     }
 
-    mediaSetManager->manager()->registerMediaSet(
+    mediaSetManager->registerMediaSet(
       { std::move( mediaSetPath ), std::move( mediaPaths ) },
       checkFileIntegrity );
     mediaSetManager->saveConfiguration();

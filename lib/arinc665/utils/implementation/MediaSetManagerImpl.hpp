@@ -34,21 +34,25 @@ class MediaSetManagerImpl final : public MediaSetManager
     /**
      * @brief Initialises the media set manager.
      *
-     * @param[in] basePath
-     *   Base Path to use, when configured paths are relative, i.e. base of
-     *   configuration file.
-     * @param[in] configuration
-     *   Media Set Manager Configuration.
+     * @param[in] directory
+     *   Directory for Media Set Manger.
      * @param[in] checkFileIntegrity
      *   If set to true additional file integrity steps are performed
      **/
-    explicit MediaSetManagerImpl(
-      std::filesystem::path basePath,
-      const MediaSetManagerConfiguration &configuration,
+    MediaSetManagerImpl(
+      const std::filesystem::path directory,
       bool checkFileIntegrity );
+
+    ~MediaSetManagerImpl() override;
 
     //! @copydoc MediaSetManager::configuration
     [[nodiscard]] MediaSetManagerConfiguration configuration() const override;
+
+    //! @copydoc MediaSetManager::saveConfiguration()
+    void saveConfiguration() override;
+
+    //! @copydoc MediaSetManager::directory()
+    [[nodiscard]] const std::filesystem::path& directory() const override;
 
     //! @copydoc MediaSetManager::hasMediaSet(std::string_view) const
     [[nodiscard]] bool hasMediaSet(
@@ -110,8 +114,8 @@ class MediaSetManagerImpl final : public MediaSetManager
       MediaSetManagerConfiguration::MediaSetPaths,
       std::less< > >;
 
-    //! Base for Relative Paths
-    const std::filesystem::path basePathV;
+    //! Media Set Manager Directory
+    const std::filesystem::path directoryV;
     //! Media Sets Information
     MediaSetsInformation mediaSetsInformationV;
     //! Media Sets Paths

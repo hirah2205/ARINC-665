@@ -18,7 +18,6 @@
 #include <arinc665/media/File.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
-#include <arinc665/utils/JsonMediaSetManager.hpp>
 #include <arinc665/utils/FileCreationPolicyDescription.hpp>
 #include <arinc665/utils/FilesystemMediaSetExporter.hpp>
 
@@ -120,7 +119,7 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 
     // Media Set Manager
     const auto mediaSetManager{
-      Arinc665::Utils::JsonMediaSetManager::load( mediaSetManagerDirectory ) };
+      Arinc665::Utils::MediaSetManager::load( mediaSetManagerDirectory ) };
 
     // load ARINC 665 XML file
     auto [ mediaSet, filePathMapping ] =
@@ -154,7 +153,7 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 
     auto mediaPaths{ ( *exporter )() };
 
-    mediaSetManager->manager()->registerMediaSet(
+    mediaSetManager->registerMediaSet(
       { std::move( mediaSetPath ), std::move( mediaPaths ) } );
     mediaSetManager->saveConfiguration();
   }

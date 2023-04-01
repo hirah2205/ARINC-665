@@ -14,7 +14,6 @@
 #include "ListMediaSetsCommand.hpp"
 
 #include <arinc665/utils/MediaSetManager.hpp>
-#include <arinc665/utils/JsonMediaSetManager.hpp>
 #include <arinc665/utils/MediaSetPrinter.hpp>
 
 #include <arinc645/CheckValue.hpp>
@@ -58,11 +57,11 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
       vm );
     boost::program_options::notify( vm );
 
-    const auto mediaSetManager{ Arinc665::Utils::JsonMediaSetManager::load(
+    const auto mediaSetManager{ Arinc665::Utils::MediaSetManager::load(
       mediaSetManagerDirectory,
       checkFileIntegrity ) };
 
-    const auto mediaSets{ mediaSetManager->manager()->mediaSets() };
+    const auto mediaSets{ mediaSetManager->mediaSets() };
 
     if ( mediaSets.empty() )
     {
@@ -70,8 +69,7 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
     }
     else
     {
-      for ( const auto &[partNumber, mediaSet] :
-            mediaSetManager->manager()->mediaSets() )
+      for ( const auto &[partNumber, mediaSet] : mediaSetManager->mediaSets() )
       {
         std::cout << "Media Set:\n";
 

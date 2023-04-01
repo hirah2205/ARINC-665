@@ -17,7 +17,6 @@ target_sources(
         FilePrinter.hpp
         FilesystemMediaSetExporter.hpp
         FilesystemMediaSetImporter.hpp
-        JsonMediaSetManager.hpp
         MediaSetExporter.hpp
         MediaSetImporter.hpp
         MediaSetManager.hpp
@@ -32,7 +31,6 @@ target_sources(
     FilePrinter.cpp
     FilesystemMediaSetExporter.cpp
     FilesystemMediaSetImporter.cpp
-    JsonMediaSetManager.cpp
     MediaSetExporter.cpp
     MediaSetImporter.cpp
     MediaSetManager.cpp

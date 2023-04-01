@@ -36,7 +36,7 @@ namespace Arinc665Qt::MediaSetManager {
  * - Removing Media Sets.
  *
  * This controller supports operation by using a predefined media set manager
- * by calling @ref start(Arinc665::Utils::JsonMediaSetManagerPtr).
+ * by calling @ref start(Arinc665::Utils::MediaSetManagerPtr).
  * When calling @ref start(), the user is asked to select a media set
  * configuration to load it.
  **/
@@ -71,7 +71,7 @@ class ARINC665_QT_EXPORT MediaSetManagerController : public QObject
      * @param[in] mediaSetManager
      *   %Media Set Manager to use
      **/
-    void start( Arinc665::Utils::JsonMediaSetManagerPtr mediaSetManager );
+    void start( Arinc665::Utils::MediaSetManagerPtr mediaSetManager );
 
   signals:
     //! Emitted, when controller is finished.
@@ -119,14 +119,14 @@ class ARINC665_QT_EXPORT MediaSetManagerController : public QObject
 
   private:
     //! Media Sets Model
-    std::unique_ptr< Media::MediaSetsModel > mediaSetsModelV;
+    std::unique_ptr< Media::MediaSetsModel > mediaSetsModelV{};
     //! Media Set Manager Dialog
-    std::unique_ptr< MediaSetManagerDialog > mediaSetManagerDialogV;
+    std::unique_ptr< MediaSetManagerDialog > mediaSetManagerDialogV{};
     //! Select Media Set Manager Directory Dialog
-    std::unique_ptr< QFileDialog > selectMediaSetDirectoryDialogV;
+    std::unique_ptr< QFileDialog > selectMediaSetDirectoryDialogV{};
 
     //! Media Set Manager
-    Arinc665::Utils::JsonMediaSetManagerPtr mediaSetManagerV;
+    Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV{};
 };
 
 }

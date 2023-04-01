@@ -13,19 +13,20 @@
 #ifndef ARINC665_UTILS_MEDIASETMANAGER_HPP
 #define ARINC665_UTILS_MEDIASETMANAGER_HPP
 
-#include <arinc665/media/Media.hpp>
-
 #include <arinc665/utils/Utils.hpp>
 #include <arinc665/utils/MediaSetManagerConfiguration.hpp>
+
+#include <arinc665/media/Media.hpp>
 
 #include <arinc645/CheckValue.hpp>
 
 #include <filesystem>
-#include <list>
-#include <string>
 #include <functional>
-#include <optional>
+#include <list>
 #include <map>
+#include <optional>
+#include <string>
+#include <string_view>
 
 namespace Arinc665::Utils {
 
@@ -35,7 +36,9 @@ namespace Arinc665::Utils {
  * This class manages the locally held media sets.
  *
  * @par Organisation of Media Set Manager data.
- * - Media sets are stored beneath the [mediaSetBasePath] directory.
+ * - The configuration is held within a JSON file within the media set
+ *   directory.
+ * - Media sets are stored beneath the media set directory.
  * - Within this directory the media sets each are stored within a directory
  *   named @p mediaSetName.
  * - Within the media set directory the media are stored with the corresponding
@@ -51,28 +54,57 @@ class ARINC665_EXPORT MediaSetManager
     using MediaSetsInformation =
       std::map< std::string, MediaSetInformation, std::less<> >;
 
-    //! Destructor
-    virtual ~MediaSetManager() noexcept = default;
+    //! Media Set Manager Configuration Filename
+    static constexpr std::string_view ConfigurationFilename{
+      "MediaSetManager.json" };
 
     /**
-     * @brief Creates the Media Set Manager instance with the given
-     *   configuration.
+     * @brief Creates an empty Media Set Manager (but don't load it)
      *
-     * @param[in] basePath
-     *   Base Path to use, when configured paths are relative, i.e. base of
-     *   configuration file.
-     * @param[in,out] configuration
-     *   Media Set Manager Configuration.
-     * @param[in] checkFileIntegrity
-     *   If set to true additional file integrity steps are performed, when
-     *   loading the Media Set Manager.
+     * @param[in] directory
+     *   Directory for Media Set Manger.
+     *   Must not exist.
      *
      * @return Media Set Manager Instance.
      **/
-    static MediaSetManagerPtr instance(
-      const std::filesystem::path &basePath,
-      const MediaSetManagerConfiguration &configuration,
+    static MediaSetManagerPtr create( std::filesystem::path directory );
+
+    /**
+     * @brief Loads the Media Set Configuration.
+     *
+     * @param[in] directory
+     *   Directory for Media Set Manger.
+     * @param[in] checkFileIntegrity
+     *   If set to true additional file integrity checks are performed
+     *
+     * @return Media Set Manager Instance.
+     **/
+    [[nodiscard]] static MediaSetManagerPtr load(
+      std::filesystem::path directory,
       bool checkFileIntegrity = true );
+
+    /**
+     * @brief Checks if a Media Set Manager Configuration is available or
+     *   creates it.
+     *
+     * @param[in] directory
+     *   Directory for Media Set Manger.
+     * @param[in] checkFileIntegrity
+     *   If set to true additional file integrity checks are performed
+     *
+     * @return Media Set Manager
+     **/
+    [[nodiscard]] static MediaSetManagerPtr loadOrCreate(
+      std::filesystem::path directory,
+      bool checkFileIntegrity = true );
+
+    //! Destructor
+    virtual ~MediaSetManager() = default;
+
+    /**
+     * @name Configuration
+     * @{
+     **/
 
     /**
      * @brief Returns the configuration for the media set manager.
@@ -81,6 +113,20 @@ class ARINC665_EXPORT MediaSetManager
      **/
     [[nodiscard]] virtual MediaSetManagerConfiguration
     configuration() const = 0;
+
+    /**
+     * @brief Persist the Configuration.
+     **/
+    virtual void saveConfiguration() = 0;
+
+    /**
+     * @brief Returns the Media Set Manager Directory
+     *
+     * @return Media Set Manager Directory.
+     **/
+    [[nodiscard]] virtual const std::filesystem::path& directory() const = 0;
+
+    /** @} **/
 
     /**
      * @name Media Set Management

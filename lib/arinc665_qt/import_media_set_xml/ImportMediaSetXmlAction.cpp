@@ -12,7 +12,6 @@
 
 #include <arinc665/utils/Arinc665Xml.hpp>
 #include <arinc665/utils/FilesystemMediaSetExporter.hpp>
-#include <arinc665/utils/JsonMediaSetManager.hpp>
 #include <arinc665/utils/MediaSetManager.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
@@ -27,7 +26,7 @@
 namespace Arinc665Qt {
 
 ImportMediaSetXmlAction::ImportMediaSetXmlAction(
-  Arinc665::Utils::JsonMediaSetManagerPtr mediaSetManager,
+  Arinc665::Utils::MediaSetManagerPtr mediaSetManager,
   QWidget * const parent ) :
   wizard{ std::make_unique< ImportMediaSetXmlWizard >( parent ) },
   mediaSetManagerV{ std::move( mediaSetManager ) },
@@ -133,7 +132,7 @@ void ImportMediaSetXmlAction::start()
     assert( exporter );
     auto mediaPaths{ ( *exporter )() };
 
-    mediaSetManagerV->manager()->registerMediaSet(
+    mediaSetManagerV->registerMediaSet(
       { mediaSet->partNumber(), std::move( mediaPaths ) },
       true );
     mediaSetManagerV->saveConfiguration();

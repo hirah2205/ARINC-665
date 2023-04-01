@@ -17,7 +17,6 @@
 #include <arinc665/media/Load.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
-#include <arinc665/utils/JsonMediaSetManager.hpp>
 
 #include <helper/HexString.hpp>
 
@@ -60,11 +59,11 @@ void ListLoadsCommand::execute( const Commands::Parameters &parameters )
       vm );
     boost::program_options::notify( vm );
 
-    const auto mediaSetManager{ Arinc665::Utils::JsonMediaSetManager::load(
+    const auto mediaSetManager{ Arinc665::Utils::MediaSetManager::load(
       mediaSetManagerDirectory,
       checkFileIntegrity ) };
 
-    const auto loads{ mediaSetManager->manager()->loads() };
+    const auto loads{ mediaSetManager->loads() };
 
     if ( loads.empty() )
     {

@@ -13,7 +13,7 @@
 
 #include "CreateMediaSetManagerCommand.hpp"
 
-#include <arinc665/utils/JsonMediaSetManager.hpp>
+#include <arinc665/utils/MediaSetManager.hpp>
 
 #include <boost/exception/all.hpp>
 
@@ -51,7 +51,7 @@ void CreateMediaSetManagerCommand::execute(
 
     std::cout << " within " << mediaSetManagerDirectory << "\n";
 
-    Arinc665::Utils::JsonMediaSetManager::create( mediaSetManagerDirectory );
+    Arinc665::Utils::MediaSetManager::create( mediaSetManagerDirectory );
   }
   catch ( const boost::program_options::error & )
   {
