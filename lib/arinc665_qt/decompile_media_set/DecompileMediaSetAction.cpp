@@ -43,11 +43,15 @@ namespace Arinc665Qt {
 DecompileMediaSetAction::DecompileMediaSetAction( QWidget * const parent ) :
   QObject{ parent },
   wizardV{ std::make_unique< DecompileMediaSetWizard >( parent ) },
+  threadV{ std::make_unique< QThread >( parent ) },
   decompilerV{ Arinc665::Utils::FilesystemMediaSetDecompiler::create() },
-  mediaPathsModelV{ std::make_unique< MediaPathsModel >() },
-  mediaSetModelV{ std::make_unique< Media::MediaSetModel >() },
-  filePathMappingModelV{ std::make_unique< FilePathMappingModel >() }
+  mediaPathsModelV{ std::make_unique< MediaPathsModel >( parent ) },
+  mediaSetModelV{ std::make_unique< Media::MediaSetModel >( parent ) },
+  filePathMappingModelV{ std::make_unique< FilePathMappingModel >( parent ) }
 {
+  moveToThread( threadV.get() );
+  emit threadV->start();
+
   wizardV->mediaPathsModel( mediaPathsModelV.get() );
   wizardV->mediaSetModel( mediaSetModelV.get() );
   wizardV->filePathMappingModel( filePathMappingModelV.get() );
@@ -73,10 +77,13 @@ DecompileMediaSetAction::DecompileMediaSetAction( QWidget * const parent ) :
     this,
     &DecompileMediaSetAction::finished );
 
-  wizardV->show();
+  emit wizardV->show();
 }
 
-DecompileMediaSetAction::~DecompileMediaSetAction() = default;
+DecompileMediaSetAction::~DecompileMediaSetAction()
+{
+  threadV->quit();
+}
 
 void DecompileMediaSetAction::checkFileIntegrity( bool checkFileIntegrity )
 {
