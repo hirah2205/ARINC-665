@@ -67,12 +67,12 @@ class MediaSetManagerImpl final : public MediaSetManager
 
     //! @copydoc MediaSetManager::registerMediaSet()
     void registerMediaSet(
-      const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
+      const MediaSetPaths &mediaSetPaths,
       bool checkFileIntegrity = true ) override;
 
     //! @copydoc MediaSetManager::deregisterMediaSet()
-    [[nodiscard]] MediaSetManagerConfiguration::MediaSetPaths
-    deregisterMediaSet( std::string_view partNumber ) override;
+    [[nodiscard]] MediaSetPaths deregisterMediaSet(
+      std::string_view partNumber ) override;
 
     //! @copydoc MediaSetManager::loads() const
     [[nodiscard]] Media::ConstLoads loads() const override;
@@ -106,13 +106,10 @@ class MediaSetManagerImpl final : public MediaSetManager
      * @return Absolute Media Paths.
      **/
     [[nodiscard]] MediaPaths absoluteMediaPaths(
-      const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths ) const;
+      const MediaSetPaths &mediaSetPaths ) const;
 
     //! Media Set Paths Map ( Part Number -> Media Set Paths )
-    using MediaSetsPaths = std::map<
-      std::string,
-      MediaSetManagerConfiguration::MediaSetPaths,
-      std::less< > >;
+    using MediaSetsPaths = std::map< std::string, MediaSetPaths, std::less<> >;
 
     //! Media Set Manager Directory
     const std::filesystem::path directoryV;

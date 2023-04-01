@@ -24,6 +24,8 @@
 
 #include <arinc665/files/Files.hpp>
 
+#include <arinc665/MediumNumber.hpp>
+
 #include <arinc645/Arinc645.hpp>
 
 #include <memory>
@@ -42,9 +44,12 @@
  **/
 namespace Arinc665::Utils {
 
-//! Media Paths
+//! Media Paths (Medium Number -> Medium Path)
 using MediaPaths =
   std::map< Arinc665::MediumNumber, std::filesystem::path >;
+
+//! Media Set Paths (Media Set Base Path + Media Paths)
+using MediaSetPaths = std::pair< std::filesystem::path, MediaPaths >;
 
 /**
  * @name Media Set Exporter
@@ -88,15 +93,25 @@ using MediaSetImportResult =
   std::pair< Media::MediaSetPtr, Media::CheckValues >;
 
 class MediaSetImporter;
-//! ARINC 665 %Media Set Importer Instance Pointer.
+//! ARINC 665 %Media Set Importer Instance.
 using MediaSetImporterPtr = std::unique_ptr< MediaSetImporter >;
 
 class FilesystemMediaSetImporter;
-//! Filesystem ARINC 665 %Media Set Importer Instance Pointer.
+//! Filesystem ARINC 665 %Media Set Importer Instance.
 using FilesystemMediaSetImporterPtr =
   std::unique_ptr< FilesystemMediaSetImporter >;
 
 /** @} **/
+
+class FilesystemMediaSetCopier;
+//! Filesystem ARINC 665 %Media Set Copier Instance.
+using FilesystemMediaSetCopierPtr =
+  std::unique_ptr< FilesystemMediaSetCopier >;
+
+class FilesystemMediaSetRemover;
+//! Filesystem ARINC 665 %Media Set Remover Instance.
+using FilesystemMediaSetRemoverPtr =
+  std::unique_ptr< FilesystemMediaSetRemover >;
 
 /**
  * @name Media Set Validator
@@ -105,7 +120,7 @@ using FilesystemMediaSetImporterPtr =
  **/
 
 class MediaSetValidator;
-//! ARINC 665 %Media Set Validator Instance Pointer.
+//! ARINC 665 %Media Set Validator Instance.
 using MediaSetValidatorPtr = std::unique_ptr< MediaSetValidator >;
 
 /** @} **/

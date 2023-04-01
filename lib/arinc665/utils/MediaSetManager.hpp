@@ -177,7 +177,7 @@ class ARINC665_EXPORT MediaSetManager
      *   loading the Media Set Manager.
      **/
     virtual void registerMediaSet(
-      const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
+      const MediaSetPaths &mediaSetPaths,
       bool checkFileIntegrity = true ) = 0;
 
     /**
@@ -190,8 +190,7 @@ class ARINC665_EXPORT MediaSetManager
      *
      * @return Media Set Path Configuration (for removal)
      **/
-    virtual MediaSetManagerConfiguration::MediaSetPaths deregisterMediaSet(
-      std::string_view partNumber ) = 0;
+    virtual MediaSetPaths deregisterMediaSet( std::string_view partNumber ) = 0;
 
     /** @} **/
 

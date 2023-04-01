@@ -119,7 +119,7 @@ MediaSetManagerImpl::mediaSets() const
 }
 
 void MediaSetManagerImpl::registerMediaSet(
-  const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths,
+  const MediaSetPaths &mediaSetPaths,
   const bool checkFileIntegrity )
 {
   auto importer( FilesystemMediaSetImporter::create() );
@@ -152,8 +152,8 @@ void MediaSetManagerImpl::registerMediaSet(
   mediaSetsPathsV.try_emplace( partNumber, mediaSetPaths );
 }
 
-MediaSetManagerConfiguration::MediaSetPaths
-MediaSetManagerImpl::deregisterMediaSet( std::string_view partNumber )
+MediaSetPaths MediaSetManagerImpl::deregisterMediaSet(
+  std::string_view partNumber )
 {
   auto mediaSetInformation{
     mediaSetsInformationV.extract( std::string{ partNumber } ) };
@@ -258,7 +258,7 @@ void MediaSetManagerImpl::loadMediaSets(
 }
 
 MediaPaths MediaSetManagerImpl::absoluteMediaPaths(
-  const MediaSetManagerConfiguration::MediaSetPaths &mediaSetPaths ) const
+  const MediaSetPaths &mediaSetPaths ) const
 {
   MediaPaths absoluteMediaPaths{};
   for ( const auto &[ mediumNumber, mediumPath ] : mediaSetPaths.second )

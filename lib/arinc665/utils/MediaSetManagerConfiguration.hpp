@@ -31,8 +31,6 @@ namespace Arinc665::Utils {
 class ARINC665_EXPORT MediaSetManagerConfiguration
 {
   public:
-    //! Media Set Paths (Media Set Base Path + Media Paths)
-    using MediaSetPaths = std::pair< std::filesystem::path, MediaPaths >;
     //! Media Sets Paths ( List of Media Set Path, @ref MediaPaths)
     using MediaSetsPaths = std::list< MediaSetPaths >;
 

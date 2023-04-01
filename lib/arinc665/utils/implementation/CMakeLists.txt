@@ -14,10 +14,14 @@ target_sources(
     Arinc665XmlLoadImpl.cpp
     Arinc665XmlSaveImpl.hpp
     Arinc665XmlSaveImpl.cpp
+    FilesystemMediaSetCopierImpl.hpp
+    FilesystemMediaSetCopierImpl.cpp
     FilesystemMediaSetExporterImpl.hpp
     FilesystemMediaSetExporterImpl.cpp
     FilesystemMediaSetImporterImpl.hpp
     FilesystemMediaSetImporterImpl.cpp
+    FilesystemMediaSetRemoverImpl.hpp
+    FilesystemMediaSetRemoverImpl.cpp
     MediaSetExporterImpl.hpp
     MediaSetExporterImpl.cpp
     MediaSetImporterImpl.hpp

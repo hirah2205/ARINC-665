@@ -14,10 +14,9 @@
 #include "RemoveMediaSetCommand.hpp"
 
 #include <arinc665/utils/MediaSetManager.hpp>
+#include <arinc665/utils/FilesystemMediaSetRemover.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
-
-#include <arinc645/CheckValue.hpp>
 
 #include <helper/Exception.hpp>
 
@@ -77,19 +76,14 @@ void RemoveMediaSetCommand::execute( const Commands::Parameters &parameters )
 
     auto mediaSetPaths{
       mediaSetManager->deregisterMediaSet( mediaSetPartNumber ) };
-
-    // iterate over media - remove media directories
-    for ( auto const &[ mediumNumber, mediumPath ] : mediaSetPaths.second )
-    {
-      std::filesystem::remove_all(
-        mediaSetManagerDirectory / mediaSetPaths.first / mediumPath );
-    }
-
-    // remove media set directories
-    std::filesystem::remove_all(
-      mediaSetManagerDirectory / mediaSetPaths.first );
-
     mediaSetManager->saveConfiguration();
+
+    auto remover{ Arinc665::Utils::FilesystemMediaSetRemover::create() };
+    assert( remover );
+
+    mediaSetPaths.first = mediaSetManagerDirectory / mediaSetPaths.first;
+    remover->mediaSetPaths( mediaSetPaths );
+    ( *remover )();
   }
   catch ( boost::program_options::error &e )
   {

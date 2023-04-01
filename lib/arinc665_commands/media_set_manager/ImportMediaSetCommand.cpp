@@ -19,17 +19,14 @@
 
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/FilesystemMediaSetImporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetCopier.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
-
-#include <arinc645/CheckValue.hpp>
 
 #include <helper/Logger.hpp>
 #include <helper/Exception.hpp>
 
 #include <boost/exception/all.hpp>
-
-#include <fmt/format.h>
 
 #include <iostream>
 
@@ -62,6 +59,8 @@ ImportMediaSetCommand::ImportMediaSetCommand() :
 
 void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 {
+  BOOST_LOG_FUNCTION()
+
   try
   {
     std::cout << "Import ARINC 665 Media Set\n";
@@ -107,43 +106,32 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 
     const auto &[ mediaSet, checkValues]{ ( *importer )() };
 
-    // Add Media Set Part Number to Output Path
-    Arinc665::Utils::MediaPaths mediaPaths{};
-    for (
-      Arinc665::MediumNumber mediumNumber{ 1U };
-      mediumNumber <= mediaSet->lastMediumNumber();
-      ++mediumNumber )
-    {
-      mediaPaths.try_emplace(
-        mediumNumber,
-        fmt::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) ) );
-    }
-
     std::filesystem::path mediaSetPath{ mediaSet->partNumber() };
 
     if ( std::filesystem::exists( mediaSetManagerDirectory / mediaSetPath ) )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665::Arinc665Exception()
-          << Helper::AdditionalInfo{ "Media Set Directory already exist" } );
+        << Helper::AdditionalInfo{ "Media Set Directory already exist" } );
     }
 
     // create media set directory
     std::filesystem::create_directories(
       mediaSetManagerDirectory / mediaSetPath );
 
-    // iterate over media - copy it to media set manager
-    for ( auto const &[ mediumNumber, mediumPath ] : mediaPaths )
-    {
-      std::filesystem::copy(
-        sourceMediaPaths[ mediumNumber ],
-        mediaSetManagerDirectory / mediaSetPath / mediumPath,
-        std::filesystem::copy_options::recursive );
-    }
+    const auto copier{ Arinc665::Utils::FilesystemMediaSetCopier::create() };
+    assert( copier );
+
+    copier
+      ->mediaPaths( sourceMediaPaths )
+      .mediaSetBasePath( mediaSetManagerDirectory / mediaSetPath );
+
+    auto destinationMediaPaths{ ( *copier )() };
 
     mediaSetManager->registerMediaSet(
-      { std::move( mediaSetPath ), std::move( mediaPaths ) },
+      { std::move( mediaSetPath ), std::move( destinationMediaPaths ) },
       checkFileIntegrity );
+
     mediaSetManager->saveConfiguration();
   }
   catch ( const boost::program_options::error &e )
