@@ -18,6 +18,8 @@
 
 #include <arinc665/media/Media.hpp>
 
+#include <arinc665/utils/MediaSetManager.hpp>
+
 #include <QWidget>
 
 namespace Arinc665Qt::MediaSetManager {
@@ -43,10 +45,14 @@ class ARINC665_QT_EXPORT RemoveMediaSetController : public QObject
     /**
      * @brief Use given %Media Set Configuration.
      *
+     * @param[in] mediaSetManager
+     *   Media Set Manager
      * @param[in] mediaSet
      *   %Media Set Manager to use
      **/
-    void start( Arinc665::Media::MediaSetPtr mediaSet );
+    void start(
+      const Arinc665::Utils::MediaSetManagerPtr &mediaSetManager,
+      Arinc665::Media::ConstMediaSetPtr mediaSet );
 
   signals:
     //! Emitted, when controller is finished.

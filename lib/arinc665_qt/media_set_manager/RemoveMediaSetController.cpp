@@ -13,6 +13,18 @@
 
 #include "RemoveMediaSetController.hpp"
 
+#include <arinc665/media/MediaSet.hpp>
+
+#include <arinc665/utils/FilesystemMediaSetRemover.hpp>
+
+#include <arinc665/Arinc665Exception.hpp>
+
+#include <QMessageBox>
+
+#include <boost/exception/all.hpp>
+
+#include <cassert>
+
 namespace Arinc665Qt::MediaSetManager {
 
 RemoveMediaSetController::RemoveMediaSetController( QWidget * const parent  ) :
@@ -23,8 +35,50 @@ RemoveMediaSetController::RemoveMediaSetController( QWidget * const parent  ) :
 RemoveMediaSetController::~RemoveMediaSetController() = default;
 
 void RemoveMediaSetController::start(
-  [[maybe_unused]] Arinc665::Media::MediaSetPtr mediaSet )
+  const Arinc665::Utils::MediaSetManagerPtr &mediaSetManager,
+  Arinc665::Media::ConstMediaSetPtr mediaSet )
 {
+  const auto answer{ QMessageBox::question(
+      nullptr,
+      tr( "Remove ARINC 665 Media Set" ),
+      tr( "Remove Media Set" ) ) };
+
+  switch ( answer )
+  {
+    case QMessageBox::StandardButton::Yes:
+      break;
+
+    case QMessageBox::StandardButton::No:
+    default:
+      emit finished();
+      return;
+  }
+
+  try
+  {
+    auto mediaSetPaths{
+      mediaSetManager->deregisterMediaSet( mediaSet->partNumber() ) };
+    mediaSetPaths.first = mediaSetManager->directory() / mediaSetPaths.first;
+
+    auto remover{ Arinc665::Utils::FilesystemMediaSetRemover::create() };
+    assert( remover );
+
+    remover->mediaSetPaths( mediaSetPaths );
+    ( *remover )();
+  }
+  catch ( const Arinc665::Arinc665Exception &e )
+  {
+    const auto info{ boost::diagnostic_information( e ) };
+
+    QMessageBox::critical(
+      nullptr,
+      tr( "Error during removal" ),
+      QString::fromStdString( info ) );
+  }
+
+  mediaSetManager->saveConfiguration();
+
+  emit finished();
 }
 
 }

@@ -15,7 +15,6 @@
 #include <arinc665/utils/MediaSetManager.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
-#include <arinc665/MediumNumber.hpp>
 
 #include <QMessageBox>
 
@@ -137,7 +136,6 @@ void ImportMediaSetXmlAction::start()
       true );
     mediaSetManagerV->saveConfiguration();
   }
-
   catch ( const Arinc665::Arinc665Exception &e )
   {
     const auto info{ boost::diagnostic_information( e ) };
