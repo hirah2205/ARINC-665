@@ -1,8 +1,14 @@
-/*
+/**
+ * @file
+ * @copyright
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- */
+ *
+ * @author Thomas Vogt, thomas@thomas-vogt.de
+ *
+ * @brief Declaration of Class Arinc665Qt::ImportMediaSetXmlAction.
+ **/
 
 #ifndef ARINC665_QT_IMPORT_MEDIA_SET_XML_IMPORTMEDIASETXMLACTION_HPP
 #define ARINC665_QT_IMPORT_MEDIA_SET_XML_IMPORTMEDIASETXMLACTION_HPP
@@ -29,7 +35,7 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlAction final : public QObject
 
   public:
     /**
-     * @brief Initialises the %Media Set Import XML Controller.
+     * @brief Initialises the %Media Set Import XML Action.
      *
      * @param[in] mediaSetManager
      *   Media Set Manager
@@ -99,11 +105,11 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlAction final : public QObject
 
   private:
     //! Wizard Dialog
-    std::unique_ptr< ImportMediaSetXmlWizard > wizard;
+    std::unique_ptr< ImportMediaSetXmlWizard > wizardV;
     //! Media Set Manager
     Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV;
     //! ARINC 665 Media Set Exporter
-    Arinc665::Utils::FilesystemMediaSetExporterPtr exporter;
+    Arinc665::Utils::FilesystemMediaSetExporterPtr exporterV;
     //! XML File
     std::filesystem::path xmlFileV;
 };

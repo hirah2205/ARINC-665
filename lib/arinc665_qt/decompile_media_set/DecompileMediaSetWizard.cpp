@@ -68,7 +68,7 @@ void DecompileMediaSetWizard::filePathMappingModel(
   ui->filePathMapping->setModel( model );
 }
 
-void DecompileMediaSetWizard::pageChanged( int id )
+void DecompileMediaSetWizard::pageChanged( const int id )
 {
   if ( ui->settings->nextId() == id )
   {

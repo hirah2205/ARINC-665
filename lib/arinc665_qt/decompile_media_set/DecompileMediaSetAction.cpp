@@ -48,8 +48,6 @@ DecompileMediaSetAction::DecompileMediaSetAction( QWidget * const parent ) :
   wizardV->mediaSetModel( mediaSetModelV.get() );
   wizardV->filePathMappingModel( filePathMappingModelV.get() );
 
-  wizardV->show();
-
   connect(
     wizardV.get(),
     &DecompileMediaSetWizard::start,
@@ -65,6 +63,8 @@ DecompileMediaSetAction::DecompileMediaSetAction( QWidget * const parent ) :
     &DecompileMediaSetWizard::finished,
     this,
     &DecompileMediaSetAction::finished );
+
+  wizardV->show();
 }
 
 DecompileMediaSetAction::~DecompileMediaSetAction() = default;

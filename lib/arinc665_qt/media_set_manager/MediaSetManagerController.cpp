@@ -31,10 +31,7 @@ MediaSetManagerController::MediaSetManagerController(
   QObject{ parent },
   mediaSetsModelV{ std::make_unique< Media::MediaSetsModel >( this ) },
   mediaSetManagerDialogV{ std::make_unique< MediaSetManagerDialog >( parent ) },
-  selectMediaSetDirectoryDialogV{ std::make_unique< QFileDialog >(
-    parent,
-    tr( "Select ARINC 665 Media Set Manager Configuration" ) ) },
-  mediaSetManagerV{}
+  selectMediaSetDirectoryDialogV{ std::make_unique< QFileDialog >( parent ) }
 {
   mediaSetManagerDialogV->mediaSetsModel( mediaSetsModelV.get() );
   connect(
@@ -64,6 +61,8 @@ MediaSetManagerController::MediaSetManagerController(
     this,
     &MediaSetManagerController::removeMediaSet );
 
+  selectMediaSetDirectoryDialogV->setWindowTitle(
+    tr( "Select ARINC 665 Media Set Manager Configuration" ) );
   selectMediaSetDirectoryDialogV->setFileMode( QFileDialog::Directory );
   selectMediaSetDirectoryDialogV->setOption( QFileDialog::ShowDirsOnly );
   connect(
@@ -161,7 +160,7 @@ void MediaSetManagerController::importMediaSetXml()
     controller,
     &ImportMediaSetXmlAction::finished,
     controller,
-    &ViewMediaSetAction::deleteLater );
+    &ImportMediaSetXmlAction::deleteLater );
 }
 
 void MediaSetManagerController::removeMediaSet( const QModelIndex &index )
@@ -189,11 +188,9 @@ void MediaSetManagerController::removeMediaSet( const QModelIndex &index )
     controller,
     &RemoveMediaSetController::finished,
     controller,
-    &ViewMediaSetAction::deleteLater );
+    &RemoveMediaSetController::deleteLater );
 
-  emit controller->start(
-    mediaSetManagerV,
-    mediaSet );
+  emit controller->start( mediaSetManagerV, mediaSet );
 }
 
 }

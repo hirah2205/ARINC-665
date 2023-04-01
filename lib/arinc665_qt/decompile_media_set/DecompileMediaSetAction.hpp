@@ -44,6 +44,10 @@ class ARINC665_QT_EXPORT DecompileMediaSetAction final : public QObject
     //! Destructor
     ~DecompileMediaSetAction() override;
 
+  signals:
+    //! Emitted, when action is finished.
+    void finished();
+
   private slots:
     /**
      * @brief Slot for conversion.
@@ -58,23 +62,19 @@ class ARINC665_QT_EXPORT DecompileMediaSetAction final : public QObject
      **/
     void save( std::filesystem::path xmlFile );
 
-  signals:
-    //! Emitted, when controller is finished.
-    void finished();
-
   private:
     //! Wizard Dialog
-    std::unique_ptr< DecompileMediaSetWizard > wizardV;
+    std::unique_ptr< DecompileMediaSetWizard > wizardV{};
     //! ARINC 665 Media Set Importer
-    Arinc665::Utils::FilesystemMediaSetImporterPtr importerV;
+    Arinc665::Utils::FilesystemMediaSetImporterPtr importerV{};
     //! Media Paths Model
-    std::unique_ptr< MediaPathsModel > mediaPathsModelV;
+    std::unique_ptr< MediaPathsModel > mediaPathsModelV{};
     //! Media Set Model
-    std::unique_ptr< Media::MediaSetModel > mediaSetModelV;
+    std::unique_ptr< Media::MediaSetModel > mediaSetModelV{};
     //! File Path Mapping Model
-    std::unique_ptr< FilePathMappingModel > filePathMappingModelV;
+    std::unique_ptr< FilePathMappingModel > filePathMappingModelV{};
     //! Media Set
-    Arinc665::Media::ConstMediaSetPtr mediaSetV;
+    Arinc665::Media::ConstMediaSetPtr mediaSetV{};
 };
 
 }
