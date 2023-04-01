@@ -12,7 +12,6 @@
 
 #include "MediaSetWidget.hpp"
 
-
 #include "ui_MediaSetWidget.h"
 
 #include <arinc665_qt/media/LoadsModel.hpp>
@@ -27,8 +26,7 @@ MediaSetWidget::MediaSetWidget( QWidget * const parent ):
   QWidget{ parent },
   ui{ std::make_unique< Ui::MediaSetWidget>() },
   loadsModelV{ std::make_unique< Media::LoadsModel >( this ) },
-  batchesModelV{ std::make_unique< Media::BatchesModel >( this ) },
-  mediaSetModelV{ nullptr }
+  batchesModelV{ std::make_unique< Media::BatchesModel >( this ) }
 {
   ui->setupUi( this );
 

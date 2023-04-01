@@ -111,6 +111,11 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
       int role ) const override;
 
     /**
+     * @name Media Sets.
+     * @{
+     **/
+
+    /**
      * @brief Returns the Number of Media Sets
      *
      * @return Number of Media Sets
@@ -130,10 +135,7 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      * @param[in] mediaSets
      *   Media Sets, contained by the model.
      **/
-    void mediaSets( const Arinc665::Media::MediaSetsVariant &mediaSets );
-
-    //! @copydoc mediaSets(const Arinc665::Media::MediaSetsVariant&)
-    void mediaSets( Arinc665::Media::MediaSetsVariant &&mediaSets );
+    void mediaSets( const Arinc665::Media::MediaSetsVariant mediaSets );
 
     /**
      * @brief Returns the Media Set for the given index.
@@ -173,9 +175,11 @@ class ARINC665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
     [[nodiscard]] Arinc665::Media::ConstMediaSetPtr constMediaSet(
       const Arinc665::Media::MediaSetVariant &mediaSet ) const;
 
+    /** @} **/
+
   private:
     //! Media Sets
-    Arinc665::Media::MediaSetsVariant mediaSetsV;
+    Arinc665::Media::MediaSetsVariant mediaSetsV{};
 };
 
 }

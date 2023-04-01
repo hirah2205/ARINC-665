@@ -109,15 +109,7 @@ BatchInfoModel::batchInformation() const
 }
 
 void BatchInfoModel::batchInformation(
-  const Arinc665::Media::BatchInformationVariant &information )
-{
-  beginResetModel();
-  batchInformationV = information;
-  endResetModel();
-}
-
-void BatchInfoModel::batchInformation(
-  Arinc665::Media::BatchInformationVariant &&information )
+  Arinc665::Media::BatchInformationVariant information )
 {
   beginResetModel();
   batchInformationV = std::move( information );

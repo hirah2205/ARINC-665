@@ -49,8 +49,8 @@ void FileWidget::selectedFile(
     case Arinc665::Media::FileType::RegularFile:
       ui->detailsStackedWidget->setCurrentIndex( 0 );
       ui->regularFilePage->selectedFile(
-        modelV,
-        std::dynamic_pointer_cast< const Arinc665::Media::RegularFile >( fileV ) );
+        std::dynamic_pointer_cast< const Arinc665::Media::RegularFile >(
+          fileV ) );
       break;
 
     case Arinc665::Media::FileType::LoadFile:

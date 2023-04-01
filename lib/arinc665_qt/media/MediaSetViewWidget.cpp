@@ -25,8 +25,7 @@ namespace Arinc665Qt::Media {
 
 MediaSetViewWidget::MediaSetViewWidget( QWidget * const parent ):
   QWidget{ parent },
-  ui{ std::make_unique< Ui::MediaSetViewWidget >() },
-  mediaSetModelV{ nullptr }
+  ui{ std::make_unique< Ui::MediaSetViewWidget >() }
 {
   ui->setupUi( this );
 

@@ -159,6 +159,14 @@ class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
       const QModelIndex &index ) const;
 
     /**
+     * @name Root Element
+     *
+     * The Root-Element of the %Media Set Model.
+     *
+     * @{
+     **/
+
+    /**
      * @brief Updates the associated Root Element.
      *
      * @param[in] root
@@ -173,9 +181,11 @@ class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
      **/
     [[nodiscard]] const Arinc665::Media::ConstBasePtr& root() const;
 
+    /** @} **/
+
   private:
     //! Root Element
-    Arinc665::Media::ConstBasePtr rootV;
+    Arinc665::Media::ConstBasePtr rootV{};
 };
 
 }

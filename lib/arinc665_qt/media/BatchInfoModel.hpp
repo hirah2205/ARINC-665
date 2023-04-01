@@ -136,11 +136,7 @@ namespace Arinc665Qt::Media {
      *   Batch Information, contained by the model.
      **/
     void batchInformation(
-      const Arinc665::Media::BatchInformationVariant &information );
-
-    //! @copydoc batchInformation(const Arinc665::Media::BatchInformationVariant&)
-    void batchInformation(
-      Arinc665::Media::BatchInformationVariant &&information );
+      const Arinc665::Media::BatchInformationVariant information );
 
     /** @} **/
 
@@ -185,7 +181,7 @@ namespace Arinc665Qt::Media {
 
   private:
     //! Batch Information
-    Arinc665::Media::BatchInformationVariant batchInformationV;
+    Arinc665::Media::BatchInformationVariant batchInformationV{};
 };
 
 }

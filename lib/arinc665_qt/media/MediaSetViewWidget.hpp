@@ -74,7 +74,7 @@ class ARINC665_QT_EXPORT MediaSetViewWidget : public QWidget
     //! UI (designer)
     std::unique_ptr< Ui::MediaSetViewWidget > ui;
     //! Media Set Model
-    MediaSetModel * mediaSetModelV;
+    MediaSetModel * mediaSetModelV{ nullptr };
 };
 
 }

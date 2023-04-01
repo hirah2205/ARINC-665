@@ -107,6 +107,11 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
       int role ) const override;
 
     /**
+     * @name Loads
+     * @{
+     **/
+
+    /**
      * @brief Returns the Number of Loads
      *
      * @return Number of Loads
@@ -126,10 +131,8 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      * @param[in] loads
      *   Loads, contained by the model.
      **/
-    void loads( const Arinc665::Media::LoadsVariant &loads );
+    void loads( const Arinc665::Media::LoadsVariant loads );
 
-    //! @copydoc loads(const Arinc665::Media::LoadsVariant&)
-    void loads( Arinc665::Media::LoadsVariant &&loads );
 
     /**
      * @brief Converts given Loads Variant to Const Loads List.
@@ -184,9 +187,11 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
     [[nodiscard]] Arinc665::Media::ConstLoadPtr constLoad(
       const Arinc665::Media::LoadVariant &load ) const;
 
+    /** @} **/
+
   private:
     //! Loads List
-    Arinc665::Media::LoadsVariant loadsV;
+    Arinc665::Media::LoadsVariant loadsV{};
 };
 
 }

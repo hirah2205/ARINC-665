@@ -149,11 +149,7 @@ class ARINC665_QT_EXPORT TargetHardwareIdsPositionsModel :
      *   THW IDs and Positions.
      **/
     void targetHardwareIdsPositions(
-      const Arinc665::Media::Load::TargetHardwareIdPositions &thwIdsPositions );
-
-    //! @copydoc targetHardwareIdsPositions(const Arinc665::Media::Load::TargetHardwareIdPositions&)
-    void targetHardwareIdsPositions(
-      Arinc665::Media::Load::TargetHardwareIdPositions &&thwIdsPositions );
+      const Arinc665::Media::Load::TargetHardwareIdPositions thwIdsPositions );
 
   private:
     /**
@@ -184,8 +180,8 @@ class ARINC665_QT_EXPORT TargetHardwareIdsPositionsModel :
       const QModelIndex &index,
       int role ) const;
 
-    //! Root Element
-    Arinc665::Media::Load::TargetHardwareIdPositions thwIdsPositionsV;
+    //! THW ID Position Element
+    Arinc665::Media::Load::TargetHardwareIdPositions thwIdsPositionsV{};
 };
 
 }

@@ -136,7 +136,7 @@ class ARINC665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
      * @brief Return Load File for given Index.
      *
      * @param[in] index
-     *   Index of Elment.
+     *   Index of Element.
      *
      * @return Load File for given Index.
      * @retval {}
@@ -147,7 +147,7 @@ class ARINC665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
 
   private:
     //! Load Files
-    Arinc665::Media::ConstLoadFiles loadFilesV;
+    Arinc665::Media::ConstLoadFiles loadFilesV{};
 };
 
 }

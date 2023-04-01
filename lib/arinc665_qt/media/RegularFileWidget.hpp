@@ -48,22 +48,16 @@ class ARINC665_QT_EXPORT RegularFileWidget : public QWidget
     /**
      * @brief Called when a File has been selected.
      *
-     * @param[in] model
-     *   Model owning @p file
      * @param[in] file
      *   Selected File
      **/
-    void selectedFile(
-      Arinc665Qt::Media::MediaSetModel * model,
-      Arinc665::Media::ConstFilePtr file );
+    void selectedFile( Arinc665::Media::ConstFilePtr file );
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::RegularFileWidget > ui;
-    //! Media Set Model
-    MediaSetModel * modelV;
+    std::unique_ptr< Ui::RegularFileWidget > ui{};
     //! File
-    Arinc665::Media::ConstFilePtr fileV;
+    Arinc665::Media::ConstFilePtr fileV{};
 };
 
 }

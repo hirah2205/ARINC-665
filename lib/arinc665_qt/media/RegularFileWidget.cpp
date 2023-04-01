@@ -18,19 +18,15 @@ namespace Arinc665Qt::Media {
 
 RegularFileWidget::RegularFileWidget( QWidget * const parent ) :
   QWidget{ parent },
-  ui{ std::make_unique< Ui::RegularFileWidget>() },
-  modelV{ nullptr }
+  ui{ std::make_unique< Ui::RegularFileWidget>() }
 {
   ui->setupUi( this );
 }
 
 RegularFileWidget::~RegularFileWidget() = default;
 
-void RegularFileWidget::selectedFile(
-  Arinc665Qt::Media::MediaSetModel * const model,
-  Arinc665::Media::ConstFilePtr file )
+void RegularFileWidget::selectedFile( Arinc665::Media::ConstFilePtr file )
 {
-  modelV = model;
   fileV = std::move( file );
 
   if ( fileV )

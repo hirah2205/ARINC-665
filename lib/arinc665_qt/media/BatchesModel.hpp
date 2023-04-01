@@ -185,7 +185,7 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
 
   private:
     //! Batches List
-    Arinc665::Media::BatchesVariant batchesV;
+    Arinc665::Media::BatchesVariant batchesV{};
 };
 
 }

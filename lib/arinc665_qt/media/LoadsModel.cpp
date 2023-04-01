@@ -118,14 +118,7 @@ const Arinc665::Media::LoadsVariant& LoadsModel::loads() const
   return loadsV;
 }
 
-void LoadsModel::loads( const Arinc665::Media::LoadsVariant &loads )
-{
-  beginResetModel();
-  loadsV = loads;
-  endResetModel();
-}
-
-void LoadsModel::loads( Arinc665::Media::LoadsVariant &&loads )
+void LoadsModel::loads( Arinc665::Media::LoadsVariant loads )
 {
   beginResetModel();
   loadsV = std::move( loads );

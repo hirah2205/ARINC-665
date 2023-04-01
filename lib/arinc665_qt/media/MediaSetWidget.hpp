@@ -63,18 +63,18 @@ class ARINC665_QT_EXPORT MediaSetWidget : public QWidget
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaSetWidget> ui;
+    std::unique_ptr< Ui::MediaSetWidget> ui{};
 
     //! Loads Model
-    std::unique_ptr< Media::LoadsModel > loadsModelV;
+    std::unique_ptr< Media::LoadsModel > loadsModelV{};
     //! Batches Model
-    std::unique_ptr< Media::BatchesModel > batchesModelV;
+    std::unique_ptr< Media::BatchesModel > batchesModelV{};
 
     //! Media Set Model
-    MediaSetModel * mediaSetModelV;
+    MediaSetModel * mediaSetModelV{ nullptr };
 
     //! Media Set
-    Arinc665::Media::ConstMediaSetPtr mediaSetV;
+    Arinc665::Media::ConstMediaSetPtr mediaSetV{};
 };
 
 }

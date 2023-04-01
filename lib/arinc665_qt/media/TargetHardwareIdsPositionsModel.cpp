@@ -182,15 +182,7 @@ QVariant TargetHardwareIdsPositionsModel::headerData(
 }
 
 void TargetHardwareIdsPositionsModel::targetHardwareIdsPositions(
-  const Arinc665::Media::Load::TargetHardwareIdPositions &thwIdsPositions )
-{
-  beginResetModel();
-  thwIdsPositionsV = thwIdsPositions;
-  endResetModel();
-}
-
-void TargetHardwareIdsPositionsModel::targetHardwareIdsPositions(
-  Arinc665::Media::Load::TargetHardwareIdPositions &&thwIdsPositions )
+  Arinc665::Media::Load::TargetHardwareIdPositions thwIdsPositions )
 {
   beginResetModel();
   thwIdsPositionsV = std::move( thwIdsPositions );

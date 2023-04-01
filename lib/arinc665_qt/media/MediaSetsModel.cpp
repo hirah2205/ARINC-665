@@ -110,15 +110,7 @@ const Arinc665::Media::MediaSetsVariant& MediaSetsModel::mediaSets() const
   return mediaSetsV;
 }
 
-void MediaSetsModel::mediaSets(
-  const Arinc665::Media::MediaSetsVariant &mediaSets )
-{
-  beginResetModel();
-  mediaSetsV = mediaSets;
-  endResetModel();
-}
-
-void MediaSetsModel::mediaSets( Arinc665::Media::MediaSetsVariant &&mediaSets )
+void MediaSetsModel::mediaSets( Arinc665::Media::MediaSetsVariant mediaSets )
 {
   beginResetModel();
   mediaSetsV = std::move( mediaSets );
