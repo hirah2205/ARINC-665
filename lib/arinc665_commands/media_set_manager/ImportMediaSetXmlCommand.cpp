@@ -125,20 +125,6 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
     auto [ mediaSet, filePathMapping ] =
       Arinc665::Utils::Arinc665Xml_load( mediaSetXmlFile );
 
-    std::filesystem::path mediaSetPath{ mediaSet->partNumber() };
-
-    if ( std::filesystem::exists(
-      mediaSetManagerDirectory / mediaSetPath ) )
-    {
-      BOOST_THROW_EXCEPTION(
-        Arinc665::Arinc665Exception()
-        << Helper::AdditionalInfo{ "Media Set Directory already exist" } );
-    }
-
-    // create media set directory
-    std::filesystem::create_directories(
-      mediaSetManagerDirectory / mediaSetPath );
-
     auto compiler{ Arinc665::Utils::FilesystemMediaSetCompiler::create() };
 
     // set exporter parameters
@@ -147,14 +133,13 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
       .arinc665Version( version )
       .createBatchFiles( createBatchFiles )
       .createLoadHeaderFiles( createLoadHeaderFiles )
-      .mediaSetBasePath( mediaSetManagerDirectory / mediaSetPath )
       .sourceBasePath( mediaSetSourceDirectory )
-      .filePathMapping( std::move( filePathMapping ) );
+      .filePathMapping( std::move( filePathMapping ) )
+      .outputBasePath( mediaSetManagerDirectory );
 
-    auto mediaPaths{ ( *compiler )() };
+    auto mediaSetPaths{ ( *compiler )() };
 
-    mediaSetManager->registerMediaSet(
-      { std::move( mediaSetPath ), std::move( mediaPaths ) } );
+    mediaSetManager->registerMediaSet( mediaSetPaths );
     mediaSetManager->saveConfiguration();
   }
   catch ( const boost::program_options::error &e )

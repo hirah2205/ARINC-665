@@ -74,8 +74,6 @@ int main( int argc, char * argv[] )
     std::filesystem::path mediaSetXmlFile;
     // Media Set source directory
     std::filesystem::path mediaSetSourceDirectory;
-    // Media Set destination directory
-    std::filesystem::path mediaSetDestinationDirectory;
     // Create batch file policy
     Arinc665::Utils::FileCreationPolicy createBatchFiles{
       Arinc665::Utils::FileCreationPolicy::None };
@@ -85,6 +83,10 @@ int main( int argc, char * argv[] )
     // ARINC 665 Version
     Arinc665::SupportedArinc665Version version{
       Arinc665::SupportedArinc665Version::Supplement2 };
+    // Media Set destination directory
+    std::filesystem::path mediaSetDestinationDirectory;
+    // Media Set name
+    std::string mediaSetName;
 
     boost::program_options::options_description optionsDescription{
       "ARINC 665 Media Set Compiler Options" };
@@ -105,11 +107,6 @@ int main( int argc, char * argv[] )
       "ARINC 665 source directory"
     )
     (
-      "destination-directory",
-      boost::program_options::value( &mediaSetDestinationDirectory )->required(),
-      "Output directory for ARINC 665 media set"
-    )
-    (
       "create-batch-files",
       boost::program_options::value(
         &createBatchFiles )->default_value( Arinc665::Utils::FileCreationPolicy::None ),
@@ -126,6 +123,18 @@ int main( int argc, char * argv[] )
       boost::program_options::value( &version )->default_value(
         Arinc665::SupportedArinc665Version::Supplement2 ),
       ( std::string( "ARINC 665 Version:\n" ) + versionValues ).c_str()
+    )
+    (
+      "destination-directory",
+      boost::program_options::value( &mediaSetDestinationDirectory )
+        ->default_value( std::filesystem::current_path() ),
+      "Output directory for ARINC 665 media set"
+    )
+    (
+      "media-set-name",
+      boost::program_options::value( &mediaSetName ),
+      "Media Set Name to use.\n"
+      "Is set to part number when not provided"
     );
 
     boost::program_options::variables_map vm{};
@@ -150,18 +159,6 @@ int main( int argc, char * argv[] )
     auto [ mediaSet, fileMapping ] =
       Arinc665::Utils::Arinc665Xml_load( mediaSetXmlFile );
 
-    // Add Media Set Part Number to Output Path
-    mediaSetDestinationDirectory /= mediaSet->partNumber();
-
-    if ( std::filesystem::exists( mediaSetDestinationDirectory ) )
-    {
-      BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-        << Helper::AdditionalInfo{ "Media Set Directory already exist" } );
-    }
-
-    // create media set directory
-    std::filesystem::create_directories( mediaSetDestinationDirectory );
-
     auto compiler{ Arinc665::Utils::FilesystemMediaSetCompiler::create() };
 
     // set exporter parameters
@@ -170,9 +167,14 @@ int main( int argc, char * argv[] )
       .arinc665Version( version )
       .createBatchFiles( createBatchFiles )
       .createLoadHeaderFiles( createLoadHeaderFiles )
-      .mediaSetBasePath( mediaSetDestinationDirectory )
       .sourceBasePath( mediaSetSourceDirectory )
-      .filePathMapping( fileMapping );
+      .filePathMapping( fileMapping )
+      .outputBasePath( mediaSetDestinationDirectory );
+
+    if ( !mediaSetName.empty() )
+    {
+      compiler->mediaSetName( mediaSetName );
+    }
 
     ( *compiler )();
   }

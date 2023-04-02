@@ -117,28 +117,13 @@ void ImportMediaSetXmlAction::start()
     auto [ mediaSet, fileMapping ] =
       Arinc665::Utils::Arinc665Xml_load( xmlFileV );
 
-    auto outputPath{ mediaSetManagerV->directory() / mediaSet->partNumber() };
-
-    if ( std::filesystem::exists( outputPath ) )
-    {
-      QMessageBox::critical(
-        nullptr,
-        tr( "Error during import" ),
-        tr( "Media Set directory must not exist" ) );
-      return;
-    }
-
-    std::filesystem::create_directory( outputPath );
-
     compilerV
       ->mediaSet( mediaSet )
       .filePathMapping( std::move( fileMapping ) )
-      .mediaSetBasePath( std::move( outputPath ) );
-    auto mediaPaths{ ( *compilerV )() };
+      .outputBasePath( mediaSetManagerV->directory() );
+    auto mediaSetPaths{ ( *compilerV )() };
 
-    mediaSetManagerV->registerMediaSet(
-      { mediaSet->partNumber(), std::move( mediaPaths ) },
-      true );
+    mediaSetManagerV->registerMediaSet( mediaSetPaths, true );
     mediaSetManagerV->saveConfiguration();
   }
   catch ( const Arinc665::Arinc665Exception &e )

@@ -64,6 +64,12 @@ FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::mediaSet(
       fmt::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) ) );
   }
 
+  // set media set name
+  if ( mediaSetNameV.empty() )
+  {
+    mediaSetNameV = mediaSet->partNumber();
+  }
+
   mediaSetCompilerV->mediaSet( std::move( mediaSet ) );
   return *this;
 }
@@ -93,13 +99,6 @@ FilesystemMediaSetCompilerImpl::createLoadHeaderFiles(
   return *this;
 }
 
-FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::mediaSetBasePath(
-  std::filesystem::path mediaSetBasePath )
-{
-  mediaSetBasePathV = std::move( mediaSetBasePath );
-  return *this;
-}
-
 FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::sourceBasePath(
   std::filesystem::path sourceBasePath )
 {
@@ -114,11 +113,43 @@ FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::filePathMapping(
   return *this;
 }
 
-MediaPaths FilesystemMediaSetCompilerImpl::operator()()
+FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::outputBasePath(
+  std::filesystem::path outputBasePath )
 {
+  outputBasePathV = std::move( outputBasePath );
+  return *this;
+}
+
+FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::mediaSetName(
+  std::string mediaSetName )
+{
+  mediaSetNameV = std::move( mediaSetName );
+  return *this;
+}
+
+MediaSetPaths FilesystemMediaSetCompilerImpl::operator()()
+{
+  if ( sourceBasePathV.empty() || filePathMappingV.empty()
+    || outputBasePathV.empty() || mediaSetNameV.empty() )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception{}
+      << Helper::AdditionalInfo{ "Not all parameter provided" } );
+  }
+
+  mediaSetBaseDirectoryV = outputBasePathV / mediaSetNameV;
+
+  if ( std::error_code err{};
+    !std::filesystem::create_directories( mediaSetBaseDirectoryV, err )
+    || err )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception{}
+      << Helper::AdditionalInfo{ err.message() }
+      << boost::errinfo_file_name{ mediaSetBaseDirectoryV.string() } );
+  }
+
   assert( mediaSetCompilerV );
   ( *mediaSetCompilerV )();
-  return mediaPathsV;
+  return { mediaSetNameV, mediaPathsV };
 }
 
 std::filesystem::path FilesystemMediaSetCompilerImpl::mediumPath(
@@ -132,7 +163,7 @@ std::filesystem::path FilesystemMediaSetCompilerImpl::mediumPath(
       << Helper::AdditionalInfo{ "Medium not found" } );
   }
 
-  return mediaSetBasePathV / mediumPath->second;
+  return mediaSetBaseDirectoryV / mediumPath->second;
 }
 
 void FilesystemMediaSetCompilerImpl::createMedium(

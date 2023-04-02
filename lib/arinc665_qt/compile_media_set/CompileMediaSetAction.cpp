@@ -124,23 +124,10 @@ void CompileMediaSetAction::start()
     auto [ mediaSet, fileMapping ] =
       Arinc665::Utils::Arinc665Xml_load( xmlFileV );
 
-    auto outputPath{ outputDirectoryV / mediaSet->partNumber() };
-
-    if ( std::filesystem::exists( outputPath ) )
-    {
-      QMessageBox::critical(
-        nullptr,
-        tr( "Error during compilation" ),
-        tr( "Media Set directory must not exist" ) );
-      return;
-    }
-
-    std::filesystem::create_directory( outputPath );
-
     compilerV
       ->mediaSet( std::move( mediaSet ) )
       .filePathMapping( std::move( fileMapping ) )
-      .mediaSetBasePath( std::move( outputPath ) );
+      .outputBasePath( outputDirectoryV );
     assert( compilerV );
     ( *compilerV )();
   }

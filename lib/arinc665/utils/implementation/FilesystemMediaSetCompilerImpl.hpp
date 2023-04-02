@@ -46,10 +46,6 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
     FilesystemMediaSetCompiler& createLoadHeaderFiles(
       FileCreationPolicy createLoadHeaderFiles ) override;
 
-    //! @copydoc FilesystemMediaSetCompiler::mediaSetBasePath()
-    FilesystemMediaSetCompiler& mediaSetBasePath(
-      std::filesystem::path mediaSetBasePath ) override;
-
     //! @copydoc FilesystemMediaSetCompiler::sourceBasePath()
     FilesystemMediaSetCompiler& sourceBasePath(
       std::filesystem::path sourceBasePath ) override;
@@ -58,10 +54,18 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
     FilesystemMediaSetCompiler& filePathMapping(
       FilePathMapping filePathMapping ) override;
 
+    //! @copydoc FilesystemMediaSetCompiler::outputBasePath()
+    FilesystemMediaSetCompiler& outputBasePath(
+      std::filesystem::path outputBasePath ) override;
+
+    //! @copydoc FilesystemMediaSetCompiler::mediaSetName()
+    FilesystemMediaSetCompiler& mediaSetName(
+      std::string mediaSetName ) override;
+
     /**
      * @brief Entry-point of the Filesystem ARINC 665 Media Set Compiler.
      ***/
-    MediaPaths operator()() override;
+    MediaSetPaths operator()() override;
 
   private:
     /**
@@ -146,15 +150,19 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
       const std::filesystem::path &path );
 
     //! Media Set Compiler
-    MediaSetCompilerPtr mediaSetCompilerV;
-    //! Media Set Base Path
-    std::filesystem::path mediaSetBasePathV;
+    MediaSetCompilerPtr mediaSetCompilerV{};
     //! Source Base Path
-    std::filesystem::path sourceBasePathV;
+    std::filesystem::path sourceBasePathV{};
     //! File Path Mapping
-    FilePathMapping filePathMappingV;
+    FilePathMapping filePathMappingV{};
+    //! Output Base Path
+    std::filesystem::path outputBasePathV{};
+    //! Media Set Name
+    std::string mediaSetNameV{};
+    //! Media Set Base Directory
+    std::filesystem::path mediaSetBaseDirectoryV{};
     //! Generated Media Paths
-    MediaPaths mediaPathsV;
+    MediaPaths mediaPathsV{};
 };
 
 }

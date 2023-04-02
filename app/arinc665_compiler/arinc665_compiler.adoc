@@ -8,10 +8,13 @@ arinc665_compiler - compiles ARINC 665 Media Sets based on an XML Configuration 
 == Synopsis
 
 *arinc665_compiler* --xml-file _XML File_ {--source-directory _Source_}
-{--destination-directory _Destination_}
 [--create-batch-files None|NoneExisting|All]
 [--create-load-header-files None|NoneExisting|All]
 [--version Supplement2|Supplement345]
+[--destination-directory _Destination_]
+[--media-set-name _Name_]
+
+The media set is generated within the directory `_Destination_/_Name_`.
 
 == Options
 
@@ -22,9 +25,6 @@ Path to ARINC 665 Media Set description XML file.
 *--source-directory* _Source_::
 Source of Media Set files.
 
-*--destination-directory* _Destination_::
-Output directory for ARINC 665 media set.
-
 *--create-batch-files* None|NoneExisting|All::
 Indicates if Load Header files shall be created or not.
 
@@ -33,6 +33,14 @@ Indicates if Batch files shall be created or not.
 
 *--version* Supplement2|Supplement345::
 ARINC 665 Media Set version.
+
+*--destination-directory* _Destination_::
+Output directory for ARINC 665 media set.
+If not set, the current directory is used.
+
+*--media-set-name _Name_::
+Media Set name to be used.
+If not provided, the part number of the media set ist used.
 
 == See Also
 

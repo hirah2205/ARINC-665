@@ -39,7 +39,12 @@ class ARINC665_EXPORT FilesystemMediaSetCompiler
     virtual ~FilesystemMediaSetCompiler() = default;
 
     /**
-     * @brief Sets the Media Set to export.
+     * @brief Sets the Media Set to compile.
+     *
+     * If media set name is not set (is empty), the name is set to the media set
+     * part number.
+     *
+     * @sa FilesystemMediaSetCompiler::mediaSetName()
      *
      * @param[in] mediaSet
      *   Media Set, which shall be exported.
@@ -85,18 +90,6 @@ class ARINC665_EXPORT FilesystemMediaSetCompiler
       FileCreationPolicy createLoadHeaderFiles ) = 0;
 
     /**
-     * @brief Updates the base directory of the Media Set, where it will be
-     *   created.
-     *
-     * @param[in] mediaSetBasePath
-     *   Media Set Base directory.
-     *
-     * @return *this for chaining.
-     **/
-    virtual FilesystemMediaSetCompiler& mediaSetBasePath(
-      std::filesystem::path mediaSetBasePath ) = 0;
-
-    /**
      * @brief Updates the base directory for source files, if the path within
      *   the file mapping table is relative.
      *
@@ -126,16 +119,40 @@ class ARINC665_EXPORT FilesystemMediaSetCompiler
       FilePathMapping filePathMapping ) = 0;
 
     /**
+     * @brief Updates the directory where the Media Set will be created.
+     *
+     * @param[in] outputBasePath
+     *   Output Base directory.
+     *
+     * @return *this for chaining.
+     **/
+    virtual FilesystemMediaSetCompiler& outputBasePath(
+      std::filesystem::path outputBasePath ) = 0;
+
+    /**
+     * @brief Updates the Media Set Name.
+     *
+     * The media set name is used for generating the output media set directory.
+     *
+     * @param[in] mediaSetName
+     *   Media Set Name.
+     *
+     * @return *this for chaining.
+     **/
+    virtual FilesystemMediaSetCompiler& mediaSetName(
+      std::string mediaSetName ) = 0;
+
+    /**
      * @brief Executes the ARINC 665 Media Set Compiler.
      *
      * All parameters must have been set previously.
      *
-     * @return Media Paths relative to Media Set Base Path.
+     * @return Media Set Paths relative to Output Directory Base Path.
      *
      * @throw Arinc665Exception
      *   When compilation fails
      **/
-    virtual MediaPaths operator()() = 0;
+    virtual MediaSetPaths operator()() = 0;
 };
 
 }
