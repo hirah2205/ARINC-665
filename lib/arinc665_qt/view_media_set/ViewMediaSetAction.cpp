@@ -20,7 +20,7 @@
 
 #include <arinc665_qt/Arinc665QtLogger.hpp>
 
-#include <arinc665/utils/FilesystemMediaSetImporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetDecompiler.hpp>
 #include <arinc665/utils/Utils.hpp>
 
 #include <arinc665/media/MediaSet.hpp>
@@ -118,15 +118,15 @@ void ViewMediaSetAction::directorySelected()
 {
   try
   {
-    auto importer{ Arinc665::Utils::FilesystemMediaSetImporter::create() };
+    auto decompiler{ Arinc665::Utils::FilesystemMediaSetDecompiler::create() };
 
     //! @todo At the moment only single medium media sets are supported
-    importer
+    decompiler
       ->mediaPaths( { {
         Arinc665::MediumNumber{ 1 },
         selectDirectoryDialogV->directory().absolutePath().toStdString() } } );
 
-    const auto &[ mediaSet, checkValues ]{ (*importer)() };
+    const auto &[ mediaSet, checkValues ]{ ( *decompiler )() };
 
     mediaSetModelV->root( mediaSet );
 

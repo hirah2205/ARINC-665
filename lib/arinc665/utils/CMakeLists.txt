@@ -17,10 +17,10 @@ target_sources(
         FilePrinter.hpp
         FilesystemMediaSetCompiler.hpp
         FilesystemMediaSetCopier.hpp
-        FilesystemMediaSetImporter.hpp
+        FilesystemMediaSetDecompiler.hpp
         FilesystemMediaSetRemover.hpp
         MediaSetCompiler.hpp
-        MediaSetImporter.hpp
+        MediaSetDecompiler.hpp
         MediaSetManager.hpp
         MediaSetManagerConfiguration.hpp
         MediaSetPrinter.hpp
@@ -33,10 +33,10 @@ target_sources(
     FilePrinter.cpp
     FilesystemMediaSetCompiler.cpp
     FilesystemMediaSetCopier.cpp
-    FilesystemMediaSetImporter.cpp
+    FilesystemMediaSetDecompiler.cpp
     FilesystemMediaSetRemover.cpp
     MediaSetCompiler.cpp
-    MediaSetImporter.cpp
+    MediaSetDecompiler.cpp
     MediaSetManager.cpp
     MediaSetManagerConfiguration.cpp
     MediaSetPrinter.cpp

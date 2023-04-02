@@ -7,18 +7,18 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665::Utils::FilesystemMediaSetImporter.
+ * @brief Definition of Class Arinc665::Utils::MediaSetDecompiler.
  **/
 
-#include "FilesystemMediaSetImporter.hpp"
+#include "MediaSetDecompiler.hpp"
 
-#include <arinc665/utils/implementation/FilesystemMediaSetImporterImpl.hpp>
+#include <arinc665/utils/implementation/MediaSetDecompilerImpl.hpp>
 
 namespace Arinc665::Utils {
 
-FilesystemMediaSetImporterPtr FilesystemMediaSetImporter::create()
+MediaSetDecompilerPtr MediaSetDecompiler::create()
 {
-  return std::make_unique< FilesystemMediaSetImporterImpl >();
+  return std::make_unique< MediaSetDecompilerImpl >();
 }
 
 }

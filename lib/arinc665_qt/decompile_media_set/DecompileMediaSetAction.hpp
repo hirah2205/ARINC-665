@@ -73,8 +73,8 @@ class ARINC665_QT_EXPORT DecompileMediaSetAction final : public QObject
   private:
     //! Wizard Dialog
     std::unique_ptr< DecompileMediaSetWizard > wizardV{};
-    //! ARINC 665 Media Set Importer
-    Arinc665::Utils::FilesystemMediaSetImporterPtr importerV{};
+    //! ARINC 665 Media Set Decompiler
+    Arinc665::Utils::FilesystemMediaSetDecompilerPtr decompilerV{};
     //! Media Paths Model
     std::unique_ptr< MediaPathsModel > mediaPathsModelV{};
     //! Media Set Model

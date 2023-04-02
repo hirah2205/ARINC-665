@@ -23,7 +23,7 @@
 #include <arinc665/media/File.hpp>
 
 #include <arinc665/utils/Arinc665Xml.hpp>
-#include <arinc665/utils/FilesystemMediaSetImporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetDecompiler.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 
@@ -43,7 +43,7 @@ namespace Arinc665Qt {
 DecompileMediaSetAction::DecompileMediaSetAction( QWidget * const parent ) :
   QObject{ parent },
   wizardV{ std::make_unique< DecompileMediaSetWizard >( parent ) },
-  importerV{ Arinc665::Utils::FilesystemMediaSetImporter::create() },
+  decompilerV{ Arinc665::Utils::FilesystemMediaSetDecompiler::create() },
   mediaPathsModelV{ std::make_unique< MediaPathsModel >() },
   mediaSetModelV{ std::make_unique< Media::MediaSetModel >() },
   filePathMappingModelV{ std::make_unique< FilePathMappingModel >() }
@@ -80,7 +80,7 @@ DecompileMediaSetAction::~DecompileMediaSetAction() = default;
 
 void DecompileMediaSetAction::checkFileIntegrity( bool checkFileIntegrity )
 {
-  importerV->checkFileIntegrity( checkFileIntegrity );
+  decompilerV->checkFileIntegrity( checkFileIntegrity );
 }
 
 void DecompileMediaSetAction::start()
@@ -89,9 +89,9 @@ void DecompileMediaSetAction::start()
 
   try
   {
-    importerV->mediaPaths( mediaPathsModelV->mediaPaths() );
+    decompilerV->mediaPaths( mediaPathsModelV->mediaPaths() );
 
-    auto [ mediaSet, checkValues ]{ ( *importerV )() };
+    auto [ mediaSet, checkValues ]{ ( *decompilerV )() };
 
     Arinc665::Utils::FilePathMapping fileMapping{};
 

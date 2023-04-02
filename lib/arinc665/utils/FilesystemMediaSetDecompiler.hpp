@@ -7,37 +7,37 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Utils::FilesystemMediaSetImporter.
+ * @brief Declaration of Class Arinc665::Utils::FilesystemMediaSetDecompiler.
  **/
 
-#ifndef ARINC665_UTILS_FILESYSTEMMEDIASETIMPORTER_HPP
-#define ARINC665_UTILS_FILESYSTEMMEDIASETIMPORTER_HPP
+#ifndef ARINC665_UTILS_FILESYSTEMMEDIASETDECOMPILER_HPP
+#define ARINC665_UTILS_FILESYSTEMMEDIASETDECOMPILER_HPP
 
 #include <arinc665/utils/Utils.hpp>
 
 namespace Arinc665::Utils {
 
 /**
- * @brief ARINC 665 %Media Set Importer using local Filesystem.
+ * @brief ARINC 665 %Media Set Decompiler using local Filesystem.
  *
- * This importer expects that each medium is contained as directory on the local
- * filesystem.
+ * This decompiler expects that each medium is contained as directory on the
+ * local filesystem.
  * Normal filesystem access routines are used to access the media and files.
  *
- * @sa @ref MediaSetImporter
+ * @sa @ref MediaSetDecompiler
  **/
-class ARINC665_EXPORT FilesystemMediaSetImporter
+class ARINC665_EXPORT FilesystemMediaSetDecompiler
 {
   public:
     /**
-     * @brief Creates the ARINC 665 %Media Set Importer Instance.
+     * @brief Creates the ARINC 665 %Media Set Decompiler Instance.
      *
-     * @return ARINC 665 %Media Set Importer Instance
+     * @return ARINC 665 %Media Set Decompiler Instance
      **/
-    static FilesystemMediaSetImporterPtr create();
+    static FilesystemMediaSetDecompilerPtr create();
 
     //! Destructor
-    virtual ~FilesystemMediaSetImporter() = default;
+    virtual ~FilesystemMediaSetDecompiler() = default;
 
     /**
      * @brief Sets the Check File Integrity Flag.
@@ -47,7 +47,7 @@ class ARINC665_EXPORT FilesystemMediaSetImporter
      *
      * @return @p *this for chaining.
      **/
-    virtual FilesystemMediaSetImporter& checkFileIntegrity(
+    virtual FilesystemMediaSetDecompiler& checkFileIntegrity(
       bool checkFileIntegrity ) noexcept = 0;
 
     /**
@@ -58,19 +58,20 @@ class ARINC665_EXPORT FilesystemMediaSetImporter
      *
      * @return @p *this for chaining.
      **/
-    virtual FilesystemMediaSetImporter& mediaPaths( MediaPaths mediaPaths ) = 0;
+    virtual FilesystemMediaSetDecompiler& mediaPaths(
+      MediaPaths mediaPaths ) = 0;
 
     /**
-     * @brief Executes the ARINC 665 %Media Set Importer.
+     * @brief Executes the ARINC 665 %Media Set Decompiler.
      *
      * All parameters must have been set previously.
      *
-     * @return Imported %Media Set
+     * @return Decompiled %Media Set
      *
      * @throw Arinc665Exception
-     *   When the media set cannot be imported.
+     *   When the media set cannot be decompiled.
      **/
-    virtual MediaSetImportResult operator()() = 0;
+    virtual MediaSetDecompilerResult operator()() = 0;
 };
 
 }

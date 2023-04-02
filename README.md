@@ -56,9 +56,9 @@ within this library.
 ### ARINC 665-4
 Clarification but no changes of data formats.
 
-### ARINC 665-4
+### ARINC 665-5
 Move Checksum and Check Value definition to ARINC 645.
-No changes of data formats.
+No changes of data format.
 
 ## References
  - ARINC Report 665-5:

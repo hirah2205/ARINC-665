@@ -16,7 +16,7 @@
 #include <arinc665/media/File.hpp>
 #include <arinc665/media/Load.hpp>
 
-#include <arinc665/utils/FilesystemMediaSetImporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetDecompiler.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
@@ -122,16 +122,16 @@ void MediaSetManagerImpl::registerMediaSet(
   const MediaSetPaths &mediaSetPaths,
   const bool checkFileIntegrity )
 {
-  auto importer( FilesystemMediaSetImporter::create() );
-  assert( importer );
+  auto decompiler( FilesystemMediaSetDecompiler::create() );
+  assert( decompiler );
 
-  // configure importer
-  importer
+  // configure decompiler
+  decompiler
     ->checkFileIntegrity( checkFileIntegrity )
     .mediaPaths( absoluteMediaPaths( mediaSetPaths ) );
 
   // import media set
-  auto [ impMediaSet, checkValues ]{ ( *importer )() };
+  auto [ impMediaSet, checkValues ]{ ( *decompiler )() };
   assert( impMediaSet );
 
   if ( mediaSet( impMediaSet->partNumber() ) )
@@ -232,16 +232,16 @@ void MediaSetManagerImpl::loadMediaSets(
 
   for ( auto const &mediaSetPaths : configuration.mediaSets )
   {
-    auto importer{ FilesystemMediaSetImporter::create() };
-    assert( importer );
+    auto decompiler{ FilesystemMediaSetDecompiler::create() };
+    assert( decompiler );
 
-    // configure importer
-    importer
+    // configure decompiler
+    decompiler
       ->checkFileIntegrity( checkFileIntegrity )
       .mediaPaths( absoluteMediaPaths( mediaSetPaths ) );
 
     // import media set
-    auto [ impMediaSet, checkValues ]{ (*importer)() };
+    auto [ impMediaSet, checkValues ]{ ( *decompiler )() };
     assert( impMediaSet );
 
     std::string partNumber{ impMediaSet->partNumber() };

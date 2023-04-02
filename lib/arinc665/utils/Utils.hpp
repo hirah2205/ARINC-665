@@ -83,23 +83,23 @@ using FilesystemMediaSetCompilerPtr =
 /** @} **/
 
 /**
- * @name Media Set Importer
+ * @name Media Set Decompiler
  *
  * @{
  **/
 
-//! %Media Set Import Result Type
-using MediaSetImportResult =
+//! %Media Set Decompiler Result Type
+using MediaSetDecompilerResult =
   std::pair< Media::MediaSetPtr, Media::CheckValues >;
 
-class MediaSetImporter;
-//! ARINC 665 %Media Set Importer Instance.
-using MediaSetImporterPtr = std::unique_ptr< MediaSetImporter >;
+class MediaSetDecompiler;
+//! ARINC 665 %Media Set Decompiler Instance.
+using MediaSetDecompilerPtr = std::unique_ptr< MediaSetDecompiler >;
 
-class FilesystemMediaSetImporter;
-//! Filesystem ARINC 665 %Media Set Importer Instance.
-using FilesystemMediaSetImporterPtr =
-  std::unique_ptr< FilesystemMediaSetImporter >;
+class FilesystemMediaSetDecompiler;
+//! Filesystem ARINC 665 %Media Set Decompiler Instance.
+using FilesystemMediaSetDecompilerPtr =
+  std::unique_ptr< FilesystemMediaSetDecompiler >;
 
 /** @} **/
 

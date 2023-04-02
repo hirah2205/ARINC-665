@@ -25,6 +25,8 @@ namespace Arinc665::Utils {
 
 /**
  * @name ARINC 665 File Printer
+ *
+ * Routines to print the content of ARINC 665 %Media Set files.
  * @{
  **/
 

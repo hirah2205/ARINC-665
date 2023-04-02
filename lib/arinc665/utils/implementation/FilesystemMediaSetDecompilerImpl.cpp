@@ -7,15 +7,14 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665::Utils::FilesystemMediaSetImporterImpl.
+ * @brief Definition of Class Arinc665::Utils::FilesystemMediaSetDecompilerImpl.
  **/
 
-#include "FilesystemMediaSetImporterImpl.hpp"
+#include "FilesystemMediaSetDecompilerImpl.hpp"
 
-#include <arinc665/utils/MediaSetImporter.hpp>
+#include <arinc665/utils/MediaSetDecompiler.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
-#include <arinc665/MediumNumber.hpp>
 
 #include <arinc645/CheckValue.hpp>
 
@@ -28,40 +27,41 @@
 
 namespace Arinc665::Utils {
 
-FilesystemMediaSetImporterImpl::FilesystemMediaSetImporterImpl() :
-  mediaSetImporter{ MediaSetImporter::create() }
+FilesystemMediaSetDecompilerImpl::FilesystemMediaSetDecompilerImpl() :
+  mediaSetDecompilerV{ MediaSetDecompiler::create() }
 {
-  mediaSetImporter
+  mediaSetDecompilerV
     ->fileSizeHandler(
-      std::bind_front( &FilesystemMediaSetImporterImpl::getFileSize, this ) )
+      std::bind_front( &FilesystemMediaSetDecompilerImpl::getFileSize, this ) )
     .readFileHandler(
-      std::bind_front( &FilesystemMediaSetImporterImpl::readFile, this ) );
+      std::bind_front( &FilesystemMediaSetDecompilerImpl::readFile, this ) );
 }
 
-FilesystemMediaSetImporterImpl::~FilesystemMediaSetImporterImpl() = default;
+FilesystemMediaSetDecompilerImpl::~FilesystemMediaSetDecompilerImpl() = default;
 
-FilesystemMediaSetImporter& FilesystemMediaSetImporterImpl::checkFileIntegrity(
+FilesystemMediaSetDecompiler&
+FilesystemMediaSetDecompilerImpl::checkFileIntegrity(
   const bool checkFileIntegrity ) noexcept
 {
-  assert( mediaSetImporter );
-  mediaSetImporter->checkFileIntegrity( checkFileIntegrity );
+  assert( mediaSetDecompilerV );
+  mediaSetDecompilerV->checkFileIntegrity( checkFileIntegrity );
   return *this;
 }
 
-FilesystemMediaSetImporter& FilesystemMediaSetImporterImpl::mediaPaths(
+FilesystemMediaSetDecompiler& FilesystemMediaSetDecompilerImpl::mediaPaths(
   MediaPaths mediaPaths )
 {
   mediaPathsV = std::move( mediaPaths );
   return *this;
 }
 
-MediaSetImportResult FilesystemMediaSetImporterImpl::operator()()
+MediaSetDecompilerResult FilesystemMediaSetDecompilerImpl::operator()()
 {
-  assert( mediaSetImporter );
-  return (*mediaSetImporter)();
+  assert( mediaSetDecompilerV );
+  return ( *mediaSetDecompilerV )();
 }
 
-size_t FilesystemMediaSetImporterImpl::getFileSize(
+size_t FilesystemMediaSetDecompilerImpl::getFileSize(
   const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {
@@ -88,7 +88,7 @@ size_t FilesystemMediaSetImporterImpl::getFileSize(
   return std::filesystem::file_size( filePath );
 }
 
-Files::RawFile FilesystemMediaSetImporterImpl::readFile(
+Files::RawFile FilesystemMediaSetDecompilerImpl::readFile(
   const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {

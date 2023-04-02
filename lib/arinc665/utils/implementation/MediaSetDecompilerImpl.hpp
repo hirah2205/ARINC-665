@@ -7,13 +7,13 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Utils::MediaSetImporterImpl.
+ * @brief Declaration of Class Arinc665::Utils::MediaSetDecompilerImpl.
  **/
 
-#ifndef ARINC665_UTILS_IMPLEMENTATION_MEDIASETIMPORTERIMPL_HPP
-#define ARINC665_UTILS_IMPLEMENTATION_MEDIASETIMPORTERIMPL_HPP
+#ifndef ARINC665_UTILS_IMPLEMENTATION_MEDIASETDECOMPILERIMPL_HPP
+#define ARINC665_UTILS_IMPLEMENTATION_MEDIASETDECOMPILERIMPL_HPP
 
-#include <arinc665/utils/MediaSetImporter.hpp>
+#include <arinc665/utils/MediaSetDecompiler.hpp>
 
 #include <arinc665/files/FileListFile.hpp>
 #include <arinc665/files/LoadListFile.hpp>
@@ -29,34 +29,34 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief Implementation of a ARINC 665 Media Set Importer.
+ * @brief Implementation of a ARINC 665 Media Set Decompiler.
  **/
-class MediaSetImporterImpl final : public MediaSetImporter
+class MediaSetDecompilerImpl final : public MediaSetDecompiler
 {
   public:
     /**
-     * @brief Initialises the ARINC 665 Media Set Importer
+     * @brief Initialises the ARINC 665 Media Set Decompiler.
      **/
-    explicit MediaSetImporterImpl() = default;
+    explicit MediaSetDecompilerImpl() = default;
 
-    //! @copydoc MediaSetImporter::fileSizeHandler()
-    MediaSetImporter& fileSizeHandler(
+    //! @copydoc MediaSetDecompiler::fileSizeHandler()
+    MediaSetDecompiler& fileSizeHandler(
       FileSizeHandler fileSizeHandler ) override;
 
-    //! @copydoc MediaSetImporter::readFileHandler()
-    MediaSetImporter& readFileHandler(
+    //! @copydoc MediaSetDecompiler::readFileHandler()
+    MediaSetDecompiler& readFileHandler(
       ReadFileHandler readFileHandler ) override;
 
-    //! @copydoc MediaSetImporter::checkFileIntegrity()
-    MediaSetImporter& checkFileIntegrity(
+    //! @copydoc MediaSetDecompiler::checkFileIntegrity()
+    MediaSetDecompiler& checkFileIntegrity(
       bool checkFileIntegrity ) noexcept override;
 
     /**
-     * @brief Entry-point of the ARINC 665 Media Set Importer.
+     * @brief Entry-point of the ARINC 665 Media Set Decompiler.
      *
      * @return Created Media Set Instance.
      **/
-    [[nodiscard]] MediaSetImportResult operator()() override;
+    [[nodiscard]] MediaSetDecompilerResult operator()() override;
 
   private:
     //! Files Information (From File List File) (filename -> file information)

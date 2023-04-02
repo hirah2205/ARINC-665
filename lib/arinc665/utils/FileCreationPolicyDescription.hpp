@@ -21,6 +21,15 @@
 
 namespace Arinc665::Utils {
 
+/**
+ * @name File Creation Policy Description
+ *
+ * @sa @ref Arinc665::Utils::FileCreationPolicy
+ * @sa @ref Arinc665::Utils::FileCreationPolicyDescription
+ *
+ * @{
+ **/
+
 //! %File Creation Policy Description
 class ARINC665_EXPORT FileCreationPolicyDescription :
   public Helper::Description<
@@ -62,6 +71,8 @@ ARINC665_EXPORT std::ostream& operator<<(
 ARINC665_EXPORT std::istream& operator>>(
   std::istream& stream,
   FileCreationPolicy &fileCreationPolicy );
+
+/** @} **/
 
 }
 

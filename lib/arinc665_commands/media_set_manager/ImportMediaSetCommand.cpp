@@ -18,7 +18,7 @@
 #include <arinc665/files/MediaSetInformation.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
-#include <arinc665/utils/FilesystemMediaSetImporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetDecompiler.hpp>
 #include <arinc665/utils/FilesystemMediaSetCopier.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
@@ -97,7 +97,7 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
         mediumSourceDirectory );
     }
 
-    auto importer{ Arinc665::Utils::FilesystemMediaSetImporter::create() };
+    auto importer{ Arinc665::Utils::FilesystemMediaSetDecompiler::create() };
     assert( importer );
 
     importer

@@ -12,7 +12,7 @@
 
 #include <arinc665/media/MediaSet.hpp>
 
-#include <arinc665/utils/FilesystemMediaSetImporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetDecompiler.hpp>
 #include <arinc665/utils/MediaSetPrinter.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
@@ -54,7 +54,7 @@ int main( int argc, char const * argv[] );
  *
  * @return Loaded Media Set.
  **/
-static Arinc665::Utils::MediaSetImportResult loadMediaSet(
+static Arinc665::Utils::MediaSetDecompilerResult loadMediaSet(
   const Directories &mediaSetDirectories,
   bool checkFileIntegrity );
 
@@ -151,7 +151,7 @@ int main( int argc, char const * argv[] )
   return EXIT_SUCCESS;
 }
 
-static Arinc665::Utils::MediaSetImportResult loadMediaSet(
+static Arinc665::Utils::MediaSetDecompilerResult loadMediaSet(
   const Directories &mediaSetDirectories,
   const bool checkFileIntegrity )
 {
@@ -164,13 +164,11 @@ static Arinc665::Utils::MediaSetImportResult loadMediaSet(
     ++mediumNumber;
   }
 
-  auto importer{ Arinc665::Utils::FilesystemMediaSetImporter::create() };
+  auto decompiler{ Arinc665::Utils::FilesystemMediaSetDecompiler::create() };
 
-  importer
+  decompiler
     ->checkFileIntegrity( checkFileIntegrity )
     .mediaPaths( std::move( mediaPaths ) );
 
-  auto result{ (*importer)() };
-
-  return result;
+  return ( *decompiler )();
 }

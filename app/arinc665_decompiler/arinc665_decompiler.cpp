@@ -15,7 +15,7 @@
 
 #include <arinc665/files/MediaSetInformation.hpp>
 
-#include <arinc665/utils/FilesystemMediaSetImporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetDecompiler.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
@@ -129,15 +129,15 @@ int main( int argc, char const * argv[] )
         mediumSourceDirectory );
     }
 
-    auto importer{ Arinc665::Utils::FilesystemMediaSetImporter::create() };
-    assert( importer );
+    auto decompiler{ Arinc665::Utils::FilesystemMediaSetDecompiler::create() };
+    assert( decompiler );
 
-    importer
+    decompiler
       ->checkFileIntegrity( checkFileIntegrity )
       .mediaPaths( std::move( mediaPaths ) );
 
     // perform import
-    const auto &[ mediaSet, checkValues ]{ ( *importer )() };
+    const auto &[ mediaSet, checkValues ]{ ( *decompiler )() };
 
     Arinc665::Utils::FilePathMapping fileMapping{};
 

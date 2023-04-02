@@ -18,14 +18,14 @@ target_sources(
     FilesystemMediaSetCompilerImpl.cpp
     FilesystemMediaSetCopierImpl.hpp
     FilesystemMediaSetCopierImpl.cpp
-    FilesystemMediaSetImporterImpl.hpp
-    FilesystemMediaSetImporterImpl.cpp
+    FilesystemMediaSetDecompilerImpl.hpp
+    FilesystemMediaSetDecompilerImpl.cpp
     FilesystemMediaSetRemoverImpl.hpp
     FilesystemMediaSetRemoverImpl.cpp
     MediaSetCompilerImpl.hpp
     MediaSetCompilerImpl.cpp
-    MediaSetImporterImpl.hpp
-    MediaSetImporterImpl.cpp
+    MediaSetDecompilerImpl.hpp
+    MediaSetDecompilerImpl.cpp
     MediaSetManagerImpl.hpp
     MediaSetManagerImpl.cpp
     MediaSetValidatorImpl.cpp

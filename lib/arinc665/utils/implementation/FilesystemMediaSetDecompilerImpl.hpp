@@ -7,42 +7,43 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Utils::FilesystemMediaSetImporterImpl.
+ * @brief Declaration of Class
+ *   Arinc665::Utils::FilesystemMediaSetDecompilerImpl.
  **/
 
-#ifndef ARINC665_UTILS_IMPLEMENTATION_FILESYSTEMMEDIASETIMPORTERIMPL_HPP
-#define ARINC665_UTILS_IMPLEMENTATION_FILESYSTEMMEDIASETIMPORTERIMPL_HPP
+#ifndef ARINC665_UTILS_IMPLEMENTATION_FILESYSTEMMEDIASETDECOMPILERIMPL_HPP
+#define ARINC665_UTILS_IMPLEMENTATION_FILESYSTEMMEDIASETDECOMPILERIMPL_HPP
 
-#include <arinc665/utils/FilesystemMediaSetImporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetDecompiler.hpp>
 
 namespace Arinc665::Utils {
 
 /**
- * @brief Implementation of a Filesystem ARINC 665 Media Set Importer.
+ * @brief Implementation of a Filesystem ARINC 665 Media Set Decompiler.
  **/
-class FilesystemMediaSetImporterImpl final : public FilesystemMediaSetImporter
+class FilesystemMediaSetDecompilerImpl final : public FilesystemMediaSetDecompiler
 {
   public:
     /**
-     * @brief Initialises the ARINC 665 Media Set Importer.
+     * @brief Initialises the ARINC 665 Media Set Decompiler.
      **/
-    explicit FilesystemMediaSetImporterImpl();
+    explicit FilesystemMediaSetDecompilerImpl();
 
-    ~FilesystemMediaSetImporterImpl() override;
+    ~FilesystemMediaSetDecompilerImpl() override;
 
-    //! @copydoc FilesystemMediaSetImporter::checkFileIntegrity()
-    FilesystemMediaSetImporter& checkFileIntegrity(
+    //! @copydoc FilesystemMediaSetDecompiler::checkFileIntegrity()
+    FilesystemMediaSetDecompiler& checkFileIntegrity(
       bool checkFileIntegrity ) noexcept override;
 
-    //! @copydoc FilesystemMediaSetImporter::mediaPaths()
-    FilesystemMediaSetImporter& mediaPaths( MediaPaths mediaPaths ) override;
+    //! @copydoc FilesystemMediaSetDecompiler::mediaPaths()
+    FilesystemMediaSetDecompiler& mediaPaths( MediaPaths mediaPaths ) override;
 
     /**
      * @brief Entry-point of the ARINC 665 Media Set Importer.
      *
      * @return Created Media Set Instance.
      **/
-    [[nodiscard]] MediaSetImportResult operator()() override;
+    [[nodiscard]] MediaSetDecompilerResult operator()() override;
 
   private:
     /**
@@ -76,8 +77,8 @@ class FilesystemMediaSetImporterImpl final : public FilesystemMediaSetImporter
       const Arinc665::MediumNumber &mediumNumber,
       const std::filesystem::path &path );
 
-    //! Media Set Importer
-    MediaSetImporterPtr mediaSetImporter;
+    //! Media Set Decompiler
+    MediaSetDecompilerPtr mediaSetDecompilerV;
     //! Media Paths
     MediaPaths mediaPathsV;
 };

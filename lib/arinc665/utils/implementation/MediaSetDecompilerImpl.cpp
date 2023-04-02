@@ -7,10 +7,10 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665::Utils::MediaSetImporterImpl.
+ * @brief Definition of Class Arinc665::Utils::MediaSetDecompilerImpl.
  **/
 
-#include "MediaSetImporterImpl.hpp"
+#include "MediaSetDecompilerImpl.hpp"
 
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/Load.hpp>
@@ -28,28 +28,28 @@
 
 namespace Arinc665::Utils {
 
-MediaSetImporter& MediaSetImporterImpl::fileSizeHandler(
+MediaSetDecompiler& MediaSetDecompilerImpl::fileSizeHandler(
   FileSizeHandler fileSizeHandler )
 {
   fileSizeHandlerV = std::move( fileSizeHandler );
   return *this;
 }
 
-MediaSetImporter& MediaSetImporterImpl::readFileHandler(
+MediaSetDecompiler& MediaSetDecompilerImpl::readFileHandler(
   ReadFileHandler readFileHandler )
 {
   readFileHandlerV = std::move( readFileHandler );
   return *this;
 }
 
-MediaSetImporter& MediaSetImporterImpl::checkFileIntegrity(
+MediaSetDecompiler& MediaSetDecompilerImpl::checkFileIntegrity(
   const bool checkFileIntegrity ) noexcept
 {
   checkFileIntegrityV = checkFileIntegrity;
   return *this;
 }
 
-MediaSetImportResult MediaSetImporterImpl::operator()()
+MediaSetDecompilerResult MediaSetDecompilerImpl::operator()()
 {
   BOOST_LOG_FUNCTION()
 
@@ -74,7 +74,7 @@ MediaSetImportResult MediaSetImporterImpl::operator()()
   return { std::move( mediaSetV ), std::move( checkValuesV ) };
 }
 
-void MediaSetImporterImpl::loadFirstMedium()
+void MediaSetDecompilerImpl::loadFirstMedium()
 {
   // Load "list of files" file
   fileListFileV =
@@ -237,7 +237,7 @@ void MediaSetImporterImpl::loadFirstMedium()
   }
 }
 
-void MediaSetImporterImpl::loadFurtherMedia() const
+void MediaSetDecompilerImpl::loadFurtherMedia() const
 {
   // iterate over media
   for (
@@ -295,7 +295,7 @@ void MediaSetImporterImpl::loadFurtherMedia() const
   }
 }
 
-void MediaSetImporterImpl::files()
+void MediaSetDecompilerImpl::files()
 {
   // iterate over all files
   for ( const auto &[ fileName, fileInfo ] : filesInfosV )
@@ -347,7 +347,7 @@ void MediaSetImporterImpl::files()
   }
 }
 
-void MediaSetImporterImpl::regularFile(
+void MediaSetDecompilerImpl::regularFile(
   Media::ContainerEntity &parent,
   const Files::FileInfo &fileInfo)
 {
@@ -378,7 +378,7 @@ void MediaSetImporterImpl::regularFile(
   regularFilesV.try_emplace( std::move( file ), fileInfo );
 }
 
-void MediaSetImporterImpl::loadFile(
+void MediaSetDecompilerImpl::loadFile(
   Media::ContainerEntity &parent,
   const Files::FileInfo &fileInfo,
   const Files::LoadInfo &loadInfo )
@@ -410,7 +410,7 @@ void MediaSetImporterImpl::loadFile(
   loadsV.try_emplace( std::move( load ), std::make_pair( fileInfo, loadInfo ) );
 }
 
-void MediaSetImporterImpl::batchFile(
+void MediaSetDecompilerImpl::batchFile(
   Media::ContainerEntity &parent,
   const Files::FileInfo &fileInfo,
   const Files::BatchInfo &batchInfo )
@@ -441,7 +441,7 @@ void MediaSetImporterImpl::batchFile(
   batchesV.try_emplace( std::move( batch ), std::make_pair( fileInfo, batchInfo ) );
 }
 
-void MediaSetImporterImpl::addLoad(
+void MediaSetDecompilerImpl::addLoad(
   Media::Load &load,
   const Files::FileInfo &fileInfo,
   const Files::LoadInfo &loadInfo )
@@ -591,7 +591,7 @@ void MediaSetImporterImpl::addLoad(
   load.loadCheckValueType( loadHeaderFile.loadCheckValueType() );
 }
 
-Media::RegularFilePtr MediaSetImporterImpl::loadFile(
+Media::RegularFilePtr MediaSetDecompilerImpl::loadFile(
   Media::ContainerEntity &parent,
   std::string_view filename,
   uint16_t crc ) const
@@ -650,7 +650,7 @@ Media::RegularFilePtr MediaSetImporterImpl::loadFile(
   return files.front();
 }
 
-void MediaSetImporterImpl::addBatch(
+void MediaSetDecompilerImpl::addBatch(
   Media::Batch &batch,
   const Files::FileInfo &fileInfo,
   const Files::BatchInfo &batchInfo )
@@ -717,7 +717,7 @@ void MediaSetImporterImpl::addBatch(
   }
 }
 
-Media::ContainerEntityPtr MediaSetImporterImpl::checkCreateDirectory(
+Media::ContainerEntityPtr MediaSetDecompilerImpl::checkCreateDirectory(
   const std::filesystem::path &directoryPath )
 {
   // make path relative (remove leading slash)
@@ -750,7 +750,7 @@ Media::ContainerEntityPtr MediaSetImporterImpl::checkCreateDirectory(
   return dir;
 }
 
-void MediaSetImporterImpl::checkMediumFiles(
+void MediaSetDecompilerImpl::checkMediumFiles(
   const MediumNumber &mediumNumber ) const
 {
   // iterate over files
@@ -772,7 +772,7 @@ void MediaSetImporterImpl::checkMediumFiles(
   }
 }
 
-void MediaSetImporterImpl::checkFileIntegrity(
+void MediaSetDecompilerImpl::checkFileIntegrity(
   const Files::FileInfo &fileInfo ) const
 {
   BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
@@ -810,7 +810,7 @@ void MediaSetImporterImpl::checkFileIntegrity(
   }
 }
 
-void MediaSetImporterImpl::checkLoadFile(
+void MediaSetDecompilerImpl::checkLoadFile(
   Arinc645::Arinc645Crc32 &loadCrc,
   Arinc645::CheckValueGenerator &loadCheckValueGenerator,
   const Files::FileInfo &fileInfo,
@@ -876,7 +876,7 @@ void MediaSetImporterImpl::checkLoadFile(
   }
 }
 
-bool MediaSetImporterImpl::checkCheckValues(
+bool MediaSetDecompilerImpl::checkCheckValues(
   const Arinc645::CheckValue &fileListCheckValue,
   const Arinc645::CheckValue &loadFileCheckValue ) const
 {

@@ -7,11 +7,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Utils::MediaSetImporter.
+ * @brief Declaration of Class Arinc665::Utils::MediaSetDecompiler.
  **/
 
-#ifndef ARINC665_ARINC665_UTILS_MEDIASETIMPORTER_HPP
-#define ARINC665_ARINC665_UTILS_MEDIASETIMPORTER_HPP
+#ifndef ARINC665_ARINC665_UTILS_MEDIASETDECOMPILER_HPP
+#define ARINC665_ARINC665_UTILS_MEDIASETDECOMPILER_HPP
 
 #include <arinc665/utils/Utils.hpp>
 
@@ -27,9 +27,9 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief ARINC 665 %Media Set Importer
+ * @brief ARINC 665 %Media Set Decompiler
  *
- * Imports the %Media Set given by the provided properties.
+ * Decompiles the %Media Set given by the provided properties.
  *
  * @par Check File Integrity
  * When the *check file integrity* flag is set to `true` the checksum and check
@@ -38,7 +38,7 @@ namespace Arinc665::Utils {
  * The file checksum of ARINC 665 files (list of files, loads, batches;
  * load header and batch file) are always verified.
  **/
-class ARINC665_EXPORT MediaSetImporter
+class ARINC665_EXPORT MediaSetDecompiler
 {
   public:
     /**
@@ -82,14 +82,14 @@ class ARINC665_EXPORT MediaSetImporter
       const std::filesystem::path &path ) >;
 
     /**
-     * @brief Creates the ARINC 665 %Media Set Importer Instance.
+     * @brief Creates the ARINC 665 %Media Set Decompiler Instance.
      *
-     * @return ARINC 665 %Media Set Importer Instance
+     * @return ARINC 665 %Media Set Decompiler Instance
      **/
-    static MediaSetImporterPtr create();
+    static MediaSetDecompilerPtr create();
 
     //! Destructor
-    virtual ~MediaSetImporter() = default;
+    virtual ~MediaSetDecompiler() = default;
 
     /**
      * @brief Sets the File Size Handler.
@@ -99,7 +99,7 @@ class ARINC665_EXPORT MediaSetImporter
      *
      * @return @p *this for chaining.
      **/
-    virtual MediaSetImporter& fileSizeHandler(
+    virtual MediaSetDecompiler& fileSizeHandler(
       FileSizeHandler fileSizeHandler ) = 0;
 
     /**
@@ -110,7 +110,7 @@ class ARINC665_EXPORT MediaSetImporter
      *
      * @return @p *this for chaining.
      **/
-    virtual MediaSetImporter& readFileHandler(
+    virtual MediaSetDecompiler& readFileHandler(
       ReadFileHandler readFileHandler ) = 0;
 
     /**
@@ -121,20 +121,20 @@ class ARINC665_EXPORT MediaSetImporter
      *
      * @return @p *this for chaining.
      **/
-    virtual MediaSetImporter& checkFileIntegrity(
+    virtual MediaSetDecompiler& checkFileIntegrity(
       bool checkFileIntegrity ) noexcept = 0;
 
     /**
-     * @brief Executes the ARINC 665 %Media Set Importer.
+     * @brief Executes the ARINC 665 %Media Set Decompiler.
      *
      * All parameters must have been set previously.
      *
-     * @return Imported %Media Set
+     * @return Decompiled %Media Set
      *
      * @throw Arinc665Exception
-     *   When the media set cannot be imported.
+     *   When the media set cannot be decompiled.
      **/
-    virtual MediaSetImportResult operator()() = 0;
+    virtual MediaSetDecompilerResult operator()() = 0;
 };
 
 }
