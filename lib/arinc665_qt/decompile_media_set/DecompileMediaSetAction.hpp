@@ -50,6 +50,14 @@ class ARINC665_QT_EXPORT DecompileMediaSetAction final : public QObject
 
   private slots:
     /**
+     * @brief Slot called, when user changed the check file integrity handling
+     *
+     * @param[in] checkFileIntegrity
+     *   Check File Integrity indicator
+     **/
+    void checkFileIntegrity( bool checkFileIntegrity );
+
+    /**
      * @brief Slot for conversion.
      **/
     void start();

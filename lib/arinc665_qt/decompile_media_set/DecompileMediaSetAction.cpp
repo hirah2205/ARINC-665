@@ -29,6 +29,9 @@
 
 #include <arinc645/CheckValue.hpp>
 
+#include <helper/Logger.hpp>
+#include <helper/Exception.hpp>
+
 #include <QMessageBox>
 
 #include <boost/exception/all.hpp>
@@ -38,6 +41,7 @@
 namespace Arinc665Qt {
 
 DecompileMediaSetAction::DecompileMediaSetAction( QWidget * const parent ) :
+  QObject{ parent },
   wizardV{ std::make_unique< DecompileMediaSetWizard >( parent ) },
   importerV{ Arinc665::Utils::FilesystemMediaSetImporter::create() },
   mediaPathsModelV{ std::make_unique< MediaPathsModel >() },
@@ -48,6 +52,11 @@ DecompileMediaSetAction::DecompileMediaSetAction( QWidget * const parent ) :
   wizardV->mediaSetModel( mediaSetModelV.get() );
   wizardV->filePathMappingModel( filePathMappingModelV.get() );
 
+  connect(
+    wizardV.get(),
+    &DecompileMediaSetWizard::checkFileIntegrity,
+    this,
+    &DecompileMediaSetAction::checkFileIntegrity );
   connect(
     wizardV.get(),
     &DecompileMediaSetWizard::start,
@@ -69,13 +78,18 @@ DecompileMediaSetAction::DecompileMediaSetAction( QWidget * const parent ) :
 
 DecompileMediaSetAction::~DecompileMediaSetAction() = default;
 
+void DecompileMediaSetAction::checkFileIntegrity( bool checkFileIntegrity )
+{
+  importerV->checkFileIntegrity( checkFileIntegrity );
+}
+
 void DecompileMediaSetAction::start()
 {
+  BOOST_LOG_FUNCTION()
+
   try
   {
-    importerV
-      ->mediaPaths( mediaPathsModelV->mediaPaths() )
-      .checkFileIntegrity( true );
+    importerV->mediaPaths( mediaPathsModelV->mediaPaths() );
 
     auto [ mediaSet, checkValues ]{ ( *importerV )() };
 
@@ -95,7 +109,17 @@ void DecompileMediaSetAction::start()
     mediaSetModelV->root( mediaSet );
     filePathMappingModelV->filePathMapping( std::move( fileMapping ) );
   }
-  catch ( const Arinc665::Arinc665Exception &e )
+  catch ( const boost::exception &e )
+  {
+    const auto info{ boost::diagnostic_information( e ) };
+
+    QMessageBox::critical(
+      nullptr,
+      tr( "Error during decompilation" ),
+      QString::fromStdString( info ) );
+    return;
+  }
+  catch ( const std::exception &e )
   {
     const auto info{ boost::diagnostic_information( e ) };
 

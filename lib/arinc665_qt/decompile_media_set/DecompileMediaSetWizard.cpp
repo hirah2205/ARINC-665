@@ -48,13 +48,18 @@ DecompileMediaSetWizard::DecompileMediaSetWizard( QWidget * const parent ) :
     &QWizard::currentIdChanged,
     this,
     &DecompileMediaSetWizard::pageChanged );
+  connect(
+    ui->settings,
+    &DecompileMediaSetSettingsPage::checkFileIntegrity,
+    this,
+    &DecompileMediaSetWizard::checkFileIntegrity );
 }
 
 DecompileMediaSetWizard::~DecompileMediaSetWizard() = default;
 
 void DecompileMediaSetWizard::mediaPathsModel( MediaPathsModel * const model )
 {
-  ui->mediaPaths->mediaPathsModel( model );
+  ui->settings->mediaPathsModel( model );
 }
 
 void DecompileMediaSetWizard::mediaSetModel( Media::MediaSetModel * const model )

@@ -71,6 +71,15 @@ class ARINC665_QT_EXPORT DecompileMediaSetWizard final : public QWizard
     void filePathMappingModel( FilePathMappingModel * model );
 
   signals:
+    /**
+     * @brief Signal emitted, when the check file integrity field has been
+     *   selected by user.
+     *
+     * @param[in] checkFileIntegrity
+     *   Check file integrity indicator.
+     **/
+    void checkFileIntegrity( bool checkFileIntegrity );
+
     //! Signal emitted when operation should be started.
     void start();
 

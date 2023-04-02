@@ -26,7 +26,7 @@
   <property name="options">
    <set>QWizard::NoCancelButtonOnLastPage</set>
   </property>
-  <widget class="QWizardPage" name="settings">
+  <widget class="Arinc665Qt::DecompileMediaSetSettingsPage" name="settings">
    <property name="title">
     <string>Settings</string>
    </property>
@@ -46,13 +46,6 @@
     <property name="bottomMargin">
      <number>0</number>
     </property>
-    <item>
-     <widget class="Arinc665Qt::MediaPathsWidget" name="mediaPaths">
-      <property name="title">
-       <string>Media Paths</string>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QWizardPage" name="completion">
@@ -129,15 +122,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Arinc665Qt::MediaPathsWidget</class>
-   <extends>QGroupBox</extends>
-   <header location="global">arinc665_qt/MediaPathsWidget.hpp</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>Arinc665Qt::Media::MediaSetViewWidget</class>
    <extends>QWidget</extends>
    <header location="global">arinc665_qt/media/MediaSetViewWidget.hpp</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Arinc665Qt::DecompileMediaSetSettingsPage</class>
+   <extends>QWizardPage</extends>
+   <header location="global">arinc665_qt/decompile_media_set/DecompileMediaSetSettingsPage.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
