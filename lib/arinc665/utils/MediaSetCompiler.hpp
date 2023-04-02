@@ -7,11 +7,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Utils::MediaSetExporter.
+ * @brief Declaration of Class Arinc665::Utils::MediaSetCompiler.
  **/
 
-#ifndef ARINC665_ARINC665_UTILS_MEDIASETEXPORTER_HPP
-#define ARINC665_ARINC665_UTILS_MEDIASETEXPORTER_HPP
+#ifndef ARINC665_ARINC665_UTILS_MEDIASETCOMPILER_HPP
+#define ARINC665_ARINC665_UTILS_MEDIASETCOMPILER_HPP
 
 #include <arinc665/utils/Utils.hpp>
 
@@ -25,11 +25,11 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief ARINC 665 %Media Set Exporter.
+ * @brief ARINC 665 %Media Set Compiler.
  *
- * This exporter uses a Media Set and exports all files and structures.
+ * This compiler uses a %Media Set and compiles all files and structures.
  **/
-class ARINC665_EXPORT MediaSetExporter
+class ARINC665_EXPORT MediaSetCompiler
 {
   public:
     /**
@@ -119,24 +119,24 @@ class ARINC665_EXPORT MediaSetExporter
         const std::filesystem::path &path ) >;
 
     /**
-     * @brief Creates the ARINC 665 Media Set Exporter Instance.
+     * @brief Creates the ARINC 665 Media Set Compiler Instance.
      *
-     * @return ARINC 665 Exporter Instance
+     * @return ARINC 665 Compiler Instance
      **/
-    static MediaSetExporterPtr create();
+    static MediaSetCompilerPtr create();
 
     //! Destructor
-    virtual ~MediaSetExporter() = default;
+    virtual ~MediaSetCompiler() = default;
 
     /**
-     * @brief Sets the Media Set to export.
+     * @brief Sets the Media Set to compile.
      *
      * @param[in] mediaSet
-     *   Media Set, which shall be exported.
+     *   Media Set, which shall be compiled.
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetExporter& mediaSet( Media::ConstMediaSetPtr mediaSet ) = 0;
+    virtual MediaSetCompiler& mediaSet( Media::ConstMediaSetPtr mediaSet ) = 0;
 
     /**
      * @brief Sets the Create Medium Handler.
@@ -146,7 +146,7 @@ class ARINC665_EXPORT MediaSetExporter
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetExporter& createMediumHandler(
+    virtual MediaSetCompiler& createMediumHandler(
       CreateMediumHandler createMediumHandler ) = 0;
 
     /**
@@ -157,7 +157,7 @@ class ARINC665_EXPORT MediaSetExporter
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetExporter& createDirectoryHandler(
+    virtual MediaSetCompiler& createDirectoryHandler(
       CreateDirectoryHandler createDirectoryHandler ) = 0;
 
     /**
@@ -168,7 +168,7 @@ class ARINC665_EXPORT MediaSetExporter
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetExporter& checkFileExistenceHandler(
+    virtual MediaSetCompiler& checkFileExistenceHandler(
       CheckFileExistenceHandler checkFileExistenceHandler ) = 0;
 
     /**
@@ -179,7 +179,7 @@ class ARINC665_EXPORT MediaSetExporter
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetExporter& createFileHandler(
+    virtual MediaSetCompiler& createFileHandler(
       CreateFileHandler createFileHandler ) = 0;
 
     /**
@@ -190,7 +190,7 @@ class ARINC665_EXPORT MediaSetExporter
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetExporter& writeFileHandler(
+    virtual MediaSetCompiler& writeFileHandler(
       WriteFileHandler writeFileHandler ) = 0;
 
     /**
@@ -202,7 +202,7 @@ class ARINC665_EXPORT MediaSetExporter
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetExporter& readFileHandler(
+    virtual MediaSetCompiler& readFileHandler(
       ReadFileHandler readFileHandler ) = 0;
 
     /**
@@ -213,7 +213,7 @@ class ARINC665_EXPORT MediaSetExporter
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetExporter& arinc665Version(
+    virtual MediaSetCompiler& arinc665Version(
       SupportedArinc665Version version ) = 0;
 
     /**
@@ -225,7 +225,7 @@ class ARINC665_EXPORT MediaSetExporter
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetExporter& createBatchFiles(
+    virtual MediaSetCompiler& createBatchFiles(
       FileCreationPolicy createBatchFiles ) = 0;
 
     /**
@@ -237,16 +237,16 @@ class ARINC665_EXPORT MediaSetExporter
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetExporter& createLoadHeaderFiles(
+    virtual MediaSetCompiler& createLoadHeaderFiles(
       FileCreationPolicy createLoadHeaderFiles ) = 0;
 
     /**
-     * @brief Executes the ARINC 665 Media Set Exporter.
+     * @brief Executes the ARINC 665 Media Set Compiler.
      *
      * All parameters must have been set previously.
      *
      * @throw Arinc665Exception
-     *   When export fails
+     *   When compilation fails
      **/
     virtual void operator()() = 0;
 };

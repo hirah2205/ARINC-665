@@ -7,10 +7,10 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665::Utils::MediaSetExporterImpl.
+ * @brief Definition of Class Arinc665::Utils::MediaSetCompilerImpl.
  **/
 
-#include "MediaSetExporterImpl.hpp"
+#include "MediaSetCompilerImpl.hpp"
 
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/Directory.hpp>
@@ -46,82 +46,81 @@
 
 namespace Arinc665::Utils {
 
-MediaSetExporter& MediaSetExporterImpl::mediaSet(
+MediaSetCompiler& MediaSetCompilerImpl::mediaSet(
   Media::ConstMediaSetPtr mediaSet )
 {
   mediaSetV = std::move( mediaSet );
   return *this;
 }
 
-MediaSetExporter& MediaSetExporterImpl::createMediumHandler(
+MediaSetCompiler& MediaSetCompilerImpl::createMediumHandler(
   CreateMediumHandler createMediumHandler )
 {
   createMediumHandlerV = std::move( createMediumHandler );
   return *this;
 }
 
-MediaSetExporter& MediaSetExporterImpl::createDirectoryHandler(
+MediaSetCompiler& MediaSetCompilerImpl::createDirectoryHandler(
   CreateDirectoryHandler createDirectoryHandler )
 {
   createDirectoryHandlerV = std::move( createDirectoryHandler );
   return *this;
 }
 
-MediaSetExporter& MediaSetExporterImpl::checkFileExistenceHandler(
+MediaSetCompiler& MediaSetCompilerImpl::checkFileExistenceHandler(
   CheckFileExistenceHandler checkFileExistenceHandler )
 {
   checkFileExistenceHandlerV = std::move( checkFileExistenceHandler );
   return *this;
 }
 
-MediaSetExporter& MediaSetExporterImpl::createFileHandler(
+MediaSetCompiler& MediaSetCompilerImpl::createFileHandler(
   CreateFileHandler createFileHandler )
 {
   createFileHandlerV = std::move( createFileHandler );
   return *this;
 }
 
-MediaSetExporter& MediaSetExporterImpl::writeFileHandler(
+MediaSetCompiler& MediaSetCompilerImpl::writeFileHandler(
   WriteFileHandler writeFileHandler )
 {
   writeFileHandlerV = std::move( writeFileHandler );
   return *this;
 }
 
-MediaSetExporter& MediaSetExporterImpl::readFileHandler(
+MediaSetCompiler& MediaSetCompilerImpl::readFileHandler(
   ReadFileHandler readFileHandler )
 {
   readFileHandlerV = std::move( readFileHandler );
   return *this;
 }
 
-MediaSetExporter& MediaSetExporterImpl::arinc665Version(
+MediaSetCompiler& MediaSetCompilerImpl::arinc665Version(
   const SupportedArinc665Version version )
 {
   arinc665VersionV = version;
   return *this;
 }
 
-MediaSetExporter& MediaSetExporterImpl::createBatchFiles(
+MediaSetCompiler& MediaSetCompilerImpl::createBatchFiles(
   const FileCreationPolicy createBatchFiles )
 {
   createBatchFilesV = createBatchFiles ;
   return *this;
 }
 
-MediaSetExporter& MediaSetExporterImpl::createLoadHeaderFiles(
+MediaSetCompiler& MediaSetCompilerImpl::createLoadHeaderFiles(
   const FileCreationPolicy createLoadHeaderFiles )
 {
   createLoadHeaderFilesV = createLoadHeaderFiles;
   return *this;
 }
 
-void MediaSetExporterImpl::operator()()
+void MediaSetCompilerImpl::operator()()
 {
   BOOST_LOG_FUNCTION()
 
-  if (
-    !mediaSetV || !createMediumHandlerV || !createDirectoryHandlerV
+  if ( !mediaSetV || !createMediumHandlerV || !createDirectoryHandlerV
     || !checkFileExistenceHandlerV || !createFileHandlerV || !writeFileHandlerV
     || !readFileHandlerV )
   {
@@ -180,7 +179,7 @@ void MediaSetExporterImpl::operator()()
   exportListOfFiles();
 }
 
-void MediaSetExporterImpl::exportDirectory(
+void MediaSetCompilerImpl::exportDirectory(
   const MediumNumber &mediumNumber,
   const Media::ConstDirectoryPtr &directory )
 {
@@ -207,7 +206,7 @@ void MediaSetExporterImpl::exportDirectory(
   }
 }
 
-void MediaSetExporterImpl::exportRegularFile(
+void MediaSetCompilerImpl::exportRegularFile(
   const Media::ConstRegularFilePtr &file )
 {
   BOOST_LOG_FUNCTION()
@@ -222,7 +221,7 @@ void MediaSetExporterImpl::exportRegularFile(
   createFileHandlerV( file );
 }
 
-void MediaSetExporterImpl::exportLoad( const Media::ConstLoadPtr &load )
+void MediaSetCompilerImpl::exportLoad( const Media::ConstLoadPtr &load )
 {
   BOOST_LOG_FUNCTION()
 
@@ -260,7 +259,7 @@ void MediaSetExporterImpl::exportLoad( const Media::ConstLoadPtr &load )
   }
 }
 
-void MediaSetExporterImpl::exportBatch( const Media::ConstBatchPtr &batch )
+void MediaSetCompilerImpl::exportBatch( const Media::ConstBatchPtr &batch )
 {
   BOOST_LOG_FUNCTION()
 
@@ -299,7 +298,7 @@ void MediaSetExporterImpl::exportBatch( const Media::ConstBatchPtr &batch )
   }
 }
 
-void MediaSetExporterImpl::exportListOfLoads() const
+void MediaSetCompilerImpl::exportListOfLoads() const
 {
   BOOST_LOG_FUNCTION()
 
@@ -345,7 +344,7 @@ void MediaSetExporterImpl::exportListOfLoads() const
   }
 }
 
-void MediaSetExporterImpl::exportListOfBatches() const
+void MediaSetCompilerImpl::exportListOfBatches() const
 {
   BOOST_LOG_FUNCTION()
 
@@ -388,7 +387,7 @@ void MediaSetExporterImpl::exportListOfBatches() const
   }
 }
 
-void MediaSetExporterImpl::exportListOfFiles() const
+void MediaSetCompilerImpl::exportListOfFiles() const
 {
   BOOST_LOG_FUNCTION()
 
@@ -479,7 +478,7 @@ void MediaSetExporterImpl::exportListOfFiles() const
   }
 }
 
-void MediaSetExporterImpl::createLoadHeaderFile( const Media::Load &load ) const
+void MediaSetCompilerImpl::createLoadHeaderFile( const Media::Load &load ) const
 {
   Files::LoadHeaderFile loadHeaderFile{ arinc665VersionV };
   loadHeaderFile.partFlags( load.partFlags() );
@@ -592,7 +591,7 @@ void MediaSetExporterImpl::createLoadHeaderFile( const Media::Load &load ) const
     rawLoadHeader );
 }
 
-Files::LoadFileInfo MediaSetExporterImpl::loadFileInformation(
+Files::LoadFileInfo MediaSetCompilerImpl::loadFileInformation(
   const Media::ConstLoadFile &loadFile ) const
 {
   const auto &[ file, partNumber, checkValueType ] = loadFile;
@@ -612,7 +611,7 @@ Files::LoadFileInfo MediaSetExporterImpl::loadFileInformation(
       rawDataFile ) };
 }
 
-void MediaSetExporterImpl::createBatchFile( const Media::Batch &batch ) const
+void MediaSetCompilerImpl::createBatchFile( const Media::Batch &batch ) const
 {
   Files::BatchFile batchFile{ arinc665VersionV };
   batchFile.partNumber( std::string{ batch.partNumber() } );
@@ -644,7 +643,7 @@ void MediaSetExporterImpl::createBatchFile( const Media::Batch &batch ) const
 }
 
 std::tuple< uint16_t, Arinc645::CheckValue >
-MediaSetExporterImpl::fileCrcCheckValue(
+MediaSetCompilerImpl::fileCrcCheckValue(
   const MediumNumber mediumNumber,
   const std::filesystem::path &filename,
   const Arinc645::CheckValueType checkValueType ) const

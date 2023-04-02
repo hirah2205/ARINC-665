@@ -19,7 +19,7 @@
 
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/FileCreationPolicyDescription.hpp>
-#include <arinc665/utils/FilesystemMediaSetExporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetCompiler.hpp>
 
 #include <arinc665/SupportedArinc665VersionDescription.hpp>
 #include <arinc665/Arinc665Exception.hpp>
@@ -139,10 +139,10 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
     std::filesystem::create_directories(
       mediaSetManagerDirectory / mediaSetPath );
 
-    auto exporter{ Arinc665::Utils::FilesystemMediaSetExporter::create() };
+    auto compiler{ Arinc665::Utils::FilesystemMediaSetCompiler::create() };
 
     // set exporter parameters
-    exporter
+    compiler
       ->mediaSet( mediaSet )
       .arinc665Version( version )
       .createBatchFiles( createBatchFiles )
@@ -151,7 +151,7 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
       .sourceBasePath( mediaSetSourceDirectory )
       .filePathMapping( std::move( filePathMapping ) );
 
-    auto mediaPaths{ ( *exporter )() };
+    auto mediaPaths{ ( *compiler )() };
 
     mediaSetManager->registerMediaSet(
       { std::move( mediaSetPath ), std::move( mediaPaths ) } );

@@ -56,7 +56,7 @@ using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping >;
  * @brief Saves the given %Media Set information to the given XML file.
  *
  * @param[in] mediaSet
- *   Media Set Information.
+ *   %Media Set Information.
  * @param[in] filePathMapping
  *   File Path Mapping.
  *   Used to insert the correct source path attribute.

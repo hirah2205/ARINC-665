@@ -17,7 +17,7 @@
 #include <arinc665/media/MediaSet.hpp>
 
 #include <arinc665/utils/Arinc665Xml.hpp>
-#include <arinc665/utils/FilesystemMediaSetExporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetCompiler.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/MediumNumber.hpp>
@@ -31,54 +31,54 @@
 namespace Arinc665Qt {
 
 CompileMediaSetAction::CompileMediaSetAction( QWidget * const parent ) :
-  wizard{ std::make_unique< CompileMediaSetWizard >( parent ) },
-  exporter{ Arinc665::Utils::FilesystemMediaSetExporter::create() }
+  wizardV{ std::make_unique< CompileMediaSetWizard >( parent ) },
+  compilerV{ Arinc665::Utils::FilesystemMediaSetCompiler::create() }
 {
-  assert( exporter );
+  assert( compilerV );
 
   connect(
-    wizard.get(),
+    wizardV.get(),
     &CompileMediaSetWizard::xmlFile,
     this,
     &CompileMediaSetAction::xmlFile );
   connect(
-    wizard.get(),
+    wizardV.get(),
     &CompileMediaSetWizard::inputDirectory,
     this,
     &CompileMediaSetAction::inputDirectory );
   connect(
-    wizard.get(),
+    wizardV.get(),
     &CompileMediaSetWizard::arinc665Version,
     this,
     &CompileMediaSetAction::arinc665Version );
   connect(
-    wizard.get(),
+    wizardV.get(),
     &CompileMediaSetWizard::createBatchFiles,
     this,
     &CompileMediaSetAction::createBatchFiles );
   connect(
-    wizard.get(),
+    wizardV.get(),
     &CompileMediaSetWizard::createLoadHeaderFiles,
     this,
     &CompileMediaSetAction::createLoadHeaderFiles );
   connect(
-    wizard.get(),
+    wizardV.get(),
     &CompileMediaSetWizard::outputDirectory,
     this,
     &CompileMediaSetAction::outputDirectory );
 
-  wizard->show();
-
   connect(
-    wizard.get(),
+    wizardV.get(),
     &CompileMediaSetWizard::start,
     this,
     &CompileMediaSetAction::start );
   connect(
-    wizard.get(),
+    wizardV.get(),
     &CompileMediaSetWizard::finished,
     this,
     &CompileMediaSetAction::finished );
+
+  wizardV->show();
 }
 
 CompileMediaSetAction::~CompileMediaSetAction() = default;
@@ -90,25 +90,25 @@ void CompileMediaSetAction::xmlFile( std::filesystem::path xmlFile )
 
 void CompileMediaSetAction::inputDirectory( std::filesystem::path directory )
 {
-  exporter->sourceBasePath( std::move( directory ) );
+  compilerV->sourceBasePath( std::move( directory ) );
 }
 
 void CompileMediaSetAction::arinc665Version(
   Arinc665::SupportedArinc665Version version )
 {
-  exporter->arinc665Version( version );
+  compilerV->arinc665Version( version );
 }
 
 void CompileMediaSetAction::createBatchFiles(
   Arinc665::Utils::FileCreationPolicy createBatchFiles )
 {
-  exporter->createBatchFiles( createBatchFiles );
+  compilerV->createBatchFiles( createBatchFiles );
 }
 
 void CompileMediaSetAction::createLoadHeaderFiles(
   Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles )
 {
-  exporter->createLoadHeaderFiles( createLoadHeaderFiles );
+  compilerV->createLoadHeaderFiles( createLoadHeaderFiles );
 }
 
 void CompileMediaSetAction::outputDirectory( std::filesystem::path directory )
@@ -137,12 +137,12 @@ void CompileMediaSetAction::start()
 
     std::filesystem::create_directory( outputPath );
 
-    exporter
+    compilerV
       ->mediaSet( std::move( mediaSet ) )
       .filePathMapping( std::move( fileMapping ) )
       .mediaSetBasePath( std::move( outputPath ) );
-    assert( exporter );
-    ( *exporter )();
+    assert( compilerV );
+    ( *compilerV )();
   }
   catch ( const Arinc665::Arinc665Exception &e )
   {

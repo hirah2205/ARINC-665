@@ -7,37 +7,36 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Utils::FilesystemMediaSetExporter.
+ * @brief Declaration of Class Arinc665::Utils::FilesystemMediaSetCompiler.
  **/
 
-#ifndef ARINC665_UTILS_FILESYSTEMMEDIASETEXPORTER_HPP
-#define ARINC665_UTILS_FILESYSTEMMEDIASETEXPORTER_HPP
+#ifndef ARINC665_UTILS_FILESYSTEMMEDIASETCOMPILER_HPP
+#define ARINC665_UTILS_FILESYSTEMMEDIASETCOMPILER_HPP
 
 #include <arinc665/utils/Utils.hpp>
 
 namespace Arinc665::Utils {
 
 /**
- * @brief ARINC 665 Media Set Exporter using local Filesystem.
+ * @brief ARINC 665 %Media Set Compiler using local Filesystem.
  *
- * This exporter expects that each medium is contained as directory on the local
- * filesystem.
- * Normal filesystem access routines are used to access the media and files.
+ * Normal filesystem access routines are used to create and access the media and
+ * files.
  *
- * @sa @ref MediaSetExporter
+ * @sa @ref MediaSetCompiler
  **/
-class ARINC665_EXPORT FilesystemMediaSetExporter
+class ARINC665_EXPORT FilesystemMediaSetCompiler
 {
   public:
     /**
-     * @brief Creates the ARINC 665 %Media Set Exporter Instance.
+     * @brief Creates the ARINC 665 %Media Set Compiler Instance.
      *
-     * @return ARINC 665 %Media Set Exporter Instance
+     * @return ARINC 665 %Media Set Compiler Instance
      **/
-    static FilesystemMediaSetExporterPtr create();
+    static FilesystemMediaSetCompilerPtr create();
 
     //! Destructor
-    virtual ~FilesystemMediaSetExporter() = default;
+    virtual ~FilesystemMediaSetCompiler() = default;
 
     /**
      * @brief Sets the Media Set to export.
@@ -47,7 +46,7 @@ class ARINC665_EXPORT FilesystemMediaSetExporter
      *
      * @return *this for chaining.
      **/
-    virtual FilesystemMediaSetExporter& mediaSet(
+    virtual FilesystemMediaSetCompiler& mediaSet(
       Media::ConstMediaSetPtr mediaSet ) = 0;
 
     /**
@@ -58,7 +57,7 @@ class ARINC665_EXPORT FilesystemMediaSetExporter
      *
      * @return *this for chaining.
      **/
-    virtual FilesystemMediaSetExporter& arinc665Version(
+    virtual FilesystemMediaSetCompiler& arinc665Version(
       SupportedArinc665Version version ) = 0;
 
     /**
@@ -70,7 +69,7 @@ class ARINC665_EXPORT FilesystemMediaSetExporter
      *
      * @return *this for chaining.
      **/
-    virtual FilesystemMediaSetExporter& createBatchFiles(
+    virtual FilesystemMediaSetCompiler& createBatchFiles(
       FileCreationPolicy createBatchFiles ) = 0;
 
     /**
@@ -82,7 +81,7 @@ class ARINC665_EXPORT FilesystemMediaSetExporter
      *
      * @return *this for chaining.
      **/
-    virtual FilesystemMediaSetExporter& createLoadHeaderFiles(
+    virtual FilesystemMediaSetCompiler& createLoadHeaderFiles(
       FileCreationPolicy createLoadHeaderFiles ) = 0;
 
     /**
@@ -94,7 +93,7 @@ class ARINC665_EXPORT FilesystemMediaSetExporter
      *
      * @return *this for chaining.
      **/
-    virtual FilesystemMediaSetExporter& mediaSetBasePath(
+    virtual FilesystemMediaSetCompiler& mediaSetBasePath(
       std::filesystem::path mediaSetBasePath ) = 0;
 
     /**
@@ -106,9 +105,9 @@ class ARINC665_EXPORT FilesystemMediaSetExporter
      *
      * @return *this for chaining.
      *
-     * @sa @ref FilesystemMediaSetExporter::filePathMapping
+     * @sa @ref FilesystemMediaSetCompiler::filePathMapping
      **/
-    virtual FilesystemMediaSetExporter& sourceBasePath(
+    virtual FilesystemMediaSetCompiler& sourceBasePath(
       std::filesystem::path sourceBasePath ) = 0;
 
     /**
@@ -121,20 +120,20 @@ class ARINC665_EXPORT FilesystemMediaSetExporter
      *
      * @return *this for chaining.
      *
-     * @sa @ref FilesystemMediaSetExporter::filePathMapping
+     * @sa @ref FilesystemMediaSetCompiler::filePathMapping
      **/
-    virtual FilesystemMediaSetExporter& filePathMapping(
+    virtual FilesystemMediaSetCompiler& filePathMapping(
       FilePathMapping filePathMapping ) = 0;
 
     /**
-     * @brief Executes the ARINC 665 Media Set Exporter.
+     * @brief Executes the ARINC 665 Media Set Compiler.
      *
      * All parameters must have been set previously.
      *
      * @return Media Paths relative to Media Set Base Path.
      *
      * @throw Arinc665Exception
-     *   When export fails
+     *   When compilation fails
      **/
     virtual MediaPaths operator()() = 0;
 };

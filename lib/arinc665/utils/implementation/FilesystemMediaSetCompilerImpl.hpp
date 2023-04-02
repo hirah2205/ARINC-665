@@ -7,59 +7,59 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Utils::FilesystemMediaSetExporterImpl.
+ * @brief Declaration of Class Arinc665::Utils::FilesystemMediaSetCompilerImpl.
  **/
 
-#ifndef ARINC665_UTILS_IMPLEMENTATION_FILESYSTEMMEDIASETEXPORTERIMPL_HPP
-#define ARINC665_UTILS_IMPLEMENTATION_FILESYSTEMMEDIASETEXPORTERIMPL_HPP
+#ifndef ARINC665_UTILS_IMPLEMENTATION_FILESYSTEMMEDIASETCOMPILERIMPL_HPP
+#define ARINC665_UTILS_IMPLEMENTATION_FILESYSTEMMEDIASETCOMPILERIMPL_HPP
 
-#include <arinc665/utils/FilesystemMediaSetExporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetCompiler.hpp>
 
 namespace Arinc665::Utils {
 
 /**
- * @brief Implementation of a Filesystem ARINC 665 Media Set Exporter.
+ * @brief Implementation of a Filesystem ARINC 665 Media Set Compiler.
  **/
-class FilesystemMediaSetExporterImpl final : public FilesystemMediaSetExporter
+class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
 {
   public:
     /**
-     * @brief Initialises the ARINC 665 Media Set Exporter.
+     * @brief Initialises the ARINC 665 %Media Set Compiler.
      **/
-    FilesystemMediaSetExporterImpl();
+    FilesystemMediaSetCompilerImpl();
 
-    ~FilesystemMediaSetExporterImpl() override;
+    ~FilesystemMediaSetCompilerImpl() override;
 
-    //! @copydoc FilesystemMediaSetExporter::mediaSet()
-    FilesystemMediaSetExporter& mediaSet(
+    //! @copydoc FilesystemMediaSetCompiler::mediaSet()
+    FilesystemMediaSetCompiler& mediaSet(
       Media::ConstMediaSetPtr mediaSet ) override;
 
-    //! @copydoc FilesystemMediaSetExporter::arinc665Version()
-    FilesystemMediaSetExporter& arinc665Version(
+    //! @copydoc FilesystemMediaSetCompiler::arinc665Version()
+    FilesystemMediaSetCompiler& arinc665Version(
       SupportedArinc665Version version ) override;
 
-    //! @copydoc FilesystemMediaSetExporter::createBatchFiles()
-    FilesystemMediaSetExporter& createBatchFiles(
+    //! @copydoc FilesystemMediaSetCompiler::createBatchFiles()
+    FilesystemMediaSetCompiler& createBatchFiles(
       FileCreationPolicy createBatchFiles ) override;
 
-    //! @copydoc FilesystemMediaSetExporter::createLoadHeaderFiles()
-    FilesystemMediaSetExporter& createLoadHeaderFiles(
+    //! @copydoc FilesystemMediaSetCompiler::createLoadHeaderFiles()
+    FilesystemMediaSetCompiler& createLoadHeaderFiles(
       FileCreationPolicy createLoadHeaderFiles ) override;
 
-    //! @copydoc FilesystemMediaSetExporter::mediaSetBasePath()
-    FilesystemMediaSetExporter& mediaSetBasePath(
+    //! @copydoc FilesystemMediaSetCompiler::mediaSetBasePath()
+    FilesystemMediaSetCompiler& mediaSetBasePath(
       std::filesystem::path mediaSetBasePath ) override;
 
-    //! @copydoc FilesystemMediaSetExporter::sourceBasePath()
-    FilesystemMediaSetExporter& sourceBasePath(
+    //! @copydoc FilesystemMediaSetCompiler::sourceBasePath()
+    FilesystemMediaSetCompiler& sourceBasePath(
       std::filesystem::path sourceBasePath ) override;
 
-    //! @copydoc FilesystemMediaSetExporter::filePathMapping()
-    FilesystemMediaSetExporter& filePathMapping(
+    //! @copydoc FilesystemMediaSetCompiler::filePathMapping()
+    FilesystemMediaSetCompiler& filePathMapping(
       FilePathMapping filePathMapping ) override;
 
     /**
-     * @brief Entry-point of the Filesystem ARINC 665 Media Set Exporter.
+     * @brief Entry-point of the Filesystem ARINC 665 Media Set Compiler.
      ***/
     MediaPaths operator()() override;
 
@@ -145,8 +145,8 @@ class FilesystemMediaSetExporterImpl final : public FilesystemMediaSetExporter
       const Arinc665::MediumNumber &mediumNumber,
       const std::filesystem::path &path );
 
-    //! Media Set Exporter
-    MediaSetExporterPtr mediaSetExporterV;
+    //! Media Set Compiler
+    MediaSetCompilerPtr mediaSetCompilerV;
     //! Media Set Base Path
     std::filesystem::path mediaSetBasePathV;
     //! Source Base Path

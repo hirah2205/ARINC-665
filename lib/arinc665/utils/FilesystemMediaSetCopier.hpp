@@ -18,7 +18,7 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief ARINC 665 Media Set Copier.
+ * @brief ARINC 665 %Media Set Copier.
  **/
 class ARINC665_EXPORT FilesystemMediaSetCopier
 {

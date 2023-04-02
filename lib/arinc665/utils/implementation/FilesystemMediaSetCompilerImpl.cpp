@@ -7,12 +7,12 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665::Utils::FilesystemMediaSetExporterImpl.
+ * @brief Definition of Class Arinc665::Utils::FilesystemMediaSetCompilerImpl.
  **/
 
-#include "FilesystemMediaSetExporterImpl.hpp"
+#include "FilesystemMediaSetCompilerImpl.hpp"
 
-#include <arinc665/utils/MediaSetExporter.hpp>
+#include <arinc665/utils/MediaSetCompiler.hpp>
 
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/MediaSet.hpp>
@@ -33,24 +33,24 @@
 
 namespace Arinc665::Utils {
 
-FilesystemMediaSetExporterImpl::FilesystemMediaSetExporterImpl():
-  mediaSetExporterV{ MediaSetExporter::create() }
+FilesystemMediaSetCompilerImpl::FilesystemMediaSetCompilerImpl():
+  mediaSetCompilerV{ MediaSetCompiler::create() }
 {
-  mediaSetExporterV
-    ->createMediumHandler( std::bind_front( &FilesystemMediaSetExporterImpl::createMedium, this ) )
-    .createDirectoryHandler( std::bind_front( &FilesystemMediaSetExporterImpl::createDirectory, this ) )
-    .checkFileExistenceHandler( std::bind_front( &FilesystemMediaSetExporterImpl::checkFileExistence, this ) )
-    .createFileHandler( std::bind_front( &FilesystemMediaSetExporterImpl::createFile, this ) )
-    .writeFileHandler( std::bind_front( &FilesystemMediaSetExporterImpl::writeFile, this ) )
-    .readFileHandler( std::bind_front( &FilesystemMediaSetExporterImpl::readFile, this ) );
+  mediaSetCompilerV
+    ->createMediumHandler( std::bind_front( &FilesystemMediaSetCompilerImpl::createMedium, this ) )
+    .createDirectoryHandler( std::bind_front( &FilesystemMediaSetCompilerImpl::createDirectory, this ) )
+    .checkFileExistenceHandler( std::bind_front( &FilesystemMediaSetCompilerImpl::checkFileExistence, this ) )
+    .createFileHandler( std::bind_front( &FilesystemMediaSetCompilerImpl::createFile, this ) )
+    .writeFileHandler( std::bind_front( &FilesystemMediaSetCompilerImpl::writeFile, this ) )
+    .readFileHandler( std::bind_front( &FilesystemMediaSetCompilerImpl::readFile, this ) );
 }
 
-FilesystemMediaSetExporterImpl::~FilesystemMediaSetExporterImpl() = default;
+FilesystemMediaSetCompilerImpl::~FilesystemMediaSetCompilerImpl() = default;
 
-FilesystemMediaSetExporter& FilesystemMediaSetExporterImpl::mediaSet(
+FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::mediaSet(
   Media::ConstMediaSetPtr mediaSet )
 {
-  assert( mediaSetExporterV );
+  assert( mediaSetCompilerV );
 
   // set media paths
   mediaPathsV.clear();
@@ -64,78 +64,78 @@ FilesystemMediaSetExporter& FilesystemMediaSetExporterImpl::mediaSet(
       fmt::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) ) );
   }
 
-  mediaSetExporterV->mediaSet( std::move( mediaSet ) );
+  mediaSetCompilerV->mediaSet( std::move( mediaSet ) );
   return *this;
 }
 
-FilesystemMediaSetExporter& FilesystemMediaSetExporterImpl::arinc665Version(
+FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::arinc665Version(
   const SupportedArinc665Version version )
 {
-  assert( mediaSetExporterV );
-  mediaSetExporterV->arinc665Version( version );
+  assert( mediaSetCompilerV );
+  mediaSetCompilerV->arinc665Version( version );
   return *this;
 }
 
-FilesystemMediaSetExporter& FilesystemMediaSetExporterImpl::createBatchFiles(
+FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::createBatchFiles(
   const FileCreationPolicy createBatchFiles )
 {
-  assert( mediaSetExporterV );
-  mediaSetExporterV->createBatchFiles( createBatchFiles );
+  assert( mediaSetCompilerV );
+  mediaSetCompilerV->createBatchFiles( createBatchFiles );
   return *this;
 }
 
-FilesystemMediaSetExporter& FilesystemMediaSetExporterImpl::createLoadHeaderFiles(
+FilesystemMediaSetCompiler&
+FilesystemMediaSetCompilerImpl::createLoadHeaderFiles(
   const FileCreationPolicy createLoadHeaderFiles )
 {
-  assert( mediaSetExporterV );
-  mediaSetExporterV->createLoadHeaderFiles( createLoadHeaderFiles );
+  assert( mediaSetCompilerV );
+  mediaSetCompilerV->createLoadHeaderFiles( createLoadHeaderFiles );
   return *this;
 }
 
-FilesystemMediaSetExporter& FilesystemMediaSetExporterImpl::mediaSetBasePath(
+FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::mediaSetBasePath(
   std::filesystem::path mediaSetBasePath )
 {
   mediaSetBasePathV = std::move( mediaSetBasePath );
   return *this;
 }
 
-FilesystemMediaSetExporter& FilesystemMediaSetExporterImpl::sourceBasePath(
+FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::sourceBasePath(
   std::filesystem::path sourceBasePath )
 {
   sourceBasePathV = std::move( sourceBasePath );
   return *this;
 }
 
-FilesystemMediaSetExporter& FilesystemMediaSetExporterImpl::filePathMapping(
+FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::filePathMapping(
   FilePathMapping filePathMapping )
 {
   filePathMappingV = std::move( filePathMapping );
   return *this;
 }
 
-MediaPaths FilesystemMediaSetExporterImpl::operator()()
+MediaPaths FilesystemMediaSetCompilerImpl::operator()()
 {
-  assert( mediaSetExporterV );
-  (*mediaSetExporterV)();
+  assert( mediaSetCompilerV );
+  ( *mediaSetCompilerV )();
   return mediaPathsV;
 }
 
-std::filesystem::path FilesystemMediaSetExporterImpl::mediumPath(
+std::filesystem::path FilesystemMediaSetCompilerImpl::mediumPath(
   const Arinc665::MediumNumber &mediumNumber ) const
 {
   const auto mediumPath{ mediaPathsV.find( mediumNumber ) };
 
   if ( mediaPathsV.end() == mediumPath )
   {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception()
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo{ "Medium not found" } );
   }
 
   return mediaSetBasePathV / mediumPath->second;
 }
 
-void FilesystemMediaSetExporterImpl::createMedium(
+void FilesystemMediaSetCompilerImpl::createMedium(
   const Arinc665::MediumNumber &mediumNumber )
 {
   BOOST_LOG_FUNCTION()
@@ -148,7 +148,7 @@ void FilesystemMediaSetExporterImpl::createMedium(
   std::filesystem::create_directory( mPath );
 }
 
-void FilesystemMediaSetExporterImpl::createDirectory(
+void FilesystemMediaSetCompilerImpl::createDirectory(
   const Arinc665::MediumNumber &mediumNumber,
   const Arinc665::Media::ConstDirectoryPtr &directory )
 {
@@ -165,7 +165,7 @@ void FilesystemMediaSetExporterImpl::createDirectory(
   std::filesystem::create_directory( directoryPath );
 }
 
-bool FilesystemMediaSetExporterImpl::checkFileExistence(
+bool FilesystemMediaSetCompilerImpl::checkFileExistence(
   const Arinc665::Media::ConstFilePtr &file )
 {
   BOOST_LOG_FUNCTION()
@@ -191,7 +191,7 @@ bool FilesystemMediaSetExporterImpl::checkFileExistence(
   return std::filesystem::is_regular_file( filePath );
 }
 
-void FilesystemMediaSetExporterImpl::createFile(
+void FilesystemMediaSetCompilerImpl::createFile(
   const Arinc665::Media::ConstFilePtr &file )
 {
   BOOST_LOG_FUNCTION()
@@ -219,7 +219,7 @@ void FilesystemMediaSetExporterImpl::createFile(
   std::filesystem::copy( sourceFilePath, destinationFilePath );
 }
 
-void FilesystemMediaSetExporterImpl::writeFile(
+void FilesystemMediaSetCompilerImpl::writeFile(
   const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path,
   const Arinc665::Files::ConstRawFileSpan &file )
@@ -259,7 +259,7 @@ void FilesystemMediaSetExporterImpl::writeFile(
     static_cast< std::streamsize >( file.size() ) );
 }
 
-Arinc665::Files::RawFile FilesystemMediaSetExporterImpl::readFile(
+Arinc665::Files::RawFile FilesystemMediaSetCompilerImpl::readFile(
   const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {

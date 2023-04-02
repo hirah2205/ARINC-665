@@ -17,7 +17,7 @@
 #include <arinc665/media/MediaSet.hpp>
 
 #include <arinc665/utils/Arinc665Xml.hpp>
-#include <arinc665/utils/FilesystemMediaSetExporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetCompiler.hpp>
 #include <arinc665/utils/MediaSetManager.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
@@ -35,9 +35,9 @@ ImportMediaSetXmlAction::ImportMediaSetXmlAction(
   QWidget * const parent ) :
   wizardV{ std::make_unique< ImportMediaSetXmlWizard >( parent ) },
   mediaSetManagerV{ std::move( mediaSetManager ) },
-  exporterV{ Arinc665::Utils::FilesystemMediaSetExporter::create() }
+  compilerV{ Arinc665::Utils::FilesystemMediaSetCompiler::create() }
 {
-  assert( exporterV );
+  assert( compilerV );
 
   connect(
     wizardV.get(),
@@ -88,25 +88,25 @@ void ImportMediaSetXmlAction::xmlFile( std::filesystem::path xmlFile )
 
 void ImportMediaSetXmlAction::inputDirectory( std::filesystem::path directory )
 {
-  exporterV->sourceBasePath( std::move( directory ) );
+  compilerV->sourceBasePath( std::move( directory ) );
 }
 
 void ImportMediaSetXmlAction::arinc665Version(
   Arinc665::SupportedArinc665Version version )
 {
-  exporterV->arinc665Version( version );
+  compilerV->arinc665Version( version );
 }
 
 void ImportMediaSetXmlAction::createBatchFiles(
   Arinc665::Utils::FileCreationPolicy createBatchFiles )
 {
-  exporterV->createBatchFiles( createBatchFiles );
+  compilerV->createBatchFiles( createBatchFiles );
 }
 
 void ImportMediaSetXmlAction::createLoadHeaderFiles(
   Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles )
 {
-  exporterV->createLoadHeaderFiles( createLoadHeaderFiles );
+  compilerV->createLoadHeaderFiles( createLoadHeaderFiles );
 }
 
 void ImportMediaSetXmlAction::start()
@@ -130,11 +130,11 @@ void ImportMediaSetXmlAction::start()
 
     std::filesystem::create_directory( outputPath );
 
-    exporterV
+    compilerV
       ->mediaSet( mediaSet )
       .filePathMapping( std::move( fileMapping ) )
       .mediaSetBasePath( std::move( outputPath ) );
-    auto mediaPaths{ ( *exporterV )() };
+    auto mediaPaths{ ( *compilerV )() };
 
     mediaSetManagerV->registerMediaSet(
       { mediaSet->partNumber(), std::move( mediaPaths ) },

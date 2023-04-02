@@ -7,18 +7,18 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665::Utils::MediaSetExporter.
+ * @brief Definition of Class Arinc665::Utils::MediaSetCompiler.
  **/
 
-#include "MediaSetExporter.hpp"
+#include "MediaSetCompiler.hpp"
 
-#include <arinc665/utils/implementation/MediaSetExporterImpl.hpp>
+#include <arinc665/utils/implementation/MediaSetCompilerImpl.hpp>
 
 namespace Arinc665::Utils {
 
-MediaSetExporterPtr MediaSetExporter::create()
+MediaSetCompilerPtr MediaSetCompiler::create()
 {
-  return std::make_unique< MediaSetExporterImpl >();
+  return std::make_unique< MediaSetCompilerImpl >();
 }
 
 }

@@ -15,11 +15,11 @@ target_sources(
         Arinc665Xml.hpp
         FileCreationPolicyDescription.hpp
         FilePrinter.hpp
+        FilesystemMediaSetCompiler.hpp
         FilesystemMediaSetCopier.hpp
-        FilesystemMediaSetExporter.hpp
         FilesystemMediaSetImporter.hpp
         FilesystemMediaSetRemover.hpp
-        MediaSetExporter.hpp
+        MediaSetCompiler.hpp
         MediaSetImporter.hpp
         MediaSetManager.hpp
         MediaSetManagerConfiguration.hpp
@@ -31,11 +31,11 @@ target_sources(
     Arinc665Xml.cpp
     FileCreationPolicyDescription.cpp
     FilePrinter.cpp
+    FilesystemMediaSetCompiler.cpp
     FilesystemMediaSetCopier.cpp
-    FilesystemMediaSetExporter.cpp
     FilesystemMediaSetImporter.cpp
     FilesystemMediaSetRemover.cpp
-    MediaSetExporter.cpp
+    MediaSetCompiler.cpp
     MediaSetImporter.cpp
     MediaSetManager.cpp
     MediaSetManagerConfiguration.cpp

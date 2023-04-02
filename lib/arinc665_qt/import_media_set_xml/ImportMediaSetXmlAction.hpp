@@ -109,7 +109,7 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlAction final : public QObject
     //! Media Set Manager
     Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV;
     //! ARINC 665 Media Set Exporter
-    Arinc665::Utils::FilesystemMediaSetExporterPtr exporterV;
+    Arinc665::Utils::FilesystemMediaSetCompilerPtr compilerV;
     //! XML File
     std::filesystem::path xmlFileV;
 };

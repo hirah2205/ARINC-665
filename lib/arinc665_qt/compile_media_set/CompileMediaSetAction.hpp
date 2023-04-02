@@ -116,9 +116,9 @@ class ARINC665_QT_EXPORT CompileMediaSetAction final : public QObject
 
   private:
     //! Wizard Dialog
-    std::unique_ptr< CompileMediaSetWizard > wizard;
-    //! ARINC 665 Media Set Exporter
-    Arinc665::Utils::FilesystemMediaSetExporterPtr exporter;
+    std::unique_ptr< CompileMediaSetWizard > wizardV;
+    //! ARINC 665 Media Set Compiler
+    Arinc665::Utils::FilesystemMediaSetCompilerPtr compilerV;
     //! XML File
     std::filesystem::path xmlFileV;
     //! Output Base Path

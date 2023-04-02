@@ -7,18 +7,18 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665::Utils::FilesystemMediaSetExporter.
+ * @brief Definition of Class Arinc665::Utils::FilesystemMediaSetCompiler.
  **/
 
-#include "FilesystemMediaSetExporter.hpp"
+#include "FilesystemMediaSetCompiler.hpp"
 
-#include <arinc665/utils/implementation/FilesystemMediaSetExporterImpl.hpp>
+#include <arinc665/utils/implementation/FilesystemMediaSetCompilerImpl.hpp>
 
 namespace Arinc665::Utils {
 
-FilesystemMediaSetExporterPtr FilesystemMediaSetExporter::create()
+FilesystemMediaSetCompilerPtr FilesystemMediaSetCompiler::create()
 {
-  return std::make_unique< FilesystemMediaSetExporterImpl >();
+  return std::make_unique< FilesystemMediaSetCompilerImpl >();
 }
 
 }

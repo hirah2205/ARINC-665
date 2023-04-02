@@ -18,7 +18,7 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief ARINC 665 Media Set Importer using local Filesystem.
+ * @brief ARINC 665 %Media Set Importer using local Filesystem.
  *
  * This importer expects that each medium is contained as directory on the local
  * filesystem.

@@ -7,64 +7,64 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Utils::MediaSetExporterImpl.
+ * @brief Declaration of Class Arinc665::Utils::MediaSetCompilerImpl.
  **/
 
-#ifndef ARINC665_UTILS_IMPLEMENTATION_MEDIASETEXPORTERIMPL_HPP
-#define ARINC665_UTILS_IMPLEMENTATION_MEDIASETEXPORTERIMPL_HPP
+#ifndef ARINC665_UTILS_IMPLEMENTATION_MEDIASETCOMPILERIMPL_HPP
+#define ARINC665_UTILS_IMPLEMENTATION_MEDIASETCOMPILERIMPL_HPP
 
-#include <arinc665/utils/MediaSetExporter.hpp>
+#include <arinc665/utils/MediaSetCompiler.hpp>
 
 namespace Arinc665::Utils {
 
 /**
- * @brief Implementation of a Media Set Exporter.
+ * @brief Implementation of a %Media Set Compiler.
  **/
-class MediaSetExporterImpl final : public MediaSetExporter
+class MediaSetCompilerImpl final : public MediaSetCompiler
 {
   public:
     /**
-     * @brief Initialises the ARINC 665 Media Set Exporter
+     * @brief Initialises the ARINC 665 %Media Set Compiler
      **/
-    MediaSetExporterImpl() = default;
+    MediaSetCompilerImpl() = default;
 
-    //! @copydoc MediaSetExporter::mediaSet()
-    MediaSetExporter& mediaSet( Media::ConstMediaSetPtr mediaSet ) override;
+    //! @copydoc MediaSetCompiler::mediaSet()
+    MediaSetCompiler& mediaSet( Media::ConstMediaSetPtr mediaSet ) override;
 
-    //! @copydoc MediaSetExporter::createMediumHandler()
-    MediaSetExporter& createMediumHandler(
+    //! @copydoc MediaSetCompiler::createMediumHandler()
+    MediaSetCompiler& createMediumHandler(
       CreateMediumHandler createMediumHandler ) override;
 
-    //! @copydoc MediaSetExporter::createDirectoryHandler()
-    MediaSetExporter& createDirectoryHandler(
+    //! @copydoc MediaSetCompiler::createDirectoryHandler()
+    MediaSetCompiler& createDirectoryHandler(
       CreateDirectoryHandler createDirectoryHandler ) override;
 
-    //! @copydoc MediaSetExporter::checkFileExistenceHandler()
-    MediaSetExporter& checkFileExistenceHandler(
+    //! @copydoc MediaSetCompiler::checkFileExistenceHandler()
+    MediaSetCompiler& checkFileExistenceHandler(
       CheckFileExistenceHandler checkFileExistenceHandler ) override;
 
-    //! @copydoc MediaSetExporter::createFileHandler()
-    MediaSetExporter& createFileHandler(
+    //! @copydoc MediaSetCompiler::createFileHandler()
+    MediaSetCompiler& createFileHandler(
       CreateFileHandler createFileHandler ) override;
 
-    //! @copydoc MediaSetExporter::writeFileHandler()
-    MediaSetExporter& writeFileHandler(
+    //! @copydoc MediaSetCompiler::writeFileHandler()
+    MediaSetCompiler& writeFileHandler(
       WriteFileHandler writeFileHandler ) override;
 
-    //! @copydoc MediaSetExporter::readFileHandler()
-    MediaSetExporter& readFileHandler(
+    //! @copydoc MediaSetCompiler::readFileHandler()
+    MediaSetCompiler& readFileHandler(
       ReadFileHandler readFileHandler ) override;
 
-    //! @copydoc MediaSetExporter::arinc665Version()
-    MediaSetExporter& arinc665Version(
+    //! @copydoc MediaSetCompiler::arinc665Version()
+    MediaSetCompiler& arinc665Version(
       SupportedArinc665Version version ) override;
 
-    //! @copydoc MediaSetExporter::createBatchFiles()
-    MediaSetExporter& createBatchFiles(
+    //! @copydoc MediaSetCompiler::createBatchFiles()
+    MediaSetCompiler& createBatchFiles(
       FileCreationPolicy createBatchFiles ) override;
 
-    //! @copydoc MediaSetExporter::createLoadHeaderFiles()
-    MediaSetExporter& createLoadHeaderFiles(
+    //! @copydoc MediaSetCompiler::createLoadHeaderFiles()
+    MediaSetCompiler& createLoadHeaderFiles(
       FileCreationPolicy createLoadHeaderFiles ) override;
 
     /**

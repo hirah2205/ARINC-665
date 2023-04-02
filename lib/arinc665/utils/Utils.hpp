@@ -38,26 +38,26 @@
  * @brief ARINC 665 Utilities.
  *
  * This namespace provides utilities for handling ARINC 665 %Media Sets:
- *  - Importing and Exporting Media Sets
+ *  - Decompiling and Compiling %Media Sets
  *  - XML Handling
  *  - %Media Set Manager
  **/
 namespace Arinc665::Utils {
 
-//! Media Paths (Medium Number -> Medium Path)
+//! %Media Paths (Medium Number -> Medium Path)
 using MediaPaths =
   std::map< Arinc665::MediumNumber, std::filesystem::path >;
 
-//! Media Set Paths (Media Set Base Path + Media Paths)
+//! %Media Set Paths (%Media Set Base Path + %Media Paths)
 using MediaSetPaths = std::pair< std::filesystem::path, MediaPaths >;
 
 /**
- * @name Media Set Exporter
+ * @name Media Set Compiler
  *
  * @{
  **/
 
-//! File creation policy of the exporter for load headers/ batch file
+//! File creation policy of the compiler for load headers/ batch file
 enum class FileCreationPolicy
 {
   //! No file (load header/ batch file) is created by the exporter itself.
@@ -71,14 +71,14 @@ enum class FileCreationPolicy
 //! File (Source) Path Mapping (File to path)
 using FilePathMapping = std::map< Media::ConstFilePtr, std::filesystem::path >;
 
-class MediaSetExporter;
-//! ARINC 665 %Media Set Exporter Instance.
-using MediaSetExporterPtr = std::unique_ptr< MediaSetExporter >;
+class MediaSetCompiler;
+//! ARINC 665 %Media Set Compiler Instance.
+using MediaSetCompilerPtr = std::unique_ptr< MediaSetCompiler >;
 
-class FilesystemMediaSetExporter;
-//! Filesystem ARINC 665 %Media Set Exporter Instance.
-using FilesystemMediaSetExporterPtr =
-  std::unique_ptr< FilesystemMediaSetExporter >;
+class FilesystemMediaSetCompiler;
+//! Filesystem ARINC 665 %Media Set Compiler Instance.
+using FilesystemMediaSetCompilerPtr =
+  std::unique_ptr< FilesystemMediaSetCompiler >;
 
 /** @} **/
 
@@ -88,7 +88,7 @@ using FilesystemMediaSetExporterPtr =
  * @{
  **/
 
-//! Media Set Import Result Type
+//! %Media Set Import Result Type
 using MediaSetImportResult =
   std::pair< Media::MediaSetPtr, Media::CheckValues >;
 
@@ -141,8 +141,8 @@ using MediaSetManagerPtr = std::shared_ptr< MediaSetManager >;
 /**
  * @brief Tries to decode the given directory as ARINC 665 Medium.
  *
- * Tries to access the `List of Files` within @p directory and decodes it.
- * If the decoding is successful, the Medium Information is returned.
+ * Tries to access the *List of %Files* within @p directory and decodes it.
+ * If the decoding is successful, the medium information is returned.
  *
  * @param[in] directory
  *   Medium directory

@@ -13,7 +13,7 @@
 #include <arinc665/media/Media.hpp>
 
 #include <arinc665/utils/Arinc665Xml.hpp>
-#include <arinc665/utils/FilesystemMediaSetExporter.hpp>
+#include <arinc665/utils/FilesystemMediaSetCompiler.hpp>
 #include <arinc665/utils/FileCreationPolicyDescription.hpp>
 
 #include <arinc665/media/MediaSet.hpp>
@@ -162,10 +162,10 @@ int main( int argc, char * argv[] )
     // create media set directory
     std::filesystem::create_directories( mediaSetDestinationDirectory );
 
-    auto exporter{ Arinc665::Utils::FilesystemMediaSetExporter::create() };
+    auto compiler{ Arinc665::Utils::FilesystemMediaSetCompiler::create() };
 
     // set exporter parameters
-    exporter
+    compiler
       ->mediaSet( mediaSet )
       .arinc665Version( version )
       .createBatchFiles( createBatchFiles )
@@ -174,7 +174,7 @@ int main( int argc, char * argv[] )
       .sourceBasePath( mediaSetSourceDirectory )
       .filePathMapping( fileMapping );
 
-    (*exporter)();
+    ( *compiler )();
   }
   catch ( const boost::program_options::error &e )
   {
