@@ -30,7 +30,7 @@ class ARINC665_QT_EXPORT FilePathMappingModel final : public QAbstractTableModel
 
   public:
     //! Columns of Model
-    enum class Columns
+    enum class Columns : int
     {
       //! Media Set File
       MediaSetFile,

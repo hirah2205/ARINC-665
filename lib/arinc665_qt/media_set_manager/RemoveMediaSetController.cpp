@@ -19,6 +19,8 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <helper_qt/String.hpp>
+
 #include <QMessageBox>
 
 #include <boost/exception/all.hpp>
@@ -41,7 +43,8 @@ void RemoveMediaSetController::start(
   const auto answer{ QMessageBox::question(
       nullptr,
       tr( "Remove ARINC 665 Media Set" ),
-      tr( "Remove Media Set" ) ) };
+      tr( "Remove Media Set: " )
+        + HelperQt::toQString( mediaSet->partNumber() ) ) };
 
   switch ( answer )
   {

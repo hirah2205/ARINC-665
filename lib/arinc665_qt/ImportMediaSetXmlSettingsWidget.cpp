@@ -73,16 +73,17 @@ void ImportMediaSetXmlSettingsWidget::xmlFileSelected( const QString &file )
 {
   ui->xmlFile->setText( file );
   emit xmlFile( file.toStdString() );
+
+  // if not already set, update input directory
+  if ( ui->inputDirectory->text().isEmpty() )
+  {
+    inputDirectorySelected( selectXmlFileDialog->directory().path() );
+  }
 }
 
 void ImportMediaSetXmlSettingsWidget::selectInputDirectory()
 {
-  if ( ui->inputDirectory->text().isEmpty() )
-  {
-    selectInputDirectoryDialog->setDirectory(
-      selectXmlFileDialog->directory() );
-  }
-
+  selectInputDirectoryDialog->setDirectory( selectXmlFileDialog->directory() );
   selectInputDirectoryDialog->exec();
 }
 

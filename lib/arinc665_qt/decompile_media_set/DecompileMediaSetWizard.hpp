@@ -19,6 +19,7 @@
 
 #include <QWizard>
 #include <QFileDialog>
+#include <QSortFilterProxyModel>
 
 #include <memory>
 #include <filesystem>
@@ -113,6 +114,8 @@ class ARINC665_QT_EXPORT DecompileMediaSetWizard final : public QWizard
     std::unique_ptr< Ui::DecompileMediaSetWizard > ui;
     //! Select XML File Dialog
     std::unique_ptr< QFileDialog > selectXmlFileDialog;
+    //! Sorted File Mapping Model
+    std::unique_ptr< QSortFilterProxyModel > sortFilterProxyModelV;
 };
 
 }

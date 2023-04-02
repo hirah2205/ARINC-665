@@ -21,10 +21,13 @@ namespace Arinc665Qt {
 DecompileMediaSetWizard::DecompileMediaSetWizard( QWidget * const parent ) :
   QWizard{ parent },
   ui{ std::make_unique< Ui::DecompileMediaSetWizard >() },
-  selectXmlFileDialog{ std::make_unique< QFileDialog >( this ) }
+  selectXmlFileDialog{ std::make_unique< QFileDialog >( this ) },
+  sortFilterProxyModelV{ std::make_unique< QSortFilterProxyModel >( this ) }
 {
   ui->setupUi( this );
   ui->settings->setCommitPage( true );
+
+  ui->filePathMapping->setModel( sortFilterProxyModelV.get() );
 
   selectXmlFileDialog->setWindowTitle( tr( "Select ARINC 665 Media Set XML" ) );
   selectXmlFileDialog->setNameFilter(tr( "ARINC 665 Media Set XML (*.xml)" ) );
@@ -62,7 +65,8 @@ void DecompileMediaSetWizard::mediaPathsModel( MediaPathsModel * const model )
   ui->settings->mediaPathsModel( model );
 }
 
-void DecompileMediaSetWizard::mediaSetModel( Media::MediaSetModel * const model )
+void DecompileMediaSetWizard::mediaSetModel(
+  Media::MediaSetModel * const model )
 {
   ui->mediaSetView->mediaSetModel( model );
 }
@@ -70,7 +74,10 @@ void DecompileMediaSetWizard::mediaSetModel( Media::MediaSetModel * const model 
 void DecompileMediaSetWizard::filePathMappingModel(
   FilePathMappingModel * const model )
 {
-  ui->filePathMapping->setModel( model );
+  //ui->filePathMapping->setModel( model );
+  sortFilterProxyModelV->setSourceModel( model );
+  sortFilterProxyModelV->sort(
+    static_cast< int >( FilePathMappingModel::Columns::MediaSetFile ) );
 }
 
 void DecompileMediaSetWizard::pageChanged( const int id )
