@@ -1,0 +1,69 @@
+/**
+ * @file
+ * @copyright
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * @author Thomas Vogt, thomas@thomas-vogt.de
+ *
+ * @brief Definition of Class Arinc665Qt::ImportMediaSetSettingsPage.
+ **/
+
+#include "ImportMediaSetSettingsPage.hpp"
+
+#include "ui_ImportMediaSetSettingsPage.h"
+
+namespace Arinc665Qt {
+
+ImportMediaSetSettingsPage::ImportMediaSetSettingsPage(
+  QWidget * const parent ) :
+  QWizardPage{ parent },
+  ui{ std::make_unique< Ui::ImportMediaSetSettingsPage >() }
+{
+  ui->setupUi( this );
+
+  connect(
+    ui->mediaPaths,
+    &MediaPathsWidget::mediaPathsChanged,
+    this,
+    &ImportMediaSetSettingsPage::completeChanged );
+
+  connect(
+    ui->checkFileIntegrity,
+    &QCheckBox::stateChanged,
+    this,
+    &ImportMediaSetSettingsPage::checkFileIntegrityStateChanged );
+}
+
+ImportMediaSetSettingsPage::~ImportMediaSetSettingsPage() = default;
+
+bool ImportMediaSetSettingsPage::isComplete() const
+{
+  return QWizardPage::isComplete() && ui->mediaPaths->completed();
+}
+
+void ImportMediaSetSettingsPage::mediaPathsModel(
+  MediaPathsModel * const model )
+{
+  ui->mediaPaths->mediaPathsModel( model );
+}
+
+void ImportMediaSetSettingsPage::checkFileIntegrityStateChanged( int state )
+{
+  switch ( state )
+  {
+    case Qt::CheckState::Unchecked:
+      emit checkFileIntegrity( false );
+      break;
+
+    case Qt::CheckState::Checked:
+      emit checkFileIntegrity( true );
+      break;
+
+    default:
+      break;
+  }
+}
+
+}

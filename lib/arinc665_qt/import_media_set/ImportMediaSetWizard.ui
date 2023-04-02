@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Arinc665Qt::ImportMediaSetWizard</class>
+ <widget class="QWizard" name="Arinc665Qt::ImportMediaSetWizard">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Import ARINC 665 Media Set</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/arinc665_qt_resources.qrc">
+    <normaloff>:/media_set_manager/arinc665_media_set_import.svg</normaloff>:/media_set_manager/arinc665_media_set_import.svg</iconset>
+  </property>
+  <property name="wizardStyle">
+   <enum>QWizard::ModernStyle</enum>
+  </property>
+  <widget class="Arinc665Qt::ImportMediaSetSettingsPage" name="settings"/>
+  <widget class="QWizardPage" name="finish">
+   <property name="title">
+    <string>Operation Completed</string>
+   </property>
+   <property name="subTitle">
+    <string>Finished import</string>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Arinc665Qt::ImportMediaSetSettingsPage</class>
+   <extends>QWizardPage</extends>
+   <header location="global">arinc665_qt/import_media_set/ImportMediaSetSettingsPage.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../resources/arinc665_qt_resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

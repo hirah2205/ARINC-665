@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Module Arinc665Qt.
+ * @brief Declaration of Namespace Arinc665Qt.
  **/
 
 /**
@@ -15,6 +15,8 @@
  * @brief Media Set Importer
  *
  * Imports an ARINC 665 Media Set to the Media Set Manager.
+ *
+ * @sa @ref Arinc665Qt::ImportMediaSetAction
  **/
 
 #ifndef ARINC665_QT_IMPORT_MEDIA_SET_IMPORTMEDIASET_HPP
@@ -24,7 +26,7 @@
 
 namespace Arinc665Qt {
 
-class ImportMediaSetController;
+class ImportMediaSetAction;
 class ImportMediaSetWizard;
 
 }

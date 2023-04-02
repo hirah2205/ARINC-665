@@ -15,6 +15,7 @@
 #include <arinc665_qt/media/MediaSetsModel.hpp>
 #include <arinc665_qt/media_set_manager/MediaSetManagerDialog.hpp>
 #include <arinc665_qt/media_set_manager/RemoveMediaSetController.hpp>
+#include <arinc665_qt/import_media_set/ImportMediaSetAction.hpp>
 #include <arinc665_qt/import_media_set_xml/ImportMediaSetXmlAction.hpp>
 #include <arinc665_qt/view_media_set/ViewMediaSetAction.hpp>
 
@@ -140,6 +141,23 @@ void MediaSetManagerController::viewMediaSet( const QModelIndex &index )
 
 void MediaSetManagerController::importMediaSet()
 {
+  auto controller{ new ImportMediaSetAction{
+    mediaSetManagerV,
+    mediaSetManagerDialogV.get() } };
+
+  // connect to reload media set model slot
+  connect(
+    controller,
+    &ImportMediaSetAction::finished,
+    this,
+    &MediaSetManagerController::reloadMediaSetModel );
+
+  // connect to clean up slot
+  connect(
+    controller,
+    &ImportMediaSetAction::finished,
+    controller,
+    &ImportMediaSetAction::deleteLater );
 }
 
 void MediaSetManagerController::importMediaSetXml()

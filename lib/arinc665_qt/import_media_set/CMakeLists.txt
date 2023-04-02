@@ -13,6 +13,13 @@ target_sources(
     FILE_SET HEADERS
       FILES
         ImportMediaSet.hpp
+        ImportMediaSetAction.hpp
+        ImportMediaSetWizard.hpp
+        ImportMediaSetSettingsPage.hpp
 
   PRIVATE
-     )
+    ImportMediaSetAction.cpp
+    ImportMediaSetSettingsPage.cpp
+    ImportMediaSetSettingsPage.ui
+    ImportMediaSetWizard.cpp
+    ImportMediaSetWizard.ui )
