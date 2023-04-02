@@ -56,6 +56,19 @@ class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
      **/
     void mediaPathsModel( MediaPathsModel * model );
 
+    /**
+     * @brief Returns, if the Media Paths are complete
+     *
+     * @return If the Media Paths are complete.
+     **/
+    bool completed() const;
+
+  signals:
+    /**
+     * @brief Signal emitted, when the user adds or delete media paths.
+     **/
+    void mediaPathsChanged();
+
   private slots:
     /**
      * @brief Slot when user wants to add medium directory.
@@ -77,7 +90,7 @@ class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
      * @brief Slot called, when input directory has been selected.
      *
      * This slot is connected to the QFileDialog::fileSelected signal.
-     * This slot checks if the selcted directory is a media directory and adds
+     * This slot checks if the selected directory is a media directory and adds
      * it to the model.
      *
      * @param[in] file

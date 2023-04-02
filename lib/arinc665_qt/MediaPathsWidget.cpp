@@ -63,6 +63,12 @@ void MediaPathsWidget::mediaPathsModel( MediaPathsModel * const model )
   ui->mediaPaths->setModel( model );
 }
 
+bool MediaPathsWidget::completed() const
+{
+  //! @todo check for completeness of media
+  return !mediaPathsModelV->mediaPaths().empty();
+}
+
 void MediaPathsWidget::addMediumDirectory()
 {
   selectMediaPathDialog->exec();
@@ -71,6 +77,8 @@ void MediaPathsWidget::addMediumDirectory()
 void MediaPathsWidget::removeMediumDirectory()
 {
   mediaPathsModelV->remove( ui->mediaPaths->currentIndex() );
+
+  emit mediaPathsChanged();
 }
 
 void MediaPathsWidget::mediumDirectorySelected( const QString &file )
@@ -87,6 +95,8 @@ void MediaPathsWidget::mediumDirectorySelected( const QString &file )
   mediaPathsModelV->mediumPath(
     mediumInformation->mediaSequenceNumber,
     file.toStdString() );
+
+  emit mediaPathsChanged();
 }
 
 }
