@@ -70,6 +70,14 @@ static void printFiles(
   std::string_view initialIndent,
   std::string_view indent );
 
+/**
+ * @brief Converts the check value type to string representation
+ *
+ * @param[in] type
+ *   Check Value Type
+ *
+ * @return Check Value Type as std::string.
+ **/
 static std::string printCheckValueType(
   std::optional< Arinc645::CheckValueType > type );
 

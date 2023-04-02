@@ -53,6 +53,12 @@ static Arinc665::Files::RawFile readFile(
   uint8_t mediumNumber,
   const std::filesystem::path &path );
 
+/**
+ * @brief Print @p information
+ *
+ * @param information
+ *   Information to print
+ **/
 static void printInformation( std::string_view information );
 
 //! Media Directories

@@ -14,6 +14,9 @@
 
 #include <QDir>
 
+/**
+ * @brief Initialises the resources.
+ **/
 static void Resources_initalise();
 
 namespace Arinc665Qt::Resources {

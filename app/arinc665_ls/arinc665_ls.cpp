@@ -101,6 +101,14 @@ static void printFileListFile( const std::filesystem::path &filesLum );
  **/
 static void list_files( const std::filesystem::path &loadDir );
 
+/**
+ * @brief Load given @p file.
+ *
+ * @param[in] file
+ *   Filename
+ *
+ * @return @p file a raw data.
+ **/
 static Arinc665::Files::RawFile loadFile( const std::filesystem::path &file );
 
 int main( int argc, char const * argv[] )
