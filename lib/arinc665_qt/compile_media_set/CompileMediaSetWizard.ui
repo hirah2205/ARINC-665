@@ -18,7 +18,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/arinc665_qt_resources.qrc">
-    <normaloff>:/media_set_manager/arinc665_media_set_import_xml.svg</normaloff>:/media_set_manager/arinc665_media_set_import_xml.svg</iconset>
+    <normaloff>:/media_set_manager/arinc665_media_set_compile.svg</normaloff>:/media_set_manager/arinc665_media_set_compile.svg</iconset>
   </property>
   <property name="wizardStyle">
    <enum>QWizard::ModernStyle</enum>

@@ -18,101 +18,24 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/arinc665_qt_resources.qrc">
-    <normaloff>:/media_set_manager/arinc665_media_set_import_xml.svg</normaloff>:/media_set_manager/arinc665_media_set_import_xml.svg</iconset>
+    <normaloff>:/media_set_manager/arinc665_media_set_decompile.svg</normaloff>:/media_set_manager/arinc665_media_set_decompile.svg</iconset>
   </property>
   <property name="wizardStyle">
    <enum>QWizard::ModernStyle</enum>
   </property>
   <property name="options">
-   <set>QWizard::NoCancelButtonOnLastPage</set>
+   <set>QWizard::NoBackButtonOnStartPage|QWizard::NoCancelButtonOnLastPage</set>
   </property>
   <widget class="Arinc665Qt::DecompileMediaSetSettingsPage" name="settings">
    <property name="title">
-    <string>Settings</string>
+    <string>Decompilation Settings</string>
    </property>
    <property name="subTitle">
-    <string>Select Media Directories</string>
+    <string>Select ARINC 665 Media Directories</string>
    </property>
-  </widget>
-  <widget class="QWizardPage" name="completion">
-   <property name="title">
-    <string>Completed</string>
-   </property>
-   <property name="subTitle">
-    <string>View Media Set and save ARINC 665 Media SET XML description.</string>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_3">
-    <item>
-     <widget class="QWidget" name="mediaSet" native="true">
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QSplitter" name="splitter">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <widget class="Arinc665Qt::Media::MediaSetViewWidget" name="mediaSetView" native="true"/>
-         <widget class="QTableView" name="filePathMapping">
-          <property name="alternatingRowColors">
-           <bool>true</bool>
-          </property>
-          <property name="selectionMode">
-           <enum>QAbstractItemView::SingleSelection</enum>
-          </property>
-          <property name="selectionBehavior">
-           <enum>QAbstractItemView::SelectRows</enum>
-          </property>
-          <attribute name="horizontalHeaderStretchLastSection">
-           <bool>true</bool>
-          </attribute>
-          <attribute name="verticalHeaderVisible">
-           <bool>false</bool>
-          </attribute>
-         </widget>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="buttons" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QPushButton" name="save">
-         <property name="text">
-          <string>Save Media Set XML</string>
-         </property>
-         <property name="icon">
-          <iconset theme="document-save">
-           <normaloff>.</normaloff>.</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
-    </item>
-   </layout>
   </widget>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>Arinc665Qt::Media::MediaSetViewWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">arinc665_qt/media/MediaSetViewWidget.hpp</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>Arinc665Qt::DecompileMediaSetSettingsPage</class>
    <extends>QWizardPage</extends>

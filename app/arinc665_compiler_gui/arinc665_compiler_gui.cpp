@@ -49,7 +49,7 @@ try
   QApplication::setApplicationName( "ARINC 665 Media Set Compiler" );
   QApplication::setApplicationDisplayName( "ARINC 665 Media Set Compiler" );
   QApplication::setWindowIcon( QIcon(
-    ":/media_set_manager/arinc665_media_set_manager.svg" ) );
+    ":/media_set_manager/arinc665_media_set_compile.svg" ) );
 
   Arinc665Qt::CompileMediaSetAction compileMediaSetAction{};
 

@@ -12,7 +12,7 @@
 
 #include <arinc665_qt/resources/Resources.hpp>
 
-#include <arinc665_qt/decompile_media_set/DecompileMediaSetAction.hpp>
+#include <arinc665_qt/decompile_media_set/DecompileMediaSetWindow.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -49,15 +49,10 @@ try
   QApplication::setApplicationName( "ARINC 665 Media Set Decompiler" );
   QApplication::setApplicationDisplayName( "ARINC 665 Media Set Decompiler" );
   QApplication::setWindowIcon( QIcon(
-    ":/media_set_manager/arinc665_media_set_manager.svg" ) );
+    ":/media_set_manager/arinc665_media_set_decompile.svg" ) );
 
-  Arinc665Qt::DecompileMediaSetAction decompileMediaSetAction{};
-
-  QObject::connect(
-    &decompileMediaSetAction,
-    &Arinc665Qt::DecompileMediaSetAction::finished,
-    &application,
-    &QApplication::quit );
+  Arinc665Qt::DecompileMediaSetWindow decompileMediaSetWindow{};
+  decompileMediaSetWindow.show();
 
   return QApplication::exec();
 }

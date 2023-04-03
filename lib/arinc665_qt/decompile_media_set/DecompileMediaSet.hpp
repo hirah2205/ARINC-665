@@ -17,7 +17,7 @@
  * Decompiles ARINC 665 Media Set.
  * The output is stored within an ARINC 665 Media Set XML description.
  *
- * @sa @ref Arinc665Qt::DecompileMediaSetAction
+ * @sa @ref Arinc665Qt::DecompileMediaSetWindow
  **/
 
 #ifndef ARINC665_QT_DECOMPILE_MEDIA_SET_DECOMPILEMEDIASET_HPP
@@ -27,7 +27,7 @@
 
 namespace Arinc665Qt {
 
-class DecompileMediaSetAction;
+class DecompileMediaSetWindow;
 class DecompileMediaSetWizard;
 
 }
