@@ -12,7 +12,7 @@
 
 #include <arinc665_qt/resources/Resources.hpp>
 
-#include <arinc665_qt/view_media_set_xml/ViewMediaSetXmlAction.hpp>
+#include <arinc665_qt/view_media_set_xml/ViewMediaSetXmlWindow.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -51,15 +51,8 @@ try
   QApplication::setWindowIcon( QIcon(
     ":/media_set_manager/arinc665_media_set_manager.svg" ) );
 
-  Arinc665Qt::ViewMediaSetXmlAction viewMediaSetXmlAction{};
-
-  QObject::connect(
-    &viewMediaSetXmlAction,
-    &Arinc665Qt::ViewMediaSetXmlAction::finished,
-    &application,
-    &QApplication::quit );
-
-  viewMediaSetXmlAction.start();
+  Arinc665Qt::ViewMediaSetXmlWindow viewMediaSetXmlWindow{};
+  viewMediaSetXmlWindow.show();
 
   return QApplication::exec();
 }

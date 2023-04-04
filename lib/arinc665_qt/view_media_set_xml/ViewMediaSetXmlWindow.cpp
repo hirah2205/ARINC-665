@@ -7,16 +7,14 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Qt::ViewMediaSetXmlAction.
+ * @brief Definition of Class Arinc665Qt::ViewMediaSetXmlWindow.
  **/
 
-#include "ViewMediaSetXmlAction.hpp"
+#include "ViewMediaSetXmlWindow.hpp"
 
-#include <arinc665_qt/view_media_set_xml/ViewMediaSetXmlDialog.hpp>
+#include "ui_ViewMediaSetXmlWindow.h"
 
 #include <arinc665_qt/media/MediaSetModel.hpp>
-#include <arinc665_qt/media/LoadsModel.hpp>
-#include <arinc665_qt/media/BatchesModel.hpp>
 
 #include <arinc665_qt/Arinc665QtLogger.hpp>
 #include <arinc665_qt/FilePathMappingModel.hpp>
@@ -25,16 +23,12 @@
 
 #include <arinc665/media/MediaSet.hpp>
 
-#include <arinc665/files/MediaSetInformation.hpp>
-
 #include <arinc665/Arinc665Exception.hpp>
-#include <arinc665/MediumNumber.hpp>
-
-#include <arinc645/CheckValue.hpp>
 
 #include <helper/Exception.hpp>
 
 #include <helper_qt/String.hpp>
+
 #include <QMessageBox>
 
 #include <boost/log/trivial.hpp>
@@ -42,60 +36,37 @@
 
 namespace Arinc665Qt {
 
-ViewMediaSetXmlAction::ViewMediaSetXmlAction( QWidget * const parent ):
-  QObject{ parent },
+ViewMediaSetXmlWindow::ViewMediaSetXmlWindow( QWidget * const parent ):
+  QMainWindow{ parent },
+  ui{ std::make_unique< Ui::ViewMediaSetXmlWindow >() },
+  selectMediaSetXmlDialogV{ std::make_unique< QFileDialog>( this ) },
   mediaSetModelV{ std::make_unique< Media::MediaSetModel >( this ) },
-  filePathMappingModelV{ std::make_unique< FilePathMappingModel >( this ) },
-  selectMediaSetXmlDialogV{ std::make_unique< QFileDialog>( parent ) },
-  viewMediaSetXmlDialogV{ std::make_unique< ViewMediaSetXmlDialog >( parent ) }
+  filePathMappingModelV{ std::make_unique< FilePathMappingModel >( this ) }
 {
+  ui->setupUi( this );
+
   selectMediaSetXmlDialogV->setWindowTitle( tr( "Select ARINC 665 Media Set XML" ) );
   selectMediaSetXmlDialogV->setNameFilter(tr("ARINC 665 Media Set XML (*.xml)" ) );
   selectMediaSetXmlDialogV->setFileMode( QFileDialog::FileMode::ExistingFile );
 
+  ui->mediaSetView->mediaSetModel( mediaSetModelV.get() );
+  ui->filePathMapping->setModel( filePathMappingModelV.get() );
+
   connect(
+    ui->actionOpenMediaSetXml,
+    &QAction::triggered,
     selectMediaSetXmlDialogV.get(),
-    &QFileDialog::rejected,
-    this,
-    &ViewMediaSetXmlAction::finished );
+    &QFileDialog::exec );
   connect(
     selectMediaSetXmlDialogV.get(),
     &QFileDialog::fileSelected,
     this,
-    &ViewMediaSetXmlAction::fileSelected );
-
-  viewMediaSetXmlDialogV->mediaSetModel( mediaSetModelV.get() );
-  viewMediaSetXmlDialogV->filePathMappingModel( filePathMappingModelV.get() );
-
-  connect(
-    viewMediaSetXmlDialogV.get(),
-    &ViewMediaSetXmlDialog::finished,
-    this,
-    &ViewMediaSetXmlAction::finished );
+    &ViewMediaSetXmlWindow::xmlFileSelected );
 }
 
-ViewMediaSetXmlAction::~ViewMediaSetXmlAction() = default;
+ViewMediaSetXmlWindow::~ViewMediaSetXmlWindow() = default;
 
-void ViewMediaSetXmlAction::start()
-{
-  selectMediaSetXmlDialogV->open();
-}
-
-void ViewMediaSetXmlAction::start(
-  Arinc665::Media::ConstMediaSetPtr mediaSet,
-  Arinc665::Utils::FilePathMapping filePathMapping )
-{
-  mediaSetModelV->root( mediaSet );
-  filePathMappingModelV->filePathMapping( std::move( filePathMapping ) );
-
-  // Set window title
-  viewMediaSetXmlDialogV->setWindowTitle(
-    HelperQt::toQString( mediaSet->partNumber() ) );
-
-  viewMediaSetXmlDialogV->open();
-}
-
-void ViewMediaSetXmlAction::fileSelected( const QString &file )
+void ViewMediaSetXmlWindow::xmlFileSelected( const QString &file )
 {
   try
   {
@@ -106,11 +77,7 @@ void ViewMediaSetXmlAction::fileSelected( const QString &file )
     filePathMappingModelV->filePathMapping( std::move( filePathMapping ) );
 
     // Set window title
-    viewMediaSetXmlDialogV->setWindowTitle(
-      HelperQt::toQString( mediaSet->partNumber() ) );
-
-    // Open Dialog
-    viewMediaSetXmlDialogV->open();
+    setWindowTitle( HelperQt::toQString( mediaSet->partNumber() ) );
   }
   catch ( Arinc665::Arinc665Exception &e )
   {
@@ -134,8 +101,6 @@ void ViewMediaSetXmlAction::fileSelected( const QString &file )
       nullptr,
       tr( "Load Media Set XML" ),
       tr( "Error loading Media Set: " ) + description );
-
-    emit finished();
     return;
   }
 }

@@ -13,10 +13,8 @@ target_sources(
     FILE_SET HEADERS
       FILES
         ViewMediaSetXml.hpp
-        ViewMediaSetXmlAction.hpp
-        ViewMediaSetXmlDialog.hpp
+        ViewMediaSetXmlWindow.hpp
 
   PRIVATE
-    ViewMediaSetXmlAction.cpp
-    ViewMediaSetXmlDialog.cpp
-    ViewMediaSetXmlDialog.ui )
+    ViewMediaSetXmlWindow.cpp
+    ViewMediaSetXmlWindow.ui )

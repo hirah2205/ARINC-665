@@ -24,8 +24,7 @@
 
 namespace Arinc665Qt {
 
-class ViewMediaSetXmlAction;
-class ViewMediaSetXmlDialog;
+class ViewMediaSetXmlWindow;
 
 }
 
