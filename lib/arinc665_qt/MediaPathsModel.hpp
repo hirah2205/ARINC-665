@@ -114,6 +114,11 @@ class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
       int role = Qt::DisplayRole ) const override;
 
     /**
+     * @name Media Paths
+     * @{
+     **/
+
+    /**
      * @brief Return all media paths.
      *
      * @return Media Paths.
@@ -153,6 +158,8 @@ class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
      *   Index identifying the medium
      **/
     void remove( const QModelIndex &index );
+
+    /** @} **/
 
   private:
     //! Media Paths

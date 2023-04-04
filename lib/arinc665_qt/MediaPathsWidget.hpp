@@ -29,7 +29,7 @@ class MediaPathsWidget;
 /**
  * @brief Media Paths Widget.
  *
- * This Widget provides a dialog to add and remove medias.
+ * This Widget provides a dialog to add and remove media.
  * The media are held by a @ref MediaPathsModel.
  **/
 class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
@@ -61,7 +61,7 @@ class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
      *
      * @return If the Media Paths are complete.
      **/
-    bool completed() const;
+    [[nodiscard]] bool completed() const;
 
   signals:
     /**
@@ -79,7 +79,7 @@ class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
     void addMediumDirectory();
 
     /**
-     * @brief Slot when user wants to delete selcted medium directory.
+     * @brief Slot when user wants to delete selected medium directory.
      *
      * This slot is connected to the delete-button QPushButton::pressed signal.
      * The selected medium is removed from the model.
@@ -100,9 +100,9 @@ class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaPathsWidget > ui;
+    std::unique_ptr< Ui::MediaPathsWidget > ui{};
     //! Select XML File Dialog
-    std::unique_ptr< QFileDialog > selectMediaPathDialog;
+    std::unique_ptr< QFileDialog > selectMediaPathDialog{};
     //! Media Paths Model
     MediaPathsModel * mediaPathsModelV{ nullptr };
 };

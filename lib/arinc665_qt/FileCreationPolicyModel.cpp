@@ -70,15 +70,11 @@ std::optional< Arinc665::Utils::FileCreationPolicy >
 FileCreationPolicyModel::fileCreationPolicy(
   const QModelIndex &index ) const
 {
-  if ( !index.isValid() )
-  {
-    return {};
-  }
-
-  if ( std::cmp_greater_equal(
-    index.row(),
-    Arinc665::Utils::FileCreationPolicyDescription::instance()
-      .descriptions().size() ) )
+  if ( !index.isValid()
+    || std::cmp_greater_equal(
+      index.row(),
+      Arinc665::Utils::FileCreationPolicyDescription::instance()
+        .descriptions().size() ) )
   {
     return {};
   }
@@ -88,18 +84,19 @@ FileCreationPolicyModel::fileCreationPolicy(
 }
 
 std::optional< Arinc665::Utils::FileCreationPolicy >
-FileCreationPolicyModel::fileCreationPolicy( const int index ) const
+FileCreationPolicyModel::fileCreationPolicy( const int row ) const
 {
-  if ( std::cmp_greater_equal(
-         index,
-         Arinc665::Utils::FileCreationPolicyDescription::instance()
-           .descriptions().size() ) )
+  if ( ( row < 0 )
+    || std::cmp_greater_equal(
+      row,
+      Arinc665::Utils::FileCreationPolicyDescription::instance()
+        .descriptions().size() ) )
   {
     return {};
   }
 
   return Arinc665::Utils::FileCreationPolicyDescription::instance().enumeration(
-    index );
+    row );
 }
 
 }

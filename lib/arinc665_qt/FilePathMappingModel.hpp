@@ -23,6 +23,9 @@ namespace Arinc665Qt {
 
 /**
  * @brief QT File Path Mapping Model.
+ *
+ * This model provides a table of Media Set Files and their corresponding file
+ * system path.
  **/
 class ARINC665_QT_EXPORT FilePathMappingModel final : public QAbstractTableModel
 {
@@ -86,7 +89,8 @@ class ARINC665_QT_EXPORT FilePathMappingModel final : public QAbstractTableModel
      * @return Data dependent of the index and role.
      **/
     [[nodiscard]] QVariant data(
-      const QModelIndex &index, int role ) const override;
+      const QModelIndex &index,
+      int role ) const override;
 
     /**
      * @brief Returns the data for the given role and section in the header with

@@ -36,9 +36,9 @@ class ARINC665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
     //! Columns of Model
     enum class Columns
     {
-      //! Load Filename
+      //! Filename
       Name,
-      //! Load Part Number
+      //! Part Number
       PartNumber,
 
       ColumnsCount
@@ -112,12 +112,17 @@ class ARINC665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
       int role ) const override;
 
     /**
+     * @name Load Files
+     * @{
+     **/
+
+    /**
      * @brief Updates the Data Model with the given Files.
      *
      * @param[in] loadFiles
      *   Load Files, contained by the model.
      **/
-    void loadFiles( const Arinc665::Media::ConstLoadFiles &loadFiles );
+    void loadFiles( Arinc665::Media::ConstLoadFiles loadFiles );
 
     /**
      * @brief Return Load File for given Index.
@@ -144,6 +149,8 @@ class ARINC665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
      **/
     [[nodiscard]] std::optional< Arinc665::Media::ConstLoadFile > loadFile(
       size_t index ) const;
+
+    /** @} **/
 
   private:
     //! Load Files

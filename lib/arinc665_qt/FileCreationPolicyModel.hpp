@@ -83,7 +83,7 @@ class ARINC665_QT_EXPORT FileCreationPolicyModel final :
     /**
      * @brief Return File Creation Policy for @p index.
      *
-     * @param[in] index
+     * @param[in] row
      *   Row Index
      *
      * @return File Creation Policy for @p index
@@ -91,7 +91,7 @@ class ARINC665_QT_EXPORT FileCreationPolicyModel final :
      *   If @p index is out of range.
      **/
     [[nodiscard]] std::optional< Arinc665::Utils::FileCreationPolicy >
-    fileCreationPolicy( int index ) const;
+    fileCreationPolicy( int row ) const;
 };
 
 }

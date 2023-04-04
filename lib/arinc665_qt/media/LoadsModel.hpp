@@ -131,7 +131,7 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
      * @param[in] loads
      *   Loads, contained by the model.
      **/
-    void loads( const Arinc665::Media::LoadsVariant loads );
+    void loads( Arinc665::Media::LoadsVariant loads );
 
 
     /**
