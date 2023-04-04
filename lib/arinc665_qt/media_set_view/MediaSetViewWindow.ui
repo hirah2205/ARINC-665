@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Arinc665Qt::DecompileMediaSetWindow</class>
- <widget class="QMainWindow" name="Arinc665Qt::DecompileMediaSetWindow">
+ <class>Arinc665Qt::MediaSetViewWindow</class>
+ <widget class="QMainWindow" name="Arinc665Qt::MediaSetViewWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>768</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/arinc665_qt_resources.qrc">
-    <normaloff>:/media_set_manager/arinc665_media_set_decompile.svg</normaloff>:/media_set_manager/arinc665_media_set_decompile.svg</iconset>
+    <normaloff>:/media_set/arinc665_media_set.svg</normaloff>:/media_set/arinc665_media_set.svg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -27,7 +27,7 @@
         <bool>true</bool>
        </property>
        <property name="selectionMode">
-        <enum>QAbstractItemView::SingleSelection</enum>
+        <enum>QAbstractItemView::NoSelection</enum>
        </property>
        <property name="selectionBehavior">
         <enum>QAbstractItemView::SelectRows</enum>
@@ -44,6 +44,9 @@
    </layout>
   </widget>
   <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
    <property name="movable">
     <bool>false</bool>
    </property>
@@ -57,11 +60,25 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionDecompileMediaSet"/>
+   <addaction name="actionOpenMediaSetXml"/>
    <addaction name="actionSaveMediaSetXml"/>
   </widget>
+  <action name="actionOpenMediaSetXml">
+   <property name="icon">
+    <iconset resource="../resources/arinc665_qt_resources.qrc">
+     <normaloff>:/media_set/arinc665_media_set.svg</normaloff>:/media_set/arinc665_media_set.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Open Media Set XML</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens an ARINC 665 Media Set XML</string>
+   </property>
+  </action>
   <action name="actionSaveMediaSetXml">
    <property name="icon">
-    <iconset theme="document-save"/>
+    <iconset theme="document-save">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Save Media Set XML</string>
@@ -69,7 +86,8 @@
   </action>
   <action name="actionDecompileMediaSet">
    <property name="icon">
-    <iconset theme="document-open"/>
+    <iconset theme="document-open">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Decompile Media Set</string>

@@ -10,12 +10,14 @@
  * @brief Declaration of Class Arinc665Qt::ViewMediaSetDialog.
  **/
 
-#ifndef ARINC665_QT_VIEW_MEDIA_SET_VIEWMEDIASETDIALOG_HPP
-#define ARINC665_QT_VIEW_MEDIA_SET_VIEWMEDIASETDIALOG_HPP
+#ifndef ARINC665_QT_MEDIA_SET_MANAGER_VIEWMEDIASETDIALOG_HPP
+#define ARINC665_QT_MEDIA_SET_MANAGER_VIEWMEDIASETDIALOG_HPP
 
-#include <arinc665_qt/view_media_set/ViewMediaSet.hpp>
+#include <arinc665_qt/media_set_manager/MediaSetManager.hpp>
 
 #include <arinc665_qt/media/Media.hpp>
+
+#include <arinc665/media/Media.hpp>
 
 #include <QDialog>
 
@@ -27,7 +29,7 @@ namespace Ui{
 class ViewMediaSetDialog;
 }
 
-//! %Media Set Dialog
+//! View %Media Set Dialog
 class ARINC665_QT_EXPORT ViewMediaSetDialog : public QDialog
 {
     Q_OBJECT
@@ -47,14 +49,16 @@ class ARINC665_QT_EXPORT ViewMediaSetDialog : public QDialog
     /**
      * @brief Sets the Media Set Model.
      *
-     * @param[in] model
-     *   Media Set Model.
+     * @param[in] mediaSet
+     *   Media Set.
      **/
-    void mediaSetModel( Media::MediaSetModel * model );
+    void mediaSet( Arinc665::Media::ConstMediaSetPtr mediaSet );
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ViewMediaSetDialog > ui;
+    std::unique_ptr< Ui::ViewMediaSetDialog > ui{};
+    //! Media Set Model
+    std::unique_ptr< Media::MediaSetModel > mediaSetModelV{};
 };
 
 }

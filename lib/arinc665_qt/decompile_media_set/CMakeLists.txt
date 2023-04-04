@@ -14,13 +14,10 @@ target_sources(
       FILES
         DecompileMediaSet.hpp
         DecompileMediaSetSettingsPage.hpp
-        DecompileMediaSetWindow.hpp
         DecompileMediaSetWizard.hpp
 
   PRIVATE
     DecompileMediaSetSettingsPage.cpp
     DecompileMediaSetSettingsPage.ui
-    DecompileMediaSetWindow.cpp
-    DecompileMediaSetWindow.ui
     DecompileMediaSetWizard.cpp
     DecompileMediaSetWizard.ui )

@@ -12,19 +12,19 @@
 
 /**
  * @dir
- * @brief Media Set XML Viewer
+ * @brief Media Set Viewer
  *
- * @sa @ref Arinc665Qt::ViewMediaSetXmlAction
+ * @sa @ref Arinc665Qt::MediaSetViewWindow
  **/
 
-#ifndef ARINC665_QT_VIEW_MEDIA_SET_XML_VIEWMEDIASETXML_HPP
-#define ARINC665_QT_VIEW_MEDIA_SET_XML_VIEWMEDIASETXML_HPP
+#ifndef ARINC665_QT_MEDIA_SET_VIEW_MEDIASETVIEW_HPP
+#define ARINC665_QT_MEDIA_SET_VIEW_MEDIASETVIEW_HPP
 
 #include <arinc665_qt/Arinc665Qt.hpp>
 
 namespace Arinc665Qt {
 
-class ViewMediaSetXmlWindow;
+class MediaSetViewWindow;
 
 }
 

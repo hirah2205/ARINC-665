@@ -12,11 +12,9 @@ target_sources(
   PUBLIC
     FILE_SET HEADERS
       FILES
-        ViewMediaSet.hpp
-        ViewMediaSetAction.hpp
-        ViewMediaSetDialog.hpp
+        MediaSetView.hpp
+        MediaSetViewWindow.hpp
 
   PRIVATE
-    ViewMediaSetAction.cpp
-    ViewMediaSetDialog.cpp
-    ViewMediaSetDialog.ui )
+    MediaSetViewWindow.cpp
+    MediaSetViewWindow.ui )

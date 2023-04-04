@@ -16,20 +16,24 @@
 
 #include <arinc665_qt/media/MediaSetModel.hpp>
 
+#include <arinc665/media/MediaSet.hpp>
+
 namespace Arinc665Qt {
 
 ViewMediaSetDialog::ViewMediaSetDialog( QWidget * const parent ):
   QDialog{ parent },
-  ui{ std::make_unique< Ui::ViewMediaSetDialog >() }
+  ui{ std::make_unique< Ui::ViewMediaSetDialog >() },
+  mediaSetModelV{ std::make_unique< Media::MediaSetModel >( this ) }
 {
   ui->setupUi( this );
+  ui->mediaSetView->mediaSetModel( mediaSetModelV.get() );
 }
 
 ViewMediaSetDialog::~ViewMediaSetDialog() = default;
 
-void ViewMediaSetDialog::mediaSetModel( Media::MediaSetModel * const model )
+void ViewMediaSetDialog::mediaSet( Arinc665::Media::ConstMediaSetPtr mediaSet )
 {
-  ui->mediaSetView->mediaSetModel( model );
+  mediaSetModelV->root( std::move( mediaSet ) );
 }
 
 }

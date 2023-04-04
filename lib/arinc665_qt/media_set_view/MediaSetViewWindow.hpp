@@ -7,15 +7,22 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::DecompileMediaSetWindow.
+ * @brief Declaration of Class Arinc665Qt::MediaSetViewWindow.
  **/
 
-#ifndef ARINC665_QT_DECOMPILE_MEDIA_SET_DECOMPILEMEDIASETWINDOW_HPP
-#define ARINC665_QT_DECOMPILE_MEDIA_SET_DECOMPILEMEDIASETWINDOW_HPP
+#ifndef ARINC665_QT_MEDIA_SET_VIEW_WMEDIASETVIEWINDOW_HPP
+#define ARINC665_QT_MEDIA_SET_VIEW_WMEDIASETVIEWINDOW_HPP
+
+
+#include <arinc665_qt/media_set_view/MediaSetViewWindow.hpp>
 
 #include <arinc665_qt/decompile_media_set/DecompileMediaSet.hpp>
 
 #include <arinc665_qt/media/Media.hpp>
+
+#include <arinc665/media/Media.hpp>
+
+#include <arinc665/files/Files.hpp>
 
 #include <arinc665/utils/Utils.hpp>
 
@@ -23,32 +30,33 @@
 #include <QFileDialog>
 #include <QSortFilterProxyModel>
 
+#include <filesystem>
 #include <memory>
 
 namespace Arinc665Qt {
 
 namespace Ui{
-class DecompileMediaSetWindow;
+class MediaSetViewWindow;
 }
 
 /**
- * @brief Decompile ARINC 665 %Media Set to ARINC 665 %Media Set XML.
+ * @brief %Media Set XML Window
  **/
-class ARINC665_QT_EXPORT DecompileMediaSetWindow final : public QMainWindow
+class ARINC665_QT_EXPORT MediaSetViewWindow : public QMainWindow
 {
     Q_OBJECT
 
   public:
     /**
-     * @brief Initialises the Decompile %Media Set Window.
+     * @brief Initialises the Media Set Window.
      *
      * @param[in] parent
-     *   Parent Widget
+     *   Widget parent.
      **/
-    explicit DecompileMediaSetWindow( QWidget * parent = nullptr );
+    explicit MediaSetViewWindow( QWidget * parent = nullptr );
 
     //! Destructor
-    ~DecompileMediaSetWindow() override;
+    ~MediaSetViewWindow() override;
 
   private slots:
     /**
@@ -62,7 +70,16 @@ class ARINC665_QT_EXPORT DecompileMediaSetWindow final : public QMainWindow
     /**
      * @brief Slot for Media Set Decompilation.
      **/
-    void startDecompilation();
+    void startMediaSetDecompilation();
+
+
+    /**
+     * @brief Called, when the user has selected a file.
+     *
+     * @param[in] file
+     *   Selected file.
+     **/
+    void loadXmlFile( const QString &file );
 
     /**
      * @brief Save XML file.
@@ -74,9 +91,14 @@ class ARINC665_QT_EXPORT DecompileMediaSetWindow final : public QMainWindow
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::DecompileMediaSetWindow > ui;
+    std::unique_ptr< Ui::MediaSetViewWindow > ui{};
     //! Wizard Dialog
-    std::unique_ptr< DecompileMediaSetWizard > wizardV{};
+    std::unique_ptr< DecompileMediaSetWizard > decompileMediaSetWizardV{};
+    //! Select Load Media Set XML file dialog
+    std::unique_ptr< QFileDialog > selectLoadMediaSetXmlDialogV{};
+    //! Select Save Media Set XML file dialog
+    std::unique_ptr< QFileDialog > selectSaveMediaSetXmlDialogV{};
+
     //! Media Paths Model
     std::unique_ptr< MediaPathsModel > mediaPathsModelV{};
     //! Media Set Model
@@ -85,12 +107,9 @@ class ARINC665_QT_EXPORT DecompileMediaSetWindow final : public QMainWindow
     std::unique_ptr< FilePathMappingModel > filePathMappingModelV{};
     //! Sorted File Mapping Model
     std::unique_ptr< QSortFilterProxyModel > sortedFilePathMappingModelV{};
-    //! Select XML File Dialog
-    std::unique_ptr< QFileDialog > selectXmlFileDialog{};
+
     //! Check File Integrity
     bool checkFileIntegrityV{ false };
-    //! Media Set
-    Arinc665::Media::ConstMediaSetPtr mediaSetV{};
 };
 
 }

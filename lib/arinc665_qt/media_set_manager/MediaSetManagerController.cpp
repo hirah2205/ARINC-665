@@ -12,12 +12,15 @@
 
 #include "MediaSetManagerController.hpp"
 
-#include <arinc665_qt/media/MediaSetsModel.hpp>
 #include <arinc665_qt/media_set_manager/MediaSetManagerDialog.hpp>
 #include <arinc665_qt/media_set_manager/RemoveMediaSetController.hpp>
+#include <arinc665_qt/media_set_manager/ViewMediaSetDialog.hpp>
+
 #include <arinc665_qt/import_media_set/ImportMediaSetAction.hpp>
+
 #include <arinc665_qt/import_media_set_xml/ImportMediaSetXmlAction.hpp>
-#include <arinc665_qt/view_media_set/ViewMediaSetAction.hpp>
+
+#include <arinc665_qt/media/MediaSetsModel.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
 
@@ -97,12 +100,13 @@ void MediaSetManagerController::directorySelected()
 {
   auto directory{ selectMediaSetDirectoryDialogV->selectedFiles().first() };
 
-  mediaSetManagerV = Arinc665::Utils::MediaSetManager::load(
+  mediaSetManagerV = Arinc665::Utils::MediaSetManager::loadOrCreate(
     directory.toStdString(),
     true );
 
   reloadMediaSetModel();
 
+  mediaSetManagerDialogV->setWindowTitle( directory );
   mediaSetManagerDialogV->open();
 }
 
@@ -128,15 +132,16 @@ void MediaSetManagerController::viewMediaSet( const QModelIndex &index )
     return;
   }
 
-  auto action{ new ViewMediaSetAction{ mediaSetManagerDialogV.get() } };
+  auto viewMediaSetDialog{ new ViewMediaSetDialog{ mediaSetManagerDialogV.get() } };
 
   connect(
-    action,
-    &ViewMediaSetAction::finished,
-    action,
-    &ViewMediaSetAction::deleteLater );
+    viewMediaSetDialog,
+    &ViewMediaSetDialog::finished,
+    viewMediaSetDialog,
+    &ViewMediaSetDialog::deleteLater );
 
-  action->start( mediaSet );
+  viewMediaSetDialog->mediaSet( mediaSet );
+  emit viewMediaSetDialog->show();
 }
 
 void MediaSetManagerController::importMediaSet()

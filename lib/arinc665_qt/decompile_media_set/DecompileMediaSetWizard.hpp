@@ -27,7 +27,9 @@ namespace Ui{
 class DecompileMediaSetWizard;
 }
 
-//! Decompile ARINC 665 %Media Set Wizard
+/**
+ * @brief Ask user for decompile ARINC 665 %Media Set Settings.
+ **/
 class ARINC665_QT_EXPORT DecompileMediaSetWizard final : public QWizard
 {
     Q_OBJECT

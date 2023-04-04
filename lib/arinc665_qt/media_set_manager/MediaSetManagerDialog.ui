@@ -13,9 +13,6 @@
     <height>500</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Mange Media Sets</string>
-  </property>
   <property name="windowIcon">
    <iconset resource="../resources/arinc665_qt_resources.qrc">
     <normaloff>:/media_set_manager/arinc665_media_set_manager.svg</normaloff>:/media_set_manager/arinc665_media_set_manager.svg</iconset>

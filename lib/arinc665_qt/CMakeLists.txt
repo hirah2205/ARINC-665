@@ -83,9 +83,8 @@ add_subdirectory( import_media_set )
 add_subdirectory( import_media_set_xml )
 add_subdirectory( media )
 add_subdirectory( media_set_manager )
+add_subdirectory( media_set_view )
 add_subdirectory( resources )
-add_subdirectory( view_media_set )
-add_subdirectory( view_media_set_xml )
 
 # disable clang tidy in binary dir by placing dummy .clang-tidy file
 file(

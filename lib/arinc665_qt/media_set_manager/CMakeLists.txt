@@ -16,9 +16,12 @@ target_sources(
         MediaSetManagerController.hpp
         MediaSetManagerDialog.hpp
         RemoveMediaSetController.hpp
+        ViewMediaSetDialog.hpp
 
   PRIVATE
     MediaSetManagerController.cpp
     MediaSetManagerDialog.cpp
     MediaSetManagerDialog.ui
-    RemoveMediaSetController.cpp )
+    RemoveMediaSetController.cpp
+    ViewMediaSetDialog.cpp
+    ViewMediaSetDialog.ui )
