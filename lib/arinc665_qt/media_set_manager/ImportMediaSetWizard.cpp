@@ -7,12 +7,12 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Qt::ImportMediaSetAction.
+ * @brief Definition of Class Arinc665Qt::MediaSetManager::ImportMediaSetWizard.
  **/
 
-#include "ImportMediaSetAction.hpp"
+#include "ImportMediaSetWizard.hpp"
 
-#include <arinc665_qt/import_media_set/ImportMediaSetWizard.hpp>
+#include "ui_ImportMediaSetWizard.h"
 
 #include <arinc665_qt/MediaPathsModel.hpp>
 
@@ -33,46 +33,49 @@
 
 #include <cassert>
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::MediaSetManager {
 
-ImportMediaSetAction::ImportMediaSetAction(
+ImportMediaSetWizard::ImportMediaSetWizard(
   Arinc665::Utils::MediaSetManagerPtr mediaSetManager,
   QWidget * const parent ) :
-  QObject{ parent },
-  wizardV{ std::make_unique< ImportMediaSetWizard >( parent ) },
+  QWizard{ parent },
+  ui{ std::make_unique< Ui::ImportMediaSetWizard >() },
   mediaSetManagerV{ std::move( mediaSetManager ) },
   copierV{ Arinc665::Utils::FilesystemMediaSetCopier::create() },
   mediaPathsModelV{ std::make_unique< MediaPathsModel >() }
 {
-  wizardV->mediaPathsModel( mediaPathsModelV.get() );
+  ui->setupUi( this );
+  ui->settings->setCommitPage( true );
+  ui->settings->mediaPathsModel( mediaPathsModelV.get() );
 
   connect(
-    wizardV.get(),
-    &ImportMediaSetWizard::checkFileIntegrity,
     this,
-    &ImportMediaSetAction::checkFileIntegrity );
+    &QWizard::currentIdChanged,
+    this,
+    &ImportMediaSetWizard::pageChanged );
   connect(
-    wizardV.get(),
-    &ImportMediaSetWizard::start,
+    ui->settings,
+    &ImportMediaSetSettingsPage::checkFileIntegrity,
     this,
-    &ImportMediaSetAction::start );
-  connect(
-    wizardV.get(),
-    &ImportMediaSetWizard::finished,
-    this,
-    &ImportMediaSetAction::finished );
-
-  wizardV->show();
+    &ImportMediaSetWizard::checkFileIntegrity );
 }
 
-ImportMediaSetAction::~ImportMediaSetAction() = default;
+ImportMediaSetWizard::~ImportMediaSetWizard() = default;
 
-void ImportMediaSetAction::checkFileIntegrity( bool checkFileIntegrity )
+void ImportMediaSetWizard::pageChanged( const int id )
+{
+  if ( ui->settings->nextId() == id )
+  {
+    importMediaSet();
+  }
+}
+
+void ImportMediaSetWizard::checkFileIntegrity( bool checkFileIntegrity )
 {
   checkFileIntegrityV = checkFileIntegrity;
 }
 
-void ImportMediaSetAction::start()
+void ImportMediaSetWizard::importMediaSet()
 {
   BOOST_LOG_FUNCTION()
 

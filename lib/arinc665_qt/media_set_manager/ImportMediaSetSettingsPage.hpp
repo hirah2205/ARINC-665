@@ -7,13 +7,14 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::ImportMediaSetSettingsPage.
+ * @brief Declaration of Class
+ *   Arinc665Qt::MediaSetManager::ImportMediaSetSettingsPage.
  **/
 
-#ifndef ARINC665_QT_IMPORT_MEDIA_SET_IMPORTMEDIASETSETTINGSPAGE_HPP
-#define ARINC665_QT_IMPORT_MEDIA_SET_IMPORTMEDIASETSETTINGSPAGE_HPP
+#ifndef ARINC665_QT_MEDIA_SET_MANAGER_IMPORTMEDIASETSETTINGSPAGE_HPP
+#define ARINC665_QT_MEDIA_SET_MANAGER_IMPORTMEDIASETSETTINGSPAGE_HPP
 
-#include <arinc665_qt/import_media_set_xml/ImportMediaSetXml.hpp>
+#include <arinc665_qt/media_set_manager/MediaSetManager.hpp>
 
 #include <arinc665/utils/Utils.hpp>
 
@@ -21,7 +22,7 @@
 
 #include <memory>
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::MediaSetManager {
 
 namespace Ui{
 class ImportMediaSetSettingsPage;

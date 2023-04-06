@@ -79,7 +79,6 @@ target_link_libraries(
 
 add_subdirectory( compile_media_set )
 add_subdirectory( decompile_media_set )
-add_subdirectory( import_media_set )
 add_subdirectory( import_media_set_xml )
 add_subdirectory( media )
 add_subdirectory( media_set_manager )

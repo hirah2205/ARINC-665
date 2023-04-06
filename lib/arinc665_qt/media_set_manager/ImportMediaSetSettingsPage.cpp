@@ -7,14 +7,14 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Qt::ImportMediaSetSettingsPage.
+ * @brief Definition of Class Arinc665Qt::MediaSetManager::ImportMediaSetSettingsPage.
  **/
 
 #include "ImportMediaSetSettingsPage.hpp"
 
 #include "ui_ImportMediaSetSettingsPage.h"
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::MediaSetManager {
 
 ImportMediaSetSettingsPage::ImportMediaSetSettingsPage(
   QWidget * const parent ) :
@@ -49,7 +49,8 @@ void ImportMediaSetSettingsPage::mediaPathsModel(
   ui->mediaPaths->mediaPathsModel( model );
 }
 
-void ImportMediaSetSettingsPage::checkFileIntegrityStateChanged( int state )
+void ImportMediaSetSettingsPage::checkFileIntegrityStateChanged(
+  const int state )
 {
   switch ( state )
   {

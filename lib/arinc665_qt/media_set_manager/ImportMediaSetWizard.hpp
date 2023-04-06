@@ -7,50 +7,60 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::ImportMediaSetAction.
+ * @brief Declaration of Class Arinc665Qt::MediaSetManager::ImportMediaSetWizard.
  **/
 
-#ifndef ARINC665_QT_INPORT_MEDIA_SET_IMPORTMEDIASETACTION_HPP
-#define ARINC665_QT_INPORT_MEDIA_SET_IMPORTMEDIASETACTION_HPP
+#ifndef ARINC665_QT_MEDIA_SET_MANAGER_IMPORTMEDIASETWIZARD_HPP
+#define ARINC665_QT_MEDIA_SET_MANAGER_IMPORTMEDIASETWIZARD_HPP
 
-#include <arinc665_qt/import_media_set/ImportMediaSet.hpp>
+#include <arinc665_qt/media_set_manager/MediaSetManager.hpp>
 
 #include <arinc665/utils/Utils.hpp>
 
-#include <QWidget>
+#include <QWizard>
 
 #include <memory>
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::MediaSetManager {
+
+namespace Ui {
+class ImportMediaSetWizard;
+}
 
 /**
- * @brief Imports an ARINC 665 %Media Set to the %Media Set Manager.
+ * @brief Import ARINC 665 %Media Set Wizard
+ *
+ * Imports a ARINC 665 Media Set into the Media Set Manager.
  **/
-class ARINC665_QT_EXPORT ImportMediaSetAction final : public QObject
+class ARINC665_QT_EXPORT ImportMediaSetWizard final : public QWizard
 {
     Q_OBJECT
 
   public:
     /**
-     * @brief Initialises the Import %Media Set Action.
+     * @brief Initialises the Decompile Media Set Wizard.
      *
      * @param[in] mediaSetManager
      *   Media Set Manager
      * @param[in] parent
-     *   Parent Widget
+     *   Widget parent.
      **/
-    explicit ImportMediaSetAction(
+    explicit ImportMediaSetWizard(
       Arinc665::Utils::MediaSetManagerPtr mediaSetManager,
       QWidget * parent = nullptr );
 
     //! Destructor
-    ~ImportMediaSetAction() override;
-
-  signals:
-    //! Emitted, when action is finished.
-    void finished();
+    ~ImportMediaSetWizard() override;
 
   private slots:
+    /**
+     * @brief Slot for currentIdChanged() signal.
+     *
+     * @param[in] id
+     *   new current ID
+     **/
+    void pageChanged( int id );
+
     /**
      * @brief Slot called, when user changed the check file integrity handling
      *
@@ -60,13 +70,13 @@ class ARINC665_QT_EXPORT ImportMediaSetAction final : public QObject
     void checkFileIntegrity( bool checkFileIntegrity );
 
     /**
-     * @brief Slot for conversion.
+     * @brief Import Media Set into media set manager
      **/
-    void start();
+    void importMediaSet();
 
   private:
-    //! Wizard Dialog
-    std::unique_ptr< ImportMediaSetWizard > wizardV{};
+    //! UI (designer)
+    std::unique_ptr< Ui::ImportMediaSetWizard > ui;
     //! Media Set Manager
     Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV{};
     //! ARINC 665 Media Set Copier

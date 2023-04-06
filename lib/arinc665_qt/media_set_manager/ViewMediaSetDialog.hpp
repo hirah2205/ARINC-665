@@ -23,7 +23,7 @@
 
 #include <memory>
 
-namespace Arinc665Qt{
+namespace Arinc665Qt {
 
 namespace Ui{
 class ViewMediaSetDialog;
