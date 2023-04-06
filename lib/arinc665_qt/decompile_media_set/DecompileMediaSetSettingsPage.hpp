@@ -49,7 +49,14 @@ class ARINC665_QT_EXPORT DecompileMediaSetSettingsPage final : public QWizardPag
      *
      * @return if page is completed
      **/
-    bool isComplete() const override;
+    [[nodiscard]] bool isComplete() const override;
+
+    /**
+     * @brief Initialises Page.
+     *
+     * Clears content of file path model.
+     **/
+    void initializePage() override;
 
     /**
      * @brief Sets the Media Paths Model.

@@ -18,8 +18,6 @@
 
 #include <arinc665/utils/Utils.hpp>
 
-#include <arinc665/files/MediaSetInformation.hpp>
-
 #include <QMessageBox>
 
 namespace Arinc665Qt {
@@ -65,8 +63,12 @@ void MediaPathsWidget::mediaPathsModel( MediaPathsModel * const model )
 
 bool MediaPathsWidget::completed() const
 {
-  //! @todo check for completeness of media
-  return !mediaPathsModelV->mediaPaths().empty();
+  return mediaPathsModelV->complete();
+}
+
+void MediaPathsWidget::clear()
+{
+  mediaPathsModelV->clear();
 }
 
 void MediaPathsWidget::addMediumDirectory()
@@ -83,18 +85,14 @@ void MediaPathsWidget::removeMediumDirectory()
 
 void MediaPathsWidget::mediumDirectorySelected( const QString &file )
 {
-  const auto mediumInformation{
-    Arinc665::Utils::getMediumInformation( file.toStdString() ) };
-
-  if ( !mediumInformation )
+  if ( !mediaPathsModelV->mediumPath( file.toStdString() ) )
   {
-    QMessageBox::warning( this, tr( "Add Medium"), tr( "is not a medium" ) );
+    QMessageBox::warning(
+      this,
+      tr( "Add Medium" ),
+      QString{ tr( "%1 is not a valid ARINC 665 medium." ) }.arg( file ) );
     return;
   }
-
-  mediaPathsModelV->mediumPath(
-    mediumInformation->mediaSequenceNumber,
-    file.toStdString() );
 
   emit mediaPathsChanged();
 }

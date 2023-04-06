@@ -67,7 +67,7 @@ MediaSetViewWindow::MediaSetViewWindow( QWidget * const parent ):
     ui->actionDecompileMediaSet,
     &QAction::triggered,
     decompileMediaSetWizardV.get(),
-    &QWizard::show );
+    &QWizard::open );
   connect(
     decompileMediaSetWizardV.get(),
     &DecompileMediaSetWizard::checkFileIntegrity,
@@ -81,7 +81,7 @@ MediaSetViewWindow::MediaSetViewWindow( QWidget * const parent ):
 
 
   selectLoadMediaSetXmlDialogV->setWindowTitle( tr( "Select ARINC 665 Media Set XML" ) );
-  selectLoadMediaSetXmlDialogV->setNameFilter(tr("ARINC 665 Media Set XML (*.xml)" ) );
+  selectLoadMediaSetXmlDialogV->setNameFilter(tr( "ARINC 665 Media Set XML (*.xml)" ) );
   selectLoadMediaSetXmlDialogV->setFileMode( QFileDialog::FileMode::ExistingFile );
 
   connect(
@@ -181,6 +181,8 @@ void MediaSetViewWindow::startMediaSetDecompilation()
       QString::fromStdString( info ) );
     return;
   }
+
+  decompileMediaSetWizardV->restart();
 }
 
 void MediaSetViewWindow::loadXmlFile( const QString &file )

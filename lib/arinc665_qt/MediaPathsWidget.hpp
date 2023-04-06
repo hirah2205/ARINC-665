@@ -63,6 +63,11 @@ class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
      **/
     [[nodiscard]] bool completed() const;
 
+    /**
+     * @brief Clears all entries in the media path model
+     **/
+    void clear();
+
   signals:
     /**
      * @brief Signal emitted, when the user adds or delete media paths.

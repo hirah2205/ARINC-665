@@ -14,6 +14,8 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
+#include <arinc665/files/MediaSetInformation.hpp>
+
 #include <boost/exception/all.hpp>
 
 namespace Arinc665Qt {
@@ -127,13 +129,36 @@ const std::filesystem::path& MediaPathsModel::mediumPath(
   return medium->second;
 }
 
-void MediaPathsModel::mediumPath(
-  Arinc665::MediumNumber mediumNumber,
-  std::filesystem::path path )
+bool MediaPathsModel::mediumPath( std::filesystem::path path )
 {
+  const auto mediumInformation{
+    Arinc665::Utils::getMediumInformation( path ) };
+
+  if ( !mediumInformation )
+  {
+    return false;
+  }
+
+  //! assign media set information
+  if ( mediaPathsV.empty() )
+  {
+    partNumberV = mediumInformation->partNumber;
+    numberOfMediaSetMembersV = mediumInformation->numberOfMediaSetMembers;
+  }
+
+  if ( ( partNumberV != mediumInformation->partNumber )
+    || ( numberOfMediaSetMembersV != mediumInformation->numberOfMediaSetMembers ) )
+  {
+    return false;
+  }
+
   beginResetModel();
-  mediaPathsV.insert_or_assign( mediumNumber, std::move( path ) );
+  mediaPathsV.insert_or_assign(
+    mediumInformation->mediaSequenceNumber,
+    std::move( path ) );
   endResetModel();
+
+  return true;
 }
 
 void MediaPathsModel::remove( const QModelIndex &index )
@@ -148,6 +173,21 @@ void MediaPathsModel::remove( const QModelIndex &index )
   auto pos{ std::next( mediaPathsV.begin(), index.row() ) };
   mediaPathsV.erase( pos );
   endResetModel();
+}
+
+void MediaPathsModel::clear()
+{
+  beginResetModel();
+  mediaPathsV.clear();
+  endResetModel();
+}
+
+bool MediaPathsModel::complete() const
+{
+  return !mediaPathsV.empty()
+    && std::cmp_equal(
+      mediaPathsV.size(),
+      static_cast< uint8_t >( numberOfMediaSetMembersV ) );
 }
 
 }

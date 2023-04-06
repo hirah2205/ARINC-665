@@ -43,6 +43,13 @@ bool DecompileMediaSetSettingsPage::isComplete() const
   return QWizardPage::isComplete() && ui->mediaPaths->completed();
 }
 
+void DecompileMediaSetSettingsPage::initializePage()
+{
+  QWizardPage::initializePage();
+
+  ui->mediaPaths->clear();
+}
+
 void DecompileMediaSetSettingsPage::mediaPathsModel(
   MediaPathsModel * const model )
 {

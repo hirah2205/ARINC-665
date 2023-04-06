@@ -25,7 +25,11 @@ namespace Ui{
 class ImportMediaSetWizard;
 }
 
-//! Import ARINC 665 %Media Set Wizard
+/**
+ * @brief Import ARINC 665 %Media Set Wizard
+ *
+ * Imports a ARINC 665 Media Set into the Media Set Manager.
+ **/
 class ARINC665_QT_EXPORT ImportMediaSetWizard final : public QWizard
 {
     Q_OBJECT

@@ -13,24 +13,16 @@
 #ifndef ARINC665_QT_MEDIA_SET_VIEW_WMEDIASETVIEWINDOW_HPP
 #define ARINC665_QT_MEDIA_SET_VIEW_WMEDIASETVIEWINDOW_HPP
 
-
 #include <arinc665_qt/media_set_view/MediaSetViewWindow.hpp>
 
 #include <arinc665_qt/decompile_media_set/DecompileMediaSet.hpp>
 
 #include <arinc665_qt/media/Media.hpp>
 
-#include <arinc665/media/Media.hpp>
-
-#include <arinc665/files/Files.hpp>
-
-#include <arinc665/utils/Utils.hpp>
-
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QSortFilterProxyModel>
 
-#include <filesystem>
 #include <memory>
 
 namespace Arinc665Qt {
@@ -40,7 +32,12 @@ class MediaSetViewWindow;
 }
 
 /**
- * @brief %Media Set XML Window
+ * @brief ARINC 665 %Media Set View Window
+ *
+ * Shows a window, where an ARINC 665 Media Set structure is shown.
+ * The window provides actions to load an ARINC 665 Media Set XML or load an
+ * existing ARINC 665 Media set via
+ * @ref Arinc665::Utils::FilesystemMediaSetDecompiler.
  **/
 class ARINC665_QT_EXPORT MediaSetViewWindow : public QMainWindow
 {

@@ -36,7 +36,7 @@ class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
 
   public:
     //! Columns of Model
-    enum class Columns
+    enum class Columns : int
     {
       //! Medium Number
       MediumNumber,
@@ -110,7 +110,7 @@ class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
      **/
     [[nodiscard]] QVariant headerData(
       int section,
-      ::Qt::Orientation orientation,
+      Qt::Orientation orientation,
       int role = Qt::DisplayRole ) const override;
 
     /**
@@ -139,14 +139,14 @@ class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
     /**
      * @brief Assigns Medium Path
      *
-     * @param[in] mediumNumber
-     *   Medium Number
+     * Determines the medium number and add it to the model.
+     *
      * @param[in] path
      *   Medium Path
+     *
+     * @return if addition was successful.
      **/
-    void mediumPath(
-      Arinc665::MediumNumber mediumNumber,
-      std::filesystem::path path );
+    bool mediumPath( std::filesystem::path path );
 
     /**
      * @brief Removes Medium with given @p index.
@@ -159,11 +159,27 @@ class ARINC665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
      **/
     void remove( const QModelIndex &index );
 
+    /**
+     * @brief Clears the content of the model.
+     **/
+    void clear();
+
     /** @} **/
+
+    /**
+     * Returns if the model is complete, i.e. all media paths are provided.
+     *
+     * @return If media path model is complete.
+     **/
+    bool complete() const;
 
   private:
     //! Media Paths
-    Arinc665::Utils::MediaPaths mediaPathsV;
+    Arinc665::Utils::MediaPaths mediaPathsV{};
+    //! Media Set Part Number
+    std::string partNumberV{};
+    //! Number of Media Set Members
+    Arinc665::MediumNumber numberOfMediaSetMembersV{};
 };
 
 }
