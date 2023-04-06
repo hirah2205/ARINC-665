@@ -7,14 +7,15 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Qt::ImportMediaSetXmlSettingsPage.
+ * @brief Definition of Class
+ *   Arinc665Qt::MediaSetManager::ImportMediaSetXmlSettingsPage.
  **/
 
 #include "ImportMediaSetXmlSettingsPage.hpp"
 
 #include "ui_ImportMediaSetXmlSettingsPage.h"
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::MediaSetManager {
 
 ImportMediaSetXmlSettingsPage::ImportMediaSetXmlSettingsPage(
   QWidget * const parent ) :

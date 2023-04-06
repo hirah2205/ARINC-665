@@ -12,8 +12,10 @@ target_sources(
   PUBLIC
     FILE_SET HEADERS
       FILES
-        ImportMediaSetWizard.hpp
         ImportMediaSetSettingsPage.hpp
+        ImportMediaSetWizard.hpp
+        ImportMediaSetXmlSettingsPage.hpp
+        ImportMediaSetXmlWizard.hpp
         MediaSetManager.hpp
         MediaSetManagerController.hpp
         MediaSetManagerDialog.hpp
@@ -25,6 +27,10 @@ target_sources(
     ImportMediaSetSettingsPage.ui
     ImportMediaSetWizard.cpp
     ImportMediaSetWizard.ui
+    ImportMediaSetXmlSettingsPage.cpp
+    ImportMediaSetXmlSettingsPage.ui
+    ImportMediaSetXmlWizard.cpp
+    ImportMediaSetXmlWizard.ui
     MediaSetManagerController.cpp
     MediaSetManagerDialog.cpp
     MediaSetManagerDialog.ui

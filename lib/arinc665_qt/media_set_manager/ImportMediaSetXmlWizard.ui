@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <author>Thomas Vogt</author>
- <class>Arinc665Qt::ImportMediaSetXmlWizard</class>
- <widget class="QWizard" name="Arinc665Qt::ImportMediaSetXmlWizard">
+ <class>Arinc665Qt::MediaSetManager::ImportMediaSetXmlWizard</class>
+ <widget class="QWizard" name="Arinc665Qt::MediaSetManager::ImportMediaSetXmlWizard">
   <property name="windowModality">
    <enum>Qt::ApplicationModal</enum>
   </property>
@@ -24,7 +24,7 @@
   <property name="wizardStyle">
    <enum>QWizard::ModernStyle</enum>
   </property>
-  <widget class="Arinc665Qt::ImportMediaSetXmlSettingsPage" name="settings"/>
+  <widget class="Arinc665Qt::MediaSetManager::ImportMediaSetXmlSettingsPage" name="settings"/>
   <widget class="QWizardPage" name="finish">
    <property name="title">
     <string>Operation Completed</string>
@@ -36,9 +36,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Arinc665Qt::ImportMediaSetXmlSettingsPage</class>
+   <class>Arinc665Qt::MediaSetManager::ImportMediaSetXmlSettingsPage</class>
    <extends>QWizardPage</extends>
-   <header location="global">arinc665_qt/import_media_set_xml/ImportMediaSetXmlSettingsPage.hpp</header>
+   <header location="global">arinc665_qt/media_set_manager/ImportMediaSetXmlSettingsPage.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

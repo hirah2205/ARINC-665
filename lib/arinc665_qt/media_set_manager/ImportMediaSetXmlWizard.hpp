@@ -7,53 +7,58 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::ImportMediaSetXmlAction.
+ * @brief Declaration of Class
+ *   Arinc665Qt::MediaSetManager::ImportMediaSetXmlAction.
  **/
 
-#ifndef ARINC665_QT_IMPORT_MEDIA_SET_XML_IMPORTMEDIASETXMLACTION_HPP
-#define ARINC665_QT_IMPORT_MEDIA_SET_XML_IMPORTMEDIASETXMLACTION_HPP
+#ifndef ARINC665_QT_MEDIA_SET_MANAGER_IMPORTMEDIASETXMLWIZARD_HPP
+#define ARINC665_QT_MEDIA_SET_MANAGER_IMPORTMEDIASETXMLWIZARD_HPP
 
-#include <arinc665_qt/import_media_set_xml/ImportMediaSetXml.hpp>
+#include <arinc665_qt/media_set_manager/MediaSetManager.hpp>
 
 #include <arinc665/utils/Utils.hpp>
 
-#include <QWidget>
+#include <QWizard>
 
 #include <memory>
+#include <filesystem>
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::MediaSetManager {
 
-/**
- * @brief Import %Media Set XML Controller.
- *
- * This class Compiles an ARINC 665 Media Set XML to an ARINC 665 Media Set and
- * imports it to the Media Set Manager.
- **/
-class ARINC665_QT_EXPORT ImportMediaSetXmlAction final : public QObject
+namespace Ui{
+class ImportMediaSetXmlWizard;
+}
+
+//! Import %Media Set XML Wizard
+class ARINC665_QT_EXPORT ImportMediaSetXmlWizard : public QWizard
 {
     Q_OBJECT
 
   public:
     /**
-     * @brief Initialises the %Media Set Import XML Action.
+     * @brief Initialises the Import Media Set XML Wizard.
      *
      * @param[in] mediaSetManager
      *   Media Set Manager
      * @param[in] parent
-     *   Parent Widget
+     *   Widget parent.
      **/
-    explicit ImportMediaSetXmlAction(
+    explicit ImportMediaSetXmlWizard(
       Arinc665::Utils::MediaSetManagerPtr mediaSetManager,
       QWidget * parent = nullptr );
 
     //! Destructor
-    ~ImportMediaSetXmlAction() override;
-
-  signals:
-    //! Emitted, when action is finished.
-    void finished();
+    ~ImportMediaSetXmlWizard() override;
 
   private slots:
+    /**
+     * @brief Slot for currentIdChanged() signal.
+     *
+     * @param[in] id
+     *   new current ID
+     **/
+    void pageChanged( int id );
+
     /**
      * @brief Called when a ARINC 665 Media Set XML file has been selected.
      *
@@ -98,14 +103,14 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlAction final : public QObject
     void createLoadHeaderFiles(
       Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles );
 
-    /**
-     * @brief Slot for conversion.
-     **/
-    void start();
-
   private:
-    //! Wizard Dialog
-    std::unique_ptr< ImportMediaSetXmlWizard > wizardV;
+    /**
+     * @brief Start Media Set XML Import.
+     **/
+    void importMediaSetXml();
+
+    //! UI (designer)
+    std::unique_ptr< Ui::ImportMediaSetXmlWizard > ui;
     //! Media Set Manager
     Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV;
     //! ARINC 665 Media Set Exporter

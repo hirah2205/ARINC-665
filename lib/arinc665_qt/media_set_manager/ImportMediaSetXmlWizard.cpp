@@ -7,12 +7,13 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Qt::ImportMediaSetXmlAction.
+ * @brief Definition of Class
+ *   Arinc665Qt::MediaSetManager::ImportMediaSetXmlWizard.
  **/
 
-#include "ImportMediaSetXmlAction.hpp"
+#include "ImportMediaSetXmlWizard.hpp"
 
-#include <arinc665_qt/import_media_set_xml/ImportMediaSetXmlWizard.hpp>
+#include "ui_ImportMediaSetXmlWizard.h"
 
 #include <arinc665/media/MediaSet.hpp>
 
@@ -28,88 +29,93 @@
 
 #include <cassert>
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::MediaSetManager {
 
-ImportMediaSetXmlAction::ImportMediaSetXmlAction(
+ImportMediaSetXmlWizard::ImportMediaSetXmlWizard(
   Arinc665::Utils::MediaSetManagerPtr mediaSetManager,
   QWidget * const parent ) :
-  wizardV{ std::make_unique< ImportMediaSetXmlWizard >( parent ) },
+  QWizard{ parent },
+  ui{ std::make_unique< Ui::ImportMediaSetXmlWizard >() },
   mediaSetManagerV{ std::move( mediaSetManager ) },
   compilerV{ Arinc665::Utils::FilesystemMediaSetCompiler::create() }
 {
   assert( compilerV );
 
-  connect(
-    wizardV.get(),
-    &ImportMediaSetXmlWizard::xmlFile,
-    this,
-    &ImportMediaSetXmlAction::xmlFile );
-  connect(
-    wizardV.get(),
-    &ImportMediaSetXmlWizard::inputDirectory,
-    this,
-    &ImportMediaSetXmlAction::inputDirectory );
-  connect(
-    wizardV.get(),
-    &ImportMediaSetXmlWizard::arinc665Version,
-    this,
-    &ImportMediaSetXmlAction::arinc665Version );
-  connect(
-    wizardV.get(),
-    &ImportMediaSetXmlWizard::createBatchFiles,
-    this,
-    &ImportMediaSetXmlAction::createBatchFiles );
-  connect(
-    wizardV.get(),
-    &ImportMediaSetXmlWizard::createLoadHeaderFiles,
-    this,
-    &ImportMediaSetXmlAction::createLoadHeaderFiles );
+  ui->setupUi( this );
+  ui->settings->setCommitPage( true );
 
   connect(
-    wizardV.get(),
-    &ImportMediaSetXmlWizard::start,
+    ui->settings,
+    &ImportMediaSetXmlSettingsPage::xmlFile,
     this,
-    &ImportMediaSetXmlAction::start );
+    &ImportMediaSetXmlWizard::xmlFile );
   connect(
-    wizardV.get(),
-    &ImportMediaSetXmlWizard::finished,
+    ui->settings,
+    &ImportMediaSetXmlSettingsPage::inputDirectory,
     this,
-    &ImportMediaSetXmlAction::finished );
+    &ImportMediaSetXmlWizard::inputDirectory );
+  connect(
+    ui->settings,
+    &ImportMediaSetXmlSettingsPage::arinc665Version,
+    this,
+    &ImportMediaSetXmlWizard::arinc665Version );
+  connect(
+    ui->settings,
+    &ImportMediaSetXmlSettingsPage::createBatchFiles,
+    this,
+    &ImportMediaSetXmlWizard::createBatchFiles );
+  connect(
+    ui->settings,
+    &ImportMediaSetXmlSettingsPage::createLoadHeaderFiles,
+    this,
+    &ImportMediaSetXmlWizard::createLoadHeaderFiles );
 
-  wizardV->show();
+  connect(
+    this,
+    &QWizard::currentIdChanged,
+    this,
+    &ImportMediaSetXmlWizard::pageChanged );
 }
 
-ImportMediaSetXmlAction::~ImportMediaSetXmlAction() = default;
+ImportMediaSetXmlWizard::~ImportMediaSetXmlWizard() = default;
 
-void ImportMediaSetXmlAction::xmlFile( std::filesystem::path xmlFile )
+void ImportMediaSetXmlWizard::pageChanged( int id )
+{
+  if ( ui->settings->nextId() == id )
+  {
+    importMediaSetXml();
+  }
+}
+
+void ImportMediaSetXmlWizard::xmlFile( std::filesystem::path xmlFile )
 {
   xmlFileV = std::move( xmlFile );
 }
 
-void ImportMediaSetXmlAction::inputDirectory( std::filesystem::path directory )
+void ImportMediaSetXmlWizard::inputDirectory( std::filesystem::path directory )
 {
   compilerV->sourceBasePath( std::move( directory ) );
 }
 
-void ImportMediaSetXmlAction::arinc665Version(
+void ImportMediaSetXmlWizard::arinc665Version(
   Arinc665::SupportedArinc665Version version )
 {
   compilerV->arinc665Version( version );
 }
 
-void ImportMediaSetXmlAction::createBatchFiles(
+void ImportMediaSetXmlWizard::createBatchFiles(
   Arinc665::Utils::FileCreationPolicy createBatchFiles )
 {
   compilerV->createBatchFiles( createBatchFiles );
 }
 
-void ImportMediaSetXmlAction::createLoadHeaderFiles(
+void ImportMediaSetXmlWizard::createLoadHeaderFiles(
   Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles )
 {
   compilerV->createLoadHeaderFiles( createLoadHeaderFiles );
 }
 
-void ImportMediaSetXmlAction::start()
+void ImportMediaSetXmlWizard::importMediaSetXml()
 {
   try
   {
