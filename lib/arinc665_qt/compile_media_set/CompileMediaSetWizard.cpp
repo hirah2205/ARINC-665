@@ -14,12 +14,29 @@
 
 #include "ui_CompileMediaSetWizard.h"
 
+#include <arinc665/utils/Arinc665Xml.hpp>
+#include <arinc665/utils/FilesystemMediaSetCompiler.hpp>
+
+#include <arinc665/media/MediaSet.hpp>
+
+#include <arinc665/Arinc665Exception.hpp>
+#include <arinc665/MediumNumber.hpp>
+
+#include <QMessageBox>
+
+#include <boost/exception/all.hpp>
+
+#include <cassert>
+
 namespace Arinc665Qt {
 
 CompileMediaSetWizard::CompileMediaSetWizard( QWidget * const parent ) :
   QWizard{ parent },
-  ui{ std::make_unique< Ui::CompileMediaSetWizard >() }
+  ui{ std::make_unique< Ui::CompileMediaSetWizard >() },
+  compilerV{ Arinc665::Utils::FilesystemMediaSetCompiler::create() }
 {
+  assert( compilerV );
+
   ui->setupUi( this );
   ui->settings->setCommitPage( true );
 
@@ -67,7 +84,67 @@ void CompileMediaSetWizard::pageChanged( int id )
 {
   if ( ui->settings->nextId() == id )
   {
-    emit start();
+    compileMediaSet();
+  }
+}
+
+void CompileMediaSetWizard::xmlFile( std::filesystem::path xmlFile )
+{
+  xmlFileV = std::move( xmlFile );
+}
+
+void CompileMediaSetWizard::inputDirectory( std::filesystem::path directory )
+{
+  compilerV->sourceBasePath( std::move( directory ) );
+}
+
+void CompileMediaSetWizard::arinc665Version(
+  Arinc665::SupportedArinc665Version version )
+{
+  compilerV->arinc665Version( version );
+}
+
+void CompileMediaSetWizard::createBatchFiles(
+  Arinc665::Utils::FileCreationPolicy createBatchFiles )
+{
+  compilerV->createBatchFiles( createBatchFiles );
+}
+
+void CompileMediaSetWizard::createLoadHeaderFiles(
+  Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles )
+{
+  compilerV->createLoadHeaderFiles( createLoadHeaderFiles );
+}
+
+void CompileMediaSetWizard::outputDirectory( std::filesystem::path directory )
+{
+  outputDirectoryV = std::move( directory );
+}
+
+void CompileMediaSetWizard::compileMediaSet()
+{
+  try
+  {
+    // load ARINC 665 XML file
+    auto [ mediaSet, fileMapping ] =
+      Arinc665::Utils::Arinc665Xml_load( xmlFileV );
+
+    compilerV
+      ->mediaSet( std::move( mediaSet ) )
+      .filePathMapping( std::move( fileMapping ) )
+      .outputBasePath( outputDirectoryV );
+    assert( compilerV );
+    ( *compilerV )();
+  }
+  catch ( const Arinc665::Arinc665Exception &e )
+  {
+    const auto info{ boost::diagnostic_information( e ) };
+
+    QMessageBox::critical(
+      nullptr,
+      tr( "Error during compilation" ),
+      QString::fromStdString( info ) );
+    return;
   }
 }
 

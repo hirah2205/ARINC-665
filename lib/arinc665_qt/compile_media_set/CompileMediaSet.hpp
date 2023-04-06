@@ -16,7 +16,7 @@
  *
  * Compiles ARINC 665 Media Set XML to Media Set.
  *
- * @sa @ref Arinc665Qt::CompileMediaSetAction
+ * @sa @ref Arinc665Qt::CompileMediaSetWizard
  **/
 
 #ifndef ARINC665_QT_COMPILE_MEDIA_SET_COMPILEMEDIASET_HPP
@@ -26,7 +26,6 @@
 
 namespace Arinc665Qt {
 
-class CompileMediaSetAction;
 class CompileMediaSetWizard;
 
 }

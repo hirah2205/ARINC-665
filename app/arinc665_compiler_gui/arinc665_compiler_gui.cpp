@@ -12,7 +12,7 @@
 
 #include <arinc665_qt/resources/Resources.hpp>
 
-#include <arinc665_qt/compile_media_set/CompileMediaSetAction.hpp>
+#include <arinc665_qt/compile_media_set/CompileMediaSetWizard.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -51,13 +51,8 @@ try
   QApplication::setWindowIcon( QIcon(
     ":/media_set_manager/arinc665_media_set_compile.svg" ) );
 
-  Arinc665Qt::CompileMediaSetAction compileMediaSetAction{};
-
-  QObject::connect(
-    &compileMediaSetAction,
-    &Arinc665Qt::CompileMediaSetAction::finished,
-    &application,
-    &QApplication::quit );
+  Arinc665Qt::CompileMediaSetWizard compileMediaSetWizard{};
+  compileMediaSetWizard.show();
 
   return QApplication::exec();
 }

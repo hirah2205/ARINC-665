@@ -28,7 +28,19 @@ namespace Ui{
 class CompileMediaSetWizard;
 }
 
-//! Compile ARINC 665 %Media Set Wizard
+/**
+ * @brief Compile ARINC 665 %Media Set XML to ARINC 665 %Media Set.
+ *
+ * This Controller guides through the process of generation of an ARINC 665
+ * %Media Set by:
+ *  - Ask the User for:
+ *    - ARINC 665 %Media Set XML,
+ *    - Input Source Path
+ *    - Output Directory
+ *    - %Media Set Parameters (Version, Load Header generation and Batch File
+ *      generation)
+ *  - Perform actual compilation of ARINC 665 %Media Set.
+ **/
 class ARINC665_QT_EXPORT CompileMediaSetWizard final : public QWizard
 {
     Q_OBJECT
@@ -45,62 +57,6 @@ class ARINC665_QT_EXPORT CompileMediaSetWizard final : public QWizard
     //! Destructor
     ~CompileMediaSetWizard() override;
 
-  signals:
-    /**
-     * @brief Emitted when a ARINC 665 Media Set XML file has been selected.
-     *
-     * @param[in] xmlFile
-     *   Selected ARINC 665 Media Set XML file.
-     **/
-    void xmlFile( std::filesystem::path xmlFile );
-
-    /**
-     * @brief Emitted when an input directory has been selected.
-     *
-     * @param[in] directory
-     *   Selected input directory.
-     **/
-    void inputDirectory( std::filesystem::path directory );
-
-    /**
-     * @brief Emitted the ARINC 665 Version Flag.
-     *
-     * @param[in] version
-     *   ARINC 665 version used for exporting.
-     **/
-    void arinc665Version( Arinc665::SupportedArinc665Version version );
-
-    /**
-     * @brief Emitted the Create Batch Files Flag.
-     *
-     * @param[in] createBatchFiles
-     *   Defines, if Batch Files are created by exporter or pre-existing ones
-     *   are used.
-     **/
-    void createBatchFiles(
-      Arinc665::Utils::FileCreationPolicy createBatchFiles );
-
-    /**
-     * @brief Emitted the Create Load Header Files Flag.
-     *
-     * @param[in] createLoadHeaderFiles
-     *   Defines, if Load Header Files are created by exporter or pre-existing
-     *   ones are used.
-     **/
-    void createLoadHeaderFiles(
-      Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles );
-
-    /**
-     * @brief Emitted when an output directory has been selected.
-     *
-     * @param[in] directory
-     *   Selected output directory.
-     **/
-    void outputDirectory( std::filesystem::path directory );
-
-    //! Signal emitted when operation should be started.
-    void start();
-
   private slots:
     /**
      * @brief Slot for currentIdChanged() signal.
@@ -110,9 +66,72 @@ class ARINC665_QT_EXPORT CompileMediaSetWizard final : public QWizard
      **/
     void pageChanged( int id );
 
+    /**
+     * @brief Called when a ARINC 665 Media Set XML file has been selected.
+     *
+     * @param[in] xmlFile
+     *   Selected ARINC 665 Media Set XML file.
+     **/
+    void xmlFile( std::filesystem::path xmlFile );
+
+    /**
+     * @brief Called when an input directory has been selected.
+     *
+     * @param[in] directory
+     *   Selected input directory.
+     **/
+    void inputDirectory( std::filesystem::path directory );
+
+    /**
+     * @brief Called the ARINC 665 Version Flag.
+     *
+     * @param[in] version
+     *   ARINC 665 version used for exporting.
+     **/
+    void arinc665Version( Arinc665::SupportedArinc665Version version );
+
+    /**
+     * @brief Called the Create Batch Files Flag.
+     *
+     * @param[in] createBatchFiles
+     *   Defines, if Batch Files are created by exporter or pre-existing ones
+     *   are used.
+     **/
+    void createBatchFiles(
+      Arinc665::Utils::FileCreationPolicy createBatchFiles );
+
+    /**
+     * @brief Called the Create Load Header Files Flag.
+     *
+     * @param[in] createLoadHeaderFiles
+     *   Defines, if Load Header Files are created by exporter or pre-existing
+     *   ones are used.
+     **/
+    void createLoadHeaderFiles(
+      Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles );
+
+    /**
+     * @brief Called when an output directory has been selected.
+     *
+     * @param[in] directory
+     *   Selected output directory.
+     **/
+    void outputDirectory( std::filesystem::path directory );
+
   private:
+    /**
+     * @brief Start Media Set Compilation.
+     **/
+    void compileMediaSet();
+
     //! UI (designer)
     std::unique_ptr< Ui::CompileMediaSetWizard > ui;
+    //! ARINC 665 Media Set Compiler
+    Arinc665::Utils::FilesystemMediaSetCompilerPtr compilerV;
+    //! XML File
+    std::filesystem::path xmlFileV;
+    //! Output Base Path
+    std::filesystem::path outputDirectoryV;
 };
 
 }
