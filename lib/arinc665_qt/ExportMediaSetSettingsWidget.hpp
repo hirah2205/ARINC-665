@@ -58,6 +58,14 @@ class ARINC665_QT_EXPORT ExportMediaSetSettingsWidget final : public QGroupBox
      **/
     [[nodiscard]] bool completed() const;
 
+    /**
+     * @brief Initialises the widgets with its defaults.
+     *
+     * @param[in] defaults
+     *   Media Set Defaults
+     **/
+    void defaults( const Arinc665::Utils::MediaSetDefaults &defaults );
+
   signals:
     /**
      * @brief Emitted the ARINC 665 Version Flag.

@@ -62,6 +62,14 @@ class ARINC665_QT_EXPORT ImportMediaSetSettingsPage final : public QWizardPage
      **/
     void mediaPathsModel( MediaPathsModel * model );
 
+    /**
+     * @brief Initialises the page with its defaults.
+     *
+     * @param[in] defaults
+     *   Media Set Defaults
+     **/
+    void defaults( const Arinc665::Utils::MediaSetDefaults &defaults );
+
   signals:
     /**
      * @brief Signal emitted, when the check file integrity field has been

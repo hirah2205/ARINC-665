@@ -14,6 +14,8 @@
 
 #include "ui_ImportMediaSetSettingsPage.h"
 
+#include <arinc665/utils/MediaSetDefaults.hpp>
+
 namespace Arinc665Qt::MediaSetManager {
 
 ImportMediaSetSettingsPage::ImportMediaSetSettingsPage(
@@ -47,6 +49,12 @@ void ImportMediaSetSettingsPage::mediaPathsModel(
   MediaPathsModel * const model )
 {
   ui->mediaPaths->mediaPathsModel( model );
+}
+
+void ImportMediaSetSettingsPage::defaults(
+  const Arinc665::Utils::MediaSetDefaults &defaults )
+{
+  ui->checkFileIntegrity->setChecked( defaults.checkFileIntegrity );
 }
 
 void ImportMediaSetSettingsPage::checkFileIntegrityStateChanged(

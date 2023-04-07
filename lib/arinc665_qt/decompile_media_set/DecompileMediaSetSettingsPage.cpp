@@ -14,6 +14,8 @@
 
 #include "ui_DecompileMediaSetSettingsPage.h"
 
+#include <arinc665/utils/MediaSetDefaults.hpp>
+
 namespace Arinc665Qt {
 
 DecompileMediaSetSettingsPage::DecompileMediaSetSettingsPage(
@@ -54,6 +56,12 @@ void DecompileMediaSetSettingsPage::mediaPathsModel(
   MediaPathsModel * const model )
 {
   ui->mediaPaths->mediaPathsModel( model );
+}
+
+void DecompileMediaSetSettingsPage::defaults(
+  const Arinc665::Utils::MediaSetDefaults &defaults )
+{
+  ui->checkFileIntegrity->setChecked( defaults.checkFileIntegrity );
 }
 
 void DecompileMediaSetSettingsPage::checkFileIntegrityStateChanged( int state )

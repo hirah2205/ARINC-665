@@ -29,7 +29,9 @@ namespace Ui{
 class CompileMediaSetSettingsPage;
 }
 
-//! Compile %Media Set Settings Page
+/**
+ * @brief Compile %Media Set Settings Page
+ **/
 class ARINC665_QT_EXPORT CompileMediaSetSettingsPage final : public QWizardPage
 {
     Q_OBJECT
@@ -54,6 +56,14 @@ class ARINC665_QT_EXPORT CompileMediaSetSettingsPage final : public QWizardPage
      * @return if page is completed
      **/
     bool isComplete() const override;
+
+    /**
+     * @brief Initialises the page with its defaults.
+     *
+     * @param[in] defaults
+     *   Media Set Defaults
+     **/
+    void defaults( const Arinc665::Utils::MediaSetDefaults &defaults );
 
   signals:
     /**

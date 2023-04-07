@@ -12,10 +12,12 @@
 
 #include "ExportMediaSetSettingsWidget.hpp"
 
+#include "ui_ExportMediaSetSettingsWidget.h"
+
 #include <arinc665_qt/SupportedArinc665VersionModel.hpp>
 #include <arinc665_qt/FileCreationPolicyModel.hpp>
 
-#include "ui_ExportMediaSetSettingsWidget.h"
+#include <arinc665/utils/MediaSetDefaults.hpp>
 
 namespace Arinc665Qt {
 
@@ -56,6 +58,24 @@ ExportMediaSetSettingsWidget::~ExportMediaSetSettingsWidget() = default;
 bool ExportMediaSetSettingsWidget::completed() const
 {
   return true;
+}
+
+void ExportMediaSetSettingsWidget::defaults(
+  const Arinc665::Utils::MediaSetDefaults &defaults )
+{
+  ui->arinc665Version->setCurrentIndex(
+    supportedArinc665VersionModelV->supportedArinc665Version(
+      defaults.version ) );
+  ui->loadHeaderCreation->setCurrentIndex(
+    fileCreationPolicyModelV->fileCreationPolicy(
+      defaults.loadHeaderFileCreationPolicy ) );
+  ui->batchFileCreation->setCurrentIndex(
+    fileCreationPolicyModelV->fileCreationPolicy(
+      defaults.batchFileCreationPolicy ) );
+
+  emit arinc665Version( defaults.version );
+  emit createLoadHeaderFiles( defaults.loadHeaderFileCreationPolicy );
+  emit createBatchFiles( defaults.batchFileCreationPolicy );
 }
 
 void ExportMediaSetSettingsWidget::arinc665VersionIndexSelected( int index )

@@ -103,6 +103,14 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlWizard : public QWizard
     void createLoadHeaderFiles(
       Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles );
 
+    /**
+     * @brief Slot called, when user changed the check file integrity handling
+     *
+     * @param[in] checkFileIntegrity
+     *   Check File Integrity indicator
+     **/
+    void checkFileIntegrity( bool checkFileIntegrity );
+
   private:
     /**
      * @brief Start Media Set XML Import.
@@ -110,13 +118,15 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlWizard : public QWizard
     void importMediaSetXml();
 
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetXmlWizard > ui;
+    std::unique_ptr< Ui::ImportMediaSetXmlWizard > ui{};
     //! Media Set Manager
-    Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV;
-    //! ARINC 665 Media Set Exporter
-    Arinc665::Utils::FilesystemMediaSetCompilerPtr compilerV;
+    Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV{};
+    //! ARINC 665 Media Set Compiler
+    Arinc665::Utils::FilesystemMediaSetCompilerPtr compilerV{};
     //! XML File
-    std::filesystem::path xmlFileV;
+    std::filesystem::path xmlFileV{};
+    //! Check File Integrity
+    bool checkFileIntegrityV{ false };
 };
 
 }

@@ -43,6 +43,8 @@ ImportMediaSetWizard::ImportMediaSetWizard(
   copierV{ Arinc665::Utils::FilesystemMediaSetCopier::create() },
   mediaPathsModelV{ std::make_unique< MediaPathsModel >() }
 {
+  assert( copierV );
+
   ui->setupUi( this );
   ui->settings->setCommitPage( true );
   ui->settings->mediaPathsModel( mediaPathsModelV.get() );
@@ -57,6 +59,9 @@ ImportMediaSetWizard::ImportMediaSetWizard(
     &ImportMediaSetSettingsPage::checkFileIntegrity,
     this,
     &ImportMediaSetWizard::checkFileIntegrity );
+
+  // finally set defaults (signals must be connected)
+  ui->settings->defaults( mediaSetManagerV->mediaSetDefaults() );
 }
 
 ImportMediaSetWizard::~ImportMediaSetWizard() = default;

@@ -92,15 +92,22 @@ std::optional< Arinc665::SupportedArinc665Version >
 SupportedArinc665VersionModel::supportedArinc665Version( int index ) const
 {
   if ( std::cmp_greater_equal(
-         index,
-         Arinc665::SupportedArinc665VersionDescription::instance()
-           .descriptions().size() ) )
+    index,
+    Arinc665::SupportedArinc665VersionDescription::instance()
+      .descriptions().size() ) )
   {
     return {};
   }
 
   return Arinc665::SupportedArinc665VersionDescription::instance().enumeration(
     index );
+}
+
+int SupportedArinc665VersionModel::supportedArinc665Version(
+  const Arinc665::SupportedArinc665Version version ) const
+{
+  return Arinc665::SupportedArinc665VersionDescription::instance().value(
+    version ).value_or( -1 );
 }
 
 }

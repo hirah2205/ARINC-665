@@ -92,6 +92,19 @@ namespace Arinc665Qt {
      **/
     [[nodiscard]] std::optional< Arinc665::SupportedArinc665Version >
     supportedArinc665Version( int index ) const;
+
+    /**
+     * @brief Returns Index from ARINC 665 Version value.
+     *
+     * @param[in] version
+     *   ARINC 665 Version Policy
+     *
+     * @return corresponding index value.
+     * @retval -1
+     *   If ARINC 665 Version value is invalid.
+     **/
+    [[nodiscard]] int supportedArinc665Version(
+      Arinc665::SupportedArinc665Version version ) const;
 };
 
 }

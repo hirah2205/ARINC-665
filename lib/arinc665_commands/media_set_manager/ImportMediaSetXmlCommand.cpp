@@ -83,22 +83,19 @@ ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
   )
   (
     "create-batch-files",
-    boost::program_options::value( &createBatchFiles )
-      ->default_value( Arinc665::Utils::FileCreationPolicy::None ),
+    boost::program_options::value( &createBatchFiles ),
     ( std::string( "batch-files creation policy:\n" )
       + fileCreationPolicyValues )
       .c_str() )(
     "create-load-header-files",
-    boost::program_options::value( &createLoadHeaderFiles )
-      ->default_value( Arinc665::Utils::FileCreationPolicy::None ),
+    boost::program_options::value( &createLoadHeaderFiles ),
     ( std::string( "Load-headers-files creation policy:\n" )
       + fileCreationPolicyValues )
       .c_str()
   )
   (
     "version",
-    boost::program_options::value( &version )
-      ->default_value( Arinc665::SupportedArinc665Version::Supplement2 ),
+    boost::program_options::value( &version ),
     ( std::string( "ARINC 665 Version:\n" ) + versionValues ).c_str()
   );
 }
@@ -128,18 +125,23 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
     auto compiler{ Arinc665::Utils::FilesystemMediaSetCompiler::create() };
 
     // set exporter parameters
+    auto defaults{ mediaSetManager->configuration().defaults };
     compiler
       ->mediaSet( mediaSet )
-      .arinc665Version( version )
-      .createBatchFiles( createBatchFiles )
-      .createLoadHeaderFiles( createLoadHeaderFiles )
+      .arinc665Version( version.value_or( defaults.version ) )
+      .createBatchFiles(
+        createBatchFiles.value_or( defaults.batchFileCreationPolicy ) )
+      .createLoadHeaderFiles( createLoadHeaderFiles.value_or(
+        defaults.loadHeaderFileCreationPolicy ) )
       .sourceBasePath( mediaSetSourceDirectory )
       .filePathMapping( std::move( filePathMapping ) )
       .outputBasePath( mediaSetManagerDirectory );
 
     auto mediaSetPaths{ ( *compiler )() };
 
-    mediaSetManager->registerMediaSet( mediaSetPaths );
+    mediaSetManager->registerMediaSet(
+      mediaSetPaths,
+      defaults.checkFileIntegrity );
     mediaSetManager->saveConfiguration();
   }
   catch ( const boost::program_options::error &e )

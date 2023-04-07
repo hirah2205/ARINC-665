@@ -105,6 +105,12 @@ bool CompileMediaSetSettingsPage::isComplete() const
     && !ui->outputBasePath->text().isEmpty();
 }
 
+void CompileMediaSetSettingsPage::defaults(
+  const Arinc665::Utils::MediaSetDefaults &defaults )
+{
+  ui->mediaSetOutputSettings->defaults( defaults );
+}
+
 void CompileMediaSetSettingsPage::selectOutputDirectory()
 {
   selectOutputDirectoryDialog->exec();

@@ -16,11 +16,11 @@
 
 #include <arinc665/utils/Arinc665Xml.hpp>
 #include <arinc665/utils/FilesystemMediaSetCompiler.hpp>
+#include <arinc665/utils/MediaSetDefaults.hpp>
 
 #include <arinc665/media/MediaSet.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
-#include <arinc665/MediumNumber.hpp>
 
 #include <QMessageBox>
 
@@ -76,6 +76,9 @@ CompileMediaSetWizard::CompileMediaSetWizard( QWidget * const parent ) :
     &QWizard::currentIdChanged,
     this,
     &CompileMediaSetWizard::pageChanged );
+
+  // finally set defaults (signals must be connected)
+  ui->settings->defaults( Arinc665::Utils::MediaSetDefaults{} );
 }
 
 CompileMediaSetWizard::~CompileMediaSetWizard() = default;

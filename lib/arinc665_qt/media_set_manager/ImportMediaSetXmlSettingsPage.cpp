@@ -15,6 +15,8 @@
 
 #include "ui_ImportMediaSetXmlSettingsPage.h"
 
+#include <arinc665/utils/MediaSetDefaults.hpp>
+
 namespace Arinc665Qt::MediaSetManager {
 
 ImportMediaSetXmlSettingsPage::ImportMediaSetXmlSettingsPage(
@@ -88,6 +90,31 @@ bool ImportMediaSetXmlSettingsPage::isComplete() const
   return QWizardPage::isComplete()
     && ui->mediaSetXmlSettings->completed()
     && ui->mediaSetOutputSettings->completed();
+}
+
+void ImportMediaSetXmlSettingsPage::defaults(
+  const Arinc665::Utils::MediaSetDefaults &defaults )
+{
+  ui->mediaSetOutputSettings->defaults( defaults );
+  ui->checkFileIntegrity->setChecked( defaults.checkFileIntegrity );
+}
+
+void ImportMediaSetXmlSettingsPage::checkFileIntegrityStateChanged(
+  const int state )
+{
+  switch ( state )
+  {
+    case Qt::CheckState::Unchecked:
+      emit checkFileIntegrity( false );
+      break;
+
+    case Qt::CheckState::Checked:
+      emit checkFileIntegrity( true );
+      break;
+
+    default:
+      break;
+  }
 }
 
 }

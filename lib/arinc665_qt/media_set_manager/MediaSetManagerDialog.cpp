@@ -19,6 +19,7 @@
 #include <arinc665_qt/media_set_manager/RemoveMediaSetController.hpp>
 #include <arinc665_qt/media_set_manager/ImportMediaSetWizard.hpp>
 #include <arinc665_qt/media_set_manager/ImportMediaSetXmlWizard.hpp>
+#include <arinc665_qt/media_set_manager/MediaSetManagerSettingsDialog.hpp>
 
 #include <arinc665_qt/media/MediaSetsModel.hpp>
 
@@ -58,6 +59,11 @@ MediaSetManagerDialog::MediaSetManagerDialog(
     &QPushButton::clicked,
     this,
     &MediaSetManagerDialog::removeMediaSet );
+  connect(
+    ui->settings,
+    &QPushButton::clicked,
+    this,
+    &MediaSetManagerDialog::settings );
 }
 
 MediaSetManagerDialog::~MediaSetManagerDialog() = default;
@@ -78,6 +84,8 @@ void MediaSetManagerDialog::reloadMediaSetModel()
   }
 
   mediaSetsModelV->mediaSets( std::move( mediaSets ) );
+
+  ui->mediaSets->selectRow( 0 );
 }
 
 void MediaSetManagerDialog::viewMediaSet()
@@ -106,7 +114,7 @@ void MediaSetManagerDialog::viewMediaSet()
     &ViewMediaSetDialog::deleteLater );
 
   viewMediaSetDialog->mediaSet( std::move( mediaSet ) );
-  emit viewMediaSetDialog->show();
+  viewMediaSetDialog->show();
 }
 
 void MediaSetManagerDialog::importMediaSet()
@@ -132,7 +140,7 @@ void MediaSetManagerDialog::importMediaSet()
     wizard,
     &ImportMediaSetWizard::deleteLater );
 
-  emit wizard->open();
+  wizard->open();
 }
 
 void MediaSetManagerDialog::importMediaSetXml()
@@ -158,7 +166,7 @@ void MediaSetManagerDialog::importMediaSetXml()
     wizard,
     &ImportMediaSetXmlWizard::deleteLater );
 
-  emit wizard->open();
+  wizard->open();
 }
 
 void MediaSetManagerDialog::removeMediaSet()
@@ -194,7 +202,32 @@ void MediaSetManagerDialog::removeMediaSet()
     controller,
     &RemoveMediaSetController::deleteLater );
 
-  emit controller->start( mediaSetManagerV, mediaSet );
+  controller->start( mediaSetManagerV, mediaSet );
+}
+
+void MediaSetManagerDialog::settings()
+{
+  MediaSetManagerSettingsDialog * const dialog{
+    new MediaSetManagerSettingsDialog{ this } };
+
+  // connect to clean up slot
+  connect(
+    dialog,
+    &MediaSetManagerSettingsDialog::finished,
+    dialog,
+    &MediaSetManagerSettingsDialog::deleteLater );
+  connect(
+    dialog,
+    &MediaSetManagerSettingsDialog::accepted,
+    [ this, dialog ]()
+    {
+      mediaSetManagerV->mediaSetDefaults( dialog->configuration() );
+      mediaSetManagerV->saveConfiguration();
+    } );
+
+  dialog->configuration( mediaSetManagerV->mediaSetDefaults() );
+
+  dialog->open();
 }
 
 }

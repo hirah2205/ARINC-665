@@ -30,8 +30,8 @@ namespace Ui{
 class MediaSetManagerDialog;
 }
 
-/** %Media Set Manager Dialog
- * @brief
+/**
+ * @brief %Media Set Manager Dialog
  *
  * The Media Set Manager Dialog provides listing of the Media Sets within the
  * Media Set manager and provides operations onto the Media Sets:
@@ -40,7 +40,7 @@ class MediaSetManagerDialog;
  * - Import Media Set XML Configuration, and
  * - Removing Media Sets.
  **/
-class ARINC665_QT_EXPORT MediaSetManagerDialog : public QDialog
+class ARINC665_QT_EXPORT MediaSetManagerDialog final : public QDialog
 {
     Q_OBJECT
 
@@ -87,6 +87,11 @@ class ARINC665_QT_EXPORT MediaSetManagerDialog : public QDialog
      * @brief Slot handling Remove Media Set Clicked.
      **/
     void removeMediaSet();
+
+    /**
+     * @brief Open Settings Dialog
+     **/
+    void settings();
 
   private:
     //! UI (designer)

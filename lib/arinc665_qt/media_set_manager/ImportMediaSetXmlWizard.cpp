@@ -69,12 +69,20 @@ ImportMediaSetXmlWizard::ImportMediaSetXmlWizard(
     &ImportMediaSetXmlSettingsPage::createLoadHeaderFiles,
     this,
     &ImportMediaSetXmlWizard::createLoadHeaderFiles );
+  connect(
+    ui->settings,
+    &ImportMediaSetXmlSettingsPage::checkFileIntegrity,
+    this,
+    &ImportMediaSetXmlWizard::checkFileIntegrity );
 
   connect(
     this,
     &QWizard::currentIdChanged,
     this,
     &ImportMediaSetXmlWizard::pageChanged );
+
+  // finally set defaults (signals must be connected)
+  ui->settings->defaults( mediaSetManagerV->mediaSetDefaults() );
 }
 
 ImportMediaSetXmlWizard::~ImportMediaSetXmlWizard() = default;
@@ -115,6 +123,11 @@ void ImportMediaSetXmlWizard::createLoadHeaderFiles(
   compilerV->createLoadHeaderFiles( createLoadHeaderFiles );
 }
 
+void ImportMediaSetXmlWizard::checkFileIntegrity( bool checkFileIntegrity )
+{
+  checkFileIntegrityV = checkFileIntegrity;
+}
+
 void ImportMediaSetXmlWizard::importMediaSetXml()
 {
   try
@@ -129,17 +142,29 @@ void ImportMediaSetXmlWizard::importMediaSetXml()
       .outputBasePath( mediaSetManagerV->directory() );
     auto mediaSetPaths{ ( *compilerV )() };
 
-    mediaSetManagerV->registerMediaSet( mediaSetPaths, true );
+    mediaSetManagerV->registerMediaSet( mediaSetPaths, checkFileIntegrityV );
     mediaSetManagerV->saveConfiguration();
   }
-  catch ( const Arinc665::Arinc665Exception &e )
+  catch ( const boost::exception &e )
   {
     const auto info{ boost::diagnostic_information( e ) };
 
     QMessageBox::critical(
       nullptr,
       tr( "Error during compilation" ),
-      QString::fromStdString( info ) );
+      QString{ tr( "Error:<br/><tt>%1</tt>") }
+        .arg( QString::fromStdString( info ) ) );
+    return;
+  }
+  catch ( const std::exception &e )
+  {
+    const auto info{ boost::diagnostic_information( e ) };
+
+    QMessageBox::critical(
+      nullptr,
+      tr( "Error during compilation" ),
+      QString{ tr( "Error:<br/><tt>%1</tt>") }
+        .arg( QString::fromStdString( info ) ) );
     return;
   }
 }

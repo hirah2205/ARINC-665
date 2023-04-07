@@ -48,15 +48,18 @@ MediaSetManagerImpl::MediaSetManagerImpl(
       << boost::errinfo_file_name{ configurationFile.string() } );
   }
 
-  boost::property_tree::ptree configurationPTree{};
+  boost::property_tree::ptree configurationProperties{};
 
   boost::property_tree::json_parser::read_json(
     configurationFile.string(),
-    configurationPTree );
+    configurationProperties );
 
-  loadMediaSets(
-    Arinc665::Utils::MediaSetManagerConfiguration{ configurationPTree },
-    checkFileIntegrity );
+  auto configuration{
+    Arinc665::Utils::MediaSetManagerConfiguration{ configurationProperties } };
+
+  loadMediaSets( configuration.mediaSets, checkFileIntegrity );
+
+  mediaSetDefaultsV = std::move( configuration.defaults );
 }
 
 MediaSetManagerImpl::~MediaSetManagerImpl()
@@ -70,6 +73,21 @@ MediaSetManagerImpl::~MediaSetManagerImpl()
   }
 }
 
+const MediaSetDefaults & MediaSetManagerImpl::mediaSetDefaults() const
+{
+  return mediaSetDefaultsV;
+}
+
+MediaSetDefaults & MediaSetManagerImpl::mediaSetDefaults()
+{
+  return mediaSetDefaultsV;
+}
+
+void MediaSetManagerImpl::mediaSetDefaults( MediaSetDefaults mediaSetDefaults )
+{
+  mediaSetDefaultsV = std::move( mediaSetDefaults );
+}
+
 MediaSetManagerConfiguration MediaSetManagerImpl::configuration() const
 {
   MediaSetManagerConfiguration configuration{};
@@ -78,6 +96,8 @@ MediaSetManagerConfiguration MediaSetManagerImpl::configuration() const
   {
     configuration.mediaSets.emplace_back( mediaSetPaths );
   }
+
+  configuration.defaults = mediaSetDefaultsV;
 
   return configuration;
 }
@@ -225,12 +245,12 @@ std::filesystem::path MediaSetManagerImpl::filePath(
 }
 
 void MediaSetManagerImpl::loadMediaSets(
-  const MediaSetManagerConfiguration &configuration,
+  const MediaSetManagerConfiguration::MediaSetsPaths &mediaSetsPaths,
   const bool checkFileIntegrity )
 {
   BOOST_LOG_FUNCTION()
 
-  for ( auto const &mediaSetPaths : configuration.mediaSets )
+  for ( auto const &mediaSetPaths : mediaSetsPaths )
   {
     auto decompiler{ FilesystemMediaSetDecompiler::create() };
     assert( decompiler );

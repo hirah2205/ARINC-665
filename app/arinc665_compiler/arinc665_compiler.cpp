@@ -60,9 +60,9 @@ int main( int argc, char * argv[] )
       Arinc665::Utils::FileCreationPolicyDescription::instance() };
 
     const std::string fileCreationPolicyValues{
-      "* '" + std::string{ fileCreatePolDesc.name( Arinc665::Utils::FileCreationPolicy::None)} + "': Create never\n" +
-      "* '" + std::string{ fileCreatePolDesc.name( Arinc665::Utils::FileCreationPolicy::NoneExisting)} + "': Create none-existing\n" +
-      "* '" + std::string{ fileCreatePolDesc.name( Arinc665::Utils::FileCreationPolicy::All)} + "': Create all" };
+      "* '" + std::string{ fileCreatePolDesc.name( Arinc665::Utils::FileCreationPolicy::None ) } + "': Create never\n" +
+      "* '" + std::string{ fileCreatePolDesc.name( Arinc665::Utils::FileCreationPolicy::NoneExisting ) } + "': Create none-existing\n" +
+      "* '" + std::string{ fileCreatePolDesc.name( Arinc665::Utils::FileCreationPolicy::All ) } + "': Create all" };
 
     const auto &versionDesc{ Arinc665::SupportedArinc665VersionDescription::instance() };
 

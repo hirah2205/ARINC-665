@@ -56,6 +56,14 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsPage final : public QWizardPag
      **/
     bool isComplete() const override;
 
+    /**
+     * @brief Initialises the page with its defaults.
+     *
+     * @param[in] defaults
+     *   Media Set Defaults
+     **/
+    void defaults( const Arinc665::Utils::MediaSetDefaults &defaults );
+
   signals:
     /**
      * @brief Emitted when a ARINC 665 Media Set XML file has been selected.
@@ -101,7 +109,27 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsPage final : public QWizardPag
     void createLoadHeaderFiles(
       Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles );
 
+    /**
+     * @brief Signal emitted, when the check file integrity field has been
+     *   selected by user.
+     *
+     * @param[in] checkFileIntegrity
+     *   Check file integrity indicator.
+     **/
+    void checkFileIntegrity( bool checkFileIntegrity );
+
   private slots:
+    /**
+     * @brief Slot called, when the file integrity changed checkbox has been
+     *   changed.
+     *
+     * check state is determined and signal @ref checkFileIntegrity() is
+     * emitted.
+     *
+     * @param[in] state
+     *   Check State.
+     **/
+    void checkFileIntegrityStateChanged( int state );
 
   private:
     //! UI (designer)

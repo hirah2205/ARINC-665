@@ -14,6 +14,8 @@
 
 #include "ui_DecompileMediaSetWizard.h"
 
+#include <arinc665/utils/MediaSetDefaults.hpp>
+
 namespace Arinc665Qt {
 
 DecompileMediaSetWizard::DecompileMediaSetWizard( QWidget * const parent ) :
@@ -27,6 +29,9 @@ DecompileMediaSetWizard::DecompileMediaSetWizard( QWidget * const parent ) :
     &DecompileMediaSetSettingsPage::checkFileIntegrity,
     this,
     &DecompileMediaSetWizard::checkFileIntegrity );
+
+    // finally set defaults (signals must be connected)
+    ui->settings->defaults( Arinc665::Utils::MediaSetDefaults{} );
 }
 
 DecompileMediaSetWizard::~DecompileMediaSetWizard() = default;

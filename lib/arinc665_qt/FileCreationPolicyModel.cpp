@@ -99,4 +99,12 @@ FileCreationPolicyModel::fileCreationPolicy( const int row ) const
     row );
 }
 
+int FileCreationPolicyModel::fileCreationPolicy(
+  Arinc665::Utils::FileCreationPolicy fileCreationPolicy ) const
+{
+  return Arinc665::Utils::FileCreationPolicyDescription::instance().value(
+    fileCreationPolicy ).value_or( -1 );
+
+}
+
 }

@@ -92,6 +92,19 @@ class ARINC665_QT_EXPORT FileCreationPolicyModel final :
      **/
     [[nodiscard]] std::optional< Arinc665::Utils::FileCreationPolicy >
     fileCreationPolicy( int row ) const;
+
+    /**
+     * @brief Returns Index from file creation policy value.
+     *
+     * @param[in] fileCreationPolicy
+     *   File Creation Policy
+     *
+     * @return corresponding index value.
+     * @retval -1
+     *   If file creation policy is invalid.
+     **/
+    [[nodiscard]] int fileCreationPolicy(
+      Arinc665::Utils::FileCreationPolicy fileCreationPolicy ) const;
 };
 
 }

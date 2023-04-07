@@ -82,7 +82,7 @@ void OpenMediaSetManagerAction::directorySelected()
       nullptr,
       tr( "Cannot open Media Set Manager" ),
       QString{ tr(
-        "<b>Media Set Directory:</b><br/><i>%1</i>><br/>"
+        "<b>Media Set Directory:</b><br/><i>%1</i><br/>"
            "<b>Error:</b><br/><tt>%2</tt>" ) }
         .arg( directory.path(), QString::fromStdString( info ) ) );
 

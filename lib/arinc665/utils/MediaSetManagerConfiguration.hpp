@@ -15,7 +15,7 @@
 
 #include <arinc665/utils/Utils.hpp>
 
-#include <arinc665/MediumNumber.hpp>
+#include <arinc665/utils/MediaSetDefaults.hpp>
 
 #include <boost/property_tree/ptree_fwd.hpp>
 
@@ -31,7 +31,7 @@ namespace Arinc665::Utils {
 class ARINC665_EXPORT MediaSetManagerConfiguration
 {
   public:
-    //! Media Sets Paths ( List of Media Set Path, @ref MediaPaths)
+    //! Media Sets Paths ( List of Media Set Path, @ref MediaSetPaths)
     using MediaSetsPaths = std::list< MediaSetPaths >;
 
     //! Initialises the configuration with default values.
@@ -63,7 +63,9 @@ class ARINC665_EXPORT MediaSetManagerConfiguration
     [[nodiscard]] boost::property_tree::ptree toProperties() const;
 
     //! Media Sets Paths
-    MediaSetsPaths mediaSets;
+    MediaSetsPaths mediaSets{};
+    //! Media Set Configuration
+    MediaSetDefaults defaults{};
 };
 
 }

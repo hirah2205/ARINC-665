@@ -31,63 +31,68 @@ void MediaSetManagerConfiguration::fromProperties(
   BOOST_LOG_FUNCTION()
 
   // iterate over media sets
-  for ( const auto &[ mediaSetPtreeName, mediaSetConfig ] : properties )
+  if ( const auto mediaSetProperties{
+    properties.get_child_optional( "media_sets" ) };
+    mediaSetProperties )
   {
-    auto mediaSetPath{
-      mediaSetConfig.get< std::filesystem::path >( "path", {} ) };
-
-    MediaPaths mediaPaths{};
-
-    // iterate over media
-    if ( const auto mediaConfigs{ mediaSetConfig.get_child_optional( "media" ) };
-         mediaConfigs )
+    for ( const auto &[mediaSetPropertyName, mediaSetConfig] : *mediaSetProperties )
     {
-      for ( const auto &[ mediaPtreeName, mediumConfig ] : *mediaConfigs )
+      auto mediaSetPath{
+        mediaSetConfig.get< std::filesystem::path >( "path", {} ) };
+
+      MediaPaths mediaPaths{};
+
+      // iterate over media
+      if ( const auto mediaConfigs{ mediaSetConfig.get_child_optional( "media" ) };
+           mediaConfigs )
       {
-        auto mediumNumber{
-          mediumConfig.get< unsigned int >( "number" ) };
-        auto mediumPath{
-          mediumConfig.get< std::filesystem::path >( "path" ) };
+        for ( const auto &[ mediaPropertyName, mediumConfig ] : *mediaConfigs )
+        {
+          auto mediumNumber{
+            mediumConfig.get< unsigned int >( "number" ) };
+          auto mediumPath{
+            mediumConfig.get< std::filesystem::path >( "path" ) };
 
-        mediaPaths.try_emplace(
-          MediumNumber{ static_cast< uint8_t >( mediumNumber ) },
-          std::move( mediumPath ) );
+          mediaPaths.try_emplace(
+            MediumNumber{ static_cast< uint8_t >( mediumNumber ) },
+            std::move( mediumPath ) );
+        }
       }
-    }
 
-    // insert media set configuration
-    mediaSets.emplace_back( std::move( mediaSetPath ), std::move( mediaPaths ) );
+      // insert media set configuration
+      mediaSets.emplace_back( std::move( mediaSetPath ), std::move( mediaPaths ) );
+    }
   }
+
+  defaults = MediaSetDefaults{ properties.get_child( "defaults", {} ) };
 }
 
 boost::property_tree::ptree MediaSetManagerConfiguration::toProperties() const
 {
   boost::property_tree::ptree properties{};
 
+  auto &mediaSetsProperties{ properties.add_child( "media_sets", {} ) };
+
   for ( const auto &[ mediaSetPath, media ] : mediaSets )
   {
-    boost::property_tree::ptree mediaSetConfig{};
+    auto &mediaSetConfig{ mediaSetsProperties.add_child( "media_set", {} ) };
 
     mediaSetConfig.add( "path", mediaSetPath.string() );
 
-    boost::property_tree::ptree mediaConfig{};
+    auto &mediaConfig{ mediaSetConfig.add_child( "media", {} ) };
 
     for ( const auto &[ mediumNumber, mediumPath ] : media )
     {
-      boost::property_tree::ptree mediumConfig{};
+      auto &mediumConfig{ mediaConfig.add_child( "medium", {} ) };
 
       mediumConfig.add(
         "number",
         static_cast< uint8_t >( mediumNumber ) );
       mediumConfig.add( "path", mediumPath.string() );
-
-      mediaConfig.add_child( "medium", mediumConfig );
     }
-
-    mediaSetConfig.add_child( "media", mediaConfig );
-
-    properties.add_child( "media_set", mediaSetConfig );
   }
+
+  properties.add_child( "defaults", defaults.toProperties() );
 
   return properties;
 }

@@ -21,6 +21,7 @@ target_sources(
         FilesystemMediaSetRemover.hpp
         MediaSetCompiler.hpp
         MediaSetDecompiler.hpp
+        MediaSetDefaults.hpp
         MediaSetManager.hpp
         MediaSetManagerConfiguration.hpp
         MediaSetPrinter.hpp
@@ -37,6 +38,7 @@ target_sources(
     FilesystemMediaSetRemover.cpp
     MediaSetCompiler.cpp
     MediaSetDecompiler.cpp
+    MediaSetDefaults.cpp
     MediaSetManager.cpp
     MediaSetManagerConfiguration.cpp
     MediaSetPrinter.cpp

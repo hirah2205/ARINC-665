@@ -102,6 +102,31 @@ class ARINC665_EXPORT MediaSetManager
     virtual ~MediaSetManager() = default;
 
     /**
+     * @name Media Set Defaults
+     * @{
+     **/
+
+    /**
+     * @brief Returns the Media Set Defaults
+     *
+     * @return Media Set Defaults
+     **/
+    [[nodiscard]] virtual const MediaSetDefaults& mediaSetDefaults() const = 0;
+
+    //! @copydoc mediaSetDefaults() const
+    [[nodiscard]] virtual MediaSetDefaults& mediaSetDefaults() = 0;
+
+    /**
+     * @brief Sets the Media Set Defaults
+     *
+     * @param[in] mediaSetDefaults
+     *   New Media Set Defaults
+     **/
+    virtual void mediaSetDefaults( MediaSetDefaults mediaSetDefaults ) = 0;
+
+    /** @} **/
+
+    /**
      * @name Configuration
      * @{
      **/

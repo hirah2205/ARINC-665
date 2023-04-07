@@ -35,6 +35,13 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QCheckBox" name="checkFileIntegrity">
+     <property name="text">
+      <string>Check File Integrity</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>

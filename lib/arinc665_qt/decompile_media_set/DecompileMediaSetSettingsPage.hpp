@@ -15,6 +15,8 @@
 
 #include <arinc665_qt/decompile_media_set/DecompileMediaSet.hpp>
 
+#include <arinc665/utils/Utils.hpp>
+
 #include <QWizardPage>
 
 #include <memory>
@@ -65,6 +67,14 @@ class ARINC665_QT_EXPORT DecompileMediaSetSettingsPage final : public QWizardPag
      *   Media Paths Model
      **/
     void mediaPathsModel( MediaPathsModel * model );
+
+    /**
+     * @brief Initialises the page with its defaults.
+     *
+     * @param[in] defaults
+     *   Media Set Defaults
+     **/
+    void defaults( const Arinc665::Utils::MediaSetDefaults &defaults );
 
   signals:
     /**

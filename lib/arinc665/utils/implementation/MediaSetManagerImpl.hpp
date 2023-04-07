@@ -40,10 +40,20 @@ class MediaSetManagerImpl final : public MediaSetManager
      *   If set to true additional file integrity steps are performed
      **/
     MediaSetManagerImpl(
-      const std::filesystem::path directory,
+      std::filesystem::path directory,
       bool checkFileIntegrity );
 
     ~MediaSetManagerImpl() override;
+
+    //! @copydoc MediaSetManager::mediaSetDefaults() const
+    [[nodiscard]] const MediaSetDefaults&
+    mediaSetDefaults() const override;
+
+    //! @copydoc MediaSetManager::mediaSetDefaults()
+    [[nodiscard]] MediaSetDefaults& mediaSetDefaults() override;
+
+    //! @copydoc MediaSetManager::mediaSetDefaults(MediaSetDefaults)
+    void mediaSetDefaults( MediaSetDefaults mediaSetDefaults ) override;
 
     //! @copydoc MediaSetManager::configuration
     [[nodiscard]] MediaSetManagerConfiguration configuration() const override;
@@ -85,13 +95,13 @@ class MediaSetManagerImpl final : public MediaSetManager
     /**
      * @brief Load Media Sets.
      *
-     * @param[in] configuration
-     *   Media Set Manager Configuration.
+     * @param[in] mediaSetsPaths
+     *   Media Sets Paths.
      * @param[in] checkFileIntegrity
      *   If set to true additional file integrity steps are performed
      **/
     void loadMediaSets(
-      const MediaSetManagerConfiguration &configuration,
+      const MediaSetManagerConfiguration::MediaSetsPaths &mediaSetsPaths,
       bool checkFileIntegrity );
 
     /**
@@ -112,11 +122,13 @@ class MediaSetManagerImpl final : public MediaSetManager
     using MediaSetsPaths = std::map< std::string, MediaSetPaths, std::less<> >;
 
     //! Media Set Manager Directory
-    const std::filesystem::path directoryV;
+    const std::filesystem::path directoryV{};
+    //! Media Set Defaults
+    MediaSetDefaults mediaSetDefaultsV{};
     //! Media Sets Information
-    MediaSetsInformation mediaSetsInformationV;
+    MediaSetsInformation mediaSetsInformationV{};
     //! Media Sets Paths
-    MediaSetsPaths mediaSetsPathsV;
+    MediaSetsPaths mediaSetsPathsV{};
 };
 
 }

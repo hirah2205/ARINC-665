@@ -1,5 +1,8 @@
 <!DOCTYPE RCC>
 <RCC version="1.0" >
+  <qresource>
+    <file>arinc665_settings.svg</file>
+  </qresource>
   <qresource prefix="/media_set" >
     <file>arinc665_batch.svg</file>
     <file>arinc665_directory.svg</file>

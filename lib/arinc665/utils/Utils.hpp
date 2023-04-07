@@ -131,6 +131,7 @@ using MediaSetValidatorPtr = std::unique_ptr< MediaSetValidator >;
  * @{
  **/
 
+class MediaSetDefaults;
 class MediaSetManagerConfiguration;
 class MediaSetManager;
 //! ARINC 665 %Media Set Manager Instance Pointer.

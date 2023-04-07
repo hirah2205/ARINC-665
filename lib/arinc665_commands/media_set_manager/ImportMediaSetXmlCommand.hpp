@@ -26,6 +26,7 @@
 #include <commands/Commands.hpp>
 
 #include <boost/program_options.hpp>
+#include <boost/optional/optional.hpp>
 
 #include <filesystem>
 
@@ -66,14 +67,12 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetXmlCommand
     //! Media Set Source Directory
     std::filesystem::path mediaSetSourceDirectory;
     //! Create Batch File Policy
-    Arinc665::Utils::FileCreationPolicy createBatchFiles{
-      Arinc665::Utils::FileCreationPolicy::None };
+    boost::optional< Arinc665::Utils::FileCreationPolicy > createBatchFiles{};
     //! Create Load Header File Policy
-    Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles{
-      Arinc665::Utils::FileCreationPolicy::None };
+    boost::optional< Arinc665::Utils::FileCreationPolicy >
+      createLoadHeaderFiles{};
     //! ARINC 665 Version
-    Arinc665::SupportedArinc665Version version{
-      Arinc665::SupportedArinc665Version::Supplement2 };
+    boost::optional< Arinc665::SupportedArinc665Version > version{};
 };
 
 }
