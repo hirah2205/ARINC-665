@@ -20,7 +20,6 @@
 
 #include <arinc665/utils/FilesystemMediaSetCopier.hpp>
 #include <arinc665/utils/MediaSetManager.hpp>
-#include <arinc665/utils/Utils.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 
@@ -100,11 +99,12 @@ void ImportMediaSetWizard::importMediaSet()
 
     copierV
       ->mediaPaths( mediaPathsModelV->mediaPaths() )
-      .mediaSetBasePath(
-        mediaSetManagerV->directory() / mediaInformation->partNumber );
+      .mediaSetBasePath( mediaSetManagerV->directory() / mediaSetPath );
+
+    auto copyResult{ ( * copierV )() };
 
     mediaSetManagerV->registerMediaSet(
-      { mediaInformation->partNumber, mediaPathsModelV->mediaPaths() },
+      { mediaSetPath, copyResult },
       checkFileIntegrityV );
   }
   catch ( const boost::exception &e )
