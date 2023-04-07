@@ -34,7 +34,7 @@ class ARINC665_EXPORT FilesystemMediaSetCopier
     virtual ~FilesystemMediaSetCopier() = default;
 
     /**
-     * @brief Updates Media Paths.
+     * @brief Updates Source Media Paths.
      *
      * @param[in] mediaPaths
      *   Media Paths of Source Media Set.
@@ -44,28 +44,40 @@ class ARINC665_EXPORT FilesystemMediaSetCopier
     virtual FilesystemMediaSetCopier& mediaPaths( MediaPaths mediaPaths ) = 0;
 
     /**
-     * @brief Updates the base directory of the Media Set, where it will be
-     *   created.
+     * @brief Updates the base-directory where the Media Set will be created.
      *
-     * @param[in] mediaSetBasePath
-     *   Media Set Base directory.
+     * @param[in] outputBasePath
+     *   Output Base directory.
      *
      * @return *this for chaining.
      **/
-    virtual FilesystemMediaSetCopier& mediaSetBasePath(
-      std::filesystem::path mediaSetBasePath ) = 0;
+    virtual FilesystemMediaSetCopier& outputBasePath(
+      std::filesystem::path outputBasePath ) = 0;
+
+    /**
+     * @brief Updates the Media Set Name.
+     *
+     * The media set name is used for generating the output media set directory.
+     *
+     * @param[in] mediaSetName
+     *   Media Set Name.
+     *
+     * @return *this for chaining.
+     **/
+    virtual FilesystemMediaSetCopier& mediaSetName(
+      std::string mediaSetName ) = 0;
 
     /**
      * @brief Executes the ARINC 665 Media Set Copier.
      *
      * All parameters must have been set previously.
      *
-     * @return Media Paths of Destination %Media Set.
+     * @return Media Set Paths relative to Output Directory Base Path.
      *
      * @throw Arinc665Exception
      *   When copy operation fails
      **/
-    [[nodiscard]] virtual MediaPaths operator()() = 0;
+    [[nodiscard]] virtual MediaSetPaths operator()() = 0;
 };
 
 }

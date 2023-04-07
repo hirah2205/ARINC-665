@@ -27,17 +27,23 @@ class FilesystemMediaSetCopierImpl final : public FilesystemMediaSetCopier
     //! @copydoc FilesystemMediaSetCopier::mediaPaths()
     FilesystemMediaSetCopier& mediaPaths( MediaPaths mediaPaths ) override;
 
-    //! @copydoc FilesystemMediaSetCopier::mediaSetBasePath()
-    FilesystemMediaSetCopier& mediaSetBasePath(
-      std::filesystem::path mediaSetBasePath ) override;
+    //! @copydoc FilesystemMediaSetCopier::outputBasePath()
+    FilesystemMediaSetCopier& outputBasePath(
+      std::filesystem::path outputBasePath ) override;
 
-    [[nodiscard]] MediaPaths operator()() override;
+    //! @copydoc FilesystemMediaSetCopier::mediaSetName()
+    FilesystemMediaSetCopier& mediaSetName(
+      std::string mediaSetName ) override;
+
+    [[nodiscard]] MediaSetPaths operator()() override;
 
   private:
     //! Media Paths
     MediaPaths mediaPathsV{};
-    //! Media Set base path
-    std::filesystem::path mediaSetBasePathV{};
+    //! Output Base Path
+    std::filesystem::path outputBasePathV{};
+    //! Media Set Name
+    std::string mediaSetNameV{};
 };
 
 }

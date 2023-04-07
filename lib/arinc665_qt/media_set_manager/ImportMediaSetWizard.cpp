@@ -84,28 +84,30 @@ void ImportMediaSetWizard::importMediaSet()
       Arinc665::Utils::getMediumInformation(
         mediaPathsModelV->mediaPaths().begin()->second ) };
 
-    std::filesystem::path mediaSetPath{ mediaInformation->partNumber };
-
-    if ( std::filesystem::exists( mediaSetManagerV->directory() / mediaSetPath ) )
+    if ( !mediaInformation )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665::Arinc665Exception()
-        << Helper::AdditionalInfo{ "Media Set Directory already exist" } );
+        << Helper::AdditionalInfo{ "Directory contains no medium" } );
     }
 
-    // create media set directory
-    std::filesystem::create_directories(
-      mediaSetManagerV->directory() / mediaSetPath );
+    if ( mediaSetManagerV->hasMediaSet( mediaInformation->partNumber) )
+    {
+      BOOST_THROW_EXCEPTION(
+        Arinc665::Arinc665Exception()
+        << Helper::AdditionalInfo{ "Media Set already exist" } );
+    }
 
+    assert( copierV );
     copierV
       ->mediaPaths( mediaPathsModelV->mediaPaths() )
-      .mediaSetBasePath( mediaSetManagerV->directory() / mediaSetPath );
+      .outputBasePath( mediaSetManagerV->directory() )
+      .mediaSetName( mediaInformation->partNumber );
 
     auto copyResult{ ( * copierV )() };
 
-    mediaSetManagerV->registerMediaSet(
-      { mediaSetPath, copyResult },
-      checkFileIntegrityV );
+    mediaSetManagerV->registerMediaSet( copyResult, checkFileIntegrityV );
+    mediaSetManagerV->saveConfiguration();
   }
   catch ( const boost::exception &e )
   {
@@ -114,7 +116,8 @@ void ImportMediaSetWizard::importMediaSet()
     QMessageBox::critical(
       nullptr,
       tr( "Error during import" ),
-      QString::fromStdString( info ) );
+      QString{ tr( "Error:<br/><tt>%1</tt>") }
+        .arg( QString::fromStdString( info ) ) );
     return;
   }
   catch ( const std::exception &e )
@@ -124,7 +127,8 @@ void ImportMediaSetWizard::importMediaSet()
     QMessageBox::critical(
       nullptr,
       tr( "Error during import" ),
-      QString::fromStdString( info ) );
+      QString{ tr( "Error:<br/><tt>%1</tt>") }
+        .arg( QString::fromStdString( info ) ) );
     return;
   }
 }

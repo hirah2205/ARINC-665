@@ -12,6 +12,8 @@
 
 #include "FilesystemMediaSetCopierImpl.hpp"
 
+#include <arinc665/files/MediaSetInformation.hpp>
+
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <helper/Exception.hpp>
@@ -29,29 +31,49 @@ FilesystemMediaSetCopier& FilesystemMediaSetCopierImpl::mediaPaths(
   return * this;
 }
 
-FilesystemMediaSetCopier& FilesystemMediaSetCopierImpl::mediaSetBasePath(
-  std::filesystem::path mediaSetBasePath )
+FilesystemMediaSetCopier& FilesystemMediaSetCopierImpl::outputBasePath(
+  std::filesystem::path outputBasePath )
 {
-  mediaSetBasePathV = std::move( mediaSetBasePath );
+  outputBasePathV = std::move( outputBasePath );
   return *this;
 }
 
-MediaPaths FilesystemMediaSetCopierImpl::operator()()
+FilesystemMediaSetCopier& FilesystemMediaSetCopierImpl::mediaSetName(
+  std::string mediaSetName )
 {
-  if ( mediaPathsV.empty() )
+  mediaSetNameV = std::move( mediaSetName );
+  return *this;
+}
+
+MediaSetPaths FilesystemMediaSetCopierImpl::operator()()
+{
+  if ( mediaPathsV.empty() || outputBasePathV.empty() )
   {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "No Media Paths Provided" } );
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception{}
+      << Helper::AdditionalInfo{ "Not all parameter provided" } );
   }
 
-  if ( mediaSetBasePathV.empty()
-    || !std::filesystem::is_directory( mediaSetBasePathV ) )
+  // update name to part number if not provided
+  if ( mediaSetNameV.empty() )
   {
-    BOOST_THROW_EXCEPTION(
-      Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "Media Set Base Directory must exist" }
-      << boost::errinfo_file_name{ mediaSetBasePathV.string() } );
+    auto mediumInformation{ getMediumInformation( mediaPathsV.begin()->second ) };
+
+    if ( mediumInformation )
+    {
+      mediaSetNameV = mediumInformation->partNumber;
+    }
+  }
+
+  const auto mediaSetBasePath{ outputBasePathV / mediaSetNameV };
+
+  // Create output directory
+  if ( std::error_code err{};
+    !std::filesystem::create_directories( mediaSetBasePath, err )
+      || err )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception{}
+      << Helper::AdditionalInfo{ err.message() }
+      << boost::errinfo_file_name{ mediaSetBasePath.string() } );
   }
 
   // iterate over media
@@ -64,7 +86,7 @@ MediaPaths FilesystemMediaSetCopierImpl::operator()()
     // copy medium
     std::filesystem::copy(
       mediumPath,
-      mediaSetBasePathV / destinationMediumDir,
+      mediaSetBasePath / destinationMediumDir,
       std::filesystem::copy_options::recursive );
 
     // store medium destination path
@@ -73,7 +95,7 @@ MediaPaths FilesystemMediaSetCopierImpl::operator()()
       destinationMediumDir );
   }
 
-  return destinationMediaPaths;
+  return { mediaSetNameV, destinationMediaPaths };
 }
 
 }

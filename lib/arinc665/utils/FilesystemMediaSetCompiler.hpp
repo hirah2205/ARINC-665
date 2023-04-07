@@ -119,7 +119,7 @@ class ARINC665_EXPORT FilesystemMediaSetCompiler
       FilePathMapping filePathMapping ) = 0;
 
     /**
-     * @brief Updates the directory where the Media Set will be created.
+     * @brief Updates the base-directory where the Media Set will be created.
      *
      * @param[in] outputBasePath
      *   Output Base directory.

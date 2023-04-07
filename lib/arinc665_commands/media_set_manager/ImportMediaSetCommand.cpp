@@ -106,30 +106,25 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 
     const auto &[ mediaSet, checkValues]{ ( *importer )() };
 
-    std::filesystem::path mediaSetPath{ mediaSet->partNumber() };
-
-    if ( std::filesystem::exists( mediaSetManagerDirectory / mediaSetPath ) )
+    if ( mediaSetManager->hasMediaSet( mediaSet->partNumber() ) )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665::Arinc665Exception()
-        << Helper::AdditionalInfo{ "Media Set Directory already exist" } );
+        << Helper::AdditionalInfo{ "Media Set already exist" } );
     }
-
-    // create media set directory
-    std::filesystem::create_directories(
-      mediaSetManagerDirectory / mediaSetPath );
 
     const auto copier{ Arinc665::Utils::FilesystemMediaSetCopier::create() };
     assert( copier );
 
     copier
       ->mediaPaths( sourceMediaPaths )
-      .mediaSetBasePath( mediaSetManagerDirectory / mediaSetPath );
+      .outputBasePath( mediaSetManagerDirectory )
+      .mediaSetName( std::string{ mediaSet->partNumber() } );
 
-    auto destinationMediaPaths{ ( *copier )() };
+    auto destinationPaths{ ( *copier )() };
 
     mediaSetManager->registerMediaSet(
-      { std::move( mediaSetPath ), std::move( destinationMediaPaths ) },
+      { std::move( destinationPaths ) },
       checkFileIntegrity );
 
     mediaSetManager->saveConfiguration();
