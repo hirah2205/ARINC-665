@@ -11,7 +11,11 @@
  **/
 
 #include <arinc665_qt/resources/Resources.hpp>
-#include <arinc665_qt/media_set_manager/MediaSetManagerController.hpp>
+
+#include <arinc665_qt/media_set_manager/OpenMediaSetManagerAction.hpp>
+#include <arinc665_qt/media_set_manager/MediaSetManagerDialog.hpp>
+
+#include <arinc665/utils/MediaSetManager.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -50,15 +54,42 @@ try
   QApplication::setWindowIcon( QIcon(
     ":/media_set_manager/arinc665_media_set_manager.svg" ) );
 
-  Arinc665Qt::MediaSetManager::MediaSetManagerController mediaSetManagerController{};
+  Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction
+    mediaSetManagerAction{};
 
   QObject::connect(
-    &mediaSetManagerController,
-    &Arinc665Qt::MediaSetManager::MediaSetManagerController::finished,
+    &mediaSetManagerAction,
+    &Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction::rejected,
     &application,
     &QApplication::quit );
+  QObject::connect(
+    &mediaSetManagerAction,
+    &Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction::accepted,
+    [&]()
+    {
+      Arinc665Qt::MediaSetManager::MediaSetManagerDialog * dialog{
+        new Arinc665Qt::MediaSetManager::MediaSetManagerDialog(
+          mediaSetManagerAction.mediaSetManager() ) };
 
-  mediaSetManagerController.start();
+      dialog->setWindowTitle(
+        QString::fromStdString(
+          mediaSetManagerAction.mediaSetManager()->directory().string() ) );
+
+      dialog->connect(
+        dialog,
+        &Arinc665Qt::MediaSetManager::MediaSetManagerDialog::finished,
+        dialog,
+        &Arinc665Qt::MediaSetManager::MediaSetManagerDialog::deleteLater );
+      dialog->connect(
+        dialog,
+        &Arinc665Qt::MediaSetManager::MediaSetManagerDialog::finished,
+        &application,
+        &QApplication::quit );
+
+      dialog->show();
+    } );
+
+  mediaSetManagerAction.open();
 
   return QApplication::exec();
 }

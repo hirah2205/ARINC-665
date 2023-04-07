@@ -15,22 +15,34 @@
 
 #include "ui_MediaSetManagerDialog.h"
 
+#include <arinc665_qt/media_set_manager/ViewMediaSetDialog.hpp>
+#include <arinc665_qt/media_set_manager/RemoveMediaSetController.hpp>
+#include <arinc665_qt/media_set_manager/ImportMediaSetWizard.hpp>
+#include <arinc665_qt/media_set_manager/ImportMediaSetXmlWizard.hpp>
+
 #include <arinc665_qt/media/MediaSetsModel.hpp>
 
 namespace Arinc665Qt::MediaSetManager {
 
-MediaSetManagerDialog::MediaSetManagerDialog( QWidget * const parent ) :
+MediaSetManagerDialog::MediaSetManagerDialog(
+  Arinc665::Utils::MediaSetManagerPtr mediaSetManager,
+  QWidget * const parent ) :
   QDialog{ parent },
   ui{ std::make_unique< Ui::MediaSetManagerDialog>() },
-  mediaSetsModelV{}
+  mediaSetManagerV{ std::move( mediaSetManager ) },
+  mediaSetsModelV{ std::make_unique< Media::MediaSetsModel >( this ) }
 {
   ui->setupUi( this );
+
+  ui->mediaSets->setModel( mediaSetsModelV.get() );
+
+  reloadMediaSetModel();
 
   connect(
     ui->viewMediaSet,
     &QPushButton::clicked,
     this,
-    &MediaSetManagerDialog::viewMediaSetClicked );
+    &MediaSetManagerDialog::viewMediaSet );
   connect(
     ui->importMediaSet,
     &QPushButton::clicked,
@@ -45,32 +57,144 @@ MediaSetManagerDialog::MediaSetManagerDialog( QWidget * const parent ) :
     ui->removeMediaSet,
     &QPushButton::clicked,
     this,
-    &MediaSetManagerDialog::removeMediaSetClicked );
+    &MediaSetManagerDialog::removeMediaSet );
 }
 
 MediaSetManagerDialog::~MediaSetManagerDialog() = default;
 
-void MediaSetManagerDialog::mediaSetsModel(
-  Media::MediaSetsModel * const model )
+void MediaSetManagerDialog::reloadMediaSetModel()
 {
-  mediaSetsModelV = model;
-  ui->mediaSets->setModel( model );
+  if ( !mediaSetsModelV )
+  {
+    return;
+  }
+
+  Arinc665::Media::ConstMediaSets mediaSets{};
+
+  // convert media sets to const media sets
+  for ( const auto &[ partNumber, mediaSet ] : mediaSetManagerV->mediaSets() )
+  {
+    mediaSets.emplace_back( mediaSet.first );
+  }
+
+  mediaSetsModelV->mediaSets( std::move( mediaSets ) );
 }
 
-void MediaSetManagerDialog::viewMediaSetClicked()
+void MediaSetManagerDialog::viewMediaSet()
 {
-  if ( ui->mediaSets->currentIndex().isValid() )
+  const auto index{ ui->mediaSets->currentIndex() };
+
+  if ( !index.isValid() )
   {
-    emit viewMediaSet( ui->mediaSets->currentIndex() );
+    return;
   }
+
+  auto mediaSet{
+    mediaSetsModelV->constMediaSet( mediaSetsModelV->mediaSet( index ) ) };
+
+  if ( !mediaSet )
+  {
+    return;
+  }
+
+  auto viewMediaSetDialog{ new ViewMediaSetDialog{ this } };
+
+  connect(
+    viewMediaSetDialog,
+    &ViewMediaSetDialog::finished,
+    viewMediaSetDialog,
+    &ViewMediaSetDialog::deleteLater );
+
+  viewMediaSetDialog->mediaSet( std::move( mediaSet ) );
+  emit viewMediaSetDialog->show();
 }
 
-void MediaSetManagerDialog::removeMediaSetClicked()
+void MediaSetManagerDialog::importMediaSet()
 {
-  if ( ui->mediaSets->currentIndex().isValid() )
+  if ( !mediaSetsModelV )
   {
-    emit removeMediaSet( ui->mediaSets->currentIndex() );
+    return;
   }
+
+  auto wizard{ new ImportMediaSetWizard{ mediaSetManagerV, this } };
+
+  // connect to reload media set model slot
+  connect(
+    wizard,
+    &ImportMediaSetWizard::finished,
+    this,
+    &MediaSetManagerDialog::reloadMediaSetModel );
+
+  // connect to clean up slot
+  connect(
+    wizard,
+    &ImportMediaSetWizard::finished,
+    wizard,
+    &ImportMediaSetWizard::deleteLater );
+
+  emit wizard->open();
+}
+
+void MediaSetManagerDialog::importMediaSetXml()
+{
+  if ( !mediaSetsModelV )
+  {
+    return;
+  }
+
+  auto wizard{ new ImportMediaSetXmlWizard{ mediaSetManagerV, this } };
+
+  // connect to reload media set model slot
+  connect(
+    wizard,
+    &ImportMediaSetXmlWizard::finished,
+    this,
+    &MediaSetManagerDialog::reloadMediaSetModel );
+
+  // connect to clean up slot
+  connect(
+    wizard,
+    &ImportMediaSetXmlWizard::finished,
+    wizard,
+    &ImportMediaSetXmlWizard::deleteLater );
+
+  emit wizard->open();
+}
+
+void MediaSetManagerDialog::removeMediaSet()
+{
+  const auto index{ ui->mediaSets->currentIndex() };
+
+  if ( !index.isValid() )
+  {
+    return;
+  }
+
+  auto mediaSet{
+    mediaSetsModelV->constMediaSet(  mediaSetsModelV->mediaSet( index ) ) };
+
+  if ( !mediaSet )
+  {
+    return;
+  }
+
+  auto controller{ new RemoveMediaSetController{ this } };
+
+  // connect to reload media set model slot
+  connect(
+    controller,
+    &RemoveMediaSetController::finished,
+    this,
+    &MediaSetManagerDialog::reloadMediaSetModel );
+
+  // connect to clean up slot
+  connect(
+    controller,
+    &RemoveMediaSetController::finished,
+    controller,
+    &RemoveMediaSetController::deleteLater );
+
+  emit controller->start( mediaSetManagerV, mediaSet );
 }
 
 }

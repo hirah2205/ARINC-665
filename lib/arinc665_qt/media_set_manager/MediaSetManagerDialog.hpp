@@ -15,7 +15,10 @@
 #define ARINC665_QT_MEDIA_SET_MANAGER_MEDIASETMANAGERDIALOG_HPP
 
 #include <arinc665_qt/media_set_manager/MediaSetManager.hpp>
+
 #include <arinc665_qt/media/Media.hpp>
+
+#include <arinc665/utils/Utils.hpp>
 
 #include <QDialog>
 
@@ -27,7 +30,16 @@ namespace Ui{
 class MediaSetManagerDialog;
 }
 
-//! %Media Set Manager Dialog
+/** %Media Set Manager Dialog
+ * @brief
+ *
+ * The Media Set Manager Dialog provides listing of the Media Sets within the
+ * Media Set manager and provides operations onto the Media Sets:
+ * - View Media Set,
+ * - Importing Media Sets,
+ * - Import Media Set XML Configuration, and
+ * - Removing Media Sets.
+ **/
 class ARINC665_QT_EXPORT MediaSetManagerDialog : public QDialog
 {
     Q_OBJECT
@@ -36,30 +48,30 @@ class ARINC665_QT_EXPORT MediaSetManagerDialog : public QDialog
     /**
      * @brief Initialises the Media Set Manager Dialog.
      *
+     * @param[in] mediaSetManager
+     *   %Media Set Manager to use
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit MediaSetManagerDialog( QWidget * parent = nullptr );
+    explicit MediaSetManagerDialog(
+      Arinc665::Utils::MediaSetManagerPtr mediaSetManager,
+      QWidget * parent = nullptr );
 
     //! Destructor
     ~MediaSetManagerDialog() override;
 
+  public slots:
     /**
-     * @brief Assigns the Media Sets Model
-     *
-     * @param[in] model
-     *   Media Sets Model
+     * @brief Reloads the Media Sets from the Media Set manager and updates the
+     *   Media Sets Model.
      **/
-    void mediaSetsModel( Media::MediaSetsModel * model );
+    void reloadMediaSetModel();
 
-  signals:
+  private slots:
     /**
-     * @brief Signals Request of Viewing given Media Set.
-     *
-     * @param[in] index
-     *   Model Index of selected Media Set
+     * @brief Slot handling View Media Set Clicked.
      **/
-    void viewMediaSet( const QModelIndex &index );
+    void viewMediaSet();
 
     /**
      * @brief Import Media Set Signal
@@ -72,29 +84,17 @@ class ARINC665_QT_EXPORT MediaSetManagerDialog : public QDialog
     void importMediaSetXml();
 
     /**
-     * @brief Remove Media Set XML Signal
-     *
-     * @param[in] index
-     *   Model Index of selected Media Set
-     **/
-    void removeMediaSet( const QModelIndex &index );
-
-  private slots:
-    /**
-     * @brief Slot handling View Media Set Clicked.
-     **/
-    void viewMediaSetClicked();
-
-    /**
      * @brief Slot handling Remove Media Set Clicked.
      **/
-    void removeMediaSetClicked();
+    void removeMediaSet();
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaSetManagerDialog > ui;
+    std::unique_ptr< Ui::MediaSetManagerDialog > ui{};
+    //! Media Set Manager
+    Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV{};
     //! Media Set Model
-    Media::MediaSetsModel * mediaSetsModelV;
+    std::unique_ptr< Media::MediaSetsModel > mediaSetsModelV{};
 };
 
 }
