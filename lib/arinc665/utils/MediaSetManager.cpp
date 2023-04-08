@@ -27,10 +27,12 @@ namespace Arinc665::Utils {
 
 MediaSetManagerPtr MediaSetManager::create( std::filesystem::path directory )
 {
-  if ( std::filesystem::exists( directory ) )
+  if ( std::filesystem::exists( directory )
+    && ( !std::filesystem::is_directory( directory )
+      || !std::filesystem::is_empty( directory ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception{}
-      << Helper::AdditionalInfo{ "Media Set Manger Directory must not exists" }
+      << Helper::AdditionalInfo{ "Path exist or is not empty" }
       << boost::errinfo_file_name{ directory.string() } );
   }
 
@@ -69,7 +71,9 @@ MediaSetManagerPtr MediaSetManager::loadOrCreate(
   std::filesystem::path directory,
   const bool checkFileIntegrity )
 {
-  if ( !std::filesystem::exists( directory ) )
+  if ( !std::filesystem::exists( directory )
+    || ( std::filesystem::is_directory( directory )
+      && std::filesystem::is_empty( directory ) ) )
   {
     return create( std::move( directory ) );
   }
