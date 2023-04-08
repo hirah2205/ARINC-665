@@ -74,9 +74,6 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsWidget final : public QGroupBo
     void inputDirectory( std::filesystem::path directory );
 
   private slots:
-    //! Slot Select XML File
-    void selectXmlFile();
-
     /**
      * @brief Slot called, when XML file has been selected.
      *
@@ -85,19 +82,16 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsWidget final : public QGroupBo
      **/
     void xmlFileSelected( const QString &file );
 
-    //! Slot Select Input Directory
-    void selectInputDirectory();
-
     //! Slot called, when input directory has been selected.
     void inputDirectorySelected( const QString &file );
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetXmlSettingsWidget > ui;
+    std::unique_ptr< Ui::ImportMediaSetXmlSettingsWidget > ui{};
     //! Select XML File Dialog
-    std::unique_ptr< QFileDialog > selectXmlFileDialog;
+    std::unique_ptr< QFileDialog > selectXmlFileDialog{};
     //! Select Input Directory Dialog
-    std::unique_ptr< QFileDialog > selectInputDirectoryDialog;
+    std::unique_ptr< QFileDialog > selectInputDirectoryDialog{};
 };
 
 }

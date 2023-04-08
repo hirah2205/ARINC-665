@@ -32,8 +32,8 @@ ImportMediaSetXmlSettingsWidget::ImportMediaSetXmlSettingsWidget(
   connect(
     ui->selectXmlFile,
     &QPushButton::clicked,
-    this,
-    &ImportMediaSetXmlSettingsWidget::selectXmlFile );
+    selectXmlFileDialog.get(),
+    qOverload<>( &QFileDialog::open ) );
   connect(
     selectXmlFileDialog.get(),
     &QFileDialog::fileSelected,
@@ -47,8 +47,8 @@ ImportMediaSetXmlSettingsWidget::ImportMediaSetXmlSettingsWidget(
   connect(
     ui->selectInputDirectory,
     &QPushButton::clicked,
-    this,
-    &ImportMediaSetXmlSettingsWidget::selectInputDirectory );
+    selectInputDirectoryDialog.get(),
+    qOverload<>( &QFileDialog::open ) );
   connect(
     selectInputDirectoryDialog.get(),
     &QFileDialog::fileSelected,
@@ -64,11 +64,6 @@ bool ImportMediaSetXmlSettingsWidget::completed() const
     && !ui->inputDirectory->text().isEmpty();
 }
 
-void ImportMediaSetXmlSettingsWidget::selectXmlFile()
-{
-  selectXmlFileDialog->exec();
-}
-
 void ImportMediaSetXmlSettingsWidget::xmlFileSelected( const QString &file )
 {
   ui->xmlFile->setText( file );
@@ -78,13 +73,8 @@ void ImportMediaSetXmlSettingsWidget::xmlFileSelected( const QString &file )
   if ( ui->inputDirectory->text().isEmpty() )
   {
     inputDirectorySelected( selectXmlFileDialog->directory().path() );
+    selectInputDirectoryDialog->setDirectory( selectXmlFileDialog->directory() );
   }
-}
-
-void ImportMediaSetXmlSettingsWidget::selectInputDirectory()
-{
-  selectInputDirectoryDialog->setDirectory( selectXmlFileDialog->directory() );
-  selectInputDirectoryDialog->exec();
 }
 
 void ImportMediaSetXmlSettingsWidget::inputDirectorySelected(

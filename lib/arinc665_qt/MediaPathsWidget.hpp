@@ -76,14 +76,6 @@ class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
 
   private slots:
     /**
-     * @brief Slot when user wants to add medium directory.
-     *
-     * This slot is connected to the add-button QPushButton::pressed signal.
-     * The select directory dilaog is shown.
-     **/
-    void addMediumDirectory();
-
-    /**
      * @brief Slot when user wants to delete selected medium directory.
      *
      * This slot is connected to the delete-button QPushButton::pressed signal.

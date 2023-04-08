@@ -88,7 +88,7 @@ MediaSetViewWindow::MediaSetViewWindow( QWidget * const parent ):
     ui->actionOpenMediaSetXml,
     &QAction::triggered,
     selectLoadMediaSetXmlDialogV.get(),
-    &QFileDialog::exec );
+    qOverload<>( &QFileDialog::open ) );
   connect(
     selectLoadMediaSetXmlDialogV.get(),
     &QFileDialog::fileSelected,
@@ -106,7 +106,7 @@ MediaSetViewWindow::MediaSetViewWindow( QWidget * const parent ):
     ui->actionSaveMediaSetXml,
     &QAction::triggered,
     selectSaveMediaSetXmlDialogV.get(),
-    &QFileDialog::exec );
+    qOverload<>( &QFileDialog::open ) );
   connect(
     selectSaveMediaSetXmlDialogV.get(),
     &QFileDialog::fileSelected,

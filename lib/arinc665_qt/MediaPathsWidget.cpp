@@ -16,8 +16,6 @@
 
 #include <arinc665_qt/MediaPathsModel.hpp>
 
-#include <arinc665/utils/Utils.hpp>
-
 #include <QMessageBox>
 
 namespace Arinc665Qt {
@@ -37,8 +35,8 @@ MediaPathsWidget::MediaPathsWidget(
   connect(
     ui->add,
     &QPushButton::pressed,
-    this,
-    &MediaPathsWidget::addMediumDirectory );
+    selectMediaPathDialog.get(),
+    qOverload<>( &QFileDialog::open ) );
 
   connect(
     ui->remove,
@@ -69,11 +67,6 @@ bool MediaPathsWidget::completed() const
 void MediaPathsWidget::clear()
 {
   mediaPathsModelV->clear();
-}
-
-void MediaPathsWidget::addMediumDirectory()
-{
-  selectMediaPathDialog->exec();
 }
 
 void MediaPathsWidget::removeMediumDirectory()

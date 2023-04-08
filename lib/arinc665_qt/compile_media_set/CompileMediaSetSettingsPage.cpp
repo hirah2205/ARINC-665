@@ -86,8 +86,8 @@ CompileMediaSetSettingsPage::CompileMediaSetSettingsPage(
   connect(
     ui->selectOutputBasePath,
     &QPushButton::clicked,
-    this,
-    &CompileMediaSetSettingsPage::selectOutputDirectory );
+    selectOutputDirectoryDialog.get(),
+    qOverload<>( &QFileDialog::show ) );
   connect(
     selectOutputDirectoryDialog.get(),
     &QFileDialog::fileSelected,
@@ -109,11 +109,6 @@ void CompileMediaSetSettingsPage::defaults(
   const Arinc665::Utils::MediaSetDefaults &defaults )
 {
   ui->mediaSetOutputSettings->defaults( defaults );
-}
-
-void CompileMediaSetSettingsPage::selectOutputDirectory()
-{
-  selectOutputDirectoryDialog->exec();
 }
 
 void CompileMediaSetSettingsPage::outputDirectorySelected( const QString &file )

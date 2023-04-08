@@ -95,18 +95,18 @@ try
 
   return QApplication::exec();
 }
-catch ( boost::exception &e )
+catch ( const boost::exception &e )
 {
-  std::cerr << boost::diagnostic_information( e ) << "\n";
+  BOOST_LOG_TRIVIAL( error ) << boost::diagnostic_information( e );
   return EXIT_FAILURE;
 }
-catch ( std::exception &e )
+catch ( const std::exception &e )
 {
-  std::cerr << e.what() << "\n";
+  BOOST_LOG_TRIVIAL( error ) << e.what();
   return EXIT_FAILURE;
 }
-catch ( ...)
+catch ( ... )
 {
-  std::cerr << "Unknown exception\n";
+  BOOST_LOG_TRIVIAL( error ) << "Unknown exception";
   return EXIT_FAILURE;
 }
