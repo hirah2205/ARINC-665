@@ -49,8 +49,10 @@ try
   Arinc665Qt::Resources::initialise();
 
   QApplication application{ argc, argv };
-  QApplication::setApplicationName( "ARINC 665 Media Set Manager" );
-  QApplication::setApplicationDisplayName( "ARINC 665 Media Set Manager" );
+  QApplication::setApplicationDisplayName(
+    QObject::tr( "ARINC 665 Media Set Manager" ) );
+  QApplication::setOrganizationName( "Thomas Vogt" );
+  QApplication::setOrganizationDomain( "thomas-vogt.de" );
   QApplication::setWindowIcon( QIcon(
     ":/media_set_manager/arinc665_media_set_manager.svg" ) );
 

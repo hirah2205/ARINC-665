@@ -197,6 +197,8 @@ void MediaSetViewWindow::loadXmlFile( const QString &file )
 
     // Set window title
     setWindowTitle( HelperQt::toQString( mediaSet->partNumber() ) );
+
+    ui->actionSaveMediaSetXml->setEnabled( true );
   }
   catch ( Arinc665::Arinc665Exception &e )
   {

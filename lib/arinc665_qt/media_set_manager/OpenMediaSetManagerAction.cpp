@@ -21,6 +21,7 @@
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <QMessageBox>
+#include <QSettings>
 
 #include <boost/exception/all.hpp>
 
@@ -33,10 +34,17 @@ OpenMediaSetManagerAction::OpenMediaSetManagerAction(
   QObject{ parent },
   selectMediaSetDirectoryDialogV{ std::make_unique< QFileDialog >( parent ) }
 {
+  QSettings settings{};
+
   selectMediaSetDirectoryDialogV->setWindowTitle(
     tr( "Select ARINC 665 Media Set Manager Configuration" ) );
   selectMediaSetDirectoryDialogV->setFileMode( QFileDialog::Directory );
   selectMediaSetDirectoryDialogV->setOption( QFileDialog::ShowDirsOnly );
+  if ( auto lastDir{ settings.value( "MediaSetManagerDirectory" ) };
+    lastDir.isValid() )
+  {
+    selectMediaSetDirectoryDialogV->setDirectory( lastDir.toString() );
+  }
 
   connect(
     selectMediaSetDirectoryDialogV.get(),
@@ -68,9 +76,13 @@ void OpenMediaSetManagerAction::directorySelected()
 
   try
   {
+    QSettings settings{};
+
     mediaSetManagerV = Arinc665::Utils::MediaSetManager::loadOrCreate(
       directory.path().toStdString(),
-      true );
+      settings.value( "CheckIntegrityOnStartup", true ).toBool() );
+
+    settings.setValue( "MediaSetManagerDirectory", directory.path() );
 
     emit accepted();
   }

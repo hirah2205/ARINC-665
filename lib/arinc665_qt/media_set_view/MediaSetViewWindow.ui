@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>Thomas Vogt</author>
  <class>Arinc665Qt::MediaSetViewWindow</class>
  <widget class="QMainWindow" name="Arinc665Qt::MediaSetViewWindow">
   <property name="geometry">
@@ -12,7 +13,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/arinc665_qt_resources.qrc">
-    <normaloff>:/media_set/arinc665_media_set.svg</normaloff>:/media_set/arinc665_media_set.svg</iconset>
+    <normaloff>:/media_set_manager/arinc665_media_set_view.svg</normaloff>:/media_set_manager/arinc665_media_set_view.svg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -65,8 +66,7 @@
   </widget>
   <action name="actionOpenMediaSetXml">
    <property name="icon">
-    <iconset resource="../resources/arinc665_qt_resources.qrc">
-     <normaloff>:/media_set/arinc665_media_set.svg</normaloff>:/media_set/arinc665_media_set.svg</iconset>
+    <iconset theme="document-open"/>
    </property>
    <property name="text">
     <string>Open Media Set XML</string>
@@ -86,8 +86,7 @@
   </action>
   <action name="actionDecompileMediaSet">
    <property name="icon">
-    <iconset theme="document-open">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="computer"/>
    </property>
    <property name="text">
     <string>Decompile Media Set</string>
