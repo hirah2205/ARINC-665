@@ -37,6 +37,7 @@
 #include <helper_qt/String.hpp>
 
 #include <QMessageBox>
+#include <QSettings>
 
 #include <boost/log/trivial.hpp>
 #include <boost/exception/all.hpp>
@@ -54,6 +55,8 @@ MediaSetViewWindow::MediaSetViewWindow( QWidget * const parent ):
   filePathMappingModelV{ std::make_unique< FilePathMappingModel >( this ) },
   sortedFilePathMappingModelV{ std::make_unique< QSortFilterProxyModel >( this ) }
 {
+  QSettings settings{};
+
   ui->setupUi( this );
 
   ui->mediaSetView->mediaSetModel( mediaSetModelV.get() );
@@ -83,6 +86,11 @@ MediaSetViewWindow::MediaSetViewWindow( QWidget * const parent ):
   selectLoadMediaSetXmlDialogV->setWindowTitle( tr( "Select ARINC 665 Media Set XML" ) );
   selectLoadMediaSetXmlDialogV->setNameFilter(tr( "ARINC 665 Media Set XML (*.xml)" ) );
   selectLoadMediaSetXmlDialogV->setFileMode( QFileDialog::FileMode::ExistingFile );
+  if ( auto lastDir{ settings.value( "LoadMediaSetXmlDirectory" ) };
+    lastDir.isValid() )
+  {
+    selectLoadMediaSetXmlDialogV->setDirectory( lastDir.toString() );
+  }
 
   connect(
     ui->actionOpenMediaSetXml,
@@ -101,6 +109,11 @@ MediaSetViewWindow::MediaSetViewWindow( QWidget * const parent ):
   selectSaveMediaSetXmlDialogV->setFileMode( QFileDialog::FileMode::AnyFile );
   selectSaveMediaSetXmlDialogV->setAcceptMode( QFileDialog::AcceptMode::AcceptSave );
   selectSaveMediaSetXmlDialogV->setDefaultSuffix( "xml" );
+  if ( auto lastDir{ settings.value( "SaveMediaSetXmlDirectory" ) };
+    lastDir.isValid() )
+  {
+    selectSaveMediaSetXmlDialogV->setDirectory( lastDir.toString() );
+  }
 
   connect(
     ui->actionSaveMediaSetXml,
@@ -199,6 +212,11 @@ void MediaSetViewWindow::loadXmlFile( const QString &file )
     setWindowTitle( HelperQt::toQString( mediaSet->partNumber() ) );
 
     ui->actionSaveMediaSetXml->setEnabled( true );
+
+    QSettings settings{};
+    settings.setValue(
+      "LoadMediaSetXmlDirectory",
+      selectLoadMediaSetXmlDialogV->directory().path() );
   }
   catch ( Arinc665::Arinc665Exception &e )
   {
@@ -240,6 +258,11 @@ void MediaSetViewWindow::saveXmlFile( const QString &file )
       *mediaSetModelV->root()->mediaSet(),
       filePathMappingModelV->filePathMapping(),
       file.toStdString() );
+
+    QSettings settings{};
+    settings.setValue(
+      "SaveMediaSetXmlDirectory",
+      selectSaveMediaSetXmlDialogV->directory().path() );
   }
   catch ( const Arinc665::Arinc665Exception &e )
   {
