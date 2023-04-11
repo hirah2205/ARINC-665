@@ -131,7 +131,27 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="openMediaSetsDirectory">
+        <property name="toolTip">
+         <string>Open Media Sets Directory</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/arinc665_qt_resources.qrc">
+          <normaloff>:/media_set/arinc665_media_set.svg</normaloff>:/media_set/arinc665_media_set.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="settings">
+        <property name="toolTip">
+         <string>Media Set Manager Settings</string>
+        </property>
         <property name="icon">
          <iconset resource="../resources/arinc665_qt_resources.qrc">
           <normaloff>:/arinc665_settings.svg</normaloff>:/arinc665_settings.svg</iconset>

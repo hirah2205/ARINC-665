@@ -23,6 +23,9 @@
 
 #include <arinc665_qt/media/MediaSetsModel.hpp>
 
+#include <QDesktopServices>
+#include <QUrl>
+
 namespace Arinc665Qt::MediaSetManager {
 
 MediaSetManagerDialog::MediaSetManagerDialog(
@@ -59,6 +62,11 @@ MediaSetManagerDialog::MediaSetManagerDialog(
     &QPushButton::clicked,
     this,
     &MediaSetManagerDialog::removeMediaSet );
+  connect(
+    ui->openMediaSetsDirectory,
+    &QPushButton::clicked,
+    this,
+    &MediaSetManagerDialog::openMediaSetsDirectory );
   connect(
     ui->settings,
     &QPushButton::clicked,
@@ -203,6 +211,12 @@ void MediaSetManagerDialog::removeMediaSet()
     &RemoveMediaSetController::deleteLater );
 
   controller->start( mediaSetManagerV, mediaSet );
+}
+
+void MediaSetManagerDialog::openMediaSetsDirectory()
+{
+  QDesktopServices::openUrl( QUrl::fromLocalFile(
+    QString::fromStdString( mediaSetManagerV->directory() ) ) );
 }
 
 void MediaSetManagerDialog::settings()

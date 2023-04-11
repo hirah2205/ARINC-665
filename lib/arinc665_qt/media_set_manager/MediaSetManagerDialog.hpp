@@ -89,6 +89,11 @@ class ARINC665_QT_EXPORT MediaSetManagerDialog final : public QDialog
     void removeMediaSet();
 
     /**
+     * @brief Slot handling the Open Media Sets Directory
+     */
+    void openMediaSetsDirectory();
+
+    /**
      * @brief Open Settings Dialog
      **/
     void settings();
