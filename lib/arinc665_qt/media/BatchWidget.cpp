@@ -33,19 +33,25 @@ BatchWidget::BatchWidget( QWidget * const parent ) :
 
   ui->targets->setModel( batchInfoModel.get() );
   ui->loads->setModel( targetLoadsModel.get() );
+  ui->loads->horizontalHeader()->setSectionResizeMode(
+    QHeaderView::ResizeMode::Stretch );
 
   connect(
-    ui->targets,
+    ui->targets->selectionModel(),
+    &QItemSelectionModel::currentChanged,
+    this,
+    &BatchWidget::selectTarget );
+  connect(
+    ui->loads,
     &QTableView::activated,
     this,
-    &BatchWidget::activatedTarget );
+    &BatchWidget::activateLoad );
 }
 
 BatchWidget::~BatchWidget() = default;
 
 
-void BatchWidget::selectedBatch(
-  Arinc665::Media::ConstBatchPtr batch )
+void BatchWidget::selectBatch( Arinc665::Media::ConstBatchPtr batch )
 {
   batchV = std::move( batch );
 
@@ -57,20 +63,27 @@ void BatchWidget::selectedBatch(
     batchInfoModel->batchInformation( batchV->targets() );
     targetLoadsModel->loads( {} );
 
-    ui->targets->resizeColumnsToContents();
     ui->targets->selectRow( 0 );
-    emit ui->targets->activated( batchInfoModel->index( 0, 0 ) );
   }
 }
 
-void BatchWidget::activatedTarget( const QModelIndex &index )
+void BatchWidget::selectTarget( const QModelIndex &index )
 {
   auto batchTargetInformation{ batchInfoModel->batchTargetInformation( index ) };
 
   targetLoadsModel->loads(
     batchInfoModel->constBatchTargetInformation( batchTargetInformation ).second );
+}
 
-  ui->loads->resizeColumnsToContents();
+void BatchWidget::activateLoad( const QModelIndex &index )
+{
+  auto load{ targetLoadsModel->constLoad(
+    targetLoadsModel->load( index ) ) };
+
+  if ( load )
+  {
+    emit activatedLoad( std::move( load ) );
+  }
 }
 
 }

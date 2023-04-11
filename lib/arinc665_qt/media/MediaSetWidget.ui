@@ -7,12 +7,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>403</height>
+    <width>500</width>
+    <height>600</height>
    </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -20,71 +17,8 @@
      <property name="title">
       <string>Media Set</string>
      </property>
-     <layout class="QFormLayout" name="formLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="partNumberLabel">
-        <property name="text">
-         <string>Part Number</string>
-        </property>
-        <property name="buddy">
-         <cstring>partNumberLineEdit</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="partNumberLineEdit">
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblDefaultMediumNumber">
-        <property name="text">
-         <string>Default Medium Number</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="lblContent">
-        <property name="text">
-         <string>Content</string>
-        </property>
-        <property name="buddy">
-         <cstring>content</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QTableView" name="content">
-        <property name="alternatingRowColors">
-         <bool>true</bool>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::NoSelection</enum>
-        </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
-        </property>
-        <attribute name="horizontalHeaderStretchLastSection">
-         <bool>true</bool>
-        </attribute>
-        <attribute name="verticalHeaderVisible">
-         <bool>false</bool>
-        </attribute>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="lblLoads">
-        <property name="text">
-         <string>Loads</string>
-        </property>
-        <property name="buddy">
-         <cstring>loads</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="7" column="0" colspan="2">
        <widget class="QTableView" name="loads">
         <property name="alternatingRowColors">
          <bool>true</bool>
@@ -103,17 +37,46 @@
         </attribute>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="lblBatches">
+      <item row="4" column="0" colspan="2">
+       <widget class="QTableView" name="content">
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::NoSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="lblDefaultMediumNumber">
         <property name="text">
-         <string>Batches</string>
+         <string>Default Medium Number</string>
         </property>
         <property name="buddy">
-         <cstring>batches</cstring>
+         <cstring>defaultMediumNumber</cstring>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="0" column="0">
+       <widget class="QLabel" name="partNumberLabel">
+        <property name="text">
+         <string>Part Number</string>
+        </property>
+        <property name="buddy">
+         <cstring>partNumberLineEdit</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0" colspan="2">
        <widget class="QTableView" name="batches">
         <property name="alternatingRowColors">
          <bool>true</bool>
@@ -142,6 +105,43 @@
         </property>
        </widget>
       </item>
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="partNumberLineEdit">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QLabel" name="lblContent">
+        <property name="text">
+         <string>Content</string>
+        </property>
+        <property name="buddy">
+         <cstring>content</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="2">
+       <widget class="QLabel" name="lblLoads">
+        <property name="text">
+         <string>Loads</string>
+        </property>
+        <property name="buddy">
+         <cstring>loads</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0" colspan="2">
+       <widget class="QLabel" name="lblBatches">
+        <property name="text">
+         <string>Batches</string>
+        </property>
+        <property name="buddy">
+         <cstring>batches</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -149,6 +149,7 @@
  </widget>
  <tabstops>
   <tabstop>partNumberLineEdit</tabstop>
+  <tabstop>defaultMediumNumber</tabstop>
   <tabstop>content</tabstop>
   <tabstop>loads</tabstop>
   <tabstop>batches</tabstop>

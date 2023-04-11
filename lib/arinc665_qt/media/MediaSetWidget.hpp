@@ -34,7 +34,7 @@ class ARINC665_QT_EXPORT MediaSetWidget : public QWidget
 
   public:
     /**
-     * @brief Initialises the Media Set Dialog.
+     * @brief Initialises the Media Set Widget.
      *
      * @param[in] parent
      *   Widget parent.
@@ -52,6 +52,14 @@ class ARINC665_QT_EXPORT MediaSetWidget : public QWidget
      **/
     void mediaSetModel( Arinc665Qt::Media::MediaSetModel * model );
 
+  signals:
+    /**
+     * @brief Emitted when an element in one of the widgets ist activated.
+     *
+     * @param element
+     **/
+    void activatedElement( Arinc665::Media::ConstBasePtr element );
+
   public slots:
     /**
      * @brief Called when a Media Set has been selected.
@@ -59,7 +67,32 @@ class ARINC665_QT_EXPORT MediaSetWidget : public QWidget
      * @param[in] mediaSet
      *   Selected Media Set
      **/
-    void selectedMediaSet( Arinc665::Media::ConstMediaSetPtr mediaSet );
+    void selectMediaSet( Arinc665::Media::ConstMediaSetPtr mediaSet );
+
+  private slots:
+    /**
+     * @brief Slot Called, when an Element has been selected
+     *
+     * @param[in] index
+     *   Model Index
+     **/
+    void selectElement( const QModelIndex &index );
+
+    /**
+     * @brief Slot Called, when a Load has been selected within Load Table
+     *
+     * @param[in] index
+     *   Model Index
+     **/
+    void selectLoad( const QModelIndex &index );
+
+    /**
+     * @brief Slot Called, when an Batch has been selected within Batch Table
+     *
+     * @param[in] index
+     *   Model Index
+     **/
+    void selectBatch( const QModelIndex &index );
 
   private:
     //! UI (designer)

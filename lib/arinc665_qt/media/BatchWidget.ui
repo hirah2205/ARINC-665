@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>316</height>
+    <width>500</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,8 +20,8 @@
      <property name="title">
       <string>Batch</string>
      </property>
-     <layout class="QFormLayout" name="formLayout">
-      <item row="1" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
        <widget class="QLabel" name="partNumberLabel">
         <property name="text">
          <string>Part Number</string>
@@ -31,17 +31,10 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="targetsLabel">
-        <property name="text">
-         <string>Targets</string>
-        </property>
-        <property name="buddy">
-         <cstring>targets</cstring>
-        </property>
-       </widget>
+      <item>
+       <widget class="QLineEdit" name="partNumber"/>
       </item>
-      <item row="2" column="0">
+      <item>
        <widget class="QLabel" name="commentLabel">
         <property name="text">
          <string>Comment</string>
@@ -51,13 +44,20 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item>
        <widget class="QLineEdit" name="comment"/>
       </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="partNumber"/>
+      <item>
+       <widget class="QLabel" name="targetsLabel">
+        <property name="text">
+         <string>Targets</string>
+        </property>
+        <property name="buddy">
+         <cstring>targets</cstring>
+        </property>
+       </widget>
       </item>
-      <item row="3" column="1">
+      <item>
        <widget class="QTableView" name="targets">
         <property name="alternatingRowColors">
          <bool>true</bool>
@@ -76,7 +76,17 @@
         </attribute>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item>
+       <widget class="QLabel" name="lblLoads">
+        <property name="text">
+         <string>Loads</string>
+        </property>
+        <property name="buddy">
+         <cstring>loads</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QTableView" name="loads">
         <property name="alternatingRowColors">
          <bool>true</bool>
@@ -93,16 +103,6 @@
         <attribute name="verticalHeaderVisible">
          <bool>false</bool>
         </attribute>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="lblLoads">
-        <property name="text">
-         <string>Loads</string>
-        </property>
-        <property name="buddy">
-         <cstring>loads</cstring>
-        </property>
        </widget>
       </item>
      </layout>

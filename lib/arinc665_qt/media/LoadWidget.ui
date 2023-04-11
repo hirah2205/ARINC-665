@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>581</height>
+    <width>500</width>
+    <height>651</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,8 +20,8 @@
      <property name="title">
       <string>Load</string>
      </property>
-     <layout class="QFormLayout" name="formLayout">
-      <item row="1" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
        <widget class="QLabel" name="lblPartNumber">
         <property name="text">
          <string>Part Number</string>
@@ -31,10 +31,89 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item>
        <widget class="QLineEdit" name="partNumber"/>
       </item>
-      <item row="4" column="1">
+      <item>
+       <widget class="QLabel" name="lblPartFlags">
+        <property name="text">
+         <string>Part Flags</string>
+        </property>
+        <property name="buddy">
+         <cstring>partFlags</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="partFlags"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="lblLoadType">
+        <property name="text">
+         <string>LoadType</string>
+        </property>
+        <property name="buddy">
+         <cstring>loadTypeDescription</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="gbLoadType">
+        <property name="title">
+         <string>Load Type</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="lblLoadTypeDescription">
+           <property name="text">
+            <string>Description</string>
+           </property>
+           <property name="buddy">
+            <cstring>loadTypeDescription</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLineEdit" name="loadTypeDescription">
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="lblLoadTypeId">
+           <property name="text">
+            <string>ID</string>
+           </property>
+           <property name="buddy">
+            <cstring>loadTypeId</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="loadTypeId">
+           <property name="inputMask">
+            <string>hhhH</string>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lblTargetHardwaresPositions">
+        <property name="text">
+         <string>Target Hardwares / Postitions</string>
+        </property>
+        <property name="buddy">
+         <cstring>targetHardwareIdsPositions</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QTreeView" name="targetHardwareIdsPositions">
         <property name="alternatingRowColors">
          <bool>true</bool>
@@ -47,17 +126,17 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="lblTargetHardwaresPositions">
+      <item>
+       <widget class="QLabel" name="lblDataFiles">
         <property name="text">
-         <string>Target Hardwares / Postitions</string>
+         <string>Data Files</string>
         </property>
         <property name="buddy">
-         <cstring>targetHardwareIdsPositions</cstring>
+         <cstring>dataFiles</cstring>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item>
        <widget class="QTableView" name="dataFiles">
         <property name="alternatingRowColors">
          <bool>true</bool>
@@ -76,7 +155,17 @@
         </attribute>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item>
+       <widget class="QLabel" name="lblSupportFiles">
+        <property name="text">
+         <string>Support Files</string>
+        </property>
+        <property name="buddy">
+         <cstring>supportFiles</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QTableView" name="supportFiles">
         <property name="alternatingRowColors">
          <bool>true</bool>
@@ -95,95 +184,6 @@
         </attribute>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="lblDataFiles">
-        <property name="text">
-         <string>Data Files</string>
-        </property>
-        <property name="buddy">
-         <cstring>dataFiles</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="lblSupportFiles">
-        <property name="text">
-         <string>Support Files</string>
-        </property>
-        <property name="buddy">
-         <cstring>supportFiles</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="lblPartFlags">
-        <property name="text">
-         <string>Part Flags</string>
-        </property>
-        <property name="buddy">
-         <cstring>partFlags</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="partFlags"/>
-      </item>
-      <item row="3" column="1">
-       <widget class="QGroupBox" name="gbLoadType">
-        <property name="title">
-         <string>Load Type</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QLabel" name="lblLoadTypeDescription">
-           <property name="text">
-            <string>Description</string>
-           </property>
-           <property name="buddy">
-            <cstring>loadTypeDescription</cstring>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="loadTypeDescription">
-           <property name="clearButtonEnabled">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="lblLoadTypeId">
-           <property name="text">
-            <string>ID</string>
-           </property>
-           <property name="buddy">
-            <cstring>loadTypeId</cstring>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="loadTypeId">
-           <property name="inputMask">
-            <string>hhhH</string>
-           </property>
-           <property name="clearButtonEnabled">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="lblLoadType">
-        <property name="text">
-         <string>LoadType</string>
-        </property>
-        <property name="buddy">
-         <cstring>loadTypeDescription</cstring>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -193,7 +193,6 @@
   <tabstop>partNumber</tabstop>
   <tabstop>partFlags</tabstop>
   <tabstop>loadTypeDescription</tabstop>
-  <tabstop>loadTypeId</tabstop>
   <tabstop>targetHardwareIdsPositions</tabstop>
   <tabstop>dataFiles</tabstop>
   <tabstop>supportFiles</tabstop>

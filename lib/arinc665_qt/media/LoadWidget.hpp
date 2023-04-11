@@ -44,6 +44,15 @@ class ARINC665_QT_EXPORT LoadWidget : public QWidget
     //! Destructor
     ~LoadWidget() override;
 
+  signals:
+    /**
+     * @brief Signal Emitted when user selected a Data or Support File.
+     *
+     * @param[in] file
+     *   Selected Data or Support File.
+     **/
+    void activatedFile( Arinc665::Media::ConstRegularFilePtr file );
+
   public slots:
     /**
      * @brief Called when a Load has been selected.
@@ -51,7 +60,22 @@ class ARINC665_QT_EXPORT LoadWidget : public QWidget
      * @param[in] load
      *   Selected Load
      **/
-    void selectedLoad( Arinc665::Media::ConstLoadPtr load );
+    void selectLoad( Arinc665::Media::ConstLoadPtr load );
+
+  private slots:
+    /**
+     * @brief Slot Called, when a Data File has been selected
+     *
+     * @param index
+     **/
+    void selectDataFile( const QModelIndex &index );
+
+    /**
+     * @brief Slot Called, when a Support File has been selected
+     *
+     * @param index
+     **/
+    void selectSupportFile( const QModelIndex &index );
 
   private:
     //! UI (designer)

@@ -15,6 +15,8 @@
 
 #include <arinc665_qt/media/Media.hpp>
 
+#include <arinc665/media/Media.hpp>
+
 #include <QWidget>
 
 #include <memory>
@@ -35,6 +37,14 @@ class ARINC665_QT_EXPORT MediaSetViewWidget : public QWidget
     Q_OBJECT
 
   public:
+    //! Enumeration identify the Widgets
+    enum class DetailsStackedWidget : int
+    {
+      MediaSet = 0,
+      Directory = 1,
+      File = 2
+    };
+
     /**
      * @brief Initialises the Media Set Dialog.
      *
@@ -53,7 +63,7 @@ class ARINC665_QT_EXPORT MediaSetViewWidget : public QWidget
      *   Media Set Model.
      **/
     void mediaSetModel( MediaSetModel * model );
-    
+
   private slots:
     /**
      * @brief Called when a selection has been made within tree-view.
@@ -61,11 +71,22 @@ class ARINC665_QT_EXPORT MediaSetViewWidget : public QWidget
      * @param[in] index
      *   Index of selected element.
      **/
-    void itemSelected( const QModelIndex &index );
+    void selectElement( const QModelIndex &index );
+
+    /**
+     * @brief Slot called, when an Element (Directory, Regular File, Load,
+     *   Batch) has been selected.
+     *
+     * The given element is focused within the tree view.
+     *
+     * @param[in] element
+     *   Element to activate
+     **/
+    void activateElement( Arinc665::Media::ConstBasePtr element );
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaSetViewWidget > ui;
+    std::unique_ptr< Ui::MediaSetViewWidget > ui{};
     //! Media Set Model
     MediaSetModel * mediaSetModelV{ nullptr };
 };

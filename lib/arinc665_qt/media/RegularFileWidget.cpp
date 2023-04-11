@@ -25,7 +25,7 @@ RegularFileWidget::RegularFileWidget( QWidget * const parent ) :
 
 RegularFileWidget::~RegularFileWidget() = default;
 
-void RegularFileWidget::selectedFile( Arinc665::Media::ConstFilePtr file )
+void RegularFileWidget::selectFile( Arinc665::Media::ConstFilePtr file )
 {
   fileV = std::move( file );
 

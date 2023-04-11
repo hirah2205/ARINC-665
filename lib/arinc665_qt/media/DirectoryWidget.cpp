@@ -24,10 +24,12 @@ namespace Arinc665Qt::Media {
 
 DirectoryWidget::DirectoryWidget( QWidget * const parent ):
   QWidget{ parent },
-  ui{ std::make_unique< Ui::DirectoryWidget >() },
-  mediaSetModelV{ nullptr }
+  ui{ std::make_unique< Ui::DirectoryWidget >() }
 {
   ui->setupUi( this );
+
+  ui->content->horizontalHeader()->setSectionResizeMode(
+    QHeaderView::ResizeMode::Stretch );
 }
 
 DirectoryWidget::~DirectoryWidget() = default;
@@ -37,16 +39,20 @@ void DirectoryWidget::mediaSetModel(
 {
   mediaSetModelV = model;
   ui->content->setModel( model );
-  ui->content->resizeColumnsToContents();
+
+  connect(
+    ui->content->selectionModel(),
+    &QItemSelectionModel::currentChanged,
+    this,
+    &DirectoryWidget::selectElement );
 }
 
-void DirectoryWidget::selectedDirectory( const QModelIndex &index )
+void DirectoryWidget::selectDirectory( const QModelIndex &index )
 {
   ui->content->setRootIndex( index );
-  ui->content->resizeColumnsToContents();
 }
 
-void DirectoryWidget::selectedDirectory(
+void DirectoryWidget::selectDirectory(
   Arinc665::Media::ConstDirectoryPtr directory )
 {
   directoryV = std::move( directory);
@@ -54,6 +60,16 @@ void DirectoryWidget::selectedDirectory(
   if ( directoryV )
   {
     ui->nameLineEdit->setText( HelperQt::toQString( directoryV->name() ) );
+  }
+}
+
+void DirectoryWidget::selectElement( const QModelIndex &index )
+{
+  auto element{ mediaSetModelV->element( index ) };
+
+  if ( element )
+  {
+    emit activatedElement( std::move( element ) );
   }
 }
 

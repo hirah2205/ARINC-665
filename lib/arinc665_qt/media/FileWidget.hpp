@@ -33,6 +33,14 @@ class ARINC665_QT_EXPORT FileWidget : public QWidget
     Q_OBJECT
 
   public:
+    //! Enumeration identify the Widgets
+    enum class FileStackedWidget : int
+    {
+      RegularFile = 0,
+      LoadFile = 1,
+      BatchFile = 2
+    };
+
     /**
      * @brief Initialises the File Widget.
      *
@@ -44,24 +52,26 @@ class ARINC665_QT_EXPORT FileWidget : public QWidget
     //! Destructor
     ~FileWidget() override;
 
+  signals:
+    /**
+     * @brief Emitted when a file in one of the widgets ist activated.
+     *
+     * @param file
+     **/
+    void activatedFile( Arinc665::Media::ConstFilePtr file );
+
   public slots:
     /**
      * @brief Called when a file has been selected.
      *
-     * @param[in] model
-     *   Model owning @p file
      * @param[in] file
      *   Selected File
      **/
-    void selectedFile(
-      Arinc665Qt::Media::MediaSetModel * model,
-      Arinc665::Media::ConstFilePtr file );
+    void selectFile( Arinc665::Media::ConstFilePtr file );
 
   private:
     //! UI (designer)
     std::unique_ptr< Ui::FileWidget> ui{};
-    //! Media Set Model
-    MediaSetModel * modelV{ nullptr };
     //! File
     Arinc665::Media::ConstFilePtr fileV{};
 };

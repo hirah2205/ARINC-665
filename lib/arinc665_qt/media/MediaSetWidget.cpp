@@ -19,6 +19,8 @@
 #include <arinc665_qt/media/MediaSetModel.hpp>
 
 #include <arinc665/media/MediaSet.hpp>
+#include <arinc665/media/Load.hpp>
+#include <arinc665/media/Batch.hpp>
 
 namespace Arinc665Qt::Media {
 
@@ -32,6 +34,24 @@ MediaSetWidget::MediaSetWidget( QWidget * const parent ):
 
   ui->loads->setModel( loadsModelV.get() );
   ui->batches->setModel( batchesModelV.get() );
+
+  ui->content->horizontalHeader()->setSectionResizeMode(
+    QHeaderView::ResizeMode::Stretch );
+  ui->loads->horizontalHeader()->setSectionResizeMode(
+    QHeaderView::ResizeMode::Stretch );
+  ui->batches->horizontalHeader()->setSectionResizeMode(
+    QHeaderView::ResizeMode::Stretch );
+
+  connect(
+    ui->loads->selectionModel(),
+    &QItemSelectionModel::currentChanged,
+    this,
+    &MediaSetWidget::selectLoad );
+  connect(
+    ui->batches->selectionModel(),
+    &QItemSelectionModel::currentChanged,
+    this,
+    &MediaSetWidget::selectBatch );
 }
 
 MediaSetWidget::~MediaSetWidget() = default;
@@ -41,9 +61,15 @@ void MediaSetWidget::mediaSetModel(
 {
   mediaSetModelV = model;
   ui->content->setModel( model );
+
+  connect(
+    ui->content->selectionModel(),
+    &QItemSelectionModel::currentChanged,
+    this,
+    &MediaSetWidget::selectElement );
 }
 
-void MediaSetWidget::selectedMediaSet(
+void MediaSetWidget::selectMediaSet(
   Arinc665::Media::ConstMediaSetPtr mediaSet )
 {
   mediaSetV = std::move( mediaSet );
@@ -62,6 +88,36 @@ void MediaSetWidget::selectedMediaSet(
 
     batchesModelV->batches( mediaSetV->recursiveBatches() );
     ui->batches->resizeColumnsToContents();
+  }
+}
+
+void MediaSetWidget::selectElement( const QModelIndex &index )
+{
+  auto element{ mediaSetModelV->element( index ) };
+
+  if ( element )
+  {
+    emit activatedElement( std::move( element ) );
+  }
+}
+
+void MediaSetWidget::selectLoad( const QModelIndex &index )
+{
+  auto load{ loadsModelV->constLoad( loadsModelV->load( index ) ) };
+
+  if ( load )
+  {
+    emit activatedElement( std::move( load ) );
+  }
+}
+
+void MediaSetWidget::selectBatch( const QModelIndex &index )
+{
+  auto batch{ batchesModelV->constBatch( batchesModelV->batch( index ) ) };
+
+  if ( batch )
+  {
+    emit activatedElement( std::move( batch ) );
   }
 }
 

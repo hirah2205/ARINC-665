@@ -96,7 +96,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @param[in] mediumNumber
      *   Medium number, to filter.
-     *   If not priveded no filtering is performed.
+     *   If not provided, no filtering is performed.
      *
      * @return Number of subdirectories.
      **/
@@ -108,7 +108,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @param[in] mediumNumber
      *   Medium number, to filter.
-     *   If not priveded no filtering is performed.
+     *   If not provided, no filtering is performed.
      *
      * @return All subdirectories contained in the current container.
      **/

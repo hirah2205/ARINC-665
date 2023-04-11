@@ -44,6 +44,15 @@ class ARINC665_QT_EXPORT BatchWidget : public QWidget
     //! Destructor
     ~BatchWidget() override;
 
+  signals:
+    /**
+     * @brief Signal Emitted when user selected a Load.
+     *
+     * @param[in] load
+     *   Selected Load.
+     **/
+    void activatedLoad( Arinc665::Media::ConstLoadPtr load );
+
   public slots:
     /**
      * @brief Called when a batch has been selected.
@@ -51,16 +60,24 @@ class ARINC665_QT_EXPORT BatchWidget : public QWidget
      * @param[in] batch
      *   Selected Batch
      **/
-    void selectedBatch( Arinc665::Media::ConstBatchPtr batch );
+    void selectBatch( Arinc665::Media::ConstBatchPtr batch );
 
   private slots:
     /**
-     * @brief Slot Called, when user selects a Target.
+     * @brief Slot called, when user selects a Target.
      *
      * @param[in] index
      *   Model Index of selected Target
      **/
-    void activatedTarget( const QModelIndex &index );
+    void selectTarget( const QModelIndex &index );
+
+    /**
+     * @brief Slot called, when user selects a Load.
+     *
+     * @param[in] index
+     *   Model Index of selected Load
+     **/
+    void activateLoad( const QModelIndex &index );
 
   private:
     //! UI (designer)

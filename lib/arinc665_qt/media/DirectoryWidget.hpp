@@ -52,6 +52,14 @@ class ARINC665_QT_EXPORT DirectoryWidget : public QWidget
      **/
     void mediaSetModel( Arinc665Qt::Media::MediaSetModel * model );
 
+  signals:
+    /**
+     * @brief Emitted when an element in one of the widgets ist activated.
+     *
+     * @param element
+     **/
+    void activatedElement( Arinc665::Media::ConstBasePtr element );
+
   public slots:
     /**
      * @brief Slot called, when a Directory is selected.
@@ -61,7 +69,7 @@ class ARINC665_QT_EXPORT DirectoryWidget : public QWidget
      * @param[in] index
      *   Model Index of selected Medium.
      **/
-    void selectedDirectory( const QModelIndex &index );
+    void selectDirectory( const QModelIndex &index );
 
     /**
      * @brief Called when a Directory has been selected.
@@ -69,15 +77,23 @@ class ARINC665_QT_EXPORT DirectoryWidget : public QWidget
      * @param[in] directory
      *   Selected Directory
      **/
-    void selectedDirectory( Arinc665::Media::ConstDirectoryPtr directory );
+    void selectDirectory( Arinc665::Media::ConstDirectoryPtr directory );
+
+  private slots:
+    /**
+     * @brief Slot Called, when an Element has been selected
+     *
+     * @param index
+     **/
+    void selectElement( const QModelIndex &index );
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::DirectoryWidget > ui;
+    std::unique_ptr< Ui::DirectoryWidget > ui{};
     //! Media Set Model
-    MediaSetModel * mediaSetModelV;
+    MediaSetModel * mediaSetModelV{ nullptr };
     //! Directory
-    Arinc665::Media::ConstDirectoryPtr directoryV;
+    Arinc665::Media::ConstDirectoryPtr directoryV{};
 };
 
 }

@@ -51,7 +51,7 @@ class ARINC665_QT_EXPORT RegularFileWidget : public QWidget
      * @param[in] file
      *   Selected File
      **/
-    void selectedFile( Arinc665::Media::ConstFilePtr file );
+    void selectFile( Arinc665::Media::ConstFilePtr file );
 
   private:
     //! UI (designer)

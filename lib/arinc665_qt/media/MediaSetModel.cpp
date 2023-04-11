@@ -583,6 +583,65 @@ Arinc665::Media::ConstBasePtr MediaSetModel::element(
     index.internalPointer() )->shared_from_this();
 }
 
+QModelIndex MediaSetModel::indexForElement(
+  const Arinc665::Media::ConstBasePtr &element ) const
+{
+  if ( rootV == element )
+  {
+    return index( 0, 0 );
+  }
+
+  auto parent{ element->parent() };
+
+  if ( element->type() == Arinc665::Media::Type::Directory )
+  {
+    auto directory{
+      std::dynamic_pointer_cast< const Arinc665::Media::Directory >( element ) };
+    if ( !directory )
+    {
+      // should not happen
+      return {};
+    }
+
+    auto subDirectories{ parent->subdirectories() };
+    auto pos( std::ranges::find( subDirectories, directory  ) );
+
+    if ( pos == subDirectories.end() )
+    {
+      // should not happen
+      return {};
+    }
+
+    return index(
+      static_cast< int >( std::distance( subDirectories.begin(), pos ) ),
+      0,
+      indexForElement( parent ) );
+  }
+
+  auto file{
+    std::dynamic_pointer_cast< const Arinc665::Media::File >( element ) };
+  if ( !file )
+  {
+    // should not happen
+    return {};
+  }
+
+  auto files{ parent->files() };
+  auto pos( std::ranges::find( files, file ) );
+
+  if ( pos == files.end() )
+  {
+    // should not happen
+    return {};
+  }
+
+  return index(
+    static_cast< int >(
+      parent->numberOfSubdirectories() + std::distance( files.begin(), pos ) ),
+    0,
+    indexForElement( parent ) );
+}
+
 void MediaSetModel::root( Arinc665::Media::ConstBasePtr root )
 {
   if ( rootV == root )

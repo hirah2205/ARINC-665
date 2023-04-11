@@ -20,6 +20,7 @@
 #include <arinc665/media/MediaSet.hpp>
 #include <arinc665/media/Directory.hpp>
 #include <arinc665/media/File.hpp>
+#include <arinc665/media/Load.hpp>
 
 namespace Arinc665Qt::Media {
 
@@ -30,10 +31,20 @@ MediaSetViewWidget::MediaSetViewWidget( QWidget * const parent ):
   ui->setupUi( this );
 
   connect(
-    ui->mediaSetTreeView,
-    &QTreeView::activated,
+    ui->mediaSetWidget,
+    &MediaSetWidget::activatedElement,
     this,
-    &MediaSetViewWidget::itemSelected );
+    &MediaSetViewWidget::activateElement );
+  connect(
+    ui->directoryWidget,
+    &DirectoryWidget::activatedElement,
+    this,
+    &MediaSetViewWidget::activateElement );
+  connect(
+    ui->fileWidget,
+    &FileWidget::activatedFile,
+    this,
+    &MediaSetViewWidget::activateElement );
 }
 
 MediaSetViewWidget::~MediaSetViewWidget() = default;
@@ -66,12 +77,18 @@ void MediaSetViewWidget::mediaSetModel( Media::MediaSetModel * const model )
         ui->mediaSetTreeView->resizeColumnToContents( 0 );
 
         // initiate update
-        emit( itemSelected( mediaSetModelV->index( 0, 0 ) ) );
+        ui->mediaSetTreeView->setCurrentIndex( mediaSetModelV->index( 0, 0 ) );
       } );
+
+    connect(
+      ui->mediaSetTreeView->selectionModel(),
+      &QItemSelectionModel::currentChanged,
+      this,
+      &MediaSetViewWidget::selectElement );
   }
 }
 
-void MediaSetViewWidget::itemSelected( const QModelIndex &index )
+void MediaSetViewWidget::selectElement( const QModelIndex &index )
 {
   auto element{ mediaSetModelV->element( index ) };
 
@@ -87,28 +104,37 @@ void MediaSetViewWidget::itemSelected( const QModelIndex &index )
       const auto mediaSet{
         std::dynamic_pointer_cast< const Arinc665::Media::MediaSet>( element ) };
 
-      ui->detailsStackedWidget->setCurrentIndex( 0 );
-      ui->mediaSetWidget->selectedMediaSet( mediaSet );
+      ui->detailsStackedWidget->setCurrentIndex(
+        static_cast< int >( DetailsStackedWidget::MediaSet ) );
+      ui->mediaSetWidget->selectMediaSet( mediaSet );
       break;
     }
 
     case Arinc665::Media::Type::Directory:
-      ui->detailsStackedWidget->setCurrentIndex( 1 );
-      ui->directoryWidget->selectedDirectory( index );
-      ui->directoryWidget->selectedDirectory(
+      ui->detailsStackedWidget->setCurrentIndex(
+        static_cast< int >( DetailsStackedWidget::Directory ) );
+      ui->directoryWidget->selectDirectory( index );
+      ui->directoryWidget->selectDirectory(
         std::dynamic_pointer_cast< const Arinc665::Media::Directory>( element ) );
       break;
 
     case Arinc665::Media::Type::File:
-      ui->detailsStackedWidget->setCurrentIndex( 2 );
-      ui->fileWidget->selectedFile(
-        mediaSetModelV,
+      ui->detailsStackedWidget->setCurrentIndex(
+        static_cast< int >( DetailsStackedWidget::File ) );
+      ui->fileWidget->selectFile(
         std::dynamic_pointer_cast< const Arinc665::Media::File>( element ) );
       break;
 
     default:
       break;
   }
+}
+
+void MediaSetViewWidget::activateElement( Arinc665::Media::ConstBasePtr element )
+{
+  auto index{ mediaSetModelV->indexForElement( element ) };
+  ui->mediaSetTreeView->setCurrentIndex( index );
+  ui->mediaSetTreeView->scrollTo( index );
 }
 
 }

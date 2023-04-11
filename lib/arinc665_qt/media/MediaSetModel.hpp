@@ -159,6 +159,17 @@ class ARINC665_QT_EXPORT MediaSetModel : public QAbstractItemModel
       const QModelIndex &index ) const;
 
     /**
+     * @brief Returns the Model Index for the given element.
+     *
+     * @param[in] element
+     *   Element of Model.
+     *
+     * @return Model Index representing @p element.
+     **/
+    [[nodiscard]] QModelIndex indexForElement(
+      const Arinc665::Media::ConstBasePtr &element ) const;
+
+    /**
      * @name Root Element
      *
      * The Root-Element of the %Media Set Model.
