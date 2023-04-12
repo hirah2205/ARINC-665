@@ -44,6 +44,15 @@ class ARINC665_QT_EXPORT RegularFileWidget : public QWidget
     //! Destructor
     ~RegularFileWidget() override;
 
+  signals:
+    /**
+     * @brief Signal Emitted when user selected a Load.
+     *
+     * @param[in] load
+     *   Selected Load.
+     **/
+    void activatedLoad( Arinc665::Media::ConstLoadPtr load );
+
   public slots:
     /**
      * @brief Called when a File has been selected.
@@ -51,13 +60,25 @@ class ARINC665_QT_EXPORT RegularFileWidget : public QWidget
      * @param[in] file
      *   Selected File
      **/
-    void selectFile( Arinc665::Media::ConstFilePtr file );
+    void selectFile( Arinc665::Media::ConstRegularFilePtr file );
+
+  private slots:
+    /**
+     * @brief Slot called, when user selects a Load.
+     *
+     * @param[in] index
+     *   Model Index of selected Load
+     **/
+    void activateLoad( const QModelIndex &index );
 
   private:
     //! UI (designer)
     std::unique_ptr< Ui::RegularFileWidget > ui{};
+    //! Used in Loads Model
+    std::unique_ptr< LoadsModel > usedInLoadsModelV{};
+
     //! File
-    Arinc665::Media::ConstFilePtr fileV{};
+    Arinc665::Media::ConstRegularFilePtr fileV{};
 };
 
 }

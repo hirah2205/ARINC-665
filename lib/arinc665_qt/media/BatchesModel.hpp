@@ -110,7 +110,7 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
      **/
     [[nodiscard]] QVariant headerData(
       int section,
-      ::Qt::Orientation orientation,
+      Qt::Orientation orientation,
       int role = Qt::DisplayRole ) const override;
 
     /**
@@ -138,10 +138,7 @@ class ARINC665_QT_EXPORT BatchesModel : public QAbstractTableModel
      * @param[in] batches
      *   Batches, contained by the model.
      **/
-    void batches( const Arinc665::Media::BatchesVariant &batches );
-
-    //! @copydoc batches(const Arinc665::Media::BatchesVariant&)
-    void batches( Arinc665::Media::BatchesVariant &&batches );
+    void batches( const Arinc665::Media::BatchesVariant batches );
 
     /** @} **/
 

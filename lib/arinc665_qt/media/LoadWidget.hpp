@@ -53,6 +53,14 @@ class ARINC665_QT_EXPORT LoadWidget : public QWidget
      **/
     void activatedFile( Arinc665::Media::ConstRegularFilePtr file );
 
+    /**
+     * @brief Signal Emitted when user selected a Batch.
+     *
+     * @param[in] batch
+     *   Selected Batch.
+     **/
+    void activatedBatch( Arinc665::Media::ConstBatchPtr batch );
+
   public slots:
     /**
      * @brief Called when a Load has been selected.
@@ -77,6 +85,13 @@ class ARINC665_QT_EXPORT LoadWidget : public QWidget
      **/
     void selectSupportFile( const QModelIndex &index );
 
+    /**
+     * @brief Slot Called, when a Batch has been selected.
+     *
+     * @param index
+     **/
+    void selectBatch( const QModelIndex &index );
+
   private:
     //! UI (designer)
     std::unique_ptr< Ui::LoadWidget> ui{};
@@ -87,7 +102,8 @@ class ARINC665_QT_EXPORT LoadWidget : public QWidget
     std::unique_ptr< LoadFilesModel > dataFilesModelV{};
     //! Support Files Model
     std::unique_ptr< LoadFilesModel > supportFilesModelV{};
-
+    //! Used in Batches Model
+    std::unique_ptr< BatchesModel > usedInBatchesModelV{};
     //! Load
     Arinc665::Media::ConstLoadPtr loadV{};
 };

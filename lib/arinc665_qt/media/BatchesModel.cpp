@@ -82,7 +82,7 @@ QVariant BatchesModel::data( const QModelIndex &index, const int role ) const
 
 QVariant BatchesModel::headerData(
   const int section,
-  const ::Qt::Orientation orientation,
+  const Qt::Orientation orientation,
   const int role ) const
 {
   if ( role != Qt::DisplayRole )
@@ -124,21 +124,15 @@ const Arinc665::Media::BatchesVariant& BatchesModel::batches() const
   return batchesV;
 }
 
-void BatchesModel::batches( const Arinc665::Media::BatchesVariant &batches )
-{
-  beginResetModel();
-  batchesV = batches;
-  endResetModel();
-}
-
-void BatchesModel::batches( Arinc665::Media::BatchesVariant &&batches )
+void BatchesModel::batches( Arinc665::Media::BatchesVariant batches )
 {
   beginResetModel();
   batchesV = std::move( batches );
   endResetModel();
 }
 
-Arinc665::Media::BatchVariant BatchesModel::batch( const QModelIndex &index ) const
+Arinc665::Media::BatchVariant BatchesModel::batch(
+  const QModelIndex &index ) const
 {
   if ( !index.isValid() )
   {

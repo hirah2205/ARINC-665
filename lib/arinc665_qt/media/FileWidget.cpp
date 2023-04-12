@@ -30,8 +30,18 @@ FileWidget::FileWidget( QWidget * const parent ):
   ui->setupUi( this );
 
   connect(
+    ui->regularFilePage,
+    &RegularFileWidget::activatedLoad,
+    this,
+    &FileWidget::activatedFile );
+  connect(
     ui->loadPage,
     &LoadWidget::activatedFile,
+    this,
+    &FileWidget::activatedFile );
+  connect(
+    ui->loadPage,
+    &LoadWidget::activatedBatch,
     this,
     &FileWidget::activatedFile );
   connect(

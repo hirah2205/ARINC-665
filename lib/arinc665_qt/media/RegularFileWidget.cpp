@@ -14,23 +14,53 @@
 
 #include "ui_RegularFileWidget.h"
 
+#include <arinc665_qt/media/LoadsModel.hpp>
+
+#include <arinc665/media/Load.hpp>
+#include <arinc665/media/MediaSet.hpp>
+#include <arinc665/media/RegularFile.hpp>
+
 namespace Arinc665Qt::Media {
 
 RegularFileWidget::RegularFileWidget( QWidget * const parent ) :
   QWidget{ parent },
-  ui{ std::make_unique< Ui::RegularFileWidget>() }
+  ui{ std::make_unique< Ui::RegularFileWidget>() },
+  usedInLoadsModelV{ std::make_unique< LoadsModel >( this ) }
 {
   ui->setupUi( this );
+
+  ui->usedInLoads->setModel( usedInLoadsModelV.get() );
+
+  ui->usedInLoads->horizontalHeader()->setSectionResizeMode(
+    QHeaderView::ResizeMode::Stretch );
+
+  connect(
+    ui->usedInLoads,
+    &QTableView::activated,
+    this,
+    &RegularFileWidget::activateLoad );
 }
 
 RegularFileWidget::~RegularFileWidget() = default;
 
-void RegularFileWidget::selectFile( Arinc665::Media::ConstFilePtr file )
+void RegularFileWidget::selectFile( Arinc665::Media::ConstRegularFilePtr file )
 {
   fileV = std::move( file );
 
   if ( fileV )
   {
+    usedInLoadsModelV->loads( fileV->mediaSet()->loadsWithFile( fileV ) );
+  }
+}
+
+void RegularFileWidget::activateLoad( const QModelIndex &index )
+{
+  auto load{ usedInLoadsModelV->constLoad(
+    usedInLoadsModelV->load( index ) ) };
+
+  if ( load )
+  {
+    emit activatedLoad( std::move( load ) );
   }
 }
 

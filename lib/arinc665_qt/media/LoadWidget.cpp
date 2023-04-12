@@ -14,11 +14,13 @@
 
 #include "ui_LoadWidget.h"
 
+#include <arinc665_qt/media/BatchesModel.hpp>
 #include <arinc665_qt/media/LoadFilesModel.hpp>
 #include <arinc665_qt/media/TargetHardwareIdsPositionsModel.hpp>
 
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/RegularFile.hpp>
+#include <arinc665/media/MediaSet.hpp>
 
 #include <helper_qt/String.hpp>
 
@@ -30,7 +32,8 @@ LoadWidget::LoadWidget( QWidget * const parent):
   targetHardwareIdsPositionsModel{
     std::make_unique< TargetHardwareIdsPositionsModel >( this ) },
   dataFilesModelV{ std::make_unique< LoadFilesModel >( this ) },
-  supportFilesModelV{ std::make_unique< LoadFilesModel >( this ) }
+  supportFilesModelV{ std::make_unique< LoadFilesModel >( this ) },
+  usedInBatchesModelV{ std::make_unique< BatchesModel >( this ) }
 {
   ui->setupUi( this );
 
@@ -38,10 +41,13 @@ LoadWidget::LoadWidget( QWidget * const parent):
     targetHardwareIdsPositionsModel.get() );
   ui->dataFiles->setModel( dataFilesModelV.get() );
   ui->supportFiles->setModel( supportFilesModelV.get() );
+  ui->usedInBatches->setModel( usedInBatchesModelV.get() );
 
   ui->dataFiles->horizontalHeader()->setSectionResizeMode(
     QHeaderView::ResizeMode::Stretch );
   ui->supportFiles->horizontalHeader()->setSectionResizeMode(
+    QHeaderView::ResizeMode::Stretch );
+  ui->usedInBatches->horizontalHeader()->setSectionResizeMode(
     QHeaderView::ResizeMode::Stretch );
 
   connect(
@@ -54,6 +60,11 @@ LoadWidget::LoadWidget( QWidget * const parent):
     &QTableView::activated,
     this,
     &LoadWidget::selectSupportFile );
+  connect(
+    ui->usedInBatches,
+    &QTableView::activated,
+    this,
+    &LoadWidget::selectBatch );
 }
 
 LoadWidget::~LoadWidget() = default;
@@ -78,6 +89,7 @@ void LoadWidget::selectLoad( Arinc665::Media::ConstLoadPtr load )
       loadV->targetHardwareIdPositions() );
     dataFilesModelV->loadFiles( loadV->dataFiles() );
     supportFilesModelV->loadFiles( loadV->supportFiles() );
+    usedInBatchesModelV->batches( loadV->mediaSet()->batchesWithLoad( loadV ) );
   }
 }
 
@@ -98,6 +110,17 @@ void LoadWidget::selectSupportFile( const QModelIndex &index )
   if ( file )
   {
     emit activatedFile( std::get< 0 >( *file ) );
+  }
+}
+
+void LoadWidget::selectBatch( const QModelIndex &index )
+{
+  auto batch{
+    usedInBatchesModelV->constBatch( usedInBatchesModelV->batch( index ) ) };
+
+  if ( batch )
+  {
+    emit activatedBatch( batch );
   }
 }
 
