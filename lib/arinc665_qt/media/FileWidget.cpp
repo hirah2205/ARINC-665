@@ -19,15 +19,20 @@
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/Batch.hpp>
 
+#include <arinc645_qt/CheckValueTypeModel.hpp>
+
 #include <helper_qt/String.hpp>
 
 namespace Arinc665Qt::Media {
 
 FileWidget::FileWidget( QWidget * const parent ):
   QWidget{ parent },
-  ui{ std::make_unique< Ui::FileWidget >() }
+  ui{ std::make_unique< Ui::FileWidget >() },
+  checkValueTypeModelV{ std::make_unique< Arinc645Qt::CheckValueTypeModel >( this ) }
 {
   ui->setupUi( this );
+
+  ui->checkValueType->setModel( checkValueTypeModelV.get() );
 
   connect(
     ui->regularFilePage,
@@ -62,6 +67,8 @@ void FileWidget::selectFile( Arinc665::Media::ConstFilePtr file )
     ui->nameLineEdit->setText( HelperQt::toQString( fileV->name() ) );
     ui->mediumNumber->setValue(
       static_cast< uint8_t >( fileV->effectiveMediumNumber() ) );
+    ui->checkValueType->setCurrentIndex( checkValueTypeModelV->checkValueType(
+      fileV->effectiveCheckValueType() ) );
   }
 
   switch ( fileV->fileType() )
