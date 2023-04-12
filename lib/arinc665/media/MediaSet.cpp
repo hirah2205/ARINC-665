@@ -72,7 +72,7 @@ ConstLoads MediaSet::loadsWithFile( const ConstRegularFilePtr &file ) const
 {
   ConstLoads foundLoads{};
 
-  for ( const auto & load : loads() )
+  for ( const auto &load : recursiveLoads() )
   {
     bool loadAdded{ false };
     for ( const auto &[ dataFile, partNumber, checkValue ] : load->dataFiles() )
@@ -106,7 +106,7 @@ ConstBatches MediaSet::batchesWithLoad( const ConstLoadPtr &load ) const
 {
   ConstBatches foundBatches{};
 
-  for ( const auto & batch : batches() )
+  for ( const auto & batch : recursiveBatches() )
   {
     for ( const auto &[ thwIdPos, loads ]: batch->targets() )
     {
