@@ -22,6 +22,8 @@
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/Batch.hpp>
 
+#include <helper_qt/String.hpp>
+
 namespace Arinc665Qt::Media {
 
 MediaSetWidget::MediaSetWidget( QWidget * const parent ):
@@ -43,13 +45,18 @@ MediaSetWidget::MediaSetWidget( QWidget * const parent ):
     QHeaderView::ResizeMode::Stretch );
 
   connect(
-    ui->loads->selectionModel(),
-    &QItemSelectionModel::currentChanged,
+    ui->content,
+    &QTableView::activated,
+    this,
+    &MediaSetWidget::selectElement );
+  connect(
+    ui->loads,
+    &QTableView::activated,
     this,
     &MediaSetWidget::selectLoad );
   connect(
-    ui->batches->selectionModel(),
-    &QItemSelectionModel::currentChanged,
+    ui->batches,
+    &QTableView::activated,
     this,
     &MediaSetWidget::selectBatch );
 }
@@ -61,12 +68,6 @@ void MediaSetWidget::mediaSetModel(
 {
   mediaSetModelV = model;
   ui->content->setModel( model );
-
-  connect(
-    ui->content->selectionModel(),
-    &QItemSelectionModel::currentChanged,
-    this,
-    &MediaSetWidget::selectElement );
 }
 
 void MediaSetWidget::selectMediaSet(
@@ -76,18 +77,17 @@ void MediaSetWidget::selectMediaSet(
 
   if ( mediaSetV )
   {
-    ui->partNumberLineEdit->setText( QString::fromUtf8(
-      mediaSetV->partNumber().data(),
-      static_cast< int >( mediaSetV->partNumber().length() ) ) );
+    ui->partNumberLineEdit->setText(
+      HelperQt::toQString( mediaSetV->partNumber() ) );
+
+    ui->defaultMediumNumber->setValue(
+      static_cast< uint8_t >( mediaSetV->effectiveDefaultMediumNumber() ) );
 
     ui->content->setRootIndex( mediaSetModelV->index( 0, 0 ) );
-    ui->content->resizeColumnsToContents();
 
     loadsModelV->loads( mediaSetV->recursiveLoads() );
-    ui->loads->resizeColumnsToContents();
 
     batchesModelV->batches( mediaSetV->recursiveBatches() );
-    ui->batches->resizeColumnsToContents();
   }
 }
 

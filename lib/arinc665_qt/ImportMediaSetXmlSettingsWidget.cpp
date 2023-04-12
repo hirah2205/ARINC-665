@@ -14,6 +14,8 @@
 
 #include "ui_ImportMediaSetXmlSettingsWidget.h"
 
+#include <QSettings>
+
 namespace Arinc665Qt {
 
 ImportMediaSetXmlSettingsWidget::ImportMediaSetXmlSettingsWidget(
@@ -25,9 +27,16 @@ ImportMediaSetXmlSettingsWidget::ImportMediaSetXmlSettingsWidget(
 {
   ui->setupUi( this );
 
+  QSettings settings{};
+
   selectXmlFileDialog->setWindowTitle( tr( "Select ARINC 665 Media Set XML" ) );
   selectXmlFileDialog->setNameFilter(tr( "ARINC 665 Media Set XML (*.xml)" ) );
   selectXmlFileDialog->setFileMode( QFileDialog::FileMode::ExistingFile );
+  if ( auto lastXmlDir{ settings.value( "LastImportMediaSetXmlDirectory" ) };
+    lastXmlDir.isValid() )
+  {
+    selectXmlFileDialog->setDirectory( lastXmlDir.toString() );
+  }
 
   connect(
     ui->selectXmlFile,
@@ -75,6 +84,11 @@ void ImportMediaSetXmlSettingsWidget::xmlFileSelected( const QString &file )
     inputDirectorySelected( selectXmlFileDialog->directory().path() );
     selectInputDirectoryDialog->setDirectory( selectXmlFileDialog->directory() );
   }
+
+  QSettings settings{};
+  settings.setValue(
+    "LastImportMediaSetXmlDirectory",
+    selectXmlFileDialog->directory().path() );
 }
 
 void ImportMediaSetXmlSettingsWidget::inputDirectorySelected(

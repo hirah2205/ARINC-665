@@ -43,6 +43,12 @@ MediaSetManagerDialog::MediaSetManagerDialog(
   reloadMediaSetModel();
 
   connect(
+    ui->mediaSets,
+    &QTableView::activated,
+    this,
+    &MediaSetManagerDialog::viewMediaSet );
+
+  connect(
     ui->viewMediaSet,
     &QPushButton::clicked,
     this,
@@ -216,7 +222,7 @@ void MediaSetManagerDialog::removeMediaSet()
 void MediaSetManagerDialog::openMediaSetsDirectory()
 {
   QDesktopServices::openUrl( QUrl::fromLocalFile(
-    QString::fromStdString( mediaSetManagerV->directory() ) ) );
+    QString::fromStdString( mediaSetManagerV->directory().string() ) ) );
 }
 
 void MediaSetManagerDialog::settings()

@@ -24,7 +24,7 @@
 namespace Arinc665Qt::Media {
 
 FileWidget::FileWidget( QWidget * const parent ):
-  QWidget{ parent},
+  QWidget{ parent },
   ui{ std::make_unique< Ui::FileWidget >() }
 {
   ui->setupUi( this );

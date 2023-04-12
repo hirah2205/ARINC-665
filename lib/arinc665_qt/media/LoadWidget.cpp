@@ -45,13 +45,13 @@ LoadWidget::LoadWidget( QWidget * const parent):
     QHeaderView::ResizeMode::Stretch );
 
   connect(
-    ui->dataFiles->selectionModel(),
-    &QItemSelectionModel::currentChanged,
+    ui->dataFiles,
+    &QTableView::activated,
     this,
     &LoadWidget::selectDataFile );
   connect(
-    ui->supportFiles->selectionModel(),
-    &QItemSelectionModel::currentChanged,
+    ui->supportFiles,
+    &QTableView::activated,
     this,
     &LoadWidget::selectSupportFile );
 }

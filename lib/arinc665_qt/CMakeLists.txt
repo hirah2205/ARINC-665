@@ -75,7 +75,8 @@ target_link_libraries(
     Qt5::Widgets
 
   PRIVATE
-    helper_qt )
+    helper_qt
+    arinc645_qt )
 
 add_subdirectory( compile_media_set )
 add_subdirectory( decompile_media_set )

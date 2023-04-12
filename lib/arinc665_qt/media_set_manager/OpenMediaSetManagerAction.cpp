@@ -40,7 +40,7 @@ OpenMediaSetManagerAction::OpenMediaSetManagerAction(
     tr( "Select ARINC 665 Media Set Manager Configuration" ) );
   selectMediaSetDirectoryDialogV->setFileMode( QFileDialog::Directory );
   selectMediaSetDirectoryDialogV->setOption( QFileDialog::ShowDirsOnly );
-  if ( auto lastDir{ settings.value( "MediaSetManagerDirectory" ) };
+  if ( auto lastDir{ settings.value( "LastMediaSetManagerDirectory" ) };
     lastDir.isValid() )
   {
     selectMediaSetDirectoryDialogV->setDirectory( lastDir.toString() );
@@ -82,7 +82,7 @@ void OpenMediaSetManagerAction::directorySelected()
       directory.path().toStdString(),
       settings.value( "CheckIntegrityOnStartup", true ).toBool() );
 
-    settings.setValue( "MediaSetManagerDirectory", directory.path() );
+    settings.setValue( "LastMediaSetManagerDirectory", directory.path() );
 
     emit accepted();
   }

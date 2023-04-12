@@ -22,9 +22,9 @@
 namespace Arinc665Qt {
 
 /**
- * @brief QT File Aupported ARINC 665 Version Model.
+ * @brief QT Supported ARINC 665 Version Model.
  **/
- class ARINC665_QT_EXPORT SupportedArinc665VersionModel final :
+class ARINC665_QT_EXPORT SupportedArinc665VersionModel final :
   public QAbstractListModel
 {
     Q_OBJECT
