@@ -27,7 +27,13 @@ namespace Ui{
 class DecompileMediaSetSettingsPage;
 }
 
-//! Decompile %Media Set Settings Page
+/**
+ * @brief Decompile %Media Set Settings Page.
+ *
+ * Provides following inputs:
+ *  - Media Paths, and
+ *  - Check file integrity.
+ **/
 class ARINC665_QT_EXPORT DecompileMediaSetSettingsPage final : public QWizardPage
 {
     Q_OBJECT
@@ -47,7 +53,7 @@ class ARINC665_QT_EXPORT DecompileMediaSetSettingsPage final : public QWizardPag
     /**
      * @brief Indicates if the page is completed.
      *
-     * checks all input fields for validity.
+     * Checks all input fields for validity.
      *
      * @return if page is completed
      **/
@@ -101,7 +107,7 @@ class ARINC665_QT_EXPORT DecompileMediaSetSettingsPage final : public QWizardPag
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::DecompileMediaSetSettingsPage > ui;
+    std::unique_ptr< Ui::DecompileMediaSetSettingsPage > ui{};
 };
 
 }

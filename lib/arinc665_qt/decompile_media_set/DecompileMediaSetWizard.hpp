@@ -28,7 +28,16 @@ class DecompileMediaSetWizard;
 }
 
 /**
- * @brief Ask user for decompile ARINC 665 %Media Set Settings.
+ * @brief Decompile ARINC 665 %Media Set Wizard.
+ *
+ * This wizard is used to query the Decompile ARINC 665 Media Set settings from
+ * the user.
+ *
+ * When the dialog is accepted the operation must be initiated by the caller.
+ *
+ * Media Paths are accessible via the MediaPathsModel.
+ * The Check File Integrity Setting is provided cia the signal
+ * @ref checkFileIntegrity.
  **/
 class ARINC665_QT_EXPORT DecompileMediaSetWizard final : public QWizard
 {
@@ -66,7 +75,7 @@ class ARINC665_QT_EXPORT DecompileMediaSetWizard final : public QWizard
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::DecompileMediaSetWizard > ui;
+    std::unique_ptr< Ui::DecompileMediaSetWizard > ui{};
 };
 
 }

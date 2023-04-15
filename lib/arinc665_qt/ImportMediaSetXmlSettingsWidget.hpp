@@ -28,13 +28,14 @@ class ImportMediaSetXmlSettingsWidget;
 }
 
 /**
- * @brief Import ARINC 665 Media Set XML Settings Widget
+ * @brief Import ARINC 665 Media Set XML Settings Widget.
  *
  * Provides a Widget where the user can select:
  *  - ARINC 665 Media Set XML, and
  *  - Base Path for files.
  **/
-class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsWidget final : public QGroupBox
+class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsWidget final :
+  public QGroupBox
 {
     Q_OBJECT
 
@@ -63,7 +64,7 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsWidget final : public QGroupBo
      * @param[in] xmlFile
      *   Selected ARINC 665 Media Set XML file.
      **/
-    void xmlFile( std::filesystem::path xmlFile );
+    void xmlFile( const std::filesystem::path &xmlFile );
 
     /**
      * @brief Emitted when an input directory has been selected.
@@ -71,7 +72,7 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlSettingsWidget final : public QGroupBo
      * @param[in] directory
      *   Selected input directory.
      **/
-    void inputDirectory( std::filesystem::path directory );
+    void inputDirectory( const std::filesystem::path &directory );
 
   private slots:
     /**

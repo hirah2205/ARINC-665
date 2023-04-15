@@ -30,7 +30,15 @@ class CompileMediaSetSettingsPage;
 }
 
 /**
- * @brief Compile %Media Set Settings Page
+ * @brief Compile %Media Set Settings Page.
+ *
+ * Provides following inputs:
+ *  - XML File,
+ *  - Input Base Directory,
+ *  - ARINC 665 Version,
+ *  - Load Header Creation Policy,
+ *  - Batch File Creation Policy, and
+ *  - Output directory.
  **/
 class ARINC665_QT_EXPORT CompileMediaSetSettingsPage final : public QWizardPage
 {
@@ -119,7 +127,12 @@ class ARINC665_QT_EXPORT CompileMediaSetSettingsPage final : public QWizardPage
     void outputDirectory( std::filesystem::path directory );
 
   private slots:
-    //! Slot called, when output directory has been selected.
+    /**
+     * @brief Slot called, when output directory has been selected.
+     *
+     * @param[in] file
+     *   Select file.
+     **/
     void outputDirectorySelected( const QString &file );
 
   private:

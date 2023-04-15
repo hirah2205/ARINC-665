@@ -23,6 +23,9 @@ namespace Arinc665Qt {
 
 /**
  * @brief QT File Creation Policy Model.
+ *
+ * Provides a list of File Creation Policies.
+ * This model is used for some dialogs to fill a QComboBox.
  **/
 class ARINC665_QT_EXPORT FileCreationPolicyModel final :
   public QAbstractListModel
@@ -31,7 +34,7 @@ class ARINC665_QT_EXPORT FileCreationPolicyModel final :
 
   public:
     /**
-     * @brief Initialises the Batches Model.
+     * @brief Initialises the File Creation Policy Model.
      *
      * @param[in] parent
      *   Parent QObject.
