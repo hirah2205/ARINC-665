@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MPL-2.0
+
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -82,6 +84,16 @@ endif()
 
 
 FetchContent_Declare(
+  qt_icon_resources
+  GIT_REPOSITORY https://git.thomas-vogt.de/thomas-vogt/qt_icon_resources.git
+  GIT_TAG        main )
+
+if( IS_DIRECTORY ${CMAKE_SOURCE_DIR}/qt_icon_resources )
+  set( FETCHCONTENT_SOURCE_DIR_QT_ICON_RESOURCES ${CMAKE_SOURCE_DIR}/qt_icon_resources )
+endif()
+
+
+FetchContent_Declare(
   arinc645
   GIT_REPOSITORY https://git.thomas-vogt.de/thomas-vogt/arinc645.git
   GIT_TAG        main )
@@ -100,7 +112,7 @@ if( IS_DIRECTORY ${CMAKE_SOURCE_DIR}/commands )
   set( FETCHCONTENT_SOURCE_DIR_COMMANDS ${CMAKE_SOURCE_DIR}/commands )
 endif()
 
-FetchContent_MakeAvailable( helper arinc645 commands )
+FetchContent_MakeAvailable( helper qt_icon_resources arinc645 commands )
 
 add_subdirectory( lib )
 add_subdirectory( app )

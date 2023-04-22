@@ -14,6 +14,8 @@
 
 #include <arinc665_qt/compile_media_set/CompileMediaSetWizard.hpp>
 
+#include <qt_icon_resources/QtIconResources.hpp>
+
 #include <helper/Logger.hpp>
 
 #include <QApplication>
@@ -43,6 +45,7 @@ try
 
   Helper::initLogging( Helper::Severity::info );
 
+  QtIconResources::initialise();
   Arinc665Qt::Resources::initialise();
 
   QApplication application{ argc, argv };
@@ -58,17 +61,17 @@ try
 
   return QApplication::exec();
 }
-catch ( boost::exception &e )
+catch ( const boost::exception &e )
 {
   std::cerr << boost::diagnostic_information( e ) << "\n";
   return EXIT_FAILURE;
 }
-catch ( std::exception &e )
+catch ( const std::exception &e )
 {
   std::cerr << e.what() << "\n";
   return EXIT_FAILURE;
 }
-catch ( ...)
+catch ( ... )
 {
   std::cerr << "Unknown exception\n";
   return EXIT_FAILURE;

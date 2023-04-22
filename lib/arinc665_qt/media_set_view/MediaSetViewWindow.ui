@@ -66,7 +66,8 @@
   </widget>
   <action name="actionOpenMediaSetXml">
    <property name="icon">
-    <iconset theme="document-open"/>
+    <iconset resource="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
+     <normaloff>:/fa/solid/file.svg</normaloff>:/fa/solid/file.svg</iconset>
    </property>
    <property name="text">
     <string>Open Media Set XML</string>
@@ -77,8 +78,8 @@
   </action>
   <action name="actionSaveMediaSetXml">
    <property name="icon">
-    <iconset theme="document-save">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset resource="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
+     <normaloff>:/fa/solid/floppy-disk.svg</normaloff>:/fa/solid/floppy-disk.svg</iconset>
    </property>
    <property name="text">
     <string>Save Media Set XML</string>
@@ -86,7 +87,8 @@
   </action>
   <action name="actionDecompileMediaSet">
    <property name="icon">
-    <iconset theme="computer"/>
+    <iconset resource="../resources/arinc665_qt_resources.qrc">
+     <normaloff>:/media_set_manager/arinc665_media_set_import.svg</normaloff>:/media_set_manager/arinc665_media_set_import.svg</iconset>
    </property>
    <property name="text">
     <string>Decompile Media Set</string>
@@ -103,6 +105,7 @@
  </customwidgets>
  <resources>
   <include location="../resources/arinc665_qt_resources.qrc"/>
+  <include location="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc"/>
  </resources>
  <connections/>
 </ui>

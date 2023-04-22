@@ -29,7 +29,12 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
 
-target_link_libraries( arinc665_compiler_gui PRIVATE arinc665 arinc665_qt )
+target_link_libraries(
+  arinc665_compiler_gui
+
+  PRIVATE
+    qt_icon_resources
+    arinc665_qt )
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}

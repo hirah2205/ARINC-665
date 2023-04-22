@@ -28,6 +28,9 @@ MediaPathsWidget::MediaPathsWidget(
 {
   ui->setupUi( this );
 
+  ui->mediaPaths->horizontalHeader()->setSectionResizeMode(
+    QHeaderView::ResizeMode::ResizeToContents );
+
   selectMediaPathDialog->setWindowTitle( tr( "Select Medium Directory" ) );
   selectMediaPathDialog->setFileMode( QFileDialog::FileMode::Directory );
   selectMediaPathDialog->setOptions( QFileDialog::Option::ShowDirsOnly );
@@ -87,6 +90,7 @@ void MediaPathsWidget::mediumDirectorySelected( const QString &file )
     return;
   }
 
+  ui->mediaPaths->resizeColumnsToContents();
   emit mediaPathsChanged();
 }
 

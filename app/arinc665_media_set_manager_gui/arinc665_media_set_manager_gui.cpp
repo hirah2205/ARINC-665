@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- *  @brief ARINC 665 Media Set Manager QT Application.
+ * @brief ARINC 665 Media Set Manager QT Application.
  **/
 
 #include <arinc665_qt/resources/Resources.hpp>
@@ -16,6 +16,8 @@
 #include <arinc665_qt/media_set_manager/MediaSetManagerDialog.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
+
+#include <qt_icon_resources/QtIconResources.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -46,6 +48,7 @@ try
 
   Helper::initLogging( Helper::Severity::info );
 
+  QtIconResources::initialise();
   Arinc665Qt::Resources::initialise();
 
   QApplication application{ argc, argv };
@@ -77,12 +80,12 @@ try
         QString::fromStdString(
           mediaSetManagerAction.mediaSetManager()->directory().string() ) );
 
-      dialog->connect(
+      Arinc665Qt::MediaSetManager::MediaSetManagerDialog::connect(
         dialog,
         &Arinc665Qt::MediaSetManager::MediaSetManagerDialog::finished,
         dialog,
         &Arinc665Qt::MediaSetManager::MediaSetManagerDialog::deleteLater );
-      dialog->connect(
+      Arinc665Qt::MediaSetManager::MediaSetManagerDialog::connect(
         dialog,
         &Arinc665Qt::MediaSetManager::MediaSetManagerDialog::finished,
         &application,

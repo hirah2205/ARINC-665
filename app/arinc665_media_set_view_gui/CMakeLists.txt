@@ -35,6 +35,7 @@ target_link_libraries(
   arinc665_media_set_view_gui
 
   PRIVATE
+    qt_icon_resources
     arinc665_qt )
 
 set_property(

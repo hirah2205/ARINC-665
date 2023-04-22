@@ -19,12 +19,17 @@
 
 #include <arinc665_qt/media_set_view/MediaSetViewWindow.hpp>
 
+#include <qt_icon_resources/QtIconResources.hpp>
+
 #include <helper/Logger.hpp>
 
 #include <QApplication>
 #include <QIcon>
 
+#include <boost/exception/diagnostic_information.hpp>
+
 #include <cstdlib>
+#include <iostream>
 
 /**
  * @brief Entry Point of Application.
@@ -40,12 +45,14 @@ int main( int argc, char * argv[] );
 
 int main( int argc, char * argv[] )
 {
+  BOOST_LOG_FUNCTION()
+
   try
   {
     Helper::initLogging( Helper::Severity::info );
 
+    QtIconResources::initialise();
     Arinc665Qt::Resources::initialise();
-
     QApplication application{ argc, argv };
     QApplication::setApplicationDisplayName(
       QObject::tr( "ARINC 665 Media Set Viewer" ) );

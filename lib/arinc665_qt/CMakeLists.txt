@@ -76,6 +76,7 @@ target_link_libraries(
 
   PRIVATE
     helper_qt
+    qt_icon_resources
     arinc645_qt )
 
 add_subdirectory( compile_media_set )

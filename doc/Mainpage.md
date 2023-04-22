@@ -27,5 +27,6 @@ This tool suite contains the components:
 Dependencies are:
  - @ref Arinc645 and @subpage arinc645_applications,
  - @ref Commands and @subpage commands_applications,
- - @ref Helper, @ref HelperQt, and @subpage helper_applications, and
+ - @ref Helper, @ref HelperQt, and @subpage helper_applications,
+ - @ref QtIconResources, and
  - libxml++
