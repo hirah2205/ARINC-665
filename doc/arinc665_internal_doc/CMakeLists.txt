@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MPL-2.0
+
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -16,6 +18,11 @@ endif()
 get_property(
   HELPER_DOC_PATHS
   DIRECTORY ${helper_SOURCE_DIR}
+  PROPERTY DOC_PATHS )
+
+get_property(
+  QT_ICON_RESOURCES_DOC_PATHS
+  DIRECTORY ${qt_icon_resources_SOURCE_DIR}
   PROPERTY DOC_PATHS )
 
 get_property(
@@ -51,6 +58,7 @@ set(
 
   ${helper_SOURCE_DIR}/lib
   ${helper_SOURCE_DIR}/app
+  ${qt_icon_resources_SOURCE_DIR}/lib
   ${commands_SOURCE_DIR}/lib
   ${commands_SOURCE_DIR}/app
   ${arinc645_SOURCE_DIR}/lib
@@ -63,6 +71,7 @@ set(
 
   ${Boost_INCLUDE_DIRS}
   ${helper_SOURCE_DIR}/lib
+  ${qt_icon_resources_SOURCE_DIR}/lib
   ${commands_SOURCE_DIR}/lib
   ${arinc645_SOURCE_DIR}/lib
   ${arinc665_SOURCE_DIR}/lib )
@@ -72,6 +81,7 @@ doxygen_add_docs(
 
   ../Mainpage.md
   ${HELPER_DOC_PATHS}
+  ${QT_ICON_RESOURCES_DOC_PATHS}
   ${COMMANDS_DOC_PATHS}
   ${ARINC645_DOC_PATHS}
   ${ARINC665_DOC_PATHS} )
