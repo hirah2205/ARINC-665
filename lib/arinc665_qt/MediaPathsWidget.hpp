@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -14,6 +15,8 @@
 #define ARINC665_QT_MEDIAPATHSPAGE_HPP
 
 #include <arinc665_qt/Arinc665Qt.hpp>
+
+#include <arinc665/utils/Utils.hpp>
 
 #include <QGroupBox>
 #include <QFileDialog>
@@ -49,14 +52,6 @@ class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
     ~MediaPathsWidget() override;
 
     /**
-     * @brief Sets the Media Paths Model.
-     *
-     * @param[in] model
-     *   Media Paths Model
-     **/
-    void mediaPathsModel( MediaPathsModel * model );
-
-    /**
      * @brief Returns, if the Media Paths are complete
      *
      * @return If the Media Paths are complete.
@@ -71,10 +66,21 @@ class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
   signals:
     /**
      * @brief Signal emitted, when the user adds or delete media paths.
+     *
+     * @param[in] mediaPaths
+     *   Updated Media Paths
      **/
-    void mediaPathsChanged();
+    void mediaPathsChanged( const Arinc665::Utils::MediaPaths &mediaPaths );
 
   private slots:
+    /**
+     * @brief Slot called, when the selection has changed.
+     *
+     * @param[in] current
+     *   Current selected item.
+     **/
+    void updateButtons( const QModelIndex &current );
+
     /**
      * @brief Slot when user wants to delete selected medium directory.
      *
@@ -98,10 +104,10 @@ class ARINC665_QT_EXPORT MediaPathsWidget final : public QGroupBox
   private:
     //! UI (designer)
     std::unique_ptr< Ui::MediaPathsWidget > ui{};
+    //! Media Paths Model
+    std::unique_ptr< MediaPathsModel > mediaPathsModelV{};
     //! Select XML File Dialog
     std::unique_ptr< QFileDialog > selectMediaPathDialog{};
-    //! Media Paths Model
-    MediaPathsModel * mediaPathsModelV{ nullptr };
 };
 
 }

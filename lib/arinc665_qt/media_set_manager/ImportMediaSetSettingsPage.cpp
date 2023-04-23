@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -29,6 +30,11 @@ ImportMediaSetSettingsPage::ImportMediaSetSettingsPage(
     ui->mediaPaths,
     &MediaPathsWidget::mediaPathsChanged,
     this,
+    &ImportMediaSetSettingsPage::mediaPathsChanged );
+  connect(
+    ui->mediaPaths,
+    &MediaPathsWidget::mediaPathsChanged,
+    this,
     &ImportMediaSetSettingsPage::completeChanged );
 
   connect(
@@ -43,12 +49,6 @@ ImportMediaSetSettingsPage::~ImportMediaSetSettingsPage() = default;
 bool ImportMediaSetSettingsPage::isComplete() const
 {
   return QWizardPage::isComplete() && ui->mediaPaths->completed();
-}
-
-void ImportMediaSetSettingsPage::mediaPathsModel(
-  MediaPathsModel * const model )
-{
-  ui->mediaPaths->mediaPathsModel( model );
 }
 
 void ImportMediaSetSettingsPage::defaults(

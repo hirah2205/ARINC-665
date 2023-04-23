@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -26,6 +27,11 @@ DecompileMediaSetWizard::DecompileMediaSetWizard( QWidget * const parent ) :
 
   connect(
     ui->settings,
+    &DecompileMediaSetSettingsPage::mediaPathsChanged,
+    this,
+    &DecompileMediaSetWizard::mediaPathsChanged );
+  connect(
+    ui->settings,
     &DecompileMediaSetSettingsPage::checkFileIntegrity,
     this,
     &DecompileMediaSetWizard::checkFileIntegrity );
@@ -35,10 +41,5 @@ DecompileMediaSetWizard::DecompileMediaSetWizard( QWidget * const parent ) :
 }
 
 DecompileMediaSetWizard::~DecompileMediaSetWizard() = default;
-
-void DecompileMediaSetWizard::mediaPathsModel( MediaPathsModel * const model )
-{
-  ui->settings->mediaPathsModel( model );
-}
 
 }

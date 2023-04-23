@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -34,7 +35,8 @@ class DecompileMediaSetSettingsPage;
  *  - Media Paths, and
  *  - Check file integrity.
  **/
-class ARINC665_QT_EXPORT DecompileMediaSetSettingsPage final : public QWizardPage
+class ARINC665_QT_EXPORT DecompileMediaSetSettingsPage final :
+  public QWizardPage
 {
     Q_OBJECT
 
@@ -67,14 +69,6 @@ class ARINC665_QT_EXPORT DecompileMediaSetSettingsPage final : public QWizardPag
     void initializePage() override;
 
     /**
-     * @brief Sets the Media Paths Model.
-     *
-     * @param[in] model
-     *   Media Paths Model
-     **/
-    void mediaPathsModel( MediaPathsModel * model );
-
-    /**
      * @brief Initialises the page with its defaults.
      *
      * @param[in] defaults
@@ -83,6 +77,14 @@ class ARINC665_QT_EXPORT DecompileMediaSetSettingsPage final : public QWizardPag
     void defaults( const Arinc665::Utils::MediaSetDefaults &defaults );
 
   signals:
+    /**
+     * @brief Signal emitted, when the user adds or delete media paths.
+     *
+     * @param[in] mediaPaths
+     *   Updated Media Paths
+     **/
+    void mediaPathsChanged( const Arinc665::Utils::MediaPaths &mediaPaths );
+
     /**
      * @brief Signal emitted, when the check file integrity field has been
      *   selected by user.

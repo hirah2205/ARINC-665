@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -29,6 +30,11 @@ DecompileMediaSetSettingsPage::DecompileMediaSetSettingsPage(
     ui->mediaPaths,
     &MediaPathsWidget::mediaPathsChanged,
     this,
+    &DecompileMediaSetSettingsPage::mediaPathsChanged );
+  connect(
+    ui->mediaPaths,
+    &MediaPathsWidget::mediaPathsChanged,
+    this,
     &DecompileMediaSetSettingsPage::completeChanged );
 
   connect(
@@ -50,12 +56,6 @@ void DecompileMediaSetSettingsPage::initializePage()
   QWizardPage::initializePage();
 
   ui->mediaPaths->clear();
-}
-
-void DecompileMediaSetSettingsPage::mediaPathsModel(
-  MediaPathsModel * const model )
-{
-  ui->mediaPaths->mediaPathsModel( model );
 }
 
 void DecompileMediaSetSettingsPage::defaults(

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -55,14 +56,6 @@ class ARINC665_QT_EXPORT ImportMediaSetSettingsPage final : public QWizardPage
     bool isComplete() const override;
 
     /**
-     * @brief Sets the Media Paths Model.
-     *
-     * @param[in] model
-     *   Media Paths Model
-     **/
-    void mediaPathsModel( MediaPathsModel * model );
-
-    /**
      * @brief Initialises the page with its defaults.
      *
      * @param[in] defaults
@@ -71,6 +64,14 @@ class ARINC665_QT_EXPORT ImportMediaSetSettingsPage final : public QWizardPage
     void defaults( const Arinc665::Utils::MediaSetDefaults &defaults );
 
   signals:
+    /**
+     * @brief Signal emitted, when the user adds or delete media paths.
+     *
+     * @param[in] mediaPaths
+     *   Updated Media Paths
+     **/
+    void mediaPathsChanged( const Arinc665::Utils::MediaPaths &mediaPaths );
+
     /**
      * @brief Signal emitted, when the check file integrity field has been
      *   selected by user.
@@ -95,7 +96,7 @@ class ARINC665_QT_EXPORT ImportMediaSetSettingsPage final : public QWizardPage
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetSettingsPage > ui;
+    std::unique_ptr< Ui::ImportMediaSetSettingsPage > ui{};
 };
 
 }

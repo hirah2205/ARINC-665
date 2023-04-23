@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -20,7 +21,6 @@
 
 #include <arinc665_qt/Arinc665QtLogger.hpp>
 #include <arinc665_qt/FilePathMappingModel.hpp>
-#include <arinc665_qt/MediaPathsModel.hpp>
 
 #include <arinc665/utils/Arinc665Xml.hpp>
 #include <arinc665/utils/FilesystemMediaSetDecompiler.hpp>
@@ -50,7 +50,6 @@ MediaSetViewWindow::MediaSetViewWindow( QWidget * const parent ):
   decompileMediaSetWizardV{ std::make_unique< DecompileMediaSetWizard >( this ) },
   selectLoadMediaSetXmlDialogV{ std::make_unique< QFileDialog>( this ) },
   selectSaveMediaSetXmlDialogV{ std::make_unique< QFileDialog>( this ) },
-  mediaPathsModelV{ std::make_unique< MediaPathsModel >( this ) },
   mediaSetModelV{ std::make_unique< Media::MediaSetModel >( this ) },
   filePathMappingModelV{ std::make_unique< FilePathMappingModel >( this ) },
   sortedFilePathMappingModelV{ std::make_unique< QSortFilterProxyModel >( this ) }
@@ -65,12 +64,17 @@ MediaSetViewWindow::MediaSetViewWindow( QWidget * const parent ):
     static_cast< int >( FilePathMappingModel::Columns::MediaSetFile ) );
   ui->filePathMapping->setModel( sortedFilePathMappingModelV.get() );
 
-  decompileMediaSetWizardV->mediaPathsModel( mediaPathsModelV.get() );
   connect(
     ui->actionDecompileMediaSet,
     &QAction::triggered,
     decompileMediaSetWizardV.get(),
     &QWizard::open );
+
+  connect(
+    decompileMediaSetWizardV.get(),
+    &DecompileMediaSetWizard::mediaPathsChanged,
+    this,
+    &MediaSetViewWindow::updateMediaPaths );
   connect(
     decompileMediaSetWizardV.get(),
     &DecompileMediaSetWizard::checkFileIntegrity,
@@ -131,6 +135,12 @@ MediaSetViewWindow::MediaSetViewWindow( QWidget * const parent ):
 
 MediaSetViewWindow::~MediaSetViewWindow() = default;
 
+void MediaSetViewWindow::updateMediaPaths(
+  const Arinc665::Utils::MediaPaths &mediaPaths )
+{
+  mediaPathsV = mediaPaths;
+}
+
 void MediaSetViewWindow::checkFileIntegrity( bool checkFileIntegrity )
 {
   checkFileIntegrityV = checkFileIntegrity;
@@ -146,7 +156,7 @@ void MediaSetViewWindow::startMediaSetDecompilation()
 
     decompiler
       ->checkFileIntegrity( checkFileIntegrityV )
-      .mediaPaths( mediaPathsModelV->mediaPaths() );
+      .mediaPaths( mediaPathsV );
 
     auto [ mediaSet, checkValues ]{ ( *decompiler )() };
 
@@ -156,7 +166,7 @@ void MediaSetViewWindow::startMediaSetDecompilation()
     for ( const auto &file : mediaSet->recursiveFiles() )
     {
       std::filesystem::path filePath(
-        mediaPathsModelV->mediaPaths().at( file->effectiveMediumNumber() )
+        mediaPathsV.at( file->effectiveMediumNumber() )
         / file->path().relative_path() );
 
       fileMapping.try_emplace( file, std::move( filePath ) );

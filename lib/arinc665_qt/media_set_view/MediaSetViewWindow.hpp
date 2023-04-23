@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -19,6 +20,8 @@
 
 #include <arinc665_qt/media/Media.hpp>
 
+#include <arinc665/utils/Utils.hpp>
+
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QSortFilterProxyModel>
@@ -39,7 +42,7 @@ class MediaSetViewWindow;
  * existing ARINC 665 Media set via
  * @ref Arinc665::Utils::FilesystemMediaSetDecompiler.
  **/
-class ARINC665_QT_EXPORT MediaSetViewWindow : public QMainWindow
+class ARINC665_QT_EXPORT MediaSetViewWindow final : public QMainWindow
 {
     Q_OBJECT
 
@@ -56,6 +59,14 @@ class ARINC665_QT_EXPORT MediaSetViewWindow : public QMainWindow
     ~MediaSetViewWindow() override;
 
   private slots:
+    /**
+     * @brief Slot called, whe user updates the Media Paths.
+     *
+     * @param[in] mediaPaths
+     *   Media Paths
+     **/
+    void updateMediaPaths( const Arinc665::Utils::MediaPaths &mediaPaths );
+
     /**
      * @brief Slot called, when user changed the check file integrity handling
      *
@@ -96,8 +107,6 @@ class ARINC665_QT_EXPORT MediaSetViewWindow : public QMainWindow
     //! Select Save Media Set XML file dialog
     std::unique_ptr< QFileDialog > selectSaveMediaSetXmlDialogV{};
 
-    //! Media Paths Model
-    std::unique_ptr< MediaPathsModel > mediaPathsModelV{};
     //! Media Set Model
     std::unique_ptr< Media::MediaSetModel > mediaSetModelV{};
     //! File Path Mapping Model
@@ -105,6 +114,8 @@ class ARINC665_QT_EXPORT MediaSetViewWindow : public QMainWindow
     //! Sorted File Mapping Model
     std::unique_ptr< QSortFilterProxyModel > sortedFilePathMappingModelV{};
 
+    //! Media Paths
+    Arinc665::Utils::MediaPaths mediaPathsV{};
     //! Check File Integrity
     bool checkFileIntegrityV{ false };
 };

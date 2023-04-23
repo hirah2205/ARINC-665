@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -16,6 +17,8 @@
 #include <arinc665_qt/decompile_media_set/DecompileMediaSet.hpp>
 
 #include <arinc665_qt/media/Media.hpp>
+
+#include <arinc665/utils/Utils.hpp>
 
 #include <QWizard>
 
@@ -55,15 +58,15 @@ class ARINC665_QT_EXPORT DecompileMediaSetWizard final : public QWizard
     //! Destructor
     ~DecompileMediaSetWizard() override;
 
-    /**
-     * @brief Sets the Media Paths Model.
-     *
-     * @param[in] model
-     *   Media Paths Model
-     **/
-    void mediaPathsModel( MediaPathsModel * model );
-
   signals:
+    /**
+     * @brief Signal emitted, when the user adds or delete media paths.
+     *
+     * @param[in] mediaPaths
+     *   Updated Media Paths
+     **/
+    void mediaPathsChanged( const Arinc665::Utils::MediaPaths &mediaPaths );
+
     /**
      * @brief Signal emitted, when the check file integrity field has been
      *   selected by user.

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -13,8 +14,6 @@
 #include "ImportMediaSetWizard.hpp"
 
 #include "ui_ImportMediaSetWizard.h"
-
-#include <arinc665_qt/MediaPathsModel.hpp>
 
 #include <arinc665/files/MediaSetInformation.hpp>
 
@@ -40,20 +39,24 @@ ImportMediaSetWizard::ImportMediaSetWizard(
   QWizard{ parent },
   ui{ std::make_unique< Ui::ImportMediaSetWizard >() },
   mediaSetManagerV{ std::move( mediaSetManager ) },
-  copierV{ Arinc665::Utils::FilesystemMediaSetCopier::create() },
-  mediaPathsModelV{ std::make_unique< MediaPathsModel >() }
+  copierV{ Arinc665::Utils::FilesystemMediaSetCopier::create() }
 {
   assert( copierV );
 
   ui->setupUi( this );
   ui->settings->setCommitPage( true );
-  ui->settings->mediaPathsModel( mediaPathsModelV.get() );
 
   connect(
     this,
     &QWizard::currentIdChanged,
     this,
     &ImportMediaSetWizard::pageChanged );
+
+  connect(
+    ui->settings,
+    &ImportMediaSetSettingsPage::mediaPathsChanged,
+    this,
+    &ImportMediaSetWizard::updateMediaPaths );
   connect(
     ui->settings,
     &ImportMediaSetSettingsPage::checkFileIntegrity,
@@ -74,6 +77,12 @@ void ImportMediaSetWizard::pageChanged( const int id )
   }
 }
 
+void ImportMediaSetWizard::updateMediaPaths(
+  const Arinc665::Utils::MediaPaths &mediaPaths )
+{
+  mediaPathsV = mediaPaths;
+}
+
 void ImportMediaSetWizard::checkFileIntegrity( bool checkFileIntegrity )
 {
   checkFileIntegrityV = checkFileIntegrity;
@@ -86,8 +95,7 @@ void ImportMediaSetWizard::importMediaSet()
   try
   {
     const auto mediaInformation{
-      Arinc665::Utils::getMediumInformation(
-        mediaPathsModelV->mediaPaths().begin()->second ) };
+      Arinc665::Utils::getMediumInformation( mediaPathsV.begin()->second ) };
 
     if ( !mediaInformation )
     {
@@ -105,7 +113,7 @@ void ImportMediaSetWizard::importMediaSet()
 
     assert( copierV );
     copierV
-      ->mediaPaths( mediaPathsModelV->mediaPaths() )
+      ->mediaPaths( mediaPathsV )
       .outputBasePath( mediaSetManagerV->directory() )
       .mediaSetName( mediaInformation->partNumber );
 

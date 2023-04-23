@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -24,16 +25,26 @@ MediaPathsWidget::MediaPathsWidget(
   QWidget * const parent ) :
   QGroupBox{ parent },
   ui{ std::make_unique< Ui::MediaPathsWidget >() },
+  mediaPathsModelV{ std::make_unique< MediaPathsModel >( this ) },
   selectMediaPathDialog{ std::make_unique< QFileDialog >( this ) }
 {
   ui->setupUi( this );
 
+  ui->mediaPaths->setModel( mediaPathsModelV.get() );
   ui->mediaPaths->horizontalHeader()->setSectionResizeMode(
     QHeaderView::ResizeMode::ResizeToContents );
+
+  ui->remove->setEnabled( false );
 
   selectMediaPathDialog->setWindowTitle( tr( "Select Medium Directory" ) );
   selectMediaPathDialog->setFileMode( QFileDialog::FileMode::Directory );
   selectMediaPathDialog->setOptions( QFileDialog::Option::ShowDirsOnly );
+
+  connect(
+    ui->mediaPaths->selectionModel(),
+    &QItemSelectionModel::currentChanged,
+    this,
+    &MediaPathsWidget::updateButtons );
 
   connect(
     ui->add,
@@ -56,12 +67,6 @@ MediaPathsWidget::MediaPathsWidget(
 
 MediaPathsWidget::~MediaPathsWidget() = default;
 
-void MediaPathsWidget::mediaPathsModel( MediaPathsModel * const model )
-{
-  mediaPathsModelV = model;
-  ui->mediaPaths->setModel( model );
-}
-
 bool MediaPathsWidget::completed() const
 {
   return mediaPathsModelV->complete();
@@ -72,11 +77,18 @@ void MediaPathsWidget::clear()
   mediaPathsModelV->clear();
 }
 
+void MediaPathsWidget::updateButtons( const QModelIndex &current )
+{
+  ui->remove->setEnabled( current.isValid() );
+}
+
 void MediaPathsWidget::removeMediumDirectory()
 {
   mediaPathsModelV->remove( ui->mediaPaths->currentIndex() );
 
-  emit mediaPathsChanged();
+  emit mediaPathsChanged( mediaPathsModelV->mediaPaths() );
+
+  ui->mediaPaths->setCurrentIndex( QModelIndex{} );
 }
 
 void MediaPathsWidget::mediumDirectorySelected( const QString &file )
@@ -91,7 +103,7 @@ void MediaPathsWidget::mediumDirectorySelected( const QString &file )
   }
 
   ui->mediaPaths->resizeColumnsToContents();
-  emit mediaPathsChanged();
+  emit mediaPathsChanged( mediaPathsModelV->mediaPaths() );
 }
 
 }

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -62,6 +63,14 @@ class ARINC665_QT_EXPORT ImportMediaSetWizard final : public QWizard
     void pageChanged( int id );
 
     /**
+     * @brief Slot called, whe user updates the Media Paths.
+     *
+     * @param[in] mediaPaths
+     *   Media Paths
+     **/
+    void updateMediaPaths( const Arinc665::Utils::MediaPaths &mediaPaths );
+
+    /**
      * @brief Slot called, when user changed the check file integrity handling
      *
      * @param[in] checkFileIntegrity
@@ -81,8 +90,8 @@ class ARINC665_QT_EXPORT ImportMediaSetWizard final : public QWizard
     Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV{};
     //! ARINC 665 Media Set Copier
     Arinc665::Utils::FilesystemMediaSetCopierPtr copierV{};
-    //! Media Paths Model
-    std::unique_ptr< MediaPathsModel > mediaPathsModelV{};
+    //! Media Paths
+    Arinc665::Utils::MediaPaths mediaPathsV{};
     //! Check File Integrity
     bool checkFileIntegrityV{ false };
 };
