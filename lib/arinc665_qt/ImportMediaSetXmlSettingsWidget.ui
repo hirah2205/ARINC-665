@@ -48,7 +48,13 @@
        <widget class="QPushButton" name="selectXmlFile">
         <property name="icon">
          <iconset resource="../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
-          <normaloff>:/fa/regular/file-lines.svg</normaloff>:/fa/regular/file-lines.svg</iconset>
+          <normaloff>:/fa/solid/file-code.svg</normaloff>:/fa/solid/file-code.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -88,7 +94,13 @@
        <widget class="QPushButton" name="selectInputDirectory">
         <property name="icon">
          <iconset resource="../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
-          <normaloff>:/fa/regular/folder-open.svg</normaloff>:/fa/regular/folder-open.svg</iconset>
+          <normaloff>:/fa/solid/folder-open.svg</normaloff>:/fa/solid/folder-open.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>

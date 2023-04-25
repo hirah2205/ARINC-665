@@ -23,6 +23,9 @@
   <property name="wizardStyle">
    <enum>QWizard::ModernStyle</enum>
   </property>
+  <property name="options">
+   <set>QWizard::NoBackButtonOnStartPage</set>
+  </property>
   <widget class="Arinc665Qt::CompileMediaSetSettingsPage" name="settings"/>
   <widget class="QWizardPage" name="finish">
    <property name="title">
