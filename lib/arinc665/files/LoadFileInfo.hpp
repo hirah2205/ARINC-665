@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -36,15 +37,15 @@ namespace Arinc665::Files {
 struct ARINC665_EXPORT LoadFileInfo
 {
   //! Filename
-  std::string filename;
+  std::string filename{};
   //! File Part Number
-  std::string partNumber;
+  std::string partNumber{};
   //! File Length (Always in bytes)
-  uint64_t length;
+  uint64_t length{};
   //! File CRC
-  uint16_t crc;
+  uint16_t crc{};
   //! Check Value (since ARINC 665-3)
-  Arinc645::CheckValue checkValue;
+  Arinc645::CheckValue checkValue{};
 };
 
 }

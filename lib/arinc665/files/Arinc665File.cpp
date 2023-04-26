@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -39,7 +40,7 @@ std::string Arinc665File::encodePath( const std::filesystem::path &path )
   return convertedPath;
 }
 
-uint32_t Arinc665File::fileLength( const ConstRawFileSpan &file )
+uint32_t Arinc665File::fileLength( ConstRawFileSpan file )
 {
   // check file size
   if ( file.size() < BaseHeaderSize )
@@ -55,7 +56,7 @@ uint32_t Arinc665File::fileLength( const ConstRawFileSpan &file )
   return fileLength;
 }
 
-uint16_t Arinc665File::formatVersion( const ConstRawFileSpan &file )
+uint16_t Arinc665File::formatVersion( ConstRawFileSpan file )
 {
   // check file size
   if ( file.size() < BaseHeaderSize )
@@ -71,7 +72,7 @@ uint16_t Arinc665File::formatVersion( const ConstRawFileSpan &file )
   return formatVersion;
 }
 
-uint16_t Arinc665File::calculateChecksum( const ConstRawFileSpan &file )
+uint16_t Arinc665File::calculateChecksum( ConstRawFileSpan file )
 {
   Arinc645::Arinc645Crc16 arincCrc16{};
 
@@ -83,7 +84,7 @@ uint16_t Arinc665File::calculateChecksum( const ConstRawFileSpan &file )
 }
 
 std::optional< FileClassType > Arinc665File::fileType(
-  const ConstRawFileSpan &rawFile )
+  ConstRawFileSpan rawFile )
 {
   switch ( formatVersion( rawFile ) )
   {
@@ -105,7 +106,7 @@ std::optional< FileClassType > Arinc665File::fileType(
 }
 
 std::optional< LoadFileFormatVersion > Arinc665File::loadFileFormatVersion(
-  const ConstRawFileSpan &rawFile )
+  ConstRawFileSpan rawFile )
 {
   const LoadFileFormatVersion formatVersion{
     Arinc665File::formatVersion( rawFile ) };
@@ -124,7 +125,7 @@ std::optional< LoadFileFormatVersion > Arinc665File::loadFileFormatVersion(
 }
 
 std::optional< BatchFileFormatVersion > Arinc665File::batchFileFormatVersion(
-  const ConstRawFileSpan &rawFile )
+  ConstRawFileSpan rawFile )
 {
   const BatchFileFormatVersion formatVersion{
     Arinc665File::formatVersion( rawFile ) };
@@ -143,7 +144,7 @@ std::optional< BatchFileFormatVersion > Arinc665File::batchFileFormatVersion(
 }
 
 std::optional< MediaFileFormatVersion > Arinc665File::mediaFileFormatVersion(
-  const ConstRawFileSpan &rawFile )
+  ConstRawFileSpan rawFile )
 {
   const MediaFileFormatVersion formatVersion{
     Arinc665File::formatVersion( rawFile ) };
@@ -310,7 +311,7 @@ std::optional< FileType > Arinc665File::fileType(
   return {};
 }
 
-Arinc665File& Arinc665File::operator=( const ConstRawFileSpan &rawFile )
+Arinc665File& Arinc665File::operator=( ConstRawFileSpan rawFile )
 {
   decodeHeader( rawFile, fileType() );
   return *this;
@@ -341,7 +342,7 @@ Arinc665File::Arinc665File(
 }
 
 Arinc665File::Arinc665File(
-  const ConstRawFileSpan &rawFile,
+  ConstRawFileSpan rawFile,
   const FileType expectedFileType,
   ptrdiff_t checksumPosition ) :
   checksumPosition{ checksumPosition },
@@ -379,7 +380,7 @@ Arinc665File& Arinc665File::operator=( Arinc665File &&other ) noexcept
 }
 
 void Arinc665File::insertHeader(
-  const RawFileSpan &rawFile,
+  RawFileSpan rawFile,
   const std::size_t additionalSize ) const
 {
   const auto fileSize{ rawFile.size() + additionalSize };
@@ -409,7 +410,7 @@ void Arinc665File::insertHeader(
       formatVersionField( fileType(), arinc665VersionV ) );
 }
 
-void Arinc665File::calculateFileCrc( const RawFileSpan &rawFile ) const
+void Arinc665File::calculateFileCrc( RawFileSpan rawFile ) const
 {
   // calculate crc
   const auto calculatedCrc{
@@ -422,7 +423,7 @@ void Arinc665File::calculateFileCrc( const RawFileSpan &rawFile ) const
 }
 
 void Arinc665File::decodeHeader(
-  const ConstRawFileSpan &rawFile,
+  ConstRawFileSpan rawFile,
   const FileType expectedFileType )
 {
   // Check file size

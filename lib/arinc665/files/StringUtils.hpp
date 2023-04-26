@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -58,7 +59,8 @@ ConstRawFileSpan::iterator ARINC665_EXPORT StringUtils_decodeString(
  *
  * @return Encoded raw string.
  **/
-RawFile ARINC665_EXPORT StringUtils_encodeString( std::string_view str );
+[[nodiscard]] RawFile ARINC665_EXPORT StringUtils_encodeString(
+  std::string_view str );
 
 /** @} **/
 
@@ -96,7 +98,7 @@ ConstRawFileSpan::iterator ARINC665_EXPORT StringUtils_decodeStrings(
  *
  * @return Encoded raw string list.
  **/
-RawFile ARINC665_EXPORT StringUtils_encodeStrings(
+[[nodiscard]] RawFile ARINC665_EXPORT StringUtils_encodeStrings(
   const std::list< std::string > &strings );
 
 /** @} **/

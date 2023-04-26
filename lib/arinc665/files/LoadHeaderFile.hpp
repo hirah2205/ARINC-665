@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -106,7 +107,7 @@ namespace Arinc665::Files {
  * The Header File CRC is a 16-bit CRC covering fields in the Header file,
  * excluding the Header File CRC and the Load CRC field.
  **/
-class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
+class ARINC665_EXPORT LoadHeaderFile final : public Arinc665File
 {
   public:
     //! Positions
@@ -310,13 +311,13 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit LoadHeaderFile( const ConstRawFileSpan &rawFile );
+    explicit LoadHeaderFile( ConstRawFileSpan rawFile );
 
     //! @copydoc Arinc665File::operator=
-    LoadHeaderFile& operator=( const ConstRawFileSpan &rawFile ) final;
+    LoadHeaderFile& operator=( ConstRawFileSpan rawFile ) override;
 
     //! @copydoc Arinc665File::fileType() const noexcept
-    [[nodiscard]] FileType fileType() const noexcept final;
+    [[nodiscard]] FileType fileType() const noexcept override;
 
     /**
      * @name Load Part Flags
@@ -628,7 +629,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
 
   private:
     //! @copydoc Arinc665File::encode
-    [[nodiscard]] RawFile encode() const final;
+    [[nodiscard]] RawFile encode() const override;
 
     /**
      * @brief Decodes the body of the load header file.
@@ -636,7 +637,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] rawFile
      *   Raw Load Header File representation.
      **/
-    void decodeBody( const ConstRawFileSpan &rawFile );
+    void decodeBody( ConstRawFileSpan rawFile );
 
     /**
      * @brief Encodes the Data Files Information List.
@@ -666,7 +667,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] decodeV3Data
      *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      **/
-    void decodeDataFiles( const ConstRawFileSpan &rawFile, bool decodeV3Data );
+    void decodeDataFiles( ConstRawFileSpan rawFile, bool decodeV3Data );
 
     /**
      * @brief Decodes the Support Files List from the raw data.
@@ -676,9 +677,7 @@ class ARINC665_EXPORT LoadHeaderFile : public Arinc665File
      * @param[in] decodeV3Data
      *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      **/
-    void decodeSupportFiles(
-      const ConstRawFileSpan &rawFile,
-      bool decodeV3Data );
+    void decodeSupportFiles( ConstRawFileSpan rawFile, bool decodeV3Data );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.

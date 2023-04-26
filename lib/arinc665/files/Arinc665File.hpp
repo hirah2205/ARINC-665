@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -74,7 +75,7 @@ class ARINC665_EXPORT Arinc665File
      * @throw InvalidArinc665File
      *   If the file size is too small to represent a valid ARINC 665 file.
      **/
-    static uint32_t fileLength( const ConstRawFileSpan &file );
+    static uint32_t fileLength( ConstRawFileSpan file );
 
     /**
      * @brief Decode the format version information from the given file.
@@ -87,7 +88,7 @@ class ARINC665_EXPORT Arinc665File
      * @throw InvalidArinc665File
      *   If the file size is too small to represent a valid ARINC 665 file.
      **/
-    static uint16_t formatVersion( const ConstRawFileSpan &file );
+    static uint16_t formatVersion( ConstRawFileSpan file );
 
     /**
      * @brief Calculates the checksum over the given file.
@@ -97,7 +98,7 @@ class ARINC665_EXPORT Arinc665File
      *
      * @return Calculated checksum.
      **/
-    static uint16_t calculateChecksum( const ConstRawFileSpan &file );
+    static uint16_t calculateChecksum( ConstRawFileSpan file );
 
     /**
      * @brief Returns the ARINC 665 file class type.
@@ -109,8 +110,7 @@ class ARINC665_EXPORT Arinc665File
      * @retval{}
      *   When @p rawFile does not map to an ARINC 665 File Type
      **/
-    static std::optional< FileClassType > fileType(
-      const ConstRawFileSpan &rawFile );
+    static std::optional< FileClassType > fileType( ConstRawFileSpan rawFile );
 
     /**
      * @brief Returns the load header file version for @p rawFile.
@@ -123,7 +123,7 @@ class ARINC665_EXPORT Arinc665File
      *   When @p rawFile is not a load header file
      **/
     static std::optional< LoadFileFormatVersion > loadFileFormatVersion(
-      const ConstRawFileSpan &rawFile );
+      ConstRawFileSpan rawFile );
 
     /**
      * @brief Returns the batch file version for @p rawFile.
@@ -136,7 +136,7 @@ class ARINC665_EXPORT Arinc665File
      *   When @p rawFile is not a batch file
      **/
     static std::optional< BatchFileFormatVersion > batchFileFormatVersion(
-      const ConstRawFileSpan &rawFile );
+      ConstRawFileSpan rawFile );
 
     /**
      * @brief Returns the media file version for @p rawFile
@@ -149,7 +149,7 @@ class ARINC665_EXPORT Arinc665File
      *   When @p rawFile is not a media file
      **/
     static std::optional< MediaFileFormatVersion > mediaFileFormatVersion(
-      const ConstRawFileSpan &rawFile );
+      ConstRawFileSpan rawFile );
 
     /**
      * @brief Returns the Supported ARINC 665 Version for the given @p fileType.
@@ -208,7 +208,7 @@ class ARINC665_EXPORT Arinc665File
      *
      * @return *this
      **/
-    virtual Arinc665File& operator=( const ConstRawFileSpan &rawFile );
+    virtual Arinc665File& operator=( ConstRawFileSpan rawFile );
 
     /**
      * @brief Returns the ARINC 665 file as raw data.
@@ -271,7 +271,7 @@ class ARINC665_EXPORT Arinc665File
      *   Checksum position.
      **/
     explicit Arinc665File(
-      const ConstRawFileSpan &rawFile,
+      ConstRawFileSpan rawFile,
       FileType expectedFileType,
       ptrdiff_t checksumPosition = DefaultChecksumPosition );
 
@@ -321,7 +321,7 @@ class ARINC665_EXPORT Arinc665File
      *   When file size is invalid
      **/
     void insertHeader(
-      const RawFileSpan &rawFile,
+      RawFileSpan rawFile,
       std::size_t additionalSize = sizeof( uint16_t ) ) const;
 
     /**
@@ -330,7 +330,7 @@ class ARINC665_EXPORT Arinc665File
      * @param[in,out] rawFile
      *   Raw file.
      **/
-    void calculateFileCrc( const RawFileSpan &rawFile ) const;
+    void calculateFileCrc( RawFileSpan rawFile ) const;
 
   private:
     /**
@@ -350,9 +350,7 @@ class ARINC665_EXPORT Arinc665File
      * @throw InvalidArinc665File
      *   When CRC is invalid
      **/
-    void decodeHeader(
-      const ConstRawFileSpan &rawFile,
-      FileType expectedFileType );
+    void decodeHeader( ConstRawFileSpan rawFile, FileType expectedFileType );
 
     //! Checksum Position
     const ptrdiff_t checksumPosition;

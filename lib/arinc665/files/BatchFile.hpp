@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -48,7 +49,7 @@ namespace Arinc665::Files {
  * Expansion Point 3                                  |  0
  * Batch File CRC                                     | 16
  **/
-class ARINC665_EXPORT BatchFile : public Arinc665File
+class ARINC665_EXPORT BatchFile final : public Arinc665File
 {
   public:
     ///! Offset of the Spare field (since ARINC 665-2).
@@ -88,13 +89,13 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit BatchFile( const ConstRawFileSpan &rawFile );
+    explicit BatchFile( ConstRawFileSpan rawFile );
 
     //! @copydoc Arinc665File::operator=
-    BatchFile& operator=( const ConstRawFileSpan &rawFile ) final;
+    BatchFile& operator=( ConstRawFileSpan rawFile ) override;
 
     //! @copydoc Arinc665File::fileType() const noexcept
-    [[nodiscard]] FileType fileType() const noexcept final;
+    [[nodiscard]] FileType fileType() const noexcept override;
 
     /**
      * @name Batch Part Number
@@ -174,7 +175,7 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
 
   private:
     //! @copydoc Arinc665File::encode
-    [[nodiscard]] RawFile encode() const final;
+    [[nodiscard]] RawFile encode() const override;
 
     /**
      * @brief Decodes the body of the batch file.
@@ -182,7 +183,7 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
      * @param[in] rawFile
      *   Raw batch file representation.
      **/
-    void decodeBody( const ConstRawFileSpan &rawFile );
+    void decodeBody( ConstRawFileSpan rawFile );
 
     /**
      * @brief Encodes the target hardware information list.
@@ -199,16 +200,14 @@ class ARINC665_EXPORT BatchFile : public Arinc665File
      * @param[in] offset
      *   Offset of the target hardware information list.
      **/
-    void decodeBatchTargetsInfo(
-      const ConstRawFileSpan &rawFile,
-      ptrdiff_t offset );
+    void decodeBatchTargetsInfo( ConstRawFileSpan rawFile, ptrdiff_t offset );
 
     //! Part Number
-    std::string partNumberV;
+    std::string partNumberV{};
     //! Comment
-    std::string commentV;
+    std::string commentV{};
     //! Targets Hardware Information
-    BatchTargetsInfo targetsHardwareV;
+    BatchTargetsInfo targetsHardwareV{};
 };
 
 }

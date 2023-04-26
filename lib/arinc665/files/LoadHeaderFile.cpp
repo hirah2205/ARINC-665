@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -145,13 +146,13 @@ LoadHeaderFile::LoadHeaderFile(
 {
 }
 
-LoadHeaderFile::LoadHeaderFile( const ConstRawFileSpan &rawFile ):
+LoadHeaderFile::LoadHeaderFile( ConstRawFileSpan rawFile ) :
   Arinc665File{ rawFile, FileType::LoadUploadHeader, FileCrcOffset }
 {
   decodeBody( rawFile );
 }
 
-LoadHeaderFile& LoadHeaderFile::operator=( const ConstRawFileSpan &rawFile )
+LoadHeaderFile& LoadHeaderFile::operator=( ConstRawFileSpan rawFile )
 {
   // call inherited operator
   Arinc665File::operator =( rawFile );
@@ -539,7 +540,7 @@ RawFile LoadHeaderFile::encode() const
   return rawFile;
 }
 
-void LoadHeaderFile::decodeBody( const ConstRawFileSpan &rawFile )
+void LoadHeaderFile::decodeBody( ConstRawFileSpan rawFile )
 {
   BOOST_LOG_FUNCTION()
 
@@ -899,7 +900,7 @@ RawFile LoadHeaderFile::encodeSupportFiles( const bool encodeV3Data ) const
 }
 
 void LoadHeaderFile::decodeDataFiles(
-  const ConstRawFileSpan &rawFile,
+  ConstRawFileSpan rawFile,
   const bool decodeV3Data )
 {
   BOOST_LOG_FUNCTION()
@@ -999,7 +1000,7 @@ void LoadHeaderFile::decodeDataFiles(
 }
 
 void LoadHeaderFile::decodeSupportFiles(
-  const ConstRawFileSpan &rawFile,
+  ConstRawFileSpan rawFile,
   bool decodeV3Data )
 {
   BOOST_LOG_FUNCTION()

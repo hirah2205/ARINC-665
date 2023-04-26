@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -115,9 +116,9 @@ class ARINC665_EXPORT ListFile : public Arinc665File
       SupportedArinc665Version version = SupportedArinc665Version::Supplement345,
       ptrdiff_t checksumPosition = DefaultChecksumPosition ) noexcept;
 
-    //! @copydoc Arinc665File::Arinc665File(const ConstRawFileSpan&,FileType,ptrdiff_t)
+    //! @copydoc Arinc665File::Arinc665File(ConstRawFileSpan,FileType,ptrdiff_t)
     ListFile(
-      const ConstRawFileSpan &rawFile,
+      ConstRawFileSpan rawFile,
       FileType expectedFileType,
       ptrdiff_t checksumPosition = DefaultChecksumPosition );
 
@@ -164,12 +165,12 @@ class ARINC665_EXPORT ListFile : public Arinc665File
      *   When Offset is Invalid
      **/
     void decodeMediaInformation(
-      const ConstRawFileSpan &rawFile,
+      ConstRawFileSpan rawFile,
       uint32_t mediaInformationPtr );
 
   private:
     //! Media Set Part Number.
-    std::string mediaSetPnV;
+    std::string mediaSetPnV{};
     //! Media Sequence Number.
     MediumNumber mediaSequenceNumberV{ 0U };
     //! Number of Media Set Members.

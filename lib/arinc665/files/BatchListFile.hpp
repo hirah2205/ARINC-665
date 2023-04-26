@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -51,35 +52,35 @@ namespace Arinc665::Files {
  * User Defined Data               | 16
  * BATCHES.LUM File CRC            | 16
  **/
-class ARINC665_EXPORT BatchListFile : public ListFile
+class ARINC665_EXPORT BatchListFile final : public ListFile
 {
   public:
     //! Offset of the Spare field (since ARINC 665-2).
-    static constexpr std::size_t SpareFieldOffsetV2{ 6U };
+    static constexpr std::size_t SpareFieldOffsetV2{ 6 };
 
     //! Offset of the Media Set Part Number Pointer Field (since ARINC 665-1)
-    static constexpr std::size_t MediaSetPartNumberPointerFieldOffsetV1{ 6U };
+    static constexpr std::size_t MediaSetPartNumberPointerFieldOffsetV1{ 6 };
 
     //! Offset of the Media Set Part Number Pointer Field (since ARINC 665-2)
-    static constexpr std::size_t MediaSetPartNumberPointerFieldOffsetV2{ 8U };
+    static constexpr std::size_t MediaSetPartNumberPointerFieldOffsetV2{ 8 };
 
     //! Offset of the Batches Pointer Field (since ARINC 665-1)
-    static constexpr std::size_t BatchFilesPointerFieldOffsetV1{ 10U };
+    static constexpr std::size_t BatchFilesPointerFieldOffsetV1{ 10 };
 
     //! Offset of the Batches Pointer Field (since ARINC 665-2)
-    static constexpr std::size_t BatchFilesPointerFieldOffsetV2{ 12U };
+    static constexpr std::size_t BatchFilesPointerFieldOffsetV2{ 12 };
 
     //! Offset of the User Defined Data Pointer Field (since ARINC 665-1)
-    static constexpr std::size_t UserDefinedDataPointerFieldOffsetV1{ 14U };
+    static constexpr std::size_t UserDefinedDataPointerFieldOffsetV1{ 14 };
 
     //! Offset of the User Defined Data Pointer Field (since ARINC 665-2)
-    static constexpr std::size_t UserDefinedDataPointerFieldOffsetV2{ 16U };
+    static constexpr std::size_t UserDefinedDataPointerFieldOffsetV2{ 16 };
 
     //! First Start of pointer data for ARINC 665 Batch List Files (since ARINC 665-1).
-    static constexpr std::size_t FileHeaderSizeV1{ 18U };
+    static constexpr std::size_t FileHeaderSizeV1{ 18 };
 
     //! First Start of pointer data for ARINC 665 Batch List Files (since ARINC 665-2).
-    static constexpr std::size_t FileHeaderSizeV2{ 20U };
+    static constexpr std::size_t FileHeaderSizeV2{ 20 };
 
     /**
      * @brief Creates an empty batch list file.
@@ -97,13 +98,13 @@ class ARINC665_EXPORT BatchListFile : public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit BatchListFile( const ConstRawFileSpan &rawFile );
+    explicit BatchListFile( ConstRawFileSpan rawFile );
 
-    //! @copydoc ListFile::operator=(const ConstRawFileSpan&)
-    BatchListFile& operator=( const ConstRawFileSpan &rawFile ) final;
+    //! @copydoc ListFile::operator=(ConstRawFileSpan)
+    BatchListFile& operator=( ConstRawFileSpan rawFile ) override;
 
     //! @copydoc ListFile::fileType() const noexcept
-    [[nodiscard]] FileType fileType() const noexcept final;
+    [[nodiscard]] FileType fileType() const noexcept override;
 
     /**
      * @name Batches
@@ -179,7 +180,7 @@ class ARINC665_EXPORT BatchListFile : public ListFile
 
   private:
     //! @copydoc ListFile::encode
-    [[nodiscard]] RawFile encode() const final;
+    [[nodiscard]] RawFile encode() const override;
 
     /**
      * @brief Decodes the body of the batch list file.
@@ -187,7 +188,7 @@ class ARINC665_EXPORT BatchListFile : public ListFile
      * @param[in] rawFile
      *   Raw batch list file representation.
      **/
-    void decodeBody( const ConstRawFileSpan &rawFile);
+    void decodeBody( ConstRawFileSpan rawFile );
 
     /**
      * @brief Encodes the batches information list.
@@ -204,9 +205,7 @@ class ARINC665_EXPORT BatchListFile : public ListFile
      * @param[in] offset
      *   Offset of the batches information list.
      **/
-    void decodeBatchesInfo(
-      const ConstRawFileSpan &rawFile,
-      std::size_t offset );
+    void decodeBatchesInfo( ConstRawFileSpan rawFile, std::size_t offset );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.
@@ -214,9 +213,9 @@ class ARINC665_EXPORT BatchListFile : public ListFile
     void checkUserDefinedData();
 
     //! Batches Information
-    BatchesInfo batchesV;
+    BatchesInfo batchesV{};
     //! User Defined Data
-    UserDefinedData userDefinedDataV;
+    UserDefinedData userDefinedDataV{};
 };
 
 }

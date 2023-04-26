@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -64,7 +65,7 @@ namespace Arinc665::Files {
  * FILES.LUM File Check Value                   | 16
  * FILES.LUM File CRC                           | 16
  **/
-class ARINC665_EXPORT FileListFile : public ListFile
+class ARINC665_EXPORT FileListFile final : public ListFile
 {
   public:
     //! Offset of the Spare field (Since ARINC 665-2).
@@ -116,13 +117,13 @@ class ARINC665_EXPORT FileListFile : public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit FileListFile( const ConstRawFileSpan &rawFile );
+    explicit FileListFile( ConstRawFileSpan rawFile );
 
-    //! @copydoc ListFile::operator=(const ConstRawFileSpan&)
-    FileListFile& operator=( const ConstRawFileSpan &rawFile ) final;
+    //! @copydoc ListFile::operator=(ConstRawFileSpan)
+    FileListFile& operator=( ConstRawFileSpan rawFile ) override;
 
     //! @copydoc ListFile::fileType() const noexcept
-    [[nodiscard]] FileType fileType() const noexcept final;
+    [[nodiscard]] FileType fileType() const noexcept override;
 
     /**
      * @name Files
@@ -227,7 +228,7 @@ class ARINC665_EXPORT FileListFile : public ListFile
 
   private:
     //! @copydoc ListFile::encode
-    [[nodiscard]] RawFile encode() const final;
+    [[nodiscard]] RawFile encode() const override;
 
     /**
      * @brief Decodes the body of the file list file.
@@ -235,7 +236,7 @@ class ARINC665_EXPORT FileListFile : public ListFile
      * @param[in] rawFile
      *   Raw file list file representation.
      **/
-    void decodeBody( const ConstRawFileSpan &rawFile );
+    void decodeBody( ConstRawFileSpan rawFile );
 
     /**
      * @brief Encodes the files information list.
@@ -258,7 +259,7 @@ class ARINC665_EXPORT FileListFile : public ListFile
      *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      **/
     void decodeFilesInfo(
-      const ConstRawFileSpan &rawFile,
+      ConstRawFileSpan rawFile,
       ptrdiff_t offset,
       bool decodeV3Data );
 
@@ -268,9 +269,9 @@ class ARINC665_EXPORT FileListFile : public ListFile
     void checkUserDefinedData();
 
     //! Files Information (list)
-    FilesInfo filesV;
+    FilesInfo filesV{};
     //! Use Defined Data.
-    UserDefinedData userDefinedDataV;
+    UserDefinedData userDefinedDataV{};
     //! Check Value Type (since ARINC 665-3)
     Arinc645::CheckValueType checkValueTypeV{
       Arinc645::CheckValueType::NotUsed };

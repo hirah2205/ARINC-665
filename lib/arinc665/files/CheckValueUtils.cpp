@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -65,7 +66,7 @@ RawFile CheckValueUtils_encode(
   return rawCheckValue;
 }
 
-Arinc645::CheckValue CheckValueUtils_decode( const ConstRawFileSpan &rawFile )
+Arinc645::CheckValue CheckValueUtils_decode( ConstRawFileSpan rawFile )
 {
   if ( rawFile.size() < sizeof( uint16_t ) )
   {

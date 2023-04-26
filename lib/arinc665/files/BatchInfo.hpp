@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -34,11 +35,11 @@ namespace Arinc665::Files {
 struct ARINC665_EXPORT BatchInfo
 {
   //! Part Number
-  std::string partNumber;
+  std::string partNumber{};
   //! File Name
-  std::string filename;
+  std::string filename{};
   //! Member Sequence Number
-  MediumNumber memberSequenceNumber;
+  MediumNumber memberSequenceNumber{};
 
   /**
    * @brief Compares batch info against each other

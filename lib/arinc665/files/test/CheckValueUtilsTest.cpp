@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -58,11 +59,11 @@ BOOST_AUTO_TEST_CASE( CheckValueUtils_decode1 )
     Arinc645::CheckValue{ Arinc645::CheckValueType::Crc16, RawFile{ 0x12, 0x34 } } ) );
 
   BOOST_CHECK_THROW(
-    CheckValueUtils_decode( RawFile{} ),
+    (void)CheckValueUtils_decode( RawFile{} ),
     Arinc665Exception );
 
   BOOST_CHECK_THROW(
-    CheckValueUtils_decode( RawFile{ 0x00, 0x05, 0x00, 0x01, 0x12 } ),
+    (void)CheckValueUtils_decode( RawFile{ 0x00, 0x05, 0x00, 0x01, 0x12 } ),
     Arinc665Exception );
 
 }

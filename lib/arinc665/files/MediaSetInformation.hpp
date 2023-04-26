@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -23,11 +24,11 @@ namespace Arinc665::Files {
 struct MediaSetInformation
 {
   //! Media Set Part Number
-  std::string partNumber;
+  std::string partNumber{};
   //! Media Sequence Number
-  MediumNumber mediaSequenceNumber;
+  MediumNumber mediaSequenceNumber{};
   //! Number of Media Set Members
-  MediumNumber numberOfMediaSetMembers;
+  MediumNumber numberOfMediaSetMembers{};
 };
 
 }

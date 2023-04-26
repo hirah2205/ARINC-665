@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -20,7 +21,7 @@ std::filesystem::path FileInfo::path() const
 {
   std::string newPathName{ pathName };
 
-  std::replace( newPathName.begin(), newPathName.end(), '\\', '/' );
+  std::ranges::replace( newPathName, '\\', '/' );
 
   return ( std::filesystem::path{ newPathName } / filename).make_preferred();
 }

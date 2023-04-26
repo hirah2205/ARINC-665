@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -71,7 +72,7 @@ ListFile::ListFile(
 }
 
 ListFile::ListFile(
-  const ConstRawFileSpan &rawFile,
+  ConstRawFileSpan rawFile,
   FileType expectedFileType,
   ptrdiff_t checksumPosition ):
   Arinc665File{ rawFile, expectedFileType, checksumPosition }
@@ -103,7 +104,7 @@ RawFile ListFile::encodeMediaInformation() const
 }
 
 void ListFile::decodeMediaInformation(
-  const ConstRawFileSpan &rawFile,
+  ConstRawFileSpan rawFile,
   const uint32_t mediaInformationPtr )
 {
   if ( static_cast< size_t >( mediaInformationPtr ) * 2U >= rawFile.size() )

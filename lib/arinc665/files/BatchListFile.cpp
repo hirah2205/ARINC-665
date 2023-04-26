@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -30,13 +31,13 @@ BatchListFile::BatchListFile( const SupportedArinc665Version version) noexcept:
 {
 }
 
-BatchListFile::BatchListFile( const ConstRawFileSpan &rawFile ):
+BatchListFile::BatchListFile( ConstRawFileSpan rawFile ):
   ListFile{ rawFile, FileType::BatchList }
 {
   decodeBody( rawFile );
 }
 
-BatchListFile& BatchListFile::operator=( const ConstRawFileSpan &rawFile)
+BatchListFile& BatchListFile::operator=( ConstRawFileSpan rawFile)
 {
   Arinc665File::operator =( rawFile );
   decodeBody( rawFile );
@@ -170,7 +171,7 @@ RawFile BatchListFile::encode() const
   return rawFile;
 }
 
-void BatchListFile::decodeBody( const ConstRawFileSpan &rawFile )
+void BatchListFile::decodeBody( ConstRawFileSpan rawFile )
 {
   BOOST_LOG_FUNCTION()
 
@@ -296,7 +297,7 @@ RawFile BatchListFile::encodeBatchesInfo() const
 }
 
 void BatchListFile::decodeBatchesInfo(
-  const ConstRawFileSpan &rawFile,
+  ConstRawFileSpan rawFile,
   const std::size_t offset )
 {
   BOOST_LOG_FUNCTION()

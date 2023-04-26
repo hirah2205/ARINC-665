@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -37,15 +38,15 @@ namespace Arinc665::Files {
 struct ARINC665_EXPORT FileInfo
 {
   //! Filename
-  std::string filename;
+  std::string filename{};
   //! Path Name
-  std::string pathName;
+  std::string pathName{};
   //! Member Sequence Number
-  MediumNumber memberSequenceNumber;
+  MediumNumber memberSequenceNumber{};
   //! CRC
-  uint16_t crc;
+  uint16_t crc{};
   //! Check Value (since ARINC 665-3)
-  Arinc645::CheckValue checkValue;
+  Arinc645::CheckValue checkValue{};
 
   /**
    * @brief Returns the path (path name / filename)

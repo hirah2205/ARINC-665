@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -152,7 +153,7 @@ using MediaSetManagerPtr = std::shared_ptr< MediaSetManager >;
  * @retval {}
  *   If @p directory is not a valid directory or ARINC 665 Medium
  **/
-ARINC665_EXPORT std::optional< Files::MediaSetInformation >
+[[nodiscard]] std::optional< Files::MediaSetInformation > ARINC665_EXPORT
 getMediumInformation( const std::filesystem::path &directory );
 
 }

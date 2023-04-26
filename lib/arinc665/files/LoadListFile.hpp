@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -54,35 +55,35 @@ namespace Arinc665::Files {
  * User Defined Data               | 16
  * LOADS.LUM File CRC              | 16
  **/
-class ARINC665_EXPORT LoadListFile : public ListFile
+class ARINC665_EXPORT LoadListFile final : public ListFile
 {
   public:
     //! Offset of the Spare field (since ARINC 665-2).
-    static constexpr ptrdiff_t SpareFieldOffsetV2{ 6U };
+    static constexpr ptrdiff_t SpareFieldOffsetV2{ 6 };
 
     //! Offset of the Media Set Part Number Pointer Field (since ARINC 665-1)
-    static constexpr ptrdiff_t MediaSetPartNumberPointerFieldOffsetV1{ 6U };
+    static constexpr ptrdiff_t MediaSetPartNumberPointerFieldOffsetV1{ 6 };
 
     //! Offset of the Media Set Part Number Pointer Field (since ARINC 665-2)
-    static constexpr ptrdiff_t MediaSetPartNumberPointerFieldOffsetV2{ 8U };
+    static constexpr ptrdiff_t MediaSetPartNumberPointerFieldOffsetV2{ 8 };
 
     //! Offset of the Loads Pointer Field (since ARINC 665-1)
-    static constexpr ptrdiff_t LoadFilesPointerFieldOffsetV1{ 10U };
+    static constexpr ptrdiff_t LoadFilesPointerFieldOffsetV1{ 10 };
 
     //! Offset of the Loads Pointer Field (since ARINC 665-2)
-    static constexpr ptrdiff_t LoadFilesPointerFieldOffsetV2{ 12U };
+    static constexpr ptrdiff_t LoadFilesPointerFieldOffsetV2{ 12 };
 
     //! Offset of the User Defined Data Pointer Field (since ARINC 665-1)
-    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffsetV1{ 14U };
+    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffsetV1{ 14 };
 
     //! Offset of the User Defined Data Pointer Field (since ARINC 665-2)
-    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffsetV2{ 16U };
+    static constexpr ptrdiff_t UserDefinedDataPointerFieldOffsetV2{ 16 };
 
     //! First Start of Pointer Data for ARINC 665 Load List Files (since ARINC 665-1).
-    static constexpr ptrdiff_t FileHeaderSizeV1{ 18U };
+    static constexpr ptrdiff_t FileHeaderSizeV1{ 18 };
 
     //! First Start of Pointer Data for ARINC 665 Load List Files (since ARINC 665-2).
-    static constexpr ptrdiff_t FileHeaderSizeV2{ 20U };
+    static constexpr ptrdiff_t FileHeaderSizeV2{ 20 };
 
     /**
      * @brief Creates an empty load list file.
@@ -100,13 +101,13 @@ class ARINC665_EXPORT LoadListFile : public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit LoadListFile( const ConstRawFileSpan &rawFile );
+    explicit LoadListFile( ConstRawFileSpan rawFile );
 
-    //! @copydoc ListFile::operator=(const ConstRawFileSpan&)
-    LoadListFile& operator=( const ConstRawFileSpan &rawFile ) final;
+    //! @copydoc ListFile::operator=(ConstRawFileSpan)
+    LoadListFile& operator=( ConstRawFileSpan rawFile ) override;
 
     //! @copydoc ListFile::fileType() const noexcept
-    [[nodiscard]] FileType fileType() const noexcept final;
+    [[nodiscard]] FileType fileType() const noexcept override;
 
     /**
      * @name Loads
@@ -195,7 +196,7 @@ class ARINC665_EXPORT LoadListFile : public ListFile
 
   private:
     //! @copydoc ListFile::encode
-    [[nodiscard]] RawFile encode() const final;
+    [[nodiscard]] RawFile encode() const override;
 
     /**
      * @brief Decodes the body of the batch file.
@@ -203,7 +204,7 @@ class ARINC665_EXPORT LoadListFile : public ListFile
      * @param[in] rawFile
      *   Raw load list file representation.
      **/
-    void decodeBody( const ConstRawFileSpan &rawFile );
+    void decodeBody( ConstRawFileSpan rawFile );
 
     /**
      * @brief Encodes the batches information list.
@@ -222,7 +223,7 @@ class ARINC665_EXPORT LoadListFile : public ListFile
      *
      * @throw InvalidArinc665File When member sequence number is out of range
      **/
-    void decodeLoadsInfo( const ConstRawFileSpan &rawFile, ptrdiff_t offset );
+    void decodeLoadsInfo( ConstRawFileSpan rawFile, ptrdiff_t offset );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.
@@ -230,9 +231,9 @@ class ARINC665_EXPORT LoadListFile : public ListFile
     void checkUserDefinedData();
 
     //! Load List
-    LoadsInfo loadsV;
+    LoadsInfo loadsV{};
     //! User Defined Data
-    UserDefinedData userDefinedDataV;
+    UserDefinedData userDefinedDataV{};
 };
 
 }

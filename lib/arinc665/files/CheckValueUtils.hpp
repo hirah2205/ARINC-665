@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -47,7 +48,8 @@ namespace Arinc665::Files {
  *
  * @return Size of raw representation of @p checkValue.
  **/
-size_t ARINC665_EXPORT CheckValueUtils_size( Arinc645::CheckValueType type );
+[[nodiscard]] size_t ARINC665_EXPORT CheckValueUtils_size(
+  Arinc645::CheckValueType type );
 
 /**
  * @brief Encodes the given Check Value.
@@ -62,7 +64,7 @@ size_t ARINC665_EXPORT CheckValueUtils_size( Arinc645::CheckValueType type );
  *
  * @return Check Value as raw data.
  **/
-RawFile ARINC665_EXPORT CheckValueUtils_encode(
+[[nodiscard]] RawFile ARINC665_EXPORT CheckValueUtils_encode(
   const Arinc645::CheckValue &checkValue );
 
 /**
@@ -79,8 +81,8 @@ RawFile ARINC665_EXPORT CheckValueUtils_encode(
  *   - Invalid Type
  *   - Check Value Type / Length mismatch
  **/
-Arinc645::CheckValue ARINC665_EXPORT CheckValueUtils_decode(
-  const ConstRawFileSpan &rawFile );
+[[nodiscard]] Arinc645::CheckValue ARINC665_EXPORT CheckValueUtils_decode(
+  ConstRawFileSpan rawFile );
 
 /** @} **/
 

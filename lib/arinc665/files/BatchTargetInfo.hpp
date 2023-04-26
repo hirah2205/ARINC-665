@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -34,9 +35,9 @@ namespace Arinc665::Files {
 struct ARINC665_EXPORT BatchTargetInfo
 {
   //! Target Hardware ID and Position
-  std::string targetHardwareIdPosition;
+  std::string targetHardwareIdPosition{};
   //! List of Loads for Target Hardware
-  BatchLoadsInfo loads;
+  BatchLoadsInfo loads{};
 };
 
 }

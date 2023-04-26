@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -55,11 +56,11 @@ namespace Arinc665::Files {
  **/
 
 //! Raw File
-using RawFile = std::vector< uint8_t>;
+using RawFile = std::vector< uint8_t >;
 //! Const Raw File Span
-using ConstRawFileSpan = std::span< const uint8_t>;
+using ConstRawFileSpan = std::span< const uint8_t >;
 //! Raw File Span
-using RawFileSpan = std::span< uint8_t>;
+using RawFileSpan = std::span< uint8_t >;
 
 /** @} **/
 

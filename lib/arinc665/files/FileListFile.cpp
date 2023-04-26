@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -32,13 +33,13 @@ FileListFile::FileListFile( const SupportedArinc665Version version ) noexcept:
 {
 }
 
-FileListFile::FileListFile( const ConstRawFileSpan &rawFile ):
+FileListFile::FileListFile( ConstRawFileSpan rawFile ) :
   ListFile{ rawFile, FileType::FileList }
 {
   decodeBody( rawFile );
 }
 
-FileListFile& FileListFile::operator=( const ConstRawFileSpan &rawFile )
+FileListFile& FileListFile::operator=( ConstRawFileSpan rawFile )
 {
   Arinc665File::operator =( rawFile );
   decodeBody( rawFile );
@@ -294,7 +295,7 @@ RawFile FileListFile::encode() const
   return rawFile;
 }
 
-void FileListFile::decodeBody( const ConstRawFileSpan &rawFile )
+void FileListFile::decodeBody( ConstRawFileSpan rawFile )
 {
   BOOST_LOG_FUNCTION()
 
@@ -494,7 +495,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
 }
 
 void FileListFile::decodeFilesInfo(
-  const ConstRawFileSpan &rawFile,
+  ConstRawFileSpan rawFile,
   const ptrdiff_t offset,
   const bool decodeV3Data )
 {

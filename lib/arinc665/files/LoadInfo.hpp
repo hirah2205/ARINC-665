@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -37,13 +38,13 @@ struct ARINC665_EXPORT LoadInfo
   using ThwIds = std::list< std::string >;
 
   //! Load Part Number
-  std::string partNumber;
+  std::string partNumber{};
   //! Header Filename
-  std::string headerFilename;
+  std::string headerFilename{};
   //! Member Sequence Number
-  MediumNumber memberSequenceNumber;
+  MediumNumber memberSequenceNumber{};
   //! Target Hardware IDs (list)
-  ThwIds targetHardwareIds;
+  ThwIds targetHardwareIds{};
 
   /**
    * @brief Compares the other load information against @p this for equality.

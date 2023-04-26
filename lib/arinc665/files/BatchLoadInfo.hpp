@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -30,9 +31,9 @@ namespace Arinc665::Files {
 struct ARINC665_EXPORT BatchLoadInfo
 {
   //! Load Header Filename.
-  std::string headerFilename;
+  std::string headerFilename{};
   //! Load Part Number.
-  std::string partNumber;
+  std::string partNumber{};
 };
 
 }
