@@ -26,6 +26,8 @@ namespace Arinc665::Utils {
 std::optional< Files::MediaSetInformation > getMediumInformation(
   const std::filesystem::path &directory )
 {
+  BOOST_LOG_FUNCTION()
+
   try
   {
     // Check existence of directory
@@ -48,8 +50,11 @@ std::optional< Files::MediaSetInformation > getMediumInformation(
 
     const auto fileSize{ std::filesystem::file_size( fileListFilePath ) };
 
-    std::fstream fileStream{ fileListFilePath };
-    if ( fileStream.bad() )
+    std::ifstream file{
+      fileListFilePath.string().c_str(),
+      std::ifstream::binary | std::ifstream::in };
+
+    if ( !file.is_open() )
     {
       BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning )
         << "Error opening file " << fileListFilePath;
@@ -57,9 +62,18 @@ std::optional< Files::MediaSetInformation > getMediumInformation(
     }
 
     Files::RawFile rawFile( fileSize );
-    fileStream.read(
+    file.read(
       (char *)std::data( rawFile ),
       static_cast< std::streamsize >( fileSize ) );
+
+    if ( file.bad()
+      || ( file.gcount() != static_cast< std::streamsize >( fileSize ) ) )
+    {
+      BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning )
+        << "Error reading from file " << fileListFilePath
+        << " read " << file.gcount() << " bytes";
+      return {};
+    }
 
     const Files::FileListFile fileListFile{ rawFile };
 

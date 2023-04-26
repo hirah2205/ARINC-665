@@ -122,7 +122,7 @@ Files::RawFile FilesystemMediaSetDecompilerImpl::readFile(
   if ( !file.is_open() )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "Error opening files" }
+      << Helper::AdditionalInfo{ "Error opening file" }
       << boost::errinfo_file_name{ filePath.string() } );
   }
 
@@ -130,6 +130,14 @@ Files::RawFile FilesystemMediaSetDecompilerImpl::readFile(
   file.read(
     (char *) &data.at( 0 ),
     static_cast< std::streamsize >( data.size() ) );
+
+  if ( file.bad()
+    || ( file.gcount() != static_cast< std::streamsize >( data.size() ) ) )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "Error reading file" }
+      << boost::errinfo_file_name{ filePath.string() } );
+  }
 
   // return the buffer
   return data;
