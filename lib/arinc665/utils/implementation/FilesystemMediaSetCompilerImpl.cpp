@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -138,9 +139,9 @@ MediaSetPaths FilesystemMediaSetCompilerImpl::operator()()
 
   mediaSetBaseDirectoryV = outputBasePathV / mediaSetNameV;
 
-  if ( std::error_code err{};
-    !std::filesystem::create_directories( mediaSetBaseDirectoryV, err )
-    || err )
+  std::error_code err{};
+  std::filesystem::create_directories( mediaSetBaseDirectoryV, err );
+  if ( err )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception{}
       << Helper::AdditionalInfo{ err.message() }

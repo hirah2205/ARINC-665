@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -1249,6 +1250,10 @@ FilesT ContainerEntity::filePerType( const std::filesystem::path &path )
   if ( path.has_parent_path() )
   {
     dir = subdirectory( path.parent_path() );
+    if ( !dir )
+    {
+      return {};
+    }
   }
 
   return dir->filePerType< FilesT, fileType >(

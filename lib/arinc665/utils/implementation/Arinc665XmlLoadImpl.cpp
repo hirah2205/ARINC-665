@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -607,7 +608,7 @@ void Arinc665XmlLoadImpl::loadBatchDeferred(
           << boost::errinfo_at_line{ targetNode->get_line() } );
       }
 
-      auto const *const loadElement{
+      auto const * const loadElement{
         dynamic_cast< xmlpp::Element const * >( loadNode ) };
       if ( nullptr == loadElement)
       {
