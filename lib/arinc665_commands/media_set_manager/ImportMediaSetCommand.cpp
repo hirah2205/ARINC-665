@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -23,12 +24,14 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
-#include <helper/Logger.hpp>
 #include <helper/Exception.hpp>
+#include <helper/Logger.hpp>
 
 #include <boost/exception/all.hpp>
 
 #include <iostream>
+
+#include <fmt/format.h>
 
 namespace Arinc665Commands::MediaSetManager {
 
@@ -42,6 +45,12 @@ ImportMediaSetCommand::ImportMediaSetCommand() :
       ->required()
       ->value_name( "Directory" ),
     "ARINC 665 Media Set Manager Directory"
+  )
+  (
+    "check-media-set-manager-integrity",
+    boost::program_options::value( &checkMediaSetManagerIntegrityV )
+      ->default_value( true ),
+    "Check Media Set Manager Integrity"
   )
   (
     "source-directory",
@@ -77,7 +86,8 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
     const auto mediaSetManager{
       Arinc665::Utils::MediaSetManager::load(
         mediaSetManagerDirectory,
-        checkFileIntegrity ) };
+        checkMediaSetManagerIntegrityV,
+        std::bind_front( &ImportMediaSetCommand::loadProgress, this ) ) };
 
     // Fill Media Paths list
     Arinc665::Utils::MediaPaths sourceMediaPaths{};
@@ -151,6 +161,20 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 void ImportMediaSetCommand::help()
 {
   std::cout << "Import ARINC 665 Media Set\n" << optionsDescription;
+}
+
+void ImportMediaSetCommand::loadProgress(
+  std::pair< std::size_t, std::size_t > mediaSet,
+  std::string_view partNumber,
+  std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
+{
+  std::cout << fmt::format(
+    "{}/{} {} {}:{}\n",
+    mediaSet.first,
+    mediaSet.second,
+    partNumber,
+    static_cast< std::string >( medium.first ),
+    static_cast< std::string >( medium.second ) );
 }
 
 }

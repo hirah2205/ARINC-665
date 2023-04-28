@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -19,16 +20,18 @@
 #include <arinc665/utils/MediaSetManager.hpp>
 
 #include <helper/HexString.hpp>
+#include <helper/Logger.hpp>
 
 #include <boost/exception/all.hpp>
 
 #include <iostream>
 
+#include <fmt/format.h>
+
 namespace Arinc665Commands::MediaSetManager {
 
 ListLoadsCommand::ListLoadsCommand() :
-  optionsDescription{ "List ARINC 665 Loads Options" },
-  checkFileIntegrity{}
+  optionsDescription{ "List ARINC 665 Loads Options" }
 {
   optionsDescription.add_options()
   (
@@ -39,14 +42,17 @@ ListLoadsCommand::ListLoadsCommand() :
     "ARINC 665 Media Set Manager Directory"
   )
   (
-    "check-file-integrity",
-    boost::program_options::value( &checkFileIntegrity )->default_value( true ),
-    "Check File Integrity during Import"
+    "check-media-set-manager-integrity",
+    boost::program_options::value( &checkMediaSetManagerIntegrityV )
+      ->default_value( true ),
+    "Check Media Set Manager Integrity"
   );
 }
 
 void ListLoadsCommand::execute( const Commands::Parameters &parameters )
 {
+  BOOST_LOG_FUNCTION()
+
   try
   {
     std::cout << "List ARINC 665 Loads\n";
@@ -59,9 +65,12 @@ void ListLoadsCommand::execute( const Commands::Parameters &parameters )
       vm );
     boost::program_options::notify( vm );
 
-    const auto mediaSetManager{ Arinc665::Utils::MediaSetManager::load(
-      mediaSetManagerDirectory,
-      checkFileIntegrity ) };
+    // Media Set Manager
+    const auto mediaSetManager{
+      Arinc665::Utils::MediaSetManager::load(
+        mediaSetManagerDirectory,
+        checkMediaSetManagerIntegrityV,
+        std::bind_front( &ListLoadsCommand::loadProgress, this ) ) };
 
     const auto loads{ mediaSetManager->loads() };
 
@@ -114,6 +123,20 @@ void ListLoadsCommand::help()
   std::cout
     << "List all Loads contained with the Media Set Manager\n"
     << optionsDescription;
+}
+
+void ListLoadsCommand::loadProgress(
+  std::pair< std::size_t, std::size_t > mediaSet,
+  std::string_view partNumber,
+  std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
+{
+  std::cout << fmt::format(
+    "{}/{} {} {}:{}\n",
+    mediaSet.first,
+    mediaSet.second,
+    partNumber,
+    static_cast< std::string >( medium.first ),
+    static_cast< std::string >( medium.second ) );
 }
 
 }

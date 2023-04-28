@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -34,6 +35,8 @@
 #include <cstdlib>
 #include <iostream>
 
+#include <fmt/format.h>
+
 /**
  * @brief Entry point of application.
  *
@@ -45,6 +48,18 @@
  * @return Success state of this operation.
  **/
 int main( int argc, char const * argv[] );
+
+/**
+ * @brief Progress Handler
+ *
+ * @param[in] partNumber
+ *   Media Set Part Number
+ * @param[in] medium
+ *   Medium information.
+ **/
+static void progress(
+  std::string_view partNumber,
+  std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium );
 
 int main( int argc, char const * argv[] )
 {
@@ -133,7 +148,8 @@ int main( int argc, char const * argv[] )
     assert( decompiler );
 
     decompiler
-      ->checkFileIntegrity( checkFileIntegrity )
+      ->progressHandler( std::bind_front( progress ) )
+      .checkFileIntegrity( checkFileIntegrity )
       .mediaPaths( std::move( mediaPaths ) );
 
     // perform import
@@ -185,4 +201,15 @@ int main( int argc, char const * argv[] )
   }
 
   return EXIT_SUCCESS;
+}
+
+static void progress(
+  std::string_view partNumber,
+  std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
+{
+  std::cout << fmt::format(
+    "{} {}:{}\n",
+    partNumber,
+    static_cast< std::string >( medium.first ),
+    static_cast< std::string >( medium.second ) );
 }

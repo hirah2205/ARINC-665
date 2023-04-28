@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -48,12 +49,14 @@ MediaSetManagerPtr MediaSetManager::create( std::filesystem::path directory )
 
   return std::make_shared< MediaSetManagerImpl >(
     std::move( directory ),
-    false );
+    false,
+    LoadProgressHandler{} );
 }
 
 MediaSetManagerPtr MediaSetManager::load(
   std::filesystem::path directory,
-  const bool checkFileIntegrity )
+  const bool checkFileIntegrity,
+  LoadProgressHandler loadProgressHandler )
 {
   if ( !std::filesystem::exists( directory ) )
   {
@@ -64,12 +67,14 @@ MediaSetManagerPtr MediaSetManager::load(
 
   return std::make_shared< MediaSetManagerImpl >(
     std::move( directory ),
-    checkFileIntegrity );
+    checkFileIntegrity,
+    std::move( loadProgressHandler ) );
 }
 
 MediaSetManagerPtr MediaSetManager::loadOrCreate(
   std::filesystem::path directory,
-  const bool checkFileIntegrity )
+  const bool checkFileIntegrity,
+  LoadProgressHandler loadProgressHandler )
 {
   if ( !std::filesystem::exists( directory )
     || ( std::filesystem::is_directory( directory )
@@ -80,7 +85,8 @@ MediaSetManagerPtr MediaSetManager::loadOrCreate(
 
   return std::make_shared< MediaSetManagerImpl >(
     std::move( directory ),
-    checkFileIntegrity );
+    checkFileIntegrity,
+    std::move( loadProgressHandler ) );
 }
 
 }

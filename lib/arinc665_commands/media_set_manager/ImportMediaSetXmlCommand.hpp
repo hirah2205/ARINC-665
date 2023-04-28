@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -58,14 +59,31 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetXmlCommand
     void help();
 
   private:
+    /**
+     * @brief Load progress indicator.
+     *
+     * @param[in] mediaSet
+     *   Media Set information
+     * @param[in] partNumber
+     *   Media Set Part Number
+     * @param[in] medium
+     *   Medium information
+     **/
+    void loadProgress(
+      std::pair< std::size_t, std::size_t > mediaSet,
+      std::string_view partNumber,
+      std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium );
+
     //! Program Options Description
     boost::program_options::options_description optionsDescription;
     //! Media Set Manager Directory
-    std::filesystem::path mediaSetManagerDirectory;
+    std::filesystem::path mediaSetManagerDirectory{};
+    //! Check Media Set Manager Integrity
+    bool checkMediaSetManagerIntegrityV{ true };
     //! Media Set XML File
-    std::filesystem::path mediaSetXmlFile;
+    std::filesystem::path mediaSetXmlFile{};
     //! Media Set Source Directory
-    std::filesystem::path mediaSetSourceDirectory;
+    std::filesystem::path mediaSetSourceDirectory{};
     //! Create Batch File Policy
     boost::optional< Arinc665::Utils::FileCreationPolicy > createBatchFiles{};
     //! Create Load Header File Policy

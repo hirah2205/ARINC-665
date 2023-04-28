@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -38,10 +39,13 @@ class MediaSetManagerImpl final : public MediaSetManager
      *   Directory for Media Set Manger.
      * @param[in] checkFileIntegrity
      *   If set to true additional file integrity steps are performed
+     * @param[in] loadProgressHandler
+     *   Handler for load progress.
      **/
     MediaSetManagerImpl(
       std::filesystem::path directory,
-      bool checkFileIntegrity );
+      bool checkFileIntegrity,
+      LoadProgressHandler loadProgressHandler );
 
     ~MediaSetManagerImpl() override;
 
@@ -99,10 +103,13 @@ class MediaSetManagerImpl final : public MediaSetManager
      *   Media Sets Paths.
      * @param[in] checkFileIntegrity
      *   If set to true additional file integrity steps are performed
+     * @param[in] loadProgressHandler
+     *   Handler for load progress.
      **/
     void loadMediaSets(
       const MediaSetManagerConfiguration::MediaSetsPaths &mediaSetsPaths,
-      bool checkFileIntegrity );
+      bool checkFileIntegrity,
+      LoadProgressHandler loadProgressHandler );
 
     /**
      * @brief Converts the given Media Set Paths to absolute Media Paths.

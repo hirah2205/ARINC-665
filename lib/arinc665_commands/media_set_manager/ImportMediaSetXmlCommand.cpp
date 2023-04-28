@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -30,6 +31,8 @@
 #include <boost/exception/all.hpp>
 
 #include <iostream>
+
+#include <fmt/format.h>
 
 namespace Arinc665Commands::MediaSetManager {
 
@@ -72,6 +75,12 @@ ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
     "ARINC 665 Media Set Manager Directory"
   )
   (
+    "check-media-set-manager-integrity",
+    boost::program_options::value( &checkMediaSetManagerIntegrityV )
+      ->default_value( true ),
+    "Check Media Set Manager Integrity"
+  )
+  (
     "xml-file",
     boost::program_options::value( &mediaSetXmlFile )->required(),
     "ARINC 665 media set description file"
@@ -102,6 +111,8 @@ ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
 
 void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 {
+  BOOST_LOG_FUNCTION()
+
   try
   {
     std::cout << "Import ARINC 665 Media Set XML\n";
@@ -116,7 +127,10 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 
     // Media Set Manager
     const auto mediaSetManager{
-      Arinc665::Utils::MediaSetManager::load( mediaSetManagerDirectory ) };
+      Arinc665::Utils::MediaSetManager::load(
+        mediaSetManagerDirectory,
+        checkMediaSetManagerIntegrityV,
+        std::bind_front( &ImportMediaSetXmlCommand::loadProgress, this ) ) };
 
     // load ARINC 665 XML file
     auto [ mediaSet, filePathMapping ] =
@@ -168,6 +182,20 @@ void ImportMediaSetXmlCommand::help()
   std::cout
     << "Compiles Media Set given by XML description and registers it to the Media Set Manager\n"
     << optionsDescription;
+}
+
+void ImportMediaSetXmlCommand::loadProgress(
+  std::pair< std::size_t, std::size_t > mediaSet,
+  std::string_view partNumber,
+  std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
+{
+  std::cout << fmt::format(
+    "{}/{} {} {}:{}\n",
+    mediaSet.first,
+    mediaSet.second,
+    partNumber,
+    static_cast< std::string >( medium.first ),
+    static_cast< std::string >( medium.second ) );
 }
 
 }

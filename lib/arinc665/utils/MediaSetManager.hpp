@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -54,6 +55,22 @@ class ARINC665_EXPORT MediaSetManager
     using MediaSetsInformation =
       std::map< std::string, MediaSetInformation, std::less<> >;
 
+    /**
+     * @brief Load Media Set Manager Progress Handler.
+     *
+     * @param[in] mediaSet
+     *   std::pair of current media set and number of media sets.
+     * @param[in] partNumber
+     *   Media Set Part Number
+     * @param[in] medium
+     *   std::pair of current medium and number of media.
+     **/
+    using LoadProgressHandler =
+      std::function< void(
+        std::pair< std::size_t, std::size_t > mediaSet,
+        std::string_view partNumber,
+        std::pair< MediumNumber, MediumNumber > medium ) >;
+
     //! Media Set Manager Configuration Filename
     static constexpr std::string_view ConfigurationFilename{
       "MediaSetManager.json" };
@@ -76,12 +93,15 @@ class ARINC665_EXPORT MediaSetManager
      *   Directory for Media Set Manger.
      * @param[in] checkFileIntegrity
      *   If set to true additional file integrity checks are performed
+     * @param[in] loadProgressHandler
+     *   Handler for load progress.
      *
      * @return Media Set Manager Instance.
      **/
     [[nodiscard]] static MediaSetManagerPtr load(
       std::filesystem::path directory,
-      bool checkFileIntegrity = true );
+      bool checkFileIntegrity = true,
+      LoadProgressHandler loadProgressHandler = LoadProgressHandler{} );
 
     /**
      * @brief Checks if a Media Set Manager Configuration is available or
@@ -91,12 +111,15 @@ class ARINC665_EXPORT MediaSetManager
      *   Directory for Media Set Manger.
      * @param[in] checkFileIntegrity
      *   If set to true additional file integrity checks are performed
+     * @param[in] loadProgressHandler
+     *   Handler for load progress.
      *
      * @return Media Set Manager
      **/
     [[nodiscard]] static MediaSetManagerPtr loadOrCreate(
       std::filesystem::path directory,
-      bool checkFileIntegrity = true );
+      bool checkFileIntegrity = true,
+      LoadProgressHandler loadProgressHandler = LoadProgressHandler{} );
 
     //! Destructor
     virtual ~MediaSetManager() = default;

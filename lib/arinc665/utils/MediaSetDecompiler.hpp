@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -82,6 +83,18 @@ class ARINC665_EXPORT MediaSetDecompiler
       const std::filesystem::path &path ) >;
 
     /**
+     * @brief Callback for progress indication.
+     *
+     * @param[in] partNumber
+     *   Media Set Part Number
+     * @param[in] medium
+     *   std::pair of current medium and number of media.
+     **/
+    using ProgressHandler = std::function< void(
+      std::string_view partNumber,
+      std::pair< MediumNumber, MediumNumber > medium ) >;
+
+    /**
      * @brief Creates the ARINC 665 %Media Set Decompiler Instance.
      *
      * @return ARINC 665 %Media Set Decompiler Instance
@@ -112,6 +125,17 @@ class ARINC665_EXPORT MediaSetDecompiler
      **/
     virtual MediaSetDecompiler& readFileHandler(
       ReadFileHandler readFileHandler ) = 0;
+
+    /**
+     * @brief Sets the Progress Handler.
+     *
+     * @param[in] progressHandler
+     *   Progress Handler called during operation.
+     *
+     * @return @p *this for chaining.
+     **/
+    virtual MediaSetDecompiler& progressHandler(
+      ProgressHandler progressHandler ) = 0;
 
     /**
      * @brief Sets the Check File Integrity Flag.

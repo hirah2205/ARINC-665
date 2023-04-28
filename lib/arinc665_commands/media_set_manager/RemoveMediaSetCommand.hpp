@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -15,6 +16,8 @@
 #define ARINC665_COMMANDS_MEDIA_SET_MANAGER_REMOVEMEDIASETCOMMAND_HPP
 
 #include <arinc665_commands/media_set_manager/MediaSetManager.hpp>
+
+#include <arinc665/Arinc665.hpp>
 
 #include <commands/Commands.hpp>
 
@@ -50,12 +53,29 @@ class ARINC665_COMMANDS_EXPORT RemoveMediaSetCommand
     void help();
 
   private:
+    /**
+     * @brief Load progress indicator.
+     *
+     * @param[in] mediaSet
+     *   Media Set information
+     * @param[in] partNumber
+     *   Media Set Part Number
+     * @param[in] medium
+     *   Medium information
+     **/
+    void loadProgress(
+      std::pair< std::size_t, std::size_t > mediaSet,
+      std::string_view partNumber,
+      std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium );
+
     //! Program Options Description
     boost::program_options::options_description optionsDescription;
     //! Media Set Manager Directory
-    std::filesystem::path mediaSetManagerDirectory;
+    std::filesystem::path mediaSetManagerDirectory{};
+    //! Check Media Set Manager Integrity
+    bool checkMediaSetManagerIntegrityV{ true };
     //! Media Set Part Number
-    std::string mediaSetPartNumber;
+    std::string mediaSetPartNumber{};
 };
 
 }

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -46,6 +47,10 @@ class MediaSetDecompilerImpl final : public MediaSetDecompiler
     //! @copydoc MediaSetDecompiler::readFileHandler()
     MediaSetDecompiler& readFileHandler(
       ReadFileHandler readFileHandler ) override;
+
+    //! @copydoc MediaSetDecompiler::progressHandler()
+    MediaSetDecompiler& progressHandler(
+      ProgressHandler progressHandler ) override;
 
     //! @copydoc MediaSetDecompiler::checkFileIntegrity()
     MediaSetDecompiler& checkFileIntegrity(
@@ -302,13 +307,15 @@ class MediaSetDecompilerImpl final : public MediaSetDecompiler
     FileSizeHandler fileSizeHandlerV;
     //! Read File Handler
     ReadFileHandler readFileHandlerV;
+    //! Progress Handler
+    ProgressHandler progressHandlerV{};
     //! Check File Integrity
     bool checkFileIntegrityV{ true };
 
     //! Media Set
-    Media::MediaSetPtr mediaSetV;
+    Media::MediaSetPtr mediaSetV{};
     //! Check Values
-    Media::CheckValues checkValuesV;
+    Media::CheckValues checkValuesV{};
 
     //! File List File (Load by loadFirstMedium(), used by loadFurtherMedia() )
     Files::FileListFile fileListFileV;
@@ -320,18 +327,27 @@ class MediaSetDecompilerImpl final : public MediaSetDecompiler
     bool batchListFilePresentV{ false };
 
     //! File Information from List of File
-    FilesInformation filesInfosV;
+    FilesInformation filesInfosV{};
     //! Load Information from List of Loads
-    LoadsInformation loadsInfosV;
+    LoadsInformation loadsInfosV{};
     //! Batch Information from List of Batches
-    BatchesInformation batchesInfosV;
+    BatchesInformation batchesInfosV{};
 
+    //! Regular Files Map
+    using RegularFilesMap =
+      std::map< Media::RegularFilePtr, Files::FileInfo, std::owner_less< Media::RegularFilePtr > >;
     //! Regular Files
-    std::map< Media::RegularFilePtr, Files::FileInfo, std::less< > > regularFilesV;
+    RegularFilesMap regularFilesV{};
+    //! Loads Map
+    using LoadsMap =
+      std::map< Media::LoadPtr, std::pair< Files::FileInfo, Files::LoadInfo >, std::owner_less< Media::LoadPtr > >;
     //! Loads
-    std::map< Media::LoadPtr, std::pair< Files::FileInfo, Files::LoadInfo >, std::less< > > loadsV;
+    LoadsMap loadsV{};
+    //! Batches Map
+    using BatchesMap =
+      std::map< Media::BatchPtr, std::pair< Files::FileInfo, Files::BatchInfo >, std::owner_less< Media::BatchPtr > >;
     //! Batches
-    std::map< Media::BatchPtr, std::pair< Files::FileInfo, Files::BatchInfo >, std::less< > > batchesV;
+    BatchesMap batchesV{};
 };
 
 }

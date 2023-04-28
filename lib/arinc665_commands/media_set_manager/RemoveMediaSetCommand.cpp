@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -19,10 +20,13 @@
 #include <arinc665/Arinc665Exception.hpp>
 
 #include <helper/Exception.hpp>
+#include <helper/Logger.hpp>
 
 #include <boost/exception/all.hpp>
 
 #include <iostream>
+
+#include <fmt/format.h>
 
 namespace Arinc665Commands::MediaSetManager {
 
@@ -38,6 +42,12 @@ RemoveMediaSetCommand::RemoveMediaSetCommand() :
     "ARINC 665 Media Set Manager Directory"
   )
   (
+    "check-media-set-manager-integrity",
+    boost::program_options::value( &checkMediaSetManagerIntegrityV )
+      ->default_value( true ),
+    "Check Media Set Manager Integrity"
+  )
+  (
     "media-set-part-number",
     boost::program_options::value( &mediaSetPartNumber )
       ->required()
@@ -48,6 +58,8 @@ RemoveMediaSetCommand::RemoveMediaSetCommand() :
 
 void RemoveMediaSetCommand::execute( const Commands::Parameters &parameters )
 {
+  BOOST_LOG_FUNCTION()
+
   try
   {
     std::cout << "Remove ARINC 665 Media Set\n";
@@ -62,7 +74,10 @@ void RemoveMediaSetCommand::execute( const Commands::Parameters &parameters )
 
     // Media Set Manager
     const auto mediaSetManager{
-      Arinc665::Utils::MediaSetManager::load( mediaSetManagerDirectory ) };
+      Arinc665::Utils::MediaSetManager::load(
+        mediaSetManagerDirectory,
+        checkMediaSetManagerIntegrityV,
+        std::bind_front( &RemoveMediaSetCommand::loadProgress, this ) ) };
 
     auto mediaSet{
       mediaSetManager->mediaSet( mediaSetPartNumber ) };
@@ -109,6 +124,20 @@ void RemoveMediaSetCommand::help()
   std::cout
     << "Remove Media Set from the Media Set Manager\n"
     << optionsDescription;
+}
+
+void RemoveMediaSetCommand::loadProgress(
+  std::pair< std::size_t, std::size_t > mediaSet,
+  std::string_view partNumber,
+  std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
+{
+  std::cout << fmt::format(
+    "{}/{} {} {}:{}\n",
+    mediaSet.first,
+    mediaSet.second,
+    partNumber,
+    static_cast< std::string >( medium.first ),
+    static_cast< std::string >( medium.second ) );
 }
 
 }

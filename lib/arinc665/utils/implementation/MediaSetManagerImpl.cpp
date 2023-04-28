@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -34,7 +35,8 @@ namespace Arinc665::Utils {
 
 MediaSetManagerImpl::MediaSetManagerImpl(
   std::filesystem::path directory,
-  const bool checkFileIntegrity ) :
+  const bool checkFileIntegrity,
+  LoadProgressHandler loadProgressHandler ) :
   directoryV{ std::move( directory ) }
 {
   BOOST_LOG_FUNCTION()
@@ -57,7 +59,10 @@ MediaSetManagerImpl::MediaSetManagerImpl(
   auto configuration{
     Arinc665::Utils::MediaSetManagerConfiguration{ configurationProperties } };
 
-  loadMediaSets( configuration.mediaSets, checkFileIntegrity );
+  loadMediaSets(
+    configuration.mediaSets,
+    checkFileIntegrity,
+    std::move( loadProgressHandler ) );
 
   mediaSetDefaultsV = std::move( configuration.defaults );
 }
@@ -246,18 +251,32 @@ std::filesystem::path MediaSetManagerImpl::filePath(
 
 void MediaSetManagerImpl::loadMediaSets(
   const MediaSetManagerConfiguration::MediaSetsPaths &mediaSetsPaths,
-  const bool checkFileIntegrity )
+  const bool checkFileIntegrity,
+  LoadProgressHandler loadProgressHandler )
 {
   BOOST_LOG_FUNCTION()
 
-  for ( auto const &mediaSetPaths : mediaSetsPaths )
+  for ( size_t mediaSetCounter{ 1U };
+    auto const &mediaSetPaths : mediaSetsPaths )
   {
     auto decompiler{ FilesystemMediaSetDecompiler::create() };
     assert( decompiler );
 
     // configure decompiler
     decompiler
-      ->checkFileIntegrity( checkFileIntegrity )
+      ->progressHandler( [&](
+        std::string_view partNumber,
+        std::pair< MediumNumber, MediumNumber > medium )
+      {
+        if ( loadProgressHandler )
+        {
+          loadProgressHandler(
+            { mediaSetCounter, mediaSetsPaths.size() },
+            partNumber,
+            medium );
+        }
+      } )
+      .checkFileIntegrity( checkFileIntegrity )
       .mediaPaths( absoluteMediaPaths( mediaSetPaths ) );
 
     // import media set
@@ -274,6 +293,9 @@ void MediaSetManagerImpl::loadMediaSets(
 
     // add to media sets paths
     mediaSetsPathsV.try_emplace( partNumber, mediaSetPaths );
+
+    // increment media set Index Counter
+    ++mediaSetCounter;
   }
 }
 

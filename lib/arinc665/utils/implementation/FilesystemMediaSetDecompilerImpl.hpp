@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -30,6 +31,10 @@ class FilesystemMediaSetDecompilerImpl final : public FilesystemMediaSetDecompil
     explicit FilesystemMediaSetDecompilerImpl();
 
     ~FilesystemMediaSetDecompilerImpl() override;
+
+    //! @copydoc FilesystemMediaSetDecompiler::progressHandler()
+    FilesystemMediaSetDecompiler& progressHandler(
+      MediaSetDecompiler::ProgressHandler progressHandler ) override;
 
     //! @copydoc FilesystemMediaSetDecompiler::checkFileIntegrity()
     FilesystemMediaSetDecompiler& checkFileIntegrity(

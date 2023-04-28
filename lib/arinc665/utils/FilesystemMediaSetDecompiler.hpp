@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -14,6 +15,8 @@
 #define ARINC665_UTILS_FILESYSTEMMEDIASETDECOMPILER_HPP
 
 #include <arinc665/utils/Utils.hpp>
+
+#include <arinc665/utils/MediaSetDecompiler.hpp>
 
 namespace Arinc665::Utils {
 
@@ -38,6 +41,17 @@ class ARINC665_EXPORT FilesystemMediaSetDecompiler
 
     //! Destructor
     virtual ~FilesystemMediaSetDecompiler() = default;
+
+    /**
+     * @brief Sets the Progress Handler.
+     *
+     * @param[in] progressHandler
+     *   Progress Handler called during operation.
+     *
+     * @return @p *this for chaining.
+     **/
+    virtual FilesystemMediaSetDecompiler& progressHandler(
+      MediaSetDecompiler::ProgressHandler progressHandler ) = 0;
 
     /**
      * @brief Sets the Check File Integrity Flag.

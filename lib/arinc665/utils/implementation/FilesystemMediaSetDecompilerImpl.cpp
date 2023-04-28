@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -38,6 +39,13 @@ FilesystemMediaSetDecompilerImpl::FilesystemMediaSetDecompilerImpl() :
 }
 
 FilesystemMediaSetDecompilerImpl::~FilesystemMediaSetDecompilerImpl() = default;
+
+FilesystemMediaSetDecompiler& FilesystemMediaSetDecompilerImpl::progressHandler(
+  MediaSetDecompiler::ProgressHandler progressHandler )
+{
+  mediaSetDecompilerV->progressHandler( std::move( progressHandler ) );
+  return *this;
+}
 
 FilesystemMediaSetDecompiler&
 FilesystemMediaSetDecompilerImpl::checkFileIntegrity(

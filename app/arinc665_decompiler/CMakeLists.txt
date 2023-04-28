@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MPL-2.0
+
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -5,6 +7,8 @@
 # Thomas Vogt, thomas@thomas-vogt.de
 
 cmake_minimum_required( VERSION 3.25 )
+
+find_package( fmt REQUIRED )
 
 add_executable( arinc665_decompiler )
 
@@ -24,7 +28,7 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
 
-target_link_libraries( arinc665_decompiler PRIVATE arinc665 )
+target_link_libraries( arinc665_decompiler PRIVATE arinc665 fmt::fmt )
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}

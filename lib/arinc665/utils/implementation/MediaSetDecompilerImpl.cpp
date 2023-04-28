@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -42,6 +43,13 @@ MediaSetDecompiler& MediaSetDecompilerImpl::readFileHandler(
   return *this;
 }
 
+MediaSetDecompiler& MediaSetDecompilerImpl::progressHandler(
+  ProgressHandler progressHandler )
+{
+  progressHandlerV = std::move( progressHandler );
+  return *this;
+}
+
 MediaSetDecompiler& MediaSetDecompilerImpl::checkFileIntegrity(
   const bool checkFileIntegrity ) noexcept
 {
@@ -79,6 +87,21 @@ void MediaSetDecompilerImpl::loadFirstMedium()
   // Load "list of files" file
   fileListFileV =
     readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfFilesName );
+
+  if ( fileListFileV.mediaSequenceNumber() != MediumNumber{ 1U } )
+  {
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo{ "File List File of 1st medium incorrect" } );
+  }
+
+  // Call progress handler
+  if ( progressHandlerV )
+  {
+    progressHandlerV(
+      fileListFileV.mediaSetPn(),
+      { fileListFileV.mediaSequenceNumber(),
+        fileListFileV.numberOfMediaSetMembers() } );
+  }
 
   // indicator, that LOADS.LUM present in FILES.LUM
   bool listOfLoadsFilePresent{ false };
@@ -245,6 +268,14 @@ void MediaSetDecompilerImpl::loadFurtherMedia() const
     mediumNumber <= fileListFileV.numberOfMediaSetMembers();
     ++mediumNumber )
   {
+    // Call progress handler
+    if ( progressHandlerV )
+    {
+      progressHandlerV(
+        fileListFileV.mediaSetPn(),
+        { mediumNumber, fileListFileV.numberOfMediaSetMembers() } );
+    }
+
     // Load "list of files" file
 
     // compare current list of files to first one
@@ -407,7 +438,7 @@ void MediaSetDecompilerImpl::loadFile(
   }
 
   // add to deferred load handling
-  loadsV.try_emplace( std::move( load ), std::make_pair( fileInfo, loadInfo ) );
+  loadsV.try_emplace( std::move( load ), fileInfo, loadInfo );
 }
 
 void MediaSetDecompilerImpl::batchFile(
@@ -438,7 +469,7 @@ void MediaSetDecompilerImpl::batchFile(
   }
 
   // add to deferred batch handling
-  batchesV.try_emplace( std::move( batch ), std::make_pair( fileInfo, batchInfo ) );
+  batchesV.try_emplace( std::move( batch ), fileInfo, batchInfo );
 }
 
 void MediaSetDecompilerImpl::addLoad(
