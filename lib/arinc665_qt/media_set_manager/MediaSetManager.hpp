@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -31,6 +32,8 @@ class OpenMediaSetManagerAction;
 class MediaSetManagerDialog;
 class RemoveMediaSetController;
 class MediaSetManagerSettingsDialog;
+
+class LoadMediaSetManagerAction;
 
 }
 

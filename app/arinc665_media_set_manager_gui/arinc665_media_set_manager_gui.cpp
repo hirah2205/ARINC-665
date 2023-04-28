@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -69,16 +70,15 @@ try
     &QApplication::quit );
   QObject::connect(
     &mediaSetManagerAction,
-    &Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction::accepted,
-    [&]()
+    &Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction::mediaSetManagerLoaded,
+    [&]( const Arinc665::Utils::MediaSetManagerPtr &mediaSetManager )
     {
       Arinc665Qt::MediaSetManager::MediaSetManagerDialog * dialog{
         new Arinc665Qt::MediaSetManager::MediaSetManagerDialog(
-          mediaSetManagerAction.mediaSetManager() ) };
+          mediaSetManager ) };
 
       dialog->setWindowTitle(
-        QString::fromStdString(
-          mediaSetManagerAction.mediaSetManager()->directory().string() ) );
+        QString::fromStdString( mediaSetManager->directory().string() ) );
 
       Arinc665Qt::MediaSetManager::MediaSetManagerDialog::connect(
         dialog,

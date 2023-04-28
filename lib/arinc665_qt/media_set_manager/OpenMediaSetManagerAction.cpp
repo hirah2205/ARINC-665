@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -12,7 +13,7 @@
 
 #include "OpenMediaSetManagerAction.hpp"
 
-#include <arinc665_qt/media_set_manager/MediaSetManagerDialog.hpp>
+#include <arinc665_qt/media_set_manager/LoadMediaSetManagerAction.hpp>
 
 #include <arinc665_qt/media/MediaSetsModel.hpp>
 
@@ -32,7 +33,8 @@ namespace Arinc665Qt::MediaSetManager {
 OpenMediaSetManagerAction::OpenMediaSetManagerAction(
   QWidget * const parent ) :
   QObject{ parent },
-  selectMediaSetDirectoryDialogV{ std::make_unique< QFileDialog >( parent ) }
+  selectMediaSetDirectoryDialogV{ std::make_unique< QFileDialog >( parent ) },
+  loadMediaSetManagerActionV{ std::make_unique< LoadMediaSetManagerAction >( this ) }
 {
   QSettings settings{};
 
@@ -56,14 +58,25 @@ OpenMediaSetManagerAction::OpenMediaSetManagerAction(
     &QFileDialog::accepted,
     this,
     &OpenMediaSetManagerAction::directorySelected );
+
+  connect(
+    loadMediaSetManagerActionV.get(),
+    &LoadMediaSetManagerAction::mediaSetManagerLoadProgress,
+    this,
+    &OpenMediaSetManagerAction::mediaSetManagerLoadProgress );
+  connect(
+    loadMediaSetManagerActionV.get(),
+    &LoadMediaSetManagerAction::mediaSetManagerLoaded,
+    this,
+    &OpenMediaSetManagerAction::mediaSetManagerLoaded );
+  connect(
+    loadMediaSetManagerActionV.get(),
+    &LoadMediaSetManagerAction::failed,
+    this,
+    &OpenMediaSetManagerAction::failed );
 }
 
 OpenMediaSetManagerAction::~OpenMediaSetManagerAction() = default;
-
-const Arinc665::Utils::MediaSetManagerPtr& OpenMediaSetManagerAction::mediaSetManager() const
-{
-  return mediaSetManagerV;
-}
 
 void OpenMediaSetManagerAction::open()
 {
@@ -74,31 +87,57 @@ void OpenMediaSetManagerAction::directorySelected()
 {
   auto directory{ selectMediaSetDirectoryDialogV->directory() };
 
-  try
+  QSettings settings{};
+
+  loadMediaSetManagerActionV->mediaSetDirectory(
+    directory.path().toStdString() );
+  loadMediaSetManagerActionV->checkMediaSetIntegrity(
+    settings.value( "CheckIntegrityOnStartup", true ).toBool() );
+
+  settings.setValue( "LastMediaSetManagerDirectory", directory.path() );
+
+  progressDialogV = new QProgressDialog{};
+  progressDialogV->setWindowTitle( tr( "Load ARINC 665 Media Set Manager" ) );
+  progressDialogV->setAutoReset( false );
+
+  connect(
+    loadMediaSetManagerActionV.get(),
+    &LoadMediaSetManagerAction::mediaSetManagerLoaded,
+    [this]()
+    {
+      progressDialogV->reset();
+      progressDialogV->deleteLater();
+    } );
+  connect(
+    loadMediaSetManagerActionV.get(),
+    &LoadMediaSetManagerAction::failed,
+    [this]()
+    {
+      progressDialogV->reset();
+      progressDialogV->deleteLater();
+    } );
+
+  progressDialogV->show();
+
+  // call start asynchronous
+  // NOLINTBEGIN(clang-analyzer-cplusplus.NewDeleteLeaks)
+  QMetaObject::invokeMethod(
+    loadMediaSetManagerActionV.get(),
+    &LoadMediaSetManagerAction::start,
+    Qt::ConnectionType::QueuedConnection );
+  // NOLINTEND(clang-analyzer-cplusplus.NewDeleteLeaks)
+}
+
+void OpenMediaSetManagerAction::mediaSetManagerLoadProgress(
+  size_t currentMediaSet,
+  size_t numberOfMediaSets,
+  const std::string &partNumber )
+{
+  if ( nullptr != progressDialogV )
   {
-    QSettings settings{};
-
-    mediaSetManagerV = Arinc665::Utils::MediaSetManager::loadOrCreate(
-      directory.path().toStdString(),
-      settings.value( "CheckIntegrityOnStartup", true ).toBool() );
-
-    settings.setValue( "LastMediaSetManagerDirectory", directory.path() );
-
-    emit accepted();
-  }
-  catch ( const Arinc665::Arinc665Exception &e )
-  {
-    const auto info{ boost::diagnostic_information( e ) };
-
-    QMessageBox::critical(
-      nullptr,
-      tr( "Cannot open Media Set Manager" ),
-      QString{ tr(
-        "<b>Media Set Directory:</b><br/><i>%1</i><br/>"
-           "<b>Error:</b><br/><tt>%2</tt>" ) }
-        .arg( directory.path(), QString::fromStdString( info ) ) );
-
-    emit rejected();
+    progressDialogV->setMaximum( static_cast< int >( currentMediaSet ) );
+    progressDialogV->setValue( static_cast< int >( numberOfMediaSets ) );
+    progressDialogV->setLabelText( QString::fromStdString( partNumber ) );
   }
 }
 

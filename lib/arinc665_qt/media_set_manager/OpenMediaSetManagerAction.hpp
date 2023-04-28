@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -7,7 +8,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::OpenMediaSetManagerAction.
+ * @brief Declaration of Class Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction.
  **/
 
 #ifndef ARINC665_QT_MEDIA_SET_MANAGER_OPENMEDIASETMANAGERACTION_HPP
@@ -18,8 +19,9 @@
 
 #include <arinc665/utils/Utils.hpp>
 
-#include <QWidget>
 #include <QFileDialog>
+#include <QProgressDialog>
+#include <QWidget>
 
 #include <memory>
 
@@ -30,6 +32,7 @@ namespace Arinc665Qt::MediaSetManager {
  *
  * Asks the User for selecting the Media Set Manager Directory and tries to open
  * it.
+ * During loading of the Media Set Manager a progress dialog is shown.
  **/
 class ARINC665_QT_EXPORT OpenMediaSetManagerAction : public QObject
 {
@@ -37,7 +40,7 @@ class ARINC665_QT_EXPORT OpenMediaSetManagerAction : public QObject
 
   public:
     /**
-     * @brief Initialises the %Media Set Manager Controller.
+     * @brief Initialises the %Media Set Manager Action.
      *
      * @param[in] parent
      *   Parent Widget
@@ -46,13 +49,6 @@ class ARINC665_QT_EXPORT OpenMediaSetManagerAction : public QObject
 
     //! Destructor
     ~OpenMediaSetManagerAction() override;
-
-    /**
-     * @brief Returns the Media Set Manager
-     *
-     * @return Media Set Manager
-     **/
-    const Arinc665::Utils::MediaSetManagerPtr& mediaSetManager() const;
 
   public slots:
     /**
@@ -64,8 +60,19 @@ class ARINC665_QT_EXPORT OpenMediaSetManagerAction : public QObject
     void open();
 
   signals:
-    //! Emitted, when controller is finished.
-    void accepted();
+    /**
+     * @brief Signal emitted, when the Media Set Manager is loaded successfully.
+     *
+     * @param[in] mediaSetManager
+     *   Media Set Manager instance.
+     **/
+    void mediaSetManagerLoaded(
+      const Arinc665::Utils::MediaSetManagerPtr &mediaSetManager );
+
+    /**
+     * @brief Signal emitted, when the Media Set Manager could not be loaded.
+     **/
+    void failed();
 
     //! Operation canceled by user
     void rejected();
@@ -76,11 +83,30 @@ class ARINC665_QT_EXPORT OpenMediaSetManagerAction : public QObject
      **/
     void directorySelected();
 
+    /**
+     * @brief Slot called for new progress information.
+     *
+     * Updates the progress dialog.
+     *
+     * @param[in] currentMediaSet
+     *   Current Media Set Counter
+     * @param[in] numberOfMediaSets
+     *   Number of Media Sets.
+     * @param[in] partNumber
+     *   Part Number of current Media Set.
+     **/
+    void mediaSetManagerLoadProgress(
+      size_t currentMediaSet,
+      size_t numberOfMediaSets,
+      const std::string &partNumber );
+
   private:
     //! Select Media Set Manager Directory Dialog
     std::unique_ptr< QFileDialog > selectMediaSetDirectoryDialogV{};
-    //! Media Set Manager
-    Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV{};
+    //! Progress Callback Dialog
+    QProgressDialog * progressDialogV{ nullptr };
+    //! Load Media Set Action
+    std::unique_ptr< LoadMediaSetManagerAction > loadMediaSetManagerActionV{};
 };
 
 }
