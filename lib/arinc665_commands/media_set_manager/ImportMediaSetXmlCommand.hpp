@@ -30,6 +30,7 @@
 #include <boost/optional/optional.hpp>
 
 #include <filesystem>
+#include <vector>
 
 namespace Arinc665Commands::MediaSetManager {
 
@@ -81,7 +82,7 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetXmlCommand
     //! Check Media Set Manager Integrity
     bool checkMediaSetManagerIntegrityV{ true };
     //! Media Set XML File
-    std::filesystem::path mediaSetXmlFile{};
+    std::vector< std::filesystem::path > mediaSetXmlFilesV{};
     //! Media Set Source Directory
     std::filesystem::path mediaSetSourceDirectory{};
     //! Create Batch File Policy

@@ -26,8 +26,6 @@
 
 #include <boost/exception/all.hpp>
 
-#include <cassert>
-
 namespace Arinc665Qt::MediaSetManager {
 
 OpenMediaSetManagerAction::OpenMediaSetManagerAction(
