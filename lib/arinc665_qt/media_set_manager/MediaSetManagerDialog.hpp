@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -54,13 +55,21 @@ class ARINC665_QT_EXPORT MediaSetManagerDialog final : public QDialog
      *   Widget parent.
      **/
     explicit MediaSetManagerDialog(
-      Arinc665::Utils::MediaSetManagerPtr mediaSetManager,
+      Arinc665::Utils::MediaSetManagerPtr mediaSetManager = {},
       QWidget * parent = nullptr );
 
     //! Destructor
     ~MediaSetManagerDialog() override;
 
   public slots:
+    /**
+     * @brief Assigns Media Set Manager.
+     *
+     * Reloads the Media Sets from the Media Set manager and updates the
+     *   Media Sets Model.
+     **/
+    void mediaSetManger( Arinc665::Utils::MediaSetManagerPtr mediaSetManager );
+
     /**
      * @brief Reloads the Media Sets from the Media Set manager and updates the
      *   Media Sets Model.

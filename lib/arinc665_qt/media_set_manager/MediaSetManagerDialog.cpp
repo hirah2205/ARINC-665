@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -22,6 +23,10 @@
 #include <arinc665_qt/media_set_manager/MediaSetManagerSettingsDialog.hpp>
 
 #include <arinc665_qt/media/MediaSetsModel.hpp>
+
+#include <arinc665/media/MediaSet.hpp>
+
+#include <helper_qt/String.hpp>
 
 #include <QDesktopServices>
 #include <QUrl>
@@ -82,6 +87,14 @@ MediaSetManagerDialog::MediaSetManagerDialog(
 
 MediaSetManagerDialog::~MediaSetManagerDialog() = default;
 
+void MediaSetManagerDialog::mediaSetManger(
+  Arinc665::Utils::MediaSetManagerPtr mediaSetManager )
+{
+  mediaSetManagerV = std::move( mediaSetManager );
+
+  reloadMediaSetModel();
+}
+
 void MediaSetManagerDialog::reloadMediaSetModel()
 {
   if ( !mediaSetsModelV )
@@ -91,10 +104,13 @@ void MediaSetManagerDialog::reloadMediaSetModel()
 
   Arinc665::Media::ConstMediaSets mediaSets{};
 
-  // convert media sets to const media sets
-  for ( const auto &[ partNumber, mediaSet ] : mediaSetManagerV->mediaSets() )
+  if ( mediaSetManagerV )
   {
-    mediaSets.emplace_back( mediaSet.first );
+    // convert media sets to const media sets
+    for ( const auto &[ partNumber, mediaSet ] : mediaSetManagerV->mediaSets() )
+    {
+      mediaSets.emplace_back( mediaSet.first );
+    }
   }
 
   mediaSetsModelV->mediaSets( std::move( mediaSets ) );
@@ -127,6 +143,8 @@ void MediaSetManagerDialog::viewMediaSet()
     viewMediaSetDialog,
     &ViewMediaSetDialog::deleteLater );
 
+  viewMediaSetDialog->setWindowTitle(
+    HelperQt::toQString( mediaSet->partNumber() ) );
   viewMediaSetDialog->mediaSet( std::move( mediaSet ) );
   viewMediaSetDialog->show();
 }

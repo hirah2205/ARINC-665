@@ -135,9 +135,11 @@ void OpenMediaSetManagerAction::mediaSetManagerLoadProgress(
 {
   if ( nullptr != progressDialogV )
   {
-    progressDialogV->setMaximum( static_cast< int >( currentMediaSet ) );
-    progressDialogV->setValue( static_cast< int >( numberOfMediaSets ) );
-    progressDialogV->setLabelText( QString::fromStdString( partNumber ) );
+    progressDialogV->setMaximum( static_cast< int >( numberOfMediaSets ) );
+    progressDialogV->setValue( static_cast< int >( currentMediaSet ) );
+    progressDialogV->setLabelText(
+      QString{ tr( "Media Set <tt>%1</tt" ) }
+        .arg( QString::fromStdString( partNumber ) ) );
   }
 }
 
