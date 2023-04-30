@@ -27,14 +27,6 @@
    <set>QWizard::NoBackButtonOnStartPage</set>
   </property>
   <widget class="Arinc665Qt::CompileMediaSetSettingsPage" name="settings"/>
-  <widget class="QWizardPage" name="finish">
-   <property name="title">
-    <string>Operation Completed</string>
-   </property>
-   <property name="subTitle">
-    <string>Finished Compilation</string>
-   </property>
-  </widget>
  </widget>
  <customwidgets>
   <customwidget>

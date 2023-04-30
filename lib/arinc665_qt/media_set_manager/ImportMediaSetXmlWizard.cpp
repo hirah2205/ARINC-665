@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -42,7 +43,21 @@ ImportMediaSetXmlWizard::ImportMediaSetXmlWizard(
   assert( compilerV );
 
   ui->setupUi( this );
-  ui->settings->setCommitPage( true );
+
+  // set Logo of Wizard Pages
+  QIcon icon{};
+  icon.addFile(
+    QString::fromUtf8(
+      ":/media_set_manager/arinc665_media_set_import_xml.svg" ),
+    QSize{},
+    QIcon::Normal,
+    QIcon::Off );
+  for ( const auto pageId : pageIds() )
+  {
+    page( pageId )->setPixmap(
+      QWizard::WizardPixmap::LogoPixmap,
+      icon.pixmap( 64 ) );
+  }
 
   connect(
     ui->settings,
@@ -77,23 +92,15 @@ ImportMediaSetXmlWizard::ImportMediaSetXmlWizard(
 
   connect(
     this,
-    &QWizard::currentIdChanged,
+    &QWizard::accepted,
     this,
-    &ImportMediaSetXmlWizard::pageChanged );
+    &ImportMediaSetXmlWizard::importMediaSetXml );
 
   // finally set defaults (signals must be connected)
   ui->settings->defaults( mediaSetManagerV->mediaSetDefaults() );
 }
 
 ImportMediaSetXmlWizard::~ImportMediaSetXmlWizard() = default;
-
-void ImportMediaSetXmlWizard::pageChanged( int id )
-{
-  if ( ui->settings->nextId() == id )
-  {
-    importMediaSetXml();
-  }
-}
 
 void ImportMediaSetXmlWizard::xmlFile( std::filesystem::path xmlFile )
 {
@@ -137,9 +144,11 @@ void ImportMediaSetXmlWizard::importMediaSetXml()
       Arinc665::Utils::Arinc665Xml_load( xmlFileV );
 
     compilerV
-      ->mediaSet( mediaSet )
+      ->mediaSet( std::move( mediaSet ) )
       .filePathMapping( std::move( fileMapping ) )
       .outputBasePath( mediaSetManagerV->directory() );
+    assert( compilerV );
+
     auto mediaSetPaths{ ( *compilerV )() };
 
     mediaSetManagerV->registerMediaSet( mediaSetPaths, checkFileIntegrityV );

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>Thomas Vogt</author>
  <class>Arinc665Qt::MediaPathsWidget</class>
  <widget class="QGroupBox" name="Arinc665Qt::MediaPathsWidget">
   <property name="geometry">
@@ -13,6 +14,9 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTableView" name="mediaPaths">
+     <property name="toolTip">
+      <string>Media Paths</string>
+     </property>
      <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
@@ -35,8 +39,11 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="add">
+        <property name="toolTip">
+         <string>Add Media Directory</string>
+        </property>
         <property name="icon">
-         <iconset resource="../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
+         <iconset>
           <normaloff>:/fa/solid/folder-plus.svg</normaloff>:/fa/solid/folder-plus.svg</iconset>
         </property>
         <property name="iconSize">
@@ -49,6 +56,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="remove">
+        <property name="toolTip">
+         <string>Remove Media Directory</string>
+        </property>
         <property name="icon">
          <iconset resource="../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
           <normaloff>:/fa/solid/folder-minus.svg</normaloff>:/fa/solid/folder-minus.svg</iconset>

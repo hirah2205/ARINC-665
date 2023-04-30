@@ -44,13 +44,26 @@ ImportMediaSetWizard::ImportMediaSetWizard(
   assert( copierV );
 
   ui->setupUi( this );
-  ui->settings->setCommitPage( true );
+
+  // set Logo of Wizard Pages
+  QIcon icon{};
+  icon.addFile(
+    QString::fromUtf8( ":/media_set_manager/arinc665_media_set_import.svg" ),
+    QSize{},
+    QIcon::Normal,
+    QIcon::Off );
+  for ( const auto pageId : pageIds() )
+  {
+    page( pageId )->setPixmap(
+      QWizard::WizardPixmap::LogoPixmap,
+      icon.pixmap( 64 ) );
+  }
 
   connect(
     this,
-    &QWizard::currentIdChanged,
+    &QWizard::accepted,
     this,
-    &ImportMediaSetWizard::pageChanged );
+    &ImportMediaSetWizard::importMediaSet );
 
   connect(
     ui->settings,
@@ -68,14 +81,6 @@ ImportMediaSetWizard::ImportMediaSetWizard(
 }
 
 ImportMediaSetWizard::~ImportMediaSetWizard() = default;
-
-void ImportMediaSetWizard::pageChanged( const int id )
-{
-  if ( ui->settings->nextId() == id )
-  {
-    importMediaSet();
-  }
-}
 
 void ImportMediaSetWizard::updateMediaPaths(
   const Arinc665::Utils::MediaPaths &mediaPaths )

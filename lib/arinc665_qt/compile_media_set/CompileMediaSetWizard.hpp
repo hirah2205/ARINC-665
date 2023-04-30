@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -59,14 +60,6 @@ class ARINC665_QT_EXPORT CompileMediaSetWizard final : public QWizard
 
   private slots:
     /**
-     * @brief Slot for currentIdChanged() signal.
-     *
-     * @param[in] id
-     *   new current ID
-     **/
-    void pageChanged( int id );
-
-    /**
      * @brief Called when a ARINC 665 Media Set XML file has been selected.
      *
      * @param[in] xmlFile
@@ -118,20 +111,20 @@ class ARINC665_QT_EXPORT CompileMediaSetWizard final : public QWizard
      **/
     void outputDirectory( std::filesystem::path directory );
 
-  private:
     /**
      * @brief Start Media Set Compilation.
      **/
     void compileMediaSet();
 
+  private:
     //! UI (designer)
-    std::unique_ptr< Ui::CompileMediaSetWizard > ui;
+    std::unique_ptr< Ui::CompileMediaSetWizard > ui{};
     //! ARINC 665 Media Set Compiler
-    Arinc665::Utils::FilesystemMediaSetCompilerPtr compilerV;
+    Arinc665::Utils::FilesystemMediaSetCompilerPtr compilerV{};
     //! XML File
-    std::filesystem::path xmlFileV;
+    std::filesystem::path xmlFileV{};
     //! Output Base Path
-    std::filesystem::path outputDirectoryV;
+    std::filesystem::path outputDirectoryV{};
 };
 
 }

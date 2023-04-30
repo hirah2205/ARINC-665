@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -71,6 +72,12 @@ QVariant LoadsModel::data( const QModelIndex &index, const int role ) const
       }
 
     case Qt::ItemDataRole::ToolTipRole:
+      if ( const auto &loadType{ loadPtr->loadType() }; loadType )
+      {
+        return QString::fromStdString( loadType->first );
+      }
+      return {};
+
     case Qt::ItemDataRole::TextAlignmentRole:
     default:
       return {};

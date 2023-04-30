@@ -24,15 +24,10 @@
   <property name="wizardStyle">
    <enum>QWizard::ModernStyle</enum>
   </property>
+  <property name="options">
+   <set>QWizard::NoBackButtonOnStartPage</set>
+  </property>
   <widget class="Arinc665Qt::MediaSetManager::ImportMediaSetXmlSettingsPage" name="settings"/>
-  <widget class="QWizardPage" name="finish">
-   <property name="title">
-    <string>Operation Completed</string>
-   </property>
-   <property name="subTitle">
-    <string>Finished Import</string>
-   </property>
-  </widget>
  </widget>
  <customwidgets>
   <customwidget>

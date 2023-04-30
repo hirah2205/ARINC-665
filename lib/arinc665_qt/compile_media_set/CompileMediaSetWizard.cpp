@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -38,7 +39,20 @@ CompileMediaSetWizard::CompileMediaSetWizard( QWidget * const parent ) :
   assert( compilerV );
 
   ui->setupUi( this );
-  ui->settings->setCommitPage( true );
+
+  // set Logo of Wizard Pages
+  QIcon icon{};
+  icon.addFile(
+    QString::fromUtf8( ":/media_set_manager/arinc665_media_set_compile.svg" ),
+    QSize{},
+    QIcon::Normal,
+    QIcon::Off );
+  for ( const auto pageId : pageIds() )
+  {
+    page( pageId )->setPixmap(
+      QWizard::WizardPixmap::LogoPixmap,
+      icon.pixmap( 64 ) );
+  }
 
   connect(
     ui->settings,
@@ -73,23 +87,15 @@ CompileMediaSetWizard::CompileMediaSetWizard( QWidget * const parent ) :
 
   connect(
     this,
-    &QWizard::currentIdChanged,
+    &QWizard::accepted,
     this,
-    &CompileMediaSetWizard::pageChanged );
+    &CompileMediaSetWizard::compileMediaSet );
 
   // finally set defaults (signals must be connected)
   ui->settings->defaults( Arinc665::Utils::MediaSetDefaults{} );
 }
 
 CompileMediaSetWizard::~CompileMediaSetWizard() = default;
-
-void CompileMediaSetWizard::pageChanged( int id )
-{
-  if ( ui->settings->nextId() == id )
-  {
-    compileMediaSet();
-  }
-}
 
 void CompileMediaSetWizard::xmlFile( std::filesystem::path xmlFile )
 {
@@ -138,15 +144,33 @@ void CompileMediaSetWizard::compileMediaSet()
       .outputBasePath( outputDirectoryV );
     assert( compilerV );
     ( *compilerV )();
+
+    QMessageBox::information(
+      nullptr,
+      tr( "Media Set Compilation successful" ),
+      QString{ "Media Set created within <tt>%1</tt>" }
+        .arg( QString::fromStdString( outputDirectoryV.string() ) ) );
   }
-  catch ( const Arinc665::Arinc665Exception &e )
+  catch ( const boost::exception &e )
   {
     const auto info{ boost::diagnostic_information( e ) };
 
     QMessageBox::critical(
       nullptr,
       tr( "Error during compilation" ),
-      QString::fromStdString( info ) );
+      QString{ tr( "Error:<br/><tt>%1</tt>") }
+        .arg( QString::fromStdString( info ) ) );
+    return;
+  }
+  catch ( const std::exception &e )
+  {
+    const auto info{ boost::diagnostic_information( e ) };
+
+    QMessageBox::critical(
+      nullptr,
+      tr( "Error during compilation" ),
+      QString{ tr( "Error:<br/><tt>%1</tt>") }
+        .arg( QString::fromStdString( info ) ) );
     return;
   }
 }

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -52,14 +53,6 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlWizard : public QWizard
 
   private slots:
     /**
-     * @brief Slot for currentIdChanged() signal.
-     *
-     * @param[in] id
-     *   new current ID
-     **/
-    void pageChanged( int id );
-
-    /**
      * @brief Called when a ARINC 665 Media Set XML file has been selected.
      *
      * @param[in] xmlFile
@@ -111,12 +104,12 @@ class ARINC665_QT_EXPORT ImportMediaSetXmlWizard : public QWizard
      **/
     void checkFileIntegrity( bool checkFileIntegrity );
 
-  private:
     /**
      * @brief Start Media Set XML Import.
      **/
     void importMediaSetXml();
 
+  private:
     //! UI (designer)
     std::unique_ptr< Ui::ImportMediaSetXmlWizard > ui{};
     //! Media Set Manager

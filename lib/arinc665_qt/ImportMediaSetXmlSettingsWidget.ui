@@ -46,6 +46,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="selectXmlFile">
+        <property name="toolTip">
+         <string>Select ARINC 665 Media Set XML file</string>
+        </property>
         <property name="icon">
          <iconset resource="../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
           <normaloff>:/fa/solid/file-code.svg</normaloff>:/fa/solid/file-code.svg</iconset>
@@ -92,6 +95,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="selectInputDirectory">
+        <property name="toolTip">
+         <string>Select Import Directory</string>
+        </property>
         <property name="icon">
          <iconset resource="../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
           <normaloff>:/fa/solid/folder-open.svg</normaloff>:/fa/solid/folder-open.svg</iconset>

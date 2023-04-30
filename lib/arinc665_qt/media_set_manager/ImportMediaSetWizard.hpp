@@ -55,14 +55,6 @@ class ARINC665_QT_EXPORT ImportMediaSetWizard final : public QWizard
 
   private slots:
     /**
-     * @brief Slot for currentIdChanged() signal.
-     *
-     * @param[in] id
-     *   new current ID
-     **/
-    void pageChanged( int id );
-
-    /**
      * @brief Slot called, whe user updates the Media Paths.
      *
      * @param[in] mediaPaths
@@ -85,7 +77,7 @@ class ARINC665_QT_EXPORT ImportMediaSetWizard final : public QWizard
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetWizard > ui;
+    std::unique_ptr< Ui::ImportMediaSetWizard > ui{};
     //! Media Set Manager
     Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV{};
     //! ARINC 665 Media Set Copier
