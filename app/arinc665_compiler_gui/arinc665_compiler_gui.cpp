@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -53,8 +54,7 @@ try
     QObject::tr( "ARINC 665 Media Set Compiler" ) );
   QApplication::setOrganizationName( "Thomas Vogt" );
   QApplication::setOrganizationDomain( "thomas-vogt.de" );
-  QApplication::setWindowIcon( QIcon(
-    ":/media_set_manager/arinc665_media_set_compile.svg" ) );
+  QApplication::setWindowIcon( QIcon{ ":/fa/solid/gears.svg" } );
 
   Arinc665Qt::CompileMediaSetWizard compileMediaSetWizard{};
   compileMediaSetWizard.show();

@@ -14,8 +14,8 @@
    </rect>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources/arinc665_qt_resources.qrc">
-    <normaloff>:/media_set_manager/arinc665_media_set_manager.svg</normaloff>:/media_set_manager/arinc665_media_set_manager.svg</iconset>
+   <iconset resource="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
+    <normaloff>:/fa/solid/database.svg</normaloff>:/fa/solid/database.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -55,8 +55,8 @@
          <string>View Media Set</string>
         </property>
         <property name="icon">
-         <iconset resource="../resources/arinc665_qt_resources.qrc">
-          <normaloff>:/media_set_manager/arinc665_media_set_view.svg</normaloff>:/media_set_manager/arinc665_media_set_view.svg</iconset>
+         <iconset resource="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
+          <normaloff>:/fa/solid/eye.svg</normaloff>:/fa/solid/eye.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -72,8 +72,8 @@
          <string>Import Media Set</string>
         </property>
         <property name="icon">
-         <iconset resource="../resources/arinc665_qt_resources.qrc">
-          <normaloff>:/media_set_manager/arinc665_media_set_import.svg</normaloff>:/media_set_manager/arinc665_media_set_import.svg</iconset>
+         <iconset resource="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
+          <normaloff>:/fa/solid/arrow-right-to-bracket.svg</normaloff>:/fa/solid/arrow-right-to-bracket.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -89,8 +89,8 @@
          <string>Import Media Set XML</string>
         </property>
         <property name="icon">
-         <iconset resource="../resources/arinc665_qt_resources.qrc">
-          <normaloff>:/media_set_manager/arinc665_media_set_import_xml.svg</normaloff>:/media_set_manager/arinc665_media_set_import_xml.svg</iconset>
+         <iconset resource="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
+          <normaloff>:/fa/solid/file-import.svg</normaloff>:/fa/solid/file-import.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -106,8 +106,8 @@
          <string>Remove Media Set</string>
         </property>
         <property name="icon">
-         <iconset resource="../resources/arinc665_qt_resources.qrc">
-          <normaloff>:/media_set_manager/arinc665_media_set_delete.svg</normaloff>:/media_set_manager/arinc665_media_set_delete.svg</iconset>
+         <iconset resource="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
+          <normaloff>:/fa/solid/trash-can.svg</normaloff>:/fa/solid/trash-can.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -136,8 +136,8 @@
          <string>Open Media Sets Directory</string>
         </property>
         <property name="icon">
-         <iconset resource="../resources/arinc665_qt_resources.qrc">
-          <normaloff>:/media_set/arinc665_media_set.svg</normaloff>:/media_set/arinc665_media_set.svg</iconset>
+         <iconset resource="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
+          <normaloff>:/fa/solid/folder-tree.svg</normaloff>:/fa/solid/folder-tree.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -153,8 +153,8 @@
          <string>Media Set Manager Settings</string>
         </property>
         <property name="icon">
-         <iconset resource="../resources/arinc665_qt_resources.qrc">
-          <normaloff>:/arinc665_settings.svg</normaloff>:/arinc665_settings.svg</iconset>
+         <iconset resource="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
+          <normaloff>:/fa/solid/gear.svg</normaloff>:/fa/solid/gear.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -178,6 +178,7 @@
  </tabstops>
  <resources>
   <include location="../resources/arinc665_qt_resources.qrc"/>
+  <include location="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc"/>
  </resources>
  <connections/>
 </ui>

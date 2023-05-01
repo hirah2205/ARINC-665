@@ -28,7 +28,7 @@ DecompileMediaSetWizard::DecompileMediaSetWizard( QWidget * const parent ) :
   // set Logo of Wizard Pages
   QIcon icon{};
   icon.addFile(
-    QString::fromUtf8( ":/media_set_manager/arinc665_media_set_decompile.svg" ),
+    QString::fromUtf8( ":/fa/solid/folder-tree.svg" ),
     QSize{},
     QIcon::Normal,
     QIcon::Off );

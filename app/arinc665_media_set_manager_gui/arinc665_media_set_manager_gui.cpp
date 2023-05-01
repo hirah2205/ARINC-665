@@ -57,8 +57,7 @@ try
     QObject::tr( "ARINC 665 Media Set Manager" ) );
   QApplication::setOrganizationName( "Thomas Vogt" );
   QApplication::setOrganizationDomain( "thomas-vogt.de" );
-  QApplication::setWindowIcon( QIcon(
-    ":/media_set_manager/arinc665_media_set_manager.svg" ) );
+  QApplication::setWindowIcon( QIcon{ ":/fa/solid/database.svg" } );
 
   Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction
     mediaSetManagerAction{};

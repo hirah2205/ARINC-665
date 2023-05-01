@@ -7,11 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>306</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>ARINC 665 Media Set Manager Settings</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
+    <normaloff>:/fa/solid/gear.svg</normaloff>:/fa/solid/gear.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -122,7 +126,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

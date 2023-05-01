@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -7,11 +8,6 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief ARINC 665 Media Set Viewer QT Application.
- **/
-
-/**
- * @dir
  * @brief ARINC 665 Media Set Viewer QT Application.
  **/
 
@@ -58,8 +54,7 @@ int main( int argc, char * argv[] )
       QObject::tr( "ARINC 665 Media Set Viewer" ) );
     QApplication::setOrganizationName( "Thomas Vogt" );
     QApplication::setOrganizationDomain( "thomas-vogt.de" );
-    QApplication::setWindowIcon( QIcon(
-      ":/media_set_manager/arinc665_media_set_view.svg" ) );
+    QApplication::setWindowIcon( QIcon{ ":/fa/solid/eye.svg" } );
 
     Arinc665Qt::MediaSetViewWindow mediaSetViewWindow{};
     emit mediaSetViewWindow.show();

@@ -47,8 +47,7 @@ ImportMediaSetXmlWizard::ImportMediaSetXmlWizard(
   // set Logo of Wizard Pages
   QIcon icon{};
   icon.addFile(
-    QString::fromUtf8(
-      ":/media_set_manager/arinc665_media_set_import_xml.svg" ),
+    QString::fromUtf8( ":/fa/solid/file-import.svg" ),
     QSize{},
     QIcon::Normal,
     QIcon::Off );

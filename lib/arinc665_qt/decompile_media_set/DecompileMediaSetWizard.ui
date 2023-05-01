@@ -17,8 +17,8 @@
    <string>Decompile ARINC 665 Media Set</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources/arinc665_qt_resources.qrc">
-    <normaloff>:/media_set_manager/arinc665_media_set_decompile.svg</normaloff>:/media_set_manager/arinc665_media_set_decompile.svg</iconset>
+   <iconset resource="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
+    <normaloff>:/fa/solid/folder-tree.svg</normaloff>:/fa/solid/folder-tree.svg</iconset>
   </property>
   <property name="wizardStyle">
    <enum>QWizard::ModernStyle</enum>
@@ -45,6 +45,7 @@
  </customwidgets>
  <resources>
   <include location="../resources/arinc665_qt_resources.qrc"/>
+  <include location="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc"/>
  </resources>
  <connections/>
 </ui>

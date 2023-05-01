@@ -93,11 +93,14 @@
   </action>
   <action name="actionDecompileMediaSet">
    <property name="icon">
-    <iconset resource="../resources/arinc665_qt_resources.qrc">
-     <normaloff>:/media_set_manager/arinc665_media_set_import.svg</normaloff>:/media_set_manager/arinc665_media_set_import.svg</iconset>
+    <iconset resource="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
+     <normaloff>:/fa/solid/arrow-right-to-bracket.svg</normaloff>:/fa/solid/arrow-right-to-bracket.svg</iconset>
    </property>
    <property name="text">
     <string>Decompile Media Set</string>
+   </property>
+   <property name="toolTip">
+    <string>Decompile ARINC 665 Media Set</string>
    </property>
   </action>
  </widget>
