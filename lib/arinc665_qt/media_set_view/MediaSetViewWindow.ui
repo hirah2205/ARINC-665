@@ -13,7 +13,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/arinc665_qt_resources.qrc">
-    <normaloff>:/media_set_manager/arinc665_media_set_view.svg</normaloff>:/media_set_manager/arinc665_media_set_view.svg</iconset>
+    <normaloff>:/fa/solid/eye.svg</normaloff>:/fa/solid/eye.svg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -89,6 +89,9 @@
    </property>
    <property name="text">
     <string>Save Media Set XML</string>
+   </property>
+   <property name="toolTip">
+    <string>Save ARINC 665 Media Set XML</string>
    </property>
   </action>
   <action name="actionDecompileMediaSet">

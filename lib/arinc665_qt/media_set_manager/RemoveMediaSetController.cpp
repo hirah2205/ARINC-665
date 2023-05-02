@@ -43,7 +43,7 @@ void RemoveMediaSetController::start(
   const auto answer{ QMessageBox::question(
       nullptr,
       tr( "Remove ARINC 665 Media Set" ),
-      QString{ tr("Remove Media Set <i>%1</i>" ) }
+      QString{ tr("Remove Media Set <i>%1</i>?" ) }
         .arg( HelperQt::toQString( mediaSet->partNumber() ) ) ) };
 
   switch ( answer )
