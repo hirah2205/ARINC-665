@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -14,17 +15,17 @@
  * @dir
  * @brief Media Set Viewer
  *
- * @sa @ref Arinc665Qt::MediaSetViewWindow
+ * @sa @ref Arinc665Qt::MediaSetViewerWindow
  **/
 
-#ifndef ARINC665_QT_MEDIA_SET_VIEW_MEDIASETVIEW_HPP
-#define ARINC665_QT_MEDIA_SET_VIEW_MEDIASETVIEW_HPP
+#ifndef ARINC665_QT_MEDIA_SET_VIEWER_MEDIASETVIEWER_HPP
+#define ARINC665_QT_MEDIA_SET_VIEWER_MEDIASETVIEWER_HPP
 
 #include <arinc665_qt/Arinc665Qt.hpp>
 
 namespace Arinc665Qt {
 
-class MediaSetViewWindow;
+class MediaSetViewerWindow;
 
 }
 

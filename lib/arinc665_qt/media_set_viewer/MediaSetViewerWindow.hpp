@@ -8,13 +8,13 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::MediaSetViewWindow.
+ * @brief Declaration of Class Arinc665Qt::MediaSetViewerWindow.
  **/
 
-#ifndef ARINC665_QT_MEDIA_SET_VIEW_WMEDIASETVIEWINDOW_HPP
-#define ARINC665_QT_MEDIA_SET_VIEW_WMEDIASETVIEWINDOW_HPP
+#ifndef ARINC665_QT_MEDIA_SET_VIEW_WMEDIASETVIEWERWINDOW_HPP
+#define ARINC665_QT_MEDIA_SET_VIEW_WMEDIASETVIEWERWINDOW_HPP
 
-#include <arinc665_qt/media_set_view/MediaSetViewWindow.hpp>
+#include <arinc665_qt/media_set_viewer/MediaSetViewerWindow.hpp>
 
 #include <arinc665_qt/decompile_media_set/DecompileMediaSet.hpp>
 
@@ -30,19 +30,19 @@
 
 namespace Arinc665Qt {
 
-namespace Ui{
-class MediaSetViewWindow;
+namespace Ui {
+class MediaSetViewerWindow;
 }
 
 /**
- * @brief ARINC 665 %Media Set View Window
+ * @brief ARINC 665 %Media Set Viewer Window
  *
  * Shows a window, where an ARINC 665 Media Set structure is shown.
  * The window provides actions to load an ARINC 665 Media Set XML or load an
  * existing ARINC 665 Media set via
  * @ref Arinc665::Utils::FilesystemMediaSetDecompiler.
  **/
-class ARINC665_QT_EXPORT MediaSetViewWindow final : public QMainWindow
+class ARINC665_QT_EXPORT MediaSetViewerWindow final : public QMainWindow
 {
     Q_OBJECT
 
@@ -53,10 +53,10 @@ class ARINC665_QT_EXPORT MediaSetViewWindow final : public QMainWindow
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit MediaSetViewWindow( QWidget * parent = nullptr );
+    explicit MediaSetViewerWindow( QWidget * parent = nullptr );
 
     //! Destructor
-    ~MediaSetViewWindow() override;
+    ~MediaSetViewerWindow() override;
 
   private slots:
     /**
@@ -99,7 +99,7 @@ class ARINC665_QT_EXPORT MediaSetViewWindow final : public QMainWindow
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaSetViewWindow > ui{};
+    std::unique_ptr< Ui::MediaSetViewerWindow > ui{};
     //! Wizard Dialog
     std::unique_ptr< DecompileMediaSetWizard > decompileMediaSetWizardV{};
     //! Select Load Media Set XML file dialog

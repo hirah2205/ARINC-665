@@ -13,7 +13,7 @@
 
 #include <arinc665_qt/resources/Resources.hpp>
 
-#include <arinc665_qt/media_set_view/MediaSetViewWindow.hpp>
+#include <arinc665_qt/media_set_viewer/MediaSetViewerWindow.hpp>
 
 #include <qt_icon_resources/QtIconResources.hpp>
 
@@ -56,8 +56,8 @@ int main( int argc, char * argv[] )
     QApplication::setOrganizationDomain( "thomas-vogt.de" );
     QApplication::setWindowIcon( QIcon{ ":/fa/solid/eye.svg" } );
 
-    Arinc665Qt::MediaSetViewWindow mediaSetViewWindow{};
-    emit mediaSetViewWindow.show();
+    Arinc665Qt::MediaSetViewerWindow mediaSetViewerWindow{};
+    emit mediaSetViewerWindow.show();
 
     return QApplication::exec();
   }

@@ -8,12 +8,12 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Qt::MediaSetViewWindow.
+ * @brief Definition of Class Arinc665Qt::MediaSetViewerWindow.
  **/
 
-#include "MediaSetViewWindow.hpp"
+#include "MediaSetViewerWindow.hpp"
 
-#include "ui_MediaSetViewWindow.h"
+#include "ui_MediaSetViewerWindow.h"
 
 #include <arinc665_qt/decompile_media_set/DecompileMediaSetWizard.hpp>
 
@@ -44,9 +44,9 @@
 
 namespace Arinc665Qt {
 
-MediaSetViewWindow::MediaSetViewWindow( QWidget * const parent ):
+MediaSetViewerWindow::MediaSetViewerWindow( QWidget * const parent ):
   QMainWindow{ parent },
-  ui{ std::make_unique< Ui::MediaSetViewWindow >() },
+  ui{ std::make_unique< Ui::MediaSetViewerWindow >() },
   decompileMediaSetWizardV{ std::make_unique< DecompileMediaSetWizard >( this ) },
   selectLoadMediaSetXmlDialogV{ std::make_unique< QFileDialog>( this ) },
   selectSaveMediaSetXmlDialogV{ std::make_unique< QFileDialog>( this ) },
@@ -74,17 +74,17 @@ MediaSetViewWindow::MediaSetViewWindow( QWidget * const parent ):
     decompileMediaSetWizardV.get(),
     &DecompileMediaSetWizard::mediaPathsChanged,
     this,
-    &MediaSetViewWindow::updateMediaPaths );
+    &MediaSetViewerWindow::updateMediaPaths );
   connect(
     decompileMediaSetWizardV.get(),
     &DecompileMediaSetWizard::checkFileIntegrity,
     this,
-    &MediaSetViewWindow::checkFileIntegrity );
+    &MediaSetViewerWindow::checkFileIntegrity );
   connect(
     decompileMediaSetWizardV.get(),
     &DecompileMediaSetWizard::accepted,
     this,
-    &MediaSetViewWindow::startMediaSetDecompilation );
+    &MediaSetViewerWindow::startMediaSetDecompilation );
 
 
   selectLoadMediaSetXmlDialogV->setWindowTitle( tr( "Select ARINC 665 Media Set XML" ) );
@@ -105,7 +105,7 @@ MediaSetViewWindow::MediaSetViewWindow( QWidget * const parent ):
     selectLoadMediaSetXmlDialogV.get(),
     &QFileDialog::fileSelected,
     this,
-    &MediaSetViewWindow::loadXmlFile );
+    &MediaSetViewerWindow::loadXmlFile );
 
 
   selectSaveMediaSetXmlDialogV->setWindowTitle( tr( "Select ARINC 665 Media Set XML" ) );
@@ -128,25 +128,25 @@ MediaSetViewWindow::MediaSetViewWindow( QWidget * const parent ):
     selectSaveMediaSetXmlDialogV.get(),
     &QFileDialog::fileSelected,
     this,
-    &MediaSetViewWindow::saveXmlFile );
+    &MediaSetViewerWindow::saveXmlFile );
 
   ui->actionSaveMediaSetXml->setEnabled( false );
 }
 
-MediaSetViewWindow::~MediaSetViewWindow() = default;
+MediaSetViewerWindow::~MediaSetViewerWindow() = default;
 
-void MediaSetViewWindow::updateMediaPaths(
+void MediaSetViewerWindow::updateMediaPaths(
   const Arinc665::Utils::MediaPaths &mediaPaths )
 {
   mediaPathsV = mediaPaths;
 }
 
-void MediaSetViewWindow::checkFileIntegrity( bool checkFileIntegrity )
+void MediaSetViewerWindow::checkFileIntegrity( bool checkFileIntegrity )
 {
   checkFileIntegrityV = checkFileIntegrity;
 }
 
-void MediaSetViewWindow::startMediaSetDecompilation()
+void MediaSetViewerWindow::startMediaSetDecompilation()
 {
   BOOST_LOG_FUNCTION()
 
@@ -208,7 +208,7 @@ void MediaSetViewWindow::startMediaSetDecompilation()
   decompileMediaSetWizardV->restart();
 }
 
-void MediaSetViewWindow::loadXmlFile( const QString &file )
+void MediaSetViewerWindow::loadXmlFile( const QString &file )
 {
   try
   {
@@ -257,7 +257,7 @@ void MediaSetViewWindow::loadXmlFile( const QString &file )
   }
 }
 
-void MediaSetViewWindow::saveXmlFile( const QString &file )
+void MediaSetViewerWindow::saveXmlFile( const QString &file )
 {
   if ( !mediaSetModelV->root() )
   {

@@ -14,9 +14,9 @@ target_sources(
   PUBLIC
     FILE_SET HEADERS
       FILES
-        MediaSetView.hpp
-        MediaSetViewWindow.hpp
+        MediaSetViewer.hpp
+        MediaSetViewerWindow.hpp
 
   PRIVATE
-    MediaSetViewWindow.cpp
-    MediaSetViewWindow.ui )
+    MediaSetViewerWindow.cpp
+    MediaSetViewerWindow.ui )

@@ -13,16 +13,16 @@ if( NOT TARGET arinc665_qt )
   return()
 endif()
 
-add_executable( arinc665_media_set_view_gui WIN32 )
+add_executable( arinc665_media_set_viewer_gui WIN32 )
 
 target_sources(
-  arinc665_media_set_view_gui
-  PRIVATE arinc665_media_set_view_gui.cpp )
+  arinc665_media_set_viewer_gui
+  PRIVATE arinc665_media_set_viewer_gui.cpp )
 
-target_compile_features( arinc665_media_set_view_gui PRIVATE cxx_std_20 )
+target_compile_features( arinc665_media_set_viewer_gui PRIVATE cxx_std_20 )
 
 target_compile_options(
-  arinc665_media_set_view_gui
+  arinc665_media_set_viewer_gui
 
   PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:-W4>
@@ -34,7 +34,7 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
 
 target_link_libraries(
-  arinc665_media_set_view_gui
+  arinc665_media_set_viewer_gui
 
   PRIVATE
     qt_icon_resources
@@ -46,6 +46,6 @@ set_property(
   PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
 
 install(
-  TARGETS arinc665_media_set_view_gui
+  TARGETS arinc665_media_set_viewer_gui
   RUNTIME_DEPENDENCY_SET arinc665-runtime-deps
   COMPONENT runtime )
