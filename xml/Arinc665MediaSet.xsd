@@ -92,7 +92,7 @@
     </documentation></annotation>
     <complexContent>
       <extension base="ams:FileType" >
-        <sequence>
+        <sequence minOccurs="0" maxOccurs="1" >
           <element name="TargetHardware"  type="ams:TargetHardwareType"  minOccurs="1" maxOccurs="unbounded" />
           <element name="DataFile"        type="ams:FileReferenceType"   minOccurs="1" maxOccurs="unbounded" />
           <element name="SupportFile"     type="ams:FileReferenceType"   minOccurs="0" maxOccurs="unbounded" />
@@ -116,7 +116,7 @@
     </documentation></annotation>
     <complexContent>
       <extension base="ams:FileType" >
-        <sequence>
+        <sequence minOccurs="0" maxOccurs="1" >
           <element name="Target" type="ams:BatchTargetType" minOccurs="1" maxOccurs="unbounded" />
         </sequence>
 

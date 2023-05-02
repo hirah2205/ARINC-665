@@ -42,5 +42,11 @@
         <Load FilePath="/Load2.LUH" />
       </Target>
     </Batch>
+    <Directory Name="Directory3" >
+      <File Name="DIR3_FILE1" />
+      <Load Name="DIR3_LOAD1.LUH" PartNumber="DIR3LOAD1" SourcePath="DIR3LOAD1.LUH" />
+      <Load Name="DIR3_LOAD2.LUH" PartNumber="DIR3LOAD2" SourcePath="DIR3LOAD2.LUH" />
+      <Batch Name="DIR3_BATCH1.LUB" PartNumber="DIR3BATCH1" SourcePath="DIR3_BATCH1.LUB" />
+    </Directory>
   </Content>
 </MediaSet>
