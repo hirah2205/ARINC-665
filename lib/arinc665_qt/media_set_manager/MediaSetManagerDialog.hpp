@@ -27,7 +27,7 @@
 
 namespace Arinc665Qt::MediaSetManager {
 
-namespace Ui{
+namespace Ui {
 class MediaSetManagerDialog;
 }
 

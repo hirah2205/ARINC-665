@@ -107,10 +107,13 @@ void MediaSetManagerDialog::reloadMediaSetModel()
   if ( mediaSetManagerV )
   {
     // convert media sets to const media sets
-    for ( const auto &[ partNumber, mediaSet ] : mediaSetManagerV->mediaSets() )
-    {
-      mediaSets.emplace_back( mediaSet.first );
-    }
+    std::ranges::transform(
+      mediaSetManagerV->mediaSets(),
+      std::back_inserter( mediaSets ),
+      []( const auto &mediaSet )
+      {
+        return mediaSet.second.first;
+      } );
   }
 
   mediaSetsModelV->mediaSets( std::move( mediaSets ) );
