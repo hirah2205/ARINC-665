@@ -84,19 +84,19 @@
  <customwidgets>
   <customwidget>
    <class>Arinc665Qt::Media::RegularFileWidget</class>
-   <extends>QWidget</extends>
+   <extends>QGroupBox</extends>
    <header location="global">arinc665_qt/media/RegularFileWidget.hpp</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>Arinc665Qt::Media::LoadWidget</class>
-   <extends>QWidget</extends>
+   <extends>QGroupBox</extends>
    <header location="global">arinc665_qt/media/LoadWidget.hpp</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>Arinc665Qt::Media::BatchWidget</class>
-   <extends>QWidget</extends>
+   <extends>QGroupBox</extends>
    <header location="global">arinc665_qt/media/BatchWidget.hpp</header>
    <container>1</container>
   </customwidget>

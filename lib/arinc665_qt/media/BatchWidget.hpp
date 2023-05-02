@@ -17,7 +17,7 @@
 
 #include <arinc665/media/Media.hpp>
 
-#include <QWidget>
+#include <QGroupBox>
 
 #include <memory>
 
@@ -28,7 +28,7 @@ class BatchWidget;
 }
 
 //! Widget for Batch Presentation
-class ARINC665_QT_EXPORT BatchWidget : public QWidget
+class ARINC665_QT_EXPORT BatchWidget final : public QGroupBox
 {
     Q_OBJECT
 

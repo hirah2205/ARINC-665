@@ -27,7 +27,7 @@
 namespace Arinc665Qt::Media {
 
 LoadWidget::LoadWidget( QWidget * const parent):
-  QWidget{ parent},
+  QGroupBox{ parent },
   ui{ std::make_unique< Ui::LoadWidget>() },
   targetHardwareIdsPositionsModel{
     std::make_unique< TargetHardwareIdsPositionsModel >( this ) },

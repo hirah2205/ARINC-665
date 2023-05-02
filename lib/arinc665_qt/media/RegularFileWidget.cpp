@@ -23,7 +23,7 @@
 namespace Arinc665Qt::Media {
 
 RegularFileWidget::RegularFileWidget( QWidget * const parent ) :
-  QWidget{ parent },
+  QGroupBox{ parent },
   ui{ std::make_unique< Ui::RegularFileWidget>() },
   usedInLoadsModelV{ std::make_unique< LoadsModel >( this ) }
 {

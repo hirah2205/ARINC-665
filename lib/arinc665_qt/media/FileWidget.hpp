@@ -30,7 +30,7 @@ class FileWidget;
 }
 
 //! Widget for Basic File Presentation
-class ARINC665_QT_EXPORT FileWidget : public QWidget
+class ARINC665_QT_EXPORT FileWidget final : public QWidget
 {
     Q_OBJECT
 

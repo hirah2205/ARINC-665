@@ -17,7 +17,7 @@
 
 #include <arinc665/media/Media.hpp>
 
-#include <QWidget>
+#include <QGroupBox>
 
 #include <memory>
 
@@ -28,7 +28,7 @@ class LoadWidget;
 }
 
 //! Widget for Load Presentation
-class ARINC665_QT_EXPORT LoadWidget : public QWidget
+class ARINC665_QT_EXPORT LoadWidget final : public QGroupBox
 {
   Q_OBJECT
 

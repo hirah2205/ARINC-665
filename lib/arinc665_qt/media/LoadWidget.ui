@@ -2,131 +2,118 @@
 <ui version="4.0">
  <author>Thomas Vogt</author>
  <class>Arinc665Qt::Media::LoadWidget</class>
- <widget class="QWidget" name="Arinc665Qt::Media::LoadWidget">
+ <widget class="QGroupBox" name="Arinc665Qt::Media::LoadWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>651</height>
+    <width>401</width>
+    <height>601</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
+  <property name="title">
+   <string>Load</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="gbLoad">
-     <property name="title">
-      <string>Load</string>
+    <widget class="QLabel" name="lblPartNumber">
+     <property name="text">
+      <string>Part Number</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QLabel" name="lblPartNumber">
+     <property name="buddy">
+      <cstring>partNumber</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="partNumber"/>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblPartFlags">
+     <property name="text">
+      <string>Part Flags</string>
+     </property>
+     <property name="buddy">
+      <cstring>partFlags</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="partFlags"/>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbLoadType">
+     <property name="title">
+      <string>Load Type</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="lblLoadTypeDescription">
         <property name="text">
-         <string>Part Number</string>
-        </property>
-        <property name="buddy">
-         <cstring>partNumber</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="partNumber"/>
-      </item>
-      <item>
-       <widget class="QLabel" name="lblPartFlags">
-        <property name="text">
-         <string>Part Flags</string>
-        </property>
-        <property name="buddy">
-         <cstring>partFlags</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="partFlags"/>
-      </item>
-      <item>
-       <widget class="QLabel" name="lblLoadType">
-        <property name="text">
-         <string>LoadType</string>
+         <string>Description</string>
         </property>
         <property name="buddy">
          <cstring>loadTypeDescription</cstring>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QGroupBox" name="gbLoadType">
-        <property name="title">
-         <string>Load Type</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="lblLoadTypeDescription">
-           <property name="text">
-            <string>Description</string>
-           </property>
-           <property name="buddy">
-            <cstring>loadTypeDescription</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLineEdit" name="loadTypeDescription">
-           <property name="clearButtonEnabled">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="lblLoadTypeId">
-           <property name="text">
-            <string>ID</string>
-           </property>
-           <property name="buddy">
-            <cstring>loadTypeId</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="loadTypeId">
-           <property name="inputMask">
-            <string>hhhH</string>
-           </property>
-           <property name="clearButtonEnabled">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="lblTargetHardwaresPositions">
-        <property name="text">
-         <string>Target Hardwares / Postitions</string>
-        </property>
-        <property name="buddy">
-         <cstring>targetHardwareIdsPositions</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTreeView" name="targetHardwareIdsPositions">
-        <property name="alternatingRowColors">
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="loadTypeDescription">
+        <property name="clearButtonEnabled">
          <bool>true</bool>
         </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::NoSelection</enum>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="lblLoadTypeId">
+        <property name="text">
+         <string>ID</string>
         </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
+        <property name="buddy">
+         <cstring>loadTypeId</cstring>
         </property>
        </widget>
       </item>
-      <item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="loadTypeId">
+        <property name="inputMask">
+         <string>hhhH</string>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblTargetHardwaresPositions">
+     <property name="text">
+      <string>Target Hardwares / Postitions</string>
+     </property>
+     <property name="buddy">
+      <cstring>targetHardwareIdsPositions</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTreeView" name="targetHardwareIdsPositions">
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::NoSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget" native="true">
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
        <widget class="QLabel" name="lblDataFiles">
         <property name="text">
          <string>Data Files</string>
@@ -136,26 +123,7 @@
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QTableView" name="dataFiles">
-        <property name="alternatingRowColors">
-         <bool>true</bool>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::NoSelection</enum>
-        </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
-        </property>
-        <attribute name="horizontalHeaderStretchLastSection">
-         <bool>true</bool>
-        </attribute>
-        <attribute name="verticalHeaderVisible">
-         <bool>false</bool>
-        </attribute>
-       </widget>
-      </item>
-      <item>
+      <item row="0" column="1">
        <widget class="QLabel" name="lblSupportFiles">
         <property name="text">
          <string>Support Files</string>
@@ -165,7 +133,7 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="1" column="1">
        <widget class="QTableView" name="supportFiles">
         <property name="alternatingRowColors">
          <bool>true</bool>
@@ -184,15 +152,8 @@
         </attribute>
        </widget>
       </item>
-      <item>
-       <widget class="QLabel" name="usedInBatchesLabel">
-        <property name="text">
-         <string>Used in Batches</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTableView" name="usedInBatches">
+      <item row="1" column="0">
+       <widget class="QTableView" name="dataFiles">
         <property name="alternatingRowColors">
          <bool>true</bool>
         </property>
@@ -213,16 +174,34 @@
      </layout>
     </widget>
    </item>
+   <item>
+    <widget class="QLabel" name="usedInBatchesLabel">
+     <property name="text">
+      <string>Used in Batches</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableView" name="usedInBatches">
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::NoSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+   </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>partNumber</tabstop>
-  <tabstop>partFlags</tabstop>
-  <tabstop>loadTypeDescription</tabstop>
-  <tabstop>targetHardwareIdsPositions</tabstop>
-  <tabstop>dataFiles</tabstop>
-  <tabstop>supportFiles</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>

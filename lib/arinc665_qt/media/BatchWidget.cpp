@@ -24,7 +24,7 @@
 namespace Arinc665Qt::Media {
 
 BatchWidget::BatchWidget( QWidget * const parent ) :
-  QWidget{ parent},
+  QGroupBox{ parent},
   ui{ std::make_unique< Ui::BatchWidget>() },
   batchInfoModel{ std::make_unique< BatchInfoModel >( this ) },
   targetLoadsModel{ std::make_unique< LoadsModel >( this ) }

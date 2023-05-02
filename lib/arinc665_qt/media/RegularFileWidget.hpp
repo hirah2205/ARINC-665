@@ -17,7 +17,7 @@
 
 #include <arinc665/media/Media.hpp>
 
-#include <QWidget>
+#include <QGroupBox>
 
 #include <memory>
 
@@ -27,8 +27,10 @@ namespace Ui {
 class RegularFileWidget;
 }
 
-//! Widget for Regular File Presentation
-class ARINC665_QT_EXPORT RegularFileWidget : public QWidget
+/**
+ * @brief Widget for Regular File Presentation.
+ **/
+class ARINC665_QT_EXPORT RegularFileWidget final : public QGroupBox
 {
   Q_OBJECT
 
