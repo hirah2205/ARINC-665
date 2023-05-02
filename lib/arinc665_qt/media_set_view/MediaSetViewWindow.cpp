@@ -223,6 +223,9 @@ void MediaSetViewWindow::loadXmlFile( const QString &file )
 
     ui->actionSaveMediaSetXml->setEnabled( true );
 
+    selectSaveMediaSetXmlDialogV->selectFile(
+      HelperQt::toQString( mediaSet->partNumber() ) + ".xml" );
+
     QSettings settings{};
     settings.setValue(
       "LoadMediaSetXmlDirectory",
