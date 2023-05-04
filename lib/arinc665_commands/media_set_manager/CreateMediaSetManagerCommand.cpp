@@ -50,7 +50,9 @@ void CreateMediaSetManagerCommand::execute(
       vm );
     boost::program_options::notify( vm );
 
-    std::cout << " within " << mediaSetManagerDirectory << "\n";
+    std::cout
+      << "Media Set Manager directory: "
+      << mediaSetManagerDirectory.string() << "\n";
 
     Arinc665::Utils::MediaSetManager::create( mediaSetManagerDirectory );
   }

@@ -92,6 +92,8 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetXmlCommand
       createLoadHeaderFiles{};
     //! ARINC 665 Version
     boost::optional< Arinc665::SupportedArinc665Version > version{};
+    //! Check File Integrity
+    bool checkFileIntegrity{ true };
 };
 
 }

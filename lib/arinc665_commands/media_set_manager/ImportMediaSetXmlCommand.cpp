@@ -105,6 +105,11 @@ ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
       .c_str()
   )
   (
+    "check-file-integrity",
+    boost::program_options::value( &checkFileIntegrity )->default_value( true ),
+    "Check File Integrity during registration"
+  )
+  (
     "version",
     boost::program_options::value( &version ),
     ( std::string( "ARINC 665 Version:\n" ) + versionValues ).c_str()
@@ -160,9 +165,7 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 
       auto mediaSetPaths{ ( *compiler )() };
 
-      mediaSetManager->registerMediaSet(
-        mediaSetPaths,
-        defaults.checkFileIntegrity );
+      mediaSetManager->registerMediaSet( mediaSetPaths, checkFileIntegrity );
       mediaSetManager->saveConfiguration();
     }
   }
