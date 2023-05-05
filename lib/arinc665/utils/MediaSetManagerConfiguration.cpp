@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -44,7 +45,7 @@ void MediaSetManagerConfiguration::fromProperties(
 
       // iterate over media
       if ( const auto mediaConfigs{ mediaSetConfig.get_child_optional( "media" ) };
-           mediaConfigs )
+        mediaConfigs )
       {
         for ( const auto &[ mediaPropertyName, mediumConfig ] : *mediaConfigs )
         {
@@ -67,32 +68,43 @@ void MediaSetManagerConfiguration::fromProperties(
   defaults = MediaSetDefaults{ properties.get_child( "defaults", {} ) };
 }
 
-boost::property_tree::ptree MediaSetManagerConfiguration::toProperties() const
+boost::property_tree::ptree MediaSetManagerConfiguration::toProperties(
+  const bool full ) const
 {
+  BOOST_LOG_FUNCTION()
+
   boost::property_tree::ptree properties{};
 
-  auto &mediaSetsProperties{ properties.add_child( "media_sets", {} ) };
-
-  for ( const auto &[ mediaSetPath, media ] : mediaSets )
+  // Media Sets configuration
+  if ( full || !mediaSets.empty() )
   {
-    auto &mediaSetConfig{ mediaSetsProperties.add_child( "media_set", {} ) };
+    auto &mediaSetsProperties{ properties.add_child( "media_sets", {} ) };
 
-    mediaSetConfig.add( "path", mediaSetPath.string() );
-
-    auto &mediaConfig{ mediaSetConfig.add_child( "media", {} ) };
-
-    for ( const auto &[ mediumNumber, mediumPath ] : media )
+    for ( const auto &[ mediaSetPath, media ] : mediaSets )
     {
-      auto &mediumConfig{ mediaConfig.add_child( "medium", {} ) };
+      auto &mediaSetConfig{ mediaSetsProperties.add_child( "media_set", {} ) };
 
-      mediumConfig.add(
-        "number",
-        static_cast< uint8_t >( mediumNumber ) );
-      mediumConfig.add( "path", mediumPath.string() );
+      mediaSetConfig.add( "path", mediaSetPath.string() );
+
+      auto &mediaConfig{ mediaSetConfig.add_child( "media", {} ) };
+
+      for ( const auto &[ mediumNumber, mediumPath ] : media )
+      {
+        auto &mediumConfig{ mediaConfig.add_child( "medium", {} ) };
+
+        mediumConfig.add( "number", static_cast< uint8_t >( mediumNumber ) );
+        mediumConfig.add( "path", mediumPath.string() );
+      }
     }
   }
 
-  properties.add_child( "defaults", defaults.toProperties() );
+  // defaults
+  if (
+    const auto defaultProperties{ defaults.toProperties( full ) };
+    full || !defaultProperties.empty() )
+  {
+    properties.add_child( "defaults", defaultProperties );
+  }
 
   return properties;
 }

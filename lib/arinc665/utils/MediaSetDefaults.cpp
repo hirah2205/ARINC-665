@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -37,24 +38,40 @@ void MediaSetDefaults::fromProperties(
 
   version = properties.get(
     "version",
-    SupportedArinc665Version::Supplement345 );
+    DefaultVersion );
 
   loadHeaderFileCreationPolicy = properties.get(
     "load_header_file_creation_policy",
-    FileCreationPolicy::NoneExisting );
+    DefaultFileCreationPolicy );
   batchFileCreationPolicy = properties.get(
     "batch_file_creation_policy",
-    FileCreationPolicy::NoneExisting );
+    DefaultFileCreationPolicy );
 }
 
-boost::property_tree::ptree MediaSetDefaults::toProperties() const
+boost::property_tree::ptree MediaSetDefaults::toProperties(
+  const bool full ) const
 {
   boost::property_tree::ptree properties{};
 
-  properties.add( "check_file_integrity", checkFileIntegrity );
-  properties.add( "version", version );
-  properties.add( "header_file_creation_policy", loadHeaderFileCreationPolicy );
-  properties.add( "batch_file_creation_policy", batchFileCreationPolicy );
+  if ( full || ( checkFileIntegrity != DefaultCheckFileIntegrity ) )
+  {
+    properties.add( "check_file_integrity", checkFileIntegrity );
+  }
+
+  if ( full || ( version != DefaultVersion ) )
+  {
+    properties.add( "version", version );
+  }
+
+  if ( full || ( loadHeaderFileCreationPolicy != DefaultFileCreationPolicy ) )
+  {
+    properties.add( "header_file_creation_policy", loadHeaderFileCreationPolicy );
+  }
+
+  if ( full || ( batchFileCreationPolicy != DefaultFileCreationPolicy ) )
+  {
+    properties.add( "batch_file_creation_policy", batchFileCreationPolicy );
+  }
 
   return properties;
 }

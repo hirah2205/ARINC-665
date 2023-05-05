@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -58,9 +59,14 @@ class ARINC665_EXPORT MediaSetManagerConfiguration
      * @brief Converts the configuration values to a
      *   boost::property_tree::ptree.
      *
+     * @param[in] full
+     *   If set to true, all options are added to the property tree, even if
+     *   defaulted.
+     *
      * @return Configuration as boost::property_tree::ptree.
      **/
-    [[nodiscard]] boost::property_tree::ptree toProperties() const;
+    [[nodiscard]] boost::property_tree::ptree toProperties(
+      bool full = false ) const;
 
     //! Media Sets Paths
     MediaSetsPaths mediaSets{};
