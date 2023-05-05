@@ -26,6 +26,10 @@ namespace Arinc665::Files {
  * @brief Base Class for ARINC 665 Protocol List %Files.
  *
  * This intermediate class is defined to add common methods for all List Files.
+ * Provides the common aatributes:
+ *  - Media Set Part Number,
+ *  - Media Sequence Number, and
+ *  - Number of Media Set Members.
  *
  * Children are:
  * - @ref FileListFile
@@ -132,6 +136,8 @@ class ARINC665_EXPORT ListFile : public Arinc665File
 
     //! @copydoc ListFile(const ListFile&)
     ListFile( ListFile &&other ) = default;
+
+    using Arinc665File::operator=;
 
     /**
      * @brief Assignment operator
