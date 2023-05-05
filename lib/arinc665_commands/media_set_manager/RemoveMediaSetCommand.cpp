@@ -39,20 +39,21 @@ RemoveMediaSetCommand::RemoveMediaSetCommand() :
     boost::program_options::value( &mediaSetManagerDirectory )
       ->required()
       ->value_name( "Directory" ),
-    "ARINC 665 Media Set Manager Directory"
+    "ARINC 665 Media Set Manager directory."
   )
   (
     "check-media-set-manager-integrity",
     boost::program_options::value( &checkMediaSetManagerIntegrityV )
       ->default_value( true ),
-    "Check Media Set Manager Integrity"
+    "Check Media Set Manager integrity during initialisation."
   )
   (
     "media-set-part-number",
     boost::program_options::value( &mediaSetPartNumber )
       ->required()
       ->composing(),
-    "ARINC 665 Media Set Part Number"
+    "ARINC 665 Media Set Part Numbers to be deleted.\n"
+    "Parameter can be provided multiple times."
   );
 }
 
@@ -102,14 +103,14 @@ void RemoveMediaSetCommand::execute( const Commands::Parameters &parameters )
   }
   catch ( boost::program_options::error &e )
   {
-    std::cout << e.what() << "\n" << optionsDescription << "\n";
+    std::cerr << e.what() << "\n" << optionsDescription << "\n";
   }
-  catch ( boost::exception &e )
+  catch ( const boost::exception &e )
   {
     std::cerr
       << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
   }
-  catch ( std::exception &e )
+  catch ( const std::exception &e )
   {
     std::cerr << "Operation failed: " << e.what() << "\n";
   }
@@ -122,7 +123,7 @@ void RemoveMediaSetCommand::execute( const Commands::Parameters &parameters )
 void RemoveMediaSetCommand::help()
 {
   std::cout
-    << "Remove Media Set from the Media Set Manager\n"
+    << "Remove ARINC 665 Media Set from the Media Set Manager.\n\n"
     << optionsDescription;
 }
 
@@ -132,7 +133,7 @@ void RemoveMediaSetCommand::loadProgress(
   std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
 {
   std::cout << fmt::format(
-    "{}/{} {} {}:{}\n",
+    "Loading: {}/{} {} {}:{}\n",
     mediaSet.first,
     mediaSet.second,
     partNumber,

@@ -39,13 +39,13 @@ ListLoadsCommand::ListLoadsCommand() :
     boost::program_options::value( &mediaSetManagerDirectory )
       ->required()
       ->value_name( "Directory" ),
-    "ARINC 665 Media Set Manager Directory"
+    "ARINC 665 Media Set Manager directory."
   )
   (
     "check-media-set-manager-integrity",
     boost::program_options::value( &checkMediaSetManagerIntegrityV )
       ->default_value( true ),
-    "Check Media Set Manager Integrity"
+    "Check Media Set Manager integrity during initialisation."
   );
 }
 
@@ -106,22 +106,23 @@ void ListLoadsCommand::execute( const Commands::Parameters &parameters )
   }
   catch ( const boost::exception &e )
   {
-    std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
+    std::cerr
+      << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "Error: " << e.what() << "\n";
+    std::cerr << "Operation failed: " << e.what() << "\n";
   }
   catch ( ... )
   {
-    std::cerr << "Error: UNKNOWN EXCEPTION\n";
+    std::cerr << "Operation failed: UNKNOWN EXCEPTION\n";
   }
 }
 
 void ListLoadsCommand::help()
 {
   std::cout
-    << "List all Loads contained with the Media Set Manager\n"
+    << "List all Loads contained with the Media Set Manager.\n\n"
     << optionsDescription;
 }
 
@@ -131,7 +132,7 @@ void ListLoadsCommand::loadProgress(
   std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
 {
   std::cout << fmt::format(
-    "{}/{} {} {}:{}\n",
+    "Loading: {}/{} {} {}:{}\n",
     mediaSet.first,
     mediaSet.second,
     partNumber,

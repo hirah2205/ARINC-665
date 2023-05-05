@@ -93,7 +93,7 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetXmlCommand
     //! ARINC 665 Version
     boost::optional< Arinc665::SupportedArinc665Version > version{};
     //! Check File Integrity
-    bool checkFileIntegrity{ true };
+    boost::optional< bool > checkFileIntegrity{};
 };
 
 }

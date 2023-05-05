@@ -16,6 +16,8 @@
 
 #include <arinc665/utils/MediaSetManager.hpp>
 
+#include <helper/Logger.hpp>
+
 #include <boost/exception/all.hpp>
 
 #include <iostream>
@@ -31,13 +33,15 @@ CreateMediaSetManagerCommand::CreateMediaSetManagerCommand() :
     boost::program_options::value( &mediaSetManagerDirectory )
       ->required()
       ->value_name( "Directory" ),
-    "ARINC 665 Media Set Manager Directory"
+    "ARINC 665 Media Set Manager directory."
   );
 }
 
 void CreateMediaSetManagerCommand::execute(
   const Commands::Parameters &parameters )
 {
+  BOOST_LOG_FUNCTION()
+
   try
   {
     std::cout << "Create ARINC 665 Media Set Manager\n";
@@ -63,21 +67,24 @@ void CreateMediaSetManagerCommand::execute(
   }
   catch ( const boost::exception &e )
   {
-    std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
+    std::cerr
+      << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "Error: " << e.what() << "\n";
+    std::cerr << "Operation failed: " << e.what() << "\n";
   }
   catch ( ... )
   {
-    std::cerr << "Error: UNKNOWN EXCEPTION\n";
+    std::cerr << "Operation failed: UNKNOWN EXCEPTION\n";
   }
 }
 
 void CreateMediaSetManagerCommand::help()
 {
-  std::cout << "Create ARINC 665 Media Set Manager\n" << optionsDescription;
+  std::cout
+    << "Create ARINC 665 Media Set Manager at the given location.\n\n"
+    << optionsDescription;
 }
 
 }

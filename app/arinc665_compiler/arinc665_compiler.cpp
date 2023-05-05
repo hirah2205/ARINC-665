@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -15,6 +16,7 @@
 #include <arinc665/utils/Arinc665Xml.hpp>
 #include <arinc665/utils/FilesystemMediaSetCompiler.hpp>
 #include <arinc665/utils/FileCreationPolicyDescription.hpp>
+#include <arinc665/utils/MediaSetDefaults.hpp>
 
 #include <arinc665/media/MediaSet.hpp>
 
@@ -33,14 +35,14 @@
 #include <cstdlib>
 
 /**
- * @brief Program entry point
+ * @brief Application Entry Point.
  *
  * @param[in] argc
  *   Number of arguments.
  * @param[in] argv
  *   Arguments
  *
- * @return Success state of this operation.
+ * @return Application exit status.
  **/
 int main( int argc, char * argv[] );
 
@@ -99,29 +101,31 @@ int main( int argc, char * argv[] )
     (
       "xml-file",
       boost::program_options::value( &mediaSetXmlFile )->required(),
-      "ARINC 665 media set description XML"
+      "ARINC 665 media set description XML file."
     )
     (
       "source-directory",
       boost::program_options::value( &mediaSetSourceDirectory )->required(),
-      "ARINC 665 source directory"
+      "ARINC 665 source directory."
     )
     (
       "create-batch-files",
-      boost::program_options::value(
-        &createBatchFiles )->default_value( Arinc665::Utils::FileCreationPolicy::None ),
+      boost::program_options::value( &createBatchFiles )
+        ->default_value(
+          Arinc665::Utils::MediaSetDefaults::DefaultFileCreationPolicy ),
       ( std::string( "batch-files creation policy:\n" ) + fileCreationPolicyValues ).c_str()
     )
     (
       "create-load-header-files",
-      boost::program_options::value( &createLoadHeaderFiles)->default_value(
-        Arinc665::Utils::FileCreationPolicy::None ),
+      boost::program_options::value( &createLoadHeaderFiles )
+        ->default_value(
+          Arinc665::Utils::MediaSetDefaults::DefaultFileCreationPolicy ),
       ( std::string( "Load-headers-files creation policy:\n" ) + fileCreationPolicyValues).c_str()
     )
     (
       "version",
       boost::program_options::value( &version )->default_value(
-        Arinc665::SupportedArinc665Version::Supplement2 ),
+        Arinc665::Utils::MediaSetDefaults::DefaultVersion ),
       ( std::string( "ARINC 665 Version:\n" ) + versionValues ).c_str()
     )
     (

@@ -71,13 +71,13 @@ ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
     boost::program_options::value( &mediaSetManagerDirectory )
       ->required()
       ->value_name( "Directory" ),
-    "ARINC 665 Media Set Manager Directory"
+    "ARINC 665 Media Set Manager directory."
   )
   (
     "check-media-set-manager-integrity",
     boost::program_options::value( &checkMediaSetManagerIntegrityV )
       ->default_value( true ),
-    "Check Media Set Manager Integrity"
+    "Check Media Set Manager integrity during initialisation."
   )
   (
     "xml-file",
@@ -85,12 +85,12 @@ ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
       ->required()
       ->composing(),
     "ARINC 665 Media Set XML description.\n"
-    "Option can be provided multiple times."
+      "Option can be provided multiple times."
   )
   (
     "source-directory",
     boost::program_options::value( &mediaSetSourceDirectory )->required(),
-    "ARINC 665 source directory"
+    "ARINC 665 source directory."
   )
   (
     "create-batch-files",
@@ -106,8 +106,8 @@ ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
   )
   (
     "check-file-integrity",
-    boost::program_options::value( &checkFileIntegrity )->default_value( true ),
-    "Check File Integrity during registration"
+    boost::program_options::value( &checkFileIntegrity ),
+    "Check File integrity during media set registration."
   )
   (
     "version",
@@ -151,7 +151,7 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
       auto compiler{ Arinc665::Utils::FilesystemMediaSetCompiler::create() };
 
       // set exporter parameters
-      auto defaults{ mediaSetManager->configuration().defaults };
+      const auto &defaults{ mediaSetManager->configuration().defaults };
       compiler
         ->mediaSet( mediaSet )
         .arinc665Version( version.value_or( defaults.version ) )
@@ -165,7 +165,9 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 
       auto mediaSetPaths{ ( *compiler )() };
 
-      mediaSetManager->registerMediaSet( mediaSetPaths, checkFileIntegrity );
+      mediaSetManager->registerMediaSet(
+        mediaSetPaths,
+        checkFileIntegrity.value_or( defaults.checkFileIntegrity ) );
       mediaSetManager->saveConfiguration();
     }
   }
@@ -191,7 +193,8 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 void ImportMediaSetXmlCommand::help()
 {
   std::cout
-    << "Compiles Media Set given by XML descriptions and registers it to the Media Set Manager\n"
+    << "Compiles Media Set given by XML descriptions and registers it to the "
+       "Media Set Manager.\n\n"
     << optionsDescription;
 }
 
@@ -201,7 +204,7 @@ void ImportMediaSetXmlCommand::loadProgress(
   std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
 {
   std::cout << fmt::format(
-    "{}/{} {} {}:{}\n",
+    "Loading: {}/{} {} {}:{}\n",
     mediaSet.first,
     mediaSet.second,
     partNumber,

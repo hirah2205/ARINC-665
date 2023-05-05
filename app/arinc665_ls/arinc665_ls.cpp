@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -41,16 +42,16 @@
 #include <iostream>
 
 /**
- * @brief Entry point of application.
+ * @brief Application Entry Point.
  *
  * @param[in] argc
- *   Argument count.
+ *   Number of arguments.
  * @param[in] argv
- *   Argument values.
+ *   Arguments
  *
  * @return Application exit status.
  **/
-int main( int argc, char const * argv[] );
+int main( int argc, char * argv[] );
 
 /**
  * @brief Loads the load upload header file and decodes its content.
@@ -111,7 +112,7 @@ static void list_files( const std::filesystem::path &loadDir );
  **/
 static Arinc665::Files::RawFile loadFile( const std::filesystem::path &file );
 
-int main( int argc, char const * argv[] )
+int main( int argc, char * argv[] )
 {
   BOOST_LOG_FUNCTION()
 

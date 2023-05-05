@@ -18,6 +18,7 @@
 
 #include <arinc665/utils/FilesystemMediaSetDecompiler.hpp>
 #include <arinc665/utils/Arinc665Xml.hpp>
+#include <arinc665/utils/MediaSetDefaults.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Version.hpp>
@@ -38,16 +39,16 @@
 #include <fmt/format.h>
 
 /**
- * @brief Entry point of application.
+ * @brief Application Entry Point.
  *
  * @param[in] argc
  *   Number of arguments.
  * @param[in] argv
  *   Arguments
  *
- * @return Success state of this operation.
+ * @return Application exit status.
  **/
-int main( int argc, char const * argv[] );
+int main( int argc, char * argv[] );
 
 /**
  * @brief Progress Handler
@@ -61,7 +62,7 @@ static void progress(
   std::string_view partNumber,
   std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium );
 
-int main( int argc, char const * argv[] )
+int main( int argc, char * argv[] )
 {
   BOOST_LOG_FUNCTION()
 
@@ -94,18 +95,19 @@ int main( int argc, char const * argv[] )
       "source-directory",
       boost::program_options::value(
         &mediaSourceDirectories )->required()->composing(),
-      "ARINC 665 media source directories"
+      "ARINC 665 media source directories."
     )
     (
       "xml-file",
       boost::program_options::value( &mediaSetXmlFile )->required(),
-      "Output ARINC 665 media set description XML"
+      "ARINC 665 media set description XML output file."
     )
     (
       "check-file-integrity",
       boost::program_options::value( &checkFileIntegrity )
-        ->default_value( true ),
-      "Check File Integrity during Import"
+        ->default_value(
+          Arinc665::Utils::MediaSetDefaults::DefaultCheckFileIntegrity ),
+      "Check File Integrity during decompilation."
     );
 
     boost::program_options::variables_map vm{};
@@ -119,7 +121,8 @@ int main( int argc, char const * argv[] )
     if ( 0U != vm.count( "help" ) )
     {
       std::cout
-        << "Decompiles the ARINC 665 Media Set\n"
+        << "Decompiles the ARINC 665 Media Set and stores the representation as"
+           "ARINC Media Set file.\n\n"
         << optionsDescription << "\n";
       return EXIT_FAILURE;
     }
@@ -183,14 +186,14 @@ int main( int argc, char const * argv[] )
   catch ( const boost::exception &e )
   {
     std::cerr
-      << "Error in decompiler: "
+      << "Error: "
       << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
     std::cerr
-      << "Error in decompiler: "
+      << "Error: "
       << e.what() << "\n";
     return EXIT_FAILURE;
   }
@@ -208,7 +211,7 @@ static void progress(
   std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
 {
   std::cout << fmt::format(
-    "{} {}:{}\n",
+    "Loading {} {}:{}\n",
     partNumber,
     static_cast< std::string >( medium.first ),
     static_cast< std::string >( medium.second ) );

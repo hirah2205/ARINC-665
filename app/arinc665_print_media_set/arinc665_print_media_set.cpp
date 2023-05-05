@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -14,6 +15,7 @@
 
 #include <arinc665/utils/FilesystemMediaSetDecompiler.hpp>
 #include <arinc665/utils/MediaSetPrinter.hpp>
+#include <arinc665/utils/MediaSetDefaults.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Version.hpp>
@@ -33,16 +35,16 @@
 using Directories = std::vector< std::filesystem::path >;
 
 /**
- * @brief Entry point of application.
+ * @brief Application Entry Point.
  *
  * @param[in] argc
- *   Argument count.
+ *   Number of arguments.
  * @param[in] argv
- *   Argument values.
+ *   Arguments
  *
  * @return Application exit status.
  **/
-int main( int argc, char const * argv[] );
+int main( int argc, char * argv[] );
 
 /**
  * @brief Loads the media set from the given directory.
@@ -58,7 +60,7 @@ static Arinc665::Utils::MediaSetDecompilerResult loadMediaSet(
   const Directories &mediaSetDirectories,
   bool checkFileIntegrity );
 
-int main( int argc, char const * argv[] )
+int main( int argc, char * argv[] )
 {
   BOOST_LOG_FUNCTION()
 
@@ -71,11 +73,13 @@ int main( int argc, char const * argv[] )
       << Arinc665::Version::VersionInformation << "\n";
 
     boost::program_options::options_description optionsDescription{
-      "ARINC 665 Media Set Printer options" };
+      "ARINC 665 Media Set Printer Options" };
 
     // directories which contains the medias
     std::vector< std::filesystem::path > directories{};
-    bool checkFileIntegrity{ true };
+
+    // Check File Integrity
+    bool checkFileIntegrity{};
 
     optionsDescription.add_options()
     (
@@ -90,8 +94,9 @@ int main( int argc, char const * argv[] )
     (
       "check-file-integrity",
       boost::program_options::value( &checkFileIntegrity )
-        ->default_value( true ),
-      "Check File Integrity during Import"
+        ->default_value(
+          Arinc665::Utils::MediaSetDefaults::DefaultCheckFileIntegrity ),
+      "Check File Integrity during decompilation."
     );
 
     boost::program_options::variables_map vm{};

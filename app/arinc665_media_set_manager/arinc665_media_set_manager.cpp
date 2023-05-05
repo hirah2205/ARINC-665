@@ -26,14 +26,14 @@
 #include <cstdlib>
 
 /**
- * @brief Program Entry Point
+ * @brief Application Entry Point.
  *
  * @param[in] argc
  *   Number of arguments.
  * @param[in] argv
  *   Arguments
  *
- * @return Success state of this operation.
+ * @return Application exit status.
  **/
 int main( int argc, char * argv[] );
 

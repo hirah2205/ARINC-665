@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -25,14 +26,14 @@
 #include <fstream>
 
 /**
- * @brief Program entry point
+ * @brief Application Entry Point.
  *
  * @param[in] argc
  *   Number of arguments.
  * @param[in] argv
  *   Arguments
  *
- * @return Success state of this operation.
+ * @return Application exit status.
  **/
 int main( int argc, char * argv[] );
 

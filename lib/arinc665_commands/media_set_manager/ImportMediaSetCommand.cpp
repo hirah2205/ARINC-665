@@ -44,25 +44,26 @@ ImportMediaSetCommand::ImportMediaSetCommand() :
     boost::program_options::value( &mediaSetManagerDirectory )
       ->required()
       ->value_name( "Directory" ),
-    "ARINC 665 Media Set Manager Directory"
+    "ARINC 665 Media Set Manager directory."
   )
   (
     "check-media-set-manager-integrity",
     boost::program_options::value( &checkMediaSetManagerIntegrityV )
       ->default_value( true ),
-    "Check Media Set Manager Integrity"
+    "Check Media Set Manager integrity during initialisation."
   )
   (
     "source-directory",
     boost::program_options::value( &mediaSourceDirectories )
       ->required()
       ->composing(),
-    "ARINC 665 media source directories"
+    "ARINC 665 media source directories.\n"
+      "Must be provided for each media directory."
   )
   (
     "check-file-integrity",
-    boost::program_options::value( &checkFileIntegrity )->default_value( true ),
-    "Check File Integrity during Import"
+    boost::program_options::value( &checkFileIntegrity ),
+    "Check File integrity during media set decompilation and registration."
   );
 }
 
@@ -110,8 +111,11 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
     auto importer{ Arinc665::Utils::FilesystemMediaSetDecompiler::create() };
     assert( importer );
 
+    const auto &defaults{ mediaSetManager->configuration().defaults };
+
     importer
-      ->checkFileIntegrity( checkFileIntegrity )
+      ->checkFileIntegrity(
+        checkFileIntegrity.value_or( defaults.checkFileIntegrity ) )
       .mediaPaths( sourceMediaPaths );
 
     const auto &[ mediaSet, checkValues]{ ( *importer )() };
@@ -135,7 +139,7 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 
     mediaSetManager->registerMediaSet(
       { std::move( destinationPaths ) },
-      checkFileIntegrity );
+      checkFileIntegrity.value_or( defaults.checkFileIntegrity ) );
 
     mediaSetManager->saveConfiguration();
   }
@@ -160,7 +164,9 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 
 void ImportMediaSetCommand::help()
 {
-  std::cout << "Import ARINC 665 Media Set\n" << optionsDescription;
+  std::cout
+    << "Import existing ARINC 665 Media Set into Media Set Manager.\n\n"
+    << optionsDescription;
 }
 
 void ImportMediaSetCommand::loadProgress(
@@ -169,7 +175,7 @@ void ImportMediaSetCommand::loadProgress(
   std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
 {
   std::cout << fmt::format(
-    "{}/{} {} {}:{}\n",
+    "Loading: {}/{} {} {}:{}\n",
     mediaSet.first,
     mediaSet.second,
     partNumber,

@@ -22,6 +22,7 @@
 #include <commands/Commands.hpp>
 
 #include <boost/program_options.hpp>
+#include <boost/optional/optional.hpp>
 
 #include <filesystem>
 #include <vector>
@@ -82,7 +83,7 @@ class ARINC665_COMMANDS_EXPORT ImportMediaSetCommand
     //! Media Source Directories
     std::vector< std::filesystem::path > mediaSourceDirectories{};
     //! Check File Integrity
-    bool checkFileIntegrity{ true };
+    boost::optional< bool > checkFileIntegrity{};
 };
 
 }
