@@ -32,7 +32,7 @@ class OpenMediaSetManagerAction;
 class MediaSetManagerDialog;
 class RemoveMediaSetController;
 class MediaSetManagerSettingsDialog;
-
+class ViewMediaSetDialog;
 class LoadMediaSetManagerAction;
 
 }

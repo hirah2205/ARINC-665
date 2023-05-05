@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <author>Thomas Vogt</author>
- <class>Arinc665Qt::ViewMediaSetDialog</class>
- <widget class="QDialog" name="Arinc665Qt::ViewMediaSetDialog">
+ <class>Arinc665Qt::MediaSetManager::ViewMediaSetDialog</class>
+ <widget class="QDialog" name="Arinc665Qt::MediaSetManager::ViewMediaSetDialog">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>

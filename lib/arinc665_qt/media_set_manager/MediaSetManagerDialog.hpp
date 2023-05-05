@@ -49,14 +49,10 @@ class ARINC665_QT_EXPORT MediaSetManagerDialog final : public QDialog
     /**
      * @brief Initialises the Media Set Manager Dialog.
      *
-     * @param[in] mediaSetManager
-     *   %Media Set Manager to use
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit MediaSetManagerDialog(
-      Arinc665::Utils::MediaSetManagerPtr mediaSetManager = {},
-      QWidget * parent = nullptr );
+    explicit MediaSetManagerDialog( QWidget * parent = nullptr );
 
     //! Destructor
     ~MediaSetManagerDialog() override;
@@ -105,11 +101,22 @@ class ARINC665_QT_EXPORT MediaSetManagerDialog final : public QDialog
     /**
      * @brief Open Settings Dialog
      **/
-    void settings();
+    void showSettings();
+
+    /**
+     * @brief Save Media Set Manager Settings.
+     **/
+    void saveSettings();
 
   private:
     //! UI (designer)
     std::unique_ptr< Ui::MediaSetManagerDialog > ui{};
+
+    //! View Media Set Dialog
+    std::unique_ptr< ViewMediaSetDialog > viewMediaSetDialog{};
+    //! Settings Dialog
+    std::unique_ptr< MediaSetManagerSettingsDialog > settingsDialog{};
+
     //! Media Set Manager
     Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV{};
     //! Media Set Model

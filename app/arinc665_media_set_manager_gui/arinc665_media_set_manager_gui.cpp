@@ -31,14 +31,14 @@
 #include <iostream>
 
 /**
- * @brief Entry Point of Application.
+ * @brief Application Entry Point.
  *
  * @param[in] argc
  *   Number of arguments.
  * @param[in] argv
  *   Arguments
  *
- * @return Success state of this operation.
+ * @return Application exit status.
  **/
 int main( int argc, char * argv[] );
 
@@ -59,6 +59,8 @@ try
   QApplication::setOrganizationDomain( "thomas-vogt.de" );
   QApplication::setWindowIcon( QIcon{ ":/fa/solid/database.svg" } );
 
+  Arinc665Qt::MediaSetManager::MediaSetManagerDialog mediaSetManagerDialog{};
+
   Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction
     mediaSetManagerAction{};
 
@@ -72,25 +74,12 @@ try
     &Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction::mediaSetManagerLoaded,
     [&]( const Arinc665::Utils::MediaSetManagerPtr &mediaSetManager )
     {
-      Arinc665Qt::MediaSetManager::MediaSetManagerDialog * dialog{
-        new Arinc665Qt::MediaSetManager::MediaSetManagerDialog(
-          mediaSetManager ) };
-
-      dialog->setWindowTitle(
+      mediaSetManagerDialog.setWindowTitle(
         QString::fromStdString( mediaSetManager->directory().string() ) );
 
-      Arinc665Qt::MediaSetManager::MediaSetManagerDialog::connect(
-        dialog,
-        &Arinc665Qt::MediaSetManager::MediaSetManagerDialog::finished,
-        dialog,
-        &Arinc665Qt::MediaSetManager::MediaSetManagerDialog::deleteLater );
-      Arinc665Qt::MediaSetManager::MediaSetManagerDialog::connect(
-        dialog,
-        &Arinc665Qt::MediaSetManager::MediaSetManagerDialog::finished,
-        &application,
-        &QApplication::quit );
+      mediaSetManagerDialog.mediaSetManger( mediaSetManager );
 
-      dialog->show();
+      mediaSetManagerDialog.show();
     } );
 
   mediaSetManagerAction.open();

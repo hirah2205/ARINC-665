@@ -33,19 +33,16 @@
 
 namespace Arinc665Qt::MediaSetManager {
 
-MediaSetManagerDialog::MediaSetManagerDialog(
-  Arinc665::Utils::MediaSetManagerPtr mediaSetManager,
-  QWidget * const parent ) :
+MediaSetManagerDialog::MediaSetManagerDialog( QWidget * const parent ) :
   QDialog{ parent },
   ui{ std::make_unique< Ui::MediaSetManagerDialog>() },
-  mediaSetManagerV{ std::move( mediaSetManager ) },
+  viewMediaSetDialog{ std::make_unique< ViewMediaSetDialog >( this ) },
+  settingsDialog{ std::make_unique< MediaSetManagerSettingsDialog >( this ) },
   mediaSetsModelV{ std::make_unique< Media::MediaSetsModel >( this ) }
 {
   ui->setupUi( this );
 
   ui->mediaSets->setModel( mediaSetsModelV.get() );
-
-  reloadMediaSetModel();
 
   connect(
     ui->mediaSets,
@@ -78,11 +75,17 @@ MediaSetManagerDialog::MediaSetManagerDialog(
     &QPushButton::clicked,
     this,
     &MediaSetManagerDialog::openMediaSetsDirectory );
+
   connect(
     ui->settings,
     &QPushButton::clicked,
     this,
-    &MediaSetManagerDialog::settings );
+    &MediaSetManagerDialog::showSettings );
+  connect(
+    settingsDialog.get(),
+    &MediaSetManagerSettingsDialog::accepted,
+    this,
+    &MediaSetManagerDialog::saveSettings );
 }
 
 MediaSetManagerDialog::~MediaSetManagerDialog() = default;
@@ -137,14 +140,6 @@ void MediaSetManagerDialog::viewMediaSet()
   {
     return;
   }
-
-  auto viewMediaSetDialog{ new ViewMediaSetDialog{ this } };
-
-  connect(
-    viewMediaSetDialog,
-    &ViewMediaSetDialog::finished,
-    viewMediaSetDialog,
-    &ViewMediaSetDialog::deleteLater );
 
   viewMediaSetDialog->setWindowTitle(
     HelperQt::toQString( mediaSet->partNumber() ) );
@@ -242,33 +237,25 @@ void MediaSetManagerDialog::removeMediaSet()
 
 void MediaSetManagerDialog::openMediaSetsDirectory()
 {
+  if ( !mediaSetManagerV )
+  {
+    return;
+  }
+
   QDesktopServices::openUrl( QUrl::fromLocalFile(
     QString::fromStdString( mediaSetManagerV->directory().string() ) ) );
 }
 
-void MediaSetManagerDialog::settings()
+void MediaSetManagerDialog::showSettings()
 {
-  MediaSetManagerSettingsDialog * const dialog{
-    new MediaSetManagerSettingsDialog{ this } };
+  settingsDialog->configuration( mediaSetManagerV->mediaSetDefaults() );
+  settingsDialog->open();
+}
 
-  // connect to clean up slot
-  connect(
-    dialog,
-    &MediaSetManagerSettingsDialog::finished,
-    dialog,
-    &MediaSetManagerSettingsDialog::deleteLater );
-  connect(
-    dialog,
-    &MediaSetManagerSettingsDialog::accepted,
-    [ this, dialog ]()
-    {
-      mediaSetManagerV->mediaSetDefaults( dialog->configuration() );
-      mediaSetManagerV->saveConfiguration();
-    } );
-
-  dialog->configuration( mediaSetManagerV->mediaSetDefaults() );
-
-  dialog->open();
+void MediaSetManagerDialog::saveSettings()
+{
+  mediaSetManagerV->mediaSetDefaults( settingsDialog->configuration() );
+  mediaSetManagerV->saveConfiguration();
 }
 
 }

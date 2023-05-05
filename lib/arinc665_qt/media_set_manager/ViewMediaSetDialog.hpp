@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::ViewMediaSetDialog.
+ * @brief Declaration of Class Arinc665Qt::MediaSetManager::ViewMediaSetDialog.
  **/
 
 #ifndef ARINC665_QT_MEDIA_SET_MANAGER_VIEWMEDIASETDIALOG_HPP
@@ -23,7 +23,7 @@
 
 #include <memory>
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::MediaSetManager {
 
 namespace Ui{
 class ViewMediaSetDialog;

@@ -7,7 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665Qt::ViewMediaSetDialog.
+ * @brief Definition of Class Arinc665Qt::MediaSetManager::ViewMediaSetDialog.
  **/
 
 #include "ViewMediaSetDialog.hpp"
@@ -18,7 +18,7 @@
 
 #include <arinc665/media/MediaSet.hpp>
 
-namespace Arinc665Qt {
+namespace Arinc665Qt::MediaSetManager {
 
 ViewMediaSetDialog::ViewMediaSetDialog( QWidget * const parent ):
   QDialog{ parent },
