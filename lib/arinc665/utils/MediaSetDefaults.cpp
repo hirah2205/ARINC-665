@@ -22,6 +22,12 @@
 
 namespace Arinc665::Utils {
 
+constexpr bool MediaSetDefaults::DefaultCheckFileIntegrity;
+
+constexpr SupportedArinc665Version MediaSetDefaults::DefaultVersion;
+
+constexpr FileCreationPolicy MediaSetDefaults::DefaultFileCreationPolicy;
+
 MediaSetDefaults::MediaSetDefaults(
   const boost::property_tree::ptree &properties )
 {
