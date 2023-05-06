@@ -38,6 +38,7 @@
 
 #include <QMessageBox>
 #include <QSettings>
+#include <QStandardPaths>
 
 #include <boost/log/trivial.hpp>
 #include <boost/exception/all.hpp>
@@ -90,11 +91,12 @@ MediaSetViewerWindow::MediaSetViewerWindow( QWidget * const parent ):
   selectLoadMediaSetXmlDialogV->setWindowTitle( tr( "Select ARINC 665 Media Set XML" ) );
   selectLoadMediaSetXmlDialogV->setNameFilter(tr( "ARINC 665 Media Set XML (*.xml)" ) );
   selectLoadMediaSetXmlDialogV->setFileMode( QFileDialog::FileMode::ExistingFile );
-  if ( auto lastDir{ settings.value( "LoadMediaSetXmlDirectory" ) };
-    lastDir.isValid() )
-  {
-    selectLoadMediaSetXmlDialogV->setDirectory( lastDir.toString() );
-  }
+  selectLoadMediaSetXmlDialogV->setDirectory(
+    settings
+      .value(
+        "LoadMediaSetXmlDirectory",
+        QStandardPaths::standardLocations( QStandardPaths::DocumentsLocation ) )
+      .toString() );
 
   connect(
     ui->actionOpenMediaSetXml,
@@ -113,11 +115,12 @@ MediaSetViewerWindow::MediaSetViewerWindow( QWidget * const parent ):
   selectSaveMediaSetXmlDialogV->setFileMode( QFileDialog::FileMode::AnyFile );
   selectSaveMediaSetXmlDialogV->setAcceptMode( QFileDialog::AcceptMode::AcceptSave );
   selectSaveMediaSetXmlDialogV->setDefaultSuffix( "xml" );
-  if ( auto lastDir{ settings.value( "SaveMediaSetXmlDirectory" ) };
-    lastDir.isValid() )
-  {
-    selectSaveMediaSetXmlDialogV->setDirectory( lastDir.toString() );
-  }
+  selectSaveMediaSetXmlDialogV->setDirectory(
+    settings
+      .value(
+        "SaveMediaSetXmlDirectory",
+        QStandardPaths::standardLocations( QStandardPaths::DocumentsLocation ) )
+      .toString() );
 
   connect(
     ui->actionSaveMediaSetXml,

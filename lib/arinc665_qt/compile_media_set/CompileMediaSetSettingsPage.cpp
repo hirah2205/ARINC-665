@@ -14,6 +14,9 @@
 
 #include "ui_CompileMediaSetSettingsPage.h"
 
+#include <QSettings>
+#include <QStandardPaths>
+
 namespace Arinc665Qt {
 
 CompileMediaSetSettingsPage::CompileMediaSetSettingsPage(
@@ -79,9 +82,17 @@ CompileMediaSetSettingsPage::CompileMediaSetSettingsPage(
     this,
     &CompileMediaSetSettingsPage::completeChanged );
 
+  QSettings settings{};
+
   selectOutputDirectoryDialog->setWindowTitle( "Select Output Base Directory" );
   selectOutputDirectoryDialog->setFileMode( QFileDialog::FileMode::Directory );
   selectOutputDirectoryDialog->setOptions( QFileDialog::Option::ShowDirsOnly );
+  selectOutputDirectoryDialog->setDirectory(
+    settings
+      .value(
+        "LastOutputDirectory",
+        QStandardPaths::standardLocations( QStandardPaths::DataLocation ) )
+      .toString() );
 
   connect(
     ui->selectOutputBasePath,
@@ -114,8 +125,15 @@ void CompileMediaSetSettingsPage::defaults(
 void CompileMediaSetSettingsPage::outputDirectorySelected( const QString &file )
 {
   ui->outputBasePath->setText( file );
+
   emit outputDirectory( file.toStdString() );
   emit completeChanged();
+
+  // store output path for next usage
+  QSettings settings{};
+  settings.setValue(
+    "LastOutputDirectory",
+    selectOutputDirectoryDialog->directory().path() );
 }
 
 }
