@@ -8,19 +8,18 @@
 
 cmake_minimum_required( VERSION 3.25 )
 
-# skip app when arinc665_qt is not available
-if( NOT TARGET arinc665_qt )
-  return()
-endif()
+find_package( fmt REQUIRED )
 
-add_executable( arinc665_compiler_gui WIN32 )
+add_executable( arinc665_media_set_decompiler )
 
-target_sources( arinc665_compiler_gui PRIVATE arinc665_compiler_gui.cpp )
+target_sources(
+  arinc665_media_set_decompiler
+  PRIVATE arinc665_media_set_decompiler.cpp )
 
-target_compile_features( arinc665_compiler_gui PRIVATE cxx_std_20 )
+target_compile_features( arinc665_media_set_decompiler PRIVATE cxx_std_20 )
 
 target_compile_options(
-  arinc665_compiler_gui
+  arinc665_media_set_decompiler
 
   PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:-W3>
@@ -31,12 +30,7 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
 
-target_link_libraries(
-  arinc665_compiler_gui
-
-  PRIVATE
-    qt_icon_resources
-    arinc665_qt )
+target_link_libraries( arinc665_media_set_decompiler PRIVATE arinc665 fmt::fmt )
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}
@@ -44,6 +38,6 @@ set_property(
   PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
 
 install(
-  TARGETS arinc665_compiler_gui
+  TARGETS arinc665_media_set_decompiler
   RUNTIME_DEPENDENCY_SET arinc665-runtime-deps
   COMPONENT runtime )

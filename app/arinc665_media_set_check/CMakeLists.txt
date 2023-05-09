@@ -8,16 +8,14 @@
 
 cmake_minimum_required( VERSION 3.25 )
 
-find_package( fmt REQUIRED )
+add_executable( arinc665_media_set_check )
 
-add_executable( arinc665_compiler )
+target_sources( arinc665_media_set_check PRIVATE arinc665_media_set_check.cpp )
 
-target_sources( arinc665_compiler PRIVATE arinc665_compiler.cpp )
-
-target_compile_features( arinc665_compiler PRIVATE cxx_std_20 )
+target_compile_features( arinc665_media_set_check PRIVATE cxx_std_20 )
 
 target_compile_options(
-  arinc665_compiler
+  arinc665_media_set_check
 
   PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:-W3>
@@ -28,7 +26,7 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
 
-target_link_libraries( arinc665_compiler PRIVATE arinc665 fmt::fmt )
+target_link_libraries( arinc665_media_set_check PRIVATE arinc665 )
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}
@@ -36,6 +34,6 @@ set_property(
   PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
 
 install(
-  TARGETS arinc665_compiler
+  TARGETS arinc665_media_set_check
   RUNTIME_DEPENDENCY_SET arinc665-runtime-deps
   COMPONENT runtime )

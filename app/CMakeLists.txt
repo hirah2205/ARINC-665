@@ -14,12 +14,12 @@ set_property(
   PROPERTY DOC_PATHS
   ${CMAKE_CURRENT_SOURCE_DIR}/arinc665_applications.md )
 
-add_subdirectory( arinc665_compiler )
-add_subdirectory( arinc665_compiler_gui )
-add_subdirectory( arinc665_decompiler )
-add_subdirectory( arinc665_check )
-add_subdirectory( arinc665_ls )
+add_subdirectory(arinc665_media_set_decompiler)
+add_subdirectory( arinc665_media_set_check )
+add_subdirectory( arinc665_media_set_compiler )
+add_subdirectory( arinc665_media_set_compiler_gui )
 add_subdirectory( arinc665_media_set_manager )
+add_subdirectory( arinc665_ls )
 
 add_subdirectory( arinc665_unit_test )
 

@@ -1,13 +1,13 @@
-= arinc665_compiler(1)
+= arinc665_media_set_compiler(1)
 Thomas Vogt
 
 == Name
 
-arinc665_compiler - compiles ARINC 665 Media Sets based on an XML Configuration file.
+arinc665_media_set_compiler - compiles ARINC 665 Media Sets based on an XML Configuration file.
 
 == Synopsis
 
-*arinc665_compiler* --xml-file _XML File_ {--source-directory _Source_}
+*arinc665_media_set_compiler* --xml-file _XML File_ {--source-directory _Source_}
 [--create-batch-files None|NoneExisting|All]
 [--create-load-header-files None|NoneExisting|All]
 [--version Supplement2|Supplement345]
@@ -44,4 +44,4 @@ If not provided, the part number of the media set ist used.
 
 == See Also
 
-link:[arinc665_decompiler(1)]
+link:[arinc665_media_set_decompiler(1)]

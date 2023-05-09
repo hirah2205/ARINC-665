@@ -1,4 +1,4 @@
-# ARINC 665 Media Set Viewer GUI Application {#arinc665_media_set_viewer_gui_main}
+# ARINC 665 Media Set Viewer Qt Application {#arinc665_media_set_viewer_gui_main}
 
  - Load and Display Media Set XML
  - Decompile ARINC 615A Media Set

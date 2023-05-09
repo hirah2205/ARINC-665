@@ -27,7 +27,7 @@ add_test(
 add_test(
   NAME arinc665_generate_media_set_v2
   COMMAND
-    arinc665_compiler
+    arinc665_media_set_compiler
     --xml-file ${CMAKE_CURRENT_SOURCE_DIR}/ExampleMediaSet.xml
     --source-directory ${CMAKE_CURRENT_BINARY_DIR}
     --destination-directory MediaSet_V2
@@ -44,7 +44,7 @@ add_test(
 add_test(
   NAME arinc665_decompile_media_set_v2
   COMMAND
-    arinc665_decompiler
+    arinc665_media_set_decompiler
     --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSet_V2.xml
     --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet_V2/CCC/MEDIUM_001 )
 
@@ -57,7 +57,7 @@ add_test(
 add_test(
   NAME arinc665_generate_media_set_v3
   COMMAND
-  arinc665_compiler
+  arinc665_media_set_compiler
   --xml-file ${CMAKE_CURRENT_SOURCE_DIR}/ExampleMediaSet.xml
   --source-directory ${CMAKE_CURRENT_BINARY_DIR}
   --destination-directory MediaSet_V3
@@ -75,6 +75,6 @@ add_test(
 add_test(
   NAME arinc665_decompile_media_set_v3
   COMMAND
-  arinc665_decompiler
+  arinc665_media_set_decompiler
   --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSet_V3.xml
   --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet_V3/CCC/MEDIUM_001 )

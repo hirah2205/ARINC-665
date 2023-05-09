@@ -1,4 +1,4 @@
-# ARINC 665 Media Set Check Application {#arinc665_check_main}
+# ARINC 665 Media Set Check Application {#arinc665_media_set_check_main}
 
 Tasks:
  - check integrity of media set
@@ -8,9 +8,9 @@ Tasks:
  - 
  - verbose options print file-contents
 
-@sa @ref arinc665_check.cpp
+@sa @ref arinc665_media_set_check.cpp
 
 @dir
 @brief ARINC 665 Media Set Validator Application.
 
-@sa @ref arinc665_check_main
+@sa @ref arinc665_media_set_check_main

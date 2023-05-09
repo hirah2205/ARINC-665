@@ -1,10 +1,10 @@
 # ARINC 665 Applications {#arinc665_applications}
-
- - @subpage arinc665_check_main
- - @subpage arinc665_compiler_main
- - @subpage arinc665_compiler_gui_main
- - @subpage arinc665_decompiler_main
+These are the applications, which are provided by this Project:
  - @subpage arinc665_ls_main
+ - @subpage arinc665_media_set_check_main
+ - @subpage arinc665_media_set_compiler_main
+ - @subpage arinc665_media_set_compiler_gui_main
+ - @subpage arinc665_media_set_decompiler_main
  - @subpage arinc665_media_set_manager_main
  - @subpage arinc665_media_set_manager_gui_main
  - @subpage arinc665_media_set_viewer_gui_main
