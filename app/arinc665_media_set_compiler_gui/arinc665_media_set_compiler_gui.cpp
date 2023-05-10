@@ -68,7 +68,7 @@ catch ( const boost::exception &e )
 }
 catch ( const std::exception &e )
 {
-  std::cerr << e.what() << "\n";
+  std::cerr << boost::diagnostic_information( e ) << "\n";
   return EXIT_FAILURE;
 }
 catch ( ... )

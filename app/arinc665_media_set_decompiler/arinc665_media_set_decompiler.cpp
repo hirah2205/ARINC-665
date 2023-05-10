@@ -139,7 +139,8 @@ int main( int argc, char * argv[] )
       if ( !mediumInformation )
       {
         BOOST_THROW_EXCEPTION(
-          boost::program_options::invalid_option_value( mediumSourceDirectory ) );
+          boost::program_options::invalid_option_value{
+            mediumSourceDirectory } );
       }
 
       mediaPaths.try_emplace(
@@ -194,7 +195,7 @@ int main( int argc, char * argv[] )
   {
     std::cerr
       << "Error: "
-      << e.what() << "\n";
+      << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( ... )

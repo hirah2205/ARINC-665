@@ -63,7 +63,7 @@ int main( int argc, char * argv[] )
   }
   catch ( const std::exception &e )
   {
-    BOOST_LOG_TRIVIAL( error ) << e.what();
+    BOOST_LOG_TRIVIAL( error ) << boost::diagnostic_information( e );
     return EXIT_FAILURE;
   }
   catch ( ... )

@@ -144,7 +144,7 @@ int main( int argc, char * argv[] )
   {
     std::cerr
       << "Error: "
-      << e.what() << "\n";
+      << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( ... )

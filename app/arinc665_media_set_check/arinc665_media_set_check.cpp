@@ -133,14 +133,9 @@ int main( int argc, char * argv[] )
   }
   catch ( const Arinc665::Arinc665Exception &e )
   {
-    std::string const * const info =
-      boost::get_error_info< Helper::AdditionalInfo>( e);
-
     std::cerr
       << "Validation failed: "
-      // << typid( e).name() << " - "
-      << ((nullptr == info) ? "Unknown" : *info) << "\n";
-
+      << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( const boost::exception &e )
