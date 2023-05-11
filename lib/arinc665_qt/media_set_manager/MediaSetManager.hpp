@@ -29,7 +29,7 @@ namespace Arinc665Qt::MediaSetManager {
 class ImportMediaSetWizard;
 class ImportMediaSetXmlWizard;
 class OpenMediaSetManagerAction;
-class MediaSetManagerDialog;
+class MediaSetManagerWindow;
 class RemoveMediaSetController;
 class MediaSetManagerSettingsDialog;
 class ViewMediaSetDialog;

@@ -8,13 +8,13 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief ARINC 665 Media Set Manager QT Application.
+ * @brief ARINC 665 Media Set Manager Qt Application.
  **/
 
 #include <arinc665_qt/resources/Resources.hpp>
 
 #include <arinc665_qt/media_set_manager/OpenMediaSetManagerAction.hpp>
-#include <arinc665_qt/media_set_manager/MediaSetManagerDialog.hpp>
+#include <arinc665_qt/media_set_manager/MediaSetManagerWindow.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
 
@@ -59,7 +59,7 @@ try
   QApplication::setOrganizationDomain( "thomas-vogt.de" );
   QApplication::setWindowIcon( QIcon{ ":/fa/solid/database.svg" } );
 
-  Arinc665Qt::MediaSetManager::MediaSetManagerDialog mediaSetManagerDialog{};
+  Arinc665Qt::MediaSetManager::MediaSetManagerWindow mediaSetManagerWindow{};
 
   Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction
     mediaSetManagerAction{};
@@ -74,12 +74,12 @@ try
     &Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction::mediaSetManagerLoaded,
     [&]( const Arinc665::Utils::MediaSetManagerPtr &mediaSetManager )
     {
-      mediaSetManagerDialog.setWindowTitle(
+      mediaSetManagerWindow.setWindowTitle(
         QString::fromStdString( mediaSetManager->directory().string() ) );
 
-      mediaSetManagerDialog.mediaSetManger( mediaSetManager );
+      mediaSetManagerWindow.mediaSetManger( mediaSetManager );
 
-      mediaSetManagerDialog.show();
+      mediaSetManagerWindow.show();
     } );
 
   mediaSetManagerAction.open();

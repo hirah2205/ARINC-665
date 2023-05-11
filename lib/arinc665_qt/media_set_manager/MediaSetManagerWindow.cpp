@@ -9,12 +9,12 @@
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
  * @brief Definition of Class
- *   Arinc665Qt::MediaSetManager::MediaSetManagerDialog.
+ *   Arinc665Qt::MediaSetManager::MediaSetManagerWindow.
  **/
 
-#include "MediaSetManagerDialog.hpp"
+#include "MediaSetManagerWindow.hpp"
 
-#include "ui_MediaSetManagerDialog.h"
+#include "ui_MediaSetManagerWindow.h"
 
 #include <arinc665_qt/media_set_manager/ViewMediaSetDialog.hpp>
 #include <arinc665_qt/media_set_manager/RemoveMediaSetController.hpp>
@@ -33,9 +33,9 @@
 
 namespace Arinc665Qt::MediaSetManager {
 
-MediaSetManagerDialog::MediaSetManagerDialog( QWidget * const parent ) :
-  QDialog{ parent },
-  ui{ std::make_unique< Ui::MediaSetManagerDialog>() },
+MediaSetManagerWindow::MediaSetManagerWindow( QWidget * const parent ) :
+  QMainWindow{ parent },
+  ui{ std::make_unique< Ui::MediaSetManagerWindow >() },
   viewMediaSetDialog{ std::make_unique< ViewMediaSetDialog >( this ) },
   settingsDialog{ std::make_unique< MediaSetManagerSettingsDialog >( this ) },
   mediaSetsModelV{ std::make_unique< Media::MediaSetsModel >( this ) }
@@ -48,49 +48,49 @@ MediaSetManagerDialog::MediaSetManagerDialog( QWidget * const parent ) :
     ui->mediaSets,
     &QTableView::activated,
     this,
-    &MediaSetManagerDialog::viewMediaSet );
+    &MediaSetManagerWindow::viewMediaSet );
 
   connect(
     ui->viewMediaSet,
-    &QPushButton::clicked,
+    &QAction::triggered,
     this,
-    &MediaSetManagerDialog::viewMediaSet );
+    &MediaSetManagerWindow::viewMediaSet );
   connect(
     ui->importMediaSet,
-    &QPushButton::clicked,
+    &QAction::triggered,
     this,
-    &MediaSetManagerDialog::importMediaSet );
+    &MediaSetManagerWindow::importMediaSet );
   connect(
     ui->importMediaSetXml,
-    &QPushButton::clicked,
+    &QAction::triggered,
     this,
-    &MediaSetManagerDialog::importMediaSetXml );
+    &MediaSetManagerWindow::importMediaSetXml );
   connect(
     ui->removeMediaSet,
-    &QPushButton::clicked,
+    &QAction::triggered,
     this,
-    &MediaSetManagerDialog::removeMediaSet );
+    &MediaSetManagerWindow::removeMediaSet );
   connect(
     ui->openMediaSetsDirectory,
-    &QPushButton::clicked,
+    &QAction::triggered,
     this,
-    &MediaSetManagerDialog::openMediaSetsDirectory );
+    &MediaSetManagerWindow::openMediaSetsDirectory );
 
   connect(
-    ui->settings,
-    &QPushButton::clicked,
+    ui->mediaSetManagerSettings,
+    &QAction::triggered,
     this,
-    &MediaSetManagerDialog::showSettings );
+    &MediaSetManagerWindow::showSettings );
   connect(
     settingsDialog.get(),
     &MediaSetManagerSettingsDialog::accepted,
     this,
-    &MediaSetManagerDialog::saveSettings );
+    &MediaSetManagerWindow::saveSettings );
 }
 
-MediaSetManagerDialog::~MediaSetManagerDialog() = default;
+MediaSetManagerWindow::~MediaSetManagerWindow() = default;
 
-void MediaSetManagerDialog::mediaSetManger(
+void MediaSetManagerWindow::mediaSetManger(
   Arinc665::Utils::MediaSetManagerPtr mediaSetManager )
 {
   mediaSetManagerV = std::move( mediaSetManager );
@@ -98,7 +98,7 @@ void MediaSetManagerDialog::mediaSetManger(
   reloadMediaSetModel();
 }
 
-void MediaSetManagerDialog::reloadMediaSetModel()
+void MediaSetManagerWindow::reloadMediaSetModel()
 {
   if ( !mediaSetsModelV )
   {
@@ -124,7 +124,7 @@ void MediaSetManagerDialog::reloadMediaSetModel()
   ui->mediaSets->selectRow( 0 );
 }
 
-void MediaSetManagerDialog::viewMediaSet()
+void MediaSetManagerWindow::viewMediaSet()
 {
   const auto index{ ui->mediaSets->currentIndex() };
 
@@ -147,7 +147,7 @@ void MediaSetManagerDialog::viewMediaSet()
   viewMediaSetDialog->show();
 }
 
-void MediaSetManagerDialog::importMediaSet()
+void MediaSetManagerWindow::importMediaSet()
 {
   if ( !mediaSetsModelV )
   {
@@ -161,7 +161,7 @@ void MediaSetManagerDialog::importMediaSet()
     wizard,
     &ImportMediaSetWizard::finished,
     this,
-    &MediaSetManagerDialog::reloadMediaSetModel );
+    &MediaSetManagerWindow::reloadMediaSetModel );
 
   // connect to clean up slot
   connect(
@@ -173,7 +173,7 @@ void MediaSetManagerDialog::importMediaSet()
   wizard->open();
 }
 
-void MediaSetManagerDialog::importMediaSetXml()
+void MediaSetManagerWindow::importMediaSetXml()
 {
   if ( !mediaSetsModelV )
   {
@@ -187,7 +187,7 @@ void MediaSetManagerDialog::importMediaSetXml()
     wizard,
     &ImportMediaSetXmlWizard::finished,
     this,
-    &MediaSetManagerDialog::reloadMediaSetModel );
+    &MediaSetManagerWindow::reloadMediaSetModel );
 
   // connect to clean up slot
   connect(
@@ -199,7 +199,7 @@ void MediaSetManagerDialog::importMediaSetXml()
   wizard->open();
 }
 
-void MediaSetManagerDialog::removeMediaSet()
+void MediaSetManagerWindow::removeMediaSet()
 {
   const auto index{ ui->mediaSets->currentIndex() };
 
@@ -223,7 +223,7 @@ void MediaSetManagerDialog::removeMediaSet()
     controller,
     &RemoveMediaSetController::finished,
     this,
-    &MediaSetManagerDialog::reloadMediaSetModel );
+    &MediaSetManagerWindow::reloadMediaSetModel );
 
   // connect to clean up slot
   connect(
@@ -235,7 +235,7 @@ void MediaSetManagerDialog::removeMediaSet()
   controller->start( mediaSetManagerV, mediaSet );
 }
 
-void MediaSetManagerDialog::openMediaSetsDirectory()
+void MediaSetManagerWindow::openMediaSetsDirectory()
 {
   if ( !mediaSetManagerV )
   {
@@ -246,13 +246,13 @@ void MediaSetManagerDialog::openMediaSetsDirectory()
     QString::fromStdString( mediaSetManagerV->directory().string() ) ) );
 }
 
-void MediaSetManagerDialog::showSettings()
+void MediaSetManagerWindow::showSettings()
 {
   settingsDialog->configuration( mediaSetManagerV->mediaSetDefaults() );
   settingsDialog->open();
 }
 
-void MediaSetManagerDialog::saveSettings()
+void MediaSetManagerWindow::saveSettings()
 {
   mediaSetManagerV->mediaSetDefaults( settingsDialog->configuration() );
   mediaSetManagerV->saveConfiguration();

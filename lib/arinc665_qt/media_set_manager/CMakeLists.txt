@@ -20,8 +20,8 @@ target_sources(
         ImportMediaSetXmlWizard.hpp
         LoadMediaSetManagerAction.hpp
         MediaSetManager.hpp
-        MediaSetManagerDialog.hpp
         MediaSetManagerSettingsDialog.hpp
+        MediaSetManagerWindow.hpp
         OpenMediaSetManagerAction.hpp
         RemoveMediaSetController.hpp
         ViewMediaSetDialog.hpp
@@ -36,10 +36,10 @@ target_sources(
     ImportMediaSetXmlWizard.cpp
     ImportMediaSetXmlWizard.ui
     LoadMediaSetManagerAction.cpp
-    MediaSetManagerDialog.cpp
-    MediaSetManagerDialog.ui
     MediaSetManagerSettingsDialog.cpp
     MediaSetManagerSettingsDialog.ui
+    MediaSetManagerWindow.cpp
+    MediaSetManagerWindow.ui
     OpenMediaSetManagerAction.cpp
     RemoveMediaSetController.cpp
     ViewMediaSetDialog.cpp

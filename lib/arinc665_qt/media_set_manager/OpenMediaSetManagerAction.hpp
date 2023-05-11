@@ -8,7 +8,8 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction.
+ * @brief Declaration of Class
+ *   Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction.
  **/
 
 #ifndef ARINC665_QT_MEDIA_SET_MANAGER_OPENMEDIASETMANAGERACTION_HPP

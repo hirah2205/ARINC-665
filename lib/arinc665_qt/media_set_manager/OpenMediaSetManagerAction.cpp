@@ -32,7 +32,8 @@ OpenMediaSetManagerAction::OpenMediaSetManagerAction(
   QWidget * const parent ) :
   QObject{ parent },
   selectMediaSetDirectoryDialogV{ std::make_unique< QFileDialog >( parent ) },
-  loadMediaSetManagerActionV{ std::make_unique< LoadMediaSetManagerAction >( this ) }
+  loadMediaSetManagerActionV{
+    std::make_unique< LoadMediaSetManagerAction >( this ) }
 {
   QSettings settings{};
 

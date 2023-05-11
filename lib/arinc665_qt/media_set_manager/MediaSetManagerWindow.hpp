@@ -9,7 +9,7 @@
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
  * @brief Declaration of Class
- *   Arinc665Qt::MediaSetManager::MediaSetManagerDialog.
+ *   Arinc665Qt::MediaSetManager::MediaSetManagerWindow.
  **/
 
 #ifndef ARINC665_QT_MEDIA_SET_MANAGER_MEDIASETMANAGERDIALOG_HPP
@@ -21,41 +21,41 @@
 
 #include <arinc665/utils/Utils.hpp>
 
-#include <QDialog>
+#include <QMainWindow>
 
 #include <memory>
 
 namespace Arinc665Qt::MediaSetManager {
 
 namespace Ui {
-class MediaSetManagerDialog;
+class MediaSetManagerWindow;
 }
 
 /**
- * @brief %Media Set Manager Dialog
+ * @brief %Media Set Manager Window
  *
- * The Media Set Manager Dialog provides listing of the Media Sets within the
+ * The Media Set Manager Window provides listing of the Media Sets within the
  * Media Set manager and provides operations onto the Media Sets:
  * - View Media Set,
  * - Importing Media Sets,
  * - Import Media Set XML Configuration, and
  * - Removing Media Sets.
  **/
-class ARINC665_QT_EXPORT MediaSetManagerDialog final : public QDialog
+class ARINC665_QT_EXPORT MediaSetManagerWindow final : public QMainWindow
 {
     Q_OBJECT
 
   public:
     /**
-     * @brief Initialises the Media Set Manager Dialog.
+     * @brief Initialises the Media Set Manager Window.
      *
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit MediaSetManagerDialog( QWidget * parent = nullptr );
+    explicit MediaSetManagerWindow( QWidget * parent = nullptr );
 
     //! Destructor
-    ~MediaSetManagerDialog() override;
+    ~MediaSetManagerWindow() override;
 
   public slots:
     /**
@@ -110,7 +110,7 @@ class ARINC665_QT_EXPORT MediaSetManagerDialog final : public QDialog
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaSetManagerDialog > ui{};
+    std::unique_ptr< Ui::MediaSetManagerWindow > ui{};
 
     //! View Media Set Dialog
     std::unique_ptr< ViewMediaSetDialog > viewMediaSetDialog{};

@@ -6,6 +6,6 @@ Set.
 @sa @ref arinc665_media_set_manager_gui.cpp
 
 @dir
-@brief ARINC 665 Media Set Manager GUI Application
+@brief ARINC 665 Media Set Manager Qt Application
 
 @sa @ref arinc665_media_set_manager_gui_main
