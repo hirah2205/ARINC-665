@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -12,7 +13,7 @@
 
 /**
  * @dir
- * @brief ARINC 665 QT Resources
+ * @brief ARINC 665 Qt Resources
  **/
 
 #ifndef ARINC665_QT_RESOURCES_RESOURCES_HPP
@@ -20,11 +21,11 @@
 
 #include <arinc665_qt/Arinc665Qt.hpp>
 
-//! ARINC 665 QT Resource Namespace
+//! ARINC 665 Qt Resource Namespace
 namespace Arinc665Qt::Resources {
 
 /**
- * @brief Initialises the ARINC 615A DLA QT %Resources.
+ * @brief Initialises the ARINC 615A DLA Qt %Resources.
  **/
 ARINC665_QT_EXPORT void initialise();
 

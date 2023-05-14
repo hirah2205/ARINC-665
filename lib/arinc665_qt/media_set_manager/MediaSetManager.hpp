@@ -22,7 +22,7 @@
 #include <arinc665_qt/Arinc665Qt.hpp>
 
 /**
- * @brief ARINC 665 %Media Set Manager QT Classes.
+ * @brief ARINC 665 %Media Set Manager Qt Classes.
  **/
 namespace Arinc665Qt::MediaSetManager {
 

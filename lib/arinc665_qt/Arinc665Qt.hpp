@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -21,7 +22,7 @@
 #include <arinc665_qt/arinc665_qt_export.h>
 
 /**
- * @brief ARINC 665 Specification QT.
+ * @brief ARINC 665 Specification Qt.
  **/
 namespace Arinc665Qt {
 

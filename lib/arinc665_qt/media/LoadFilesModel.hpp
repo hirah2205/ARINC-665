@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -24,7 +25,7 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT Table Model of Load Files.
+ * @brief Qt Table Model of Load Files.
  *
  * Lists the files, which are part of a load.
  **/

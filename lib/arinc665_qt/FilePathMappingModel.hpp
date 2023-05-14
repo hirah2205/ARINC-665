@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -22,7 +23,7 @@
 namespace Arinc665Qt {
 
 /**
- * @brief QT File Path Mapping Model.
+ * @brief File Path Mapping Qt Model.
  *
  * This model provides a table of Media Set Files and their corresponding file
  * system path.

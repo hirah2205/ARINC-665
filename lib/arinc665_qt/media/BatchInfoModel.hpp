@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -24,7 +25,7 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT Table Model of Batch Information.
+ * @brief Table Model of Batch Qt Information.
  *
  * Presents the List of Batch Information as Table.
  **/

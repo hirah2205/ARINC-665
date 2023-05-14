@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -24,7 +25,7 @@
 namespace Arinc665Qt {
 
 /**
- * @brief QT Media Paths Model.
+ * @brief Qt Media Paths Model.
  *
  * This model is used to manage a list of @ref Arinc665::Utils::MediaPaths.
  *

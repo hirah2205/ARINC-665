@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -22,7 +23,7 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT Adaption of ARINC 665 %Media Set.
+ * @brief Qt Adaption of ARINC 665 %Media Set.
  *
  * This is a hierarchical model giving access to %Media Sets, %Media,
  * Directories and Files.

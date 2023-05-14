@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -21,7 +22,7 @@
 #include <arinc665_qt/Arinc665Qt.hpp>
 
 /**
- * @brief ARINC 665 %Media QT Classes.
+ * @brief ARINC 665 %Media Qt Classes.
  *
  * Provides Models and Widgets for @ref Arinc665::Media classes.
  **/

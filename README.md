@@ -14,7 +14,7 @@ A library is provided for:
 An XML format and corresponding tools are provided to ease generation of media 
 sets.
 
-For building graphical applications an QT based library is provided which 
+For building graphical applications a Qt based library is provided which 
 consist ow models, dialogs, and wizards to work with ARINC 665 media sets.
 
 ## Changes

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -22,7 +23,7 @@
 namespace Arinc665Qt {
 
 /**
- * @brief QT Supported ARINC 665 Version Model.
+ * @brief Supported ARINC 665 Version Qt Model.
  **/
 class ARINC665_QT_EXPORT SupportedArinc665VersionModel final :
   public QAbstractListModel

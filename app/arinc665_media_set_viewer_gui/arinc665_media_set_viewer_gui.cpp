@@ -8,7 +8,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief ARINC 665 Media Set Viewer QT Application.
+ * @brief ARINC 665 Media Set Viewer Qt Application.
  **/
 
 #include <arinc665_qt/resources/Resources.hpp>

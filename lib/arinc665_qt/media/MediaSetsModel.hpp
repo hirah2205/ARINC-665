@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -24,7 +25,7 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT Table Model of list of %Media Sets.
+ * @brief Qt Table Model of list of %Media Sets.
  *
  * For media sets the type Arinc665::Media::MediaSetsVariant is used to allow
  * const and non-const media sets to be used

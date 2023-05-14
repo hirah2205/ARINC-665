@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -22,7 +23,7 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief QT Table Model of List of Loads.
+ * @brief Qt Table Model of List of Loads.
  **/
 class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
 {

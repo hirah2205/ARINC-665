@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -22,7 +23,7 @@
 namespace Arinc665Qt {
 
 /**
- * @brief QT File Creation Policy Model.
+ * @brief File Creation Policy Qt Model.
  *
  * Provides a list of File Creation Policies.
  * This model is used for some dialogs to fill a QComboBox.
