@@ -57,13 +57,19 @@ set(
   DOXYGEN_STRIP_FROM_PATH
 
   ${helper_SOURCE_DIR}/lib
+  ${helper_BINARY_DIR}/lib
   ${helper_SOURCE_DIR}/app
   ${qt_icon_resources_SOURCE_DIR}/lib
+  ${qt_icon_resources_BINARY_DIR}/lib
+  ${qt_icon_resources_SOURCE_DIR}/app
   ${commands_SOURCE_DIR}/lib
+  ${commands_BINARY_DIR}/lib
   ${commands_SOURCE_DIR}/app
   ${arinc645_SOURCE_DIR}/lib
+  ${arinc645_BINARY_DIR}/lib
   ${arinc645_SOURCE_DIR}/app
   ${arinc665_SOURCE_DIR}/lib
+  ${arinc665_BINARY_DIR}/lib
   ${arinc665_SOURCE_DIR}/app )
 
 set(
@@ -71,10 +77,15 @@ set(
 
   ${Boost_INCLUDE_DIRS}
   ${helper_SOURCE_DIR}/lib
+  ${helper_BINARY_DIR}/lib
   ${qt_icon_resources_SOURCE_DIR}/lib
+  ${qt_icon_resources_BINARY_DIR}/lib
   ${commands_SOURCE_DIR}/lib
+  ${commands_BINARY_DIR}/lib
   ${arinc645_SOURCE_DIR}/lib
-  ${arinc665_SOURCE_DIR}/lib )
+  ${arinc645_BINARY_DIR}/lib
+  ${arinc665_SOURCE_DIR}/lib
+  ${arinc665_BINARY_DIR}/lib )
 
 doxygen_add_docs(
   arinc665_internal_doc

@@ -28,5 +28,5 @@ Dependencies are:
  - @ref Arinc645 and @subpage arinc645_applications,
  - @ref Commands and @subpage commands_applications,
  - @ref Helper, @ref HelperQt, and @subpage helper_applications,
- - @ref QtIconResources, and
+ - @ref QtIconResources, and @subpage qt_icon_resources_applications, and
  - libxml++

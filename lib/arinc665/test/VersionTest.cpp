@@ -25,11 +25,13 @@ BOOST_AUTO_TEST_SUITE( Arinc665VersionTest )
 BOOST_AUTO_TEST_CASE( version )
 {
   std::cout
-    << "ARINC 665 Version: "
+    << Version::Key << " " << Version::Name
+    << " Version: "
     << Version::Major << "."
     << Version::Minor << "."
     << Version::Patch << "-"
-    << Version::Addition << "\n";
+    << Version::Addition << "\n"
+    << Version::Url << " " << Version::License << "\n";
 
   std::cout
     << "ARINC 665 Version Information: " << Version::VersionInformation << "\n";

@@ -32,6 +32,8 @@ target_link_libraries(
   PRIVATE
     arinc665_test
     arinc645_test
+    commands_test
+    qt_icon_resources_test
     helper_test )
 
 add_test( NAME arinc665_unit_test COMMAND arinc665_unit_test )

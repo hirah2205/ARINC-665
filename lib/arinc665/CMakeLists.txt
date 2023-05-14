@@ -10,7 +10,6 @@ cmake_minimum_required( VERSION 3.25 )
 
 find_package( Boost REQUIRED )
 find_package( PkgConfig REQUIRED )
-
 pkg_search_module(
   Libxmlpp
   REQUIRED
@@ -20,7 +19,7 @@ pkg_search_module(
 find_package( fmt REQUIRED )
 
 # prepare Version.cpp
-configure_file( Version.cpp.in Version.cpp )
+configure_file( Version.hpp.in Version.hpp )
 
 add_library( arinc665 )
 
@@ -43,15 +42,14 @@ target_sources(
         MediumNumber.hpp
         PartNumber.hpp
         SupportedArinc665VersionDescription.hpp
-        Version.hpp
         ${CMAKE_CURRENT_BINARY_DIR}/arinc665_export.h
+        ${CMAKE_CURRENT_BINARY_DIR}/Version.hpp
 
   PRIVATE
     FileTypeDescription.cpp
     MediumNumber.cpp
     PartNumber.cpp
-    SupportedArinc665VersionDescription.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/Version.cpp )
+    SupportedArinc665VersionDescription.cpp )
 
 target_compile_features( arinc665 PUBLIC cxx_std_20 )
 
@@ -134,7 +132,9 @@ add_subdirectory( utils )
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}
   APPEND
-  PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
+  PROPERTY DOC_PATHS
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}/Version.hpp )
 
 
 install(
