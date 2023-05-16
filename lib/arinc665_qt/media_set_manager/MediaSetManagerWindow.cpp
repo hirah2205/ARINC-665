@@ -26,8 +26,20 @@
 
 #include <arinc665/media/MediaSet.hpp>
 
+#include <arinc665/Version.hpp>
+
+#include <arinc645/Version.hpp>
+
+#include <commands/Version.hpp>
+
+#include <qt_icon_resources/Version.hpp>
+
+#include <helper_qt/AboutDialog.hpp>
 #include <helper_qt/String.hpp>
 
+#include <helper/Version.hpp>
+
+#include <QIcon>
 #include <QDesktopServices>
 #include <QUrl>
 
@@ -38,11 +50,85 @@ MediaSetManagerWindow::MediaSetManagerWindow( QWidget * const parent ) :
   ui{ std::make_unique< Ui::MediaSetManagerWindow >() },
   viewMediaSetDialog{ std::make_unique< ViewMediaSetDialog >( this ) },
   settingsDialog{ std::make_unique< MediaSetManagerSettingsDialog >( this ) },
+  aboutDialog{ std::make_unique< HelperQt::AboutDialog >( this ) },
   mediaSetsModelV{ std::make_unique< Media::MediaSetsModel >( this ) }
 {
   ui->setupUi( this );
 
   ui->mediaSets->setModel( mediaSetsModelV.get() );
+
+  QIcon icon{};
+  icon.addFile(
+    QString::fromUtf8( ":/fa/solid/database.svg" ),
+    QSize{},
+    QIcon::Normal,
+    QIcon::Off );
+  aboutDialog->productLogo( icon.pixmap( 64 ) );
+  aboutDialog->productName( QString{ "%1 (%2)" }.arg(
+    tr( "ARINC 665 Media Set Manager" ),
+    QString::fromStdString( Arinc665::Version::Name ) ) );
+  aboutDialog->productVersion(
+    QString::fromStdString( Arinc665::Version::VersionInformation ) );
+  aboutDialog->productLicense(
+    QString::fromStdString( Arinc665::Version::License ) );
+  aboutDialog->productUrl( QString::fromStdString( Arinc665::Version::Url ) );
+  aboutDialog->versions(
+    {
+      {
+        Arinc665::Version::Key,
+        {
+          Arinc665::Version::Name,
+          Arinc665::Version::VersionInformation,
+          Arinc665::Version::License,
+          Arinc665::Version::Url
+        }
+      },
+      {
+        Arinc645::Version::Key,
+        {
+          Arinc645::Version::Name,
+          Arinc645::Version::VersionInformation,
+          Arinc645::Version::License,
+          Arinc645::Version::Url
+        }
+      },
+      {
+        QtIconResources::Version::Key,
+        {
+          QtIconResources::Version::Name,
+          QtIconResources::Version::VersionInformation,
+          QtIconResources::Version::License,
+          QtIconResources::Version::Url
+        }
+      },
+      {
+        Commands::Version::Key,
+        {
+          Commands::Version::Name,
+          Commands::Version::VersionInformation,
+          Commands::Version::License,
+          Commands::Version::Url
+        }
+      },
+      {
+        Helper::Version::Key,
+        {
+          Helper::Version::Name,
+          Helper::Version::VersionInformation,
+          Helper::Version::License,
+          Helper::Version::Url
+        }
+      },
+      {
+        "qt",
+        {
+          "Qt Library",
+          qVersion(),
+          "LGPL-3.0-only",
+          "https://www.qt.io/"
+        }
+      }
+    } );
 
   connect(
     ui->mediaSets,
@@ -86,6 +172,12 @@ MediaSetManagerWindow::MediaSetManagerWindow( QWidget * const parent ) :
     &MediaSetManagerSettingsDialog::accepted,
     this,
     &MediaSetManagerWindow::saveSettings );
+
+  connect(
+    ui->about,
+    &QAction::triggered,
+    aboutDialog.get(),
+    QOverload<>::of( &HelperQt::AboutDialog::open ) );
 }
 
 MediaSetManagerWindow::~MediaSetManagerWindow() = default;

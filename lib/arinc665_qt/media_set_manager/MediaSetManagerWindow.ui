@@ -65,6 +65,8 @@
     </property>
     <addaction name="openMediaSetsDirectory"/>
     <addaction name="mediaSetManagerSettings"/>
+    <addaction name="separator"/>
+    <addaction name="about"/>
    </widget>
    <addaction name="mediaSetMenu"/>
    <addaction name="mediaSetManagerMenu"/>
@@ -76,12 +78,12 @@
    </property>
    <property name="iconSize">
     <size>
-     <width>32</width>
-     <height>32</height>
+     <width>48</width>
+     <height>48</height>
     </size>
    </property>
    <attribute name="toolBarArea">
-    <enum>BottomToolBarArea</enum>
+    <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
@@ -97,18 +99,20 @@
    </property>
    <property name="iconSize">
     <size>
-     <width>32</width>
-     <height>32</height>
+     <width>48</width>
+     <height>48</height>
     </size>
    </property>
    <attribute name="toolBarArea">
-    <enum>BottomToolBarArea</enum>
+    <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
    <addaction name="openMediaSetsDirectory"/>
    <addaction name="mediaSetManagerSettings"/>
+   <addaction name="separator"/>
+   <addaction name="about"/>
   </widget>
   <action name="viewMediaSet">
    <property name="icon">
@@ -198,6 +202,18 @@
    </property>
    <property name="statusTip">
     <string>Manage Media Set Manger Settings</string>
+   </property>
+  </action>
+  <action name="about">
+   <property name="icon">
+    <iconset resource="../../../qt_icon_resources/lib/qt_icon_resources/font_awesome/font_awesome.qrc">
+     <normaloff>:/fa/solid/circle-question.svg</normaloff>:/fa/solid/circle-question.svg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+   <property name="toolTip">
+    <string>About Media Set Manager</string>
    </property>
   </action>
  </widget>

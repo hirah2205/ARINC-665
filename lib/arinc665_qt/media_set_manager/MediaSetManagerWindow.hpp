@@ -21,6 +21,8 @@
 
 #include <arinc665/utils/Utils.hpp>
 
+#include <helper_qt/HelperQt.hpp>
+
 #include <QMainWindow>
 
 #include <memory>
@@ -116,6 +118,8 @@ class ARINC665_QT_EXPORT MediaSetManagerWindow final : public QMainWindow
     std::unique_ptr< ViewMediaSetDialog > viewMediaSetDialog{};
     //! Settings Dialog
     std::unique_ptr< MediaSetManagerSettingsDialog > settingsDialog{};
+    //! About Dialog
+    std::unique_ptr< HelperQt::AboutDialog > aboutDialog{};
 
     //! Media Set Manager
     Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV{};
