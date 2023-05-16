@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -16,6 +17,7 @@
 #include <arinc665/media/RegularFile.hpp>
 
 #include <arinc665/Arinc665Exception.hpp>
+#include <arinc665/Arinc665Logger.hpp>
 
 #include <arinc645/CheckValue.hpp>
 
@@ -113,6 +115,8 @@ ConstRegularFilePtr Load::file(
   std::string_view filename,
   std::string_view partNumber ) const
 {
+  BOOST_LOG_FUNCTION()
+
   ConstRegularFiles files{};
 
   for ( const auto &[file, filePartNumber, checkValueType] : dataFilesV )
@@ -140,11 +144,19 @@ ConstRegularFilePtr Load::file(
     return files.front();
   }
 
+  if ( !files.empty() )
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+      << "More loads found for given parameters";
+  }
+
   return {};
 }
 
 ConstLoadFiles Load::dataFiles( const bool effective ) const
 {
+  BOOST_LOG_FUNCTION()
+
   ConstLoadFiles files{};
 
   for ( const auto &[ filePtr, partNumber, checkValueType  ] : dataFilesV )
@@ -175,6 +187,8 @@ void Load::dataFile(
   std::string partNumber,
   std::optional< Arinc645::CheckValueType > checkValueType )
 {
+  BOOST_LOG_FUNCTION()
+
   if ( !file || ( file->mediaSet() != mediaSet() ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception{}
@@ -189,6 +203,8 @@ void Load::dataFile(
 
 ConstLoadFiles Load::supportFiles( const bool effective ) const
 {
+  BOOST_LOG_FUNCTION()
+
   ConstLoadFiles files{};
 
   for ( const auto &[filePtr, partNumber, checkValueType ] : supportFilesV )
@@ -219,6 +235,8 @@ void Load::supportFile(
   std::string partNumber,
   std::optional< Arinc645::CheckValueType > checkValueType )
 {
+  BOOST_LOG_FUNCTION()
+
   if ( !file || ( file->mediaSet() != mediaSet() ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception{}
@@ -318,6 +336,8 @@ ConstFilePtr Load_file(
   std::string_view filename,
   std::string_view partNumber )
 {
+  BOOST_LOG_FUNCTION()
+
   if ( !load )
   {
     return {};
@@ -339,6 +359,8 @@ ConstFilePtr Load_file(
   std::string_view filename,
   const Arinc645::CheckValue &checkValue )
 {
+  BOOST_LOG_FUNCTION()
+
   if ( !load )
   {
     return {};
@@ -377,6 +399,12 @@ ConstFilePtr Load_file(
     return files.front();
   }
 
+  if ( !files.empty() )
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+      << "More loads found for given parameters";
+  }
+
   return {};
 }
 
@@ -385,6 +413,8 @@ ConstFilePtr Loads_file(
   std::string_view filename,
   std::string_view partNumber )
 {
+  BOOST_LOG_FUNCTION()
+
   ConstFiles files{};
 
   for ( const auto &load : loads )
@@ -401,6 +431,12 @@ ConstFilePtr Loads_file(
     return files.front();
   }
 
+  if ( !files.empty() )
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+      << "More loads found for given parameters";
+  }
+
   return {};
 }
 
@@ -410,6 +446,8 @@ ConstFilePtr Loads_file(
   std::string_view filename,
   const Arinc645::CheckValue &checkValue )
 {
+  BOOST_LOG_FUNCTION()
+
   ConstFiles files{};
 
   for ( const auto &load : loads )
@@ -426,6 +464,13 @@ ConstFilePtr Loads_file(
     return files.front();
   }
 
+  if ( !files.empty() )
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+      << "More loads found for given parameters";
+  }
+
+  // no, or more than one file
   return {};
 }
 

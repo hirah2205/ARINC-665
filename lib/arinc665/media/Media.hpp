@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -119,9 +120,9 @@ using MediaSetsVariant = std::variant< MediaSets, ConstMediaSets >;
 
 class ContainerEntity;
 //! Constant %Container Entity Pointer
-using ConstContainerEntityPtr = std::shared_ptr< const ContainerEntity>;
+using ConstContainerEntityPtr = std::shared_ptr< const ContainerEntity >;
 //! %Container Entity Pointer
-using ContainerEntityPtr = std::shared_ptr< ContainerEntity>;
+using ContainerEntityPtr = std::shared_ptr< ContainerEntity >;
 
 /** @} **/
 
@@ -158,7 +159,7 @@ using FilePtr = std::shared_ptr< File >;
 //! List of %Files
 using Files = std::list< FilePtr >;
 //! List of Constant %Files
-using ConstFiles = std::list< ConstFilePtr>;
+using ConstFiles = std::list< ConstFilePtr >;
 
 /** @} **/
 
@@ -174,7 +175,7 @@ using RegularFilePtr = std::shared_ptr< RegularFile >;
 //! Regular %Files (List)
 using RegularFiles = std::list< RegularFilePtr >;
 //! Constant Regular %Files (List)
-using ConstRegularFiles = std::list< ConstRegularFilePtr>;
+using ConstRegularFiles = std::list< ConstRegularFilePtr >;
 
 /** @} **/
 
@@ -198,8 +199,10 @@ using LoadsVariant = std::variant< Loads, ConstLoads >;
 
 //! Const %Load %File List (File, Part Number, Check Value Type for this File).
 //! Used for Data and Support Files of Load
-using ConstLoadFile =
-  std::tuple< ConstRegularFilePtr, std::string, std::optional< Arinc645::CheckValueType > >;
+using ConstLoadFile = std::tuple<
+  ConstRegularFilePtr,
+  std::string,
+  std::optional< Arinc645::CheckValueType > >;
 
 //! Const %Load %File List. Used for Data and Support Files of Load
 using ConstLoadFiles = std::list< ConstLoadFile >;
@@ -247,15 +250,17 @@ using BatchTargetInformationVariant =
  **/
 
 //! Tuple of directory a const file
-using ConstDirectoryFileTuple  = std::tuple< const Directory&, ConstFilePtr>;
+using ConstDirectoryFileTuple  = std::tuple< const Directory&, ConstFilePtr >;
 //! Tuple of directory a file
-using DirectoryFileTuple = std::tuple< Directory&, FilePtr>;
+using DirectoryFileTuple = std::tuple< Directory&, FilePtr >;
 
 /** @} **/
 
 //! Check Values of Media Set Files
-using CheckValues =
-  std::map< ConstFilePtr, std::set< Arinc645::CheckValue >, std::less< > >;
+using CheckValues = std::map<
+  ConstFilePtr,
+  std::set< Arinc645::CheckValue >,
+  std::owner_less< ConstFilePtr > >;
 
 }
 
