@@ -23,7 +23,7 @@ target_sources(
         MediaSetManagerSettingsDialog.hpp
         MediaSetManagerWindow.hpp
         OpenMediaSetManagerAction.hpp
-        RemoveMediaSetController.hpp
+        RemoveMediaSetAction.hpp
         ViewMediaSetDialog.hpp
 
   PRIVATE
@@ -41,6 +41,6 @@ target_sources(
     MediaSetManagerWindow.cpp
     MediaSetManagerWindow.ui
     OpenMediaSetManagerAction.cpp
-    RemoveMediaSetController.cpp
+    RemoveMediaSetAction.cpp
     ViewMediaSetDialog.cpp
     ViewMediaSetDialog.ui )

@@ -30,7 +30,7 @@ class ImportMediaSetWizard;
 class ImportMediaSetXmlWizard;
 class OpenMediaSetManagerAction;
 class MediaSetManagerWindow;
-class RemoveMediaSetController;
+class RemoveMediaSetAction;
 class MediaSetManagerSettingsDialog;
 class ViewMediaSetDialog;
 class LoadMediaSetManagerAction;

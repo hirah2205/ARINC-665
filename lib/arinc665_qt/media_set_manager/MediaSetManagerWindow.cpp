@@ -17,7 +17,7 @@
 #include "ui_MediaSetManagerWindow.h"
 
 #include <arinc665_qt/media_set_manager/ViewMediaSetDialog.hpp>
-#include <arinc665_qt/media_set_manager/RemoveMediaSetController.hpp>
+#include <arinc665_qt/media_set_manager/RemoveMediaSetAction.hpp>
 #include <arinc665_qt/media_set_manager/ImportMediaSetWizard.hpp>
 #include <arinc665_qt/media_set_manager/ImportMediaSetXmlWizard.hpp>
 #include <arinc665_qt/media_set_manager/MediaSetManagerSettingsDialog.hpp>
@@ -308,23 +308,23 @@ void MediaSetManagerWindow::removeMediaSet()
     return;
   }
 
-  auto controller{ new RemoveMediaSetController{ this } };
+  auto action{ new RemoveMediaSetAction{ this } };
 
   // connect to reload media set model slot
   connect(
-    controller,
-    &RemoveMediaSetController::finished,
+    action,
+    &RemoveMediaSetAction::finished,
     this,
     &MediaSetManagerWindow::reloadMediaSetModel );
 
   // connect to clean up slot
   connect(
-    controller,
-    &RemoveMediaSetController::finished,
-    controller,
-    &RemoveMediaSetController::deleteLater );
+    action,
+    &RemoveMediaSetAction::finished,
+    action,
+    &RemoveMediaSetAction::deleteLater );
 
-  controller->start( mediaSetManagerV, mediaSet );
+  action->start( mediaSetManagerV, mediaSet );
 }
 
 void MediaSetManagerWindow::openMediaSetsDirectory()

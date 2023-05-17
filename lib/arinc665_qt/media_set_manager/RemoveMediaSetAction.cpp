@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -8,10 +9,10 @@
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
  * @brief Definition of Class
- *   Arinc665Qt::MediaSetManager::RemoveMediaSetController.
+ *   Arinc665Qt::MediaSetManager::RemoveMediaSetAction.
  **/
 
-#include "RemoveMediaSetController.hpp"
+#include "RemoveMediaSetAction.hpp"
 
 #include <arinc665/media/MediaSet.hpp>
 
@@ -29,14 +30,14 @@
 
 namespace Arinc665Qt::MediaSetManager {
 
-RemoveMediaSetController::RemoveMediaSetController( QWidget * const parent  ) :
+RemoveMediaSetAction::RemoveMediaSetAction( QWidget * const parent  ) :
   QObject{ parent }
 {
 }
 
-RemoveMediaSetController::~RemoveMediaSetController() = default;
+RemoveMediaSetAction::~RemoveMediaSetAction() = default;
 
-void RemoveMediaSetController::start(
+void RemoveMediaSetAction::start(
   const Arinc665::Utils::MediaSetManagerPtr &mediaSetManager,
   Arinc665::Media::ConstMediaSetPtr mediaSet )
 {

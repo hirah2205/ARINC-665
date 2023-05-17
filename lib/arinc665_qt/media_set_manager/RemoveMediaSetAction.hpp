@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MPL-2.0
 /**
  * @file
  * @copyright
@@ -8,11 +9,11 @@
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
  * @brief Declaration of Class
- *   Arinc665Qt::MediaSetManager::RemoveMediaSetController.
+ *   Arinc665Qt::MediaSetManager::RemoveMediaSetAction.
  **/
 
-#ifndef ARINC665_QT_MEDIA_SET_MANAGER_REMOVEMEDIASETCONTROLLER_HPP
-#define ARINC665_QT_MEDIA_SET_MANAGER_REMOVEMEDIASETCONTROLLER_HPP
+#ifndef ARINC665_QT_MEDIA_SET_MANAGER_REMOVEMEDIASETACTION_HPP
+#define ARINC665_QT_MEDIA_SET_MANAGER_REMOVEMEDIASETACTION_HPP
 
 #include <arinc665_qt/media_set_manager/MediaSetManager.hpp>
 
@@ -24,22 +25,26 @@
 
 namespace Arinc665Qt::MediaSetManager {
 
-//! Remove %Media Set Controller
-class ARINC665_QT_EXPORT RemoveMediaSetController : public QObject
+/**
+ * @brief Remove %Media Set Action.
+ *
+ * Ask for confirmation of deletion.
+ **/
+class ARINC665_QT_EXPORT RemoveMediaSetAction final : public QObject
 {
     Q_OBJECT
 
   public:
     /**
-     * @brief Initialises the Remove %Media Set Manager Controller.
+     * @brief Initialises the Remove %Media Set Manager Action.
      *
      * @param[in] parent
      *   Parent Widget
      **/
-    explicit RemoveMediaSetController( QWidget * parent = nullptr );
+    explicit RemoveMediaSetAction( QWidget * parent = nullptr );
 
     //! Destructor
-    ~RemoveMediaSetController() override;
+    ~RemoveMediaSetAction() override;
 
   public slots:
     /**

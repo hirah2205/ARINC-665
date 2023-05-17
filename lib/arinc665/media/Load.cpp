@@ -343,7 +343,7 @@ ConstFilePtr Load_file(
     return {};
   }
 
-  // check load header filename
+  // check if requested file is the load header file itself
   if ( ( filename == load->name() )
     && ( partNumber.empty() || ( partNumber == load->partNumber() ) ) )
   {
@@ -402,7 +402,7 @@ ConstFilePtr Load_file(
   if ( !files.empty() )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-      << "More loads found for given parameters";
+      << "More files found for given parameters";
   }
 
   return {};
@@ -434,7 +434,7 @@ ConstFilePtr Loads_file(
   if ( !files.empty() )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-      << "More loads found for given parameters";
+      << "More files found for given parameters";
   }
 
   return {};
@@ -467,7 +467,7 @@ ConstFilePtr Loads_file(
   if ( !files.empty() )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-      << "More loads found for given parameters";
+      << "More files found for given parameters";
   }
 
   // no, or more than one file
