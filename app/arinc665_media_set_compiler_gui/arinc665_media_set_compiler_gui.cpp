@@ -40,39 +40,45 @@
 int main( int argc, char * argv[] );
 
 int main( int argc, char * argv[] )
-try
 {
   BOOST_LOG_FUNCTION()
 
   Helper::initLogging( Helper::Severity::info );
 
-  QtIconResources::initialise();
-  Arinc665Qt::Resources::initialise();
+  try
+  {
+    QtIconResources::initialise();
+    Arinc665Qt::Resources::initialise();
 
-  QApplication application{ argc, argv };
-  QApplication::setApplicationDisplayName(
-    QObject::tr( "ARINC 665 Media Set Compiler" ) );
-  QApplication::setOrganizationName( "Thomas Vogt" );
-  QApplication::setOrganizationDomain( "thomas-vogt.de" );
-  QApplication::setWindowIcon( QIcon{ ":/fa/solid/gears.svg" } );
+    QApplication application{ argc, argv };
+    QApplication::setApplicationDisplayName(
+      QObject::tr( "ARINC 665 Media Set Compiler" ) );
+    QApplication::setOrganizationName( "Thomas Vogt" );
+    QApplication::setOrganizationDomain( "thomas-vogt.de" );
+    QApplication::setWindowIcon( QIcon{ ":/fa/solid/gears.svg" } );
 
-  Arinc665Qt::CompileMediaSetWizard compileMediaSetWizard{};
-  compileMediaSetWizard.show();
+    Arinc665Qt::CompileMediaSetWizard compileMediaSetWizard{};
+    compileMediaSetWizard.show();
 
-  return QApplication::exec();
-}
-catch ( const boost::exception &e )
-{
-  std::cerr << boost::diagnostic_information( e ) << "\n";
-  return EXIT_FAILURE;
-}
-catch ( const std::exception &e )
-{
-  std::cerr << boost::diagnostic_information( e ) << "\n";
-  return EXIT_FAILURE;
-}
-catch ( ... )
-{
-  std::cerr << "Unknown exception\n";
-  return EXIT_FAILURE;
+    return QApplication::exec();
+  }
+  catch ( const boost::exception &e )
+  {
+    std::cerr
+      << "Error: "
+      << boost::diagnostic_information( e ) << "\n";
+    return EXIT_FAILURE;
+  }
+  catch ( const std::exception &e )
+  {
+    std::cerr
+      << "Error: "
+      << boost::diagnostic_information( e ) << "\n";
+    return EXIT_FAILURE;
+  }
+  catch ( ... )
+  {
+    std::cerr << "Unknown exception occurred\n";
+    return EXIT_FAILURE;
+  }
 }

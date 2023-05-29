@@ -43,12 +43,13 @@ int main( int argc, char * argv[] )
 {
   BOOST_LOG_FUNCTION()
 
+  Helper::initLogging( Helper::Severity::info );
+
   try
   {
-    Helper::initLogging( Helper::Severity::info );
-
     QtIconResources::initialise();
     Arinc665Qt::Resources::initialise();
+
     QApplication application{ argc, argv };
     QApplication::setApplicationDisplayName(
       QObject::tr( "ARINC 665 Media Set Viewer" ) );
@@ -61,14 +62,23 @@ int main( int argc, char * argv[] )
 
     return QApplication::exec();
   }
+  catch ( const boost::exception &e )
+  {
+    std::cerr
+      << "Error: "
+      << boost::diagnostic_information( e ) << "\n";
+    return EXIT_FAILURE;
+  }
   catch ( const std::exception &e )
   {
-    BOOST_LOG_TRIVIAL( error ) << boost::diagnostic_information( e );
+    std::cerr
+      << "Error: "
+      << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( ... )
   {
-    BOOST_LOG_TRIVIAL( error ) << "Unknown exception";
+    std::cerr << "Unknown exception occurred\n";
     return EXIT_FAILURE;
   }
 }

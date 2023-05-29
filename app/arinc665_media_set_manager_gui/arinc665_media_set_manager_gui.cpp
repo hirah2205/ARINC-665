@@ -43,61 +43,68 @@
 int main( int argc, char * argv[] );
 
 int main( int argc, char * argv[] )
-try
 {
   BOOST_LOG_FUNCTION()
 
   Helper::initLogging( Helper::Severity::info );
 
-  QtIconResources::initialise();
-  Arinc665Qt::Resources::initialise();
+  try
+  {
+    QtIconResources::initialise();
+    Arinc665Qt::Resources::initialise();
 
-  QApplication application{ argc, argv };
-  QApplication::setApplicationDisplayName(
-    QObject::tr( "ARINC 665 Media Set Manager" ) );
-  QApplication::setOrganizationName( "Thomas Vogt" );
-  QApplication::setOrganizationDomain( "thomas-vogt.de" );
-  QApplication::setWindowIcon( QIcon{ ":/fa/solid/database.svg" } );
+    QApplication application{ argc, argv };
+    QApplication::setApplicationDisplayName(
+      QObject::tr( "ARINC 665 Media Set Manager" ) );
+    QApplication::setOrganizationName( "Thomas Vogt" );
+    QApplication::setOrganizationDomain( "thomas-vogt.de" );
+    QApplication::setWindowIcon( QIcon{ ":/fa/solid/database.svg" } );
 
-  Arinc665Qt::MediaSetManager::MediaSetManagerWindow mediaSetManagerWindow{};
+    Arinc665Qt::MediaSetManager::MediaSetManagerWindow mediaSetManagerWindow{};
 
-  Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction
-    mediaSetManagerAction{};
+    Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction
+      mediaSetManagerAction{};
 
-  QObject::connect(
-    &mediaSetManagerAction,
-    &Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction::rejected,
-    &application,
-    &QApplication::quit );
-  QObject::connect(
-    &mediaSetManagerAction,
-    &Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction::mediaSetManagerLoaded,
-    [&]( const Arinc665::Utils::MediaSetManagerPtr &mediaSetManager )
-    {
-      mediaSetManagerWindow.setWindowTitle(
-        QString::fromStdString( mediaSetManager->directory().string() ) );
+    QObject::connect(
+      &mediaSetManagerAction,
+      &Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction::rejected,
+      &application,
+      &QApplication::quit );
+    QObject::connect(
+      &mediaSetManagerAction,
+      &Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction::
+        mediaSetManagerLoaded,
+      [&]( const Arinc665::Utils::MediaSetManagerPtr &mediaSetManager )
+      {
+        mediaSetManagerWindow.setWindowTitle(
+          QString::fromStdString( mediaSetManager->directory().string() ) );
 
-      mediaSetManagerWindow.mediaSetManger( mediaSetManager );
+        mediaSetManagerWindow.mediaSetManger( mediaSetManager );
 
-      mediaSetManagerWindow.show();
-    } );
+        mediaSetManagerWindow.show();
+      } );
 
-  mediaSetManagerAction.open();
+    mediaSetManagerAction.open();
 
-  return QApplication::exec();
-}
-catch ( const boost::exception &e )
-{
-  BOOST_LOG_TRIVIAL( error ) << boost::diagnostic_information( e );
-  return EXIT_FAILURE;
-}
-catch ( const std::exception &e )
-{
-  BOOST_LOG_TRIVIAL( error ) << boost::diagnostic_information( e );
-  return EXIT_FAILURE;
-}
-catch ( ... )
-{
-  BOOST_LOG_TRIVIAL( error ) << "Unknown exception";
-  return EXIT_FAILURE;
+    return QApplication::exec();
+  }
+  catch ( const boost::exception &e )
+  {
+    std::cerr
+      << "Error: "
+      << boost::diagnostic_information( e ) << "\n";
+    return EXIT_FAILURE;
+  }
+  catch ( const std::exception &e )
+  {
+    std::cerr
+      << "Error: "
+      << boost::diagnostic_information( e ) << "\n";
+    return EXIT_FAILURE;
+  }
+  catch ( ... )
+  {
+    std::cerr << "Unknown exception occurred\n";
+    return EXIT_FAILURE;
+  }
 }

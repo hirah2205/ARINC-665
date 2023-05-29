@@ -21,8 +21,8 @@
 #include <boost/exception/all.hpp>
 
 #include <filesystem>
-#include <vector>
 #include <iostream>
+#include <vector>
 #include <fstream>
 
 /**
@@ -103,6 +103,7 @@ int main( int argc, char * argv[] )
     if ( 0U != vm.count( "help" ) )
     {
       std::cout
+        << "Validates ARINC 665 Media Set\n"
         << optionsDescription << "\n";
       return EXIT_FAILURE;
     }
@@ -123,19 +124,17 @@ int main( int argc, char * argv[] )
       std::cerr << "Validation FAILED\n";
       return EXIT_FAILURE;
     }
+
+    std::cout << "Validation Successfully completed\n";
+
+    return EXIT_SUCCESS;
   }
   catch ( const boost::program_options::error &e )
   {
     std::cerr
       << "Error parsing command line: " << e.what() << "\n"
-      << "Enter " << argv[0] << " --help for command line description\n";
-    return EXIT_FAILURE;
-  }
-  catch ( const Arinc665::Arinc665Exception &e )
-  {
-    std::cerr
-      << "Validation failed: "
-      << boost::diagnostic_information( e ) << "\n";
+      << "Enter " << argv[0]
+      << " --help for command line description\n";
     return EXIT_FAILURE;
   }
   catch ( const boost::exception &e )
@@ -145,15 +144,18 @@ int main( int argc, char * argv[] )
       << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
-  catch ( ... )
+  catch ( const std::exception &e )
   {
-    std::cerr << "Error in validation: UNKNOWN EXCEPTION\n";
+    std::cerr
+      << "Error: "
+      << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
-
-  std::cout << "Validation Successfully completed\n";
-
-  return EXIT_SUCCESS;
+  catch ( ... )
+  {
+    std::cerr << "Unknown exception occurred\n";
+    return EXIT_FAILURE;
+  }
 }
 
 static Arinc665::Files::RawFile readFile(

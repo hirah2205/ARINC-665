@@ -93,12 +93,15 @@ int main( int argc, char * argv[] )
       Arinc665::Utils::Arinc665Xml_load( xmlPath ) };
 
     Arinc665::Utils::MediaSetPrinter_print( *mediaSet, std::cout, "  ", "  " );
+
+    return EXIT_SUCCESS;
   }
   catch ( const boost::program_options::error &e )
   {
     std::cerr
       << "Error parsing command line: " << e.what() << "\n"
-      << "Enter " << argv[0] << " --help for command line description\n";
+      << "Enter " << argv[0]
+      << " --help for command line description\n";
     return EXIT_FAILURE;
   }
   catch ( const boost::exception &e )
@@ -117,9 +120,7 @@ int main( int argc, char * argv[] )
   }
   catch ( ... )
   {
-    std::cerr << "unknown exception occurred\n";
+    std::cerr << "Unknown exception occurred\n";
     return EXIT_FAILURE;
   }
-
-  return EXIT_SUCCESS;
 }

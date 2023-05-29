@@ -22,8 +22,8 @@
 
 #include <boost/exception/diagnostic_information.hpp>
 
-#include <iostream>
 #include <cstdlib>
+#include <iostream>
 
 /**
  * @brief Application Entry Point.
@@ -74,7 +74,7 @@ int main( int argc, char * argv[] )
   }
   catch ( ... )
   {
-    std::cerr << "unknown error\n";
+    std::cerr << "Unknown exception occurred\n";
     return EXIT_FAILURE;
   }
 }

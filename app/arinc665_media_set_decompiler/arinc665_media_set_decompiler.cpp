@@ -31,12 +31,12 @@
 #include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
 
-#include <filesystem>
-#include <vector>
-#include <cstdlib>
-#include <iostream>
-
 #include <fmt/format.h>
+
+#include <cstdlib>
+#include <filesystem>
+#include <iostream>
+#include <vector>
 
 /**
  * @brief Application Entry Point.
@@ -93,8 +93,9 @@ int main( int argc, char * argv[] )
     )
     (
       "source-directory",
-      boost::program_options::value(
-        &mediaSourceDirectories )->required()->composing(),
+      boost::program_options::value( &mediaSourceDirectories )
+        ->required()
+        ->composing(),
       "ARINC 665 media source directories."
     )
     (
@@ -176,12 +177,15 @@ int main( int argc, char * argv[] )
       *mediaSet,
       fileMapping,
       mediaSetXmlFile );
+
+    return EXIT_SUCCESS;
   }
   catch ( const boost::program_options::error &e )
   {
     std::cerr
       << "Error parsing command line: " << e.what() << "\n"
-      << "Enter " << argv[0] << " --help for command line description\n";
+      << "Enter " << argv[0]
+      << " --help for command line description\n";
     return EXIT_FAILURE;
   }
   catch ( const boost::exception &e )
@@ -200,11 +204,9 @@ int main( int argc, char * argv[] )
   }
   catch ( ... )
   {
-    std::cerr << "unknown exception occurred\n";
+    std::cerr << "Unknown exception occurred\n";
     return EXIT_FAILURE;
   }
-
-  return EXIT_SUCCESS;
 }
 
 static void progress(

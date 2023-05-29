@@ -30,9 +30,9 @@
 #include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
 
-#include <iostream>
-#include <filesystem>
 #include <cstdlib>
+#include <filesystem>
+#include <iostream>
 
 /**
  * @brief Application Entry Point.
@@ -100,7 +100,8 @@ int main( int argc, char * argv[] )
     )
     (
       "xml-file",
-      boost::program_options::value( &mediaSetXmlFile )->required(),
+      boost::program_options::value( &mediaSetXmlFile )
+        ->required(),
       "ARINC 665 media set description XML file."
     )
     (
@@ -181,19 +182,15 @@ int main( int argc, char * argv[] )
     }
 
     ( *compiler )();
+
+    return EXIT_SUCCESS;
   }
   catch ( const boost::program_options::error &e )
   {
     std::cerr
       << "Error parsing command line: " << e.what() << "\n"
-      << "Enter " << argv[0] << " --help for command line description\n";
-    return EXIT_FAILURE;
-  }
-  catch ( const Arinc665::Arinc665Exception &e )
-  {
-    std::cerr
-      << "Arinc665Exception in compiler: "
-      << boost::diagnostic_information( e ) << "\n";
+      << "Enter " << argv[0]
+      << " --help for command line description\n";
     return EXIT_FAILURE;
   }
   catch ( const boost::exception &e )
@@ -212,9 +209,7 @@ int main( int argc, char * argv[] )
   }
   catch ( ... )
   {
-    std::cerr << "unknown exception occurred\n";
+    std::cerr << "Unknown exception occurred\n";
     return EXIT_FAILURE;
   }
-
-  return EXIT_SUCCESS;
 }
