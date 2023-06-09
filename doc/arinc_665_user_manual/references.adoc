@@ -1,0 +1,15 @@
+[bibliography]
+== References
+
+[discrete]
+=== ARINC Standards
+
+* [[[arinc_665_5,ARINC 665-5]]]
+ARINC Report 665-5:
+Loadable Software Standards;
+2019-08-13
+
+* [[[arinc_645_1,ARINC 645-1]]]
+ARINC Report 645-1:
+Common Terminology and Functions for Software Distribution and Loading;
+2021-08-11

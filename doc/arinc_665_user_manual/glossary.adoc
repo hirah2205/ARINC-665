@@ -1,0 +1,19 @@
+[glossary]
+== Glossary
+
+[glossary]
+
+**CLI**
+**C**ommand **L**ine **I**nterface
+
+**GUI**
+**G**raphical **U**ser **I**nterface
+
+**LSP**
+**L**oadable **S**oftware **P**art
+
+**MSP**
+**M**edia **S**et **P**art
+
+**BFP**
+**B**atch **F**ile **P**art

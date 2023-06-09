@@ -1,0 +1,148 @@
+== ARINC 665 Media Set XML
+
+This XML-dialect is used to describe an ARINC 665 Media Set in a user-readable
+way.
+This XML is used to create / import ARINC 665 Media Sets.
+
+- XML Schema
+- Checksums
+
+=== Generic Check Value Attributes
+The _Check Value_ attributes are used to define the Check Value Algorithm used.
+
+=== Element `MediaSet`
+
+The _MediaSet_ element is the start point of a ARINC 665 XML Media Set description.
+It must contain the mandatory _PartNumber_ Attribute and a _Content_ Element.
+
+[discrete]
+==== Example
+
+[source,xml]
+----
+<MediaSet
+  xmlns="http://www.thomas-vogt.de/Arinc665MediaSet"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.thomas-vogt.de/Arinc665MediaSet Arinc665MediaSet.xsd"
+
+  PartNumber="CCC"
+  MediaSetCheckValue="CRC64" >
+
+  <FilesUserDefinedData>Files User Defined Data</FilesUserDefinedData>
+  <LoadsUserDefinedData>Loads User Defined Data</LoadsUserDefinedData>
+  <BatchesUserDefinedData>Batches User Defined Data</BatchesUserDefinedData>
+
+  <Content>
+    [...]
+  </Content>
+</MediaSet>
+----
+
+==== Attribute `PartNumber`
+The Media Set Part Number.
+
+==== Attribute `MediaSetCheckValue`
+The Media Set Default Check Value.
+
+=== Element `FilesUserDefinedData`
+User Defined Data for _List of Files_ file.
+This Element is optional.
+
+=== Element `LoadsUserDefinedData`
+User Defined Data for _List of Loads_ file.
+This Element is optional.
+
+=== Element `BatchesUserDefinedData`
+User Defined Data for _List of Batches_ file.
+This Element is optional.
+
+=== Element `Content`
+Contains the _Directories_, _Files_, _Loads_, and _Batches_ located on the Media Set.
+
+=== Element `Directory`
+Defines a directory, which is located on the Media Set.
+
+==== Attribute `Name`
+The directory name.
+This attribute is mandatory.
+
+=== Element `File`
+
+==== Attribute `Name`
+The directory name.
+This attribute is mandatory.
+
+=== Element `Load`
+
+==== Attribute `Name`
+The directory name.
+This attribute is mandatory.
+
+=== Element `Batch`
+
+==== Attribute `Name`
+The directory name.
+This attribute is mandatory.
+
+=== Example
+
+[source,xml]
+----
+<MediaSet
+  xmlns="http://www.thomas-vogt.de/Arinc665MediaSet"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.thomas-vogt.de/Arinc665MediaSet Arinc665MediaSet.xsd"
+
+  PartNumber="CCC"
+  MediaSetCheckValue="CRC64" >
+
+  <FilesUserDefinedData>File Data</FilesUserDefinedData>
+  <LoadsUserDefinedData>Loads Data</LoadsUserDefinedData>
+  <BatchesUserDefinedData>Batch Data</BatchesUserDefinedData>
+
+  <Content>
+    <File Name="File1" SourcePath="File1" />
+    <Load
+      Name="Load1.LUH"
+      PartNumber="AABBCC"
+      PartFlags="0x0000"
+      Description="Test Load Description"
+      Type="0x0501"
+      LoadCheckValue="CRC64" >
+      <TargetHardware ThwId="ABCDEF" >
+        <Position Pos="123" />
+        <Position Pos="456" />
+      </TargetHardware>
+      <TargetHardware ThwId="GHIJKL" />
+
+      <DataFile    FilePath="/File1" PartNumber="AABBCC1" />
+      <SupportFile FilePath="/Directory1/File2" PartNumber="AABBCC2" />
+
+      <UserDefinedData>TEST</UserDefinedData>
+    </Load>
+    <Load Name="Load2.LUH" PartNumber="AABBDD" PartFlags="0x0000" >
+      <TargetHardware ThwId="ABCDEF" />
+      <TargetHardware ThwId="GHIJKL" />
+
+      <DataFile    FilePath="/File1" PartNumber="AABBCC1" />
+      <SupportFile FilePath="/Directory1/File2" PartNumber="AABBCC2" />
+    </Load>
+    <Directory Name="Directory1" >
+      <File Name="File2" SourcePath="File2" />
+    </Directory>
+    <File Name="Readme.txt" SourcePath="Readme.txt" />
+    <Batch Name="Batch1.LUB" PartNumber="AABBEE" Comment="Comment Text" >
+      <Target ThwIdPos="ABCDEF_123" >
+        <Load FilePath="/Load1.LUH" />
+        <Load FilePath="/Load2.LUH" />
+      </Target>
+    </Batch>
+    <Directory Name="Directory3" >
+      <File Name="DIR3_FILE1" />
+      <Load Name="DIR3_LOAD1.LUH" PartNumber="DIR3LOAD1" SourcePath="DIR3LOAD1.LUH" />
+      <Load Name="DIR3_LOAD2.LUH" PartNumber="DIR3LOAD2" SourcePath="DIR3LOAD2.LUH" />
+      <Batch Name="DIR3_BATCH1.LUB" PartNumber="DIR3BATCH1" SourcePath="DIR3_BATCH1.LUB" />
+    </Directory>
+  </Content>
+</MediaSet>
+----

@@ -1,0 +1,40 @@
+== Media Set Manger Qt Application
+
+The _Media Set Manager Qt Application_ is a GUI application, which is used to
+manage a _Media Sets Repository_.
+
+=== Setup Media Set Manager
+When the application is started, the user is asked for a *Media Set Manager
+Configuration Directory*.
+When an empty directory is selected, a new Media Set Manager Configuration is
+created within this directory.
+The application remembers its last used *Media Set Manager Configuration*
+directory.
+
+=== Configuring the Media Set Manager
+
+When selecting the _Media Set Manager Settings_ menu entry or button, a dialog
+is shown, where the user can modify the Media Set Manger Settings as required.
+When accepting the dialog the settings will be applied immediately.
+When discarding the dialog, the old settings remain valid.
+
+=== Import existing ARINC 665 Media Set
+
+=== Import ARINC 665 Media Set via Media Set XML Description
+
+Imports a ARINC 665 Media Set given by an ARINC 665 Media Set XML description.
+When the operation is started by activating the _Import ARINC 665 Media Set_
+menu entry or button, a wizard is executed.
+
+=== Inspect ARINC 665 Media Set
+
+When activating a Media Set or selecting the _View Media Set_ menu entry, the
+active Media Set is opened in a separate view for inspection.
+
+=== Remove ARINC 665 Media Set
+
+Removes the selected media set within the media set list.
+
+. Select Media Set to Remove,
+. Active _Remove Media Set_ menu entry or press button, and
+. Confirm the removal of the media set.
