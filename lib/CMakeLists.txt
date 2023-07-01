@@ -6,7 +6,7 @@
 #
 # Thomas Vogt, thomas@thomas-vogt.de
 
-cmake_minimum_required( VERSION 3.25 )
+cmake_minimum_required( VERSION 3.26 )
 
 add_subdirectory( arinc665 )
 add_subdirectory( arinc665_commands )
