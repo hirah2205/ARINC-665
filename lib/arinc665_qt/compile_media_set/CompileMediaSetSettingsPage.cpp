@@ -92,7 +92,7 @@ CompileMediaSetSettingsPage::CompileMediaSetSettingsPage(
     settings
       .value(
         "LastOutputDirectory",
-        QStandardPaths::standardLocations( QStandardPaths::DataLocation ) )
+        QStandardPaths::standardLocations( QStandardPaths::AppLocalDataLocation ) )
       .toString() );
 
   connect(
