@@ -12,7 +12,7 @@ add_executable( arinc665_unit_test )
 
 target_sources( arinc665_unit_test PRIVATE arinc665_unit_test.cpp )
 
-target_compile_features( arinc665_unit_test PRIVATE cxx_std_20 )
+target_compile_features( arinc665_unit_test PRIVATE cxx_std_23 )
 
 target_compile_options(
   arinc665_unit_test

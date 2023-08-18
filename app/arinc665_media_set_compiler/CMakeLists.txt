@@ -16,7 +16,7 @@ target_sources(
   arinc665_media_set_compiler
   PRIVATE arinc665_media_set_compiler.cpp )
 
-target_compile_features( arinc665_media_set_compiler PRIVATE cxx_std_20 )
+target_compile_features( arinc665_media_set_compiler PRIVATE cxx_std_23 )
 
 target_compile_options(
   arinc665_media_set_compiler

@@ -12,7 +12,7 @@ add_executable( arinc665_print_xml )
 
 target_sources( arinc665_print_xml PRIVATE arinc665_print_xml.cpp )
 
-target_compile_features( arinc665_print_xml PRIVATE cxx_std_20 )
+target_compile_features( arinc665_print_xml PRIVATE cxx_std_23 )
 
 target_compile_options(
   arinc665_print_xml
