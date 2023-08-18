@@ -96,10 +96,6 @@ target_sources(
     test/PartNumberTest.cpp
     test/VersionTest.cpp )
 
-target_include_directories(
-  arinc665_test
-  PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES> )
-
 target_compile_features( arinc665_test PUBLIC cxx_std_23 )
 
 target_compile_definitions(
