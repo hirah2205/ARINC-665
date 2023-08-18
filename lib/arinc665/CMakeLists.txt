@@ -51,7 +51,7 @@ target_sources(
     PartNumber.cpp
     SupportedArinc665VersionDescription.cpp )
 
-target_compile_features( arinc665 PUBLIC cxx_std_20 )
+target_compile_features( arinc665 PUBLIC cxx_std_23 )
 
 target_compile_definitions(
   arinc665
@@ -100,7 +100,7 @@ target_include_directories(
   arinc665_test
   PRIVATE $<TARGET_PROPERTY:arinc665,INCLUDE_DIRECTORIES> )
 
-target_compile_features( arinc665_test PUBLIC cxx_std_20 )
+target_compile_features( arinc665_test PUBLIC cxx_std_23 )
 
 target_compile_definitions(
   arinc665_test

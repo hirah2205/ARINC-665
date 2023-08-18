@@ -55,7 +55,7 @@ target_sources(
     MediaPathsWidget.ui
     SupportedArinc665VersionModel.cpp )
 
-target_compile_features( arinc665_qt PUBLIC cxx_std_20 )
+target_compile_features( arinc665_qt PUBLIC cxx_std_23 )
 
 target_compile_options(
   arinc665_qt

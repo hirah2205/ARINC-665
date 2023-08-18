@@ -30,7 +30,7 @@ target_sources(
   PRIVATE
     Arinc665Commands.cpp )
 
-target_compile_features( arinc665_commands PUBLIC cxx_std_20 )
+target_compile_features( arinc665_commands PUBLIC cxx_std_23 )
 
 target_compile_options(
   arinc665_commands
