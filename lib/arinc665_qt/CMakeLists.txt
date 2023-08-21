@@ -8,9 +8,12 @@
 
 cmake_minimum_required( VERSION 3.26 )
 
-find_package( Qt5 COMPONENTS Widgets QUIET )
+find_package( Qt6 COMPONENTS Widgets QUIET )
+if( NOT Qt6_FOUND )
+  find_package( Qt5 COMPONENTS Widgets QUIET )
+endif()
 
-if( NOT TARGET Qt5::Widgets )
+if( NOT TARGET Qt::Widgets )
   return()
 endif()
 
@@ -74,7 +77,7 @@ target_link_libraries(
 
   PUBLIC
     arinc665
-    Qt5::Widgets
+    Qt::Widgets
 
   PRIVATE
     helper_qt
