@@ -220,23 +220,45 @@ class ARINC665_EXPORT Load final : public File
      **/
 
     /**
-     * @brief Returns file with given filename and optional part number.
+     * @brief Returns file with given filename.
+     *
+     * It also verifies the filename against the load header file itself.
      *
      * If more than one file is found with the given attributes no file is
      * returned.
      *
      * @param[in] filename
      *   Filename of file to look for.
-     * @param[in] partNumber
-     *   Part Number
+     *
+     * @return File with filename.
+     * @retval {}
+     *   No file or more than on file found within data and support files.
+     **/
+    [[nodiscard]] ConstFilePtr file( std::string_view filename ) const;
+
+    /**
+     * @brief Returns file with given filename and Check Value.
+     *
+     * It also verifies the filename against the load header file itself.
+     *
+     * If more than one file is found with the given attributes no file is
+     * returned.
+     *
+     * @param[in] checkValues
+     *   List of check values.
+     * @param[in] filename
+     *   Filename of file to look for.
+     * @param[in] checkValue
+     *   Check Value of file.
      *
      * @return File with filename and part number if provided.
      * @retval {}
      *   No file or more than on file found within data and support files.
      **/
-    [[nodiscard]] ConstRegularFilePtr file(
+    [[nodiscard]] ConstFilePtr file(
+      const CheckValues &checkValues,
       std::string_view filename,
-      std::string_view partNumber = {} ) const;
+      const Arinc645::CheckValue &checkValue ) const;
 
     /** @} **/
 
@@ -557,77 +579,52 @@ class ARINC665_EXPORT Load final : public File
  **/
 
 /**
- * @brief Returns file with given filename and part number.
+ * @brief Returns load identified by Part Number.
  *
- * It also verifies the filename and part number against the load header file.
+ * Iterates over @p loads returning the first load, whom *Part Number* matches
+ * @p partNumber.
  *
- * If more than one file is found with the given attributes no file is
- * returned.
- *
- * @param[in] load
- *   Load
- * @param[in] filename
- *   Filename
+ * @param[in] loads
+ *   List of Loads.
  * @param[in] partNumber
- *   Part Number
+ *   Load Part Number
  *
- * @return Load with filename and part number if provided.
+ * @return Load with given part number.
  * @retval {}
- *   No file or more than on file found within data and support files.
+ *   When no load with given part number exists in @p loads
  **/
-[[nodiscard]] ConstFilePtr ARINC665_EXPORT Load_file(
-  const ConstLoadPtr &load,
-  std::string_view filename,
-  std::string_view partNumber = {} );
+[[nodiscard]] ConstLoadPtr ARINC665_EXPORT Loads_loadByPartNumber(
+  const ConstLoads &loads,
+  std::string_view partNumber );
 
 /**
- * @brief Returns file with given filename and Check Value.
+ * @brief Returns file with given filename from load with given Part Number.
  *
- * It also verifies the filename and part number against the load header file.
- *
+ * If @p loadPartNumber is provided, first find the matching load from @p loads.
+ * Then determine the files with the matching @p filename.
  * If more than one file is found with the given attributes no file is
  * returned.
+ * If @p filename refers to the load header, the corresponding load header file
+ * is returned.
  *
- * @param[in] load
- *   Load
- * @param[in] checkValues
- *   Check Values
- * @param[in] filename
- *   Filename
- * @param[in] checkValue
- *   Check Value
- *
- * @return File with filename and part number if provided.
- * @retval {}
- *   No file or more than on file found within data and support files.
- **/
-[[nodiscard]] ConstFilePtr ARINC665_EXPORT Load_file(
-  const ConstLoadPtr &load,
-  const CheckValues &checkValues,
-  std::string_view filename,
-  const Arinc645::CheckValue &checkValue );
-
-/**
- * @brief Returns file with given filename and part number.
- *
- * If more than one file is found with the given attributes no file is
- * returned.
+ * @sa @ref Loads_loadByPartNumber()
+ * @sa @ref Load::file(std::string_view) const
  *
  * @param[in] loads
  *   List of loads
  * @param[in] filename
  *   Filename
- * @param[in] partNumber
- *   Part Number
+ * @param[in] loadPartNumber
+ *   Load Part Number
  *
- * @return File with filename and part number if provided.
+ * @return File with filename.
  * @retval {}
  *   No file or more than on file found within data and support files.
  **/
 [[nodiscard]] ConstFilePtr ARINC665_EXPORT Loads_file(
   const ConstLoads &loads,
   std::string_view filename,
-  std::string_view partNumber = {} );
+  std::string_view loadPartNumber = {} );
 
 /**
  * @brief Returns file with given filename and Check Value.

@@ -112,19 +112,22 @@ void Load::targetHardwareId( std::string targetHardwareId, Positions positions )
     std::move( positions ) );
 }
 
-ConstRegularFilePtr Load::file(
-  std::string_view filename,
-  std::string_view partNumber ) const
+ConstFilePtr Load::file( std::string_view filename ) const
 {
   BOOST_LOG_FUNCTION()
+
+  // check if requested file is the load header file itself
+  if ( filename == name() )
+  {
+    return std::dynamic_pointer_cast< const File >( shared_from_this() );
+  }
 
   ConstRegularFiles files{};
 
   for ( const auto &[ file, filePartNumber, checkValueType ] : dataFilesV )
   {
     if ( auto regularFile{ file.lock() };
-      regularFile && ( regularFile->name() == filename )
-      && ( partNumber.empty() || ( partNumber == filePartNumber ) ) )
+      regularFile && ( regularFile->name() == filename ) )
     {
       files.emplace_back( regularFile );
     }
@@ -133,8 +136,7 @@ ConstRegularFilePtr Load::file(
   for ( const auto &[ file, filePartNumber, checkValueType ] : supportFilesV )
   {
     if ( auto regularFile{ file.lock() };
-         regularFile && ( regularFile->name() == filename )
-         && ( partNumber.empty() || ( partNumber == filePartNumber ) ) )
+      regularFile && ( regularFile->name() == filename ) )
     {
       files.emplace_back( regularFile );
     }
@@ -152,6 +154,56 @@ ConstRegularFilePtr Load::file(
   }
 
   return {};
+}
+
+ConstFilePtr Load::file(
+  const CheckValues &checkValues,
+  std::string_view filename,
+  const Arinc645::CheckValue &checkValue ) const
+{
+  BOOST_LOG_FUNCTION()
+
+  ConstRegularFiles files{};
+
+  for ( const auto &[ file, filePartNumber, checkValueType ] : dataFiles() )
+  {
+    if ( file && ( file->name() == filename ) )
+    {
+      if (
+        auto fileCheckValues{ checkValues.find( file ) };
+        ( fileCheckValues != checkValues.end() ) &&
+        fileCheckValues->second.contains( checkValue ) )
+      {
+        files.emplace_back( file );
+      }
+    }
+  }
+
+  for ( const auto &[ file, filePartNumber, checkValueType ] : supportFiles() )
+  {
+    if ( file && ( file->name() == filename ) )
+    {
+      auto fileCheckValues{ checkValues.find( file ) };
+      if ( fileCheckValues->second.contains( checkValue ) )
+      {
+        files.emplace_back( file );
+      }
+    }
+  }
+
+  if ( 1U == files.size() )
+  {
+    return files.front();
+  }
+
+  if ( !files.empty() )
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+      << "More files found for given parameters";
+  }
+
+  return {};
+
 }
 
 ConstLoadFiles Load::dataFiles( const bool effective ) const
@@ -327,78 +379,18 @@ void Load::supportFilesCheckValueType(
   supportFilesCheckValueTypeV = checkValueType;
 }
 
-ConstFilePtr Load_file(
-  const ConstLoadPtr &load,
-  std::string_view filename,
+ConstLoadPtr Loads_loadByPartNumber(
+  const ConstLoads &loads,
   std::string_view partNumber )
 {
   BOOST_LOG_FUNCTION()
 
-  if ( !load )
+  for ( const auto &load : loads )
   {
-    return {};
-  }
-
-  // check if requested file is the load header file itself
-  if ( ( filename == load->name() )
-    && ( partNumber.empty() || ( partNumber == load->partNumber() ) ) )
-  {
-    return load;
-  }
-
-  return load->file( filename, partNumber );
-}
-
-ConstFilePtr Load_file(
-  const ConstLoadPtr &load,
-  const CheckValues &checkValues,
-  std::string_view filename,
-  const Arinc645::CheckValue &checkValue )
-{
-  BOOST_LOG_FUNCTION()
-
-  if ( !load )
-  {
-    return {};
-  }
-
-  ConstRegularFiles files{};
-
-  for ( const auto &[file, filePartNumber, checkValueType] : load->dataFiles() )
-  {
-    if ( file && ( file->name() == filename ) )
+    if ( load->partNumber() == partNumber )
     {
-      if (
-        auto fileCheckValues{ checkValues.find( file ) };
-        ( fileCheckValues != checkValues.end() ) &&
-        fileCheckValues->second.contains( checkValue ) )
-      {
-        files.emplace_back( file );
-      }
+      return load;
     }
-  }
-
-  for ( const auto &[file, filePartNumber, checkValueType] : load->supportFiles() )
-  {
-    if ( file && ( file->name() == filename ) )
-    {
-      auto fileCheckValues{ checkValues.find( file ) };
-      if ( fileCheckValues->second.contains( checkValue ) )
-      {
-        files.emplace_back( file );
-      }
-    }
-  }
-
-  if ( 1U == files.size() )
-  {
-    return files.front();
-  }
-
-  if ( !files.empty() )
-  {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-      << "More files found for given parameters";
   }
 
   return {};
@@ -407,16 +399,28 @@ ConstFilePtr Load_file(
 ConstFilePtr Loads_file(
   const ConstLoads &loads,
   std::string_view filename,
-  std::string_view partNumber )
+  std::string_view loadPartNumber )
 {
   BOOST_LOG_FUNCTION()
+
+  if ( !loadPartNumber.empty() )
+  {
+    const auto load{ Loads_loadByPartNumber( loads, loadPartNumber ) };
+
+    if ( !load )
+    {
+      return {};
+    }
+
+    return load->file( filename );
+  }
 
   ConstFiles files{};
 
   for ( const auto &load : loads )
   {
     assert( load );
-    if ( auto file{ Load_file( load, filename, partNumber ) }; file )
+    if ( auto file{ load->file( filename ) }; file )
     {
       files.emplace_back( std::move( file ) );
     }
@@ -449,7 +453,7 @@ ConstFilePtr Loads_file(
   for ( const auto &load : loads )
   {
     assert( load );
-    if ( auto file{ Load_file( load, checkValues, filename, checkValue ) }; file )
+    if ( auto file{ load->file( checkValues, filename, checkValue ) }; file )
     {
       files.emplace_back( std::move( file ) );
     }

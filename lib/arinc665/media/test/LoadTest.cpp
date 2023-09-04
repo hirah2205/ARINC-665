@@ -57,6 +57,7 @@ BOOST_AUTO_TEST_CASE( constructor )
   load->supportFile( regularFile3, "PN3" );
   load->supportFile( regularFile4, "PN4" );
 
+  BOOST_CHECK( load->file( "LOAD.LUH" ) == load );
   BOOST_CHECK( load->file( "FILE1" ) == regularFile1 );
   BOOST_CHECK( load->file( "FILE2" ) == regularFile2 );
   BOOST_CHECK( load->file( "FILE3" ) == regularFile3 );
@@ -64,6 +65,54 @@ BOOST_AUTO_TEST_CASE( constructor )
   BOOST_CHECK( !load->file( "INVALID" ) );
 
   BOOST_CHECK( load->userDefinedData().empty() );
+}
+
+//! Load by Part Number Test
+BOOST_AUTO_TEST_CASE( Loads_loadByPartNumberTest )
+{
+  using namespace std::string_view_literals;
+
+  auto mediaSet{ MediaSet::create() };
+
+  auto load1{ mediaSet->addLoad( "LOAD1.LUH" ) };
+  BOOST_CHECK( load1 );
+  load1->partNumber( "PN1" );
+  BOOST_CHECK( load1->partNumber() == "PN1" );
+
+  auto load2{ mediaSet->addLoad( "LOAD2.LUH" ) };
+  BOOST_CHECK( load2 );
+  load2->partNumber( "PN2" );
+  BOOST_CHECK( load2->partNumber() == "PN2" );
+
+  ConstLoads loads{ load1, load2 };
+
+  BOOST_CHECK( !Loads_loadByPartNumber( loads, "XXX" ) );
+  BOOST_CHECK( Loads_loadByPartNumber( loads, "PN1" ) == load1 );
+  BOOST_CHECK( Loads_loadByPartNumber( loads, "PN2" ) == load2 );
+}
+
+//! File by Part Number Test
+BOOST_AUTO_TEST_CASE( Loads_filePartNumberTest )
+{
+  using namespace std::string_view_literals;
+
+  auto mediaSet{ MediaSet::create() };
+
+  auto load1{ mediaSet->addLoad( "LOAD1.LUH" ) };
+  BOOST_CHECK( load1 );
+  load1->partNumber( "PN1" );
+  BOOST_CHECK( load1->partNumber() == "PN1" );
+
+  auto load2{ mediaSet->addLoad( "LOAD2.LUH" ) };
+  BOOST_CHECK( load2 );
+  load2->partNumber( "PN2" );
+  BOOST_CHECK( load2->partNumber() == "PN2" );
+
+  ConstLoads loads{ load1, load2 };
+
+  BOOST_CHECK( !Loads_file( loads, "XXX" ) );
+  BOOST_CHECK( Loads_file( loads, "LOAD1.LUH", "PN1" ) == load1 );
+  BOOST_CHECK( Loads_file( loads, "LOAD2.LUH", "PN2" ) == load2 );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
