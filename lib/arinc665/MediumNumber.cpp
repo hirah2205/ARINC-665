@@ -61,7 +61,7 @@ std::ostream& operator <<(
   std::ostream &ostream,
   const MediumNumber &mediumNumber )
 {
-  ostream << static_cast< std::string>( mediumNumber );
+  ostream << static_cast< std::string >( mediumNumber );
   return ostream;
 }
 

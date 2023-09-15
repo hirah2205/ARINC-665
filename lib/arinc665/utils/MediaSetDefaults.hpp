@@ -21,7 +21,12 @@
 namespace Arinc665::Utils {
 
 /**
- * @brief ARINC 665 %Media Set Configuration.
+ * @brief ARINC 665 %Media Set Handling Default Configuration.
+ *
+ * This class provides defaults for Media Set Handling (loading, importing, and
+ * creation).
+ * This defaults are runtime configurable and are can be loaded/ stored from
+ * boost::property_tree instances.
  **/
 class ARINC665_EXPORT MediaSetDefaults
 {

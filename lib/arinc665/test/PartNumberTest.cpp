@@ -32,14 +32,14 @@ BOOST_AUTO_TEST_CASE( testPartNumber1 )
   BOOST_CHECK( pn.productIdentifier() == "54972000");
 
   BOOST_CHECK( pn.partNumber() ==
-    std::string{ pn.manufacturerCode()} +
-    std::string{ pn.checkCode()} +
-    std::string{ pn.productIdentifier()});
+    std::string{ pn.manufacturerCode() } +
+    std::string{ pn.checkCode() } +
+    std::string{ pn.productIdentifier() } );
 
-  BOOST_CHECK_THROW( (PartNumber{ "", "54972000"}), Arinc665Exception);
-  BOOST_CHECK_THROW( (PartNumber{ "A", "54972000"}), Arinc665Exception);
-  BOOST_CHECK_THROW( (PartNumber{ "AA", "54972000"}), Arinc665Exception);
-  BOOST_CHECK_THROW( (PartNumber{ "AAAA", "54972000"}), Arinc665Exception);
+  BOOST_CHECK_THROW( (PartNumber{ "", "54972000"} ), Arinc665Exception );
+  BOOST_CHECK_THROW( (PartNumber{ "A", "54972000"} ), Arinc665Exception );
+  BOOST_CHECK_THROW( (PartNumber{ "AA", "54972000"} ), Arinc665Exception );
+  BOOST_CHECK_THROW( (PartNumber{ "AAAA", "54972000"} ), Arinc665Exception );
 
 
   BOOST_CHECK_THROW( (PartNumber{ "EBE", ""}), Arinc665Exception);

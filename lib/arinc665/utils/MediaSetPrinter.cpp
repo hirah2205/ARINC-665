@@ -251,7 +251,7 @@ void MediaSetPrinter_print(
     << load.path().generic_string() << "\n"
 
     << initialIndent
-    << "Load Part Nummer: '"
+    << "Load Part Number: '"
     << load.partNumber() << "'\n"
 
     << initialIndent
@@ -309,16 +309,16 @@ void MediaSetPrinter_print(
   {
     outS
       << nextIndent
-      << "File Name: "
+      << "Filename: "
       << file->name() << "\n"
 
       << nextIndent
-      << "File Path: "
+      << "Path: "
       << "[" << file->effectiveMediumNumber() << "]:"
       << file->path().generic_string() << "\n"
 
       << nextIndent
-      << "File Part Number: '"
+      << "Part Number: '"
       << partNumber << "'\n"
 
       << nextIndent
@@ -340,16 +340,16 @@ void MediaSetPrinter_print(
   {
     outS
       << nextIndent
-      << "File Name: "
+      << "Filename: "
       << file->name() << "\n"
 
       << nextIndent
-      << "File Path: "
+      << "Path: "
       << "[" << file->effectiveMediumNumber() << "]:"
       << file->path().generic_string() << "\n"
 
       << nextIndent
-      << "Part Number: '"
+      << "Number: '"
       << partNumber << "'\n"
 
       << nextIndent
@@ -377,15 +377,15 @@ void MediaSetPrinter_print(
 
   outS
     << initialIndent
-    << "Batch Name: " << batch.name() << "\n"
+    << "Filename: " << batch.name() << "\n"
 
     << initialIndent
-    << "Batch Path: "
+    << "Path: "
     << "[" << batch.effectiveMediumNumber() << "]:"
     << batch.path().generic_string() << "\n"
 
     << initialIndent
-    << "Batch Part Number: '" << batch.partNumber() << "'\n"
+    << "Part Number: '" << batch.partNumber() << "'\n"
 
     << initialIndent
     << "Comment: '" << batch.comment() << "'\n";
@@ -410,7 +410,7 @@ void MediaSetPrinter_print(
         << "Name: " << load->name() << "\n"
 
         << nextNextIndent
-        << "Load Path: "
+        << "Path: "
         << "[" << load->effectiveMediumNumber() << "]:"
         << load->path().generic_string() << "\n";
 

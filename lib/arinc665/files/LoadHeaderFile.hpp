@@ -488,7 +488,7 @@ class ARINC665_EXPORT LoadHeaderFile final : public Arinc665File
     /**
      * @brief Returns the Load Type Information.
      *
-     * This information is only used in ARIN 665-3/4 files.
+     * This information is only used in ARINC 665-3/4 files.
      *
      * @return Load Type information.
      **/
@@ -497,7 +497,7 @@ class ARINC665_EXPORT LoadHeaderFile final : public Arinc665File
     /**
      * @brief Updates the Load Type Information.
      *
-     * This information is only used in ARIN 665-3/4 files.
+     * This information is only used in ARINC 665-3/4 files.
      *
      * @param[in] type
      *   Load Type Information.

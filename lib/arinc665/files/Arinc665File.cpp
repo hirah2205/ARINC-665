@@ -113,7 +113,7 @@ std::optional< LoadFileFormatVersion > Arinc665File::loadFileFormatVersion(
   const LoadFileFormatVersion formatVersion{
     Arinc665File::formatVersion( rawFile ) };
 
-  switch ( formatVersion)
+  switch ( formatVersion )
   {
     case LoadFileFormatVersion::Version2:
     case LoadFileFormatVersion::Version345:
@@ -441,7 +441,7 @@ void Arinc665File::decodeHeader(
 
   if ( static_cast< size_t >( fileLength ) * 2U != rawFile.size() )
   {
-    BOOST_THROW_EXCEPTION(InvalidArinc665File()
+    BOOST_THROW_EXCEPTION( InvalidArinc665File()
       << Helper::AdditionalInfo{ "file size invalid" } );
   }
 

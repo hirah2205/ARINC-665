@@ -346,7 +346,7 @@ void MediaSetDecompilerImpl::files()
       {
       BOOST_THROW_EXCEPTION(
         Arinc665Exception()
-          << Helper::AdditionalInfo{ "Load file also in batch list present"}
+          << Helper::AdditionalInfo{ "Load file also in batch list present" }
           << boost::errinfo_file_name{ fileName } );
       }
 

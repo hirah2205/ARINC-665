@@ -70,7 +70,7 @@ class ARINC665_EXPORT MediaSetManagerConfiguration
 
     //! Media Sets Paths
     MediaSetsPaths mediaSets{};
-    //! Media Set Configuration
+    //! Media Set Defaults Configuration
     MediaSetDefaults defaults{};
 };
 

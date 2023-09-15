@@ -36,7 +36,7 @@ struct ARINC665_EXPORT BatchInfo
 {
   //! Part Number
   std::string partNumber{};
-  //! File Name
+  //! Filename
   std::string filename{};
   //! Member Sequence Number
   MediumNumber memberSequenceNumber{};

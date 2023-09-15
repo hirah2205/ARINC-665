@@ -34,9 +34,13 @@ namespace Arinc665::Files {
  * +4     | Value  | n * 2 B | Check Value (always even number of bytes)
  *
  * @par No Check Value Encoding
+ * There are two alternatives for encoding "No Check Value":
  *  1. Set `Length` field to `0` and omit `Type` and `Value` field.
  *  2. Set `Length` field to `4`, set `Type` field to `0` and omit `Value`
  *     field.
+ *
+ * This implementation uses the first option.
+ *
  * @{
  **/
 
@@ -53,11 +57,6 @@ namespace Arinc665::Files {
 
 /**
  * @brief Encodes the given Check Value.
- *
- * There are two alternatives for encoding "No Check Value".
- * Setting the Length Field to @p 0, or set Length Field to @p 4 and the
- * Check Value Type to @p 0 (No Check Value).
- * This implementation uses the first option.
  *
  * @param[in] checkValue
  *   Check Value to encode.

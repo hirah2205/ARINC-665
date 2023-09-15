@@ -26,7 +26,7 @@ namespace Arinc665::Files {
  * @brief Base Class for ARINC 665 Protocol List %Files.
  *
  * This intermediate class is defined to add common methods for all List Files.
- * Provides the common aatributes:
+ * Provides the common attributes:
  *  - Media Set Part Number,
  *  - Media Sequence Number, and
  *  - Number of Media Set Members.

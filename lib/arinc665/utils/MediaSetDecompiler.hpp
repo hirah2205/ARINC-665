@@ -36,8 +36,8 @@ namespace Arinc665::Utils {
  * When the *check file integrity* flag is set to `true` the checksum and check
  * values of all media set member files and the load checksum and load check
  * values of all loads are verified.
- * The file checksum of ARINC 665 files (list of files, loads, batches;
- * load header and batch file) are always verified.
+ * The file checksum of ARINC 665 files (list of files, list of loads, list of
+ * batches, load headers and batch files) are always verified.
  **/
 class ARINC665_EXPORT MediaSetDecompiler
 {
@@ -46,8 +46,8 @@ class ARINC665_EXPORT MediaSetDecompiler
      * @brief Handler, which is called to obtain the file size.
      *
      * This handler is also used to access files, which are not represented by
-     * Arinc665::Media classes (i.e. List of Files, Loads, and Batches).
-     * Therefore, a basic representation is used.
+     * Arinc665::Media classes (i.e. List of Files, List of Loads, and List of
+     * Batches).
      *
      * This Handler shall throw, when the file does not exist.
      *
@@ -67,7 +67,6 @@ class ARINC665_EXPORT MediaSetDecompiler
      *
      * This handler is also used to read files, which are not represented by
      * Arinc665::Media classes.
-     * Therefore, a basic representation is used.
      *
      * This Handler shall throw, when the file does not exist.
      *

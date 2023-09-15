@@ -31,6 +31,7 @@ namespace Arinc665::Utils {
 FilesystemMediaSetDecompilerImpl::FilesystemMediaSetDecompilerImpl() :
   mediaSetDecompilerV{ MediaSetDecompiler::create() }
 {
+  assert( mediaSetDecompilerV );
   mediaSetDecompilerV
     ->fileSizeHandler(
       std::bind_front( &FilesystemMediaSetDecompilerImpl::getFileSize, this ) )
