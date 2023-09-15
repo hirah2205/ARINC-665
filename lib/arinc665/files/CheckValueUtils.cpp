@@ -37,6 +37,7 @@ size_t CheckValueUtils_size( const Arinc645::CheckValueType type )
 RawFile CheckValueUtils_encode(
   const Arinc645::CheckValue &checkValue )
 {
+  // special Handling of "No Check Value"
   if ( Arinc645::CheckValueType::NotUsed == checkValue.type() )
   {
     return { 0, 0 };
@@ -68,6 +69,7 @@ RawFile CheckValueUtils_encode(
 
 Arinc645::CheckValue CheckValueUtils_decode( ConstRawFileSpan rawFile )
 {
+  // at least length field must be provided
   if ( rawFile.size() < sizeof( uint16_t ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -76,21 +78,23 @@ Arinc645::CheckValue CheckValueUtils_decode( ConstRawFileSpan rawFile )
 
   auto it{ rawFile.begin() };
 
+  // Check Value Length
   uint16_t checkValueLength{};
   it = Helper::getInt< uint16_t>( it, checkValueLength );
 
+  // Special handling of empty check value
   if ( 0U == checkValueLength )
   {
-    // empty check value
     return Arinc645::CheckValue::NoCheckValue;
   }
 
-  if ( checkValueLength <= ( 2U * sizeof( uint16_t ) ) )
+  if ( checkValueLength < ( 2U * sizeof( uint16_t ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "Invalid length field of check value" } );
   }
 
+  // Check Value Type
   uint16_t rawCheckValueType{};
   it = Helper::getInt< uint16_t >( it, rawCheckValueType );
 
@@ -104,6 +108,7 @@ Arinc645::CheckValue CheckValueUtils_decode( ConstRawFileSpan rawFile )
       << Helper::AdditionalInfo{ "Invalid check value type" } );
   }
 
+  // validate check value size
   if ( Arinc645::CheckValue::Sizes.find( *checkValueType )->second
     != checkValueLength - ( 2U * sizeof( uint16_t ) ) )
   {

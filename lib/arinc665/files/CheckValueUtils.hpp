@@ -70,7 +70,7 @@ namespace Arinc665::Files {
  * @brief Decodes the given data as Check Value.
  *
  * @param[in] rawFile
- *   Raw file data.
+ *   Raw file data starting with raw check value.
  *
  * @return Decoded Check Value.
  *
