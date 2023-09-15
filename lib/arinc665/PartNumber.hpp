@@ -179,6 +179,22 @@ class ARINC665_EXPORT PartNumber
     std::string productIdentifierV;
 };
 
+/**
+ * @brief Part Number @p std::ostream output operator.
+ *
+ * @param[in,out] ostream
+ *   Output stream.
+ * @param[in] partNumber
+ *   Part number.
+ *
+ * @return Output stream
+ *
+ * @sa @ref PartNumber
+ **/
+ARINC665_EXPORT std::ostream& operator<<(
+  std::ostream &ostream,
+  const PartNumber &partNumber );
+
 }
 
 #endif
