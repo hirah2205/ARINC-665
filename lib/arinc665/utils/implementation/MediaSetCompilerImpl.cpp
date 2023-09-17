@@ -39,12 +39,6 @@
 
 #include <utility>
 
-//! @todo Within GCC Std C++ lib a warning on string concatenation is
-//!   generated in GCC 12 - Check on future version
-#if defined(__GNUC__) && !defined(__clang__)
-#pragma GCC diagnostic ignored "-Wrestrict"
-#endif
-
 namespace Arinc665::Utils {
 
 MediaSetCompiler& MediaSetCompilerImpl::mediaSet(

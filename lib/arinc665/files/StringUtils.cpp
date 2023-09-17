@@ -52,14 +52,6 @@ ConstRawFileSpan::iterator StringUtils_decodeString(
   return it;
 }
 
-//! @todo Within GCC Std C++ lib an out of range warning on string copy is
-//!   generated in GCC 12 - Check on future version
-#if defined(__GNUC__) && !defined(__clang__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Warray-bounds"
-#pragma GCC diagnostic ignored "-Wstringop-overread"
-#endif
-
 RawFile StringUtils_encodeString( std::string_view str )
 {
   RawFile rawString( sizeof( uint16_t ) );
@@ -80,10 +72,6 @@ RawFile StringUtils_encodeString( std::string_view str )
 
   return rawString;
 }
-
-#if defined(__GNUC__) && !defined(__clang__)
-#pragma GCC diagnostic pop
-#endif
 
 ConstRawFileSpan::iterator StringUtils_decodeStrings(
   ConstRawFileSpan::iterator it,
