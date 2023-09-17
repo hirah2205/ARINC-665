@@ -69,12 +69,16 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 
 MediaSetManagerImpl::~MediaSetManagerImpl()
 {
+  BOOST_LOG_FUNCTION()
+
   try
   {
     saveConfiguration();
   }
-  catch ( ... )
+  catch ( const Arinc665Exception &e )
   {
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::fatal )
+      << "Save configuration: " << boost::diagnostic_information( e );
   }
 }
 
@@ -109,9 +113,23 @@ MediaSetManagerConfiguration MediaSetManagerImpl::configuration() const
 
 void MediaSetManagerImpl::saveConfiguration()
 {
-  boost::property_tree::write_json(
-    ( directoryV / ConfigurationFilename ).string(),
-    configuration().toProperties() );
+  BOOST_LOG_FUNCTION()
+
+  try
+  {
+    boost::property_tree::write_json(
+      ( directoryV / ConfigurationFilename ).string(),
+      configuration().toProperties() );
+  }
+  catch ( const boost::property_tree::json_parser_error &e )
+  {
+    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+      << "Save configuration " << e.filename() << " " << e.message();
+
+    BOOST_THROW_EXCEPTION( Arinc665Exception()
+      << Helper::AdditionalInfo( e.message() )
+      << boost::errinfo_file_name( e.filename() ) );
+  }
 }
 
 const std::filesystem::path& MediaSetManagerImpl::directory() const
