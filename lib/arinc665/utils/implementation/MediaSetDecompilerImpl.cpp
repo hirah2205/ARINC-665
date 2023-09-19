@@ -537,6 +537,7 @@ void MediaSetDecompilerImpl::addLoad(
   // iterate over data files
   for ( const auto &loadFileInfo : loadHeaderFile.dataFiles() )
   {
+    // start search in parent directory of load (according ARINC 665-5)
     const auto dataFilePtr{
       loadFile( *load.parent(), loadFileInfo.filename, loadFileInfo.crc ) };
 
@@ -568,6 +569,7 @@ void MediaSetDecompilerImpl::addLoad(
   // iterate over support files
   for ( const auto &loadFileInfo : loadHeaderFile.supportFiles() )
   {
+    // start search in parent directory of load (according ARINC 665-5)
     auto supportFilePtr{
       loadFile( *load.parent(), loadFileInfo.filename, loadFileInfo.crc ) };
 
@@ -713,6 +715,7 @@ void MediaSetDecompilerImpl::addBatch(
     // iterate over loads
     for ( const auto& load : targetHardware.loads )
     {
+      // start search in parent directory of batch (according ARINC 665-5)
       const auto loads{ mediaSetV->recursiveLoads( load.headerFilename ) };
 
       if ( loads.empty() )

@@ -71,7 +71,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
     /**
      * @brief Get the Number of the last Medium within the container.
      *
-     * if the container is the Media Set, this value is the number of media.
+     * If the container is the Media Set, this value is the number of media.
      *
      * @return Last medium within container.
      **/
@@ -138,13 +138,15 @@ class ARINC665_EXPORT ContainerEntity : public Base
     /**
      * @brief Returns the subdirectory at given path
      *
+     * If the path is absolute, the request is redirected to the media set.
      * The path `/` will return the media set.
+     *
      * @param[in] path
      *   Path of directory.
      *
      * @return Directory at @p path
      * @retval {}
-     *   If path does not reference a directory
+     *   If path does not reference a directory or path is empty.
      **/
     [[nodiscard]] ConstContainerEntityPtr subdirectory(
       const std::filesystem::path &path ) const;
@@ -255,6 +257,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
     /**
      * @brief Returns the files with the given name.
      *
+     * The lookup is started recursively within the current container.
      * The file type is not relevant (file can be load header file, batch file,
      * or other file).
      *
@@ -262,7 +265,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *   Name of the requested file.
      * @param[in] mediumNumber
      *   Medium number, to filter.
-     *   If not priveded no filtering is performed.
+     *   If not provided, no filtering is performed.
      *
      * @return Files with the given name.
      * @retval {}
@@ -278,7 +281,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
       OptionalMediumNumber mediumNumber = {} );
 
     /**
-     * @brief Returns the file with the given name.
+     * @brief Returns the file with the given name within this container.
      *
      * The file type is not relevant (file can be load header file, batch file,
      * or other file).
@@ -286,7 +289,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @param[in] filename
      *   Name of the requested file.
      *
-     * @return The file with the given name.
+     * @return File with the given name.
      * @retval {}
      *   If no such file exists.
      **/
@@ -298,12 +301,16 @@ class ARINC665_EXPORT ContainerEntity : public Base
     /**
      * @brief Returns the file at given path.
      *
+     * If @p path is empty an empty file pointer is returned.
+     * If @p path has a parent path (absolute or relative), the request is
+     * forwarded to this container.
+     *
      * @param[in] path
      *   Path of file.
      *
      * @return File at @p path
      * @retval {}
-     *   If path does not reference a directory
+     *   If path does not reference a directory or is empty.
      **/
     [[nodiscard]] ConstFilePtr file( const std::filesystem::path &path ) const;
 
@@ -318,7 +325,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @param[in] filename
      *   Filename of the file to be deleted.
      *
-     * @throw Arinc665Exception() if file does not exists.
+     * @throw Arinc665Exception() if file does not exist.
      **/
     void removeFile( std::string_view filename );
 
@@ -330,7 +337,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @param[in] file
      *   File to be deleted.
      *
-     * @throw Arinc665Exception() if file does not exists.
+     * @throw Arinc665Exception() if file does not exist.
      **/
     void removeFile( const ConstFilePtr &file );
 
@@ -342,7 +349,8 @@ class ARINC665_EXPORT ContainerEntity : public Base
      **/
 
     /**
-     * @brief Return the number of Regular Files.
+     * @brief Return the number of Regular Files optionally filtered by medium
+     *   number.
      *
      * @return Number of Regular Files.
      **/
@@ -350,7 +358,8 @@ class ARINC665_EXPORT ContainerEntity : public Base
       OptionalMediumNumber mediumNumber = {} ) const;
 
     /**
-     * @brief Recursively returns number of regular files.
+     * @brief Recursively returns number of regular files optionally filtered by
+     *   medium number.
      *
      * @return Number of regular files in container and its subdirectories.
      **/
@@ -358,11 +367,11 @@ class ARINC665_EXPORT ContainerEntity : public Base
       OptionalMediumNumber mediumNumber = {} ) const;
 
     /**
-     * @brief Return Regular Files.
+     * @brief Return Regular Files optionally filtered by medium number.
      *
      * @param[in] mediumNumber
      *   Medium number, to filter.
-     *   If not priveded no filtering is performed.
+     *   If not provided, no filtering is performed.
      *
      * @return Regular Files contained within this container.
      **/
@@ -374,11 +383,12 @@ class ARINC665_EXPORT ContainerEntity : public Base
       OptionalMediumNumber mediumNumber = {} );
 
     /**
-     * @brief Recursively returns all regular files.
+     * @brief Recursively returns all regular files optionally filtered by
+     *   medium number.
      *
      * @param[in] mediumNumber
      *   Medium number, to filter.
-     *   If not priveded no filtering is performed.
+     *   If not provided, no filtering is performed.
      *
      * @return All regular files in @p container and its subdirectories.
      **/
@@ -390,13 +400,14 @@ class ARINC665_EXPORT ContainerEntity : public Base
       OptionalMediumNumber mediumNumber = {} );
 
     /**
-     * @brief Returns the regular files with the given name.
+     * @brief Returns the regular files with the given name optionally filtered
+     *   by medium number.
      *
      * @param[in] filename
      *   Name of the requested regular file.
      * @param[in] mediumNumber
      *   Medium number, to filter.
-     *   If not priveded no filtering is performed.
+     *   If not provided, no filtering is performed.
      *
      * @return The regular files with the given name.
      * @retval {}
@@ -419,7 +430,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @return Load with the given filename.
      * @retval {}
-     *   If load does not exists.
+     *   If load with given name does not exist.
      **/
     [[nodiscard]] ConstRegularFilePtr regularFile(
       std::string_view filename ) const;
@@ -430,12 +441,16 @@ class ARINC665_EXPORT ContainerEntity : public Base
     /**
      * @brief Returns the regular file at given path.
      *
+     * If @p path is empty, no file is returned.
+     * If @p path has parent path, the request is forwarded to the container
+     * identified by parent path.
+     *
      * @param[in] path
      *   Path of file.
      *
      * @return File at @p path
      * @retval {}
-     *   If path does not reference a directory
+     *   If path does not reference a regular file or is empty.
      **/
     [[nodiscard]] ConstRegularFilePtr regularFile(
       const std::filesystem::path &path ) const;
@@ -527,11 +542,11 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *   Name of the requested Load.
      * @param[in] mediumNumber
      *   Medium number, to filter.
-     *   If not priveded no filtering is performed.
+     *   If not provided, no filtering is performed.
      *
      * @return Loads with the given name.
      * @retval {}
-     *   If no such loads exists.
+     *   If no loads with given filename exists.
      **/
     [[nodiscard]] ConstLoads recursiveLoads(
       std::string_view filename,
@@ -550,7 +565,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @return Load with the given filename.
      * @retval {}
-     *   If load does not exists.
+     *   If load does not exist.
      **/
     [[nodiscard]] ConstLoadPtr load( std::string_view filename ) const;
 
@@ -560,12 +575,16 @@ class ARINC665_EXPORT ContainerEntity : public Base
     /**
      * @brief Returns the load at given path.
      *
+     * If @p path is empty, no load is returned.
+     * If @p path has parent path, the request is forwarded to the container
+     * identified by parent path.
+     *
      * @param[in] path
      *   Path of file.
      *
-     * @return File at @p path
+     * @return Load at @p path
      * @retval {}
-     *   If path does not reference a directory
+     *   If @p path does not reference a load or is empty.
      **/
     [[nodiscard]] ConstLoadPtr load( const std::filesystem::path &path ) const;
 
@@ -579,13 +598,13 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *   Load filename.
      * @param[in] mediumNumber
      *   Medium number, where the file is located onto.
-     *   If not priveded the default medium number of the owning container is
+     *   If not provided the default medium number of the owning container is
      *   used.
      *
      * @return Created load.
      *
      * @throw Arinc665Exception
-     *   When a file with given filename already exist.
+     *   When a load with given filename already exist.
      **/
     [[nodiscard]] LoadPtr addLoad(
       std::string filename,
@@ -630,7 +649,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @param[in] mediumNumber
      *   Medium number, to filter.
-     *   If not priveded no filtering is performed.
+     *   If not provided, no filtering is performed.
      *
      * @return All Batches in container and its subdirectories.
      **/
@@ -681,12 +700,16 @@ class ARINC665_EXPORT ContainerEntity : public Base
     /**
      * @brief Returns the batch at given path.
      *
+     * If @p path is empty, no batch is returned.
+     * If @p path has parent path, the request is forwarded to the container
+     * identified by parent path.
+     *
      * @param[in] path
      *   Path of file.
      *
      * @return File at @p path
      * @retval {}
-     *   If path does not reference a directory
+     *   If path does not reference a batch or is empty.
      **/
     [[nodiscard]] ConstBatchPtr batch(
       const std::filesystem::path &path ) const;
@@ -701,7 +724,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *   Batch filename.
      * @param[in] mediumNumber
      *   Medium number, where the file is located onto.
-     *   If not priveded the default medium number of the owning container is
+     *   If not provided, the default medium number of the owning container is
      *   used.
      *
      * @return Created batch.
@@ -732,7 +755,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *   File type to search for.
      * @param[in] mediumNumber
      *   Medium number, where the file is located onto.
-     *   If not priveded the default medium number of the owning container is
+     *   If not provided, the default medium number of the owning container is
      *   used.
      *
      * @return Number of files of specific type.
@@ -785,6 +808,10 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @brief Return the file (real file, load, batch) with the specified file
      *   type at the given path.
      *
+     * If @p path is empty, no file is returned.
+     * If @p path has parent path, the request is forwarded to the container
+     * identified by parent path.
+     *
      * @param[in] path
      *   Path of file.
      *
@@ -801,11 +828,11 @@ class ARINC665_EXPORT ContainerEntity : public Base
 
   private:
     //! Default Medium Number
-    OptionalMediumNumber defaultMediumNumberV;
+    OptionalMediumNumber defaultMediumNumberV{};
     //! Subdirectories
-    Directories subdirectoriesV;
+    Directories subdirectoriesV{};
     //! Files
-    Files filesV;
+    Files filesV{};
 };
 
 }
