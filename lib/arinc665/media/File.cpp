@@ -18,6 +18,8 @@
 #include <arinc665/media/ContainerEntity.hpp>
 #include <arinc665/media/MediaSet.hpp>
 
+#include <arinc645/Filename.hpp>
+
 #include <helper/Exception.hpp>
 
 #include <boost/exception/all.hpp>
@@ -129,10 +131,10 @@ File::File(
   nameV{ std::move( name ) },
   mediumNumberV{ mediumNumber }
 {
-  if ( !parent )
+  if ( !parent || !Arinc645::Filename_check( nameV ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "parent must be valid" } );
+      << Helper::AdditionalInfo{ "parameter invalid" } );
   }
 }
 

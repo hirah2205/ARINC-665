@@ -248,7 +248,7 @@ class ARINC665_EXPORT Load final : public File
      * @brief Returns the data files.
      *
      * @param[in] effective
-     *   Defines how to handle the check value of the files information.
+     *   Defines how to handle the check value of the files' information.
      *   If set to true the effective check value type is returned for the file.
      *
      * @return Data files.
@@ -298,7 +298,7 @@ class ARINC665_EXPORT Load final : public File
      * @brief Returns the Support Files.
      *
      * @param[in] effective
-     *   Defines how to handle the check value of the files information.
+     *   Defines how to handle the check value of the files' information.
      *   If set to true the effective check value type is returned for the file.
      *
      * @return Support Files.
@@ -367,7 +367,7 @@ class ARINC665_EXPORT Load final : public File
 
     /**
      * @name Load Type
-     * The load type is an description and an @p uint16_t ID assigned.
+     * The load type is a description and an @p uint16_t ID assigned.
      *
      * @{
      **/

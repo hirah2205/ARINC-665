@@ -181,7 +181,7 @@ class ARINC665_EXPORT File : public Base
      *   Medium Number, where the file is located on.
      *
      * @throw Arinc665Exception
-     *   If parent is invalid
+     *   If @p parent is empty or @p name empty
      **/
     File(
       const ContainerEntityPtr &parent,
@@ -190,6 +190,8 @@ class ARINC665_EXPORT File : public Base
 
     /**
      * @brief Sets the parent element.
+     *
+     * @todo check that parent is on same media set
      *
      * @param[in] parent
      *   Parent element.

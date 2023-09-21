@@ -119,7 +119,7 @@ ConstRegularFilePtr Load::file(
 
   ConstRegularFiles files{};
 
-  for ( const auto &[file, filePartNumber, checkValueType] : dataFilesV )
+  for ( const auto &[ file, filePartNumber, checkValueType ] : dataFilesV )
   {
     if ( auto regularFile{ file.lock() };
       regularFile && ( regularFile->name() == filename )
@@ -129,7 +129,7 @@ ConstRegularFilePtr Load::file(
     }
   }
 
-  for ( const auto &[file, filePartNumber, checkValueType] : supportFilesV )
+  for ( const auto &[ file, filePartNumber, checkValueType ] : supportFilesV )
   {
     if ( auto regularFile{ file.lock() };
          regularFile && ( regularFile->name() == filename )
@@ -159,7 +159,7 @@ ConstLoadFiles Load::dataFiles( const bool effective ) const
 
   ConstLoadFiles files{};
 
-  for ( const auto &[ filePtr, partNumber, checkValueType  ] : dataFilesV )
+  for ( const auto &[ filePtr, partNumber, checkValueType ] : dataFilesV )
   {
     if ( effective )
     {

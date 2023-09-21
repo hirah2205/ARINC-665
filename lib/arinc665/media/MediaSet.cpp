@@ -36,7 +36,7 @@ ConstMediaSetPtr MediaSet::mediaSet() const
 
 MediaSetPtr MediaSet::mediaSet()
 {
-  return std::dynamic_pointer_cast< MediaSet>( shared_from_this() );
+  return std::dynamic_pointer_cast< MediaSet >( shared_from_this() );
 }
 
 Type MediaSet::type() const
