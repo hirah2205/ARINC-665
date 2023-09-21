@@ -22,12 +22,12 @@ using namespace std::string_view_literals;
 
 namespace Arinc665::Media {
 
-BOOST_AUTO_TEST_SUITE( Arinc665Test)
-BOOST_AUTO_TEST_SUITE( MediaTest)
-BOOST_AUTO_TEST_SUITE( MediaSetTest)
+BOOST_AUTO_TEST_SUITE( Arinc665Test )
+BOOST_AUTO_TEST_SUITE( MediaTest )
+BOOST_AUTO_TEST_SUITE( MediaSetTest )
 
 //! Constructor test
-BOOST_AUTO_TEST_CASE( constructor)
+BOOST_AUTO_TEST_CASE( constructor )
 {
   MediaSet mediaSet;
 
@@ -35,33 +35,35 @@ BOOST_AUTO_TEST_CASE( constructor)
   BOOST_CHECK( mediaSet.lastMediumNumber() == MediumNumber{ 1U } );
   BOOST_CHECK( mediaSet.type() == Type::MediaSet );
 
-  BOOST_CHECK_THROW( auto ptr( mediaSet.shared_from_this()), std::bad_weak_ptr );
+  BOOST_CHECK_THROW(
+    auto ptr( mediaSet.shared_from_this() ),
+    std::bad_weak_ptr );
 
-  BOOST_CHECK( mediaSet.numberOfFiles() == 0);
-  BOOST_CHECK( mediaSet.files().empty());
+  BOOST_CHECK( mediaSet.numberOfFiles() == 0 );
+  BOOST_CHECK( mediaSet.files().empty() );
 
-  BOOST_CHECK( mediaSet.numberOfLoads() == 0);
-  BOOST_CHECK( mediaSet.loads().empty());
+  BOOST_CHECK( mediaSet.numberOfLoads() == 0 );
+  BOOST_CHECK( mediaSet.loads().empty() );
 
-  BOOST_CHECK( mediaSet.numberOfBatches() == 0);
-  BOOST_CHECK( mediaSet.batches().empty());
+  BOOST_CHECK( mediaSet.numberOfBatches() == 0 );
+  BOOST_CHECK( mediaSet.batches().empty() );
 }
 
 //! part number test
-BOOST_AUTO_TEST_CASE( partNumber)
+BOOST_AUTO_TEST_CASE( partNumber )
 {
   MediaSet mediaSet;
+
   BOOST_CHECK( mediaSet.partNumber().empty() );
-
   mediaSet.partNumber( "YYY" );
-
   BOOST_CHECK( mediaSet.partNumber() == "YYY" );
 }
 
 //! medium test
-BOOST_AUTO_TEST_CASE( medium)
+BOOST_AUTO_TEST_CASE( medium )
 {
   auto mediaSet{ std::make_shared< MediaSet >() };
+  BOOST_CHECK( mediaSet );
   BOOST_CHECK( mediaSet->lastMediumNumber() == MediumNumber{ 1U } );
 
   BOOST_CHECK( mediaSet->addRegularFile( "Medium1File", Arinc665::MediumNumber{ 1U } ) );
@@ -78,6 +80,20 @@ BOOST_AUTO_TEST_CASE( medium)
 
   BOOST_CHECK_NO_THROW( mediaSet->removeFile( "Medium6File") );
   BOOST_CHECK( mediaSet->lastMediumNumber() == MediumNumber{ 2U } );
+}
+
+//! Loads test
+BOOST_AUTO_TEST_CASE( loads )
+{
+  using namespace std::string_view_literals;
+
+  auto mediaSet{ std::make_shared< MediaSet >()};
+
+  BOOST_CHECK( !mediaSet->load( "LOAD1.LUH"sv ) );
+  auto load1{ mediaSet->addLoad( "LOAD1.LUH" ) };
+  BOOST_CHECK( load1 );
+  BOOST_CHECK( mediaSet->load( "LOAD1.LUH"sv ) == load1 );
+  BOOST_CHECK( mediaSet->load( std::filesystem::path{ "/LOAD1.LUH" } ) == load1 );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -37,4 +37,5 @@ target_sources(
   arinc665_test
 
   PRIVATE
+    test/LoadTest.cpp
     test/MediaSetTest.cpp )
