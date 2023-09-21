@@ -40,7 +40,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @name Medium Number
      *
      * A %Media Set consists of 1 up to 255 %Media.
-     * The  default medium number when a child does not define any.
+     * The default medium number when a child does not define any.
      * @{
      **/
 

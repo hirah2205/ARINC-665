@@ -269,12 +269,7 @@ const Load::Type& Load::loadType() const
   return typeV;
 }
 
-void Load::loadType( const Type &type )
-{
-  typeV = type;
-}
-
-void Load::loadType( Type &&type )
+void Load::loadType( Type type )
 {
   typeV = std::move( type );
 }
