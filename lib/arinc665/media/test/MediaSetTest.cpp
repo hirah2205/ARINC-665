@@ -13,6 +13,9 @@
 
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/MediaSet.hpp>
+#include <arinc665/media/Batch.hpp>
+#include <arinc665/media/Load.hpp>
+#include <arinc665/media/RegularFile.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -82,6 +85,29 @@ BOOST_AUTO_TEST_CASE( medium )
   BOOST_CHECK( mediaSet->lastMediumNumber() == MediumNumber{ 2U } );
 }
 
+//! Regular Files test
+BOOST_AUTO_TEST_CASE( regularFiles )
+{
+  using namespace std::string_view_literals;
+
+  auto mediaSet{ std::make_shared< MediaSet >() };
+
+  BOOST_CHECK( !mediaSet->regularFile( "FILE1"sv ) );
+  auto regularFile{ mediaSet->addRegularFile( "FILE1" ) };
+  BOOST_CHECK( regularFile );
+
+  BOOST_CHECK( mediaSet->file( "FILE1"sv ) == regularFile );
+
+  BOOST_CHECK( mediaSet->regularFile( "FILE1"sv ) == regularFile );
+  BOOST_CHECK( mediaSet->regularFile( std::filesystem::path{ "/FILE1" } ) == regularFile );
+
+  BOOST_CHECK( !mediaSet->batch( "FILE1"sv ) );
+  BOOST_CHECK( !mediaSet->batch( std::filesystem::path{ "/FILE1" } ) );
+
+  BOOST_CHECK( !mediaSet->load( "LOAD1.LUH"sv ) );
+  BOOST_CHECK( !mediaSet->load( std::filesystem::path{ "/FILE1" } ) );
+}
+
 //! Loads test
 BOOST_AUTO_TEST_CASE( loads )
 {
@@ -92,8 +118,40 @@ BOOST_AUTO_TEST_CASE( loads )
   BOOST_CHECK( !mediaSet->load( "LOAD1.LUH"sv ) );
   auto load1{ mediaSet->addLoad( "LOAD1.LUH" ) };
   BOOST_CHECK( load1 );
+
+  BOOST_CHECK( mediaSet->file( "LOAD1.LUH"sv ) == load1 );
+
+  BOOST_CHECK( !mediaSet->regularFile( "LOAD1.LUH"sv ) );
+  BOOST_CHECK( !mediaSet->regularFile( std::filesystem::path{ "/LOAD1.LUH" } ) );
+
+  BOOST_CHECK( !mediaSet->batch( "LOAD1.LUH"sv ) );
+  BOOST_CHECK( !mediaSet->batch( std::filesystem::path{ "/LOAD1.LUH" } ) );
+
   BOOST_CHECK( mediaSet->load( "LOAD1.LUH"sv ) == load1 );
   BOOST_CHECK( mediaSet->load( std::filesystem::path{ "/LOAD1.LUH" } ) == load1 );
+}
+
+//! Batches test
+BOOST_AUTO_TEST_CASE( batches )
+{
+  using namespace std::string_view_literals;
+
+  auto mediaSet{ std::make_shared< MediaSet >()};
+
+  BOOST_CHECK( !mediaSet->batch( "BATCH1.LUB"sv ) );
+  auto batch{ mediaSet->addBatch( "BATCH1.LUB" ) };
+  BOOST_CHECK( batch );
+
+  BOOST_CHECK( mediaSet->file( "BATCH1.LUB"sv ) == batch );
+
+  BOOST_CHECK( !mediaSet->regularFile( "BATCH1.LUB"sv ) );
+  BOOST_CHECK( !mediaSet->regularFile( std::filesystem::path{ "/BATCH1.LUB" } ) );
+
+  BOOST_CHECK( !mediaSet->load( "BATCH1.LUB"sv ) );
+  BOOST_CHECK( !mediaSet->load( std::filesystem::path{ "/BATCH1.LUB" } ) );
+
+  BOOST_CHECK( mediaSet->batch( "BATCH1.LUB"sv ) == batch );
+  BOOST_CHECK( mediaSet->batch( std::filesystem::path{ "/BATCH1.LUB" } ) == batch );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
