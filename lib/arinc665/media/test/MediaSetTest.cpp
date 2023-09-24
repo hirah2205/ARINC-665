@@ -32,40 +32,36 @@ BOOST_AUTO_TEST_SUITE( MediaSetTest )
 //! Constructor test
 BOOST_AUTO_TEST_CASE( constructor )
 {
-  MediaSet mediaSet;
+  auto mediaSet{ MediaSet::create() };
 
-  BOOST_CHECK( mediaSet.partNumber().empty() );
-  BOOST_CHECK( mediaSet.lastMediumNumber() == MediumNumber{ 1U } );
-  BOOST_CHECK( mediaSet.type() == Type::MediaSet );
+  BOOST_CHECK( mediaSet->partNumber().empty() );
+  BOOST_CHECK( mediaSet->lastMediumNumber() == MediumNumber{ 1U } );
+  BOOST_CHECK( mediaSet->type() == Type::MediaSet );
 
-  BOOST_CHECK_THROW(
-    auto ptr( mediaSet.shared_from_this() ),
-    std::bad_weak_ptr );
+  BOOST_CHECK( mediaSet->numberOfFiles() == 0 );
+  BOOST_CHECK( mediaSet->files().empty() );
 
-  BOOST_CHECK( mediaSet.numberOfFiles() == 0 );
-  BOOST_CHECK( mediaSet.files().empty() );
+  BOOST_CHECK( mediaSet->numberOfLoads() == 0 );
+  BOOST_CHECK( mediaSet->loads().empty() );
 
-  BOOST_CHECK( mediaSet.numberOfLoads() == 0 );
-  BOOST_CHECK( mediaSet.loads().empty() );
-
-  BOOST_CHECK( mediaSet.numberOfBatches() == 0 );
-  BOOST_CHECK( mediaSet.batches().empty() );
+  BOOST_CHECK( mediaSet->numberOfBatches() == 0 );
+  BOOST_CHECK( mediaSet->batches().empty() );
 }
 
 //! part number test
 BOOST_AUTO_TEST_CASE( partNumber )
 {
-  MediaSet mediaSet;
+  auto mediaSet{ MediaSet::create() };
 
-  BOOST_CHECK( mediaSet.partNumber().empty() );
-  mediaSet.partNumber( "YYY" );
-  BOOST_CHECK( mediaSet.partNumber() == "YYY" );
+  BOOST_CHECK( mediaSet->partNumber().empty() );
+  mediaSet->partNumber( "YYY" );
+  BOOST_CHECK( mediaSet->partNumber() == "YYY" );
 }
 
 //! medium test
 BOOST_AUTO_TEST_CASE( medium )
 {
-  auto mediaSet{ std::make_shared< MediaSet >() };
+  auto mediaSet{ MediaSet::create() };
   BOOST_CHECK( mediaSet );
   BOOST_CHECK( mediaSet->lastMediumNumber() == MediumNumber{ 1U } );
 
@@ -90,7 +86,7 @@ BOOST_AUTO_TEST_CASE( regularFiles )
 {
   using namespace std::string_view_literals;
 
-  auto mediaSet{ std::make_shared< MediaSet >() };
+  auto mediaSet{ MediaSet::create() };
 
   BOOST_CHECK( !mediaSet->regularFile( "FILE1"sv ) );
   auto regularFile{ mediaSet->addRegularFile( "FILE1" ) };
@@ -113,7 +109,7 @@ BOOST_AUTO_TEST_CASE( loads )
 {
   using namespace std::string_view_literals;
 
-  auto mediaSet{ std::make_shared< MediaSet >()};
+  auto mediaSet{ MediaSet::create() };
 
   BOOST_CHECK( !mediaSet->load( "LOAD1.LUH"sv ) );
   auto load1{ mediaSet->addLoad( "LOAD1.LUH" ) };
@@ -136,7 +132,7 @@ BOOST_AUTO_TEST_CASE( batches )
 {
   using namespace std::string_view_literals;
 
-  auto mediaSet{ std::make_shared< MediaSet >()};
+  auto mediaSet{ MediaSet::create() };
 
   BOOST_CHECK( !mediaSet->batch( "BATCH1.LUB"sv ) );
   auto batch{ mediaSet->addBatch( "BATCH1.LUB" ) };

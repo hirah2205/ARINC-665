@@ -296,7 +296,8 @@ DirectoryPtr ContainerEntity::addSubdirectory( std::string name )
   // create, emplace and return directory
   return subdirectoriesV.emplace_back( std::make_shared< Directory >(
     std::dynamic_pointer_cast< ContainerEntity >( shared_from_this() ),
-    std::move( name ) ) );
+    std::move( name ),
+    CreateKey{} ) );
 }
 
 void ContainerEntity::removeSubdirectory( std::string_view name )
@@ -793,7 +794,8 @@ RegularFilePtr ContainerEntity::addRegularFile(
   auto file{ std::make_shared< RegularFile >(
     std::dynamic_pointer_cast< ContainerEntity>( shared_from_this() ),
     std::move( filename ),
-    mediumNumber ) };
+    mediumNumber,
+    CreateKey{} ) };
 
   // create, emplace and return file
   filesV.push_back( file );
@@ -954,7 +956,8 @@ LoadPtr ContainerEntity::addLoad(
   auto load{ std::make_shared< Load>(
     std::dynamic_pointer_cast< ContainerEntity>( shared_from_this() ),
     std::move( filename ),
-    mediumNumber ) };
+    mediumNumber,
+    CreateKey{} ) };
 
   // insert into map
   filesV.push_back( load );
@@ -1115,7 +1118,8 @@ BatchPtr ContainerEntity::addBatch(
   auto batch{ std::make_shared< Batch>(
     std::dynamic_pointer_cast< ContainerEntity>( shared_from_this() ),
     std::move( filename ),
-    mediumNumber ) };
+    mediumNumber,
+    CreateKey{} ) };
 
   // insert into map
   filesV.push_back( batch );

@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE( constructor )
 {
   using namespace std::string_view_literals;
 
-  auto mediaSet{ std::make_shared< MediaSet >()};
+  auto mediaSet{ MediaSet::create() };
 
   auto load{ mediaSet->addLoad( "LOAD.LUH" ) };
   BOOST_CHECK( load );

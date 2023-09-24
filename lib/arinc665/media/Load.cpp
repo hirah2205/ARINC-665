@@ -32,7 +32,8 @@ namespace Arinc665::Media {
 Load::Load(
   const ContainerEntityPtr &parent,
   std::string name,
-  const OptionalMediumNumber &mediumNumber ) :
+  const OptionalMediumNumber &mediumNumber,
+  [[maybe_unused]] const CreateKey &createKey ) :
   File{ parent, std::move( name ), mediumNumber }
 {
 }

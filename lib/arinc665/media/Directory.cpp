@@ -21,7 +21,10 @@
 
 namespace Arinc665::Media {
 
-Directory::Directory( const ContainerEntityPtr &parent, std::string name ):
+Directory::Directory(
+  const ContainerEntityPtr &parent,
+  std::string name,
+  [[maybe_unused]] const CreateKey &createKey ):
   nameV{ std::move( name ) },
   parentV{ parent }
 {

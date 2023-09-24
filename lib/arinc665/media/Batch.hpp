@@ -43,11 +43,14 @@ class ARINC665_EXPORT Batch final : public File
      *   Name of the Batch.
      * @param[in] mediumNumber
      *   Medium Number, where the file is located on.
+     * @param[in] createKey
+     *   Key to protect creation.
      **/
     Batch(
       const ContainerEntityPtr &parent,
       std::string name,
-      const OptionalMediumNumber &mediumNumber );
+      const OptionalMediumNumber &mediumNumber,
+      const CreateKey &createKey );
 
     /**
      * @copydoc File::fileType()

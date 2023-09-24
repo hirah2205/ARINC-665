@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE( constructor )
 {
   using namespace std::string_view_literals;
 
-  auto mediaSet{ std::make_shared< MediaSet >()};
+  auto mediaSet{ MediaSet::create() };
 
   auto batch{ mediaSet->addBatch( "BATCH.LUB" ) };
   BOOST_CHECK( batch );

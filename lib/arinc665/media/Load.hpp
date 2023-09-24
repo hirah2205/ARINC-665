@@ -55,11 +55,14 @@ class ARINC665_EXPORT Load final : public File
      *   Name of the Load
      * @param[in] mediumNumber
      *   Medium Number, where the file is located on.
+     * @param[in] createKey
+     *   Key to protect creation.
      **/
     Load(
       const ContainerEntityPtr &parent,
       std::string name,
-      const OptionalMediumNumber &mediumNumber );
+      const OptionalMediumNumber &mediumNumber,
+      const CreateKey &createKey );
 
     /**
      * @copydoc File::fileType()

@@ -32,6 +32,25 @@ namespace Arinc665::Media {
 class Base : public std::enable_shared_from_this< Base >
 {
   public:
+    //! Create Key for controlled Creation
+    class CreateKey final
+    {
+      private:
+        //! Default Constructor
+        CreateKey() {};
+        //! Deleted Copy Constructor
+        CreateKey( CreateKey &other ) = delete;
+        //! Deleted Move Constructor
+        CreateKey( CreateKey &&other ) = delete;
+        //! Deleted Assignment Operator
+        CreateKey& operator =( CreateKey &other ) = delete;
+        //! Deleted Move Assignment Operator
+        CreateKey& operator =( CreateKey &&other ) = delete;
+
+        friend class MediaSet;
+        friend class ContainerEntity;
+    };
+
     //! Default Constructor
     Base() noexcept = default;
 

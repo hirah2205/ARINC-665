@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE( constructor )
 {
   using namespace std::string_view_literals;
 
-  auto mediaSet{ std::make_shared< MediaSet >()};
+  auto mediaSet{ MediaSet::create() };
 
   auto regularFile{ mediaSet->addRegularFile( "FILE1" ) };
   BOOST_CHECK( regularFile );

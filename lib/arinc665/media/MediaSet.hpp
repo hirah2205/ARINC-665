@@ -35,8 +35,22 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
      * @brief Creates a new %Media Set.
      *
      * This %Media Set contains no media, data files, loads nor batches.
+     *
+     * @return Media Set Instance
      **/
-    MediaSet();
+    [[nodiscard]] static MediaSetPtr create();
+
+    /**
+     * @brief Creates a new %Media Set.
+     *
+     * This %Media Set contains no media, data files, loads nor batches.
+     *
+     * @param[in] createKey
+     *   Key to protect creation.
+     *
+     * @sa @ref MediaSet::create()
+     **/
+    explicit MediaSet( const CreateKey &createKey );
 
     //! @copydoc Base::mediaSet() const
     [[nodiscard]] ConstMediaSetPtr mediaSet() const override;

@@ -32,11 +32,11 @@ class ARINC665_EXPORT RegularFile final : public File
      * @brief Creates a file, which is part of a media within a media set
      *
      * The list of files does not handle the protocol files like:
-     * - List of files file
-     * - List of loads file
-     * - List of batches file
-     * - Load upload header file
-     * - Batch file
+     * - *List of files* file
+     * - *List of loads* file
+     * - *List of batches* file
+     * - *Load upload header* file
+     * - *Batch* file
      *
      * @param[in] parent
      *   Parent of this file.
@@ -44,11 +44,14 @@ class ARINC665_EXPORT RegularFile final : public File
      *   Name of the file.
      * @param[in] mediumNumber
      *   Medium Number, where the file is located on.
+     * @param[in] createKey
+     *   Key to protect creation.
      **/
     RegularFile(
       const ContainerEntityPtr &parent,
       std::string name,
-      const OptionalMediumNumber &mediumNumber );
+      const OptionalMediumNumber &mediumNumber,
+      const CreateKey &createKey );
 
     /**
      * @copydoc File::fileType

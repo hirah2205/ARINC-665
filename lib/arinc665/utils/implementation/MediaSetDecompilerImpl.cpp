@@ -68,7 +68,7 @@ MediaSetDecompilerResult MediaSetDecompilerImpl::operator()()
   }
 
   // create Media set
-  mediaSetV = std::make_shared< Media::MediaSet>();
+  mediaSetV = Media::MediaSet::create();
 
   // 1st Medium
   loadFirstMedium();

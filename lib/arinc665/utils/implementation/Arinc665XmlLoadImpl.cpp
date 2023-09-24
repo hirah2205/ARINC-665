@@ -72,7 +72,7 @@ LoadXmlResult Arinc665XmlLoadImpl::operator()()
         << boost::errinfo_file_name{ xmlFileV.string() } );
     }
 
-    mediaSetV = std::make_shared< Media::MediaSet>();
+    mediaSetV = Media::MediaSet::create();
     filePathMappingV.clear();
     deferredLoadInfoV.clear();
     deferredBatchInfoV.clear();

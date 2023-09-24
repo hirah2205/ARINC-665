@@ -24,7 +24,12 @@
 
 namespace Arinc665::Media {
 
-MediaSet::MediaSet():
+MediaSetPtr MediaSet::create()
+{
+  return std::make_shared< MediaSet >( CreateKey{} );
+}
+
+MediaSet::MediaSet( [[maybe_unused]] const CreateKey &createKey ):
   ContainerEntity{ MediumNumber{ 1U } }
 {
 }

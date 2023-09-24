@@ -35,11 +35,16 @@ class ARINC665_EXPORT Directory final : public ContainerEntity
      *   Parent of this directory.
      * @param[in] name
      *   Name of the directory.
+     * @param[in] createKey
+     *   Key to protect creation.
      *
      * @throw Arinc665::Arinc665Exception
      *   When parent is not valid
      **/
-    Directory( const ContainerEntityPtr &parent, std::string name );
+    Directory(
+      const ContainerEntityPtr &parent,
+      std::string name,
+      const CreateKey &createKey );
 
     //! @copydoc ContainerEntity::mediaSet
     [[nodiscard]] ConstMediaSetPtr mediaSet() const override;
