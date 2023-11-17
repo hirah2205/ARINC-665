@@ -116,41 +116,25 @@ ConstFilePtr Load::file( std::string_view filename ) const
 {
   BOOST_LOG_FUNCTION()
 
-  // check if requested file is the load header file itself
-  if ( filename == name() )
-  {
-    return std::dynamic_pointer_cast< const File >( shared_from_this() );
-  }
+  ConstFiles foundFiles{};
 
-  ConstRegularFiles files{};
-
-  for ( const auto &[ file, filePartNumber, checkValueType ] : dataFilesV )
+  for ( const auto &file : files() )
   {
-    if ( auto regularFile{ file.lock() };
-      regularFile && ( regularFile->name() == filename ) )
+    if ( file->name() == filename )
     {
-      files.emplace_back( regularFile );
+      foundFiles.emplace_back( file );
     }
   }
 
-  for ( const auto &[ file, filePartNumber, checkValueType ] : supportFilesV )
+  if ( 1U == foundFiles.size() )
   {
-    if ( auto regularFile{ file.lock() };
-      regularFile && ( regularFile->name() == filename ) )
-    {
-      files.emplace_back( regularFile );
-    }
+    return foundFiles.front();
   }
 
-  if ( 1U == files.size() )
-  {
-    return files.front();
-  }
-
-  if ( !files.empty() )
+  if ( !foundFiles.empty() )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-      << "More loads found for given parameters";
+      << "More than one file found for given filename";
   }
 
   return {};
@@ -163,47 +147,58 @@ ConstFilePtr Load::file(
 {
   BOOST_LOG_FUNCTION()
 
-  ConstRegularFiles files{};
+  ConstFiles foundFiles{};
 
-  for ( const auto &[ file, filePartNumber, checkValueType ] : dataFiles() )
+  for ( const auto &file : files() )
   {
-    if ( file && ( file->name() == filename ) )
+    if ( file->name() == filename )
     {
       if (
         auto fileCheckValues{ checkValues.find( file ) };
         ( fileCheckValues != checkValues.end() ) &&
         fileCheckValues->second.contains( checkValue ) )
       {
-        files.emplace_back( file );
+        foundFiles.emplace_back( file );
       }
     }
   }
 
-  for ( const auto &[ file, filePartNumber, checkValueType ] : supportFiles() )
+  if ( 1U == foundFiles.size() )
   {
-    if ( file && ( file->name() == filename ) )
-    {
-      auto fileCheckValues{ checkValues.find( file ) };
-      if ( fileCheckValues->second.contains( checkValue ) )
-      {
-        files.emplace_back( file );
-      }
-    }
+    return foundFiles.front();
   }
 
-  if ( 1U == files.size() )
-  {
-    return files.front();
-  }
-
-  if ( !files.empty() )
+  if ( !foundFiles.empty() )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-      << "More files found for given parameters";
+      << "More than one file found for given parameters";
   }
 
   return {};
 
+}
+
+ConstFiles Load::files() const
+{
+  BOOST_LOG_FUNCTION()
+
+  // add load file itself
+  ConstFiles files{ {
+    std::dynamic_pointer_cast< const File >( shared_from_this() ) } };
+
+  // add data files
+  for ( const auto &[ file, filePartNumber, checkValueType ] : dataFilesV )
+  {
+    files.emplace_back( file );
+  }
+
+  // add support files
+  for ( const auto &[ file, filePartNumber, checkValueType ] : supportFilesV )
+  {
+    files.emplace_back( file );
+  }
+
+  return files;
 }
 
 ConstLoadFiles Load::dataFiles( const bool effective ) const
@@ -434,7 +429,7 @@ ConstFilePtr Loads_file(
   if ( !files.empty() )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-      << "More files found for given parameters";
+      << "More than one file found for given parameters";
   }
 
   return {};
@@ -444,9 +439,22 @@ ConstFilePtr Loads_file(
   const ConstLoads &loads,
   const CheckValues &checkValues,
   std::string_view filename,
+  std::string_view loadPartNumber,
   const Arinc645::CheckValue &checkValue )
 {
   BOOST_LOG_FUNCTION()
+
+  if ( !loadPartNumber.empty() )
+  {
+    const auto load{ Loads_loadByPartNumber( loads, loadPartNumber ) };
+
+    if ( !load )
+    {
+      return {};
+    }
+
+    return load->file( checkValues, filename, checkValue );
+  }
 
   ConstFiles files{};
 
@@ -467,7 +475,7 @@ ConstFilePtr Loads_file(
   if ( !files.empty() )
   {
     BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
-      << "More files found for given parameters";
+      << "More than one file found for given parameters";
   }
 
   // no, or more than one file

@@ -17,7 +17,7 @@
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/File.hpp>
 
-#include <arinc645/Arinc645.hpp>
+#include <arinc645/CheckValue.hpp>
 
 #include <string>
 #include <list>
@@ -259,6 +259,18 @@ class ARINC665_EXPORT Load final : public File
       const CheckValues &checkValues,
       std::string_view filename,
       const Arinc645::CheckValue &checkValue ) const;
+
+    /**
+     * @brief Return all files.
+     *
+     * Contains:
+     *  - the Load %File itself,
+     *  - all Data %Files, and
+     *  - all Support %Files.
+     *
+     * @return All files relating to load.
+     **/
+    [[nodiscard]] ConstFiles files() const;
 
     /** @} **/
 
@@ -627,7 +639,7 @@ class ARINC665_EXPORT Load final : public File
   std::string_view loadPartNumber = {} );
 
 /**
- * @brief Returns file with given filename and Check Value.
+ * @brief Returns file with given filename, Part Number and Check Value.
  *
  * If more than one file is found with the given attributes no file is
  * returned.
@@ -638,6 +650,8 @@ class ARINC665_EXPORT Load final : public File
  *   Check Values
  * @param[in] filename
  *   Filename
+ * @param[in] loadPartNumber
+ *   Load Part Number
  * @param[in] checkValue
  *   Check Value of file
  *
@@ -649,7 +663,8 @@ class ARINC665_EXPORT Load final : public File
   const ConstLoads &loads,
   const CheckValues &checkValues,
   std::string_view filename,
-  const Arinc645::CheckValue &checkValue );
+  std::string_view loadPartNumber = {},
+  const Arinc645::CheckValue &checkValue = Arinc645::CheckValue::NoCheckValue );
 
 /** @} **/
 
