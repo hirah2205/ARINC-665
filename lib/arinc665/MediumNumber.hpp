@@ -110,7 +110,7 @@ class ARINC665_EXPORT MediumNumber
 /**
  * @brief Medium Number @p std::ostream output operator.
  *
- * @param[in,out] ostream
+ * @param[in,out] stream
  *   Output stream.
  * @param[in] mediumNumber
  *   Medium number.
@@ -120,7 +120,7 @@ class ARINC665_EXPORT MediumNumber
  * @sa @ref MediumNumber
  **/
 ARINC665_EXPORT std::ostream& operator<<(
-  std::ostream &ostream,
+  std::ostream &stream,
   const MediumNumber &mediumNumber );
 
 }

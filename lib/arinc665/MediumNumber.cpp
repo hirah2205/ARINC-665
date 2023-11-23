@@ -58,11 +58,10 @@ MediumNumber& MediumNumber::operator =( const uint8_t mediumNumber )
 }
 
 std::ostream& operator <<(
-  std::ostream &ostream,
+  std::ostream &stream,
   const MediumNumber &mediumNumber )
 {
-  ostream << static_cast< std::string >( mediumNumber );
-  return ostream;
+  return stream << static_cast< std::string >( mediumNumber );
 }
 
 }
