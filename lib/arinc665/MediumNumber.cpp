@@ -13,7 +13,7 @@
 
 #include "MediumNumber.hpp"
 
-#include <fmt/format.h>
+#include <format>
 
 namespace Arinc665 {
 
@@ -48,7 +48,7 @@ MediumNumber::operator uint8_t() const
 
 MediumNumber::operator std::string() const
 {
-  return fmt::format( "{:03d}", mediumNumberV );
+  return std::format( "{:03d}", mediumNumberV );
 }
 
 MediumNumber& MediumNumber::operator =( const uint8_t mediumNumber )

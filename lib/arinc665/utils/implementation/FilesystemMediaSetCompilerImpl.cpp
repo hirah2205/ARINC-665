@@ -27,10 +27,9 @@
 
 #include <boost/exception/all.hpp>
 
-#include <fmt/format.h>
-
 #include <cassert>
 #include <fstream>
+#include <format>
 
 namespace Arinc665::Utils {
 
@@ -62,7 +61,7 @@ FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::mediaSet(
   {
     mediaPathsV.try_emplace(
       mediumNumber,
-      fmt::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) ) );
+      std::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) ) );
   }
 
   // set media set name

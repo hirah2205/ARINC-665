@@ -21,7 +21,7 @@
 
 #include <boost/exception/all.hpp>
 
-#include <fmt/format.h>
+#include <format>
 
 namespace Arinc665::Utils {
 
@@ -82,7 +82,7 @@ MediaSetPaths FilesystemMediaSetCopierImpl::operator()()
   for ( auto const &[ mediumNumber, mediumPath ] : mediaPathsV )
   {
     auto destinationMediumDir{
-      fmt::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) ) };
+      std::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) ) };
 
     // copy medium
     std::filesystem::copy(

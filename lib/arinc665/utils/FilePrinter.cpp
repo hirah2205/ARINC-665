@@ -22,7 +22,7 @@
 #include <arinc645/CheckValue.hpp>
 #include <arinc645/CheckValueTypeDescription.hpp>
 
-#include <fmt/format.h>
+#include <format>
 
 namespace Arinc665::Utils {
 
@@ -36,7 +36,7 @@ void FilePrinter_print(
   nextIndent += indent;
 
   outS
-    << fmt::format(
+    << std::format(
       "{0}media set PN: {1}\n"
       "{0}media seq no: {2}\n"
       "{0}no of media set members: {3}\n",
@@ -48,7 +48,7 @@ void FilePrinter_print(
   for ( const auto &file : fileListFile.files() )
   {
     outS
-      << fmt::format(
+      << std::format(
         "{0}Filename: {1}\n"
         "{0}File Path: {2}\n"
         "{0}File Member Sequence Number: {3}\n"
@@ -75,7 +75,7 @@ void FilePrinter_print(
   nextIndent += indent;
 
   outS
-    << fmt::format(
+    << std::format(
       "{0}Media Set PN: {1}\n"
       "{0}Media seq no: {2}\n"
       "{0}no of media set members: {3}\n",
@@ -87,7 +87,7 @@ void FilePrinter_print(
   for ( const auto & load : loadListFile.loads() )
   {
     outS
-      << fmt::format(
+      << std::format(
         "\n{0}Load PN: {1}\n"
         "{0}Load Header filename: {2}\n"
         "{0}Load member sequence number: {3}\n",
@@ -113,7 +113,7 @@ void FilePrinter_print(
   nextIndent += indent;
 
   outS
-    << fmt::format(
+    << std::format(
          "{0}Media Set PN: {1}\n"
          "{0}Media Seq no: {2}\n"
          "{0}no of media set members: {3}\n\n",
@@ -125,7 +125,7 @@ void FilePrinter_print(
   for ( const auto & batch : batchListFile.batches() )
   {
     outS
-      << fmt::format(
+      << std::format(
            "{0}Batch PN: {1}\n"
            "{0}Batch filename: {2}\n"
            "{0}Batch member sequence number: {3}\n\n",
@@ -166,7 +166,7 @@ void FilePrinter_print(
   for ( const auto &dataFile : loadHeaderFile.dataFiles() )
   {
     outS
-      << fmt::format(
+      << std::format(
         "{0}Data File Filename: {1}\n"
         "{0}Data File PN: {2}\n"
         "{0}Data File Size: {3}\n"
@@ -185,7 +185,7 @@ void FilePrinter_print(
   for ( const auto &supportFile : loadHeaderFile.supportFiles() )
   {
     outS
-      << fmt::format(
+      << std::format(
         "{0}Support File Filename: {1}\n"
         "{0}Support File PN: {2}\n"
         "{0}Support File Size: {3}\n"

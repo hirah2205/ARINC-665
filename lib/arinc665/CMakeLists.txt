@@ -16,8 +16,6 @@ pkg_search_module(
   IMPORTED_TARGET
   "libxml++-2.6" )
 
-find_package( fmt REQUIRED )
-
 # prepare Version.cpp
 configure_file( Version.hpp.in Version.hpp )
 
@@ -34,6 +32,7 @@ target_sources(
       BASE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/..
         ${CMAKE_CURRENT_BINARY_DIR}/..
+
       FILES
         Arinc665.hpp
         Arinc665Exception.hpp
@@ -82,7 +81,6 @@ target_link_libraries(
     arinc645
 
   PRIVATE
-    fmt::fmt
     PkgConfig::Libxmlpp )
 
 

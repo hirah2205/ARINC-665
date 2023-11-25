@@ -25,8 +25,7 @@
 #include <boost/exception/all.hpp>
 
 #include <iostream>
-
-#include <fmt/format.h>
+#include <format>
 
 namespace Arinc665Commands::MediaSetManager {
 
@@ -131,7 +130,7 @@ void ListLoadsCommand::loadProgress(
   std::string_view partNumber,
   std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
 {
-  std::cout << fmt::format(
+  std::cout << std::format(
     "Loading: {}/{} {} {}:{}\n",
     mediaSet.first,
     mediaSet.second,

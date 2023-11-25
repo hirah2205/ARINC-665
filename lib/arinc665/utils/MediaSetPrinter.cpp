@@ -24,7 +24,7 @@
 #include <arinc645/CheckValueTypeDescription.hpp>
 #include <arinc645/CheckValue.hpp>
 
-#include <fmt/format.h>
+#include <format>
 
 namespace Arinc665::Utils {
 
@@ -277,7 +277,7 @@ void MediaSetPrinter_print(
     outS
       << initialIndent
       << "Load Type: '" << type->first << "'"
-      << fmt::format( "0x{:04X}", type->second ) << "\n";
+      << std::format( "0x{:04X}", type->second ) << "\n";
   }
 
   outS

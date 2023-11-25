@@ -31,12 +31,11 @@
 #include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
 
-#include <fmt/format.h>
-
 #include <cstdlib>
 #include <filesystem>
 #include <iostream>
 #include <vector>
+#include <format>
 
 /**
  * @brief Application Entry Point.
@@ -213,7 +212,7 @@ static void progress(
   std::string_view partNumber,
   std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
 {
-  std::cout << fmt::format(
+  std::cout << std::format(
     "Loading {} {}:{}\n",
     partNumber,
     static_cast< std::string >( medium.first ),

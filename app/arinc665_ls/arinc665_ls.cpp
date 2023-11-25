@@ -35,11 +35,10 @@
 #include <boost/format.hpp>
 #include <boost/program_options.hpp>
 
-#include <fmt/format.h>
-
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <format>
 
 /**
  * @brief Application Entry Point.
@@ -235,7 +234,7 @@ static void printLoadHeaderFile( const std::filesystem::path &luhFile)
       "\t" );
 
     std::cout
-      << fmt::format(
+      << std::format(
         "\tLoad CRC 0x{:02X}\n",
         Arinc665::Files::LoadHeaderFile::decodeLoadCrc( rawLoadHeaderFile ) );
 
@@ -398,7 +397,7 @@ static void list_files( const std::filesystem::path &loadDir )
 static Arinc665::Files::RawFile loadFile( const std::filesystem::path &file )
 {
   std::cout
-    << fmt::format( "\tFile size is: {}\n", std::filesystem::file_size( file ) );
+    << std::format( "\tFile size is: {}\n", std::filesystem::file_size( file ) );
 
   Arinc665::Files::RawFile data( std::filesystem::file_size( file ) );
 

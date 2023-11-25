@@ -8,8 +8,6 @@
 
 cmake_minimum_required( VERSION 3.26 )
 
-find_package( fmt REQUIRED )
-
 add_executable( arinc665_media_set_decompiler )
 
 target_sources(
@@ -30,7 +28,7 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
 
-target_link_libraries( arinc665_media_set_decompiler PRIVATE arinc665 fmt::fmt )
+target_link_libraries( arinc665_media_set_decompiler PRIVATE arinc665 )
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}

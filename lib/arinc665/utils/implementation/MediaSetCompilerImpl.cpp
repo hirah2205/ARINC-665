@@ -33,8 +33,6 @@
 
 #include <helper/Exception.hpp>
 
-#include <fmt/format.h>
-
 #include <boost/exception/all.hpp>
 
 #include <utility>

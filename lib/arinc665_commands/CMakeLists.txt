@@ -8,8 +8,6 @@
 
 cmake_minimum_required( VERSION 3.26 )
 
-find_package( fmt REQUIRED )
-
 add_library( arinc665_commands )
 
 include( GenerateExportHeader )
@@ -49,10 +47,7 @@ target_link_libraries(
 
   PUBLIC
     arinc665
-    commands
-
-  PRIVATE
-    fmt::fmt )
+    commands )
 
 add_subdirectory( media_set_manager )
 

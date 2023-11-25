@@ -26,9 +26,9 @@
 
 #include <helper/Exception.hpp>
 
-#include <fmt/format.h>
-
 #include <boost/exception/all.hpp>
+
+#include <format>
 
 namespace Arinc665::Utils {
 
@@ -218,7 +218,7 @@ void Arinc665XmlSaveImpl::load(
 
   loadElement->set_attribute(
     "PartFlags",
-    fmt::format( "0x{:04X}", load->partFlags() ) );
+    std::format( "0x{:04X}", load->partFlags() ) );
 
   // Optional Load Type (Description + Type Value)
   if ( const auto &loadType{ load->loadType() }; loadType )
@@ -227,7 +227,7 @@ void Arinc665XmlSaveImpl::load(
     loadElement->set_attribute( "Description", description );
     loadElement->set_attribute(
       "Type",
-      fmt::format( "0x{:04X}", id ) );
+      std::format( "0x{:04X}", id ) );
   }
 
   // Load Check Value
