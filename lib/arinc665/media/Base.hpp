@@ -32,7 +32,11 @@ namespace Arinc665::Media {
 class Base : public std::enable_shared_from_this< Base >
 {
   public:
-    //! Create Key for controlled Creation
+    /**
+     * @brief Create Key for controlled Creation
+     *
+     * @sa https://arne-mertz.de/2016/10/passkey-idiom/
+     **/
     class CreateKey final
     {
       private:
@@ -102,6 +106,8 @@ class Base : public std::enable_shared_from_this< Base >
 
     /**
      * @brief Returns the path up to the media set root.
+     *
+     * The path is an absolute path originate in the medium root directory.
      *
      * @return The path up to the media set root.
      **/

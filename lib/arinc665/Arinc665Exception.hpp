@@ -32,7 +32,7 @@ class ARINC665_EXPORT Arinc665Exception :
      * @brief Returns the exception description.
      * @return The exception description.
      **/
-    [[nodiscard]] const char* what() const noexcept override
+    [[nodiscard]] const char * what() const noexcept override
     {
       return "ARINC 665 Exception";
     }

@@ -28,23 +28,12 @@ namespace Arinc665::Media {
 
 ConstMediaSetPtr File::mediaSet() const
 {
-  if ( const auto parentPtr{ parent() }; parentPtr )
-  {
-    return parentPtr->mediaSet();
-  }
-
-  return {};
+  return parent()->mediaSet();
 }
 
 MediaSetPtr File::mediaSet()
 {
-
-  if ( const auto parentPtr{ parent() }; parentPtr )
-  {
-    return parentPtr->mediaSet();
-  }
-
-  return {};
+  return parent()->mediaSet();
 }
 
 Type File::type() const
@@ -54,22 +43,21 @@ Type File::type() const
 
 ConstContainerEntityPtr File::parent() const
 {
-  return parentV.lock();
+  auto parentPtr{ parentV.lock() };
+  assert( parentPtr );
+  return parentPtr;
 }
 
 ContainerEntityPtr File::parent()
 {
-  return parentV.lock();
+  auto parentPtr{ parentV.lock() };
+  assert( parentPtr );
+  return parentPtr;
 }
 
 std::filesystem::path File::path() const
 {
-  if ( const auto parentPtr{ parent() }; parentPtr )
-  {
-    return parentPtr->path() / nameV;
-  }
-
-  return nameV;
+  return parent()->path() / nameV;
 }
 
 std::string_view File::name() const
@@ -79,15 +67,12 @@ std::string_view File::name() const
 
 void File::rename( std::string name )
 {
-  if ( const auto parentPtr{ parent() }; parentPtr )
+  if ( parent()->subdirectory( std::string_view( name ) )
+    || parent()->file( std::string_view( name ) ) )
   {
-    if ( parentPtr->subdirectory( std::string_view( name ) )
-      || parentPtr->file( std::string_view( name ) ) )
-    {
-      BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-        << Helper::AdditionalInfo{ "directory or file with given names exist" }
-        << boost::errinfo_file_name{ name } );
-    }
+    BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
+      << Helper::AdditionalInfo{ "directory or file with given names exist" }
+      << boost::errinfo_file_name{ name } );
   }
 
   nameV = std::move( name );
@@ -127,7 +112,7 @@ File::File(
   const ContainerEntityPtr &parent,
   std::string name,
   const OptionalMediumNumber &mediumNumber ) :
-  parentV{  parent },
+  parentV{ parent },
   nameV{ std::move( name ) },
   mediumNumberV{ mediumNumber }
 {
@@ -140,13 +125,13 @@ File::File(
 
 void File::parent( const ContainerEntityPtr &parent )
 {
-  if ( !parent )
+  if ( !parent || ( mediaSet() != parent->mediaSet() ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "parent must be valid" } );
+      << Helper::AdditionalInfo{ "parent not valid or not on same media set" } );
   }
 
-  if ( this->parentV.lock() == parent )
+  if ( this->parent() == parent )
   {
     return;
   }

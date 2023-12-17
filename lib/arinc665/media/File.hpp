@@ -30,9 +30,9 @@ namespace Arinc665::Media {
  * @brief %Media Set %File.
  *
  * This class is used as common base for:
- *  - regular files (File),
- *  - load header files (Load), and
- *  - batch files (Batch).
+ *  - regular files (@ref File),
+ *  - load header files (@ref Load), and
+ *  - batch files (@ref Batch).
  *
  * The parent stored within this class is held as weak reference.
  **/
@@ -51,22 +51,18 @@ class ARINC665_EXPORT File : public Base
     //! @copydoc Base::type
     [[nodiscard]] Type type() const final;
 
-    //! @copydoc Base::parent() const
+    /**
+     * @copydoc Base::parent() const
+     *
+     * @note
+     * The return value of this method is always valid.
+     **/
     [[nodiscard]] ConstContainerEntityPtr parent() const final;
 
-    //! @copydoc Base::parent() const
+    //! @copydoc File::parent() const
     [[nodiscard]] ContainerEntityPtr parent() final;
 
-    /**
-     * @copydoc Base::path() const
-     *
-     * This also contains the filename.
-     * The path is an absolute path originate in the medium root directory.
-     *
-     * @return The path up to the medium root.
-     * @retval {}
-     *   If parent is not available. (Should never happen)
-     **/
+    //! @copydoc Base::path() const
     [[nodiscard]] std::filesystem::path path() const final;
 
     /**
@@ -79,10 +75,13 @@ class ARINC665_EXPORT File : public Base
     /**
      * @brief Renames the file.
      *
-     * Checks if a directory or file exist with this name.
+     * Checks if a directory or file exist with this name in parent container.
      *
      * @param[in] name
      *   New filename.
+     *
+     * @throw Arinc665::Arinc665Exception
+     *   When a file or directory with same name exists within parent directory.
      **/
     void rename( std::string name );
 
@@ -191,13 +190,17 @@ class ARINC665_EXPORT File : public Base
     /**
      * @brief Sets the parent element.
      *
-     * @todo check that parent is on same media set
+     * This operation is used to move a file to another directory.
+     *
+     * @attention
+     * The new parent and the file must reside on the same media set.
      *
      * @param[in] parent
      *   Parent element.
      *
      * @throw Arinc665Exception
-     *   If parent is invalid
+     *   If parent is invalid or does not reside on the same media set as
+     *   @p this.
      **/
     void parent( const ContainerEntityPtr &parent );
 

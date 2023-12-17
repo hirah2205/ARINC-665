@@ -67,10 +67,14 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
      **/
     [[nodiscard]] ConstContainerEntityPtr parent() const override;
 
-    //! @copydoc ContainerEntity::parent() const
+    //! @copydoc MediaSet::parent() const
     [[nodiscard]] ContainerEntityPtr parent() override;
 
-    //! @copydoc ContainerEntity::path() const
+    /**
+     * @copydoc ContainerEntity::path() const
+     *
+     * @retval The root-directory.
+     **/
     [[nodiscard]] std::filesystem::path path() const override;
 
     /**
