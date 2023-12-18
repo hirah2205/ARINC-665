@@ -18,6 +18,8 @@
 
 #include <arinc665/media/Media.hpp>
 
+#include <arinc645_qt/Arinc645Qt.hpp>
+
 #include <QGroupBox>
 
 #include <memory>
@@ -96,6 +98,8 @@ class ARINC665_QT_EXPORT LoadWidget final : public QGroupBox
   private:
     //! UI (designer)
     std::unique_ptr< Ui::LoadWidget> ui{};
+    //! Check Value Type Model
+    std::unique_ptr< Arinc645Qt::CheckValueTypeModel > checkValueTypeModelV{};
     //! THW ID Positions Model
     std::unique_ptr< TargetHardwareIdsPositionsModel >
       targetHardwareIdsPositionsModel{};

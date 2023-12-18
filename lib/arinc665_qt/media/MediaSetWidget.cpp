@@ -23,6 +23,8 @@
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/Batch.hpp>
 
+#include <arinc645_qt/CheckValueTypeModel.hpp>
+
 #include <helper_qt/String.hpp>
 
 namespace Arinc665Qt::Media {
@@ -30,10 +32,17 @@ namespace Arinc665Qt::Media {
 MediaSetWidget::MediaSetWidget( QWidget * const parent ):
   QWidget{ parent },
   ui{ std::make_unique< Ui::MediaSetWidget>() },
+  checkValueTypeModelV{ std::make_unique< Arinc645Qt::CheckValueTypeModel >( this ) },
   loadsModelV{ std::make_unique< Media::LoadsModel >( this ) },
   batchesModelV{ std::make_unique< Media::BatchesModel >( this ) }
 {
   ui->setupUi( this );
+
+  ui->mediaSetCheckValueType->setModel( checkValueTypeModelV.get() );
+  ui->listOfFilesCheckValueType->setModel( checkValueTypeModelV.get() );
+  ui->listOfLoadsCheckValueType->setModel( checkValueTypeModelV.get() );
+  ui->listOfBatchesCheckValueType->setModel( checkValueTypeModelV.get() );
+  ui->filesCheckValueType->setModel( checkValueTypeModelV.get() );
 
   ui->loads->setModel( loadsModelV.get() );
   ui->batches->setModel( batchesModelV.get() );
@@ -83,6 +92,31 @@ void MediaSetWidget::selectMediaSet(
 
     ui->defaultMediumNumber->setValue(
       static_cast< uint8_t >( mediaSetV->effectiveDefaultMediumNumber() ) );
+
+    ui->mediaSetCheckValueTypeGroupBox->setChecked(
+      mediaSetV->mediaSetCheckValueType().has_value() );
+    ui->mediaSetCheckValueType->setCurrentIndex( checkValueTypeModelV->checkValueType(
+      mediaSetV->effectiveMediaSetCheckValueType() ) );
+
+    ui->listOfFilesCheckValueTypeGroupBox->setChecked(
+      mediaSetV->listOfFilesCheckValueType().has_value() );
+    ui->listOfFilesCheckValueType->setCurrentIndex( checkValueTypeModelV->checkValueType(
+      mediaSetV->effectiveListOfFilesCheckValueType() ) );
+
+    ui->listOfLoadsCheckValueTypeGroupBox->setChecked(
+      mediaSetV->listOfLoadsCheckValueType().has_value() );
+    ui->listOfLoadsCheckValueType->setCurrentIndex( checkValueTypeModelV->checkValueType(
+      mediaSetV->effectiveListOfLoadsCheckValueType() ) );
+
+    ui->listOfBatchesCheckValueTypeGroupBox->setChecked(
+      mediaSetV->listOfBatchesCheckValueType().has_value() );
+    ui->listOfBatchesCheckValueType->setCurrentIndex( checkValueTypeModelV->checkValueType(
+      mediaSetV->effectiveListOfBatchesCheckValueType() ) );
+
+    ui->filesCheckValueTypeGroupBox->setChecked(
+      mediaSetV->filesCheckValueType().has_value() );
+    ui->filesCheckValueType->setCurrentIndex( checkValueTypeModelV->checkValueType(
+      mediaSetV->effectiveFilesCheckValueType() ) );
 
     ui->content->setRootIndex( mediaSetModelV->index( 0, 0 ) );
 

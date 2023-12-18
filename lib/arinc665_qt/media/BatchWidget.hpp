@@ -58,6 +58,8 @@ class ARINC665_QT_EXPORT BatchWidget final : public QGroupBox
     /**
      * @brief Called when a batch has been selected.
      *
+     * The widget is updated with the information of the current Batch.
+     *
      * @param[in] batch
      *   Selected Batch
      **/

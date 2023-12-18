@@ -20,8 +20,8 @@
      <property name="title">
       <string>Directory</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
        <widget class="QLabel" name="nameLabel">
         <property name="text">
          <string>Name</string>
@@ -31,27 +31,32 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item>
        <widget class="QLineEdit" name="nameLineEdit"/>
       </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="lblDefaultMediumNumber">
-        <property name="text">
+      <item>
+       <widget class="QGroupBox" name="defaultMediumNumberGroupBox">
+        <property name="title">
          <string>Default Medium Number</string>
         </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QSpinBox" name="defaultMediumNumber">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>255</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="defaultMediumNumber">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>255</number>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0" colspan="2">
+      <item>
        <widget class="QLabel" name="lblContent">
         <property name="text">
          <string>Content</string>
@@ -61,7 +66,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="2">
+      <item>
        <widget class="QTableView" name="content">
         <property name="alternatingRowColors">
          <bool>true</bool>
@@ -87,6 +92,8 @@
  </widget>
  <tabstops>
   <tabstop>nameLineEdit</tabstop>
+  <tabstop>defaultMediumNumberGroupBox</tabstop>
+  <tabstop>defaultMediumNumber</tabstop>
   <tabstop>content</tabstop>
  </tabstops>
  <resources/>

@@ -66,8 +66,13 @@ void FileWidget::selectFile( Arinc665::Media::ConstFilePtr file )
   if ( fileV )
   {
     ui->nameLineEdit->setText( HelperQt::toQString( fileV->name() ) );
+
+    ui->mediumNumberGroupBox->setChecked( fileV->mediumNumber().has_value() );
     ui->mediumNumber->setValue(
       static_cast< uint8_t >( fileV->effectiveMediumNumber() ) );
+
+    ui->checkValueTypeGroupBox->setChecked(
+      fileV->checkValueType().has_value() );
     ui->checkValueType->setCurrentIndex( checkValueTypeModelV->checkValueType(
       fileV->effectiveCheckValueType() ) );
   }

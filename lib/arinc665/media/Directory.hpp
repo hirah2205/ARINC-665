@@ -91,9 +91,9 @@ class ARINC665_EXPORT Directory final : public ContainerEntity
     void parent( const ContainerEntityPtr &parent );
 
     //! Directory Name
-    std::string nameV;
+    std::string nameV{};
     //! Parent
-    ContainerEntityPtr::weak_type parentV;
+    ContainerEntityPtr::weak_type parentV{};
 };
 
 }

@@ -10,9 +10,6 @@
     <height>600</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="fileGroupBox">
@@ -20,39 +17,6 @@
       <string>File</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="3" column="1">
-       <widget class="QComboBox" name="checkValueType"/>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="checkValueTypeLabel">
-        <property name="text">
-         <string>Check Value Type</string>
-        </property>
-        <property name="buddy">
-         <cstring>checkValueType</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="lblMediumNumber">
-        <property name="text">
-         <string>Medium Number</string>
-        </property>
-        <property name="buddy">
-         <cstring>mediumNumber</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QSpinBox" name="mediumNumber">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>255</number>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0" colspan="2">
        <widget class="QLineEdit" name="nameLineEdit"/>
       </item>
@@ -64,6 +28,43 @@
         <property name="buddy">
          <cstring>nameLineEdit</cstring>
         </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QGroupBox" name="mediumNumberGroupBox">
+        <property name="title">
+         <string>Medium Number</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QSpinBox" name="mediumNumber">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>255</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QGroupBox" name="checkValueTypeGroupBox">
+        <property name="title">
+         <string>Check Value Type</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QComboBox" name="checkValueType"/>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
@@ -103,7 +104,9 @@
  </customwidgets>
  <tabstops>
   <tabstop>nameLineEdit</tabstop>
+  <tabstop>mediumNumberGroupBox</tabstop>
   <tabstop>mediumNumber</tabstop>
+  <tabstop>checkValueTypeGroupBox</tabstop>
   <tabstop>checkValueType</tabstop>
  </tabstops>
  <resources/>

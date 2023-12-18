@@ -56,11 +56,14 @@ void DirectoryWidget::selectDirectory( const QModelIndex &index )
 void DirectoryWidget::selectDirectory(
   Arinc665::Media::ConstDirectoryPtr directory )
 {
-  directoryV = std::move( directory);
+  directoryV = std::move( directory );
 
   if ( directoryV )
   {
     ui->nameLineEdit->setText( HelperQt::toQString( directoryV->name() ) );
+
+    ui->defaultMediumNumberGroupBox->setChecked(
+      directoryV->defaultMediumNumber().has_value() );
     ui->defaultMediumNumber->setValue(
       static_cast< uint8_t >( directoryV->effectiveDefaultMediumNumber() ) );
   }

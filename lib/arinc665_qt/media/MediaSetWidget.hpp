@@ -18,6 +18,8 @@
 
 #include <arinc665/media/Media.hpp>
 
+#include <arinc645_qt/Arinc645Qt.hpp>
+
 #include <QWidget>
 
 #include <memory>
@@ -99,6 +101,8 @@ class ARINC665_QT_EXPORT MediaSetWidget : public QWidget
     //! UI (designer)
     std::unique_ptr< Ui::MediaSetWidget> ui{};
 
+    //! Check Value Type Model
+    std::unique_ptr< Arinc645Qt::CheckValueTypeModel > checkValueTypeModelV{};
     //! Loads Model
     std::unique_ptr< Media::LoadsModel > loadsModelV{};
     //! Batches Model

@@ -67,7 +67,7 @@ class ARINC665_EXPORT Load final : public File
     /**
      * @copydoc File::fileType()
      *
-     * @return FileType::LoadFile
+     * @retval FileType::LoadFile
      *   Always
      **/
     [[nodiscard]] FileType fileType() const override;

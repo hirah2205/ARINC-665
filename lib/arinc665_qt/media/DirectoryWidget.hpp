@@ -84,7 +84,8 @@ class ARINC665_QT_EXPORT DirectoryWidget : public QWidget
     /**
      * @brief Slot Called, when an Element has been selected
      *
-     * @param index
+     * @param[in] index
+     *   Selected model element.
      **/
     void selectElement( const QModelIndex &index );
 
