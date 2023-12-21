@@ -71,7 +71,7 @@ int main( int argc, char * argv[] )
   {
     std::cout
       << "ARINC 665 Media Set Decompiler - "
-      << Arinc665::Version::VersionString << "\n";
+      << Arinc665::Version::VersionInformation << "\n";
 
     boost::program_options::options_description optionsDescription{
       "ARINC 665 Media Set Decompiler Options" };

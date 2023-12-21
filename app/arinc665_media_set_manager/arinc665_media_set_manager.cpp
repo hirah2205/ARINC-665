@@ -47,7 +47,7 @@ int main( int argc, char * argv[] )
   {
     std::cout
       << "ARINC 665 Media Set Manager - "
-      << Arinc665::Version::VersionString << "\n";
+      << Arinc665::Version::VersionInformation << "\n";
 
     auto registry{ Commands::CommandRegistry::instance() };
 

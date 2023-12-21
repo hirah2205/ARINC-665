@@ -45,6 +45,7 @@ target_sources(
         ${CMAKE_CURRENT_BINARY_DIR}/Version.hpp
 
   PRIVATE
+    Arinc665.cpp
     FileTypeDescription.cpp
     MediumNumber.cpp
     PartNumber.cpp

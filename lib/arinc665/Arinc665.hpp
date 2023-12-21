@@ -21,6 +21,8 @@
 
 #include <arinc665/arinc665_export.h>
 
+#include <helper/Helper.hpp>
+
 #include <string_view>
 #include <vector>
 #include <optional>
@@ -171,6 +173,13 @@ class PartNumber;
 
 //! Optional Medium Number
 using OptionalMediumNumber = std::optional< MediumNumber >;
+
+/**
+ * @brief Provide ARINC 665 Version Information.
+ *
+ * @return ARINC 665 Version Information.
+ **/
+ARINC665_EXPORT Helper::VersionsInformation::value_type arinc665Version();
 
 }
 

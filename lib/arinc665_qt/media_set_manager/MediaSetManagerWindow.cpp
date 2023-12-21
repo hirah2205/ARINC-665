@@ -68,19 +68,20 @@ MediaSetManagerWindow::MediaSetManagerWindow( QWidget * const parent ) :
     tr( "ARINC 665 Media Set Manager" ),
     QString::fromStdString( Arinc665::Version::Name ) ) );
   aboutDialog->productVersion(
-    QString::fromStdString( Arinc665::Version::VersionString ) );
+    QString::fromStdString( Arinc665::Version::VersionInformation ) );
   aboutDialog->productLicense(
     QString::fromStdString( Arinc665::Version::License ) );
   aboutDialog->productUrl( QString::fromStdString( Arinc665::Version::Url ) );
   aboutDialog->versions(
     {
-      Arinc665::Version::VersionInformation(),
-      Arinc645::Version::VersionInformation(),
-      Arinc645::Arinc645_botanVersion(),
-      QtIconResources::Version::VersionInformation(),
-      Commands::Version::VersionInformation(),
-      Helper::Version::VersionInformation(),
-      HelperQt::HelperQt_qtVersion()
+      Arinc665::arinc665Version(),
+      Arinc645::arinc645Version(),
+      Arinc645::botanVersion(),
+      QtIconResources::qtIconResourcesVersion(),
+      Commands::commandsVersion(),
+      Helper::helperVersion(),
+      Helper::boostVersion(),
+      HelperQt::qtVersion()
     } );
 
   connect(

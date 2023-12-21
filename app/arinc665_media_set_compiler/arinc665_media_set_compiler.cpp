@@ -56,7 +56,7 @@ int main( int argc, char * argv[] )
   {
     std::cout
       << "ARINC 665 Media Set Compiler - "
-      << Arinc665::Version::VersionString << "\n";
+      << Arinc665::Version::VersionInformation << "\n";
 
     const auto &fileCreatePolDesc{
       Arinc665::Utils::FileCreationPolicyDescription::instance() };
