@@ -68,66 +68,18 @@ MediaSetManagerWindow::MediaSetManagerWindow( QWidget * const parent ) :
     tr( "ARINC 665 Media Set Manager" ),
     QString::fromStdString( Arinc665::Version::Name ) ) );
   aboutDialog->productVersion(
-    QString::fromStdString( Arinc665::Version::VersionInformation ) );
+    QString::fromStdString( Arinc665::Version::VersionString ) );
   aboutDialog->productLicense(
     QString::fromStdString( Arinc665::Version::License ) );
   aboutDialog->productUrl( QString::fromStdString( Arinc665::Version::Url ) );
   aboutDialog->versions(
     {
-      {
-        Arinc665::Version::Key,
-        {
-          Arinc665::Version::Name,
-          Arinc665::Version::VersionInformation,
-          Arinc665::Version::License,
-          Arinc665::Version::Url
-        }
-      },
-      {
-        Arinc645::Version::Key,
-        {
-          Arinc645::Version::Name,
-          Arinc645::Version::VersionInformation,
-          Arinc645::Version::License,
-          Arinc645::Version::Url
-        }
-      },
-      {
-        QtIconResources::Version::Key,
-        {
-          QtIconResources::Version::Name,
-          QtIconResources::Version::VersionInformation,
-          QtIconResources::Version::License,
-          QtIconResources::Version::Url
-        }
-      },
-      {
-        Commands::Version::Key,
-        {
-          Commands::Version::Name,
-          Commands::Version::VersionInformation,
-          Commands::Version::License,
-          Commands::Version::Url
-        }
-      },
-      {
-        Helper::Version::Key,
-        {
-          Helper::Version::Name,
-          Helper::Version::VersionInformation,
-          Helper::Version::License,
-          Helper::Version::Url
-        }
-      },
-      {
-        "qt",
-        {
-          "Qt Library",
-          qVersion(),
-          "LGPL-3.0-only",
-          "https://www.qt.io/"
-        }
-      }
+      Arinc665::Version::VersionInformation(),
+      Arinc645::Version::VersionInformation(),
+      QtIconResources::Version::VersionInformation(),
+      Commands::Version::VersionInformation(),
+      Helper::Version::VersionInformation(),
+      HelperQt::HelperQt_qtVersion()
     } );
 
   connect(

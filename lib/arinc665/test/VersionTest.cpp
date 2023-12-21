@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE( version )
     << Version::Url << " " << Version::License << "\n";
 
   std::cout
-    << "ARINC 665 Version Information: " << Version::VersionInformation << "\n";
+    << "ARINC 665 Version Information: " << Version::VersionString << "\n";
 }
 
 BOOST_AUTO_TEST_SUITE_END()
