@@ -133,7 +133,7 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="dataFilesPage" native="true">
+     <widget class="QWidget" name="dataFilesPage">
       <attribute name="title">
        <string>Data Files</string>
       </attribute>

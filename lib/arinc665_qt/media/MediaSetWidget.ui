@@ -33,7 +33,7 @@
         <property name="currentIndex">
          <number>0</number>
         </property>
-        <widget class="QWidget" name="contentPage" native="true">
+        <widget class="QWidget" name="contentPage">
          <attribute name="title">
           <string>Content</string>
          </attribute>
@@ -127,7 +127,7 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="checkValueTypePage" native="true">
+        <widget class="QWidget" name="checkValueTypePage">
          <attribute name="title">
           <string>Check Value Types</string>
          </attribute>
@@ -206,6 +206,19 @@
              </item>
             </layout>
            </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>

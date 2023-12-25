@@ -53,7 +53,7 @@ class ARINC665_QT_EXPORT ImportMediaSetSettingsPage final : public QWizardPage
      *
      * @return if page is completed
      **/
-    bool isComplete() const override;
+    [[nodiscard]] bool isComplete() const override;
 
     /**
      * @brief Initialises the page with its defaults.

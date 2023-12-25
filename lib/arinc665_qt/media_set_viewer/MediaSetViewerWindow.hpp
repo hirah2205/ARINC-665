@@ -25,6 +25,7 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QSortFilterProxyModel>
+#include <QFileSystemWatcher>
 
 #include <memory>
 
@@ -113,6 +114,8 @@ class ARINC665_QT_EXPORT MediaSetViewerWindow final : public QMainWindow
     std::unique_ptr< FilePathMappingModel > filePathMappingModelV{};
     //! Sorted File Mapping Model
     std::unique_ptr< QSortFilterProxyModel > sortedFilePathMappingModelV{};
+    //! Filesystem Watcher
+    std::unique_ptr< QFileSystemWatcher > fileSystemWatcherV{};
 
     //! Media Paths
     Arinc665::Utils::MediaPaths mediaPathsV{};

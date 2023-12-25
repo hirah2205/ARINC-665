@@ -53,7 +53,8 @@ MediaSetViewerWindow::MediaSetViewerWindow( QWidget * const parent ):
   selectSaveMediaSetXmlDialogV{ std::make_unique< QFileDialog>( this ) },
   mediaSetModelV{ std::make_unique< Media::MediaSetModel >( this ) },
   filePathMappingModelV{ std::make_unique< FilePathMappingModel >( this ) },
-  sortedFilePathMappingModelV{ std::make_unique< QSortFilterProxyModel >( this ) }
+  sortedFilePathMappingModelV{ std::make_unique< QSortFilterProxyModel >( this ) },
+  fileSystemWatcherV{ std::make_unique< QFileSystemWatcher>( this ) }
 {
   QSettings settings{};
 
@@ -133,6 +134,12 @@ MediaSetViewerWindow::MediaSetViewerWindow( QWidget * const parent ):
     this,
     &MediaSetViewerWindow::saveXmlFile );
 
+  connect(
+    fileSystemWatcherV.get(),
+    &QFileSystemWatcher::fileChanged,
+    this,
+    &MediaSetViewerWindow::loadXmlFile );
+
   ui->actionSaveMediaSetXml->setEnabled( false );
 }
 
@@ -177,6 +184,9 @@ void MediaSetViewerWindow::startMediaSetDecompilation()
 
     auto partNumber{ mediaSet->partNumber() };
 
+    // remove all files from watching
+    fileSystemWatcherV->removePaths( fileSystemWatcherV->files() );
+
     mediaSetModelV->root( std::move( mediaSet ) );
     filePathMappingModelV->filePathMapping( std::move( fileMapping ) );
 
@@ -215,6 +225,9 @@ void MediaSetViewerWindow::loadXmlFile( const QString &file )
 {
   try
   {
+    // remove all files from watching
+    fileSystemWatcherV->removePaths( fileSystemWatcherV->files() );
+
     auto [ mediaSet, filePathMapping ]{
       Arinc665::Utils::Arinc665Xml_load( file.toStdString() ) };
 
@@ -233,6 +246,8 @@ void MediaSetViewerWindow::loadXmlFile( const QString &file )
     settings.setValue(
       "LoadMediaSetXmlDirectory",
       selectLoadMediaSetXmlDialogV->directory().path() );
+
+    fileSystemWatcherV->addPath( file );
   }
   catch ( Arinc665::Arinc665Exception &e )
   {
