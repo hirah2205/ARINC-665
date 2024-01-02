@@ -53,7 +53,7 @@ int main( int argc, char * argv[] )
     std::cout << "ARINC 665 Media Set XML Printer" << "\n";
 
     boost::program_options::options_description optionsDescription{
-      "ARINC 665 List options" };
+      "Print ARINC 665 XML options" };
 
     std::filesystem::path xmlPath{};
 

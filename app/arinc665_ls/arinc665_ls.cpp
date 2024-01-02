@@ -134,7 +134,7 @@ int main( int argc, char * argv[] )
     )
     (
       "directory",
-      boost::program_options::value( &directory)->required(),
+      boost::program_options::value( &directory )->required(),
       "start directory"
     );
 

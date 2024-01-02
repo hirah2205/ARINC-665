@@ -601,7 +601,7 @@ Files::LoadFileInfo MediaSetCompilerImpl::loadFileInformation(
     .crc = Files::Arinc665File::calculateChecksum( rawDataFile ),
     .checkValue = Arinc645::CheckValueGenerator::checkValue(
       checkValueType.value_or( Arinc645::CheckValueType::NotUsed ),
-      rawDataFile ) };
+      rawDataFile ).value_or( Arinc645::CheckValue::NoCheckValue) };
 }
 
 void MediaSetCompilerImpl::createBatchFile( const Media::Batch &batch ) const

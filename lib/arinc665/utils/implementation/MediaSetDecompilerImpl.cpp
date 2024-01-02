@@ -627,7 +627,7 @@ void MediaSetDecompilerImpl::addLoad(
 Media::RegularFilePtr MediaSetDecompilerImpl::loadFile(
   Media::ContainerEntity &parent,
   std::string_view filename,
-  uint16_t crc ) const
+  const uint16_t crc ) const
 {
   auto files{ mediaSetV->recursiveRegularFiles( filename ) };
 
@@ -670,11 +670,15 @@ Media::RegularFilePtr MediaSetDecompilerImpl::loadFile(
   {
     for ( const auto &checkValue : checkValuesV.at( file ) )
     {
-      if ( ( Arinc645::CheckValueType::Crc16 == checkValue.type() )
-        && ( crc == Arinc645::CheckValue::crc16( checkValue ) ) )
+      if ( Arinc645::CheckValueType::Crc16 == checkValue.type() )
       {
-        // CRC matches
-        return file;
+        if (
+          const auto crcConverted{ Arinc645::CheckValue::crc16( checkValue ) };
+          crcConverted && ( crc == *crcConverted ) )
+        {
+          // CRC matches
+          return file;
+        }
       }
     }
   }

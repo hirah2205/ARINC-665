@@ -277,7 +277,7 @@ RawFile FileListFile::encode() const
     const auto rawCheckValue{ CheckValueUtils_encode(
       Arinc645::CheckValueGenerator::checkValue(
         checkValueTypeV,
-        rawFile ) ) };
+        rawFile ).value_or( Arinc645::CheckValue::NoCheckValue ) ) };
     assert( rawCheckValue.size() % 2 == 0 );
 
     rawFile.insert(
