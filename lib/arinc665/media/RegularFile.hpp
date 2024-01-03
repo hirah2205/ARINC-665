@@ -29,14 +29,10 @@ class ARINC665_EXPORT RegularFile final : public File
 {
   public:
     /**
-     * @brief Creates a file, which is part of a media within a media set
+     * @brief Creates a regular file, which is part of a media set.
      *
-     * The list of files does not handle the protocol files like:
-     * - *List of files* file
-     * - *List of loads* file
-     * - *List of batches* file
-     * - *Load upload header* file
-     * - *Batch* file
+     * An instance cannot be created directly.
+     * Refer to ContainerEntity::addRegularFile() for instantiation.
      *
      * @param[in] parent
      *   Parent of this file.

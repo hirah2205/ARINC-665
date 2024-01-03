@@ -153,7 +153,7 @@ class ARINC665_EXPORT FilesystemMediaSetCompiler
      * @throw Arinc665Exception
      *   When compilation fails
      **/
-    virtual MediaSetPaths operator()() = 0;
+    [[nodiscard]] virtual MediaSetPaths operator()() = 0;
 };
 
 }

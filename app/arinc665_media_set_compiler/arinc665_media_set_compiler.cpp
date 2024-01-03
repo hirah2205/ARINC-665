@@ -32,6 +32,7 @@
 
 #include <cstdlib>
 #include <filesystem>
+#include <format>
 #include <iostream>
 
 /**
@@ -181,7 +182,16 @@ int main( int argc, char * argv[] )
       compiler->mediaSetName( mediaSetName );
     }
 
-    ( *compiler )();
+    const auto &[mediaSetPath, mediaPaths]{ ( *compiler )() };
+
+    std::cout << "Created Media Set " << mediaSetName << " in \n";
+    for ( const auto &[ mediumNumber, mediumPath ] : mediaPaths )
+    {
+      std::cout << std::format(
+        " * [%1]: %2\n",
+        static_cast< std::string >( mediumNumber ),
+        ( mediaSetPath / mediumPath ).string() );
+    }
 
     return EXIT_SUCCESS;
   }

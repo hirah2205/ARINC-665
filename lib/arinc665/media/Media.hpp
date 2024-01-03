@@ -44,22 +44,22 @@ namespace Arinc665::Media {
 //! Item Type
 enum class Type
 {
-  //! Media Set
+  //! %Media Set
   MediaSet,
-  //! Directory within Media Set
+  //! %Directory within %Media Set
   Directory,
-  //! File within Media Set / Directory (Refined by @ref FileType)
+  //! %File within %Media Set / %Directory (Refined by @ref FileType)
   File
 };
 
 //! File Type
 enum class FileType
 {
-  //! Regular File (can be part of Load)
+  //! Regular %File (can be part of a %Load)
   RegularFile,
-  //! Load Header File
+  //! %Load Header %File
   LoadFile,
-  //! Batch File
+  //! %Batch %File
   BatchFile
 };
 

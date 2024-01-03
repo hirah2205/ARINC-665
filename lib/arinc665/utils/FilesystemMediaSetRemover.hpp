@@ -20,6 +20,8 @@ namespace Arinc665::Utils {
 
 /**
  * @brief ARINC 665 %Media Set Remover.
+ *
+ * Removes an ARINC 665 Media Set from the filesystem.
  **/
 class ARINC665_EXPORT FilesystemMediaSetRemover
 {

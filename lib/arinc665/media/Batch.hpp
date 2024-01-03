@@ -26,7 +26,7 @@ namespace Arinc665::Media {
 /**
  * @brief %Batch of Loads.
  *
- * A Batch is used to declare loads for multiple Target Hardware Items at a
+ * A %Batch is used to declare loads for multiple Target Hardware Items at a
  * time.
  * For each Target Hardware (identified by its Target Hardware ID - THW ID) a
  * list of loads is defined.
@@ -37,10 +37,13 @@ class ARINC665_EXPORT Batch final : public File
     /**
      * @brief Initialises the batch with the given data.
      *
+     * An instance cannot be created directly.
+     * Refer to ContainerEntity::addBatch() for instantiation.
+     *
      * @param[in] parent
      *   Parent of this file.
      * @param[in] name
-     *   Name of the Batch.
+     *   Name of the %Batch.
      * @param[in] mediumNumber
      *   Medium Number, where the file is located on.
      * @param[in] createKey
@@ -55,7 +58,7 @@ class ARINC665_EXPORT Batch final : public File
     /**
      * @copydoc File::fileType()
      *
-     * @return FileType::BatchFile
+     * @retval FileType::BatchFile
      *   Always
      **/
     [[nodiscard]] FileType fileType() const override;
@@ -68,28 +71,28 @@ class ARINC665_EXPORT Batch final : public File
      **/
 
     /**
-     * @brief Return the Part Number of the Batch.
+     * @brief Return the Part Number of the %Batch.
      *
-     * @return Part Number of the Batch.
+     * @return Part Number of the %Batch.
      **/
     [[nodiscard]] std::string_view partNumber() const;
 
     /**
-     * @brief Updates the Batch Part Number.
+     * @brief Updates the %Batch Part Number.
      *
      * @param[in] partNumber
-     *   New Batch Part Number
+     *   New %Batch Part Number
      **/
     void partNumber( std::string partNumber );
 
     /** @} **/
 
     /**
-     * @name Batch Comment
+     * @name %Batch Comment
      *
      * A Batch can have an addition comment.
      * This field may be used to include the batch definition design information
-     * or modification history of the Batch File.
+     * or modification history of the %Batch %File.
      *
      * @{
      **/
@@ -121,9 +124,9 @@ class ARINC665_EXPORT Batch final : public File
      **/
 
     /**
-     * @brief Return Batch Information for Targets.
+     * @brief Return %Batch Information for Targets.
      *
-     * @return Batch Target Information.
+     * @return %Batch Target Information.
      **/
     [[nodiscard]] ConstBatchInformation targets() const;
 

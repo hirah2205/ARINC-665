@@ -179,7 +179,8 @@ using OptionalMediumNumber = std::optional< MediumNumber >;
  *
  * @return ARINC 665 Version Information.
  **/
-ARINC665_EXPORT Helper::VersionsInformation::value_type arinc665Version();
+[[nodiscard]] Helper::VersionsInformation::value_type ARINC665_EXPORT
+arinc665Version();
 
 }
 

@@ -71,7 +71,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
     /**
      * @brief Get the Number of the last Medium within the container.
      *
-     * If the container is the Media Set, this value is the number of media.
+     * If the container is the %Media Set, this value is the number of media.
      *
      * @return Last medium within container.
      **/
@@ -349,10 +349,10 @@ class ARINC665_EXPORT ContainerEntity : public Base
      **/
 
     /**
-     * @brief Return the number of Regular Files optionally filtered by medium
+     * @brief Return the number of Regular %Files optionally filtered by medium
      *   number.
      *
-     * @return Number of Regular Files.
+     * @return Number of regular files.
      **/
     [[nodiscard]] size_t numberOfRegularFiles(
       OptionalMediumNumber mediumNumber = {} ) const;
@@ -367,13 +367,13 @@ class ARINC665_EXPORT ContainerEntity : public Base
       OptionalMediumNumber mediumNumber = {} ) const;
 
     /**
-     * @brief Return Regular Files optionally filtered by medium number.
+     * @brief Return Regular %Files optionally filtered by medium number.
      *
      * @param[in] mediumNumber
      *   Medium number, to filter.
      *   If not provided, no filtering is performed.
      *
-     * @return Regular Files contained within this container.
+     * @return Regular files contained within this container.
      **/
     [[nodiscard]] ConstRegularFiles regularFiles(
       OptionalMediumNumber mediumNumber = {} ) const;
@@ -460,7 +460,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
       const std::filesystem::path &path );
 
     /**
-     * @brief Adds a Regular File into this container.
+     * @brief Adds a Regular %File into this container.
      *
      * @param[in] filename
      *   Filename of the file to be created.
@@ -473,6 +473,8 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @throw Arinc665Exception
      *   When file already exist.
+     *
+     * @sa RegularFile
      **/
     [[nodiscard]] RegularFilePtr addRegularFile(
       std::string filename,
@@ -595,7 +597,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @brief Creates a load with the given filename.
      *
      * @param[in] filename
-     *   Load filename.
+     *   %Load filename.
      * @param[in] mediumNumber
      *   Medium number, where the file is located onto.
      *   If not provided the default medium number of the owning container is
@@ -605,6 +607,8 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @throw Arinc665Exception
      *   When a load with given filename already exist.
+     *
+     * @sa Load
      **/
     [[nodiscard]] LoadPtr addLoad(
       std::string filename,
@@ -686,9 +690,9 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @brief Returns the batch with the given filename.
      *
      * @param[in] filename
-     *   Batch filename
+     *   %Batch filename
      *
-     * @return Batch with the given filename.
+     * @return %Batch with the given filename.
      * @retval {}
      *   If batch does not exist.
      **/
@@ -707,7 +711,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @param[in] path
      *   Path of file.
      *
-     * @return File at @p path
+     * @return %Batch at @p path
      * @retval {}
      *   If path does not reference a batch or is empty.
      **/
@@ -721,7 +725,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      * @brief Creates a batch with the given filename.
      *
      * @param[in] filename
-     *   Batch filename.
+     *   %Batch filename.
      * @param[in] mediumNumber
      *   Medium number, where the file is located onto.
      *   If not provided, the default medium number of the owning container is
@@ -731,6 +735,8 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *
      * @throw Arinc665Exception
      *   When a file with given filename already exist.
+     *
+     * @sa Batch
      **/
     [[nodiscard]] BatchPtr addBatch(
       std::string filename,
@@ -752,7 +758,7 @@ class ARINC665_EXPORT ContainerEntity : public Base
      *   specified file type.
      *
      * @param[in] fileType
-     *   File type to search for.
+     *   %File type to search for.
      * @param[in] mediumNumber
      *   Medium number, where the file is located onto.
      *   If not provided, the default medium number of the owning container is

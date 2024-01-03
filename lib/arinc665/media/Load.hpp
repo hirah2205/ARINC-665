@@ -43,11 +43,14 @@ class ARINC665_EXPORT Load final : public File
       std::map< std::string, Positions, std::less<> >;
     //! Target Hardware ID List
     using TargetHardwareIds = std::set< std::string, std::less<> >;
-    //! Load Type (Description + ID)
+    //! %Load Type (Description + ID)
     using Type = std::optional< std::pair< std::string, uint16_t > >;
 
     /**
-     * @brief Initialises a ARINC 665 Load
+     * @brief Initialises a ARINC 665 Load.
+     *
+     * An instance cannot be created directly.
+     * Refer to ContainerEntity::addLoad() for instantiation.
      *
      * @param[in] parent
      *   Parent of this Load.
@@ -132,17 +135,17 @@ class ARINC665_EXPORT Load final : public File
      **/
 
     /**
-     * @brief Return the Part Number of the Load.
+     * @brief Return the Part Number of the %Load.
      *
-     * @return Part Number of the Media Set.
+     * @return Part Number of the %Load.
      **/
     [[nodiscard]] std::string_view partNumber() const;
 
     /**
-     * @brief Updates the Part Number of the Load.
+     * @brief Updates the Part Number of the %Load.
      *
      * @param[in] partNumber
-     *   New Load Part Number
+     *   New %Load Part Number
      **/
     void partNumber( std::string partNumber );
 
@@ -230,7 +233,7 @@ class ARINC665_EXPORT Load final : public File
      * @param[in] filename
      *   Filename of file to look for.
      *
-     * @return File with filename.
+     * @return %File with filename.
      * @retval {}
      *   No file or more than on file found within data and support files.
      **/
@@ -251,7 +254,7 @@ class ARINC665_EXPORT Load final : public File
      * @param[in] checkValue
      *   Check Value of file.
      *
-     * @return File with filename and part number if provided.
+     * @return %File with filename and part number if provided.
      * @retval {}
      *   No file or more than on file found within data and support files.
      **/
@@ -264,7 +267,7 @@ class ARINC665_EXPORT Load final : public File
      * @brief Return all files.
      *
      * Contains:
-     *  - the Load %File itself,
+     *  - the %Load (Header) %File itself,
      *  - all Data %Files, and
      *  - all Support %Files.
      *
@@ -293,12 +296,12 @@ class ARINC665_EXPORT Load final : public File
     [[nodiscard]] ConstLoadFiles dataFiles( bool effective = false ) const;
 
     /**
-     * @brief Sets Data Files.
+     * @brief Sets Data %Files.
      *
-     * Replaces all data files by @sa files.
+     * Replaces all data files by @p files.
      *
      * @param[in] files
-     *   Files to set.
+     *   %Files to set.
      **/
     void dataFiles( const ConstLoadFiles &files );
 
@@ -306,7 +309,7 @@ class ARINC665_EXPORT Load final : public File
      * @brief Add the given file as data file.
      *
      * @param[in] file
-     *   Data File.
+     *   Data %File.
      * @param[in] partNumber
      *   Part Number.
      * @param[in] checkValueType
@@ -332,23 +335,23 @@ class ARINC665_EXPORT Load final : public File
      **/
 
     /**
-     * @brief Returns the Support Files.
+     * @brief Returns the Support %Files.
      *
      * @param[in] effective
      *   Defines how to handle the check value of the files' information.
      *   If set to true the effective check value type is returned for the file.
      *
-     * @return Support Files.
+     * @return Support %Files.
      **/
     [[nodiscard]] ConstLoadFiles supportFiles( bool effective = false ) const;
 
     /**
-     * @brief Sets Support Files.
+     * @brief Sets Support %Files.
      *
-     * Replaces all support files by @sa files.
+     * Replaces all support files by @p files.
      *
      * @param[in] files
-     *   Files to set.
+     *   %Files to set.
      **/
     void supportFiles( const ConstLoadFiles &files );
 
@@ -356,7 +359,7 @@ class ARINC665_EXPORT Load final : public File
      * @brief Add the given file as support file.
      *
      * @param[in] file
-     *   Support File.
+     *   Support %File.
      * @param[in] partNumber
      *   Part Number.
      * @param[in] checkValueType
@@ -410,14 +413,14 @@ class ARINC665_EXPORT Load final : public File
      **/
 
     /**
-     * @brief Returns the Load Type.
+     * @brief Returns the %Load Type.
      *
-     * @return Load Type.
+     * @return %Load Type.
      **/
     [[nodiscard]] const Type& loadType() const;
 
     /**
-     * @brief Updates the Load Type.
+     * @brief Updates the %Load Type.
      *
      * @param[in] type
      *   New load type.
@@ -430,37 +433,37 @@ class ARINC665_EXPORT Load final : public File
      * @name Load Check Value Type
      *
      * This information is used to determine the Check Value Type used for
-     * generation of Load Check Value.
-     * If not provided, the Media Set Check Value is used.
+     * generation of *%Load Check Value*.
+     * If not provided, the %Media Set Check Value is used.
      *
      * @{
      **/
 
     /**
-     * @brief Returns the effective Load Check Value Type.
+     * @brief Returns the effective %Load Check Value Type.
      *
-     * if no check value is given for Load Check Value Type, the Media Set Check
-     * Value Type is used.
+     * if no check value is given for %Load Check Value Type, the %Media Set
+     * Check Value Type is used.
      *
-     * @return Effective Load Check Value Type
+     * @return Effective %Load Check Value Type
      *
      * @sa MediaSet::mediaSetCheckValueType
      **/
     [[nodiscard]] Arinc645::CheckValueType effectiveLoadCheckValueType() const;
 
     /**
-     * @brief Returns the Load Check Value Type.
+     * @brief Returns the %Load Check Value Type.
      *
-     * @return Load Check Value Type
+     * @return %Load Check Value Type
      **/
     [[nodiscard]] std::optional< Arinc645::CheckValueType >
     loadCheckValueType() const;
 
     /**
-     * @brief Updates the Load Check Value Type
+     * @brief Updates the %Load Check Value Type
      *
      * @param[in] checkValueType
-     *   New Load Check Value Type.
+     *   New %Load Check Value Type.
      **/
     void loadCheckValueType(
       std::optional< Arinc645::CheckValueType > checkValueType );
@@ -468,22 +471,22 @@ class ARINC665_EXPORT Load final : public File
     /** @} **/
 
     /**
-     * @name Data Files Check Value Type
+     * @name Data %Files Check Value Type
      *
      * This information is used to determine the Check Value Type used for
-     * generation of Data Files Check Value.
-     * If not provided, the *Media Set Check Value* is used.
+     * generation of Data %Files Check Value.
+     * If not provided, the *%Media Set Check Value* is used.
      *
      * @{
      **/
 
     /**
-     * @brief Returns the effective Data Files Check Value Type.
+     * @brief Returns the effective Data %Files Check Value Type.
      *
-     * if no check value is given for Data Files Check Value Type, the Media Set
-     * Check Value Type is used.
+     * if no check value is given for Data %Files Check Value Type, the %Media
+     * Set Check Value Type is used.
      *
-     * @return Effective Data Files Check Value Type
+     * @return Effective Data %Files Check Value Type
      *
      * @sa MediaSet::mediaSetCheckValueType
      **/
@@ -491,18 +494,18 @@ class ARINC665_EXPORT Load final : public File
     effectiveDataFilesCheckValueType() const;
 
     /**
-     * @brief Returns the Data Files Check Value Type.
+     * @brief Returns the Data %Files Check Value Type.
      *
-     * @return Data Files Check Value Type
+     * @return Data %Files Check Value Type
      **/
     [[nodiscard]] std::optional< Arinc645::CheckValueType >
     dataFilesCheckValueType() const;
 
     /**
-     * @brief Updates the Data Files Check Value Type
+     * @brief Updates the Data %Files Check Value Type.
      *
      * @param[in] checkValueType
-     *   New Data Files Check Value Type.
+     *   New Data %Files Check Value Type.
      **/
     void dataFilesCheckValueType(
       std::optional< Arinc645::CheckValueType > checkValueType );
@@ -510,22 +513,22 @@ class ARINC665_EXPORT Load final : public File
     /** @} **/
 
     /**
-     * @name Support Files Check Value Type
+     * @name Support %Files Check Value Type
      *
      * This information is used to determine the Check Value Type used for
-     * generation of Support Files Check Value.
-     * If not provided, the *Media Set Check Value* is used.
+     * generation of *Support %Files Check Value*.
+     * If not provided, the *%Media Set Check Value* is used.
      *
      * @{
      **/
 
     /**
-     * @brief Returns the effective Support Files Check Value Type.
+     * @brief Returns the effective Support %Files Check Value Type.
      *
-     * if no check value is given for Support Files Check Value Type, the Media
-     * Set Check Value Type is used.
+     * if no check value is given for Support %Files Check Value Type, the
+     * %Media Set Check Value Type is used.
      *
-     * @return Effective Support Files Check Value Type
+     * @return Effective Support %Files Check Value Type
      *
      * @sa MediaSet::mediaSetCheckValueType
      **/
@@ -533,18 +536,18 @@ class ARINC665_EXPORT Load final : public File
     effectiveSupportFilesCheckValueType() const;
 
     /**
-     * @brief Returns the Support Files Check Value Type.
+     * @brief Returns the Support %Files Check Value Type.
      *
-     * @return Support Files Check Value Type
+     * @return Support %Files Check Value Type
      **/
     [[nodiscard]] std::optional< Arinc645::CheckValueType >
     supportFilesCheckValueType() const;
 
     /**
-     * @brief Updates the Support Files Check Value Type
+     * @brief Updates the Support %Files Check Value Type.
      *
      * @param[in] checkValueType
-     *   New Support Files Check Value Type.
+     *   New Support %Files Check Value Type.
      **/
     void supportFilesCheckValueType(
       std::optional< Arinc645::CheckValueType > checkValueType );
@@ -597,11 +600,11 @@ class ARINC665_EXPORT Load final : public File
  * @p partNumber.
  *
  * @param[in] loads
- *   List of Loads.
+ *   List of %Loads.
  * @param[in] partNumber
- *   Load Part Number
+ *   %Load Part Number
  *
- * @return Load with given part number.
+ * @return %Load with given part number.
  * @retval {}
  *   When no load with given part number exists in @p loads
  **/
@@ -627,9 +630,9 @@ class ARINC665_EXPORT Load final : public File
  * @param[in] filename
  *   Filename
  * @param[in] loadPartNumber
- *   Load Part Number
+ *   %Load Part Number
  *
- * @return File with filename.
+ * @return %File with filename.
  * @retval {}
  *   No file or more than on file found within data and support files.
  **/
@@ -651,11 +654,11 @@ class ARINC665_EXPORT Load final : public File
  * @param[in] filename
  *   Filename
  * @param[in] loadPartNumber
- *   Load Part Number
+ *   %Load Part Number
  * @param[in] checkValue
  *   Check Value of file
  *
- * @return File with filename and part number if provided.
+ * @return %File with filename and part number if provided.
  * @retval {}
  *   No file or more than on file found within data and support files.
  **/

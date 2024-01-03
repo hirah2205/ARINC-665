@@ -30,9 +30,15 @@ namespace Arinc665::Media {
  * @brief %Media Set %File.
  *
  * This class is used as common base for:
- *  - regular files (@ref File),
+ *  - regular files (@ref RegularFile),
  *  - load header files (@ref Load), and
  *  - batch files (@ref Batch).
+ *
+ * The media set *List* files:
+ * - *List of files* file
+ * - *List of loads* file
+ * - *List of batches* file
+ * have no direct representation.
  *
  * The parent stored within this class is held as weak reference.
  **/
@@ -66,7 +72,7 @@ class ARINC665_EXPORT File : public Base
     [[nodiscard]] std::filesystem::path path() const final;
 
     /**
-     * @brief Returns the Name of the File.
+     * @brief Returns the Name of the %File.
      *
      * @return Name of the file.
      **/
@@ -110,7 +116,7 @@ class ARINC665_EXPORT File : public Base
     [[nodiscard]] OptionalMediumNumber mediumNumber() const;
 
     /**
-     * @brief Updates the Medium Number of the file,
+     * @brief Updates the Medium Number of the file.
      *
      * @param[in] mediumNumber
      *   New Medium Number.
@@ -121,9 +127,9 @@ class ARINC665_EXPORT File : public Base
     /** @} **/
 
     /**
-     * @brief Returns the File Type.
+     * @brief Returns the %File Type.
      *
-     * @return File type
+     * @return %File type
      **/
     [[nodiscard]] virtual FileType fileType() const = 0;
 
@@ -131,7 +137,7 @@ class ARINC665_EXPORT File : public Base
      * @name File Check Value Type
      *
      * This information is used to determine the Check Value Type used for
-     * generation of Media Set Files List Check Value.
+     * generation of %Media Set %Files List Check Value.
      * This Value override a common value set by
      * @ref MediaSet::filesCheckValueType().
      *
@@ -139,30 +145,30 @@ class ARINC665_EXPORT File : public Base
      **/
 
     /**
-     * @brief Returns the effective File Check Value Type.
+     * @brief Returns the effective %File Check Value Type.
      *
-     * If value is not set the effective Media Set File Check Value Type is
+     * If value is not set the effective *%Media Set %File Check Value Type* is
      * used.
      *
-     * @return Effective File Check Value Type.
+     * @return Effective %File Check Value Type.
      *
      * @sa MediaSet::effectiveFilesCheckValueType.
      **/
     [[nodiscard]] Arinc645::CheckValueType effectiveCheckValueType() const;
 
     /**
-     * @brief Returns the File Check Value Type.
+     * @brief Returns the %File Check Value Type.
      *
-     * @return File Check Value Type
+     * @return %File Check Value Type
      **/
     [[nodiscard]] std::optional< Arinc645::CheckValueType >
     checkValueType() const;
 
     /**
-     * @brief Updates the File Check Value Type
+     * @brief Updates the %File Check Value Type.
      *
      * @param[in] type
-     *   New File Check Value Type.
+     *   New %File Check Value Type.
      **/
     void checkValueType( std::optional< Arinc645::CheckValueType > type );
 

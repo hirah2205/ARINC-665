@@ -34,16 +34,19 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
     /**
      * @brief Creates a new %Media Set.
      *
-     * This %Media Set contains no media, data files, loads nor batches.
+     * This %Media Set contains no directories, data files, loads nor batches.
      *
-     * @return Media Set Instance
+     * @return %Media Set Instance
      **/
     [[nodiscard]] static MediaSetPtr create();
 
     /**
      * @brief Creates a new %Media Set.
      *
-     * This %Media Set contains no media, data files, loads nor batches.
+     * This %Media Set contains no directories, data files, loads nor batches.
+     *
+     * An instance cannot be created directly.
+     * Refer to MediaSet::create() for instantiation.
      *
      * @param[in] createKey
      *   Key to protect creation.
@@ -73,7 +76,7 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
     /**
      * @copydoc ContainerEntity::path() const
      *
-     * @retval The root-directory.
+     * @retval `/`
      **/
     [[nodiscard]] std::filesystem::path path() const override;
 
@@ -145,14 +148,14 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
     /** @} **/
 
     /**
-     * @name User Defined Data of Files List
+     * @name User Defined Data of %Files List
      * @{
      **/
 
     /**
-     * @brief Returns the User Defined Data for List of Files.
+     * @brief Returns the User Defined Data for *List of %Files* %File.
      *
-     * @return User Defined Data for List of Files.
+     * @return User Defined Data for List of %Files.
      **/
     [[nodiscard]] ConstUserDefinedDataSpan filesUserDefinedData() const;
 
@@ -160,7 +163,7 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
     [[nodiscard]] UserDefinedData& filesUserDefinedData();
 
     /**
-     * @brief Updates the User Defined Data for List of Files.
+     * @brief Updates the User Defined Data for *List of %Files*.
      *
      * @param[in] userDefinedData
      *   User Defined Data.
@@ -175,7 +178,7 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
      **/
 
     /**
-     * @brief Returns the user defined data for loads list files.
+     * @brief Returns the User Defined Data for *List of %Loads* %File.
      *
      * @return User defined data for loads list files.
      **/
@@ -185,7 +188,7 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
     [[nodiscard]] UserDefinedData& loadsUserDefinedData();
 
     /**
-     * @brief Updates the user defined data for load list files.
+     * @brief Updates the User Defined Data for *List of %Loads* %File.
      *
      * @param[in] userDefinedData
      *   User defined data.
@@ -200,7 +203,7 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
      **/
 
     /**
-     * @brief Returns the user defined data for batch list files.
+     * @brief Returns the User Defined Data for *List of %Batches* %File.
      *
      * @return User defined data for batch list files.
      **/
@@ -210,7 +213,7 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
     [[nodiscard]] UserDefinedData& batchesUserDefinedData();
 
     /**
-     * @brief Updates the user defined data for batch list files.
+     * @brief Updates the User Defined Data for *List of %Batches* %File.
      *
      * @param[in] userDefinedData
      *   User Defined Data.
@@ -260,10 +263,10 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
     /** @} **/
 
     /**
-     * @name List of Files Check Value Type
+     * @name List of %Files Check Value Type
      *
      * This information is used to determine the Check Value Type used for
-     * generation of List of Files (`FILES.LUM`) Check Value.
+     * generation of *List of %Files* (`FILES.LUM`) Check Value.
      *
      * If not provided, the %Media Set Check Value is used.
      *
@@ -271,11 +274,11 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
      **/
 
     /**
-     * @brief Returns the Effective List of Files Check Value Type.
+     * @brief Returns the Effective List of %Files Check Value Type.
      *
      * If no value is set, the %Media Set Check Value Type is used.
      *
-     * @return Effective List of Files Check Value Type
+     * @return Effective List of %Files Check Value Type
      *
      * @sa effectiveMediaSetCheckValueType()
      **/
@@ -283,18 +286,18 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
     effectiveListOfFilesCheckValueType() const;
 
     /**
-     * @brief Returns the List of Files Check Value Type.
+     * @brief Returns the List of %Files Check Value Type.
      *
-     * @return List of Files Check Value Type
+     * @return List of %Files Check Value Type
      **/
     [[nodiscard]] std::optional< Arinc645::CheckValueType >
     listOfFilesCheckValueType() const;
 
     /**
-     * @brief Updates the List of Files Check Value Type
+     * @brief Updates the List of %Files Check Value Type.
      *
      * @param[in] type
-     *   New List of Files Check Value Type.
+     *   New List of %Files Check Value Type.
      **/
     void listOfFilesCheckValueType(
       std::optional< Arinc645::CheckValueType > type );
@@ -302,13 +305,13 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
     /** @} **/
 
     /**
-     * @name List of Loads Check Value Type
+     * @name List of %Loads Check Value Type
      *
      * This information is used to determine the Check Value Type used for
-     * generation of List of Loads (`LOADS.LUM`) Check Value which is stored
-     * within the List of Files (`FILES.LUM`).
+     * generation of List of %Loads (`LOADS.LUM`) Check Value which is stored
+     * within the List of %Files (`FILES.LUM`).
      *
-     * If not provided, the Files Check Value is used.
+     * If not provided, the %Files Check Value is used.
      *
      * @sa effectiveFilesCheckValueType()
      *
@@ -316,11 +319,11 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
      **/
 
     /**
-     * @brief Returns the Effective List of Loads Check Value Type.
+     * @brief Returns the Effective List of %Loads Check Value Type.
      *
-     * If not provided, the Files Check Value is used.
+     * If not provided, the %Files Check Value is used.
      *
-     * @return Effective Files Check Value Type
+     * @return Effective %Loads Check Value Type
      *
      * @sa effectiveFilesCheckValueType()
      **/
@@ -328,18 +331,18 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
     effectiveListOfLoadsCheckValueType() const;
 
     /**
-     * @brief Returns the List of Loads Check Value Type.
+     * @brief Returns the List of %Loads Check Value Type.
      *
-     * @return List of Loads Check Value Type
+     * @return List of %Loads Check Value Type
      **/
     [[nodiscard]] std::optional< Arinc645::CheckValueType >
     listOfLoadsCheckValueType() const;
 
     /**
-     * @brief Updates the List of Loads Check Value Type
+     * @brief Updates the List of %Loads Check Value Type.
      *
      * @param[in] type
-     *   New List of Loads Check Value Type.
+     *   New List of %Loads Check Value Type.
      **/
     void listOfLoadsCheckValueType(
       std::optional< Arinc645::CheckValueType > type );
@@ -352,7 +355,7 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
      * This information is used to determine the Check Value Type used for
      * generation of List of Batches (`BATCHES.LUM`) Check Value.
      *
-     * If not provided, the Files Check Value is used.
+     * If not provided, the %Files Check Value is used.
      *
      * @sa effectiveFilesCheckValueType()
      * @{
@@ -361,7 +364,7 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
     /**
      * @brief Returns the Effective List of Batches Check Value Type.
      *
-     * If no value is set, the Files Check Value Type is used.
+     * If no value is set, the %Files Check Value Type is used.
      *
      * @return Effective List of Batches Check Value Type
      *
@@ -393,7 +396,7 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
      * @name Files Check Value Type
      *
      * This information is used to determine the Check Value Type used for
-     * generation of Files Check Values within `FILES.LUM`.
+     * generation of %Files Check Values within `FILES.LUM`.
      * It can be overridden on per-file basis.
      * For the List of Loads %File and List of Batches %File separate functions
      * are provided.
@@ -407,29 +410,29 @@ class ARINC665_EXPORT MediaSet final : public ContainerEntity
      **/
 
     /**
-     * @brief Returns the Effective Files Check Value Type.
+     * @brief Returns the Effective %Files Check Value Type.
      *
      * If no value is set, the %Media Set Check Value Type is used.
      *
-     * @return Effective Files Check Value Type
+     * @return Effective %Files Check Value Type
      *
      * @sa effectiveMediaSetCheckValueType()
      **/
     [[nodiscard]] Arinc645::CheckValueType effectiveFilesCheckValueType() const;
 
     /**
-     * @brief Returns the Files Check Value Type.
+     * @brief Returns the %Files Check Value Type.
      *
-     * @return Files Check Value Type
+     * @return %Files Check Value Type
      **/
     [[nodiscard]] std::optional< Arinc645::CheckValueType >
     filesCheckValueType() const;
 
     /**
-     * @brief Updates the Files Check Value Type
+     * @brief Updates the %Files Check Value Type
      *
      * @param[in] type
-     *   New Files Check Value Type.
+     *   New %Files Check Value Type.
      **/
     void filesCheckValueType( std::optional< Arinc645::CheckValueType > type );
 

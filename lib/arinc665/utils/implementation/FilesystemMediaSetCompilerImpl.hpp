@@ -66,7 +66,7 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
     /**
      * @brief Entry-point of the Filesystem ARINC 665 Media Set Compiler.
      ***/
-    MediaSetPaths operator()() override;
+    [[nodiscard]] MediaSetPaths operator()() override;
 
   private:
     /**

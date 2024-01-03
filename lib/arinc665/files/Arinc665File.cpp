@@ -46,7 +46,7 @@ uint32_t Arinc665File::fileLength( ConstRawFileSpan file )
   if ( file.size() < BaseHeaderSize )
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << Helper::AdditionalInfo{ "length of check code string invalid" } );
+      << Helper::AdditionalInfo{ "file content too small" } );
   }
 
   // decode the file length
@@ -62,7 +62,7 @@ uint16_t Arinc665File::formatVersion( ConstRawFileSpan file )
   if ( file.size() < BaseHeaderSize )
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << Helper::AdditionalInfo{ "file content to small" } );
+      << Helper::AdditionalInfo{ "file content too small" } );
   }
 
   // decode the format version
@@ -391,7 +391,7 @@ void Arinc665File::insertHeader(
   if ( rawFile.size() <= ( BaseHeaderSize + sizeof( uint16_t ) ) )
   {
     BOOST_THROW_EXCEPTION(
-      InvalidArinc665File() << Helper::AdditionalInfo{ "File to small" } );
+      InvalidArinc665File() << Helper::AdditionalInfo{ "File too small" } );
   }
 
   // Check file size

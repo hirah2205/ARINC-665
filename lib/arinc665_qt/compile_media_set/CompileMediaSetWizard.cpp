@@ -143,13 +143,13 @@ void CompileMediaSetWizard::compileMediaSet()
       .filePathMapping( std::move( fileMapping ) )
       .outputBasePath( outputDirectoryV );
     assert( compilerV );
-    ( *compilerV )();
+    auto mediaSetPaths{ ( *compilerV )() };
 
     QMessageBox::information(
       nullptr,
       tr( "Media Set Compilation successful" ),
       QString{ "Media Set created within <tt>%1</tt>" }
-        .arg( QString::fromStdString( outputDirectoryV.string() ) ) );
+        .arg( QString::fromStdString( mediaSetPaths.first.string() ) ) );
   }
   catch ( const boost::exception &e )
   {

@@ -20,6 +20,9 @@ namespace Arinc665::Utils {
 
 /**
  * @brief ARINC 665 %Media Set Copier.
+ *
+ * Copies a media set from a filesystem source to a filesystem destination.
+ * No integrity checks of the media set is performed.
  **/
 class ARINC665_EXPORT FilesystemMediaSetCopier
 {
@@ -59,6 +62,8 @@ class ARINC665_EXPORT FilesystemMediaSetCopier
      * @brief Updates the Media Set Name.
      *
      * The media set name is used for generating the output media set directory.
+     * If the name is not set explicitly, the part number of the media set is
+     * used.
      *
      * @param[in] mediaSetName
      *   Media Set Name.

@@ -31,6 +31,9 @@ class ARINC665_EXPORT Directory final : public ContainerEntity
     /**
      * @brief Initialises the instance with the given data.
      *
+     * An instance cannot be created directly.
+     * Refer to ContainerEntity::addDirectory() for instantiation.
+     *
      * @param[in] parent
      *   Parent of this directory.
      * @param[in] name
