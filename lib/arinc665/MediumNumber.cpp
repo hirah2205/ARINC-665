@@ -22,6 +22,11 @@ MediumNumber::MediumNumber( const uint8_t mediumNumber ) noexcept :
 {
 }
 
+std::string MediumNumber::toString() const
+{
+  return std::format( "{:03d}", mediumNumberV );
+}
+
 MediumNumber MediumNumber::operator+( const uint8_t increment )
 {
   mediumNumberV += increment;
@@ -48,7 +53,7 @@ MediumNumber::operator uint8_t() const
 
 MediumNumber::operator std::string() const
 {
-  return std::format( "{:03d}", mediumNumberV );
+  return toString();
 }
 
 MediumNumber& MediumNumber::operator =( const uint8_t mediumNumber )
@@ -61,7 +66,7 @@ std::ostream& operator <<(
   std::ostream &stream,
   const MediumNumber &mediumNumber )
 {
-  return stream << static_cast< std::string >( mediumNumber );
+  return stream << mediumNumber.toString();
 }
 
 }

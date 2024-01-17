@@ -45,6 +45,13 @@ class ARINC665_EXPORT MediumNumber
     explicit MediumNumber( uint8_t mediumNumber ) noexcept;
 
     /**
+     * @brief Medium number as @p std::string representation.
+     *
+     * @return Medium Number as @p std::string.
+     **/
+    [[nodiscard]] std::string toString() const;
+
+    /**
      * @brief Binary Plus Operator with @p uin8_t.
      *
      * @param[in] increment
