@@ -44,6 +44,7 @@ FilesystemMediaSetDecompilerImpl::~FilesystemMediaSetDecompilerImpl() = default;
 FilesystemMediaSetDecompiler& FilesystemMediaSetDecompilerImpl::progressHandler(
   MediaSetDecompiler::ProgressHandler progressHandler )
 {
+  assert( mediaSetDecompilerV );
   mediaSetDecompilerV->progressHandler( std::move( progressHandler ) );
   return *this;
 }
