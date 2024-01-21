@@ -404,6 +404,8 @@ ConstFilePtr Loads_file(
 
     if ( !load )
     {
+      BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+        << "No Load with given Part Number";
       return {};
     }
 
@@ -450,6 +452,8 @@ ConstFilePtr Loads_file(
 
     if ( !load )
     {
+      BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+        << "No Load with given Part Number";
       return {};
     }
 
