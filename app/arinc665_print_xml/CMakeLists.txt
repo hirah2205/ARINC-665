@@ -33,6 +33,12 @@ set_property(
   APPEND
   PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
 
+set_property(
+  DIRECTORY ${PROJECT_SOURCE_DIR}
+  APPEND
+  PROPERTY MAN_PATHS
+    ${CMAKE_CURRENT_SOURCE_DIR}/arinc665_print_xml.adoc )
+
 install(
   TARGETS arinc665_print_xml
   RUNTIME_DEPENDENCY_SET arinc665-runtime-deps

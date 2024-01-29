@@ -1,0 +1,22 @@
+= arinc665_ls(1)
+Thomas Vogt
+
+== Name
+
+arinc665_ls - Prints ARINC 665 Media Set information.
+
+== Synopsis
+
+*arinc665_ls* --directory _Directory_
+
+Recursively iterates of *Directory* and prints ARINC 665 Media Set information.
+
+== Options
+
+// tag::options[]
+*--directory* _Directory_::
+Directory.
+
+== See Also
+
+link:[arinc665_media_set_print(1)]

@@ -3,8 +3,7 @@ Thomas Vogt
 
 == Name
 
-arinc665_media_set_decompiler - decompiles ARINC 665 Media Sets and creates an associated XML Configuration
-file.
+arinc665_media_set_decompiler - decompiles ARINC 665 Media Sets and creates an associated XML Configuration file.
 
 == Synopsis
 

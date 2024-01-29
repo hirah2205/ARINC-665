@@ -14,3 +14,4 @@ endif()
 
 add_subdirectory( arinc665_api_doc )
 add_subdirectory( arinc665_internal_doc )
+add_subdirectory( arinc665_manpage )

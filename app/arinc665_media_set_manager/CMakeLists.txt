@@ -43,6 +43,15 @@ set_property(
   APPEND
   PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
 
+set_property(
+  DIRECTORY ${PROJECT_SOURCE_DIR}
+  APPEND
+  PROPERTY MAN_PATHS
+    ${CMAKE_CURRENT_SOURCE_DIR}/arinc665_media_set_manager.adoc
+    ${CMAKE_CURRENT_SOURCE_DIR}/arinc665_media_set_manager-create.adoc
+    ${CMAKE_CURRENT_SOURCE_DIR}/arinc665_media_set_manager-list-loads.adoc
+    ${CMAKE_CURRENT_SOURCE_DIR}/arinc665_media_set_manager-list-media-sets.adoc )
+
 install(
   TARGETS arinc665_media_set_manager
   RUNTIME_DEPENDENCY_SET arinc665-runtime-deps
