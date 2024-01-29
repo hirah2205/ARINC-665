@@ -44,7 +44,7 @@ void registerCommands( const Commands::CommandRegistryPtr& registry )
   auto listLoadsCommand{ std::make_shared< ListLoadsCommand >() };
   registry->command(
     "ListLoads",
-    "List Loads contained on all ARINC 665 Media Sets",
+    "List Loads contained within all ARINC 665 Media Sets",
     std::bind_front(
       &ListLoadsCommand::execute,
       listLoadsCommand ),

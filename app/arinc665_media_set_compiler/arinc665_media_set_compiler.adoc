@@ -7,38 +7,40 @@ arinc665_media_set_compiler - compiles ARINC 665 Media Sets based on an XML Conf
 
 == Synopsis
 
-*arinc665_media_set_compiler* --xml-file _XML File_ {--source-directory _Source_}
-[--create-batch-files None|NoneExisting|All]
-[--create-load-header-files None|NoneExisting|All]
-[--version Supplement2|Supplement345]
-[--destination-directory _Destination_]
-[--media-set-name _Name_]
+*arinc665_media_set_compiler*
+-f|--xml-file _XML File_
+{-s|--source-directory _Source_}
+[-b|--create-batch-files None|NoneExisting|All]
+[-l|--create-load-header-files None|NoneExisting|All]
+[-v|--version Supplement2|Supplement345]
+[-d|--destination-directory _Destination_]
+[-n|--media-set-name _Name_]
 
 The media set is generated within the directory `_Destination_/_Name_`.
 
 == Options
 
 // tag::options[]
-*--xml-file* _XML File_::
+*-f|--xml-file* _XML File_::
 Path to ARINC 665 Media Set description XML file.
 
-*--source-directory* _Source_::
+*-s|--source-directory* _Source_::
 Source of Media Set files.
 
-*--create-batch-files* None|NoneExisting|All::
+*-b|--create-batch-files* None|NoneExisting|All::
 Indicates if Load Header files shall be created or not.
 
-*--create-load-header-files* None|NoneExisting|All::
+*-l|--create-load-header-files* None|NoneExisting|All::
 Indicates if Batch files shall be created or not.
 
-*--version* Supplement2|Supplement345::
+*-v|--version* Supplement2|Supplement345::
 ARINC 665 Media Set version.
 
-*--destination-directory* _Destination_::
+*-d|--destination-directory* _Destination_::
 Output directory for ARINC 665 media set.
 If not set, the current directory is used.
 
-*--media-set-name _Name_::
+*-n|--media-set-name _Name_::
 Media Set name to be used.
 If not provided, the part number of the media set ist used.
 

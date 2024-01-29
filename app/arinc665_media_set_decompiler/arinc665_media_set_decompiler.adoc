@@ -8,19 +8,19 @@ file.
 
 == Synopsis
 
-*arinc665_media_set_decompiler* {--source-directory _Source_}... --xml-file _XML File_ [--check-file-integrity true|false]
+*arinc665_media_set_decompiler* {-d|--source-directory _Source_}... -f|--xml-file _XML File_ [-i|--check-file-integrity true|false]
 
 == Options
 
 // tag::options[]
-*--source-directory* _Source_::
+*-d|--source-directory* _Source_::
  ARINC 665 Media Set _Medium Directory_.
  Must be repeated foreach medium of media set.
 
-*--xml-file* _XML File_::
+*-f|--xml-file* _XML File_::
  Path to ARINC 665 Media Set description XML file, which will be created.
 
-*--check-file-integrity* _true|false_::
+*-i|--check-file-integrity* _true|false_::
  If set to `true`, the integrity of the media set is checked.
 
 == See Also

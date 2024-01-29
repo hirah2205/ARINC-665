@@ -7,10 +7,17 @@ arinc665_media_set_manager - ARINC 665 Media Sets Manager Command Line Utility.
 
 == Synopsis
 
-*arinc665_media_set_manager* --command _Command_ ...
+*arinc665_media_set_manager* -c|--command _Command_ ...
 
 == Options
 
 // tag::options[]
-*--command* _Command_::
+*-c|--command* _Command_::
  ARINC 665 Media Set management command.
+
+ - Create - Create ARINC 665 Media Set Manager
+ - ListLoads - List Loads contained in all ARINC 665 Media Sets
+ - ListMediaSets - List ARINC 665 Media Sets and Content
+ - ImportMediaSetXml - Import ARINC Media Set XML
+ - ImportMediaSet - Import ARINC 665 Media Set
+ - RemoveMediaSet - Remove ARINC 665 Media Set

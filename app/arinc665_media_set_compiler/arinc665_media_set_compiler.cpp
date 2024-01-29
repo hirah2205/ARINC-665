@@ -96,48 +96,48 @@ int main( int argc, char * argv[] )
 
     optionsDescription.add_options()
     (
-      "help",
+      "help,h",
       "print this help screen"
     )
     (
-      "xml-file",
+      "xml-file,f",
       boost::program_options::value( &mediaSetXmlFile )
         ->required(),
       "ARINC 665 media set description XML file."
     )
     (
-      "source-directory",
+      "source-directory,s",
       boost::program_options::value( &mediaSetSourceDirectory )->required(),
       "ARINC 665 source directory."
     )
     (
-      "create-batch-files",
+      "create-batch-files,b",
       boost::program_options::value( &createBatchFiles )
         ->default_value(
           Arinc665::Utils::MediaSetDefaults::DefaultFileCreationPolicy ),
       ( std::string( "batch-files creation policy:\n" ) + fileCreationPolicyValues ).c_str()
     )
     (
-      "create-load-header-files",
+      "create-load-header-files,l",
       boost::program_options::value( &createLoadHeaderFiles )
         ->default_value(
           Arinc665::Utils::MediaSetDefaults::DefaultFileCreationPolicy ),
       ( std::string( "Load-headers-files creation policy:\n" ) + fileCreationPolicyValues).c_str()
     )
     (
-      "version",
+      "version,v",
       boost::program_options::value( &version )->default_value(
         Arinc665::Utils::MediaSetDefaults::DefaultVersion ),
       ( std::string( "ARINC 665 Version:\n" ) + versionValues ).c_str()
     )
     (
-      "destination-directory",
+      "destination-directory,d",
       boost::program_options::value( &mediaSetDestinationDirectory )
         ->default_value( std::filesystem::current_path() ),
       "Output directory for ARINC 665 media set"
     )
     (
-      "media-set-name",
+      "media-set-name,n",
       boost::program_options::value( &mediaSetName ),
       "Media Set Name to use.\n"
       "Is set to part number when not provided"

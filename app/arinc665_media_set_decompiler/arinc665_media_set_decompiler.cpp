@@ -87,23 +87,23 @@ int main( int argc, char * argv[] )
 
     optionsDescription.add_options()
     (
-      "help",
+      "help,h",
       "print this help screen"
     )
     (
-      "source-directory",
+      "source-directory,d",
       boost::program_options::value( &mediaSourceDirectories )
         ->required()
         ->composing(),
       "ARINC 665 media source directories."
     )
     (
-      "xml-file",
+      "xml-file,f",
       boost::program_options::value( &mediaSetXmlFile )->required(),
       "ARINC 665 media set description XML output file."
     )
     (
-      "check-file-integrity",
+      "check-file-integrity,i",
       boost::program_options::value( &checkFileIntegrity )
         ->default_value(
           Arinc665::Utils::MediaSetDefaults::DefaultCheckFileIntegrity ),
