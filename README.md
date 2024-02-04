@@ -1,4 +1,5 @@
 # ARINC 665 Tool Suite
+![ProjectLogo.svg](ProjectLogo.svg)
 
 Provides library and applications for generating, reading and handling ARINC 665
 Media Sets.
