@@ -91,6 +91,9 @@ class MediaSetManagerImpl final : public MediaSetManager
     //! @copydoc MediaSetManager::loads() const
     [[nodiscard]] Media::ConstLoads loads() const override;
 
+    //! @copydoc MediaSetManager::batches() const
+    [[nodiscard]] Media::ConstBatches batches() const override;
+
     //! @copydoc MediaSetManager::filePath
     [[nodiscard]] std::filesystem::path filePath(
       const Media::ConstFilePtr &file ) const override;

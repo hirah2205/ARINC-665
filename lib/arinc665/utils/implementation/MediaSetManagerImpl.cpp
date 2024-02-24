@@ -233,6 +233,18 @@ Media::ConstLoads MediaSetManagerImpl::loads() const
   return loads;
 }
 
+Media::ConstBatches MediaSetManagerImpl::batches() const
+{
+  Media::ConstBatches batches{};
+
+  for ( const auto &[ partNumber, mediaSet ] : mediaSetsInformationV )
+  {
+    batches.splice( batches.end(), mediaSet.first->recursiveBatches() );
+  }
+
+  return batches;
+}
+
 std::filesystem::path MediaSetManagerImpl::filePath(
   const Media::ConstFilePtr &file ) const
 {

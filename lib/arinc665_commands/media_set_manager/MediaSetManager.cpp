@@ -14,6 +14,7 @@
 #include "MediaSetManager.hpp"
 
 #include <arinc665_commands/media_set_manager/CreateMediaSetManagerCommand.hpp>
+#include <arinc665_commands/media_set_manager/ListBatchesCommand.hpp>
 #include <arinc665_commands/media_set_manager/ListLoadsCommand.hpp>
 #include <arinc665_commands/media_set_manager/ListMediaSetsCommand.hpp>
 #include <arinc665_commands/media_set_manager/ImportMediaSetXmlCommand.hpp>
@@ -51,6 +52,18 @@ void registerCommands( const Commands::CommandRegistryPtr& registry )
     std::bind_front(
       &ListLoadsCommand::help,
       listLoadsCommand ) );
+
+
+  auto listBatchesCommand{ std::make_shared< ListBatchesCommand >() };
+  registry->command(
+    "ListBatches",
+    "List batches contained within all ARINC 665 Media Sets",
+    std::bind_front(
+      &ListBatchesCommand::execute,
+      listBatchesCommand ),
+    std::bind_front(
+      &ListBatchesCommand::help,
+      listBatchesCommand ) );
 
   auto listCommand{ std::make_shared< ListMediaSetsCommand >() };
   registry->command(

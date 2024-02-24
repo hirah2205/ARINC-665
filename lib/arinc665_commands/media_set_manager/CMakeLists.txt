@@ -17,6 +17,7 @@ target_sources(
         CreateMediaSetManagerCommand.hpp
         ImportMediaSetCommand.hpp
         ImportMediaSetXmlCommand.hpp
+        ListBatchesCommand.hpp
         ListLoadsCommand.hpp
         ListMediaSetsCommand.hpp
         MediaSetManager.hpp
@@ -26,6 +27,7 @@ target_sources(
     CreateMediaSetManagerCommand.cpp
     ImportMediaSetCommand.cpp
     ImportMediaSetXmlCommand.cpp
+    ListBatchesCommand.cpp
     ListLoadsCommand.cpp
     ListMediaSetsCommand.cpp
     MediaSetManager.cpp

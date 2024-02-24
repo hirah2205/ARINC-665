@@ -70,7 +70,7 @@ class ARINC665_COMMANDS_EXPORT ListMediaSetsCommand
     //! Program Options Description
     boost::program_options::options_description optionsDescription;
     //! Media Set Manager Directory
-    std::filesystem::path mediaSetManagerDirectory{};
+    std::filesystem::path mediaSetManagerDirectoryV{};
     //! Check Media Set Manager Integrity
     bool checkMediaSetManagerIntegrityV{ true };
 };

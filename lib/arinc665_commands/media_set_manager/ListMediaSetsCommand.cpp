@@ -33,14 +33,14 @@ ListMediaSetsCommand::ListMediaSetsCommand() :
 {
   optionsDescription.add_options()
   (
-    "media-set-manager-dir",
-    boost::program_options::value( &mediaSetManagerDirectory )
+    "media-set-manager-dir,d",
+    boost::program_options::value( &mediaSetManagerDirectoryV )
       ->required()
       ->value_name( "Directory" ),
-    "ARINC 665 Media Set Manager directory."
+    "ARINC 665 Media Set Manager directory"
   )
   (
-    "check-media-set-manager-integrity",
+    "check-media-set-manager-integrity,i",
     boost::program_options::value( &checkMediaSetManagerIntegrityV )
       ->default_value( true ),
     "Check Media Set Manager integrity during initialisation."
@@ -66,7 +66,7 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
     // Media Set Manager
     const auto mediaSetManager{
       Arinc665::Utils::MediaSetManager::load(
-        mediaSetManagerDirectory,
+        mediaSetManagerDirectoryV,
         checkMediaSetManagerIntegrityV,
         std::bind_front( &ListMediaSetsCommand::loadProgress, this ) ) };
 
@@ -92,9 +92,10 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
       }
     }
   }
-  catch ( const boost::program_options::error &e )
+  catch ( const boost::program_options::error & )
   {
-    std::cerr << e.what() << "\n" << optionsDescription << "\n";
+    // parsing errors are handled by command handler
+    throw;
   }
   catch ( const boost::exception &e )
   {

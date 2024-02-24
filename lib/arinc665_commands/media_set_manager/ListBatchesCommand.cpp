@@ -9,13 +9,13 @@
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
  * @brief Definition of Class
- *   Arinc665Commands::MediaSetManager::ListLoadsCommand.
+ *   Arinc665Commands::MediaSetManager::ListBatchesCommand.
  **/
 
-#include "ListLoadsCommand.hpp"
+#include "ListBatchesCommand.hpp"
 
 #include <arinc665/media/MediaSet.hpp>
-#include <arinc665/media/Load.hpp>
+#include <arinc665/media/Batch.hpp>
 
 #include <arinc665/utils/MediaSetManager.hpp>
 
@@ -29,8 +29,8 @@
 
 namespace Arinc665Commands::MediaSetManager {
 
-ListLoadsCommand::ListLoadsCommand() :
-  optionsDescription{ "List ARINC 665 Loads Options" }
+ListBatchesCommand::ListBatchesCommand() :
+  optionsDescription{ "List ARINC 665 Batches Options" }
 {
   optionsDescription.add_options()
   (
@@ -48,13 +48,13 @@ ListLoadsCommand::ListLoadsCommand() :
   );
 }
 
-void ListLoadsCommand::execute( const Commands::Parameters &parameters )
+void ListBatchesCommand::execute( const Commands::Parameters &parameters )
 {
   BOOST_LOG_FUNCTION()
 
   try
   {
-    std::cout << "List ARINC 665 Loads\n";
+    std::cout << "List ARINC 665 Batches\n";
 
     boost::program_options::variables_map vm{};
     boost::program_options::store(
@@ -69,32 +69,27 @@ void ListLoadsCommand::execute( const Commands::Parameters &parameters )
       Arinc665::Utils::MediaSetManager::load(
         mediaSetManagerDirectoryV,
         checkMediaSetManagerIntegrityV,
-        std::bind_front( &ListLoadsCommand::loadProgress, this ) ) };
+        std::bind_front( &ListBatchesCommand::loadProgress, this ) ) };
 
-    const auto loads{ mediaSetManager->loads() };
+    const auto batches{ mediaSetManager->batches() };
 
-    if ( loads.empty() )
+    if ( batches.empty() )
     {
-      std::cout << "*** No loads within media set manger ***\n";
+      std::cout << "*** No batches within media set manger ***\n";
     }
     else
     {
-      for ( const auto &load : loads )
+      for ( const auto &batch : batches )
       {
-        std::cout
-          << "Media Set P/N:        " << load->mediaSet()->partNumber()
-          << "\n"
-          << "Load Header Filename: " << load->name() << "\n"
-          << "Load P/N:             " << load->partNumber() << "\n";
-
-        if ( const auto loadType{ load->loadType() }; loadType )
-        {
-          std::cout
-            << "Load Type:            " << loadType->first << " ("
-            << Helper::to_hexstring( loadType->second ) << ")\n";
-        }
-
-        std::cout << "\n";
+        std::cout << std::format(
+          "Media Set P/N:  {}\n"
+          "Batch Filename: {}\n"
+          "Batch P/N:      {}\n"
+          "Batch Comment:  {}\n\n",
+          batch->mediaSet()->partNumber(),
+          batch->name(),
+          batch->partNumber(),
+          batch->comment() );
       }
     }
   }
@@ -118,14 +113,14 @@ void ListLoadsCommand::execute( const Commands::Parameters &parameters )
   }
 }
 
-void ListLoadsCommand::help()
+void ListBatchesCommand::help()
 {
   std::cout
-    << "List all loads contained with the Media Set Manager.\n\n"
+    << "List all batches contained with the Media Set Manager.\n\n"
     << optionsDescription;
 }
 
-void ListLoadsCommand::loadProgress(
+void ListBatchesCommand::loadProgress(
   std::pair< std::size_t, std::size_t > mediaSet,
   std::string_view partNumber,
   std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )

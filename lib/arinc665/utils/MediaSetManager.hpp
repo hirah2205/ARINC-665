@@ -63,7 +63,7 @@ class ARINC665_EXPORT MediaSetManager
      * @param[in] partNumber
      *   Media Set Part Number
      * @param[in] medium
-     *   std::pair of current medium and number of media.
+     *   @p std::pair of current medium and number of media.
      **/
     using LoadProgressHandler =
       std::function< void(
@@ -253,6 +253,20 @@ class ARINC665_EXPORT MediaSetManager
      * @return All available loads.
      **/
     [[nodiscard]] virtual Media::ConstLoads loads() const = 0;
+
+    /** @} **/
+
+    /**
+     * @name Batch Handling
+     * @{
+     **/
+
+    /**
+     * @brief Get all available Batches from all Media Sets.
+     *
+     * @return All available batches.
+     **/
+    [[nodiscard]] virtual Media::ConstBatches batches() const = 0;
 
     /** @} **/
 
