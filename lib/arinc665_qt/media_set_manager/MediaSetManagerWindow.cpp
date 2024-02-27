@@ -200,7 +200,7 @@ void MediaSetManagerWindow::importMediaSet()
     return;
   }
 
-  auto wizard{ new ImportMediaSetWizard{ mediaSetManagerV, this } };
+  auto * const wizard{ new ImportMediaSetWizard{ mediaSetManagerV, this } };
 
   // connect to reload media set model slot
   connect(
@@ -226,7 +226,7 @@ void MediaSetManagerWindow::importMediaSetXml()
     return;
   }
 
-  auto wizard{ new ImportMediaSetXmlWizard{ mediaSetManagerV, this } };
+  auto * const wizard{ new ImportMediaSetXmlWizard{ mediaSetManagerV, this } };
 
   // connect to reload media set model slot
   connect(
@@ -262,7 +262,7 @@ void MediaSetManagerWindow::removeMediaSet()
     return;
   }
 
-  auto action{ new RemoveMediaSetAction{ this } };
+  auto * const action{ new RemoveMediaSetAction{ this } };
 
   // connect to reload media set model slot
   connect(

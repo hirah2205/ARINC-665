@@ -496,7 +496,7 @@ Files ContainerEntity::recursiveFiles(
 
 ConstFilePtr ContainerEntity::file( std::string_view filename ) const
 {
-  for ( auto & file : filesV )
+  for ( const auto &file : filesV )
   {
     if ( file->name() == filename )
     {
@@ -1151,7 +1151,7 @@ FilesT ContainerEntity::filesPerType( OptionalMediumNumber mediumNumber ) const
 {
   FilesT result{};
 
-  for ( auto & file : filesV )
+  for ( const auto &file : filesV )
   {
     if ( ( file->fileType() == fileType )
       && ( !mediumNumber || ( mediumNumber == file->effectiveMediumNumber() ) ) )

@@ -25,7 +25,6 @@
 namespace Arinc665Qt::MediaSetManager {
 
 LoadMediaSetManagerAction::LoadMediaSetManagerAction( QObject * const parent ) :
-  QObject{},
   threadV{ new QThread{ parent } }
 {
   qRegisterMetaType< size_t >( "size_t" );

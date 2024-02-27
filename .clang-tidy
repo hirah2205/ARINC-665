@@ -4,7 +4,12 @@ Checks: |
   clang-analyzer-*,
   bugprone-*,
   -bugprone-easily-swappable-parameters,
-  readability-inconsistent-declaration-parameter-name,
+  readability-*,
+  -readability-convert-member-functions-to-static,
+  -readability-function-cognitive-complexity,
+  -readability-identifier-length,
+  -readability-magic-numbers,
+  -readability-redundant-declaration,
   -google-default-arguments,
   -llvmlibc-*
 WarningsAsErrors: ''

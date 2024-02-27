@@ -109,8 +109,7 @@ std::string PartNumber::partNumber() const
   return manufacturerCodeV + checkCode() + productIdentifierV;
 }
 
-void PartNumber::checkManufacturerCode(
-  std::string_view manufacturerCode ) const
+void PartNumber::checkManufacturerCode( std::string_view manufacturerCode )
 {
   // check string length
   if ( manufacturerCode.size() != ManufacturerCodeLength )
@@ -120,8 +119,7 @@ void PartNumber::checkManufacturerCode(
   }
 }
 
-void PartNumber::checkProductIdentifier(
-  std::string_view productIdentifier ) const
+void PartNumber::checkProductIdentifier( std::string_view productIdentifier )
 {
   // check length of string
   if ( productIdentifier.size() != ProductIdentifierLength )
@@ -131,7 +129,7 @@ void PartNumber::checkProductIdentifier(
   }
 }
 
-void PartNumber::checkCheckCode( std::string_view checkCode ) const
+void PartNumber::checkCheckCode( std::string_view checkCode )
 {
   // check length of string
   if ( checkCode.size() != CheckCodeLength )

@@ -771,7 +771,7 @@ Media::ContainerEntityPtr MediaSetDecompilerImpl::checkCreateDirectory(
   assert( dir );
 
   // iterate over path elements
-  for ( auto &subPath : dirPath )
+  for ( const auto &subPath : dirPath )
   {
     auto subDir{ dir->subdirectory( std::string_view{ subPath.string() } ) };
 

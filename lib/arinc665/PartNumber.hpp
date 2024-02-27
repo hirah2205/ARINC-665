@@ -147,7 +147,7 @@ class ARINC665_EXPORT PartNumber
      * @param[in] manufacturerCode
      *   Manufacturer Code to check
      **/
-    void checkManufacturerCode( std::string_view manufacturerCode ) const;
+    static void checkManufacturerCode( std::string_view manufacturerCode );
 
     /**
      * @brief Checks the Product Identifier.
@@ -158,7 +158,7 @@ class ARINC665_EXPORT PartNumber
      * @throw Arinc665Exception
      *   if length is invalid.
      **/
-    void checkProductIdentifier( std::string_view productIdentifier ) const;
+    static void checkProductIdentifier( std::string_view productIdentifier );
 
     /**
      * @brief Checks the Check Code.
@@ -171,7 +171,7 @@ class ARINC665_EXPORT PartNumber
      * @throw std::invalid_argument
      *   When invalid string is supplied
      **/
-    void checkCheckCode( std::string_view checkCode ) const;
+    static void checkCheckCode( std::string_view checkCode );
 
     //! Manufacture Code
     std::string manufacturerCodeV;

@@ -63,7 +63,7 @@ LoadXmlResult Arinc665XmlLoadImpl::operator()()
         << boost::errinfo_file_name{ xmlFileV.string() } );
     }
 
-    auto mediaSetElement{ parser.get_document()->get_root_node() };
+    auto * mediaSetElement{ parser.get_document()->get_root_node() };
     if ( ( nullptr == mediaSetElement )
       || ( "MediaSet" != mediaSetElement->get_name() ) )
     {
@@ -193,7 +193,7 @@ void Arinc665XmlLoadImpl::mediaSet( const xmlpp::Element &mediaSetElement )
   }
 
   if (
-    const auto filesUserDefinedDataNode{ dynamic_cast< const xmlpp::Element*>(
+    const auto * filesUserDefinedDataNode{ dynamic_cast< const xmlpp::Element*>(
       mediaSetElement.get_first_child( "FilesUserDefinedData" ) ) };
     nullptr != filesUserDefinedDataNode )
   {
@@ -204,7 +204,7 @@ void Arinc665XmlLoadImpl::mediaSet( const xmlpp::Element &mediaSetElement )
   }
 
   if (
-    const auto loadsUserDefinedDataNode{ dynamic_cast< const xmlpp::Element *>(
+    const auto * loadsUserDefinedDataNode{ dynamic_cast< const xmlpp::Element *>(
       mediaSetElement.get_first_child( "LoadsUserDefinedData" ) ) };
     nullptr != loadsUserDefinedDataNode )
   {
@@ -215,7 +215,7 @@ void Arinc665XmlLoadImpl::mediaSet( const xmlpp::Element &mediaSetElement )
   }
 
   if (
-    const auto batchesUserDefinedDataNode{ dynamic_cast< const xmlpp::Element*>(
+    const auto * batchesUserDefinedDataNode{ dynamic_cast< const xmlpp::Element*>(
       mediaSetElement.get_first_child( "BatchesUserDefinedData") ) };
     nullptr != batchesUserDefinedDataNode )
   {
@@ -226,7 +226,7 @@ void Arinc665XmlLoadImpl::mediaSet( const xmlpp::Element &mediaSetElement )
   }
 
   // content node
-  const auto contentNode{ dynamic_cast< const xmlpp::Element * >(
+  const auto * contentNode{ dynamic_cast< const xmlpp::Element * >(
     mediaSetElement.get_first_child( "Content" ) ) };
   if ( nullptr == contentNode )
   {
@@ -272,9 +272,9 @@ void Arinc665XmlLoadImpl::entries(
   }
 
   // iterate over all XML nodes
-  for ( auto entryNode : currentContainerElement.get_children() )
+  for ( auto * entryNode : currentContainerElement.get_children() )
   {
-    auto entryElement{ dynamic_cast< xmlpp::Element*>( entryNode ) };
+    auto * entryElement{ dynamic_cast< xmlpp::Element*>( entryNode ) };
 
     if ( nullptr == entryElement )
     {
@@ -378,7 +378,7 @@ void Arinc665XmlLoadImpl::load(
         << boost::errinfo_at_line{ loadElement.get_line() } );
     }
 
-    const auto targetHardwareElement{
+    const auto * const targetHardwareElement{
       dynamic_cast< xmlpp::Element const * >( targetHardwareNode ) };
     if ( nullptr == targetHardwareElement )
     {
@@ -403,7 +403,7 @@ void Arinc665XmlLoadImpl::load(
           << boost::errinfo_at_line{ targetHardwareElement->get_line() } );
       }
 
-      const auto positionElement{
+      const auto * const positionElement{
         dynamic_cast< xmlpp::Element const * >( positionNode ) };
       if ( nullptr == positionElement )
       {
@@ -425,7 +425,7 @@ void Arinc665XmlLoadImpl::load(
   //  handle data and support files later in deferred loading
 
   if (
-    const auto userDefinedDataElement{ dynamic_cast< const xmlpp::Element*>(
+    const auto * const userDefinedDataElement{ dynamic_cast< const xmlpp::Element*>(
       loadElement.get_first_child( "UserDefinedData" ) ) };
     nullptr != userDefinedDataElement )
   {
@@ -498,7 +498,7 @@ Media::ConstLoadFiles Arinc665XmlLoadImpl::loadFiles(
         << boost::errinfo_at_line{ loadElement.get_line() } );
     }
 
-    auto fileElement{ dynamic_cast< xmlpp::Element const * >( fileNode ) };
+    const auto * fileElement{ dynamic_cast< xmlpp::Element const * >( fileNode ) };
     if ( nullptr == fileElement )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -585,7 +585,7 @@ void Arinc665XmlLoadImpl::loadBatchDeferred(
         << boost::errinfo_at_line{ batchElement.get_line() } );
     }
 
-    const auto targetElement{ dynamic_cast< xmlpp::Element const * >( targetNode ) };
+    const auto * const targetElement{ dynamic_cast< xmlpp::Element const * >( targetNode ) };
     if ( nullptr == targetElement )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()

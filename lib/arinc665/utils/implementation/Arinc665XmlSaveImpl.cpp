@@ -62,7 +62,7 @@ void Arinc665XmlSaveImpl::operator()()
   try
   {
     xmlpp::Document xmlDoc{};
-    auto mediaSetNode{ xmlDoc.create_root_node( "MediaSet" ) };
+    auto * const mediaSetNode{ xmlDoc.create_root_node( "MediaSet" ) };
 
     mediaSet( *mediaSetNode );
 
@@ -140,7 +140,7 @@ void Arinc665XmlSaveImpl::mediaSet( xmlpp::Element &mediaSetElement ) const
   }
 
   // Content
-  auto contentNode{ mediaSetElement.add_child( "Content" ) };
+  auto * const contentNode{ mediaSetElement.add_child( "Content" ) };
   entries( mediaSetV, *contentNode );
 }
 
@@ -160,7 +160,7 @@ void Arinc665XmlSaveImpl::entries(
   // iterate over subdirectories within container and add them recursively
   for ( const auto &dirEntry : currentContainer.subdirectories() )
   {
-    auto directoryNode{ currentContainerElement.add_child( "Directory" ) };
+    auto * const directoryNode{ currentContainerElement.add_child( "Directory" ) };
 
     directoryNode->set_attribute( "Name", toGlibString( dirEntry->name() ) );
 
@@ -255,7 +255,7 @@ void Arinc665XmlSaveImpl::load(
 
     for( const auto &position : positions )
     {
-      auto positionElement{ targetHardwareElement->add_child( "Position" ) };
+      auto * const positionElement{ targetHardwareElement->add_child( "Position" ) };
       positionElement->set_attribute( "Pos", position );
     }
   }
@@ -322,14 +322,14 @@ void Arinc665XmlSaveImpl::batch(
   // Iterate over batch information
   for ( const auto &[ thwIdPos, loads ] : batch->targets() )
   {
-    auto targetElement{ batchElement->add_child( "Target" ) };
+    auto * const targetElement{ batchElement->add_child( "Target" ) };
 
     targetElement->set_attribute( "ThwIdPos", thwIdPos );
 
     // iterate over loads
     for ( const auto &load : loads )
     {
-      auto loadNode{ targetElement->add_child( "Load" ) };
+      auto * const loadNode{ targetElement->add_child( "Load" ) };
 
       loadNode->set_attribute( "FilePath", load->path().string() );
     }
