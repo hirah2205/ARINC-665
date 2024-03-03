@@ -24,6 +24,8 @@ namespace Arinc665Qt::Media {
 
 /**
  * @brief Qt Table Model of List of Loads.
+ *
+ * @sa @ref Arinc665::Media::Load
  **/
 class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
 {
@@ -37,6 +39,8 @@ class ARINC665_QT_EXPORT LoadsModel : public QAbstractTableModel
       Name,
       //! Load Part Number
       PartNumber,
+      //! Load Type
+      LoadType,
 
       ColumnsCount
     };

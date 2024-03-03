@@ -17,6 +17,8 @@
 
 #include <helper_qt/String.hpp>
 
+#include <format>
+
 namespace Arinc665Qt::Media {
 
 LoadsModel::LoadsModel( QObject * const parent ) :
@@ -67,6 +69,17 @@ QVariant LoadsModel::data( const QModelIndex &index, const int role ) const
         case Columns::PartNumber:
           return HelperQt::toQString( loadPtr->partNumber() );
 
+        case Columns::LoadType:
+          if ( auto loadType{ loadPtr->loadType() }; loadType )
+          {
+            return QString::fromStdString(
+              std::format(
+                "0x{:04x}: {:}",
+                loadType->second,
+                loadType->first ) );
+          }
+          return {};
+
         default:
           return {};
       }
@@ -107,6 +120,9 @@ QVariant LoadsModel::headerData(
 
     case Columns::PartNumber:
       return QString{ tr( "Part Number" ) };
+
+    case Columns::LoadType:
+      return QString{ tr( "Load Type" ) };
 
     default:
       return {};
