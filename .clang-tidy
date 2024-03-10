@@ -14,7 +14,6 @@ Checks: |
   -llvmlibc-*
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
-AnalyzeTemporaryDtors: false
 FormatStyle: none
 CheckOptions:
   readability-identifier-length.IgnoredParameterNames: 'id'
