@@ -68,15 +68,15 @@ int main( int argc, char * argv[] )
       "ARINC 665 media set description XML"
     );
 
-    boost::program_options::variables_map vm{};
+    boost::program_options::variables_map variablesMap{};
     boost::program_options::store(
       boost::program_options::parse_command_line(
         argc,
         argv,
         optionsDescription ),
-      vm );
+      variablesMap );
 
-    if ( 0U != vm.count( "help" ) )
+    if ( 0U != variablesMap.count( "help" ) )
     {
       std::cout
         << "Prints the ARINC 665 Media Set XML.\n"
@@ -84,7 +84,7 @@ int main( int argc, char * argv[] )
       return EXIT_FAILURE;
     }
 
-    boost::program_options::notify( vm );
+    boost::program_options::notify( variablesMap );
 
     std::cout << "List XML" << "\n";
 

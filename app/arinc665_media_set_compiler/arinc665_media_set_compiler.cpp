@@ -143,15 +143,15 @@ int main( int argc, char * argv[] )
       "Is set to part number when not provided"
     );
 
-    boost::program_options::variables_map vm{};
+    boost::program_options::variables_map variablesMap{};
     boost::program_options::store(
       boost::program_options::parse_command_line(
         argc,
         argv,
         optionsDescription ),
-      vm );
+      variablesMap );
 
-    if ( 0U != vm.count( "help" ) )
+    if ( 0U != variablesMap.count( "help" ) )
     {
       std::cout
         << "Compiles an ARINC 665 Media Set\n"
@@ -159,7 +159,7 @@ int main( int argc, char * argv[] )
       return EXIT_FAILURE;
     }
 
-    boost::program_options::notify( vm );
+    boost::program_options::notify( variablesMap );
 
     // load ARINC 665 XML file
     auto [ mediaSet, fileMapping ] =

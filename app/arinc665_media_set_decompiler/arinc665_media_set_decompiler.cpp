@@ -110,15 +110,15 @@ int main( int argc, char * argv[] )
       "Check File Integrity during decompilation."
     );
 
-    boost::program_options::variables_map vm{};
+    boost::program_options::variables_map variablesMap{};
     boost::program_options::store(
       boost::program_options::parse_command_line(
         argc,
         argv,
         optionsDescription ),
-      vm );
+      variablesMap );
 
-    if ( 0U != vm.count( "help" ) )
+    if ( 0U != variablesMap.count( "help" ) )
     {
       std::cout
         << "Decompiles the ARINC 665 Media Set and stores the representation as"
@@ -127,7 +127,7 @@ int main( int argc, char * argv[] )
       return EXIT_FAILURE;
     }
 
-    boost::program_options::notify( vm );
+    boost::program_options::notify( variablesMap );
 
     // Fill Media Paths list
     Arinc665::Utils::MediaPaths mediaPaths{};

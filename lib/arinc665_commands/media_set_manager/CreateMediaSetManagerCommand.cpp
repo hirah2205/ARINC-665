@@ -46,13 +46,13 @@ void CreateMediaSetManagerCommand::execute(
   {
     std::cout << "Create ARINC 665 Media Set Manager\n";
 
-    boost::program_options::variables_map vm{};
+    boost::program_options::variables_map variablesMap{};
     boost::program_options::store(
       boost::program_options::command_line_parser( parameters )
         .options( optionsDescription )
         .run(),
-      vm );
-    boost::program_options::notify( vm );
+      variablesMap );
+    boost::program_options::notify( variablesMap );
 
     std::cout
       << "Media Set Manager directory: "
