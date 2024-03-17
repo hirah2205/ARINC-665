@@ -16,7 +16,7 @@
 #include <arinc665/Version.hpp>
 
 #include <commands/CommandRegistry.hpp>
-#include <commands/CommandUtils.hpp>
+#include <commands/Utils.hpp>
 
 #include <helper/Logger.hpp>
 
@@ -54,7 +54,7 @@ int main( int argc, char * argv[] )
     Arinc665Commands::registerCommands( registry );
 
     const auto result{
-      Commands::CommandUtils::commandLineHandler( registry )( argc, argv ) };
+      Commands::Utils_commandLineHandler( registry )( argc, argv ) };
 
     return result;
   }
