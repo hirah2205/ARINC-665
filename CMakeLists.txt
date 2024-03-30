@@ -9,10 +9,10 @@
 cmake_minimum_required( VERSION 3.28 )
 
 project(
-  arinc665
+  arinc_665
   VERSION 0.0.0.0
   DESCRIPTION "ARINC 665 Tool Suite"
-  HOMEPAGE_URL "https://git.thomas-vogt.de/thomas-vogt/arinc665" )
+  HOMEPAGE_URL "https://git.thomas-vogt.de/thomas-vogt/arinc_665/" )
 
 set( PROJECT_VERSION_ADDITION "dev" )
 
@@ -94,12 +94,12 @@ endif()
 
 
 FetchContent_Declare(
-  arinc645
-  GIT_REPOSITORY https://git.thomas-vogt.de/thomas-vogt/arinc645.git
+  arinc_645
+  GIT_REPOSITORY https://git.thomas-vogt.de/thomas-vogt/arinc_645.git
   GIT_TAG        main )
 
-if( IS_DIRECTORY ${CMAKE_SOURCE_DIR}/arinc645 )
-  set( FETCHCONTENT_SOURCE_DIR_ARINC645 ${CMAKE_SOURCE_DIR}/arinc645 )
+if( IS_DIRECTORY ${CMAKE_SOURCE_DIR}/arinc_645 )
+  set( FETCHCONTENT_SOURCE_DIR_ARINC_645 ${CMAKE_SOURCE_DIR}/arinc_645 )
 endif()
 
 
@@ -112,7 +112,7 @@ if( IS_DIRECTORY ${CMAKE_SOURCE_DIR}/commands )
   set( FETCHCONTENT_SOURCE_DIR_COMMANDS ${CMAKE_SOURCE_DIR}/commands )
 endif()
 
-FetchContent_MakeAvailable( helper qt_icon_resources arinc645 commands )
+FetchContent_MakeAvailable( helper qt_icon_resources arinc_645 commands )
 
 add_subdirectory( lib )
 add_subdirectory( app )

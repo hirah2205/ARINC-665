@@ -20,7 +20,7 @@ get_property(
   PROPERTY MAN_PATHS )
 
 add_custom_target(
-  arinc665_manpage
+  arinc_665_manpage
   COMMAND
     ${ASCIIDOCTOR_EXE}
     --backend manpage
@@ -34,7 +34,7 @@ add_custom_target(
 # man -M ${CMAKE_CURRENT_BINARY_DIR}
 # apropos -M ${CMAKE_CURRENT_BINARY_DIR}
 
-add_dependencies( doc arinc665_manpage )
+add_dependencies( doc arinc_665_manpage )
 
 install(
   DIRECTORY

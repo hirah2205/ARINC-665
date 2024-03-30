@@ -31,18 +31,18 @@ get_property(
   PROPERTY DOC_PATHS )
 
 get_property(
-  ARINC645_DOC_PATHS
-  DIRECTORY ${arinc645_SOURCE_DIR}
+  ARINC_645_DOC_PATHS
+  DIRECTORY ${arinc_645_SOURCE_DIR}
   PROPERTY DOC_PATHS )
 
 get_property(
-  ARINC665_DOC_PATHS
-  DIRECTORY ${arinc665_SOURCE_DIR}
+  ARINC_665_DOC_PATHS
+  DIRECTORY ${arinc_665_SOURCE_DIR}
   PROPERTY DOC_PATHS )
 
-set( DOXYGEN_PROJECT_NAME "${arinc665_DESCRIPTION}" )
-set( DOXYGEN_PROJECT_BRIEF "${arinc665_DESCRIPTION}" )
-set( DOXYGEN_PROJECT_NUMBER "${arinc665_VERSION}" )
+set( DOXYGEN_PROJECT_NAME "${arinc_665_DESCRIPTION}" )
+set( DOXYGEN_PROJECT_BRIEF "${arinc_665_DESCRIPTION}" )
+set( DOXYGEN_PROJECT_NUMBER "${arinc_665_VERSION}" )
 #set( DOXYGEN_BUILTIN_STL_SUPPORT YES )
 set( DOXYGEN_EXTRACT_PRIVATE YES )
 set( DOXYGEN_EXTRACT_STATIC YES )
@@ -65,12 +65,12 @@ set(
   ${commands_SOURCE_DIR}/lib
   ${commands_BINARY_DIR}/lib
   ${commands_SOURCE_DIR}/app
-  ${arinc645_SOURCE_DIR}/lib
-  ${arinc645_BINARY_DIR}/lib
-  ${arinc645_SOURCE_DIR}/app
-  ${arinc665_SOURCE_DIR}/lib
-  ${arinc665_BINARY_DIR}/lib
-  ${arinc665_SOURCE_DIR}/app )
+  ${arinc_645_SOURCE_DIR}/lib
+  ${arinc_645_BINARY_DIR}/lib
+  ${arinc_645_SOURCE_DIR}/app
+  ${arinc_665_SOURCE_DIR}/lib
+  ${arinc_665_BINARY_DIR}/lib
+  ${arinc_665_SOURCE_DIR}/app )
 
 set(
   DOXYGEN_INCLUDE_PATH
@@ -82,22 +82,22 @@ set(
   ${qt_icon_resources_BINARY_DIR}/lib
   ${commands_SOURCE_DIR}/lib
   ${commands_BINARY_DIR}/lib
-  ${arinc645_SOURCE_DIR}/lib
-  ${arinc645_BINARY_DIR}/lib
-  ${arinc665_SOURCE_DIR}/lib
-  ${arinc665_BINARY_DIR}/lib )
+  ${arinc_645_SOURCE_DIR}/lib
+  ${arinc_645_BINARY_DIR}/lib
+  ${arinc_665_SOURCE_DIR}/lib
+  ${arinc_665_BINARY_DIR}/lib )
 
 doxygen_add_docs(
-  arinc665_internal_doc
+  arinc_665_internal_doc
 
   ../Mainpage.md
   ${HELPER_DOC_PATHS}
   ${QT_ICON_RESOURCES_DOC_PATHS}
   ${COMMANDS_DOC_PATHS}
-  ${ARINC645_DOC_PATHS}
-  ${ARINC665_DOC_PATHS} )
+  ${ARINC_645_DOC_PATHS}
+  ${ARINC_665_DOC_PATHS} )
 
-add_dependencies( doc arinc665_internal_doc )
+add_dependencies( doc arinc_665_internal_doc )
 
 # add index.html redirection
 configure_file(
@@ -108,13 +108,13 @@ configure_file(
 install(
   DIRECTORY
     ${CMAKE_CURRENT_BINARY_DIR}/html
-  DESTINATION ${CMAKE_INSTALL_DOCDIR}/arinc665_internal_doc
+  DESTINATION ${CMAKE_INSTALL_DOCDIR}/arinc_665_internal_doc
   COMPONENT development
   OPTIONAL
   MESSAGE_NEVER )
 
 install(
   FILES ${CMAKE_CURRENT_BINARY_DIR}/index.html
-  DESTINATION ${CMAKE_INSTALL_DOCDIR}/arinc665_internal_doc
+  DESTINATION ${CMAKE_INSTALL_DOCDIR}/arinc_665_internal_doc
   COMPONENT development
   OPTIONAL )
