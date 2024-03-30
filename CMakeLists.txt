@@ -12,7 +12,7 @@ project(
   arinc_665
   VERSION 0.0.0.0
   DESCRIPTION "ARINC 665 Tool Suite"
-  HOMEPAGE_URL "https://git.thomas-vogt.de/thomas-vogt/arinc_665/" )
+  HOMEPAGE_URL "https://git.thomas-vogt.de/thomas-vogt/arinc_665" )
 
 set( PROJECT_VERSION_ADDITION "dev" )
 

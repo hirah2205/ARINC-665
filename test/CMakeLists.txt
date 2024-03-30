@@ -20,14 +20,14 @@ file( GENERATE OUTPUT File4 CONTENT ${FILE4_CONTENT} )
 file( GENERATE OUTPUT Readme.txt CONTENT "Readme Content" )
 
 add_test(
-  NAME arinc665_generate_media_set_rmoutdir_v2
+  NAME arinc_665_generate_media_set_rmoutdir_v2
   COMMAND
-  ${CMAKE_COMMAND} -E remove_directory MediaSet_V2 )
+    ${CMAKE_COMMAND} -E remove_directory MediaSet_V2 )
 
 add_test(
-  NAME arinc665_generate_media_set_v2
+  NAME arinc_665_generate_media_set_v2
   COMMAND
-    arinc665_media_set_compiler
+    arinc_665_media_set_compiler
     --xml-file ${CMAKE_CURRENT_SOURCE_DIR}/ExampleMediaSet.xml
     --source-directory ${CMAKE_CURRENT_BINARY_DIR}
     --destination-directory MediaSet_V2
@@ -35,46 +35,46 @@ add_test(
     --create-load-header-files All )
 
 add_test(
-  NAME arinc665_copy_media_set_manager_config_v2
+  NAME arinc_665_copy_media_set_manager_config_v2
   COMMAND
-  ${CMAKE_COMMAND} -E copy
+    ${CMAKE_COMMAND} -E copy
     ${CMAKE_CURRENT_SOURCE_DIR}/MediaSetConfig.json.in
     ${CMAKE_CURRENT_BINARY_DIR}/MediaSet_V2/MediaSetConfig.json )
 
 add_test(
-  NAME arinc665_decompile_media_set_v2
+  NAME arinc_665_decompile_media_set_v2
   COMMAND
-    arinc665_media_set_decompiler
+    arinc_665_media_set_decompiler
     --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSet_V2.xml
     --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet_V2/CCC/MEDIUM_001 )
 
 
 add_test(
-  NAME arinc665_generate_media_set_rmoutdir_v3
+  NAME arinc_665_generate_media_set_rmoutdir_v3
   COMMAND
-  ${CMAKE_COMMAND} -E remove_directory MediaSet_V3 )
+    ${CMAKE_COMMAND} -E remove_directory MediaSet_V3 )
 
 add_test(
-  NAME arinc665_generate_media_set_v3
+  NAME arinc_665_generate_media_set_v3
   COMMAND
-  arinc665_media_set_compiler
-  --xml-file ${CMAKE_CURRENT_SOURCE_DIR}/ExampleMediaSet.xml
-  --source-directory ${CMAKE_CURRENT_BINARY_DIR}
-  --destination-directory MediaSet_V3
-  --create-batch-files All
-  --create-load-header-files All
-  --version Supplement345 )
+    arinc_665_media_set_compiler
+    --xml-file ${CMAKE_CURRENT_SOURCE_DIR}/ExampleMediaSet.xml
+    --source-directory ${CMAKE_CURRENT_BINARY_DIR}
+    --destination-directory MediaSet_V3
+    --create-batch-files All
+    --create-load-header-files All
+    --version Supplement345 )
 
 add_test(
-  NAME arinc665_copy_media_set_manager_config_v3
+  NAME arinc_665_copy_media_set_manager_config_v3
   COMMAND
-  ${CMAKE_COMMAND} -E copy
-  ${CMAKE_CURRENT_SOURCE_DIR}/MediaSetConfig.json.in
-  ${CMAKE_CURRENT_BINARY_DIR}/MediaSet_V3/MediaSetConfig.json )
+    ${CMAKE_COMMAND} -E copy
+    ${CMAKE_CURRENT_SOURCE_DIR}/MediaSetConfig.json.in
+    ${CMAKE_CURRENT_BINARY_DIR}/MediaSet_V3/MediaSetConfig.json )
 
 add_test(
-  NAME arinc665_decompile_media_set_v3
+  NAME arinc_665_decompile_media_set_v3
   COMMAND
-  arinc665_media_set_decompiler
-  --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSet_V3.xml
-  --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet_V3/CCC/MEDIUM_001 )
+    arinc_665_media_set_decompiler
+    --xml-file ${CMAKE_CURRENT_BINARY_DIR}/DecompiledMediaSet_V3.xml
+    --source-directory ${CMAKE_CURRENT_BINARY_DIR}/MediaSet_V3/CCC/MEDIUM_001 )

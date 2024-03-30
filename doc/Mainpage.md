@@ -22,10 +22,10 @@ This tool suite contains the components:
    - @ref Arinc665,
    - @ref Arinc665Commands, and 
    - @ref Arinc665Qt.
- - @subpage arinc665_applications
+ - @subpage arinc_665_applications
 
 Dependencies are:
- - @ref Arinc645 and @subpage arinc645_applications,
+ - @ref Arinc645 and @subpage arinc_645_applications,
  - @ref Commands and @subpage commands_applications,
  - @ref Helper, @ref HelperQt, and @subpage helper_applications,
  - @ref QtIconResources, and @subpage qt_icon_resources_applications, and

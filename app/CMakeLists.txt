@@ -12,19 +12,19 @@ set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}
   APPEND
   PROPERTY DOC_PATHS
-  ${CMAKE_CURRENT_SOURCE_DIR}/arinc665_applications.md )
+  ${CMAKE_CURRENT_SOURCE_DIR}/arinc_665_applications.md )
 
-add_subdirectory(arinc665_media_set_decompiler)
-add_subdirectory( arinc665_media_set_check )
-add_subdirectory( arinc665_media_set_compiler )
-add_subdirectory( arinc665_media_set_compiler_gui )
-add_subdirectory( arinc665_media_set_manager )
-add_subdirectory( arinc665_ls )
+add_subdirectory( arinc_665_media_set_decompiler )
+add_subdirectory( arinc_665_media_set_check )
+add_subdirectory( arinc_665_media_set_compiler )
+add_subdirectory( arinc_665_media_set_compiler_gui )
+add_subdirectory( arinc_665_media_set_manager )
+add_subdirectory( arinc_665_ls )
 
-add_subdirectory( arinc665_unit_test )
+add_subdirectory( arinc_665_unit_test )
 
-add_subdirectory( arinc665_print_media_set )
-add_subdirectory( arinc665_print_xml )
+add_subdirectory( arinc_665_print_media_set )
+add_subdirectory( arinc_665_print_xml )
 
-add_subdirectory( arinc665_media_set_manager_gui )
-add_subdirectory( arinc665_media_set_viewer_gui )
+add_subdirectory( arinc_665_media_set_manager_gui )
+add_subdirectory( arinc_665_media_set_viewer_gui )
