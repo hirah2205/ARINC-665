@@ -40,4 +40,5 @@ install(
   DIRECTORY
     ${CMAKE_CURRENT_BINARY_DIR}/man1
   TYPE MAN
-  COMPONENT runtime )
+  COMPONENT runtime
+  OPTIONAL )
