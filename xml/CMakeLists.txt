@@ -12,5 +12,5 @@ install(
   FILES
     Arinc665MediaSet.xsd
     MediaSet.template.xml
-  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/arinc665_xml
+  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/arinc_665_xml
   COMPONENT runtime )
