@@ -28,7 +28,7 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
     $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
 
-target_link_libraries( arinc_665_media_set_decompiler PRIVATE arinc665 )
+target_link_libraries( arinc_665_media_set_decompiler PRIVATE arinc_665 )
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}
@@ -37,5 +37,5 @@ set_property(
 
 install(
   TARGETS arinc_665_media_set_decompiler
-  RUNTIME_DEPENDENCY_SET arinc665-runtime-deps
+  RUNTIME_DEPENDENCY_SET arinc_665-runtime-deps
   COMPONENT runtime )

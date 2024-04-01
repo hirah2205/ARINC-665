@@ -34,7 +34,7 @@ target_link_libraries(
   arinc_665_media_set_manager
 
   PRIVATE
-    arinc665_commands
+    arinc_665_commands
     commands
     helper )
 
@@ -54,5 +54,5 @@ set_property(
 
 install(
   TARGETS arinc_665_media_set_manager
-  RUNTIME_DEPENDENCY_SET arinc665-runtime-deps
+  RUNTIME_DEPENDENCY_SET arinc_665-runtime-deps
   COMPONENT runtime )

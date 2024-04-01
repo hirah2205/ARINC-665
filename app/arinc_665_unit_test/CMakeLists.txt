@@ -30,7 +30,7 @@ target_link_libraries(
   arinc_665_unit_test
 
   PRIVATE
-    arinc665_test
+    arinc_665_test
     arinc_645_test
     commands_test
     qt_icon_resources_test
@@ -45,5 +45,5 @@ set_property(
 
 install(
   TARGETS arinc_665_unit_test
-  RUNTIME_DEPENDENCY_SET arinc665-runtime-deps
+  RUNTIME_DEPENDENCY_SET arinc_665-runtime-deps
   COMPONENT test )

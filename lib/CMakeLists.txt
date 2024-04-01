@@ -8,6 +8,6 @@
 
 cmake_minimum_required( VERSION 3.28 )
 
-add_subdirectory( arinc665 )
-add_subdirectory( arinc665_commands )
-add_subdirectory( arinc665_qt )
+add_subdirectory( arinc_665 )
+add_subdirectory( arinc_665_commands )
+add_subdirectory( arinc_665_qt )

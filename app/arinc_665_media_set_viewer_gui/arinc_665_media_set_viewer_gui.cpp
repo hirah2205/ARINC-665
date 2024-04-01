@@ -11,9 +11,9 @@
  * @brief ARINC 665 Media Set Viewer Qt Application.
  **/
 
-#include <arinc665_qt/resources/Resources.hpp>
+#include <arinc_665_qt/resources/Resources.hpp>
 
-#include <arinc665_qt/media_set_viewer/MediaSetViewerWindow.hpp>
+#include <arinc_665_qt/media_set_viewer/MediaSetViewerWindow.hpp>
 
 #include <qt_icon_resources/QtIconResources.hpp>
 

@@ -11,8 +11,8 @@
  * @brief ARINC 665 Media Set Validator.
  **/
 
-#include <arinc665/utils/MediaSetValidator.hpp>
-#include <arinc665/Arinc665Exception.hpp>
+#include <arinc_665/utils/MediaSetValidator.hpp>
+#include <arinc_665/Arinc665Exception.hpp>
 
 #include <helper/Logger.hpp>
 #include <helper/Exception.hpp>

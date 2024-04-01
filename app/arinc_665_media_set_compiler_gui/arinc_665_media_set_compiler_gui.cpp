@@ -11,9 +11,9 @@
  * @brief ARINC 665 Media Set Compiler Qt Application.
  **/
 
-#include <arinc665_qt/resources/Resources.hpp>
+#include <arinc_665_qt/resources/Resources.hpp>
 
-#include <arinc665_qt/compile_media_set/CompileMediaSetWizard.hpp>
+#include <arinc_665_qt/compile_media_set/CompileMediaSetWizard.hpp>
 
 #include <qt_icon_resources/QtIconResources.hpp>
 

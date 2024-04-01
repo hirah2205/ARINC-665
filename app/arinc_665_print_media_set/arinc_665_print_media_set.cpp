@@ -11,14 +11,14 @@
  * @brief ARINC 665 Media Set Print Application.
  **/
 
-#include <arinc665/media/MediaSet.hpp>
+#include <arinc_665/media/MediaSet.hpp>
 
-#include <arinc665/utils/FilesystemMediaSetDecompiler.hpp>
-#include <arinc665/utils/MediaSetPrinter.hpp>
-#include <arinc665/utils/MediaSetDefaults.hpp>
+#include <arinc_665/utils/FilesystemMediaSetDecompiler.hpp>
+#include <arinc_665/utils/MediaSetPrinter.hpp>
+#include <arinc_665/utils/MediaSetDefaults.hpp>
 
-#include <arinc665/Arinc665Exception.hpp>
-#include <arinc665/Version.hpp>
+#include <arinc_665/Arinc665Exception.hpp>
+#include <arinc_665/Version.hpp>
 
 #include <arinc_645/CheckValue.hpp>
 

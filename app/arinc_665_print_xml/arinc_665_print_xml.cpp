@@ -11,13 +11,13 @@
  * @brief ARINC 665 Media Set XML Printer Application.
  **/
 
-#include <arinc665/Arinc665.hpp>
-#include <arinc665/Arinc665Exception.hpp>
+#include <arinc_665/Arinc665.hpp>
+#include <arinc_665/Arinc665Exception.hpp>
 
-#include <arinc665/media/MediaSet.hpp>
+#include <arinc_665/media/MediaSet.hpp>
 
-#include <arinc665/utils/Arinc665Xml.hpp>
-#include <arinc665/utils/MediaSetPrinter.hpp>
+#include <arinc_665/utils/Arinc665Xml.hpp>
+#include <arinc_665/utils/MediaSetPrinter.hpp>
 
 #include <helper/Dump.hpp>
 #include <helper/Logger.hpp>

@@ -8,8 +8,8 @@
 
 cmake_minimum_required( VERSION 3.28 )
 
-# skip app when arinc665_qt is not available
-if( NOT TARGET arinc665_qt )
+# skip app when arinc_665_qt is not available
+if( NOT TARGET arinc_665_qt )
   return()
 endif()
 
@@ -38,7 +38,7 @@ target_link_libraries(
 
   PRIVATE
     qt_icon_resources
-    arinc665_qt )
+    arinc_665_qt )
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}
@@ -47,5 +47,5 @@ set_property(
 
 install(
   TARGETS arinc_665_media_set_manager_gui
-  RUNTIME_DEPENDENCY_SET arinc665-runtime-deps
+  RUNTIME_DEPENDENCY_SET arinc_665-runtime-deps
   COMPONENT runtime )

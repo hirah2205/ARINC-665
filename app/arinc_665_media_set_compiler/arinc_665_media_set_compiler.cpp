@@ -11,18 +11,18 @@
  * @brief ARINC 665 Media Set Compiler Application.
  **/
 
-#include <arinc665/media/Media.hpp>
+#include <arinc_665/media/Media.hpp>
 
-#include <arinc665/utils/Arinc665Xml.hpp>
-#include <arinc665/utils/FilesystemMediaSetCompiler.hpp>
-#include <arinc665/utils/FileCreationPolicyDescription.hpp>
-#include <arinc665/utils/MediaSetDefaults.hpp>
+#include <arinc_665/utils/Arinc665Xml.hpp>
+#include <arinc_665/utils/FilesystemMediaSetCompiler.hpp>
+#include <arinc_665/utils/FileCreationPolicyDescription.hpp>
+#include <arinc_665/utils/MediaSetDefaults.hpp>
 
-#include <arinc665/media/MediaSet.hpp>
+#include <arinc_665/media/MediaSet.hpp>
 
-#include <arinc665/Arinc665Exception.hpp>
-#include <arinc665/SupportedArinc665VersionDescription.hpp>
-#include <arinc665/Version.hpp>
+#include <arinc_665/Arinc665Exception.hpp>
+#include <arinc_665/SupportedArinc665VersionDescription.hpp>
+#include <arinc_665/Version.hpp>
 
 #include <helper/Logger.hpp>
 #include <helper/Exception.hpp>
