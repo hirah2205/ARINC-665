@@ -18,7 +18,7 @@
 #include <arinc665/files/ListFile.hpp>
 #include <arinc665/files/FileInfo.hpp>
 
-#include <arinc645/Arinc645.hpp>
+#include <arinc_645/Arinc645.hpp>
 
 #include <string_view>
 #include <string>

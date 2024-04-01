@@ -19,7 +19,7 @@
 #include <arinc665/Arinc665Exception.hpp>
 #include <arinc665/Arinc665Logger.hpp>
 
-#include <arinc645/CheckValueGenerator.hpp>
+#include <arinc_645/CheckValueGenerator.hpp>
 
 #include <helper/Endianness.hpp>
 #include <helper/Exception.hpp>

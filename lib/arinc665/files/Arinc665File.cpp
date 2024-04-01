@@ -15,7 +15,7 @@
 
 #include <arinc665/Arinc665Exception.hpp>
 
-#include <arinc645/Arinc645Crc.hpp>
+#include <arinc_645/Arinc645Crc.hpp>
 
 #include <helper/Endianness.hpp>
 #include <helper/Exception.hpp>

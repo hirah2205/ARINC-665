@@ -31,7 +31,7 @@ target_link_libraries(
 
   PRIVATE
     arinc665_test
-    arinc645_test
+    arinc_645_test
     commands_test
     qt_icon_resources_test
     helper_test )

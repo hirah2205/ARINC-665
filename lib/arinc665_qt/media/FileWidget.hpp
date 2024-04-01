@@ -18,7 +18,7 @@
 
 #include <arinc665/media/Media.hpp>
 
-#include <arinc645_qt/Arinc645Qt.hpp>
+#include <arinc_645_qt/Arinc645Qt.hpp>
 
 #include <QWidget>
 

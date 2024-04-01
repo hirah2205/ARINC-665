@@ -28,8 +28,8 @@
 #include <arinc665/Arinc665Logger.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 
-#include <arinc645/Arinc645Crc.hpp>
-#include <arinc645/CheckValueGenerator.hpp>
+#include <arinc_645/Arinc645Crc.hpp>
+#include <arinc_645/CheckValueGenerator.hpp>
 
 #include <helper/Exception.hpp>
 

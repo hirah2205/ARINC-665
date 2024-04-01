@@ -19,8 +19,8 @@
 #include <arinc665/files/LoadHeaderFile.hpp>
 #include <arinc665/files/BatchFile.hpp>
 
-#include <arinc645/CheckValue.hpp>
-#include <arinc645/CheckValueTypeDescription.hpp>
+#include <arinc_645/CheckValue.hpp>
+#include <arinc_645/CheckValueTypeDescription.hpp>
 
 #include <format>
 

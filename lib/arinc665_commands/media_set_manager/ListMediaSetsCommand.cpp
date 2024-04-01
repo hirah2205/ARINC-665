@@ -17,7 +17,7 @@
 #include <arinc665/utils/MediaSetManager.hpp>
 #include <arinc665/utils/MediaSetPrinter.hpp>
 
-#include <arinc645/CheckValue.hpp>
+#include <arinc_645/CheckValue.hpp>
 
 #include <helper/Logger.hpp>
 

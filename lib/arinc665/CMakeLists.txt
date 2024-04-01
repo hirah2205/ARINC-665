@@ -79,7 +79,7 @@ target_link_libraries(
   PUBLIC
     Boost::boost
     helper
-    arinc645
+    arinc_645
 
   PRIVATE
     PkgConfig::Libxmlpp )

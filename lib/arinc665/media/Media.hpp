@@ -21,7 +21,7 @@
 
 #include <arinc665/Arinc665.hpp>
 
-#include <arinc645/Arinc645.hpp>
+#include <arinc_645/Arinc645.hpp>
 
 #include <map>
 #include <vector>

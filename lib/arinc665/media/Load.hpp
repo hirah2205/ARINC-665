@@ -17,7 +17,7 @@
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/File.hpp>
 
-#include <arinc645/CheckValue.hpp>
+#include <arinc_645/CheckValue.hpp>
 
 #include <string>
 #include <list>

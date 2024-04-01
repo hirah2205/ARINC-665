@@ -17,7 +17,7 @@
 #include <arinc665/media/Media.hpp>
 #include <arinc665/media/ContainerEntity.hpp>
 
-#include <arinc645/Arinc645.hpp>
+#include <arinc_645/Arinc645.hpp>
 
 #include <string_view>
 #include <span>

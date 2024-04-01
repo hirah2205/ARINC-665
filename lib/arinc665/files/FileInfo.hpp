@@ -18,7 +18,7 @@
 
 #include <arinc665/MediumNumber.hpp>
 
-#include <arinc645/CheckValue.hpp>
+#include <arinc_645/CheckValue.hpp>
 
 #include <filesystem>
 #include <string>

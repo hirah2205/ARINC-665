@@ -21,8 +21,8 @@
 
 #include <arinc665/MediumNumber.hpp>
 
-#include <arinc645/CheckValueTypeDescription.hpp>
-#include <arinc645/CheckValue.hpp>
+#include <arinc_645/CheckValueTypeDescription.hpp>
+#include <arinc_645/CheckValue.hpp>
 
 #include <format>
 

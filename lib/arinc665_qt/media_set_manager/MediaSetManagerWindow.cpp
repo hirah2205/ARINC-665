@@ -28,7 +28,7 @@
 
 #include <arinc665/Version.hpp>
 
-#include <arinc645/Version.hpp>
+#include <arinc_645/Version.hpp>
 
 #include <commands/Version.hpp>
 

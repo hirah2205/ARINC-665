@@ -20,7 +20,7 @@
 
 #include <arinc665/files/Files.hpp>
 
-#include <arinc645/Arinc645.hpp>
+#include <arinc_645/Arinc645.hpp>
 
 #include <filesystem>
 #include <functional>

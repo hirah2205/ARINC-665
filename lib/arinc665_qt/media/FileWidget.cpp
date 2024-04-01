@@ -20,7 +20,7 @@
 #include <arinc665/media/Load.hpp>
 #include <arinc665/media/Batch.hpp>
 
-#include <arinc645_qt/CheckValueTypeModel.hpp>
+#include <arinc_645_qt/CheckValueTypeModel.hpp>
 
 #include <helper_qt/String.hpp>
 

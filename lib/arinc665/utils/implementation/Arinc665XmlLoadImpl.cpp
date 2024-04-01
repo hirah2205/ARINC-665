@@ -22,7 +22,7 @@
 #include <arinc665/Arinc665Logger.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 
-#include <arinc645/CheckValueTypeDescription.hpp>
+#include <arinc_645/CheckValueTypeDescription.hpp>
 
 #include <helper/SafeCast.hpp>
 #include <helper/Exception.hpp>

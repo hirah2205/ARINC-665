@@ -14,7 +14,7 @@
 #include <arinc665/files/CheckValueUtils.hpp>
 #include <arinc665/Arinc665Exception.hpp>
 
-#include <arinc645/CheckValue.hpp>
+#include <arinc_645/CheckValue.hpp>
 
 #include <helper/Dump.hpp>
 

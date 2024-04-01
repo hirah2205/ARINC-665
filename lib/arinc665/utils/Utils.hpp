@@ -27,7 +27,7 @@
 
 #include <arinc665/MediumNumber.hpp>
 
-#include <arinc645/Arinc645.hpp>
+#include <arinc_645/Arinc645.hpp>
 
 #include <memory>
 #include <optional>

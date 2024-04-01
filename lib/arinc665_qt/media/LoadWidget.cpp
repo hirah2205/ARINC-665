@@ -23,7 +23,7 @@
 #include <arinc665/media/RegularFile.hpp>
 #include <arinc665/media/MediaSet.hpp>
 
-#include <arinc645_qt/CheckValueTypeModel.hpp>
+#include <arinc_645_qt/CheckValueTypeModel.hpp>
 
 #include <helper_qt/String.hpp>
 

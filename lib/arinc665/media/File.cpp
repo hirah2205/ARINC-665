@@ -18,7 +18,7 @@
 #include <arinc665/media/ContainerEntity.hpp>
 #include <arinc665/media/MediaSet.hpp>
 
-#include <arinc645/Filename.hpp>
+#include <arinc_645/Filename.hpp>
 
 #include <helper/Exception.hpp>
 
