@@ -34,6 +34,7 @@ target_sources(
       BASE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/..
         ${CMAKE_CURRENT_BINARY_DIR}/..
+
       FILES
         Arinc665Qt.hpp
         Arinc665QtLogger.hpp
@@ -82,7 +83,6 @@ target_link_libraries(
   PRIVATE
     helper_qt
     qt_icon_resources
-    commands
     arinc_645_qt )
 
 add_subdirectory( compile_media_set )

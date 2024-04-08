@@ -30,8 +30,6 @@
 
 #include <arinc_645/Version.hpp>
 
-#include <commands/Version.hpp>
-
 #include <qt_icon_resources/Version.hpp>
 
 #include <helper_qt/AboutDialog.hpp>
@@ -78,7 +76,6 @@ MediaSetManagerWindow::MediaSetManagerWindow( QWidget * const parent ) :
       Arinc645::arinc645Version(),
       Arinc645::botanVersion(),
       QtIconResources::qtIconResourcesVersion(),
-      Commands::commandsVersion(),
       Helper::helperVersion(),
       Helper::boostVersion(),
       HelperQt::qtVersion()
