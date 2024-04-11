@@ -265,14 +265,14 @@
     </documentation></annotation>
     <restriction base="string" >
       <enumeration value="NotUsed" />
-      <enumeration value="Crc8" />
-      <enumeration value="Crc16" />
-      <enumeration value="Crc32" />
-      <enumeration value="Md5" />
-      <enumeration value="Sha1" />
-      <enumeration value="Sha256" />
-      <enumeration value="Sha512" />
-      <enumeration value="Crc64" />
+      <enumeration value="CRC8" />
+      <enumeration value="CRC16" />
+      <enumeration value="CRC32" />
+      <enumeration value="MD5" />
+      <enumeration value="SHA1" />
+      <enumeration value="SHA256" />
+      <enumeration value="SHA512" />
+      <enumeration value="CRC64" />
     </restriction>
   </simpleType >
 
