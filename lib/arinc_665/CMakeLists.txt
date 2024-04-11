@@ -36,8 +36,8 @@ target_sources(
       FILES
         Arinc665.hpp
         Arinc665Exception.hpp
-        Logger.hpp
         FileTypeDescription.hpp
+        Logger.hpp
         MediumNumber.hpp
         PartNumber.hpp
         SupportedArinc665VersionDescription.hpp
