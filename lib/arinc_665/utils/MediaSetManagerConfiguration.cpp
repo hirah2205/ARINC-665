@@ -13,7 +13,7 @@
 
 #include "MediaSetManagerConfiguration.hpp"
 
-#include <arinc_665/Arinc665Logger.hpp>
+#include <arinc_665/Logger.hpp>
 
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>

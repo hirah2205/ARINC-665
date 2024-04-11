@@ -17,7 +17,7 @@
 #include <arinc_665/files/StringUtils.hpp>
 
 #include <arinc_665/Arinc665Exception.hpp>
-#include <arinc_665/Arinc665Logger.hpp>
+#include <arinc_665/Logger.hpp>
 
 #include <arinc_645/CheckValueGenerator.hpp>
 
@@ -1087,7 +1087,7 @@ void LoadHeaderFile::checkUserDefinedData()
 
   if ( userDefinedDataV.size() % 2U != 0U )
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::warning )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::warning )
       << "User defined data must be 2-byte aligned. - extending range";
 
     userDefinedDataV.push_back( 0U );

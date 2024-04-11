@@ -20,7 +20,7 @@
 #include <arinc_665/utils/FilesystemMediaSetDecompiler.hpp>
 
 #include <arinc_665/Arinc665Exception.hpp>
-#include <arinc_665/Arinc665Logger.hpp>
+#include <arinc_665/Logger.hpp>
 
 #include <helper/Exception.hpp>
 
@@ -77,7 +77,7 @@ MediaSetManagerImpl::~MediaSetManagerImpl()
   }
   catch ( const Arinc665Exception &e )
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::fatal )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::fatal )
       << "Save configuration: " << boost::diagnostic_information( e );
   }
 }
@@ -123,7 +123,7 @@ void MediaSetManagerImpl::saveConfiguration()
   }
   catch ( const boost::property_tree::json_parser_error &e )
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
       << "Save configuration " << e.filename() << " " << e.message();
 
     BOOST_THROW_EXCEPTION( Arinc665Exception()
@@ -252,7 +252,7 @@ std::filesystem::path MediaSetManagerImpl::filePath(
 
   if ( !file )
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
       << "Given file is empty";
   }
 
@@ -260,7 +260,7 @@ std::filesystem::path MediaSetManagerImpl::filePath(
 
   if ( mediaSetIt == mediaSetsPathsV.end() )
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
       << "Media Set not found";
     return {};
   }
@@ -270,7 +270,7 @@ std::filesystem::path MediaSetManagerImpl::filePath(
 
   if ( mediumIt == mediaSetIt->second.second.end() )
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
       << "Medium not found";
     return {};
   }

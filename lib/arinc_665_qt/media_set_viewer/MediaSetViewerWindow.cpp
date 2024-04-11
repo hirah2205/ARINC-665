@@ -19,7 +19,7 @@
 
 #include <arinc_665_qt/media/MediaSetModel.hpp>
 
-#include <arinc_665_qt/Arinc665QtLogger.hpp>
+#include <arinc_665_qt/Logger.hpp>
 #include <arinc_665_qt/FilePathMappingModel.hpp>
 
 #include <arinc_665/utils/Arinc665Xml.hpp>

@@ -8,11 +8,11 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Logger Arinc665::Arinc665Logger.
+ * @brief Declaration of Logger Arinc665::Logger.
  **/
 
-#ifndef ARINC_665_ARINC665LOGGER_HPP
-#define ARINC_665_ARINC665LOGGER_HPP
+#ifndef ARINC_665_LOGGER_HPP
+#define ARINC_665_LOGGER_HPP
 
 #include <arinc_665/Arinc665.hpp>
 
@@ -24,9 +24,9 @@ namespace Arinc665 {
 
 //! ARINC 665 Logger.
 BOOST_LOG_INLINE_GLOBAL_LOGGER_CTOR_ARGS(
-  Arinc665Logger,
+  Logger,
   Helper::ChannelSeverityLoggerMt,
-  (boost::log::keywords::channel = "Arinc665" ) )
+  ( boost::log::keywords::channel = "Arinc665" ) )
 
 }
 

@@ -19,7 +19,7 @@
 #include <arinc_665/media/Load.hpp>
 #include <arinc_665/media/Batch.hpp>
 
-#include <arinc_665/Arinc665Logger.hpp>
+#include <arinc_665/Logger.hpp>
 #include <arinc_665/Arinc665Exception.hpp>
 
 #include <arinc_645/CheckValueTypeDescription.hpp>
@@ -56,7 +56,7 @@ void Arinc665XmlSaveImpl::operator()()
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
     << "Save Media Set " << mediaSetV.partNumber() << " to " << xmlFileV;
 
   try

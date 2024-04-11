@@ -13,7 +13,7 @@
 
 #include "MediaSetModel.hpp"
 
-#include <arinc_665_qt/Arinc665QtLogger.hpp>
+#include <arinc_665_qt/Logger.hpp>
 
 #include <arinc_665/media/MediaSet.hpp>
 #include <arinc_665/media/Directory.hpp>
@@ -55,7 +55,7 @@ QModelIndex MediaSetModel::index(
   if ( !parentBase )
   {
     // Should not happen
-    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
       << "Invalid Element Pointer";
     return {};
   }
@@ -72,7 +72,7 @@ QModelIndex MediaSetModel::index(
       if ( !containerParent )
       {
         // Should not happen
-        BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+        BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
           << "Could not cast to Container";
         return {};
       }
@@ -107,7 +107,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
   if ( !index.isValid() )
   {
     // Should not happen
-    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::warning )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::warning )
       << "Root Element has no parent";
     return {};
   }
@@ -118,7 +118,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
   if ( !base )
   {
     // Should not happen
-    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
       << "Invalid Element Pointer";
     return {};
   }
@@ -167,7 +167,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
       if ( !file )
       {
         // Should not happen
-        BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+        BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
           << "Could not cast to File";
         return {};
       }
@@ -198,7 +198,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
 
     default:
       // Should not happen
-      BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+      BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
         << "Invalid Container Type";
       return {};
   }
@@ -219,7 +219,7 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
   if ( !base )
   {
     // Should not happen
-    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
       << "Invalid Element Pointer";
     return {};
   }
@@ -235,7 +235,7 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
       if ( !container )
       {
         // Should not happen
-        BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+        BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
           << "Invalid Cast to Container";
         return {};
       }
@@ -249,7 +249,7 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
 
     default:
       // Should not happen
-      BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+      BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
         << "Invalid Container Type";
       return false;
   }
@@ -270,7 +270,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
   if ( !base )
   {
     // Should not happen
-    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
       << "Invalid Element Pointer";
     return {};
   }
@@ -286,7 +286,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
       if ( !container )
       {
         // Should not happen
-        BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+        BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
           << "Invalid Cast to Container";
         return {};
       }
@@ -302,7 +302,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
 
     default:
       // Should not happen
-      BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+      BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
         << "Invalid Container Type";
       return 0;
   }
@@ -367,7 +367,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               if ( !file )
               {
                 // Should not happen
-                BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+                BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
                   << "Invalid Cast to File";
                 return {};
               }
@@ -434,7 +434,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               if ( !mediaSet )
               {
                 // Should not happen
-                BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+                BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
                   << "Invalid Cast to Media Set";
                 return {};
               }
@@ -450,7 +450,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               if ( !directory )
               {
                 // Should not happen
-                BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+                BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
                   << "Invalid Cast to Directory";
                 return {};
               }
@@ -466,7 +466,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               if ( !file )
               {
                 // Should not happen
-                BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+                BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
                   << "Invalid Cast to File";
                 return {};
               }
@@ -495,7 +495,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
               if ( !file )
               {
                 // Should not happen
-                BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+                BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
                   << "Invalid Cast to File";
                 return {};
               }
@@ -573,7 +573,7 @@ Arinc665::Media::ConstBasePtr MediaSetModel::element(
   if ( nullptr == index.internalPointer() )
   {
     // Should not happen
-    BOOST_LOG_SEV( Arinc665QtLogger::get(), Helper::Severity::error )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
       << "Invalid Model Index";
 
     // empty element

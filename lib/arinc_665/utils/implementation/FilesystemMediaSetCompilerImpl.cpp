@@ -21,7 +21,7 @@
 
 #include <arinc_665/Arinc665Exception.hpp>
 #include <arinc_665/MediumNumber.hpp>
-#include <arinc_665/Arinc665Logger.hpp>
+#include <arinc_665/Logger.hpp>
 
 #include <helper/Exception.hpp>
 
@@ -173,7 +173,7 @@ void FilesystemMediaSetCompilerImpl::createMedium(
 
   auto mPath{ mediumPath( mediumNumber ) };
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
     << "Create medium directory " << mPath.string();
 
   std::filesystem::create_directory( mPath );
@@ -188,7 +188,7 @@ void FilesystemMediaSetCompilerImpl::createDirectory(
   auto directoryPath{
     mediumPath( mediumNumber ) / directory->path().relative_path() };
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
     << "Create directory "
     << "[" << mediumNumber << "]:" << directory->path().string()
     << " (" << directoryPath.string() << ")";
@@ -201,7 +201,7 @@ bool FilesystemMediaSetCompilerImpl::checkFileExistence(
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
     << "check existence of "
     << "[" << file->effectiveMediumNumber() << "]:"
     << file->path().string();
@@ -216,7 +216,7 @@ bool FilesystemMediaSetCompilerImpl::checkFileExistence(
 
   const auto filePath{ ( sourceBasePathV / fileIt->second ).lexically_normal() };
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
     << "found at " << filePath.string();
 
   return std::filesystem::is_regular_file( filePath );
@@ -242,7 +242,7 @@ void FilesystemMediaSetCompilerImpl::createFile(
   const auto destinationFilePath{
     mediumPath( file->effectiveMediumNumber() ) / file->path().relative_path() };
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
     << "Copy file from " << sourceFilePath.string()
     << " to " << destinationFilePath.string();
 
@@ -259,7 +259,7 @@ void FilesystemMediaSetCompilerImpl::writeFile(
 
   auto filePath{ mediumPath( mediumNumber ) / path.relative_path() };
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
     << "Write file "
     << "[" << mediumNumber << "]:" << path.string()
     << " (" << filePath.string() << ")";
@@ -299,7 +299,7 @@ Arinc665::Files::RawFile FilesystemMediaSetCompilerImpl::readFile(
   // check medium number
   auto filePath{ mediumPath( mediumNumber ) / path.relative_path() };
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
     << "Read file "
     << "[" << mediumNumber << "]:" << path.string()
     << " (" << filePath.string() << ")";

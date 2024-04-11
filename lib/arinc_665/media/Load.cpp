@@ -17,7 +17,7 @@
 #include <arinc_665/media/RegularFile.hpp>
 
 #include <arinc_665/Arinc665Exception.hpp>
-#include <arinc_665/Arinc665Logger.hpp>
+#include <arinc_665/Logger.hpp>
 
 #include <arinc_645/CheckValue.hpp>
 
@@ -133,7 +133,7 @@ ConstFilePtr Load::file( std::string_view filename ) const
 
   if ( !foundFiles.empty() )
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
       << "More than one file found for given filename";
   }
 
@@ -170,7 +170,7 @@ ConstFilePtr Load::file(
 
   if ( !foundFiles.empty() )
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
       << "More than one file found for given parameters";
   }
 
@@ -404,7 +404,7 @@ ConstFilePtr Loads_file(
 
     if ( !load )
     {
-      BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+      BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
         << "No Load with given Part Number";
       return {};
     }
@@ -430,7 +430,7 @@ ConstFilePtr Loads_file(
 
   if ( !files.empty() )
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
       << "More than one file found for given parameters";
   }
 
@@ -452,7 +452,7 @@ ConstFilePtr Loads_file(
 
     if ( !load )
     {
-      BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+      BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
         << "No Load with given Part Number";
       return {};
     }
@@ -478,7 +478,7 @@ ConstFilePtr Loads_file(
 
   if ( !files.empty() )
   {
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
       << "More than one file found for given parameters";
   }
 

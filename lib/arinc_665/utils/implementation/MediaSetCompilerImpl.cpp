@@ -25,7 +25,7 @@
 #include <arinc_665/files/LoadHeaderFile.hpp>
 #include <arinc_665/files/BatchFile.hpp>
 
-#include <arinc_665/Arinc665Logger.hpp>
+#include <arinc_665/Logger.hpp>
 #include <arinc_665/Arinc665Exception.hpp>
 
 #include <arinc_645/Arinc645Crc.hpp>
@@ -121,7 +121,7 @@ void MediaSetCompilerImpl::operator()()
       << Helper::AdditionalInfo{ "Invalid state of exporter" } );
   }
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
     << "Export Media Set "
     << "'" << mediaSetV->partNumber() << "'";
 
@@ -178,7 +178,7 @@ void MediaSetCompilerImpl::exportDirectory(
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
     << "Export Directory to ["
     << mediumNumber
     << "]:"
@@ -204,7 +204,7 @@ void MediaSetCompilerImpl::exportRegularFile(
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
     << "Export Regular File to ["
     << file->effectiveMediumNumber()
     << "]:"
@@ -218,7 +218,7 @@ void MediaSetCompilerImpl::exportLoad( const Media::ConstLoadPtr &load )
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
     << "Export Load to ["
     << load->effectiveMediumNumber()
     << "]:"
@@ -256,7 +256,7 @@ void MediaSetCompilerImpl::exportBatch( const Media::ConstBatchPtr &batch )
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
     << "Export Batch to ["
     << batch->effectiveMediumNumber()
     << "]:"
@@ -322,7 +322,7 @@ void MediaSetCompilerImpl::exportListOfLoads() const
   {
     const std::filesystem::path filename{ "/" / std::filesystem::path{ ListOfLoadsName } };
 
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
       << "Export List of Loads to ["
       << mediumNumber
       << "]:"
@@ -365,7 +365,7 @@ void MediaSetCompilerImpl::exportListOfBatches() const
   {
     const std::filesystem::path filename{ "/" / std::filesystem::path{ ListOfBatchesName } };
 
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
       << "Export List of Batches to ["
       <<  mediumNumber
       << "]:"
@@ -418,7 +418,7 @@ void MediaSetCompilerImpl::exportListOfFiles() const
   {
     const std::filesystem::path filename{ "/" / std::filesystem::path{ ListOfFilesName } };
 
-    BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::info )
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
       << "Export List of Files to ["
       << mediumNumber
       << "]:"

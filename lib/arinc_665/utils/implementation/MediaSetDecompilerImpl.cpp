@@ -19,7 +19,7 @@
 #include <arinc_665/media/RegularFile.hpp>
 
 #include <arinc_665/Arinc665Exception.hpp>
-#include <arinc_665/Arinc665Logger.hpp>
+#include <arinc_665/Logger.hpp>
 
 #include <arinc_645/CheckValueGenerator.hpp>
 
@@ -384,7 +384,7 @@ void MediaSetDecompilerImpl::regularFile(
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
     << "Regular File " << fileInfo.path().generic_string();
 
   // create file
@@ -416,7 +416,7 @@ void MediaSetDecompilerImpl::loadFile(
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
     << "Load Header File " << fileInfo.path().generic_string();
 
   // create load
@@ -448,7 +448,7 @@ void MediaSetDecompilerImpl::batchFile(
 {
   BOOST_LOG_FUNCTION()
 
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
     << "Batch File " << fileInfo.path().generic_string();
 
   // create batch
@@ -813,7 +813,7 @@ void MediaSetDecompilerImpl::checkMediumFiles(
 void MediaSetDecompilerImpl::checkFileIntegrity(
   const Files::FileInfo &fileInfo ) const
 {
-  BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::trace )
+  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
     << "Check file " << fileInfo.path().generic_string();
 
   const auto rawFile{
@@ -866,7 +866,7 @@ void MediaSetDecompilerImpl::checkLoadFile(
     if ( ( fileSize16Bit && ( fileSize / 2 != loadFileInfo.length / 2 ) )
       || ( !fileSize16Bit && ( fileSize != loadFileInfo.length ) ) )
     {
-      BOOST_LOG_SEV( Arinc665Logger::get(), Helper::Severity::error )
+      BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
         << "Load File Size inconsistent "
         << loadFileInfo.filename << " "
         << fileSize << " "

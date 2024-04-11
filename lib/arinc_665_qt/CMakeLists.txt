@@ -37,7 +37,7 @@ target_sources(
 
       FILES
         Arinc665Qt.hpp
-        Arinc665QtLogger.hpp
+        Logger.hpp
         ExportMediaSetSettingsWidget.hpp
         FileCreationPolicyModel.hpp
         FilePathMappingModel.hpp
