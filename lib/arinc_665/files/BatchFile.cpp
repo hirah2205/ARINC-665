@@ -259,7 +259,7 @@ void BatchFile::decodeBatchTargetsInfo(
   ConstRawFileSpan rawFile,
   const ptrdiff_t offset )
 {
-  //BOOST_LOG_FUNCTION()
+  BOOST_LOG_FUNCTION()
 
   auto it{ rawFile.begin() + offset };
 

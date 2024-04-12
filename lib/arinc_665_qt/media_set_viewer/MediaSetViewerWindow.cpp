@@ -40,7 +40,6 @@
 #include <QSettings>
 #include <QStandardPaths>
 
-#include <boost/log/trivial.hpp>
 #include <boost/exception/all.hpp>
 
 namespace Arinc665Qt {
@@ -223,6 +222,8 @@ void MediaSetViewerWindow::startMediaSetDecompilation()
 
 void MediaSetViewerWindow::loadXmlFile( const QString &file )
 {
+  BOOST_LOG_FUNCTION()
+
   try
   {
     // remove all files from watching
@@ -265,13 +266,13 @@ void MediaSetViewerWindow::loadXmlFile( const QString &file )
       description = QString::fromStdString( *info );
     }
 
-    BOOST_LOG_TRIVIAL( error ) << boost::diagnostic_information( e, true );
+    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
+      << boost::diagnostic_information( e, true );
 
     QMessageBox::critical(
       nullptr,
       tr( "Load Media Set XML" ),
       tr( "Error loading Media Set: " ) + description );
-    return;
   }
 }
 

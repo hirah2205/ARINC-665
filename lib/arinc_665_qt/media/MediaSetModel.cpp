@@ -37,6 +37,8 @@ QModelIndex MediaSetModel::index(
   const int column,
   const QModelIndex &parent ) const
 {
+  BOOST_LOG_FUNCTION()
+
   // check if model contains valid Elements
   if ( !rootV )
   {
@@ -103,6 +105,8 @@ QModelIndex MediaSetModel::index(
 
 QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
 {
+  BOOST_LOG_FUNCTION()
+
   // invalid index has no parent
   if ( !index.isValid() )
   {
@@ -206,6 +210,8 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
 
 bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
 {
+  BOOST_LOG_FUNCTION()
+
   // First level (media set)
   if ( !parent.isValid() )
   {
@@ -257,6 +263,8 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
 
 int MediaSetModel::rowCount( const QModelIndex &parent ) const
 {
+  BOOST_LOG_FUNCTION()
+
   // First level (Media Set)
   if ( !parent.isValid() )
   {
@@ -316,6 +324,8 @@ int MediaSetModel::columnCount(
 
 QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
 {
+  BOOST_LOG_FUNCTION()
+
   if ( !index.isValid() )
   {
     return {};
@@ -539,6 +549,8 @@ QVariant MediaSetModel::headerData(
   const Qt::Orientation orientation,
   const int role ) const
 {
+  BOOST_LOG_FUNCTION()
+
   if ( orientation == Qt::Vertical )
   {
     return {};
@@ -565,6 +577,8 @@ QVariant MediaSetModel::headerData(
 Arinc665::Media::ConstBasePtr MediaSetModel::element(
   const QModelIndex &index ) const
 {
+  BOOST_LOG_FUNCTION()
+
   if ( !index.isValid() )
   {
     return {};
@@ -587,6 +601,8 @@ Arinc665::Media::ConstBasePtr MediaSetModel::element(
 QModelIndex MediaSetModel::indexForElement(
   const Arinc665::Media::ConstBasePtr &element ) const
 {
+  BOOST_LOG_FUNCTION()
+
   if ( rootV == element )
   {
     return index( 0, 0 );
