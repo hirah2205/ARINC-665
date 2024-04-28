@@ -14,9 +14,9 @@
 #ifndef ARINC_665_QT_DECOMPILE_MEDIA_SET_DECOMPILEMEDIASETSETTINGSPAGE_HPP
 #define ARINC_665_QT_DECOMPILE_MEDIA_SET_DECOMPILEMEDIASETSETTINGSPAGE_HPP
 
-#include <arinc_665_qt/decompile_media_set/DecompileMediaSet.hpp>
+#include "arinc_665_qt/decompile_media_set/DecompileMediaSet.hpp"
 
-#include <arinc_665/utils/Utils.hpp>
+#include "arinc_665/utils/Utils.hpp"
 
 #include <QWizardPage>
 

@@ -15,11 +15,11 @@
 
 #include "ui_RegularFileWidget.h"
 
-#include <arinc_665_qt/media/LoadsModel.hpp>
+#include "arinc_665_qt/media/LoadsModel.hpp"
 
-#include <arinc_665/media/Load.hpp>
-#include <arinc_665/media/MediaSet.hpp>
-#include <arinc_665/media/RegularFile.hpp>
+#include "arinc_665/media/Load.hpp"
+#include "arinc_665/media/MediaSet.hpp"
+#include "arinc_665/media/RegularFile.hpp"
 
 namespace Arinc665Qt::Media {
 

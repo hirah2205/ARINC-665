@@ -14,7 +14,7 @@
 #ifndef ARINC_665_FILES_ARINC665FILE_HPP
 #define ARINC_665_FILES_ARINC665FILE_HPP
 
-#include <arinc_665/files/Files.hpp>
+#include "arinc_665/files/Files.hpp"
 
 #include <filesystem>
 #include <string>

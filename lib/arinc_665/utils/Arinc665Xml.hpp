@@ -14,8 +14,8 @@
 #ifndef ARINC_665_XML_ARINC665XML_HPP
 #define ARINC_665_XML_ARINC665XML_HPP
 
-#include <arinc_665/utils/Utils.hpp>
-#include <arinc_665/media/Media.hpp>
+#include "arinc_665/utils/Utils.hpp"
+#include "arinc_665/media/Media.hpp"
 
 #include <filesystem>
 #include <map>

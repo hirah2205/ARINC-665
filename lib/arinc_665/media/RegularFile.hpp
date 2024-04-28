@@ -14,8 +14,8 @@
 #ifndef ARINC_665_MEDIA_REGULARFILE_HPP
 #define ARINC_665_MEDIA_REGULARFILE_HPP
 
-#include <arinc_665/media/Media.hpp>
-#include <arinc_665/media/File.hpp>
+#include "arinc_665/media/Media.hpp"
+#include "arinc_665/media/File.hpp"
 
 #include <string>
 #include <cstdint>

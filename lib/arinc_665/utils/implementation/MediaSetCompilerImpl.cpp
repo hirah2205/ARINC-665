@@ -13,25 +13,25 @@
 
 #include "MediaSetCompilerImpl.hpp"
 
-#include <arinc_665/media/MediaSet.hpp>
-#include <arinc_665/media/Directory.hpp>
-#include <arinc_665/media/RegularFile.hpp>
-#include <arinc_665/media/Load.hpp>
-#include <arinc_665/media/Batch.hpp>
+#include "arinc_665/media/MediaSet.hpp"
+#include "arinc_665/media/Directory.hpp"
+#include "arinc_665/media/RegularFile.hpp"
+#include "arinc_665/media/Load.hpp"
+#include "arinc_665/media/Batch.hpp"
 
-#include <arinc_665/files/LoadListFile.hpp>
-#include <arinc_665/files/BatchListFile.hpp>
-#include <arinc_665/files/FileListFile.hpp>
-#include <arinc_665/files/LoadHeaderFile.hpp>
-#include <arinc_665/files/BatchFile.hpp>
+#include "arinc_665/files/LoadListFile.hpp"
+#include "arinc_665/files/BatchListFile.hpp"
+#include "arinc_665/files/FileListFile.hpp"
+#include "arinc_665/files/LoadHeaderFile.hpp"
+#include "arinc_665/files/BatchFile.hpp"
 
-#include <arinc_665/Logger.hpp>
-#include <arinc_665/Arinc665Exception.hpp>
+#include "arinc_665/Logger.hpp"
+#include "arinc_665/Arinc665Exception.hpp"
 
-#include <arinc_645/Arinc645Crc.hpp>
-#include <arinc_645/CheckValueGenerator.hpp>
+#include "arinc_645/Arinc645Crc.hpp"
+#include "arinc_645/CheckValueGenerator.hpp"
 
-#include <helper/Exception.hpp>
+#include "helper/Exception.hpp"
 
 #include <boost/exception/all.hpp>
 

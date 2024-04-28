@@ -14,9 +14,9 @@
 #ifndef ARINC_665_QT_COMPILE_MEDIA_SET_COMPILEMEDIASETSETTINGSPAGE_HPP
 #define ARINC_665_QT_COMPILE_MEDIA_SET_COMPILEMEDIASETSETTINGSPAGE_HPP
 
-#include <arinc_665_qt/compile_media_set/CompileMediaSet.hpp>
+#include "arinc_665_qt/compile_media_set/CompileMediaSet.hpp"
 
-#include <arinc_665/utils/Utils.hpp>
+#include "arinc_665/utils/Utils.hpp"
 
 #include <QWizardPage>
 #include <QFileDialog>

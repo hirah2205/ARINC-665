@@ -13,9 +13,9 @@
 
 #include "FileCreationPolicyModel.hpp"
 
-#include <arinc_665/utils/FileCreationPolicyDescription.hpp>
+#include "arinc_665/utils/FileCreationPolicyDescription.hpp"
 
-#include <helper_qt/String.hpp>
+#include "helper_qt/String.hpp"
 
 namespace Arinc665Qt {
 

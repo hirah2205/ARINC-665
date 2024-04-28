@@ -14,9 +14,9 @@
 #ifndef ARINC_665_QT_SUPPORTEDARINC665VERSIONMODEL_HPP
 #define ARINC_665_QT_SUPPORTEDARINC665VERSIONMODEL_HPP
 
-#include <arinc_665_qt/Arinc665Qt.hpp>
+#include "arinc_665_qt/Arinc665Qt.hpp"
 
-#include <arinc_665/Arinc665.hpp>
+#include "arinc_665/Arinc665.hpp"
 
 #include <QAbstractListModel>
 

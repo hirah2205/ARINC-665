@@ -15,10 +15,10 @@
 #ifndef ARINC_665_FILES_LISTFILE_HPP
 #define ARINC_665_FILES_LISTFILE_HPP
 
-#include <arinc_665/files/Files.hpp>
-#include <arinc_665/files/Arinc665File.hpp>
+#include "arinc_665/files/Files.hpp"
+#include "arinc_665/files/Arinc665File.hpp"
 
-#include <arinc_665/MediumNumber.hpp>
+#include "arinc_665/MediumNumber.hpp"
 
 namespace Arinc665::Files {
 

@@ -13,9 +13,9 @@
 
 #include "LoadsModel.hpp"
 
-#include <arinc_665/media/Load.hpp>
+#include "arinc_665/media/Load.hpp"
 
-#include <helper_qt/String.hpp>
+#include "helper_qt/String.hpp"
 
 #include <format>
 

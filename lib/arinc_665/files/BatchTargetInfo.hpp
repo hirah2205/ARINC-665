@@ -14,8 +14,8 @@
 #ifndef ARINC_665_FILES_BATCHTARGETINFO_HPP
 #define ARINC_665_FILES_BATCHTARGETINFO_HPP
 
-#include <arinc_665/files/Files.hpp>
-#include <arinc_665/files/BatchLoadInfo.hpp>
+#include "arinc_665/files/Files.hpp"
+#include "arinc_665/files/BatchLoadInfo.hpp"
 
 #include <string>
 

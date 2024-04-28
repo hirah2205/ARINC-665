@@ -16,10 +16,10 @@
 
 #include "ui_MediaSetManagerSettingsDialog.h"
 
-#include <arinc_665_qt/SupportedArinc665VersionModel.hpp>
-#include <arinc_665_qt/FileCreationPolicyModel.hpp>
+#include "arinc_665_qt/SupportedArinc665VersionModel.hpp"
+#include "arinc_665_qt/FileCreationPolicyModel.hpp"
 
-#include <arinc_665/utils/MediaSetDefaults.hpp>
+#include "arinc_665/utils/MediaSetDefaults.hpp"
 
 #include <QSettings>
 

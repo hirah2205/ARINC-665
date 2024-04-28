@@ -15,17 +15,17 @@
 
 #include "ui_MediaSetWidget.h"
 
-#include <arinc_665_qt/media/LoadsModel.hpp>
-#include <arinc_665_qt/media/BatchesModel.hpp>
-#include <arinc_665_qt/media/MediaSetModel.hpp>
+#include "arinc_665_qt/media/LoadsModel.hpp"
+#include "arinc_665_qt/media/BatchesModel.hpp"
+#include "arinc_665_qt/media/MediaSetModel.hpp"
 
-#include <arinc_665/media/MediaSet.hpp>
-#include <arinc_665/media/Load.hpp>
-#include <arinc_665/media/Batch.hpp>
+#include "arinc_665/media/MediaSet.hpp"
+#include "arinc_665/media/Load.hpp"
+#include "arinc_665/media/Batch.hpp"
 
-#include <arinc_645_qt/CheckValueTypeModel.hpp>
+#include "arinc_645_qt/CheckValueTypeModel.hpp"
 
-#include <helper_qt/String.hpp>
+#include "helper_qt/String.hpp"
 
 namespace Arinc665Qt::Media {
 

@@ -15,7 +15,7 @@
 #ifndef ARINC_665_UTILS_IMPLEMENTATION_FILESYSTEMMEDIASETDECOMPILERIMPL_HPP
 #define ARINC_665_UTILS_IMPLEMENTATION_FILESYSTEMMEDIASETDECOMPILERIMPL_HPP
 
-#include <arinc_665/utils/FilesystemMediaSetDecompiler.hpp>
+#include "arinc_665/utils/FilesystemMediaSetDecompiler.hpp"
 
 namespace Arinc665::Utils {
 

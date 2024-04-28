@@ -13,13 +13,13 @@
 
 #include "OpenMediaSetManagerAction.hpp"
 
-#include <arinc_665_qt/media_set_manager/LoadMediaSetManagerAction.hpp>
+#include "arinc_665_qt/media_set_manager/LoadMediaSetManagerAction.hpp"
 
-#include <arinc_665_qt/media/MediaSetsModel.hpp>
+#include "arinc_665_qt/media/MediaSetsModel.hpp"
 
-#include <arinc_665/utils/MediaSetManager.hpp>
+#include "arinc_665/utils/MediaSetManager.hpp"
 
-#include <arinc_665/Arinc665Exception.hpp>
+#include "arinc_665/Arinc665Exception.hpp"
 
 #include <QMessageBox>
 #include <QSettings>

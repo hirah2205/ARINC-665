@@ -19,7 +19,7 @@
 #ifndef ARINC_665_QT_MEDIA_MEDIA_HPP
 #define ARINC_665_QT_MEDIA_MEDIA_HPP
 
-#include <arinc_665_qt/Arinc665Qt.hpp>
+#include "arinc_665_qt/Arinc665Qt.hpp"
 
 /**
  * @brief ARINC 665 %Media Qt Classes.

@@ -13,7 +13,7 @@
 
 #include "MediaSetDecompiler.hpp"
 
-#include <arinc_665/utils/implementation/MediaSetDecompilerImpl.hpp>
+#include "arinc_665/utils/implementation/MediaSetDecompilerImpl.hpp"
 
 namespace Arinc665::Utils {
 

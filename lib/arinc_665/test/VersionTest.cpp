@@ -11,7 +11,7 @@
  * @brief Definition of Unit Tests for Class Arinc665::Version.
  **/
 
-#include <arinc_665/Version.hpp>
+#include "arinc_665/Version.hpp"
 
 #include <boost/test/unit_test.hpp>
 

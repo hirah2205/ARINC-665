@@ -11,9 +11,9 @@
  * @brief Definition of unit tests for the class Arinc665::Files::LoadListFile.
  **/
 
-#include <arinc_665/files/LoadListFile.hpp>
+#include "arinc_665/files/LoadListFile.hpp"
 
-#include <arinc_665/Arinc665Exception.hpp>
+#include "arinc_665/Arinc665Exception.hpp"
 
 #include <boost/test/unit_test.hpp>
 

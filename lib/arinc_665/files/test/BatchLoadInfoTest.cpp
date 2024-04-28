@@ -11,11 +11,11 @@
  * @brief Definition of unit tests for the class Arinc665::Files::BatchLoadInfo.
  **/
 
-#include <arinc_665/files/BatchLoadInfo.hpp>
+#include "arinc_665/files/BatchLoadInfo.hpp"
 
-#include <arinc_665/Arinc665Exception.hpp>
+#include "arinc_665/Arinc665Exception.hpp"
 
-#include <helper/Dump.hpp>
+#include "helper/Dump.hpp"
 
 #include <boost/test/unit_test.hpp>
 
@@ -23,12 +23,12 @@
 
 namespace Arinc665::Files {
 
-BOOST_AUTO_TEST_SUITE( Arinc665Test)
-BOOST_AUTO_TEST_SUITE( FilesTest)
-BOOST_AUTO_TEST_SUITE( BatchLoadInfoTest)
+BOOST_AUTO_TEST_SUITE( Arinc665Test )
+BOOST_AUTO_TEST_SUITE( FilesTest )
+BOOST_AUTO_TEST_SUITE( BatchLoadInfoTest )
 
 //! ARINC 665 BatchLoadInfo Constructor Test
-BOOST_AUTO_TEST_CASE( constructor1)
+BOOST_AUTO_TEST_CASE( constructor1 )
 {
   BatchLoadInfo batchLoadInfo{ "Filename1", "Partnumber1" };
   BOOST_CHECK( batchLoadInfo.headerFilename == "Filename1" );
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE( constructor1)
 }
 
 //! ARINC 665 Batch File Header Filename Test
-BOOST_AUTO_TEST_CASE( headerFilename)
+BOOST_AUTO_TEST_CASE( headerFilename )
 {
   using namespace std::string_view_literals;
   using namespace std::string_literals;
@@ -46,23 +46,23 @@ BOOST_AUTO_TEST_CASE( headerFilename)
   BOOST_CHECK( batchLoadInfo.partNumber.empty() );
 
   batchLoadInfo.headerFilename = "Filename1";
-  BOOST_CHECK( batchLoadInfo.headerFilename == "Filename1");
+  BOOST_CHECK( batchLoadInfo.headerFilename == "Filename1" );
   BOOST_CHECK( batchLoadInfo.partNumber.empty());
 }
 
 //! ARINC 665 Batch File Part Number Test
-BOOST_AUTO_TEST_CASE( partNumber)
+BOOST_AUTO_TEST_CASE( partNumber )
 {
   using namespace std::string_view_literals;
   using namespace std::string_literals;
 
   BatchLoadInfo batchLoadInfo{};
-  BOOST_CHECK( batchLoadInfo.headerFilename.empty());
-  BOOST_CHECK( batchLoadInfo.partNumber.empty());
+  BOOST_CHECK( batchLoadInfo.headerFilename.empty() );
+  BOOST_CHECK( batchLoadInfo.partNumber.empty() );
 
   batchLoadInfo.partNumber = "Partnumber1";
-  BOOST_CHECK( batchLoadInfo.headerFilename.empty());
-  BOOST_CHECK( batchLoadInfo.partNumber == "Partnumber1");
+  BOOST_CHECK( batchLoadInfo.headerFilename.empty() );
+  BOOST_CHECK( batchLoadInfo.partNumber == "Partnumber1" );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

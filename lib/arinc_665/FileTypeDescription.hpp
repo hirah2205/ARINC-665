@@ -14,9 +14,9 @@
 #ifndef ARINC_665_FILETYPEDESCRIPTION_HPP
 #define ARINC_665_FILETYPEDESCRIPTION_HPP
 
-#include <arinc_665/Arinc665.hpp>
+#include "arinc_665/Arinc665.hpp"
 
-#include <helper/Description.hpp>
+#include "helper/Description.hpp"
 
 #include <iosfwd>
 

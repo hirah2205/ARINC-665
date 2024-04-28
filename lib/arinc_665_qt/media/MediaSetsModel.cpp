@@ -13,9 +13,9 @@
 
 #include "MediaSetsModel.hpp"
 
-#include <arinc_665/media/MediaSet.hpp>
+#include "arinc_665/media/MediaSet.hpp"
 
-#include <helper_qt/String.hpp>
+#include "helper_qt/String.hpp"
 
 namespace Arinc665Qt::Media {
 

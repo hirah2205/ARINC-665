@@ -13,10 +13,10 @@
 
 #include "MediaSetDefaults.hpp"
 
-#include <arinc_665/utils/FileCreationPolicyDescription.hpp>
+#include "arinc_665/utils/FileCreationPolicyDescription.hpp"
 
-#include <arinc_665/Logger.hpp>
-#include <arinc_665/SupportedArinc665VersionDescription.hpp>
+#include "arinc_665/Logger.hpp"
+#include "arinc_665/SupportedArinc665VersionDescription.hpp"
 
 #include <boost/property_tree/ptree.hpp>
 

@@ -15,26 +15,26 @@
 
 #include "ui_MediaSetViewerWindow.h"
 
-#include <arinc_665_qt/decompile_media_set/DecompileMediaSetWizard.hpp>
+#include "arinc_665_qt/decompile_media_set/DecompileMediaSetWizard.hpp"
 
-#include <arinc_665_qt/media/MediaSetModel.hpp>
+#include "arinc_665_qt/media/MediaSetModel.hpp"
 
-#include <arinc_665_qt/Logger.hpp>
-#include <arinc_665_qt/FilePathMappingModel.hpp>
+#include "arinc_665_qt/Logger.hpp"
+#include "arinc_665_qt/FilePathMappingModel.hpp"
 
-#include <arinc_665/utils/Arinc665Xml.hpp>
-#include <arinc_665/utils/FilesystemMediaSetDecompiler.hpp>
+#include "arinc_665/utils/Arinc665Xml.hpp"
+#include "arinc_665/utils/FilesystemMediaSetDecompiler.hpp"
 
-#include <arinc_665/media/MediaSet.hpp>
-#include <arinc_665/media/File.hpp>
+#include "arinc_665/media/MediaSet.hpp"
+#include "arinc_665/media/File.hpp"
 
-#include <arinc_665/Arinc665Exception.hpp>
+#include "arinc_665/Arinc665Exception.hpp"
 
-#include <arinc_645/CheckValue.hpp>
+#include "arinc_645/CheckValue.hpp"
 
-#include <helper/Exception.hpp>
+#include "helper/Exception.hpp"
 
-#include <helper_qt/String.hpp>
+#include "helper_qt/String.hpp"
 
 #include <QMessageBox>
 #include <QSettings>

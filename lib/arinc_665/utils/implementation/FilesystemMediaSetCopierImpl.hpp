@@ -14,7 +14,7 @@
 #ifndef ARINC_665_UTILS_IMPLEMENTATION_FILESYSTEMMEDIASETCOPIERIMPL_HPP
 #define ARINC_665_UTILS_IMPLEMENTATION_FILESYSTEMMEDIASETCOPIERIMPL_HPP
 
-#include <arinc_665/utils/FilesystemMediaSetCopier.hpp>
+#include "arinc_665/utils/FilesystemMediaSetCopier.hpp"
 
 namespace Arinc665::Utils {
 

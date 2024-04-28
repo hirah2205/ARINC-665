@@ -15,11 +15,11 @@
 #ifndef ARINC_665_QT_MEDIA_SET_MANAGER_REMOVEMEDIASETACTION_HPP
 #define ARINC_665_QT_MEDIA_SET_MANAGER_REMOVEMEDIASETACTION_HPP
 
-#include <arinc_665_qt/media_set_manager/MediaSetManager.hpp>
+#include "arinc_665_qt/media_set_manager/MediaSetManager.hpp"
 
-#include <arinc_665/media/Media.hpp>
+#include "arinc_665/media/Media.hpp"
 
-#include <arinc_665/utils/MediaSetManager.hpp>
+#include "arinc_665/utils/MediaSetManager.hpp"
 
 #include <QWidget>
 

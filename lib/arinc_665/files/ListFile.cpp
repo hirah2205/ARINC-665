@@ -13,13 +13,13 @@
 
 #include "ListFile.hpp"
 
-#include <arinc_665/files/StringUtils.hpp>
-#include <arinc_665/files/MediaSetInformation.hpp>
+#include "arinc_665/files/StringUtils.hpp"
+#include "arinc_665/files/MediaSetInformation.hpp"
 
-#include <arinc_665/Arinc665Exception.hpp>
+#include "arinc_665/Arinc665Exception.hpp"
 
-#include <helper/Endianness.hpp>
-#include <helper/Exception.hpp>
+#include "helper/Endianness.hpp"
+#include "helper/Exception.hpp"
 
 #include <boost/exception/all.hpp>
 

@@ -15,9 +15,9 @@
 #ifndef ARINC_665_QT_MEDIA_TARGETHARDWAREIDSPOSITIONSMODEL_HPP
 #define ARINC_665_QT_MEDIA_TARGETHARDWAREIDSPOSITIONSMODEL_HPP
 
-#include <arinc_665_qt/media/Media.hpp>
+#include "arinc_665_qt/media/Media.hpp"
 
-#include <arinc_665/media/Load.hpp>
+#include "arinc_665/media/Load.hpp"
 
 #include <QAbstractItemModel>
 

@@ -16,13 +16,13 @@
 
 #include "ui_ImportMediaSetXmlWizard.h"
 
-#include <arinc_665/media/MediaSet.hpp>
+#include "arinc_665/media/MediaSet.hpp"
 
-#include <arinc_665/utils/Arinc665Xml.hpp>
-#include <arinc_665/utils/FilesystemMediaSetCompiler.hpp>
-#include <arinc_665/utils/MediaSetManager.hpp>
+#include "arinc_665/utils/Arinc665Xml.hpp"
+#include "arinc_665/utils/FilesystemMediaSetCompiler.hpp"
+#include "arinc_665/utils/MediaSetManager.hpp"
 
-#include <arinc_665/Arinc665Exception.hpp>
+#include "arinc_665/Arinc665Exception.hpp"
 
 #include <QMessageBox>
 

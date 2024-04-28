@@ -15,11 +15,11 @@
 
 #include "ui_DirectoryWidget.h"
 
-#include <arinc_665_qt/media/MediaSetModel.hpp>
+#include "arinc_665_qt/media/MediaSetModel.hpp"
 
-#include <arinc_665/media/Directory.hpp>
+#include "arinc_665/media/Directory.hpp"
 
-#include <helper_qt/String.hpp>
+#include "helper_qt/String.hpp"
 
 namespace Arinc665Qt::Media {
 

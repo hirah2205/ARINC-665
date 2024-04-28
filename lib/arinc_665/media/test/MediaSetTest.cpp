@@ -11,13 +11,13 @@
  * @brief Definition of Unit Tests for Class Arinc665::Media::MediaSet.
  **/
 
-#include <arinc_665/media/Media.hpp>
-#include <arinc_665/media/MediaSet.hpp>
-#include <arinc_665/media/Batch.hpp>
-#include <arinc_665/media/Load.hpp>
-#include <arinc_665/media/RegularFile.hpp>
+#include "arinc_665/media/Media.hpp"
+#include "arinc_665/media/MediaSet.hpp"
+#include "arinc_665/media/Batch.hpp"
+#include "arinc_665/media/Load.hpp"
+#include "arinc_665/media/RegularFile.hpp"
 
-#include <helper/Logger.hpp>
+#include "helper/Logger.hpp"
 
 #include <boost/test/unit_test.hpp>
 

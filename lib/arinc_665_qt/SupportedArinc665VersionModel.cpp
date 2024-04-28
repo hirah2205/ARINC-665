@@ -13,9 +13,9 @@
 
 #include "SupportedArinc665VersionModel.hpp"
 
-#include <arinc_665/SupportedArinc665VersionDescription.hpp>
+#include "arinc_665/SupportedArinc665VersionDescription.hpp"
 
-#include <helper_qt/String.hpp>
+#include "helper_qt/String.hpp"
 
 namespace Arinc665Qt {
 

@@ -13,8 +13,8 @@
 
 #include "Arinc665Xml.hpp"
 
-#include <arinc_665/utils/implementation/Arinc665XmlLoadImpl.hpp>
-#include <arinc_665/utils/implementation/Arinc665XmlSaveImpl.hpp>
+#include "arinc_665/utils/implementation/Arinc665XmlLoadImpl.hpp"
+#include "arinc_665/utils/implementation/Arinc665XmlSaveImpl.hpp"
 
 namespace Arinc665::Utils {
 

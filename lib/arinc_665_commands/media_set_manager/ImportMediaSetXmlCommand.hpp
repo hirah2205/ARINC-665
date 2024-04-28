@@ -15,16 +15,16 @@
 #ifndef ARINC_665_COMMANDS_MEDIA_SET_MANAGER_IMPORTMEDIASETXMLCOMMAND_HPP
 #define ARINC_665_COMMANDS_MEDIA_SET_MANAGER_IMPORTMEDIASETXMLCOMMAND_HPP
 
-#include <arinc_665_commands/media_set_manager/MediaSetManager.hpp>
+#include "arinc_665_commands/media_set_manager/MediaSetManager.hpp"
 
-#include <arinc_665/utils/Arinc665Xml.hpp>
-#include <arinc_665/utils/MediaSetManagerConfiguration.hpp>
+#include "arinc_665/utils/Arinc665Xml.hpp"
+#include "arinc_665/utils/MediaSetManagerConfiguration.hpp"
 
-#include <arinc_665/media/Media.hpp>
+#include "arinc_665/media/Media.hpp"
 
-#include <arinc_665/files/Files.hpp>
+#include "arinc_665/files/Files.hpp"
 
-#include <commands/Commands.hpp>
+#include "commands/Commands.hpp"
 
 #include <boost/program_options.hpp>
 #include <boost/optional/optional.hpp>

@@ -14,9 +14,9 @@
 #ifndef ARINC_665_FILES_CHECKVALUEUTILS_HPP
 #define ARINC_665_FILES_CHECKVALUEUTILS_HPP
 
-#include <arinc_665/files/Files.hpp>
+#include "arinc_665/files/Files.hpp"
 
-#include <arinc_645/Arinc645.hpp>
+#include "arinc_645/Arinc645.hpp"
 
 namespace Arinc665::Files {
 

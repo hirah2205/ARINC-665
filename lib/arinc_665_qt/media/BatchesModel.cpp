@@ -13,9 +13,9 @@
 
 #include "BatchesModel.hpp"
 
-#include <arinc_665/media/Batch.hpp>
+#include "arinc_665/media/Batch.hpp"
 
-#include <helper_qt/String.hpp>
+#include "helper_qt/String.hpp"
 
 namespace Arinc665Qt::Media {
 

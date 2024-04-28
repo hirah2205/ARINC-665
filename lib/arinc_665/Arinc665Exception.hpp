@@ -14,7 +14,7 @@
 #ifndef ARINC_665_ARINC665EXCEPTION_HPP
 #define ARINC_665_ARINC665EXCEPTION_HPP
 
-#include <arinc_665/Arinc665.hpp>
+#include "arinc_665/Arinc665.hpp"
 
 #include <boost/exception/exception.hpp>
 

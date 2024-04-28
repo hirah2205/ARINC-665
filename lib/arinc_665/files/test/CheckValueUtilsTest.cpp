@@ -11,12 +11,12 @@
  * @brief Unit test of Check Value Utilities.
  **/
 
-#include <arinc_665/files/CheckValueUtils.hpp>
-#include <arinc_665/Arinc665Exception.hpp>
+#include "arinc_665/files/CheckValueUtils.hpp"
+#include "arinc_665/Arinc665Exception.hpp"
 
-#include <arinc_645/CheckValue.hpp>
+#include "arinc_645/CheckValue.hpp"
 
-#include <helper/Dump.hpp>
+#include "helper/Dump.hpp"
 
 #include <boost/test/unit_test.hpp>
 

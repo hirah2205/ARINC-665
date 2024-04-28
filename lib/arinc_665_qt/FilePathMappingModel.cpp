@@ -13,7 +13,7 @@
 
 #include "FilePathMappingModel.hpp"
 
-#include <arinc_665/media/File.hpp>
+#include "arinc_665/media/File.hpp"
 
 namespace Arinc665Qt {
 

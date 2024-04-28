@@ -13,7 +13,7 @@
 
 #include "FilesystemMediaSetCopier.hpp"
 
-#include <arinc_665/utils/implementation/FilesystemMediaSetCopierImpl.hpp>
+#include "arinc_665/utils/implementation/FilesystemMediaSetCopierImpl.hpp"
 
 namespace Arinc665::Utils {
 

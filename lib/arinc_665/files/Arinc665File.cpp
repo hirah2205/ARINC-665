@@ -13,13 +13,13 @@
 
 #include "Arinc665File.hpp"
 
-#include <arinc_665/Arinc665Exception.hpp>
+#include "arinc_665/Arinc665Exception.hpp"
 
-#include <arinc_645/Arinc645Crc.hpp>
+#include "arinc_645/Arinc645Crc.hpp"
 
-#include <helper/Endianness.hpp>
-#include <helper/Exception.hpp>
-#include <helper/SafeCast.hpp>
+#include "helper/Endianness.hpp"
+#include "helper/Exception.hpp"
+#include "helper/SafeCast.hpp"
 
 #include <boost/exception/all.hpp>
 

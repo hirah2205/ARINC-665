@@ -11,14 +11,14 @@
  * @brief ARINC 665 Media Set Manager.
  **/
 
-#include <arinc_665_commands/Arinc665Commands.hpp>
+#include "arinc_665_commands/Arinc665Commands.hpp"
 
-#include <arinc_665/Version.hpp>
+#include "arinc_665/Version.hpp"
 
-#include <commands/CommandRegistry.hpp>
-#include <commands/Utils.hpp>
+#include "commands/CommandRegistry.hpp"
+#include "commands/Utils.hpp"
 
-#include <helper/Logger.hpp>
+#include "helper/Logger.hpp"
 
 #include <boost/exception/diagnostic_information.hpp>
 

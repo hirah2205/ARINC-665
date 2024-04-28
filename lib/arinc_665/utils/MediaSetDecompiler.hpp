@@ -14,13 +14,13 @@
 #ifndef ARINC_665_UTILS_MEDIASETDECOMPILER_HPP
 #define ARINC_665_UTILS_MEDIASETDECOMPILER_HPP
 
-#include <arinc_665/utils/Utils.hpp>
+#include "arinc_665/utils/Utils.hpp"
 
-#include <arinc_665/media/Media.hpp>
+#include "arinc_665/media/Media.hpp"
 
-#include <arinc_665/files/Files.hpp>
+#include "arinc_665/files/Files.hpp"
 
-#include <arinc_645/Arinc645.hpp>
+#include "arinc_645/Arinc645.hpp"
 
 #include <filesystem>
 #include <functional>

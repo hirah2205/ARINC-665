@@ -13,14 +13,14 @@
 
 #include "CheckValueUtils.hpp"
 
-#include <arinc_665/Arinc665Exception.hpp>
+#include "arinc_665/Arinc665Exception.hpp"
 
-#include <arinc_645/CheckValue.hpp>
-#include <arinc_645/CheckValueTypeDescription.hpp>
+#include "arinc_645/CheckValue.hpp"
+#include "arinc_645/CheckValueTypeDescription.hpp"
 
-#include <helper/Endianness.hpp>
-#include <helper/Exception.hpp>
-#include <helper/SafeCast.hpp>
+#include "helper/Endianness.hpp"
+#include "helper/Exception.hpp"
+#include "helper/SafeCast.hpp"
 
 #include <boost/exception/all.hpp>
 

@@ -16,9 +16,9 @@
 #ifndef ARINC_665_UTILS_MEDIASETPRINTER_HPP
 #define ARINC_665_UTILS_MEDIASETPRINTER_HPP
 
-#include <arinc_665/utils/Utils.hpp>
+#include "arinc_665/utils/Utils.hpp"
 
-#include <arinc_665/media/Media.hpp>
+#include "arinc_665/media/Media.hpp"
 
 #include <iosfwd>
 #include <iostream>

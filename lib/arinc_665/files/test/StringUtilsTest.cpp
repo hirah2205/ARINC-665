@@ -11,9 +11,9 @@
  * @brief Definition of unit tests for the Module Arinc665::Files::StringUtils.
  **/
 
-#include <arinc_665/files/StringUtils.hpp>
+#include "arinc_665/files/StringUtils.hpp"
 
-#include <arinc_665/Arinc665Exception.hpp>
+#include "arinc_665/Arinc665Exception.hpp"
 
 #include <boost/test/unit_test.hpp>
 

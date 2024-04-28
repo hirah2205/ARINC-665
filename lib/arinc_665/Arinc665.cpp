@@ -13,9 +13,9 @@
 
 #include "Arinc665.hpp"
 
-#include <arinc_665/Version.hpp>
+#include "arinc_665/Version.hpp"
 
-#include <helper/VersionInformation.hpp>
+#include "helper/VersionInformation.hpp"
 
 namespace Arinc665 {
 

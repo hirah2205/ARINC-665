@@ -15,11 +15,11 @@
 #ifndef ARINC_665_COMMANDS_MEDIA_SET_MANAGER_LISTBATCHESCOMMAND_HPP
 #define ARINC_665_COMMANDS_MEDIA_SET_MANAGER_LISTBATCHESCOMMAND_HPP
 
-#include <arinc_665_commands/media_set_manager/MediaSetManager.hpp>
+#include "arinc_665_commands/media_set_manager/MediaSetManager.hpp"
 
-#include <arinc_665/Arinc665.hpp>
+#include "arinc_665/Arinc665.hpp"
 
-#include <commands/Commands.hpp>
+#include "commands/Commands.hpp"
 
 #include <boost/program_options.hpp>
 

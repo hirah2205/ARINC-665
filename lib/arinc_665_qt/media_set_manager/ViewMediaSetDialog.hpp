@@ -14,11 +14,11 @@
 #ifndef ARINC_665_QT_MEDIA_SET_MANAGER_VIEWMEDIASETDIALOG_HPP
 #define ARINC_665_QT_MEDIA_SET_MANAGER_VIEWMEDIASETDIALOG_HPP
 
-#include <arinc_665_qt/media_set_manager/MediaSetManager.hpp>
+#include "arinc_665_qt/media_set_manager/MediaSetManager.hpp"
 
-#include <arinc_665_qt/media/Media.hpp>
+#include "arinc_665_qt/media/Media.hpp"
 
-#include <arinc_665/media/Media.hpp>
+#include "arinc_665/media/Media.hpp"
 
 #include <QDialog>
 

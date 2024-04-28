@@ -14,13 +14,13 @@
 
 #include "RemoveMediaSetAction.hpp"
 
-#include <arinc_665/media/MediaSet.hpp>
+#include "arinc_665/media/MediaSet.hpp"
 
-#include <arinc_665/utils/FilesystemMediaSetRemover.hpp>
+#include "arinc_665/utils/FilesystemMediaSetRemover.hpp"
 
-#include <arinc_665/Arinc665Exception.hpp>
+#include "arinc_665/Arinc665Exception.hpp"
 
-#include <helper_qt/String.hpp>
+#include "helper_qt/String.hpp"
 
 #include <QMessageBox>
 

@@ -15,13 +15,13 @@
 
 #include "ui_MediaSetViewWidget.h"
 
-#include <arinc_665_qt/media/MediaSetModel.hpp>
+#include "arinc_665_qt/media/MediaSetModel.hpp"
 
-#include <arinc_665/media/Base.hpp>
-#include <arinc_665/media/MediaSet.hpp>
-#include <arinc_665/media/Directory.hpp>
-#include <arinc_665/media/File.hpp>
-#include <arinc_665/media/Load.hpp>
+#include "arinc_665/media/Base.hpp"
+#include "arinc_665/media/MediaSet.hpp"
+#include "arinc_665/media/Directory.hpp"
+#include "arinc_665/media/File.hpp"
+#include "arinc_665/media/Load.hpp"
 
 namespace Arinc665Qt::Media {
 

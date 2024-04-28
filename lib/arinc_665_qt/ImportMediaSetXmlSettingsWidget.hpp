@@ -14,7 +14,7 @@
 #ifndef ARINC_665_QT_IMPORTMEDIASETXMLSETTINGSWIDGET_HPP
 #define ARINC_665_QT_IMPORTMEDIASETXMLSETTINGSWIDGET_HPP
 
-#include <arinc_665_qt/Arinc665Qt.hpp>
+#include "arinc_665_qt/Arinc665Qt.hpp"
 
 #include <QGroupBox>
 #include <QFileDialog>

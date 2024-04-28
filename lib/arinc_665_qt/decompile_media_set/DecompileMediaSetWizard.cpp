@@ -15,7 +15,7 @@
 
 #include "ui_DecompileMediaSetWizard.h"
 
-#include <arinc_665/utils/MediaSetDefaults.hpp>
+#include "arinc_665/utils/MediaSetDefaults.hpp"
 
 namespace Arinc665Qt {
 

@@ -20,7 +20,7 @@
 #ifndef ARINC_665_COMMANDS_MEDIA_SET_MANAGER_MEDIASETMANAGER_HPP
 #define ARINC_665_COMMANDS_MEDIA_SET_MANAGER_MEDIASETMANAGER_HPP
 
-#include <arinc_665_commands/Arinc665Commands.hpp>
+#include "arinc_665_commands/Arinc665Commands.hpp"
 
 /**
  * @brief ARINC 665 %Media Set Manager %Commands.

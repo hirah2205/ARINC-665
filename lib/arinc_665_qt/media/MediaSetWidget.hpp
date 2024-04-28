@@ -14,11 +14,11 @@
 #ifndef ARINC_665_QT_MEDIA_MEDIASETWIDGET_HPP
 #define ARINC_665_QT_MEDIA_MEDIASETWIDGET_HPP
 
-#include <arinc_665_qt/media/Media.hpp>
+#include "arinc_665_qt/media/Media.hpp"
 
-#include <arinc_665/media/Media.hpp>
+#include "arinc_665/media/Media.hpp"
 
-#include <arinc_645_qt/Arinc645Qt.hpp>
+#include "arinc_645_qt/Arinc645Qt.hpp"
 
 #include <QWidget>
 

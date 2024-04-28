@@ -14,9 +14,9 @@
 #ifndef ARINC_665_LOGGER_HPP
 #define ARINC_665_LOGGER_HPP
 
-#include <arinc_665/Arinc665.hpp>
+#include "arinc_665/Arinc665.hpp"
 
-#include <helper/Logger.hpp>
+#include "helper/Logger.hpp"
 
 #include <boost/log/sources/global_logger_storage.hpp>
 
