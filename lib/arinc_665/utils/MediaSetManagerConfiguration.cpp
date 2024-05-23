@@ -65,7 +65,13 @@ void MediaSetManagerConfiguration::fromProperties(
     }
   }
 
-  defaults = MediaSetDefaults{ properties.get_child( "defaults", {} ) };
+  defaults = MediaSetDefaults{};
+  if (
+    const auto defaultsProperties{ properties.get_child_optional( "defaults" ) };
+    defaultsProperties )
+  {
+    defaults = MediaSetDefaults{ *defaultsProperties };
+  }
 }
 
 boost::property_tree::ptree MediaSetManagerConfiguration::toProperties(
