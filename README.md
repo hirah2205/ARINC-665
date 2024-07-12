@@ -18,6 +18,9 @@ sets.
 For building graphical applications a Qt based library is provided which 
 consist ow models, dialogs, and wizards to work with ARINC 665 media sets.
 
+## License
+This project is licensed under the terms of the [*Mozilla Public License Version 2.0* (MPL)](LICENSE).
+
 ## Changes
 This section only contains changes within the standards, which are respected
 within this library.
