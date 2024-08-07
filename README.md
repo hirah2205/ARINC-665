@@ -18,6 +18,16 @@ sets.
 For building graphical applications a Qt based library is provided which 
 consist ow models, dialogs, and wizards to work with ARINC 665 media sets.
 
+## Dependencies
+First level dependencies:
+- [Helper Library](https://git.thomas-vogt.de/thomas-vogt/helper)
+- [Qt Icon Resources](https://git.thomas-vogt.de/thomas-vogt/qt_icon_resources)
+- [ARINC 645 Tool Suite](https://git.thomas-vogt.de/thomas-vogt/arinc_645)
+- [Commands Library](https://git.thomas-vogt.de/thomas-vogt/commands)
+- Boost Library
+- libxml++
+- Qt (Version 5 or 6)
+
 ## License
 This project is licensed under the terms of the [*Mozilla Public License Version 2.0* (MPL)](LICENSE).
 
