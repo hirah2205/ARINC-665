@@ -41,7 +41,7 @@ get_property(
   PROPERTY DOC_PATHS )
 
 set( DOXYGEN_PROJECT_NAME "${arinc_665_DESCRIPTION}" )
-set( DOXYGEN_PROJECT_BRIEF "${arinc_665_DESCRIPTION}" )
+set( DOXYGEN_PROJECT_BRIEF "API Description" )
 set( DOXYGEN_PROJECT_NUMBER "${arinc_665_VERSION}" )
 #set( DOXYGEN_BUILTIN_STL_SUPPORT YES )
 set( DOXYGEN_EXTRACT_PRIVATE NO )
@@ -111,6 +111,7 @@ doxygen_add_docs(
 add_dependencies( doc arinc_665_api_doc )
 
 # add index.html redirection
+set( INDEX_HTML_OUTPUT_DIR html )
 configure_file(
   ${cmake_common_SOURCE_DIR}/doxygen_index.html.in
   index.html
@@ -118,14 +119,20 @@ configure_file(
 
 install(
   DIRECTORY
-    ${CMAKE_CURRENT_BINARY_DIR}/html
+    ${CMAKE_CURRENT_BINARY_DIR}/html/
   DESTINATION ${CMAKE_INSTALL_DOCDIR}/arinc_665_api_doc
   COMPONENT development
   OPTIONAL
   MESSAGE_NEVER )
 
+set( INDEX_HTML_OUTPUT_DIR arinc_665_api_doc )
+configure_file(
+  ${cmake_common_SOURCE_DIR}/doxygen_index.html.in
+  arinc_665_api_doc.html
+  @ONLY )
+
 install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/index.html
-  DESTINATION ${CMAKE_INSTALL_DOCDIR}/arinc_665_api_doc
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/arinc_665_api_doc.html
+  DESTINATION ${CMAKE_INSTALL_DOCDIR}
   COMPONENT development
   OPTIONAL )
