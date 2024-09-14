@@ -28,6 +28,8 @@ namespace Arinc665::Utils {
 
 /**
  * @brief ARINC 665 %Media Set Manager Configuration.
+ *
+ * It can load and store configuration values using the boost::property_tree.
  **/
 class ARINC_665_EXPORT MediaSetManagerConfiguration
 {
@@ -69,9 +71,9 @@ class ARINC_665_EXPORT MediaSetManagerConfiguration
       bool full = false ) const;
 
     //! Media Sets Paths
-    MediaSetsPaths mediaSets{};
+    MediaSetsPaths mediaSets;
     //! Media Set Defaults Configuration
-    MediaSetDefaults defaults{};
+    MediaSetDefaults defaults;
 };
 
 }

@@ -28,7 +28,9 @@ namespace Arinc665::Utils {
 /**
  * @brief ARINC 665 %Media Set Compiler.
  *
- * This compiler uses a %Media Set and compiles all files and structures.
+ * This class is responsible for managing the creation of media, directories,
+ * and files, as well as handling the reading and writing of specific file types
+ * within the target.
  **/
 class ARINC_665_EXPORT MediaSetCompiler
 {
