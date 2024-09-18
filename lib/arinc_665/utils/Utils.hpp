@@ -29,10 +29,10 @@
 
 #include "arinc_645/Arinc645.hpp"
 
-#include <memory>
-#include <optional>
 #include <filesystem>
 #include <map>
+#include <memory>
+#include <optional>
 #include <set>
 
 /**
@@ -153,7 +153,7 @@ using MediaSetManagerPtr = std::shared_ptr< MediaSetManager >;
  * @retval {}
  *   If @p directory is not a valid directory or ARINC 665 Medium
  **/
-[[nodiscard]] std::optional< Files::MediaSetInformation > ARINC_665_EXPORT
+[[nodiscard]] ARINC_665_EXPORT std::optional< Files::MediaSetInformation >
 getMediumInformation( const std::filesystem::path &directory );
 
 }

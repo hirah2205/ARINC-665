@@ -36,7 +36,7 @@ namespace Arinc665Commands::MediaSetManager {
  * @param[in,out] registry
  *   Registry, where the commands shall be registered to.
  **/
-void ARINC_665_COMMANDS_EXPORT registerCommands(
+ARINC_665_COMMANDS_EXPORT void registerCommands(
   const Commands::CommandRegistryPtr& registry );
 
 }

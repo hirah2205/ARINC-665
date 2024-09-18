@@ -19,14 +19,14 @@
 
 #include "arinc_645/CheckValue.hpp"
 
-#include <string>
-#include <list>
-#include <vector>
-#include <set>
-#include <map>
-#include <utility>
-#include <optional>
 #include <cstdint>
+#include <list>
+#include <map>
+#include <optional>
+#include <set>
+#include <string>
+#include <utility>
+#include <vector>
 
 namespace Arinc665::Media {
 
@@ -608,7 +608,7 @@ class ARINC_665_EXPORT Load final : public File
  * @retval {}
  *   When no load with given part number exists in @p loads
  **/
-[[nodiscard]] ConstLoadPtr ARINC_665_EXPORT Loads_loadByPartNumber(
+[[nodiscard]] ARINC_665_EXPORT ConstLoadPtr Loads_loadByPartNumber(
   const ConstLoads &loads,
   std::string_view partNumber );
 
@@ -636,7 +636,7 @@ class ARINC_665_EXPORT Load final : public File
  * @retval {}
  *   No file or more than on file found within data and support files.
  **/
-[[nodiscard]] ConstFilePtr ARINC_665_EXPORT Loads_file(
+[[nodiscard]] ARINC_665_EXPORT ConstFilePtr Loads_file(
   const ConstLoads &loads,
   std::string_view filename,
   std::string_view loadPartNumber = {} );
@@ -662,7 +662,7 @@ class ARINC_665_EXPORT Load final : public File
  * @retval {}
  *   No file or more than on file found within data and support files.
  **/
-[[nodiscard]] ConstFilePtr ARINC_665_EXPORT Loads_file(
+[[nodiscard]] ARINC_665_EXPORT ConstFilePtr Loads_file(
   const ConstLoads &loads,
   const CheckValues &checkValues,
   std::string_view filename,

@@ -16,10 +16,10 @@
 
 #include "arinc_665/files/Files.hpp"
 
-#include <string>
-#include <string_view>
 #include <list>
 #include <set>
+#include <string>
+#include <string_view>
 
 namespace Arinc665::Files {
 
@@ -47,7 +47,7 @@ namespace Arinc665::Files {
  *
  * @return New iterator position.
  **/
-ConstRawFileSpan::iterator ARINC_665_EXPORT StringUtils_decodeString(
+ARINC_665_EXPORT ConstRawFileSpan::iterator StringUtils_decodeString(
   ConstRawFileSpan::iterator it,
   std::string &str );
 
@@ -59,7 +59,7 @@ ConstRawFileSpan::iterator ARINC_665_EXPORT StringUtils_decodeString(
  *
  * @return Encoded raw string.
  **/
-[[nodiscard]] RawFile ARINC_665_EXPORT StringUtils_encodeString(
+[[nodiscard]] ARINC_665_EXPORT RawFile StringUtils_encodeString(
   std::string_view str );
 
 /** @} **/
@@ -86,7 +86,7 @@ ConstRawFileSpan::iterator ARINC_665_EXPORT StringUtils_decodeString(
  *
  * @return New iterator position.
  **/
-ConstRawFileSpan::iterator ARINC_665_EXPORT StringUtils_decodeStrings(
+ARINC_665_EXPORT ConstRawFileSpan::iterator StringUtils_decodeStrings(
   ConstRawFileSpan::iterator it,
   std::list< std::string > &strings );
 
@@ -98,7 +98,7 @@ ConstRawFileSpan::iterator ARINC_665_EXPORT StringUtils_decodeStrings(
  *
  * @return Encoded raw string list.
  **/
-[[nodiscard]] RawFile ARINC_665_EXPORT StringUtils_encodeStrings(
+[[nodiscard]] ARINC_665_EXPORT RawFile StringUtils_encodeStrings(
   const std::list< std::string > &strings );
 
 /** @} **/

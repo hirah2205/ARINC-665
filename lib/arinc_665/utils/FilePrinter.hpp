@@ -43,7 +43,7 @@ namespace Arinc665::Utils {
  * @param[in] indent
  *   Indent for sub-information
  **/
-void ARINC_665_EXPORT FilePrinter_print(
+ARINC_665_EXPORT void FilePrinter_print(
   const Arinc665::Files::FileListFile &fileListFile,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
@@ -61,7 +61,7 @@ void ARINC_665_EXPORT FilePrinter_print(
  * @param[in] indent
  *   Indent for sub-information
  **/
-void ARINC_665_EXPORT FilePrinter_print(
+ARINC_665_EXPORT void FilePrinter_print(
   const Arinc665::Files::LoadListFile &loadListFile,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
@@ -79,7 +79,7 @@ void ARINC_665_EXPORT FilePrinter_print(
  * @param[in] indent
  *   Indent for sub-information
  **/
-void ARINC_665_EXPORT FilePrinter_print(
+ARINC_665_EXPORT void FilePrinter_print(
   const Arinc665::Files::BatchListFile &batchListFile,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
@@ -97,7 +97,7 @@ void ARINC_665_EXPORT FilePrinter_print(
  * @param[in] indent
  *   Indent for sub-information
  **/
-void ARINC_665_EXPORT FilePrinter_print(
+ARINC_665_EXPORT void FilePrinter_print(
   const Arinc665::Files::LoadHeaderFile &loadHeaderFile,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
@@ -115,7 +115,7 @@ void ARINC_665_EXPORT FilePrinter_print(
  * @param[in] indent
  *   Indent for sub-information
  **/
-void ARINC_665_EXPORT FilePrinter_print(
+ARINC_665_EXPORT void FilePrinter_print(
   const Arinc665::Files::BatchFile &batchFile,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},

@@ -50,7 +50,7 @@ namespace Arinc665::Utils {
  * @param[in] indent
  *   Indent for sub-information
  **/
-void ARINC_665_EXPORT MediaSetPrinter_print(
+ARINC_665_EXPORT void MediaSetPrinter_print(
   const Media::MediaSet &mediaSet,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
@@ -69,7 +69,7 @@ void ARINC_665_EXPORT MediaSetPrinter_print(
  * @param[in] initialIndent
  *   Initial Indention prepended before each output.
  **/
-void ARINC_665_EXPORT MediaSetPrinter_print(
+ARINC_665_EXPORT void MediaSetPrinter_print(
   const Media::File &file,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {} );
@@ -91,7 +91,7 @@ void ARINC_665_EXPORT MediaSetPrinter_print(
  * @param[in] indent
  *   Indent for sub-information
  **/
-void ARINC_665_EXPORT MediaSetPrinter_print(
+ARINC_665_EXPORT void MediaSetPrinter_print(
   const Media::Load &load,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
@@ -113,7 +113,7 @@ void ARINC_665_EXPORT MediaSetPrinter_print(
  * @param[in] indent
  *   Indent for sub-information
  **/
-void ARINC_665_EXPORT MediaSetPrinter_print(
+ARINC_665_EXPORT void MediaSetPrinter_print(
   const Media::Batch &batch,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},
@@ -134,7 +134,7 @@ void ARINC_665_EXPORT MediaSetPrinter_print(
  * @param[in] indent
  *   Indent for sub-information
  **/
-void ARINC_665_EXPORT MediaSetPrinter_print(
+ARINC_665_EXPORT void MediaSetPrinter_print(
   const Media::CheckValues &checkValues,
   std::ostream &outS = std::cout,
   std::string_view initialIndent = {},

@@ -50,7 +50,7 @@ using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping >;
  * @throw Arinc665Exception
  *   If file cannot be loaded or is invalid.
  **/
-[[nodiscard]] LoadXmlResult ARINC_665_EXPORT Arinc665Xml_load(
+[[nodiscard]] ARINC_665_EXPORT LoadXmlResult Arinc665Xml_load(
   const std::filesystem::path &xmlFile );
 
 /**
@@ -64,7 +64,7 @@ using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping >;
  * @param[in] xmlFile
  *   ARINC 665 XML file.
  **/
-void ARINC_665_EXPORT Arinc665Xml_save(
+ARINC_665_EXPORT void Arinc665Xml_save(
   const Media::MediaSet &mediaSet,
   const FilePathMapping &filePathMapping,
   const std::filesystem::path &xmlFile );

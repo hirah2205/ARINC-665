@@ -52,7 +52,7 @@ namespace Arinc665::Files {
  *
  * @return Size of raw representation of @p checkValue.
  **/
-[[nodiscard]] size_t ARINC_665_EXPORT CheckValueUtils_size(
+[[nodiscard]] ARINC_665_EXPORT size_t CheckValueUtils_size(
   Arinc645::CheckValueType type );
 
 /**
@@ -63,7 +63,7 @@ namespace Arinc665::Files {
  *
  * @return Check Value as raw data.
  **/
-[[nodiscard]] RawFile ARINC_665_EXPORT CheckValueUtils_encode(
+[[nodiscard]] ARINC_665_EXPORT RawFile CheckValueUtils_encode(
   const Arinc645::CheckValue &checkValue );
 
 /**
@@ -80,7 +80,7 @@ namespace Arinc665::Files {
  *   - Invalid Type
  *   - Check Value Type / Length mismatch
  **/
-[[nodiscard]] Arinc645::CheckValue ARINC_665_EXPORT CheckValueUtils_decode(
+[[nodiscard]] ARINC_665_EXPORT Arinc645::CheckValue CheckValueUtils_decode(
   ConstRawFileSpan rawFile );
 
 /** @} **/

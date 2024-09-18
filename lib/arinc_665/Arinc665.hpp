@@ -23,10 +23,10 @@
 
 #include "helper/Helper.hpp"
 
+#include <cstdint>
+#include <optional>
 #include <string_view>
 #include <vector>
-#include <optional>
-#include <cstdint>
 
 /**
  * @brief ARINC 665 Specification.
@@ -179,7 +179,7 @@ using OptionalMediumNumber = std::optional< MediumNumber >;
  *
  * @return ARINC 665 Version Information.
  **/
-[[nodiscard]] Helper::VersionsInformation::value_type ARINC_665_EXPORT
+[[nodiscard]] ARINC_665_EXPORT Helper::VersionsInformation::value_type
 arinc665Version();
 
 }
