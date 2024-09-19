@@ -73,8 +73,9 @@ void FileWidget::selectFile( Arinc665::Media::ConstFilePtr file )
 
     ui->checkValueTypeGroupBox->setChecked(
       fileV->checkValueType().has_value() );
-    ui->checkValueType->setCurrentIndex( checkValueTypeModelV->checkValueType(
-      fileV->effectiveCheckValueType() ) );
+    ui->checkValueType->setCurrentIndex(
+      Arinc645Qt::CheckValueTypeModel::checkValueType(
+        fileV->effectiveCheckValueType() ) );
   }
 
   switch ( fileV->fileType() )

@@ -95,28 +95,33 @@ void MediaSetWidget::selectMediaSet(
 
     ui->mediaSetCheckValueTypeGroupBox->setChecked(
       mediaSetV->mediaSetCheckValueType().has_value() );
-    ui->mediaSetCheckValueType->setCurrentIndex( checkValueTypeModelV->checkValueType(
-      mediaSetV->effectiveMediaSetCheckValueType() ) );
+    ui->mediaSetCheckValueType->setCurrentIndex(
+      Arinc645Qt::CheckValueTypeModel::checkValueType(
+        mediaSetV->effectiveMediaSetCheckValueType() ) );
 
     ui->listOfFilesCheckValueTypeGroupBox->setChecked(
       mediaSetV->listOfFilesCheckValueType().has_value() );
-    ui->listOfFilesCheckValueType->setCurrentIndex( checkValueTypeModelV->checkValueType(
-      mediaSetV->effectiveListOfFilesCheckValueType() ) );
+    ui->listOfFilesCheckValueType->setCurrentIndex(
+      Arinc645Qt::CheckValueTypeModel::checkValueType(
+        mediaSetV->effectiveListOfFilesCheckValueType() ) );
 
     ui->listOfLoadsCheckValueTypeGroupBox->setChecked(
       mediaSetV->listOfLoadsCheckValueType().has_value() );
-    ui->listOfLoadsCheckValueType->setCurrentIndex( checkValueTypeModelV->checkValueType(
-      mediaSetV->effectiveListOfLoadsCheckValueType() ) );
+    ui->listOfLoadsCheckValueType->setCurrentIndex(
+      Arinc645Qt::CheckValueTypeModel::checkValueType(
+        mediaSetV->effectiveListOfLoadsCheckValueType() ) );
 
     ui->listOfBatchesCheckValueTypeGroupBox->setChecked(
       mediaSetV->listOfBatchesCheckValueType().has_value() );
-    ui->listOfBatchesCheckValueType->setCurrentIndex( checkValueTypeModelV->checkValueType(
-      mediaSetV->effectiveListOfBatchesCheckValueType() ) );
+    ui->listOfBatchesCheckValueType->setCurrentIndex(
+      Arinc645Qt::CheckValueTypeModel::checkValueType(
+        mediaSetV->effectiveListOfBatchesCheckValueType() ) );
 
     ui->filesCheckValueTypeGroupBox->setChecked(
       mediaSetV->filesCheckValueType().has_value() );
-    ui->filesCheckValueType->setCurrentIndex( checkValueTypeModelV->checkValueType(
-      mediaSetV->effectiveFilesCheckValueType() ) );
+    ui->filesCheckValueType->setCurrentIndex(
+      Arinc645Qt::CheckValueTypeModel::checkValueType(
+        mediaSetV->effectiveFilesCheckValueType() ) );
 
     ui->content->setRootIndex( mediaSetModelV->index( 0, 0 ) );
 

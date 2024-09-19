@@ -78,7 +78,7 @@ void Arinc665XmlSaveImpl::operator()()
 
 void Arinc665XmlSaveImpl::mediaSet( xmlpp::Element &mediaSetElement ) const
 {
-  mediaSetElement.set_attribute( "PartNumber", mediaSetV.partNumber().data() );
+  mediaSetElement.set_attribute( "PartNumber", std::string( mediaSetV.partNumber() ) );
 
   // Media Set Check Value
   checkValue(
@@ -214,7 +214,7 @@ void Arinc665XmlSaveImpl::load(
   const auto load{ std::dynamic_pointer_cast< const Media::Load >( file ) };
   assert( load );
 
-  loadElement->set_attribute( "PartNumber", load->partNumber().data() );
+  loadElement->set_attribute( "PartNumber", std::string( load->partNumber() ) );
 
   loadElement->set_attribute(
     "PartFlags",
@@ -311,12 +311,12 @@ void Arinc665XmlSaveImpl::batch(
   const auto batch{ std::dynamic_pointer_cast< const Media::Batch >( file ) };
   assert( batch );
 
-  batchElement->set_attribute( "PartNumber", batch->partNumber().data() );
+  batchElement->set_attribute( "PartNumber", std::string( batch->partNumber() ) );
 
   // set optional comment
   if ( const auto comment{ batch->comment() }; !comment.empty() )
   {
-    batchElement->set_attribute( "Comment", comment.data() );
+    batchElement->set_attribute( "Comment", std::string( comment ) );
   }
 
   // Iterate over batch information

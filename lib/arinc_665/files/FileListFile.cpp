@@ -458,7 +458,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
       rawPathname.begin(),
       rawPathname.end() );
 
-    rawFileInfo.resize( rawFileInfo.size() + 2 * sizeof( uint16_t ) );
+    rawFileInfo.resize( rawFileInfo.size() + ( 2 * sizeof( uint16_t ) ) );
 
     // member sequence number
     auto fileInfoIt{ Helper::setInt< uint16_t>(

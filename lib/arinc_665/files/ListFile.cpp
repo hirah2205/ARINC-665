@@ -88,7 +88,8 @@ RawFile ListFile::encodeMediaInformation() const
   const auto partNumberSize{
     static_cast< ptrdiff_t >( rawMediaInformation.size() ) };
 
-  rawMediaInformation.resize( rawMediaInformation.size() + 2 * sizeof( uint8_t ) );
+  rawMediaInformation.resize(
+    rawMediaInformation.size() + ( 2 * sizeof( uint8_t ) ) );
 
   // media sequence number
   Helper::setInt< uint8_t>(

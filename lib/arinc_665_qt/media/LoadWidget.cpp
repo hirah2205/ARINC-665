@@ -106,20 +106,20 @@ void LoadWidget::selectLoad( Arinc665::Media::ConstLoadPtr load )
     ui->loadCheckValueTypeGroupBox->setChecked(
       loadV->loadCheckValueType().has_value() );
     ui->loadCheckValueType->setCurrentIndex(
-      checkValueTypeModelV->checkValueType(
+      Arinc645Qt::CheckValueTypeModel::checkValueType(
         loadV->effectiveLoadCheckValueType() ) );
 
     ui->dataFilesCheckValueTypeGroupBox->setChecked(
       loadV->dataFilesCheckValueType().has_value() );
     ui->dataFilesCheckValueType->setCurrentIndex(
-      checkValueTypeModelV->checkValueType(
+      Arinc645Qt::CheckValueTypeModel::checkValueType(
         loadV->effectiveDataFilesCheckValueType() ) );
     dataFilesModelV->loadFiles( loadV->dataFiles() );
 
     ui->supportFilesCheckValueTypeGroupBox->setChecked(
       loadV->supportFilesCheckValueType().has_value() );
     ui->supportFilesCheckValueType->setCurrentIndex(
-      checkValueTypeModelV->checkValueType(
+      Arinc645Qt::CheckValueTypeModel::checkValueType(
         loadV->effectiveSupportFilesCheckValueType() ) );
     supportFilesModelV->loadFiles( loadV->supportFiles() );
 

@@ -31,7 +31,7 @@ size_t CheckValueUtils_size( const Arinc645::CheckValueType type )
   return
     ( Arinc645::CheckValueType::NotUsed == type ) ?
     sizeof( uint16_t ) :
-    2U * sizeof( uint16_t ) + Arinc645::CheckValue::Sizes.at( type );
+    ( 2U * sizeof( uint16_t ) ) + Arinc645::CheckValue::Sizes.at( type );
 }
 
 RawFile CheckValueUtils_encode(
