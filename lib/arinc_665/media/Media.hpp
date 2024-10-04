@@ -23,15 +23,15 @@
 
 #include "arinc_645/Arinc645.hpp"
 
-#include <map>
-#include <vector>
 #include <list>
-#include <set>
+#include <map>
 #include <memory>
-#include <variant>
 #include <optional>
-#include <tuple>
+#include <set>
 #include <span>
+#include <tuple>
+#include <variant>
+#include <vector>
 
 /**
  * @brief ARINC 665 %Media Set Model.

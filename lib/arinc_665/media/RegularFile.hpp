@@ -17,8 +17,8 @@
 #include "arinc_665/media/Media.hpp"
 #include "arinc_665/media/File.hpp"
 
-#include <string>
 #include <cstdint>
+#include <string>
 
 namespace Arinc665::Media {
 

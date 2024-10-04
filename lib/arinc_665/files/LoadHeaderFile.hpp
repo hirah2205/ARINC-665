@@ -21,11 +21,11 @@
 #include "arinc_645/Arinc645.hpp"
 #include "arinc_645/Arinc645Crc.hpp"
 
-#include <string_view>
-#include <list>
-#include <utility>
-#include <optional>
 #include <cstdint>
+#include <list>
+#include <optional>
+#include <string_view>
+#include <utility>
 
 namespace Arinc665::Files {
 
