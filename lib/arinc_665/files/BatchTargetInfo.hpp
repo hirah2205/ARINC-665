@@ -35,9 +35,9 @@ namespace Arinc665::Files {
 struct ARINC_665_EXPORT BatchTargetInfo
 {
   //! Target Hardware ID and Position
-  std::string targetHardwareIdPosition{};
+  std::string targetHardwareIdPosition;
   //! List of Loads for Target Hardware
-  BatchLoadsInfo loads{};
+  BatchLoadsInfo loads;
 };
 
 }

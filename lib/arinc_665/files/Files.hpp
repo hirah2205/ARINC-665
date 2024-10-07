@@ -21,11 +21,11 @@
 
 #include "arinc_665/Arinc665.hpp"
 
-#include <vector>
-#include <span>
-#include <list>
-#include <string>
 #include <cstdint>
+#include <list>
+#include <span>
+#include <string>
+#include <vector>
 
 /**
  * @brief ARINC 665 %Media Set %Files.

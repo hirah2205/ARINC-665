@@ -50,7 +50,7 @@ MediaPathsWidget::MediaPathsWidget(
     ui->add,
     &QPushButton::pressed,
     selectMediaPathDialog.get(),
-    qOverload<>( &QFileDialog::open ) );
+    qOverload<>( &QDialog::open ) );
 
   connect(
     ui->remove,

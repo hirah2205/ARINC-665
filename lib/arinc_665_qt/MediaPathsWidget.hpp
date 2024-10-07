@@ -103,11 +103,11 @@ class ARINC_665_QT_EXPORT MediaPathsWidget final : public QGroupBox
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaPathsWidget > ui{};
+    std::unique_ptr< Ui::MediaPathsWidget > ui;
     //! Media Paths Model
-    std::unique_ptr< MediaPathsModel > mediaPathsModelV{};
+    std::unique_ptr< MediaPathsModel > mediaPathsModelV;
     //! Select XML File Dialog
-    std::unique_ptr< QFileDialog > selectMediaPathDialog{};
+    std::unique_ptr< QFileDialog > selectMediaPathDialog;
 };
 
 }

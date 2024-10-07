@@ -17,9 +17,9 @@
 #include "arinc_665/media/Media.hpp"
 
 #include <filesystem>
+#include <memory>
 #include <string>
 #include <string_view>
-#include <memory>
 
 namespace Arinc665::Media {
 

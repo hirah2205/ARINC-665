@@ -34,10 +34,15 @@ class ARINC_665_EXPORT FilesystemMediaSetCompiler
      *
      * @return ARINC 665 %Media Set Compiler Instance
      **/
-    static FilesystemMediaSetCompilerPtr create();
+    [[nodiscard]]  static FilesystemMediaSetCompilerPtr create();
 
     //! Destructor
     virtual ~FilesystemMediaSetCompiler() = default;
+
+    /**
+     * @name Configuration Methods.
+     * @{
+     **/
 
     /**
      * @brief Sets the Media Set to compile.
@@ -143,8 +148,10 @@ class ARINC_665_EXPORT FilesystemMediaSetCompiler
     virtual FilesystemMediaSetCompiler& mediaSetName(
       std::string mediaSetName ) = 0;
 
+    /** @} **/
+
     /**
-     * @brief Executes the ARINC 665 Media Set Compiler.
+     * @brief Executes the ARINC 665 %Media Set Compiler.
      *
      * All parameters must have been set previously.
      *

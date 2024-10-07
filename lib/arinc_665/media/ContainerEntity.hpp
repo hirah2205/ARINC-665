@@ -209,7 +209,7 @@ class ARINC_665_EXPORT ContainerEntity : public Base
      *
      * @param[in] mediumNumber
      *   Medium number, to filter.
-     *   If not priveded no filtering is performed.
+     *   If not provided, no filtering is performed.
      *
      * @return Number of files within this directory.
      **/
@@ -834,11 +834,11 @@ class ARINC_665_EXPORT ContainerEntity : public Base
 
   private:
     //! Default Medium Number
-    OptionalMediumNumber defaultMediumNumberV{};
+    OptionalMediumNumber defaultMediumNumberV;
     //! Subdirectories
-    Directories subdirectoriesV{};
+    Directories subdirectoriesV;
     //! Files
-    Files filesV{};
+    Files filesV;
 };
 
 }

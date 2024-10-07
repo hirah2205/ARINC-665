@@ -122,22 +122,27 @@ class ARINC_665_EXPORT MediaSetCompiler
         const std::filesystem::path &path ) >;
 
     /**
-     * @brief Creates the ARINC 665 Media Set Compiler Instance.
+     * @brief Creates the ARINC 665 %Media Set Compiler Instance.
      *
-     * @return ARINC 665 Compiler Instance
+     * @return ARINC 665 %Media Set Compiler Instance
      **/
-    static MediaSetCompilerPtr create();
+    [[nodiscard]] static MediaSetCompilerPtr create();
 
     //! Destructor
     virtual ~MediaSetCompiler() = default;
 
     /**
-     * @brief Sets the Media Set to compile.
+     * @name Configuration Methods.
+     * @{
+     **/
+
+    /**
+     * @brief Sets the %Media Set to compile.
      *
      * @param[in] mediaSet
      *   Media Set, which shall be compiled.
      *
-     * @return *this for chaining.
+     * @return @p *this for chaining.
      **/
     virtual MediaSetCompiler& mediaSet( Media::ConstMediaSetPtr mediaSet ) = 0;
 
@@ -147,7 +152,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      * @param[in] createMediumHandler
      *   Called to create the given medium.
      *
-     * @return *this for chaining.
+     * @return @p *this for chaining.
      **/
     virtual MediaSetCompiler& createMediumHandler(
       CreateMediumHandler createMediumHandler ) = 0;
@@ -158,7 +163,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      * @param[in] createDirectoryHandler
      *   Called to create the given directory.
      *
-     * @return *this for chaining.
+     * @return @p *this for chaining.
      **/
     virtual MediaSetCompiler& createDirectoryHandler(
       CreateDirectoryHandler createDirectoryHandler ) = 0;
@@ -169,7 +174,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      * @param[in] checkFileExistenceHandler
      *   Called to check if file exists.
      *
-     * @return *this for chaining.
+     * @return @p *this for chaining.
      **/
     virtual MediaSetCompiler& checkFileExistenceHandler(
       CheckFileExistenceHandler checkFileExistenceHandler ) = 0;
@@ -180,7 +185,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      * @param[in] createFileHandler
      *   When a file needs to be generated, this handler is called.
      *
-     * @return *this for chaining.
+     * @return @p *this for chaining.
      **/
     virtual MediaSetCompiler& createFileHandler(
       CreateFileHandler createFileHandler ) = 0;
@@ -243,8 +248,10 @@ class ARINC_665_EXPORT MediaSetCompiler
     virtual MediaSetCompiler& createLoadHeaderFiles(
       FileCreationPolicy createLoadHeaderFiles ) = 0;
 
+    /** @} **/
+
     /**
-     * @brief Executes the ARINC 665 Media Set Compiler.
+     * @brief Executes the ARINC 665 %Media Set Compiler.
      *
      * All parameters must have been set previously.
      *

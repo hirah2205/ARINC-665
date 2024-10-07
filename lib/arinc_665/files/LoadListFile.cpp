@@ -26,7 +26,7 @@
 
 namespace Arinc665::Files {
 
-LoadListFile::LoadListFile( const SupportedArinc665Version version ) noexcept :
+LoadListFile::LoadListFile( const SupportedArinc665Version version ) :
   ListFile{ version }
 {
 }

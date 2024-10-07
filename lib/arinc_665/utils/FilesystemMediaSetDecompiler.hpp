@@ -37,10 +37,15 @@ class ARINC_665_EXPORT FilesystemMediaSetDecompiler
      *
      * @return ARINC 665 %Media Set Decompiler Instance
      **/
-    static FilesystemMediaSetDecompilerPtr create();
+    [[nodiscard]] static FilesystemMediaSetDecompilerPtr create();
 
     //! Destructor
     virtual ~FilesystemMediaSetDecompiler() = default;
+
+    /**
+     * @name Configuration Methods.
+     * @{
+     **/
 
     /**
      * @brief Sets the Progress Handler.
@@ -74,6 +79,8 @@ class ARINC_665_EXPORT FilesystemMediaSetDecompiler
      **/
     virtual FilesystemMediaSetDecompiler& mediaPaths(
       MediaPaths mediaPaths ) = 0;
+
+    /** @} **/
 
     /**
      * @brief Executes the ARINC 665 %Media Set Decompiler.

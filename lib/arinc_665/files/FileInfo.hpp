@@ -20,10 +20,10 @@
 
 #include "arinc_645/CheckValue.hpp"
 
-#include <filesystem>
-#include <string>
-#include <optional>
 #include <cstdint>
+#include <filesystem>
+#include <optional>
+#include <string>
 
 namespace Arinc665::Files {
 
@@ -38,15 +38,15 @@ namespace Arinc665::Files {
 struct ARINC_665_EXPORT FileInfo
 {
   //! Filename
-  std::string filename{};
+  std::string filename;
   //! Path Name
-  std::string pathName{};
+  std::string pathName;
   //! Member Sequence Number
-  MediumNumber memberSequenceNumber{};
+  MediumNumber memberSequenceNumber;
   //! CRC
   uint16_t crc{};
   //! Check Value (since ARINC 665-3)
-  Arinc645::CheckValue checkValue{};
+  Arinc645::CheckValue checkValue;
 
   /**
    * @brief Returns the path (path name / filename)

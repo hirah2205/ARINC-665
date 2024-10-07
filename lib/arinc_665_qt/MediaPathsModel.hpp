@@ -176,11 +176,11 @@ class ARINC_665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
 
   private:
     //! Media Paths
-    Arinc665::Utils::MediaPaths mediaPathsV{};
+    Arinc665::Utils::MediaPaths mediaPathsV;
     //! Media Set Part Number
-    std::string partNumberV{};
+    std::string partNumberV;
     //! Number of Media Set Members
-    Arinc665::MediumNumber numberOfMediaSetMembersV{};
+    Arinc665::MediumNumber numberOfMediaSetMembersV;
 };
 
 }

@@ -58,7 +58,9 @@ void CreateMediaSetManagerCommand::execute(
       << "Media Set Manager directory: "
       << mediaSetManagerDirectory.string() << "\n";
 
-    Arinc665::Utils::MediaSetManager::create( mediaSetManagerDirectory );
+    auto mediaSetManager{
+      Arinc665::Utils::MediaSetManager::create( mediaSetManagerDirectory ) };
+    assert( mediaSetManager );
   }
   catch ( const boost::program_options::error & )
   {

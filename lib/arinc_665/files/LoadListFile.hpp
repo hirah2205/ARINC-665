@@ -93,7 +93,7 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
      **/
     explicit LoadListFile(
       SupportedArinc665Version version =
-        SupportedArinc665Version::Supplement345 ) noexcept;
+        SupportedArinc665Version::Supplement345 );
 
     /**
      * @brief Creates a load list file from the given raw data.
@@ -102,6 +102,9 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
      *   Raw data file representation.
      **/
     explicit LoadListFile( ConstRawFileSpan rawFile );
+
+    //! Destructor.
+    ~LoadListFile() override = default;
 
     //! @copydoc ListFile::operator=(ConstRawFileSpan)
     LoadListFile& operator=( ConstRawFileSpan rawFile ) override;
@@ -231,9 +234,9 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
     void checkUserDefinedData();
 
     //! Load List
-    LoadsInfo loadsV{};
+    LoadsInfo loadsV;
     //! User Defined Data
-    UserDefinedData userDefinedDataV{};
+    UserDefinedData userDefinedDataV;
 };
 
 }

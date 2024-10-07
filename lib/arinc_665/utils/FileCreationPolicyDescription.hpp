@@ -70,7 +70,7 @@ ARINC_665_EXPORT std::ostream& operator<<(
  *   When @p stream cannot be decoded to FileCreationPolicy.
  **/
 ARINC_665_EXPORT std::istream& operator>>(
-  std::istream& stream,
+  std::istream &stream,
   FileCreationPolicy &fileCreationPolicy );
 
 /** @} **/

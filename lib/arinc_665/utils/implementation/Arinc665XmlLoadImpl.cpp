@@ -32,7 +32,7 @@
 namespace Arinc665::Utils {
 
 Arinc665XmlLoadImpl::Arinc665XmlLoadImpl(
-  const std::filesystem::path &xmlFile ) noexcept :
+  const std::filesystem::path &xmlFile ) :
   xmlFileV{ xmlFile }
 {
 }

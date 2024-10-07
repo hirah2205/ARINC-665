@@ -31,10 +31,15 @@ class ARINC_665_EXPORT FilesystemMediaSetRemover
      *
      * @return ARINC 665 %Media Set Remover Instance
      **/
-    static FilesystemMediaSetRemoverPtr create();
+    [[nodiscard]] static FilesystemMediaSetRemoverPtr create();
 
     //! Destructor
     virtual ~FilesystemMediaSetRemover() = default;
+
+    /**
+     * @name Configuration Methods.
+     * @{
+     **/
 
     /**
      * @brief Updates Media Paths.
@@ -47,8 +52,10 @@ class ARINC_665_EXPORT FilesystemMediaSetRemover
     virtual FilesystemMediaSetRemover& mediaSetPaths(
       MediaSetPaths mediaSetPaths ) = 0;
 
+    /** @} **/
+
     /**
-     * @brief Executes the ARINC 665 Media Set Remover.
+     * @brief Executes the ARINC 665 %Media Set Remover.
      *
      * All parameters must have been set previously.
      *

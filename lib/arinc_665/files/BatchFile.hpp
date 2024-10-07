@@ -81,7 +81,7 @@ class ARINC_665_EXPORT BatchFile final : public Arinc665File
      **/
     explicit BatchFile(
       SupportedArinc665Version version =
-        SupportedArinc665Version::Supplement345 ) noexcept;
+        SupportedArinc665Version::Supplement345 );
 
     /**
      * @brief Creates a batch file from the given raw data.
@@ -90,6 +90,9 @@ class ARINC_665_EXPORT BatchFile final : public Arinc665File
      *   Raw data file representation.
      **/
     explicit BatchFile( ConstRawFileSpan rawFile );
+
+    //! Destructor.
+    ~BatchFile() override = default;
 
     //! @copydoc Arinc665File::operator=
     BatchFile& operator=( ConstRawFileSpan rawFile ) override;
@@ -203,11 +206,11 @@ class ARINC_665_EXPORT BatchFile final : public Arinc665File
     void decodeBatchTargetsInfo( ConstRawFileSpan rawFile, ptrdiff_t offset );
 
     //! Part Number
-    std::string partNumberV{};
+    std::string partNumberV;
     //! Comment
-    std::string commentV{};
+    std::string commentV;
     //! Targets Hardware Information
-    BatchTargetsInfo targetsHardwareV{};
+    BatchTargetsInfo targetsHardwareV;
 };
 
 }

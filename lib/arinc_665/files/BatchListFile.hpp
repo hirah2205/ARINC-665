@@ -90,7 +90,7 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
      **/
     explicit BatchListFile(
       SupportedArinc665Version version =
-        SupportedArinc665Version::Supplement345 ) noexcept;
+        SupportedArinc665Version::Supplement345 );
 
     /**
      * @brief Creates a batch list file from the given raw data.
@@ -99,6 +99,9 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
      *   Raw data file representation.
      **/
     explicit BatchListFile( ConstRawFileSpan rawFile );
+
+    //! Destructor.
+    ~BatchListFile() override = default;
 
     //! @copydoc ListFile::operator=(ConstRawFileSpan)
     BatchListFile& operator=( ConstRawFileSpan rawFile ) override;
@@ -213,9 +216,9 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
     void checkUserDefinedData();
 
     //! Batches Information
-    BatchesInfo batchesV{};
+    BatchesInfo batchesV;
     //! User Defined Data
-    UserDefinedData userDefinedDataV{};
+    UserDefinedData userDefinedDataV;
 };
 
 }

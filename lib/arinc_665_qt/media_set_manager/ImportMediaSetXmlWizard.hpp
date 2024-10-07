@@ -111,13 +111,13 @@ class ARINC_665_QT_EXPORT ImportMediaSetXmlWizard : public QWizard
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetXmlWizard > ui{};
+    std::unique_ptr< Ui::ImportMediaSetXmlWizard > ui;
     //! Media Set Manager
-    Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV{};
+    Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV;
     //! ARINC 665 Media Set Compiler
-    Arinc665::Utils::FilesystemMediaSetCompilerPtr compilerV{};
+    Arinc665::Utils::FilesystemMediaSetCompilerPtr compilerV;
     //! XML File
-    std::filesystem::path xmlFileV{};
+    std::filesystem::path xmlFileV;
     //! Check File Integrity
     bool checkFileIntegrityV{ false };
 };

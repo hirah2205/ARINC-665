@@ -45,7 +45,7 @@ static Glib::ustring toGlibString( std::string_view str );
 Arinc665XmlSaveImpl::Arinc665XmlSaveImpl(
   const Media::MediaSet &mediaSet,
   const FilePathMapping &filePathMapping,
-  const std::filesystem::path &xmlFile ) noexcept :
+  const std::filesystem::path &xmlFile ) :
   mediaSetV{ mediaSet },
   filePathMappingV{ filePathMapping },
   xmlFileV{ xmlFile }

@@ -440,23 +440,23 @@ class ARINC_665_EXPORT MediaSet final : public ContainerEntity
 
   private:
     //! Part Number
-    std::string partNumberV{};
+    std::string partNumberV;
     //! User Defined Data for Files List Files
-    UserDefinedData filesUserDefinedDataV{};
+    UserDefinedData filesUserDefinedDataV;
     //! User Defined Data for Loads List Files
-    UserDefinedData loadsUserDefinedDataV{};
+    UserDefinedData loadsUserDefinedDataV;
     //! User Defined Data for Batches List Files
-    UserDefinedData batchesUserDefinedDataV{};
+    UserDefinedData batchesUserDefinedDataV;
     //! ARINC 645 Check Value for %Media Set Generation
-    std::optional< Arinc645::CheckValueType > mediaSetCheckValueTypeV{};
+    std::optional< Arinc645::CheckValueType > mediaSetCheckValueTypeV;
     //! ARINC 645 Check Value Type for List of Files Generation
-    std::optional< Arinc645::CheckValueType > listOfFilesCheckValueTypeV{};
+    std::optional< Arinc645::CheckValueType > listOfFilesCheckValueTypeV;
     //! ARINC 645 Check Value Type for List of Loads Generation
-    std::optional< Arinc645::CheckValueType > listOfLoadsCheckValueTypeV{};
+    std::optional< Arinc645::CheckValueType > listOfLoadsCheckValueTypeV;
     //! ARINC 645 Check Value Type for List of Batches Generation
-    std::optional< Arinc645::CheckValueType > listOfBatchesCheckValueTypeV{};
+    std::optional< Arinc645::CheckValueType > listOfBatchesCheckValueTypeV;
     //! ARINC 645 Check Value for %Media Set %File List Generation
-    std::optional< Arinc645::CheckValueType > filesCheckValueTypeV{};
+    std::optional< Arinc645::CheckValueType > filesCheckValueTypeV;
 };
 
 }

@@ -31,9 +31,9 @@ namespace Arinc665::Files {
 struct ARINC_665_EXPORT BatchLoadInfo
 {
   //! Load Header Filename.
-  std::string headerFilename{};
+  std::string headerFilename;
   //! Load Part Number.
-  std::string partNumber{};
+  std::string partNumber;
 };
 
 }

@@ -65,7 +65,11 @@ target_compile_options(
   arinc_665
 
   PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:-W3>
+    $<$<CXX_COMPILER_ID:MSVC>:/W3>
+    # Disable Warning for exporting classes with std::* private members
+    $<$<CXX_COMPILER_ID:MSVC>:/wd4251>
+    # Disable Warning for exporting classes, which derives from std::*
+    $<$<CXX_COMPILER_ID:MSVC>:/wd4275>
 
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>
@@ -83,7 +87,6 @@ target_link_libraries(
 
   PRIVATE
     PkgConfig::Libxmlpp )
-
 
 add_library( arinc_665_test OBJECT )
 
@@ -109,7 +112,11 @@ target_compile_options(
   arinc_665_test
 
   PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:-W3>
+    $<$<CXX_COMPILER_ID:MSVC>:/W3>
+    # Disable Warning for exporting classes with std::* private members
+    $<$<CXX_COMPILER_ID:MSVC>:/wd4251>
+    # Disable Warning for exporting classes, which derives from std::*
+    $<$<CXX_COMPILER_ID:MSVC>:/wd4275>
 
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>
@@ -123,14 +130,12 @@ add_subdirectory( files )
 add_subdirectory( media )
 add_subdirectory( utils )
 
-
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}
   APPEND
   PROPERTY DOC_PATHS
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/Version.hpp )
-
 
 install(
   TARGETS arinc_665

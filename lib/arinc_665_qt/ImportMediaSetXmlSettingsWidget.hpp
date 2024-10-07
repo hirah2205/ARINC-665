@@ -89,11 +89,11 @@ class ARINC_665_QT_EXPORT ImportMediaSetXmlSettingsWidget final :
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetXmlSettingsWidget > ui{};
+    std::unique_ptr< Ui::ImportMediaSetXmlSettingsWidget > ui;
     //! Select XML File Dialog
-    std::unique_ptr< QFileDialog > selectXmlFileDialog{};
+    std::unique_ptr< QFileDialog > selectXmlFileDialog;
     //! Select Input Directory Dialog
-    std::unique_ptr< QFileDialog > selectInputDirectoryDialog{};
+    std::unique_ptr< QFileDialog > selectInputDirectoryDialog;
 };
 
 }

@@ -100,25 +100,25 @@ class ARINC_665_QT_EXPORT MediaSetViewerWindow final : public QMainWindow
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaSetViewerWindow > ui{};
+    std::unique_ptr< Ui::MediaSetViewerWindow > ui;
     //! Wizard Dialog
-    std::unique_ptr< DecompileMediaSetWizard > decompileMediaSetWizardV{};
+    std::unique_ptr< DecompileMediaSetWizard > decompileMediaSetWizardV;
     //! Select Load Media Set XML file dialog
-    std::unique_ptr< QFileDialog > selectLoadMediaSetXmlDialogV{};
+    std::unique_ptr< QFileDialog > selectLoadMediaSetXmlDialogV;
     //! Select Save Media Set XML file dialog
-    std::unique_ptr< QFileDialog > selectSaveMediaSetXmlDialogV{};
+    std::unique_ptr< QFileDialog > selectSaveMediaSetXmlDialogV;
 
     //! Media Set Model
-    std::unique_ptr< Media::MediaSetModel > mediaSetModelV{};
+    std::unique_ptr< Media::MediaSetModel > mediaSetModelV;
     //! File Path Mapping Model
-    std::unique_ptr< FilePathMappingModel > filePathMappingModelV{};
+    std::unique_ptr< FilePathMappingModel > filePathMappingModelV;
     //! Sorted File Mapping Model
-    std::unique_ptr< QSortFilterProxyModel > sortedFilePathMappingModelV{};
+    std::unique_ptr< QSortFilterProxyModel > sortedFilePathMappingModelV;
     //! Filesystem Watcher
-    std::unique_ptr< QFileSystemWatcher > fileSystemWatcherV{};
+    std::unique_ptr< QFileSystemWatcher > fileSystemWatcherV;
 
     //! Media Paths
-    Arinc665::Utils::MediaPaths mediaPathsV{};
+    Arinc665::Utils::MediaPaths mediaPathsV;
     //! Check File Integrity
     bool checkFileIntegrityV{ false };
 };

@@ -71,11 +71,11 @@ class ARINC_665_COMMANDS_EXPORT RemoveMediaSetCommand
     //! Program Options Description
     boost::program_options::options_description optionsDescription;
     //! Media Set Manager Directory
-    std::filesystem::path mediaSetManagerDirectory{};
+    std::filesystem::path mediaSetManagerDirectory;
     //! Check Media Set Manager Integrity
     bool checkMediaSetManagerIntegrityV{ true };
     //! Media Set Part Number
-    std::string mediaSetPartNumber{};
+    std::string mediaSetPartNumber;
 };
 
 }

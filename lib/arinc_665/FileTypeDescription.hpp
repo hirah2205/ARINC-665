@@ -20,7 +20,16 @@
 
 #include <iosfwd>
 
-namespace Arinc665{
+namespace Arinc665 {
+
+/**
+ * @name File Type Description.
+ *
+ * @sa @ref FileTypeDescription
+ * @sa @ref FileType
+ *
+ * @{
+ **/
 
 //! ARINC 665 %File Type Description.
 class ARINC_665_EXPORT FileTypeDescription :
@@ -44,6 +53,8 @@ class ARINC_665_EXPORT FileTypeDescription :
 ARINC_665_EXPORT std::ostream& operator<<(
   std::ostream &stream,
   FileType fileType );
+
+/** @} **/
 
 }
 

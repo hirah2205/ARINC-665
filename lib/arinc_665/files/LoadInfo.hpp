@@ -18,9 +18,9 @@
 
 #include "arinc_665/MediumNumber.hpp"
 
+#include <cstdint>
 #include <string>
 #include <vector>
-#include <cstdint>
 
 namespace Arinc665::Files {
 
@@ -38,13 +38,13 @@ struct ARINC_665_EXPORT LoadInfo
   using ThwIds = std::list< std::string >;
 
   //! Load Part Number
-  std::string partNumber{};
+  std::string partNumber;
   //! Header Filename
-  std::string headerFilename{};
+  std::string headerFilename;
   //! Member Sequence Number
-  MediumNumber memberSequenceNumber{};
+  MediumNumber memberSequenceNumber;
   //! Target Hardware IDs (list)
-  ThwIds targetHardwareIds{};
+  ThwIds targetHardwareIds;
 
   /**
    * @brief Compares the other load information against @p this for equality.

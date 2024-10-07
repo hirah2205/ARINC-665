@@ -19,6 +19,7 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <array>
 #include <iostream>
 
 namespace Arinc665::Files {

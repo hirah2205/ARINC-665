@@ -118,13 +118,13 @@ class ARINC_665_QT_EXPORT CompileMediaSetWizard final : public QWizard
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::CompileMediaSetWizard > ui{};
+    std::unique_ptr< Ui::CompileMediaSetWizard > ui;
     //! ARINC 665 Media Set Compiler
-    Arinc665::Utils::FilesystemMediaSetCompilerPtr compilerV{};
+    Arinc665::Utils::FilesystemMediaSetCompilerPtr compilerV;
     //! XML File
-    std::filesystem::path xmlFileV{};
+    std::filesystem::path xmlFileV;
     //! Output Base Path
-    std::filesystem::path outputDirectoryV{};
+    std::filesystem::path outputDirectoryV;
 };
 
 }

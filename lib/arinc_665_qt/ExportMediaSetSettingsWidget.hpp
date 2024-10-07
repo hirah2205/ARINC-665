@@ -129,12 +129,12 @@ class ARINC_665_QT_EXPORT ExportMediaSetSettingsWidget final : public QGroupBox
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ExportMediaSetSettingsWidget > ui{};
+    std::unique_ptr< Ui::ExportMediaSetSettingsWidget > ui;
     //! Support ARINC 665 Version Model
     std::unique_ptr< SupportedArinc665VersionModel >
-      supportedArinc665VersionModelV{};
+      supportedArinc665VersionModelV;
     //! File Creation Policy Model (used for load header and batch files)
-    std::unique_ptr< FileCreationPolicyModel > fileCreationPolicyModelV{};
+    std::unique_ptr< FileCreationPolicyModel > fileCreationPolicyModelV;
 };
 
 }

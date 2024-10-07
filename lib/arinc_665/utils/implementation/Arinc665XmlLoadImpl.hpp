@@ -37,8 +37,7 @@ class Arinc665XmlLoadImpl final
      * @param[in] xmlFile
      *   ARINC 665 XML file.
      **/
-    explicit Arinc665XmlLoadImpl(
-      const std::filesystem::path &xmlFile ) noexcept;
+    explicit Arinc665XmlLoadImpl( const std::filesystem::path &xmlFile );
 
     /**
      * @brief Loads the Media Set information from the given XML file.

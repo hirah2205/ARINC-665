@@ -13,6 +13,8 @@
 
 #include "FileTypeDescription.hpp"
 
+#include <ostream>
+
 namespace Arinc665 {
 
 FileTypeDescription::FileTypeDescription():

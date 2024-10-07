@@ -78,7 +78,7 @@ class ARINC_665_QT_EXPORT DecompileMediaSetWizard final : public QWizard
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::DecompileMediaSetWizard > ui{};
+    std::unique_ptr< Ui::DecompileMediaSetWizard > ui;
 };
 
 }

@@ -155,7 +155,7 @@ class ARINC_665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
 
   private:
     //! Load Files
-    Arinc665::Media::ConstLoadFiles loadFilesV{};
+    Arinc665::Media::ConstLoadFiles loadFilesV;
 };
 
 }

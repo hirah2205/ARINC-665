@@ -91,11 +91,11 @@ class ARINC_665_QT_EXPORT DirectoryWidget : public QWidget
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::DirectoryWidget > ui{};
+    std::unique_ptr< Ui::DirectoryWidget > ui;
     //! Media Set Model
     MediaSetModel * mediaSetModelV{ nullptr };
     //! Directory
-    Arinc665::Media::ConstDirectoryPtr directoryV{};
+    Arinc665::Media::ConstDirectoryPtr directoryV;
 };
 
 }

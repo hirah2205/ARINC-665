@@ -120,7 +120,7 @@ class ARINC_665_QT_EXPORT LoadMediaSetManagerAction : public QObject
     //! Thread for execution of Media Set Loading
     QThread * threadV{ nullptr };
     //! Media Set Directory
-    std::filesystem::path mediaSetDirectoryV{};
+    std::filesystem::path mediaSetDirectoryV;
     //! Check Media Set Integrity parameter.
     bool checkMediaSetIntegrityV{ true };
 };

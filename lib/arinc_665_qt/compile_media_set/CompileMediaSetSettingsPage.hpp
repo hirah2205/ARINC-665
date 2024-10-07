@@ -138,9 +138,9 @@ class ARINC_665_QT_EXPORT CompileMediaSetSettingsPage final : public QWizardPage
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::CompileMediaSetSettingsPage > ui{};
+    std::unique_ptr< Ui::CompileMediaSetSettingsPage > ui;
     //! Select Output Directory Dialog
-    std::unique_ptr< QFileDialog > selectOutputDirectoryDialog{};
+    std::unique_ptr< QFileDialog > selectOutputDirectoryDialog;
 };
 
 }

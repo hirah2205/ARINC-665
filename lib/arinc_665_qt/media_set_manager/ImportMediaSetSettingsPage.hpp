@@ -96,7 +96,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetSettingsPage final : public QWizardPage
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetSettingsPage > ui{};
+    std::unique_ptr< Ui::ImportMediaSetSettingsPage > ui;
 };
 
 }

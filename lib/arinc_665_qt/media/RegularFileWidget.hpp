@@ -76,12 +76,12 @@ class ARINC_665_QT_EXPORT RegularFileWidget final : public QGroupBox
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::RegularFileWidget > ui{};
+    std::unique_ptr< Ui::RegularFileWidget > ui;
     //! Used in Loads Model
-    std::unique_ptr< LoadsModel > usedInLoadsModelV{};
+    std::unique_ptr< LoadsModel > usedInLoadsModelV;
 
     //! File
-    Arinc665::Media::ConstRegularFilePtr fileV{};
+    Arinc665::Media::ConstRegularFilePtr fileV;
 };
 
 }

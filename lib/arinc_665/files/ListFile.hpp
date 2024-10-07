@@ -39,6 +39,9 @@ namespace Arinc665::Files {
 class ARINC_665_EXPORT ListFile : public Arinc665File
 {
   public:
+    //! Destructor.
+    ~ListFile() override = default;
+
     /**
      * @name Media Set Part Number
      * @{
@@ -176,7 +179,7 @@ class ARINC_665_EXPORT ListFile : public Arinc665File
 
   private:
     //! Media Set Part Number.
-    std::string mediaSetPnV{};
+    std::string mediaSetPnV;
     //! Media Sequence Number.
     MediumNumber mediaSequenceNumberV{ 0U };
     //! Number of Media Set Members.

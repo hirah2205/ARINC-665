@@ -212,13 +212,13 @@ class ARINC_665_EXPORT File : public Base
 
   private:
     //! Parent Container
-    ContainerEntityPtr::weak_type parentV{};
+    ContainerEntityPtr::weak_type parentV;
     //! Filename
-    std::string nameV{};
+    std::string nameV;
     //! Medium Number
-    OptionalMediumNumber mediumNumberV{};
+    OptionalMediumNumber mediumNumberV;
     //! Check Value Type
-    std::optional< Arinc645::CheckValueType > checkValueTypeV{};
+    std::optional< Arinc645::CheckValueType > checkValueTypeV;
 };
 
 }

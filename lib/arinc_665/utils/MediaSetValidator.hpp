@@ -56,14 +56,19 @@ class ARINC_665_EXPORT MediaSetValidator
       std::function< void( std::string_view information ) >;
 
     /**
-     * @brief Creates the ARINC 665 Media Set Validator Instance.
+     * @brief Creates the ARINC 665 %Media Set Validator Instance.
      *
      * @return ARINC 665 Validator Instance
      **/
-    static MediaSetValidatorPtr create();
+    [[nodiscard]] static MediaSetValidatorPtr create();
 
     //! Destructor
     virtual ~MediaSetValidator() = default;
+
+    /**
+     * @name Configuration Methods.
+     * @{
+     **/
 
     /**
      * @brief Sets the Read File Handler.
@@ -71,7 +76,7 @@ class ARINC_665_EXPORT MediaSetValidator
      * @param[in] readFileHandler
      *   Handler for reading files.
      *
-     * @return *this for chaining.
+     * @return @p *this for chaining.
      **/
     virtual MediaSetValidator& readFileHandler(
       ReadFileHandler readFileHandler ) = 0;
@@ -82,13 +87,15 @@ class ARINC_665_EXPORT MediaSetValidator
      * @param[in] informationHandler
      *   Handler for validation information.
      *
-     * @return *this for chaining.
+     * @return @p *this for chaining.
      **/
     virtual MediaSetValidator& informationHandler(
       ValidatorInformationHandler informationHandler ) = 0;
 
+    /** @} **/
+
     /**
-     * @brief Executes the ARINC 665 Media Set Validator.
+     * @brief Executes the ARINC 665 %Media Set Validator.
      *
      * All parameters must have been set previously.
      *
@@ -96,7 +103,7 @@ class ARINC_665_EXPORT MediaSetValidator
      *
      * @throw Arinc665Exception
      **/
-    virtual bool operator()() = 0;
+    [[nodiscard]] virtual bool operator()() = 0;
 };
 
 }

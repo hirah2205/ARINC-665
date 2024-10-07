@@ -16,13 +16,12 @@
 
 #include "arinc_665/files/Files.hpp"
 
+#include <cstdint>
 #include <filesystem>
+#include <optional>
+#include <set>
 #include <string>
 #include <string_view>
-#include <list>
-#include <set>
-#include <cstdint>
-#include <optional>
 
 namespace Arinc665::Files {
 
@@ -32,9 +31,6 @@ namespace Arinc665::Files {
 class ARINC_665_EXPORT Arinc665File
 {
   public:
-    //! String List
-    using StringList = std::list< std::string >;
-
     //! Base Header Size
     static constexpr ptrdiff_t BaseHeaderSize{
       sizeof( uint32_t ) +  // File length field
@@ -203,12 +199,16 @@ class ARINC_665_EXPORT Arinc665File
     /**
      * @brief Assigns raw data to the file.
      *
+     * @note
+     * Regardless this method is marked pure, an base implementation is provided.
+     * A child class needs to override this method.
+     *
      * @param[in] rawFile
      *   File raw data
      *
      * @return *this
      **/
-    virtual Arinc665File& operator=( ConstRawFileSpan rawFile );
+    virtual Arinc665File& operator=( ConstRawFileSpan rawFile ) = 0;
 
     /**
      * @brief Returns the ARINC 665 file as raw data.

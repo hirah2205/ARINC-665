@@ -12,6 +12,7 @@
  **/
 
 #include "arinc_665/files/BatchFile.hpp"
+
 #include "arinc_665/Arinc665Exception.hpp"
 
 #include "helper/Dump.hpp"

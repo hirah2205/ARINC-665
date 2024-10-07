@@ -45,7 +45,7 @@ ImportMediaSetXmlSettingsWidget::ImportMediaSetXmlSettingsWidget(
     ui->selectXmlFile,
     &QPushButton::clicked,
     selectXmlFileDialog.get(),
-    qOverload<>( &QFileDialog::open ) );
+    qOverload<>( &QDialog::open ) );
   connect(
     selectXmlFileDialog.get(),
     &QFileDialog::fileSelected,
@@ -60,7 +60,7 @@ ImportMediaSetXmlSettingsWidget::ImportMediaSetXmlSettingsWidget(
     ui->selectInputDirectory,
     &QPushButton::clicked,
     selectInputDirectoryDialog.get(),
-    qOverload<>( &QFileDialog::open ) );
+    qOverload<>( &QDialog::open ) );
   connect(
     selectInputDirectoryDialog.get(),
     &QFileDialog::fileSelected,

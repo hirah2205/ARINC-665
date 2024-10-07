@@ -16,6 +16,9 @@
 #include <boost/exception/exception.hpp>
 #include <boost/program_options.hpp>
 
+#include <ostream>
+#include <istream>
+
 namespace Arinc665 {
 
 SupportedArinc665VersionDescription::SupportedArinc665VersionDescription() :

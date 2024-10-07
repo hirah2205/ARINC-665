@@ -112,19 +112,19 @@ class ARINC_665_QT_EXPORT MediaSetManagerWindow final : public QMainWindow
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaSetManagerWindow > ui{};
+    std::unique_ptr< Ui::MediaSetManagerWindow > ui;
 
     //! View Media Set Dialog
-    std::unique_ptr< ViewMediaSetDialog > viewMediaSetDialog{};
+    std::unique_ptr< ViewMediaSetDialog > viewMediaSetDialog;
     //! Settings Dialog
-    std::unique_ptr< MediaSetManagerSettingsDialog > settingsDialog{};
+    std::unique_ptr< MediaSetManagerSettingsDialog > settingsDialog;
     //! About Dialog
-    std::unique_ptr< HelperQt::AboutDialog > aboutDialog{};
+    std::unique_ptr< HelperQt::AboutDialog > aboutDialog;
 
     //! Media Set Manager
-    Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV{};
+    Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV;
     //! Media Set Model
-    std::unique_ptr< Media::MediaSetsModel > mediaSetsModelV{};
+    std::unique_ptr< Media::MediaSetsModel > mediaSetsModelV;
 };
 
 }

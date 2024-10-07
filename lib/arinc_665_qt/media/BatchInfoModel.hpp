@@ -182,7 +182,7 @@ namespace Arinc665Qt::Media {
 
   private:
     //! Batch Information
-    Arinc665::Media::BatchInformationVariant batchInformationV{};
+    Arinc665::Media::BatchInformationVariant batchInformationV;
 };
 
 }

@@ -77,13 +77,13 @@ class ARINC_665_QT_EXPORT ImportMediaSetWizard final : public QWizard
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetWizard > ui{};
+    std::unique_ptr< Ui::ImportMediaSetWizard > ui;
     //! Media Set Manager
-    Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV{};
+    Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV;
     //! ARINC 665 Media Set Copier
-    Arinc665::Utils::FilesystemMediaSetCopierPtr copierV{};
+    Arinc665::Utils::FilesystemMediaSetCopierPtr copierV;
     //! Media Paths
-    Arinc665::Utils::MediaPaths mediaPathsV{};
+    Arinc665::Utils::MediaPaths mediaPathsV;
     //! Check File Integrity
     bool checkFileIntegrityV{ false };
 };

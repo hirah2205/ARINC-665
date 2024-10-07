@@ -197,7 +197,7 @@ class ARINC_665_QT_EXPORT MediaSetModel : public QAbstractItemModel
 
   private:
     //! Root Element
-    Arinc665::Media::ConstBasePtr rootV{};
+    Arinc665::Media::ConstBasePtr rootV;
 };
 
 }

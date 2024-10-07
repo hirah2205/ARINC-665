@@ -180,7 +180,7 @@ class ARINC_665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
 
   private:
     //! Media Sets
-    Arinc665::Media::MediaSetsVariant mediaSetsV{};
+    Arinc665::Media::MediaSetsVariant mediaSetsV;
 };
 
 }

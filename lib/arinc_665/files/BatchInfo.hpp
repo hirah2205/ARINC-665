@@ -35,11 +35,11 @@ namespace Arinc665::Files {
 struct ARINC_665_EXPORT BatchInfo
 {
   //! Part Number
-  std::string partNumber{};
+  std::string partNumber;
   //! Filename
-  std::string filename{};
+  std::string filename;
   //! Member Sequence Number
-  MediumNumber memberSequenceNumber{};
+  MediumNumber memberSequenceNumber;
 
   /**
    * @brief Compares batch info against each other

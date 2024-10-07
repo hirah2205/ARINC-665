@@ -21,6 +21,7 @@ target_sources(
       BASE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/..
         ${CMAKE_CURRENT_BINARY_DIR}/..
+
       FILES
         Arinc665Commands.hpp
         ${CMAKE_CURRENT_BINARY_DIR}/arinc_665_commands_export.h
@@ -34,7 +35,11 @@ target_compile_options(
   arinc_665_commands
 
   PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:-W3>
+    $<$<CXX_COMPILER_ID:MSVC>:/W3>
+    # Disable Warning for exporting classes with std::* private members
+    $<$<CXX_COMPILER_ID:MSVC>:/wd4251>
+    # Disable Warning for exporting classes, which derives from std::*
+    $<$<CXX_COMPILER_ID:MSVC>:/wd4275>
 
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>

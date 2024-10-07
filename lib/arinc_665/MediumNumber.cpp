@@ -14,6 +14,7 @@
 #include "MediumNumber.hpp"
 
 #include <format>
+#include <ostream>
 
 namespace Arinc665 {
 

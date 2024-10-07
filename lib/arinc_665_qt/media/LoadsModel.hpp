@@ -196,7 +196,7 @@ class ARINC_665_QT_EXPORT LoadsModel : public QAbstractTableModel
 
   private:
     //! Loads List
-    Arinc665::Media::LoadsVariant loadsV{};
+    Arinc665::Media::LoadsVariant loadsV;
 };
 
 }

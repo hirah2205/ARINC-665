@@ -103,11 +103,11 @@ class ARINC_665_QT_EXPORT OpenMediaSetManagerAction : public QObject
 
   private:
     //! Select Media Set Manager Directory Dialog
-    std::unique_ptr< QFileDialog > selectMediaSetDirectoryDialogV{};
+    std::unique_ptr< QFileDialog > selectMediaSetDirectoryDialogV;
     //! Progress Callback Dialog
     QProgressDialog * progressDialogV{ nullptr };
     //! Load Media Set Action
-    std::unique_ptr< LoadMediaSetManagerAction > loadMediaSetManagerActionV{};
+    std::unique_ptr< LoadMediaSetManagerAction > loadMediaSetManagerActionV;
 };
 
 }

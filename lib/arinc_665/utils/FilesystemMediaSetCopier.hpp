@@ -32,10 +32,15 @@ class ARINC_665_EXPORT FilesystemMediaSetCopier
      *
      * @return ARINC 665 %Media Set Copier Instance
      **/
-    static FilesystemMediaSetCopierPtr create();
+    [[nodiscard]] static FilesystemMediaSetCopierPtr create();
 
     //! Destructor
     virtual ~FilesystemMediaSetCopier() = default;
+
+    /**
+     * @name Configuration Methods.
+     * @{
+     **/
 
     /**
      * @brief Updates Source Media Paths.
@@ -73,8 +78,10 @@ class ARINC_665_EXPORT FilesystemMediaSetCopier
     virtual FilesystemMediaSetCopier& mediaSetName(
       std::string mediaSetName ) = 0;
 
+    /** @} **/
+
     /**
-     * @brief Executes the ARINC 665 Media Set Copier.
+     * @brief Executes the ARINC 665 %Media Set Copier.
      *
      * All parameters must have been set previously.
      *

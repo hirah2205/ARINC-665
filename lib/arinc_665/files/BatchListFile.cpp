@@ -26,7 +26,7 @@
 
 namespace Arinc665::Files {
 
-BatchListFile::BatchListFile( const SupportedArinc665Version version) noexcept:
+BatchListFile::BatchListFile( const SupportedArinc665Version version) :
   ListFile{ version }
 {
 }

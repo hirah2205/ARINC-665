@@ -566,23 +566,23 @@ class ARINC_665_EXPORT Load final : public File
     //! Part Flags
     uint16_t partFlagsV{};
     //! Part Number
-    std::string partNumberV{};
+    std::string partNumberV;
     //! Target Hardware ID/ Positions
-    TargetHardwareIdPositions targetHardwareIdPositionsV{};
+    TargetHardwareIdPositions targetHardwareIdPositionsV;
     //! Data Files
-    WeakLoadFiles dataFilesV{};
+    WeakLoadFiles dataFilesV;
     //! Support Files
-    WeakLoadFiles supportFilesV{};
+    WeakLoadFiles supportFilesV;
     //! User Defined Data
-    UserDefinedData userDefinedDataV{};
+    UserDefinedData userDefinedDataV;
     //! Load Type
-    Type typeV{};
+    Type typeV;
     //! Load Check Value Type
-    std::optional< Arinc645::CheckValueType > loadCheckValueTypeV{};
+    std::optional< Arinc645::CheckValueType > loadCheckValueTypeV;
     //! Data Files Default Check Value Type
-    std::optional< Arinc645::CheckValueType > dataFilesCheckValueTypeV{};
+    std::optional< Arinc645::CheckValueType > dataFilesCheckValueTypeV;
     //! Support Files Default Check Value Type
-    std::optional< Arinc645::CheckValueType > supportFilesCheckValueTypeV{};
+    std::optional< Arinc645::CheckValueType > supportFilesCheckValueTypeV;
 };
 
 /**

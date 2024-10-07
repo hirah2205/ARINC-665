@@ -151,19 +151,19 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
       const std::filesystem::path &path );
 
     //! Media Set Compiler
-    MediaSetCompilerPtr mediaSetCompilerV{};
+    MediaSetCompilerPtr mediaSetCompilerV;
     //! Source Base Path
-    std::filesystem::path sourceBasePathV{};
+    std::filesystem::path sourceBasePathV;
     //! File Path Mapping
-    FilePathMapping filePathMappingV{};
+    FilePathMapping filePathMappingV;
     //! Output Base Path
-    std::filesystem::path outputBasePathV{};
+    std::filesystem::path outputBasePathV;
     //! Media Set Name
-    std::string mediaSetNameV{};
+    std::string mediaSetNameV;
     //! Media Set Base Directory
-    std::filesystem::path mediaSetBaseDirectoryV{};
+    std::filesystem::path mediaSetBaseDirectoryV;
     //! Generated Media Paths
-    MediaPaths mediaPathsV{};
+    MediaPaths mediaPathsV;
 };
 
 }

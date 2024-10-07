@@ -74,11 +74,11 @@ class ARINC_665_QT_EXPORT FileWidget final : public QWidget
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::FileWidget > ui{};
+    std::unique_ptr< Ui::FileWidget > ui;
     //! Check Value Type Model
-    std::unique_ptr< Arinc645Qt::CheckValueTypeModel > checkValueTypeModelV{};
+    std::unique_ptr< Arinc645Qt::CheckValueTypeModel > checkValueTypeModelV;
     //! File
-    Arinc665::Media::ConstFilePtr fileV{};
+    Arinc665::Media::ConstFilePtr fileV;
 };
 
 }

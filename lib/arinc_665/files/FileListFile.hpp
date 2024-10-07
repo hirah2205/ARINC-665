@@ -20,11 +20,11 @@
 
 #include "arinc_645/Arinc645.hpp"
 
-#include <string_view>
-#include <string>
-#include <vector>
 #include <cstdint>
 #include <span>
+#include <string>
+#include <string_view>
+#include <vector>
 
 namespace Arinc665::Files {
 
@@ -109,7 +109,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
      **/
     explicit FileListFile(
       SupportedArinc665Version version =
-        SupportedArinc665Version::Supplement345 ) noexcept;
+        SupportedArinc665Version::Supplement345 );
 
     /**
      * @brief Creates a file list file from the given raw data.
@@ -118,6 +118,9 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
      *   Raw data file representation.
      **/
     explicit FileListFile( ConstRawFileSpan rawFile );
+
+    //! Destructor.
+    ~FileListFile() override = default;
 
     //! @copydoc ListFile::operator=(ConstRawFileSpan)
     FileListFile& operator=( ConstRawFileSpan rawFile ) override;
@@ -269,9 +272,9 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
     void checkUserDefinedData();
 
     //! Files Information (list)
-    FilesInfo filesV{};
+    FilesInfo filesV;
     //! Use Defined Data.
-    UserDefinedData userDefinedDataV{};
+    UserDefinedData userDefinedDataV;
     //! Check Value Type (since ARINC 665-3)
     Arinc645::CheckValueType checkValueTypeV{
       Arinc645::CheckValueType::NotUsed };

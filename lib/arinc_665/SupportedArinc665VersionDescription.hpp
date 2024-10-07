@@ -22,6 +22,15 @@
 
 namespace Arinc665 {
 
+/**
+ * @name Supported ARINC 665 %Version Description.
+ *
+ * @sa @ref SupportedArinc665VersionDescription
+ * @sa @ref SupportedArinc665Version
+ *
+ * @{
+ **/
+
 //! Description for SupportedArinc665Version Enumeration.
 class ARINC_665_EXPORT SupportedArinc665VersionDescription :
   public Helper::Description<
@@ -60,6 +69,8 @@ ARINC_665_EXPORT std::ostream& operator<<(
 ARINC_665_EXPORT std::istream& operator>>(
   std::istream& stream,
   SupportedArinc665Version &version );
+
+/** @} **/
 
 }
 

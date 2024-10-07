@@ -303,7 +303,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      **/
     explicit LoadHeaderFile(
       SupportedArinc665Version version =
-        SupportedArinc665Version::Supplement345 ) noexcept;
+        SupportedArinc665Version::Supplement345 );
 
     /**
      * @brief Creates a load header file from the given raw data.
@@ -312,6 +312,9 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      *   Raw data file representation.
      **/
     explicit LoadHeaderFile( ConstRawFileSpan rawFile );
+
+    //! Destructor.
+    ~LoadHeaderFile() = default;
 
     //! @copydoc Arinc665File::operator=
     LoadHeaderFile& operator=( ConstRawFileSpan rawFile ) override;

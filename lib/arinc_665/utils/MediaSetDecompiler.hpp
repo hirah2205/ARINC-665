@@ -98,13 +98,18 @@ class ARINC_665_EXPORT MediaSetDecompiler
      *
      * @return ARINC 665 %Media Set Decompiler Instance
      **/
-    static MediaSetDecompilerPtr create();
+    [[nodiscard]] static MediaSetDecompilerPtr create();
 
     //! Destructor
     virtual ~MediaSetDecompiler() = default;
 
     /**
-     * @brief Sets the File Size Handler.
+     * @name Configuration Methods.
+     * @{
+     **/
+
+    /**
+     * @brief Sets the %File Size Handler.
      *
      * @param[in] fileSizeHandler
      *   Handler which is called to obtain the requested file size the medium.
@@ -147,6 +152,8 @@ class ARINC_665_EXPORT MediaSetDecompiler
     virtual MediaSetDecompiler& checkFileIntegrity(
       bool checkFileIntegrity ) noexcept = 0;
 
+    /** @} **/
+
     /**
      * @brief Executes the ARINC 665 %Media Set Decompiler.
      *
@@ -157,7 +164,7 @@ class ARINC_665_EXPORT MediaSetDecompiler
      * @throw Arinc665Exception
      *   When the media set cannot be decompiled.
      **/
-    virtual MediaSetDecompilerResult operator()() = 0;
+    [[nodiscard]] virtual MediaSetDecompilerResult operator()() = 0;
 };
 
 }

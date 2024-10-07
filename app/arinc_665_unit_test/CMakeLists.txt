@@ -18,7 +18,7 @@ target_compile_options(
   arinc_665_unit_test
 
   PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:-W3>
+    $<$<CXX_COMPILER_ID:MSVC>:/W3>
 
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>
@@ -33,7 +33,7 @@ target_link_libraries(
     arinc_665_test
     arinc_645_test
     commands_test
-    qt_icon_resources_test
+    $<TARGET_NAME_IF_EXISTS:qt_icon_resources_test> # Optionally link qt_icon_resources_test
     helper_test )
 
 add_test( NAME arinc_665_unit_test COMMAND arinc_665_unit_test )

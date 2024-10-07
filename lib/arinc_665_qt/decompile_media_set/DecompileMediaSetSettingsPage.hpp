@@ -109,7 +109,7 @@ class ARINC_665_QT_EXPORT DecompileMediaSetSettingsPage final :
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::DecompileMediaSetSettingsPage > ui{};
+    std::unique_ptr< Ui::DecompileMediaSetSettingsPage > ui;
 };
 
 }

@@ -66,12 +66,12 @@ class ARINC_665_QT_EXPORT MediaSetManagerSettingsDialog  final : public QDialog
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaSetManagerSettingsDialog > ui{};
+    std::unique_ptr< Ui::MediaSetManagerSettingsDialog > ui;
     //! Support ARINC 665 Version Model
     std::unique_ptr< SupportedArinc665VersionModel >
-      supportedArinc665VersionModelV{};
+      supportedArinc665VersionModelV;
     //! File Creation Policy Model (used for load header and batch files)
-    std::unique_ptr< FileCreationPolicyModel > fileCreationPolicyModelV{};
+    std::unique_ptr< FileCreationPolicyModel > fileCreationPolicyModelV;
 };
 
 }

@@ -140,8 +140,7 @@ Arinc645::CheckValue LoadHeaderFile::decodeLoadCheckValue(
     rawFile.subspan( static_cast< size_t >( loadCheckValuePtr ) * 2U ) );
 }
 
-LoadHeaderFile::LoadHeaderFile(
-  const SupportedArinc665Version version ) noexcept :
+LoadHeaderFile::LoadHeaderFile( const SupportedArinc665Version version ) :
   Arinc665File{ version, FileCrcOffset }
 {
 }
@@ -516,7 +515,8 @@ RawFile LoadHeaderFile::encode() const
     // Alternative implementation set Load Check Pointer to zero, when Load
     // Check Value is not given
 
-    checkValueCrcSizes += CheckValueUtils_size( loadCheckValueTypeV );
+    checkValueCrcSizes += static_cast< uint32_t >(
+      CheckValueUtils_size( loadCheckValueTypeV ) );
 
     // Set Pointer to Load Check Value Field
     Helper::setInt< uint32_t >(

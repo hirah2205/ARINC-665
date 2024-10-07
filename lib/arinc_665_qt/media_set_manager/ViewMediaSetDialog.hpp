@@ -57,9 +57,9 @@ class ARINC_665_QT_EXPORT ViewMediaSetDialog : public QDialog
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ViewMediaSetDialog > ui{};
+    std::unique_ptr< Ui::ViewMediaSetDialog > ui;
     //! Media Set Model
-    std::unique_ptr< Media::MediaSetModel > mediaSetModelV{};
+    std::unique_ptr< Media::MediaSetModel > mediaSetModelV;
 };
 
 }

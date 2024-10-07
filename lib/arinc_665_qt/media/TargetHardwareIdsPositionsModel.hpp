@@ -182,7 +182,7 @@ class ARINC_665_QT_EXPORT TargetHardwareIdsPositionsModel :
       int role ) const;
 
     //! THW ID Position Element
-    Arinc665::Media::Load::TargetHardwareIdPositions thwIdsPositionsV{};
+    Arinc665::Media::Load::TargetHardwareIdPositions thwIdsPositionsV;
 };
 
 }
