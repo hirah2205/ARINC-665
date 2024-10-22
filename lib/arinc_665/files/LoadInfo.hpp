@@ -14,9 +14,9 @@
 #ifndef ARINC_665_FILES_LOADINFO_HPP
 #define ARINC_665_FILES_LOADINFO_HPP
 
-#include "arinc_665/files/Files.hpp"
+#include <arinc_665/files/Files.hpp>
 
-#include "arinc_665/MediumNumber.hpp"
+#include <arinc_665/MediumNumber.hpp>
 
 #include <cstdint>
 #include <string>

@@ -13,7 +13,7 @@
 
 #include "PartNumber.hpp"
 
-#include "helper/Exception.hpp"
+#include <helper/Exception.hpp>
 
 #include <boost/exception/all.hpp>
 

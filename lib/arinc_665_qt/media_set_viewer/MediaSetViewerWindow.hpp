@@ -14,13 +14,13 @@
 #ifndef ARINC_665_QT_MEDIA_SET_VIEW_WMEDIASETVIEWERWINDOW_HPP
 #define ARINC_665_QT_MEDIA_SET_VIEW_WMEDIASETVIEWERWINDOW_HPP
 
-#include "arinc_665_qt/media_set_viewer/MediaSetViewerWindow.hpp"
+#include <arinc_665_qt/media_set_viewer/MediaSetViewerWindow.hpp>
 
-#include "arinc_665_qt/decompile_media_set/DecompileMediaSet.hpp"
+#include <arinc_665_qt/decompile_media_set/DecompileMediaSet.hpp>
 
-#include "arinc_665_qt/media/Media.hpp"
+#include <arinc_665_qt/media/Media.hpp>
 
-#include "arinc_665/utils/Utils.hpp"
+#include <arinc_665/utils/Utils.hpp>
 
 #include <QMainWindow>
 #include <QFileDialog>

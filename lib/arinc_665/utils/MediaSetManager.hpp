@@ -14,12 +14,12 @@
 #ifndef ARINC_665_UTILS_MEDIASETMANAGER_HPP
 #define ARINC_665_UTILS_MEDIASETMANAGER_HPP
 
-#include "arinc_665/utils/Utils.hpp"
-#include "arinc_665/utils/MediaSetManagerConfiguration.hpp"
+#include <arinc_665/utils/Utils.hpp>
+#include <arinc_665/utils/MediaSetManagerConfiguration.hpp>
 
-#include "arinc_665/media/Media.hpp"
+#include <arinc_665/media/Media.hpp>
 
-#include "arinc_645/CheckValue.hpp"
+#include <arinc_645/CheckValue.hpp>
 
 #include <filesystem>
 #include <functional>

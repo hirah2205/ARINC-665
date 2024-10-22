@@ -14,9 +14,9 @@
 #ifndef ARINC_665_QT_LOGGER_HPP
 #define ARINC_665_QT_LOGGER_HPP
 
-#include "arinc_665_qt/Arinc665Qt.hpp"
+#include <arinc_665_qt/Arinc665Qt.hpp>
 
-#include "helper/Logger.hpp"
+#include <helper/Logger.hpp>
 
 #include <boost/log/sources/global_logger_storage.hpp>
 

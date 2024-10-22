@@ -11,7 +11,7 @@
  * @brief Definition of Class Arinc665::Utils::FileCreationPolicyDescription.
  **/
 
-#include "arinc_665/utils/FileCreationPolicyDescription.hpp"
+#include <arinc_665/utils/FileCreationPolicyDescription.hpp>
 
 #include <boost/exception/exception.hpp>
 #include <boost/program_options.hpp>

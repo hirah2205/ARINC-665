@@ -19,7 +19,7 @@
 #ifndef ARINC_665_QT_ARINC665QT_HPP
 #define ARINC_665_QT_ARINC665QT_HPP
 
-#include "arinc_665_qt/arinc_665_qt_export.h"
+#include <arinc_665_qt/arinc_665_qt_export.h>
 
 /**
  * @brief ARINC 665 Specification Qt.

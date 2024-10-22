@@ -21,7 +21,7 @@
 #ifndef ARINC_665_QT_MEDIA_SET_VIEWER_MEDIASETVIEWER_HPP
 #define ARINC_665_QT_MEDIA_SET_VIEWER_MEDIASETVIEWER_HPP
 
-#include "arinc_665_qt/Arinc665Qt.hpp"
+#include <arinc_665_qt/Arinc665Qt.hpp>
 
 namespace Arinc665Qt {
 

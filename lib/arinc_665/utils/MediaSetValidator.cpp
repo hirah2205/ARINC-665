@@ -13,7 +13,7 @@
 
 #include "MediaSetValidator.hpp"
 
-#include "arinc_665/utils/implementation/MediaSetValidatorImpl.hpp"
+#include <arinc_665/utils/implementation/MediaSetValidatorImpl.hpp>
 
 namespace Arinc665::Utils {
 

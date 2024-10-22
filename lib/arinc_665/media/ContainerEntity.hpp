@@ -14,10 +14,10 @@
 #ifndef ARINC_665_MEDIA_CONTAINERENTITY_HPP
 #define ARINC_665_MEDIA_CONTAINERENTITY_HPP
 
-#include "arinc_665/media/Media.hpp"
-#include "arinc_665/media/Base.hpp"
+#include <arinc_665/media/Media.hpp>
+#include <arinc_665/media/Base.hpp>
 
-#include "arinc_665/MediumNumber.hpp"
+#include <arinc_665/MediumNumber.hpp>
 
 #include <filesystem>
 #include <string>

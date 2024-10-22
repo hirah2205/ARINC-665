@@ -13,9 +13,9 @@
 
 #include "MediaPathsModel.hpp"
 
-#include "arinc_665/Arinc665Exception.hpp"
+#include <arinc_665/Arinc665Exception.hpp>
 
-#include "arinc_665/files/MediaSetInformation.hpp"
+#include <arinc_665/files/MediaSetInformation.hpp>
 
 #include <boost/exception/all.hpp>
 

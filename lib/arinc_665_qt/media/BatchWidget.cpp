@@ -15,12 +15,12 @@
 
 #include "ui_BatchWidget.h"
 
-#include "arinc_665_qt/media/BatchInfoModel.hpp"
-#include "arinc_665_qt/media/LoadsModel.hpp"
+#include <arinc_665_qt/media/BatchInfoModel.hpp>
+#include <arinc_665_qt/media/LoadsModel.hpp>
 
-#include "arinc_665/media/Batch.hpp"
+#include <arinc_665/media/Batch.hpp>
 
-#include "helper_qt/String.hpp"
+#include <helper_qt/String.hpp>
 
 namespace Arinc665Qt::Media {
 

@@ -11,7 +11,7 @@
  * @brief Unit test of class Arinc665::Files::LoadFileInfo.
  **/
 
-#include "arinc_665/files/LoadFileInfo.hpp"
+#include <arinc_665/files/LoadFileInfo.hpp>
 
 #include <boost/test/unit_test.hpp>
 

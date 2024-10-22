@@ -11,16 +11,16 @@
  * @brief ARINC 665 Media Set Manager Qt Application.
  **/
 
-#include "arinc_665_qt/resources/Resources.hpp"
+#include <arinc_665_qt/resources/Resources.hpp>
 
-#include "arinc_665_qt/media_set_manager/OpenMediaSetManagerAction.hpp"
-#include "arinc_665_qt/media_set_manager/MediaSetManagerWindow.hpp"
+#include <arinc_665_qt/media_set_manager/OpenMediaSetManagerAction.hpp>
+#include <arinc_665_qt/media_set_manager/MediaSetManagerWindow.hpp>
 
-#include "arinc_665/utils/MediaSetManager.hpp"
+#include <arinc_665/utils/MediaSetManager.hpp>
 
-#include "qt_icon_resources/QtIconResources.hpp"
+#include <qt_icon_resources/QtIconResources.hpp>
 
-#include "helper/Logger.hpp"
+#include <helper/Logger.hpp>
 
 #include <QApplication>
 #include <QIcon>

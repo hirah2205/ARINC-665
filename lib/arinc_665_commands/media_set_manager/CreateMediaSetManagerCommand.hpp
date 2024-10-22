@@ -15,9 +15,9 @@
 #ifndef ARINC_665_COMMANDS_MEDIA_SET_MANAGER_CREATEMEDIASETMANAGERCOMMAND_HPP
 #define ARINC_665_COMMANDS_MEDIA_SET_MANAGER_CREATEMEDIASETMANAGERCOMMAND_HPP
 
-#include "arinc_665_commands/media_set_manager/MediaSetManager.hpp"
+#include <arinc_665_commands/media_set_manager/MediaSetManager.hpp>
 
-#include "commands/Commands.hpp"
+#include <commands/Commands.hpp>
 
 #include <boost/program_options.hpp>
 

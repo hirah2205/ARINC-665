@@ -16,26 +16,26 @@
 
 #include "ui_MediaSetManagerWindow.h"
 
-#include "arinc_665_qt/media_set_manager/ViewMediaSetDialog.hpp"
-#include "arinc_665_qt/media_set_manager/RemoveMediaSetAction.hpp"
-#include "arinc_665_qt/media_set_manager/ImportMediaSetWizard.hpp"
-#include "arinc_665_qt/media_set_manager/ImportMediaSetXmlWizard.hpp"
-#include "arinc_665_qt/media_set_manager/MediaSetManagerSettingsDialog.hpp"
+#include <arinc_665_qt/media_set_manager/ViewMediaSetDialog.hpp>
+#include <arinc_665_qt/media_set_manager/RemoveMediaSetAction.hpp>
+#include <arinc_665_qt/media_set_manager/ImportMediaSetWizard.hpp>
+#include <arinc_665_qt/media_set_manager/ImportMediaSetXmlWizard.hpp>
+#include <arinc_665_qt/media_set_manager/MediaSetManagerSettingsDialog.hpp>
 
-#include "arinc_665_qt/media/MediaSetsModel.hpp"
+#include <arinc_665_qt/media/MediaSetsModel.hpp>
 
-#include "arinc_665/media/MediaSet.hpp"
+#include <arinc_665/media/MediaSet.hpp>
 
-#include "arinc_665/Version.hpp"
+#include <arinc_665/Version.hpp>
 
-#include "arinc_645/Version.hpp"
+#include <arinc_645/Version.hpp>
 
-#include "qt_icon_resources/Version.hpp"
+#include <qt_icon_resources/Version.hpp>
 
-#include "helper_qt/AboutDialog.hpp"
-#include "helper_qt/String.hpp"
+#include <helper_qt/AboutDialog.hpp>
+#include <helper_qt/String.hpp>
 
-#include "helper/Version.hpp"
+#include <helper/Version.hpp>
 
 #include <QIcon>
 #include <QDesktopServices>

@@ -11,11 +11,11 @@
  * @brief Definition of unit tests for the class Arinc665::Files::BatchLoadInfo.
  **/
 
-#include "arinc_665/files/BatchLoadInfo.hpp"
+#include <arinc_665/files/BatchLoadInfo.hpp>
 
-#include "arinc_665/Arinc665Exception.hpp"
+#include <arinc_665/Arinc665Exception.hpp>
 
-#include "helper/Dump.hpp"
+#include <helper/Dump.hpp>
 
 #include <boost/test/unit_test.hpp>
 

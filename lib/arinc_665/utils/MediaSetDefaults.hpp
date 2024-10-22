@@ -14,7 +14,7 @@
 #ifndef ARINC_665_UTILS_MEDIASETDEFAULTS_HPP
 #define ARINC_665_UTILS_MEDIASETDEFAULTS_HPP
 
-#include "arinc_665/utils/Utils.hpp"
+#include <arinc_665/utils/Utils.hpp>
 
 #include <boost/property_tree/ptree_fwd.hpp>
 

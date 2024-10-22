@@ -14,10 +14,10 @@
 #ifndef ARINC_665_UTILS_ARINC665XMLSAVEIMPL_HPP
 #define ARINC_665_UTILS_ARINC665XMLSAVEIMPL_HPP
 
-#include "arinc_665/utils/Utils.hpp"
-#include "arinc_665/utils/Arinc665Xml.hpp"
+#include <arinc_665/utils/Utils.hpp>
+#include <arinc_665/utils/Arinc665Xml.hpp>
 
-#include "arinc_645/Arinc645.hpp"
+#include <arinc_645/Arinc645.hpp>
 
 #include <libxml++/libxml++.h>
 

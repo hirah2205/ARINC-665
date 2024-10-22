@@ -21,9 +21,9 @@
 #ifndef ARINC_665_COMMANDS_ARINC665COMMANDS_HPP
 #define ARINC_665_COMMANDS_ARINC665COMMANDS_HPP
 
-#include "arinc_665_commands/arinc_665_commands_export.h"
+#include <arinc_665_commands/arinc_665_commands_export.h>
 
-#include "commands/Commands.hpp"
+#include <commands/Commands.hpp>
 
 /**
  * @brief ARINC 665 %Commands.

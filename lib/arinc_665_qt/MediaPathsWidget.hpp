@@ -14,9 +14,9 @@
 #ifndef ARINC_665_QT_MEDIAPATHSPAGE_HPP
 #define ARINC_665_QT_MEDIAPATHSPAGE_HPP
 
-#include "arinc_665_qt/Arinc665Qt.hpp"
+#include <arinc_665_qt/Arinc665Qt.hpp>
 
-#include "arinc_665/utils/Utils.hpp"
+#include <arinc_665/utils/Utils.hpp>
 
 #include <QGroupBox>
 #include <QFileDialog>

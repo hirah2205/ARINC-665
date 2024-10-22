@@ -13,7 +13,7 @@
 
 #include "FilesystemMediaSetDecompiler.hpp"
 
-#include "arinc_665/utils/implementation/FilesystemMediaSetDecompilerImpl.hpp"
+#include <arinc_665/utils/implementation/FilesystemMediaSetDecompilerImpl.hpp>
 
 namespace Arinc665::Utils {
 

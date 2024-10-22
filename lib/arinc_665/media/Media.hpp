@@ -19,9 +19,9 @@
 #ifndef ARINC_665_MEDIA_MEDIA_HPP
 #define ARINC_665_MEDIA_MEDIA_HPP
 
-#include "arinc_665/Arinc665.hpp"
+#include <arinc_665/Arinc665.hpp>
 
-#include "arinc_645/Arinc645.hpp"
+#include <arinc_645/Arinc645.hpp>
 
 #include <list>
 #include <map>

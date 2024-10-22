@@ -14,11 +14,11 @@
 #ifndef ARINC_665_FILES_FILEINFO_HPP
 #define ARINC_665_FILES_FILEINFO_HPP
 
-#include "arinc_665/files/Files.hpp"
+#include <arinc_665/files/Files.hpp>
 
-#include "arinc_665/MediumNumber.hpp"
+#include <arinc_665/MediumNumber.hpp>
 
-#include "arinc_645/CheckValue.hpp"
+#include <arinc_645/CheckValue.hpp>
 
 #include <cstdint>
 #include <filesystem>

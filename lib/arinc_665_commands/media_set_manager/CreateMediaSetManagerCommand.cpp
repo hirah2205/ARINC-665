@@ -14,9 +14,9 @@
 
 #include "CreateMediaSetManagerCommand.hpp"
 
-#include "arinc_665/utils/MediaSetManager.hpp"
+#include <arinc_665/utils/MediaSetManager.hpp>
 
-#include "helper/Logger.hpp"
+#include <helper/Logger.hpp>
 
 #include <boost/exception/all.hpp>
 

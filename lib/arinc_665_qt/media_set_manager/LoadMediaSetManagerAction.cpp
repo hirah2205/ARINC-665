@@ -14,9 +14,9 @@
 
 #include "LoadMediaSetManagerAction.hpp"
 
-#include "arinc_665/utils/MediaSetManager.hpp"
+#include <arinc_665/utils/MediaSetManager.hpp>
 
-#include "arinc_665/Arinc665Exception.hpp"
+#include <arinc_665/Arinc665Exception.hpp>
 
 #include <QMessageBox>
 

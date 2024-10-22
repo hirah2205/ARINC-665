@@ -19,9 +19,9 @@
 #ifndef ARINC_665_ARINC665_HPP
 #define ARINC_665_ARINC665_HPP
 
-#include "arinc_665/arinc_665_export.h"
+#include <arinc_665/arinc_665_export.h>
 
-#include "helper/Helper.hpp"
+#include <helper/Helper.hpp>
 
 #include <cstdint>
 #include <optional>

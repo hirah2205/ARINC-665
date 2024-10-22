@@ -15,9 +15,9 @@
 
 #include "ui_ViewMediaSetDialog.h"
 
-#include "arinc_665_qt/media/MediaSetModel.hpp"
+#include <arinc_665_qt/media/MediaSetModel.hpp>
 
-#include "arinc_665/media/MediaSet.hpp"
+#include <arinc_665/media/MediaSet.hpp>
 
 namespace Arinc665Qt::MediaSetManager {
 

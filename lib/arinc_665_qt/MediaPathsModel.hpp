@@ -14,11 +14,11 @@
 #ifndef ARINC_665_QT_MEDIAPATHSMODEL_HPP
 #define ARINC_665_QT_MEDIAPATHSMODEL_HPP
 
-#include "arinc_665_qt/Arinc665Qt.hpp"
+#include <arinc_665_qt/Arinc665Qt.hpp>
 
-#include "arinc_665/utils/Utils.hpp"
+#include <arinc_665/utils/Utils.hpp>
 
-#include "arinc_665/MediumNumber.hpp"
+#include <arinc_665/MediumNumber.hpp>
 
 #include <QAbstractTableModel>
 

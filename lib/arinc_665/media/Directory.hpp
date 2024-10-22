@@ -14,8 +14,8 @@
 #ifndef ARINC_665_MEDIA_DIRECTORY_HPP
 #define ARINC_665_MEDIA_DIRECTORY_HPP
 
-#include "arinc_665/media/Media.hpp"
-#include "arinc_665/media/ContainerEntity.hpp"
+#include <arinc_665/media/Media.hpp>
+#include <arinc_665/media/ContainerEntity.hpp>
 
 #include <string>
 #include <string_view>

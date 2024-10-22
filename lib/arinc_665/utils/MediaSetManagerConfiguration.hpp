@@ -14,9 +14,9 @@
 #ifndef ARINC_665_UTILS_MEDIASETMANAGERCONFIGURATION_HPP
 #define ARINC_665_UTILS_MEDIASETMANAGERCONFIGURATION_HPP
 
-#include "arinc_665/utils/Utils.hpp"
+#include <arinc_665/utils/Utils.hpp>
 
-#include "arinc_665/utils/MediaSetDefaults.hpp"
+#include <arinc_665/utils/MediaSetDefaults.hpp>
 
 #include <boost/property_tree/ptree_fwd.hpp>
 

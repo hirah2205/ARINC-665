@@ -14,8 +14,8 @@
 #ifndef ARINC_665_PARTNUMBER_HPP
 #define ARINC_665_PARTNUMBER_HPP
 
-#include "arinc_665/Arinc665.hpp"
-#include "arinc_665/Arinc665Exception.hpp"
+#include <arinc_665/Arinc665.hpp>
+#include <arinc_665/Arinc665Exception.hpp>
 
 #include <string>
 #include <string_view>

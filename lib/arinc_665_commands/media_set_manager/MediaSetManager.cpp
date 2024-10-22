@@ -13,15 +13,15 @@
 
 #include "MediaSetManager.hpp"
 
-#include "arinc_665_commands/media_set_manager/CreateMediaSetManagerCommand.hpp"
-#include "arinc_665_commands/media_set_manager/ListBatchesCommand.hpp"
-#include "arinc_665_commands/media_set_manager/ListLoadsCommand.hpp"
-#include "arinc_665_commands/media_set_manager/ListMediaSetsCommand.hpp"
-#include "arinc_665_commands/media_set_manager/ImportMediaSetXmlCommand.hpp"
-#include "arinc_665_commands/media_set_manager/ImportMediaSetCommand.hpp"
-#include "arinc_665_commands/media_set_manager/RemoveMediaSetCommand.hpp"
+#include <arinc_665_commands/media_set_manager/CreateMediaSetManagerCommand.hpp>
+#include <arinc_665_commands/media_set_manager/ListBatchesCommand.hpp>
+#include <arinc_665_commands/media_set_manager/ListLoadsCommand.hpp>
+#include <arinc_665_commands/media_set_manager/ListMediaSetsCommand.hpp>
+#include <arinc_665_commands/media_set_manager/ImportMediaSetXmlCommand.hpp>
+#include <arinc_665_commands/media_set_manager/ImportMediaSetCommand.hpp>
+#include <arinc_665_commands/media_set_manager/RemoveMediaSetCommand.hpp>
 
-#include "commands/CommandRegistry.hpp"
+#include <commands/CommandRegistry.hpp>
 
 #include <functional>
 #include <memory>

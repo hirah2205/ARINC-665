@@ -19,7 +19,7 @@
 #ifndef ARINC_665_QT_MEDIA_SET_MANAGER_MEDIASETMANAGER_HPP
 #define ARINC_665_QT_MEDIA_SET_MANAGER_MEDIASETMANAGER_HPP
 
-#include "arinc_665_qt/Arinc665Qt.hpp"
+#include <arinc_665_qt/Arinc665Qt.hpp>
 
 /**
  * @brief ARINC 665 %Media Set Manager Qt Classes.

@@ -11,8 +11,8 @@
  * @brief Definition of unit tests for the class Arinc665::PartNumber.
  **/
 
-#include "arinc_665/PartNumber.hpp"
-#include "arinc_665/Arinc665Exception.hpp"
+#include <arinc_665/PartNumber.hpp>
+#include <arinc_665/Arinc665Exception.hpp>
 
 #include <boost/test/unit_test.hpp>
 

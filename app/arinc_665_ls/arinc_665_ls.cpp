@@ -13,21 +13,21 @@
  * Utility to Scan Directories/ Files for ARINC 665 Content and Decodes them.
  **/
 
-#include "arinc_665/Arinc665.hpp"
+#include <arinc_665/Arinc665.hpp>
 
-#include "arinc_665/files/FileListFile.hpp"
-#include "arinc_665/files/LoadListFile.hpp"
-#include "arinc_665/files/BatchListFile.hpp"
-#include "arinc_665/files/LoadHeaderFile.hpp"
-#include "arinc_665/files/BatchFile.hpp"
+#include <arinc_665/files/FileListFile.hpp>
+#include <arinc_665/files/LoadListFile.hpp>
+#include <arinc_665/files/BatchListFile.hpp>
+#include <arinc_665/files/LoadHeaderFile.hpp>
+#include <arinc_665/files/BatchFile.hpp>
 
-#include "arinc_665/utils/FilePrinter.hpp"
+#include <arinc_665/utils/FilePrinter.hpp>
 
-#include "arinc_665/Arinc665Exception.hpp"
+#include <arinc_665/Arinc665Exception.hpp>
 
-#include "helper/Dump.hpp"
-#include "helper/Exception.hpp"
-#include "helper/Logger.hpp"
+#include <helper/Dump.hpp>
+#include <helper/Exception.hpp>
+#include <helper/Logger.hpp>
 
 #include <boost/exception/all.hpp>
 #include <boost/format.hpp>

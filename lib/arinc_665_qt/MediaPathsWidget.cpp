@@ -15,7 +15,7 @@
 
 #include "ui_MediaPathsWidget.h"
 
-#include "arinc_665_qt/MediaPathsModel.hpp"
+#include <arinc_665_qt/MediaPathsModel.hpp>
 
 #include <QMessageBox>
 

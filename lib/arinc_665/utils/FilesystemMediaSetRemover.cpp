@@ -13,7 +13,7 @@
 
 #include "FilesystemMediaSetRemover.hpp"
 
-#include "arinc_665/utils/implementation/FilesystemMediaSetRemoverImpl.hpp"
+#include <arinc_665/utils/implementation/FilesystemMediaSetRemoverImpl.hpp>
 
 namespace Arinc665::Utils {
 

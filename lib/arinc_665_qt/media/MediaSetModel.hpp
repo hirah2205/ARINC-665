@@ -14,9 +14,9 @@
 #ifndef ARINC_665_QT_MEDIA_MEDIASETMODEL_HPP
 #define ARINC_665_QT_MEDIA_MEDIASETMODEL_HPP
 
-#include "arinc_665_qt/media/Media.hpp"
+#include <arinc_665_qt/media/Media.hpp>
 
-#include "arinc_665/media/Media.hpp"
+#include <arinc_665/media/Media.hpp>
 
 #include <QAbstractItemModel>
 

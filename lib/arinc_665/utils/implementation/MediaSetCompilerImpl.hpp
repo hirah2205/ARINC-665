@@ -14,7 +14,7 @@
 #ifndef ARINC_665_UTILS_IMPLEMENTATION_MEDIASETCOMPILERIMPL_HPP
 #define ARINC_665_UTILS_IMPLEMENTATION_MEDIASETCOMPILERIMPL_HPP
 
-#include "arinc_665/utils/MediaSetCompiler.hpp"
+#include <arinc_665/utils/MediaSetCompiler.hpp>
 
 namespace Arinc665::Utils {
 

@@ -14,9 +14,9 @@
 #ifndef ARINC_665_QT_MEDIA_SET_MANAGER_IMPORTMEDIASETWIZARD_HPP
 #define ARINC_665_QT_MEDIA_SET_MANAGER_IMPORTMEDIASETWIZARD_HPP
 
-#include "arinc_665_qt/media_set_manager/MediaSetManager.hpp"
+#include <arinc_665_qt/media_set_manager/MediaSetManager.hpp>
 
-#include "arinc_665/utils/Utils.hpp"
+#include <arinc_665/utils/Utils.hpp>
 
 #include <QWizard>
 

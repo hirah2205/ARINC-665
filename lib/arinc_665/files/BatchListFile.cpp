@@ -13,14 +13,14 @@
 
 #include "BatchListFile.hpp"
 
-#include "arinc_665/files/StringUtils.hpp"
+#include <arinc_665/files/StringUtils.hpp>
 
-#include "arinc_665/Arinc665Exception.hpp"
-#include "arinc_665/Logger.hpp"
+#include <arinc_665/Arinc665Exception.hpp>
+#include <arinc_665/Logger.hpp>
 
-#include "helper/Endianness.hpp"
-#include "helper/Exception.hpp"
-#include "helper/SafeCast.hpp"
+#include <helper/Endianness.hpp>
+#include <helper/Exception.hpp>
+#include <helper/SafeCast.hpp>
 
 #include <boost/exception/all.hpp>
 

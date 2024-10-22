@@ -14,7 +14,7 @@
 #ifndef ARINC_665_UTILS_FILESYSTEMMEDIASETCOMPILER_HPP
 #define ARINC_665_UTILS_FILESYSTEMMEDIASETCOMPILER_HPP
 
-#include "arinc_665/utils/Utils.hpp"
+#include <arinc_665/utils/Utils.hpp>
 
 namespace Arinc665::Utils {
 

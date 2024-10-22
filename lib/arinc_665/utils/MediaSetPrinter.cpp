@@ -13,16 +13,16 @@
 
 #include "MediaSetPrinter.hpp"
 
-#include "arinc_665/media/MediaSet.hpp"
-#include "arinc_665/media/Directory.hpp"
-#include "arinc_665/media/Load.hpp"
-#include "arinc_665/media/Batch.hpp"
-#include "arinc_665/media/RegularFile.hpp"
+#include <arinc_665/media/MediaSet.hpp>
+#include <arinc_665/media/Directory.hpp>
+#include <arinc_665/media/Load.hpp>
+#include <arinc_665/media/Batch.hpp>
+#include <arinc_665/media/RegularFile.hpp>
 
-#include "arinc_665/MediumNumber.hpp"
+#include <arinc_665/MediumNumber.hpp>
 
-#include "arinc_645/CheckValueTypeDescription.hpp"
-#include "arinc_645/CheckValue.hpp"
+#include <arinc_645/CheckValueTypeDescription.hpp>
+#include <arinc_645/CheckValue.hpp>
 
 #include <format>
 
