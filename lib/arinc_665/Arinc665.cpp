@@ -19,12 +19,6 @@
 
 namespace Arinc665 {
 
-/**
-     * @brief Provide Version Information as
-     *   Helper::VersionsInformation::value_type.
-     *
-     * @return Version Information.
-     **/
 Helper::VersionsInformation::value_type arinc665Version()
 {
   return {

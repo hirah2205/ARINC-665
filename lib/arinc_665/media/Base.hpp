@@ -29,7 +29,7 @@ namespace Arinc665::Media {
  * %Base class for media set classes.
  * Provides common attributes.
  */
-class Base : public std::enable_shared_from_this< Base >
+class ARINC_665_EXPORT Base : public std::enable_shared_from_this< Base >
 {
   public:
     /**
@@ -39,9 +39,7 @@ class Base : public std::enable_shared_from_this< Base >
      **/
     class CreateKey final
     {
-      private:
-        //! Default Constructor
-        CreateKey() {};
+      public:
         //! Deleted Copy Constructor
         CreateKey( CreateKey &other ) = delete;
         //! Deleted Move Constructor
@@ -50,6 +48,10 @@ class Base : public std::enable_shared_from_this< Base >
         CreateKey& operator =( CreateKey &other ) = delete;
         //! Deleted Move Assignment Operator
         CreateKey& operator =( CreateKey &&other ) = delete;
+
+      private:
+        //! Default Constructor
+        CreateKey() = default;
 
         friend class MediaSet;
         friend class ContainerEntity;
