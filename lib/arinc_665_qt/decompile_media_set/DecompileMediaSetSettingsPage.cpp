@@ -39,7 +39,7 @@ DecompileMediaSetSettingsPage::DecompileMediaSetSettingsPage(
 
   connect(
     ui->checkFileIntegrity,
-    &QCheckBox::stateChanged,
+    &QCheckBox::checkStateChanged,
     this,
     &DecompileMediaSetSettingsPage::checkFileIntegrityStateChanged );
 }
@@ -64,7 +64,8 @@ void DecompileMediaSetSettingsPage::defaults(
   ui->checkFileIntegrity->setChecked( defaults.checkFileIntegrity );
 }
 
-void DecompileMediaSetSettingsPage::checkFileIntegrityStateChanged( int state )
+void DecompileMediaSetSettingsPage::checkFileIntegrityStateChanged(
+  const Qt::CheckState state )
 {
   switch ( state )
   {

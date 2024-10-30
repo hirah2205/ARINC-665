@@ -39,7 +39,7 @@ ImportMediaSetSettingsPage::ImportMediaSetSettingsPage(
 
   connect(
     ui->checkFileIntegrity,
-    &QCheckBox::stateChanged,
+    &QCheckBox::checkStateChanged,
     this,
     &ImportMediaSetSettingsPage::checkFileIntegrityStateChanged );
 }
@@ -58,7 +58,7 @@ void ImportMediaSetSettingsPage::defaults(
 }
 
 void ImportMediaSetSettingsPage::checkFileIntegrityStateChanged(
-  const int state )
+  const Qt::CheckState state )
 {
   switch ( state )
   {

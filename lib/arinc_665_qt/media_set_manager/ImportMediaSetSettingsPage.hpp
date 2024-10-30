@@ -92,7 +92,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetSettingsPage final : public QWizardPage
      * @param[in] state
      *   Check State.
      **/
-    void checkFileIntegrityStateChanged( int state );
+    void checkFileIntegrityStateChanged( Qt::CheckState state );
 
   private:
     //! UI (designer)
