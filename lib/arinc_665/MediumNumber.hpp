@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -24,7 +23,7 @@ namespace Arinc665 {
 /**
  * @brief ARINC 665 Medium Number
  *
- * The Medium Number is used to provide a Medium Number @p [0..255].
+ * This class is used to provide an ARINC 665 Medium Number @p [1..255].
  **/
 class ARINC_665_EXPORT MediumNumber
 {
@@ -38,6 +37,8 @@ class ARINC_665_EXPORT MediumNumber
 
     /**
      * @brief Constructs the Medium Number
+     *
+     * @todo Handling of initialisation with `0`
      *
      * @param[in] mediumNumber
      *   Medium Number
@@ -54,33 +55,69 @@ class ARINC_665_EXPORT MediumNumber
     /**
      * @brief Binary Plus Operator with @p uin8_t.
      *
+     * Clamps value to range [1..255].
+     *
      * @param[in] increment
      *   Increment Value.
      *
      * @return *this
      **/
-    MediumNumber operator+( uint8_t increment );
+    MediumNumber operator+( uint8_t increment ) const noexcept;
+
+    /**
+     * @brief Binary Plus Minus with @p uin8_t.
+     *
+     * Clamps value to range [1..255].
+     *
+     * @param[in] decrement
+     *   Decrement Value.
+     *
+     * @return *this
+     **/
+    MediumNumber operator-( uint8_t decrement ) const noexcept;
 
     /**
      * @brief Prefix increment operator (@p ++mediumNumber).
      *
+     * Clamps value to range [1..255].
+     *
      * @return *this
      **/
-    MediumNumber operator++();
+    MediumNumber& operator++() noexcept;
 
     /**
      * @brief Postfix increment operator (@p mediumNumber++).
      *
+     * Clamps value to range [1..255].
+     *
      * @return *this before increment
      **/
-    MediumNumber operator++( int );
+    MediumNumber operator++( int ) noexcept;
+
+    /**
+     * @brief Prefix decrement operator (@p --mediumNumber).
+     *
+     * Clamps value to range [1..255].
+     *
+     * @return *this
+     **/
+    MediumNumber& operator--() noexcept;
+
+    /**
+     * @brief Postfix decrement operator (@p mediumNumber--).
+     *
+     * Clamps value to range [1..255].
+     *
+     * @return *this before decrement
+     **/
+    MediumNumber operator--( int ) noexcept;
 
     /**
      * @brief Explicit cast to @p uint8_t.
      *
      * @return Medium Number @p uint8_t
      **/
-    explicit operator uint8_t() const;
+    explicit operator uint8_t() const noexcept;
 
     /**
      * @brief Explicit cast to @p std::string.
@@ -92,12 +129,14 @@ class ARINC_665_EXPORT MediumNumber
     /**
      * @brief Assigns @p uint8_t to medium number.
      *
+     * @todo Handling of initialisation with `0`
+     *
      * @param[in] mediumNumber
      *   Medium Number
      *
      * @return *this
      **/
-    MediumNumber& operator =( uint8_t mediumNumber );
+    MediumNumber& operator =( uint8_t mediumNumber ) noexcept;
 
     /**
      * @brief 3-way comparison of Medium Number.
@@ -107,7 +146,7 @@ class ARINC_665_EXPORT MediumNumber
      *
      * @return Comparison.
      **/
-    auto operator<=>( const MediumNumber &rhs ) const = default;
+    auto operator<=>( const MediumNumber &rhs ) const noexcept = default;
 
   private:
     //! Medium Number
@@ -125,10 +164,9 @@ class ARINC_665_EXPORT MediumNumber
  * @return Output stream
  *
  * @sa @ref MediumNumber
+ * @sa @ref MediumNumber::toString() const
  **/
-ARINC_665_EXPORT std::ostream& operator<<(
-  std::ostream &stream,
-  const MediumNumber &mediumNumber );
+ARINC_665_EXPORT std::ostream& operator<<( std::ostream &stream, const MediumNumber &mediumNumber );
 
 }
 
