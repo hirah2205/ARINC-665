@@ -28,6 +28,7 @@ BOOST_AUTO_TEST_CASE( constructor1 )
   BOOST_CHECK( static_cast< uint8_t >( mediumNumber )  == 1U );
 }
 
+//! Constructor Test
 BOOST_AUTO_TEST_CASE( constructor2 )
 {
   MediumNumber mediumNumber1{ 1U };
@@ -37,6 +38,7 @@ BOOST_AUTO_TEST_CASE( constructor2 )
   BOOST_CHECK( static_cast< uint8_t >( mediumNumber2 ) == 255U );
 }
 
+//! Constructor Test
 BOOST_AUTO_TEST_CASE( preIncrement )
 {
   MediumNumber mediumNumber1{ 1 };
@@ -54,6 +56,7 @@ BOOST_AUTO_TEST_CASE( preIncrement )
   BOOST_CHECK( static_cast< uint8_t >( mediumNumber4 )  == 255U );
 }
 
+//! Post Increment Test
 BOOST_AUTO_TEST_CASE( postIncrement )
 {
   MediumNumber mediumNumber1{ 1 };
@@ -71,6 +74,7 @@ BOOST_AUTO_TEST_CASE( postIncrement )
   BOOST_CHECK( static_cast< uint8_t >( mediumNumber4 )  == 255U );
 }
 
+//! Pre Increment Test
 BOOST_AUTO_TEST_CASE( preDecrement )
 {
   MediumNumber mediumNumber1{ 1 };
@@ -88,6 +92,7 @@ BOOST_AUTO_TEST_CASE( preDecrement )
   BOOST_CHECK( static_cast< uint8_t >( mediumNumber4 )  == 254U );
 }
 
+//! Post Decrement Test
 BOOST_AUTO_TEST_CASE( postDecrement )
 {
   MediumNumber mediumNumber1{ 1 };
@@ -105,6 +110,7 @@ BOOST_AUTO_TEST_CASE( postDecrement )
   BOOST_CHECK( static_cast< uint8_t >( mediumNumber4 )  == 255U );
 }
 
+//! Pre Decrement Test
 BOOST_AUTO_TEST_CASE( toString )
 {
   BOOST_CHECK( static_cast< std::string >( MediumNumber{ 1U } )  == "001" );
