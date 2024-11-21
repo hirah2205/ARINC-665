@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -34,8 +33,7 @@ size_t CheckValueUtils_size( const Arinc645::CheckValueType type )
     ( 2U * sizeof( uint16_t ) ) + Arinc645::CheckValue::Sizes.at( type );
 }
 
-RawFile CheckValueUtils_encode(
-  const Arinc645::CheckValue &checkValue )
+RawFile CheckValueUtils_encode( const Arinc645::CheckValue &checkValue )
 {
   // special Handling of "No Check Value"
   if ( Arinc645::CheckValueType::NotUsed == checkValue.type() )
@@ -54,15 +52,10 @@ RawFile CheckValueUtils_encode(
   // Check Value Data
   const auto &checkValueData{ checkValue.value() };
 
-  rawCheckValue.insert(
-    rawCheckValue.end(),
-    checkValueData.begin(),
-    checkValueData.end() );
+  rawCheckValue.insert( rawCheckValue.end(), checkValueData.begin(), checkValueData.end() );
 
   // Check Value Length
-  Helper::setInt< uint16_t>(
-    rawCheckValue.begin(),
-    Helper::safeCast< uint16_t>( rawCheckValue.size() ) );
+  Helper::setInt< uint16_t >( rawCheckValue.begin(), Helper::safeCast< uint16_t >( rawCheckValue.size() ) );
 
   return rawCheckValue;
 }
@@ -76,11 +69,8 @@ Arinc645::CheckValue CheckValueUtils_decode( ConstRawFileSpan rawFile )
       << Helper::AdditionalInfo{ "Invalid check value" } );
   }
 
-  auto it{ rawFile.begin() };
-
   // Check Value Length
-  uint16_t checkValueLength{};
-  it = Helper::getInt< uint16_t>( it, checkValueLength );
+  auto [ remainingData, checkValueLength ] = Helper::getInt< uint16_t>( rawFile );
 
   // Special handling of empty check value
   if ( 0U == checkValueLength )
@@ -96,11 +86,9 @@ Arinc645::CheckValue CheckValueUtils_decode( ConstRawFileSpan rawFile )
 
   // Check Value Type
   uint16_t rawCheckValueType{};
-  it = Helper::getInt< uint16_t >( it, rawCheckValueType );
+  std::tie( remainingData, rawCheckValueType) = Helper::getInt< uint16_t >( remainingData );
 
-  const auto checkValueType{
-    Arinc645::CheckValueTypeDescription::instance().enumeration(
-      rawCheckValueType ) };
+  const auto checkValueType{ Arinc645::CheckValueTypeDescription::instance().enumeration( rawCheckValueType ) };
 
   if ( !checkValueType )
   {
@@ -109,17 +97,15 @@ Arinc645::CheckValue CheckValueUtils_decode( ConstRawFileSpan rawFile )
   }
 
   // validate check value size
-  if ( Arinc645::CheckValue::Sizes.find( *checkValueType )->second
-    != checkValueLength - ( 2U * sizeof( uint16_t ) ) )
+  if ( Arinc645::CheckValue::Sizes.find( *checkValueType )->second != checkValueLength - ( 2U * sizeof( uint16_t ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo{ "Invalid check value length" } );
   }
 
-  return { *checkValueType,
-    std::vector< uint8_t >{
-      it,
-      it + checkValueLength - ( 2U * sizeof( uint16_t ) ) } };
+  return {
+    *checkValueType,
+    std::vector< uint8_t >{ remainingData.begin(), remainingData.begin() + ( checkValueLength - ( 2U * sizeof( uint16_t ) ) ) } };
 }
 
 }
