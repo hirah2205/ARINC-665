@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -24,21 +23,17 @@
 #include <QMessageBox>
 #include <QSettings>
 
-#include <boost/exception/all.hpp>
-
 namespace Arinc665Qt::MediaSetManager {
 
 OpenMediaSetManagerAction::OpenMediaSetManagerAction(
   QWidget * const parent ) :
   QObject{ parent },
   selectMediaSetDirectoryDialogV{ std::make_unique< QFileDialog >( parent ) },
-  loadMediaSetManagerActionV{
-    std::make_unique< LoadMediaSetManagerAction >( this ) }
+  loadMediaSetManagerActionV{ std::make_unique< LoadMediaSetManagerAction >( this ) }
 {
   QSettings settings{};
 
-  selectMediaSetDirectoryDialogV->setWindowTitle(
-    tr( "Select ARINC 665 Media Set Manager Configuration" ) );
+  selectMediaSetDirectoryDialogV->setWindowTitle( tr( "Select ARINC 665 Media Set Manager Configuration" ) );
   selectMediaSetDirectoryDialogV->setFileMode( QFileDialog::Directory );
   selectMediaSetDirectoryDialogV->setOption( QFileDialog::ShowDirsOnly );
   if ( auto lastDir{ settings.value( "LastMediaSetManagerDirectory" ) };
@@ -88,10 +83,8 @@ void OpenMediaSetManagerAction::directorySelected()
 
   QSettings settings{};
 
-  loadMediaSetManagerActionV->mediaSetDirectory(
-    directory.path().toStdString() );
-  loadMediaSetManagerActionV->checkMediaSetIntegrity(
-    settings.value( "CheckIntegrityOnStartup", true ).toBool() );
+  loadMediaSetManagerActionV->mediaSetDirectory( directory.path().toStdString() );
+  loadMediaSetManagerActionV->checkMediaSetIntegrity( settings.value( "CheckIntegrityOnStartup", true ).toBool() );
 
   settings.setValue( "LastMediaSetManagerDirectory", directory.path() );
 
@@ -102,19 +95,24 @@ void OpenMediaSetManagerAction::directorySelected()
   connect(
     loadMediaSetManagerActionV.get(),
     &LoadMediaSetManagerAction::mediaSetManagerLoaded,
-    [this]()
-    {
-      progressDialogV->reset();
-      progressDialogV->deleteLater();
-    } );
+    progressDialogV,
+    &QProgressDialog::reset );
+  connect(
+    loadMediaSetManagerActionV.get(),
+    &LoadMediaSetManagerAction::mediaSetManagerLoaded,
+    progressDialogV,
+    &QProgressDialog::deleteLater );
+
   connect(
     loadMediaSetManagerActionV.get(),
     &LoadMediaSetManagerAction::failed,
-    [this]()
-    {
-      progressDialogV->reset();
-      progressDialogV->deleteLater();
-    } );
+    progressDialogV,
+    &QProgressDialog::reset );
+  connect(
+    loadMediaSetManagerActionV.get(),
+    &LoadMediaSetManagerAction::failed,
+    progressDialogV,
+    &QProgressDialog::deleteLater );
 
   progressDialogV->show();
 
@@ -128,8 +126,8 @@ void OpenMediaSetManagerAction::directorySelected()
 }
 
 void OpenMediaSetManagerAction::mediaSetManagerLoadProgress(
-  size_t currentMediaSet,
-  size_t numberOfMediaSets,
+  size_t const currentMediaSet,
+  size_t const numberOfMediaSets,
   const std::string &partNumber )
 {
   if ( nullptr != progressDialogV )

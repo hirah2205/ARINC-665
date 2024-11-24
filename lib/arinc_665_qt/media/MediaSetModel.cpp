@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -32,10 +31,7 @@ MediaSetModel::MediaSetModel( QObject * const parent ) :
 {
 }
 
-QModelIndex MediaSetModel::index(
-  const int row,
-  const int column,
-  const QModelIndex &parent ) const
+QModelIndex MediaSetModel::index( const int row, const int column, const QModelIndex &parent ) const
 {
   BOOST_LOG_FUNCTION()
 
@@ -67,9 +63,7 @@ QModelIndex MediaSetModel::index(
     case Arinc665::Media::Type::MediaSet:
     case Arinc665::Media::Type::Directory:
     {
-      auto containerParent{
-        std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >(
-          parentBase ) };
+      auto containerParent{ std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >( parentBase ) };
 
       if ( !containerParent )
       {
@@ -79,17 +73,15 @@ QModelIndex MediaSetModel::index(
         return {};
       }
 
-      if ( std::cmp_less( row, containerParent->numberOfSubdirectories() ) )
+      if ( auto directories{ containerParent->subdirectories() }; std::cmp_less( row, directories.size() ) )
       {
-        auto dirIt{ std::next( containerParent->subdirectories().begin(), row ) };
-
+        auto dirIt{ std::next( directories.begin(), row ) };
         return createIndex( row, column, (void*)dirIt->get() );
       }
 
-      auto fileIt{ std::next(
-        containerParent->files().begin(),
-        row - static_cast< ptrdiff_t >( containerParent->numberOfSubdirectories() ) ) };
-
+      auto files{ containerParent->files() };
+      auto fileIt{
+        std::next( files.begin(), row - static_cast< ptrdiff_t >( containerParent->numberOfSubdirectories() ) ) };
       return createIndex( row, column, (void*)fileIt->get() );
     }
 
@@ -178,13 +170,11 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
 
       if ( Arinc665::Media::Type::MediaSet == file->parent()->type() )
       {
-        auto parent( std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >(
-          file->parent() ) );
-
+        auto parent( std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( file->parent() ) );
         assert( parent );
 
         // the media set
-         return createIndex( 0, 0, (void*)parent.get() );
+        return createIndex( 0, 0, (void*)parent.get() );
       }
 
       auto grandParent{ file->parent()->parent() };
@@ -235,8 +225,7 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
     case Arinc665::Media::Type::MediaSet:
     case Arinc665::Media::Type::Directory:
     {
-      auto container{
-        std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >( base ) };
+      auto container{ std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >( base ) };
 
       if ( !container )
       {
@@ -288,8 +277,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
     case Arinc665::Media::Type::MediaSet:
     case Arinc665::Media::Type::Directory:
     {
-      auto container{
-        std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >( base ) };
+      auto container{ std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >( base ) };
 
       if ( !container )
       {
@@ -300,8 +288,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
       }
 
       // Medium and Directories have subdirectories and files
-      return static_cast< int>(
-        container->numberOfSubdirectories() + container->numberOfFiles() );
+      return static_cast< int >( container->numberOfSubdirectories() + container->numberOfFiles() );
     }
 
     case Arinc665::Media::Type::File:
@@ -316,13 +303,12 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
   }
 }
 
-int MediaSetModel::columnCount(
-  const QModelIndex & parent [[maybe_unused]] ) const
+int MediaSetModel::columnCount( const QModelIndex &parent [[maybe_unused]] ) const
 {
   return static_cast< int >( Columns::Last );
 }
 
-QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
+QVariant MediaSetModel::data( const QModelIndex &index, int const role ) const
 {
   BOOST_LOG_FUNCTION()
 
@@ -371,8 +357,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
 
             case Arinc665::Media::Type::File:
             {
-              auto file{
-                std::dynamic_pointer_cast< const Arinc665::Media::File >( base ) };
+              auto file{ std::dynamic_pointer_cast< const Arinc665::Media::File >( base ) };
 
               if ( !file )
               {
@@ -438,8 +423,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
           {
             case Arinc665::Media::Type::MediaSet:
             {
-              auto mediaSet{
-                std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( base) };
+              auto mediaSet{ std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( base ) };
 
               if ( !mediaSet )
               {
@@ -454,8 +438,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
 
             case Arinc665::Media::Type::Directory:
             {
-              auto directory{
-                std::dynamic_pointer_cast< const Arinc665::Media::Directory >( base) };
+              auto directory{ std::dynamic_pointer_cast< const Arinc665::Media::Directory >( base ) };
 
               if ( !directory )
               {
@@ -470,8 +453,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
 
             case Arinc665::Media::Type::File:
             {
-              auto file{
-                std::dynamic_pointer_cast< const Arinc665::Media::File >( base) };
+              auto file{ std::dynamic_pointer_cast< const Arinc665::Media::File >( base ) };
 
               if ( !file )
               {
@@ -544,10 +526,7 @@ QVariant MediaSetModel::data( const QModelIndex & index, int role ) const
   }
 }
 
-QVariant MediaSetModel::headerData(
-  const int section,
-  const Qt::Orientation orientation,
-  const int role ) const
+QVariant MediaSetModel::headerData( const int section, const Qt::Orientation orientation, const int role ) const
 {
   BOOST_LOG_FUNCTION()
 
@@ -574,8 +553,7 @@ QVariant MediaSetModel::headerData(
   }
 }
 
-Arinc665::Media::ConstBasePtr MediaSetModel::element(
-  const QModelIndex &index ) const
+Arinc665::Media::ConstBasePtr MediaSetModel::element( const QModelIndex &index ) const
 {
   BOOST_LOG_FUNCTION()
 
@@ -594,12 +572,10 @@ Arinc665::Media::ConstBasePtr MediaSetModel::element(
     return {};
   }
 
-  return static_cast< Arinc665::Media::Base *>(
-    index.internalPointer() )->shared_from_this();
+  return static_cast< Arinc665::Media::Base * >( index.internalPointer() )->shared_from_this();
 }
 
-QModelIndex MediaSetModel::indexForElement(
-  const Arinc665::Media::ConstBasePtr &element ) const
+QModelIndex MediaSetModel::indexForElement( const Arinc665::Media::ConstBasePtr &element ) const
 {
   BOOST_LOG_FUNCTION()
 
@@ -612,8 +588,7 @@ QModelIndex MediaSetModel::indexForElement(
 
   if ( element->type() == Arinc665::Media::Type::Directory )
   {
-    auto directory{
-      std::dynamic_pointer_cast< const Arinc665::Media::Directory >( element ) };
+    auto directory{ std::dynamic_pointer_cast< const Arinc665::Media::Directory >( element ) };
     if ( !directory )
     {
       // should not happen
@@ -635,8 +610,7 @@ QModelIndex MediaSetModel::indexForElement(
       indexForElement( parent ) );
   }
 
-  auto file{
-    std::dynamic_pointer_cast< const Arinc665::Media::File >( element ) };
+  auto file{ std::dynamic_pointer_cast< const Arinc665::Media::File >( element ) };
   if ( !file )
   {
     // should not happen
