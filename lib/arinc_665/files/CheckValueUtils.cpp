@@ -105,7 +105,10 @@ Arinc645::CheckValue CheckValueUtils_decode( ConstRawFileSpan rawFile )
 
   return {
     *checkValueType,
-    std::vector< uint8_t >{ remainingData.begin(), remainingData.begin() + ( checkValueLength - ( 2U * sizeof( uint16_t ) ) ) } };
+    std::vector< uint8_t >{
+      remainingData.begin(),
+      remainingData.begin()
+        + static_cast< std::vector< uint8_t >::difference_type >( checkValueLength - ( 2U * sizeof( uint16_t ) ) ) } };
 }
 
 }
