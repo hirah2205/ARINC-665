@@ -2,17 +2,16 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class Arinc665::Utils::Arinc665XmlLoadImpl.
+ * @brief Declaration of Class Arinc665::Utils::Arinc665XmlLoadImpl5.
  **/
 
-#ifndef ARINC_665_UTILS_ARINC665XMLLOADIMPL_HPP
-#define ARINC_665_UTILS_ARINC665XMLLOADIMPL_HPP
+#ifndef ARINC_665_UTILS_ARINC665XMLLOADIMPL5_HPP
+#define ARINC_665_UTILS_ARINC665XMLLOADIMPL5_HPP
 
 #include <arinc_665/utils/Utils.hpp>
 #include <arinc_665/utils/Arinc665Xml.hpp>
@@ -28,7 +27,7 @@ namespace Arinc665::Utils {
  *
  * Loads a given XML file and generates the appropriate MediaSet representation.
  **/
-class Arinc665XmlLoadImpl final
+class Arinc665XmlLoadImpl5 final
 {
   public:
     /**
@@ -37,7 +36,7 @@ class Arinc665XmlLoadImpl final
      * @param[in] xmlFile
      *   ARINC 665 XML file.
      **/
-    explicit Arinc665XmlLoadImpl( const std::filesystem::path &xmlFile );
+    explicit Arinc665XmlLoadImpl5( const std::filesystem::path &xmlFile );
 
     /**
      * @brief Loads the Media Set information from the given XML file.
@@ -60,26 +59,6 @@ class Arinc665XmlLoadImpl final
       LoadFile,
       BatchFile
     };
-
-    /**
-     * @brief Converts GLib string to std::string_view.
-     *
-     * @param[in] str
-     *   GLib String.
-     *
-     * @return string view of @p str.
-     **/
-    static std::string_view toStringView( const Glib::ustring &str );
-
-    /**
-     * @brief Converts std::string_view to GLib string.
-     *
-     * @param[in] str
-     *   String
-     *
-     * @return GLib String.
-     **/
-    static Glib::ustring toGlibString( std::string_view str );
 
     /**
      * @brief Returns the Common Name attribute for directories and files.

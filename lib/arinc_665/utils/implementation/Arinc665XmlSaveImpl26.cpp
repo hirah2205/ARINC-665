@@ -2,16 +2,15 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665::Utils::Arinc665XmlSaveImpl.
+ * @brief Definition of Class Arinc665::Utils::Arinc665XmlSaveImpl26.
  **/
 
-#include "Arinc665XmlSaveImpl.hpp"
+#include "Arinc665XmlSaveImpl26.hpp"
 
 #include <arinc_665/media/MediaSet.hpp>
 #include <arinc_665/media/Directory.hpp>
@@ -42,7 +41,7 @@ namespace Arinc665::Utils {
  **/
 static Glib::ustring toGlibString( std::string_view str );
 
-Arinc665XmlSaveImpl::Arinc665XmlSaveImpl(
+Arinc665XmlSaveImpl26::Arinc665XmlSaveImpl26(
   const Media::MediaSet &mediaSet,
   const FilePathMapping &filePathMapping,
   const std::filesystem::path &xmlFile ) :
@@ -52,7 +51,7 @@ Arinc665XmlSaveImpl::Arinc665XmlSaveImpl(
 {
 }
 
-void Arinc665XmlSaveImpl::operator()()
+void Arinc665XmlSaveImpl26::operator()()
 {
   BOOST_LOG_FUNCTION()
 
@@ -76,7 +75,7 @@ void Arinc665XmlSaveImpl::operator()()
   }
 }
 
-void Arinc665XmlSaveImpl::mediaSet( xmlpp::Element &mediaSetElement ) const
+void Arinc665XmlSaveImpl26::mediaSet( xmlpp::Element &mediaSetElement ) const
 {
   mediaSetElement.set_attribute( "PartNumber", std::string( mediaSetV.partNumber() ) );
 
@@ -144,7 +143,7 @@ void Arinc665XmlSaveImpl::mediaSet( xmlpp::Element &mediaSetElement ) const
   entries( mediaSetV, *contentNode );
 }
 
-void Arinc665XmlSaveImpl::entries(
+void Arinc665XmlSaveImpl26::entries(
   const Media::ContainerEntity &currentContainer,
   xmlpp::Element &currentContainerElement ) const
 {
@@ -194,7 +193,7 @@ void Arinc665XmlSaveImpl::entries(
   }
 }
 
-void Arinc665XmlSaveImpl::regularFile(
+void Arinc665XmlSaveImpl26::regularFile(
   const Media::ConstFilePtr &file,
   xmlpp::Element &parentElement ) const
 {
@@ -203,7 +202,7 @@ void Arinc665XmlSaveImpl::regularFile(
   baseFile( file, *fileElement );
 }
 
-void Arinc665XmlSaveImpl::load(
+void Arinc665XmlSaveImpl26::load(
   const Media::ConstFilePtr &file,
   xmlpp::Element &parentElement ) const
 {
@@ -275,7 +274,7 @@ void Arinc665XmlSaveImpl::load(
   }
 }
 
-void Arinc665XmlSaveImpl::loadFiles(
+void Arinc665XmlSaveImpl26::loadFiles(
   const Media::ConstLoadFiles &files,
   std::string_view fileElementName,
   xmlpp::Element &loadElement ) const
@@ -300,7 +299,7 @@ void Arinc665XmlSaveImpl::loadFiles(
   }
 }
 
-void Arinc665XmlSaveImpl::batch(
+void Arinc665XmlSaveImpl26::batch(
   const Media::ConstFilePtr &file,
   xmlpp::Element &parentElement ) const
 {
@@ -336,7 +335,7 @@ void Arinc665XmlSaveImpl::batch(
   }
 }
 
-void Arinc665XmlSaveImpl::baseFile(
+void Arinc665XmlSaveImpl26::baseFile(
   const Media::ConstFilePtr &file,
   xmlpp::Element &fileElement ) const
 {
@@ -370,7 +369,7 @@ void Arinc665XmlSaveImpl::baseFile(
   }
 }
 
-void Arinc665XmlSaveImpl::checkValue(
+void Arinc665XmlSaveImpl26::checkValue(
   xmlpp::Element &element,
   std::string_view attribute,
   std::optional< Arinc645::CheckValueType > checkValue ) const

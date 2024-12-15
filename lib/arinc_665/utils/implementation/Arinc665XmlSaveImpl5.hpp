@@ -2,17 +2,16 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
  * @brief Declaration of Class Arinc665::Utils::Arinc665XmlSaveImpl.
  **/
 
-#ifndef ARINC_665_UTILS_ARINC665XMLSAVEIMPL_HPP
-#define ARINC_665_UTILS_ARINC665XMLSAVEIMPL_HPP
+#ifndef ARINC_665_UTILS_ARINC665XMLSAVEIMPL5_HPP
+#define ARINC_665_UTILS_ARINC665XMLSAVEIMPL5_HPP
 
 #include <arinc_665/utils/Utils.hpp>
 #include <arinc_665/utils/Arinc665Xml.hpp>
@@ -26,7 +25,7 @@ namespace Arinc665::Utils {
 /**
  * @brief ARINC 665 Media Sets XML File Exporter.
  **/
-class Arinc665XmlSaveImpl final
+class Arinc665XmlSaveImpl5 final
 {
   public:
     /**
@@ -40,7 +39,7 @@ class Arinc665XmlSaveImpl final
      * @param[in] xmlFile
      *   ARINC 665 XML file.
      **/
-    Arinc665XmlSaveImpl(
+    Arinc665XmlSaveImpl5(
       const Media::MediaSet &mediaSet,
       const FilePathMapping &filePathMapping,
       const std::filesystem::path &xmlFile );
@@ -71,10 +70,8 @@ class Arinc665XmlSaveImpl final
      *   Current medium or directory.
      * @param[in,out] currentContainerElement
      *   XML Element, where to add content.
-     */
-    void entries(
-      const Media::ContainerEntity &currentContainer,
-      xmlpp::Element &currentContainerElement ) const;
+     **/
+    void entries( const Media::ContainerEntity &currentContainer, xmlpp::Element &currentContainerElement ) const;
 
     /**
      * @brief Export Regular File to the XML DOM.
@@ -84,9 +81,7 @@ class Arinc665XmlSaveImpl final
      * @param[in,out] parentElement
      *   Parent XML Element
      **/
-    void regularFile(
-      const Media::ConstFilePtr &file,
-      xmlpp::Element &parentElement ) const;
+    void regularFile( const Media::ConstFilePtr &file, xmlpp::Element &parentElement ) const;
 
     /**
      * @brief Export Load to the XML DOM.
@@ -96,9 +91,7 @@ class Arinc665XmlSaveImpl final
      * @param[in,out] parentElement
      *   Parent XML Element
      **/
-    void load(
-      const Media::ConstFilePtr &file,
-      xmlpp::Element &parentElement ) const;
+    void load( const Media::ConstFilePtr &file, xmlpp::Element &parentElement ) const;
 
     /**
      * @brief Export Load Files to the XML DOM.
@@ -111,7 +104,7 @@ class Arinc665XmlSaveImpl final
      *   XML Element Name
      * @param[in,out] loadElement
      *   Parent XML Load Element
-     */
+     **/
     void loadFiles(
       const Media::ConstLoadFiles &files,
       std::string_view fileElementName,
@@ -125,9 +118,7 @@ class Arinc665XmlSaveImpl final
      * @param[in,out] parentElement
      *   Parent XML Element
      **/
-    void batch(
-      const Media::ConstFilePtr &file,
-      xmlpp::Element &parentElement ) const;
+    void batch( const Media::ConstFilePtr &file, xmlpp::Element &parentElement ) const;
 
     /**
      * @brief Export Base File Attributes to the XML DOM.
@@ -145,9 +136,7 @@ class Arinc665XmlSaveImpl final
      * @param[in,out] fileElement
      *   XML ELement
      **/
-    void baseFile(
-      const Media::ConstFilePtr &file,
-      xmlpp::Element &fileElement ) const;
+    void baseFile( const Media::ConstFilePtr &file, xmlpp::Element &fileElement ) const;
 
     /**
      * @brief Encodes the Check Value and stores it as attribute.
@@ -171,11 +160,9 @@ class Arinc665XmlSaveImpl final
     //! XML File Path
     const std::filesystem::path &xmlFileV;
     //! Deferred Load Loading Info
-    std::list< std::tuple< const xmlpp::Element *, Media::LoadPtr > >
-      deferredLoadInfoV{};
+    std::list< std::tuple< const xmlpp::Element *, Media::LoadPtr > > deferredLoadInfoV;
     //! Deferred Batch Loading Info
-    std::list< std::tuple< const xmlpp::Element *, Media::BatchPtr > >
-      deferredBatchInfoV{};
+    std::list< std::tuple< const xmlpp::Element *, Media::BatchPtr > > deferredBatchInfoV;
 };
 
 }

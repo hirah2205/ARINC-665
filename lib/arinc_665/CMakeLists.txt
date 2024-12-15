@@ -13,7 +13,13 @@ pkg_search_module(
   Libxmlpp
   REQUIRED
   IMPORTED_TARGET
-  "libxml++-2.6" )
+  "libxml++-5.0" "libxml++-2.6" )
+
+if( Libxmlpp_MODULE_NAME STREQUAL "libxml++-5.0" )
+  set( LIBXMLPPVERSION 5 )
+elseif( Libxmlpp_MODULE_NAME STREQUAL "libxml++-2.6" )
+  set( LIBXMLPPVERSION 26 )
+endif()
 
 # prepare Version.cpp
 configure_file( Version.hpp.in Version.hpp )

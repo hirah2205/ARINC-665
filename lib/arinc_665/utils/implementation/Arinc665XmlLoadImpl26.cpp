@@ -2,16 +2,15 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class Arinc665::Utils::Arinc665XmlLoadImpl.
+ * @brief Definition of Class Arinc665::Utils::Arinc665XmlLoadImpl26.
  **/
 
-#include "Arinc665XmlLoadImpl.hpp"
+#include "Arinc665XmlLoadImpl26.hpp"
 
 #include <arinc_665/media/MediaSet.hpp>
 #include <arinc_665/media/Directory.hpp>
@@ -31,13 +30,13 @@
 
 namespace Arinc665::Utils {
 
-Arinc665XmlLoadImpl::Arinc665XmlLoadImpl(
+Arinc665XmlLoadImpl26::Arinc665XmlLoadImpl26(
   const std::filesystem::path &xmlFile ) :
   xmlFileV{ xmlFile }
 {
 }
 
-LoadXmlResult Arinc665XmlLoadImpl::operator()()
+LoadXmlResult Arinc665XmlLoadImpl26::operator()()
 {
   BOOST_LOG_FUNCTION()
 
@@ -89,17 +88,17 @@ LoadXmlResult Arinc665XmlLoadImpl::operator()()
   }
 }
 
-std::string_view Arinc665XmlLoadImpl::toStringView( const Glib::ustring &str )
+std::string_view Arinc665XmlLoadImpl26::toStringView( const Glib::ustring &str )
 {
   return std::string_view{ str.data(), str.length() };
 }
 
-Glib::ustring Arinc665XmlLoadImpl::toGlibString( std::string_view str )
+Glib::ustring Arinc665XmlLoadImpl26::toGlibString( std::string_view str )
 {
   return Glib::ustring{ str.data(), str.size() };
 }
 
-std::string Arinc665XmlLoadImpl::name( const xmlpp::Element &element )
+std::string Arinc665XmlLoadImpl26::name( const xmlpp::Element &element )
 {
   const auto name{ element.get_attribute_value( "Name" ) };
 
@@ -113,7 +112,7 @@ std::string Arinc665XmlLoadImpl::name( const xmlpp::Element &element )
   return name;
 }
 
-OptionalMediumNumber Arinc665XmlLoadImpl::mediumNumber(
+OptionalMediumNumber Arinc665XmlLoadImpl26::mediumNumber(
   const xmlpp::Element &element )
 {
   if (
@@ -135,7 +134,7 @@ OptionalMediumNumber Arinc665XmlLoadImpl::mediumNumber(
   return {};
 }
 
-void Arinc665XmlLoadImpl::mediaSet( const xmlpp::Element &mediaSetElement )
+void Arinc665XmlLoadImpl26::mediaSet( const xmlpp::Element &mediaSetElement )
 {
   // Part Number
   const auto partNumber{ mediaSetElement.get_attribute_value( "PartNumber" ) };
@@ -249,7 +248,7 @@ void Arinc665XmlLoadImpl::mediaSet( const xmlpp::Element &mediaSetElement )
   }
 }
 
-void Arinc665XmlLoadImpl::entries(
+void Arinc665XmlLoadImpl26::entries(
   const xmlpp::Element &currentContainerElement,
   Media::ContainerEntity &currentContainer )
 {
@@ -272,9 +271,10 @@ void Arinc665XmlLoadImpl::entries(
   }
 
   // iterate over all XML nodes
-  for ( auto * entryNode : currentContainerElement.get_children() )
+  for ( auto const * const entryNode : currentContainerElement.get_children() )
   {
-    auto * entryElement{ dynamic_cast< xmlpp::Element*>( entryNode ) };
+    auto const * const entryElement{
+      dynamic_cast< xmlpp::Element const * >( entryNode ) };
 
     if ( nullptr == entryElement )
     {
@@ -311,7 +311,7 @@ void Arinc665XmlLoadImpl::entries(
   }
 }
 
-void Arinc665XmlLoadImpl::regularFile(
+void Arinc665XmlLoadImpl26::regularFile(
   const xmlpp::Element &fileElement,
   Media::ContainerEntity &parent )
 {
@@ -321,7 +321,7 @@ void Arinc665XmlLoadImpl::regularFile(
   baseFile( fileElement, file );
 }
 
-void Arinc665XmlLoadImpl::load(
+void Arinc665XmlLoadImpl26::load(
   const xmlpp::Element &loadElement,
   Media::ContainerEntity &parent )
 {
@@ -466,7 +466,7 @@ void Arinc665XmlLoadImpl::load(
   deferredLoadInfoV.emplace_back( &loadElement, load );
 }
 
-void Arinc665XmlLoadImpl::loadDeferred(
+void Arinc665XmlLoadImpl26::loadDeferred(
   const xmlpp::Element &loadElement,
   Media::Load &load )
 {
@@ -479,7 +479,7 @@ void Arinc665XmlLoadImpl::loadDeferred(
   load.supportFiles( loadFiles( loadElement, "SupportFile", loadParent ) );
 }
 
-Media::ConstLoadFiles Arinc665XmlLoadImpl::loadFiles(
+Media::ConstLoadFiles Arinc665XmlLoadImpl26::loadFiles(
   const xmlpp::Element &loadElement,
   std::string_view fileElementsName,
   const Media::ContainerEntity &parent ) const
@@ -542,7 +542,7 @@ Media::ConstLoadFiles Arinc665XmlLoadImpl::loadFiles(
   return loadFiles;
 }
 
-void Arinc665XmlLoadImpl::batch(
+void Arinc665XmlLoadImpl26::batch(
   const xmlpp::Element &batchElement,
   Media::ContainerEntity &parent )
 {
@@ -569,7 +569,7 @@ void Arinc665XmlLoadImpl::batch(
   deferredBatchInfoV.emplace_back( &batchElement, batch );
 }
 
-void Arinc665XmlLoadImpl::loadBatchDeferred(
+void Arinc665XmlLoadImpl26::loadBatchDeferred(
   const xmlpp::Element &batchElement,
   Media::Batch &batch )
 {
@@ -643,7 +643,7 @@ void Arinc665XmlLoadImpl::loadBatchDeferred(
   }
 }
 
-void Arinc665XmlLoadImpl::baseFile(
+void Arinc665XmlLoadImpl26::baseFile(
   const xmlpp::Element &fileElement,
   const Media::FilePtr &file )
 {
@@ -662,7 +662,7 @@ void Arinc665XmlLoadImpl::baseFile(
   }
 }
 
-std::optional< Arinc645::CheckValueType > Arinc665XmlLoadImpl::checkValue(
+std::optional< Arinc645::CheckValueType > Arinc665XmlLoadImpl26::checkValue(
   const xmlpp::Element &element,
   std::string_view attribute )
 {
@@ -688,7 +688,7 @@ std::optional< Arinc645::CheckValueType > Arinc665XmlLoadImpl::checkValue(
   return {};
 }
 
-Arinc665XmlLoadImpl::EntryType Arinc665XmlLoadImpl::entryType(
+Arinc665XmlLoadImpl26::EntryType Arinc665XmlLoadImpl26::entryType(
   const xmlpp::Element &element )
 {
   using namespace std::string_literals;

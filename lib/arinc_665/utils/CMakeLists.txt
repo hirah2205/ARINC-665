@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: MPL-2.0
 
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+# If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Thomas Vogt, thomas@thomas-vogt.de
 
@@ -46,6 +45,13 @@ target_sources(
     MediaSetPrinter.cpp
     MediaSetValidator.cpp
     Utils.cpp )
+
+set_source_files_properties(
+  Arinc665Xml.cpp
+  TARGET_DIRECTORY arinc_665
+  PROPERTIES
+    COMPILE_DEFINITIONS
+    LIBXMLPPVERSION=${LIBXMLPPVERSION} )
 
 #target_sources(
 #  arinc_665_test
