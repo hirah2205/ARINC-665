@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -27,9 +26,9 @@ namespace Arinc665::Files {
  *
  * This intermediate class is defined to add common methods for all List Files.
  * Provides the common attributes:
- *  - Media Set Part Number,
- *  - Media Sequence Number, and
- *  - Number of Media Set Members.
+ * - Media Set Part Number,
+ * - Media Sequence Number, and
+ * - Number of Media Set Members.
  *
  * Children are:
  * - @ref FileListFile
@@ -165,17 +164,10 @@ class ARINC_665_EXPORT ListFile : public Arinc665File
     /**
      * @brief Decodes the Media Information.
      *
-     * @param[in] rawFile
-     *   Raw List File
-     * @param[in] mediaInformationPtr
-     *   Media Information Pointer as stored within List File.
-     *
-     * @throw InvalidArinc665File
-     *   When Offset is Invalid
+     * @param[in] rawData
+     *   Raw Data
      **/
-    void decodeMediaInformation(
-      ConstRawFileSpan rawFile,
-      uint32_t mediaInformationPtr );
+    void decodeMediaInformation( ConstRawFileSpan rawData );
 
   private:
     //! Media Set Part Number.

@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -28,12 +27,11 @@ std::filesystem::path FileInfo::path() const
 
 bool FileInfo::operator ==( const FileInfo &other ) const
 {
-  return
-    ( filename == other.filename ) &&
-    ( pathName == other.pathName ) &&
-    ( memberSequenceNumber == other.memberSequenceNumber ) &&
-    ( crc == other.crc ) &&
-    ( checkValue == other.checkValue );
+  return ( filename == other.filename )
+    && ( pathName == other.pathName )
+    && ( memberSequenceNumber == other.memberSequenceNumber )
+    && ( crc == other.crc )
+    && ( checkValue == other.checkValue );
 }
 
 }

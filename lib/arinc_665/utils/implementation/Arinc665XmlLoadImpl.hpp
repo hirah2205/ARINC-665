@@ -285,13 +285,13 @@ class Arinc665XmlLoadImpl final
     //! Media Set
     Media::MediaSetPtr mediaSetV;
     //! File path mappings.
-    FilePathMapping filePathMappingV{};
+    FilePathMapping filePathMappingV;
     //! Deferred Load Loading Info
     std::list< std::tuple< const xmlpp::Element *, Media::LoadPtr > >
-      deferredLoadInfoV{};
+      deferredLoadInfoV;
     //! Deferred Batch Loading Info
     std::list< std::tuple< const xmlpp::Element *, Media::BatchPtr > >
-      deferredBatchInfoV{};
+      deferredBatchInfoV;
 };
 
 }

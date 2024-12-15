@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -43,12 +42,12 @@ int MediaSetsModel::columnCount( const QModelIndex &parent ) const
     return 0;
   }
 
-  return static_cast< int >( Columns::ColumnsCount );
+  return std::to_underlying( Columns::ColumnsCount );
 }
 
 QVariant MediaSetsModel::data( const QModelIndex &index, const int role ) const
 {
-  auto mediaSetPtr{ constMediaSet( mediaSet( index ) ) };
+  const auto mediaSetPtr{ constMediaSet( mediaSet( index ) ) };
 
   if ( !mediaSetPtr )
   {
@@ -74,10 +73,7 @@ QVariant MediaSetsModel::data( const QModelIndex &index, const int role ) const
   }
 }
 
-QVariant MediaSetsModel::headerData(
-  const int section,
-  const ::Qt::Orientation orientation,
-  const int role ) const
+QVariant MediaSetsModel::headerData( const int section, const ::Qt::Orientation orientation, const int role ) const
 {
   if ( role != Qt::DisplayRole )
   {
@@ -118,8 +114,7 @@ void MediaSetsModel::mediaSets( Arinc665::Media::MediaSetsVariant mediaSets )
   endResetModel();
 }
 
-Arinc665::Media::MediaSetVariant MediaSetsModel::mediaSet(
-  const QModelIndex &index ) const
+Arinc665::Media::MediaSetVariant MediaSetsModel::mediaSet( const QModelIndex &index ) const
 {
   if ( !index.isValid() )
   {
@@ -130,8 +125,7 @@ Arinc665::Media::MediaSetVariant MediaSetsModel::mediaSet(
   return mediaSet( index.row() );
 }
 
-Arinc665::Media::MediaSetVariant MediaSetsModel::mediaSet(
-  const std::size_t index ) const
+Arinc665::Media::MediaSetVariant MediaSetsModel::mediaSet( const std::size_t index ) const
 {
   if ( index >= numberOfMediaSets() )
   {

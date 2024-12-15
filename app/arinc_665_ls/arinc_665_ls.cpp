@@ -30,7 +30,6 @@
 #include <helper/Logger.hpp>
 
 #include <boost/exception/all.hpp>
-#include <boost/format.hpp>
 #include <boost/program_options.hpp>
 
 #include <filesystem>

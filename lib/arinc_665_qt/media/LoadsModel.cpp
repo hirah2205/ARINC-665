@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -72,11 +71,7 @@ QVariant LoadsModel::data( const QModelIndex &index, const int role ) const
         case Columns::LoadType:
           if ( auto loadType{ loadPtr->loadType() }; loadType )
           {
-            return QString::fromStdString(
-              std::format(
-                "0x{:04x}: {:}",
-                loadType->second,
-                loadType->first ) );
+            return QString::fromStdString( std::format( "0x{:04x}: {:}", loadType->second, loadType->first ) );
           }
           return {};
 
@@ -97,10 +92,7 @@ QVariant LoadsModel::data( const QModelIndex &index, const int role ) const
   }
 }
 
-QVariant LoadsModel::headerData(
-  const int section,
-  const ::Qt::Orientation orientation,
-  const int role ) const
+QVariant LoadsModel::headerData( const int section, const ::Qt::Orientation orientation, const int role ) const
 {
   if ( role != Qt::DisplayRole )
   {
@@ -148,8 +140,7 @@ void LoadsModel::loads( Arinc665::Media::LoadsVariant loads )
   endResetModel();
 }
 
-Arinc665::Media::ConstLoads LoadsModel::constLoads(
-  const Arinc665::Media::LoadsVariant &loads ) const
+Arinc665::Media::ConstLoads LoadsModel::constLoads( const Arinc665::Media::LoadsVariant &loads ) const
 {
   if ( holds_alternative< Arinc665::Media::ConstLoads >( loads ) )
   {
@@ -186,8 +177,7 @@ Arinc665::Media::LoadVariant LoadsModel::load( const std::size_t index ) const
     loadsV );
 }
 
-Arinc665::Media::ConstLoadPtr LoadsModel::constLoad(
-  const Arinc665::Media::LoadVariant &load ) const
+Arinc665::Media::ConstLoadPtr LoadsModel::constLoad( const Arinc665::Media::LoadVariant &load ) const
 {
   return std::visit(
     []( const auto &load ) {

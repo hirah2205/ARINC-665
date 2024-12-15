@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -20,114 +19,112 @@
 #include <boost/test/unit_test.hpp>
 
 #include <array>
-#include <iostream>
 
 namespace Arinc665::Files {
 
-BOOST_AUTO_TEST_SUITE( Arinc665Test)
-BOOST_AUTO_TEST_SUITE( FilesTest)
-BOOST_AUTO_TEST_SUITE( LoadHeaderFileTest)
+BOOST_AUTO_TEST_SUITE( Arinc665Test )
+BOOST_AUTO_TEST_SUITE( FilesTest )
+BOOST_AUTO_TEST_SUITE( LoadHeaderFileTest )
+
+//! Raw Load Header File
+static const auto rawLoadHeaderFile{ std::to_array< uint8_t >( {
+  // header file length
+  0x00, 0x00, 0x00, 0x35,
+  // Format version
+  0x80, 0x03,
+  // spare
+  0x00, 0x00,
+  // Pointer to Load Part Number
+  0x00, 0x00, 0x00, 0x0E,
+  // Pointer to Target HW ID list
+  0x00, 0x00, 0x00, 0x12,
+  // Pointer to Data File list
+  0x00, 0x00, 0x00, 0x16,
+  // Pointer to Support File list
+  0x00, 0x00, 0x00, 0x23,
+  // Pointer to User Defined Data
+  0x00, 0x00, 0x00, 0x30,
+  // Expansion Point No.1
+
+  /* 14 */
+  // Load PN Length
+  0x00, 0x05,
+  // Load PN
+  'P', 'N', '1', '2', '3', 0x00,
+
+  /* 18 */
+  // Number of Target HW IDs
+  0x00, 0x01,
+
+  // Target HW ID Length
+  0x00, 0x04,
+  // Target HW ID
+  'T', 'H', 'W', '0',
+
+  /* 22 */
+  // Number of Data Files
+  0x00, 0x01,
+
+  // Data File Pointer
+  0x00, 0x00,
+  // Data File Name Length
+  0x00, 0x05,
+  // Data File Name
+  'F', 'I', 'L', 'E', '1', 0x00,
+
+  // Data File PN Length
+  0x00, 0x06,
+  // Data File PN
+  'P', 'N', '0', '0', '0', '1',
+
+  // Data File Length
+  0x00, 0x00, 0x00, 0x10,
+
+  // Data File CRC
+  0xAB, 0xCD,
+
+  // Expansion Point No. 2
+
+  /* 35 */
+
+  // Number of Support Files
+  0x00, 0x01,
+
+  // Support File Pointer
+  0x00, 0x00,
+
+  // Support File Name Length
+  0x00, 0x05,
+  // Support File Name
+  'F', 'I', 'L', 'E', '2', 0x00,
+
+  // Support File PN Length
+  0x00, 0x06,
+  // Support File PN
+  'P', 'N', '0', '0', '0', '2',
+  // Support File Length
+  0x00, 0x00, 0x00, 0x10,
+  // Support File CRC
+  0xAB, 0xCD,
+  // Expansion Point No. 3
+
+  // Expansion Point No. 4
+
+  /* 48 */
+  // User Defined Data
+  0x12, 0x34, 0x56, 0x78,
+
+  // Header File CRC
+  0xA1, 0x6C,
+
+  // Load CRC
+  0xFE, 0xDC, 0xBA, 0x98
+  /* 53 */
+} ) };
 
 BOOST_AUTO_TEST_CASE( constructor1 )
 {
-  RawFile rawFile{
-    // header file length
-    0x00, 0x00, 0x00, 0x35,
-    // Format version
-    0x80, 0x03,
-    // spare
-    0x00, 0x00,
-    // Pointer to Load Part Number
-    0x00, 0x00, 0x00, 0x0E,
-    // Pointer to Target HW ID list
-    0x00, 0x00, 0x00, 0x12,
-    // Pointer to Data File list
-    0x00, 0x00, 0x00, 0x16,
-    // Pointer to Support File list
-    0x00, 0x00, 0x00, 0x23,
-    // Pointer to User Defined Data
-    0x00, 0x00, 0x00, 0x30,
-    // Expansion Point No.1
-
-    /* 14 */
-    // Load PN Length
-    0x00, 0x05,
-    // Load PN
-    'P', 'N', '1', '2', '3', 0x00,
-
-    /* 18 */
-    // Number of Target HW IDs
-    0x00, 0x01,
-
-    // Target HW ID Length
-    0x00, 0x04,
-    // Target HW ID
-    'T', 'H', 'W', '0',
-
-    /* 22 */
-    // Number of Data Files
-    0x00, 0x01,
-
-    // Data File Pointer
-    0x00, 0x00,
-    // Data File Name Length
-    0x00, 0x05,
-    // Data File Name
-    'F', 'I', 'L', 'E', '1', 0x00,
-
-    // Data File PN Length
-    0x00, 0x06,
-    // Data File PN
-    'P', 'N', '0', '0', '0', '1',
-
-    // Data File Length
-    0x00, 0x00, 0x00, 0x10,
-
-    // Data File CRC
-    0xAB, 0xCD,
-
-    // Expansion Point No. 2
-
-    /* 35 */
-
-    // Number of Support Files
-    0x00, 0x01,
-
-    // Support File Pointer
-    0x00, 0x00,
-
-    // Support File Name Length
-    0x00, 0x05,
-    // Support File Name
-    'F', 'I', 'L', 'E', '2', 0x00,
-
-    // Support File PN Length
-    0x00, 0x06,
-    // Support File PN
-    'P', 'N', '0', '0', '0', '2',
-    // Support File Length
-    0x00, 0x00, 0x00, 0x10,
-    // Support File CRC
-    0xAB, 0xCD,
-    // Expansion Point No. 3
-
-    // Expansion Point No. 4
-
-    /* 48 */
-    // User Defined Data
-    0x12, 0x34, 0x56, 0x78,
-
-    // Header File CRC
-    0xA1, 0x6C,
-
-    // Load CRC
-    0xFE, 0xDC, 0xBA, 0x98
-    /* 53 */
-  };
-
-  // std::cout << std::hex << LoadHeaderFile::calculateChecksum( rawFile, 6U)<<"\n";
-
-  LoadHeaderFile file{ rawFile};
+  LoadHeaderFile file{ rawLoadHeaderFile };
 
   BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2 );
 
@@ -161,16 +158,14 @@ BOOST_AUTO_TEST_CASE( constructor1 )
     file.userDefinedData().end(),
     std::to_array< uint8_t >( { 0x12, 0x34, 0x56, 0x78 } ).begin() ) );
 
-  BOOST_CHECK( 0xFEDCBA98 == Arinc665::Files::LoadHeaderFile::decodeLoadCrc( rawFile ) );
+  BOOST_CHECK( 0xFEDCBA98 == Arinc665::Files::LoadHeaderFile::decodeLoadCrc( rawLoadHeaderFile ) );
 
   auto raw2{ static_cast< RawFile>( file ) };
 
   Arinc665::Files::LoadHeaderFile::encodeLoadCrc( raw2, 0xFEDCBA98 );
   BOOST_CHECK( 0xFEDCBA98 == Arinc665::Files::LoadHeaderFile::decodeLoadCrc( raw2 ) );
 
-  // std::cout << Dump( &(*(raw2.begin())), raw2.size());
-
-  BOOST_CHECK( rawFile == raw2 );
+  BOOST_CHECK( std::ranges::equal( rawLoadHeaderFile, raw2 ) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

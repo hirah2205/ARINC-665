@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -198,12 +197,10 @@ class ARINC_665_EXPORT BatchFile final : public Arinc665File
     /**
      * @brief Decodes the target hardware information list from the raw data.
      *
-     * @param[in] rawFile
-     *   Raw batch file representation.
-     * @param[in] offset
-     *   Offset of the target hardware information list.
+     * @param[in] rawData
+     *   Raw batch targets information representation.
      **/
-    void decodeBatchTargetsInfo( ConstRawFileSpan rawFile, ptrdiff_t offset );
+    void decodeBatchTargetsInfo( ConstRawFileSpan rawData );
 
     //! Part Number
     std::string partNumberV;

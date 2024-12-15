@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -90,16 +89,13 @@ void LoadListFile::userDefinedData( UserDefinedData userDefinedData )
   checkUserDefinedData();
 }
 
-bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other) const
+bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other ) const
 {
   BOOST_LOG_FUNCTION()
 
   return ( mediaSetPn() == other.mediaSetPn() )
     && ( numberOfMediaSetMembers() == other.numberOfMediaSetMembers() )
-    && std::equal(
-      userDefinedDataV.begin(),
-      userDefinedDataV.end(),
-      other.userDefinedData().begin() )
+    && std::ranges::equal( userDefinedDataV, other.userDefinedData() )
     && ( loadsV == other.loads() );
 }
 
@@ -115,19 +111,18 @@ RawFile LoadListFile::encode() const
   // Next free Offset (used for optional pointer calculation)
   ptrdiff_t nextFreeOffset{ static_cast< ptrdiff_t >( rawFile.size() ) };
 
-
   // media set information
   const auto rawMediaInformation{ encodeMediaInformation() };
   assert( rawMediaInformation.size() % 2 == 0);
   rawFile.insert( rawFile.end(), rawMediaInformation.begin(), rawMediaInformation.end() );
 
-  // Update Pointer
-  Helper::setInt< uint32_t>(
+  // media set information pointer
+  Helper::setInt< uint32_t >(
     rawFile.begin() + MediaSetPartNumberPointerFieldOffsetV2,
     static_cast< uint32_t >( nextFreeOffset / 2U ) );
   nextFreeOffset += static_cast< ptrdiff_t >( rawMediaInformation.size() );
 
-  // Loads info
+  // loads info
   const auto rawLoadsInfo{ encodeLoadsInfo() };
   assert( rawLoadsInfo.size() % 2 == 0);
 
@@ -139,10 +134,9 @@ RawFile LoadListFile::encode() const
 
   rawFile.insert( rawFile.end(), rawLoadsInfo.begin(), rawLoadsInfo.end() );
 
-
   // user defined data
   assert( userDefinedDataV.size() % 2 == 0 );
-  uint32_t userDefinedDataPtr = 0;
+  uint32_t userDefinedDataPtr{};
 
   if ( !userDefinedDataV.empty() )
   {
@@ -176,9 +170,7 @@ void LoadListFile::decodeBody( ConstRawFileSpan rawFile )
   BOOST_LOG_FUNCTION()
 
   // Spare Field
-  uint16_t spare{};
-  Helper::getInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, spare);
-
+  auto [ _, spare ]{ Helper::getInt< uint16_t >( rawFile.subspan( SpareFieldOffsetV2 ) ) };
   if ( 0U != spare )
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
@@ -186,33 +178,25 @@ void LoadListFile::decodeBody( ConstRawFileSpan rawFile )
   }
 
   // media information pointer
-  uint32_t mediaInformationPtr{};
-  Helper::getInt< uint32_t>(
-    rawFile.begin() + MediaSetPartNumberPointerFieldOffsetV2,
-    mediaInformationPtr );
+  auto [ _1, mediaInformationPtr ]{
+    Helper::getInt< uint32_t >( rawFile.subspan( MediaSetPartNumberPointerFieldOffsetV2 ) ) };
 
   // Loads list pointer
-  uint32_t loadListPtr{};
-  Helper::getInt< uint32_t>(
-    rawFile.begin() + LoadFilesPointerFieldOffsetV2,
-    loadListPtr );
-
+  auto [ _2, loadListPtr ]{
+    Helper::getInt< uint32_t >( rawFile.subspan( LoadFilesPointerFieldOffsetV2 ) ) };
 
   // user defined data pointer
-  uint32_t userDefinedDataPtr{};
-  Helper::getInt< uint32_t>(
-    rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
-    userDefinedDataPtr );
+  auto [ _3, userDefinedDataPtr ]{
+    Helper::getInt< uint32_t >( rawFile.subspan( UserDefinedDataPointerFieldOffsetV2 ) ) };
 
   // decode Media Information
-  decodeMediaInformation( rawFile, mediaInformationPtr );
+  decodeMediaInformation( rawFile.subspan( 2ULL * mediaInformationPtr ) );
 
   // Loads list
-  decodeLoadsInfo( rawFile, static_cast< ptrdiff_t >( loadListPtr ) * 2 );
-
+  decodeLoadsInfo( rawFile.subspan( loadListPtr * 2ULL ) );
 
   // user defined data
-  if ( 0 != userDefinedDataPtr)
+  if ( 0 != userDefinedDataPtr )
   {
     userDefinedDataV.assign(
       rawFile.begin() + static_cast< ptrdiff_t >( userDefinedDataPtr ) * 2,
@@ -236,9 +220,7 @@ RawFile LoadListFile::encodeLoadsInfo() const
   }
 
   // number of loads
-  Helper::setInt< uint16_t>(
-    rawLoadsInfo.begin(),
-    static_cast< uint16_t >( loadsV.size() ) );
+  Helper::setInt< uint16_t >( rawLoadsInfo.begin(), static_cast< uint16_t >( loadsV.size() ) );
 
   // iterate over files
   uint16_t loadCounter( 0);
@@ -255,13 +237,13 @@ RawFile LoadListFile::encodeLoadsInfo() const
     assert( rawThwIds.size() % 2 == 0);
 
     RawFile rawLoadInfo(
-      sizeof( uint16_t) + // next load pointer
+      sizeof( uint16_t ) + // next load pointer
       rawPartNumber.size() +
       rawHeaderFilename.size() +
-      sizeof( uint16_t) + // member sequence number
-      rawThwIds.size());
+      sizeof( uint16_t ) + // member sequence number
+      rawThwIds.size() );
 
-    auto loadInfoIt( rawLoadInfo.begin());
+    auto loadInfoIt( rawLoadInfo.begin() );
 
     // next load pointer (is set to 0 for last load)
     loadInfoIt = Helper::setInt< uint16_t>(
@@ -277,40 +259,36 @@ RawFile LoadListFile::encodeLoadsInfo() const
     loadInfoIt = std::copy( rawHeaderFilename.begin(), rawHeaderFilename.end(), loadInfoIt );
 
     // member sequence number
-    loadInfoIt = Helper::setInt< uint16_t>(
-      loadInfoIt,
-      static_cast< uint8_t >( loadInfo.memberSequenceNumber ) );
+    loadInfoIt = Helper::setInt< uint16_t >( loadInfoIt, static_cast< uint8_t >( loadInfo.memberSequenceNumber ) );
 
     // THW IDs list
     std::copy( rawThwIds.begin(), rawThwIds.end(), loadInfoIt );
 
     // add file info to files info
-    rawLoadsInfo.insert( rawLoadsInfo.end(), rawLoadInfo.begin(), rawLoadInfo.end());
+    rawLoadsInfo.insert( rawLoadsInfo.end(), rawLoadInfo.begin(), rawLoadInfo.end() );
   }
 
   return rawLoadsInfo;
 }
 
-void LoadListFile::decodeLoadsInfo(
-  ConstRawFileSpan rawFile,
-  const ptrdiff_t offset )
+void LoadListFile::decodeLoadsInfo( ConstRawFileSpan rawData )
 {
   BOOST_LOG_FUNCTION()
 
-  auto it{ rawFile.begin() + offset };
+  auto remaining{ rawData };
 
   // number of loads
   uint16_t numberOfLoads{};
-  it = Helper::getInt< uint16_t>( it, numberOfLoads );
+  std::tie( remaining, numberOfLoads ) = Helper::getInt< uint16_t>( remaining );
 
   // iterate of load counter
   for ( uint16_t loadIndex = 0; loadIndex < numberOfLoads; ++loadIndex )
   {
-    auto listIt{ it };
+    auto listRemaining{ remaining };
 
     // next load pointer
     uint16_t loadPointer{};
-    listIt = Helper::getInt< uint16_t>( listIt, loadPointer);
+    std::tie( listRemaining, loadPointer ) = Helper::getInt< uint16_t >( listRemaining );
 
     // check load pointer for validity
     if ( loadIndex != numberOfLoads - 1U )
@@ -331,34 +309,33 @@ void LoadListFile::decodeLoadsInfo(
     }
 
     // part number
-    std::string partNumber{};
-    listIt = StringUtils_decodeString( listIt, partNumber );
+    std::string partNumber;
+    std::tie( listRemaining, partNumber ) = StringUtils_decodeString( listRemaining );
 
     // header filename
-    std::string headerFilename{};
-    listIt = StringUtils_decodeString( listIt, headerFilename );
+    std::string headerFilename;
+    std::tie( listRemaining, headerFilename ) = StringUtils_decodeString( listRemaining );
 
     // member sequence number
-    uint16_t fileMemberSequenceNumber{};
-    listIt = Helper::getInt< uint16_t>( listIt, fileMemberSequenceNumber );
+    uint16_t fileMemberSequenceNumber;
+    std::tie( listRemaining, fileMemberSequenceNumber ) = Helper::getInt< uint16_t >( listRemaining );
     if ( ( fileMemberSequenceNumber < 1U ) || ( fileMemberSequenceNumber > 255U ) )
     {
       BOOST_THROW_EXCEPTION( InvalidArinc665File()
         << Helper::AdditionalInfo{ "member sequence number out of range" } );
     }
 
-    LoadInfo::ThwIds thwIds{};
-    StringUtils_decodeStrings( listIt, thwIds );
+    LoadInfo::ThwIds thwIds;
+    std::tie( std::ignore, thwIds ) = StringUtils_decodeStrings( listRemaining );
 
     loadsV.emplace_back( LoadInfo{
       .partNumber = std::move( partNumber ),
       .headerFilename = std::move( headerFilename ),
-      .memberSequenceNumber =
-        MediumNumber{ Helper::safeCast< uint8_t>( fileMemberSequenceNumber ) },
+      .memberSequenceNumber = MediumNumber{ Helper::safeCast< uint8_t >( fileMemberSequenceNumber ) },
       .targetHardwareIds = std::move( thwIds ) } );
 
     // set it to begin of next load
-    it += static_cast< ptrdiff_t >( loadPointer ) * 2;
+    remaining = remaining.subspan( loadPointer * 2ULL );
   }
 }
 

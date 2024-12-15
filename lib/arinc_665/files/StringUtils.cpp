@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -25,47 +24,46 @@
 
 namespace Arinc665::Files {
 
-ConstRawFileSpan::iterator StringUtils_decodeString(
-  ConstRawFileSpan::iterator it,
-  std::string &str )
+std::tuple< ConstRawFileSpan, std::string > StringUtils_decodeString( ConstRawFileSpan rawData )
 {
-  // determine string length
-  uint16_t strLength{};
-  it = Helper::getInt< uint16_t >( it, strLength );
+  std::string string{};
+  auto remaining{ rawData };
+
+  // string length
+  uint16_t stringLength{};
+  std::tie( remaining, stringLength ) = Helper::getInt< uint16_t >( remaining );
 
   // copy string
-  str.assign( it, it + strLength );
-  it += strLength;
+  string.assign( remaining.begin(), remaining.begin() + stringLength );
+  remaining = remaining.subspan( stringLength );
 
   // if string is odd skip filled 0-character
-  if ( strLength % 2 == 1 )
+  if ( stringLength % 2 == 1 )
   {
     // check fill-character
-    if ( 0U != *it )
+    if ( 0U != remaining.front())
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "Fill character not '0'" } );
     }
-    ++it;
+    remaining = remaining.subspan( 1 );
   }
 
-  return it;
+  return { remaining, string };
 }
 
-RawFile StringUtils_encodeString( std::string_view str )
+RawFile StringUtils_encodeString( std::string_view string )
 {
   RawFile rawString( sizeof( uint16_t ) );
 
   // set string length
-  Helper::setInt< uint16_t>(
-    rawString.begin(),
-    Helper::safeCast< uint16_t>( str.size() ) );
+  Helper::setInt< uint16_t >( rawString, Helper::safeCast< uint16_t >( string.size() ) );
 
   // copy string
-  rawString.insert( rawString.end(), str.begin(), str.end() );
+  rawString.insert( rawString.end(), string.begin(), string.end() );
 
   // fill string if it is odd
-  if ( str.size() % 2 == 1 )
+  if ( string.size() % 2 == 1 )
   {
     rawString.push_back( 0U );
   }
@@ -73,26 +71,26 @@ RawFile StringUtils_encodeString( std::string_view str )
   return rawString;
 }
 
-ConstRawFileSpan::iterator StringUtils_decodeStrings(
-  ConstRawFileSpan::iterator it,
-  std::list< std::string > &strings )
+std::tuple< ConstRawFileSpan, std::list< std::string > > StringUtils_decodeStrings( ConstRawFileSpan rawData )
 {
   // empty strings
-  strings.clear();
+  std::list< std::string > strings;
+
+  auto remaining{ rawData };
 
   // number of strings
   uint16_t numberOfEntries{};
-  it = Helper::getInt< uint16_t>( it, numberOfEntries );
+  std::tie( remaining, numberOfEntries ) = Helper::getInt< uint16_t >( remaining );
 
   for ( uint16_t index = 0U; index < numberOfEntries; ++index )
   {
     // string
-    std::string str{};
-    it = StringUtils_decodeString( it, str );
-    strings.emplace_back( std::move( str ) );
+    std::string string;
+    std::tie( remaining, string ) = StringUtils_decodeString( remaining );
+    strings.emplace_back( std::move( string ) );
   }
 
-  return it;
+  return { remaining, strings };
 }
 
 RawFile StringUtils_encodeStrings( const std::list< std::string > &strings )
@@ -100,17 +98,15 @@ RawFile StringUtils_encodeStrings( const std::list< std::string > &strings )
   RawFile rawStrings( sizeof( uint16_t ) );
 
   // set number of strings
-  Helper::setInt< uint16_t >(
-    rawStrings.begin(),
-    static_cast< uint16_t>( strings.size() ) );
+  Helper::setInt< uint16_t >( rawStrings, static_cast< uint16_t >( strings.size() ) );
 
-  for ( const auto &str : strings )
+  for ( const auto &string : strings )
   {
-    auto rawStr{ StringUtils_encodeString( str ) };
-    assert( rawStr.size() % 2 == 0 );
+    auto rawString{ StringUtils_encodeString( string ) };
+    assert( rawString.size() % 2 == 0 );
 
     // append string
-    rawStrings.insert( rawStrings.end(), rawStr.begin(), rawStr.end() );
+    rawStrings.insert( rawStrings.end(), rawString.begin(), rawString.end() );
   }
 
   return rawStrings;

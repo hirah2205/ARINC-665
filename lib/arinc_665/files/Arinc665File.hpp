@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -46,8 +45,7 @@ class ARINC_665_EXPORT Arinc665File
     static constexpr ptrdiff_t FileFormatVersionFieldOffset{ 4 };
 
     /**
-     * @brief Encodes the given path for storage within ARINC 665 media set
-     *   files.
+     * @brief Encodes the given path for storage within ARINC 665 media set files.
      *
      * The main purpose is to replace all forward slashes '/' by
      * back-slashes '\'.
@@ -148,8 +146,7 @@ class ARINC_665_EXPORT Arinc665File
       ConstRawFileSpan rawFile );
 
     /**
-     * @brief Returns the Supported ARINC 665 Version for the given @p fileType.
-     *   and [formatVersionField].
+     * @brief Returns the Supported ARINC 665 Version for the given @p fileType and @p formatVersionField.
      *
      * @param[in] fileType
      *   File Type.
@@ -158,16 +155,14 @@ class ARINC_665_EXPORT Arinc665File
      *
      * @return Supported ARINC 665 version.
      * @retval {}
-     *   If the given information are inconsistent or the Version is not
-     *   supported.
+     *   If the given information are inconsistent or the Version is not supported.
      **/
     static std::optional< SupportedArinc665Version > arinc665Version(
       FileType fileType,
       uint16_t formatVersionField ) noexcept;
 
     /**
-     * @brief Returns the ARINC 665 version for the given @p fileType and
-     *   @p arinc665Version.
+     * @brief Returns the ARINC 665 version for the given @p fileType and @p arinc665Version.
      *
      * @param[in] fileType
      *   File type.
@@ -190,8 +185,7 @@ class ARINC_665_EXPORT Arinc665File
      * @retval {}
      *   If @p filename is not a ARINC 665 file type.
      **/
-    static std::optional< FileType > fileType(
-      const std::filesystem::path &filename );
+    static std::optional< FileType > fileType( const std::filesystem::path &filename );
 
     //! Destructor
     virtual ~Arinc665File() noexcept = default;
@@ -200,7 +194,7 @@ class ARINC_665_EXPORT Arinc665File
      * @brief Assigns raw data to the file.
      *
      * @note
-     * Regardless this method is marked pure, an base implementation is provided.
+     * Regardless this method is marked pure, a base implementation is provided.
      * A child class needs to override this method.
      *
      * @param[in] rawFile
@@ -256,8 +250,7 @@ class ARINC_665_EXPORT Arinc665File
      *   Checksum position.
      **/
     explicit Arinc665File(
-      SupportedArinc665Version version =
-        SupportedArinc665Version::Supplement345,
+      SupportedArinc665Version version = SupportedArinc665Version::Supplement345,
       ptrdiff_t checksumPosition = DefaultChecksumPosition ) noexcept;
 
     /**
@@ -320,9 +313,7 @@ class ARINC_665_EXPORT Arinc665File
      * @throw InvalidArinc665File
      *   When file size is invalid
      **/
-    void insertHeader(
-      RawFileSpan rawFile,
-      std::size_t additionalSize = sizeof( uint16_t ) ) const;
+    void insertHeader( RawFileSpan rawFile, std::size_t additionalSize = sizeof( uint16_t ) ) const;
 
     /**
      * @brief Calculates and updates the File CRC field.

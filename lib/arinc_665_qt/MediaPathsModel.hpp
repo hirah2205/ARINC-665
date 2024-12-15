@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -92,13 +91,10 @@ class ARINC_665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
      *
      * @return Data dependent of the index and role.
      **/
-    [[nodiscard]] QVariant data(
-      const QModelIndex &index,
-      int role ) const override;
+    [[nodiscard]] QVariant data( const QModelIndex &index, int role ) const override;
 
     /**
-     * @brief Returns the data for the given role and section in the header with
-     *   the specified orientation.
+     * @brief Returns the data for the given role and section in the header with the specified orientation.
      *
      * @param[in] section
      *   Section Number
@@ -134,8 +130,7 @@ class ARINC_665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
      *
      * @return Medium Path for Medium Number.
      **/
-    [[nodiscard]] const std::filesystem::path& mediumPath(
-      Arinc665::MediumNumber mediumNumber ) const;
+    [[nodiscard]] const std::filesystem::path& mediumPath( Arinc665::MediumNumber mediumNumber ) const;
 
     /**
      * @brief Assigns Medium Path
@@ -152,8 +147,7 @@ class ARINC_665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
     /**
      * @brief Removes Medium with given @p index.
      *
-     * If @p index is invalid or out of range, the operation returns without
-     * modifying the model.
+     * If @p index is invalid or out of range, the operation returns without modifying the model.
      *
      * @param[in] index
      *   Index identifying the medium

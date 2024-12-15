@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -20,6 +19,7 @@
 #include <set>
 #include <string>
 #include <string_view>
+#include <tuple>
 
 namespace Arinc665::Files {
 
@@ -38,29 +38,27 @@ namespace Arinc665::Files {
  **/
 
 /**
- * @brief Decodes the ARINC 665 string from the stream.
+ * @brief Decodes the ARINC 665 string from the raw data.
  *
- * @param[in] it
- *   Current position, where the raw string start.
- * @param[out] str
- *   Will contain the decoded string.
+ * Decodes length field and the following string.
+ * Checks if the string is filled to a multiple of 2 bytes.
  *
- * @return New iterator position.
+ * @param[in] rawData
+ *   Raw Data.
+ *
+ * @return std::tuple of Remaining Raw Data and decoded string.
  **/
-ARINC_665_EXPORT ConstRawFileSpan::iterator StringUtils_decodeString(
-  ConstRawFileSpan::iterator it,
-  std::string &str );
+ARINC_665_EXPORT std::tuple< ConstRawFileSpan, std::string > StringUtils_decodeString( ConstRawFileSpan rawData );
 
 /**
  * @brief Encodes the ARINC 665 string to the stream.
  *
- * @param[in] str
+ * @param[in] string
  *  String to encode.
  *
  * @return Encoded raw string.
  **/
-[[nodiscard]] ARINC_665_EXPORT RawFile StringUtils_encodeString(
-  std::string_view str );
+[[nodiscard]] ARINC_665_EXPORT RawFile StringUtils_encodeString( std::string_view string );
 
 /** @} **/
 
@@ -79,16 +77,13 @@ ARINC_665_EXPORT ConstRawFileSpan::iterator StringUtils_decodeString(
 /**
  * @brief Decodes the ARINC 665 String List from the stream.
  *
- * @param[in] it
- *   current position, where the raw string list starts.
- * @param[out] strings
- *   Decoded Strings.
+ * @param[in] rawData
+ *   raw string list.
  *
- * @return New iterator position.
+ * @return std::tuple of remaining raw data and decoded strings.
  **/
-ARINC_665_EXPORT ConstRawFileSpan::iterator StringUtils_decodeStrings(
-  ConstRawFileSpan::iterator it,
-  std::list< std::string > &strings );
+ARINC_665_EXPORT std::tuple< ConstRawFileSpan, std::list< std::string > > StringUtils_decodeStrings(
+  ConstRawFileSpan rawData );
 
 /**
  * @brief Encodes the ARINC 665 String List to the Stream.
@@ -98,8 +93,7 @@ ARINC_665_EXPORT ConstRawFileSpan::iterator StringUtils_decodeStrings(
  *
  * @return Encoded raw string list.
  **/
-[[nodiscard]] ARINC_665_EXPORT RawFile StringUtils_encodeStrings(
-  const std::list< std::string > &strings );
+[[nodiscard]] ARINC_665_EXPORT RawFile StringUtils_encodeStrings( const std::list< std::string > &strings );
 
 /** @} **/
 

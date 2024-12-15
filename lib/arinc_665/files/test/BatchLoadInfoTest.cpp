@@ -2,13 +2,12 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of unit tests for the class Arinc665::Files::BatchLoadInfo.
+ * @brief Definition of Unit Tests for Class Arinc665::Files::BatchLoadInfo.
  **/
 
 #include <arinc_665/files/BatchLoadInfo.hpp>

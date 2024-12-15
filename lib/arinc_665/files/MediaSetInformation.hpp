@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -24,11 +23,11 @@ namespace Arinc665::Files {
 struct MediaSetInformation
 {
   //! Media Set Part Number
-  std::string partNumber{};
+  std::string partNumber;
   //! Media Sequence Number
-  MediumNumber mediaSequenceNumber{};
+  MediumNumber mediaSequenceNumber;
   //! Number of Media Set Members
-  MediumNumber numberOfMediaSetMembers{};
+  MediumNumber numberOfMediaSetMembers;
 };
 
 }

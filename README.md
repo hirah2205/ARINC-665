@@ -16,7 +16,7 @@ An XML format and corresponding tools are provided to ease generation of media
 sets.
 
 For building graphical applications a Qt based library is provided which 
-consist ow models, dialogs, and wizards to work with ARINC 665 media sets.
+consist of models, dialogs, and wizards to work with ARINC 665 media sets.
 
 ## Dependencies
 First level dependencies:
@@ -59,13 +59,13 @@ within this library.
  - Update File Versions (Separate between media files, load files, and batch
    files)
  - Load header file (.LUH)
-   - Change `Spare` field to `Part Flags` field
-   - Add Load Check Value
-   - Add Load Type Section (ID + Description)
-   - Add Target Hardware IDs with Positions section
-   - Add Data File `length in bytes` field
-   - Add Data and Support File Check Value field
- - FILES.LUM add File Check Value
+   - Change *Spare* field to *Part Flags* field
+   - Add *Load Check Value*
+   - Add *Load Type Section* (ID + description)
+   - Add *Target Hardware IDs with Positions* section
+   - Add Data File *length in bytes* field
+   - Add *Data and Support File Check Value* field
+ - FILES.LUM add *File Check Value*
 
 ### ARINC 665-4
 Clarification but no changes of data formats.
@@ -81,4 +81,4 @@ No changes of data format.
  - ARINC Report 645-1:
    Common Terminology and Functions for Software Distribution and Loading;
    2021-08-11
- - https://aviation-ia.sae-itc.com/standards/arinc665-5-665-5-loadable-software-standards
+ - [ARINC 665-5 @ ARINC](https://aviation-ia.sae-itc.com/standards/arinc665-5-665-5-loadable-software-standards)

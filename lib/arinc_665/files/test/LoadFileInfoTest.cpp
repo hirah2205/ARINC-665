@@ -2,13 +2,12 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Unit test of class Arinc665::Files::LoadFileInfo.
+ * @brief Definition of Unit Tests for Class Arinc665::Files::LoadFileInfo.
  **/
 
 #include <arinc_665/files/LoadFileInfo.hpp>
@@ -19,24 +18,24 @@ using namespace std::string_view_literals;
 
 namespace Arinc665::Files {
 
-BOOST_AUTO_TEST_SUITE( Arinc665Test)
-BOOST_AUTO_TEST_SUITE( FilesTest)
-BOOST_AUTO_TEST_SUITE( LoadFileInfoTest)
+BOOST_AUTO_TEST_SUITE( Arinc665Test )
+BOOST_AUTO_TEST_SUITE( FilesTest )
+BOOST_AUTO_TEST_SUITE( LoadFileInfoTest )
 
 //! Constructor test
-BOOST_AUTO_TEST_CASE( constructor1)
+BOOST_AUTO_TEST_CASE( constructor1 )
 {
   LoadFileInfo loadFileInfo{ "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU, Arinc645::CheckValue::NoCheckValue };
 
-  BOOST_CHECK( loadFileInfo.filename == "NAME");
-  BOOST_CHECK( loadFileInfo.partNumber == "PART_NUMBER");
-  BOOST_CHECK( loadFileInfo.length == 0xDEADBEEFUL);
-  BOOST_CHECK( loadFileInfo.crc == 0xBABEU);
+  BOOST_CHECK( loadFileInfo.filename == "NAME" );
+  BOOST_CHECK( loadFileInfo.partNumber == "PART_NUMBER" );
+  BOOST_CHECK( loadFileInfo.length == 0xDEADBEEFUL );
+  BOOST_CHECK( loadFileInfo.crc == 0xBABEU );
   BOOST_CHECK( loadFileInfo.checkValue == Arinc645::CheckValue::NoCheckValue );
 }
 
 //! get/set name test
-BOOST_AUTO_TEST_CASE( GetSetName)
+BOOST_AUTO_TEST_CASE( GetSetName )
 {
   LoadFileInfo loadFileInfo{ "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU, Arinc645::CheckValue::NoCheckValue };
 
@@ -56,7 +55,7 @@ BOOST_AUTO_TEST_CASE( GetSetName)
 }
 
 //! get/set part number test
-BOOST_AUTO_TEST_CASE( GetSetPartNumber)
+BOOST_AUTO_TEST_CASE( GetSetPartNumber )
 {
   LoadFileInfo loadFileInfo{ "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU, Arinc645::CheckValue::NoCheckValue };
 
@@ -76,7 +75,7 @@ BOOST_AUTO_TEST_CASE( GetSetPartNumber)
 }
 
 //! get/set length test
-BOOST_AUTO_TEST_CASE( GetSetLength)
+BOOST_AUTO_TEST_CASE( GetSetLength )
 {
   LoadFileInfo loadFileInfo{ "NAME", "PART_NUMBER", 0xDEADBEEFUL, 0xBABEU, Arinc645::CheckValue::NoCheckValue };
 

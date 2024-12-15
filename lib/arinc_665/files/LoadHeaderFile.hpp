@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -187,9 +186,8 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
     /**
      * @name Load CRC
      *
-     * The Load CRC is a 32-bit CRC covering the entire Software Load, including
-     * all Data Files, Support Files, and Header File contents excluding the
-     * "Load CRC" itself.
+     * The Load CRC is a 32-bit CRC covering the entire Software Load, including all Data Files, Support Files, and
+     * Header File contents excluding the "Load CRC" itself.
      * The Load CRC should be calculated in the following order:
      *  1. Header file contents excluding the `Load CRC` field,
      *  2. Data files in the sequence they are listed in the header file, and
@@ -199,8 +197,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      **/
 
     /**
-     * @brief Processes the Load CRC over the given Load Header Raw
-     *   representation.
+     * @brief Processes the Load CRC over the given Load Header Raw representation.
      *
      * Must be used to determine the correct size of the data to be processed.
      *
@@ -209,9 +206,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in,out] loadCrc
      *   Processed CRC state.
      **/
-    static void processLoadCrc(
-      ConstRawFileSpan rawFile,
-      Arinc645::Arinc645Crc32 &loadCrc );
+    static void processLoadCrc( ConstRawFileSpan rawFile, Arinc645::Arinc645Crc32 &loadCrc );
 
     /**
      * @brief Encodes the Load CRC within the Raw Load Header File.
@@ -239,9 +234,8 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @name Load Check Value
      *
      * The Load Check Value should be calculated in the following order:
-     *  1. Header file contents excluding the `Load Check Length`, the `Load
-     *     Check Value Type`, the `Load Check Value`, the `Header File CRC`, and
-     *     the `Load CRC`,
+     *  1. Header file contents excluding the `Load Check Length`, the `Load Check Value Type`, the `Load Check Value`,
+     *     the `Header File CRC`, and the `Load CRC`,
      *  2. Data files in the sequence they are listed in the header file, and
      *  3. Support files in the sequence they are listed in the header file.
      *
@@ -249,22 +243,19 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      **/
 
     /**
-     * @brief Processes the Load Check Value over the given Load Header Raw
-     *   representation.
+     * @brief Processes the Load Check Value over the given Load Header Raw representation.
      *
      * Must be used to determine the correct size of the data to be processed.
      *
-     * After Completion the Load Check Value can be set via
-     * encodeLoadCheckValue() or checked via decodeLoadCheckValue().
+     * After Completion the Load Check Value can be set via encodeLoadCheckValue() or checked via
+     * decodeLoadCheckValue().
      *
      * @param[in] rawFile
      *   Load Header File Raw representation.
      * @param[in,out] checkValueGenerator
      *   Processed Check Value Generator state.
      **/
-    static void processLoadCheckValue(
-      ConstRawFileSpan rawFile,
-      Arinc645::CheckValueGenerator &checkValueGenerator );
+    static void processLoadCheckValue( ConstRawFileSpan rawFile, Arinc645::CheckValueGenerator &checkValueGenerator );
 
     /**
      * @brief Encodes the Load Check Value within the Raw Load Header File.
@@ -276,9 +267,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] checkValue
      *   Load Check Value
      **/
-    static void encodeLoadCheckValue(
-      RawFileSpan rawFile,
-      const Arinc645::CheckValue &checkValue );
+    static void encodeLoadCheckValue( RawFileSpan rawFile, const Arinc645::CheckValue &checkValue );
 
     /**
      * @brief Decodes the Load Check Value within the Raw Load Header File.
@@ -290,8 +279,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @retval Arinc645::NoCheckValue
      *   When no Load Check Value is stored.
      **/
-    [[nodiscard]] static Arinc645::CheckValue decodeLoadCheckValue(
-      ConstRawFileSpan rawFile );
+    [[nodiscard]] static Arinc645::CheckValue decodeLoadCheckValue( ConstRawFileSpan rawFile );
 
     /** @} **/
 
@@ -301,9 +289,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit LoadHeaderFile(
-      SupportedArinc665Version version =
-        SupportedArinc665Version::Supplement345 );
+    explicit LoadHeaderFile( SupportedArinc665Version version = SupportedArinc665Version::Supplement345 );
 
     /**
      * @brief Creates a load header file from the given raw data.
@@ -314,7 +300,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
     explicit LoadHeaderFile( ConstRawFileSpan rawFile );
 
     //! Destructor.
-    ~LoadHeaderFile() = default;
+    ~LoadHeaderFile() override = default;
 
     //! @copydoc Arinc665File::operator=
     LoadHeaderFile& operator=( ConstRawFileSpan rawFile ) override;
@@ -327,20 +313,19 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      *
      * @par Definition ARINC 665-5
      * The Part Flags are defined by a 16-bit word.
-     * They are used to indicate extra information to help operators and systems
-     * distinguish and understand the purpose of a part.
+     * They are used to indicate extra information to help operators and systems distinguish and understand the purpose
+     * of a part.
      *
      * @par Download Flag
      * The Least Significant Bit is used to indicate an upload/download part.
      * The value of @p 0 indicates an upload.
      * The value of @p 1 indicates that the part contains instructions for
      * download.
-     * A data loader may use this field to help the operator select parts that
-     * correspond with a download operation versus an upload operation.
+     * A data loader may use this field to help the operator select parts that correspond with a download operation
+     * versus an upload operation.
      *
      * @par Spare Flags
-     * The other 15 bits of the 16-bit Part Flags field are reserved for future
-     * use and should be set to binary 0.
+     * The other 15 bits of the 16-bit Part Flags field are reserved for future use and should be set to binary 0.
      *
      * @{
      **/
@@ -425,10 +410,8 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
     /**
      * @name Target Hardware IDs with Positions
      *
-     * Target HW ID with Position is not intended to replace the Target HW ID,
-     * which remains mandatory.
-     * Target HW ID with Positions is only used to restrict the LSP upload into
-     * a specific position of a Target HW ID.
+     * Target HW ID with Position is not intended to replace the Target HW ID, which remains mandatory.
+     * Target HW ID with Positions is only used to restrict the LSP upload into a specific position of a Target HW ID.
      *
      * @{
      **/
@@ -450,8 +433,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] targetHardwareIdsPositions
      *   Target Hardware ID/ Positions.
      **/
-    void targetHardwareIdsPositions(
-      TargetHardwareIdsPositions targetHardwareIdsPositions );
+    void targetHardwareIdsPositions( TargetHardwareIdsPositions targetHardwareIdsPositions );
 
     /**
      * @brief Add Target Hardware ID/ Positions.
@@ -461,28 +443,21 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] positions
      *   Positions
      **/
-    void targetHardwareIdPositions(
-      std::string targetHardwareId,
-      Positions positions );
+    void targetHardwareIdPositions( std::string targetHardwareId, Positions positions );
 
     /** @} **/
 
     /**
      * @name Load Type
-     * The `Load Type Description` string describes the load or the function the
-     * load performs (e.g., "EEC Operational Software," "FMS Navigation Data
-     * Base," etc.).
+     * The `Load Type Description` string describes the load or the function the load performs (e.g., "EEC Operational
+     * Software," "FMS Navigation Data Base," etc.).
      *
-     * The `Load Type ID` is a 16-bit hexadecimal numeric value set by the
-     * manufacturer or system integrator.
-     * The value in this field should correspond with the content of the
-     * `Load Type Description` field.
-     * `Load Type ID` should be unique for each LSP type which is loaded to a
-     * particular target hardware type.
+     * The `Load Type ID` is a 16-bit hexadecimal numeric value set by the manufacturer or system integrator.
+     * The value in this field should correspond with the content of the `Load Type Description` field.
+     * `Load Type ID` should be unique for each LSP type which is loaded to a particular target hardware type.
      *
      * Load Type ID is used to easily identify the software part type.
-     * This allows the target to identify which load the incoming load replaces
-     * and where to place it in memory.
+     * This allows the target to identify which load the incoming load replaces and where to place it in memory.
      *
      * @sa LoadType
      * @{
@@ -603,8 +578,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @name Load Check Value Type
      *
      * Check Value Type for the whole Load.
-     * This information is used to determine the size, which is reserved on
-     * raw file generation.
+     * This information is used to determine the size, which is reserved on raw file generation.
      *
      * @sa encodeLoadCheckValue()
      * @sa decodeLoadCheckValue()
@@ -665,22 +639,22 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
     /**
      * @brief Decodes the Data Files List from the raw data.
      *
-     * @param[in] rawFile
+     * @param[in] rawData
      *   Raw Load Header File representation.
      * @param[in] decodeV3Data
      *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      **/
-    void decodeDataFiles( ConstRawFileSpan rawFile, bool decodeV3Data );
+    void decodeDataFiles( ConstRawFileSpan rawData, bool decodeV3Data );
 
     /**
      * @brief Decodes the Support Files List from the raw data.
      *
-     * @param[in] rawFile
+     * @param[in] rawData
      *   Raw Load Header File representation.
      * @param[in] decodeV3Data
      *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      **/
-    void decodeSupportFiles( ConstRawFileSpan rawFile, bool decodeV3Data );
+    void decodeSupportFiles( ConstRawFileSpan rawData, bool decodeV3Data );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.
@@ -705,8 +679,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
     UserDefinedData userDefinedDataV;
     //! Load Check Value (Type) (since ARINC 665-3) - Value is calculated on
     //! generation.
-    Arinc645::CheckValueType loadCheckValueTypeV{
-      Arinc645::CheckValueType::NotUsed };
+    Arinc645::CheckValueType loadCheckValueTypeV{ Arinc645::CheckValueType::NotUsed };
 };
 
 }

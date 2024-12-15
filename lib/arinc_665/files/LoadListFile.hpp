@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -91,9 +90,7 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit LoadListFile(
-      SupportedArinc665Version version =
-        SupportedArinc665Version::Supplement345 );
+    explicit LoadListFile( SupportedArinc665Version version = SupportedArinc665Version::Supplement345 );
 
     /**
      * @brief Creates a load list file from the given raw data.
@@ -191,9 +188,9 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
      * for match.
      *
      * @param[in] other
-     *   The other load list file
+     *   The other load list file.
      *
-     * @return If the given load list files belongs to the same media set
+     * @return If the given load list files belongs to the same media set.
      **/
     [[nodiscard]] bool belongsToSameMediaSet( const LoadListFile &other ) const;
 
@@ -219,14 +216,12 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
     /**
      * @brief Decodes the loads information list from the raw data.
      *
-     * @param[in] rawFile
-     *   Raw load list file representation.
-     * @param[in] offset
-     *   Offset of the loads information list.
+     * @param[in] rawData
+     *   Raw loads info representation.
      *
      * @throw InvalidArinc665File When member sequence number is out of range
      **/
-    void decodeLoadsInfo( ConstRawFileSpan rawFile, ptrdiff_t offset );
+    void decodeLoadsInfo( ConstRawFileSpan rawData );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.
@@ -235,7 +230,7 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
 
     //! Load List
     LoadsInfo loadsV;
-    //! User Defined Data
+    //! User Defined Data.
     UserDefinedData userDefinedDataV;
 };
 

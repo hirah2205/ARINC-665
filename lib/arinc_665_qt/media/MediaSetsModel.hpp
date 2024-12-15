@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -27,8 +26,7 @@ namespace Arinc665Qt::Media {
 /**
  * @brief Qt Table Model of list of %Media Sets.
  *
- * For media sets the type Arinc665::Media::MediaSetsVariant is used to allow
- * const and non-const media sets to be used
+ * For media sets the type Arinc665::Media::MediaSetsVariant is used to allow const and non-const media sets to be used.
  **/
 class ARINC_665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
 {
@@ -36,7 +34,7 @@ class ARINC_665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
 
   public:
     //! Columns of Model
-    enum class Columns
+    enum class Columns : int
     {
       //! Media Set Part Number
       PartNumber,
@@ -89,9 +87,7 @@ class ARINC_665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      *
      * @return Data dependent of the index and role.
      **/
-    [[nodiscard]] QVariant data(
-      const QModelIndex &index,
-      int role ) const override;
+    [[nodiscard]] QVariant data( const QModelIndex &index, int role ) const override;
 
     /**
      * @brief Returns the data for the given role and section in the header with
@@ -106,10 +102,7 @@ class ARINC_665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      *
      * @return Header data for the given parameters.
      **/
-    [[nodiscard]] QVariant headerData(
-      int section,
-      ::Qt::Orientation orientation,
-      int role ) const override;
+    [[nodiscard]] QVariant headerData( int section, ::Qt::Orientation orientation, int role ) const override;
 
     /**
      * @name Media Sets.
@@ -146,8 +139,7 @@ class ARINC_665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      *
      * @return Media Set for the given index.
      **/
-    [[nodiscard]] Arinc665::Media::MediaSetVariant mediaSet(
-      const QModelIndex &index ) const;
+    [[nodiscard]] Arinc665::Media::MediaSetVariant mediaSet( const QModelIndex &index ) const;
 
     /**
      * @brief Return Media Set for given Index.
@@ -159,8 +151,7 @@ class ARINC_665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      * @retval {}
      *   If index is invalid
      **/
-    [[nodiscard]] Arinc665::Media::MediaSetVariant mediaSet(
-      std::size_t index ) const;
+    [[nodiscard]] Arinc665::Media::MediaSetVariant mediaSet( std::size_t index ) const;
 
     /**
      * @brief Converts given Media Set Variant to Const Media Set Pointer.

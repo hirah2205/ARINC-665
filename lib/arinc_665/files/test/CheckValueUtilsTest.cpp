@@ -20,8 +20,6 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <iostream>
-
 namespace Arinc665::Files {
 
 BOOST_AUTO_TEST_SUITE( Arinc665Test )

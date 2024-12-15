@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -15,8 +14,8 @@
 #define ARINC_665_FILES_BATCHLISTFILE_HPP
 
 #include <arinc_665/files/Files.hpp>
-#include <arinc_665/files/ListFile.hpp>
 #include <arinc_665/files/BatchInfo.hpp>
+#include <arinc_665/files/ListFile.hpp>
 
 #include <list>
 #include <vector>
@@ -88,9 +87,7 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit BatchListFile(
-      SupportedArinc665Version version =
-        SupportedArinc665Version::Supplement345 );
+    explicit BatchListFile( SupportedArinc665Version version = SupportedArinc665Version::Supplement345 );
 
     /**
      * @brief Creates a batch list file from the given raw data.
@@ -178,8 +175,7 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
      *
      * @return If the given batch list file belongs to the same media set.
      **/
-    [[nodiscard]] bool belongsToSameMediaSet(
-      const BatchListFile &other ) const;
+    [[nodiscard]] bool belongsToSameMediaSet( const BatchListFile &other ) const;
 
   private:
     //! @copydoc ListFile::encode
@@ -203,21 +199,19 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
     /**
      * @brief Decodes the batches information list from the raw data.
      *
-     * @param[in] rawFile
-     *   Raw batch list file representation.
-     * @param[in] offset
-     *   Offset of the batches information list.
+     * @param[in] rawData
+     *   Raw batch list information representation.
      **/
-    void decodeBatchesInfo( ConstRawFileSpan rawFile, std::size_t offset );
+    void decodeBatchesInfo( ConstRawFileSpan rawData );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.
      **/
     void checkUserDefinedData();
 
-    //! Batches Information
+    //! Batches Information.
     BatchesInfo batchesV;
-    //! User Defined Data
+    //! User Defined Data.
     UserDefinedData userDefinedDataV;
 };
 

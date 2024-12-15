@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -107,9 +106,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
      * @param[in] version
      *   ARINC 665 version.
      **/
-    explicit FileListFile(
-      SupportedArinc665Version version =
-        SupportedArinc665Version::Supplement345 );
+    explicit FileListFile( SupportedArinc665Version version = SupportedArinc665Version::Supplement345 );
 
     /**
      * @brief Creates a file list file from the given raw data.
@@ -186,7 +183,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
     [[nodiscard]] ConstUserDefinedDataSpan userDefinedData() const;
 
     /**
-     * @brief Updates the user defined data.
+     * @brief Updates the User Defined Data.
      *
      * @param[in] userDefinedData
      *   User Defined Data.
@@ -254,17 +251,12 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
     /**
      * @brief Decodes the files information list from the raw data.
      *
-     * @param[in] rawFile
-     *   Raw files list file representation.
-     * @param[in] offset
-     *   Offset of the files information list.
+     * @param[in] rawData
+     *   Raw files list information representation.
      * @param[in] decodeV3Data
      *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      **/
-    void decodeFilesInfo(
-      ConstRawFileSpan rawFile,
-      ptrdiff_t offset,
-      bool decodeV3Data );
+    void decodeFilesInfo( ConstRawFileSpan rawData, bool decodeV3Data );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.
@@ -273,11 +265,10 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
 
     //! Files Information (list)
     FilesInfo filesV;
-    //! Use Defined Data.
+    //! User Defined Data.
     UserDefinedData userDefinedDataV;
     //! Check Value Type (since ARINC 665-3)
-    Arinc645::CheckValueType checkValueTypeV{
-      Arinc645::CheckValueType::NotUsed };
+    Arinc645::CheckValueType checkValueTypeV{ Arinc645::CheckValueType::NotUsed };
 };
 
 }

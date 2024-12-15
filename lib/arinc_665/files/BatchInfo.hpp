@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -18,17 +17,16 @@
 
 #include <arinc_665/MediumNumber.hpp>
 
-#include <vector>
 #include <string>
 #include <string_view>
+#include <vector>
 
 namespace Arinc665::Files {
 
 /**
  * @brief ARINC 665 Batch Information.
  *
- * Batch Information stored within the batch list of the ARINC 665 Batch List
- * File.
+ * Batch Information stored within the batch list of the ARINC 665 Batch List File.
  *
  * @sa BatchListFile
  **/

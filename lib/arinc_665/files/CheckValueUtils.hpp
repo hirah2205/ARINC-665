@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -36,8 +35,7 @@ namespace Arinc665::Files {
  * @par No Check Value Encoding
  * There are two alternatives for encoding "No Check Value":
  *  1. Set `Length` field to `0` and omit `Type` and `Value` field.
- *  2. Set `Length` field to `4`, set `Type` field to `0` and omit `Value`
- *     field.
+ *  2. Set `Length` field to `4`, set `Type` field to `0` and omit `Value` field.
  *
  * This implementation uses the first option.
  *
@@ -52,8 +50,7 @@ namespace Arinc665::Files {
  *
  * @return Size of raw representation of @p checkValue.
  **/
-[[nodiscard]] ARINC_665_EXPORT size_t CheckValueUtils_size(
-  Arinc645::CheckValueType type );
+[[nodiscard]] ARINC_665_EXPORT size_t CheckValueUtils_size( Arinc645::CheckValueType type );
 
 /**
  * @brief Encodes the given Check Value.
@@ -63,8 +60,7 @@ namespace Arinc665::Files {
  *
  * @return Check Value as raw data.
  **/
-[[nodiscard]] ARINC_665_EXPORT RawFile CheckValueUtils_encode(
-  const Arinc645::CheckValue &checkValue );
+[[nodiscard]] ARINC_665_EXPORT RawFile CheckValueUtils_encode( const Arinc645::CheckValue &checkValue );
 
 /**
  * @brief Decodes the given data as Check Value.
@@ -80,8 +76,7 @@ namespace Arinc665::Files {
  *   - Invalid Type
  *   - Check Value Type / Length mismatch
  **/
-[[nodiscard]] ARINC_665_EXPORT Arinc645::CheckValue CheckValueUtils_decode(
-  ConstRawFileSpan rawFile );
+[[nodiscard]] ARINC_665_EXPORT Arinc645::CheckValue CheckValueUtils_decode( ConstRawFileSpan rawFile );
 
 /** @} **/
 

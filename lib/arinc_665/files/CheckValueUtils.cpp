@@ -29,8 +29,8 @@ size_t CheckValueUtils_size( const Arinc645::CheckValueType type )
 {
   return
     ( Arinc645::CheckValueType::NotUsed == type ) ?
-    sizeof( uint16_t ) :
-    ( 2U * sizeof( uint16_t ) ) + Arinc645::CheckValue::Sizes.at( type );
+      sizeof( uint16_t ) :
+      ( 2U * sizeof( uint16_t ) ) + Arinc645::CheckValue::Sizes.at( type );
 }
 
 RawFile CheckValueUtils_encode( const Arinc645::CheckValue &checkValue )
@@ -45,9 +45,9 @@ RawFile CheckValueUtils_encode( const Arinc645::CheckValue &checkValue )
   RawFile rawCheckValue( 2 *sizeof( uint16_t ) );
 
   // Check Value Type Field
-  Helper::setInt< uint16_t>(
-    rawCheckValue.begin() + sizeof( uint16_t ),
-    static_cast< uint16_t>( checkValue.type() ) );
+  Helper::setInt< uint16_t >(
+    RawFileSpan{ rawCheckValue }.subspan( sizeof( uint16_t ) ),
+    static_cast< uint16_t >( checkValue.type() ) );
 
   // Check Value Data
   const auto &checkValueData{ checkValue.value() };
@@ -55,7 +55,7 @@ RawFile CheckValueUtils_encode( const Arinc645::CheckValue &checkValue )
   rawCheckValue.insert( rawCheckValue.end(), checkValueData.begin(), checkValueData.end() );
 
   // Check Value Length
-  Helper::setInt< uint16_t >( rawCheckValue.begin(), Helper::safeCast< uint16_t >( rawCheckValue.size() ) );
+  Helper::setInt< uint16_t >( rawCheckValue, Helper::safeCast< uint16_t >( rawCheckValue.size() ) );
 
   return rawCheckValue;
 }
@@ -86,7 +86,7 @@ Arinc645::CheckValue CheckValueUtils_decode( ConstRawFileSpan rawFile )
 
   // Check Value Type
   uint16_t rawCheckValueType{};
-  std::tie( remainingData, rawCheckValueType) = Helper::getInt< uint16_t >( remainingData );
+  std::tie( remainingData, rawCheckValueType ) = Helper::getInt< uint16_t >( remainingData );
 
   const auto checkValueType{ Arinc645::CheckValueTypeDescription::instance().enumeration( rawCheckValueType ) };
 
