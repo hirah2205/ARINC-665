@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -49,17 +48,15 @@ class ARINC_665_EXPORT MediaSetManager
 {
   public:
     //! Media Set Information (Media Set + Check Values)
-    using MediaSetInformation =
-      std::pair< Media::ConstMediaSetPtr, Media::CheckValues >;
+    using MediaSetInformation = std::pair< Media::ConstMediaSetPtr, Media::CheckValues >;
     //! Media Sets Information (Part Number -> Media Set Information)
-    using MediaSetsInformation =
-      std::map< std::string, MediaSetInformation, std::less<> >;
+    using MediaSetsInformation = std::map< std::string, MediaSetInformation, std::less<> >;
 
     /**
      * @brief Load Media Set Manager Progress Handler.
      *
      * @param[in] mediaSet
-     *   std::pair of current media set and number of media sets.
+     *   @p std::pair of current media set and number of media sets.
      * @param[in] partNumber
      *   Media Set Part Number
      * @param[in] medium
@@ -72,8 +69,7 @@ class ARINC_665_EXPORT MediaSetManager
         std::pair< MediumNumber, MediumNumber > medium ) >;
 
     //! Media Set Manager Configuration Filename
-    static constexpr std::string_view ConfigurationFilename{
-      "MediaSetManager.json" };
+    static constexpr std::string_view ConfigurationFilename{ "MediaSetManager.json" };
 
     /**
      * @brief Creates an empty Media Set Manager (but don't load it)
@@ -101,7 +97,7 @@ class ARINC_665_EXPORT MediaSetManager
     [[nodiscard]] static MediaSetManagerPtr load(
       std::filesystem::path directory,
       bool checkFileIntegrity = true,
-      LoadProgressHandler loadProgressHandler = LoadProgressHandler{} );
+      LoadProgressHandler loadProgressHandler = {} );
 
     /**
      * @brief Checks if a Media Set Manager Configuration is available or
@@ -119,7 +115,7 @@ class ARINC_665_EXPORT MediaSetManager
     [[nodiscard]] static MediaSetManagerPtr loadOrCreate(
       std::filesystem::path directory,
       bool checkFileIntegrity = true,
-      LoadProgressHandler loadProgressHandler = LoadProgressHandler{} );
+      LoadProgressHandler loadProgressHandler = {} );
 
     //! Destructor
     virtual ~MediaSetManager() = default;
@@ -159,8 +155,7 @@ class ARINC_665_EXPORT MediaSetManager
      *
      * @return Media Set Manager Configuration.
      **/
-    [[nodiscard]] virtual MediaSetManagerConfiguration
-    configuration() const = 0;
+    [[nodiscard]] virtual MediaSetManagerConfiguration configuration() const = 0;
 
     /**
      * @brief Persist the Configuration.
@@ -182,16 +177,14 @@ class ARINC_665_EXPORT MediaSetManager
      **/
 
     /**
-     * @brief Returns true, if the Media Set with the given Part Number is
-     *   registered to the Media Set Manager.
+     * @brief Returns true, if the Media Set with the given Part Number is registered to the Media Set Manager.
      *
      * @param[in] partNumber
      *   Media Set Part Number.
      *
      * @return If the media set with the given part number is registered
      **/
-    [[nodiscard]] virtual bool hasMediaSet(
-      std::string_view partNumber ) const = 0;
+    [[nodiscard]] virtual bool hasMediaSet( std::string_view partNumber ) const = 0;
 
     /**
      * @brief Returns the Media Set with the given Part Number.
@@ -203,8 +196,7 @@ class ARINC_665_EXPORT MediaSetManager
      * @retval {}
      *   If no Media Set with partNumber exist.
      **/
-    [[nodiscard]] virtual std::optional< MediaSetInformation > mediaSet(
-      std::string_view partNumber ) const = 0;
+    [[nodiscard]] virtual std::optional< MediaSetInformation > mediaSet( std::string_view partNumber ) const = 0;
 
     /**
      * @brief Returns all registered media sets.
@@ -224,9 +216,7 @@ class ARINC_665_EXPORT MediaSetManager
      *   If set to true additional file integrity steps are performed, when
      *   loading the Media Set Manager.
      **/
-    virtual void registerMediaSet(
-      const MediaSetPaths &mediaSetPaths,
-      bool checkFileIntegrity = true ) = 0;
+    virtual void registerMediaSet( const MediaSetPaths &mediaSetPaths, bool checkFileIntegrity = true ) = 0;
 
     /**
      * @brief De-registers the Media Set from the Media Set Manager.
@@ -283,8 +273,7 @@ class ARINC_665_EXPORT MediaSetManager
      *
      * @return Path to the given file.
      **/
-    [[nodiscard]] virtual std::filesystem::path filePath(
-      const Media::ConstFilePtr &file ) const = 0;
+    [[nodiscard]] virtual std::filesystem::path filePath( const Media::ConstFilePtr &file ) const = 0;
 
     /** @} **/
 };

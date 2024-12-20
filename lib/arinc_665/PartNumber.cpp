@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -21,9 +20,7 @@
 
 namespace Arinc665 {
 
-PartNumber::PartNumber(
-  std::string_view manufacturerCode,
-  std::string_view productIdentifier ) :
+PartNumber::PartNumber( std::string_view manufacturerCode, std::string_view productIdentifier ) :
   manufacturerCodeV{ manufacturerCode },
   productIdentifierV{ productIdentifier }
 {
@@ -34,10 +31,7 @@ PartNumber::PartNumber(
 PartNumber::PartNumber( std::string_view partNumber )
 try :
   manufacturerCodeV{ partNumber.substr( 0, ManufacturerCodeLength ) },
-  productIdentifierV{
-    partNumber.substr(
-      ManufacturerCodeLength + CheckCodeLength,
-      ProductIdentifierLength ) }
+  productIdentifierV{ partNumber.substr( ManufacturerCodeLength + CheckCodeLength, ProductIdentifierLength ) }
 {
   // check size of part number
   if ( partNumber.size() != Length )
@@ -47,8 +41,7 @@ try :
   }
 
   // decode check code
-  auto checkCodeDecoded{
-    partNumber.substr( ManufacturerCodeLength, CheckCodeLength ) };
+  auto checkCodeDecoded{ partNumber.substr( ManufacturerCodeLength, CheckCodeLength ) };
 
   // compare check code with calculated one
   if ( checkCodeDecoded != checkCode() )
@@ -140,14 +133,12 @@ void PartNumber::checkCheckCode( std::string_view checkCode )
 
   // decode string to integer
   [[maybe_unused]] unsigned long parsedCheckCode{
-    std::stoul( std::string{ checkCode }, nullptr, 16 ) }; //! @todo check implementation of explicit cast
+    std::stoul( std::string{ checkCode }, nullptr, 16 ) };//! @todo check implementation of explicit cast
 
   assert( parsedCheckCode <= 255U );
 }
 
-std::ostream& operator<<(
-  std::ostream &ostream,
-  const PartNumber &partNumber )
+std::ostream &operator<<( std::ostream &ostream, const PartNumber &partNumber )
 {
   ostream << partNumber.partNumber();
   return ostream;

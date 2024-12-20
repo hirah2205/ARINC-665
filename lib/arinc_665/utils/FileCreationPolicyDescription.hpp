@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -32,10 +31,8 @@ namespace Arinc665::Utils {
  **/
 
 //! %File Creation Policy Description
-class ARINC_665_EXPORT FileCreationPolicyDescription :
-  public Helper::Description<
-    FileCreationPolicyDescription,
-    FileCreationPolicy >
+class ARINC_665_EXPORT FileCreationPolicyDescription final :
+  public Helper::Description< FileCreationPolicyDescription, FileCreationPolicy >
 {
   public:
     //! Constructs and adds the entries
@@ -52,9 +49,7 @@ class ARINC_665_EXPORT FileCreationPolicyDescription :
  *
  * @return Output Stream for chaining.
  **/
-ARINC_665_EXPORT std::ostream& operator<<(
-  std::ostream &stream,
-  FileCreationPolicy fileCreationPolicy );
+ARINC_665_EXPORT std::ostream& operator<<( std::ostream &stream, FileCreationPolicy fileCreationPolicy );
 
 /**
  * @brief File Creation Policy @p std::istream input operator.
@@ -69,9 +64,7 @@ ARINC_665_EXPORT std::ostream& operator<<(
  * @throw boost::program_options
  *   When @p stream cannot be decoded to FileCreationPolicy.
  **/
-ARINC_665_EXPORT std::istream& operator>>(
-  std::istream &stream,
-  FileCreationPolicy &fileCreationPolicy );
+ARINC_665_EXPORT std::istream& operator>>( std::istream &stream, FileCreationPolicy &fileCreationPolicy );
 
 /** @} **/
 

@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -27,11 +26,11 @@ namespace Arinc665::Utils {
  *
  * Handles the representation of %Media Sets as XML file.
  *
- * The ARINC 665 XML is an XML-Schema, which can be used to describe ARINC 665
- * %Media Sets and loads in a human-readable manner.
+ * The ARINC 665 XML is an XML-Schema, which can be used to describe ARINC 665 %Media Sets and loads in a human-readable
+ * manner.
  *
- * Tools can use this representation to "decompile" binary media sets to this
- * representation and "compile" the XML representation to a binary media set.
+ * Tools can use this representation to "decompile" binary media sets to this representation and "compile" the XML
+ * representation to a binary media set.
  *
  * @{
  **/
@@ -50,8 +49,7 @@ using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping >;
  * @throw Arinc665Exception
  *   If file cannot be loaded or is invalid.
  **/
-[[nodiscard]] ARINC_665_EXPORT LoadXmlResult Arinc665Xml_load(
-  const std::filesystem::path &xmlFile );
+[[nodiscard]] ARINC_665_EXPORT LoadXmlResult Arinc665Xml_load( const std::filesystem::path &xmlFile );
 
 /**
  * @brief Saves the given %Media Set information to the given XML file.

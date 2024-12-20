@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -27,31 +26,24 @@ FileCreationPolicyDescription::FileCreationPolicyDescription():
 {
 }
 
-std::ostream& operator<<(
-  std::ostream &stream,
-  const FileCreationPolicy fileCreationPolicy )
+std::ostream &operator<<( std::ostream &stream, const FileCreationPolicy fileCreationPolicy )
 {
-  return ( stream << FileCreationPolicyDescription::instance().name(
-    fileCreationPolicy ) );
+  return ( stream << FileCreationPolicyDescription::instance().name( fileCreationPolicy ) );
 }
 
-std::istream& operator>>(
-  std::istream& stream,
-  FileCreationPolicy &fileCreationPolicy )
+std::istream &operator>>( std::istream &stream, FileCreationPolicy &fileCreationPolicy )
 {
-  std::string str{};
+  std::string str;
 
   // extract string from stream
   stream >> str;
 
   // Decode
-  const auto optionalFileCreationPolicy{
-    FileCreationPolicyDescription::instance().enumeration( str ) };
+  const auto optionalFileCreationPolicy{ FileCreationPolicyDescription::instance().enumeration( str ) };
 
   if ( !optionalFileCreationPolicy )
   {
-    BOOST_THROW_EXCEPTION(
-      boost::program_options::invalid_option_value( str ) );
+    BOOST_THROW_EXCEPTION( boost::program_options::invalid_option_value( str ) );
   }
 
   fileCreationPolicy = *optionalFileCreationPolicy;

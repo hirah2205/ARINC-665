@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -32,8 +31,7 @@ namespace Arinc665 {
  **/
 
 //! ARINC 665 %File Type Description.
-class ARINC_665_EXPORT FileTypeDescription :
-  public Helper::Description< FileTypeDescription, FileType >
+class ARINC_665_EXPORT FileTypeDescription final : public Helper::Description< FileTypeDescription, FileType >
 {
   public:
     //! Initialises Description
@@ -50,9 +48,7 @@ class ARINC_665_EXPORT FileTypeDescription :
  *
  * @return @p stream for chaining.
  **/
-ARINC_665_EXPORT std::ostream& operator<<(
-  std::ostream &stream,
-  FileType fileType );
+ARINC_665_EXPORT std::ostream& operator<<( std::ostream &stream, FileType fileType );
 
 /** @} **/
 

@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -16,12 +15,12 @@
 #include <arinc_665/utils/MediaSetCompiler.hpp>
 
 #include <arinc_665/media/Directory.hpp>
-#include <arinc_665/media/MediaSet.hpp>
 #include <arinc_665/media/File.hpp>
+#include <arinc_665/media/MediaSet.hpp>
 
 #include <arinc_665/Arinc665Exception.hpp>
-#include <arinc_665/MediumNumber.hpp>
 #include <arinc_665/Logger.hpp>
+#include <arinc_665/MediumNumber.hpp>
 
 #include <helper/Exception.hpp>
 
@@ -33,7 +32,7 @@
 
 namespace Arinc665::Utils {
 
-FilesystemMediaSetCompilerImpl::FilesystemMediaSetCompilerImpl():
+FilesystemMediaSetCompilerImpl::FilesystemMediaSetCompilerImpl() :
   mediaSetCompilerV{ MediaSetCompiler::create() }
 {
   mediaSetCompilerV
@@ -47,21 +46,15 @@ FilesystemMediaSetCompilerImpl::FilesystemMediaSetCompilerImpl():
 
 FilesystemMediaSetCompilerImpl::~FilesystemMediaSetCompilerImpl() = default;
 
-FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::mediaSet(
-  Media::ConstMediaSetPtr mediaSet )
+FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::mediaSet( Media::ConstMediaSetPtr mediaSet )
 {
   assert( mediaSetCompilerV );
 
   // set media paths
   mediaPathsV.clear();
-  for (
-    MediumNumber mediumNumber{};
-    mediumNumber <= mediaSet->lastMediumNumber();
-    ++mediumNumber )
+  for ( MediumNumber mediumNumber{}; mediumNumber <= mediaSet->lastMediumNumber(); ++mediumNumber )
   {
-    mediaPathsV.try_emplace(
-      mediumNumber,
-      std::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) ) );
+    mediaPathsV.try_emplace( mediumNumber, std::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) ) );
   }
 
   // set media set name
@@ -74,8 +67,7 @@ FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::mediaSet(
   return *this;
 }
 
-FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::arinc665Version(
-  const SupportedArinc665Version version )
+FilesystemMediaSetCompiler &FilesystemMediaSetCompilerImpl::arinc665Version( const SupportedArinc665Version version )
 {
   assert( mediaSetCompilerV );
   mediaSetCompilerV->arinc665Version( version );
@@ -90,8 +82,7 @@ FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::createBatchFiles(
   return *this;
 }
 
-FilesystemMediaSetCompiler&
-FilesystemMediaSetCompilerImpl::createLoadHeaderFiles(
+FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::createLoadHeaderFiles(
   const FileCreationPolicy createLoadHeaderFiles )
 {
   assert( mediaSetCompilerV );
@@ -99,29 +90,25 @@ FilesystemMediaSetCompilerImpl::createLoadHeaderFiles(
   return *this;
 }
 
-FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::sourceBasePath(
-  std::filesystem::path sourceBasePath )
+FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::sourceBasePath( std::filesystem::path sourceBasePath )
 {
   sourceBasePathV = std::move( sourceBasePath );
   return *this;
 }
 
-FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::filePathMapping(
-  FilePathMapping filePathMapping )
+FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::filePathMapping( FilePathMapping filePathMapping )
 {
   filePathMappingV = std::move( filePathMapping );
   return *this;
 }
 
-FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::outputBasePath(
-  std::filesystem::path outputBasePath )
+FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::outputBasePath( std::filesystem::path outputBasePath )
 {
   outputBasePathV = std::move( outputBasePath );
   return *this;
 }
 
-FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::mediaSetName(
-  std::string mediaSetName )
+FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::mediaSetName( std::string mediaSetName )
 {
   mediaSetNameV = std::move( mediaSetName );
   return *this;
@@ -129,8 +116,7 @@ FilesystemMediaSetCompiler& FilesystemMediaSetCompilerImpl::mediaSetName(
 
 MediaSetPaths FilesystemMediaSetCompilerImpl::operator()()
 {
-  if ( sourceBasePathV.empty() || filePathMappingV.empty()
-    || outputBasePathV.empty() || mediaSetNameV.empty() )
+  if ( sourceBasePathV.empty() || filePathMappingV.empty() || outputBasePathV.empty() || mediaSetNameV.empty() )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception{}
       << Helper::AdditionalInfo{ "Not all parameter provided" } );
@@ -152,8 +138,7 @@ MediaSetPaths FilesystemMediaSetCompilerImpl::operator()()
   return { mediaSetNameV, mediaPathsV };
 }
 
-std::filesystem::path FilesystemMediaSetCompilerImpl::mediumPath(
-  const Arinc665::MediumNumber &mediumNumber ) const
+std::filesystem::path FilesystemMediaSetCompilerImpl::mediumPath( const Arinc665::MediumNumber &mediumNumber ) const
 {
   const auto mediumPath{ mediaPathsV.find( mediumNumber ) };
 
@@ -166,8 +151,7 @@ std::filesystem::path FilesystemMediaSetCompilerImpl::mediumPath(
   return mediaSetBaseDirectoryV / mediumPath->second;
 }
 
-void FilesystemMediaSetCompilerImpl::createMedium(
-  const Arinc665::MediumNumber &mediumNumber )
+void FilesystemMediaSetCompilerImpl::createMedium( const Arinc665::MediumNumber &mediumNumber )
 {
   BOOST_LOG_FUNCTION()
 
@@ -185,8 +169,7 @@ void FilesystemMediaSetCompilerImpl::createDirectory(
 {
   BOOST_LOG_FUNCTION()
 
-  auto directoryPath{
-    mediumPath( mediumNumber ) / directory->path().relative_path() };
+  auto directoryPath{ mediumPath( mediumNumber ) / directory->path().relative_path() };
 
   BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
     << "Create directory "
@@ -196,8 +179,7 @@ void FilesystemMediaSetCompilerImpl::createDirectory(
   std::filesystem::create_directory( directoryPath );
 }
 
-bool FilesystemMediaSetCompilerImpl::checkFileExistence(
-  const Arinc665::Media::ConstFilePtr &file )
+bool FilesystemMediaSetCompilerImpl::checkFileExistence( const Arinc665::Media::ConstFilePtr &file )
 {
   BOOST_LOG_FUNCTION()
 
@@ -222,8 +204,7 @@ bool FilesystemMediaSetCompilerImpl::checkFileExistence(
   return std::filesystem::is_regular_file( filePath );
 }
 
-void FilesystemMediaSetCompilerImpl::createFile(
-  const Arinc665::Media::ConstFilePtr &file )
+void FilesystemMediaSetCompilerImpl::createFile( const Arinc665::Media::ConstFilePtr &file )
 {
   BOOST_LOG_FUNCTION()
 
@@ -237,10 +218,8 @@ void FilesystemMediaSetCompilerImpl::createFile(
       << boost::errinfo_file_name{ std::string{ file->name() } } );
   }
 
-  const auto sourceFilePath{
-    ( sourceBasePathV / fileIt->second ).lexically_normal() };
-  const auto destinationFilePath{
-    mediumPath( file->effectiveMediumNumber() ) / file->path().relative_path() };
+  const auto sourceFilePath{ ( sourceBasePathV / fileIt->second ).lexically_normal() };
+  const auto destinationFilePath{ mediumPath( file->effectiveMediumNumber() ) / file->path().relative_path() };
 
   BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
     << "Copy file from " << sourceFilePath.string()
@@ -273,9 +252,7 @@ void FilesystemMediaSetCompilerImpl::writeFile(
   }
 
   // save file
-  std::ofstream fileStream(
-    filePath.string(),
-    std::ofstream::binary | std::ofstream::out | std::ofstream::trunc );
+  std::ofstream fileStream( filePath.string(), std::ofstream::binary | std::ofstream::out | std::ofstream::trunc );
 
   if ( !fileStream.is_open() )
   {
@@ -285,9 +262,7 @@ void FilesystemMediaSetCompilerImpl::writeFile(
   }
 
   // write the data to the buffer
-  fileStream.write(
-    (const char*) file.data(),
-    static_cast< std::streamsize >( file.size() ) );
+  fileStream.write( (const char *)file.data(), static_cast< std::streamsize >( file.size() ) );
 }
 
 Arinc665::Files::RawFile FilesystemMediaSetCompilerImpl::readFile(
@@ -316,9 +291,7 @@ Arinc665::Files::RawFile FilesystemMediaSetCompilerImpl::readFile(
   Arinc665::Files::RawFile data( std::filesystem::file_size( filePath ) );
 
   // load file
-  std::ifstream file{
-    filePath.string().c_str(),
-    std::ifstream::binary | std::ifstream::in };
+  std::ifstream file{ filePath.string().c_str(), std::ifstream::binary | std::ifstream::in };
 
   if ( !file.is_open() )
   {
@@ -328,9 +301,7 @@ Arinc665::Files::RawFile FilesystemMediaSetCompilerImpl::readFile(
   }
 
   // read the data to the buffer
-  file.read(
-    (char *) &data.at( 0 ),
-    static_cast< std::streamsize >( data.size() ) );
+  file.read( (char *)&data.at( 0 ), static_cast< std::streamsize >( data.size() ) );
 
   // return the buffer
   return data;

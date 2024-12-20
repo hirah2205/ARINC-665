@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -23,8 +22,7 @@ namespace Arinc665::Utils {
 /**
  * @brief ARINC 665 %Media Set Decompiler using local Filesystem.
  *
- * This decompiler expects that each medium is contained as directory on the
- * local filesystem.
+ * This decompiler expects that each medium is contained as directory on the local filesystem.
  * Normal filesystem access routines are used to access the media and files.
  *
  * @sa @ref MediaSetDecompiler
@@ -55,8 +53,7 @@ class ARINC_665_EXPORT FilesystemMediaSetDecompiler
      *
      * @return @p *this for chaining.
      **/
-    virtual FilesystemMediaSetDecompiler& progressHandler(
-      MediaSetDecompiler::ProgressHandler progressHandler ) = 0;
+    virtual FilesystemMediaSetDecompiler& progressHandler( MediaSetDecompiler::ProgressHandler progressHandler ) = 0;
 
     /**
      * @brief Sets the Check File Integrity Flag.
@@ -66,8 +63,7 @@ class ARINC_665_EXPORT FilesystemMediaSetDecompiler
      *
      * @return @p *this for chaining.
      **/
-    virtual FilesystemMediaSetDecompiler& checkFileIntegrity(
-      bool checkFileIntegrity ) noexcept = 0;
+    virtual FilesystemMediaSetDecompiler& checkFileIntegrity( bool checkFileIntegrity ) noexcept = 0;
 
     /**
      * @brief Sets the Media Paths
@@ -77,8 +73,7 @@ class ARINC_665_EXPORT FilesystemMediaSetDecompiler
      *
      * @return @p *this for chaining.
      **/
-    virtual FilesystemMediaSetDecompiler& mediaPaths(
-      MediaPaths mediaPaths ) = 0;
+    virtual FilesystemMediaSetDecompiler& mediaPaths( MediaPaths mediaPaths ) = 0;
 
     /** @} **/
 

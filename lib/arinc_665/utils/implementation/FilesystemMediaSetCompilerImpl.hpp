@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -32,36 +31,28 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
     ~FilesystemMediaSetCompilerImpl() override;
 
     //! @copydoc FilesystemMediaSetCompiler::mediaSet()
-    FilesystemMediaSetCompiler& mediaSet(
-      Media::ConstMediaSetPtr mediaSet ) override;
+    FilesystemMediaSetCompiler &mediaSet( Media::ConstMediaSetPtr mediaSet ) override;
 
     //! @copydoc FilesystemMediaSetCompiler::arinc665Version()
-    FilesystemMediaSetCompiler& arinc665Version(
-      SupportedArinc665Version version ) override;
+    FilesystemMediaSetCompiler &arinc665Version( SupportedArinc665Version version ) override;
 
     //! @copydoc FilesystemMediaSetCompiler::createBatchFiles()
-    FilesystemMediaSetCompiler& createBatchFiles(
-      FileCreationPolicy createBatchFiles ) override;
+    FilesystemMediaSetCompiler &createBatchFiles( FileCreationPolicy createBatchFiles ) override;
 
     //! @copydoc FilesystemMediaSetCompiler::createLoadHeaderFiles()
-    FilesystemMediaSetCompiler& createLoadHeaderFiles(
-      FileCreationPolicy createLoadHeaderFiles ) override;
+    FilesystemMediaSetCompiler &createLoadHeaderFiles( FileCreationPolicy createLoadHeaderFiles ) override;
 
     //! @copydoc FilesystemMediaSetCompiler::sourceBasePath()
-    FilesystemMediaSetCompiler& sourceBasePath(
-      std::filesystem::path sourceBasePath ) override;
+    FilesystemMediaSetCompiler &sourceBasePath( std::filesystem::path sourceBasePath ) override;
 
     //! @copydoc FilesystemMediaSetCompiler::filePathMapping()
-    FilesystemMediaSetCompiler& filePathMapping(
-      FilePathMapping filePathMapping ) override;
+    FilesystemMediaSetCompiler &filePathMapping( FilePathMapping filePathMapping ) override;
 
     //! @copydoc FilesystemMediaSetCompiler::outputBasePath()
-    FilesystemMediaSetCompiler& outputBasePath(
-      std::filesystem::path outputBasePath ) override;
+    FilesystemMediaSetCompiler &outputBasePath( std::filesystem::path outputBasePath ) override;
 
     //! @copydoc FilesystemMediaSetCompiler::mediaSetName()
-    FilesystemMediaSetCompiler& mediaSetName(
-      std::string mediaSetName ) override;
+    FilesystemMediaSetCompiler &mediaSetName( std::string mediaSetName ) override;
 
     /**
      * @brief Entry-point of the Filesystem ARINC 665 Media Set Compiler.
@@ -77,8 +68,7 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
      *
      * @return Medium Path.
      **/
-    [[nodiscard]] std::filesystem::path mediumPath(
-      const Arinc665::MediumNumber &mediumNumber ) const;
+    [[nodiscard]] std::filesystem::path mediumPath( const Arinc665::MediumNumber &mediumNumber ) const;
 
     /**
      * @brief Creates the Directory for the given Medium.
@@ -108,8 +98,7 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
      *
      * @return If file exists
      **/
-    [[nodiscard]] bool checkFileExistence(
-      const Arinc665::Media::ConstFilePtr &file );
+    [[nodiscard]] bool checkFileExistence( const Arinc665::Media::ConstFilePtr &file );
 
     /**
      * @brief Create File Handler.

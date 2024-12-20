@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -36,8 +35,7 @@ class ARINC_665_EXPORT MediaSetValidator
     /**
      * @brief Handler, which is called to read a file form a medium.
      *
-     * This handler is also used to read files, which are not represented by
-     * Arinc665::Media classes.
+     * This handler is also used to read files, which are not represented by Arinc665::Media classes.
      * Therefore, a basic representation is used.
      *
      * @param[in] mediumNumber
@@ -47,13 +45,10 @@ class ARINC_665_EXPORT MediaSetValidator
      *
      * @return File Data (Read as binary).
      **/
-    using ReadFileHandler = std::function< Files::RawFile(
-      uint8_t mediumNumber,
-      const std::filesystem::path &path ) >;
+    using ReadFileHandler = std::function< Files::RawFile( uint8_t mediumNumber, const std::filesystem::path &path ) >;
 
     //! Handler which is called for Validation Information.
-    using ValidatorInformationHandler =
-      std::function< void( std::string_view information ) >;
+    using ValidatorInformationHandler = std::function< void( std::string_view information ) >;
 
     /**
      * @brief Creates the ARINC 665 %Media Set Validator Instance.
@@ -78,8 +73,7 @@ class ARINC_665_EXPORT MediaSetValidator
      *
      * @return @p *this for chaining.
      **/
-    virtual MediaSetValidator& readFileHandler(
-      ReadFileHandler readFileHandler ) = 0;
+    virtual MediaSetValidator &readFileHandler( ReadFileHandler readFileHandler ) = 0;
 
     /**
      * @brief Sets the Validator Information Handler.
@@ -89,8 +83,7 @@ class ARINC_665_EXPORT MediaSetValidator
      *
      * @return @p *this for chaining.
      **/
-    virtual MediaSetValidator& informationHandler(
-      ValidatorInformationHandler informationHandler ) = 0;
+    virtual MediaSetValidator &informationHandler( ValidatorInformationHandler informationHandler ) = 0;
 
     /** @} **/
 

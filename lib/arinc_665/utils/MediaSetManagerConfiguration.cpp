@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -20,43 +19,33 @@
 
 namespace Arinc665::Utils {
 
-MediaSetManagerConfiguration::MediaSetManagerConfiguration(
-  const boost::property_tree::ptree &properties )
+MediaSetManagerConfiguration::MediaSetManagerConfiguration( const boost::property_tree::ptree &properties )
 {
   fromProperties( properties );
 }
 
-void MediaSetManagerConfiguration::fromProperties(
-  const boost::property_tree::ptree &properties )
+void MediaSetManagerConfiguration::fromProperties( const boost::property_tree::ptree &properties )
 {
   BOOST_LOG_FUNCTION()
 
   // iterate over media sets
-  if ( const auto mediaSetProperties{
-    properties.get_child_optional( "media_sets" ) };
-    mediaSetProperties )
+  if ( const auto mediaSetProperties{ properties.get_child_optional( "media_sets" ) }; mediaSetProperties )
   {
     for ( const auto &[mediaSetPropertyName, mediaSetConfig] : *mediaSetProperties )
     {
-      auto mediaSetPath{
-        mediaSetConfig.get< std::filesystem::path >( "path", {} ) };
+      auto mediaSetPath{ mediaSetConfig.get< std::filesystem::path >( "path", {} ) };
 
       MediaPaths mediaPaths{};
 
       // iterate over media
-      if ( const auto mediaConfigs{ mediaSetConfig.get_child_optional( "media" ) };
-        mediaConfigs )
+      if ( const auto mediaConfigs{ mediaSetConfig.get_child_optional( "media" ) }; mediaConfigs )
       {
         for ( const auto &[ mediaPropertyName, mediumConfig ] : *mediaConfigs )
         {
-          auto mediumNumber{
-            mediumConfig.get< unsigned int >( "number" ) };
-          auto mediumPath{
-            mediumConfig.get< std::filesystem::path >( "path" ) };
+          auto mediumNumber{ mediumConfig.get< unsigned int >( "number" ) };
+          auto mediumPath{ mediumConfig.get< std::filesystem::path >( "path" ) };
 
-          mediaPaths.try_emplace(
-            MediumNumber{ static_cast< uint8_t >( mediumNumber ) },
-            std::move( mediumPath ) );
+          mediaPaths.try_emplace( MediumNumber{ static_cast< uint8_t >( mediumNumber ) }, std::move( mediumPath ) );
         }
       }
 
@@ -66,16 +55,13 @@ void MediaSetManagerConfiguration::fromProperties(
   }
 
   defaults = MediaSetDefaults{};
-  if (
-    const auto defaultsProperties{ properties.get_child_optional( "defaults" ) };
-    defaultsProperties )
+  if ( const auto defaultsProperties{ properties.get_child_optional( "defaults" ) }; defaultsProperties )
   {
     defaults = MediaSetDefaults{ *defaultsProperties };
   }
 }
 
-boost::property_tree::ptree MediaSetManagerConfiguration::toProperties(
-  const bool full ) const
+boost::property_tree::ptree MediaSetManagerConfiguration::toProperties( const bool full ) const
 {
   BOOST_LOG_FUNCTION()
 
@@ -105,9 +91,7 @@ boost::property_tree::ptree MediaSetManagerConfiguration::toProperties(
   }
 
   // defaults
-  if (
-    const auto defaultProperties{ defaults.toProperties( full ) };
-    full || !defaultProperties.empty() )
+  if ( const auto defaultProperties{ defaults.toProperties( full ) }; full || !defaultProperties.empty() )
   {
     properties.add_child( "defaults", defaultProperties );
   }

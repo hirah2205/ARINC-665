@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -32,10 +31,8 @@ namespace Arinc665 {
  **/
 
 //! Description for SupportedArinc665Version Enumeration.
-class ARINC_665_EXPORT SupportedArinc665VersionDescription :
-  public Helper::Description<
-    SupportedArinc665VersionDescription,
-    SupportedArinc665Version >
+class ARINC_665_EXPORT SupportedArinc665VersionDescription final :
+  public Helper::Description< SupportedArinc665VersionDescription, SupportedArinc665Version >
 {
   public:
     //! Initialises Description Values
@@ -52,9 +49,7 @@ class ARINC_665_EXPORT SupportedArinc665VersionDescription :
  *
  * @return @p stream for chaining.
  **/
-ARINC_665_EXPORT std::ostream& operator<<(
-  std::ostream &stream,
-  SupportedArinc665Version version );
+ARINC_665_EXPORT std::ostream& operator<<( std::ostream &stream, SupportedArinc665Version version );
 
 /**
  * @brief Supported ARINC 665 %Version @p std::istream input operator.
@@ -66,9 +61,7 @@ ARINC_665_EXPORT std::ostream& operator<<(
  *
  * @return @p stream for chaining.
  **/
-ARINC_665_EXPORT std::istream& operator>>(
-  std::istream& stream,
-  SupportedArinc665Version &version );
+ARINC_665_EXPORT std::istream& operator>>( std::istream& stream, SupportedArinc665Version &version );
 
 /** @} **/
 

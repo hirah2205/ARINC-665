@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -13,16 +12,16 @@
 
 #include "MediaSetPrinter.hpp"
 
-#include <arinc_665/media/MediaSet.hpp>
+#include <arinc_665/media/Batch.hpp>
 #include <arinc_665/media/Directory.hpp>
 #include <arinc_665/media/Load.hpp>
-#include <arinc_665/media/Batch.hpp>
+#include <arinc_665/media/MediaSet.hpp>
 #include <arinc_665/media/RegularFile.hpp>
 
 #include <arinc_665/MediumNumber.hpp>
 
-#include <arinc_645/CheckValueTypeDescription.hpp>
 #include <arinc_645/CheckValue.hpp>
+#include <arinc_645/CheckValueTypeDescription.hpp>
 
 #include <format>
 
@@ -137,17 +136,9 @@ void MediaSetPrinter_print(
     << "Media:" << "\n";
 
   // iterate over media
-  for (
-    MediumNumber mediumNumber{ 1U };
-    mediumNumber <= mediaSet.lastMediumNumber();
-    ++mediumNumber )
+  for ( MediumNumber mediumNumber{ 1U }; mediumNumber <= mediaSet.lastMediumNumber(); ++mediumNumber )
   {
-    printMedium(
-      mediaSet,
-      mediumNumber,
-      outS,
-      nextIndent,
-      indent );
+    printMedium( mediaSet, mediumNumber, outS, nextIndent, indent );
     outS << "\n";
   }
 
@@ -177,10 +168,7 @@ void MediaSetPrinter_print(
   }
 }
 
-void MediaSetPrinter_print(
-  const Media::File &file,
-  std::ostream &outS,
-  std::string_view initialIndent )
+void MediaSetPrinter_print( const Media::File &file, std::ostream &outS, std::string_view initialIndent )
 {
   outS
     << initialIndent
@@ -325,8 +313,7 @@ void MediaSetPrinter_print(
       << "Check Value Type: '"
       << printCheckValueType( checkValueType )
       << " - "
-      << printCheckValueType( checkValueType.value_or(
-        load.effectiveDataFilesCheckValueType() ) ) << "'\n";
+      << printCheckValueType( checkValueType.value_or( load.effectiveDataFilesCheckValueType() ) ) << "'\n";
 
     outS << "\n";
   }
@@ -356,8 +343,7 @@ void MediaSetPrinter_print(
       << "Check Value Type: '"
       << printCheckValueType( checkValueType )
       << " - "
-      << printCheckValueType( checkValueType.value_or(
-        load.effectiveSupportFilesCheckValueType() ) ) << "'\n";
+      << printCheckValueType( checkValueType.value_or( load.effectiveSupportFilesCheckValueType() ) ) << "'\n";
 
     outS << "\n";
   }
@@ -490,12 +476,9 @@ static void printFiles(
   }
 }
 
-static std::string printCheckValueType(
-  std::optional< Arinc645::CheckValueType > type )
+static std::string printCheckValueType( std::optional< Arinc645::CheckValueType > type )
 {
-  return ( type ?
-    std::string( Arinc645::CheckValueTypeDescription::instance().name( * type ) ) :
-    "***Undefined***" );
+  return ( type ? std::string( Arinc645::CheckValueTypeDescription::instance().name( *type ) ) : "***Undefined***" );
 }
 
 }

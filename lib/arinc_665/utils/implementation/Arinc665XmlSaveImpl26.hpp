@@ -70,10 +70,8 @@ class Arinc665XmlSaveImpl26 final
      *   Current medium or directory.
      * @param[in,out] currentContainerElement
      *   XML Element, where to add content.
-     */
-    void entries(
-      const Media::ContainerEntity &currentContainer,
-      xmlpp::Element &currentContainerElement ) const;
+     **/
+    void entries( const Media::ContainerEntity &currentContainer, xmlpp::Element &currentContainerElement ) const;
 
     /**
      * @brief Export Regular File to the XML DOM.
@@ -83,9 +81,7 @@ class Arinc665XmlSaveImpl26 final
      * @param[in,out] parentElement
      *   Parent XML Element
      **/
-    void regularFile(
-      const Media::ConstFilePtr &file,
-      xmlpp::Element &parentElement ) const;
+    void regularFile( const Media::ConstFilePtr &file, xmlpp::Element &parentElement ) const;
 
     /**
      * @brief Export Load to the XML DOM.
@@ -95,9 +91,7 @@ class Arinc665XmlSaveImpl26 final
      * @param[in,out] parentElement
      *   Parent XML Element
      **/
-    void load(
-      const Media::ConstFilePtr &file,
-      xmlpp::Element &parentElement ) const;
+    void load( const Media::ConstFilePtr &file, xmlpp::Element &parentElement ) const;
 
     /**
      * @brief Export Load Files to the XML DOM.
@@ -110,7 +104,7 @@ class Arinc665XmlSaveImpl26 final
      *   XML Element Name
      * @param[in,out] loadElement
      *   Parent XML Load Element
-     */
+     **/
     void loadFiles(
       const Media::ConstLoadFiles &files,
       std::string_view fileElementName,
@@ -124,9 +118,7 @@ class Arinc665XmlSaveImpl26 final
      * @param[in,out] parentElement
      *   Parent XML Element
      **/
-    void batch(
-      const Media::ConstFilePtr &file,
-      xmlpp::Element &parentElement ) const;
+    void batch( const Media::ConstFilePtr &file, xmlpp::Element &parentElement ) const;
 
     /**
      * @brief Export Base File Attributes to the XML DOM.
@@ -142,11 +134,9 @@ class Arinc665XmlSaveImpl26 final
      * @param[in] file
      *   File
      * @param[in,out] fileElement
-     *   XML ELement
+     *   XML Element
      **/
-    void baseFile(
-      const Media::ConstFilePtr &file,
-      xmlpp::Element &fileElement ) const;
+    void baseFile( const Media::ConstFilePtr &file, xmlpp::Element &fileElement ) const;
 
     /**
      * @brief Encodes the Check Value and stores it as attribute.
@@ -170,11 +160,9 @@ class Arinc665XmlSaveImpl26 final
     //! XML File Path
     const std::filesystem::path &xmlFileV;
     //! Deferred Load Loading Info
-    std::list< std::tuple< const xmlpp::Element *, Media::LoadPtr > >
-      deferredLoadInfoV{};
+    std::list< std::tuple< const xmlpp::Element *, Media::LoadPtr > > deferredLoadInfoV;
     //! Deferred Batch Loading Info
-    std::list< std::tuple< const xmlpp::Element *, Media::BatchPtr > >
-      deferredBatchInfoV{};
+    std::list< std::tuple< const xmlpp::Element *, Media::BatchPtr > > deferredBatchInfoV;
 };
 
 }

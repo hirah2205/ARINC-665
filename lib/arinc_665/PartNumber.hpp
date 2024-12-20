@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -31,13 +30,10 @@ namespace Arinc665 {
  * `MMMCC-SSSS-SSSS`
  *
  * whereby:
- *  - `MMM` is a unique, upper-case alphanumeric identifier that is assigned to
- *    each software supplier
- *  - `CC` is a two "check characters" generated from the other characters in
- *    the part number
- *  - `SSSSSSSS` is a software supplier defined unique product identifier
- *    consisting of upper-case alphanumeric characters except for alpha
- *    characters "I", "O", "Q" and "Z".
+ *  - `MMM` is a unique, upper-case alphanumeric identifier that is assigned to each software supplier
+ *  - `CC` is a two "check characters" generated from the other characters in the part number
+ *  - `SSSSSSSS` is a software supplier defined unique product identifier consisting of upper-case alphanumeric
+ *    characters except for alpha characters "I", "O", "Q" and "Z".
  **/
 class ARINC_665_EXPORT PartNumber
 {
@@ -52,8 +48,7 @@ class ARINC_665_EXPORT PartNumber
     static constexpr size_t CheckCodeLength{ 2U };
 
     //! Length of an ARINC 665 Part Number
-    static constexpr size_t Length{
-      ManufacturerCodeLength + CheckCodeLength + ProductIdentifierLength };
+    static constexpr size_t Length{ ManufacturerCodeLength + CheckCodeLength + ProductIdentifierLength };
 
     /**
      * @brief Constructs an ARINC 665 part number based on manufacturer code
@@ -64,13 +59,10 @@ class ARINC_665_EXPORT PartNumber
      * @param[in] productIdentifier
      *   Product identifier
      **/
-    PartNumber(
-      std::string_view manufacturerCode,
-      std::string_view productIdentifier );
+    PartNumber( std::string_view manufacturerCode, std::string_view productIdentifier );
 
     /**
-     * @brief Constructs an ARINC 665 part number based on a part number
-     *   string.
+     * @brief Constructs an ARINC 665 part number based on a part number string.
      *
      * @param[in] partNumber
      *   Part number as string
@@ -191,9 +183,7 @@ class ARINC_665_EXPORT PartNumber
  *
  * @sa @ref PartNumber
  **/
-ARINC_665_EXPORT std::ostream& operator<<(
-  std::ostream &ostream,
-  const PartNumber &partNumber );
+ARINC_665_EXPORT std::ostream &operator<<( std::ostream &ostream, const PartNumber &partNumber );
 
 }
 

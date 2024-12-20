@@ -134,7 +134,7 @@ class Arinc665XmlSaveImpl5 final
      * @param[in] file
      *   File
      * @param[in,out] fileElement
-     *   XML ELement
+     *   XML Element
      **/
     void baseFile( const Media::ConstFilePtr &file, xmlpp::Element &fileElement ) const;
 

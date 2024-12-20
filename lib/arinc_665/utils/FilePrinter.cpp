@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -13,11 +12,11 @@
 
 #include "FilePrinter.hpp"
 
-#include <arinc_665/files/FileListFile.hpp>
-#include <arinc_665/files/LoadListFile.hpp>
-#include <arinc_665/files/BatchListFile.hpp>
-#include <arinc_665/files/LoadHeaderFile.hpp>
 #include <arinc_665/files/BatchFile.hpp>
+#include <arinc_665/files/BatchListFile.hpp>
+#include <arinc_665/files/FileListFile.hpp>
+#include <arinc_665/files/LoadHeaderFile.hpp>
+#include <arinc_665/files/LoadListFile.hpp>
 
 #include <arinc_645/CheckValue.hpp>
 #include <arinc_645/CheckValueTypeDescription.hpp>
@@ -59,8 +58,7 @@ void FilePrinter_print(
         file.pathName,
         static_cast< std::string >( file.memberSequenceNumber ),
         file.crc,
-        Arinc645::CheckValueTypeDescription::instance().name(
-          file.checkValue.type() ),
+        Arinc645::CheckValueTypeDescription::instance().name( file.checkValue.type() ),
         file.checkValue.toString() );
   }
 }
@@ -114,25 +112,25 @@ void FilePrinter_print(
 
   outS
     << std::format(
-         "{0}Media Set PN: {1}\n"
-         "{0}Media Seq no: {2}\n"
-         "{0}no of media set members: {3}\n\n",
-         initialIndent,
-         batchListFile.mediaSetPn(),
-         static_cast< std::string >( batchListFile.mediaSequenceNumber() ),
-         static_cast< std::string >( batchListFile.numberOfMediaSetMembers() ) );
+      "{0}Media Set PN: {1}\n"
+      "{0}Media Seq no: {2}\n"
+      "{0}no of media set members: {3}\n\n",
+      initialIndent,
+      batchListFile.mediaSetPn(),
+      static_cast< std::string >( batchListFile.mediaSequenceNumber() ),
+      static_cast< std::string >( batchListFile.numberOfMediaSetMembers() ) );
 
   for ( const auto & batch : batchListFile.batches() )
   {
     outS
       << std::format(
-           "{0}Batch PN: {1}\n"
-           "{0}Batch filename: {2}\n"
-           "{0}Batch member sequence number: {3}\n\n",
-           nextIndent,
-           batch.partNumber,
-           batch.filename,
-           static_cast< std::string >( batch.memberSequenceNumber ) );
+        "{0}Batch PN: {1}\n"
+        "{0}Batch filename: {2}\n"
+        "{0}Batch member sequence number: {3}\n\n",
+        nextIndent,
+        batch.partNumber,
+        batch.filename,
+        static_cast< std::string >( batch.memberSequenceNumber ) );
   }
 }
 
@@ -177,8 +175,7 @@ void FilePrinter_print(
         dataFile.partNumber,
         dataFile.length,
         dataFile.crc,
-        Arinc645::CheckValueTypeDescription::instance().name(
-          dataFile.checkValue.type() ),
+        Arinc645::CheckValueTypeDescription::instance().name( dataFile.checkValue.type() ),
         dataFile.checkValue.toString() );
   }
 
@@ -196,8 +193,7 @@ void FilePrinter_print(
         supportFile.partNumber,
         supportFile.length,
         supportFile.crc,
-        Arinc645::CheckValueTypeDescription::instance().name(
-          supportFile.checkValue.type() ),
+        Arinc645::CheckValueTypeDescription::instance().name( supportFile.checkValue.type() ),
         supportFile.checkValue.toString() );
   }
 }

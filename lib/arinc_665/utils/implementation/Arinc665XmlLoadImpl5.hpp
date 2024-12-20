@@ -105,24 +105,19 @@ class Arinc665XmlLoadImpl5 final
      * @throw Arinc665::Arinc665Exception
      *   When Name Attribute is missing or empty.
      **/
-    void entries(
-      const xmlpp::Element &currentContainerElement,
-      Media::ContainerEntity &currentContainer );
+    void entries( const xmlpp::Element &currentContainerElement, Media::ContainerEntity &currentContainer );
 
     /**
      * @brief Import Regular File from the XML DOM.
      *
-     * A regular file is added to the @p parent container and initialised to its
-     * decoded values.
+     * A regular file is added to the @p parent container and initialised to its decoded values.
      *
      * @param[in] fileElement
      *   XML Element representing the file.
      * @param parent
      *   Owning parent Container
      **/
-    void regularFile(
-      const xmlpp::Element &fileElement,
-      Media::ContainerEntity &parent );
+    void regularFile( const xmlpp::Element &fileElement, Media::ContainerEntity &parent );
 
     /**
      * @brief Import Load from the XML DOM.
@@ -139,24 +134,20 @@ class Arinc665XmlLoadImpl5 final
      * @throw Arinc665::Arinc665Exception
      *   When PartNumber attribute is missing or empty.
      **/
-    void load(
-      const xmlpp::Element &loadElement,
-      Media::ContainerEntity &parent );
+    void load( const xmlpp::Element &loadElement, Media::ContainerEntity &parent );
 
     /**
      * @brief Deferred Loading of Load Element
      *
-     * The data and support files are added here to assure that all possible
-     * files has been added to the Media Set previously.
+     * The data and support files are added here to assure that all possible files has been added to the Media Set
+     * previously.
      *
      * @param[in] loadElement
      *   XML Element representing the load.
      * @param[in,out] load
      *   Load
      **/
-    void loadDeferred(
-      const xmlpp::Element &loadElement,
-      Media::Load &load );
+    void loadDeferred( const xmlpp::Element &loadElement, Media::Load &load );
 
     /**
      * @brief Import Load Data/ Support %Files from XML DOM.
@@ -193,9 +184,7 @@ class Arinc665XmlLoadImpl5 final
      *     - When @p NameRef attribute is missing or empty.
      *     - When @p NameRef attribute does not reference load.
      **/
-    void batch(
-      const xmlpp::Element &batchElement,
-      Media::ContainerEntity &parent );
+    void batch( const xmlpp::Element &batchElement, Media::ContainerEntity &parent );
 
     /**
      * @brief Deferred Loading of Batch Element
@@ -208,9 +197,7 @@ class Arinc665XmlLoadImpl5 final
      * @param[in,out] batch
      *   Load
      **/
-    void loadBatchDeferred(
-      const xmlpp::Element &batchElement,
-      Media::Batch &batch );
+    void loadBatchDeferred( const xmlpp::Element &batchElement, Media::Batch &batch );
 
     /**
      * @brief Import Base File Attributes from the XML DOM.
@@ -218,17 +205,14 @@ class Arinc665XmlLoadImpl5 final
      * Handles attributes:
      *  - `CheckValue`, and
      *  - `SourcePath`.
-     * The common attributes `Name` and `MediumNumber` is handled by @ref name()
-     * and @ref mediumNumber().
+     * The common attributes `Name` and `MediumNumber` is handled by @ref name() and @ref mediumNumber().
      *
      * @param[in] fileElement
      *   XML Element
      * @param[in,out] file
      *   File
      **/
-    void baseFile(
-      const xmlpp::Element &fileElement,
-      const Media::FilePtr &file );
+    void baseFile( const xmlpp::Element &fileElement, const Media::FilePtr &file );
 
     /**
      * @brief Decodes the attribute as Check Value Type.

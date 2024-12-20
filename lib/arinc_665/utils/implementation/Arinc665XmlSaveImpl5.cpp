@@ -12,14 +12,14 @@
 
 #include "Arinc665XmlSaveImpl5.hpp"
 
-#include <arinc_665/media/MediaSet.hpp>
-#include <arinc_665/media/Directory.hpp>
-#include <arinc_665/media/RegularFile.hpp>
-#include <arinc_665/media/Load.hpp>
 #include <arinc_665/media/Batch.hpp>
+#include <arinc_665/media/Directory.hpp>
+#include <arinc_665/media/Load.hpp>
+#include <arinc_665/media/MediaSet.hpp>
+#include <arinc_665/media/RegularFile.hpp>
 
-#include <arinc_665/Logger.hpp>
 #include <arinc_665/Arinc665Exception.hpp>
+#include <arinc_665/Logger.hpp>
 
 #include <arinc_645/CheckValueTypeDescription.hpp>
 
@@ -70,62 +70,39 @@ void Arinc665XmlSaveImpl5::mediaSet( xmlpp::Element &mediaSetElement ) const
   mediaSetElement.set_attribute( "PartNumber", std::string( mediaSetV.partNumber() ) );
 
   // Media Set Check Value
-  checkValue(
-    mediaSetElement,
-    "MediaSetCheckValue",
-    mediaSetV.mediaSetCheckValueType() );
+  checkValue( mediaSetElement, "MediaSetCheckValue", mediaSetV.mediaSetCheckValueType() );
 
   // List of Files Check Value
-  checkValue(
-    mediaSetElement,
-    "ListOfFilesCheckValue",
-    mediaSetV.listOfFilesCheckValueType() );
+  checkValue( mediaSetElement, "ListOfFilesCheckValue", mediaSetV.listOfFilesCheckValueType() );
 
   // List of Loads Check Value
-  checkValue(
-    mediaSetElement,
-    "ListOfLoadsCheckValue",
-    mediaSetV.listOfLoadsCheckValueType() );
+  checkValue( mediaSetElement, "ListOfLoadsCheckValue", mediaSetV.listOfLoadsCheckValueType() );
 
   // List of Batches Check Value
-  checkValue(
-    mediaSetElement,
-    "ListOfBatchesCheckValue",
-    mediaSetV.listOfBatchesCheckValueType() );
+  checkValue( mediaSetElement, "ListOfBatchesCheckValue", mediaSetV.listOfBatchesCheckValueType() );
 
   // Files Check Value
-  checkValue(
-    mediaSetElement,
-    "FilesCheckValue",
-    mediaSetV.filesCheckValueType() );
+  checkValue( mediaSetElement, "FilesCheckValue", mediaSetV.filesCheckValueType() );
 
   // Files List User Defined Data
-  if (
-    const auto &filesUserDefinedData{ mediaSetV.filesUserDefinedData() };
-    !filesUserDefinedData.empty() )
+  if ( const auto &filesUserDefinedData{ mediaSetV.filesUserDefinedData() }; !filesUserDefinedData.empty() )
   {
     mediaSetElement.add_child_element( "FilesUserDefinedData" )->add_child_text(
       std::string{ filesUserDefinedData.begin(), filesUserDefinedData.end() } );
   }
 
   // List of Loads User Defined Data
-  if (
-    const auto &loadsUserDefinedData{ mediaSetV.loadsUserDefinedData() };
-    !loadsUserDefinedData.empty() )
+  if ( const auto &loadsUserDefinedData{ mediaSetV.loadsUserDefinedData() }; !loadsUserDefinedData.empty() )
   {
     mediaSetElement.add_child_element( "LoadsUserDefinedData" )->add_child_text(
       std::string{ loadsUserDefinedData.begin(), loadsUserDefinedData.end() } );
   }
 
   // List of Batches User Defined Data
-  if (
-    const auto &batchesUserDefinedData{ mediaSetV.batchesUserDefinedData() };
-    !batchesUserDefinedData.empty() )
+  if ( const auto &batchesUserDefinedData{ mediaSetV.batchesUserDefinedData() }; !batchesUserDefinedData.empty() )
   {
     mediaSetElement.add_child_element( "BatchesUserDefinedData" )->add_child_text(
-      std::string{
-        batchesUserDefinedData.begin(),
-        batchesUserDefinedData.end() } );
+      std::string{ batchesUserDefinedData.begin(), batchesUserDefinedData.end() } );
   }
 
   // Content
@@ -138,12 +115,11 @@ void Arinc665XmlSaveImpl5::entries(
   xmlpp::Element &currentContainerElement ) const
 {
   // set default medium if provided
-  if ( const auto defaultMedium{ currentContainer.defaultMediumNumber() };
-    defaultMedium )
+  if ( const auto defaultMedium{ currentContainer.defaultMediumNumber() }; defaultMedium )
   {
     currentContainerElement.set_attribute(
       "DefaultMedium",
-      std::to_string( static_cast< uint8_t >( *defaultMedium )) );
+      std::to_string( static_cast< uint8_t >( *defaultMedium ) ) );
   }
 
   // iterate over subdirectories within container and add them recursively
@@ -183,18 +159,14 @@ void Arinc665XmlSaveImpl5::entries(
   }
 }
 
-void Arinc665XmlSaveImpl5::regularFile(
-  const Media::ConstFilePtr &file,
-  xmlpp::Element &parentElement ) const
+void Arinc665XmlSaveImpl5::regularFile( const Media::ConstFilePtr &file, xmlpp::Element &parentElement ) const
 {
   xmlpp::Element * const fileElement{ parentElement.add_child_element( "File" ) };
   assert( nullptr != fileElement );
   baseFile( file, *fileElement );
 }
 
-void Arinc665XmlSaveImpl5::load(
-  const Media::ConstFilePtr &file,
-  xmlpp::Element &parentElement ) const
+void Arinc665XmlSaveImpl5::load( const Media::ConstFilePtr &file, xmlpp::Element &parentElement ) const
 {
   xmlpp::Element * const loadElement{ parentElement.add_child_element( "Load" ) };
   assert( nullptr != loadElement );
@@ -205,47 +177,34 @@ void Arinc665XmlSaveImpl5::load(
 
   loadElement->set_attribute( "PartNumber", std::string( load->partNumber() ) );
 
-  loadElement->set_attribute(
-    "PartFlags",
-    std::format( "0x{:04X}", load->partFlags() ) );
+  loadElement->set_attribute( "PartFlags", std::format( "0x{:04X}", load->partFlags() ) );
 
   // Optional Load Type (Description + Type Value)
   if ( const auto &loadType{ load->loadType() }; loadType )
   {
     const auto &[ description, id ]{ *loadType };
     loadElement->set_attribute( "Description", description );
-    loadElement->set_attribute(
-      "Type",
-      std::format( "0x{:04X}", id ) );
+    loadElement->set_attribute( "Type", std::format( "0x{:04X}", id ) );
   }
 
   // Load Check Value
   checkValue( *loadElement, "LoadCheckValue", load->loadCheckValueType() );
 
   // Data Files Check Value
-  checkValue(
-    *loadElement,
-    "DataFilesCheckValue",
-    load->dataFilesCheckValueType() );
+  checkValue( *loadElement, "DataFilesCheckValue", load->dataFilesCheckValueType() );
 
   // Support Files Check Value
-  checkValue(
-    *loadElement,
-    "SupportFilesCheckValue",
-    load->supportFilesCheckValueType() );
+  checkValue( *loadElement, "SupportFilesCheckValue", load->supportFilesCheckValueType() );
 
   // iterate over target hardware
-  for ( const auto &[ targetHardwareId, positions ] :
-    load->targetHardwareIdPositions() )
+  for ( const auto &[targetHardwareId, positions] : load->targetHardwareIdPositions() )
   {
-    auto * const targetHardwareElement{
-      loadElement->add_child_element( "TargetHardware" ) };
+    auto * const targetHardwareElement{ loadElement->add_child_element( "TargetHardware" ) };
     targetHardwareElement->set_attribute( "ThwId", targetHardwareId );
 
     for( const auto &position : positions )
     {
-      auto * const positionElement{
-        targetHardwareElement->add_child_element( "Position" ) };
+      auto * const positionElement{ targetHardwareElement->add_child_element( "Position" ) };
       positionElement->set_attribute( "Pos", position );
     }
   }
@@ -256,9 +215,7 @@ void Arinc665XmlSaveImpl5::load(
   // support files
   loadFiles( load->supportFiles(), "SupportFile", *loadElement );
 
-  if (
-    const auto &userDefinedData{ load->userDefinedData() };
-    !userDefinedData.empty() )
+  if ( const auto &userDefinedData{ load->userDefinedData() }; !userDefinedData.empty() )
   {
     loadElement->add_child_element( "UserDefinedData" )->add_child_text(
       std::string{ userDefinedData.begin(), userDefinedData.end() } );
@@ -273,8 +230,7 @@ void Arinc665XmlSaveImpl5::loadFiles(
   // iterate over files
   for ( const auto &[ file, partNumber, checkValueType ] : files )
   {
-    auto * const fileElement{
-      loadElement.add_child_element( std::string{ fileElementName } ) };
+    auto * const fileElement{ loadElement.add_child_element( std::string{ fileElementName } ) };
     fileElement->set_attribute( "FilePath", file->path().string() );
     fileElement->set_attribute( "PartNumber", partNumber );
 
@@ -282,15 +238,12 @@ void Arinc665XmlSaveImpl5::loadFiles(
     {
       fileElement->set_attribute(
         "CheckValue",
-        std::string{ Arinc645::CheckValueTypeDescription::instance().name(
-          *checkValueType ) } );
+        std::string{ Arinc645::CheckValueTypeDescription::instance().name( *checkValueType ) } );
     }
   }
 }
 
-void Arinc665XmlSaveImpl5::batch(
-  const Media::ConstFilePtr &file,
-  xmlpp::Element &parentElement ) const
+void Arinc665XmlSaveImpl5::batch( const Media::ConstFilePtr &file, xmlpp::Element &parentElement ) const
 {
   xmlpp::Element * const batchElement{ parentElement.add_child_element( "Batch" ) };
   assert( nullptr != batchElement );
@@ -324,9 +277,7 @@ void Arinc665XmlSaveImpl5::batch(
   }
 }
 
-void Arinc665XmlSaveImpl5::baseFile(
-  const Media::ConstFilePtr &file,
-  xmlpp::Element &fileElement ) const
+void Arinc665XmlSaveImpl5::baseFile( const Media::ConstFilePtr &file, xmlpp::Element &fileElement ) const
 {
   // Add name attribute
   fileElement.set_attribute( "Name", std::string{ file->name() } );
@@ -336,25 +287,19 @@ void Arinc665XmlSaveImpl5::baseFile(
   {
     fileElement.set_attribute(
       "CheckValue",
-      std::string{
-        Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) } );
+      std::string{ Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) } );
   }
 
   // Add source path attribute (optional)
-  if (
-    auto filePathIt{ filePathMappingV.find( file ) };
-    filePathIt != filePathMappingV.end() )
+  if ( auto filePathIt{ filePathMappingV.find( file ) }; filePathIt != filePathMappingV.end() )
   {
     fileElement.set_attribute( "SourcePath", filePathIt->second.string() );
   }
 
   // Add medium if provided
-  if ( const auto mediumNumber{ file->mediumNumber() };
-       mediumNumber )
+  if ( const auto mediumNumber{ file->mediumNumber() }; mediumNumber )
   {
-    fileElement.set_attribute(
-      "Medium",
-      std::to_string( static_cast< uint8_t >( *mediumNumber )) );
+    fileElement.set_attribute( "Medium", std::to_string( static_cast< uint8_t >( *mediumNumber ) ) );
   }
 }
 
@@ -367,8 +312,7 @@ void Arinc665XmlSaveImpl5::checkValue(
   {
     element.set_attribute(
       std::string{ attribute },
-      std::string{
-        Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) } );
+      std::string{ Arinc645::CheckValueTypeDescription::instance().name( *checkValue ) } );
   }
 }
 

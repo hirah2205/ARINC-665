@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -46,8 +45,7 @@ class ARINC_665_EXPORT MediaSetManagerConfiguration
      * @param[in] properties
      *   Stored configuration.
      **/
-    explicit MediaSetManagerConfiguration(
-      const boost::property_tree::ptree &properties );
+    explicit MediaSetManagerConfiguration( const boost::property_tree::ptree &properties );
 
     /**
      * @brief Loads the media set configuration form the given property tree.
@@ -58,8 +56,7 @@ class ARINC_665_EXPORT MediaSetManagerConfiguration
     void fromProperties( const boost::property_tree::ptree &properties );
 
     /**
-     * @brief Converts the configuration values to a
-     *   boost::property_tree::ptree.
+     * @brief Converts the configuration values to a boost::property_tree::ptree.
      *
      * @param[in] full
      *   If set to true, all options are added to the property tree, even if
@@ -67,8 +64,7 @@ class ARINC_665_EXPORT MediaSetManagerConfiguration
      *
      * @return Configuration as boost::property_tree::ptree.
      **/
-    [[nodiscard]] boost::property_tree::ptree toProperties(
-      bool full = false ) const;
+    [[nodiscard]] boost::property_tree::ptree toProperties( bool full = false ) const;
 
     //! Media Sets Paths
     MediaSetsPaths mediaSets;

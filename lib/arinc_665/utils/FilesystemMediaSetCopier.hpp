@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -60,23 +59,20 @@ class ARINC_665_EXPORT FilesystemMediaSetCopier
      *
      * @return *this for chaining.
      **/
-    virtual FilesystemMediaSetCopier& outputBasePath(
-      std::filesystem::path outputBasePath ) = 0;
+    virtual FilesystemMediaSetCopier& outputBasePath( std::filesystem::path outputBasePath ) = 0;
 
     /**
      * @brief Updates the Media Set Name.
      *
      * The media set name is used for generating the output media set directory.
-     * If the name is not set explicitly, the part number of the media set is
-     * used.
+     * If the name is not set explicitly, the part number of the media set is used.
      *
      * @param[in] mediaSetName
      *   Media Set Name.
      *
      * @return *this for chaining.
      **/
-    virtual FilesystemMediaSetCopier& mediaSetName(
-      std::string mediaSetName ) = 0;
+    virtual FilesystemMediaSetCopier& mediaSetName( std::string mediaSetName ) = 0;
 
     /** @} **/
 

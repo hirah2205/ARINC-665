@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -46,8 +45,7 @@
 namespace Arinc665::Utils {
 
 //! %Media Paths (Medium Number -> Medium Path)
-using MediaPaths =
-  std::map< Arinc665::MediumNumber, std::filesystem::path >;
+using MediaPaths = std::map< Arinc665::MediumNumber, std::filesystem::path >;
 
 //! %Media Set Paths (%Media Set Base Path + %Media Paths)
 using MediaSetPaths = std::pair< std::filesystem::path, MediaPaths >;
@@ -78,8 +76,7 @@ using MediaSetCompilerPtr = std::unique_ptr< MediaSetCompiler >;
 
 class FilesystemMediaSetCompiler;
 //! Filesystem ARINC 665 %Media Set Compiler Instance.
-using FilesystemMediaSetCompilerPtr =
-  std::unique_ptr< FilesystemMediaSetCompiler >;
+using FilesystemMediaSetCompilerPtr = std::unique_ptr< FilesystemMediaSetCompiler >;
 
 /** @} **/
 
@@ -90,8 +87,7 @@ using FilesystemMediaSetCompilerPtr =
  **/
 
 //! %Media Set Decompiler Result Type
-using MediaSetDecompilerResult =
-  std::pair< Media::MediaSetPtr, Media::CheckValues >;
+using MediaSetDecompilerResult = std::pair< Media::MediaSetPtr, Media::CheckValues >;
 
 class MediaSetDecompiler;
 //! ARINC 665 %Media Set Decompiler Instance.
@@ -99,20 +95,17 @@ using MediaSetDecompilerPtr = std::unique_ptr< MediaSetDecompiler >;
 
 class FilesystemMediaSetDecompiler;
 //! Filesystem ARINC 665 %Media Set Decompiler Instance.
-using FilesystemMediaSetDecompilerPtr =
-  std::unique_ptr< FilesystemMediaSetDecompiler >;
+using FilesystemMediaSetDecompilerPtr = std::unique_ptr< FilesystemMediaSetDecompiler >;
 
 /** @} **/
 
 class FilesystemMediaSetCopier;
 //! Filesystem ARINC 665 %Media Set Copier Instance.
-using FilesystemMediaSetCopierPtr =
-  std::unique_ptr< FilesystemMediaSetCopier >;
+using FilesystemMediaSetCopierPtr = std::unique_ptr< FilesystemMediaSetCopier >;
 
 class FilesystemMediaSetRemover;
 //! Filesystem ARINC 665 %Media Set Remover Instance.
-using FilesystemMediaSetRemoverPtr =
-  std::unique_ptr< FilesystemMediaSetRemover >;
+using FilesystemMediaSetRemoverPtr = std::unique_ptr< FilesystemMediaSetRemover >;
 
 /**
  * @name Media Set Validator
@@ -153,8 +146,8 @@ using MediaSetManagerPtr = std::shared_ptr< MediaSetManager >;
  * @retval {}
  *   If @p directory is not a valid directory or ARINC 665 Medium
  **/
-[[nodiscard]] ARINC_665_EXPORT std::optional< Files::MediaSetInformation >
-getMediumInformation( const std::filesystem::path &directory );
+[[nodiscard]] ARINC_665_EXPORT std::optional< Files::MediaSetInformation > getMediumInformation(
+  const std::filesystem::path &directory );
 
 }
 

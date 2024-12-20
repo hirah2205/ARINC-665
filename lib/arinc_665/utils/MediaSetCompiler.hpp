@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -28,9 +27,8 @@ namespace Arinc665::Utils {
 /**
  * @brief ARINC 665 %Media Set Compiler.
  *
- * This class is responsible for managing the creation of media, directories,
- * and files, as well as handling the reading and writing of specific file types
- * within the target.
+ * This class is responsible for managing the creation of media, directories, and files, as well as handling the reading
+ * and writing of specific file types within the target.
  **/
 class ARINC_665_EXPORT MediaSetCompiler
 {
@@ -41,8 +39,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      * @param[in] mediumNumber
      *   Medium Number to Create.
      **/
-    using CreateMediumHandler =
-      std::function< void( const MediumNumber &mediumNumber ) >;
+    using CreateMediumHandler = std::function< void( const MediumNumber &mediumNumber ) >;
 
     /**
      * @brief Handler, which is called to generate the given Directory.
@@ -51,24 +48,21 @@ class ARINC_665_EXPORT MediaSetCompiler
      *   Directory to create.
      **/
     using CreateDirectoryHandler =
-      std::function< void(
-        const MediumNumber &mediumNumber,
-        const Media::ConstDirectoryPtr &directory ) >;
+      std::function< void( const MediumNumber &mediumNumber, const Media::ConstDirectoryPtr &directory ) >;
 
     /**
      * @brief Handler, which checks the existence of a file within the Source.
      *
      * This callback is used, to check if a file exist on sources.
-     * This is used for Load Header and Batch Files when the file creation
-     * policy is set to FileCreationPolicy::NoneExisting.
+     * This is used for Load Header and Batch Files when the file creation policy is set to
+     * @p FileCreationPolicy::NoneExisting.
      *
      * @param[in] file
      *   File to check existence for.
      *
      * @return if the File exist on sources.
      **/
-    using CheckFileExistenceHandler =
-      std::function< bool( const Media::ConstFilePtr &file ) >;
+    using CheckFileExistenceHandler = std::function< bool( const Media::ConstFilePtr &file ) >;
 
     /**
      * @brief Handler, which is called to generate the given File from Source.
@@ -78,14 +72,12 @@ class ARINC_665_EXPORT MediaSetCompiler
      * @param[in] file
      *   File to be created.
      **/
-    using CreateFileHandler =
-      std::function< void( const Media::ConstFilePtr &file ) >;
+    using CreateFileHandler = std::function< void( const Media::ConstFilePtr &file ) >;
 
     /**
      * @brief Handler, which is called to write the given File on the Target.
      *
-     * This handler is also used to write files, which are not represented by
-     * Arinc665::Media classes.
+     * This handler is also used to write files, which are not represented by Arinc665::Media classes.
      * Therefore, a basic representation is used.
      *
      * @param[in] mediumNumber
@@ -104,8 +96,7 @@ class ARINC_665_EXPORT MediaSetCompiler
     /**
      * @brief Handler, which is called to read a File from the Target.
      *
-     * This handler is also used to read files, which are not represented by
-     * Arinc665::Media classes.
+     * This handler is also used to read files, which are not represented by Arinc665::Media classes.
      * Therefore, a basic representation is used.
      * This operation is used for checksum and check value calculation.
      *
@@ -117,9 +108,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      * @return File Data (Read as binary).
      **/
     using ReadFileHandler =
-      std::function< Files::RawFile(
-        const MediumNumber &mediumNumber,
-        const std::filesystem::path &path ) >;
+      std::function< Files::RawFile( const MediumNumber &mediumNumber, const std::filesystem::path &path ) >;
 
     /**
      * @brief Creates the ARINC 665 %Media Set Compiler Instance.
@@ -154,8 +143,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      *
      * @return @p *this for chaining.
      **/
-    virtual MediaSetCompiler& createMediumHandler(
-      CreateMediumHandler createMediumHandler ) = 0;
+    virtual MediaSetCompiler& createMediumHandler( CreateMediumHandler createMediumHandler ) = 0;
 
     /**
      * @brief Sets the Create Directory Handler.
@@ -165,8 +153,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      *
      * @return @p *this for chaining.
      **/
-    virtual MediaSetCompiler& createDirectoryHandler(
-      CreateDirectoryHandler createDirectoryHandler ) = 0;
+    virtual MediaSetCompiler& createDirectoryHandler( CreateDirectoryHandler createDirectoryHandler ) = 0;
 
     /**
      * @brief Sets the Check File Existence Handler.
@@ -176,8 +163,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      *
      * @return @p *this for chaining.
      **/
-    virtual MediaSetCompiler& checkFileExistenceHandler(
-      CheckFileExistenceHandler checkFileExistenceHandler ) = 0;
+    virtual MediaSetCompiler& checkFileExistenceHandler( CheckFileExistenceHandler checkFileExistenceHandler ) = 0;
 
     /**
      * @brief Sets the Create File Handler.
@@ -187,8 +173,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      *
      * @return @p *this for chaining.
      **/
-    virtual MediaSetCompiler& createFileHandler(
-      CreateFileHandler createFileHandler ) = 0;
+    virtual MediaSetCompiler& createFileHandler( CreateFileHandler createFileHandler ) = 0;
 
     /**
      * @brief Sets the Write File Handler.
@@ -198,8 +183,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetCompiler& writeFileHandler(
-      WriteFileHandler writeFileHandler ) = 0;
+    virtual MediaSetCompiler& writeFileHandler( WriteFileHandler writeFileHandler ) = 0;
 
     /**
      * @brief Sets the Read File Handler.
@@ -210,8 +194,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetCompiler& readFileHandler(
-      ReadFileHandler readFileHandler ) = 0;
+    virtual MediaSetCompiler& readFileHandler( ReadFileHandler readFileHandler ) = 0;
 
     /**
      * @brief Sets the ARINC 665 Version Flag.
@@ -221,32 +204,27 @@ class ARINC_665_EXPORT MediaSetCompiler
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetCompiler& arinc665Version(
-      SupportedArinc665Version version ) = 0;
+    virtual MediaSetCompiler& arinc665Version( SupportedArinc665Version version ) = 0;
 
     /**
      * @brief Sets the Create Batch Files Flag.
      *
      * @param[in] createBatchFiles
-     *   Defines, if Batch Files are created by exporter or pre-existing ones
-     *   are used.
+     *   Defines, if Batch Files are created by exporter or pre-existing ones are used.
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetCompiler& createBatchFiles(
-      FileCreationPolicy createBatchFiles ) = 0;
+    virtual MediaSetCompiler& createBatchFiles( FileCreationPolicy createBatchFiles ) = 0;
 
     /**
      * @brief Sets the Create Load Header Files Flag.
      *
      * @param[in] createLoadHeaderFiles
-     *   Defines, if Load Header Files are created by exporter or pre-existing
-     *   ones are used.
+     *   Defines, if Load Header Files are created by exporter or pre-existing ones are used.
      *
      * @return *this for chaining.
      **/
-    virtual MediaSetCompiler& createLoadHeaderFiles(
-      FileCreationPolicy createLoadHeaderFiles ) = 0;
+    virtual MediaSetCompiler& createLoadHeaderFiles( FileCreationPolicy createLoadHeaderFiles ) = 0;
 
     /** @} **/
 

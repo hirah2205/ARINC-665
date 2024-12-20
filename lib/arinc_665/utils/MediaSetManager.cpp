@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -28,9 +27,9 @@ namespace Arinc665::Utils {
 
 MediaSetManagerPtr MediaSetManager::create( std::filesystem::path directory )
 {
-  if ( std::filesystem::exists( directory )
-    && ( !std::filesystem::is_directory( directory )
-      || !std::filesystem::is_empty( directory ) ) )
+  if (
+    std::filesystem::exists( directory )
+    && ( !std::filesystem::is_directory( directory ) || !std::filesystem::is_empty( directory ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception{}
       << Helper::AdditionalInfo{ "Path exist or is not empty" }
@@ -43,14 +42,9 @@ MediaSetManagerPtr MediaSetManager::create( std::filesystem::path directory )
 
   boost::property_tree::ptree configurationPTree{ configuration.toProperties() };
 
-  boost::property_tree::write_json(
-    ( directory / ConfigurationFilename ).string(),
-    configurationPTree );
+  boost::property_tree::write_json( ( directory / ConfigurationFilename ).string(), configurationPTree );
 
-  return std::make_shared< MediaSetManagerImpl >(
-    std::move( directory ),
-    false,
-    LoadProgressHandler{} );
+  return std::make_shared< MediaSetManagerImpl >( std::move( directory ), false, LoadProgressHandler{} );
 }
 
 MediaSetManagerPtr MediaSetManager::load(
@@ -76,9 +70,9 @@ MediaSetManagerPtr MediaSetManager::loadOrCreate(
   const bool checkFileIntegrity,
   LoadProgressHandler loadProgressHandler )
 {
-  if ( !std::filesystem::exists( directory )
-    || ( std::filesystem::is_directory( directory )
-      && std::filesystem::is_empty( directory ) ) )
+  if (
+    !std::filesystem::exists( directory )
+    || ( std::filesystem::is_directory( directory ) && std::filesystem::is_empty( directory ) ) )
   {
     return create( std::move( directory ) );
   }

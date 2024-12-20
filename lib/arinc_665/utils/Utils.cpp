@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -24,8 +23,7 @@
 
 namespace Arinc665::Utils {
 
-std::optional< Files::MediaSetInformation > getMediumInformation(
-  const std::filesystem::path &directory )
+std::optional< Files::MediaSetInformation > getMediumInformation( const std::filesystem::path &directory )
 {
   BOOST_LOG_FUNCTION()
 
@@ -51,9 +49,7 @@ std::optional< Files::MediaSetInformation > getMediumInformation(
 
     const auto fileSize{ std::filesystem::file_size( fileListFilePath ) };
 
-    std::ifstream file{
-      fileListFilePath.string().c_str(),
-      std::ifstream::binary | std::ifstream::in };
+    std::ifstream file{ fileListFilePath.string().c_str(), std::ifstream::binary | std::ifstream::in };
 
     if ( !file.is_open() )
     {
@@ -63,12 +59,9 @@ std::optional< Files::MediaSetInformation > getMediumInformation(
     }
 
     Files::RawFile rawFile( fileSize );
-    file.read(
-      (char *)std::data( rawFile ),
-      static_cast< std::streamsize >( fileSize ) );
+    file.read( (char *)std::data( rawFile ), static_cast< std::streamsize >( fileSize ) );
 
-    if ( file.bad()
-      || ( file.gcount() != static_cast< std::streamsize >( fileSize ) ) )
+    if ( file.bad() || ( file.gcount() != static_cast< std::streamsize >( fileSize ) ) )
     {
       BOOST_LOG_SEV( Logger::get(), Helper::Severity::warning )
         << "Error reading from file " << fileListFilePath

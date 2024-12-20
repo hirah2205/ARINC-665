@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -21,8 +20,7 @@ namespace Arinc665::Utils {
 /**
  * @brief ARINC 665 %Media Set Compiler using local Filesystem.
  *
- * Normal filesystem access routines are used to create and access the media and
- * files.
+ * Normal filesystem access routines are used to create and access the media and files.
  *
  * @sa @ref MediaSetCompiler
  **/
@@ -47,8 +45,7 @@ class ARINC_665_EXPORT FilesystemMediaSetCompiler
     /**
      * @brief Sets the Media Set to compile.
      *
-     * If media set name is not set (is empty), the name is set to the media set
-     * part number.
+     * If media set name is not set (is empty), the name is set to the media set part number.
      *
      * @sa FilesystemMediaSetCompiler::mediaSetName()
      *
@@ -57,8 +54,7 @@ class ARINC_665_EXPORT FilesystemMediaSetCompiler
      *
      * @return *this for chaining.
      **/
-    virtual FilesystemMediaSetCompiler& mediaSet(
-      Media::ConstMediaSetPtr mediaSet ) = 0;
+    virtual FilesystemMediaSetCompiler& mediaSet( Media::ConstMediaSetPtr mediaSet ) = 0;
 
     /**
      * @brief Sets the ARINC 665 Version Flag.
@@ -68,36 +64,30 @@ class ARINC_665_EXPORT FilesystemMediaSetCompiler
      *
      * @return *this for chaining.
      **/
-    virtual FilesystemMediaSetCompiler& arinc665Version(
-      SupportedArinc665Version version ) = 0;
+    virtual FilesystemMediaSetCompiler& arinc665Version( SupportedArinc665Version version ) = 0;
 
     /**
      * @brief Sets the Create Batch Files Flag.
      *
      * @param[in] createBatchFiles
-     *   Defines, if Batch Files are created by exporter or pre-existing ones
-     *   are used.
+     *   Defines, if Batch Files are created by exporter or pre-existing ones are used.
      *
      * @return *this for chaining.
      **/
-    virtual FilesystemMediaSetCompiler& createBatchFiles(
-      FileCreationPolicy createBatchFiles ) = 0;
+    virtual FilesystemMediaSetCompiler& createBatchFiles( FileCreationPolicy createBatchFiles ) = 0;
 
     /**
      * @brief Sets the Create Load Header Files Flag.
      *
      * @param[in] createLoadHeaderFiles
-     *   Defines, if Load Header Files are created by exporter or pre-existing
-     *   ones are used.
+     *   Defines, if Load Header Files are created by exporter or pre-existing ones are used.
      *
      * @return *this for chaining.
      **/
-    virtual FilesystemMediaSetCompiler& createLoadHeaderFiles(
-      FileCreationPolicy createLoadHeaderFiles ) = 0;
+    virtual FilesystemMediaSetCompiler& createLoadHeaderFiles( FileCreationPolicy createLoadHeaderFiles ) = 0;
 
     /**
-     * @brief Updates the base directory for source files, if the path within
-     *   the file mapping table is relative.
+     * @brief Updates the base directory for source files, if the path within the file mapping table is relative.
      *
      * @param[in] sourceBasePath
      *   Sources Base directory.
@@ -106,8 +96,7 @@ class ARINC_665_EXPORT FilesystemMediaSetCompiler
      *
      * @sa @ref FilesystemMediaSetCompiler::filePathMapping
      **/
-    virtual FilesystemMediaSetCompiler& sourceBasePath(
-      std::filesystem::path sourceBasePath ) = 0;
+    virtual FilesystemMediaSetCompiler& sourceBasePath( std::filesystem::path sourceBasePath ) = 0;
 
     /**
      * @brief Updates the File Mapping Table.
@@ -121,8 +110,7 @@ class ARINC_665_EXPORT FilesystemMediaSetCompiler
      *
      * @sa @ref FilesystemMediaSetCompiler::filePathMapping
      **/
-    virtual FilesystemMediaSetCompiler& filePathMapping(
-      FilePathMapping filePathMapping ) = 0;
+    virtual FilesystemMediaSetCompiler& filePathMapping( FilePathMapping filePathMapping ) = 0;
 
     /**
      * @brief Updates the base-directory where the Media Set will be created.
@@ -132,8 +120,7 @@ class ARINC_665_EXPORT FilesystemMediaSetCompiler
      *
      * @return *this for chaining.
      **/
-    virtual FilesystemMediaSetCompiler& outputBasePath(
-      std::filesystem::path outputBasePath ) = 0;
+    virtual FilesystemMediaSetCompiler& outputBasePath( std::filesystem::path outputBasePath ) = 0;
 
     /**
      * @brief Updates the Media Set Name.
@@ -145,8 +132,7 @@ class ARINC_665_EXPORT FilesystemMediaSetCompiler
      *
      * @return *this for chaining.
      **/
-    virtual FilesystemMediaSetCompiler& mediaSetName(
-      std::string mediaSetName ) = 0;
+    virtual FilesystemMediaSetCompiler& mediaSetName( std::string mediaSetName ) = 0;
 
     /** @} **/
 
