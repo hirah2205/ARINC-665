@@ -75,6 +75,11 @@ void Arinc665XmlSaveImpl26::operator()()
   }
 }
 
+std::string Arinc665XmlSaveImpl26::userDefinedData( Media::ConstUserDefinedDataSpan userDefinedData )
+{
+  return std::string{ reinterpret_cast< char const * >( userDefinedData.data() ), userDefinedData.size() };
+}
+
 void Arinc665XmlSaveImpl26::mediaSet( xmlpp::Element &mediaSetElement ) const
 {
   mediaSetElement.set_attribute( "PartNumber", std::string( mediaSetV.partNumber() ) );
@@ -97,22 +102,19 @@ void Arinc665XmlSaveImpl26::mediaSet( xmlpp::Element &mediaSetElement ) const
   // Files List User Defined Data
   if ( const auto &filesUserDefinedData{ mediaSetV.filesUserDefinedData() }; !filesUserDefinedData.empty() )
   {
-    mediaSetElement.add_child( "FilesUserDefinedData" )->add_child_text(
-      std::string{ filesUserDefinedData.begin(), filesUserDefinedData.end() } );
+    mediaSetElement.add_child( "FilesUserDefinedData" )->add_child_text( userDefinedData( filesUserDefinedData ) );
   }
 
   // List of Loads User Defined Data
   if ( const auto &loadsUserDefinedData{ mediaSetV.loadsUserDefinedData() }; !loadsUserDefinedData.empty() )
   {
-    mediaSetElement.add_child( "LoadsUserDefinedData" )->add_child_text(
-      std::string{ loadsUserDefinedData.begin(), loadsUserDefinedData.end() } );
+    mediaSetElement.add_child( "LoadsUserDefinedData" )->add_child_text( userDefinedData( loadsUserDefinedData ) );
   }
 
   // List of Batches User Defined Data
   if ( const auto &batchesUserDefinedData{ mediaSetV.batchesUserDefinedData() }; !batchesUserDefinedData.empty() )
   {
-    mediaSetElement.add_child( "BatchesUserDefinedData" )->add_child_text(
-      std::string{ batchesUserDefinedData.begin(), batchesUserDefinedData.end() } );
+    mediaSetElement.add_child( "BatchesUserDefinedData" )->add_child_text( userDefinedData( batchesUserDefinedData ) );
   }
 
   // Content
@@ -225,10 +227,9 @@ void Arinc665XmlSaveImpl26::load( const Media::ConstFilePtr &file, xmlpp::Elemen
   // support files
   loadFiles( load->supportFiles(), "SupportFile", *loadElement );
 
-  if ( const auto &userDefinedData{ load->userDefinedData() }; !userDefinedData.empty() )
+  if ( const auto &loadUserDefinedData{ load->userDefinedData() }; !loadUserDefinedData.empty() )
   {
-    loadElement->add_child( "UserDefinedData" )->add_child_text(
-      std::string{ userDefinedData.begin(), userDefinedData.end() } );
+    loadElement->add_child( "UserDefinedData" )->add_child_text( userDefinedData( loadUserDefinedData ) );
   }
 }
 

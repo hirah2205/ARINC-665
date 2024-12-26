@@ -17,7 +17,7 @@
 #include <arinc_645/CheckValue.hpp>
 #include <arinc_645/CheckValueTypeDescription.hpp>
 
-#include <helper/Endianness.hpp>
+#include <helper/Endianess.hpp>
 #include <helper/Exception.hpp>
 #include <helper/SafeCast.hpp>
 
@@ -33,20 +33,20 @@ size_t CheckValueUtils_size( const Arinc645::CheckValueType type )
       ( 2U * sizeof( uint16_t ) ) + Arinc645::CheckValue::Sizes.at( type );
 }
 
-RawFile CheckValueUtils_encode( const Arinc645::CheckValue &checkValue )
+RawData CheckValueUtils_encode( const Arinc645::CheckValue &checkValue )
 {
   // special Handling of "No Check Value"
   if ( Arinc645::CheckValueType::NotUsed == checkValue.type() )
   {
-    return { 0, 0 };
+    return { std::byte{ 0 }, std::byte{ 0 } };
   }
 
   // Length + Type
-  RawFile rawCheckValue( 2 *sizeof( uint16_t ) );
+  RawData rawCheckValue( 2 *sizeof( uint16_t ) );
 
   // Check Value Type Field
   Helper::setInt< uint16_t >(
-    RawFileSpan{ rawCheckValue }.subspan( sizeof( uint16_t ) ),
+    RawDataSpan{ rawCheckValue }.subspan( sizeof( uint16_t ) ),
     static_cast< uint16_t >( checkValue.type() ) );
 
   // Check Value Data
@@ -60,7 +60,7 @@ RawFile CheckValueUtils_encode( const Arinc645::CheckValue &checkValue )
   return rawCheckValue;
 }
 
-Arinc645::CheckValue CheckValueUtils_decode( ConstRawFileSpan rawFile )
+Arinc645::CheckValue CheckValueUtils_decode( ConstRawDataSpan rawFile )
 {
   // at least length field must be provided
   if ( rawFile.size() < sizeof( uint16_t ) )
@@ -103,12 +103,11 @@ Arinc645::CheckValue CheckValueUtils_decode( ConstRawFileSpan rawFile )
       << Helper::AdditionalInfo{ "Invalid check value length" } );
   }
 
+  remainingData = remainingData.first( checkValueLength - ( 2U * sizeof( uint16_t ) ) );
+
   return {
     *checkValueType,
-    std::vector< uint8_t >{
-      remainingData.begin(),
-      remainingData.begin()
-        + static_cast< std::vector< uint8_t >::difference_type >( checkValueLength - ( 2U * sizeof( uint16_t ) ) ) } };
+    std::vector< std::byte >{ remainingData.begin(), remainingData.end() } };
 }
 
 }

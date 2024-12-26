@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -54,16 +53,14 @@ int main( int argc, char * argv[] )
     Arinc665Qt::Resources::initialise();
 
     QApplication application{ argc, argv };
-    QApplication::setApplicationDisplayName(
-      QObject::tr( "ARINC 665 Media Set Manager" ) );
+    QApplication::setApplicationDisplayName( QObject::tr( "ARINC 665 Media Set Manager" ) );
     QApplication::setOrganizationName( "Thomas Vogt" );
     QApplication::setOrganizationDomain( "thomas-vogt.de" );
     QApplication::setWindowIcon( QIcon{ ":/fa/solid/database.svg" } );
 
-    Arinc665Qt::MediaSetManager::MediaSetManagerWindow mediaSetManagerWindow{};
+    Arinc665Qt::MediaSetManager::MediaSetManagerWindow mediaSetManagerWindow;
 
-    Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction
-      mediaSetManagerAction{};
+    Arinc665Qt::MediaSetManager::OpenMediaSetManagerAction mediaSetManagerAction;
 
     QObject::connect(
       &mediaSetManagerAction,
@@ -76,8 +73,7 @@ int main( int argc, char * argv[] )
         mediaSetManagerLoaded,
       [&]( const Arinc665::Utils::MediaSetManagerPtr &mediaSetManager )
       {
-        mediaSetManagerWindow.setWindowTitle(
-          QString::fromStdString( mediaSetManager->directory().string() ) );
+        mediaSetManagerWindow.setWindowTitle( QString::fromStdString( mediaSetManager->directory().string() ) );
 
         mediaSetManagerWindow.mediaSetManger( mediaSetManager );
 

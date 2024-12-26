@@ -232,7 +232,7 @@ void FilesystemMediaSetCompilerImpl::createFile( const Arinc665::Media::ConstFil
 void FilesystemMediaSetCompilerImpl::writeFile(
   const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path,
-  const Arinc665::Files::ConstRawFileSpan &file )
+  const Arinc665::Files::ConstRawDataSpan &file )
 {
   BOOST_LOG_FUNCTION()
 
@@ -265,7 +265,7 @@ void FilesystemMediaSetCompilerImpl::writeFile(
   fileStream.write( (const char *)file.data(), static_cast< std::streamsize >( file.size() ) );
 }
 
-Arinc665::Files::RawFile FilesystemMediaSetCompilerImpl::readFile(
+Arinc665::Files::RawData FilesystemMediaSetCompilerImpl::readFile(
   const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {
@@ -288,7 +288,7 @@ Arinc665::Files::RawFile FilesystemMediaSetCompilerImpl::readFile(
       << boost::errinfo_file_name{ filePath.string() } );
   }
 
-  Arinc665::Files::RawFile data( std::filesystem::file_size( filePath ) );
+  Arinc665::Files::RawData data( std::filesystem::file_size( filePath ) );
 
   // load file
   std::ifstream file{ filePath.string().c_str(), std::ifstream::binary | std::ifstream::in };

@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -23,6 +22,7 @@
 
 #include <arinc_645/Arinc645.hpp>
 
+#include <cstddef>
 #include <list>
 #include <map>
 #include <memory>
@@ -69,13 +69,13 @@ enum class FileType
  **/
 
 //! User Defined Data
-using UserDefinedData = std::vector< uint8_t >;
+using UserDefinedData = std::vector< std::byte >;
 
 //! Const User Defined Data Span Type
-using ConstUserDefinedDataSpan = std::span< const uint8_t >;
+using ConstUserDefinedDataSpan = std::span< const std::byte >;
 
 //! User Defined Data Span Type
-using UserDefinedDataSpan = std::span< const uint8_t >;
+using UserDefinedDataSpan = std::span< const std::byte >;
 
 /** @} **/
 
@@ -232,15 +232,13 @@ using BatchInformation = std::map< std::string, Loads, std::less<> >;
 //! Const Batch Information (Maps: Target Hardware ID Position -> Loads)
 using ConstBatchInformation = std::map< std::string, ConstLoads, std::less<> >;
 //! Batch Information Variant
-using BatchInformationVariant =
-  std::variant< BatchInformation, ConstBatchInformation >;
+using BatchInformationVariant = std::variant< BatchInformation, ConstBatchInformation >;
 //! Batch Target Information
 using BatchTargetInformation = BatchInformation::value_type;
 //! Const Batch Target Information
 using ConstBatchTargetInformation = ConstBatchInformation::value_type;
 //! Batch Target Information Variant
-using BatchTargetInformationVariant =
-  std::variant< BatchTargetInformation, ConstBatchTargetInformation >;
+using BatchTargetInformationVariant = std::variant< BatchTargetInformation, ConstBatchTargetInformation >;
 
 /** @} **/
 

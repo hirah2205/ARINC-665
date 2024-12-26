@@ -59,8 +59,7 @@ class ARINC_665_EXPORT MediaSetManagerConfiguration
      * @brief Converts the configuration values to a boost::property_tree::ptree.
      *
      * @param[in] full
-     *   If set to true, all options are added to the property tree, even if
-     *   defaulted.
+     *   If set to true, all options are added to the property tree, even if defaulted.
      *
      * @return Configuration as boost::property_tree::ptree.
      **/

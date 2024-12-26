@@ -25,7 +25,7 @@ namespace Arinc665 {
  *
  * This class is used to provide an ARINC 665 Medium Number @p [1..255].
  **/
-class ARINC_665_EXPORT MediumNumber
+class ARINC_665_EXPORT MediumNumber final
 {
   public:
     /**

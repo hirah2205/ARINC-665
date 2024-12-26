@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -106,7 +105,7 @@ static void list_files( const std::filesystem::path &loadDir );
  *
  * @return @p file a raw data.
  **/
-static Arinc665::Files::RawFile loadFile( const std::filesystem::path &file );
+static Arinc665::Files::RawData loadFile( const std::filesystem::path &file );
 
 int main( int argc, char * argv[] )
 {
@@ -118,11 +117,10 @@ int main( int argc, char * argv[] )
   {
     std::cout << "ARINC 665 list\n";
 
-    boost::program_options::options_description optionsDescription{
-      "ARINC 665 List options" };
+    boost::program_options::options_description optionsDescription{ "ARINC 665 List options" };
 
     // directory to list
-    std::filesystem::path directory{};
+    std::filesystem::path directory;
 
     optionsDescription.add_options()
     (
@@ -135,12 +133,9 @@ int main( int argc, char * argv[] )
       "start directory"
     );
 
-    boost::program_options::variables_map variablesMap{};
+    boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::parse_command_line(
-        argc,
-        argv,
-        optionsDescription ),
+      boost::program_options::parse_command_line( argc, argv, optionsDescription ),
       variablesMap );
 
     if ( 0U != variablesMap.count( "help" ) )
@@ -194,12 +189,7 @@ static void printBatchFile( const std::filesystem::path &lubFile )
   {
     Arinc665::Files::BatchFile batch{ loadFile( lubFile ) };
 
-    Arinc665::Utils::FilePrinter_print(
-      batch,
-      std::cout,
-      "\t",
-      "\t" );
-
+    Arinc665::Utils::FilePrinter_print( batch, std::cout, "\t", "\t" );
   }
   catch ( const boost::exception &e )
   {
@@ -224,11 +214,7 @@ static void printLoadHeaderFile( const std::filesystem::path &luhFile)
 
     Arinc665::Files::LoadHeaderFile load{ rawLoadHeaderFile };
 
-    Arinc665::Utils::FilePrinter_print(
-      load,
-      std::cout,
-      "\t",
-      "\t" );
+    Arinc665::Utils::FilePrinter_print( load, std::cout, "\t", "\t" );
 
     std::cout
       << std::format(
@@ -260,11 +246,7 @@ static void printLoadListFile( const std::filesystem::path &loadsLum )
 {
   try
   {
-    Arinc665::Utils::FilePrinter_print(
-      Arinc665::Files::LoadListFile{loadFile( loadsLum ) },
-      std::cout,
-      "\t",
-      "\t" );
+    Arinc665::Utils::FilePrinter_print( Arinc665::Files::LoadListFile{ loadFile( loadsLum ) }, std::cout, "\t", "\t" );
   }
   catch ( const boost::exception &e )
   {
@@ -285,11 +267,7 @@ static void printBatchListFile( const std::filesystem::path &filePath )
 {
   try
   {
-    Arinc665::Utils::FilePrinter_print(
-      Arinc665::Files::BatchListFile{ loadFile( filePath ) },
-      std::cout,
-      "\t",
-      "\t" );
+    Arinc665::Utils::FilePrinter_print( Arinc665::Files::BatchListFile{ loadFile( filePath ) }, std::cout, "\t", "\t" );
   }
   catch ( const boost::exception &e )
   {
@@ -310,11 +288,7 @@ static void printFileListFile( const std::filesystem::path &filesLum )
 {
   try
   {
-    Arinc665::Utils::FilePrinter_print(
-      Arinc665::Files::FileListFile{ loadFile( filesLum ) },
-      std::cout,
-      "\t",
-      "\t" );
+    Arinc665::Utils::FilePrinter_print( Arinc665::Files::FileListFile{ loadFile( filesLum ) }, std::cout, "\t", "\t" );
   }
   catch ( const boost::exception &e )
   {
@@ -333,8 +307,10 @@ static void printFileListFile( const std::filesystem::path &filesLum )
 
 static void list_files( const std::filesystem::path &loadDir )
 {
-  for ( std::filesystem::directory_iterator itr( loadDir );
-    itr != std::filesystem::directory_iterator(); ++itr )
+  for (
+    std::filesystem::directory_iterator itr( loadDir );
+    itr != std::filesystem::directory_iterator();
+    ++itr )
   {
     std::cout << itr->path() << " - ";
 
@@ -391,16 +367,14 @@ static void list_files( const std::filesystem::path &loadDir )
   }
 }
 
-static Arinc665::Files::RawFile loadFile( const std::filesystem::path &file )
+static Arinc665::Files::RawData loadFile( const std::filesystem::path &file )
 {
   std::cout
     << std::format( "\tFile size is: {}\n", std::filesystem::file_size( file ) );
 
-  Arinc665::Files::RawFile data( std::filesystem::file_size( file ) );
+  Arinc665::Files::RawData data( std::filesystem::file_size( file ) );
 
-  std::ifstream fileStream{
-    file,
-    std::ifstream::binary | std::ifstream::in };
+  std::ifstream fileStream{ file, std::ifstream::binary | std::ifstream::in };
 
   if ( !fileStream.is_open() )
   {
@@ -410,9 +384,7 @@ static Arinc665::Files::RawFile loadFile( const std::filesystem::path &file )
         << boost::errinfo_file_name{ file.string() } );
   }
 
-  fileStream.read(
-    (char *)&data.at( 0 ),
-    static_cast< std::streamsize >( data.size() ) );
+  fileStream.read( reinterpret_cast< char * >( data.data() ), static_cast< std::streamsize >( data.size() ) );
 
   return data;
 }

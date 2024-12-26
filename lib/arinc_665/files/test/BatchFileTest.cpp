@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_SUITE( FilesTest )
 BOOST_AUTO_TEST_SUITE( BatchFileTest )
 
 //! Raw Batch File
-static const auto rawBatchFile{ std::to_array< uint8_t >( {
+static const uint8_t rawBatchFile[]{
   // header file length
   0x00, 0x00, 0x00, 0x20,
   // Format version
@@ -80,7 +80,7 @@ static const auto rawBatchFile{ std::to_array< uint8_t >( {
   // Batch File CRC
   0x76, 0x48,
   /* 64 */
-} ) };
+};
 
 BOOST_AUTO_TEST_CASE( constructor1 )
 {
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE( constructor1 )
 //! Constructor Test - Raw Decoding
 BOOST_AUTO_TEST_CASE( constructor2 )
 {
-  BatchFile file{ rawBatchFile };
+  BatchFile file{ std::as_bytes( std::span{ rawBatchFile } ) };
 
   BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2 );
 
@@ -112,9 +112,9 @@ BOOST_AUTO_TEST_CASE( constructor2 )
   BOOST_CHECK( loads.begin()->headerFilename == "FN_001" );
   BOOST_CHECK( loads.begin()->partNumber == "PN_001" );
 
-  const auto raw2{ static_cast< RawFile >( file ) };
+  const auto raw2{ static_cast< RawData >( file ) };
 
-  BOOST_CHECK( std::ranges::equal( rawBatchFile, raw2 ) );
+  BOOST_CHECK( std::ranges::equal( std::as_bytes( std::span{ rawBatchFile } ), raw2 ) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

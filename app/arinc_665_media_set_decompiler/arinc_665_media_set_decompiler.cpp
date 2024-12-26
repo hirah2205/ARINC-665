@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -57,9 +56,7 @@ int main( int argc, char * argv[] );
  * @param[in] medium
  *   Medium information.
  **/
-static void progress(
-  std::string_view partNumber,
-  std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium );
+static void progress( std::string_view partNumber, std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium );
 
 int main( int argc, char * argv[] )
 {
@@ -73,14 +70,13 @@ int main( int argc, char * argv[] )
       << "ARINC 665 Media Set Decompiler - "
       << Arinc665::Version::VersionInformation << "\n";
 
-    boost::program_options::options_description optionsDescription{
-      "ARINC 665 Media Set Decompiler Options" };
+    boost::program_options::options_description optionsDescription{ "ARINC 665 Media Set Decompiler Options" };
 
     // Media source directories
-    std::vector< std::filesystem::path > mediaSourceDirectories{};
+    std::vector< std::filesystem::path > mediaSourceDirectories;
 
     // Media Set XML file
-    std::filesystem::path mediaSetXmlFile{};
+    std::filesystem::path mediaSetXmlFile;
 
     // Check File Integrity
     bool checkFileIntegrity{};
@@ -105,17 +101,13 @@ int main( int argc, char * argv[] )
     (
       "check-file-integrity,i",
       boost::program_options::value( &checkFileIntegrity )
-        ->default_value(
-          Arinc665::Utils::MediaSetDefaults::DefaultCheckFileIntegrity ),
+        ->default_value( Arinc665::Utils::MediaSetDefaults::DefaultCheckFileIntegrity ),
       "Check File Integrity during decompilation."
     );
 
-    boost::program_options::variables_map variablesMap{};
+    boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::parse_command_line(
-        argc,
-        argv,
-        optionsDescription ),
+      boost::program_options::parse_command_line( argc, argv, optionsDescription ),
       variablesMap );
 
     if ( 0U != variablesMap.count( "help" ) )
@@ -133,19 +125,15 @@ int main( int argc, char * argv[] )
     Arinc665::Utils::MediaPaths mediaPaths{};
     for ( const auto &mediumSourceDirectory : mediaSourceDirectories )
     {
-      const auto mediumInformation{
-        Arinc665::Utils::getMediumInformation( mediumSourceDirectory ) };
+      const auto mediumInformation{ Arinc665::Utils::getMediumInformation( mediumSourceDirectory ) };
 
       if ( !mediumInformation )
       {
         BOOST_THROW_EXCEPTION(
-          boost::program_options::invalid_option_value{
-            mediumSourceDirectory } );
+          boost::program_options::invalid_option_value{ mediumSourceDirectory } );
       }
 
-      mediaPaths.try_emplace(
-        mediumInformation->mediaSequenceNumber,
-        mediumSourceDirectory );
+      mediaPaths.try_emplace( mediumInformation->mediaSequenceNumber, mediumSourceDirectory );
     }
 
     auto decompiler{ Arinc665::Utils::FilesystemMediaSetDecompiler::create() };
@@ -159,23 +147,20 @@ int main( int argc, char * argv[] )
     // perform import
     const auto &[ mediaSet, checkValues ]{ ( *decompiler )() };
 
-    Arinc665::Utils::FilePathMapping fileMapping{};
+    Arinc665::Utils::FilePathMapping fileMapping;
 
     // iterate over all files to add file-mapping
     for ( const auto &file : mediaSet->recursiveFiles() )
     {
       std::filesystem::path filePath(
-        mediaSourceDirectories[ static_cast< uint8_t >( file->effectiveMediumNumber() ) - 1]
+        mediaSourceDirectories[ static_cast< uint8_t >( file->effectiveMediumNumber() ) - 1 ]
           / file->path().relative_path() );
 
       fileMapping.try_emplace( file, filePath );
     }
 
     // export to ARINC 665 XML file
-    Arinc665::Utils::Arinc665Xml_save(
-      *mediaSet,
-      fileMapping,
-      mediaSetXmlFile );
+    Arinc665::Utils::Arinc665Xml_save( *mediaSet, fileMapping, mediaSetXmlFile );
 
     return EXIT_SUCCESS;
   }
@@ -208,9 +193,7 @@ int main( int argc, char * argv[] )
   }
 }
 
-static void progress(
-  std::string_view partNumber,
-  std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
+static void progress( std::string_view partNumber, std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
 {
   std::cout << std::format(
     "Loading {} {}:{}\n",

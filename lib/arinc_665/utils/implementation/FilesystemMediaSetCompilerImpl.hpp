@@ -123,7 +123,7 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
     void writeFile(
       const Arinc665::MediumNumber &mediumNumber,
       const std::filesystem::path &path,
-      const Arinc665::Files::ConstRawFileSpan &file );
+      const Arinc665::Files::ConstRawDataSpan &file );
 
     /**
      * @brief Read File Handler
@@ -135,7 +135,7 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
      *
      * @return File Content
      **/
-    [[nodiscard]] Arinc665::Files::RawFile readFile(
+    [[nodiscard]] Arinc665::Files::RawData readFile(
       const Arinc665::MediumNumber &mediumNumber,
       const std::filesystem::path &path );
 

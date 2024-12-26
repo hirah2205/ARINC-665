@@ -91,7 +91,7 @@ class ARINC_665_EXPORT MediaSetCompiler
       std::function< void(
         const MediumNumber &mediumNumber,
         const std::filesystem::path &path,
-        const Files::ConstRawFileSpan &file ) >;
+        const Files::ConstRawDataSpan &file ) >;
 
     /**
      * @brief Handler, which is called to read a File from the Target.
@@ -108,7 +108,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      * @return File Data (Read as binary).
      **/
     using ReadFileHandler =
-      std::function< Files::RawFile( const MediumNumber &mediumNumber, const std::filesystem::path &path ) >;
+      std::function< Files::RawData( const MediumNumber &mediumNumber, const std::filesystem::path &path ) >;
 
     /**
      * @brief Creates the ARINC 665 %Media Set Compiler Instance.

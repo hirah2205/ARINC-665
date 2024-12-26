@@ -88,13 +88,13 @@ class ARINC_665_EXPORT BatchFile final : public Arinc665File
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit BatchFile( ConstRawFileSpan rawFile );
+    explicit BatchFile( ConstRawDataSpan rawFile );
 
     //! Destructor.
     ~BatchFile() override = default;
 
     //! @copydoc Arinc665File::operator=
-    BatchFile& operator=( ConstRawFileSpan rawFile ) override;
+    BatchFile& operator=( ConstRawDataSpan rawFile ) override;
 
     //! @copydoc Arinc665File::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept override;
@@ -177,7 +177,7 @@ class ARINC_665_EXPORT BatchFile final : public Arinc665File
 
   private:
     //! @copydoc Arinc665File::encode
-    [[nodiscard]] RawFile encode() const override;
+    [[nodiscard]] RawData encode() const override;
 
     /**
      * @brief Decodes the body of the batch file.
@@ -185,14 +185,14 @@ class ARINC_665_EXPORT BatchFile final : public Arinc665File
      * @param[in] rawFile
      *   Raw batch file representation.
      **/
-    void decodeBody( ConstRawFileSpan rawFile );
+    void decodeBody( ConstRawDataSpan rawFile );
 
     /**
      * @brief Encodes the target hardware information list.
      *
      * @return Raw representation of target hardware information list.
      **/
-    [[nodiscard]] RawFile encodeBatchTargetsInfo() const;
+    [[nodiscard]] RawData encodeBatchTargetsInfo() const;
 
     /**
      * @brief Decodes the target hardware information list from the raw data.
@@ -200,7 +200,7 @@ class ARINC_665_EXPORT BatchFile final : public Arinc665File
      * @param[in] rawData
      *   Raw batch targets information representation.
      **/
-    void decodeBatchTargetsInfo( ConstRawFileSpan rawData );
+    void decodeBatchTargetsInfo( ConstRawDataSpan rawData );
 
     //! Part Number
     std::string partNumberV;

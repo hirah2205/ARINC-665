@@ -98,7 +98,7 @@ size_t FilesystemMediaSetDecompilerImpl::getFileSize(
   return std::filesystem::file_size( filePath );
 }
 
-Files::RawFile FilesystemMediaSetDecompilerImpl::readFile(
+Files::RawData FilesystemMediaSetDecompilerImpl::readFile(
   const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {
@@ -122,7 +122,7 @@ Files::RawFile FilesystemMediaSetDecompilerImpl::readFile(
       << boost::errinfo_file_name{ filePath.string() } );
   }
 
-  Arinc665::Files::RawFile data( std::filesystem::file_size( filePath ) );
+  Arinc665::Files::RawData data( std::filesystem::file_size( filePath ) );
 
   // load file
   std::ifstream file{

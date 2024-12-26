@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -78,21 +77,17 @@ int main( int argc, char * argv[] )
     // Media Set source directory
     std::filesystem::path mediaSetSourceDirectory;
     // Create batch file policy
-    Arinc665::Utils::FileCreationPolicy createBatchFiles{
-      Arinc665::Utils::FileCreationPolicy::None };
+    Arinc665::Utils::FileCreationPolicy createBatchFiles{ Arinc665::Utils::FileCreationPolicy::None };
     // Create Load Header file policy
-    Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles{
-      Arinc665::Utils::FileCreationPolicy::None };
+    Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles{ Arinc665::Utils::FileCreationPolicy::None };
     // ARINC 665 Version
-    Arinc665::SupportedArinc665Version version{
-      Arinc665::SupportedArinc665Version::Supplement2 };
+    Arinc665::SupportedArinc665Version version{ Arinc665::SupportedArinc665Version::Supplement2 };
     // Media Set destination directory
     std::filesystem::path mediaSetDestinationDirectory;
     // Media Set name
     std::string mediaSetName;
 
-    boost::program_options::options_description optionsDescription{
-      "ARINC 665 Media Set Compiler Options" };
+    boost::program_options::options_description optionsDescription{ "ARINC 665 Media Set Compiler Options" };
 
     optionsDescription.add_options()
     (
@@ -113,27 +108,23 @@ int main( int argc, char * argv[] )
     (
       "create-batch-files,b",
       boost::program_options::value( &createBatchFiles )
-        ->default_value(
-          Arinc665::Utils::MediaSetDefaults::DefaultFileCreationPolicy ),
+        ->default_value( Arinc665::Utils::MediaSetDefaults::DefaultFileCreationPolicy ),
       ( std::string( "batch-files creation policy:\n" ) + fileCreationPolicyValues ).c_str()
     )
     (
       "create-load-header-files,l",
       boost::program_options::value( &createLoadHeaderFiles )
-        ->default_value(
-          Arinc665::Utils::MediaSetDefaults::DefaultFileCreationPolicy ),
+        ->default_value( Arinc665::Utils::MediaSetDefaults::DefaultFileCreationPolicy ),
       ( std::string( "Load-headers-files creation policy:\n" ) + fileCreationPolicyValues).c_str()
     )
     (
       "version,v",
-      boost::program_options::value( &version )->default_value(
-        Arinc665::Utils::MediaSetDefaults::DefaultVersion ),
+      boost::program_options::value( &version )->default_value( Arinc665::Utils::MediaSetDefaults::DefaultVersion ),
       ( std::string( "ARINC 665 Version:\n" ) + versionValues ).c_str()
     )
     (
       "destination-directory,d",
-      boost::program_options::value( &mediaSetDestinationDirectory )
-        ->default_value( std::filesystem::current_path() ),
+      boost::program_options::value( &mediaSetDestinationDirectory )->default_value( std::filesystem::current_path() ),
       "Output directory for ARINC 665 media set"
     )
     (
@@ -143,12 +134,9 @@ int main( int argc, char * argv[] )
       "Is set to part number when not provided"
     );
 
-    boost::program_options::variables_map variablesMap{};
+    boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::parse_command_line(
-        argc,
-        argv,
-        optionsDescription ),
+      boost::program_options::parse_command_line( argc, argv, optionsDescription ),
       variablesMap );
 
     if ( 0U != variablesMap.count( "help" ) )
@@ -162,8 +150,7 @@ int main( int argc, char * argv[] )
     boost::program_options::notify( variablesMap );
 
     // load ARINC 665 XML file
-    auto [ mediaSet, fileMapping ] =
-      Arinc665::Utils::Arinc665Xml_load( mediaSetXmlFile );
+    auto [ mediaSet, fileMapping ]{ Arinc665::Utils::Arinc665Xml_load( mediaSetXmlFile ) };
 
     auto compiler{ Arinc665::Utils::FilesystemMediaSetCompiler::create() };
 

@@ -122,9 +122,9 @@ class ARINC_665_EXPORT ListFile : public Arinc665File
       SupportedArinc665Version version = SupportedArinc665Version::Supplement345,
       ptrdiff_t checksumPosition = DefaultChecksumPosition ) noexcept;
 
-    //! @copydoc Arinc665File::Arinc665File(ConstRawFileSpan,FileType,ptrdiff_t)
+    //! @copydoc Arinc665File::Arinc665File(ConstRawDataSpan,FileType,ptrdiff_t)
     ListFile(
-      ConstRawFileSpan rawFile,
+      ConstRawDataSpan rawFile,
       FileType expectedFileType,
       ptrdiff_t checksumPosition = DefaultChecksumPosition );
 
@@ -159,7 +159,7 @@ class ARINC_665_EXPORT ListFile : public Arinc665File
      *
      * @return Raw representation of Media Information.
      **/
-    [[nodiscard]] RawFile encodeMediaInformation() const;
+    [[nodiscard]] RawData encodeMediaInformation() const;
 
     /**
      * @brief Decodes the Media Information.
@@ -167,7 +167,7 @@ class ARINC_665_EXPORT ListFile : public Arinc665File
      * @param[in] rawData
      *   Raw Data
      **/
-    void decodeMediaInformation( ConstRawFileSpan rawData );
+    void decodeMediaInformation( ConstRawDataSpan rawData );
 
   private:
     //! Media Set Part Number.

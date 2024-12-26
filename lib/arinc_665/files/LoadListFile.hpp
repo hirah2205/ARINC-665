@@ -98,13 +98,13 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit LoadListFile( ConstRawFileSpan rawFile );
+    explicit LoadListFile( ConstRawDataSpan rawFile );
 
     //! Destructor.
     ~LoadListFile() override = default;
 
-    //! @copydoc ListFile::operator=(ConstRawFileSpan)
-    LoadListFile& operator=( ConstRawFileSpan rawFile ) override;
+    //! @copydoc ListFile::operator=(ConstRawDataSpan)
+    LoadListFile& operator=( ConstRawDataSpan rawFile ) override;
 
     //! @copydoc ListFile::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept override;
@@ -196,7 +196,7 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
 
   private:
     //! @copydoc ListFile::encode
-    [[nodiscard]] RawFile encode() const override;
+    [[nodiscard]] RawData encode() const override;
 
     /**
      * @brief Decodes the body of the batch file.
@@ -204,14 +204,14 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
      * @param[in] rawFile
      *   Raw load list file representation.
      **/
-    void decodeBody( ConstRawFileSpan rawFile );
+    void decodeBody( ConstRawDataSpan rawFile );
 
     /**
      * @brief Encodes the batches information list.
      *
      * @return Raw representation of loads information list.
      **/
-    [[nodiscard]] RawFile encodeLoadsInfo() const;
+    [[nodiscard]] RawData encodeLoadsInfo() const;
 
     /**
      * @brief Decodes the loads information list from the raw data.
@@ -221,7 +221,7 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
      *
      * @throw InvalidArinc665File When member sequence number is out of range
      **/
-    void decodeLoadsInfo( ConstRawFileSpan rawData );
+    void decodeLoadsInfo( ConstRawDataSpan rawData );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.

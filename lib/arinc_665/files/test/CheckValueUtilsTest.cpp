@@ -17,6 +17,7 @@
 #include <arinc_645/CheckValue.hpp>
 
 #include <helper/Dump.hpp>
+#include <helper/Endianess.hpp>
 
 #include <boost/test/unit_test.hpp>
 
@@ -29,37 +30,41 @@ BOOST_AUTO_TEST_SUITE( CheckValueUtilsTest )
 //! CheckValueUtils_encode Test
 BOOST_AUTO_TEST_CASE( CheckValueUtils_encode1 )
 {
-  BOOST_CHECK( CheckValueUtils_encode( Arinc645::CheckValue::NoCheckValue ) == RawFile( { 0x00, 0x00 } ) );
-  BOOST_CHECK( CheckValueUtils_encode(
+  using Helper::operator""_b;
+
+  BOOST_CHECK( CheckValueUtils_encode( Arinc645::CheckValue::NoCheckValue ) == RawData( { 0x00_b, 0x00_b } ) );
+  BOOST_CHECK( ( CheckValueUtils_encode(
     Arinc645::CheckValue{
       Arinc645::CheckValueType::Crc8,
-      RawFile( { 0x12, 0x34 } ) } ) == RawFile({ 0x00, 0x06, 0x00, 0x01, 0x12, 0x34 } ) );
+      RawData{ 0x12_b, 0x34_b } } ) == RawData{ 0x00_b, 0x06_b, 0x00_b, 0x01_b, 0x12_b, 0x34_b } ) );
 }
 
 //! CheckValueUtils_decode Test
 BOOST_AUTO_TEST_CASE( CheckValueUtils_decode1 )
 {
-  const auto cv1a{ CheckValueUtils_decode( RawFile{ 0x00, 0x00 } ) };
+  using Helper::operator""_b;
+
+  const auto cv1a{ CheckValueUtils_decode( RawData{ 0x00_b, 0x00_b } ) };
 
   BOOST_CHECK( ( cv1a == Arinc645::CheckValue{ Arinc645::CheckValue::NoCheckValue } ) );
 
-  const auto cv1b{ CheckValueUtils_decode( RawFile{ 0x00, 0x04, 0x00, 0x00 } ) };
+  const auto cv1b{ CheckValueUtils_decode( RawData{ 0x00_b, 0x04_b, 0x00_b, 0x00_b } ) };
 
   BOOST_CHECK( ( cv1b == Arinc645::CheckValue{ Arinc645::CheckValue::NoCheckValue } ) );
 
-  const auto cv2{ CheckValueUtils_decode( RawFile{ 0x00, 0x06, 0x00, 0x01, 0x12, 0x34 } ) };
+  const auto cv2{ CheckValueUtils_decode( RawData{ 0x00_b, 0x06_b, 0x00_b, 0x01_b, 0x12_b, 0x34_b } ) };
 
-  BOOST_CHECK( ( cv2 == Arinc645::CheckValue{ Arinc645::CheckValueType::Crc8, RawFile{ 0x12, 0x34 } } ) );
+  BOOST_CHECK( ( cv2 == Arinc645::CheckValue{ Arinc645::CheckValueType::Crc8, RawData{ 0x12_b, 0x34_b } } ) );
 
-  const auto cv3{ CheckValueUtils_decode( RawFile{ 0x00, 0x06, 0x00, 0x02, 0x12, 0x34 } ) };
+  const auto cv3{ CheckValueUtils_decode( RawData{ 0x00_b, 0x06_b, 0x00_b, 0x02_b, 0x12_b, 0x34_b } ) };
 
-  BOOST_CHECK( ( cv3 == Arinc645::CheckValue{ Arinc645::CheckValueType::Crc16, RawFile{ 0x12, 0x34 } } ) );
+  BOOST_CHECK( ( cv3 == Arinc645::CheckValue{ Arinc645::CheckValueType::Crc16, RawData{ 0x12_b, 0x34_b } } ) );
 
-  BOOST_CHECK_THROW( (void)CheckValueUtils_decode( RawFile{} ), Arinc665Exception );
+  BOOST_CHECK_THROW( (void)CheckValueUtils_decode( RawData{} ), Arinc665Exception );
 
-  BOOST_CHECK_THROW( (void)CheckValueUtils_decode( RawFile{ 0x00 } ), Arinc665Exception );
+  BOOST_CHECK_THROW( (void)CheckValueUtils_decode( RawData{ 0x00_b } ), Arinc665Exception );
 
-  BOOST_CHECK_THROW( (void)CheckValueUtils_decode( RawFile{ 0x00, 0x05, 0x00, 0x01, 0x12 } ), Arinc665Exception );
+  BOOST_CHECK_THROW( (void)CheckValueUtils_decode( RawData{ 0x00_b, 0x05_b, 0x00_b, 0x01_b, 0x12_b } ), Arinc665Exception );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

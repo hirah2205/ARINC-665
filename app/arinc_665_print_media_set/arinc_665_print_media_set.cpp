@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -72,11 +71,10 @@ int main( int argc, char * argv[] )
       << "ARINC 665 Media Set Printer - "
       << Arinc665::Version::VersionInformation << "\n";
 
-    boost::program_options::options_description optionsDescription{
-      "ARINC 665 Media Set Printer Options" };
+    boost::program_options::options_description optionsDescription{ "ARINC 665 Media Set Printer Options" };
 
     // directories which contains the medias
-    std::vector< std::filesystem::path > directories{};
+    std::vector< std::filesystem::path > directories;
 
     // Check File Integrity
     bool checkFileIntegrity{};
@@ -94,17 +92,13 @@ int main( int argc, char * argv[] )
     (
       "check-file-integrity",
       boost::program_options::value( &checkFileIntegrity )
-        ->default_value(
-          Arinc665::Utils::MediaSetDefaults::DefaultCheckFileIntegrity ),
+        ->default_value( Arinc665::Utils::MediaSetDefaults::DefaultCheckFileIntegrity ),
       "Check File Integrity during decompilation."
     );
 
-    boost::program_options::variables_map variablesMap{};
+    boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::parse_command_line(
-        argc,
-        argv,
-        optionsDescription ),
+      boost::program_options::parse_command_line( argc, argv, optionsDescription ),
       variablesMap );
 
     if ( 0U != variablesMap.count( "help" ) )
@@ -117,8 +111,7 @@ int main( int argc, char * argv[] )
 
     boost::program_options::notify( variablesMap );
 
-    const auto [mediaSet,checkValues]{
-      loadMediaSet( directories, checkFileIntegrity ) };
+    const auto [ mediaSet, checkValues ]{ loadMediaSet( directories, checkFileIntegrity ) };
 
     std::cout << "Media Set: \n";
     Arinc665::Utils::MediaSetPrinter_print( *mediaSet, std::cout, "", "  " );
@@ -162,9 +155,7 @@ static Arinc665::Utils::MediaSetDecompilerResult loadMediaSet(
   const bool checkFileIntegrity )
 {
   Arinc665::Utils::MediaPaths mediaPaths{};
-  for (
-    Arinc665::MediumNumber mediumNumber{};
-    const auto &mediumDirectory : mediaSetDirectories )
+  for ( Arinc665::MediumNumber mediumNumber{}; const auto &mediumDirectory : mediaSetDirectories )
   {
     mediaPaths.try_emplace( mediumNumber, mediumDirectory );
     ++mediumNumber;

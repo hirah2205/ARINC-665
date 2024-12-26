@@ -129,6 +129,17 @@ OptionalMediumNumber Arinc665XmlLoadImpl26::mediumNumber( const xmlpp::Element &
   return {};
 }
 
+Media::UserDefinedData Arinc665XmlLoadImpl26::userDefinedData( const Glib::ustring &str )
+{
+  Media::ConstUserDefinedDataSpan userDefinedDataSpan{ reinterpret_cast< std::byte const * >( str.data() ), str.size() };
+  Media::UserDefinedData userDefinedDataEncoded{ userDefinedDataSpan.begin(), userDefinedDataSpan.end() };
+  if ( userDefinedDataEncoded.size() % 2 == 1 )
+  {
+    userDefinedDataEncoded.push_back( std::byte{ 0U } );
+  }
+  return userDefinedDataEncoded;
+}
+
 void Arinc665XmlLoadImpl26::mediaSet( const xmlpp::Element &mediaSetElement )
 {
   // Part Number
@@ -178,30 +189,27 @@ void Arinc665XmlLoadImpl26::mediaSet( const xmlpp::Element &mediaSetElement )
   }
 
   if (
-    const auto *filesUserDefinedDataNode{
+    auto const * const filesUserDefinedDataNode{
       dynamic_cast< const xmlpp::Element * >( mediaSetElement.get_first_child( "FilesUserDefinedData" ) ) };
     nullptr != filesUserDefinedDataNode )
   {
-    const auto userDefinedData{ filesUserDefinedDataNode->get_child_text()->get_content() };
-    mediaSetV->filesUserDefinedData( Media::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
+    mediaSetV->filesUserDefinedData( userDefinedData( filesUserDefinedDataNode->get_child_text()->get_content() ) );
   }
 
   if (
-    const auto * loadsUserDefinedDataNode{
+    auto const * const loadsUserDefinedDataNode{
       dynamic_cast< const xmlpp::Element * >( mediaSetElement.get_first_child( "LoadsUserDefinedData" ) ) };
     nullptr != loadsUserDefinedDataNode )
   {
-    const auto userDefinedData{ loadsUserDefinedDataNode->get_child_text()->get_content() };
-    mediaSetV->loadsUserDefinedData( Media::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
+    mediaSetV->loadsUserDefinedData( userDefinedData( loadsUserDefinedDataNode->get_child_text()->get_content() ) );
   }
 
   if (
-    const auto * batchesUserDefinedDataNode{ dynamic_cast< const xmlpp::Element*>(
+    auto const * const batchesUserDefinedDataNode{ dynamic_cast< const xmlpp::Element*>(
       mediaSetElement.get_first_child( "BatchesUserDefinedData") ) };
     nullptr != batchesUserDefinedDataNode )
   {
-    const auto userDefinedData{ batchesUserDefinedDataNode->get_child_text()->get_content() };
-    mediaSetV->batchesUserDefinedData( Media::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
+    mediaSetV->batchesUserDefinedData( userDefinedData( batchesUserDefinedDataNode->get_child_text()->get_content() ) );
   }
 
   // content node
@@ -390,9 +398,7 @@ void Arinc665XmlLoadImpl26::load( const xmlpp::Element &loadElement, Media::Cont
       loadElement.get_first_child( "UserDefinedData" ) ) };
     nullptr != userDefinedDataElement )
   {
-    const auto userDefinedData{ userDefinedDataElement->get_child_text()->get_content() };
-
-    load->userDefinedData( Media::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
+    load->userDefinedData( userDefinedData( userDefinedDataElement->get_child_text()->get_content() ) );
   }
 
   // Load Check Value

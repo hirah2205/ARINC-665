@@ -103,6 +103,16 @@ class Arinc665XmlLoadImpl26 final
     static OptionalMediumNumber mediumNumber( const xmlpp::Element &element );
 
     /**
+     * @brief Encodes string User Defined Data as Raw User Defined Data.
+     *
+     * @param[in] str
+     *   User Defined Data String.
+     *
+     * @return Raw User Defined Data
+     **/
+    [[nodiscard]] static Media::UserDefinedData userDefinedData( const Glib::ustring &str );
+
+    /**
      * @brief Import the Media Set from the XML DOM.
      *
      * @param[in] mediaSetElement
@@ -270,11 +280,9 @@ class Arinc665XmlLoadImpl26 final
     //! File path mappings.
     FilePathMapping filePathMappingV;
     //! Deferred Load Loading Info
-    std::list< std::tuple< const xmlpp::Element *, Media::LoadPtr > >
-      deferredLoadInfoV;
+    std::list< std::tuple< const xmlpp::Element *, Media::LoadPtr > > deferredLoadInfoV;
     //! Deferred Batch Loading Info
-    std::list< std::tuple< const xmlpp::Element *, Media::BatchPtr > >
-      deferredBatchInfoV;
+    std::list< std::tuple< const xmlpp::Element *, Media::BatchPtr > > deferredBatchInfoV;
 };
 
 }

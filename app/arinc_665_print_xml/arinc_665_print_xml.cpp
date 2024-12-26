@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -27,7 +26,6 @@
 #include <boost/program_options.hpp>
 
 #include <filesystem>
-#include <fstream>
 #include <iostream>
 
 /**
@@ -52,10 +50,9 @@ int main( int argc, char * argv[] )
   {
     std::cout << "ARINC 665 Media Set XML Printer" << "\n";
 
-    boost::program_options::options_description optionsDescription{
-      "Print ARINC 665 XML options" };
+    boost::program_options::options_description optionsDescription{ "Print ARINC 665 XML options" };
 
-    std::filesystem::path xmlPath{};
+    std::filesystem::path xmlPath;
 
     optionsDescription.add_options()
     (
@@ -68,12 +65,9 @@ int main( int argc, char * argv[] )
       "ARINC 665 media set description XML"
     );
 
-    boost::program_options::variables_map variablesMap{};
+    boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::parse_command_line(
-        argc,
-        argv,
-        optionsDescription ),
+      boost::program_options::parse_command_line( argc, argv, optionsDescription ),
       variablesMap );
 
     if ( 0U != variablesMap.count( "help" ) )
@@ -89,8 +83,7 @@ int main( int argc, char * argv[] )
     std::cout << "List XML" << "\n";
 
     // load ARINC 665 XML file
-    const auto [ mediaSet, filePathMapping ]{
-      Arinc665::Utils::Arinc665Xml_load( xmlPath ) };
+    const auto [ mediaSet, filePathMapping ]{ Arinc665::Utils::Arinc665Xml_load( xmlPath ) };
 
     Arinc665::Utils::MediaSetPrinter_print( *mediaSet, std::cout, "  ", "  " );
 

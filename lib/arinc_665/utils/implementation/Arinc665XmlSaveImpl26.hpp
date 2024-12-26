@@ -53,6 +53,17 @@ class Arinc665XmlSaveImpl26 final
     void operator()();
 
   private:
+
+    /**
+     * @brief Decodes User Defined data into string representation.
+     *
+     * @param[in] userDefinedData
+     *   Decodes into string representation.
+     *
+     * @return User Defined Data String.
+     **/
+    [[nodiscard]] static std::string userDefinedData( Media::ConstUserDefinedDataSpan userDefinedData );
+
     /**
      * @brief Export the Media Set section to the XML DOM.
      *

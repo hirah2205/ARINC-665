@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_SUITE( FilesTest )
 BOOST_AUTO_TEST_SUITE( LoadHeaderFileTest )
 
 //! Raw Load Header File
-static const auto rawLoadHeaderFile{ std::to_array< uint8_t >( {
+static const uint8_t rawLoadHeaderFile[]{
   // header file length
   0x00, 0x00, 0x00, 0x35,
   // Format version
@@ -120,11 +120,11 @@ static const auto rawLoadHeaderFile{ std::to_array< uint8_t >( {
   // Load CRC
   0xFE, 0xDC, 0xBA, 0x98
   /* 53 */
-} ) };
+};
 
 BOOST_AUTO_TEST_CASE( constructor1 )
 {
-  LoadHeaderFile file{ rawLoadHeaderFile };
+  LoadHeaderFile file{ std::as_bytes( std::span{ rawLoadHeaderFile } ) };
 
   BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2 );
 
@@ -153,19 +153,18 @@ BOOST_AUTO_TEST_CASE( constructor1 )
   BOOST_CHECK( supportFiles.begin()->checkValue == Arinc645::CheckValue::NoCheckValue );
 
   BOOST_CHECK( file.userDefinedData().size() == 4 );
-  BOOST_CHECK( std::equal(
-    file.userDefinedData().begin(),
-    file.userDefinedData().end(),
-    std::to_array< uint8_t >( { 0x12, 0x34, 0x56, 0x78 } ).begin() ) );
 
-  BOOST_CHECK( 0xFEDCBA98 == Arinc665::Files::LoadHeaderFile::decodeLoadCrc( rawLoadHeaderFile ) );
+  const uint8_t expected[]{ 0x12, 0x34, 0x56, 0x78 };
+  BOOST_CHECK( std::ranges::equal( file.userDefinedData(), std::as_bytes( std::span( expected ) ) ) );
 
-  auto raw2{ static_cast< RawFile>( file ) };
+  BOOST_CHECK( 0xFEDCBA98 == Arinc665::Files::LoadHeaderFile::decodeLoadCrc( std::as_bytes( std::span{ rawLoadHeaderFile } ) ) );
+
+  auto raw2{ static_cast< RawData>( file ) };
 
   Arinc665::Files::LoadHeaderFile::encodeLoadCrc( raw2, 0xFEDCBA98 );
   BOOST_CHECK( 0xFEDCBA98 == Arinc665::Files::LoadHeaderFile::decodeLoadCrc( raw2 ) );
 
-  BOOST_CHECK( std::ranges::equal( rawLoadHeaderFile, raw2 ) );
+  BOOST_CHECK( std::ranges::equal( std::as_bytes( std::span{ rawLoadHeaderFile } ), raw2 ) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

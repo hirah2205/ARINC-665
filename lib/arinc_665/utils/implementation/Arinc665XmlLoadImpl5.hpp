@@ -83,6 +83,16 @@ class Arinc665XmlLoadImpl5 final
     static OptionalMediumNumber mediumNumber( const xmlpp::Element &element );
 
     /**
+     * @brief Encodes string User Defined Data as Raw User Defined Data.
+     *
+     * @param[in] str
+     *   User Defined Data String.
+     *
+     * @return Raw User Defined Data
+     **/
+    [[nodiscard]] static Media::UserDefinedData userDefinedData( std::string_view str );
+
+    /**
      * @brief Import the Media Set from the XML DOM.
      *
      * @param[in] mediaSetElement

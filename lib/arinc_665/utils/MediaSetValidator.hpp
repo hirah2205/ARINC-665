@@ -45,7 +45,7 @@ class ARINC_665_EXPORT MediaSetValidator
      *
      * @return File Data (Read as binary).
      **/
-    using ReadFileHandler = std::function< Files::RawFile( uint8_t mediumNumber, const std::filesystem::path &path ) >;
+    using ReadFileHandler = std::function< Files::RawData( uint8_t mediumNumber, const std::filesystem::path &path ) >;
 
     //! Handler which is called for Validation Information.
     using ValidatorInformationHandler = std::function< void( std::string_view information ) >;

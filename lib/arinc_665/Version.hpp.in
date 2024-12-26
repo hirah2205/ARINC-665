@@ -15,12 +15,10 @@
 
 #include <arinc_665/Arinc665.hpp>
 
-#include <cstdint>
-
 namespace Arinc665 {
 
 //! ARINC 665 C++ Library %Version Information.
-class ARINC_665_EXPORT Version
+class ARINC_665_EXPORT Version final
 {
   public:
     // Deleted Constructor

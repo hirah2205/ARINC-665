@@ -78,7 +78,7 @@ class FilesystemMediaSetDecompilerImpl final : public FilesystemMediaSetDecompil
      * @throw Arinc665Exception
      *   If file does not exist or cannot be read.
      **/
-    [[nodiscard]] Files::RawFile readFile(
+    [[nodiscard]] Files::RawData readFile(
       const Arinc665::MediumNumber &mediumNumber,
       const std::filesystem::path &path );
 

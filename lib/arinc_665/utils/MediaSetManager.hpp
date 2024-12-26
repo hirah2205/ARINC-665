@@ -36,13 +36,10 @@ namespace Arinc665::Utils {
  * This class manages the locally held media sets.
  *
  * @par Organisation of Media Set Manager data.
- * - The configuration is held within a JSON file within the media set
- *   directory.
+ * - The configuration is held within a JSON file within the media set directory.
  * - Media sets are stored beneath the media set directory.
- * - Within this directory the media sets each are stored within a directory
- *   named @p mediaSetName.
- * - Within the media set directory the media are stored with the corresponding
- *   medium-path mapping.
+ * - Within this directory the media sets each are stored within a directory named @p mediaSetName.
+ * - Within the media set directory the media are stored with the corresponding medium-path mapping.
  **/
 class ARINC_665_EXPORT MediaSetManager
 {
@@ -100,8 +97,7 @@ class ARINC_665_EXPORT MediaSetManager
       LoadProgressHandler loadProgressHandler = {} );
 
     /**
-     * @brief Checks if a Media Set Manager Configuration is available or
-     *   creates it.
+     * @brief Checks if a Media Set Manager Configuration is available or creates it.
      *
      * @param[in] directory
      *   Directory for Media Set Manger.

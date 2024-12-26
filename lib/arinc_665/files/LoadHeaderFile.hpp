@@ -112,13 +112,11 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
     //! Positions
     using Positions = std::list< std::string >;
     //! Target Hardware IDs / Positions
-    using TargetHardwareIdsPositions =
-      std::list< std::pair< std::string, Positions > >;
+    using TargetHardwareIdsPositions = std::list< std::pair< std::string, Positions > >;
     //! Target Hardware IDs
     using TargetHardwareIds = std::list< std::string >;
     //! Load Type (Description + ID)
-    using LoadType =
-      std::optional< std::pair< std::string, uint16_t > >;
+    using LoadType = std::optional< std::pair< std::string, uint16_t > >;
 
     //! Offset of the Spare Field (since ARINC 665-2)
     static constexpr ptrdiff_t SpareFieldOffsetV2{ 6 };
@@ -206,7 +204,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in,out] loadCrc
      *   Processed CRC state.
      **/
-    static void processLoadCrc( ConstRawFileSpan rawFile, Arinc645::Arinc645Crc32 &loadCrc );
+    static void processLoadCrc( ConstRawDataSpan rawFile, Arinc645::Arinc645Crc32 &loadCrc );
 
     /**
      * @brief Encodes the Load CRC within the Raw Load Header File.
@@ -216,7 +214,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] crc
      *   Load CRC
      **/
-    static void encodeLoadCrc( RawFileSpan rawFile, uint32_t crc );
+    static void encodeLoadCrc( RawDataSpan rawFile, uint32_t crc );
 
     /**
      * @brief Decodes the Load CRC within the Raw Load Header File.
@@ -226,7 +224,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      *
      * @return Load CRC
      **/
-    [[nodiscard]] static uint32_t decodeLoadCrc( ConstRawFileSpan rawFile );
+    [[nodiscard]] static uint32_t decodeLoadCrc( ConstRawDataSpan rawFile );
 
     /** @} **/
 
@@ -255,7 +253,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in,out] checkValueGenerator
      *   Processed Check Value Generator state.
      **/
-    static void processLoadCheckValue( ConstRawFileSpan rawFile, Arinc645::CheckValueGenerator &checkValueGenerator );
+    static void processLoadCheckValue( ConstRawDataSpan rawFile, Arinc645::CheckValueGenerator &checkValueGenerator );
 
     /**
      * @brief Encodes the Load Check Value within the Raw Load Header File.
@@ -267,7 +265,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] checkValue
      *   Load Check Value
      **/
-    static void encodeLoadCheckValue( RawFileSpan rawFile, const Arinc645::CheckValue &checkValue );
+    static void encodeLoadCheckValue( RawDataSpan rawFile, const Arinc645::CheckValue &checkValue );
 
     /**
      * @brief Decodes the Load Check Value within the Raw Load Header File.
@@ -279,7 +277,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @retval Arinc645::NoCheckValue
      *   When no Load Check Value is stored.
      **/
-    [[nodiscard]] static Arinc645::CheckValue decodeLoadCheckValue( ConstRawFileSpan rawFile );
+    [[nodiscard]] static Arinc645::CheckValue decodeLoadCheckValue( ConstRawDataSpan rawFile );
 
     /** @} **/
 
@@ -297,13 +295,13 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit LoadHeaderFile( ConstRawFileSpan rawFile );
+    explicit LoadHeaderFile( ConstRawDataSpan rawFile );
 
     //! Destructor.
     ~LoadHeaderFile() override = default;
 
     //! @copydoc Arinc665File::operator=
-    LoadHeaderFile& operator=( ConstRawFileSpan rawFile ) override;
+    LoadHeaderFile& operator=( ConstRawDataSpan rawFile ) override;
 
     //! @copydoc Arinc665File::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept override;
@@ -606,7 +604,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
 
   private:
     //! @copydoc Arinc665File::encode
-    [[nodiscard]] RawFile encode() const override;
+    [[nodiscard]] RawData encode() const override;
 
     /**
      * @brief Decodes the body of the load header file.
@@ -614,7 +612,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] rawFile
      *   Raw Load Header File representation.
      **/
-    void decodeBody( ConstRawFileSpan rawFile );
+    void decodeBody( ConstRawDataSpan rawFile );
 
     /**
      * @brief Encodes the Data Files Information List.
@@ -624,7 +622,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      *
      * @return Raw representation of files information list.
      **/
-    [[nodiscard]] RawFile encodeDataFiles( bool encodeV3Data ) const;
+    [[nodiscard]] RawData encodeDataFiles( bool encodeV3Data ) const;
 
     /**
      * @brief Encodes the Support Files Information List.
@@ -634,7 +632,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      *
      * @return Raw representation of files information list.
      **/
-    [[nodiscard]] RawFile encodeSupportFiles( bool encodeV3Data ) const;
+    [[nodiscard]] RawData encodeSupportFiles( bool encodeV3Data ) const;
 
     /**
      * @brief Decodes the Data Files List from the raw data.
@@ -644,7 +642,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] decodeV3Data
      *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      **/
-    void decodeDataFiles( ConstRawFileSpan rawData, bool decodeV3Data );
+    void decodeDataFiles( ConstRawDataSpan rawData, bool decodeV3Data );
 
     /**
      * @brief Decodes the Support Files List from the raw data.
@@ -654,7 +652,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] decodeV3Data
      *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      **/
-    void decodeSupportFiles( ConstRawFileSpan rawData, bool decodeV3Data );
+    void decodeSupportFiles( ConstRawDataSpan rawData, bool decodeV3Data );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.

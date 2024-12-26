@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_SUITE( FilesTest )
 BOOST_AUTO_TEST_SUITE( LoadListFileTest )
 
 //! Raw List of Loads File
-static auto const rawLoadListFile{ std::to_array< uint8_t >( {
+static const uint8_t rawLoadListFile[]{
   // header file length
   0x00, 0x00, 0x00, 0x34,
   // Format version
@@ -102,11 +102,11 @@ static auto const rawLoadListFile{ std::to_array< uint8_t >( {
 
   // File CRC
   0xCE, 0x32
-} ) };
+};
 
 BOOST_AUTO_TEST_CASE( constructor1 )
 {
-  LoadListFile file{ rawLoadListFile };
+  LoadListFile file{ std::as_bytes( std::span{ rawLoadListFile } ) };
 
   BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2 );
 
@@ -132,14 +132,12 @@ BOOST_AUTO_TEST_CASE( constructor1 )
   BOOST_CHECK( *load->targetHardwareIds.begin() == "THWID010" );
 
   BOOST_CHECK( file.userDefinedData().size() == 6 );
-  BOOST_CHECK( std::equal(
-    file.userDefinedData().begin(),
-    file.userDefinedData().end(),
-    std::to_array< uint8_t >( { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 } ).begin() ) );
 
-  const auto raw2{ static_cast< RawFile >( file ) };
+  const uint8_t expected[]{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };
+  BOOST_CHECK( std::ranges::equal( file.userDefinedData(), std::as_bytes( std::span{ expected } ) ) );
 
-  BOOST_CHECK( std::ranges::equal( rawLoadListFile, raw2 ) );
+  const auto raw2{ static_cast< RawData >( file ) };
+  BOOST_CHECK( std::ranges::equal( std::as_bytes( std::span{ rawLoadListFile } ), raw2 ) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

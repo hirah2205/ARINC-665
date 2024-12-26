@@ -20,7 +20,7 @@
 
 #include <arinc_645/CheckValueGenerator.hpp>
 
-#include <helper/Endianness.hpp>
+#include <helper/Endianess.hpp>
 #include <helper/Exception.hpp>
 #include <helper/SafeCast.hpp>
 
@@ -28,25 +28,24 @@
 
 namespace Arinc665::Files {
 
-void LoadHeaderFile::processLoadCrc( ConstRawFileSpan rawFile, Arinc645::Arinc645Crc32 &loadCrc )
+void LoadHeaderFile::processLoadCrc( ConstRawDataSpan rawFile, Arinc645::Arinc645Crc32 &loadCrc )
 {
   loadCrc.process_bytes( std::data( rawFile ), rawFile.size() - LoadCrcOffset );
 }
 
-void LoadHeaderFile::encodeLoadCrc( RawFileSpan rawFile, const uint32_t crc )
+void LoadHeaderFile::encodeLoadCrc( RawDataSpan rawFile, const uint32_t crc )
 {
-  Helper::setInt< uint32_t >( rawFile.begin() + static_cast< ptrdiff_t >( rawFile.size() ) - LoadCrcOffset, crc );
+  Helper::setInt< uint32_t >( rawFile.last( LoadCrcOffset ), crc );
 }
 
-uint32_t LoadHeaderFile::decodeLoadCrc( ConstRawFileSpan rawFile )
+uint32_t LoadHeaderFile::decodeLoadCrc( ConstRawDataSpan rawFile )
 {
-  uint32_t crc{ 0U };
-  Helper::getInt< uint32_t>( rawFile.end() - LoadCrcOffset, crc );
+  auto [ _, crc ]{ Helper::getInt< uint32_t >( rawFile.last( LoadCrcOffset ) ) };
   return crc;
 }
 
 void
-LoadHeaderFile::processLoadCheckValue( ConstRawFileSpan rawFile, Arinc645::CheckValueGenerator &checkValueGenerator )
+LoadHeaderFile::processLoadCheckValue( ConstRawDataSpan rawFile, Arinc645::CheckValueGenerator &checkValueGenerator )
 {
   if ( loadFileFormatVersion( rawFile ) != LoadFileFormatVersion::Version345 )
   {
@@ -55,9 +54,7 @@ LoadHeaderFile::processLoadCheckValue( ConstRawFileSpan rawFile, Arinc645::Check
   }
 
   // Obtain Load Check Value Pointer
-  uint32_t loadCheckValuePtr{ 0U };
-
-  Helper::getInt< uint32_t >( rawFile.begin() + LoadCheckValuePointerFieldOffsetV3, loadCheckValuePtr );
+  auto [ _, loadCheckValuePtr ]{ Helper::getInt< uint32_t >( rawFile.subspan( LoadCheckValuePointerFieldOffsetV3 ) ) };
 
   if ( 0U == loadCheckValuePtr )
   {
@@ -66,10 +63,10 @@ LoadHeaderFile::processLoadCheckValue( ConstRawFileSpan rawFile, Arinc645::Check
   }
 
   // process check value
-  checkValueGenerator.process( rawFile.first( static_cast< size_t >( loadCheckValuePtr ) * 2U ) );
+  checkValueGenerator.process( std::as_bytes( rawFile.first( static_cast< size_t >( loadCheckValuePtr ) * 2U ) ) );
 }
 
-void LoadHeaderFile::encodeLoadCheckValue( RawFileSpan rawFile, const Arinc645::CheckValue &checkValue )
+void LoadHeaderFile::encodeLoadCheckValue( RawDataSpan rawFile, const Arinc645::CheckValue &checkValue )
 {
   if ( loadFileFormatVersion( rawFile ) != LoadFileFormatVersion::Version345 )
   {
@@ -78,9 +75,7 @@ void LoadHeaderFile::encodeLoadCheckValue( RawFileSpan rawFile, const Arinc645::
   }
 
   // Obtain Load Check Value Pointer
-  uint32_t loadCheckValuePtr{ 0U };
-
-  Helper::getInt< uint32_t >( rawFile.begin() + LoadCheckValuePointerFieldOffsetV3, loadCheckValuePtr );
+  auto [ _, loadCheckValuePtr]{ Helper::getInt< uint32_t >( rawFile.subspan( LoadCheckValuePointerFieldOffsetV3 ) ) };
 
   if ( 0U == loadCheckValuePtr )
   {
@@ -96,21 +91,17 @@ void LoadHeaderFile::encodeLoadCheckValue( RawFileSpan rawFile, const Arinc645::
   // Update File CRC, which is also calculated over Load Check Value
   const auto calculatedCrc{ calculateChecksum( rawFile.first( rawFile.size() - FileCrcOffset ) ) };
 
-  Helper::setInt< uint16_t >(
-    rawFile.begin() + static_cast< ptrdiff_t >( rawFile.size() ) - FileCrcOffset,
-    calculatedCrc );
+  Helper::setInt< uint16_t >( rawFile.last( FileCrcOffset ), calculatedCrc );
 }
 
-Arinc645::CheckValue LoadHeaderFile::decodeLoadCheckValue( ConstRawFileSpan rawFile )
+Arinc645::CheckValue LoadHeaderFile::decodeLoadCheckValue( ConstRawDataSpan rawFile )
 {
   if ( loadFileFormatVersion( rawFile ) != LoadFileFormatVersion::Version345 )
   {
     return Arinc645::CheckValue::NoCheckValue;
   }
 
-  uint32_t loadCheckValuePtr{ 0U };
-
-  Helper::getInt< uint32_t >( rawFile.begin() + LoadCheckValuePointerFieldOffsetV3, loadCheckValuePtr );
+  auto [ _, loadCheckValuePtr ]{ Helper::getInt< uint32_t >( rawFile.subspan( LoadCheckValuePointerFieldOffsetV3 ) ) };
 
   if ( 0U == loadCheckValuePtr )
   {
@@ -125,18 +116,17 @@ LoadHeaderFile::LoadHeaderFile( const SupportedArinc665Version version ) :
 {
 }
 
-LoadHeaderFile::LoadHeaderFile( ConstRawFileSpan rawFile ) :
+LoadHeaderFile::LoadHeaderFile( ConstRawDataSpan rawFile ) :
   Arinc665File{ rawFile, FileType::LoadUploadHeader, FileCrcOffset }
 {
   decodeBody( rawFile );
 }
 
-LoadHeaderFile& LoadHeaderFile::operator=( ConstRawFileSpan rawFile )
+LoadHeaderFile& LoadHeaderFile::operator=( ConstRawDataSpan rawFile )
 {
   // call inherited operator
   Arinc665File::operator =( rawFile );
   decodeBody( rawFile );
-
   return *this;
 }
 
@@ -165,8 +155,7 @@ void LoadHeaderFile::partNumber( std::string partNumber )
   partNumberV = std::move( partNumber );
 }
 
-const LoadHeaderFile::TargetHardwareIds&
-LoadHeaderFile::targetHardwareIds() const
+const LoadHeaderFile::TargetHardwareIds& LoadHeaderFile::targetHardwareIds() const
 {
   return targetHardwareIdsV;
 }
@@ -186,14 +175,12 @@ void LoadHeaderFile::targetHardwareId( std::string targetHardwareId )
   targetHardwareIdsV.emplace_back( std::move( targetHardwareId ) );
 }
 
-const LoadHeaderFile::TargetHardwareIdsPositions&
-LoadHeaderFile::targetHardwareIdsPositions() const
+const LoadHeaderFile::TargetHardwareIdsPositions& LoadHeaderFile::targetHardwareIdsPositions() const
 {
   return targetHardwareIdsPositionsV;
 }
 
-LoadHeaderFile::TargetHardwareIdsPositions&
-LoadHeaderFile::targetHardwareIdsPositions()
+LoadHeaderFile::TargetHardwareIdsPositions& LoadHeaderFile::targetHardwareIdsPositions()
 {
   return targetHardwareIdsPositionsV;
 }
@@ -282,7 +269,7 @@ void LoadHeaderFile::loadCheckValueType( const Arinc645::CheckValueType type )
   loadCheckValueTypeV = type;
 }
 
-RawFile LoadHeaderFile::encode() const
+RawData LoadHeaderFile::encode() const
 {
   BOOST_LOG_FUNCTION()
 
@@ -307,10 +294,10 @@ RawFile LoadHeaderFile::encode() const
         << Helper::AdditionalInfo{ "Unsupported ARINC 665 Version" } );
   }
 
-  RawFile rawFile( baseSize );
+  RawData rawFile( baseSize );
 
   // Part Flags or Spare
-  Helper::setInt< uint16_t >( rawFile.begin() + PartFlagsFieldOffsetV3, encodeV3Data ? partFlagsV : 0U );
+  Helper::setInt< uint16_t >( RawDataSpan{ rawFile }.subspan( PartFlagsFieldOffsetV3 ), encodeV3Data ? partFlagsV : 0U );
 
   // Next free Offset (used for optional pointer calculation)
   ptrdiff_t nextFreeOffset{ static_cast< ptrdiff_t>( rawFile.size() ) };
@@ -320,7 +307,7 @@ RawFile LoadHeaderFile::encode() const
   assert( rawLoadPn.size() % 2 == 0 );
 
   Helper::setInt< uint32_t >(
-    rawFile.begin() + LoadPartNumberPointerFieldOffsetV2,
+    RawDataSpan{ rawFile }.subspan( LoadPartNumberPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2 ) );
   nextFreeOffset += static_cast< ptrdiff_t>( rawLoadPn.size() );
 
@@ -345,13 +332,13 @@ RawFile LoadHeaderFile::encode() const
 
       rawFile.resize( rawFile.size() + sizeof( uint16_t ) );
       Helper::setInt< uint16_t >(
-        rawFile.begin() + nextFreeOffset + static_cast< ptrdiff_t >( rawTypeDescription.size() ),
+        RawDataSpan{ rawFile }.subspan( nextFreeOffset + static_cast< ptrdiff_t >( rawTypeDescription.size() ) ),
         typeV->second );
 
       nextFreeOffset += static_cast< ptrdiff_t>( rawTypeDescription.size() + sizeof( uint16_t ) );
     }
 
-    Helper::setInt< uint32_t >( rawFile.begin() + LoadTypeDescriptionPointerFieldOffsetV3, loadTypePtr );
+    Helper::setInt< uint32_t >( RawDataSpan{ rawFile }.subspan( LoadTypeDescriptionPointerFieldOffsetV3 ), loadTypePtr );
   }
 
   // THW ID list
@@ -359,7 +346,7 @@ RawFile LoadHeaderFile::encode() const
   assert( rawThwIdsList.size() % 2 == 0 );
 
   Helper::setInt< uint32_t >(
-    rawFile.begin() + ThwIdsPointerFieldOffsetV2,
+    RawDataSpan{ rawFile }.subspan( ThwIdsPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2 ) );
   nextFreeOffset += static_cast< ptrdiff_t >( rawThwIdsList.size() );
 
@@ -370,7 +357,7 @@ RawFile LoadHeaderFile::encode() const
   if ( encodeV3Data )
   {
     uint16_t thwIdPosCount{ 0 };
-    RawFile rawThwPos( sizeof( uint16_t ) );
+    RawData rawThwPos( sizeof( uint16_t ) );
 
     for ( const auto &[ thwId, positions ] : targetHardwareIdsPositionsV )
     {
@@ -395,7 +382,7 @@ RawFile LoadHeaderFile::encode() const
       ++thwIdPosCount;
     }
 
-    Helper::setInt< uint16_t>( rawThwPos.begin(), thwIdPosCount );
+    Helper::setInt< uint16_t>( rawThwPos, thwIdPosCount );
 
     uint32_t thwIdPosPtr{ 0 };
 
@@ -406,9 +393,7 @@ RawFile LoadHeaderFile::encode() const
       nextFreeOffset += static_cast< ptrdiff_t>( rawThwPos.size() );
     }
 
-    Helper::setInt< uint32_t>(
-      rawFile.begin() + ThwIdPositionsPointerFieldOffsetV3,
-      thwIdPosPtr );
+    Helper::setInt< uint32_t >( RawDataSpan{ rawFile }.subspan( ThwIdPositionsPointerFieldOffsetV3 ), thwIdPosPtr );
   }
 
 
@@ -417,7 +402,7 @@ RawFile LoadHeaderFile::encode() const
   assert( rawDataFiles.size() % 2 == 0 );
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + DataFilesPointerFieldOffsetV2,
+    RawDataSpan{ rawFile }.subspan( DataFilesPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2 ) );
   nextFreeOffset += static_cast< ptrdiff_t>( rawDataFiles.size() );
 
@@ -438,7 +423,7 @@ RawFile LoadHeaderFile::encode() const
     rawFile.insert( rawFile.end(), rawSupportFiles.begin(), rawSupportFiles.end() );
   }
 
-  Helper::setInt< uint32_t >( rawFile.begin() + SupportFilesPointerFieldOffsetV2, supportFileListPtr );
+  Helper::setInt< uint32_t >( RawDataSpan{ rawFile }.subspan( SupportFilesPointerFieldOffsetV2 ), supportFileListPtr );
 
   // user defined data pointer
   assert( userDefinedDataV.size() % 2 == 0 );
@@ -452,8 +437,8 @@ RawFile LoadHeaderFile::encode() const
     rawFile.insert( rawFile.end(), userDefinedDataV.begin(), userDefinedDataV.end() );
   }
 
-  Helper::setInt< uint32_t>(
-    rawFile.begin() + UserDefinedDataPointerFieldOffsetV2,
+  Helper::setInt< uint32_t >(
+    RawDataSpan{ rawFile }.subspan( UserDefinedDataPointerFieldOffsetV2 ),
     userDefinedDataPtr );
 
   // amount of data of Check Values and CRCs
@@ -470,7 +455,7 @@ RawFile LoadHeaderFile::encode() const
 
     // Set Pointer to Load Check Value Field
     Helper::setInt< uint32_t >(
-      rawFile.begin() + LoadCheckValuePointerFieldOffsetV3,
+      RawDataSpan{ rawFile }.subspan( LoadCheckValuePointerFieldOffsetV3 ),
       static_cast< uint32_t >( nextFreeOffset / 2 ) );
 
     // actual check value must be encoded by external means
@@ -490,7 +475,7 @@ RawFile LoadHeaderFile::encode() const
   return rawFile;
 }
 
-void LoadHeaderFile::decodeBody( ConstRawFileSpan rawFile )
+void LoadHeaderFile::decodeBody( ConstRawDataSpan rawFile )
 {
   BOOST_LOG_FUNCTION()
 
@@ -522,19 +507,24 @@ void LoadHeaderFile::decodeBody( ConstRawFileSpan rawFile )
   }
 
   uint32_t loadPartNumberPtr{};
-  Helper::getInt< uint32_t >( rawFile.begin() + LoadPartNumberPointerFieldOffsetV2, loadPartNumberPtr );
+  std::tie( std::ignore, loadPartNumberPtr ) =
+    Helper::getInt< uint32_t >( rawFile.subspan( LoadPartNumberPointerFieldOffsetV2 ) );
 
   uint32_t targetHardwareIdListPtr{};
-  Helper::getInt< uint32_t >( rawFile.begin() + ThwIdsPointerFieldOffsetV2, targetHardwareIdListPtr );
+  std::tie( std::ignore, targetHardwareIdListPtr ) =
+    Helper::getInt< uint32_t >( rawFile.subspan( ThwIdsPointerFieldOffsetV2 ) );
 
   uint32_t dataFileListPtr{};
-  Helper::getInt< uint32_t >( rawFile.begin() + DataFilesPointerFieldOffsetV2, dataFileListPtr );
+  std::tie( std::ignore, dataFileListPtr ) =
+    Helper::getInt< uint32_t >( rawFile.subspan( DataFilesPointerFieldOffsetV2 ) );
 
   uint32_t supportFileListPtr{};
-  Helper::getInt< uint32_t >( rawFile.begin() + SupportFilesPointerFieldOffsetV2, supportFileListPtr );
+  std::tie( std::ignore, supportFileListPtr ) =
+    Helper::getInt< uint32_t >( rawFile.subspan( SupportFilesPointerFieldOffsetV2 ) );
 
   uint32_t userDefinedDataPtr{};
-  Helper::getInt< uint32_t >( rawFile.begin() + UserDefinedDataPointerFieldOffsetV2, userDefinedDataPtr );
+  std::tie( std::ignore, userDefinedDataPtr ) =
+    Helper::getInt< uint32_t >( rawFile.subspan( UserDefinedDataPointerFieldOffsetV2 ) );
 
   uint32_t loadTypeDescriptionPtr{ 0U };
   uint32_t thwIdsPositionPtr{ 0U };
@@ -543,11 +533,14 @@ void LoadHeaderFile::decodeBody( ConstRawFileSpan rawFile )
   // only decode this pointers in V3 mode
   if ( decodeV3Data )
   {
-    Helper::getInt< uint32_t >( rawFile.begin() + LoadTypeDescriptionPointerFieldOffsetV3, loadTypeDescriptionPtr );
+    std::tie( std::ignore, loadTypeDescriptionPtr ) =
+      Helper::getInt< uint32_t >( rawFile.subspan( LoadTypeDescriptionPointerFieldOffsetV3 ) );
 
-    Helper::getInt< uint32_t >( rawFile.begin() + ThwIdPositionsPointerFieldOffsetV3, thwIdsPositionPtr );
+    std::tie( std::ignore, thwIdsPositionPtr ) =
+      Helper::getInt< uint32_t >( rawFile.subspan( ThwIdPositionsPointerFieldOffsetV3 ) );
 
-    Helper::getInt< uint32_t >( rawFile.begin() + LoadCheckValuePointerFieldOffsetV3, loadCheckValuePtr );
+    std::tie( std::ignore, loadCheckValuePtr ) =
+      Helper::getInt< uint32_t >( rawFile.subspan( LoadCheckValuePointerFieldOffsetV3 ) );
   }
 
 
@@ -637,11 +630,11 @@ void LoadHeaderFile::decodeBody( ConstRawFileSpan rawFile )
   // load crc is not decoded - this must be done by other means
 }
 
-RawFile LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
+RawData LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
 {
   BOOST_LOG_FUNCTION()
 
-  RawFile rawFileList( sizeof( uint16_t ) );
+  RawData rawFileList( sizeof( uint16_t ) );
 
   // Number of files must not exceed field
   if ( dataFilesV.size() > std::numeric_limits< uint16_t >::max() )
@@ -651,7 +644,7 @@ RawFile LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
   }
 
   // number of files
-  Helper::setInt< uint16_t >( rawFileList.begin(), Helper::safeCast< uint16_t >( dataFilesV.size() ) );
+  Helper::setInt< uint16_t >( rawFileList, Helper::safeCast< uint16_t >( dataFilesV.size() ) );
 
   // iterate over files
   uint16_t fileCounter{ 0 };
@@ -659,7 +652,7 @@ RawFile LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
   {
     ++fileCounter;
 
-    RawFile rawFileInfo( sizeof( uint16_t ) );
+    RawData rawFileInfo( sizeof( uint16_t ) );
 
     // filename
     auto const rawFilename{ StringUtils_encodeString( fileInfo.filename ) };
@@ -678,22 +671,18 @@ RawFile LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
     const uint32_t fileLength{ Helper::safeCast< uint32_t >( ( fileInfo.length + 1U ) / 2U ) };
 
     Helper::setInt< uint32_t>(
-      rawFileInfo.begin() + static_cast< ptrdiff_t>( rawFileInfo.size() ) - ( sizeof( uint32_t ) + sizeof( uint16_t ) ),
+      RawDataSpan{ rawFileInfo }.last( sizeof( uint32_t ) + sizeof( uint16_t ) ),
       fileLength );
 
     // CRC
-    Helper::setInt< uint16_t>(
-      rawFileInfo.begin() + static_cast< ptrdiff_t>( rawFileInfo.size() ) - sizeof( uint16_t ),
-      fileInfo.crc );
+    Helper::setInt< uint16_t >( RawDataSpan{ rawFileInfo }.last( sizeof( uint16_t ) ), fileInfo.crc );
 
     // following fields are available in ARINC 665-3 ff
     if ( encodeV3Data )
     {
       // length in bytes (Data File List)
       rawFileInfo.resize( rawFileInfo.size() + sizeof( uint64_t ) );
-      Helper::setInt<uint64_t>(
-        rawFileInfo.begin() + static_cast< ptrdiff_t>( rawFileInfo.size() ) - sizeof( uint64_t ),
-        fileInfo.length );
+      Helper::setInt< uint64_t >( RawDataSpan{ rawFileInfo }.last( sizeof( uint64_t ) ), fileInfo.length );
 
       // check Value
       const auto rawCheckValue{ CheckValueUtils_encode( fileInfo.checkValue ) };
@@ -703,7 +692,7 @@ RawFile LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
 
     // next load pointer (is set to 0 for last load)
     Helper::setInt< uint16_t>(
-      rawFileInfo.begin(),
+      rawFileInfo,
       ( fileCounter == dataFilesV.size() ) ?
         0U :
         Helper::safeCast< uint16_t>( rawFileInfo.size() / 2U ) );
@@ -715,11 +704,11 @@ RawFile LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
   return rawFileList;
 }
 
-RawFile LoadHeaderFile::encodeSupportFiles( const bool encodeV3Data ) const
+RawData LoadHeaderFile::encodeSupportFiles( const bool encodeV3Data ) const
 {
   BOOST_LOG_FUNCTION()
 
-  RawFile rawFileList( sizeof( uint16_t ) );
+  RawData rawFileList( sizeof( uint16_t ) );
 
   // Number of files must not exceed field
   if ( supportFilesV.size() > std::numeric_limits< uint16_t>::max() )
@@ -729,7 +718,7 @@ RawFile LoadHeaderFile::encodeSupportFiles( const bool encodeV3Data ) const
   }
 
   // number of loads
-  Helper::setInt< uint16_t >( rawFileList.begin(), Helper::safeCast< uint16_t >( supportFilesV.size() ) );
+  Helper::setInt< uint16_t >( rawFileList, Helper::safeCast< uint16_t >( supportFilesV.size() ) );
 
   // iterate over files
   uint16_t fileCounter{ 0 };
@@ -737,7 +726,7 @@ RawFile LoadHeaderFile::encodeSupportFiles( const bool encodeV3Data ) const
   {
     ++fileCounter;
 
-    RawFile rawFileInfo( sizeof( uint16_t ) );
+    RawData rawFileInfo( sizeof( uint16_t ) );
 
     // filename
     auto const rawFilename{ StringUtils_encodeString( fileInfo.filename ) };
@@ -756,14 +745,11 @@ RawFile LoadHeaderFile::encodeSupportFiles( const bool encodeV3Data ) const
     uint32_t fileLength{ Helper::safeCast< uint32_t>( fileInfo.length ) };
 
     Helper::setInt< uint32_t >(
-      rawFileInfo.begin() + static_cast< ptrdiff_t >( rawFileInfo.size() )
-        - ( sizeof( uint32_t ) + sizeof( uint16_t ) ),
+      RawDataSpan{ rawFileInfo }.last( sizeof( uint32_t ) + sizeof( uint16_t ) ),
       fileLength );
 
     // CRC
-    Helper::setInt< uint16_t>(
-      rawFileInfo.begin() + static_cast< ptrdiff_t>( rawFileInfo.size() ) - sizeof( uint16_t ),
-      fileInfo.crc );
+    Helper::setInt< uint16_t >( RawDataSpan{ rawFileInfo }.last( sizeof( uint16_t ) ), fileInfo.crc );
 
     // following fields are available in ARINC 665-3 ff
     if ( encodeV3Data )
@@ -776,7 +762,7 @@ RawFile LoadHeaderFile::encodeSupportFiles( const bool encodeV3Data ) const
 
     // next load pointer (is set to 0 for last load)
     Helper::setInt< uint16_t>(
-      rawFileInfo.begin(),
+      rawFileInfo,
       ( fileCounter == supportFilesV.size() ) ?
         0U :
         Helper::safeCast< uint16_t>( rawFileInfo.size() / 2U ) );
@@ -788,7 +774,7 @@ RawFile LoadHeaderFile::encodeSupportFiles( const bool encodeV3Data ) const
   return rawFileList;
 }
 
-void LoadHeaderFile::decodeDataFiles( ConstRawFileSpan rawData, const bool decodeV3Data )
+void LoadHeaderFile::decodeDataFiles( ConstRawDataSpan rawData, const bool decodeV3Data )
 {
   BOOST_LOG_FUNCTION()
 
@@ -885,7 +871,7 @@ void LoadHeaderFile::decodeDataFiles( ConstRawFileSpan rawData, const bool decod
   }
 }
 
-void LoadHeaderFile::decodeSupportFiles( ConstRawFileSpan rawData, bool decodeV3Data )
+void LoadHeaderFile::decodeSupportFiles( ConstRawDataSpan rawData, bool decodeV3Data )
 {
   BOOST_LOG_FUNCTION()
 
@@ -973,7 +959,7 @@ void LoadHeaderFile::checkUserDefinedData()
     BOOST_LOG_SEV( Logger::get(), Helper::Severity::warning )
       << "User defined data must be 2-byte aligned. - extending range";
 
-    userDefinedDataV.push_back( 0U );
+    userDefinedDataV.push_back( std::byte{ 0U } );
   }
 }
 

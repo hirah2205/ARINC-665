@@ -20,7 +20,7 @@
 
 #include <arinc_665/Arinc665.hpp>
 
-#include <cstdint>
+#include <cstddef>
 #include <list>
 #include <span>
 #include <string>
@@ -55,11 +55,11 @@ namespace Arinc665::Files {
  **/
 
 //! Raw File
-using RawFile = std::vector< uint8_t >;
+using RawData = std::vector< std::byte >;
 //! Const Raw File Span
-using ConstRawFileSpan = std::span< const uint8_t >;
+using ConstRawDataSpan = std::span< const std::byte >;
 //! Raw File Span
-using RawFileSpan = std::span< uint8_t >;
+using RawDataSpan = std::span< std::byte >;
 
 /** @} **/
 
@@ -71,11 +71,11 @@ using RawFileSpan = std::span< uint8_t >;
  **/
 
 //! User Defined Data Type
-using UserDefinedData = std::vector< uint8_t >;
+using UserDefinedData = std::vector< std::byte >;
 //! Const User Defined Data Span Type
-using ConstUserDefinedDataSpan = std::span< const uint8_t >;
+using ConstUserDefinedDataSpan = std::span< const std::byte >;
 //! User Defined Data Span Type
-using UserDefinedDataSpan = std::span< const uint8_t >;
+using UserDefinedDataSpan = std::span< std::byte >;
 
 /** @} **/
 

@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -39,8 +38,7 @@ class ARINC_665_EXPORT Load final : public File
     //! Positions List
     using Positions = std::set< std::string, std::less<> >;
     //! Target Hardware ID / Positions
-    using TargetHardwareIdPositions =
-      std::map< std::string, Positions, std::less<> >;
+    using TargetHardwareIdPositions = std::map< std::string, Positions, std::less<> >;
     //! Target Hardware ID List
     using TargetHardwareIds = std::set< std::string, std::less<> >;
     //! %Load Type (Description + ID)
@@ -79,35 +77,30 @@ class ARINC_665_EXPORT Load final : public File
      * @name Part Flags.
      *
      * The Part Flags are defined by a 16-bit word.
-     * They are used to indicate extra information to help operators and systems
-     * distinguish and understand the purpose of a part.
+     * They are used to indicate extra information to help operators and systems distinguish and understand the purpose
+     * of a part.
      *
      * @par Download Flag
      * The Least Significant Bit is used to indicate an upload/download part.
      * The value of `0` indicates an upload.
-     * The value of `1` indicates that the part contains instructions for
-     * download.
-     * A data loader may use this field to help the operator select parts that
-     * correspond with a download operation versus an upload operation.
+     * The value of `1` indicates that the part contains instructions for download.
+     * A data loader may use this field to help the operator select parts that correspond with a download operation
+     * versus an upload operation.
      *
      * @note
-     * In an upload operation, a data loader uses information from the LSP to
-     * cause a transfer of specific information from the LSP to the target.
-     * In a download operation, a data loader uses information from the LSP to
-     * cause a transfer of specific information from the target to the data
-     * loader.
+     * In an upload operation, a data loader uses information from the LSP to cause a transfer of specific information
+     * from the LSP to the target.
+     * In a download operation, a data loader uses information from the LSP to cause a transfer of specific information
+     * from the target to the data loader.
      *
-     * The purpose of assigning a PN to a download LSP is to identify, control,
-     * and provide integrity for the files in the LSP which describe to the data
-     * loader how to perform the specific download operation.
-     * The PN of the download LSP only pertains to the files that are provided
-     * to the data loader which cause the download.
-     * The download PN does not provide configuration data for the data
-     * downloaded from the target.
+     * The purpose of assigning a PN to a download LSP is to identify, control, and provide integrity for the files in
+     * the LSP which describe to the data loader how to perform the specific download operation.
+     * The PN of the download LSP only pertains to the files that are provided to the data loader which cause the
+     * download.
+     * The download PN does not provide configuration data for the data downloaded from the target.
      *
      * @par Spare Flags
-     * The other 15 bits of the 16-bit Part Flags field are reserved for future
-     * use and should be set to binary `0`.
+     * The other 15 bits of the 16-bit Part Flags field are reserved for future use and should be set to binary `0`.
      *
      * @{
      **/
@@ -173,12 +166,10 @@ class ARINC_665_EXPORT Load final : public File
      * @param[in] targetHardwareIdPositions
      *   Target Hardware ID/ Positions.
      **/
-    void targetHardwareIdPositions(
-      const TargetHardwareIdPositions &targetHardwareIdPositions );
+    void targetHardwareIdPositions( const TargetHardwareIdPositions &targetHardwareIdPositions );
 
     //! @copydoc targetHardwareIdPositions(const TargetHardwareIdPositions&)
-    void targetHardwareIdPositions(
-      TargetHardwareIdPositions &&targetHardwareIdPositions );
+    void targetHardwareIdPositions( TargetHardwareIdPositions &&targetHardwareIdPositions );
 
     /** @} **/
 
@@ -210,9 +201,7 @@ class ARINC_665_EXPORT Load final : public File
      * @param[in] positions
      *   Optional additional Position specification.
      **/
-    void targetHardwareId(
-      std::string targetHardwareId,
-      Positions positions = {} );
+    void targetHardwareId( std::string targetHardwareId, Positions positions = {} );
 
     /** @} **/
 
@@ -227,8 +216,7 @@ class ARINC_665_EXPORT Load final : public File
      *
      * It also verifies the filename against the load header file itself.
      *
-     * If more than one file is found with the given attributes no file is
-     * returned.
+     * If more than one file is found with the given attributes no file is returned.
      *
      * @param[in] filename
      *   Filename of file to look for.
@@ -244,8 +232,7 @@ class ARINC_665_EXPORT Load final : public File
      *
      * It also verifies the filename against the load header file itself.
      *
-     * If more than one file is found with the given attributes no file is
-     * returned.
+     * If more than one file is found with the given attributes no file is returned.
      *
      * @param[in] checkValues
      *   List of check values.
@@ -379,8 +366,7 @@ class ARINC_665_EXPORT Load final : public File
     /**
      * @name User Defined Data
      *
-     * This library handles *user defined data* as plain data without any data
-     * format.
+     * This library handles *user defined data* as plain data without any data format.
      *
      * @{
      **/
@@ -432,8 +418,7 @@ class ARINC_665_EXPORT Load final : public File
     /**
      * @name Load Check Value Type
      *
-     * This information is used to determine the Check Value Type used for
-     * generation of *%Load Check Value*.
+     * This information is used to determine the Check Value Type used for generation of *%Load Check Value*.
      * If not provided, the %Media Set Check Value is used.
      *
      * @{
@@ -442,8 +427,7 @@ class ARINC_665_EXPORT Load final : public File
     /**
      * @brief Returns the effective %Load Check Value Type.
      *
-     * if no check value is given for %Load Check Value Type, the %Media Set
-     * Check Value Type is used.
+     * if no check value is given for %Load Check Value Type, the %Media Set Check Value Type is used.
      *
      * @return Effective %Load Check Value Type
      *
@@ -456,8 +440,7 @@ class ARINC_665_EXPORT Load final : public File
      *
      * @return %Load Check Value Type
      **/
-    [[nodiscard]] std::optional< Arinc645::CheckValueType >
-    loadCheckValueType() const;
+    [[nodiscard]] std::optional< Arinc645::CheckValueType > loadCheckValueType() const;
 
     /**
      * @brief Updates the %Load Check Value Type
@@ -465,16 +448,14 @@ class ARINC_665_EXPORT Load final : public File
      * @param[in] checkValueType
      *   New %Load Check Value Type.
      **/
-    void loadCheckValueType(
-      std::optional< Arinc645::CheckValueType > checkValueType );
+    void loadCheckValueType( std::optional< Arinc645::CheckValueType > checkValueType );
 
     /** @} **/
 
     /**
      * @name Data %Files Check Value Type
      *
-     * This information is used to determine the Check Value Type used for
-     * generation of Data %Files Check Value.
+     * This information is used to determine the Check Value Type used for generation of Data %Files Check Value.
      * If not provided, the *%Media Set Check Value* is used.
      *
      * @{
@@ -483,23 +464,20 @@ class ARINC_665_EXPORT Load final : public File
     /**
      * @brief Returns the effective Data %Files Check Value Type.
      *
-     * if no check value is given for Data %Files Check Value Type, the %Media
-     * Set Check Value Type is used.
+     * if no check value is given for Data %Files Check Value Type, the %Media Set Check Value Type is used.
      *
      * @return Effective Data %Files Check Value Type
      *
      * @sa MediaSet::mediaSetCheckValueType
      **/
-    [[nodiscard]] Arinc645::CheckValueType
-    effectiveDataFilesCheckValueType() const;
+    [[nodiscard]] Arinc645::CheckValueType effectiveDataFilesCheckValueType() const;
 
     /**
      * @brief Returns the Data %Files Check Value Type.
      *
      * @return Data %Files Check Value Type
      **/
-    [[nodiscard]] std::optional< Arinc645::CheckValueType >
-    dataFilesCheckValueType() const;
+    [[nodiscard]] std::optional< Arinc645::CheckValueType > dataFilesCheckValueType() const;
 
     /**
      * @brief Updates the Data %Files Check Value Type.
@@ -507,16 +485,14 @@ class ARINC_665_EXPORT Load final : public File
      * @param[in] checkValueType
      *   New Data %Files Check Value Type.
      **/
-    void dataFilesCheckValueType(
-      std::optional< Arinc645::CheckValueType > checkValueType );
+    void dataFilesCheckValueType( std::optional< Arinc645::CheckValueType > checkValueType );
 
     /** @} **/
 
     /**
      * @name Support %Files Check Value Type
      *
-     * This information is used to determine the Check Value Type used for
-     * generation of *Support %Files Check Value*.
+     * This information is used to determine the Check Value Type used for generation of *Support %Files Check Value*.
      * If not provided, the *%Media Set Check Value* is used.
      *
      * @{
@@ -525,23 +501,20 @@ class ARINC_665_EXPORT Load final : public File
     /**
      * @brief Returns the effective Support %Files Check Value Type.
      *
-     * if no check value is given for Support %Files Check Value Type, the
-     * %Media Set Check Value Type is used.
+     * if no check value is given for Support %Files Check Value Type, the %Media Set Check Value Type is used.
      *
      * @return Effective Support %Files Check Value Type
      *
      * @sa MediaSet::mediaSetCheckValueType
      **/
-    [[nodiscard]] Arinc645::CheckValueType
-    effectiveSupportFilesCheckValueType() const;
+    [[nodiscard]] Arinc645::CheckValueType effectiveSupportFilesCheckValueType() const;
 
     /**
      * @brief Returns the Support %Files Check Value Type.
      *
      * @return Support %Files Check Value Type
      **/
-    [[nodiscard]] std::optional< Arinc645::CheckValueType >
-    supportFilesCheckValueType() const;
+    [[nodiscard]] std::optional< Arinc645::CheckValueType > supportFilesCheckValueType() const;
 
     /**
      * @brief Updates the Support %Files Check Value Type.
@@ -549,8 +522,7 @@ class ARINC_665_EXPORT Load final : public File
      * @param[in] checkValueType
      *   New Support %Files Check Value Type.
      **/
-    void supportFilesCheckValueType(
-      std::optional< Arinc645::CheckValueType > checkValueType );
+    void supportFilesCheckValueType( std::optional< Arinc645::CheckValueType > checkValueType );
 
     /** @} **/
 
@@ -596,8 +568,7 @@ class ARINC_665_EXPORT Load final : public File
 /**
  * @brief Returns load identified by Part Number.
  *
- * Iterates over @p loads returning the first load, whom *Part Number* matches
- * @p partNumber.
+ * Iterates over @p loads returning the first load, whom *Part Number* matches @p partNumber.
  *
  * @param[in] loads
  *   List of %Loads.
@@ -617,10 +588,8 @@ class ARINC_665_EXPORT Load final : public File
  *
  * If @p loadPartNumber is provided, first find the matching load from @p loads.
  * Then determine the files with the matching @p filename.
- * If more than one file is found with the given attributes no file is
- * returned.
- * If @p filename refers to the load header, the corresponding load header file
- * is returned.
+ * If more than one file is found with the given attributes no file is returned.
+ * If @p filename refers to the load header, the corresponding load header file is returned.
  *
  * @sa @ref Loads_loadByPartNumber()
  * @sa @ref Load::file(std::string_view) const
@@ -644,8 +613,7 @@ class ARINC_665_EXPORT Load final : public File
 /**
  * @brief Returns file with given filename, Part Number and Check Value.
  *
- * If more than one file is found with the given attributes no file is
- * returned.
+ * If more than one file is found with the given attributes no file is returned.
  *
  * @param[in] loads
  *   List of loads

@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -29,29 +28,25 @@
 
 namespace Arinc665::Utils {
 
-MediaSetDecompiler& MediaSetDecompilerImpl::fileSizeHandler(
-  FileSizeHandler fileSizeHandler )
+MediaSetDecompiler &MediaSetDecompilerImpl::fileSizeHandler( FileSizeHandler fileSizeHandler )
 {
   fileSizeHandlerV = std::move( fileSizeHandler );
   return *this;
 }
 
-MediaSetDecompiler& MediaSetDecompilerImpl::readFileHandler(
-  ReadFileHandler readFileHandler )
+MediaSetDecompiler &MediaSetDecompilerImpl::readFileHandler( ReadFileHandler readFileHandler )
 {
   readFileHandlerV = std::move( readFileHandler );
   return *this;
 }
 
-MediaSetDecompiler& MediaSetDecompilerImpl::progressHandler(
-  ProgressHandler progressHandler )
+MediaSetDecompiler &MediaSetDecompilerImpl::progressHandler( ProgressHandler progressHandler )
 {
   progressHandlerV = std::move( progressHandler );
   return *this;
 }
 
-MediaSetDecompiler& MediaSetDecompilerImpl::checkFileIntegrity(
-  const bool checkFileIntegrity ) noexcept
+MediaSetDecompiler &MediaSetDecompilerImpl::checkFileIntegrity( const bool checkFileIntegrity ) noexcept
 {
   checkFileIntegrityV = checkFileIntegrity;
   return *this;
@@ -85,8 +80,7 @@ MediaSetDecompilerResult MediaSetDecompilerImpl::operator()()
 void MediaSetDecompilerImpl::loadFirstMedium()
 {
   // Load "list of files" file
-  fileListFileV =
-    readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfFilesName );
+  fileListFileV = readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfFilesName );
 
   if ( fileListFileV.mediaSequenceNumber() != MediumNumber{ 1U } )
   {
@@ -99,8 +93,7 @@ void MediaSetDecompilerImpl::loadFirstMedium()
   {
     progressHandlerV(
       fileListFileV.mediaSetPn(),
-      { fileListFileV.mediaSequenceNumber(),
-        fileListFileV.numberOfMediaSetMembers() } );
+      { fileListFileV.mediaSequenceNumber(), fileListFileV.numberOfMediaSetMembers() } );
   }
 
   // indicator, that LOADS.LUM present in FILES.LUM
@@ -110,7 +103,7 @@ void MediaSetDecompilerImpl::loadFirstMedium()
   {
     // get file type
     // skip list files and handle load headers and batch files separate
-    if(
+    if (
       const auto fileType{ Arinc665::Files::Arinc665File::fileType( fileInfo.filename ) };
       fileType )
     {
@@ -179,18 +172,14 @@ void MediaSetDecompilerImpl::loadFirstMedium()
 
   // store list of files user defined data
   auto filesUserDefinedData{ fileListFileV.userDefinedData() };
-  mediaSetV->filesUserDefinedData(
-    Media::UserDefinedData{
-      filesUserDefinedData.begin(),
-      filesUserDefinedData.end() } );
+  mediaSetV->filesUserDefinedData( Media::UserDefinedData{ filesUserDefinedData.begin(), filesUserDefinedData.end() } );
   // store file list file check value
   mediaSetV->listOfFilesCheckValueType( fileListFileV.checkValueType() );
   // Set Media Set Parameter
   mediaSetV->partNumber( std::string{ fileListFileV.mediaSetPn() } );
 
   // Load "list of loads" file
-  loadListFileV =
-    readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfLoadsName );
+  loadListFileV = readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfLoadsName );
 
   for ( const auto &load : loadListFileV.loads() )
   {
@@ -219,14 +208,12 @@ void MediaSetDecompilerImpl::loadFirstMedium()
 
   // store list of loads user defined data
   auto loadsUserDefinedData{ loadListFileV.userDefinedData() };
-  mediaSetV->loadsUserDefinedData(
-    Media::UserDefinedData{ loadsUserDefinedData.begin(), loadsUserDefinedData.end() } );
+  mediaSetV->loadsUserDefinedData( Media::UserDefinedData{ loadsUserDefinedData.begin(), loadsUserDefinedData.end() } );
 
   // Load "list of batches" file
   if ( batchListFilePresentV )
   {
-    batchListFileV =
-      readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfBatchesName );
+    batchListFileV = readFileHandlerV( MediumNumber{ 1U }, Arinc665::ListOfBatchesName );
 
     for ( const auto &batch : batchListFileV.batches() )
     {
@@ -280,10 +267,9 @@ void MediaSetDecompilerImpl::loadFurtherMedia() const
 
     // compare current list of files to first one
     if (
-      const Files::FileListFile mediumFileListFile{
-        readFileHandlerV( mediumNumber, Arinc665::ListOfFilesName ) };
-       !mediumFileListFile.belongsToSameMediaSet( fileListFileV )
-      || ( mediumNumber != mediumFileListFile.mediaSequenceNumber() ) )
+      const Files::FileListFile mediumFileListFile{ readFileHandlerV( mediumNumber, Arinc665::ListOfFilesName ) };
+      !mediumFileListFile.belongsToSameMediaSet( fileListFileV )
+        || ( mediumNumber != mediumFileListFile.mediaSequenceNumber() ) )
     {
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "inconsistent file list file" }
@@ -297,8 +283,7 @@ void MediaSetDecompilerImpl::loadFurtherMedia() const
 
     // check against stored version
     if (
-      const Files::LoadListFile mediumLoadListFile{
-        readFileHandlerV( mediumNumber, Arinc665::ListOfLoadsName ) };
+      const Files::LoadListFile mediumLoadListFile{ readFileHandlerV( mediumNumber, Arinc665::ListOfLoadsName ) };
       !mediumLoadListFile.belongsToSameMediaSet( loadListFileV )
         || ( mediumNumber != mediumLoadListFile.mediaSequenceNumber() ) )
     {
@@ -312,10 +297,9 @@ void MediaSetDecompilerImpl::loadFurtherMedia() const
     {
       // check against stored version
       if (
-        const Files::BatchListFile mediumBatchListFile{
-          readFileHandlerV( mediumNumber, Arinc665::ListOfBatchesName ) };
+        const Files::BatchListFile mediumBatchListFile{ readFileHandlerV( mediumNumber, Arinc665::ListOfBatchesName ) };
         !mediumBatchListFile.belongsToSameMediaSet( batchListFileV )
-        || ( mediumNumber != mediumBatchListFile.mediaSequenceNumber() ) )
+          || ( mediumNumber != mediumBatchListFile.mediaSequenceNumber() ) )
       {
         BOOST_THROW_EXCEPTION(
           Arinc665Exception() << Helper::AdditionalInfo{
@@ -332,8 +316,7 @@ void MediaSetDecompilerImpl::files()
   for ( const auto &[ fileName, fileInfo ] : filesInfosV )
   {
     // get directory, where file will be placed into.
-    const auto parent{
-      checkCreateDirectory( fileInfo.path().parent_path() ) };
+    const auto parent{ checkCreateDirectory( fileInfo.path().parent_path() ) };
 
     const auto loadInfo{ loadsInfosV.find( fileName ) };
     const auto batchInfo{ batchesInfosV.find( fileName ) };
@@ -378,9 +361,7 @@ void MediaSetDecompilerImpl::files()
   }
 }
 
-void MediaSetDecompilerImpl::regularFile(
-  Media::ContainerEntity &parent,
-  const Files::FileInfo &fileInfo)
+void MediaSetDecompilerImpl::regularFile( Media::ContainerEntity &parent, const Files::FileInfo &fileInfo )
 {
   BOOST_LOG_FUNCTION()
 
@@ -388,17 +369,14 @@ void MediaSetDecompilerImpl::regularFile(
     << "Regular File " << fileInfo.path().generic_string();
 
   // create file
-  auto file{ parent.addRegularFile(
-    fileInfo.filename,
-    fileInfo.memberSequenceNumber ) };
+  auto file{ parent.addRegularFile( fileInfo.filename, fileInfo.memberSequenceNumber ) };
   assert( file );
 
   // set check value indicator
   file->checkValueType( fileInfo.checkValue.type() );
 
   // update check values (CRC and Check Value if provided)
-  checkValuesV[ file ].emplace(
-    Arinc645::CheckValue::crc16( fileInfo.crc ) );
+  checkValuesV[ file ].emplace( Arinc645::CheckValue::crc16( fileInfo.crc ) );
 
   if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
   {
@@ -420,17 +398,14 @@ void MediaSetDecompilerImpl::loadFile(
     << "Load Header File " << fileInfo.path().generic_string();
 
   // create load
-  auto load{ parent.addLoad(
-    loadInfo.headerFilename,
-    loadInfo.memberSequenceNumber ) };
+  auto load{ parent.addLoad( loadInfo.headerFilename, loadInfo.memberSequenceNumber ) };
   assert( load );
 
   // set check value indicator
   load->checkValueType( fileInfo.checkValue.type() );
 
   // update check values (CRC and Check Value if provided)
-  checkValuesV[ load ].emplace(
-    Arinc645::CheckValue::crc16( fileInfo.crc ) );
+  checkValuesV[ load ].emplace( Arinc645::CheckValue::crc16( fileInfo.crc ) );
 
   if ( Arinc645::CheckValue::NoCheckValue != fileInfo.checkValue )
   {
@@ -452,9 +427,7 @@ void MediaSetDecompilerImpl::batchFile(
     << "Batch File " << fileInfo.path().generic_string();
 
   // create batch
-  auto batch{ parent.addBatch(
-    batchInfo.filename,
-    batchInfo.memberSequenceNumber ) };
+  auto batch{ parent.addBatch( batchInfo.filename, batchInfo.memberSequenceNumber ) };
   assert( batch );
 
   // set check value indicator
@@ -480,8 +453,7 @@ void MediaSetDecompilerImpl::addLoad(
   BOOST_LOG_FUNCTION()
 
   // decode load header
-  const auto rawLoadHeaderFile{
-    readFileHandlerV( fileInfo.memberSequenceNumber, fileInfo.path() ) };
+  const auto rawLoadHeaderFile{ readFileHandlerV( fileInfo.memberSequenceNumber, fileInfo.path() ) };
   const Files::LoadHeaderFile loadHeaderFile{ rawLoadHeaderFile };
 
   // validate load part number to load information
@@ -524,8 +496,7 @@ void MediaSetDecompilerImpl::addLoad(
 
   // Load Check CRC and Load Check Value
   Arinc645::Arinc645Crc32 loadCrc{};
-  auto loadCheckValueGenerator{
-    Arinc645::CheckValueGenerator::create( loadHeaderFile.loadCheckValueType() ) };
+  auto loadCheckValueGenerator{ Arinc645::CheckValueGenerator::create( loadHeaderFile.loadCheckValueType() ) };
   assert( loadCheckValueGenerator );
 
   if ( checkFileIntegrityV )
@@ -538,8 +509,7 @@ void MediaSetDecompilerImpl::addLoad(
   for ( const auto &loadFileInfo : loadHeaderFile.dataFiles() )
   {
     // start search in parent directory of load (according ARINC 665-5)
-    const auto dataFilePtr{
-      loadFile( *load.parent(), loadFileInfo.filename, loadFileInfo.crc ) };
+    const auto dataFilePtr{ loadFile( *load.parent(), loadFileInfo.filename, loadFileInfo.crc ) };
 
     const auto dataFileInfo{ regularFilesV.find( dataFilePtr ) };
     assert( dataFileInfo != regularFilesV.end() );
@@ -553,10 +523,7 @@ void MediaSetDecompilerImpl::addLoad(
       loadFileInfo,
       loadHeaderFile.arincVersion() == SupportedArinc665Version::Supplement2 );
 
-    load.dataFile(
-      dataFilePtr,
-      loadFileInfo.partNumber,
-      loadFileInfo.checkValue.type() );
+    load.dataFile( dataFilePtr, loadFileInfo.partNumber, loadFileInfo.checkValue.type() );
 
     // Add check value if provided - CRC 16 is not added, as it is handled
     // within addFiles
@@ -570,8 +537,7 @@ void MediaSetDecompilerImpl::addLoad(
   for ( const auto &loadFileInfo : loadHeaderFile.supportFiles() )
   {
     // start search in parent directory of load (according ARINC 665-5)
-    auto supportFilePtr{
-      loadFile( *load.parent(), loadFileInfo.filename, loadFileInfo.crc ) };
+    auto supportFilePtr{ loadFile( *load.parent(), loadFileInfo.filename, loadFileInfo.crc ) };
 
     const auto supportFileInfo{ regularFilesV.find( supportFilePtr ) };
     assert( supportFileInfo != regularFilesV.end() );
@@ -583,10 +549,7 @@ void MediaSetDecompilerImpl::addLoad(
       loadFileInfo,
       false );
 
-    load.supportFile(
-      supportFilePtr,
-      loadFileInfo.partNumber,
-      loadFileInfo.checkValue.type() );
+    load.supportFile( supportFilePtr, loadFileInfo.partNumber, loadFileInfo.checkValue.type() );
 
     // Add check value if provided - CRC 16 is not added, as it is handled
     // within addFiles
@@ -618,8 +581,7 @@ void MediaSetDecompilerImpl::addLoad(
 
   // User Defined Data
   auto loadUserDefinedData{ loadHeaderFile.userDefinedData() };
-  load.userDefinedData(
-    Media::UserDefinedData{ loadUserDefinedData.begin(), loadUserDefinedData.end() } );
+  load.userDefinedData( Media::UserDefinedData{ loadUserDefinedData.begin(), loadUserDefinedData.end() } );
   // Load Check Value
   load.loadCheckValueType( loadHeaderFile.loadCheckValueType() );
 }
@@ -695,9 +657,7 @@ void MediaSetDecompilerImpl::addBatch(
   BOOST_LOG_FUNCTION()
 
   // Decode batch File
-  Files::BatchFile batchFile{ readFileHandlerV(
-    fileInfo.memberSequenceNumber,
-    fileInfo.path() ) };
+  Files::BatchFile batchFile{ readFileHandlerV( fileInfo.memberSequenceNumber, fileInfo.path() ) };
 
   // validate batch part number to batch information
   if ( batchInfo.partNumber != batchFile.partNumber() )
@@ -755,8 +715,7 @@ void MediaSetDecompilerImpl::addBatch(
   }
 }
 
-Media::ContainerEntityPtr MediaSetDecompilerImpl::checkCreateDirectory(
-  const std::filesystem::path &directoryPath )
+Media::ContainerEntityPtr MediaSetDecompilerImpl::checkCreateDirectory( const std::filesystem::path &directoryPath )
 {
   // make path relative (remove leading slash)
   const auto dirPath{ directoryPath.relative_path() };
@@ -788,8 +747,7 @@ Media::ContainerEntityPtr MediaSetDecompilerImpl::checkCreateDirectory(
   return dir;
 }
 
-void MediaSetDecompilerImpl::checkMediumFiles(
-  const MediumNumber &mediumNumber ) const
+void MediaSetDecompilerImpl::checkMediumFiles( const MediumNumber &mediumNumber ) const
 {
   // iterate over files
   for ( const auto &[ filename, fileInfo ] : filesInfosV )
@@ -810,16 +768,12 @@ void MediaSetDecompilerImpl::checkMediumFiles(
   }
 }
 
-void MediaSetDecompilerImpl::checkFileIntegrity(
-  const Files::FileInfo &fileInfo ) const
+void MediaSetDecompilerImpl::checkFileIntegrity( const Files::FileInfo &fileInfo ) const
 {
   BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
     << "Check file " << fileInfo.path().generic_string();
 
-  const auto rawFile{
-    readFileHandlerV(
-      fileInfo.memberSequenceNumber,
-      fileInfo.path() ) };
+  const auto rawFile{ readFileHandlerV( fileInfo.memberSequenceNumber, fileInfo.path() ) };
 
   // compare checksums
   if (
@@ -837,7 +791,7 @@ void MediaSetDecompilerImpl::checkFileIntegrity(
   {
     const auto checkValueCalculated{ Arinc645::CheckValueGenerator::checkValue(
       fileInfo.checkValue.type(),
-      rawFile ) };
+      std::as_bytes( Files::ConstRawDataSpan{ rawFile } ) ) };
 
     if ( fileInfo.checkValue != checkValueCalculated )
     {
@@ -858,8 +812,7 @@ void MediaSetDecompilerImpl::checkLoadFile(
   // get memorised file size ( only when file integrity is checked)
   if ( checkFileIntegrityV )
   {
-    const auto fileSize{
-      fileSizeHandlerV( fileInfo.memberSequenceNumber, fileInfo.path() ) };
+    const auto fileSize{ fileSizeHandlerV( fileInfo.memberSequenceNumber, fileInfo.path() ) };
 
     // check load data file size - we divide by 2 to work around 16-bit size
     // storage within Supplement 2 LUHs (Only Data Files)
@@ -888,23 +841,21 @@ void MediaSetDecompilerImpl::checkLoadFile(
   }
 
   // Check File Check Value
-  const bool fileCheckValueChecked{
-    checkCheckValues( fileInfo.checkValue, loadFileInfo.checkValue ) };
+  const bool fileCheckValueChecked{ checkCheckValues( fileInfo.checkValue, loadFileInfo.checkValue ) };
 
   // Load CRC, Load Check Value and File Check Value Check
   if ( checkFileIntegrityV )
   {
-    const auto rawDataFile{
-      readFileHandlerV( fileInfo.memberSequenceNumber, fileInfo.path() ) };
+    const auto rawDataFile{ readFileHandlerV( fileInfo.memberSequenceNumber, fileInfo.path() ) };
 
-    loadCrc.process_bytes( std::data( rawDataFile ), rawDataFile.size() );
-    loadCheckValueGenerator.process( rawDataFile );
+    loadCrc.process_bytes( rawDataFile.data(), rawDataFile.size() );
+    loadCheckValueGenerator.process( std::as_bytes( Files::ConstRawDataSpan{ rawDataFile } ) );
 
     // Load file Check Value
     if ( !fileCheckValueChecked
       && ( Arinc645::CheckValueGenerator::checkValue(
         loadFileInfo.checkValue.type(),
-        rawDataFile ) != loadFileInfo.checkValue ) )
+        std::as_bytes( Files::ConstRawDataSpan{ rawDataFile } ) ) != loadFileInfo.checkValue ) )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665Exception()

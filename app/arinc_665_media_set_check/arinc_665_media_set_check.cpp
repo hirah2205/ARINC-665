@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -50,9 +49,7 @@ int main( int argc, char * argv[] );
  * @throw Arinc665Exception
  *   If file does not exist or cannot be read.
  **/
-static Arinc665::Files::RawFile readFile(
-  uint8_t mediumNumber,
-  const std::filesystem::path &path );
+static Arinc665::Files::RawData readFile( uint8_t mediumNumber, const std::filesystem::path &path );
 
 /**
  * @brief Print @p information
@@ -75,8 +72,7 @@ int main( int argc, char * argv[] )
   {
     std::cout << "ARINC 665 Media Set Validator\n";
 
-    boost::program_options::options_description optionsDescription{
-      "ARINC 665 Media Set Validator Options" };
+    boost::program_options::options_description optionsDescription{ "ARINC 665 Media Set Validator Options" };
 
     optionsDescription.add_options()
     (
@@ -92,12 +88,9 @@ int main( int argc, char * argv[] )
       "For more media, repeat this parameter."
     );
 
-    boost::program_options::variables_map variablesMap{};
+    boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::parse_command_line(
-        argc,
-        argv,
-        optionsDescription ),
+      boost::program_options::parse_command_line( argc, argv, optionsDescription ),
       variablesMap );
 
     if ( 0U != variablesMap.count( "help" ) )
@@ -113,7 +106,8 @@ int main( int argc, char * argv[] )
     // create validator
     auto validator{ Arinc665::Utils::MediaSetValidator::create() };
 
-    validator->readFileHandler( std::bind_front( &readFile ) )
+    validator
+      ->readFileHandler( std::bind_front( &readFile ) )
       .informationHandler( std::bind_front( &printInformation ) );
 
     // perform validation
@@ -158,9 +152,7 @@ int main( int argc, char * argv[] )
   }
 }
 
-static Arinc665::Files::RawFile readFile(
-  const uint8_t mediumNumber,
-  const std::filesystem::path &path)
+static Arinc665::Files::RawData readFile( const uint8_t mediumNumber, const std::filesystem::path &path )
 {
   // check medium number
   if ( mediumNumber > mediaDirectories.size() )
@@ -168,7 +160,7 @@ static Arinc665::Files::RawFile readFile(
     return {};
   }
 
-  auto filePath{ mediaDirectories[ mediumNumber-1] / path.relative_path() };
+  auto filePath{ mediaDirectories[ mediumNumber-1 ] / path.relative_path() };
 
   // check existence of file
   if ( !std::filesystem::is_regular_file( filePath))
@@ -179,12 +171,10 @@ static Arinc665::Files::RawFile readFile(
         << Helper::AdditionalInfo{ "File not found" } );
   }
 
-  Arinc665::Files::RawFile data( std::filesystem::file_size( filePath ) );
+  Arinc665::Files::RawData data( std::filesystem::file_size( filePath ) );
 
   // load file
-  std::ifstream file{
-    filePath.string().c_str(),
-    std::ifstream::binary | std::ifstream::in };
+  std::ifstream file{ filePath.string().c_str(), std::ifstream::binary | std::ifstream::in };
 
   if ( !file.is_open() )
   {
@@ -193,9 +183,7 @@ static Arinc665::Files::RawFile readFile(
   }
 
   // read the data to the buffer
-  file.read(
-    (char*) &data.at( 0),
-    static_cast< std::streamsize >( data.size() ) );
+  file.read( reinterpret_cast< char * >( data.data() ), static_cast< std::streamsize >( data.size() ) );
 
   // return the buffer
   return data;

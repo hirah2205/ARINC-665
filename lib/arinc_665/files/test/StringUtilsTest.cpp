@@ -25,47 +25,53 @@ BOOST_AUTO_TEST_SUITE( SringUtilsTest )
 //! Decode String Test
 BOOST_AUTO_TEST_CASE( decodeString )
 {
-  ConstRawFileSpan remaining;
+  ConstRawDataSpan remaining;
   std::string out;
 
-  std::tie( remaining, out ) = StringUtils_decodeString( ConstRawFileSpan{ { 0x00, 0x00 } } );
+  const uint8_t rawStr1[]{ 0x00, 0x00 };
+  std::tie( remaining, out ) = StringUtils_decodeString( std::as_bytes( std::span{ rawStr1 } ) );
   BOOST_CHECK( remaining.empty() );
   BOOST_CHECK( out.empty() );
 
-  std::tie( remaining, out ) = StringUtils_decodeString( ConstRawFileSpan{ { 0x00, 0x04, 'T', 'e', 's', 't' } } );
+  const uint8_t rawStr2[]{  0x00, 0x04, 'T', 'e', 's', 't' };
+  std::tie( remaining, out ) = StringUtils_decodeString( std::as_bytes( std::span{ rawStr2 } ) );
   BOOST_CHECK( remaining.empty() );
   BOOST_CHECK( out == "Test" );
 
-  std::tie( remaining, out ) =
-    StringUtils_decodeString( ConstRawFileSpan{ { 0x00, 0x05, 'T', 'e', 's', 't', '1', 0x00 } } );
+  const uint8_t rawStr3[]{ 0x00, 0x05, 'T', 'e', 's', 't', '1', 0x00 };
+  std::tie( remaining, out ) = StringUtils_decodeString( std::as_bytes( std::span{ rawStr3 } ) );
   BOOST_CHECK( remaining.empty() );
   BOOST_CHECK( out == "Test1" );
 
-  BOOST_CHECK_THROW(
-    StringUtils_decodeString( ConstRawFileSpan{ { 0x00, 0x05, 'T', 'e', 's', 't', '1', 1U } } ),
-    Arinc665Exception );
+  const uint8_t rawStr4[]{ 0x00, 0x05, 'T', 'e', 's', 't', '1', 1U };
+  BOOST_CHECK_THROW( StringUtils_decodeString( std::as_bytes( std::span{ rawStr4 } ) ), Arinc665Exception );
 }
 
 //! Encode String Test
 BOOST_AUTO_TEST_CASE( encodeString )
 {
-  BOOST_CHECK( ( StringUtils_encodeString( "Test" ) == RawFile{ { 0x00, 0x04, 'T', 'e', 's', 't' } } ) );
-  BOOST_CHECK( ( StringUtils_encodeString( "Test1" ) ==  RawFile{ { 0x00, 0x05, 'T', 'e', 's', 't', '1', 0x00 } } ) );
-  BOOST_CHECK( ( StringUtils_encodeString( "" ) ==  RawFile{ { 0x00, 0x00 } } ) );
+  const uint8_t expected1[]{ 0x00, 0x04, 'T', 'e', 's', 't' };
+  BOOST_CHECK( std::ranges::equal( StringUtils_encodeString( "Test" ), std::as_bytes( std::span{ expected1 } ) ) );
+
+  const uint8_t expected2[]{ 0x00, 0x05, 'T', 'e', 's', 't', '1', 0x00 };
+  BOOST_CHECK( std::ranges::equal( StringUtils_encodeString( "Test1" ), std::as_bytes( std::span{ expected2 } ) ) );
+
+  const uint8_t expected3[]{ 0x00, 0x00 };
+  BOOST_CHECK( std::ranges::equal( StringUtils_encodeString( "" ), std::as_bytes( std::span{ expected3 } ) ) );
 }
 
 //! Decode Strings Test
 BOOST_AUTO_TEST_CASE( decodeStrings )
 {
-  ConstRawFileSpan remaining;
+  ConstRawDataSpan remaining;
   std::list< std::string > out;
 
-  std::tie( remaining, out ) = StringUtils_decodeStrings(
-    ConstRawFileSpan{
-      { 0x00, 0x03,
-        0x00, 0x04, 'T', 'e', 's', 't',
-        0x00, 0x05, 'T', 'e', 's', 't', '1', 0x00,
-        0x00, 0x00} } );
+  const uint8_t rawStringList1[]{
+    0x00, 0x03,
+    0x00, 0x04, 'T', 'e', 's', 't',
+    0x00, 0x05, 'T', 'e', 's', 't', '1', 0x00,
+    0x00, 0x00 };
+  std::tie( remaining, out ) = StringUtils_decodeStrings( std::as_bytes( std::span{ rawStringList1 } ) );
 
   BOOST_CHECK( remaining.empty() );
   BOOST_CHECK( out.size() == 3 );
@@ -73,7 +79,8 @@ BOOST_AUTO_TEST_CASE( decodeStrings )
   BOOST_CHECK( *std::next( out.begin() ) == "Test1" );
   BOOST_CHECK( std::next( out.begin(), 2 )->empty() );
 
-  std::tie( remaining, out ) = StringUtils_decodeStrings( ConstRawFileSpan{ { 0x00, 0x00 } } );
+  const uint8_t rawStringList2[]{ 0x00, 0x00 };
+  std::tie( remaining, out ) = StringUtils_decodeStrings( std::as_bytes( std::span{ rawStringList2 } ) );
   BOOST_CHECK( remaining.empty() );
   BOOST_CHECK( out.empty() );
 }
@@ -81,15 +88,18 @@ BOOST_AUTO_TEST_CASE( decodeStrings )
 //! Encode Strings Test
 BOOST_AUTO_TEST_CASE( encodeStrings )
 {
-  BOOST_CHECK( ( StringUtils_encodeStrings( {} ) == RawFile{ { 0x00, 0x00 } } ) );
+  const uint8_t expected1[]{ 0x00, 0x00 };
+  BOOST_CHECK( std::ranges::equal( StringUtils_encodeStrings( {} ), std::as_bytes( std::span{ expected1 } ) ) );
 
-  BOOST_CHECK( ( StringUtils_encodeStrings( { "Test", "Test1", "" } )
-    == RawFile{
-      {
-        0x00, 0x03,
-        0x00, 0x04, 'T', 'e', 's', 't',
-        0x00, 0x05, 'T', 'e', 's', 't', '1', 0x00,
-        0x00, 0x00 } } ) );
+  const uint8_t expected2[]{
+    0x00, 0x03,
+    0x00, 0x04, 'T', 'e', 's', 't',
+    0x00, 0x05, 'T', 'e', 's', 't', '1', 0x00,
+    0x00, 0x00 };
+  BOOST_CHECK(
+    std::ranges::equal(
+      StringUtils_encodeStrings( { "Test", "Test1", "" } ),
+      std::as_bytes( std::span{ expected2 } ) ) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

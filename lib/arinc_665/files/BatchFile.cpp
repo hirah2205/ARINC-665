@@ -17,10 +17,10 @@
 
 #include <arinc_665/Arinc665Exception.hpp>
 
-#include <helper/Endianness.hpp>
+#include <helper/Endianess.hpp>
 #include <helper/Exception.hpp>
-#include <helper/SafeCast.hpp>
 #include <helper/Logger.hpp>
+#include <helper/SafeCast.hpp>
 
 #include <boost/exception/all.hpp>
 
@@ -31,13 +31,13 @@ BatchFile::BatchFile( const SupportedArinc665Version version ) :
 {
 }
 
-BatchFile::BatchFile( ConstRawFileSpan rawFile ) :
+BatchFile::BatchFile( ConstRawDataSpan rawFile ) :
   Arinc665File{ rawFile, FileType::BatchFile }
 {
   decodeBody( rawFile );
 }
 
-BatchFile& BatchFile::operator=( ConstRawFileSpan rawFile )
+BatchFile& BatchFile::operator=( ConstRawDataSpan rawFile )
 {
   // call inherited operator
   Arinc665File::operator =( rawFile );
@@ -86,12 +86,12 @@ void BatchFile::targetHardware( BatchTargetInfo targetHardwareInfo )
   targetsHardwareV.push_back( std::move( targetHardwareInfo ) );
 }
 
-RawFile BatchFile::encode() const
+RawData BatchFile::encode() const
 {
-  RawFile rawFile( BatchFileHeaderSizeV2 );
+  RawData rawFile( BatchFileHeaderSizeV2 );
 
   // spare field
-  Helper::setInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, 0U );
+  Helper::setInt< uint16_t>( RawDataSpan{ rawFile }.subspan( SpareFieldOffsetV2 ), 0U );
 
 
   // Next free Offset (used for optional pointer calculation)
@@ -104,8 +104,8 @@ RawFile BatchFile::encode() const
   auto rawComment{ StringUtils_encodeString( commentV ) };
   assert( rawComment.size() % 2 == 0 );
 
-  Helper::setInt< uint32_t>(
-    rawFile.begin() + BatchPartNumberPointerFieldOffsetV2,
+  Helper::setInt< uint32_t >(
+    RawDataSpan{ rawFile }.subspan( BatchPartNumberPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2U ) );
   nextFreeOffset += rawBatchPn.size() + rawComment.size();
 
@@ -118,7 +118,7 @@ RawFile BatchFile::encode() const
   assert( rawThwIdsList.size() % 2 == 0 );
 
   Helper::setInt< uint32_t>(
-    rawFile.begin() + ThwIdsPointerFieldOffsetV2,
+    RawDataSpan{ rawFile }.subspan( ThwIdsPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2U ) );
 
   rawFile.insert( rawFile.end(), rawThwIdsList.begin(), rawThwIdsList.end() );
@@ -135,7 +135,7 @@ RawFile BatchFile::encode() const
   return rawFile;
 }
 
-void BatchFile::decodeBody( ConstRawFileSpan rawFile )
+void BatchFile::decodeBody( ConstRawDataSpan rawFile )
 {
   // Spare field
   auto [ _, spare ]{ Helper::getInt< uint16_t>( rawFile.subspan( SpareFieldOffsetV2 ) ) };
@@ -163,11 +163,11 @@ void BatchFile::decodeBody( ConstRawFileSpan rawFile )
   decodeBatchTargetsInfo( rawFile.subspan( targetHardwareIdListPtr * 2ULL ) );
 }
 
-RawFile BatchFile::encodeBatchTargetsInfo() const
+RawData BatchFile::encodeBatchTargetsInfo() const
 {
   BOOST_LOG_FUNCTION()
 
-  RawFile rawBatchTargetsInfo( sizeof( uint16_t ) ); // Number of THW IDs
+  RawData rawBatchTargetsInfo( sizeof( uint16_t ) ); // Number of THW IDs
 
   // Number of targets must not exceed field
   if ( targetsHardwareV.size() > std::numeric_limits< uint16_t>::max() )
@@ -176,21 +176,15 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
       << Helper::AdditionalInfo{ "More THW IDs than allowed" } );
   }
 
-  Helper::setInt< uint16_t>(
-    rawBatchTargetsInfo.begin(),
-    Helper::safeCast< uint16_t>( targetsHardwareV.size() ) );
+  Helper::setInt< uint16_t>( rawBatchTargetsInfo, Helper::safeCast< uint16_t>( targetsHardwareV.size() ) );
 
   // iterate over target HWs
-  uint16_t thwCounter{ 0};
+  uint16_t thwCounter{ 0 };
   for ( auto const &targetHardwareInfo : targetsHardwareV )
   {
     ++thwCounter;
 
-    auto const rawThwIdPosition{
-      StringUtils_encodeString( targetHardwareInfo.targetHardwareIdPosition ) };
-    assert( rawThwIdPosition.size() % 2 == 0);
-
-    RawFile rawLoadsInfo{};
+    RawData rawLoadsInfo{};
     /* iterate over loads */
     for ( auto const &loadInfo : targetHardwareInfo.loads )
     {
@@ -203,42 +197,39 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
       rawLoadsInfo.insert(
         rawLoadsInfo.end(),
         rawHeaderFilename.begin(),
-        rawHeaderFilename.end());
+        rawHeaderFilename.end() );
       rawLoadsInfo.insert(
         rawLoadsInfo.end(),
         rawPartNumber.begin(),
-        rawPartNumber.end());
+        rawPartNumber.end() );
     }
     assert( rawLoadsInfo.size() % 2 == 0);
 
-    RawFile rawBatchTargetInfo(
-      sizeof( uint16_t ) + // next THW ID pointer
-      rawThwIdPosition.size() +
-      sizeof( uint16_t ) + // number of loads
-      rawLoadsInfo.size() );
+    RawData rawBatchTargetInfo( sizeof( uint16_t ) );
 
-    auto batchTargetInfoIt{ rawBatchTargetInfo.begin() };
+    auto const rawThwIdPosition{
+      StringUtils_encodeString( targetHardwareInfo.targetHardwareIdPosition ) };
+    assert( rawThwIdPosition.size() % 2 == 0);
 
-    // next load pointer (is set to 0 for last load)
-    batchTargetInfoIt = Helper::setInt< uint16_t>(
-      batchTargetInfoIt,
-      ( thwCounter == targetsHardwareV.size() ) ?
-        ( 0U ) :
-        Helper::safeCast< uint16_t>( rawBatchTargetInfo.size() / 2 ) );
+    // THW ID + Position
+    rawBatchTargetInfo.insert( rawBatchTargetInfo.end(), rawThwIdPosition.begin(), rawThwIdPosition.end() );
 
-    // THW ID
-    batchTargetInfoIt = std::copy(
-      rawThwIdPosition.begin(),
-      rawThwIdPosition.end(),
-      batchTargetInfoIt );
+    rawBatchTargetInfo.resize( rawBatchTargetInfo.size() + sizeof( uint16_t ) );
 
     // Number of Loads
-    batchTargetInfoIt = Helper::setInt< uint16_t>(
-      batchTargetInfoIt,
+    Helper::setInt< uint16_t>(
+      RawDataSpan{ rawBatchTargetInfo }.last( sizeof( uint16_t ) ),
       Helper::safeCast< uint16_t>( targetHardwareInfo.loads.size() ) );
 
     // Loads list
-    std::copy( rawLoadsInfo.begin(), rawLoadsInfo.end(), batchTargetInfoIt );
+    rawBatchTargetInfo.insert( rawBatchTargetInfo.end(), rawLoadsInfo.begin(), rawLoadsInfo.end() );
+
+    // next load pointer (is set to 0 for last load)
+    Helper::setInt< uint16_t>(
+      rawBatchTargetInfo,
+      ( thwCounter == targetsHardwareV.size() ) ?
+        ( 0U ) :
+        Helper::safeCast< uint16_t>( rawBatchTargetInfo.size() / 2 ) );
 
     // add THW info to files info
     rawBatchTargetsInfo.insert(
@@ -250,7 +241,7 @@ RawFile BatchFile::encodeBatchTargetsInfo() const
   return rawBatchTargetsInfo;
 }
 
-void BatchFile::decodeBatchTargetsInfo( ConstRawFileSpan rawData )
+void BatchFile::decodeBatchTargetsInfo( ConstRawDataSpan rawData )
 {
   BOOST_LOG_FUNCTION()
 

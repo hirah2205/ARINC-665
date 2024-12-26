@@ -17,7 +17,6 @@
 
 #include <arinc_665/MediumNumber.hpp>
 
-#include <cstdint>
 #include <string>
 #include <vector>
 

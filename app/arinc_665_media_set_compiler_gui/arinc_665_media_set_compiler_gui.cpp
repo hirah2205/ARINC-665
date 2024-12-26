@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -51,13 +50,12 @@ int main( int argc, char * argv[] )
     Arinc665Qt::Resources::initialise();
 
     QApplication application{ argc, argv };
-    QApplication::setApplicationDisplayName(
-      QObject::tr( "ARINC 665 Media Set Compiler" ) );
+    QApplication::setApplicationDisplayName( QObject::tr( "ARINC 665 Media Set Compiler" ) );
     QApplication::setOrganizationName( "Thomas Vogt" );
     QApplication::setOrganizationDomain( "thomas-vogt.de" );
     QApplication::setWindowIcon( QIcon{ ":/fa/solid/gears.svg" } );
 
-    Arinc665Qt::CompileMediaSetWizard compileMediaSetWizard{};
+    Arinc665Qt::CompileMediaSetWizard compileMediaSetWizard;
     compileMediaSetWizard.show();
 
     return QApplication::exec();

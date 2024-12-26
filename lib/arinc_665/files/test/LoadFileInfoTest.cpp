@@ -125,18 +125,20 @@ BOOST_AUTO_TEST_CASE( GetSetCheckValue)
   BOOST_CHECK( loadFileInfo.crc == 0xBABEU );
   BOOST_CHECK( loadFileInfo.checkValue == Arinc645::CheckValue::NoCheckValue );
 
-  BOOST_CHECK_NO_THROW( (
-    loadFileInfo.checkValue =  Arinc645::CheckValue{
-      Arinc645::CheckValueType::Crc8,
-      std::vector< uint8_t>{ 0x12, 0x34} } ) );
+  BOOST_CHECK_NO_THROW(
+    ( loadFileInfo.checkValue = Arinc645::CheckValue{
+        Arinc645::CheckValueType::Crc8,
+        std::vector< std::byte >{ std::byte{ 0x12 }, std::byte{ 0x34 } } } ) );
 
   BOOST_CHECK( loadFileInfo.filename == "NAME");
   BOOST_CHECK( loadFileInfo.partNumber == "PART_NUMBER");
   BOOST_CHECK( loadFileInfo.length == 0xDEADBEEFUL);
   BOOST_CHECK( loadFileInfo.crc == 0xBABEU);
-  BOOST_CHECK( ( loadFileInfo.checkValue == Arinc645::CheckValue{
-    Arinc645::CheckValueType::Crc8,
-    std::vector< uint8_t>{ 0x12, 0x34} } ) );
+  BOOST_CHECK(
+    ( loadFileInfo.checkValue
+      == Arinc645::CheckValue{
+        Arinc645::CheckValueType::Crc8,
+        std::vector< std::byte >{ std::byte{ 0x12 }, std::byte{ 0x34 } } } ) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -20,7 +20,7 @@
 
 #include <arinc_645/CheckValueGenerator.hpp>
 
-#include <helper/Endianness.hpp>
+#include <helper/Endianess.hpp>
 #include <helper/Exception.hpp>
 
 #include <boost/exception/all.hpp>
@@ -32,13 +32,13 @@ FileListFile::FileListFile( const SupportedArinc665Version version ) :
 {
 }
 
-FileListFile::FileListFile( ConstRawFileSpan rawFile ) :
+FileListFile::FileListFile( ConstRawDataSpan rawFile ) :
   ListFile{ rawFile, FileType::FileList }
 {
   decodeBody( rawFile );
 }
 
-FileListFile& FileListFile::operator=( ConstRawFileSpan rawFile )
+FileListFile& FileListFile::operator=( ConstRawDataSpan rawFile )
 {
   Arinc665File::operator =( rawFile );
   decodeBody( rawFile );
@@ -168,7 +168,7 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
   return true;
 }
 
-RawFile FileListFile::encode() const
+RawData FileListFile::encode() const
 {
   BOOST_LOG_FUNCTION()
 
@@ -191,10 +191,10 @@ RawFile FileListFile::encode() const
         << Helper::AdditionalInfo{ "Unsupported ARINC 665 Version" } );
   }
 
-  RawFile rawFile( baseSize );
+  RawData rawFile( baseSize );
 
   // spare field
-  Helper::setInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, 0U );
+  Helper::setInt< uint16_t>( RawDataSpan{ rawFile }.subspan( SpareFieldOffsetV2 ), 0U );
 
   // Next free Offset (used for optional pointer calculation)
   ptrdiff_t nextFreeOffset{ static_cast< ptrdiff_t>( rawFile.size() ) };
@@ -207,7 +207,7 @@ RawFile FileListFile::encode() const
 
   // Update Pointer
   Helper::setInt< uint32_t >(
-    rawFile.begin() + MediaSetPartNumberPointerFieldOffsetV2,
+    RawDataSpan{ rawFile }.subspan( MediaSetPartNumberPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2U ) );
   nextFreeOffset += static_cast< ptrdiff_t >( rawMediaInformation.size() );
 
@@ -217,7 +217,7 @@ RawFile FileListFile::encode() const
   assert( rawFilesInfo.size() % 2 == 0 );
 
   Helper::setInt< uint32_t >(
-    rawFile.begin() + MediaSetFilesPointerFieldOffsetV2,
+    RawDataSpan{ rawFile }.subspan( MediaSetFilesPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2U ) );
   nextFreeOffset += static_cast< ptrdiff_t>( rawFilesInfo.size() );
 
@@ -236,7 +236,7 @@ RawFile FileListFile::encode() const
   }
 
   // update User Defined Data Pointer
-  Helper::setInt< uint32_t >( rawFile.begin() + UserDefinedDataPointerFieldOffsetV2, userDefinedDataPtr );
+  Helper::setInt< uint32_t >( RawDataSpan{ rawFile }.subspan( UserDefinedDataPointerFieldOffsetV2 ), userDefinedDataPtr );
 
 
   // Update Check Value Pointer (only in V3 mode)
@@ -246,7 +246,7 @@ RawFile FileListFile::encode() const
   {
     // Check Value Pointer
     Helper::setInt< uint32_t >(
-      rawFile.begin() + FileCheckValuePointerFieldOffsetV3,
+      RawDataSpan{ rawFile }.subspan( FileCheckValuePointerFieldOffsetV3 ),
       static_cast< uint32_t >( nextFreeOffset / 2 ) );
 
     // Update size
@@ -264,7 +264,7 @@ RawFile FileListFile::encode() const
     const auto rawCheckValue{ CheckValueUtils_encode(
       Arinc645::CheckValueGenerator::checkValue(
         checkValueTypeV,
-        rawFile ).value_or( Arinc645::CheckValue::NoCheckValue ) ) };
+        std::as_bytes( ConstRawDataSpan{ rawFile } ) ).value_or( Arinc645::CheckValue::NoCheckValue ) ) };
     assert( rawCheckValue.size() % 2 == 0 );
 
     rawFile.insert( rawFile.end(), rawCheckValue.begin(), rawCheckValue.end() );
@@ -279,7 +279,7 @@ RawFile FileListFile::encode() const
   return rawFile;
 }
 
-void FileListFile::decodeBody( ConstRawFileSpan rawFile )
+void FileListFile::decodeBody( ConstRawDataSpan rawFile )
 {
   BOOST_LOG_FUNCTION()
 
@@ -302,7 +302,8 @@ void FileListFile::decodeBody( ConstRawFileSpan rawFile )
 
   // Spare Field
   uint16_t spare{};
-  Helper::getInt< uint16_t>( rawFile.begin() + SpareFieldOffsetV2, spare );
+  std::tie( std::ignore, spare ) =
+    Helper::getInt< uint16_t>( rawFile.subspan( SpareFieldOffsetV2 ) );
 
   if ( 0U != spare )
   {
@@ -312,24 +313,26 @@ void FileListFile::decodeBody( ConstRawFileSpan rawFile )
 
   // media information pointer
   uint32_t mediaInformationPtr{};
-  Helper::getInt< uint32_t >( rawFile.begin() + MediaSetPartNumberPointerFieldOffsetV2, mediaInformationPtr );
+  std::tie( std::ignore, mediaInformationPtr ) =
+    Helper::getInt< uint32_t >( rawFile.subspan( MediaSetPartNumberPointerFieldOffsetV2 ) );
 
   // file list pointer
   uint32_t fileListPtr{};
-  Helper::getInt< uint32_t>(
-    rawFile.begin() + MediaSetFilesPointerFieldOffsetV2,
-    fileListPtr);
+  std::tie( std::ignore, fileListPtr ) =
+    Helper::getInt< uint32_t >( rawFile.subspan( MediaSetFilesPointerFieldOffsetV2 ) );
 
   // user defined data pointer
   uint32_t userDefinedDataPtr{};
-  Helper::getInt< uint32_t >( rawFile.begin() + UserDefinedDataPointerFieldOffsetV2, userDefinedDataPtr );
+  std::tie( std::ignore, userDefinedDataPtr ) =
+    Helper::getInt< uint32_t >( rawFile.subspan( UserDefinedDataPointerFieldOffsetV2) );
 
   uint32_t fileCheckValuePtr{};
 
   // only decode this pointers in V3 mode
   if ( decodeV3Data )
   {
-    Helper::getInt< uint32_t >( rawFile.begin() + FileCheckValuePointerFieldOffsetV3, fileCheckValuePtr );
+    std::tie( std::ignore, fileCheckValuePtr ) =
+      Helper::getInt< uint32_t >( rawFile.subspan( FileCheckValuePointerFieldOffsetV3 ) );
   }
 
   // decode Media Information
@@ -373,7 +376,7 @@ void FileListFile::decodeBody( ConstRawFileSpan rawFile )
       // calculate Check Value
       const auto calcCheckValue{ Arinc645::CheckValueGenerator::checkValue(
         checkValueTypeV,
-        rawFile.first( 2U * static_cast< std::size_t >( fileCheckValuePtr ) ) ) };
+        std::as_bytes( rawFile.first( 2U * static_cast< std::size_t >( fileCheckValuePtr ) ) ) ) };
 
       if ( checkValue != calcCheckValue )
       {
@@ -387,11 +390,11 @@ void FileListFile::decodeBody( ConstRawFileSpan rawFile )
   // file crc decoded and checked within base class
 }
 
-RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
+RawData FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
 {
   BOOST_LOG_FUNCTION()
 
-  RawFile rawFilesInfo( sizeof( uint16_t ) );
+  RawData rawFilesInfo( sizeof( uint16_t ) );
 
   // Number of files must not exceed field
   if ( filesV.size() > std::numeric_limits< uint16_t>::max() )
@@ -401,7 +404,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
   }
 
   // number of files
-  Helper::setInt< uint16_t >( rawFilesInfo.begin(), static_cast< uint16_t >( filesV.size() ) );
+  Helper::setInt< uint16_t >( rawFilesInfo, static_cast< uint16_t >( filesV.size() ) );
 
   // iterate over files
   uint16_t fileCounter{ 0 };
@@ -409,7 +412,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
   {
     ++fileCounter;
 
-    RawFile rawFileInfo( sizeof( uint16_t));
+    RawData rawFileInfo( sizeof( uint16_t) );
 
     // filename
     auto const rawFilename{ StringUtils_encodeString( fileInfo.filename ) };
@@ -424,12 +427,12 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
     rawFileInfo.resize( rawFileInfo.size() + ( 2 * sizeof( uint16_t ) ) );
 
     // member sequence number
-    auto fileInfoIt{ Helper::setInt< uint16_t>(
-      rawFileInfo.begin() + static_cast< ptrdiff_t>( rawFileInfo.size() ) - ( 2 * sizeof( uint16_t ) ),
+    auto next{ Helper::setInt< uint16_t>(
+      RawDataSpan{ rawFileInfo }.last( 2 * sizeof( uint16_t ) ),
       static_cast< uint8_t >( fileInfo.memberSequenceNumber ) ) };
 
     // crc
-    Helper::setInt< uint16_t>( fileInfoIt, fileInfo.crc );
+    Helper::setInt< uint16_t>( next, fileInfo.crc );
 
     // following fields are available in ARINC 665-3 ff
     if ( encodeV3Data )
@@ -442,7 +445,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
 
     // next file pointer (is set to 0 for last file)
     Helper::setInt< uint16_t >(
-      rawFileInfo.begin(),
+      rawFileInfo,
       ( fileCounter == numberOfFiles() ) ?
       0U :
       static_cast< uint16_t >( rawFileInfo.size() / 2U ) );
@@ -454,7 +457,7 @@ RawFile FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
   return rawFilesInfo;
 }
 
-void FileListFile::decodeFilesInfo( ConstRawFileSpan rawData, const bool decodeV3Data )
+void FileListFile::decodeFilesInfo( ConstRawDataSpan rawData, const bool decodeV3Data )
 {
   BOOST_LOG_FUNCTION()
 
@@ -546,7 +549,7 @@ void FileListFile::checkUserDefinedData()
     BOOST_LOG_SEV( Logger::get(), Helper::Severity::warning )
       << "User defined data must be 2-byte aligned. - extending range";
 
-    userDefinedDataV.push_back( 0U );
+    userDefinedDataV.push_back( std::byte{ 0U } );
   }
 }
 

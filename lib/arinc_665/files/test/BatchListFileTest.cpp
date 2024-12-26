@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_SUITE( FilesTest )
 BOOST_AUTO_TEST_SUITE( BatchListFileTest )
 
 //! Raw List of Batches File
-static const auto rawBatchListFile{ std::to_array< uint8_t >( {
+static const uint8_t rawBatchListFile[]{
   // header file length
   0x00, 0x00, 0x00, 0x28,
   // Format version
@@ -93,11 +93,11 @@ static const auto rawBatchListFile{ std::to_array< uint8_t >( {
   0x01, 0x02, 0x03, 0x04, 0x05, 0x06,
 
   // File CRC
-  0x36, 0x95 } ) };
+  0x36, 0x95 };
 
 BOOST_AUTO_TEST_CASE( constructor1 )
 {
-  BatchListFile file{ rawBatchListFile };
+  BatchListFile file{ std::as_bytes( std::span{ rawBatchListFile } ) };
 
   BOOST_CHECK( file.arincVersion() == SupportedArinc665Version::Supplement2 );
 
@@ -119,14 +119,12 @@ BOOST_AUTO_TEST_CASE( constructor1 )
   BOOST_CHECK( batch->memberSequenceNumber == MediumNumber{ 1U } );
 
   BOOST_CHECK( file.userDefinedData().size() == 6 );
-  BOOST_CHECK( std::equal(
-    file.userDefinedData().begin(),
-    file.userDefinedData().end(),
-    std::to_array< uint8_t >( { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 } ).begin() ) );
 
-  const auto raw2{ static_cast< RawFile >( file ) };
+  const uint8_t expected[]{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };
+  BOOST_CHECK( std::ranges::equal( file.userDefinedData(), std::as_bytes( std::span{ expected } ) ) );
 
-  BOOST_CHECK( std::ranges::equal( rawBatchListFile, raw2 ) );
+  const auto raw2{ static_cast< RawData >( file ) };
+  BOOST_CHECK( std::ranges::equal( std::as_bytes( std::span{ rawBatchListFile } ), raw2 ) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

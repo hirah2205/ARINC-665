@@ -19,7 +19,6 @@
 
 #include <arinc_645/Arinc645.hpp>
 
-#include <cstdint>
 #include <span>
 #include <string>
 #include <string_view>
@@ -92,13 +91,13 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
     static constexpr ptrdiff_t FileCheckValuePointerFieldOffsetV3{ 20 };
 
     //! First Start of pointer Data for ARINC 665-1 File List File.
-    static constexpr ptrdiff_t FileHeaderSizeV1 = 18;
+    static constexpr ptrdiff_t FileHeaderSizeV1{ 18 };
 
     //! First Start of pointer Data for ARINC 665-2 File List File.
-    static constexpr ptrdiff_t FileHeaderSizeV2 = 20;
+    static constexpr ptrdiff_t FileHeaderSizeV2{ 20 };
 
     //! First Start of pointer Data for ARINC 665-3/4/5 File List File.
-    static constexpr ptrdiff_t FileHeaderSizeV3 = 24;
+    static constexpr ptrdiff_t FileHeaderSizeV3{ 24 };
 
     /**
      * @brief Creates an empty file list file.
@@ -114,13 +113,13 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit FileListFile( ConstRawFileSpan rawFile );
+    explicit FileListFile( ConstRawDataSpan rawFile );
 
     //! Destructor.
     ~FileListFile() override = default;
 
-    //! @copydoc ListFile::operator=(ConstRawFileSpan)
-    FileListFile& operator=( ConstRawFileSpan rawFile ) override;
+    //! @copydoc ListFile::operator=(ConstRawDataSpan)
+    FileListFile& operator=( ConstRawDataSpan rawFile ) override;
 
     //! @copydoc ListFile::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept override;
@@ -228,7 +227,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
 
   private:
     //! @copydoc ListFile::encode
-    [[nodiscard]] RawFile encode() const override;
+    [[nodiscard]] RawData encode() const override;
 
     /**
      * @brief Decodes the body of the file list file.
@@ -236,7 +235,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
      * @param[in] rawFile
      *   Raw file list file representation.
      **/
-    void decodeBody( ConstRawFileSpan rawFile );
+    void decodeBody( ConstRawDataSpan rawFile );
 
     /**
      * @brief Encodes the files information list.
@@ -246,7 +245,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
      *
      * @return Raw representation of files information list.
      **/
-    [[nodiscard]] RawFile encodeFilesInfo( bool encodeV3Data ) const;
+    [[nodiscard]] RawData encodeFilesInfo( bool encodeV3Data ) const;
 
     /**
      * @brief Decodes the files information list from the raw data.
@@ -256,7 +255,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
      * @param[in] decodeV3Data
      *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      **/
-    void decodeFilesInfo( ConstRawFileSpan rawData, bool decodeV3Data );
+    void decodeFilesInfo( ConstRawDataSpan rawData, bool decodeV3Data );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.
