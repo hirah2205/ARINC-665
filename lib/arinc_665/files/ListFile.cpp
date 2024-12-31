@@ -17,8 +17,8 @@
 
 #include <arinc_665/Arinc665Exception.hpp>
 
-#include <helper/Endianess.hpp>
 #include <helper/Exception.hpp>
+#include <helper/RawData.hpp>
 
 #include <boost/exception/all.hpp>
 
@@ -84,10 +84,10 @@ RawData ListFile::encodeMediaInformation() const
   auto remaining{ RawDataSpan{ rawMediaInformation}.subspan( partNumberSize ) };
 
   // media sequence number
-  remaining = Helper::setInt( remaining, static_cast< uint8_t >( mediaSequenceNumberV ) );
+  remaining = Helper::RawData_setInt( remaining, static_cast< uint8_t >( mediaSequenceNumberV ) );
 
   // number of media set members
-  Helper::setInt< uint8_t>( remaining, static_cast< uint8_t >( numberOfMediaSetMembersV ) );
+  Helper::RawData_setInt< uint8_t>( remaining, static_cast< uint8_t >( numberOfMediaSetMembersV ) );
 
   return rawMediaInformation;
 }
@@ -101,12 +101,12 @@ void ListFile::decodeMediaInformation( ConstRawDataSpan rawData )
 
   // media sequence number
   uint8_t mediaSequenceNumber;
-  std::tie( remaining, mediaSequenceNumber ) = Helper::getInt< uint8_t >( remaining );
+  std::tie( remaining, mediaSequenceNumber ) = Helper::RawData_getInt< uint8_t >( remaining );
   mediaSequenceNumberV = mediaSequenceNumber;
 
   // number of media set members
   uint8_t numberOfMediaSetMembers;
-  std::tie( std::ignore, numberOfMediaSetMembers ) = Helper::getInt< uint8_t >( remaining );
+  std::tie( std::ignore, numberOfMediaSetMembers ) = Helper::RawData_getInt< uint8_t >( remaining );
   numberOfMediaSetMembersV = numberOfMediaSetMembers;
 }
 

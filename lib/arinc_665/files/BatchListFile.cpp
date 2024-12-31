@@ -17,8 +17,8 @@
 #include <arinc_665/Arinc665Exception.hpp>
 #include <arinc_665/Logger.hpp>
 
-#include <helper/Endianess.hpp>
 #include <helper/Exception.hpp>
+#include <helper/RawData.hpp>
 #include <helper/SafeCast.hpp>
 
 #include <boost/exception/all.hpp>
@@ -105,7 +105,7 @@ RawData BatchListFile::encode() const
   RawData rawFile( FileHeaderSizeV2 );
 
   // Spare Field
-  Helper::setInt< uint16_t>( RawDataSpan{ rawFile }.subspan( SpareFieldOffsetV2 ), 0U );
+  Helper::RawData_setInt< uint16_t>( RawDataSpan{ rawFile }.subspan( SpareFieldOffsetV2 ), 0U );
 
   // Next free Offset (used for optional pointer calculation)
   size_t nextFreeOffset{ rawFile.size() };
@@ -117,7 +117,7 @@ RawData BatchListFile::encode() const
   rawFile.insert( rawFile.end(), rawMediaInformation.begin(), rawMediaInformation.end() );
 
   // Update Pointer
-  Helper::setInt< uint32_t >(
+  Helper::RawData_setInt< uint32_t >(
     RawDataSpan{ rawFile }.subspan(  MediaSetPartNumberPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2U ) );
   nextFreeOffset += static_cast< ptrdiff_t >( rawMediaInformation.size() );
@@ -128,7 +128,7 @@ RawData BatchListFile::encode() const
   assert( rawBatchesInfo.size() % 2 == 0 );
 
   // batches list pointer
-  Helper::setInt< uint32_t >(
+  Helper::RawData_setInt< uint32_t >(
     RawDataSpan{ rawFile }.subspan( BatchFilesPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2U ) );
   nextFreeOffset += rawBatchesInfo.size();
@@ -147,7 +147,9 @@ RawData BatchListFile::encode() const
     rawFile.insert( rawFile.end(), userDefinedDataV.begin(), userDefinedDataV.end() );
   }
 
-  Helper::setInt< uint32_t >( RawDataSpan{ rawFile }.subspan( UserDefinedDataPointerFieldOffsetV2 ), userDefinedDataPtr );
+  Helper::RawData_setInt< uint32_t >(
+    RawDataSpan{ rawFile }.subspan( UserDefinedDataPointerFieldOffsetV2 ),
+    userDefinedDataPtr );
 
   // set header
   insertHeader( rawFile );
@@ -166,7 +168,7 @@ void BatchListFile::decodeBody( ConstRawDataSpan rawFile )
   BOOST_LOG_FUNCTION()
 
   // Spare Field
-  auto [ _, spare ]{ Helper::getInt< uint16_t >( rawFile.subspan( SpareFieldOffsetV2 ) ) };
+  auto [ _, spare ]{ Helper::RawData_getInt< uint16_t >( rawFile.subspan( SpareFieldOffsetV2 ) ) };
 
   if ( 0U != spare )
   {
@@ -177,13 +179,14 @@ void BatchListFile::decodeBody( ConstRawDataSpan rawFile )
 
   // media information pointer
   auto [ _1, mediaInformationPtr ]{
-    Helper::getInt< uint32_t>( rawFile.subspan( MediaSetPartNumberPointerFieldOffsetV2 ) ) };
+    Helper::RawData_getInt< uint32_t>( rawFile.subspan( MediaSetPartNumberPointerFieldOffsetV2 ) ) };
 
   // batch list pointer
-  auto [ _2, batchListPtr ]{ Helper::getInt< uint32_t >( rawFile.subspan( BatchFilesPointerFieldOffsetV2 ) ) };
+  auto [ _2, batchListPtr ]{ Helper::RawData_getInt< uint32_t >( rawFile.subspan( BatchFilesPointerFieldOffsetV2 ) ) };
 
   // user defined data pointer
-  auto [ _3, userDefinedDataPtr]{ Helper::getInt< uint32_t >( rawFile.subspan( UserDefinedDataPointerFieldOffsetV2 ) ) };
+  auto [_3, userDefinedDataPtr]{
+    Helper::RawData_getInt< uint32_t >( rawFile.subspan( UserDefinedDataPointerFieldOffsetV2 ) ) };
 
   // decode media information
   decodeMediaInformation( rawFile.subspan( 2ULL * mediaInformationPtr ) );
@@ -216,7 +219,7 @@ RawData BatchListFile::encodeBatchesInfo() const
   }
 
   // number of batches
-  Helper::setInt< uint16_t >( rawBatchesInfo, static_cast< uint16_t >( batchesV.size() ) );
+  Helper::RawData_setInt< uint16_t >( rawBatchesInfo, static_cast< uint16_t >( batchesV.size() ) );
 
   // iterate over batches
   uint16_t batchCounter{ 0 };
@@ -233,7 +236,7 @@ RawData BatchListFile::encodeBatchesInfo() const
     assert( rawFilename.size() % 2 == 0 );
 
     // next pointer
-    Helper::setInt< uint16_t >(
+    Helper::RawData_setInt< uint16_t >(
       rawBatchInfo,
       (batchCounter == numberOfBatches() ) ?
       0U :
@@ -251,7 +254,7 @@ RawData BatchListFile::encodeBatchesInfo() const
     // member sequence number
     rawBatchInfo.resize( rawBatchInfo.size() + sizeof( uint16_t ) );
 
-    Helper::setInt< uint16_t >(
+    Helper::RawData_setInt< uint16_t >(
       RawDataSpan{ rawBatchInfo }.last( sizeof( uint16_t ) ),
       static_cast< uint8_t >( batchInfo.memberSequenceNumber ) );
 
@@ -273,7 +276,7 @@ void BatchListFile::decodeBatchesInfo( ConstRawDataSpan rawData )
 
   // number of batches
   uint16_t numberOfBatches;
-  std::tie( remaining, numberOfBatches ) = Helper::getInt< uint16_t >( remaining );
+  std::tie( remaining, numberOfBatches ) = Helper::RawData_getInt< uint16_t >( remaining );
 
   // iterate over batch indexes
   for ( uint16_t batchIndex = 0; batchIndex < numberOfBatches; ++batchIndex )
@@ -282,7 +285,7 @@ void BatchListFile::decodeBatchesInfo( ConstRawDataSpan rawData )
 
     // next batch pointer
     uint16_t batchPointer{};
-    std::tie( listRemaining, batchPointer ) = Helper::getInt< uint16_t>( listRemaining );
+    std::tie( listRemaining, batchPointer ) = Helper::RawData_getInt< uint16_t>( listRemaining );
 
     // check batch pointer for validity
     if ( batchIndex != numberOfBatches - 1U )
@@ -312,7 +315,7 @@ void BatchListFile::decodeBatchesInfo( ConstRawDataSpan rawData )
 
     // member sequence number
     uint16_t memberSequenceNumber{};
-    std::tie( listRemaining, memberSequenceNumber ) = Helper::getInt< uint16_t >( listRemaining );
+    std::tie( listRemaining, memberSequenceNumber ) = Helper::RawData_getInt< uint16_t >( listRemaining );
     if ( ( memberSequenceNumber < 1U ) || ( memberSequenceNumber > 255U ) )
     {
       BOOST_THROW_EXCEPTION( InvalidArinc665File()

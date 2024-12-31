@@ -17,8 +17,8 @@
 #include <arinc_645/CheckValue.hpp>
 #include <arinc_645/CheckValueTypeDescription.hpp>
 
-#include <helper/Endianess.hpp>
 #include <helper/Exception.hpp>
+#include <helper/RawData.hpp>
 #include <helper/SafeCast.hpp>
 
 #include <boost/exception/all.hpp>
@@ -42,10 +42,10 @@ RawData CheckValueUtils_encode( const Arinc645::CheckValue &checkValue )
   }
 
   // Length + Type
-  RawData rawCheckValue( 2 *sizeof( uint16_t ) );
+  RawData rawCheckValue( 2 * sizeof( uint16_t ) );
 
   // Check Value Type Field
-  Helper::setInt< uint16_t >(
+  Helper::RawData_setInt< uint16_t >(
     RawDataSpan{ rawCheckValue }.subspan( sizeof( uint16_t ) ),
     static_cast< uint16_t >( checkValue.type() ) );
 
@@ -55,7 +55,7 @@ RawData CheckValueUtils_encode( const Arinc645::CheckValue &checkValue )
   rawCheckValue.insert( rawCheckValue.end(), checkValueData.begin(), checkValueData.end() );
 
   // Check Value Length
-  Helper::setInt< uint16_t >( rawCheckValue, Helper::safeCast< uint16_t >( rawCheckValue.size() ) );
+  Helper::RawData_setInt< uint16_t >( rawCheckValue, Helper::safeCast< uint16_t >( rawCheckValue.size() ) );
 
   return rawCheckValue;
 }
@@ -70,7 +70,7 @@ Arinc645::CheckValue CheckValueUtils_decode( ConstRawDataSpan rawFile )
   }
 
   // Check Value Length
-  auto [ remainingData, checkValueLength ] = Helper::getInt< uint16_t>( rawFile );
+  auto [ remainingData, checkValueLength ] = Helper::RawData_getInt< uint16_t>( rawFile );
 
   // Special handling of empty check value
   if ( 0U == checkValueLength )
@@ -86,7 +86,7 @@ Arinc645::CheckValue CheckValueUtils_decode( ConstRawDataSpan rawFile )
 
   // Check Value Type
   uint16_t rawCheckValueType{};
-  std::tie( remainingData, rawCheckValueType ) = Helper::getInt< uint16_t >( remainingData );
+  std::tie( remainingData, rawCheckValueType ) = Helper::RawData_getInt< uint16_t >( remainingData );
 
   const auto checkValueType{ Arinc645::CheckValueTypeDescription::instance().enumeration( rawCheckValueType ) };
 

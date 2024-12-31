@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -17,9 +16,9 @@
 
 #include <arinc_665/Arinc665Exception.hpp>
 
-#include <helper/Endianess.hpp>
 #include <helper/Exception.hpp>
 #include <helper/Logger.hpp>
+#include <helper/RawData.hpp>
 #include <helper/SafeCast.hpp>
 
 #include <boost/exception/all.hpp>
@@ -91,7 +90,7 @@ RawData BatchFile::encode() const
   RawData rawFile( BatchFileHeaderSizeV2 );
 
   // spare field
-  Helper::setInt< uint16_t>( RawDataSpan{ rawFile }.subspan( SpareFieldOffsetV2 ), 0U );
+  Helper::RawData_setInt< uint16_t>( RawDataSpan{ rawFile }.subspan( SpareFieldOffsetV2 ), 0U );
 
 
   // Next free Offset (used for optional pointer calculation)
@@ -104,7 +103,7 @@ RawData BatchFile::encode() const
   auto rawComment{ StringUtils_encodeString( commentV ) };
   assert( rawComment.size() % 2 == 0 );
 
-  Helper::setInt< uint32_t >(
+  Helper::RawData_setInt< uint32_t >(
     RawDataSpan{ rawFile }.subspan( BatchPartNumberPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2U ) );
   nextFreeOffset += rawBatchPn.size() + rawComment.size();
@@ -117,7 +116,7 @@ RawData BatchFile::encode() const
   auto rawThwIdsList{ encodeBatchTargetsInfo() };
   assert( rawThwIdsList.size() % 2 == 0 );
 
-  Helper::setInt< uint32_t>(
+  Helper::RawData_setInt< uint32_t>(
     RawDataSpan{ rawFile }.subspan( ThwIdsPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2U ) );
 
@@ -138,7 +137,7 @@ RawData BatchFile::encode() const
 void BatchFile::decodeBody( ConstRawDataSpan rawFile )
 {
   // Spare field
-  auto [ _, spare ]{ Helper::getInt< uint16_t>( rawFile.subspan( SpareFieldOffsetV2 ) ) };
+  auto [ _, spare ]{ Helper::RawData_getInt< uint16_t>( rawFile.subspan( SpareFieldOffsetV2 ) ) };
 
   if ( 0U != spare )
   {
@@ -147,9 +146,10 @@ void BatchFile::decodeBody( ConstRawDataSpan rawFile )
   }
 
   auto [ _1, batchPartNumberPtr]{
-    Helper::getInt< uint32_t >( rawFile.subspan( BatchPartNumberPointerFieldOffsetV2 ) ) };
+    Helper::RawData_getInt< uint32_t >( rawFile.subspan( BatchPartNumberPointerFieldOffsetV2 ) ) };
 
-  auto [ _2, targetHardwareIdListPtr]{ Helper::getInt< uint32_t >( rawFile.subspan( ThwIdsPointerFieldOffsetV2 ) ) };
+  auto [_2, targetHardwareIdListPtr]{
+    Helper::RawData_getInt< uint32_t >( rawFile.subspan( ThwIdsPointerFieldOffsetV2 ) ) };
 
   auto remaining{ rawFile.subspan( batchPartNumberPtr * 2ULL ) };
 
@@ -176,7 +176,7 @@ RawData BatchFile::encodeBatchTargetsInfo() const
       << Helper::AdditionalInfo{ "More THW IDs than allowed" } );
   }
 
-  Helper::setInt< uint16_t>( rawBatchTargetsInfo, Helper::safeCast< uint16_t>( targetsHardwareV.size() ) );
+  Helper::RawData_setInt< uint16_t>( rawBatchTargetsInfo, Helper::safeCast< uint16_t>( targetsHardwareV.size() ) );
 
   // iterate over target HWs
   uint16_t thwCounter{ 0 };
@@ -217,7 +217,7 @@ RawData BatchFile::encodeBatchTargetsInfo() const
     rawBatchTargetInfo.resize( rawBatchTargetInfo.size() + sizeof( uint16_t ) );
 
     // Number of Loads
-    Helper::setInt< uint16_t>(
+    Helper::RawData_setInt< uint16_t>(
       RawDataSpan{ rawBatchTargetInfo }.last( sizeof( uint16_t ) ),
       Helper::safeCast< uint16_t>( targetHardwareInfo.loads.size() ) );
 
@@ -225,17 +225,14 @@ RawData BatchFile::encodeBatchTargetsInfo() const
     rawBatchTargetInfo.insert( rawBatchTargetInfo.end(), rawLoadsInfo.begin(), rawLoadsInfo.end() );
 
     // next load pointer (is set to 0 for last load)
-    Helper::setInt< uint16_t>(
+    Helper::RawData_setInt< uint16_t>(
       rawBatchTargetInfo,
       ( thwCounter == targetsHardwareV.size() ) ?
         ( 0U ) :
         Helper::safeCast< uint16_t>( rawBatchTargetInfo.size() / 2 ) );
 
     // add THW info to files info
-    rawBatchTargetsInfo.insert(
-      rawBatchTargetsInfo.end(),
-      rawBatchTargetInfo.begin(),
-      rawBatchTargetInfo.end() );
+    rawBatchTargetsInfo.insert( rawBatchTargetsInfo.end(), rawBatchTargetInfo.begin(), rawBatchTargetInfo.end() );
   }
 
   return rawBatchTargetsInfo;
@@ -252,7 +249,7 @@ void BatchFile::decodeBatchTargetsInfo( ConstRawDataSpan rawData )
 
   // number of target HW IDs
   uint16_t numberOfTargetHardwareIds{};
-  std::tie( remaining, numberOfTargetHardwareIds ) = Helper::getInt< uint16_t >( remaining );
+  std::tie( remaining, numberOfTargetHardwareIds ) = Helper::RawData_getInt< uint16_t >( remaining );
 
   // iterate over THW ID index
   for ( uint16_t thwIdIndex{ 0U }; thwIdIndex < numberOfTargetHardwareIds; ++thwIdIndex )
@@ -261,7 +258,7 @@ void BatchFile::decodeBatchTargetsInfo( ConstRawDataSpan rawData )
 
     // next THW ID pointer
     uint16_t thwIdPointer{};
-    std::tie( listRemaining, thwIdPointer ) = Helper::getInt< uint16_t>( listRemaining );
+    std::tie( listRemaining, thwIdPointer ) = Helper::RawData_getInt< uint16_t>( listRemaining );
 
     // check file pointer for validity
     if ( thwIdIndex != numberOfTargetHardwareIds - 1U )
@@ -290,7 +287,7 @@ void BatchFile::decodeBatchTargetsInfo( ConstRawDataSpan rawData )
 
     // number of loads
     uint16_t numberOfLoads{};
-    std::tie( listRemaining, numberOfLoads ) = Helper::getInt< uint16_t>( listRemaining );
+    std::tie( listRemaining, numberOfLoads ) = Helper::RawData_getInt< uint16_t>( listRemaining );
 
     // iterate over load index
     for ( uint16_t loadIndex{ 0U }; loadIndex < numberOfLoads; ++loadIndex )

@@ -16,8 +16,8 @@
 
 #include <arinc_645/Arinc645Crc.hpp>
 
-#include <helper/Endianess.hpp>
 #include <helper/Exception.hpp>
+#include <helper/RawData.hpp>
 #include <helper/SafeCast.hpp>
 
 #include <boost/exception/all.hpp>
@@ -49,7 +49,7 @@ uint32_t Arinc665File::fileLength( ConstRawDataSpan file )
   }
 
   // decode the file length
-  auto [ _, fileLength ]{ Helper::getInt< uint32_t >( file.subspan( FileLengthFieldOffset ) ) };
+  auto [ _, fileLength ]{ Helper::RawData_getInt< uint32_t >( file.subspan( FileLengthFieldOffset ) ) };
 
   return fileLength;
 }
@@ -64,7 +64,7 @@ uint16_t Arinc665File::formatVersion( ConstRawDataSpan file )
   }
 
   // decode the format version
-  auto [ _, formatVersion ]{ Helper::getInt< uint16_t >( file.subspan( FileFormatVersionFieldOffset ) ) };
+  auto [ _, formatVersion ]{ Helper::RawData_getInt< uint16_t >( file.subspan( FileFormatVersionFieldOffset ) ) };
 
   return formatVersion;
 }
@@ -385,10 +385,10 @@ void Arinc665File::insertHeader( RawDataSpan rawFile, const std::size_t addition
   }
 
   // file size
-  Helper::setInt( rawFile.subspan( FileLengthFieldOffset ), Helper::safeCast< uint32_t >( fileSize / 2U ) );
+  Helper::RawData_setInt( rawFile.subspan( FileLengthFieldOffset ), Helper::safeCast< uint32_t >( fileSize / 2U ) );
 
   // format version
-  Helper::setInt< uint16_t >(
+  Helper::RawData_setInt< uint16_t >(
     rawFile.subspan( FileFormatVersionFieldOffset ),
     formatVersionField( fileType(), arinc665VersionV ) );
 }
@@ -399,7 +399,7 @@ void Arinc665File::calculateFileCrc( RawDataSpan rawFile ) const
   const auto calculatedCrc{ calculateChecksum( rawFile.first( rawFile.size() - checksumPosition ) ) };
 
   // set crc field
-  Helper::setInt< uint16_t >( rawFile.last( checksumPosition ), calculatedCrc );
+  Helper::RawData_setInt< uint16_t >( rawFile.last( checksumPosition ), calculatedCrc );
 }
 
 void Arinc665File::decodeHeader( ConstRawDataSpan rawFile, const FileType expectedFileType )
@@ -412,7 +412,7 @@ void Arinc665File::decodeHeader( ConstRawDataSpan rawFile, const FileType expect
   }
 
   // check size field
-  auto [ _, fileLength ]{ Helper::getInt< uint32_t >( rawFile.subspan( FileLengthFieldOffset ) ) };
+  auto [ _, fileLength ]{ Helper::RawData_getInt< uint32_t >( rawFile.subspan( FileLengthFieldOffset ) ) };
 
   if ( static_cast< size_t >( fileLength ) * 2U != rawFile.size() )
   {
@@ -421,7 +421,7 @@ void Arinc665File::decodeHeader( ConstRawDataSpan rawFile, const FileType expect
   }
 
   // format version
-  auto [ _1, formatVersion ]{ Helper::getInt< uint16_t >( rawFile.subspan( FileFormatVersionFieldOffset ) ) };
+  auto [ _1, formatVersion ]{ Helper::RawData_getInt< uint16_t >( rawFile.subspan( FileFormatVersionFieldOffset ) ) };
 
   const auto optionalArinc665Version{ arinc665Version( expectedFileType, formatVersion ) };
 
@@ -435,7 +435,7 @@ void Arinc665File::decodeHeader( ConstRawDataSpan rawFile, const FileType expect
   arinc665VersionV = *optionalArinc665Version;
 
   // Decode checksum field
-  auto [ _2, crc ]{ Helper::getInt< uint16_t >( rawFile.last( checksumPosition ) ) };
+  auto [ _2, crc ]{ Helper::RawData_getInt< uint16_t >( rawFile.last( checksumPosition ) ) };
 
   // calculate checksum and compare against stored
   const auto calcCrc{ calculateChecksum( rawFile.first( rawFile.size() - checksumPosition ) ) };

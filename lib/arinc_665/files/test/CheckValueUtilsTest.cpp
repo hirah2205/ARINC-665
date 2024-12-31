@@ -17,7 +17,7 @@
 #include <arinc_645/CheckValue.hpp>
 
 #include <helper/Dump.hpp>
-#include <helper/Endianess.hpp>
+#include <helper/RawData.hpp>
 
 #include <boost/test/unit_test.hpp>
 
@@ -60,11 +60,13 @@ BOOST_AUTO_TEST_CASE( CheckValueUtils_decode1 )
 
   BOOST_CHECK( ( cv3 == Arinc645::CheckValue{ Arinc645::CheckValueType::Crc16, RawData{ 0x12_b, 0x34_b } } ) );
 
-  BOOST_CHECK_THROW( (void)CheckValueUtils_decode( RawData{} ), Arinc665Exception );
+  BOOST_CHECK_THROW( boost::ignore_unused( CheckValueUtils_decode( RawData{} ) ), Arinc665Exception );
 
-  BOOST_CHECK_THROW( (void)CheckValueUtils_decode( RawData{ 0x00_b } ), Arinc665Exception );
+  BOOST_CHECK_THROW( boost::ignore_unused( CheckValueUtils_decode( RawData{ 0x00_b } ) ), Arinc665Exception );
 
-  BOOST_CHECK_THROW( (void)CheckValueUtils_decode( RawData{ 0x00_b, 0x05_b, 0x00_b, 0x01_b, 0x12_b } ), Arinc665Exception );
+  BOOST_CHECK_THROW(
+    boost::ignore_unused( CheckValueUtils_decode( RawData{ 0x00_b, 0x05_b, 0x00_b, 0x01_b, 0x12_b } ) ),
+    Arinc665Exception );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

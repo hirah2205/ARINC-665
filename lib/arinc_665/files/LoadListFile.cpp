@@ -17,8 +17,8 @@
 #include <arinc_665/Logger.hpp>
 #include <arinc_665/Arinc665Exception.hpp>
 
-#include <helper/Endianess.hpp>
 #include <helper/Exception.hpp>
+#include <helper/RawData.hpp>
 #include <helper/SafeCast.hpp>
 
 #include <boost/exception/all.hpp>
@@ -106,7 +106,7 @@ RawData LoadListFile::encode() const
   RawData rawFile( FileHeaderSizeV2 );
 
   // Spare Field
-  Helper::setInt< uint16_t>( RawDataSpan{ rawFile }.subspan( SpareFieldOffsetV2 ), 0U );
+  Helper::RawData_setInt< uint16_t>( RawDataSpan{ rawFile }.subspan( SpareFieldOffsetV2 ), 0U );
 
   // Next free Offset (used for optional pointer calculation)
   ptrdiff_t nextFreeOffset{ static_cast< ptrdiff_t >( rawFile.size() ) };
@@ -117,7 +117,7 @@ RawData LoadListFile::encode() const
   rawFile.insert( rawFile.end(), rawMediaInformation.begin(), rawMediaInformation.end() );
 
   // media set information pointer
-  Helper::setInt< uint32_t >(
+  Helper::RawData_setInt< uint32_t >(
     RawDataSpan{ rawFile }.subspan( MediaSetPartNumberPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2U ) );
   nextFreeOffset += static_cast< ptrdiff_t >( rawMediaInformation.size() );
@@ -127,7 +127,7 @@ RawData LoadListFile::encode() const
   assert( rawLoadsInfo.size() % 2 == 0);
 
   // loads list pointer
-  Helper::setInt< uint32_t>(
+  Helper::RawData_setInt< uint32_t >(
     RawDataSpan{ rawFile }.subspan( LoadFilesPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2U ) );
   nextFreeOffset += static_cast< ptrdiff_t >( rawLoadsInfo.size() );
@@ -142,13 +142,10 @@ RawData LoadListFile::encode() const
   {
     userDefinedDataPtr = static_cast< uint32_t >( nextFreeOffset / 2U );
 
-    rawFile.insert(
-      rawFile.end(),
-      userDefinedDataV.begin(),
-      userDefinedDataV.end());
+    rawFile.insert( rawFile.end(), userDefinedDataV.begin(), userDefinedDataV.end() );
   }
 
-  Helper::setInt< uint32_t>(
+  Helper::RawData_setInt< uint32_t>(
     RawDataSpan{ rawFile }.subspan( UserDefinedDataPointerFieldOffsetV2 ),
     userDefinedDataPtr );
 
@@ -170,7 +167,7 @@ void LoadListFile::decodeBody( ConstRawDataSpan rawFile )
   BOOST_LOG_FUNCTION()
 
   // Spare Field
-  auto [ _, spare ]{ Helper::getInt< uint16_t >( rawFile.subspan( SpareFieldOffsetV2 ) ) };
+  auto [ _, spare ]{ Helper::RawData_getInt< uint16_t >( rawFile.subspan( SpareFieldOffsetV2 ) ) };
   if ( 0U != spare )
   {
     BOOST_THROW_EXCEPTION( InvalidArinc665File()
@@ -179,15 +176,15 @@ void LoadListFile::decodeBody( ConstRawDataSpan rawFile )
 
   // media information pointer
   auto [ _1, mediaInformationPtr ]{
-    Helper::getInt< uint32_t >( rawFile.subspan( MediaSetPartNumberPointerFieldOffsetV2 ) ) };
+    Helper::RawData_getInt< uint32_t >( rawFile.subspan( MediaSetPartNumberPointerFieldOffsetV2 ) ) };
 
   // Loads list pointer
   auto [ _2, loadListPtr ]{
-    Helper::getInt< uint32_t >( rawFile.subspan( LoadFilesPointerFieldOffsetV2 ) ) };
+    Helper::RawData_getInt< uint32_t >( rawFile.subspan( LoadFilesPointerFieldOffsetV2 ) ) };
 
   // user defined data pointer
   auto [ _3, userDefinedDataPtr ]{
-    Helper::getInt< uint32_t >( rawFile.subspan( UserDefinedDataPointerFieldOffsetV2 ) ) };
+    Helper::RawData_getInt< uint32_t >( rawFile.subspan( UserDefinedDataPointerFieldOffsetV2 ) ) };
 
   // decode Media Information
   decodeMediaInformation( rawFile.subspan( 2ULL * mediaInformationPtr ) );
@@ -220,7 +217,7 @@ RawData LoadListFile::encodeLoadsInfo() const
   }
 
   // number of loads
-  Helper::setInt< uint16_t >( rawLoadsInfo, Helper::safeCast< uint16_t >( loadsV.size() ) );
+  Helper::RawData_setInt< uint16_t >( rawLoadsInfo, Helper::safeCast< uint16_t >( loadsV.size() ) );
 
   // iterate over files
   uint16_t loadCounter{ 0 };
@@ -242,7 +239,7 @@ RawData LoadListFile::encodeLoadsInfo() const
 
     // member sequence number
     rawLoadInfo.resize( rawLoadInfo.size() + sizeof( uint16_t ) );
-    Helper::setInt< uint16_t >(
+    Helper::RawData_setInt< uint16_t >(
       RawDataSpan{ rawLoadInfo }.last( sizeof( uint16_t ) ),
       static_cast< uint8_t >( loadInfo.memberSequenceNumber ) );
 
@@ -252,7 +249,7 @@ RawData LoadListFile::encodeLoadsInfo() const
     rawLoadInfo.insert( rawLoadInfo.end(), rawThwIds.begin(), rawThwIds.end() );
 
     // next load pointer (is set to 0 for last load)
-    Helper::setInt< uint16_t>(
+    Helper::RawData_setInt< uint16_t >(
       rawLoadInfo,
       ( loadCounter == numberOfLoads() ) ?
         0U :
@@ -273,7 +270,7 @@ void LoadListFile::decodeLoadsInfo( ConstRawDataSpan rawData )
 
   // number of loads
   uint16_t numberOfLoads{};
-  std::tie( remaining, numberOfLoads ) = Helper::getInt< uint16_t>( remaining );
+  std::tie( remaining, numberOfLoads ) = Helper::RawData_getInt< uint16_t>( remaining );
 
   // iterate of load counter
   for ( uint16_t loadIndex = 0; loadIndex < numberOfLoads; ++loadIndex )
@@ -282,7 +279,7 @@ void LoadListFile::decodeLoadsInfo( ConstRawDataSpan rawData )
 
     // next load pointer
     uint16_t loadPointer{};
-    std::tie( listRemaining, loadPointer ) = Helper::getInt< uint16_t >( listRemaining );
+    std::tie( listRemaining, loadPointer ) = Helper::RawData_getInt< uint16_t >( listRemaining );
 
     // check load pointer for validity
     if ( loadIndex != numberOfLoads - 1U )
@@ -312,7 +309,7 @@ void LoadListFile::decodeLoadsInfo( ConstRawDataSpan rawData )
 
     // member sequence number
     uint16_t fileMemberSequenceNumber;
-    std::tie( listRemaining, fileMemberSequenceNumber ) = Helper::getInt< uint16_t >( listRemaining );
+    std::tie( listRemaining, fileMemberSequenceNumber ) = Helper::RawData_getInt< uint16_t >( listRemaining );
     if ( ( fileMemberSequenceNumber < 1U ) || ( fileMemberSequenceNumber > 255U ) )
     {
       BOOST_THROW_EXCEPTION( InvalidArinc665File()
