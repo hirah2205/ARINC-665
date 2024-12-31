@@ -14,8 +14,8 @@
 
 #include <arinc_665/Arinc665Exception.hpp>
 
-#include <helper/Endianess.hpp>
 #include <helper/Exception.hpp>
+#include <helper/RawData.hpp>
 #include <helper/SafeCast.hpp>
 
 #include <boost/exception/all.hpp>
@@ -24,17 +24,17 @@
 
 namespace Arinc665::Files {
 
-std::tuple< ConstRawDataSpan, std::string > StringUtils_decodeString( ConstRawDataSpan rawData )
+std::tuple< ConstRawDataSpan, std::string_view > StringUtils_decodeString( ConstRawDataSpan rawData )
 {
   auto remaining{ rawData };
 
   // string length
   uint16_t stringLength{};
-  std::tie( remaining, stringLength ) = Helper::getInt< uint16_t >( remaining );
+  std::tie( remaining, stringLength ) = Helper::RawData_getInt< uint16_t >( remaining );
 
   // copy string
-  std::string string{ reinterpret_cast< char const * >( remaining.data() ), stringLength };
-  remaining = remaining.subspan( stringLength );
+  std::string_view string;
+  std::tie( remaining, string ) =  Helper::RawData_getString( remaining, stringLength );
 
   // if string is odd skip filled 0-character
   if ( stringLength % 2 == 1 )
@@ -58,10 +58,10 @@ RawData StringUtils_encodeString( std::string_view string )
 
   // set string length
   rawString.resize( sizeof( uint16_t ) );
-  Helper::setInt< uint16_t >( rawString, Helper::safeCast< uint16_t >( string.size() ) );
+  Helper::RawData_setInt< uint16_t >( rawString, Helper::safeCast< uint16_t >( string.size() ) );
 
   // copy string
-  auto stringSpan{ ConstRawDataSpan{ reinterpret_cast< std::byte const * >( string.data() ), string.size() } };
+  auto stringSpan{ Helper::RawData_toRawData( string ) };
   rawString.insert( rawString.end(), stringSpan.begin(), stringSpan.end() );
 
   // fill string if it is odd
@@ -82,14 +82,14 @@ std::tuple< ConstRawDataSpan, std::list< std::string > > StringUtils_decodeStrin
 
   // number of strings
   uint16_t numberOfEntries{};
-  std::tie( remaining, numberOfEntries ) = Helper::getInt< uint16_t >( remaining );
+  std::tie( remaining, numberOfEntries ) = Helper::RawData_getInt< uint16_t >( remaining );
 
   for ( uint16_t index = 0U; index < numberOfEntries; ++index )
   {
     // string
-    std::string string;
+    std::string_view string;
     std::tie( remaining, string ) = StringUtils_decodeString( remaining );
-    strings.emplace_back( std::move( string ) );
+    strings.emplace_back( string );
   }
 
   return { remaining, strings };
@@ -100,7 +100,7 @@ RawData StringUtils_encodeStrings( const std::list< std::string > &strings )
   RawData rawStrings( sizeof( uint16_t ) );
 
   // set number of strings
-  Helper::setInt< uint16_t >( rawStrings, Helper::safeCast< uint16_t >( strings.size() ) );
+  Helper::RawData_setInt< uint16_t >( rawStrings, Helper::safeCast< uint16_t >( strings.size() ) );
 
   for ( const auto &string : strings )
   {

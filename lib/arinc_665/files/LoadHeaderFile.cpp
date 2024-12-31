@@ -557,7 +557,7 @@ void LoadHeaderFile::decodeBody( ConstRawDataSpan rawFile )
 
     auto [ _, loadTypeValue ]{ Helper::getInt< uint16_t>( remaining ) };
 
-    loadType( {std::make_pair(std::move( loadTypeDescription ), loadTypeValue ) } );
+    loadType( LoadType{ { std::string{ loadTypeDescription }, loadTypeValue } } );
   }
 
   // Target Hardware ID list
