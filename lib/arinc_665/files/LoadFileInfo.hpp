@@ -17,9 +17,9 @@
 
 #include <arinc_645/CheckValue.hpp>
 
-#include <string>
-#include <optional>
 #include <cstdint>
+#include <optional>
+#include <string>
 
 namespace Arinc665::Files {
 
