@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -33,12 +32,10 @@ class FilesystemMediaSetDecompilerImpl final : public FilesystemMediaSetDecompil
     ~FilesystemMediaSetDecompilerImpl() override;
 
     //! @copydoc FilesystemMediaSetDecompiler::progressHandler()
-    FilesystemMediaSetDecompiler& progressHandler(
-      MediaSetDecompiler::ProgressHandler progressHandler ) override;
+    FilesystemMediaSetDecompiler& progressHandler( MediaSetDecompiler::ProgressHandler progressHandler ) override;
 
     //! @copydoc FilesystemMediaSetDecompiler::checkFileIntegrity()
-    FilesystemMediaSetDecompiler& checkFileIntegrity(
-      bool checkFileIntegrity ) noexcept override;
+    FilesystemMediaSetDecompiler& checkFileIntegrity( bool checkFileIntegrity ) noexcept override;
 
     //! @copydoc FilesystemMediaSetDecompiler::mediaPaths()
     FilesystemMediaSetDecompiler& mediaPaths( MediaPaths mediaPaths ) override;
@@ -61,9 +58,7 @@ class FilesystemMediaSetDecompilerImpl final : public FilesystemMediaSetDecompil
      *
      * @return File Size
      **/
-    [[nodiscard]] size_t getFileSize(
-      const Arinc665::MediumNumber &mediumNumber,
-      const std::filesystem::path &path );
+    [[nodiscard]] size_t getFileSize( const Arinc665::MediumNumber &mediumNumber, const std::filesystem::path &path );
 
     /**
      * @brief Reads the give file and returns the data.

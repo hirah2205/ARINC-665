@@ -2,14 +2,12 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class
- *   Arinc665Commands::MediaSetManager::CreateMediaSetManagerCommand.
+ * @brief Definition of Class Arinc665Commands::MediaSetManager::CreateMediaSetManagerCommand.
  **/
 
 #include "CreateMediaSetManagerCommand.hpp"
@@ -37,8 +35,7 @@ CreateMediaSetManagerCommand::CreateMediaSetManagerCommand() :
   );
 }
 
-void CreateMediaSetManagerCommand::execute(
-  const Commands::Parameters &parameters )
+void CreateMediaSetManagerCommand::execute( const Commands::Parameters &parameters )
 {
   BOOST_LOG_FUNCTION()
 
@@ -46,11 +43,9 @@ void CreateMediaSetManagerCommand::execute(
   {
     std::cout << "Create ARINC 665 Media Set Manager\n";
 
-    boost::program_options::variables_map variablesMap{};
+    boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::command_line_parser( parameters )
-        .options( optionsDescription )
-        .run(),
+      boost::program_options::command_line_parser( parameters ).options( optionsDescription ).run(),
       variablesMap );
     boost::program_options::notify( variablesMap );
 
@@ -58,8 +53,7 @@ void CreateMediaSetManagerCommand::execute(
       << "Media Set Manager directory: "
       << mediaSetManagerDirectory.string() << "\n";
 
-    auto mediaSetManager{
-      Arinc665::Utils::MediaSetManager::create( mediaSetManagerDirectory ) };
+    auto mediaSetManager{ Arinc665::Utils::MediaSetManager::create( mediaSetManagerDirectory ) };
     assert( mediaSetManager );
   }
   catch ( const boost::program_options::error & )

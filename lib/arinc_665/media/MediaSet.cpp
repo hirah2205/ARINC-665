@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -29,7 +28,7 @@ MediaSetPtr MediaSet::create()
   return std::make_shared< MediaSet >( CreateKey{} );
 }
 
-MediaSet::MediaSet( [[maybe_unused]] const CreateKey &createKey ):
+MediaSet::MediaSet( [[maybe_unused]] const CreateKey &createKey ) :
   ContainerEntity{ MediumNumber{ 1U } }
 {
 }
@@ -190,19 +189,15 @@ void MediaSet::mediaSetCheckValueType(
 
 Arinc645::CheckValueType MediaSet::effectiveListOfFilesCheckValueType() const
 {
-  return listOfFilesCheckValueTypeV.value_or(
-    mediaSetCheckValueTypeV.value_or(
-      Arinc645::CheckValueType::NotUsed ) );
+  return listOfFilesCheckValueTypeV.value_or( mediaSetCheckValueTypeV.value_or( Arinc645::CheckValueType::NotUsed ) );
 }
 
-std::optional< Arinc645::CheckValueType >
-MediaSet::listOfFilesCheckValueType() const
+std::optional< Arinc645::CheckValueType > MediaSet::listOfFilesCheckValueType() const
 {
   return listOfFilesCheckValueTypeV;
 }
 
-void MediaSet::listOfFilesCheckValueType(
-  std::optional< Arinc645::CheckValueType > type )
+void MediaSet::listOfFilesCheckValueType( std::optional< Arinc645::CheckValueType > type )
 {
   listOfFilesCheckValueTypeV = type;
 }
@@ -213,32 +208,27 @@ Arinc645::CheckValueType MediaSet::effectiveListOfLoadsCheckValueType() const
     listOfLoadsCheckValueTypeV.value_or( effectiveFilesCheckValueType() );
 }
 
-std::optional< Arinc645::CheckValueType >
-MediaSet::listOfLoadsCheckValueType() const
+std::optional< Arinc645::CheckValueType > MediaSet::listOfLoadsCheckValueType() const
 {
   return listOfLoadsCheckValueTypeV;
 }
 
-void MediaSet::listOfLoadsCheckValueType(
-  std::optional< Arinc645::CheckValueType > type )
+void MediaSet::listOfLoadsCheckValueType( std::optional< Arinc645::CheckValueType > type )
 {
   listOfLoadsCheckValueTypeV = type;
 }
 
 Arinc645::CheckValueType MediaSet::effectiveListOfBatchesCheckValueType() const
 {
-  return
-    listOfBatchesCheckValueTypeV.value_or( effectiveFilesCheckValueType() );
+  return listOfBatchesCheckValueTypeV.value_or( effectiveFilesCheckValueType() );
 }
 
-std::optional< Arinc645::CheckValueType >
-MediaSet::listOfBatchesCheckValueType() const
+std::optional< Arinc645::CheckValueType > MediaSet::listOfBatchesCheckValueType() const
 {
   return listOfBatchesCheckValueTypeV;
 }
 
-void MediaSet::listOfBatchesCheckValueType(
-  std::optional< Arinc645::CheckValueType > type )
+void MediaSet::listOfBatchesCheckValueType( std::optional< Arinc645::CheckValueType > type )
 {
   listOfBatchesCheckValueTypeV = type;
 }
@@ -253,8 +243,7 @@ std::optional< Arinc645::CheckValueType > MediaSet::filesCheckValueType() const
   return filesCheckValueTypeV;
 }
 
-void MediaSet::filesCheckValueType(
-  std::optional< Arinc645::CheckValueType > type )
+void MediaSet::filesCheckValueType( std::optional< Arinc645::CheckValueType > type )
 {
   filesCheckValueTypeV = type;
 }

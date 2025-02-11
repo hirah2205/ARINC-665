@@ -116,8 +116,7 @@ class ARINC_665_EXPORT Arinc665File
      * @retval LoadFileFormatVersion::Invalid
      *   When @p rawFile is not a load header file
      **/
-    static std::optional< LoadFileFormatVersion > loadFileFormatVersion(
-      ConstRawDataSpan rawFile );
+    static std::optional< LoadFileFormatVersion > loadFileFormatVersion( ConstRawDataSpan rawFile );
 
     /**
      * @brief Returns the batch file version for @p rawFile.
@@ -129,8 +128,7 @@ class ARINC_665_EXPORT Arinc665File
      * @retval {}
      *   When @p rawFile is not a batch file
      **/
-    static std::optional< BatchFileFormatVersion > batchFileFormatVersion(
-      ConstRawDataSpan rawFile );
+    static std::optional< BatchFileFormatVersion > batchFileFormatVersion( ConstRawDataSpan rawFile );
 
     /**
      * @brief Returns the media file version for @p rawFile
@@ -142,8 +140,7 @@ class ARINC_665_EXPORT Arinc665File
      * @retval {}
      *   When @p rawFile is not a media file
      **/
-    static std::optional< MediaFileFormatVersion > mediaFileFormatVersion(
-      ConstRawDataSpan rawFile );
+    static std::optional< MediaFileFormatVersion > mediaFileFormatVersion( ConstRawDataSpan rawFile );
 
     /**
      * @brief Returns the Supported ARINC 665 Version for the given @p fileType and @p formatVersionField.
@@ -171,9 +168,7 @@ class ARINC_665_EXPORT Arinc665File
      *
      * @return Format version field of file.
      **/
-    static uint16_t formatVersionField(
-      FileType fileType,
-      SupportedArinc665Version arinc665Version ) noexcept;
+    static uint16_t formatVersionField( FileType fileType, SupportedArinc665Version arinc665Version ) noexcept;
 
     /**
      * @brief Detects the file type for the given filename.

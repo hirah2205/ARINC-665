@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -25,22 +24,19 @@
 
 namespace Arinc665::Utils {
 
-FilesystemMediaSetCopier& FilesystemMediaSetCopierImpl::mediaPaths(
-  MediaPaths mediaPaths )
+FilesystemMediaSetCopier& FilesystemMediaSetCopierImpl::mediaPaths( MediaPaths mediaPaths )
 {
   mediaPathsV = std::move( mediaPaths );
   return * this;
 }
 
-FilesystemMediaSetCopier& FilesystemMediaSetCopierImpl::outputBasePath(
-  std::filesystem::path outputBasePath )
+FilesystemMediaSetCopier &FilesystemMediaSetCopierImpl::outputBasePath( std::filesystem::path outputBasePath )
 {
   outputBasePathV = std::move( outputBasePath );
   return *this;
 }
 
-FilesystemMediaSetCopier& FilesystemMediaSetCopierImpl::mediaSetName(
-  std::string mediaSetName )
+FilesystemMediaSetCopier &FilesystemMediaSetCopierImpl::mediaSetName( std::string mediaSetName )
 {
   mediaSetNameV = std::move( mediaSetName );
   return *this;
@@ -69,8 +65,7 @@ MediaSetPaths FilesystemMediaSetCopierImpl::operator()()
 
   // Create output directory
   if ( std::error_code err{};
-    !std::filesystem::create_directories( mediaSetBasePath, err )
-      || err )
+    !std::filesystem::create_directories( mediaSetBasePath, err ) || err )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception{}
       << Helper::AdditionalInfo{ err.message() }
@@ -81,8 +76,7 @@ MediaSetPaths FilesystemMediaSetCopierImpl::operator()()
   MediaPaths destinationMediaPaths{};
   for ( auto const &[ mediumNumber, mediumPath ] : mediaPathsV )
   {
-    auto destinationMediumDir{
-      std::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) ) };
+    auto destinationMediumDir{ std::format( "MEDIUM_{:03d}", static_cast< uint8_t >( mediumNumber ) ) };
 
     // copy medium
     std::filesystem::copy(
@@ -91,9 +85,7 @@ MediaSetPaths FilesystemMediaSetCopierImpl::operator()()
       std::filesystem::copy_options::recursive );
 
     // store medium destination path
-    destinationMediaPaths.try_emplace(
-      mediumNumber,
-      destinationMediumDir );
+    destinationMediaPaths.try_emplace( mediumNumber, destinationMediumDir );
   }
 
   return { mediaSetNameV, destinationMediaPaths };

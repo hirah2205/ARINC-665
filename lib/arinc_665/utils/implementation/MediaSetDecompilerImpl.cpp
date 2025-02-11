@@ -103,25 +103,20 @@ void MediaSetDecompilerImpl::loadFirstMedium()
   {
     // get file type
     // skip list files and handle load headers and batch files separate
-    if (
-      const auto fileType{ Arinc665::Files::Arinc665File::fileType( fileInfo.filename ) };
-      fileType )
+    if ( const auto fileType{ Arinc665::Files::Arinc665File::fileType( fileInfo.filename ) }; fileType )
     {
       switch ( *fileType )
       {
         using enum Arinc665::FileType;
 
         case FileList:
-          BOOST_THROW_EXCEPTION( Arinc665Exception()
-            << Helper::AdditionalInfo{
-              "File List File not expected to be in FILES.LUM" } );
+          BOOST_THROW_EXCEPTION( Arinc665Exception{} << Helper::AdditionalInfo{ "File List File not expected to be in FILES.LUM" } );
 
         case LoadList:
           // check that List of Loads is in Root Directory
           if ( fileInfo.pathName != "\\" )
           {
-            BOOST_THROW_EXCEPTION( Arinc665Exception()
-              << Helper::AdditionalInfo{ "LOADS.LUM not in Root Directory" } );
+            BOOST_THROW_EXCEPTION( Arinc665Exception{} << Helper::AdditionalInfo{ "LOADS.LUM not in Root Directory" } );
           }
 
           listOfLoadsFilePresent = true;
@@ -250,17 +245,12 @@ void MediaSetDecompilerImpl::loadFirstMedium()
 void MediaSetDecompilerImpl::loadFurtherMedia() const
 {
   // iterate over media
-  for (
-    MediumNumber mediumNumber{ 2U };
-    mediumNumber <= fileListFileV.numberOfMediaSetMembers();
-    ++mediumNumber )
+  for ( MediumNumber mediumNumber{ 2U }; mediumNumber <= fileListFileV.numberOfMediaSetMembers(); ++mediumNumber )
   {
     // Call progress handler
     if ( progressHandlerV )
     {
-      progressHandlerV(
-        fileListFileV.mediaSetPn(),
-        { mediumNumber, fileListFileV.numberOfMediaSetMembers() } );
+      progressHandlerV( fileListFileV.mediaSetPn(), { mediumNumber, fileListFileV.numberOfMediaSetMembers() } );
     }
 
     // Load "list of files" file
@@ -466,9 +456,8 @@ void MediaSetDecompilerImpl::addLoad(
   }
 
   // validate THW IDs of load header against list of loads
-  if ( std::multiset< std::string, std::less<> >{
-      loadInfo.targetHardwareIds.begin(),
-      loadInfo.targetHardwareIds.end() }
+  if (
+    std::multiset< std::string, std::less<> >{ loadInfo.targetHardwareIds.begin(), loadInfo.targetHardwareIds.end() }
     != std::multiset< std::string, std::less<> >{
       loadHeaderFile.targetHardwareIds().begin(),
       loadHeaderFile.targetHardwareIds().end() } )
@@ -542,12 +531,7 @@ void MediaSetDecompilerImpl::addLoad(
     const auto supportFileInfo{ regularFilesV.find( supportFilePtr ) };
     assert( supportFileInfo != regularFilesV.end() );
 
-    checkLoadFile(
-      loadCrc,
-      *loadCheckValueGenerator,
-      supportFileInfo->second,
-      loadFileInfo,
-      false );
+    checkLoadFile( loadCrc, *loadCheckValueGenerator, supportFileInfo->second, loadFileInfo, false );
 
     load.supportFile( supportFilePtr, loadFileInfo.partNumber, loadFileInfo.checkValue.type() );
 

@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -33,18 +32,17 @@ class FilesystemMediaSetCopierImpl final : public FilesystemMediaSetCopier
       std::filesystem::path outputBasePath ) override;
 
     //! @copydoc FilesystemMediaSetCopier::mediaSetName()
-    FilesystemMediaSetCopier& mediaSetName(
-      std::string mediaSetName ) override;
+    FilesystemMediaSetCopier& mediaSetName( std::string mediaSetName ) override;
 
     [[nodiscard]] MediaSetPaths operator()() override;
 
   private:
     //! Media Paths
-    MediaPaths mediaPathsV{};
+    MediaPaths mediaPathsV;
     //! Output Base Path
-    std::filesystem::path outputBasePathV{};
+    std::filesystem::path outputBasePathV;
     //! Media Set Name
-    std::string mediaSetNameV{};
+    std::string mediaSetNameV;
 };
 
 }

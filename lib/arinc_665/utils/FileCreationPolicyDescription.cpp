@@ -26,12 +26,12 @@ FileCreationPolicyDescription::FileCreationPolicyDescription():
 {
 }
 
-std::ostream &operator<<( std::ostream &stream, const FileCreationPolicy fileCreationPolicy )
+std::ostream& operator<<( std::ostream &stream, const FileCreationPolicy fileCreationPolicy )
 {
   return ( stream << FileCreationPolicyDescription::instance().name( fileCreationPolicy ) );
 }
 
-std::istream &operator>>( std::istream &stream, FileCreationPolicy &fileCreationPolicy )
+std::istream& operator>>( std::istream &stream, FileCreationPolicy &fileCreationPolicy )
 {
   std::string str;
 

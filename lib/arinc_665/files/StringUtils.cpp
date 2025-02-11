@@ -42,8 +42,7 @@ std::tuple< ConstRawDataSpan, std::string_view > StringUtils_decodeString( Const
     // check fill-character
     if ( std::byte{ 0 } != remaining.front() )
     {
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "Fill character not '0'" } );
+      BOOST_THROW_EXCEPTION( Arinc665Exception{} << Helper::AdditionalInfo{ "Fill character not '0'" } );
     }
     remaining = remaining.subspan( 1 );
   }

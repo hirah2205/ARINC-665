@@ -54,13 +54,12 @@ LoadHeaderFile::processLoadCheckValue( ConstRawDataSpan rawFile, Arinc645::Check
   }
 
   // Obtain Load Check Value Pointer
-  auto [_, loadCheckValuePtr]{
+  auto [ _, loadCheckValuePtr ]{
     Helper::RawData_getInt< uint32_t >( rawFile.subspan( LoadCheckValuePointerFieldOffsetV3 ) ) };
 
   if ( 0U == loadCheckValuePtr )
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Load Check Value Ptr invalid" } );
+    BOOST_THROW_EXCEPTION( Arinc665Exception{} << Helper::AdditionalInfo{ "Load Check Value Ptr invalid" } );
   }
 
   // process check value
@@ -76,13 +75,12 @@ void LoadHeaderFile::encodeLoadCheckValue( RawDataSpan rawFile, const Arinc645::
   }
 
   // Obtain Load Check Value Pointer
-  auto [_, loadCheckValuePtr]{
+  auto [ _, loadCheckValuePtr ]{
     Helper::RawData_getInt< uint32_t >( rawFile.subspan( LoadCheckValuePointerFieldOffsetV3 ) ) };
 
   if ( 0U == loadCheckValuePtr )
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "Load Check Value Ptr invalid" } );
+    BOOST_THROW_EXCEPTION( Arinc665Exception{} << Helper::AdditionalInfo{ "Load Check Value Ptr invalid" } );
   }
 
   // write load check value to position
@@ -103,7 +101,7 @@ Arinc645::CheckValue LoadHeaderFile::decodeLoadCheckValue( ConstRawDataSpan rawF
     return Arinc645::CheckValue::NoCheckValue;
   }
 
-  auto [_, loadCheckValuePtr]{
+  auto [ _, loadCheckValuePtr ]{
     Helper::RawData_getInt< uint32_t >( rawFile.subspan( LoadCheckValuePointerFieldOffsetV3 ) ) };
 
   if ( 0U == loadCheckValuePtr )
@@ -293,8 +291,7 @@ RawData LoadHeaderFile::encode() const
       break;
 
     default:
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "Unsupported ARINC 665 Version" } );
+      BOOST_THROW_EXCEPTION( Arinc665Exception{} << Helper::AdditionalInfo{ "Unsupported ARINC 665 Version" } );
   }
 
   RawData rawFile( baseSize );
@@ -502,8 +499,7 @@ void LoadHeaderFile::decodeBody( ConstRawDataSpan rawFile )
       if ( partFlags != 0U )
       {
         partFlagsV = 0;
-        BOOST_THROW_EXCEPTION( Arinc665Exception()
-          << Helper::AdditionalInfo{ "Spare not 0" } );
+        BOOST_THROW_EXCEPTION( Arinc665Exception{} << Helper::AdditionalInfo{ "Spare not 0" } );
       }
       break;
 
@@ -513,8 +509,7 @@ void LoadHeaderFile::decodeBody( ConstRawDataSpan rawFile )
       break;
 
     default:
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "Unsupported ARINC 665 Version" } );
+      BOOST_THROW_EXCEPTION( Arinc665Exception{} << Helper::AdditionalInfo{ "Unsupported ARINC 665 Version" } );
   }
 
   uint32_t loadPartNumberPtr{};
@@ -611,20 +606,17 @@ void LoadHeaderFile::decodeBody( ConstRawDataSpan rawFile )
   {
     ptrdiff_t endOfUserDefinedData{ static_cast< ptrdiff_t>( rawFile.size() ) - FileCrcOffset };
 
-    if (loadCheckValuePtr != 0)
+    if ( loadCheckValuePtr != 0 )
     {
-      if (loadCheckValuePtr <= userDefinedDataPtr)
+      if ( loadCheckValuePtr <= userDefinedDataPtr )
       {
-        BOOST_THROW_EXCEPTION( InvalidArinc665File()
-          << Helper::AdditionalInfo{ "Invalid Pointers" } );
+        BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "Invalid Pointers" } );
       }
 
       endOfUserDefinedData = loadCheckValuePtr * 2LL;
     }
 
-    userDefinedDataV.assign(
-      rawFile.begin() + userDefinedDataPtr * 2LL,
-      rawFile.begin() + endOfUserDefinedData );
+    userDefinedDataV.assign( rawFile.begin() + userDefinedDataPtr * 2LL, rawFile.begin() + endOfUserDefinedData );
   }
 
   // Load Check Value Field (ARINC 665-3) - Only Type is stored.
@@ -634,7 +626,6 @@ void LoadHeaderFile::decodeBody( ConstRawDataSpan rawFile )
   {
     loadCheckValueTypeV = CheckValueUtils_decode( rawFile.subspan( loadCheckValuePtr * 2ULL ) ).type();
   }
-
 
   // file crc decoded and checked within base class
 
@@ -650,8 +641,7 @@ RawData LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
   // Number of files must not exceed field
   if ( dataFilesV.size() > std::numeric_limits< uint16_t >::max() )
   {
-    BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << Helper::AdditionalInfo{ "More files than allowed" } );
+    BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "More files than allowed" } );
   }
 
   // number of files
@@ -681,7 +671,7 @@ RawData LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
     // file length - rounded number of 16-bit words
     const uint32_t fileLength{ Helper::safeCast< uint32_t >( ( fileInfo.length + 1U ) / 2U ) };
 
-    Helper::RawData_setInt< uint32_t>(
+    Helper::RawData_setInt< uint32_t >(
       RawDataSpan{ rawFileInfo }.last( sizeof( uint32_t ) + sizeof( uint16_t ) ),
       fileLength );
 
@@ -702,11 +692,9 @@ RawData LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
     }
 
     // next load pointer (is set to 0 for last load)
-    Helper::RawData_setInt< uint16_t>(
+    Helper::RawData_setInt< uint16_t >(
       rawFileInfo,
-      ( fileCounter == dataFilesV.size() ) ?
-        0U :
-        Helper::safeCast< uint16_t>( rawFileInfo.size() / 2U ) );
+      ( fileCounter == dataFilesV.size() ) ? 0U : Helper::safeCast< uint16_t >( rawFileInfo.size() / 2U ) );
 
     // add file info to files info
     rawFileList.insert( rawFileList.end(), rawFileInfo.begin(), rawFileInfo.end() );
@@ -724,8 +712,7 @@ RawData LoadHeaderFile::encodeSupportFiles( const bool encodeV3Data ) const
   // Number of files must not exceed field
   if ( supportFilesV.size() > std::numeric_limits< uint16_t>::max() )
   {
-    BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << Helper::AdditionalInfo{ "More files than allowed" } );
+    BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "More files than allowed" } );
   }
 
   // number of loads
@@ -774,9 +761,7 @@ RawData LoadHeaderFile::encodeSupportFiles( const bool encodeV3Data ) const
     // next load pointer (is set to 0 for last load)
     Helper::RawData_setInt< uint16_t >(
       rawFileInfo,
-      ( fileCounter == supportFilesV.size() ) ?
-        0U :
-        Helper::safeCast< uint16_t>( rawFileInfo.size() / 2U ) );
+      ( fileCounter == supportFilesV.size() ) ? 0U : Helper::safeCast< uint16_t >( rawFileInfo.size() / 2U ) );
 
     // add file info to files info
     rawFileList.insert( rawFileList.end(), rawFileInfo.begin(), rawFileInfo.end() );
@@ -812,16 +797,14 @@ void LoadHeaderFile::decodeDataFiles( ConstRawDataSpan rawData, const bool decod
     {
       if ( filePointer == 0U )
       {
-        BOOST_THROW_EXCEPTION( InvalidArinc665File()
-          << Helper::AdditionalInfo{ "next file pointer is 0" } );
+        BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "next file pointer is 0" } );
       }
     }
     else
     {
       if ( filePointer != 0U )
       {
-        BOOST_THROW_EXCEPTION( InvalidArinc665File()
-          << Helper::AdditionalInfo{ "next file pointer is not 0" } );
+        BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "next file pointer is not 0" } );
       }
     }
 
@@ -909,16 +892,14 @@ void LoadHeaderFile::decodeSupportFiles( ConstRawDataSpan rawData, bool decodeV3
     {
       if ( filePointer == 0U )
       {
-        BOOST_THROW_EXCEPTION( InvalidArinc665File()
-          << Helper::AdditionalInfo{ "next file pointer is 0" } );
+        BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "next file pointer is 0" } );
       }
     }
     else
     {
       if ( filePointer != 0U )
       {
-        BOOST_THROW_EXCEPTION( InvalidArinc665File()
-          << Helper::AdditionalInfo{ "next file pointer is not 0" } );
+        BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "next file pointer is not 0" } );
       }
     }
 
@@ -939,7 +920,7 @@ void LoadHeaderFile::decodeSupportFiles( ConstRawDataSpan rawData, bool decodeV3
     std::tie( listRemaining, crc ) = Helper::RawData_getInt< uint16_t >( listRemaining );
 
     // CheckValue - if not decoded "no check value"
-   Arinc645::CheckValue checkValue{ Arinc645::CheckValue::NoCheckValue };
+    Arinc645::CheckValue checkValue{ Arinc645::CheckValue::NoCheckValue };
 
     // following fields are available in ARINC 665-3 ff
     if ( decodeV3Data )
@@ -952,12 +933,8 @@ void LoadHeaderFile::decodeSupportFiles( ConstRawDataSpan rawData, bool decodeV3
     remaining = remaining.subspan( filePointer * 2ULL );
 
     // file info
-    supportFilesV.emplace_back( LoadFileInfo{
-      std::move( name ),
-      std::move( partNumber ),
-      length,
-      crc,
-      std::move( checkValue ) } );
+    supportFilesV.emplace_back(
+      LoadFileInfo{ std::move( name ), std::move( partNumber ), length, crc, std::move( checkValue ) } );
   }
 }
 

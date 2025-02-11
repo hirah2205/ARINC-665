@@ -28,12 +28,12 @@ SupportedArinc665VersionDescription::SupportedArinc665VersionDescription() :
 {
 }
 
-std::ostream &operator<<( std::ostream &stream, const SupportedArinc665Version version )
+std::ostream& operator<<( std::ostream &stream, const SupportedArinc665Version version )
 {
   return ( stream << SupportedArinc665VersionDescription::instance().name( version ) );
 }
 
-std::istream &operator>>( std::istream &stream, SupportedArinc665Version &version )
+std::istream& operator>>( std::istream &stream, SupportedArinc665Version &version )
 {
   std::string versionStr;
 

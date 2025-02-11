@@ -170,8 +170,7 @@ void LoadListFile::decodeBody( ConstRawDataSpan rawFile )
   auto [ _, spare ]{ Helper::RawData_getInt< uint16_t >( rawFile.subspan( SpareFieldOffsetV2 ) ) };
   if ( 0U != spare )
   {
-    BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << Helper::AdditionalInfo{ "Spare is not 0" } );
+    BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "Spare is not 0" } );
   }
 
   // media information pointer
@@ -251,9 +250,7 @@ RawData LoadListFile::encodeLoadsInfo() const
     // next load pointer (is set to 0 for last load)
     Helper::RawData_setInt< uint16_t >(
       rawLoadInfo,
-      ( loadCounter == numberOfLoads() ) ?
-        0U :
-        static_cast< uint16_t >( rawLoadInfo.size() / 2U ) );
+      ( loadCounter == numberOfLoads() ) ? 0U : static_cast< uint16_t >( rawLoadInfo.size() / 2U ) );
 
     // add file info to files info
     rawLoadsInfo.insert( rawLoadsInfo.end(), rawLoadInfo.begin(), rawLoadInfo.end() );
@@ -286,16 +283,14 @@ void LoadListFile::decodeLoadsInfo( ConstRawDataSpan rawData )
     {
       if ( loadPointer == 0U )
       {
-        BOOST_THROW_EXCEPTION( InvalidArinc665File()
-          << Helper::AdditionalInfo{ "next load pointer is 0" } );
+        BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "next load pointer is 0" } );
       }
     }
     else
     {
       if ( loadPointer != 0U )
       {
-        BOOST_THROW_EXCEPTION( InvalidArinc665File()
-          << Helper::AdditionalInfo{ "next load pointer is not 0" } );
+        BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "next load pointer is not 0" } );
       }
     }
 
@@ -312,8 +307,7 @@ void LoadListFile::decodeLoadsInfo( ConstRawDataSpan rawData )
     std::tie( listRemaining, fileMemberSequenceNumber ) = Helper::RawData_getInt< uint16_t >( listRemaining );
     if ( ( fileMemberSequenceNumber < 1U ) || ( fileMemberSequenceNumber > 255U ) )
     {
-      BOOST_THROW_EXCEPTION( InvalidArinc665File()
-        << Helper::AdditionalInfo{ "member sequence number out of range" } );
+      BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "member sequence number out of range" } );
     }
 
     LoadInfo::ThwIds thwIds;

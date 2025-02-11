@@ -2,14 +2,12 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class
- *   Arinc665Commands::MediaSetManager::ListMediaSetsCommand.
+ * @brief Definition of Class Arinc665Commands::MediaSetManager::ListMediaSetsCommand.
  **/
 
 #include "ListMediaSetsCommand.hpp"
@@ -55,20 +53,17 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
   {
     std::cout << "List ARINC 665 Media Sets \n";
 
-    boost::program_options::variables_map variablesMap{};
+    boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::command_line_parser( parameters )
-        .options( optionsDescription )
-        .run(),
+      boost::program_options::command_line_parser( parameters ).options( optionsDescription ).run(),
       variablesMap );
     boost::program_options::notify( variablesMap );
 
     // Media Set Manager
-    const auto mediaSetManager{
-      Arinc665::Utils::MediaSetManager::load(
-        mediaSetManagerDirectoryV,
-        checkMediaSetManagerIntegrityV,
-        std::bind_front( &ListMediaSetsCommand::loadProgress, this ) ) };
+    const auto mediaSetManager{ Arinc665::Utils::MediaSetManager::load(
+      mediaSetManagerDirectoryV,
+      checkMediaSetManagerIntegrityV,
+      std::bind_front( &ListMediaSetsCommand::loadProgress, this ) ) };
 
     const auto mediaSets{ mediaSetManager->mediaSets() };
 
@@ -82,11 +77,7 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
       {
         std::cout << "Media Set:\n";
 
-        Arinc665::Utils::MediaSetPrinter_print(
-          *mediaSet.first,
-          std::cout,
-          "  ",
-          "  " );
+        Arinc665::Utils::MediaSetPrinter_print( *mediaSet.first, std::cout, "  ", "  " );
 
         std::cout << "\n";
       }

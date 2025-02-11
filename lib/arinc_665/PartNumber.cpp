@@ -138,7 +138,7 @@ void PartNumber::checkCheckCode( std::string_view checkCode )
   assert( parsedCheckCode <= 255U );
 }
 
-std::ostream &operator<<( std::ostream &ostream, const PartNumber &partNumber )
+std::ostream& operator<<( std::ostream &ostream, const PartNumber &partNumber )
 {
   ostream << partNumber.partNumber();
   return ostream;

@@ -2,14 +2,12 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class
- *   Arinc665Commands::MediaSetManager::ImportMediaSetCommand.
+ * @brief Declaration of Class Arinc665Commands::MediaSetManager::ImportMediaSetCommand.
  **/
 
 #include "ImportMediaSetCommand.hpp"
@@ -76,35 +74,28 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
 
     boost::program_options::variables_map variablesMap{};
     boost::program_options::store(
-      boost::program_options::command_line_parser( parameters )
-        .options( optionsDescription )
-        .run(),
+      boost::program_options::command_line_parser( parameters ).options( optionsDescription ).run(),
       variablesMap );
     boost::program_options::notify( variablesMap );
 
     // Media Set Manager
-    const auto mediaSetManager{
-      Arinc665::Utils::MediaSetManager::load(
-        mediaSetManagerDirectory,
-        checkMediaSetManagerIntegrityV,
-        std::bind_front( &ImportMediaSetCommand::loadProgress, this ) ) };
+    const auto mediaSetManager{ Arinc665::Utils::MediaSetManager::load(
+      mediaSetManagerDirectory,
+      checkMediaSetManagerIntegrityV,
+      std::bind_front( &ImportMediaSetCommand::loadProgress, this ) ) };
 
     // Fill Media Paths list
     Arinc665::Utils::MediaPaths sourceMediaPaths{};
     for ( const auto &mediumSourceDirectory : mediaSourceDirectories )
     {
-      const auto mediumInformation{
-        Arinc665::Utils::getMediumInformation( mediumSourceDirectory ) };
+      const auto mediumInformation{ Arinc665::Utils::getMediumInformation( mediumSourceDirectory ) };
 
       if ( !mediumInformation )
       {
-        BOOST_THROW_EXCEPTION(
-          boost::program_options::invalid_option_value( mediumSourceDirectory ) );
+        BOOST_THROW_EXCEPTION( boost::program_options::invalid_option_value( mediumSourceDirectory ) );
       }
 
-      sourceMediaPaths.try_emplace(
-        mediumInformation->mediaSequenceNumber,
-        mediumSourceDirectory );
+      sourceMediaPaths.try_emplace( mediumInformation->mediaSequenceNumber, mediumSourceDirectory );
     }
 
     auto importer{ Arinc665::Utils::FilesystemMediaSetDecompiler::create() };
@@ -113,17 +104,14 @@ void ImportMediaSetCommand::execute( const Commands::Parameters &parameters )
     const auto &defaults{ mediaSetManager->configuration().defaults };
 
     importer
-      ->checkFileIntegrity(
-        checkFileIntegrity.value_or( defaults.checkFileIntegrity ) )
+      ->checkFileIntegrity( checkFileIntegrity.value_or( defaults.checkFileIntegrity ) )
       .mediaPaths( sourceMediaPaths );
 
     const auto &[ mediaSet, checkValues]{ ( *importer )() };
 
     if ( mediaSetManager->hasMediaSet( mediaSet->partNumber() ) )
     {
-      BOOST_THROW_EXCEPTION(
-        Arinc665::Arinc665Exception()
-        << Helper::AdditionalInfo{ "Media Set already exist" } );
+      BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception{} << Helper::AdditionalInfo{ "Media Set already exist" } );
     }
 
     const auto copier{ Arinc665::Utils::FilesystemMediaSetCopier::create() };

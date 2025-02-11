@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -44,10 +43,7 @@ class ARINC_665_EXPORT Directory final : public ContainerEntity
      * @throw Arinc665::Arinc665Exception
      *   When parent is not valid
      **/
-    Directory(
-      const ContainerEntityPtr &parent,
-      std::string name,
-      const CreateKey &createKey );
+    Directory( const ContainerEntityPtr &parent, std::string name, const CreateKey &createKey );
 
     //! @copydoc ContainerEntity::mediaSet
     [[nodiscard]] ConstMediaSetPtr mediaSet() const override;

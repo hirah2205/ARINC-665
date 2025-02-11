@@ -16,7 +16,7 @@
 
 namespace Arinc665::Files {
 
-bool LoadInfo::operator ==( const LoadInfo &other) const
+bool LoadInfo::operator ==( const LoadInfo &other ) const
 {
   return ( partNumber == other.partNumber )
     && ( headerFilename == other.headerFilename )

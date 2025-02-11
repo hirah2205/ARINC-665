@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -67,8 +66,7 @@ std::string_view File::name() const
 
 void File::rename( std::string name )
 {
-  if ( parent()->subdirectory( std::string_view( name ) )
-    || parent()->file( std::string_view( name ) ) )
+  if ( parent()->subdirectory( std::string_view( name ) ) || parent()->file( std::string_view( name ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo{ "directory or file with given names exist" }
@@ -118,8 +116,7 @@ File::File(
 {
   if ( !parent || !Arinc645::Filename_check( nameV ) )
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "parameter invalid" } );
+    BOOST_THROW_EXCEPTION( Arinc665Exception{} << Helper::AdditionalInfo{ "parameter invalid" } );
   }
 }
 
@@ -127,8 +124,7 @@ void File::parent( const ContainerEntityPtr &parent )
 {
   if ( !parent || ( mediaSet() != parent->mediaSet() ) )
   {
-    BOOST_THROW_EXCEPTION( Arinc665Exception()
-      << Helper::AdditionalInfo{ "parent not valid or not on same media set" } );
+    BOOST_THROW_EXCEPTION( Arinc665Exception{} << Helper::AdditionalInfo{ "parent not valid or not on same media set" } );
   }
 
   if ( this->parent() == parent )

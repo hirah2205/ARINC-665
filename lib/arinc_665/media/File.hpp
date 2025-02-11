@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -101,8 +100,7 @@ class ARINC_665_EXPORT File : public Base
     /**
      * @brief Returns the effective medium number.
      *
-     * If the medium number is not defined, the parent effective medium number
-     * is returned.
+     * If the medium number is not defined, the parent effective medium number is returned.
      *
      * @return effective medium number.
      */
@@ -136,10 +134,9 @@ class ARINC_665_EXPORT File : public Base
     /**
      * @name File Check Value Type
      *
-     * This information is used to determine the Check Value Type used for
-     * generation of %Media Set %Files List Check Value.
-     * This Value override a common value set by
-     * @ref MediaSet::filesCheckValueType().
+     * This information is used to determine the Check Value Type used for generation of %Media Set %Files List Check
+     * Value.
+     * This Value override a common value set by @ref MediaSet::filesCheckValueType().
      *
      * @{
      **/
@@ -147,8 +144,7 @@ class ARINC_665_EXPORT File : public Base
     /**
      * @brief Returns the effective %File Check Value Type.
      *
-     * If value is not set the effective *%Media Set %File Check Value Type* is
-     * used.
+     * If value is not set the effective *%Media Set %File Check Value Type* is used.
      *
      * @return Effective %File Check Value Type.
      *
@@ -188,10 +184,7 @@ class ARINC_665_EXPORT File : public Base
      * @throw Arinc665Exception
      *   If @p parent is empty or @p name empty
      **/
-    File(
-      const ContainerEntityPtr &parent,
-      std::string name,
-      const OptionalMediumNumber &mediumNumber );
+    File( const ContainerEntityPtr &parent, std::string name, const OptionalMediumNumber &mediumNumber );
 
     /**
      * @brief Sets the parent element.
@@ -205,8 +198,7 @@ class ARINC_665_EXPORT File : public Base
      *   Parent element.
      *
      * @throw Arinc665Exception
-     *   If parent is invalid or does not reside on the same media set as
-     *   @p this.
+     *   If parent is invalid or does not reside on the same media set as @p this.
      **/
     void parent( const ContainerEntityPtr &parent );
 

@@ -45,7 +45,7 @@ class ARINC_665_EXPORT MediaSet final : public ContainerEntity
      * This %Media Set contains no directories, data files, loads nor batches.
      *
      * An instance cannot be created directly.
-     * Refer to MediaSet::create() for instantiation.
+     * Refer to @ref MediaSet::create() for instantiation.
      *
      * @param[in] createKey
      *   Key to protect creation.

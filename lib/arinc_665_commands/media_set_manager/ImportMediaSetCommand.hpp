@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -77,13 +76,13 @@ class ARINC_665_COMMANDS_EXPORT ImportMediaSetCommand
     //! Program Options Description
     boost::program_options::options_description optionsDescription;
     //! Media Set Manager Directory
-    std::filesystem::path mediaSetManagerDirectory{};
+    std::filesystem::path mediaSetManagerDirectory;
     //! Check Media Set Manager Integrity
     bool checkMediaSetManagerIntegrityV{ true };
     //! Media Source Directories
-    std::vector< std::filesystem::path > mediaSourceDirectories{};
+    std::vector< std::filesystem::path > mediaSourceDirectories;
     //! Check File Integrity
-    boost::optional< bool > checkFileIntegrity{};
+    boost::optional< bool > checkFileIntegrity;
 };
 
 }

@@ -78,9 +78,7 @@ class ARINC_665_EXPORT BatchFile final : public Arinc665File
      * @param[in] version
      *   ARINC 665 Version.
      **/
-    explicit BatchFile(
-      SupportedArinc665Version version =
-        SupportedArinc665Version::Supplement345 );
+    explicit BatchFile( SupportedArinc665Version version = SupportedArinc665Version::Supplement345 );
 
     /**
      * @brief Creates a batch file from the given raw data.

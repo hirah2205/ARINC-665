@@ -187,8 +187,7 @@ RawData FileListFile::encode() const
       break;
 
     default:
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "Unsupported ARINC 665 Version" } );
+      BOOST_THROW_EXCEPTION( Arinc665Exception{} << Helper::AdditionalInfo{ "Unsupported ARINC 665 Version" } );
   }
 
   RawData rawFile( baseSize );
@@ -297,15 +296,13 @@ void FileListFile::decodeBody( ConstRawDataSpan rawFile )
       break;
 
     default:
-      BOOST_THROW_EXCEPTION( Arinc665Exception()
-        << Helper::AdditionalInfo{ "Unsupported ARINC 665 Version" } );
+      BOOST_THROW_EXCEPTION( Arinc665Exception{} << Helper::AdditionalInfo{ "Unsupported ARINC 665 Version" } );
   }
 
 
   // Spare Field
   uint16_t spare{};
-  std::tie( std::ignore, spare ) =
-    Helper::RawData_getInt< uint16_t>( rawFile.subspan( SpareFieldOffsetV2 ) );
+  std::tie( std::ignore, spare ) = Helper::RawData_getInt< uint16_t >( rawFile.subspan( SpareFieldOffsetV2 ) );
 
   if ( 0U != spare )
   {
@@ -352,8 +349,7 @@ void FileListFile::decodeBody( ConstRawDataSpan rawFile )
     {
       if ( fileCheckValuePtr <= userDefinedDataPtr )
       {
-        BOOST_THROW_EXCEPTION( InvalidArinc665File()
-          << Helper::AdditionalInfo{ "Invalid Pointers" } );
+        BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "Invalid Pointers" } );
       }
 
       endOfUserDefinedData = static_cast< ptrdiff_t >( fileCheckValuePtr ) * 2;
@@ -368,8 +364,8 @@ void FileListFile::decodeBody( ConstRawDataSpan rawFile )
   checkValueTypeV = Arinc645::CheckValueType::NotUsed;
   if ( decodeV3Data && ( 0U != fileCheckValuePtr ) )
   {
-    const auto checkValue{ CheckValueUtils_decode(
-      rawFile.subspan( 2U * static_cast< size_t >( fileCheckValuePtr ) ) ) };
+    const auto checkValue{
+      CheckValueUtils_decode( rawFile.subspan( 2U * static_cast< size_t >( fileCheckValuePtr ) ) ) };
 
     checkValueTypeV = checkValue.type();
 
@@ -383,8 +379,7 @@ void FileListFile::decodeBody( ConstRawDataSpan rawFile )
       if ( checkValue != calcCheckValue )
       {
         BOOST_THROW_EXCEPTION(
-          InvalidArinc665File()
-            << Helper::AdditionalInfo{ "Check Value Verification failed" } );
+          InvalidArinc665File{} << Helper::AdditionalInfo{ "Check Value Verification failed" } );
       }
     }
   }
@@ -448,9 +443,7 @@ RawData FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
     // next file pointer (is set to 0 for last file)
     Helper::RawData_setInt< uint16_t >(
       rawFileInfo,
-      ( fileCounter == numberOfFiles() ) ?
-      0U :
-      static_cast< uint16_t >( rawFileInfo.size() / 2U ) );
+      ( fileCounter == numberOfFiles() ) ? 0U : static_cast< uint16_t >( rawFileInfo.size() / 2U ) );
 
     // add file info to files info
     rawFilesInfo.insert( rawFilesInfo.end(), rawFileInfo.begin(), rawFileInfo.end() );
@@ -486,16 +479,14 @@ void FileListFile::decodeFilesInfo( ConstRawDataSpan rawData, const bool decodeV
     {
       if ( filePointer == 0U )
       {
-        BOOST_THROW_EXCEPTION( InvalidArinc665File()
-          << Helper::AdditionalInfo{ "next file pointer is 0" } );
+        BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "next file pointer is 0" } );
       }
     }
     else
     {
       if ( filePointer != 0U )
       {
-        BOOST_THROW_EXCEPTION( InvalidArinc665File()
-          << Helper::AdditionalInfo{ "next file pointer is not 0" } );
+        BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "next file pointer is not 0" } );
       }
     }
 
@@ -512,8 +503,7 @@ void FileListFile::decodeFilesInfo( ConstRawDataSpan rawData, const bool decodeV
     std::tie( listRemaining, memberSequenceNumber ) = Helper::RawData_getInt< uint16_t >( listRemaining );
     if ( ( memberSequenceNumber < 1U ) || ( memberSequenceNumber > 255U ) )
     {
-      BOOST_THROW_EXCEPTION( InvalidArinc665File()
-        << Helper::AdditionalInfo{ "member sequence number out of range" } );
+      BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "member sequence number out of range" } );
     }
 
     // crc

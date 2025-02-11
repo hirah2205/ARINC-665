@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -73,20 +72,16 @@ class MediaSetManagerImpl final : public MediaSetManager
       std::string_view partNumber ) const override;
 
     //! @copydoc MediaSetManager::mediaSet(std::string_view) const
-    [[nodiscard]] std::optional< MediaSetInformation > mediaSet(
-      std::string_view partNumber ) const override;
+    [[nodiscard]] std::optional< MediaSetInformation > mediaSet( std::string_view partNumber ) const override;
 
     //! @copydoc MediaSetManager::mediaSets() const
     [[nodiscard]] const MediaSetsInformation& mediaSets() const override;
 
     //! @copydoc MediaSetManager::registerMediaSet()
-    void registerMediaSet(
-      const MediaSetPaths &mediaSetPaths,
-      bool checkFileIntegrity = true ) override;
+    void registerMediaSet( const MediaSetPaths &mediaSetPaths, bool checkFileIntegrity = true ) override;
 
     //! @copydoc MediaSetManager::deregisterMediaSet()
-    [[nodiscard]] MediaSetPaths deregisterMediaSet(
-      std::string_view partNumber ) override;
+    [[nodiscard]] MediaSetPaths deregisterMediaSet( std::string_view partNumber ) override;
 
     //! @copydoc MediaSetManager::loads() const
     [[nodiscard]] Media::ConstLoads loads() const override;
@@ -95,8 +90,7 @@ class MediaSetManagerImpl final : public MediaSetManager
     [[nodiscard]] Media::ConstBatches batches() const override;
 
     //! @copydoc MediaSetManager::filePath
-    [[nodiscard]] std::filesystem::path filePath(
-      const Media::ConstFilePtr &file ) const override;
+    [[nodiscard]] std::filesystem::path filePath( const Media::ConstFilePtr &file ) const override;
 
   private:
     /**
@@ -125,20 +119,19 @@ class MediaSetManagerImpl final : public MediaSetManager
      *
      * @return Absolute Media Paths.
      **/
-    [[nodiscard]] MediaPaths absoluteMediaPaths(
-      const MediaSetPaths &mediaSetPaths ) const;
+    [[nodiscard]] MediaPaths absoluteMediaPaths( const MediaSetPaths &mediaSetPaths ) const;
 
     //! Media Set Paths Map ( Part Number -> Media Set Paths )
     using MediaSetsPaths = std::map< std::string, MediaSetPaths, std::less<> >;
 
     //! Media Set Manager Directory
-    const std::filesystem::path directoryV{};
+    const std::filesystem::path directoryV;
     //! Media Set Defaults
-    MediaSetDefaults mediaSetDefaultsV{};
+    MediaSetDefaults mediaSetDefaultsV;
     //! Media Sets Information
-    MediaSetsInformation mediaSetsInformationV{};
+    MediaSetsInformation mediaSetsInformationV;
     //! Media Sets Paths
-    MediaSetsPaths mediaSetsPathsV{};
+    MediaSetsPaths mediaSetsPathsV;
 };
 
 }

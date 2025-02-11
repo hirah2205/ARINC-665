@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -52,17 +51,11 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 
   boost::property_tree::ptree configurationProperties{};
 
-  boost::property_tree::json_parser::read_json(
-    configurationFile.string(),
-    configurationProperties );
+  boost::property_tree::json_parser::read_json( configurationFile.string(), configurationProperties );
 
-  auto configuration{
-    Arinc665::Utils::MediaSetManagerConfiguration{ configurationProperties } };
+  auto configuration{ Arinc665::Utils::MediaSetManagerConfiguration{ configurationProperties } };
 
-  loadMediaSets(
-    configuration.mediaSets,
-    checkFileIntegrity,
-    std::move( loadProgressHandler ) );
+  loadMediaSets( configuration.mediaSets, checkFileIntegrity, std::move( loadProgressHandler ) );
 
   mediaSetDefaultsV = std::move( configuration.defaults );
 }
@@ -117,9 +110,7 @@ void MediaSetManagerImpl::saveConfiguration()
 
   try
   {
-    boost::property_tree::write_json(
-      ( directoryV / ConfigurationFilename ).string(),
-      configuration().toProperties() );
+    boost::property_tree::write_json( ( directoryV / ConfigurationFilename ).string(), configuration().toProperties() );
   }
   catch ( const boost::property_tree::json_parser_error &e )
   {
@@ -142,8 +133,8 @@ bool MediaSetManagerImpl::hasMediaSet( std::string_view partNumber ) const
   return mediaSetsInformationV.contains( partNumber );
 }
 
-std::optional< MediaSetManagerImpl::MediaSetInformation >
-MediaSetManagerImpl::mediaSet( std::string_view partNumber ) const
+std::optional< MediaSetManagerImpl::MediaSetInformation > MediaSetManagerImpl::mediaSet(
+  std::string_view partNumber ) const
 {
   auto mediaSet{ mediaSetsInformationV.find( partNumber ) };
 
@@ -155,15 +146,12 @@ MediaSetManagerImpl::mediaSet( std::string_view partNumber ) const
   return mediaSet->second;
 }
 
-const MediaSetManagerImpl::MediaSetsInformation&
-MediaSetManagerImpl::mediaSets() const
+const MediaSetManagerImpl::MediaSetsInformation& MediaSetManagerImpl::mediaSets() const
 {
   return mediaSetsInformationV;
 }
 
-void MediaSetManagerImpl::registerMediaSet(
-  const MediaSetPaths &mediaSetPaths,
-  const bool checkFileIntegrity )
+void MediaSetManagerImpl::registerMediaSet( const MediaSetPaths &mediaSetPaths, const bool checkFileIntegrity )
 {
   auto decompiler( FilesystemMediaSetDecompiler::create() );
   assert( decompiler );
@@ -186,20 +174,15 @@ void MediaSetManagerImpl::registerMediaSet(
   std::string partNumber{ impMediaSet->partNumber() };
 
   // add to media sets information
-  mediaSetsInformationV.try_emplace(
-    partNumber,
-    std::move( impMediaSet ),
-    std::move( checkValues ) );
+  mediaSetsInformationV.try_emplace( partNumber, std::move( impMediaSet ), std::move( checkValues ) );
 
   // add to media sets paths
   mediaSetsPathsV.try_emplace( partNumber, mediaSetPaths );
 }
 
-MediaSetPaths MediaSetManagerImpl::deregisterMediaSet(
-  std::string_view partNumber )
+MediaSetPaths MediaSetManagerImpl::deregisterMediaSet( std::string_view partNumber )
 {
-  auto mediaSetInformation{
-    mediaSetsInformationV.extract( std::string{ partNumber } ) };
+  auto mediaSetInformation{ mediaSetsInformationV.extract( std::string{ partNumber } ) };
 
   // extract from media sets information
   if ( !mediaSetInformation )
@@ -245,8 +228,7 @@ Media::ConstBatches MediaSetManagerImpl::batches() const
   return batches;
 }
 
-std::filesystem::path MediaSetManagerImpl::filePath(
-  const Media::ConstFilePtr &file ) const
+std::filesystem::path MediaSetManagerImpl::filePath( const Media::ConstFilePtr &file ) const
 {
   BOOST_LOG_FUNCTION()
 
@@ -286,24 +268,18 @@ void MediaSetManagerImpl::loadMediaSets(
 {
   BOOST_LOG_FUNCTION()
 
-  for ( size_t mediaSetCounter{ 1U };
-    auto const &mediaSetPaths : mediaSetsPaths )
+  for ( size_t mediaSetCounter{ 1U }; auto const &mediaSetPaths : mediaSetsPaths )
   {
     auto decompiler{ FilesystemMediaSetDecompiler::create() };
     assert( decompiler );
 
     // configure decompiler
     decompiler
-      ->progressHandler( [&](
-        std::string_view partNumber,
-        std::pair< MediumNumber, MediumNumber > medium )
+      ->progressHandler( [&]( std::string_view partNumber, std::pair< MediumNumber, MediumNumber > medium )
       {
         if ( loadProgressHandler )
         {
-          loadProgressHandler(
-            { mediaSetCounter, mediaSetsPaths.size() },
-            partNumber,
-            medium );
+          loadProgressHandler( { mediaSetCounter, mediaSetsPaths.size() }, partNumber, medium );
         }
       } )
       .checkFileIntegrity( checkFileIntegrity )
@@ -316,10 +292,7 @@ void MediaSetManagerImpl::loadMediaSets(
     std::string partNumber{ impMediaSet->partNumber() };
 
     // add to media sets information
-    mediaSetsInformationV.try_emplace(
-      partNumber,
-      std::move( impMediaSet ),
-      std::move( checkValues ) );
+    mediaSetsInformationV.try_emplace( partNumber, std::move( impMediaSet ), std::move( checkValues ) );
 
     // add to media sets paths
     mediaSetsPathsV.try_emplace( partNumber, mediaSetPaths );
@@ -329,8 +302,7 @@ void MediaSetManagerImpl::loadMediaSets(
   }
 }
 
-MediaPaths MediaSetManagerImpl::absoluteMediaPaths(
-  const MediaSetPaths &mediaSetPaths ) const
+MediaPaths MediaSetManagerImpl::absoluteMediaPaths( const MediaSetPaths &mediaSetPaths ) const
 {
   MediaPaths absoluteMediaPaths{};
   for ( const auto &[ mediumNumber, mediumPath ] : mediaSetPaths.second )

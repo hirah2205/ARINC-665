@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -73,16 +72,9 @@ Load::TargetHardwareIdPositions& Load::targetHardwareIdPositions()
   return targetHardwareIdPositionsV;
 }
 
-void Load::targetHardwareIdPositions(
-  const TargetHardwareIdPositions &targetHardwareIdPositions)
+void Load::targetHardwareIdPositions( TargetHardwareIdPositions targetHardwareIdPositions )
 {
-  targetHardwareIdPositionsV = targetHardwareIdPositions;
-}
-
-void Load::targetHardwareIdPositions(
-  TargetHardwareIdPositions &&targetHardwareIdPositions)
-{
-  targetHardwareIdPositionsV = std::move( targetHardwareIdPositions);
+  targetHardwareIdPositionsV = std::move( targetHardwareIdPositions );
 }
 
 Load::TargetHardwareIds Load::targetHardwareIds() const
@@ -107,9 +99,7 @@ void Load::targetHardwareIds( const TargetHardwareIds &thwIds )
 
 void Load::targetHardwareId( std::string targetHardwareId, Positions positions )
 {
-  targetHardwareIdPositionsV.insert_or_assign(
-    std::move( targetHardwareId ),
-    std::move( positions ) );
+  targetHardwareIdPositionsV.insert_or_assign( std::move( targetHardwareId ), std::move( positions ) );
 }
 
 ConstFilePtr Load::file( std::string_view filename ) const
@@ -291,10 +281,7 @@ void Load::supportFile(
       << Helper::AdditionalInfo{ "invalid File" } );
   }
 
-  supportFilesV.emplace_back(
-    file,
-    std::move( partNumber ),
-    checkValueType );
+  supportFilesV.emplace_back( file, std::move( partNumber ), checkValueType );
 }
 
 ConstUserDefinedDataSpan Load::userDefinedData() const
@@ -351,16 +338,14 @@ std::optional< Arinc645::CheckValueType > Load::dataFilesCheckValueType() const
   return dataFilesCheckValueTypeV;
 }
 
-void Load::dataFilesCheckValueType(
-  std::optional< Arinc645::CheckValueType > checkValueType )
+void Load::dataFilesCheckValueType( std::optional< Arinc645::CheckValueType > checkValueType )
 {
   dataFilesCheckValueTypeV = checkValueType;
 }
 
 Arinc645::CheckValueType Load::effectiveSupportFilesCheckValueType() const
 {
-  return supportFilesCheckValueTypeV.value_or(
-    mediaSet()->effectiveMediaSetCheckValueType() );
+  return supportFilesCheckValueTypeV.value_or( mediaSet()->effectiveMediaSetCheckValueType() );
 }
 
 std::optional< Arinc645::CheckValueType > Load::supportFilesCheckValueType() const
@@ -368,15 +353,12 @@ std::optional< Arinc645::CheckValueType > Load::supportFilesCheckValueType() con
   return supportFilesCheckValueTypeV;
 }
 
-void Load::supportFilesCheckValueType(
-  std::optional< Arinc645::CheckValueType > checkValueType )
+void Load::supportFilesCheckValueType( std::optional< Arinc645::CheckValueType > checkValueType )
 {
   supportFilesCheckValueTypeV = checkValueType;
 }
 
-ConstLoadPtr Loads_loadByPartNumber(
-  const ConstLoads &loads,
-  std::string_view partNumber )
+ConstLoadPtr Loads_loadByPartNumber( const ConstLoads &loads, std::string_view partNumber )
 {
   BOOST_LOG_FUNCTION()
 
@@ -391,10 +373,7 @@ ConstLoadPtr Loads_loadByPartNumber(
   return {};
 }
 
-ConstFilePtr Loads_file(
-  const ConstLoads &loads,
-  std::string_view filename,
-  std::string_view loadPartNumber )
+ConstFilePtr Loads_file( const ConstLoads &loads, std::string_view filename, std::string_view loadPartNumber )
 {
   BOOST_LOG_FUNCTION()
 

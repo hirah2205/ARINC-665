@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -33,40 +32,31 @@ class MediaSetCompilerImpl final : public MediaSetCompiler
     MediaSetCompiler& mediaSet( Media::ConstMediaSetPtr mediaSet ) override;
 
     //! @copydoc MediaSetCompiler::createMediumHandler()
-    MediaSetCompiler& createMediumHandler(
-      CreateMediumHandler createMediumHandler ) override;
+    MediaSetCompiler &createMediumHandler( CreateMediumHandler createMediumHandler ) override;
 
     //! @copydoc MediaSetCompiler::createDirectoryHandler()
-    MediaSetCompiler& createDirectoryHandler(
-      CreateDirectoryHandler createDirectoryHandler ) override;
+    MediaSetCompiler &createDirectoryHandler( CreateDirectoryHandler createDirectoryHandler ) override;
 
     //! @copydoc MediaSetCompiler::checkFileExistenceHandler()
-    MediaSetCompiler& checkFileExistenceHandler(
-      CheckFileExistenceHandler checkFileExistenceHandler ) override;
+    MediaSetCompiler &checkFileExistenceHandler( CheckFileExistenceHandler checkFileExistenceHandler ) override;
 
     //! @copydoc MediaSetCompiler::createFileHandler()
-    MediaSetCompiler& createFileHandler(
-      CreateFileHandler createFileHandler ) override;
+    MediaSetCompiler &createFileHandler( CreateFileHandler createFileHandler ) override;
 
     //! @copydoc MediaSetCompiler::writeFileHandler()
-    MediaSetCompiler& writeFileHandler(
-      WriteFileHandler writeFileHandler ) override;
+    MediaSetCompiler &writeFileHandler( WriteFileHandler writeFileHandler ) override;
 
     //! @copydoc MediaSetCompiler::readFileHandler()
-    MediaSetCompiler& readFileHandler(
-      ReadFileHandler readFileHandler ) override;
+    MediaSetCompiler &readFileHandler( ReadFileHandler readFileHandler ) override;
 
     //! @copydoc MediaSetCompiler::arinc665Version()
-    MediaSetCompiler& arinc665Version(
-      SupportedArinc665Version version ) override;
+    MediaSetCompiler &arinc665Version( SupportedArinc665Version version ) override;
 
     //! @copydoc MediaSetCompiler::createBatchFiles()
-    MediaSetCompiler& createBatchFiles(
-      FileCreationPolicy createBatchFiles ) override;
+    MediaSetCompiler &createBatchFiles( FileCreationPolicy createBatchFiles ) override;
 
     //! @copydoc MediaSetCompiler::createLoadHeaderFiles()
-    MediaSetCompiler& createLoadHeaderFiles(
-      FileCreationPolicy createLoadHeaderFiles ) override;
+    MediaSetCompiler &createLoadHeaderFiles( FileCreationPolicy createLoadHeaderFiles ) override;
 
     /**
      * @brief Entry-point of the ARINC 665 Media Set Exporter.
@@ -84,9 +74,7 @@ class MediaSetCompilerImpl final : public MediaSetCompiler
      * @param[in] mediumNumber
      *   Medium Number.
      **/
-    void exportDirectory(
-      const MediumNumber &mediumNumber,
-      const Media::ConstDirectoryPtr &directory );
+    void exportDirectory( const MediumNumber &mediumNumber, const Media::ConstDirectoryPtr &directory );
 
     /**
      * @brief Called to export the given Regular File.
@@ -152,8 +140,7 @@ class MediaSetCompilerImpl final : public MediaSetCompiler
      *
      * @return Processed Load File Information
      **/
-    [[nodiscard]] Files::LoadFileInfo loadFileInformation(
-      const Media::ConstLoadFile &loadFile ) const;
+    [[nodiscard]] Files::LoadFileInfo loadFileInformation( const Media::ConstLoadFile &loadFile ) const;
 
     /**
      * @brief Creates the Batch File.
@@ -179,15 +166,13 @@ class MediaSetCompilerImpl final : public MediaSetCompiler
      *
      * @return CRC16 and Check Value as std::tuple.
      **/
-    [[nodiscard]] std::tuple< uint16_t, Arinc645::CheckValue >
-    fileCrcCheckValue(
+    [[nodiscard]] std::tuple< uint16_t, Arinc645::CheckValue > fileCrcCheckValue(
       const MediumNumber mediumNumber,
       const std::filesystem::path &filename,
       Arinc645::CheckValueType checkValueType ) const;
 
     //! ARINC 665 Version used for exporting
-    SupportedArinc665Version arinc665VersionV{
-      SupportedArinc665Version::Supplement2 };
+    SupportedArinc665Version arinc665VersionV{ SupportedArinc665Version::Supplement2 };
     //! Indicates if batch files shall be created by Media set Exporter
     FileCreationPolicy createBatchFilesV{ FileCreationPolicy::None };
     //! Indicates if load header files shall be created by Media Set Exporter

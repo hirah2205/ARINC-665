@@ -246,7 +246,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * Must be used to determine the correct size of the data to be processed.
      *
      * After Completion the Load Check Value can be set via encodeLoadCheckValue() or checked via
-     * decodeLoadCheckValue().
+     * @ref decodeLoadCheckValue().
      *
      * @param[in] rawFile
      *   Load Header File Raw representation.
@@ -317,8 +317,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @par Download Flag
      * The Least Significant Bit is used to indicate an upload/download part.
      * The value of @p 0 indicates an upload.
-     * The value of @p 1 indicates that the part contains instructions for
-     * download.
+     * The value of @p 1 indicates that the part contains instructions for download.
      * A data loader may use this field to help the operator select parts that correspond with a download operation
      * versus an upload operation.
      *
@@ -419,8 +418,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      *
      * @return Target Hardware IDs
      **/
-    [[nodiscard]] const TargetHardwareIdsPositions&
-    targetHardwareIdsPositions() const;
+    [[nodiscard]] const TargetHardwareIdsPositions& targetHardwareIdsPositions() const;
 
     //! @copydoc targetHardwareIdsPositions() const
     TargetHardwareIdsPositions& targetHardwareIdsPositions();

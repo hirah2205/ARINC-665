@@ -166,10 +166,7 @@ class ARINC_665_EXPORT Load final : public File
      * @param[in] targetHardwareIdPositions
      *   Target Hardware ID/ Positions.
      **/
-    void targetHardwareIdPositions( const TargetHardwareIdPositions &targetHardwareIdPositions );
-
-    //! @copydoc targetHardwareIdPositions(const TargetHardwareIdPositions&)
-    void targetHardwareIdPositions( TargetHardwareIdPositions &&targetHardwareIdPositions );
+    void targetHardwareIdPositions( TargetHardwareIdPositions targetHardwareIdPositions );
 
     /** @} **/
 

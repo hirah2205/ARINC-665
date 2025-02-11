@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -16,7 +15,7 @@
 namespace Arinc665::Media {
 
 Batch::Batch(
-  const ContainerEntityPtr& parent,
+  const ContainerEntityPtr &parent,
   std::string name,
   const OptionalMediumNumber &mediumNumber,
   [[maybe_unused]] const CreateKey &createKey ) :
@@ -55,10 +54,7 @@ ConstBatchInformation Batch::targets() const
 
   for ( const auto &[ targetHardwareId, loads ] : batchesV )
   {
-    batchInfo.try_emplace(
-      targetHardwareId,
-      loads.begin(),
-      loads.end() );
+    batchInfo.try_emplace( targetHardwareId, loads.begin(), loads.end() );
   }
 
   return batchInfo;
@@ -76,21 +72,14 @@ ConstLoads Batch::target( std::string_view targetHardwareIdPosition ) const
   return { it->second.begin(), it->second.end() };
 }
 
-void Batch::target(
-  std::string targetHardwareIdPosition,
-  const ConstLoads &loads )
+void Batch::target( std::string targetHardwareIdPosition, const ConstLoads &loads )
 {
-  batchesV.try_emplace(
-    std::move( targetHardwareIdPosition ),
-    loads.begin(),
-    loads.end() );
+  batchesV.try_emplace( std::move( targetHardwareIdPosition ), loads.begin(), loads.end() );
 }
 
-void Batch::target(
-  std::string_view targetHardwareIdPosition,
-  const ConstLoadPtr &load )
+void Batch::target( std::string_view targetHardwareIdPosition, const ConstLoadPtr &load )
 {
-  batchesV[ std::string{ targetHardwareIdPosition } ].emplace_back( load );
+  batchesV [ std::string{ targetHardwareIdPosition } ].emplace_back( load );
 }
 
 }

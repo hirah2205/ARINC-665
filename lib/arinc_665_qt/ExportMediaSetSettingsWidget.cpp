@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -26,8 +25,7 @@ ExportMediaSetSettingsWidget::ExportMediaSetSettingsWidget(
   QWidget * const parent ) :
   QGroupBox{ parent },
   ui{ std::make_unique< Ui::ExportMediaSetSettingsWidget >() },
-  supportedArinc665VersionModelV{
-    std::make_unique< SupportedArinc665VersionModel >( this ) },
+  supportedArinc665VersionModelV{ std::make_unique< SupportedArinc665VersionModel >( this ) },
   fileCreationPolicyModelV{ std::make_unique< FileCreationPolicyModel >( this ) }
 {
   ui->setupUi( this );
@@ -61,18 +59,13 @@ bool ExportMediaSetSettingsWidget::completed() const
   return true;
 }
 
-void ExportMediaSetSettingsWidget::defaults(
-  const Arinc665::Utils::MediaSetDefaults &defaults )
+void ExportMediaSetSettingsWidget::defaults( const Arinc665::Utils::MediaSetDefaults &defaults )
 {
-  ui->arinc665Version->setCurrentIndex(
-    supportedArinc665VersionModelV->supportedArinc665Version(
-      defaults.version ) );
+  ui->arinc665Version->setCurrentIndex( supportedArinc665VersionModelV->supportedArinc665Version( defaults.version ) );
   ui->loadHeaderCreation->setCurrentIndex(
-    fileCreationPolicyModelV->fileCreationPolicy(
-      defaults.loadHeaderFileCreationPolicy ) );
+    fileCreationPolicyModelV->fileCreationPolicy( defaults.loadHeaderFileCreationPolicy ) );
   ui->batchFileCreation->setCurrentIndex(
-    fileCreationPolicyModelV->fileCreationPolicy(
-      defaults.batchFileCreationPolicy ) );
+    fileCreationPolicyModelV->fileCreationPolicy( defaults.batchFileCreationPolicy ) );
 
   emit arinc665Version( defaults.version );
   emit createLoadHeaderFiles( defaults.loadHeaderFileCreationPolicy );
@@ -81,10 +74,7 @@ void ExportMediaSetSettingsWidget::defaults(
 
 void ExportMediaSetSettingsWidget::arinc665VersionIndexSelected( int index )
 {
-  if (
-    const auto version{
-      supportedArinc665VersionModelV->supportedArinc665Version( index ) };
-    version )
+  if ( const auto version{ supportedArinc665VersionModelV->supportedArinc665Version( index ) }; version )
   {
     emit arinc665Version( *version );
   }
@@ -92,20 +82,15 @@ void ExportMediaSetSettingsWidget::arinc665VersionIndexSelected( int index )
 
 void ExportMediaSetSettingsWidget::createBatchFilesIndexSelected( int index )
 {
-  if (
-    const auto policy{ fileCreationPolicyModelV->fileCreationPolicy( index ) };
-    policy )
+  if ( const auto policy{ fileCreationPolicyModelV->fileCreationPolicy( index ) }; policy )
   {
     emit createBatchFiles( *policy );
   }
 }
 
-void ExportMediaSetSettingsWidget::createLoadHeadersFilesIndexSelected(
-  int index )
+void ExportMediaSetSettingsWidget::createLoadHeadersFilesIndexSelected( int index )
 {
-  if (
-    const auto policy{ fileCreationPolicyModelV->fileCreationPolicy( index ) };
-    policy )
+  if ( const auto policy{ fileCreationPolicyModelV->fileCreationPolicy( index ) }; policy )
   {
     emit createLoadHeaderFiles( *policy );
   }

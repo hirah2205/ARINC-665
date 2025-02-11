@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -29,12 +28,10 @@ class MediaSetValidatorImpl final : public MediaSetValidator
     MediaSetValidatorImpl();
 
     //! @copydoc MediaSetValidator::readFileHandler()
-    [[nodiscard]] MediaSetValidator& readFileHandler(
-      ReadFileHandler readFileHandler ) override;
+    [[nodiscard]] MediaSetValidator& readFileHandler( ReadFileHandler readFileHandler ) override;
 
     //! @copydoc MediaSetValidator::informationHandler()
-    [[nodiscard]] MediaSetValidator& informationHandler(
-      ValidatorInformationHandler informationHandler ) override;
+    [[nodiscard]] MediaSetValidator& informationHandler( ValidatorInformationHandler informationHandler ) override;
 
     /**
      * @brief Executes the ARINC 665 Media Set Validator.

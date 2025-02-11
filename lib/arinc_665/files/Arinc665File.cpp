@@ -59,7 +59,7 @@ uint16_t Arinc665File::formatVersion( ConstRawDataSpan file )
   // check file size
   if ( file.size() < BaseHeaderSize )
   {
-    BOOST_THROW_EXCEPTION( InvalidArinc665File()
+    BOOST_THROW_EXCEPTION( InvalidArinc665File{}
       << Helper::AdditionalInfo{ "file content too small" } );
   }
 
@@ -374,14 +374,14 @@ void Arinc665File::insertHeader( RawDataSpan rawFile, const std::size_t addition
   if ( rawFile.size() <= ( BaseHeaderSize + sizeof( uint16_t ) ) )
   {
     BOOST_THROW_EXCEPTION(
-      InvalidArinc665File() << Helper::AdditionalInfo{ "File too small" } );
+      InvalidArinc665File{} << Helper::AdditionalInfo{ "File too small" } );
   }
 
   // Check file size
   if ( fileSize % 2 != 0U )
   {
     BOOST_THROW_EXCEPTION(
-      InvalidArinc665File() << Helper::AdditionalInfo{ "Invalid size" } );
+      InvalidArinc665File{} << Helper::AdditionalInfo{ "Invalid size" } );
   }
 
   // file size
@@ -408,7 +408,7 @@ void Arinc665File::decodeHeader( ConstRawDataSpan rawFile, const FileType expect
   if ( rawFile.size() <= BaseHeaderSize )
   {
     BOOST_THROW_EXCEPTION(
-      InvalidArinc665File() << Helper::AdditionalInfo{ "File to small" } );
+      InvalidArinc665File{} << Helper::AdditionalInfo{ "File to small" } );
   }
 
   // check size field
@@ -416,8 +416,7 @@ void Arinc665File::decodeHeader( ConstRawDataSpan rawFile, const FileType expect
 
   if ( static_cast< size_t >( fileLength ) * 2U != rawFile.size() )
   {
-    BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << Helper::AdditionalInfo{ "file size invalid" } );
+    BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "file size invalid" } );
   }
 
   // format version
@@ -428,8 +427,7 @@ void Arinc665File::decodeHeader( ConstRawDataSpan rawFile, const FileType expect
   // check format field version
   if ( !optionalArinc665Version )
   {
-    BOOST_THROW_EXCEPTION(
-      InvalidArinc665File() << Helper::AdditionalInfo{ "wrong file format" } );
+    BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "wrong file format" } );
   }
 
   arinc665VersionV = *optionalArinc665Version;
@@ -441,8 +439,7 @@ void Arinc665File::decodeHeader( ConstRawDataSpan rawFile, const FileType expect
   const auto calcCrc{ calculateChecksum( rawFile.first( rawFile.size() - checksumPosition ) ) };
   if ( crc != calcCrc )
   {
-    BOOST_THROW_EXCEPTION(
-      InvalidArinc665File() << Helper::AdditionalInfo{ "Invalid checksum" } );
+    BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "Invalid checksum" } );
   }
 }
 

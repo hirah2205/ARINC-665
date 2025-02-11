@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -78,22 +77,21 @@ class ARINC_665_COMMANDS_EXPORT ImportMediaSetXmlCommand
     //! Program Options Description
     boost::program_options::options_description optionsDescription;
     //! Media Set Manager Directory
-    std::filesystem::path mediaSetManagerDirectory{};
+    std::filesystem::path mediaSetManagerDirectory;
     //! Check Media Set Manager Integrity
     bool checkMediaSetManagerIntegrityV{ true };
     //! Media Set XML File
-    std::vector< std::filesystem::path > mediaSetXmlFilesV{};
+    std::vector< std::filesystem::path > mediaSetXmlFilesV;
     //! Media Set Source Directory
-    std::filesystem::path mediaSetSourceDirectory{};
+    std::filesystem::path mediaSetSourceDirectory;
     //! Create Batch File Policy
-    boost::optional< Arinc665::Utils::FileCreationPolicy > createBatchFiles{};
+    boost::optional< Arinc665::Utils::FileCreationPolicy > createBatchFiles;
     //! Create Load Header File Policy
-    boost::optional< Arinc665::Utils::FileCreationPolicy >
-      createLoadHeaderFiles{};
+    boost::optional< Arinc665::Utils::FileCreationPolicy > createLoadHeaderFiles;
     //! ARINC 665 Version
-    boost::optional< Arinc665::SupportedArinc665Version > version{};
+    boost::optional< Arinc665::SupportedArinc665Version > version;
     //! Check File Integrity
-    boost::optional< bool > checkFileIntegrity{};
+    boost::optional< bool > checkFileIntegrity;
 };
 
 }

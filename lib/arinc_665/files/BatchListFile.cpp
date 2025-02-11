@@ -185,7 +185,7 @@ void BatchListFile::decodeBody( ConstRawDataSpan rawFile )
   auto [ _2, batchListPtr ]{ Helper::RawData_getInt< uint32_t >( rawFile.subspan( BatchFilesPointerFieldOffsetV2 ) ) };
 
   // user defined data pointer
-  auto [_3, userDefinedDataPtr]{
+  auto [ _3, userDefinedDataPtr ]{
     Helper::RawData_getInt< uint32_t >( rawFile.subspan( UserDefinedDataPointerFieldOffsetV2 ) ) };
 
   // decode media information
@@ -214,8 +214,7 @@ RawData BatchListFile::encodeBatchesInfo() const
   // Number of batches must not exceed field
   if ( batchesV.size() > std::numeric_limits< uint16_t>::max() )
   {
-    BOOST_THROW_EXCEPTION( InvalidArinc665File()
-      << Helper::AdditionalInfo{ "More batches than allowed" } );
+    BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "More batches than allowed" } );
   }
 
   // number of batches
@@ -238,12 +237,10 @@ RawData BatchListFile::encodeBatchesInfo() const
     // next pointer
     Helper::RawData_setInt< uint16_t >(
       rawBatchInfo,
-      (batchCounter == numberOfBatches() ) ?
-      0U :
-      static_cast< uint16_t >( (sizeof( uint16_t )
-        + rawPartNumber.size()
-        + rawFilename.size()
-        + sizeof( uint16_t ) ) / 2U ) );
+      ( batchCounter == numberOfBatches() )
+        ? 0U
+        : static_cast< uint16_t >(
+            ( sizeof( uint16_t ) + rawPartNumber.size() + rawFilename.size() + sizeof( uint16_t ) ) / 2U ) );
 
     // Part Number
     rawBatchInfo.insert( rawBatchInfo.end(), rawPartNumber.begin(), rawPartNumber.end() );
@@ -292,16 +289,14 @@ void BatchListFile::decodeBatchesInfo( ConstRawDataSpan rawData )
     {
       if ( batchPointer == 0U )
       {
-        BOOST_THROW_EXCEPTION( InvalidArinc665File()
-          << Helper::AdditionalInfo{ "next batch pointer is 0" } );
+        BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "next batch pointer is 0" } );
       }
     }
     else
     {
       if ( batchPointer != 0U )
       {
-        BOOST_THROW_EXCEPTION( InvalidArinc665File()
-          << Helper::AdditionalInfo{ "next batch pointer is not 0" } );
+        BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo{ "next batch pointer is not 0" } );
       }
     }
 
@@ -318,8 +313,7 @@ void BatchListFile::decodeBatchesInfo( ConstRawDataSpan rawData )
     std::tie( listRemaining, memberSequenceNumber ) = Helper::RawData_getInt< uint16_t >( listRemaining );
     if ( ( memberSequenceNumber < 1U ) || ( memberSequenceNumber > 255U ) )
     {
-      BOOST_THROW_EXCEPTION( InvalidArinc665File()
-        << Helper::AdditionalInfo( "member sequence number out of range" ) );
+      BOOST_THROW_EXCEPTION( InvalidArinc665File{} << Helper::AdditionalInfo( "member sequence number out of range" ) );
     }
 
     // set it to begin of next batch

@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -42,27 +41,20 @@ ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
 
   const std::string fileCreationPolicyValues{
     "* '"
-    + std::string{ fileCreatPolDes.name(
-      Arinc665::Utils::FileCreationPolicy::None ) }
+    + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::None ) }
     + "': Create never\n" + "* '"
-    + std::string{ fileCreatPolDes.name(
-      Arinc665::Utils::FileCreationPolicy::NoneExisting ) }
+    + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::NoneExisting ) }
     + "': Create none-existing\n" + "* '"
-    + std::string{ fileCreatPolDes.name(
-      Arinc665::Utils::FileCreationPolicy::All ) }
+    + std::string{ fileCreatPolDes.name( Arinc665::Utils::FileCreationPolicy::All ) }
     + "': Create all" };
 
   const auto &versionDes{
     Arinc665::SupportedArinc665VersionDescription::instance() };
 
   const std::string versionValues{
-    "* '"
-    + std::string{ versionDes.name(
-      Arinc665::SupportedArinc665Version::Supplement2 ) }
-    + "': ARINC 665-2\n" + "* '"
-    + std::string{ versionDes.name(
-      Arinc665::SupportedArinc665Version::Supplement345 ) }
-    + "': ARINC 665-3/4/5" };
+    "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement2 ) } + "': ARINC 665-2\n"
+    + "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement345 ) }
+      + "': ARINC 665-3/4/5" };
 
   optionsDescription.add_options()
   (
@@ -94,14 +86,12 @@ ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
   (
     "create-batch-files",
     boost::program_options::value( &createBatchFiles ),
-    ( std::string( "batch-files creation policy:\n" )
-      + fileCreationPolicyValues )
-      .c_str() )(
+    ( std::string( "batch-files creation policy:\n" ) + fileCreationPolicyValues ).c_str()
+  )
+  (
     "create-load-header-files",
     boost::program_options::value( &createLoadHeaderFiles ),
-    ( std::string( "Load-headers-files creation policy:\n" )
-      + fileCreationPolicyValues )
-      .c_str()
+    ( std::string( "Load-headers-files creation policy:\n" ) + fileCreationPolicyValues ).c_str()
   )
   (
     "check-file-integrity",
@@ -123,20 +113,17 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
   {
     std::cout << "Import ARINC 665 Media Set XML\n";
 
-    boost::program_options::variables_map variablesMap{};
+    boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::command_line_parser( parameters )
-        .options( optionsDescription )
-        .run(),
+      boost::program_options::command_line_parser( parameters ).options( optionsDescription ).run(),
       variablesMap );
     boost::program_options::notify( variablesMap );
 
     // Media Set Manager
-    const auto mediaSetManager{
-      Arinc665::Utils::MediaSetManager::load(
-        mediaSetManagerDirectory,
-        checkMediaSetManagerIntegrityV,
-        std::bind_front( &ImportMediaSetXmlCommand::loadProgress, this ) ) };
+    const auto mediaSetManager{ Arinc665::Utils::MediaSetManager::load(
+      mediaSetManagerDirectory,
+      checkMediaSetManagerIntegrityV,
+      std::bind_front( &ImportMediaSetXmlCommand::loadProgress, this ) ) };
 
     // iterate over XML files
     for ( const auto &mediaSetXmlFile : mediaSetXmlFilesV )
@@ -144,8 +131,7 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
       std::cout << "Load XML: " << mediaSetXmlFile.string() << "\n";
 
       // load ARINC 665 XML file
-      auto [ mediaSet, filePathMapping ] =
-        Arinc665::Utils::Arinc665Xml_load( mediaSetXmlFile );
+      auto [ mediaSet, filePathMapping ]{ Arinc665::Utils::Arinc665Xml_load( mediaSetXmlFile ) };
 
       auto compiler{ Arinc665::Utils::FilesystemMediaSetCompiler::create() };
 
@@ -154,19 +140,15 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
       compiler
         ->mediaSet( mediaSet )
         .arinc665Version( version.value_or( defaults.version ) )
-        .createBatchFiles(
-          createBatchFiles.value_or( defaults.batchFileCreationPolicy ) )
-        .createLoadHeaderFiles( createLoadHeaderFiles.value_or(
-          defaults.loadHeaderFileCreationPolicy ) )
+        .createBatchFiles( createBatchFiles.value_or( defaults.batchFileCreationPolicy ) )
+        .createLoadHeaderFiles( createLoadHeaderFiles.value_or( defaults.loadHeaderFileCreationPolicy ) )
         .sourceBasePath( mediaSetSourceDirectory )
         .filePathMapping( std::move( filePathMapping ) )
         .outputBasePath( mediaSetManagerDirectory );
 
       auto mediaSetPaths{ ( *compiler )() };
 
-      mediaSetManager->registerMediaSet(
-        mediaSetPaths,
-        checkFileIntegrity.value_or( defaults.checkFileIntegrity ) );
+      mediaSetManager->registerMediaSet( mediaSetPaths, checkFileIntegrity.value_or( defaults.checkFileIntegrity ) );
       mediaSetManager->saveConfiguration();
     }
   }

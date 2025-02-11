@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -33,10 +32,8 @@ FilesystemMediaSetDecompilerImpl::FilesystemMediaSetDecompilerImpl() :
 {
   assert( mediaSetDecompilerV );
   mediaSetDecompilerV
-    ->fileSizeHandler(
-      std::bind_front( &FilesystemMediaSetDecompilerImpl::getFileSize, this ) )
-    .readFileHandler(
-      std::bind_front( &FilesystemMediaSetDecompilerImpl::readFile, this ) );
+    ->fileSizeHandler( std::bind_front( &FilesystemMediaSetDecompilerImpl::getFileSize, this ) )
+    .readFileHandler( std::bind_front( &FilesystemMediaSetDecompilerImpl::readFile, this ) );
 }
 
 FilesystemMediaSetDecompilerImpl::~FilesystemMediaSetDecompilerImpl() = default;
@@ -49,8 +46,7 @@ FilesystemMediaSetDecompiler& FilesystemMediaSetDecompilerImpl::progressHandler(
   return *this;
 }
 
-FilesystemMediaSetDecompiler&
-FilesystemMediaSetDecompilerImpl::checkFileIntegrity(
+FilesystemMediaSetDecompiler& FilesystemMediaSetDecompilerImpl::checkFileIntegrity(
   const bool checkFileIntegrity ) noexcept
 {
   assert( mediaSetDecompilerV );
@@ -58,8 +54,7 @@ FilesystemMediaSetDecompilerImpl::checkFileIntegrity(
   return *this;
 }
 
-FilesystemMediaSetDecompiler& FilesystemMediaSetDecompilerImpl::mediaPaths(
-  MediaPaths mediaPaths )
+FilesystemMediaSetDecompiler &FilesystemMediaSetDecompilerImpl::mediaPaths( MediaPaths mediaPaths )
 {
   mediaPathsV = std::move( mediaPaths );
   return *this;
@@ -125,9 +120,7 @@ Files::RawData FilesystemMediaSetDecompilerImpl::readFile(
   Arinc665::Files::RawData data( std::filesystem::file_size( filePath ) );
 
   // load file
-  std::ifstream file{
-    filePath.string().c_str(),
-    std::ifstream::binary | std::ifstream::in };
+  std::ifstream file{ filePath, std::ifstream::binary | std::ifstream::in };
 
   if ( !file.is_open() )
   {
@@ -137,12 +130,9 @@ Files::RawData FilesystemMediaSetDecompilerImpl::readFile(
   }
 
   // read the data to the buffer
-  file.read(
-    (char *) &data.at( 0 ),
-    static_cast< std::streamsize >( data.size() ) );
+  file.read( reinterpret_cast< char * >( data.data() ), static_cast< std::streamsize >( data.size() ) );
 
-  if ( file.bad()
-    || ( file.gcount() != static_cast< std::streamsize >( data.size() ) ) )
+  if ( file.bad() || ( file.gcount() != static_cast< std::streamsize >( data.size() ) ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
       << Helper::AdditionalInfo{ "Error reading file" }
