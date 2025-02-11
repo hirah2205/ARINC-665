@@ -29,14 +29,13 @@
 /**
  * @brief ARINC 665 %Media Set %Files.
  *
- * This namespace contains the implementation of the following ARINC 665
- * protocol files:
+ * This namespace contains the implementation of the following ARINC 665 protocol files:
  * - List files:
- *   - List of %Files: FileListFile
- *   - List of Loads: LoadListFile
- *   - List of Batches: BatchListFile
- * - Load Header File: LoadHeaderFile
- * - Batch File: BatchFile
+ *   - List of %Files: @ref FileListFile
+ *   - List of Loads: @ref LoadListFile
+ *   - List of Batches: @ref BatchListFile
+ * - Load Header File: @ref LoadHeaderFile
+ * - Batch File: @ref BatchFile
  *
  * The implementation supports the file formats of the following ARINC 665
  * supplements:

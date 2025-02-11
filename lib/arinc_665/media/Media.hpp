@@ -36,8 +36,8 @@
 /**
  * @brief ARINC 665 %Media Set Model.
  *
- * This namespace provides classes to represent a ARINC 665 %Media Set and their
- * parts like Directories, Loads, Batches and other %Files.
+ * This namespace provides classes to represent a ARINC 665 %Media Set and their parts like Directories, Loads, Batches
+ * and other %Files.
  **/
 namespace Arinc665::Media {
 
@@ -132,6 +132,7 @@ using ContainerEntityPtr = std::shared_ptr< ContainerEntity >;
  **/
 
 class Directory;
+
 //! Constant %Directory Pointer
 using ConstDirectoryPtr = std::shared_ptr< const Directory >;
 //! %Directory Pointer
@@ -148,9 +149,6 @@ using Directories = std::list< DirectoryPtr >;
  * @{
  **/
 class File;
-class RegularFile;
-class Load;
-class Batch;
 
 //! Pointer to Const %File
 using ConstFilePtr = std::shared_ptr< const File >;
@@ -167,6 +165,7 @@ using ConstFiles = std::list< ConstFilePtr >;
  * @name Regular File Declarations
  * @{
  **/
+class RegularFile;
 
 //! Pointer to Const Regular %File
 using ConstRegularFilePtr = std::shared_ptr< const RegularFile > ;
@@ -183,6 +182,7 @@ using ConstRegularFiles = std::list< ConstRegularFilePtr >;
  * @name Load Declarations
  * @{
  **/
+class Load;
 
 //! Constant %Load Pointer
 using ConstLoadPtr = std::shared_ptr< const Load >;
@@ -213,6 +213,7 @@ using ConstLoadFiles = std::list< ConstLoadFile >;
  * @name Batch Declarations
  * @{
  **/
+class Batch;
 
 //! Constant %Batch Pointer
 using ConstBatchPtr = std::shared_ptr< const Batch > ;
@@ -243,7 +244,7 @@ using BatchTargetInformationVariant = std::variant< BatchTargetInformation, Cons
 /** @} **/
 
 /**
- * @name Directory Declarations
+ * @name Directory / Files Declarations
  * @{
  **/
 
@@ -255,10 +256,7 @@ using DirectoryFileTuple = std::tuple< Directory&, FilePtr >;
 /** @} **/
 
 //! Check Values of Media Set Files
-using CheckValues = std::map<
-  ConstFilePtr,
-  std::set< Arinc645::CheckValue >,
-  std::owner_less< ConstFilePtr > >;
+using CheckValues = std::map< ConstFilePtr, std::set< Arinc645::CheckValue >, std::owner_less< ConstFilePtr > >;
 
 }
 

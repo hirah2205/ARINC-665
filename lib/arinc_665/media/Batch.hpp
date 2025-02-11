@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -26,10 +25,8 @@ namespace Arinc665::Media {
 /**
  * @brief %Batch of Loads.
  *
- * A %Batch is used to declare loads for multiple Target Hardware Items at a
- * time.
- * For each Target Hardware (identified by its Target Hardware ID - THW ID) a
- * list of loads is defined.
+ * A %Batch is used to declare loads for multiple Target Hardware Items at a time.
+ * For each Target Hardware (identified by its Target Hardware ID - THW ID) a list of loads is defined.
  **/
 class ARINC_665_EXPORT Batch final : public File
 {
@@ -91,8 +88,8 @@ class ARINC_665_EXPORT Batch final : public File
      * @name %Batch Comment
      *
      * A Batch can have an addition comment.
-     * This field may be used to include the batch definition design information
-     * or modification history of the %Batch %File.
+     * This field may be used to include the batch definition design information or modification history of the %Batch
+     * %File.
      *
      * @{
      **/
@@ -117,8 +114,7 @@ class ARINC_665_EXPORT Batch final : public File
     /**
      * @name Batch Targets Information
      *
-     * Defines the Target HW ID POS and Loads information, which are loaded by
-     * this batch.
+     * Defines the Target HW ID POS and Loads information, which are loaded by this batch.
      *
      * @{
      **/
@@ -152,9 +148,7 @@ class ARINC_665_EXPORT Batch final : public File
      * @param[in] loads
      *   Loads for @p targetHardwareIdPosition.
      **/
-    void target(
-      std::string targetHardwareIdPosition,
-      const ConstLoads &loads );
+    void target( std::string targetHardwareIdPosition, const ConstLoads &loads );
 
     /**
      * @brief Add the given Load to the Target Hardware ID Position.
@@ -167,9 +161,7 @@ class ARINC_665_EXPORT Batch final : public File
      * @param[in] load
      *   Load to add.
      **/
-    void target(
-      std::string_view targetHardwareIdPosition,
-      const ConstLoadPtr &load );
+    void target( std::string_view targetHardwareIdPosition, const ConstLoadPtr &load );
 
     /** @} **/
 

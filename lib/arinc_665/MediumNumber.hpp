@@ -21,7 +21,7 @@
 namespace Arinc665 {
 
 /**
- * @brief ARINC 665 Medium Number
+ * @brief ARINC 665 Medium Number.
  *
  * This class is used to provide an ARINC 665 Medium Number @p [1..255].
  **/
