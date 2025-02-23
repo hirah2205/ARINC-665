@@ -22,16 +22,13 @@
 
 #include <arinc_645/Arinc645.hpp>
 
-#include <cstddef>
 #include <list>
 #include <map>
 #include <memory>
 #include <optional>
 #include <set>
-#include <span>
 #include <tuple>
 #include <variant>
-#include <vector>
 
 /**
  * @brief ARINC 665 %Media Set Model.
@@ -62,22 +59,6 @@ enum class FileType
   //! %Batch %File
   BatchFile
 };
-
-/**
- * @name User Defined Data
- * @{
- **/
-
-//! User Defined Data
-using UserDefinedData = std::vector< std::byte >;
-
-//! Const User Defined Data Span Type
-using ConstUserDefinedDataSpan = std::span< const std::byte >;
-
-//! User Defined Data Span Type
-using UserDefinedDataSpan = std::span< const std::byte >;
-
-/** @} **/
 
 /**
  * @name %Base Class Declarations

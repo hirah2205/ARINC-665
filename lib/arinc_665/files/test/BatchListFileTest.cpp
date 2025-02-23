@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE( constructor1 )
   const uint8_t expected[]{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };
   BOOST_CHECK( std::ranges::equal( file.userDefinedData(), std::as_bytes( std::span{ expected } ) ) );
 
-  const auto raw2{ static_cast< RawData >( file ) };
+  const auto raw2{ static_cast< Helper::RawData >( file ) };
   BOOST_CHECK( std::ranges::equal( std::as_bytes( std::span{ rawBatchListFile } ), raw2 ) );
 }
 

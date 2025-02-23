@@ -18,7 +18,6 @@
 #include <arinc_665/files/LoadInfo.hpp>
 
 #include <string_view>
-#include <vector>
 
 namespace Arinc665::Files {
 
@@ -98,13 +97,13 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit LoadListFile( ConstRawDataSpan rawFile );
+    explicit LoadListFile( Helper::ConstRawDataSpan rawFile );
 
     //! Destructor.
     ~LoadListFile() override = default;
 
-    //! @copydoc ListFile::operator=(ConstRawDataSpan)
-    LoadListFile& operator=( ConstRawDataSpan rawFile ) override;
+    //! @copydoc ListFile::operator=(Helper::ConstRawDataSpan)
+    LoadListFile& operator=( Helper::ConstRawDataSpan rawFile ) override;
 
     //! @copydoc ListFile::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept override;
@@ -163,7 +162,7 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
      *
      * @return User Defined Data.
      **/
-    [[nodiscard]] ConstUserDefinedDataSpan userDefinedData() const;
+    [[nodiscard]] Helper::ConstRawDataSpan userDefinedData() const;
 
     /**
      * @brief Updates the user defined data.
@@ -173,7 +172,7 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
      * @param[in] userDefinedData
      *   User Defined Data.
      **/
-    void userDefinedData( UserDefinedData userDefinedData );
+    void userDefinedData( Helper::RawData userDefinedData );
 
     /** @} **/
 
@@ -196,7 +195,7 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
 
   private:
     //! @copydoc ListFile::encode
-    [[nodiscard]] RawData encode() const override;
+    [[nodiscard]] Helper::RawData encode() const override;
 
     /**
      * @brief Decodes the body of the batch file.
@@ -204,14 +203,14 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
      * @param[in] rawFile
      *   Raw load list file representation.
      **/
-    void decodeBody( ConstRawDataSpan rawFile );
+    void decodeBody( Helper::ConstRawDataSpan rawFile );
 
     /**
      * @brief Encodes the batches information list.
      *
      * @return Raw representation of loads information list.
      **/
-    [[nodiscard]] RawData encodeLoadsInfo() const;
+    [[nodiscard]] Helper::RawData encodeLoadsInfo() const;
 
     /**
      * @brief Decodes the loads information list from the raw data.
@@ -221,7 +220,7 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
      *
      * @throw InvalidArinc665File When member sequence number is out of range
      **/
-    void decodeLoadsInfo( ConstRawDataSpan rawData );
+    void decodeLoadsInfo( Helper::ConstRawDataSpan rawData );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.
@@ -231,7 +230,7 @@ class ARINC_665_EXPORT LoadListFile final : public ListFile
     //! Load List
     LoadsInfo loadsV;
     //! User Defined Data.
-    UserDefinedData userDefinedDataV;
+    Helper::RawData userDefinedDataV;
 };
 
 }

@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_SUITE( SringUtilsTest )
 //! Decode String Test
 BOOST_AUTO_TEST_CASE( decodeString )
 {
-  ConstRawDataSpan remaining;
+  Helper::ConstRawDataSpan remaining;
   std::string out;
 
   const uint8_t rawStr1[]{ 0x00, 0x00 };
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE( encodeString )
 //! Decode Strings Test
 BOOST_AUTO_TEST_CASE( decodeStrings )
 {
-  ConstRawDataSpan remaining;
+  Helper::ConstRawDataSpan remaining;
   std::list< std::string > out;
 
   const uint8_t rawStringList1[]{

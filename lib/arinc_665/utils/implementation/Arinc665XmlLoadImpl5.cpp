@@ -119,10 +119,10 @@ OptionalMediumNumber Arinc665XmlLoadImpl5::mediumNumber( const xmlpp::Element &e
   return {};
 }
 
-Media::UserDefinedData Arinc665XmlLoadImpl5::userDefinedData( std::string_view str )
+Helper::RawData Arinc665XmlLoadImpl5::userDefinedData( std::string_view str )
 {
-  Media::ConstUserDefinedDataSpan userDefinedDataSpan{ reinterpret_cast< std::byte const * >( str.data() ), str.size() };
-  Media::UserDefinedData userDefinedDataEncoded{ userDefinedDataSpan.begin(), userDefinedDataSpan.end() };
+  Helper::ConstRawDataSpan userDefinedDataSpan{ reinterpret_cast< std::byte const * >( str.data() ), str.size() };
+  Helper::RawData userDefinedDataEncoded{ userDefinedDataSpan.begin(), userDefinedDataSpan.end() };
   if ( userDefinedDataEncoded.size() % 2 == 1 )
   {
     userDefinedDataEncoded.push_back( std::byte{ 0U } );

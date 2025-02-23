@@ -18,7 +18,6 @@
 #include <arinc_645/CheckValueTypeDescription.hpp>
 
 #include <helper/Exception.hpp>
-#include <helper/RawData.hpp>
 #include <helper/SafeCast.hpp>
 
 #include <boost/exception/all.hpp>
@@ -33,7 +32,7 @@ size_t CheckValueUtils_size( const Arinc645::CheckValueType type )
       ( 2U * sizeof( uint16_t ) ) + Arinc645::CheckValue::Sizes.at( type );
 }
 
-RawData CheckValueUtils_encode( const Arinc645::CheckValue &checkValue )
+Helper::RawData CheckValueUtils_encode( const Arinc645::CheckValue &checkValue )
 {
   // special Handling of "No Check Value"
   if ( Arinc645::CheckValueType::NotUsed == checkValue.type() )
@@ -42,11 +41,11 @@ RawData CheckValueUtils_encode( const Arinc645::CheckValue &checkValue )
   }
 
   // Length + Type
-  RawData rawCheckValue( 2 * sizeof( uint16_t ) );
+  Helper::RawData rawCheckValue( 2 * sizeof( uint16_t ) );
 
   // Check Value Type Field
   Helper::RawData_setInt< uint16_t >(
-    RawDataSpan{ rawCheckValue }.subspan( sizeof( uint16_t ) ),
+    Helper::RawDataSpan{ rawCheckValue }.subspan( sizeof( uint16_t ) ),
     static_cast< uint16_t >( checkValue.type() ) );
 
   // Check Value Data
@@ -60,7 +59,7 @@ RawData CheckValueUtils_encode( const Arinc645::CheckValue &checkValue )
   return rawCheckValue;
 }
 
-Arinc645::CheckValue CheckValueUtils_decode( ConstRawDataSpan rawFile )
+Arinc645::CheckValue CheckValueUtils_decode( Helper::ConstRawDataSpan rawFile )
 {
   // at least length field must be provided
   if ( rawFile.size() < sizeof( uint16_t ) )
@@ -105,9 +104,7 @@ Arinc645::CheckValue CheckValueUtils_decode( ConstRawDataSpan rawFile )
 
   remainingData = remainingData.first( checkValueLength - ( 2U * sizeof( uint16_t ) ) );
 
-  return {
-    *checkValueType,
-    std::vector< std::byte >{ remainingData.begin(), remainingData.end() } };
+  return { *checkValueType, std::vector< std::byte >{ remainingData.begin(), remainingData.end() } };
 }
 
 }

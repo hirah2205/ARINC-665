@@ -105,7 +105,7 @@ static void list_files( const std::filesystem::path &loadDir );
  *
  * @return @p file a raw data.
  **/
-static Arinc665::Files::RawData loadFile( const std::filesystem::path &file );
+static Helper::RawData loadFile( const std::filesystem::path &file );
 
 int main( int argc, char * argv[] )
 {
@@ -307,10 +307,7 @@ static void printFileListFile( const std::filesystem::path &filesLum )
 
 static void list_files( const std::filesystem::path &loadDir )
 {
-  for (
-    std::filesystem::directory_iterator itr( loadDir );
-    itr != std::filesystem::directory_iterator();
-    ++itr )
+  for ( std::filesystem::directory_iterator itr( loadDir ); itr != std::filesystem::directory_iterator(); ++itr )
   {
     std::cout << itr->path() << " - ";
 
@@ -321,9 +318,7 @@ static void list_files( const std::filesystem::path &loadDir )
     }
     else if ( is_regular_file( itr->status()))
     {
-      if (
-        const auto fileType{ Arinc665::Files::Arinc665File::fileType( itr->path().filename() ) };
-        fileType )
+      if ( const auto fileType{ Arinc665::Files::Arinc665File::fileType( itr->path().filename() ) }; fileType )
       {
         switch ( *fileType )
         {
@@ -367,12 +362,12 @@ static void list_files( const std::filesystem::path &loadDir )
   }
 }
 
-static Arinc665::Files::RawData loadFile( const std::filesystem::path &file )
+static Helper::RawData loadFile( const std::filesystem::path &file )
 {
   std::cout
     << std::format( "\tFile size is: {}\n", std::filesystem::file_size( file ) );
 
-  Arinc665::Files::RawData data( std::filesystem::file_size( file ) );
+  Helper::RawData data( std::filesystem::file_size( file ) );
 
   std::ifstream fileStream{ file, std::ifstream::binary | std::ifstream::in };
 

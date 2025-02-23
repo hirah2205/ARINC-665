@@ -18,7 +18,6 @@
 
 #include <helper/Exception.hpp>
 #include <helper/Logger.hpp>
-#include <helper/RawData.hpp>
 #include <helper/SafeCast.hpp>
 
 #include <boost/exception/all.hpp>
@@ -30,13 +29,13 @@ BatchFile::BatchFile( const SupportedArinc665Version version ) :
 {
 }
 
-BatchFile::BatchFile( ConstRawDataSpan rawFile ) :
+BatchFile::BatchFile( Helper::ConstRawDataSpan rawFile ) :
   Arinc665File{ rawFile, FileType::BatchFile }
 {
   decodeBody( rawFile );
 }
 
-BatchFile& BatchFile::operator=( ConstRawDataSpan rawFile )
+BatchFile& BatchFile::operator=( Helper::ConstRawDataSpan rawFile )
 {
   // call inherited operator
   Arinc665File::operator =( rawFile );
@@ -85,12 +84,12 @@ void BatchFile::targetHardware( BatchTargetInfo targetHardwareInfo )
   targetsHardwareV.push_back( std::move( targetHardwareInfo ) );
 }
 
-RawData BatchFile::encode() const
+Helper::RawData BatchFile::encode() const
 {
-  RawData rawFile( BatchFileHeaderSizeV2 );
+  Helper::RawData rawFile( BatchFileHeaderSizeV2 );
 
   // spare field
-  Helper::RawData_setInt< uint16_t>( RawDataSpan{ rawFile }.subspan( SpareFieldOffsetV2 ), 0U );
+  Helper::RawData_setInt< uint16_t>( Helper::RawDataSpan{ rawFile }.subspan( SpareFieldOffsetV2 ), 0U );
 
 
   // Next free Offset (used for optional pointer calculation)
@@ -104,7 +103,7 @@ RawData BatchFile::encode() const
   assert( rawComment.size() % 2 == 0 );
 
   Helper::RawData_setInt< uint32_t >(
-    RawDataSpan{ rawFile }.subspan( BatchPartNumberPointerFieldOffsetV2 ),
+    Helper::RawDataSpan{ rawFile }.subspan( BatchPartNumberPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2U ) );
   nextFreeOffset += rawBatchPn.size() + rawComment.size();
 
@@ -117,7 +116,7 @@ RawData BatchFile::encode() const
   assert( rawThwIdsList.size() % 2 == 0 );
 
   Helper::RawData_setInt< uint32_t>(
-    RawDataSpan{ rawFile }.subspan( ThwIdsPointerFieldOffsetV2 ),
+    Helper::RawDataSpan{ rawFile }.subspan( ThwIdsPointerFieldOffsetV2 ),
     static_cast< uint32_t >( nextFreeOffset / 2U ) );
 
   rawFile.insert( rawFile.end(), rawThwIdsList.begin(), rawThwIdsList.end() );
@@ -134,7 +133,7 @@ RawData BatchFile::encode() const
   return rawFile;
 }
 
-void BatchFile::decodeBody( ConstRawDataSpan rawFile )
+void BatchFile::decodeBody( Helper::ConstRawDataSpan rawFile )
 {
   // Spare field
   auto [ _, spare ]{ Helper::RawData_getInt< uint16_t>( rawFile.subspan( SpareFieldOffsetV2 ) ) };
@@ -163,11 +162,11 @@ void BatchFile::decodeBody( ConstRawDataSpan rawFile )
   decodeBatchTargetsInfo( rawFile.subspan( targetHardwareIdListPtr * 2ULL ) );
 }
 
-RawData BatchFile::encodeBatchTargetsInfo() const
+Helper::RawData BatchFile::encodeBatchTargetsInfo() const
 {
   BOOST_LOG_FUNCTION()
 
-  RawData rawBatchTargetsInfo( sizeof( uint16_t ) ); // Number of THW IDs
+  Helper::RawData rawBatchTargetsInfo( sizeof( uint16_t ) ); // Number of THW IDs
 
   // Number of targets must not exceed field
   if ( targetsHardwareV.size() > std::numeric_limits< uint16_t>::max() )
@@ -184,7 +183,7 @@ RawData BatchFile::encodeBatchTargetsInfo() const
   {
     ++thwCounter;
 
-    RawData rawLoadsInfo{};
+    Helper::RawData rawLoadsInfo{};
     /* iterate over loads */
     for ( auto const &loadInfo : targetHardwareInfo.loads )
     {
@@ -194,21 +193,14 @@ RawData BatchFile::encodeBatchTargetsInfo() const
       auto const rawPartNumber{ StringUtils_encodeString( loadInfo.partNumber ) };
       assert( rawPartNumber.size() % 2 == 0 );
 
-      rawLoadsInfo.insert(
-        rawLoadsInfo.end(),
-        rawHeaderFilename.begin(),
-        rawHeaderFilename.end() );
-      rawLoadsInfo.insert(
-        rawLoadsInfo.end(),
-        rawPartNumber.begin(),
-        rawPartNumber.end() );
+      rawLoadsInfo.insert( rawLoadsInfo.end(), rawHeaderFilename.begin(), rawHeaderFilename.end() );
+      rawLoadsInfo.insert( rawLoadsInfo.end(), rawPartNumber.begin(), rawPartNumber.end() );
     }
     assert( rawLoadsInfo.size() % 2 == 0);
 
-    RawData rawBatchTargetInfo( sizeof( uint16_t ) );
+    Helper::RawData rawBatchTargetInfo( sizeof( uint16_t ) );
 
-    auto const rawThwIdPosition{
-      StringUtils_encodeString( targetHardwareInfo.targetHardwareIdPosition ) };
+    auto const rawThwIdPosition{ StringUtils_encodeString( targetHardwareInfo.targetHardwareIdPosition ) };
     assert( rawThwIdPosition.size() % 2 == 0);
 
     // THW ID + Position
@@ -218,7 +210,7 @@ RawData BatchFile::encodeBatchTargetsInfo() const
 
     // Number of Loads
     Helper::RawData_setInt< uint16_t>(
-      RawDataSpan{ rawBatchTargetInfo }.last( sizeof( uint16_t ) ),
+      Helper::RawDataSpan{ rawBatchTargetInfo }.last( sizeof( uint16_t ) ),
       Helper::safeCast< uint16_t>( targetHardwareInfo.loads.size() ) );
 
     // Loads list
@@ -238,7 +230,7 @@ RawData BatchFile::encodeBatchTargetsInfo() const
   return rawBatchTargetsInfo;
 }
 
-void BatchFile::decodeBatchTargetsInfo( ConstRawDataSpan rawData )
+void BatchFile::decodeBatchTargetsInfo( Helper::ConstRawDataSpan rawData )
 {
   BOOST_LOG_FUNCTION()
 

@@ -19,7 +19,6 @@
 
 #include <string>
 #include <string_view>
-#include <vector>
 
 namespace Arinc665::Files {
 

@@ -134,8 +134,7 @@ class ARINC_665_EXPORT Batch final : public File
      *
      * @return Loads corresponding to @p targetHardwareIdPosition.
      **/
-    [[nodiscard]] ConstLoads target(
-      std::string_view targetHardwareIdPosition ) const;
+    [[nodiscard]] ConstLoads target( std::string_view targetHardwareIdPosition ) const;
 
     /**
      * @brief Add Loads for the given Target Hardware ID Position.

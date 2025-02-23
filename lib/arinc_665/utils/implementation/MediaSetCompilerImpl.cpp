@@ -297,8 +297,7 @@ void MediaSetCompilerImpl::exportListOfLoads() const
   }
 
   auto userDefinedData{ mediaSetV->loadsUserDefinedData() };
-  loadListFile.userDefinedData(
-    Files::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
+  loadListFile.userDefinedData( Helper::RawData{ userDefinedData.begin(), userDefinedData.end() } );
 
   for ( MediumNumber mediumNumber{ 1U }; mediumNumber <= mediaSetV->lastMediumNumber(); ++mediumNumber )
   {
@@ -312,7 +311,7 @@ void MediaSetCompilerImpl::exportListOfLoads() const
 
     loadListFile.mediaSequenceNumber( mediumNumber );
 
-    writeFileHandlerV( mediumNumber, filename, static_cast< Files::RawData >( loadListFile ) );
+    writeFileHandlerV( mediumNumber, filename, static_cast< Helper::RawData >( loadListFile ) );
   }
 }
 
@@ -334,7 +333,7 @@ void MediaSetCompilerImpl::exportListOfBatches() const
   }
 
   auto userDefinedData{ mediaSetV->batchesUserDefinedData() };
-  batchListFile.userDefinedData( Files::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
+  batchListFile.userDefinedData( Helper::RawData{ userDefinedData.begin(), userDefinedData.end() } );
 
   for ( MediumNumber mediumNumber{ 1U }; mediumNumber <= mediaSetV->lastMediumNumber(); ++mediumNumber )
   {
@@ -348,10 +347,7 @@ void MediaSetCompilerImpl::exportListOfBatches() const
 
     batchListFile.mediaSequenceNumber( mediumNumber );
 
-    writeFileHandlerV(
-      mediumNumber,
-      filename,
-      static_cast< Files::RawData >( batchListFile ) );
+    writeFileHandlerV( mediumNumber, filename, static_cast< Helper::RawData >( batchListFile ) );
   }
 }
 
@@ -379,7 +375,7 @@ void MediaSetCompilerImpl::exportListOfFiles() const
   fileListFile.mediaSetPn( std::string{ mediaSetV->partNumber() } );
   fileListFile.numberOfMediaSetMembers( mediaSetV->lastMediumNumber() );
   auto userDefinedData{ mediaSetV->filesUserDefinedData() };
-  fileListFile.userDefinedData( Files::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
+  fileListFile.userDefinedData( Helper::RawData{ userDefinedData.begin(), userDefinedData.end() } );
   fileListFile.checkValueType( mediaSetV->effectiveListOfFilesCheckValueType() );
 
   for ( MediumNumber mediumNumber{ 1U }; mediumNumber <= mediaSetV->lastMediumNumber(); ++mediumNumber )
@@ -429,7 +425,7 @@ void MediaSetCompilerImpl::exportListOfFiles() const
     // add Files
     fileListFile.files().insert( fileListFile.files().end(), filesInfo.begin(), filesInfo.end() );
 
-    writeFileHandlerV( mediumNumber, filename, static_cast< Files::RawData >( fileListFile ) );
+    writeFileHandlerV( mediumNumber, filename, static_cast< Helper::RawData >( fileListFile ) );
   }
 }
 
@@ -461,13 +457,13 @@ void MediaSetCompilerImpl::createLoadHeaderFile( const Media::Load &load ) const
 
   // User Defined Data
   auto userDefinedData{ load.userDefinedData() };
-  loadHeaderFile.userDefinedData( Files::UserDefinedData{ userDefinedData.begin(), userDefinedData.end() } );
+  loadHeaderFile.userDefinedData( Helper::RawData{ userDefinedData.begin(), userDefinedData.end() } );
 
   // Set Check Value Type before Raw File generation (for Space Reserving)
   loadHeaderFile.loadCheckValueType( load.effectiveLoadCheckValueType() );
 
   // RAW load header used for load Check Value and CRC calculation
-  auto rawLoadHeader{ Files::RawData( loadHeaderFile ) };
+  auto rawLoadHeader{ Helper::RawData( loadHeaderFile ) };
 
   // Calculate Load Check Value ( Only for supported version)
   if ( SupportedArinc665Version::Supplement345 == arinc665VersionV )
@@ -482,7 +478,7 @@ void MediaSetCompilerImpl::createLoadHeaderFile( const Media::Load &load ) const
     {
       auto rawDataFile{ readFileHandlerV( file->effectiveMediumNumber(), file->path() ) };
 
-      checkValueGenerator->process( std::as_bytes( Files::RawDataSpan{ rawDataFile } ) );
+      checkValueGenerator->process( std::as_bytes( Helper::RawDataSpan{ rawDataFile } ) );
     }
 
     // load support files for Load Check Value.
@@ -490,7 +486,7 @@ void MediaSetCompilerImpl::createLoadHeaderFile( const Media::Load &load ) const
     {
       auto rawSupportFile{ readFileHandlerV( file->effectiveMediumNumber(), file->path() ) };
 
-      checkValueGenerator->process( std::as_bytes( Files::RawDataSpan{ rawSupportFile } ) );
+      checkValueGenerator->process( std::as_bytes( Helper::RawDataSpan{ rawSupportFile } ) );
     }
 
     Files::LoadHeaderFile::encodeLoadCheckValue( rawLoadHeader, checkValueGenerator->checkValue() );
@@ -539,7 +535,7 @@ Files::LoadFileInfo MediaSetCompilerImpl::loadFileInformation( const Media::Cons
     .crc = Files::Arinc665File::calculateChecksum( rawDataFile ),
     .checkValue = Arinc645::CheckValueGenerator::checkValue(
       checkValueType.value_or( Arinc645::CheckValueType::NotUsed ),
-      std::as_bytes( Files::ConstRawDataSpan{ rawDataFile } ) ).value_or( Arinc645::CheckValue::NoCheckValue) };
+      std::as_bytes( Helper::ConstRawDataSpan{ rawDataFile } ) ).value_or( Arinc645::CheckValue::NoCheckValue) };
 }
 
 void MediaSetCompilerImpl::createBatchFile( const Media::Batch &batch ) const
@@ -566,7 +562,7 @@ void MediaSetCompilerImpl::createBatchFile( const Media::Batch &batch ) const
     batchFile.targetHardware( Files::BatchTargetInfo{ targetHwId, std::move( batchLoadsInfo ) } );
   }
 
-  writeFileHandlerV( batch.effectiveMediumNumber(), batch.path(), static_cast< Files::RawData >( batchFile ) );
+  writeFileHandlerV( batch.effectiveMediumNumber(), batch.path(), static_cast< Helper::RawData >( batchFile ) );
 }
 
 std::tuple< uint16_t, Arinc645::CheckValue > MediaSetCompilerImpl::fileCrcCheckValue(
@@ -574,15 +570,14 @@ std::tuple< uint16_t, Arinc645::CheckValue > MediaSetCompilerImpl::fileCrcCheckV
   const std::filesystem::path &filename,
   const Arinc645::CheckValueType checkValueType ) const
 {
-  auto checkValueGenerator{
-    Arinc645::CheckValueGenerator::create( checkValueType ) };
+  auto checkValueGenerator{ Arinc645::CheckValueGenerator::create( checkValueType ) };
   assert( checkValueGenerator );
 
   const auto rawFile{ readFileHandlerV( mediumNumber, filename ) };
 
   const auto crc{ Files::Arinc665File::calculateChecksum( rawFile ) };
 
-  checkValueGenerator->process( std::as_bytes( Files::ConstRawDataSpan{ rawFile } ) );
+  checkValueGenerator->process( std::as_bytes( Helper::ConstRawDataSpan{ rawFile } ) );
   const auto checkValue = checkValueGenerator->checkValue();
 
   return { crc, checkValue };

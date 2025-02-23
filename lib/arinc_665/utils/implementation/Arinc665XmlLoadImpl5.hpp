@@ -18,6 +18,8 @@
 
 #include <arinc_645/Arinc645.hpp>
 
+#include <helper/RawData.hpp>
+
 #include <libxml++/libxml++.h>
 
 namespace Arinc665::Utils {
@@ -90,7 +92,7 @@ class Arinc665XmlLoadImpl5 final
      *
      * @return Raw User Defined Data
      **/
-    [[nodiscard]] static Media::UserDefinedData userDefinedData( std::string_view str );
+    [[nodiscard]] static Helper::RawData userDefinedData( std::string_view str );
 
     /**
      * @brief Import the Media Set from the XML DOM.
@@ -260,11 +262,9 @@ class Arinc665XmlLoadImpl5 final
     //! File path mappings.
     FilePathMapping filePathMappingV;
     //! Deferred Load Loading Info
-    std::list< std::tuple< const xmlpp::Element *, Media::LoadPtr > >
-      deferredLoadInfoV;
+    std::list< std::tuple< const xmlpp::Element *, Media::LoadPtr > > deferredLoadInfoV;
     //! Deferred Batch Loading Info
-    std::list< std::tuple< const xmlpp::Element *, Media::BatchPtr > >
-      deferredBatchInfoV;
+    std::list< std::tuple< const xmlpp::Element *, Media::BatchPtr > > deferredBatchInfoV;
 };
 
 }

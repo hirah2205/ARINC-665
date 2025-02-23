@@ -75,7 +75,7 @@ void Arinc665XmlSaveImpl26::operator()()
   }
 }
 
-std::string Arinc665XmlSaveImpl26::userDefinedData( Media::ConstUserDefinedDataSpan userDefinedData )
+std::string Arinc665XmlSaveImpl26::userDefinedData( Helper::ConstRawDataSpan userDefinedData )
 {
   return std::string{ reinterpret_cast< char const * >( userDefinedData.data() ), userDefinedData.size() };
 }

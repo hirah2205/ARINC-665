@@ -17,6 +17,8 @@
 
 #include <arinc_665/files/Files.hpp>
 
+#include <helper/RawData.hpp>
+
 #include <filesystem>
 #include <functional>
 #include <string>
@@ -45,7 +47,7 @@ class ARINC_665_EXPORT MediaSetValidator
      *
      * @return File Data (Read as binary).
      **/
-    using ReadFileHandler = std::function< Files::RawData( uint8_t mediumNumber, const std::filesystem::path &path ) >;
+    using ReadFileHandler = std::function< Helper::RawData( uint8_t mediumNumber, const std::filesystem::path &path ) >;
 
     //! Handler which is called for Validation Information.
     using ValidatorInformationHandler = std::function< void( std::string_view information ) >;
@@ -73,7 +75,7 @@ class ARINC_665_EXPORT MediaSetValidator
      *
      * @return @p *this for chaining.
      **/
-    virtual MediaSetValidator &readFileHandler( ReadFileHandler readFileHandler ) = 0;
+    virtual MediaSetValidator& readFileHandler( ReadFileHandler readFileHandler ) = 0;
 
     /**
      * @brief Sets the Validator Information Handler.
@@ -83,7 +85,7 @@ class ARINC_665_EXPORT MediaSetValidator
      *
      * @return @p *this for chaining.
      **/
-    virtual MediaSetValidator &informationHandler( ValidatorInformationHandler informationHandler ) = 0;
+    virtual MediaSetValidator& informationHandler( ValidatorInformationHandler informationHandler ) = 0;
 
     /** @} **/
 

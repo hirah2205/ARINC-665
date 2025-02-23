@@ -125,47 +125,47 @@ ConstBatches MediaSet::batchesWithLoad( const ConstLoadPtr &load ) const
   return foundBatches;
 }
 
-ConstUserDefinedDataSpan MediaSet::filesUserDefinedData() const
+Helper::ConstRawDataSpan MediaSet::filesUserDefinedData() const
 {
   return filesUserDefinedDataV;
 }
 
-UserDefinedData& MediaSet::filesUserDefinedData()
+Helper::RawData& MediaSet::filesUserDefinedData()
 {
   return filesUserDefinedDataV;
 }
 
-void MediaSet::filesUserDefinedData( UserDefinedData userDefinedData )
+void MediaSet::filesUserDefinedData( Helper::RawData userDefinedData )
 {
   filesUserDefinedDataV = std::move( userDefinedData );
 }
 
-ConstUserDefinedDataSpan MediaSet::loadsUserDefinedData() const
+Helper::ConstRawDataSpan MediaSet::loadsUserDefinedData() const
 {
   return loadsUserDefinedDataV;
 }
 
-UserDefinedData& MediaSet::loadsUserDefinedData()
+Helper::RawData& MediaSet::loadsUserDefinedData()
 {
   return loadsUserDefinedDataV;
 }
 
-void MediaSet::loadsUserDefinedData( UserDefinedData userDefinedData )
+void MediaSet::loadsUserDefinedData( Helper::RawData userDefinedData )
 {
   loadsUserDefinedDataV = std::move( userDefinedData );
 }
 
-ConstUserDefinedDataSpan MediaSet::batchesUserDefinedData() const
+Helper::ConstRawDataSpan MediaSet::batchesUserDefinedData() const
 {
   return batchesUserDefinedDataV;
 }
 
-UserDefinedData& MediaSet::batchesUserDefinedData()
+Helper::RawData& MediaSet::batchesUserDefinedData()
 {
   return batchesUserDefinedDataV;
 }
 
-void MediaSet::batchesUserDefinedData( UserDefinedData userDefinedData )
+void MediaSet::batchesUserDefinedData( Helper::RawData userDefinedData )
 {
   batchesUserDefinedDataV = std::move( userDefinedData );
 }

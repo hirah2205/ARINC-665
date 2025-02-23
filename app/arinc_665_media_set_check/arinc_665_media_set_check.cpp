@@ -49,7 +49,7 @@ int main( int argc, char * argv[] );
  * @throw Arinc665Exception
  *   If file does not exist or cannot be read.
  **/
-static Arinc665::Files::RawData readFile( uint8_t mediumNumber, const std::filesystem::path &path );
+static Helper::RawData readFile( uint8_t mediumNumber, const std::filesystem::path &path );
 
 /**
  * @brief Print @p information
@@ -152,7 +152,7 @@ int main( int argc, char * argv[] )
   }
 }
 
-static Arinc665::Files::RawData readFile( const uint8_t mediumNumber, const std::filesystem::path &path )
+static Helper::RawData readFile( const uint8_t mediumNumber, const std::filesystem::path &path )
 {
   // check medium number
   if ( mediumNumber > mediaDirectories.size() )
@@ -171,7 +171,7 @@ static Arinc665::Files::RawData readFile( const uint8_t mediumNumber, const std:
         << Helper::AdditionalInfo{ "File not found" } );
   }
 
-  Arinc665::Files::RawData data( std::filesystem::file_size( filePath ) );
+  Helper::RawData data( std::filesystem::file_size( filePath ) );
 
   // load file
   std::ifstream file{ filePath.string().c_str(), std::ifstream::binary | std::ifstream::in };

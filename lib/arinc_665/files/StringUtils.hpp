@@ -15,6 +15,8 @@
 
 #include <arinc_665/files/Files.hpp>
 
+#include <helper/RawData.hpp>
+
 #include <list>
 #include <set>
 #include <string>
@@ -48,7 +50,8 @@ namespace Arinc665::Files {
  *
  * @return std::tuple of Remaining Raw Data and decoded string.
  **/
-ARINC_665_EXPORT std::tuple< ConstRawDataSpan, std::string_view > StringUtils_decodeString( ConstRawDataSpan rawData );
+ARINC_665_EXPORT std::tuple< Helper::ConstRawDataSpan, std::string_view > StringUtils_decodeString(
+  Helper::ConstRawDataSpan rawData );
 
 /**
  * @brief Encodes the ARINC 665 string to the stream.
@@ -58,7 +61,7 @@ ARINC_665_EXPORT std::tuple< ConstRawDataSpan, std::string_view > StringUtils_de
  *
  * @return Encoded raw string.
  **/
-[[nodiscard]] ARINC_665_EXPORT RawData StringUtils_encodeString( std::string_view string );
+[[nodiscard]] ARINC_665_EXPORT Helper::RawData StringUtils_encodeString( std::string_view string );
 
 /** @} **/
 
@@ -82,8 +85,8 @@ ARINC_665_EXPORT std::tuple< ConstRawDataSpan, std::string_view > StringUtils_de
  *
  * @return std::tuple of remaining raw data and decoded strings.
  **/
-ARINC_665_EXPORT std::tuple< ConstRawDataSpan, std::list< std::string > > StringUtils_decodeStrings(
-  ConstRawDataSpan rawData );
+ARINC_665_EXPORT std::tuple< Helper::ConstRawDataSpan, std::list< std::string > > StringUtils_decodeStrings(
+  Helper::ConstRawDataSpan rawData );
 
 /**
  * @brief Encodes the ARINC 665 String List to the Stream.
@@ -93,7 +96,7 @@ ARINC_665_EXPORT std::tuple< ConstRawDataSpan, std::list< std::string > > String
  *
  * @return Encoded raw string list.
  **/
-[[nodiscard]] ARINC_665_EXPORT RawData StringUtils_encodeStrings( const std::list< std::string > &strings );
+[[nodiscard]] ARINC_665_EXPORT Helper::RawData StringUtils_encodeStrings( const std::list< std::string > &strings );
 
 /** @} **/
 

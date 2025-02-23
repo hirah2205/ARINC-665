@@ -19,10 +19,8 @@
 
 #include <arinc_645/Arinc645.hpp>
 
-#include <span>
 #include <string>
 #include <string_view>
-#include <vector>
 
 namespace Arinc665::Files {
 
@@ -113,13 +111,13 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit FileListFile( ConstRawDataSpan rawFile );
+    explicit FileListFile( Helper::ConstRawDataSpan rawFile );
 
     //! Destructor.
     ~FileListFile() override = default;
 
-    //! @copydoc ListFile::operator=(ConstRawDataSpan)
-    FileListFile& operator=( ConstRawDataSpan rawFile ) override;
+    //! @copydoc ListFile::operator=(Helper::ConstRawDataSpan)
+    FileListFile& operator=( Helper::ConstRawDataSpan rawFile ) override;
 
     //! @copydoc ListFile::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept override;
@@ -179,7 +177,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
      *
      * @return User Defined Data.
      **/
-    [[nodiscard]] ConstUserDefinedDataSpan userDefinedData() const;
+    [[nodiscard]] Helper::ConstRawDataSpan userDefinedData() const;
 
     /**
      * @brief Updates the User Defined Data.
@@ -187,7 +185,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
      * @param[in] userDefinedData
      *   User Defined Data.
      **/
-    void userDefinedData( UserDefinedData userDefinedData );
+    void userDefinedData( Helper::RawData userDefinedData );
 
     /** @} **/
 
@@ -227,7 +225,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
 
   private:
     //! @copydoc ListFile::encode
-    [[nodiscard]] RawData encode() const override;
+    [[nodiscard]] Helper::RawData encode() const override;
 
     /**
      * @brief Decodes the body of the file list file.
@@ -235,7 +233,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
      * @param[in] rawFile
      *   Raw file list file representation.
      **/
-    void decodeBody( ConstRawDataSpan rawFile );
+    void decodeBody( Helper::ConstRawDataSpan rawFile );
 
     /**
      * @brief Encodes the files information list.
@@ -245,7 +243,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
      *
      * @return Raw representation of files information list.
      **/
-    [[nodiscard]] RawData encodeFilesInfo( bool encodeV3Data ) const;
+    [[nodiscard]] Helper::RawData encodeFilesInfo( bool encodeV3Data ) const;
 
     /**
      * @brief Decodes the files information list from the raw data.
@@ -255,7 +253,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
      * @param[in] decodeV3Data
      *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      **/
-    void decodeFilesInfo( ConstRawDataSpan rawData, bool decodeV3Data );
+    void decodeFilesInfo( Helper::ConstRawDataSpan rawData, bool decodeV3Data );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.
@@ -265,7 +263,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
     //! Files Information (list)
     FilesInfo filesV;
     //! User Defined Data.
-    UserDefinedData userDefinedDataV;
+    Helper::RawData userDefinedDataV;
     //! Check Value Type (since ARINC 665-3)
     Arinc645::CheckValueType checkValueTypeV{ Arinc645::CheckValueType::NotUsed };
 };

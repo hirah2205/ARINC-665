@@ -284,17 +284,17 @@ void Load::supportFile(
   supportFilesV.emplace_back( file, std::move( partNumber ), checkValueType );
 }
 
-ConstUserDefinedDataSpan Load::userDefinedData() const
+Helper::ConstRawDataSpan Load::userDefinedData() const
 {
   return userDefinedDataV;
 }
 
-UserDefinedData& Load::userDefinedData()
+Helper::RawData& Load::userDefinedData()
 {
   return userDefinedDataV;
 }
 
-void Load::userDefinedData( UserDefinedData userDefinedData )
+void Load::userDefinedData( Helper::RawData userDefinedData )
 {
   userDefinedDataV = std::move( userDefinedData ) ;
 }

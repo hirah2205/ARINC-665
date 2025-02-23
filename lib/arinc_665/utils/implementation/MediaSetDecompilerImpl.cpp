@@ -167,7 +167,7 @@ void MediaSetDecompilerImpl::loadFirstMedium()
 
   // store list of files user defined data
   auto filesUserDefinedData{ fileListFileV.userDefinedData() };
-  mediaSetV->filesUserDefinedData( Media::UserDefinedData{ filesUserDefinedData.begin(), filesUserDefinedData.end() } );
+  mediaSetV->filesUserDefinedData( Helper::RawData{ filesUserDefinedData.begin(), filesUserDefinedData.end() } );
   // store file list file check value
   mediaSetV->listOfFilesCheckValueType( fileListFileV.checkValueType() );
   // Set Media Set Parameter
@@ -203,7 +203,7 @@ void MediaSetDecompilerImpl::loadFirstMedium()
 
   // store list of loads user defined data
   auto loadsUserDefinedData{ loadListFileV.userDefinedData() };
-  mediaSetV->loadsUserDefinedData( Media::UserDefinedData{ loadsUserDefinedData.begin(), loadsUserDefinedData.end() } );
+  mediaSetV->loadsUserDefinedData( Helper::RawData{ loadsUserDefinedData.begin(), loadsUserDefinedData.end() } );
 
   // Load "list of batches" file
   if ( batchListFilePresentV )
@@ -238,7 +238,7 @@ void MediaSetDecompilerImpl::loadFirstMedium()
     // store list of batches user defined data
     auto batchesUserDefinedData{ batchListFileV.userDefinedData() };
     mediaSetV->batchesUserDefinedData(
-      Media::UserDefinedData{ batchesUserDefinedData.begin(), batchesUserDefinedData.end() } );
+      Helper::RawData{ batchesUserDefinedData.begin(), batchesUserDefinedData.end() } );
   }
 }
 
@@ -565,7 +565,7 @@ void MediaSetDecompilerImpl::addLoad(
 
   // User Defined Data
   auto loadUserDefinedData{ loadHeaderFile.userDefinedData() };
-  load.userDefinedData( Media::UserDefinedData{ loadUserDefinedData.begin(), loadUserDefinedData.end() } );
+  load.userDefinedData( Helper::RawData{ loadUserDefinedData.begin(), loadUserDefinedData.end() } );
   // Load Check Value
   load.loadCheckValueType( loadHeaderFile.loadCheckValueType() );
 }
@@ -775,7 +775,7 @@ void MediaSetDecompilerImpl::checkFileIntegrity( const Files::FileInfo &fileInfo
   {
     const auto checkValueCalculated{ Arinc645::CheckValueGenerator::checkValue(
       fileInfo.checkValue.type(),
-      std::as_bytes( Files::ConstRawDataSpan{ rawFile } ) ) };
+      std::as_bytes( Helper::ConstRawDataSpan{ rawFile } ) ) };
 
     if ( fileInfo.checkValue != checkValueCalculated )
     {
@@ -833,13 +833,13 @@ void MediaSetDecompilerImpl::checkLoadFile(
     const auto rawDataFile{ readFileHandlerV( fileInfo.memberSequenceNumber, fileInfo.path() ) };
 
     loadCrc.process_bytes( rawDataFile.data(), rawDataFile.size() );
-    loadCheckValueGenerator.process( std::as_bytes( Files::ConstRawDataSpan{ rawDataFile } ) );
+    loadCheckValueGenerator.process( std::as_bytes( Helper::ConstRawDataSpan{ rawDataFile } ) );
 
     // Load file Check Value
     if ( !fileCheckValueChecked
       && ( Arinc645::CheckValueGenerator::checkValue(
         loadFileInfo.checkValue.type(),
-        std::as_bytes( Files::ConstRawDataSpan{ rawDataFile } ) ) != loadFileInfo.checkValue ) )
+        std::as_bytes( Helper::ConstRawDataSpan{ rawDataFile } ) ) != loadFileInfo.checkValue ) )
     {
       BOOST_THROW_EXCEPTION(
         Arinc665Exception()

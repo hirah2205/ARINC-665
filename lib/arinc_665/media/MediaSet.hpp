@@ -18,8 +18,9 @@
 
 #include <arinc_645/Arinc645.hpp>
 
+#include <helper/RawData.hpp>
+
 #include <string_view>
-#include <span>
 #include <optional>
 
 namespace Arinc665::Media {
@@ -152,10 +153,10 @@ class ARINC_665_EXPORT MediaSet final : public ContainerEntity
      *
      * @return User Defined Data for List of %Files.
      **/
-    [[nodiscard]] ConstUserDefinedDataSpan filesUserDefinedData() const;
+    [[nodiscard]] Helper::ConstRawDataSpan filesUserDefinedData() const;
 
     //! @copydoc filesUserDefinedData() const
-    [[nodiscard]] UserDefinedData& filesUserDefinedData();
+    [[nodiscard]] Helper::RawData& filesUserDefinedData();
 
     /**
      * @brief Updates the User Defined Data for *List of %Files*.
@@ -163,7 +164,7 @@ class ARINC_665_EXPORT MediaSet final : public ContainerEntity
      * @param[in] userDefinedData
      *   User Defined Data.
      **/
-    void filesUserDefinedData( UserDefinedData userDefinedData );
+    void filesUserDefinedData( Helper::RawData userDefinedData );
 
     /** @} **/
 
@@ -177,10 +178,10 @@ class ARINC_665_EXPORT MediaSet final : public ContainerEntity
      *
      * @return User defined data for loads list files.
      **/
-    [[nodiscard]] ConstUserDefinedDataSpan loadsUserDefinedData() const;
+    [[nodiscard]] Helper::ConstRawDataSpan loadsUserDefinedData() const;
 
     //! @copydoc loadsUserDefinedData() const
-    [[nodiscard]] UserDefinedData& loadsUserDefinedData();
+    [[nodiscard]] Helper::RawData& loadsUserDefinedData();
 
     /**
      * @brief Updates the User Defined Data for *List of %Loads* %File.
@@ -188,7 +189,7 @@ class ARINC_665_EXPORT MediaSet final : public ContainerEntity
      * @param[in] userDefinedData
      *   User defined data.
      **/
-    void loadsUserDefinedData( UserDefinedData userDefinedData );
+    void loadsUserDefinedData( Helper::RawData userDefinedData );
 
     /** @} **/
 
@@ -202,10 +203,10 @@ class ARINC_665_EXPORT MediaSet final : public ContainerEntity
      *
      * @return User defined data for batch list files.
      **/
-    [[nodiscard]] ConstUserDefinedDataSpan batchesUserDefinedData() const;
+    [[nodiscard]] Helper::ConstRawDataSpan batchesUserDefinedData() const;
 
     //! @copydoc batchesUserDefinedData() const
-    [[nodiscard]] UserDefinedData& batchesUserDefinedData();
+    [[nodiscard]] Helper::RawData& batchesUserDefinedData();
 
     /**
      * @brief Updates the User Defined Data for *List of %Batches* %File.
@@ -213,7 +214,7 @@ class ARINC_665_EXPORT MediaSet final : public ContainerEntity
      * @param[in] userDefinedData
      *   User Defined Data.
      **/
-    void batchesUserDefinedData( UserDefinedData userDefinedData );
+    void batchesUserDefinedData( Helper::RawData userDefinedData );
 
     /** @} **/
 
@@ -420,11 +421,11 @@ class ARINC_665_EXPORT MediaSet final : public ContainerEntity
     //! Part Number
     std::string partNumberV;
     //! User Defined Data for Files List Files
-    UserDefinedData filesUserDefinedDataV;
+    Helper::RawData filesUserDefinedDataV;
     //! User Defined Data for Loads List Files
-    UserDefinedData loadsUserDefinedDataV;
+    Helper::RawData loadsUserDefinedDataV;
     //! User Defined Data for Batches List Files
-    UserDefinedData batchesUserDefinedDataV;
+    Helper::RawData batchesUserDefinedDataV;
     //! ARINC 645 Check Value for %Media Set Generation
     std::optional< Arinc645::CheckValueType > mediaSetCheckValueTypeV;
     //! ARINC 645 Check Value Type for List of Files Generation

@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE( constructor2 )
   BOOST_CHECK( loads.begin()->headerFilename == "FN_001" );
   BOOST_CHECK( loads.begin()->partNumber == "PN_001" );
 
-  const auto raw2{ static_cast< RawData >( file ) };
+  const auto raw2{ static_cast< Helper::RawData >( file ) };
 
   BOOST_CHECK( std::ranges::equal( std::as_bytes( std::span{ rawBatchFile } ), raw2 ) );
 }

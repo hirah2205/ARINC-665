@@ -204,7 +204,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in,out] loadCrc
      *   Processed CRC state.
      **/
-    static void processLoadCrc( ConstRawDataSpan rawFile, Arinc645::Arinc645Crc32 &loadCrc );
+    static void processLoadCrc( Helper::ConstRawDataSpan rawFile, Arinc645::Arinc645Crc32 &loadCrc );
 
     /**
      * @brief Encodes the Load CRC within the Raw Load Header File.
@@ -214,7 +214,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] crc
      *   Load CRC
      **/
-    static void encodeLoadCrc( RawDataSpan rawFile, uint32_t crc );
+    static void encodeLoadCrc( Helper::RawDataSpan rawFile, uint32_t crc );
 
     /**
      * @brief Decodes the Load CRC within the Raw Load Header File.
@@ -224,7 +224,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      *
      * @return Load CRC
      **/
-    [[nodiscard]] static uint32_t decodeLoadCrc( ConstRawDataSpan rawFile );
+    [[nodiscard]] static uint32_t decodeLoadCrc( Helper::ConstRawDataSpan rawFile );
 
     /** @} **/
 
@@ -253,7 +253,9 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in,out] checkValueGenerator
      *   Processed Check Value Generator state.
      **/
-    static void processLoadCheckValue( ConstRawDataSpan rawFile, Arinc645::CheckValueGenerator &checkValueGenerator );
+    static void processLoadCheckValue(
+      Helper::ConstRawDataSpan rawFile,
+      Arinc645::CheckValueGenerator &checkValueGenerator );
 
     /**
      * @brief Encodes the Load Check Value within the Raw Load Header File.
@@ -265,7 +267,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] checkValue
      *   Load Check Value
      **/
-    static void encodeLoadCheckValue( RawDataSpan rawFile, const Arinc645::CheckValue &checkValue );
+    static void encodeLoadCheckValue( Helper::RawDataSpan rawFile, const Arinc645::CheckValue &checkValue );
 
     /**
      * @brief Decodes the Load Check Value within the Raw Load Header File.
@@ -277,7 +279,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @retval Arinc645::NoCheckValue
      *   When no Load Check Value is stored.
      **/
-    [[nodiscard]] static Arinc645::CheckValue decodeLoadCheckValue( ConstRawDataSpan rawFile );
+    [[nodiscard]] static Arinc645::CheckValue decodeLoadCheckValue( Helper::ConstRawDataSpan rawFile );
 
     /** @} **/
 
@@ -295,13 +297,13 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit LoadHeaderFile( ConstRawDataSpan rawFile );
+    explicit LoadHeaderFile( Helper::ConstRawDataSpan rawFile );
 
     //! Destructor.
     ~LoadHeaderFile() override = default;
 
     //! @copydoc Arinc665File::operator=
-    LoadHeaderFile& operator=( ConstRawDataSpan rawFile ) override;
+    LoadHeaderFile& operator=( Helper::ConstRawDataSpan rawFile ) override;
 
     //! @copydoc Arinc665File::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept override;
@@ -558,7 +560,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      *
      * @return User defined data.
      **/
-    [[nodiscard]] ConstUserDefinedDataSpan userDefinedData() const;
+    [[nodiscard]] Helper::ConstRawDataSpan userDefinedData() const;
 
     /**
      * @brief Updates the User Defined Data.
@@ -566,7 +568,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] userDefinedData
      *   User defined data.
      **/
-    void userDefinedData( UserDefinedData userDefinedData );
+    void userDefinedData( Helper::RawData userDefinedData );
 
     /** @} **/
 
@@ -602,7 +604,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
 
   private:
     //! @copydoc Arinc665File::encode
-    [[nodiscard]] RawData encode() const override;
+    [[nodiscard]] Helper::RawData encode() const override;
 
     /**
      * @brief Decodes the body of the load header file.
@@ -610,7 +612,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] rawFile
      *   Raw Load Header File representation.
      **/
-    void decodeBody( ConstRawDataSpan rawFile );
+    void decodeBody( Helper::ConstRawDataSpan rawFile );
 
     /**
      * @brief Encodes the Data Files Information List.
@@ -620,7 +622,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      *
      * @return Raw representation of files information list.
      **/
-    [[nodiscard]] RawData encodeDataFiles( bool encodeV3Data ) const;
+    [[nodiscard]] Helper::RawData encodeDataFiles( bool encodeV3Data ) const;
 
     /**
      * @brief Encodes the Support Files Information List.
@@ -630,7 +632,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      *
      * @return Raw representation of files information list.
      **/
-    [[nodiscard]] RawData encodeSupportFiles( bool encodeV3Data ) const;
+    [[nodiscard]] Helper::RawData encodeSupportFiles( bool encodeV3Data ) const;
 
     /**
      * @brief Decodes the Data Files List from the raw data.
@@ -640,7 +642,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] decodeV3Data
      *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      **/
-    void decodeDataFiles( ConstRawDataSpan rawData, bool decodeV3Data );
+    void decodeDataFiles( Helper::ConstRawDataSpan rawData, bool decodeV3Data );
 
     /**
      * @brief Decodes the Support Files List from the raw data.
@@ -650,7 +652,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
      * @param[in] decodeV3Data
      *   If set to true, additional data as stated in ARINC 665-3 is decoded.
      **/
-    void decodeSupportFiles( ConstRawDataSpan rawData, bool decodeV3Data );
+    void decodeSupportFiles( Helper::ConstRawDataSpan rawData, bool decodeV3Data );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.
@@ -672,7 +674,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
     //! List of Support files
     LoadFilesInfo supportFilesV;
     //! User Defined Data
-    UserDefinedData userDefinedDataV;
+    Helper::RawData userDefinedDataV;
     //! Load Check Value (Type) (since ARINC 665-3) - Value is calculated on
     //! generation.
     Arinc645::CheckValueType loadCheckValueTypeV{ Arinc645::CheckValueType::NotUsed };

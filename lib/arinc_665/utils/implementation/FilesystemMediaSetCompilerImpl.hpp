@@ -15,6 +15,8 @@
 
 #include <arinc_665/utils/FilesystemMediaSetCompiler.hpp>
 
+#include <helper/RawData.hpp>
+
 namespace Arinc665::Utils {
 
 /**
@@ -123,7 +125,7 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
     void writeFile(
       const Arinc665::MediumNumber &mediumNumber,
       const std::filesystem::path &path,
-      const Arinc665::Files::ConstRawDataSpan &file );
+      const Helper::ConstRawDataSpan file );
 
     /**
      * @brief Read File Handler
@@ -135,7 +137,7 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
      *
      * @return File Content
      **/
-    [[nodiscard]] Arinc665::Files::RawData readFile(
+    [[nodiscard]] Helper::RawData readFile(
       const Arinc665::MediumNumber &mediumNumber,
       const std::filesystem::path &path );
 

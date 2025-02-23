@@ -15,6 +15,8 @@
 
 #include <arinc_665/files/Files.hpp>
 
+#include <helper/RawData.hpp>
+
 #include <arinc_645/Arinc645.hpp>
 
 namespace Arinc665::Files {
@@ -60,7 +62,7 @@ namespace Arinc665::Files {
  *
  * @return Check Value as raw data.
  **/
-[[nodiscard]] ARINC_665_EXPORT RawData CheckValueUtils_encode( const Arinc645::CheckValue &checkValue );
+[[nodiscard]] ARINC_665_EXPORT Helper::RawData CheckValueUtils_encode( const Arinc645::CheckValue &checkValue );
 
 /**
  * @brief Decodes the given data as Check Value.
@@ -76,7 +78,7 @@ namespace Arinc665::Files {
  *   - Invalid Type
  *   - Check Value Type / Length mismatch
  **/
-[[nodiscard]] ARINC_665_EXPORT Arinc645::CheckValue CheckValueUtils_decode( ConstRawDataSpan rawFile );
+[[nodiscard]] ARINC_665_EXPORT Arinc645::CheckValue CheckValueUtils_decode( Helper::ConstRawDataSpan rawFile );
 
 /** @} **/
 

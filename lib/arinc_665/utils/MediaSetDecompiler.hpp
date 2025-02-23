@@ -21,6 +21,8 @@
 
 #include <arinc_645/Arinc645.hpp>
 
+#include <helper/RawData.hpp>
+
 #include <filesystem>
 #include <functional>
 
@@ -73,7 +75,7 @@ class ARINC_665_EXPORT MediaSetDecompiler
      * @return File Data (Read as binary).
      **/
     using ReadFileHandler =
-      std::function< Files::RawData( const MediumNumber &mediumNumber, const std::filesystem::path &path ) >;
+      std::function< Helper::RawData( const MediumNumber &mediumNumber, const std::filesystem::path &path ) >;
 
     /**
      * @brief Callback for progress indication.

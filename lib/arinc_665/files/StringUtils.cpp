@@ -15,7 +15,6 @@
 #include <arinc_665/Arinc665Exception.hpp>
 
 #include <helper/Exception.hpp>
-#include <helper/RawData.hpp>
 #include <helper/SafeCast.hpp>
 
 #include <boost/exception/all.hpp>
@@ -24,7 +23,7 @@
 
 namespace Arinc665::Files {
 
-std::tuple< ConstRawDataSpan, std::string_view > StringUtils_decodeString( ConstRawDataSpan rawData )
+std::tuple< Helper::ConstRawDataSpan, std::string_view > StringUtils_decodeString( Helper::ConstRawDataSpan rawData )
 {
   auto remaining{ rawData };
 
@@ -50,9 +49,9 @@ std::tuple< ConstRawDataSpan, std::string_view > StringUtils_decodeString( Const
   return { remaining, string };
 }
 
-RawData StringUtils_encodeString( std::string_view string )
+Helper::RawData StringUtils_encodeString( std::string_view string )
 {
-  RawData rawString;
+  Helper::RawData rawString;
   rawString.reserve( sizeof( uint16_t ) + string.size()  + ( string.size() % sizeof( uint16_t ) ) );
 
   // set string length
@@ -72,7 +71,8 @@ RawData StringUtils_encodeString( std::string_view string )
   return rawString;
 }
 
-std::tuple< ConstRawDataSpan, std::list< std::string > > StringUtils_decodeStrings( ConstRawDataSpan rawData )
+std::tuple< Helper::ConstRawDataSpan, std::list< std::string > > StringUtils_decodeStrings(
+  Helper::ConstRawDataSpan rawData )
 {
   // empty strings
   std::list< std::string > strings;
@@ -94,9 +94,9 @@ std::tuple< ConstRawDataSpan, std::list< std::string > > StringUtils_decodeStrin
   return { remaining, strings };
 }
 
-RawData StringUtils_encodeStrings( const std::list< std::string > &strings )
+Helper::RawData StringUtils_encodeStrings( const std::list< std::string > &strings )
 {
-  RawData rawStrings( sizeof( uint16_t ) );
+  Helper::RawData rawStrings( sizeof( uint16_t ) );
 
   // set number of strings
   Helper::RawData_setInt< uint16_t >( rawStrings, Helper::safeCast< uint16_t >( strings.size() ) );

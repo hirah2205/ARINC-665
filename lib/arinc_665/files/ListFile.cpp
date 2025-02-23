@@ -67,12 +67,15 @@ ListFile::ListFile( SupportedArinc665Version version, ptrdiff_t checksumPosition
 {
 }
 
-ListFile::ListFile( ConstRawDataSpan rawFile, const FileType expectedFileType, const ptrdiff_t checksumPosition ) :
+ListFile::ListFile(
+  Helper::ConstRawDataSpan rawFile,
+  const FileType expectedFileType,
+  const ptrdiff_t checksumPosition ) :
   Arinc665File{ rawFile, expectedFileType, checksumPosition }
 {
 }
 
-RawData ListFile::encodeMediaInformation() const
+Helper::RawData ListFile::encodeMediaInformation() const
 {
   // media set part number
   auto rawMediaInformation{ StringUtils_encodeString( mediaSetPn() ) };
@@ -81,7 +84,7 @@ RawData ListFile::encodeMediaInformation() const
   const auto partNumberSize{ static_cast< ptrdiff_t >( rawMediaInformation.size() ) };
 
   rawMediaInformation.resize( partNumberSize + ( 2U * sizeof( uint8_t ) ) );
-  auto remaining{ RawDataSpan{ rawMediaInformation}.subspan( partNumberSize ) };
+  auto remaining{ Helper::RawDataSpan{ rawMediaInformation}.subspan( partNumberSize ) };
 
   // media sequence number
   remaining = Helper::RawData_setInt( remaining, static_cast< uint8_t >( mediaSequenceNumberV ) );
@@ -92,7 +95,7 @@ RawData ListFile::encodeMediaInformation() const
   return rawMediaInformation;
 }
 
-void ListFile::decodeMediaInformation( ConstRawDataSpan rawData )
+void ListFile::decodeMediaInformation( Helper::ConstRawDataSpan rawData )
 {
   auto remaining{ rawData };
 

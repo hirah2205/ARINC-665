@@ -18,6 +18,8 @@
 
 #include <arinc_645/Arinc645.hpp>
 
+#include <helper/RawData.hpp>
+
 #include <libxml++/libxml++.h>
 
 namespace Arinc665::Utils {
@@ -62,7 +64,7 @@ class Arinc665XmlSaveImpl5 final
      *
      * @return User Defined Data String.
      **/
-    [[nodiscard]] static std::string userDefinedData( Media::ConstUserDefinedDataSpan userDefinedData );
+    [[nodiscard]] static std::string userDefinedData( Helper::ConstRawDataSpan userDefinedData );
 
     /**
      * @brief Export the Media Set section to the XML DOM.

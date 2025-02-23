@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE( constructor1 )
 
   BOOST_CHECK( 0xFEDCBA98 == Arinc665::Files::LoadHeaderFile::decodeLoadCrc( std::as_bytes( std::span{ rawLoadHeaderFile } ) ) );
 
-  auto raw2{ static_cast< RawData>( file ) };
+  auto raw2{ static_cast< Helper::RawData>( file ) };
 
   Arinc665::Files::LoadHeaderFile::encodeLoadCrc( raw2, 0xFEDCBA98 );
   BOOST_CHECK( 0xFEDCBA98 == Arinc665::Files::LoadHeaderFile::decodeLoadCrc( raw2 ) );

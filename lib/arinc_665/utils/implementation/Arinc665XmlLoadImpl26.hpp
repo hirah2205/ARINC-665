@@ -18,6 +18,8 @@
 
 #include <arinc_645/Arinc645.hpp>
 
+#include <helper/RawData.hpp>
+
 #include <libxml++/libxml++.h>
 
 namespace Arinc665::Utils {
@@ -110,7 +112,7 @@ class Arinc665XmlLoadImpl26 final
      *
      * @return Raw User Defined Data
      **/
-    [[nodiscard]] static Media::UserDefinedData userDefinedData( const Glib::ustring &str );
+    [[nodiscard]] static Helper::RawData userDefinedData( const Glib::ustring &str );
 
     /**
      * @brief Import the Media Set from the XML DOM.

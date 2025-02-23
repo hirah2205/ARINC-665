@@ -20,11 +20,7 @@
 
 #include <arinc_665/Arinc665.hpp>
 
-#include <cstddef>
 #include <list>
-#include <span>
-#include <string>
-#include <vector>
 
 /**
  * @brief ARINC 665 %Media Set %Files.
@@ -45,38 +41,6 @@
  * - Supplement 5 (Which actually does not refine the file formats)
  **/
 namespace Arinc665::Files {
-
-/**
- * @name Raw File
- *
- * Representation of raw file data.
- * @{
- **/
-
-//! Raw File
-using RawData = std::vector< std::byte >;
-//! Const Raw File Span
-using ConstRawDataSpan = std::span< const std::byte >;
-//! Raw File Span
-using RawDataSpan = std::span< std::byte >;
-
-/** @} **/
-
-/**
- * @name User Defined Data
- *
- * Representation of user defined data.
- * @{
- **/
-
-//! User Defined Data Type
-using UserDefinedData = std::vector< std::byte >;
-//! Const User Defined Data Span Type
-using ConstUserDefinedDataSpan = std::span< const std::byte >;
-//! User Defined Data Span Type
-using UserDefinedDataSpan = std::span< std::byte >;
-
-/** @} **/
 
 struct MediaSetInformation;
 

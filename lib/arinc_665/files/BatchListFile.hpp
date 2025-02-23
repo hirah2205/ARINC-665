@@ -95,13 +95,13 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
      * @param[in] rawFile
      *   Raw data file representation.
      **/
-    explicit BatchListFile( ConstRawDataSpan rawFile );
+    explicit BatchListFile( Helper::ConstRawDataSpan rawFile );
 
     //! Destructor.
     ~BatchListFile() override = default;
 
-    //! @copydoc ListFile::operator=(ConstRawDataSpan)
-    BatchListFile& operator=( ConstRawDataSpan rawFile ) override;
+    //! @copydoc ListFile::operator=(Helper::ConstRawDataSpan)
+    BatchListFile& operator=( Helper::ConstRawDataSpan rawFile ) override;
 
     //! @copydoc ListFile::fileType() const noexcept
     [[nodiscard]] FileType fileType() const noexcept override;
@@ -155,7 +155,7 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
      *
      * @return User Defined Data.
      **/
-    [[nodiscard]] ConstUserDefinedDataSpan userDefinedData() const;
+    [[nodiscard]] Helper::ConstRawDataSpan userDefinedData() const;
 
     /**
      * @brief Updates the User Defined Data.
@@ -163,7 +163,7 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
      * @param[in] userDefinedData
      *   User Defined Data.
      **/
-    void userDefinedData( UserDefinedData userDefinedData );
+    void userDefinedData( Helper::RawData userDefinedData );
 
     /** @} **/
 
@@ -179,7 +179,7 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
 
   private:
     //! @copydoc ListFile::encode
-    [[nodiscard]] RawData encode() const override;
+    [[nodiscard]] Helper::RawData encode() const override;
 
     /**
      * @brief Decodes the body of the batch list file.
@@ -187,14 +187,14 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
      * @param[in] rawFile
      *   Raw batch list file representation.
      **/
-    void decodeBody( ConstRawDataSpan rawFile );
+    void decodeBody( Helper::ConstRawDataSpan rawFile );
 
     /**
      * @brief Encodes the batches information list.
      *
      * @return Raw representation of batches information list.
      **/
-    [[nodiscard]] RawData encodeBatchesInfo() const;
+    [[nodiscard]] Helper::RawData encodeBatchesInfo() const;
 
     /**
      * @brief Decodes the batches information list from the raw data.
@@ -202,7 +202,7 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
      * @param[in] rawData
      *   Raw batch list information representation.
      **/
-    void decodeBatchesInfo( ConstRawDataSpan rawData );
+    void decodeBatchesInfo( Helper::ConstRawDataSpan rawData );
 
     /**
      * @brief Checks, if the User Defined Data is a multiple of 2 size.
@@ -212,7 +212,7 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
     //! Batches Information.
     BatchesInfo batchesV;
     //! User Defined Data.
-    UserDefinedData userDefinedDataV;
+    Helper::RawData userDefinedDataV;
 };
 
 }

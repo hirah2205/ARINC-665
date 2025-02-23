@@ -32,11 +32,10 @@ BOOST_AUTO_TEST_CASE( CheckValueUtils_encode1 )
 {
   using Helper::operator""_b;
 
-  BOOST_CHECK( CheckValueUtils_encode( Arinc645::CheckValue::NoCheckValue ) == RawData( { 0x00_b, 0x00_b } ) );
-  BOOST_CHECK( ( CheckValueUtils_encode(
-    Arinc645::CheckValue{
-      Arinc645::CheckValueType::Crc8,
-      RawData{ 0x12_b, 0x34_b } } ) == RawData{ 0x00_b, 0x06_b, 0x00_b, 0x01_b, 0x12_b, 0x34_b } ) );
+  BOOST_CHECK( CheckValueUtils_encode( Arinc645::CheckValue::NoCheckValue ) == Helper::RawData( { 0x00_b, 0x00_b } ) );
+  BOOST_CHECK( (
+    CheckValueUtils_encode( Arinc645::CheckValue{ Arinc645::CheckValueType::Crc8, Helper::RawData{ 0x12_b, 0x34_b } } )
+      == Helper::RawData{ 0x00_b, 0x06_b, 0x00_b, 0x01_b, 0x12_b, 0x34_b } ) );
 }
 
 //! CheckValueUtils_decode Test
@@ -44,28 +43,28 @@ BOOST_AUTO_TEST_CASE( CheckValueUtils_decode1 )
 {
   using Helper::operator""_b;
 
-  const auto cv1a{ CheckValueUtils_decode( RawData{ 0x00_b, 0x00_b } ) };
+  const auto cv1a{ CheckValueUtils_decode( Helper::RawData{ 0x00_b, 0x00_b } ) };
 
   BOOST_CHECK( ( cv1a == Arinc645::CheckValue{ Arinc645::CheckValue::NoCheckValue } ) );
 
-  const auto cv1b{ CheckValueUtils_decode( RawData{ 0x00_b, 0x04_b, 0x00_b, 0x00_b } ) };
+  const auto cv1b{ CheckValueUtils_decode( Helper::RawData{ 0x00_b, 0x04_b, 0x00_b, 0x00_b } ) };
 
   BOOST_CHECK( ( cv1b == Arinc645::CheckValue{ Arinc645::CheckValue::NoCheckValue } ) );
 
-  const auto cv2{ CheckValueUtils_decode( RawData{ 0x00_b, 0x06_b, 0x00_b, 0x01_b, 0x12_b, 0x34_b } ) };
+  const auto cv2{ CheckValueUtils_decode( Helper::RawData{ 0x00_b, 0x06_b, 0x00_b, 0x01_b, 0x12_b, 0x34_b } ) };
 
-  BOOST_CHECK( ( cv2 == Arinc645::CheckValue{ Arinc645::CheckValueType::Crc8, RawData{ 0x12_b, 0x34_b } } ) );
+  BOOST_CHECK( ( cv2 == Arinc645::CheckValue{ Arinc645::CheckValueType::Crc8, Helper::RawData{ 0x12_b, 0x34_b } } ) );
 
-  const auto cv3{ CheckValueUtils_decode( RawData{ 0x00_b, 0x06_b, 0x00_b, 0x02_b, 0x12_b, 0x34_b } ) };
+  const auto cv3{ CheckValueUtils_decode( Helper::RawData{ 0x00_b, 0x06_b, 0x00_b, 0x02_b, 0x12_b, 0x34_b } ) };
 
-  BOOST_CHECK( ( cv3 == Arinc645::CheckValue{ Arinc645::CheckValueType::Crc16, RawData{ 0x12_b, 0x34_b } } ) );
+  BOOST_CHECK( ( cv3 == Arinc645::CheckValue{ Arinc645::CheckValueType::Crc16, Helper::RawData{ 0x12_b, 0x34_b } } ) );
 
-  BOOST_CHECK_THROW( boost::ignore_unused( CheckValueUtils_decode( RawData{} ) ), Arinc665Exception );
+  BOOST_CHECK_THROW( boost::ignore_unused( CheckValueUtils_decode( Helper::RawData{} ) ), Arinc665Exception );
 
-  BOOST_CHECK_THROW( boost::ignore_unused( CheckValueUtils_decode( RawData{ 0x00_b } ) ), Arinc665Exception );
+  BOOST_CHECK_THROW( boost::ignore_unused( CheckValueUtils_decode( Helper::RawData{ 0x00_b } ) ), Arinc665Exception );
 
   BOOST_CHECK_THROW(
-    boost::ignore_unused( CheckValueUtils_decode( RawData{ 0x00_b, 0x05_b, 0x00_b, 0x01_b, 0x12_b } ) ),
+    boost::ignore_unused( CheckValueUtils_decode( Helper::RawData{ 0x00_b, 0x05_b, 0x00_b, 0x01_b, 0x12_b } ) ),
     Arinc665Exception );
 }
 

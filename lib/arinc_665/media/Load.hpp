@@ -18,6 +18,8 @@
 
 #include <arinc_645/CheckValue.hpp>
 
+#include <helper/RawData.hpp>
+
 #include <cstdint>
 #include <list>
 #include <map>
@@ -373,10 +375,10 @@ class ARINC_665_EXPORT Load final : public File
      *
      * @return User-defined data.
      **/
-    [[nodiscard]] ConstUserDefinedDataSpan userDefinedData() const;
+    [[nodiscard]] Helper::ConstRawDataSpan userDefinedData() const;
 
     //! @copydoc Load::userDefinedData() const
-    [[nodiscard]] UserDefinedData& userDefinedData();
+    [[nodiscard]] Helper::RawData& userDefinedData();
 
     /**
      * @brief Sets the user-defined data stored in the load header.
@@ -384,7 +386,7 @@ class ARINC_665_EXPORT Load final : public File
      * @param[in] userDefinedData
      *   Updated user-defined data.
      **/
-    void userDefinedData( UserDefinedData userDefinedData );
+    void userDefinedData( Helper::RawData userDefinedData );
 
     /** @} **/
 
@@ -543,7 +545,7 @@ class ARINC_665_EXPORT Load final : public File
     //! Support Files
     WeakLoadFiles supportFilesV;
     //! User Defined Data
-    UserDefinedData userDefinedDataV;
+    Helper::RawData userDefinedDataV;
     //! Load Type
     Type typeV;
     //! Load Check Value Type
