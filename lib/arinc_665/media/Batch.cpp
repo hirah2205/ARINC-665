@@ -62,14 +62,14 @@ ConstBatchInformation Batch::targets() const
 
 ConstLoads Batch::target( std::string_view targetHardwareIdPosition ) const
 {
-  const auto it{ batchesV.find( targetHardwareIdPosition ) };
+  const auto targetLoads{ batchesV.find( targetHardwareIdPosition ) };
 
-  if ( it == batchesV.end() )
+  if ( targetLoads == batchesV.end() )
   {
     return {};
   }
 
-  return { it->second.begin(), it->second.end() };
+  return { targetLoads->second.begin(), targetLoads->second.end() };
 }
 
 void Batch::target( std::string targetHardwareIdPosition, const ConstLoads &loads )
@@ -79,7 +79,7 @@ void Batch::target( std::string targetHardwareIdPosition, const ConstLoads &load
 
 void Batch::target( std::string_view targetHardwareIdPosition, const ConstLoadPtr &load )
 {
-  batchesV [ std::string{ targetHardwareIdPosition } ].emplace_back( load );
+  batchesV[ std::string{ targetHardwareIdPosition } ].emplace_back( load );
 }
 
 }
