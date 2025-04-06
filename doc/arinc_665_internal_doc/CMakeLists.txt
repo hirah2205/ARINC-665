@@ -104,7 +104,7 @@ add_dependencies( doc arinc_665_internal_doc )
 # add index.html redirection
 set( INDEX_HTML_OUTPUT_DIR html )
 configure_file(
-  ${cmake_common_SOURCE_DIR}/doxygen_index.html.in
+  ../doxygen_index.html.in
   index.html
   @ONLY )
 
@@ -118,7 +118,7 @@ install(
 
 set( INDEX_HTML_OUTPUT_DIR arinc_665_internal_doc )
 configure_file(
-  ${cmake_common_SOURCE_DIR}/doxygen_index.html.in
+  ../doxygen_index.html.in
   arinc_665_internal_doc.html
   @ONLY )
 
