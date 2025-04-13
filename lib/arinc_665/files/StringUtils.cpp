@@ -15,7 +15,6 @@
 #include <arinc_665/Arinc665Exception.hpp>
 
 #include <helper/Exception.hpp>
-#include <helper/SafeCast.hpp>
 
 #include <boost/exception/all.hpp>
 
@@ -59,7 +58,7 @@ Helper::RawData StringUtils_encodeString( std::string_view string )
   Helper::RawData_setInt< uint16_t >( rawString, Helper::safeCast< uint16_t >( string.size() ) );
 
   // copy string
-  auto stringSpan{ Helper::RawData_toRawData( string ) };
+  auto stringSpan{ Helper::RawData_asRawData( string ) };
   rawString.insert( rawString.end(), stringSpan.begin(), stringSpan.end() );
 
   // fill string if it is odd
