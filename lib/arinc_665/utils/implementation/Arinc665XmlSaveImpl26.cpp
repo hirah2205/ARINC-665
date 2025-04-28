@@ -194,9 +194,9 @@ void Arinc665XmlSaveImpl26::load( const Media::ConstFilePtr &file, xmlpp::Elemen
   // Optional Load Type (Description + Type Value)
   if ( const auto &loadType{ load->loadType() }; loadType )
   {
-    const auto &[ description, id ]{ *loadType };
-    loadElement->set_attribute( "Description", description );
-    loadElement->set_attribute( "Type", std::format( "0x{:04X}", id ) );
+    const auto &[ loadDescription, loadId ]{ *loadType };
+    loadElement->set_attribute( "Description", loadDescription );
+    loadElement->set_attribute( "Type", std::format( "0x{:04X}", loadId ) );
   }
 
   // Load Check Value

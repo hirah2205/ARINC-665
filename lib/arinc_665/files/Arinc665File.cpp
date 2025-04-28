@@ -71,7 +71,7 @@ uint16_t Arinc665File::formatVersion( Helper::ConstRawDataSpan file )
 
 uint16_t Arinc665File::calculateChecksum( Helper::ConstRawDataSpan file )
 {
-  Arinc645::Arinc645Crc16 arincCrc16{};
+  Arinc645::Arinc645Crc16 arincCrc16;
 
   arincCrc16.process_block( std::data( file ), std::data( file ) + file.size() );
 
