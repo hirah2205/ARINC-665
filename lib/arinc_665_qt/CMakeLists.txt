@@ -67,9 +67,11 @@ target_compile_options(
 
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>
+    $<$<CXX_COMPILER_ID:GNU>:-Wpedantic>
 
     $<$<CXX_COMPILER_ID:Clang>:-Wall>
-    $<$<CXX_COMPILER_ID:Clang>:-Wextra> )
+    $<$<CXX_COMPILER_ID:Clang>:-Wextra>
+    $<$<CXX_COMPILER_ID:Clang>:-Wpedantic> )
 
 target_link_libraries(
   arinc_665_qt
@@ -99,7 +101,9 @@ file(
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}
   APPEND
-  PROPERTY DOC_PATHS ${CMAKE_CURRENT_SOURCE_DIR} )
+  PROPERTY DOC_PATHS
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}/arinc_665_qt_export.h )
 
 
 install(
