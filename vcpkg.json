@@ -4,11 +4,11 @@
     "boost-asio",
     "boost-crc",
     "boost-endian",
+    "boost-hash2",
     "boost-log",
     "boost-program-options",
     "boost-serialization",
     "boost-test",
-    "botan",
     "libxmlpp",
     "pkgconf"
   ],

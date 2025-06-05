@@ -22,7 +22,7 @@ First level dependencies:
 - [Commands Library](https://git.thomas-vogt.de/thomas-vogt/commands)
 - Boost Library
 - libxml++
-- Qt (Version 5 or 6) - Optionally
+- Qt 6 - Optionally
 
 ## Building
 The library uses CMake to handle build configuration.
@@ -31,7 +31,7 @@ CMake Presets are provided to generate builds compiling with:
 - Clang, and
 - MSVC.
 
-For each compiler and environment, following variants can be built:
+For each compiler and environment, the following variants can be built:
 - Static debug,
 - Static release,
 - Shared debug, and
@@ -84,10 +84,10 @@ Move Checksum and Check Value definition to ARINC 645.
 No changes of data format.
 
 ## References
- - ARINC Report 665-5:
-   Loadable Software Standards;
-   2019-08-13
- - ARINC Report 645-1:
-   Common Terminology and Functions for Software Distribution and Loading;
-   2021-08-11
- - [ARINC 665-5 @ ARINC](https://aviation-ia.sae-itc.com/standards/arinc665-5-665-5-loadable-software-standards)
+- ARINC Report 665-5:
+  Loadable Software Standards;
+  2019-08-13
+- ARINC Report 645-1:
+  Common Terminology and Functions for Software Distribution and Loading;
+  2021-08-11
+- [ARINC 665-5 @ ARINC](https://aviation-ia.sae-itc.com/standards/arinc665-5-665-5-loadable-software-standards)

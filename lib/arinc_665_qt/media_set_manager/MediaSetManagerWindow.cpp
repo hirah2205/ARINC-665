@@ -74,7 +74,6 @@ MediaSetManagerWindow::MediaSetManagerWindow( QWidget * const parent ) :
     {
       Arinc665::arinc665Version(),
       Arinc645::arinc645Version(),
-      Arinc645::botanVersion(),
       QtIconResources::qtIconResourcesVersion(),
       Helper::helperVersion(),
       Helper::boostVersion(),
