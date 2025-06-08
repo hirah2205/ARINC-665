@@ -6,9 +6,9 @@ Provides library and applications for generating, reading and handling ARINC 665
 This tool suite supports the generation and interpretation of media sets according to ARINC 665-2, ARINC 665-3, ARINC 665-4, and ARINC 665-5.
 
 A library is provided for:
- - generating and parsing ARINC 665 files
- - media set model, and
- - utilities for generation and management of media sets.
+- generating and parsing ARINC 665 files
+- media set model, and
+- utilities for generation and management of media sets.
 
 An XML format and corresponding tools are provided to ease generation of media sets.
 

@@ -14,7 +14,9 @@ add_executable( arinc_665_media_set_manager_gui WIN32 )
 
 target_sources(
   arinc_665_media_set_manager_gui
-  PRIVATE arinc_665_media_set_manager_gui.cpp )
+
+  PRIVATE
+    arinc_665_media_set_manager_gui.cpp )
 
 target_compile_features( arinc_665_media_set_manager_gui PRIVATE cxx_std_23 )
 
@@ -22,7 +24,7 @@ target_compile_options(
   arinc_665_media_set_manager_gui
 
   PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:-W4>
+    $<$<CXX_COMPILER_ID:MSVC>:/W4>
 
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>
@@ -36,8 +38,10 @@ target_link_libraries(
   arinc_665_media_set_manager_gui
 
   PRIVATE
+    arinc_665_qt
+    arinc_665
     qt_icon_resources
-    arinc_665_qt )
+    helper )
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}

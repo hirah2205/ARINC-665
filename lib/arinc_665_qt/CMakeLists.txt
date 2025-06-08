@@ -83,7 +83,8 @@ target_link_libraries(
   PRIVATE
     helper_qt
     qt_icon_resources
-    arinc_645_qt )
+    arinc_645_qt
+    helper )
 
 add_subdirectory( compile_media_set )
 add_subdirectory( decompile_media_set )

@@ -36,7 +36,7 @@
  **/
 int main( int argc, char * argv[] );
 
-int main( int argc, char * argv[] )
+int main( const int argc, char * argv[] )
 {
   BOOST_LOG_FUNCTION()
 
@@ -48,7 +48,7 @@ int main( int argc, char * argv[] )
       << "ARINC 665 Media Set Manager - "
       << Arinc665::Version::VersionInformation << "\n";
 
-    auto registry{ Commands::CommandRegistry::instance() };
+    const auto registry{ Commands::CommandRegistry::instance() };
 
     Arinc665Commands::registerCommands( registry );
 

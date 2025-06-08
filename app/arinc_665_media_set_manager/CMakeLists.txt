@@ -11,7 +11,7 @@ target_sources(
   arinc_665_media_set_manager
 
   PRIVATE
-  arinc_665_media_set_manager.cpp )
+    arinc_665_media_set_manager.cpp )
 
 target_compile_features( arinc_665_media_set_manager PRIVATE cxx_std_23 )
 
@@ -19,7 +19,7 @@ target_compile_options(
   arinc_665_media_set_manager
 
   PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:/W3>
+    $<$<CXX_COMPILER_ID:MSVC>:/W4>
 
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>
