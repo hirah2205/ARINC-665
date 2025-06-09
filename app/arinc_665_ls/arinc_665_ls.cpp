@@ -26,7 +26,8 @@
 
 #include <helper/Dump.hpp>
 #include <helper/Exception.hpp>
-#include <helper/Logger.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 #include <boost/program_options.hpp>
@@ -109,9 +110,7 @@ static Helper::RawData loadFile( const std::filesystem::path &file );
 
 int main( int argc, char * argv[] )
 {
-  BOOST_LOG_FUNCTION()
-
-  Helper::initLogging( Helper::Severity::info );
+  spdlog::set_level( spdlog::level::info );
 
   try
   {

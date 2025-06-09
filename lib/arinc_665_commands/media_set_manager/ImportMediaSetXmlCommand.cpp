@@ -24,7 +24,7 @@
 #include <arinc_665/SupportedArinc665VersionDescription.hpp>
 #include <arinc_665/Arinc665Exception.hpp>
 
-#include <helper/Logger.hpp>
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -107,8 +107,6 @@ ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
 
 void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 {
-  BOOST_LOG_FUNCTION()
-
   try
   {
     std::cout << "Import ARINC 665 Media Set XML\n";

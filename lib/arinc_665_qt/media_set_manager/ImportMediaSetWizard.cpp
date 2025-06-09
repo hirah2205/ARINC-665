@@ -22,10 +22,11 @@
 
 #include <arinc_665/Arinc665Exception.hpp>
 
-#include <helper/Logger.hpp>
 #include <helper/Exception.hpp>
 
 #include <QMessageBox>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -95,8 +96,6 @@ void ImportMediaSetWizard::checkFileIntegrity( bool checkFileIntegrity )
 
 void ImportMediaSetWizard::importMediaSet()
 {
-  BOOST_LOG_FUNCTION()
-
   try
   {
     const auto mediaInformation{

@@ -5,6 +5,8 @@
 
 cmake_minimum_required( VERSION 3.31 )
 
+find_package( spdlog REQUIRED )
+
 add_library( arinc_665_commands )
 
 include( GenerateExportHeader )
@@ -51,7 +53,10 @@ target_link_libraries(
 
   PUBLIC
     arinc_665
-    commands )
+    commands
+
+  PRIVATE
+    spdlog::spdlog )
 
 add_subdirectory( media_set_manager )
 

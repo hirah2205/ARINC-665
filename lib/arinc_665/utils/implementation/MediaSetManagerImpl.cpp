@@ -19,12 +19,13 @@
 #include <arinc_665/utils/FilesystemMediaSetDecompiler.hpp>
 
 #include <arinc_665/Arinc665Exception.hpp>
-#include <arinc_665/Logger.hpp>
 
 #include <helper/Exception.hpp>
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -38,8 +39,6 @@ MediaSetManagerImpl::MediaSetManagerImpl(
   LoadProgressHandler loadProgressHandler ) :
   directoryV{ std::move( directory ) }
 {
-  BOOST_LOG_FUNCTION()
-
   const auto configurationFile{ directoryV / ConfigurationFilename };
 
   if ( !std::filesystem::is_regular_file( configurationFile ) )
@@ -62,16 +61,13 @@ MediaSetManagerImpl::MediaSetManagerImpl(
 
 MediaSetManagerImpl::~MediaSetManagerImpl()
 {
-  BOOST_LOG_FUNCTION()
-
   try
   {
     saveConfiguration();
   }
   catch ( const Arinc665Exception &e )
   {
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::fatal )
-      << "Save configuration: " << boost::diagnostic_information( e );
+    spdlog::critical( "Save configuration: {}", boost::diagnostic_information( e ) );
   }
 }
 
@@ -106,16 +102,13 @@ MediaSetManagerConfiguration MediaSetManagerImpl::configuration() const
 
 void MediaSetManagerImpl::saveConfiguration()
 {
-  BOOST_LOG_FUNCTION()
-
   try
   {
     boost::property_tree::write_json( ( directoryV / ConfigurationFilename ).string(), configuration().toProperties() );
   }
   catch ( const boost::property_tree::json_parser_error &e )
   {
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
-      << "Save configuration " << e.filename() << " " << e.message();
+    spdlog::error( "Save configuration '{}': {}", e.filename(), e.message() );
 
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo( e.message() )
@@ -230,30 +223,24 @@ Media::ConstBatches MediaSetManagerImpl::batches() const
 
 std::filesystem::path MediaSetManagerImpl::filePath( const Media::ConstFilePtr &file ) const
 {
-  BOOST_LOG_FUNCTION()
-
   if ( !file )
   {
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
-      << "Given file is empty";
+    spdlog::error( "Given file is empty" );
   }
 
   auto mediaSetIt{ mediaSetsPathsV.find( file->mediaSet()->partNumber() ) };
 
   if ( mediaSetIt == mediaSetsPathsV.end() )
   {
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
-      << "Media Set not found";
+    spdlog::error( "Media Set not found" );
     return {};
   }
 
-  auto mediumIt{
-    mediaSetIt->second.second.find( file->effectiveMediumNumber() ) };
+  auto mediumIt{ mediaSetIt->second.second.find( file->effectiveMediumNumber() ) };
 
   if ( mediumIt == mediaSetIt->second.second.end() )
   {
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
-      << "Medium not found";
+    spdlog::error( "Medium not found" );
     return {};
   }
 
@@ -266,8 +253,6 @@ void MediaSetManagerImpl::loadMediaSets(
   const bool checkFileIntegrity,
   LoadProgressHandler loadProgressHandler )
 {
-  BOOST_LOG_FUNCTION()
-
   for ( size_t mediaSetCounter{ 1U }; auto const &mediaSetPaths : mediaSetsPaths )
   {
     auto decompiler{ FilesystemMediaSetDecompiler::create() };

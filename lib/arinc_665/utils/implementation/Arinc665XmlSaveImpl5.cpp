@@ -19,11 +19,12 @@
 #include <arinc_665/media/RegularFile.hpp>
 
 #include <arinc_665/Arinc665Exception.hpp>
-#include <arinc_665/Logger.hpp>
 
 #include <arinc_645/CheckValueTypeDescription.hpp>
 
 #include <helper/Exception.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -43,10 +44,7 @@ Arinc665XmlSaveImpl5::Arinc665XmlSaveImpl5(
 
 void Arinc665XmlSaveImpl5::operator()()
 {
-  BOOST_LOG_FUNCTION()
-
-  BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-    << "Save Media Set " << mediaSetV.partNumber() << " to " << xmlFileV;
+  spdlog::info( "Save Media Set '{}' to '{}'", mediaSetV.partNumber(), xmlFileV.string() );
 
   try
   {

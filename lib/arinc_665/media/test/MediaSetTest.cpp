@@ -16,8 +16,6 @@
 #include <arinc_665/media/Load.hpp>
 #include <arinc_665/media/RegularFile.hpp>
 
-#include <helper/Logger.hpp>
-
 #include <boost/test/unit_test.hpp>
 
 using namespace std::string_view_literals;

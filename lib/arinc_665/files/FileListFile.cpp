@@ -16,12 +16,13 @@
 #include <arinc_665/files/CheckValueUtils.hpp>
 
 #include <arinc_665/Arinc665Exception.hpp>
-#include <arinc_665/Logger.hpp>
 
 #include <arinc_645/CheckValueGenerator.hpp>
 
 #include <helper/Exception.hpp>
 #include <helper/RawData.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -83,8 +84,6 @@ Helper::ConstRawDataSpan FileListFile::userDefinedData() const
 
 void FileListFile::userDefinedData( Helper::RawData userDefinedData )
 {
-  BOOST_LOG_FUNCTION()
-
   userDefinedDataV = std::move( userDefinedData );
 
   checkUserDefinedData();
@@ -103,8 +102,6 @@ void FileListFile::checkValueType( Arinc645::CheckValueType type )
 bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
 {
   //! @todo rework
-
-  BOOST_LOG_FUNCTION()
 
   if ( ( mediaSetPn() != other.mediaSetPn() )
     || ( numberOfMediaSetMembers() != other.numberOfMediaSetMembers() )
@@ -169,8 +166,6 @@ bool FileListFile::belongsToSameMediaSet( const FileListFile &other ) const
 
 Helper::RawData FileListFile::encode() const
 {
-  BOOST_LOG_FUNCTION()
-
   bool encodeV3Data{ false };
   std::size_t baseSize;
 
@@ -281,8 +276,6 @@ Helper::RawData FileListFile::encode() const
 
 void FileListFile::decodeBody( Helper::ConstRawDataSpan rawFile )
 {
-  BOOST_LOG_FUNCTION()
-
   bool decodeV3Data{ false };
 
   switch ( arincVersion() )
@@ -388,8 +381,6 @@ void FileListFile::decodeBody( Helper::ConstRawDataSpan rawFile )
 
 Helper::RawData FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
 {
-  BOOST_LOG_FUNCTION()
-
   Helper::RawData rawFilesInfo( sizeof( uint16_t ) );
 
   // Number of files must not exceed field
@@ -453,8 +444,6 @@ Helper::RawData FileListFile::encodeFilesInfo( const bool encodeV3Data ) const
 
 void FileListFile::decodeFilesInfo( Helper::ConstRawDataSpan rawData, const bool decodeV3Data )
 {
-  BOOST_LOG_FUNCTION()
-
   auto remaining{ rawData };
 
   // clear potentially data
@@ -533,12 +522,9 @@ void FileListFile::decodeFilesInfo( Helper::ConstRawDataSpan rawData, const bool
 
 void FileListFile::checkUserDefinedData()
 {
-  BOOST_LOG_FUNCTION()
-
   if ( userDefinedDataV.size() % 2U != 0U )
   {
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::warning )
-      << "User defined data must be 2-byte aligned. - extending range";
+    spdlog::warn( "User defined data must be 2-byte aligned. - extending range" );
 
     userDefinedDataV.push_back( std::byte{ 0U } );
   }

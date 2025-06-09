@@ -22,7 +22,8 @@
 #include <arinc_645/CheckValue.hpp>
 
 #include <helper/Exception.hpp>
-#include <helper/Logger.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
@@ -59,11 +60,9 @@ static Arinc665::Utils::MediaSetDecompilerResult loadMediaSet(
   const Directories &mediaSetDirectories,
   bool checkFileIntegrity );
 
-int main( int argc, char * argv[] )
+int main( const int argc, char * argv[] )
 {
-  BOOST_LOG_FUNCTION()
-
-  Helper::initLogging( Helper::Severity::warning, true );
+  spdlog::set_level( spdlog::level::warn );
 
   try
   {
@@ -73,7 +72,7 @@ int main( int argc, char * argv[] )
 
     boost::program_options::options_description optionsDescription{ "ARINC 665 Media Set Printer Options" };
 
-    // directories which contains the medias
+    // directories which contain the medias
     std::vector< std::filesystem::path > directories;
 
     // Check File Integrity
@@ -131,16 +130,12 @@ int main( int argc, char * argv[] )
   }
   catch ( const boost::exception &e )
   {
-    std::cerr
-      << "Error: "
-      << boost::diagnostic_information( e ) << "\n";
+    std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
-    std::cerr
-      << "Error: "
-      << boost::diagnostic_information( e ) << "\n";
+    std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( ... )

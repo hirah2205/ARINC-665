@@ -19,7 +19,6 @@
 
 #include <arinc_665_qt/media/MediaSetModel.hpp>
 
-#include <arinc_665_qt/Logger.hpp>
 #include <arinc_665_qt/FilePathMappingModel.hpp>
 
 #include <arinc_665/utils/Arinc665Xml.hpp>
@@ -35,6 +34,8 @@
 #include <helper/Exception.hpp>
 
 #include <helper_qt/String.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <QMessageBox>
 #include <QSettings>
@@ -157,8 +158,6 @@ void MediaSetViewerWindow::checkFileIntegrity( bool checkFileIntegrity )
 
 void MediaSetViewerWindow::startMediaSetDecompilation()
 {
-  BOOST_LOG_FUNCTION()
-
   try
   {
     auto decompiler{ Arinc665::Utils::FilesystemMediaSetDecompiler::create() };
@@ -222,8 +221,6 @@ void MediaSetViewerWindow::startMediaSetDecompilation()
 
 void MediaSetViewerWindow::loadXmlFile( const QString &file )
 {
-  BOOST_LOG_FUNCTION()
-
   try
   {
     // remove all files from watching
@@ -266,13 +263,9 @@ void MediaSetViewerWindow::loadXmlFile( const QString &file )
       description = QString::fromStdString( *info );
     }
 
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
-      << boost::diagnostic_information( e, true );
+    spdlog::error( boost::diagnostic_information( e, true ) );
 
-    QMessageBox::critical(
-      nullptr,
-      tr( "Load Media Set XML" ),
-      tr( "Error loading Media Set: " ) + description );
+    QMessageBox::critical( nullptr, tr( "Load Media Set XML" ), tr( "Error loading Media Set: " ) + description );
   }
 }
 
@@ -292,18 +285,13 @@ void MediaSetViewerWindow::saveXmlFile( const QString &file )
       file.toStdString() );
 
     QSettings settings{};
-    settings.setValue(
-      "SaveMediaSetXmlDirectory",
-      selectSaveMediaSetXmlDialogV->directory().path() );
+    settings.setValue( "SaveMediaSetXmlDirectory", selectSaveMediaSetXmlDialogV->directory().path() );
   }
   catch ( const Arinc665::Arinc665Exception &e )
   {
     const auto info{ boost::diagnostic_information( e ) };
 
-    QMessageBox::critical(
-      nullptr,
-      tr( "Save Media Set XML" ),
-      QString::fromStdString( info ) );
+    QMessageBox::critical( nullptr, tr( "Save Media Set XML" ), QString::fromStdString( info ) );
     return;
   }
 }

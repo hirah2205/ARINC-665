@@ -6,6 +6,7 @@
 cmake_minimum_required( VERSION 3.31 )
 
 find_package( Boost REQUIRED )
+find_package( spdlog REQUIRED )
 find_package( PkgConfig REQUIRED )
 pkg_search_module(
   Libxmlpp
@@ -40,7 +41,6 @@ target_sources(
         Arinc665.hpp
         Arinc665Exception.hpp
         FileTypeDescription.hpp
-        Logger.hpp
         MediumNumber.hpp
         PartNumber.hpp
         SupportedArinc665VersionDescription.hpp
@@ -91,6 +91,7 @@ target_link_libraries(
     arinc_645
 
   PRIVATE
+    spdlog::spdlog
     PkgConfig::Libxmlpp )
 
 add_library( arinc_665_test OBJECT )

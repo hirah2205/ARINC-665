@@ -17,7 +17,7 @@
 
 #include <arinc_645/CheckValue.hpp>
 
-#include <helper/Logger.hpp>
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -47,8 +47,6 @@ ListMediaSetsCommand::ListMediaSetsCommand() :
 
 void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
 {
-  BOOST_LOG_FUNCTION()
-
   try
   {
     std::cout << "List ARINC 665 Media Sets \n";

@@ -15,7 +15,7 @@
 #include <arinc_665/files/FileListFile.hpp>
 #include <arinc_665/files/MediaSetInformation.hpp>
 
-#include <arinc_665/Logger.hpp>
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/diagnostic_information.hpp>
 
@@ -25,15 +25,12 @@ namespace Arinc665::Utils {
 
 std::optional< Files::MediaSetInformation > getMediumInformation( const std::filesystem::path &directory )
 {
-  BOOST_LOG_FUNCTION()
-
   try
   {
-    // Check existence of directory
+    // Check the existence of the directory
     if ( !std::filesystem::is_directory( directory ) )
     {
-      BOOST_LOG_SEV( Logger::get(), Helper::Severity::warning )
-        << directory << " is not a directory";
+      spdlog::warn( "'{}' is not a directory", directory.string() );
       return {};
     }
 
@@ -42,8 +39,7 @@ std::optional< Files::MediaSetInformation > getMediumInformation( const std::fil
     // check existence of list of files
     if ( !std::filesystem::is_regular_file( fileListFilePath ) )
     {
-      BOOST_LOG_SEV( Logger::get(), Helper::Severity::warning )
-        << fileListFilePath << " is not a regular file";
+      spdlog::warn( "'{}' is not a regular file", fileListFilePath.string() ) ;
       return {};
     }
 
@@ -53,8 +49,7 @@ std::optional< Files::MediaSetInformation > getMediumInformation( const std::fil
 
     if ( !file.is_open() )
     {
-      BOOST_LOG_SEV( Logger::get(), Helper::Severity::warning )
-        << "Error opening file " << fileListFilePath;
+      spdlog::warn( "Error opening file '{}'", fileListFilePath. string() );
       return {};
     }
 
@@ -63,9 +58,7 @@ std::optional< Files::MediaSetInformation > getMediumInformation( const std::fil
 
     if ( file.bad() || ( file.gcount() != static_cast< std::streamsize >( fileSize ) ) )
     {
-      BOOST_LOG_SEV( Logger::get(), Helper::Severity::warning )
-        << "Error reading from file " << fileListFilePath
-        << " read " << file.gcount() << " bytes";
+      spdlog::warn( "Error reading from file '{}' read {} bytes", fileListFilePath.string(), file.gcount() );
       return {};
     }
 
@@ -75,10 +68,8 @@ std::optional< Files::MediaSetInformation > getMediumInformation( const std::fil
   }
   catch ( const boost::exception &e )
   {
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::warning )
-      << "Exception " << boost::diagnostic_information( e, false );
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-      << "Exception Details " << boost::diagnostic_information( e );
+    spdlog::warn( "Exception {}", boost::diagnostic_information( e, false ) );
+    spdlog::info( "Exception Details {}", boost::diagnostic_information( e ) );
 
     return {};
   }

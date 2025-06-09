@@ -14,7 +14,7 @@
 
 #include <arinc_665/utils/MediaSetManager.hpp>
 
-#include <helper/Logger.hpp>
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -37,8 +37,6 @@ CreateMediaSetManagerCommand::CreateMediaSetManagerCommand() :
 
 void CreateMediaSetManagerCommand::execute( const Commands::Parameters &parameters )
 {
-  BOOST_LOG_FUNCTION()
-
   try
   {
     std::cout << "Create ARINC 665 Media Set Manager\n";

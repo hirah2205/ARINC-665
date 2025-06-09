@@ -24,7 +24,8 @@
 #include <arinc_665/Version.hpp>
 
 #include <helper/Exception.hpp>
-#include <helper/Logger.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
@@ -48,9 +49,7 @@ int main( int argc, char * argv[] );
 
 int main( int argc, char * argv[] )
 {
-  BOOST_LOG_FUNCTION()
-
-  Helper::initLogging( Helper::Severity::info );
+  spdlog::set_level( spdlog::level::info );
 
   try
   {
@@ -169,7 +168,7 @@ int main( int argc, char * argv[] )
       compiler->mediaSetName( mediaSetName );
     }
 
-    const auto &[mediaSetPath, mediaPaths]{ ( *compiler )() };
+    const auto &[ mediaSetPath, mediaPaths ]{ ( *compiler )() };
 
     std::cout << "Created Media Set " << mediaSetName << " in \n";
     for ( const auto &[ mediumNumber, mediumPath ] : mediaPaths )

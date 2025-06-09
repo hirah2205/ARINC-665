@@ -14,12 +14,13 @@
 
 #include <arinc_665/files/StringUtils.hpp>
 
-#include <arinc_665/Logger.hpp>
 #include <arinc_665/Arinc665Exception.hpp>
 
 #include <helper/Exception.hpp>
 #include <helper/RawData.hpp>
 #include <helper/SafeCast.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -82,8 +83,6 @@ Helper::ConstRawDataSpan LoadListFile::userDefinedData() const
 
 void LoadListFile::userDefinedData( Helper::RawData userDefinedData )
 {
-  BOOST_LOG_FUNCTION()
-
   userDefinedDataV = std::move( userDefinedData);
 
   checkUserDefinedData();
@@ -91,8 +90,6 @@ void LoadListFile::userDefinedData( Helper::RawData userDefinedData )
 
 bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other ) const
 {
-  BOOST_LOG_FUNCTION()
-
   return ( mediaSetPn() == other.mediaSetPn() )
     && ( numberOfMediaSetMembers() == other.numberOfMediaSetMembers() )
     && std::ranges::equal( userDefinedDataV, other.userDefinedData() )
@@ -101,8 +98,6 @@ bool LoadListFile::belongsToSameMediaSet( const LoadListFile &other ) const
 
 Helper::RawData LoadListFile::encode() const
 {
-  BOOST_LOG_FUNCTION()
-
   Helper::RawData rawFile( FileHeaderSizeV2 );
 
   // Spare Field
@@ -164,8 +159,6 @@ Helper::RawData LoadListFile::encode() const
 
 void LoadListFile::decodeBody( Helper::ConstRawDataSpan rawFile )
 {
-  BOOST_LOG_FUNCTION()
-
   // Spare Field
   auto [ _, spare ]{ Helper::RawData_getInt< uint16_t >( rawFile.subspan( SpareFieldOffsetV2 ) ) };
   if ( 0U != spare )
@@ -204,8 +197,6 @@ void LoadListFile::decodeBody( Helper::ConstRawDataSpan rawFile )
 
 Helper::RawData LoadListFile::encodeLoadsInfo() const
 {
-  BOOST_LOG_FUNCTION()
-
   Helper::RawData rawLoadsInfo( sizeof( uint16_t ) );
 
   // Number of loads must not exceed field
@@ -261,8 +252,6 @@ Helper::RawData LoadListFile::encodeLoadsInfo() const
 
 void LoadListFile::decodeLoadsInfo( Helper::ConstRawDataSpan rawData )
 {
-  BOOST_LOG_FUNCTION()
-
   auto remaining{ rawData };
 
   // number of loads
@@ -326,12 +315,9 @@ void LoadListFile::decodeLoadsInfo( Helper::ConstRawDataSpan rawData )
 
 void LoadListFile::checkUserDefinedData()
 {
-  BOOST_LOG_FUNCTION()
-
   if ( userDefinedDataV.size() % 2U != 0U )
   {
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::warning )
-      << "User defined data must be 2-byte aligned. - extending range";
+    spdlog::warn( "User defined data must be 2-byte aligned. - extending range" );
 
     userDefinedDataV.push_back( std::byte{ 0U } );
   }

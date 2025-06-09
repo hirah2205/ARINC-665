@@ -14,7 +14,6 @@
 
 #include <arinc_665/utils/FileCreationPolicyDescription.hpp>
 
-#include <arinc_665/Logger.hpp>
 #include <arinc_665/SupportedArinc665VersionDescription.hpp>
 
 #include <boost/property_tree/ptree.hpp>
@@ -34,8 +33,6 @@ MediaSetDefaults::MediaSetDefaults( const boost::property_tree::ptree &propertie
 
 void MediaSetDefaults::fromProperties( const boost::property_tree::ptree &properties )
 {
-  BOOST_LOG_FUNCTION()
-
   checkFileIntegrity = properties.get( "check_file_integrity", DefaultCheckFileIntegrity );
 
   version = properties.get( "version", DefaultVersion );

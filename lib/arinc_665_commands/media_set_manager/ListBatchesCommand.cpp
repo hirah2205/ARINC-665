@@ -18,7 +18,8 @@
 #include <arinc_665/utils/MediaSetManager.hpp>
 
 #include <helper/HexString.hpp>
-#include <helper/Logger.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -48,8 +49,6 @@ ListBatchesCommand::ListBatchesCommand() :
 
 void ListBatchesCommand::execute( const Commands::Parameters &parameters )
 {
-  BOOST_LOG_FUNCTION()
-
   try
   {
     std::cout << "List ARINC 665 Batches\n";

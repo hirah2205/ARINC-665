@@ -12,9 +12,6 @@
 
 #include "MediaSetManagerConfiguration.hpp"
 
-#include <arinc_665/Logger.hpp>
-
-#include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 
 namespace Arinc665::Utils {
@@ -26,8 +23,6 @@ MediaSetManagerConfiguration::MediaSetManagerConfiguration( const boost::propert
 
 void MediaSetManagerConfiguration::fromProperties( const boost::property_tree::ptree &properties )
 {
-  BOOST_LOG_FUNCTION()
-
   // iterate over media sets
   if ( const auto mediaSetProperties{ properties.get_child_optional( "media_sets" ) }; mediaSetProperties )
   {
@@ -63,8 +58,6 @@ void MediaSetManagerConfiguration::fromProperties( const boost::property_tree::p
 
 boost::property_tree::ptree MediaSetManagerConfiguration::toProperties( const bool full ) const
 {
-  BOOST_LOG_FUNCTION()
-
   boost::property_tree::ptree properties{};
 
   // Media Sets configuration

@@ -6,6 +6,7 @@
 cmake_minimum_required( VERSION 3.31 )
 
 find_package( Qt6 COMPONENTS Widgets QUIET )
+find_package( spdlog REQUIRED )
 
 if( NOT TARGET Qt::Widgets )
   return()
@@ -31,7 +32,6 @@ target_sources(
 
       FILES
         Arinc665Qt.hpp
-        Logger.hpp
         ExportMediaSetSettingsWidget.hpp
         FileCreationPolicyModel.hpp
         FilePathMappingModel.hpp
@@ -81,6 +81,7 @@ target_link_libraries(
     Qt::Widgets
 
   PRIVATE
+    spdlog::spdlog
     helper_qt
     qt_icon_resources
     arinc_645_qt

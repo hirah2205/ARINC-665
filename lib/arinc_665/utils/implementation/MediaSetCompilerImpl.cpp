@@ -24,13 +24,14 @@
 #include <arinc_665/files/LoadHeaderFile.hpp>
 #include <arinc_665/files/BatchFile.hpp>
 
-#include <arinc_665/Logger.hpp>
 #include <arinc_665/Arinc665Exception.hpp>
 
 #include <arinc_645/Arinc645Crc.hpp>
 #include <arinc_645/CheckValueGenerator.hpp>
 
 #include <helper/Exception.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -100,8 +101,6 @@ MediaSetCompiler &MediaSetCompilerImpl::createLoadHeaderFiles( const FileCreatio
 
 void MediaSetCompilerImpl::operator()()
 {
-  BOOST_LOG_FUNCTION()
-
   if ( !mediaSetV || !createMediumHandlerV || !createDirectoryHandlerV
     || !checkFileExistenceHandlerV || !createFileHandlerV || !writeFileHandlerV
     || !readFileHandlerV )
@@ -110,9 +109,7 @@ void MediaSetCompilerImpl::operator()()
       << Helper::AdditionalInfo{ "Invalid state of exporter" } );
   }
 
-  BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-    << "Export Media Set "
-    << "'" << mediaSetV->partNumber() << "'";
+  spdlog::info( "Export Media Set '{}'", mediaSetV->partNumber() );
 
   // first export medium (directories and regular files)
   for ( MediumNumber mediumNumber{ 1U }; mediumNumber <= mediaSetV->lastMediumNumber(); ++mediumNumber )
@@ -162,13 +159,7 @@ void MediaSetCompilerImpl::exportDirectory(
   const MediumNumber &mediumNumber,
   const Media::ConstDirectoryPtr &directory )
 {
-  BOOST_LOG_FUNCTION()
-
-  BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-    << "Export Directory to ["
-    << mediumNumber
-    << "]:"
-    << directory->path().string();
+  spdlog::info( "Export Directory to [{}]:'{}'", mediumNumber.toString(), directory->path().string() );
 
   createDirectoryHandlerV( mediumNumber, directory );
 
@@ -187,13 +178,7 @@ void MediaSetCompilerImpl::exportDirectory(
 
 void MediaSetCompilerImpl::exportRegularFile( const Media::ConstRegularFilePtr &file )
 {
-  BOOST_LOG_FUNCTION()
-
-  BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-    << "Export Regular File to ["
-    << file->effectiveMediumNumber()
-    << "]:"
-    << file->path().string();
+  spdlog::info( "Export Regular File to [{}]:'{}'", file->effectiveMediumNumber().toString(), file->path().string() );
 
   // regular file mus be created by callback
   createFileHandlerV( file );
@@ -201,13 +186,7 @@ void MediaSetCompilerImpl::exportRegularFile( const Media::ConstRegularFilePtr &
 
 void MediaSetCompilerImpl::exportLoad( const Media::ConstLoadPtr &load )
 {
-  BOOST_LOG_FUNCTION()
-
-  BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-    << "Export Load to ["
-    << load->effectiveMediumNumber()
-    << "]:"
-    << load->path().string();
+  spdlog::info( "Export Load to [{}]:'{}'", load->effectiveMediumNumber().toString(), load->path().string() );
 
   // check load header creation policy
   switch ( createLoadHeaderFilesV )
@@ -239,13 +218,7 @@ void MediaSetCompilerImpl::exportLoad( const Media::ConstLoadPtr &load )
 
 void MediaSetCompilerImpl::exportBatch( const Media::ConstBatchPtr &batch )
 {
-  BOOST_LOG_FUNCTION()
-
-  BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-    << "Export Batch to ["
-    << batch->effectiveMediumNumber()
-    << "]:"
-    << batch->path().string();
+  spdlog::info( "Export Batch to [{}]:'{}'", batch->effectiveMediumNumber().toString(), batch->path().string() );
 
   // check batch file creation policy
   switch ( createBatchFilesV )
@@ -278,9 +251,7 @@ void MediaSetCompilerImpl::exportBatch( const Media::ConstBatchPtr &batch )
 
 void MediaSetCompilerImpl::exportListOfLoads() const
 {
-  BOOST_LOG_FUNCTION()
-
-  Arinc665::Files::LoadListFile loadListFile{ arinc665VersionV };
+  Files::LoadListFile loadListFile{ arinc665VersionV };
 
   loadListFile.mediaSetPn( std::string{ mediaSetV->partNumber() } );
   loadListFile.numberOfMediaSetMembers( mediaSetV->lastMediumNumber() );
@@ -303,11 +274,7 @@ void MediaSetCompilerImpl::exportListOfLoads() const
   {
     const std::filesystem::path filename{ "/" / std::filesystem::path{ ListOfLoadsName } };
 
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-      << "Export List of Loads to ["
-      << mediumNumber
-      << "]:"
-      << filename.string();
+    spdlog::info( "Export List of Loads to [{}]:'{}'", mediumNumber.toString(), filename.string() );
 
     loadListFile.mediaSequenceNumber( mediumNumber );
 
@@ -317,9 +284,7 @@ void MediaSetCompilerImpl::exportListOfLoads() const
 
 void MediaSetCompilerImpl::exportListOfBatches() const
 {
-  BOOST_LOG_FUNCTION()
-
-  Arinc665::Files::BatchListFile batchListFile{ arinc665VersionV };
+  Files::BatchListFile batchListFile{ arinc665VersionV };
   batchListFile.mediaSetPn( std::string{ mediaSetV->partNumber() } );
   batchListFile.numberOfMediaSetMembers( mediaSetV->lastMediumNumber() );
 
@@ -339,11 +304,7 @@ void MediaSetCompilerImpl::exportListOfBatches() const
   {
     const std::filesystem::path filename{ "/" / std::filesystem::path{ ListOfBatchesName } };
 
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-      << "Export List of Batches to ["
-      <<  mediumNumber
-      << "]:"
-      << filename.string();
+    spdlog::info( "Export List of Batches to [{}]:'{}'", mediumNumber.toString(), filename.string() );
 
     batchListFile.mediaSequenceNumber( mediumNumber );
 
@@ -353,8 +314,6 @@ void MediaSetCompilerImpl::exportListOfBatches() const
 
 void MediaSetCompilerImpl::exportListOfFiles() const
 {
-  BOOST_LOG_FUNCTION()
-
   Files::FilesInfo filesInfo{};
 
   /* add all files, load header files, and batch files to file list */
@@ -382,11 +341,7 @@ void MediaSetCompilerImpl::exportListOfFiles() const
   {
     const std::filesystem::path filename{ "/" / std::filesystem::path{ ListOfFilesName } };
 
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-      << "Export List of Files to ["
-      << mediumNumber
-      << "]:"
-      << filename.string();
+    spdlog::info( "Export List of Files to [{}]:'{}'", mediumNumber.toString(), filename.string() );
 
     fileListFile.mediaSequenceNumber( mediumNumber );
 
@@ -465,7 +420,7 @@ void MediaSetCompilerImpl::createLoadHeaderFile( const Media::Load &load ) const
   // RAW load header used for load Check Value and CRC calculation
   auto rawLoadHeader{ Helper::RawData( loadHeaderFile ) };
 
-  // Calculate Load Check Value ( Only for supported version)
+  // Calculate Load Check Value (Only for supported version)
   if ( SupportedArinc665Version::Supplement345 == arinc665VersionV )
   {
     auto checkValueGenerator{ Arinc645::CheckValueGenerator::create( load.effectiveLoadCheckValueType() ) };

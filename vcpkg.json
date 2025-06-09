@@ -5,12 +5,14 @@
     "boost-crc",
     "boost-endian",
     "boost-hash2",
-    "boost-log",
+    "boost-multi-index",
     "boost-program-options",
+    "boost-property-tree",
     "boost-serialization",
     "boost-test",
     "libxmlpp",
-    "pkgconf"
+    "pkgconf",
+    "spdlog"
   ],
   "features": {
     "with-qt" : {

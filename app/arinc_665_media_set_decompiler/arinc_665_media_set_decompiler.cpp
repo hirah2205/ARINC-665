@@ -24,8 +24,7 @@
 
 #include <arinc_645/CheckValue.hpp>
 
-#include <helper/Exception.hpp>
-#include <helper/Logger.hpp>
+#include <spdlog/spdlog.h>
 
 #include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
@@ -58,11 +57,9 @@ int main( int argc, char * argv[] );
  **/
 static void progress( std::string_view partNumber, std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium );
 
-int main( int argc, char * argv[] )
+int main( const int argc, char * argv[] )
 {
-  BOOST_LOG_FUNCTION()
-
-  Helper::initLogging( Helper::Severity::info );
+  spdlog::set_level( spdlog::level::info );
 
   try
   {
@@ -174,16 +171,12 @@ int main( int argc, char * argv[] )
   }
   catch ( const boost::exception &e )
   {
-    std::cerr
-      << "Error: "
-      << boost::diagnostic_information( e ) << "\n";
+    std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
-    std::cerr
-      << "Error: "
-      << boost::diagnostic_information( e ) << "\n";
+    std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
     return EXIT_FAILURE;
   }
   catch ( ... )

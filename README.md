@@ -22,6 +22,7 @@ First level dependencies:
 - [Commands Library](https://git.thomas-vogt.de/thomas-vogt/commands)
 - Boost Library
 - libxml++
+- spdlog
 - Qt 6 - Optionally
 
 ## Building

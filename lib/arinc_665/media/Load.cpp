@@ -16,11 +16,12 @@
 #include <arinc_665/media/RegularFile.hpp>
 
 #include <arinc_665/Arinc665Exception.hpp>
-#include <arinc_665/Logger.hpp>
 
 #include <arinc_645/CheckValue.hpp>
 
 #include <helper/Exception.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -104,8 +105,6 @@ void Load::targetHardwareId( std::string targetHardwareId, Positions positions )
 
 ConstFilePtr Load::file( std::string_view filename ) const
 {
-  BOOST_LOG_FUNCTION()
-
   ConstFiles foundFiles{};
 
   for ( const auto &file : files() )
@@ -123,8 +122,7 @@ ConstFilePtr Load::file( std::string_view filename ) const
 
   if ( !foundFiles.empty() )
   {
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-      << "More than one file found for given filename";
+    spdlog::info( "More than one file found for given filename" );
   }
 
   return {};
@@ -135,8 +133,6 @@ ConstFilePtr Load::file(
   std::string_view filename,
   const Arinc645::CheckValue &checkValue ) const
 {
-  BOOST_LOG_FUNCTION()
-
   ConstFiles foundFiles{};
 
   for ( const auto &file : files() )
@@ -160,8 +156,7 @@ ConstFilePtr Load::file(
 
   if ( !foundFiles.empty() )
   {
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-      << "More than one file found for given parameters";
+    spdlog::info( "More than one file found for given parameters" );
   }
 
   return {};
@@ -170,9 +165,7 @@ ConstFilePtr Load::file(
 
 ConstFiles Load::files() const
 {
-  BOOST_LOG_FUNCTION()
-
-  // add load file itself
+  // add the load file itself
   ConstFiles files{ {
     std::dynamic_pointer_cast< const File >( shared_from_this() ) } };
 
@@ -193,8 +186,6 @@ ConstFiles Load::files() const
 
 ConstLoadFiles Load::dataFiles( const bool effective ) const
 {
-  BOOST_LOG_FUNCTION()
-
   ConstLoadFiles files{};
 
   for ( const auto &[ filePtr, partNumber, checkValueType ] : dataFilesV )
@@ -225,8 +216,6 @@ void Load::dataFile(
   std::string partNumber,
   std::optional< Arinc645::CheckValueType > checkValueType )
 {
-  BOOST_LOG_FUNCTION()
-
   if ( !file || ( file->mediaSet() != mediaSet() ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception{}
@@ -241,8 +230,6 @@ void Load::dataFile(
 
 ConstLoadFiles Load::supportFiles( const bool effective ) const
 {
-  BOOST_LOG_FUNCTION()
-
   ConstLoadFiles files{};
 
   for ( const auto &[filePtr, partNumber, checkValueType ] : supportFilesV )
@@ -273,8 +260,6 @@ void Load::supportFile(
   std::string partNumber,
   std::optional< Arinc645::CheckValueType > checkValueType )
 {
-  BOOST_LOG_FUNCTION()
-
   if ( !file || ( file->mediaSet() != mediaSet() ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception{}
@@ -360,8 +345,6 @@ void Load::supportFilesCheckValueType( std::optional< Arinc645::CheckValueType >
 
 ConstLoadPtr Loads_loadByPartNumber( const ConstLoads &loads, std::string_view partNumber )
 {
-  BOOST_LOG_FUNCTION()
-
   for ( const auto &load : loads )
   {
     if ( load->partNumber() == partNumber )
@@ -375,16 +358,13 @@ ConstLoadPtr Loads_loadByPartNumber( const ConstLoads &loads, std::string_view p
 
 ConstFilePtr Loads_file( const ConstLoads &loads, std::string_view filename, std::string_view loadPartNumber )
 {
-  BOOST_LOG_FUNCTION()
-
   if ( !loadPartNumber.empty() )
   {
     const auto load{ Loads_loadByPartNumber( loads, loadPartNumber ) };
 
     if ( !load )
     {
-      BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
-        << "No Load with given Part Number";
+      spdlog::error( "No Load with given Part Number" );
       return {};
     }
 
@@ -409,8 +389,7 @@ ConstFilePtr Loads_file( const ConstLoads &loads, std::string_view filename, std
 
   if ( !files.empty() )
   {
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-      << "More than one file found for given parameters";
+    spdlog::info( "More than one file found for given parameters" );
   }
 
   return {};
@@ -423,16 +402,13 @@ ConstFilePtr Loads_file(
   std::string_view loadPartNumber,
   const Arinc645::CheckValue &checkValue )
 {
-  BOOST_LOG_FUNCTION()
-
   if ( !loadPartNumber.empty() )
   {
     const auto load{ Loads_loadByPartNumber( loads, loadPartNumber ) };
 
     if ( !load )
     {
-      BOOST_LOG_SEV( Logger::get(), Helper::Severity::error )
-        << "No Load with given Part Number";
+      spdlog::error( "No Load with given Part Number" );
       return {};
     }
 
@@ -457,8 +433,7 @@ ConstFilePtr Loads_file(
 
   if ( !files.empty() )
   {
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-      << "More than one file found for given parameters";
+    spdlog::info( "More than one file found for given parameters" );
   }
 
   // no, or more than one file

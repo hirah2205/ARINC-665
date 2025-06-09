@@ -15,10 +15,11 @@
 #include <arinc_665/files/StringUtils.hpp>
 
 #include <arinc_665/Arinc665Exception.hpp>
-#include <arinc_665/Logger.hpp>
 
 #include <helper/Exception.hpp>
 #include <helper/SafeCast.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -80,8 +81,6 @@ Helper::ConstRawDataSpan BatchListFile::userDefinedData() const
 
 void BatchListFile::userDefinedData( Helper::RawData userDefinedData )
 {
-  BOOST_LOG_FUNCTION()
-
   userDefinedDataV = std::move( userDefinedData );
 
   checkUserDefinedData();
@@ -89,8 +88,6 @@ void BatchListFile::userDefinedData( Helper::RawData userDefinedData )
 
 bool BatchListFile::belongsToSameMediaSet( const BatchListFile &other ) const
 {
-  BOOST_LOG_FUNCTION()
-
   return ( mediaSetPn() == other.mediaSetPn() )
     && ( numberOfMediaSetMembers() == other.numberOfMediaSetMembers() )
     && std::ranges::equal( userDefinedDataV, other.userDefinedData() )
@@ -99,8 +96,6 @@ bool BatchListFile::belongsToSameMediaSet( const BatchListFile &other ) const
 
 Helper::RawData BatchListFile::encode() const
 {
-  BOOST_LOG_FUNCTION()
-
   Helper::RawData rawFile( FileHeaderSizeV2 );
 
   // Spare Field
@@ -164,8 +159,6 @@ Helper::RawData BatchListFile::encode() const
 
 void BatchListFile::decodeBody( Helper::ConstRawDataSpan rawFile )
 {
-  BOOST_LOG_FUNCTION()
-
   // Spare Field
   auto [ _, spare ]{ Helper::RawData_getInt< uint16_t >( rawFile.subspan( SpareFieldOffsetV2 ) ) };
 
@@ -206,8 +199,6 @@ void BatchListFile::decodeBody( Helper::ConstRawDataSpan rawFile )
 
 Helper::RawData BatchListFile::encodeBatchesInfo() const
 {
-  BOOST_LOG_FUNCTION()
-
   Helper::RawData rawBatchesInfo( sizeof( uint16_t ) );
 
   // Number of batches must not exceed field
@@ -263,8 +254,6 @@ Helper::RawData BatchListFile::encodeBatchesInfo() const
 
 void BatchListFile::decodeBatchesInfo( Helper::ConstRawDataSpan rawData )
 {
-  BOOST_LOG_FUNCTION()
-
   auto remaining{ rawData };
 
   // clear eventually stored infos
@@ -327,12 +316,9 @@ void BatchListFile::decodeBatchesInfo( Helper::ConstRawDataSpan rawData )
 
 void BatchListFile::checkUserDefinedData()
 {
-  BOOST_LOG_FUNCTION()
-
   if ( userDefinedDataV.size() % 2U != 0U )
   {
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::warning )
-      << "User defined data must be 2-byte aligned. - extending range";
+    spdlog::warn( "User defined data must be 2-byte aligned. - extending range" );
 
     userDefinedDataV.push_back( std::byte{ 0U } );
   }

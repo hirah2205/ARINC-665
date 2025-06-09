@@ -16,7 +16,7 @@
 
 #include <qt_icon_resources/QtIconResources.hpp>
 
-#include <helper/Logger.hpp>
+#include <spdlog/spdlog.h>
 
 #include <QApplication>
 #include <QIcon>
@@ -40,9 +40,7 @@ int main( int argc, char * argv[] );
 
 int main( int argc, char * argv[] )
 {
-  BOOST_LOG_FUNCTION()
-
-  Helper::initLogging( Helper::Severity::info );
+  spdlog::set_level( spdlog::level::info );
 
   try
   {

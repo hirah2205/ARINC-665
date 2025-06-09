@@ -14,7 +14,8 @@
 #include <arinc_665/Arinc665Exception.hpp>
 
 #include <helper/Exception.hpp>
-#include <helper/Logger.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
@@ -64,9 +65,7 @@ static std::vector< std::filesystem::path> mediaDirectories;
 
 int main( int argc, char * argv[] )
 {
-  BOOST_LOG_FUNCTION()
-
-  Helper::initLogging( Helper::Severity::info, true );
+  spdlog::set_level( spdlog::level::info );
 
   try
   {

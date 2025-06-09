@@ -16,12 +16,13 @@
 #include <arinc_665/files/StringUtils.hpp>
 
 #include <arinc_665/Arinc665Exception.hpp>
-#include <arinc_665/Logger.hpp>
 
 #include <arinc_645/CheckValueGenerator.hpp>
 
 #include <helper/Exception.hpp>
 #include <helper/SafeCast.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -253,8 +254,6 @@ Helper::ConstRawDataSpan LoadHeaderFile::userDefinedData() const
 
 void LoadHeaderFile::userDefinedData( Helper::RawData userDefinedData )
 {
-  BOOST_LOG_FUNCTION()
-
   userDefinedDataV = std::move( userDefinedData );
 
   checkUserDefinedData();
@@ -272,8 +271,6 @@ void LoadHeaderFile::loadCheckValueType( const Arinc645::CheckValueType type )
 
 Helper::RawData LoadHeaderFile::encode() const
 {
-  BOOST_LOG_FUNCTION()
-
   bool encodeV3Data{ false };
   std::size_t baseSize;
 
@@ -485,8 +482,6 @@ Helper::RawData LoadHeaderFile::encode() const
 
 void LoadHeaderFile::decodeBody( Helper::ConstRawDataSpan rawFile )
 {
-  BOOST_LOG_FUNCTION()
-
   bool decodeV3Data{ false };
 
   uint16_t partFlags;
@@ -634,8 +629,6 @@ void LoadHeaderFile::decodeBody( Helper::ConstRawDataSpan rawFile )
 
 Helper::RawData LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
 {
-  BOOST_LOG_FUNCTION()
-
   Helper::RawData rawFileList( sizeof( uint16_t ) );
 
   // Number of files must not exceed field
@@ -707,8 +700,6 @@ Helper::RawData LoadHeaderFile::encodeDataFiles( const bool encodeV3Data ) const
 
 Helper::RawData LoadHeaderFile::encodeSupportFiles( const bool encodeV3Data ) const
 {
-  BOOST_LOG_FUNCTION()
-
   Helper::RawData rawFileList( sizeof( uint16_t ) );
 
   // Number of files must not exceed field
@@ -774,8 +765,6 @@ Helper::RawData LoadHeaderFile::encodeSupportFiles( const bool encodeV3Data ) co
 
 void LoadHeaderFile::decodeDataFiles( Helper::ConstRawDataSpan rawData, const bool decodeV3Data )
 {
-  BOOST_LOG_FUNCTION()
-
   auto remaining{ rawData };
 
   // clear data files
@@ -869,8 +858,6 @@ void LoadHeaderFile::decodeDataFiles( Helper::ConstRawDataSpan rawData, const bo
 
 void LoadHeaderFile::decodeSupportFiles( Helper::ConstRawDataSpan rawData, bool decodeV3Data )
 {
-  BOOST_LOG_FUNCTION()
-
   auto remaining{ rawData };
 
   // clear support files
@@ -942,12 +929,9 @@ void LoadHeaderFile::decodeSupportFiles( Helper::ConstRawDataSpan rawData, bool 
 
 void LoadHeaderFile::checkUserDefinedData()
 {
-  BOOST_LOG_FUNCTION()
-
   if ( userDefinedDataV.size() % 2U != 0U )
   {
-    BOOST_LOG_SEV( Logger::get(), Helper::Severity::warning )
-      << "User defined data must be 2-byte aligned. - extending range";
+    spdlog::warn( "User defined data must be 2-byte aligned. - extending range" );
 
     userDefinedDataV.push_back( std::byte{ 0U } );
   }

@@ -17,7 +17,6 @@
 #include <arinc_665/Arinc665Exception.hpp>
 
 #include <helper/Exception.hpp>
-#include <helper/Logger.hpp>
 #include <helper/SafeCast.hpp>
 
 #include <boost/exception/all.hpp>
@@ -164,8 +163,6 @@ void BatchFile::decodeBody( Helper::ConstRawDataSpan rawFile )
 
 Helper::RawData BatchFile::encodeBatchTargetsInfo() const
 {
-  BOOST_LOG_FUNCTION()
-
   Helper::RawData rawBatchTargetsInfo( sizeof( uint16_t ) ); // Number of THW IDs
 
   // Number of targets must not exceed field
@@ -232,8 +229,6 @@ Helper::RawData BatchFile::encodeBatchTargetsInfo() const
 
 void BatchFile::decodeBatchTargetsInfo( Helper::ConstRawDataSpan rawData )
 {
-  BOOST_LOG_FUNCTION()
-
   auto remaining{ rawData };
 
   // clear potentially data

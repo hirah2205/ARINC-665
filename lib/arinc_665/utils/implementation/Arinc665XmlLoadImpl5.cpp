@@ -19,12 +19,13 @@
 #include <arinc_665/media/RegularFile.hpp>
 
 #include <arinc_665/Arinc665Exception.hpp>
-#include <arinc_665/Logger.hpp>
 
 #include <arinc_645/CheckValueTypeDescription.hpp>
 
 #include <helper/Exception.hpp>
 #include <helper/SafeCast.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -37,12 +38,9 @@ Arinc665XmlLoadImpl5::Arinc665XmlLoadImpl5( const std::filesystem::path &xmlFile
 
 LoadXmlResult Arinc665XmlLoadImpl5::operator()()
 {
-  BOOST_LOG_FUNCTION()
+  spdlog::info( "Load Media Set from '{}'", xmlFileV.string() );
 
-  BOOST_LOG_SEV( Logger::get(), Helper::Severity::info )
-    << "Load Media Set from " << xmlFileV;
-
-  // Check existence of file
+  // Check the existence of the input XML file
   if ( !std::filesystem::is_regular_file( xmlFileV ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665Exception()

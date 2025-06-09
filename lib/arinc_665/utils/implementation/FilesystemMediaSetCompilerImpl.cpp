@@ -19,10 +19,11 @@
 #include <arinc_665/media/MediaSet.hpp>
 
 #include <arinc_665/Arinc665Exception.hpp>
-#include <arinc_665/Logger.hpp>
 #include <arinc_665/MediumNumber.hpp>
 
 #include <helper/Exception.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
 
@@ -153,12 +154,9 @@ std::filesystem::path FilesystemMediaSetCompilerImpl::mediumPath( const Arinc665
 
 void FilesystemMediaSetCompilerImpl::createMedium( const Arinc665::MediumNumber &mediumNumber )
 {
-  BOOST_LOG_FUNCTION()
-
   auto mPath{ mediumPath( mediumNumber ) };
 
-  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
-    << "Create medium directory " << mPath.string();
+  spdlog::trace( "Create medium directory '{}'", mPath.string() );
 
   std::filesystem::create_directory( mPath );
 }
@@ -167,26 +165,20 @@ void FilesystemMediaSetCompilerImpl::createDirectory(
   const Arinc665::MediumNumber &mediumNumber,
   const Arinc665::Media::ConstDirectoryPtr &directory )
 {
-  BOOST_LOG_FUNCTION()
-
   auto directoryPath{ mediumPath( mediumNumber ) / directory->path().relative_path() };
 
-  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
-    << "Create directory "
-    << "[" << mediumNumber << "]:" << directory->path().string()
-    << " (" << directoryPath.string() << ")";
+  spdlog::trace(
+    "Create directory [{}]:'{}' ('{}')",
+    mediumNumber.toString(),
+    directory->path().string(),
+    directoryPath.string() );
 
   std::filesystem::create_directory( directoryPath );
 }
 
 bool FilesystemMediaSetCompilerImpl::checkFileExistence( const Arinc665::Media::ConstFilePtr &file )
 {
-  BOOST_LOG_FUNCTION()
-
-  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
-    << "check existence of "
-    << "[" << file->effectiveMediumNumber() << "]:"
-    << file->path().string();
+  spdlog::trace( "check existence of [{}]:'{}'", file->effectiveMediumNumber().toString(), file->path().string() );
 
   // search for file
   auto fileIt{ filePathMappingV.find( file ) };
@@ -198,16 +190,13 @@ bool FilesystemMediaSetCompilerImpl::checkFileExistence( const Arinc665::Media::
 
   const auto filePath{ ( sourceBasePathV / fileIt->second ).lexically_normal() };
 
-  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
-    << "found at " << filePath.string();
+  spdlog::trace( "found at '{}'", filePath.string() );
 
   return std::filesystem::is_regular_file( filePath );
 }
 
 void FilesystemMediaSetCompilerImpl::createFile( const Arinc665::Media::ConstFilePtr &file )
 {
-  BOOST_LOG_FUNCTION()
-
   // search for file
   auto fileIt{ filePathMappingV.find( file ) };
 
@@ -221,9 +210,7 @@ void FilesystemMediaSetCompilerImpl::createFile( const Arinc665::Media::ConstFil
   const auto sourceFilePath{ ( sourceBasePathV / fileIt->second ).lexically_normal() };
   const auto destinationFilePath{ mediumPath( file->effectiveMediumNumber() ) / file->path().relative_path() };
 
-  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
-    << "Copy file from " << sourceFilePath.string()
-    << " to " << destinationFilePath.string();
+  spdlog::trace( "Copy file from '{}' to '{}'", sourceFilePath.string(), destinationFilePath.string() );
 
   // copy file
   std::filesystem::copy( sourceFilePath, destinationFilePath );
@@ -234,14 +221,9 @@ void FilesystemMediaSetCompilerImpl::writeFile(
   const std::filesystem::path &path,
   Helper::ConstRawDataSpan file )
 {
-  BOOST_LOG_FUNCTION()
-
   auto filePath{ mediumPath( mediumNumber ) / path.relative_path() };
 
-  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
-    << "Write file "
-    << "[" << mediumNumber << "]:" << path.string()
-    << " (" << filePath.string() << ")";
+  spdlog::trace( "Write file [{}]:'{}' ('{}')", mediumNumber.toString(), path.string(), filePath.string() );
 
   // check existence of file
   if ( std::filesystem::exists( filePath ) )
@@ -269,15 +251,10 @@ Helper::RawData FilesystemMediaSetCompilerImpl::readFile(
   const Arinc665::MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {
-  BOOST_LOG_FUNCTION()
-
   // check medium number
   auto filePath{ mediumPath( mediumNumber ) / path.relative_path() };
 
-  BOOST_LOG_SEV( Logger::get(), Helper::Severity::trace )
-    << "Read file "
-    << "[" << mediumNumber << "]:" << path.string()
-    << " (" << filePath.string() << ")";
+  spdlog::trace( "Read file [{}]:'{}' ('{}')", mediumNumber.toString(), path.string(), filePath.string() );
 
   // check existence of file
   if ( !std::filesystem::is_regular_file( filePath ) )
@@ -301,7 +278,7 @@ Helper::RawData FilesystemMediaSetCompilerImpl::readFile(
   }
 
   // read the data to the buffer
-  file.read( (char *)&data.at( 0 ), static_cast< std::streamsize >( data.size() ) );
+  file.read( reinterpret_cast< char * >( std::data( data ) ), static_cast< std::streamsize >( std::size( data ) ) );
 
   // return the buffer
   return data;
