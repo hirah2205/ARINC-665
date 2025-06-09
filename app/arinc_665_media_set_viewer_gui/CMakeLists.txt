@@ -22,7 +22,8 @@ target_compile_options(
   arinc_665_media_set_viewer_gui
 
   PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:-W4>
+    $<$<CXX_COMPILER_ID:MSVC>:/W4>
+    #$<$<CXX_COMPILER_ID:MSVC>:/Wall>
 
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>

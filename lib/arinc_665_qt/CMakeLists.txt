@@ -59,7 +59,8 @@ target_compile_options(
   arinc_665_qt
 
   PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:/W3>
+    $<$<CXX_COMPILER_ID:MSVC>:/W4>
+    #$<$<CXX_COMPILER_ID:MSVC>:/Wall>
     # Disable Warning for exporting classes with std::* private members
     $<$<CXX_COMPILER_ID:MSVC>:/wd4251>
     # Disable Warning for exporting classes, which derives from std::*

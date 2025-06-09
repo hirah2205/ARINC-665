@@ -15,7 +15,8 @@ target_compile_options(
   arinc_665_unit_test
 
   PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:/W3>
+    $<$<CXX_COMPILER_ID:MSVC>:/W4>
+    #$<$<CXX_COMPILER_ID:MSVC>:/Wall>
 
     $<$<CXX_COMPILER_ID:GNU>:-Wall>
     $<$<CXX_COMPILER_ID:GNU>:-Wextra>

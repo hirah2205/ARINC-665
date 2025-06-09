@@ -17,7 +17,8 @@ target_compile_options(
   arinc_665_print_media_set
 
   PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:/W3>
+    $<$<CXX_COMPILER_ID:MSVC>:/W4>
+    #$<$<CXX_COMPILER_ID:MSVC>:/Wall>
     # Disable Warning for exporting classes with std::* private members
     $<$<CXX_COMPILER_ID:MSVC>:/wd4251>
     # Disable Warning for exporting classes, which derives from std::*
@@ -31,7 +32,12 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:Clang>:-Wextra>
     $<$<CXX_COMPILER_ID:Clang>:-Wpedantic> )
 
-target_link_libraries( arinc_665_print_media_set PRIVATE arinc_665 Boost::program_options )
+target_link_libraries(
+  arinc_665_print_media_set
+
+  PRIVATE
+    arinc_665
+    Boost::program_options )
 
 set_property(
   DIRECTORY ${PROJECT_SOURCE_DIR}
