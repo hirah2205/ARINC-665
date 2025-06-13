@@ -38,7 +38,7 @@ Arinc665XmlLoadImpl26::Arinc665XmlLoadImpl26( const std::filesystem::path &xmlFi
 
 LoadXmlResult Arinc665XmlLoadImpl26::operator()()
 {
-  spdlog::info( "Load Media Set from '{}'", xmlFileV.string() );
+  SPDLOG_INFO( "Load Media Set from '{}'", xmlFileV.string() );
 
   // Check the existence of the input XML file
   if ( !std::filesystem::is_regular_file( xmlFileV ) )

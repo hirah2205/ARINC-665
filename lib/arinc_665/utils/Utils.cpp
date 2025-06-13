@@ -30,7 +30,7 @@ std::optional< Files::MediaSetInformation > getMediumInformation( const std::fil
     // Check the existence of the directory
     if ( !std::filesystem::is_directory( directory ) )
     {
-      spdlog::warn( "'{}' is not a directory", directory.string() );
+      SPDLOG_WARN( "'{}' is not a directory", directory.string() );
       return {};
     }
 
@@ -39,7 +39,7 @@ std::optional< Files::MediaSetInformation > getMediumInformation( const std::fil
     // check existence of list of files
     if ( !std::filesystem::is_regular_file( fileListFilePath ) )
     {
-      spdlog::warn( "'{}' is not a regular file", fileListFilePath.string() ) ;
+      SPDLOG_WARN( "'{}' is not a regular file", fileListFilePath.string() ) ;
       return {};
     }
 
@@ -49,7 +49,7 @@ std::optional< Files::MediaSetInformation > getMediumInformation( const std::fil
 
     if ( !file.is_open() )
     {
-      spdlog::warn( "Error opening file '{}'", fileListFilePath. string() );
+      SPDLOG_WARN( "Error opening file '{}'", fileListFilePath. string() );
       return {};
     }
 
@@ -58,7 +58,7 @@ std::optional< Files::MediaSetInformation > getMediumInformation( const std::fil
 
     if ( file.bad() || ( file.gcount() != static_cast< std::streamsize >( fileSize ) ) )
     {
-      spdlog::warn( "Error reading from file '{}' read {} bytes", fileListFilePath.string(), file.gcount() );
+      SPDLOG_WARN( "Error reading from file '{}' read {} bytes", fileListFilePath.string(), file.gcount() );
       return {};
     }
 
@@ -68,8 +68,8 @@ std::optional< Files::MediaSetInformation > getMediumInformation( const std::fil
   }
   catch ( const boost::exception &e )
   {
-    spdlog::warn( "Exception {}", boost::diagnostic_information( e, false ) );
-    spdlog::info( "Exception Details {}", boost::diagnostic_information( e ) );
+    SPDLOG_WARN( "Exception {}", boost::diagnostic_information( e, false ) );
+    SPDLOG_INFO( "Exception Details {}", boost::diagnostic_information( e ) );
 
     return {};
   }

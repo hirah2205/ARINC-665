@@ -122,7 +122,7 @@ ConstFilePtr Load::file( std::string_view filename ) const
 
   if ( !foundFiles.empty() )
   {
-    spdlog::info( "More than one file found for given filename" );
+    SPDLOG_INFO( "More than one file found for given filename" );
   }
 
   return {};
@@ -156,7 +156,7 @@ ConstFilePtr Load::file(
 
   if ( !foundFiles.empty() )
   {
-    spdlog::info( "More than one file found for given parameters" );
+    SPDLOG_INFO( "More than one file found for given parameters" );
   }
 
   return {};
@@ -364,7 +364,7 @@ ConstFilePtr Loads_file( const ConstLoads &loads, std::string_view filename, std
 
     if ( !load )
     {
-      spdlog::error( "No Load with given Part Number" );
+      SPDLOG_ERROR( "No Load with given Part Number" );
       return {};
     }
 
@@ -389,7 +389,7 @@ ConstFilePtr Loads_file( const ConstLoads &loads, std::string_view filename, std
 
   if ( !files.empty() )
   {
-    spdlog::info( "More than one file found for given parameters" );
+    SPDLOG_INFO( "More than one file found for given parameters" );
   }
 
   return {};
@@ -408,7 +408,7 @@ ConstFilePtr Loads_file(
 
     if ( !load )
     {
-      spdlog::error( "No Load with given Part Number" );
+      SPDLOG_ERROR( "No Load with given Part Number" );
       return {};
     }
 
@@ -433,7 +433,7 @@ ConstFilePtr Loads_file(
 
   if ( !files.empty() )
   {
-    spdlog::info( "More than one file found for given parameters" );
+    SPDLOG_INFO( "More than one file found for given parameters" );
   }
 
   // no, or more than one file

@@ -51,7 +51,7 @@ QModelIndex MediaSetModel::index( const int row, const int column, const QModelI
   if ( !parentBase )
   {
     // Should not happen
-    spdlog::error( "Invalid Element Pointer" );
+    SPDLOG_ERROR( "Invalid Element Pointer" );
     return {};
   }
 
@@ -65,7 +65,7 @@ QModelIndex MediaSetModel::index( const int row, const int column, const QModelI
       if ( !containerParent )
       {
         // Should not happen
-        spdlog::error( "Could not cast to Container" );
+        SPDLOG_ERROR( "Could not cast to Container" );
         return {};
       }
 
@@ -97,7 +97,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
   if ( !index.isValid() )
   {
     // Should not happen
-    spdlog::warn( "Root Element has no parent" );
+    SPDLOG_WARN( "Root Element has no parent" );
     return {};
   }
 
@@ -107,7 +107,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
   if ( !base )
   {
     // Should not happen
-    spdlog::error( "Invalid Element Pointer" );
+    SPDLOG_ERROR( "Invalid Element Pointer" );
     return {};
   }
 
@@ -153,7 +153,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
       if ( !file )
       {
         // Should not happen
-        spdlog::error( "Could not cast to File" );
+        SPDLOG_ERROR( "Could not cast to File" );
         return {};
       }
 
@@ -181,7 +181,7 @@ QModelIndex MediaSetModel::parent( const QModelIndex &index ) const
 
     default:
       // Should not happen
-      spdlog::error( "Invalid Container Type" );
+      SPDLOG_ERROR( "Invalid Container Type" );
       return {};
   }
 }
@@ -201,7 +201,7 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
   if ( !base )
   {
     // Should not happen
-    spdlog::error( "Invalid Element Pointer" );
+    SPDLOG_ERROR( "Invalid Element Pointer" );
     return {};
   }
 
@@ -215,7 +215,7 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
       if ( !container )
       {
         // Should not happen
-        spdlog::error( "Invalid Cast to Container" );
+        SPDLOG_ERROR( "Invalid Cast to Container" );
         return {};
       }
 
@@ -228,7 +228,7 @@ bool MediaSetModel::hasChildren( const QModelIndex &parent ) const
 
     default:
       // Should not happen
-      spdlog::error( "Invalid Container Type" );
+      SPDLOG_ERROR( "Invalid Container Type" );
       return false;
   }
 }
@@ -248,7 +248,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
   if ( !base )
   {
     // Should not happen
-    spdlog::error( "Invalid Element Pointer" );
+    SPDLOG_ERROR( "Invalid Element Pointer" );
     return {};
   }
 
@@ -262,7 +262,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
       if ( !container )
       {
         // Should not happen
-        spdlog::error( "Invalid Cast to Container" );
+        SPDLOG_ERROR( "Invalid Cast to Container" );
         return {};
       }
 
@@ -276,7 +276,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
 
     default:
       // Should not happen
-      spdlog::error( "Invalid Container Type" );
+      SPDLOG_ERROR( "Invalid Container Type" );
       return 0;
   }
 }
@@ -336,7 +336,7 @@ QVariant MediaSetModel::data( const QModelIndex &index, int const role ) const
               if ( !file )
               {
                 // Should not happen
-                spdlog::error( "Invalid Cast to File" );
+                SPDLOG_ERROR( "Invalid Cast to File" );
                 return {};
               }
 
@@ -398,7 +398,7 @@ QVariant MediaSetModel::data( const QModelIndex &index, int const role ) const
               if ( !mediaSet )
               {
                 // Should not happen
-                spdlog::error( "Invalid Cast to Media Set" );
+                SPDLOG_ERROR( "Invalid Cast to Media Set" );
                 return {};
               }
 
@@ -412,7 +412,7 @@ QVariant MediaSetModel::data( const QModelIndex &index, int const role ) const
               if ( !directory )
               {
                 // Should not happen
-                spdlog::error( "Invalid Cast to Directory" );
+                SPDLOG_ERROR( "Invalid Cast to Directory" );
                 return {};
               }
 
@@ -426,7 +426,7 @@ QVariant MediaSetModel::data( const QModelIndex &index, int const role ) const
               if ( !file )
               {
                 // Should not happen
-                spdlog::error( "Invalid Cast to File" );
+                SPDLOG_ERROR( "Invalid Cast to File" );
                 return {};
               }
 
@@ -453,7 +453,7 @@ QVariant MediaSetModel::data( const QModelIndex &index, int const role ) const
               if ( !file )
               {
                 // Should not happen
-                spdlog::error( "Invalid Cast to File" );
+                SPDLOG_ERROR( "Invalid Cast to File" );
                 return {};
               }
 
@@ -526,7 +526,7 @@ Arinc665::Media::ConstBasePtr MediaSetModel::element( const QModelIndex &index )
   if ( nullptr == index.internalPointer() )
   {
     // Should not happen
-    spdlog::error( "Invalid Model Index" );
+    SPDLOG_ERROR( "Invalid Model Index" );
 
     // empty element
     return {};

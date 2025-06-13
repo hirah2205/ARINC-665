@@ -263,7 +263,7 @@ void MediaSetViewerWindow::loadXmlFile( const QString &file )
       description = QString::fromStdString( *info );
     }
 
-    spdlog::error( boost::diagnostic_information( e, true ) );
+    SPDLOG_ERROR( boost::diagnostic_information( e, true ) );
 
     QMessageBox::critical( nullptr, tr( "Load Media Set XML" ), tr( "Error loading Media Set: " ) + description );
   }

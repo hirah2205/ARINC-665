@@ -109,7 +109,7 @@ void MediaSetCompilerImpl::operator()()
       << Helper::AdditionalInfo{ "Invalid state of exporter" } );
   }
 
-  spdlog::info( "Export Media Set '{}'", mediaSetV->partNumber() );
+  SPDLOG_INFO( "Export Media Set '{}'", mediaSetV->partNumber() );
 
   // first export medium (directories and regular files)
   for ( MediumNumber mediumNumber{ 1U }; mediumNumber <= mediaSetV->lastMediumNumber(); ++mediumNumber )
@@ -159,7 +159,7 @@ void MediaSetCompilerImpl::exportDirectory(
   const MediumNumber &mediumNumber,
   const Media::ConstDirectoryPtr &directory )
 {
-  spdlog::info( "Export Directory to [{}]:'{}'", mediumNumber.toString(), directory->path().string() );
+  SPDLOG_INFO( "Export Directory to [{}]:'{}'", mediumNumber.toString(), directory->path().string() );
 
   createDirectoryHandlerV( mediumNumber, directory );
 
@@ -178,7 +178,7 @@ void MediaSetCompilerImpl::exportDirectory(
 
 void MediaSetCompilerImpl::exportRegularFile( const Media::ConstRegularFilePtr &file )
 {
-  spdlog::info( "Export Regular File to [{}]:'{}'", file->effectiveMediumNumber().toString(), file->path().string() );
+  SPDLOG_INFO( "Export Regular File to [{}]:'{}'", file->effectiveMediumNumber().toString(), file->path().string() );
 
   // regular file mus be created by callback
   createFileHandlerV( file );
@@ -186,7 +186,7 @@ void MediaSetCompilerImpl::exportRegularFile( const Media::ConstRegularFilePtr &
 
 void MediaSetCompilerImpl::exportLoad( const Media::ConstLoadPtr &load )
 {
-  spdlog::info( "Export Load to [{}]:'{}'", load->effectiveMediumNumber().toString(), load->path().string() );
+  SPDLOG_INFO( "Export Load to [{}]:'{}'", load->effectiveMediumNumber().toString(), load->path().string() );
 
   // check load header creation policy
   switch ( createLoadHeaderFilesV )
@@ -218,7 +218,7 @@ void MediaSetCompilerImpl::exportLoad( const Media::ConstLoadPtr &load )
 
 void MediaSetCompilerImpl::exportBatch( const Media::ConstBatchPtr &batch )
 {
-  spdlog::info( "Export Batch to [{}]:'{}'", batch->effectiveMediumNumber().toString(), batch->path().string() );
+  SPDLOG_INFO( "Export Batch to [{}]:'{}'", batch->effectiveMediumNumber().toString(), batch->path().string() );
 
   // check batch file creation policy
   switch ( createBatchFilesV )
@@ -274,7 +274,7 @@ void MediaSetCompilerImpl::exportListOfLoads() const
   {
     const std::filesystem::path filename{ "/" / std::filesystem::path{ ListOfLoadsName } };
 
-    spdlog::info( "Export List of Loads to [{}]:'{}'", mediumNumber.toString(), filename.string() );
+    SPDLOG_INFO( "Export List of Loads to [{}]:'{}'", mediumNumber.toString(), filename.string() );
 
     loadListFile.mediaSequenceNumber( mediumNumber );
 
@@ -304,7 +304,7 @@ void MediaSetCompilerImpl::exportListOfBatches() const
   {
     const std::filesystem::path filename{ "/" / std::filesystem::path{ ListOfBatchesName } };
 
-    spdlog::info( "Export List of Batches to [{}]:'{}'", mediumNumber.toString(), filename.string() );
+    SPDLOG_INFO( "Export List of Batches to [{}]:'{}'", mediumNumber.toString(), filename.string() );
 
     batchListFile.mediaSequenceNumber( mediumNumber );
 
@@ -341,7 +341,7 @@ void MediaSetCompilerImpl::exportListOfFiles() const
   {
     const std::filesystem::path filename{ "/" / std::filesystem::path{ ListOfFilesName } };
 
-    spdlog::info( "Export List of Files to [{}]:'{}'", mediumNumber.toString(), filename.string() );
+    SPDLOG_INFO( "Export List of Files to [{}]:'{}'", mediumNumber.toString(), filename.string() );
 
     fileListFile.mediaSequenceNumber( mediumNumber );
 

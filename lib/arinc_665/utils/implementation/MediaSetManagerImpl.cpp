@@ -67,7 +67,7 @@ MediaSetManagerImpl::~MediaSetManagerImpl()
   }
   catch ( const Arinc665Exception &e )
   {
-    spdlog::critical( "Save configuration: {}", boost::diagnostic_information( e ) );
+    SPDLOG_CRITICAL( "Save configuration: {}", boost::diagnostic_information( e ) );
   }
 }
 
@@ -108,7 +108,7 @@ void MediaSetManagerImpl::saveConfiguration()
   }
   catch ( const boost::property_tree::json_parser_error &e )
   {
-    spdlog::error( "Save configuration '{}': {}", e.filename(), e.message() );
+    SPDLOG_ERROR( "Save configuration '{}': {}", e.filename(), e.message() );
 
     BOOST_THROW_EXCEPTION( Arinc665Exception()
       << Helper::AdditionalInfo( e.message() )
@@ -225,14 +225,14 @@ std::filesystem::path MediaSetManagerImpl::filePath( const Media::ConstFilePtr &
 {
   if ( !file )
   {
-    spdlog::error( "Given file is empty" );
+    SPDLOG_ERROR( "Given file is empty" );
   }
 
   auto mediaSetIt{ mediaSetsPathsV.find( file->mediaSet()->partNumber() ) };
 
   if ( mediaSetIt == mediaSetsPathsV.end() )
   {
-    spdlog::error( "Media Set not found" );
+    SPDLOG_ERROR( "Media Set not found" );
     return {};
   }
 
@@ -240,7 +240,7 @@ std::filesystem::path MediaSetManagerImpl::filePath( const Media::ConstFilePtr &
 
   if ( mediumIt == mediaSetIt->second.second.end() )
   {
-    spdlog::error( "Medium not found" );
+    SPDLOG_ERROR( "Medium not found" );
     return {};
   }
 

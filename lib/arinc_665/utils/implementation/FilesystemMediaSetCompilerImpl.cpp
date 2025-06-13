@@ -156,7 +156,7 @@ void FilesystemMediaSetCompilerImpl::createMedium( const Arinc665::MediumNumber 
 {
   auto mPath{ mediumPath( mediumNumber ) };
 
-  spdlog::trace( "Create medium directory '{}'", mPath.string() );
+  SPDLOG_TRACE( "Create medium directory '{}'", mPath.string() );
 
   std::filesystem::create_directory( mPath );
 }
@@ -167,7 +167,7 @@ void FilesystemMediaSetCompilerImpl::createDirectory(
 {
   auto directoryPath{ mediumPath( mediumNumber ) / directory->path().relative_path() };
 
-  spdlog::trace(
+  SPDLOG_TRACE(
     "Create directory [{}]:'{}' ('{}')",
     mediumNumber.toString(),
     directory->path().string(),
@@ -178,7 +178,7 @@ void FilesystemMediaSetCompilerImpl::createDirectory(
 
 bool FilesystemMediaSetCompilerImpl::checkFileExistence( const Arinc665::Media::ConstFilePtr &file )
 {
-  spdlog::trace( "check existence of [{}]:'{}'", file->effectiveMediumNumber().toString(), file->path().string() );
+  SPDLOG_TRACE( "check existence of [{}]:'{}'", file->effectiveMediumNumber().toString(), file->path().string() );
 
   // search for file
   auto fileIt{ filePathMappingV.find( file ) };
@@ -190,7 +190,7 @@ bool FilesystemMediaSetCompilerImpl::checkFileExistence( const Arinc665::Media::
 
   const auto filePath{ ( sourceBasePathV / fileIt->second ).lexically_normal() };
 
-  spdlog::trace( "found at '{}'", filePath.string() );
+  SPDLOG_TRACE( "found at '{}'", filePath.string() );
 
   return std::filesystem::is_regular_file( filePath );
 }
@@ -210,7 +210,7 @@ void FilesystemMediaSetCompilerImpl::createFile( const Arinc665::Media::ConstFil
   const auto sourceFilePath{ ( sourceBasePathV / fileIt->second ).lexically_normal() };
   const auto destinationFilePath{ mediumPath( file->effectiveMediumNumber() ) / file->path().relative_path() };
 
-  spdlog::trace( "Copy file from '{}' to '{}'", sourceFilePath.string(), destinationFilePath.string() );
+  SPDLOG_TRACE( "Copy file from '{}' to '{}'", sourceFilePath.string(), destinationFilePath.string() );
 
   // copy file
   std::filesystem::copy( sourceFilePath, destinationFilePath );
@@ -223,7 +223,7 @@ void FilesystemMediaSetCompilerImpl::writeFile(
 {
   auto filePath{ mediumPath( mediumNumber ) / path.relative_path() };
 
-  spdlog::trace( "Write file [{}]:'{}' ('{}')", mediumNumber.toString(), path.string(), filePath.string() );
+  SPDLOG_TRACE( "Write file [{}]:'{}' ('{}')", mediumNumber.toString(), path.string(), filePath.string() );
 
   // check existence of file
   if ( std::filesystem::exists( filePath ) )
@@ -254,7 +254,7 @@ Helper::RawData FilesystemMediaSetCompilerImpl::readFile(
   // check medium number
   auto filePath{ mediumPath( mediumNumber ) / path.relative_path() };
 
-  spdlog::trace( "Read file [{}]:'{}' ('{}')", mediumNumber.toString(), path.string(), filePath.string() );
+  SPDLOG_TRACE( "Read file [{}]:'{}' ('{}')", mediumNumber.toString(), path.string(), filePath.string() );
 
   // check existence of file
   if ( !std::filesystem::is_regular_file( filePath ) )

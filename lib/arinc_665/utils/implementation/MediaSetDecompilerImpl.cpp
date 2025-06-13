@@ -352,7 +352,7 @@ void MediaSetDecompilerImpl::files()
 
 void MediaSetDecompilerImpl::regularFile( Media::ContainerEntity &parent, const Files::FileInfo &fileInfo )
 {
-  spdlog::trace( "Regular File '{}'", fileInfo.path().generic_string() );
+  SPDLOG_TRACE( "Regular File '{}'", fileInfo.path().generic_string() );
 
   // create file
   auto file{ parent.addRegularFile( fileInfo.filename, fileInfo.memberSequenceNumber ) };
@@ -378,7 +378,7 @@ void MediaSetDecompilerImpl::loadFile(
   const Files::FileInfo &fileInfo,
   const Files::LoadInfo &loadInfo )
 {
-  spdlog::trace( "Load Header File '{}'", fileInfo.path().generic_string() );
+  SPDLOG_TRACE( "Load Header File '{}'", fileInfo.path().generic_string() );
 
   // create the load
   auto load{ parent.addLoad( loadInfo.headerFilename, loadInfo.memberSequenceNumber ) };
@@ -404,7 +404,7 @@ void MediaSetDecompilerImpl::batchFile(
   const Files::FileInfo &fileInfo,
   const Files::BatchInfo &batchInfo )
 {
-  spdlog::trace( "Batch File '{}'", fileInfo.path().generic_string() );
+  SPDLOG_TRACE( "Batch File '{}'", fileInfo.path().generic_string() );
 
   // create batch
   auto batch{ parent.addBatch( batchInfo.filename, batchInfo.memberSequenceNumber ) };
@@ -740,7 +740,7 @@ void MediaSetDecompilerImpl::checkMediumFiles( const MediumNumber &mediumNumber 
 
 void MediaSetDecompilerImpl::checkFileIntegrity( const Files::FileInfo &fileInfo ) const
 {
-  spdlog::trace( "Check file '{}'", fileInfo.path().generic_string() );
+  SPDLOG_TRACE( "Check file '{}'", fileInfo.path().generic_string() );
 
   const auto rawFile{ readFileHandlerV( fileInfo.memberSequenceNumber, fileInfo.path() ) };
 
@@ -788,7 +788,7 @@ void MediaSetDecompilerImpl::checkLoadFile(
     if ( ( fileSize16Bit && ( fileSize / 2 != loadFileInfo.length / 2 ) )
       || ( !fileSize16Bit && ( fileSize != loadFileInfo.length ) ) )
     {
-      spdlog::error( "Load File Size inconsistent '{}' {} {}", loadFileInfo.filename, fileSize, loadFileInfo.length );
+      SPDLOG_ERROR( "Load File Size inconsistent '{}' {} {}", loadFileInfo.filename, fileSize, loadFileInfo.length );
 
       BOOST_THROW_EXCEPTION( Arinc665Exception()
         << Helper::AdditionalInfo{ "Load File Size inconsistent" }

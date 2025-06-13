@@ -54,7 +54,7 @@ Arinc665XmlSaveImpl26::Arinc665XmlSaveImpl26(
 
 void Arinc665XmlSaveImpl26::operator()()
 {
-  spdlog::info( "Save Media Set '{}' to '{}'", mediaSetV.partNumber(), xmlFileV.string() );
+  SPDLOG_INFO( "Save Media Set '{}' to '{}'", mediaSetV.partNumber(), xmlFileV.string() );
 
   try
   {

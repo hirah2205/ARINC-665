@@ -524,7 +524,7 @@ void FileListFile::checkUserDefinedData()
 {
   if ( userDefinedDataV.size() % 2U != 0U )
   {
-    spdlog::warn( "User defined data must be 2-byte aligned. - extending range" );
+    SPDLOG_WARN( "User defined data must be 2-byte aligned. - extending range" );
 
     userDefinedDataV.push_back( std::byte{ 0U } );
   }
