@@ -11,18 +11,25 @@ A library is provided for:
 
 An XML format and corresponding tools are provided to ease generation of media sets.
 
-For building graphical applications an Qt based library is provided which consist of models, dialogs, and wizards to work with ARINC 665 media sets.
+For building graphical applications a Qt based library is provided which consist of models, dialogs, and wizards to work with ARINC 665 media sets.
 
 This tool suite contains the components:
- - Library with namespaces:
-   - @ref Arinc665,
-   - @ref Arinc665Commands, and 
-   - @ref Arinc665Qt.
- - @subpage arinc_665_applications
-
-Dependencies are:
- - @ref Arinc645 and @subpage arinc_645_applications,
- - @ref Commands and @subpage commands_applications,
- - @ref Helper, @ref HelperQt, and @subpage helper_applications,
- - @ref QtIconResources, and @subpage qt_icon_resources_applications, and
- - libxml++
+- ARINC 665
+  - ARINC 665 Standard Namespace @ref Arinc665,
+  - ARINC 665 CLI %Commands Namespace @ref Arinc665Commands,
+  - ARINC 665 Standard Qt Framework Namespace @ref Arinc665Qt,
+  - @subpage arinc_665_applications,
+- ARINC 645
+  - ARINC 645 Standard Namespace @ref Arinc645,
+  - ARINC 645 Standard Qt Framework Namespace @ref Arinc645Qt,
+  - @subpage arinc_645_applications,
+- %Commands
+  - @ref Commands Library Namespace,
+  - @subpage commands_applications,
+- Qt Icon Resources
+  - Namespace @ref QtIconResources,
+  - @subpage qt_icon_resources_applications,
+- %Helper Library
+  - %Helper Library Namespace @ref Helper,
+  - %Helper Qt Framework Namespace @ref HelperQt,
+  - @subpage helper_applications.

@@ -53,29 +53,29 @@ This project is licensed under the terms of the [*Mozilla Public License Version
 This section only contains changes within the standards, which are respected within this library.
 
 ### ARINC 665-1
- - Update file versions (Separate between media files, load files)
- - FILES.LUM: Add filename and file length field
- - Add optional batch files (.LUB)
- - Add optional list of batch files (BATCHES.LUM)
+- Update file versions (Separate between media files, load files)
+- FILES.LUM: Add filename and file length field
+- Add optional batch files (.LUB)
+- Add optional list of batch files (BATCHES.LUM)
 
 ### ARINC 665-2
- - Update File Versions (Separate between media files, load files, and batch files)
- - Load header file (.LUH): add `spare field` after file length and file format version to align following fields to 32 bit
- - Batch file (.LUB): add `spare field` after file length and file format version to align following fields to 32 bit
- - LOADS.LUM file: add `spare field` after file length and file format version to align following fields to 32 bit
- - FILES.LUM file: add `spare field` after file length and file format version to align following fields to 32 bit
- - BATCHES.LUM file: add `spare field` after file length and file format version to align following fields to 32 bit
+- Update File Versions (Separate between media files, load files, and batch files)
+- Load header file (.LUH): add `spare field` after file length and file format version to align following fields to 32 bit
+- Batch file (.LUB): add `spare field` after file length and file format version to align following fields to 32 bit
+- LOADS.LUM file: add `spare field` after file length and file format version to align following fields to 32 bit
+- FILES.LUM file: add `spare field` after file length and file format version to align following fields to 32 bit
+- BATCHES.LUM file: add `spare field` after file length and file format version to align following fields to 32 bit
 
 ### ARINC 665-3
- - Update File Versions (Separate between media files, load files, and batch files)
- - Load header file (.LUH)
-   - Change *Spare* field to *Part Flags* field
-   - Add *Load Check Value*
-   - Add *Load Type Section* (ID + description)
-   - Add *Target Hardware IDs with Positions* section
-   - Add Data File *length in bytes* field
-   - Add *Data and Support File Check Value* field
- - FILES.LUM add *File Check Value*
+- Update File Versions (Separate between media files, load files, and batch files)
+- Load header file (.LUH)
+  - Change *Spare* field to *Part Flags* field
+  - Add *Load Check Value*
+  - Add *Load Type Section* (ID + description)
+  - Add *Target Hardware IDs with Positions* section
+  - Add Data File *length in bytes* field
+  - Add *Data and Support File Check Value* field
+- FILES.LUM add *File Check Value*
 
 ### ARINC 665-4
 Clarification but no changes of data formats.
