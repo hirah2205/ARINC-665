@@ -17,10 +17,6 @@
 
 #include <arinc_665/utils/MediaSetManager.hpp>
 
-#include <helper/HexString.hpp>
-
-#include <spdlog/spdlog.h>
-
 #include <boost/exception/all.hpp>
 
 #include <iostream>
@@ -75,17 +71,17 @@ void ListLoadsCommand::execute( const Commands::Parameters &parameters )
     {
       for ( const auto &load : loads )
       {
-        std::cout
-          << "Media Set P/N:        " << load->mediaSet()->partNumber()
-          << "\n"
-          << "Load Header Filename: " << load->name() << "\n"
-          << "Load P/N:             " << load->partNumber() << "\n";
+        std::cout << std::format(
+          "Media Set P/N:        {}\n"
+          "Load Header Filename: {}\n"
+          "Load P/N:             {}\n",
+          load->mediaSet()->partNumber(),
+          load->name(),
+          load->partNumber() );
 
         if ( const auto loadType{ load->loadType() }; loadType )
         {
-          std::cout
-            << "Load Type:            " << loadType->first << " ("
-            << Helper::to_hexstring( loadType->second ) << ")\n";
+          std::cout << std::format( "Load Type:            {} (0x{:08X})\n", loadType->first, loadType->second );
         }
 
         std::cout << "\n";

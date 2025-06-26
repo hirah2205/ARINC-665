@@ -17,10 +17,6 @@
 
 #include <arinc_665/utils/MediaSetManager.hpp>
 
-#include <helper/HexString.hpp>
-
-#include <spdlog/spdlog.h>
-
 #include <boost/exception/all.hpp>
 
 #include <iostream>
