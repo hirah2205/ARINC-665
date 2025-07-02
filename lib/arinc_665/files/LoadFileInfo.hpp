@@ -18,7 +18,6 @@
 #include <arinc_645/CheckValue.hpp>
 
 #include <cstdint>
-#include <optional>
 #include <string>
 
 namespace Arinc665::Files {
@@ -28,7 +27,7 @@ namespace Arinc665::Files {
  *
  * File Information stored within the file list of the ARINC 665 Load Header File.
  *
- * The file size is always interpreted in number of bytes (octets).
+ * The file size is always interpreted as number of bytes (octets).
  *
  * @sa LoadHeaderFile
  **/

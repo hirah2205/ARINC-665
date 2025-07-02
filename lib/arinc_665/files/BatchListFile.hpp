@@ -55,31 +55,31 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
 {
   public:
     //! Offset of the Spare field (since ARINC 665-2).
-    static constexpr std::size_t SpareFieldOffsetV2{ 6 };
+    static constexpr auto SpareFieldOffsetV2{ 6Z };
 
     //! Offset of the Media Set Part Number Pointer Field (since ARINC 665-1)
-    static constexpr std::size_t MediaSetPartNumberPointerFieldOffsetV1{ 6 };
+    static constexpr auto MediaSetPartNumberPointerFieldOffsetV1{ 6Z };
 
     //! Offset of the Media Set Part Number Pointer Field (since ARINC 665-2)
-    static constexpr std::size_t MediaSetPartNumberPointerFieldOffsetV2{ 8 };
+    static constexpr auto MediaSetPartNumberPointerFieldOffsetV2{ 8Z };
 
     //! Offset of the Batches Pointer Field (since ARINC 665-1)
-    static constexpr std::size_t BatchFilesPointerFieldOffsetV1{ 10 };
+    static constexpr auto BatchFilesPointerFieldOffsetV1{ 10Z };
 
     //! Offset of the Batches Pointer Field (since ARINC 665-2)
-    static constexpr std::size_t BatchFilesPointerFieldOffsetV2{ 12 };
+    static constexpr auto BatchFilesPointerFieldOffsetV2{ 12Z };
 
     //! Offset of the User Defined Data Pointer Field (since ARINC 665-1)
-    static constexpr std::size_t UserDefinedDataPointerFieldOffsetV1{ 14 };
+    static constexpr auto UserDefinedDataPointerFieldOffsetV1{ 14Z };
 
     //! Offset of the User Defined Data Pointer Field (since ARINC 665-2)
-    static constexpr std::size_t UserDefinedDataPointerFieldOffsetV2{ 16 };
+    static constexpr auto UserDefinedDataPointerFieldOffsetV2{ 16Z };
 
     //! First Start of pointer data for ARINC 665 Batch List Files (since ARINC 665-1).
-    static constexpr std::size_t FileHeaderSizeV1{ 18 };
+    static constexpr auto FileHeaderSizeV1{ 18Z };
 
     //! First Start of pointer data for ARINC 665 Batch List Files (since ARINC 665-2).
-    static constexpr std::size_t FileHeaderSizeV2{ 20 };
+    static constexpr auto FileHeaderSizeV2{ 20Z };
 
     /**
      * @brief Creates an empty batch list file.

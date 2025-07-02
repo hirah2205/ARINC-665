@@ -49,8 +49,7 @@ class ARINC_665_EXPORT Arinc665File
     /**
      * @brief Encodes the given path for storage within ARINC 665 media set files.
      *
-     * The main purpose is to replace all forward slashes '/' by
-     * back-slashes '\'.
+     * The main purpose is to replace all forward slashes '/' by backslashes '\'.
      * The path always contains a trailing '\'.
      *
      * @param[in] path
