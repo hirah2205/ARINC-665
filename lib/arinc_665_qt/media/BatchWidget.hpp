@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -47,7 +46,7 @@ class ARINC_665_QT_EXPORT BatchWidget final : public QGroupBox
 
   signals:
     /**
-     * @brief Signal Emitted when user selected a Load.
+     * @brief Signal Emitted when the user selected a Load.
      *
      * @param[in] load
      *   Selected Load.
@@ -67,15 +66,15 @@ class ARINC_665_QT_EXPORT BatchWidget final : public QGroupBox
 
   private slots:
     /**
-     * @brief Slot called, when user selects a Target.
+     * @brief Slot called when the user selects a Target.
      *
      * @param[in] index
-     *   Model Index of selected Target
+     *   Model Index of the selected Target
      **/
     void selectTarget( const QModelIndex &index );
 
     /**
-     * @brief Slot called, when user selects a Load.
+     * @brief Slot called when the user selects a Load.
      *
      * @param[in] index
      *   Model Index of selected Load

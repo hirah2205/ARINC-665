@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -27,7 +26,7 @@ namespace Arinc665Qt::Media {
  *
  * @sa @ref Arinc665::Media::Load
  **/
-class ARINC_665_QT_EXPORT LoadsModel : public QAbstractTableModel
+class ARINC_665_QT_EXPORT LoadsModel final : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -89,13 +88,10 @@ class ARINC_665_QT_EXPORT LoadsModel : public QAbstractTableModel
      *
      * @return Data dependent of the index and role.
      **/
-    [[nodiscard]] QVariant data(
-      const QModelIndex &index,
-      int role ) const override;
+    [[nodiscard]] QVariant data( const QModelIndex &index, int role ) const override;
 
     /**
-     * @brief Returns the data for the given role and section in the header with
-     *   the specified orientation.
+     * @brief Returns the data for the given role and section in the header with the specified orientation.
      *
      * @param[in] section
      *   Section number
@@ -106,10 +102,7 @@ class ARINC_665_QT_EXPORT LoadsModel : public QAbstractTableModel
      *
      * @return Header data for the given parameters.
      **/
-    [[nodiscard]] QVariant headerData(
-      int section,
-      ::Qt::Orientation orientation,
-      int role ) const override;
+    [[nodiscard]] QVariant headerData( int section, Qt::Orientation orientation, int role ) const override;
 
     /**
      * @name Loads
@@ -140,18 +133,16 @@ class ARINC_665_QT_EXPORT LoadsModel : public QAbstractTableModel
 
 
     /**
-     * @brief Converts given Loads Variant to Const Loads List.
+     * @brief Converts a given Loads Variant to a Const Loads List.
      *
-     * If variant stores a const load list, it is returned directly, otherwise
-     * converts it to const load list.
+     * If the variant stores a const load list, it is returned directly, otherwise converts it to a const load list.
      *
      * @param[in] loads
      *   Loads Variant
      *
      * @return Const Loads List
      **/
-    [[nodiscard]] Arinc665::Media::ConstLoads constLoads(
-      const Arinc665::Media::LoadsVariant &loads ) const;
+    [[nodiscard]] Arinc665::Media::ConstLoads constLoads( const Arinc665::Media::LoadsVariant &loads ) const;
 
     /**
      * @brief Returns the load for the given index.
@@ -163,34 +154,31 @@ class ARINC_665_QT_EXPORT LoadsModel : public QAbstractTableModel
      * @retval {}
      *   If @p index is invalid
      **/
-    [[nodiscard]] Arinc665::Media::LoadVariant load(
-      const QModelIndex &index ) const;
+    [[nodiscard]] Arinc665::Media::LoadVariant load( const QModelIndex &index ) const;
 
     /**
-     * @brief Return Load for given Index.
+     * @brief Return Load for a given Index.
      *
      * @param[in] index
      *   Load Index
      *
-     * @return Load for given Index
+     * @return Load for a given Index
      * @retval {}
      *   If @p index is invalid
      **/
     [[nodiscard]] Arinc665::Media::LoadVariant load( std::size_t index ) const;
 
     /**
-     * @brief Converts given Load Variant to Const Load Pointer.
+     * @brief Converts a given Load Variant to a Const Load Pointer.
      *
-     * If variant stores a const load, it is returned directly, otherwise
-     * converts it to const load pointer.
+     * If the variant stores a const load, it is returned directly, otherwise converts it to a const load pointer.
      *
      * @param[in] load
      *   Load Variant
      *
      * @return Const Load Pointer
      **/
-    [[nodiscard]] Arinc665::Media::ConstLoadPtr constLoad(
-      const Arinc665::Media::LoadVariant &load ) const;
+    [[nodiscard]] Arinc665::Media::ConstLoadPtr constLoad( const Arinc665::Media::LoadVariant &load ) const;
 
     /** @} **/
 

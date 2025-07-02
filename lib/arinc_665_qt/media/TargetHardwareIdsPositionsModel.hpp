@@ -2,14 +2,12 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class
- *   Arinc665Qt::Media::TargetHardwareIdsPositionsModel.
+ * @brief Declaration of Class Arinc665Qt::Media::TargetHardwareIdsPositionsModel.
  **/
 
 #ifndef ARINC_665_QT_MEDIA_TARGETHARDWAREIDSPOSITIONSMODEL_HPP
@@ -28,8 +26,7 @@ namespace Arinc665Qt::Media {
  *
  * Target Hardware IDs and Positions are displayed in a tree view.
  **/
-class ARINC_665_QT_EXPORT TargetHardwareIdsPositionsModel :
-  public QAbstractItemModel
+class ARINC_665_QT_EXPORT TargetHardwareIdsPositionsModel final : public QAbstractItemModel
 {
     Q_OBJECT
 
@@ -67,10 +64,7 @@ class ARINC_665_QT_EXPORT TargetHardwareIdsPositionsModel :
      *
      * @return Model Index
      **/
-    [[nodiscard]] QModelIndex index(
-      int row,
-      int column,
-      const QModelIndex &parent ) const override;
+    [[nodiscard]] QModelIndex index( int row, int column, const QModelIndex &parent ) const override;
 
     /**
      * @brief Return the parent of the given index.
@@ -122,9 +116,7 @@ class ARINC_665_QT_EXPORT TargetHardwareIdsPositionsModel :
      *
      * @return Data corresponding to @p index and @p role.
      **/
-    [[nodiscard]] QVariant data(
-      const QModelIndex &index,
-      int role ) const override;
+    [[nodiscard]] QVariant data( const QModelIndex &index, int role ) const override;
 
     /**
      * @brief Returns the header data.
@@ -138,10 +130,7 @@ class ARINC_665_QT_EXPORT TargetHardwareIdsPositionsModel :
      *
      * @return Corresponding Header Data.
      **/
-    [[nodiscard]] QVariant headerData(
-      int section,
-      ::Qt::Orientation orientation,
-      int role ) const override;
+    [[nodiscard]] QVariant headerData( int section, Qt::Orientation orientation, int role ) const override;
 
     /**
      * @brief Assigns the THW IDs and Positions Information.
@@ -149,8 +138,7 @@ class ARINC_665_QT_EXPORT TargetHardwareIdsPositionsModel :
      * @param[in] thwIdsPositions
      *   THW IDs and Positions.
      **/
-    void targetHardwareIdsPositions(
-      const Arinc665::Media::Load::TargetHardwareIdPositions thwIdsPositions );
+    void targetHardwareIdsPositions( Arinc665::Media::Load::TargetHardwareIdPositions thwIdsPositions );
 
   private:
     /**
@@ -163,9 +151,7 @@ class ARINC_665_QT_EXPORT TargetHardwareIdsPositionsModel :
      *
      * @return Data Representation.
      **/
-    [[nodiscard]] QVariant dataThwId(
-      const QModelIndex &index,
-      int role ) const;
+    [[nodiscard]] QVariant dataThwId( const QModelIndex &index, int role ) const;
 
     /**
      * @brief Returns that for Target Position.
@@ -173,13 +159,11 @@ class ARINC_665_QT_EXPORT TargetHardwareIdsPositionsModel :
      * @param[in] index
      *   Model Index
      * @param[in] role
-     *   Role to siplay
+     *   Role to display
      *
      * @return Data Representation.
      **/
-    [[nodiscard]] QVariant dataPosition(
-      const QModelIndex &index,
-      int role ) const;
+    [[nodiscard]] QVariant dataPosition( const QModelIndex &index, int role ) const;
 
     //! THW ID Position Element
     Arinc665::Media::Load::TargetHardwareIdPositions thwIdsPositionsV;

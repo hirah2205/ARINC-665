@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -27,9 +26,9 @@ namespace Arinc665Qt::Media {
 /**
  * @brief Qt Table Model of List of Batches.
  *
- * A List of Batches is shown with Batch Attributes.
+ * A List of Batches is shown with batch attributes like name, part number, and comment.
  **/
-class ARINC_665_QT_EXPORT BatchesModel : public QAbstractTableModel
+class ARINC_665_QT_EXPORT BatchesModel final : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -92,9 +91,7 @@ class ARINC_665_QT_EXPORT BatchesModel : public QAbstractTableModel
      *
      * @return Data dependent of the index and role.
      **/
-    [[nodiscard]] QVariant data(
-      const QModelIndex &index,
-      int role ) const override;
+    [[nodiscard]] QVariant data( const QModelIndex &index, int role ) const override;
 
     /**
      * @brief Returns the data for the given role and section in the header with
@@ -139,7 +136,7 @@ class ARINC_665_QT_EXPORT BatchesModel : public QAbstractTableModel
      * @param[in] batches
      *   Batches, contained by the model.
      **/
-    void batches( const Arinc665::Media::BatchesVariant batches );
+    void batches( Arinc665::Media::BatchesVariant batches );
 
     /** @} **/
 
@@ -151,35 +148,31 @@ class ARINC_665_QT_EXPORT BatchesModel : public QAbstractTableModel
      *
      * @return Batch for the given index.
      **/
-    [[nodiscard]] Arinc665::Media::BatchVariant batch(
-      const QModelIndex &index ) const;
+    [[nodiscard]] Arinc665::Media::BatchVariant batch( const QModelIndex &index ) const;
 
     /**
-     * @brief Return Batch for given Index.
+     * @brief Return Batch for a given Index.
      *
      * @param[in] index
      *   Batch Index
      *
-     * @return Batch for given Index
+     * @return Batch for a given Index
      * @retval {}
      *   If index is invalid
      **/
-    [[nodiscard]] Arinc665::Media::BatchVariant batch(
-      std::size_t index ) const;
+    [[nodiscard]] Arinc665::Media::BatchVariant batch( std::size_t index ) const;
 
     /**
-     * @brief Converts given Batch Variant to Const Batch Pointer.
+     * @brief Converts a given Batch Variant to Const Batch Pointer.
      *
-     * If variant stores a const batch, it is returned directly, otherwise
-     * converts it to const batch pointer.
+     * If the variant stores a const batch, it is returned directly, otherwise converts it to a const batch pointer.
      *
      * @param[in] batch
      *   Batch Variant
      *
      * @return Const Batch Pointer
      **/
-    [[nodiscard]] Arinc665::Media::ConstBatchPtr constBatch(
-      const Arinc665::Media::BatchVariant &batch ) const;
+    [[nodiscard]] Arinc665::Media::ConstBatchPtr constBatch( const Arinc665::Media::BatchVariant &batch ) const;
 
   private:
     //! Batches List

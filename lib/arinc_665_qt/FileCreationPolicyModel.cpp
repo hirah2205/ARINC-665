@@ -38,9 +38,7 @@ int FileCreationPolicyModel::rowCount( const QModelIndex &parent ) const
       .descriptions().size() );
 }
 
-QVariant FileCreationPolicyModel::data(
-  const QModelIndex &index,
-  int role ) const
+QVariant FileCreationPolicyModel::data( const QModelIndex &index, const int role ) const
 {
   if ( !index.isValid() )
   {
@@ -49,8 +47,7 @@ QVariant FileCreationPolicyModel::data(
 
   if ( std::cmp_greater_equal(
     index.row(),
-    Arinc665::Utils::FileCreationPolicyDescription::instance()
-      .descriptions().size() ) )
+    Arinc665::Utils::FileCreationPolicyDescription::instance().descriptions().size() ) )
   {
     return {};
   }
@@ -58,17 +55,14 @@ QVariant FileCreationPolicyModel::data(
   switch ( role )
   {
     case Qt::ItemDataRole::DisplayRole:
-      return HelperQt::toQString(
-        Arinc665::Utils::FileCreationPolicyDescription::instance().name(
-          index.row() ) );
+      return HelperQt::toQString( Arinc665::Utils::FileCreationPolicyDescription::instance().name( index.row() ) );
 
     default:
       return {};
   }
 }
 
-std::optional< Arinc665::Utils::FileCreationPolicy >
-FileCreationPolicyModel::fileCreationPolicy(
+std::optional< Arinc665::Utils::FileCreationPolicy > FileCreationPolicyModel::fileCreationPolicy(
   const QModelIndex &index ) const
 {
   if ( !index.isValid()
@@ -84,8 +78,7 @@ FileCreationPolicyModel::fileCreationPolicy(
     index.row() );
 }
 
-std::optional< Arinc665::Utils::FileCreationPolicy >
-FileCreationPolicyModel::fileCreationPolicy( const int row ) const
+std::optional< Arinc665::Utils::FileCreationPolicy > FileCreationPolicyModel::fileCreationPolicy( const int row ) const
 {
   if ( ( row < 0 )
     || std::cmp_greater_equal(
@@ -100,11 +93,9 @@ FileCreationPolicyModel::fileCreationPolicy( const int row ) const
     row );
 }
 
-int FileCreationPolicyModel::fileCreationPolicy(
-  Arinc665::Utils::FileCreationPolicy fileCreationPolicy ) const
+int FileCreationPolicyModel::fileCreationPolicy( Arinc665::Utils::FileCreationPolicy fileCreationPolicy ) const
 {
-  return Arinc665::Utils::FileCreationPolicyDescription::instance().value(
-    fileCreationPolicy ).value_or( -1 );
+  return Arinc665::Utils::FileCreationPolicyDescription::instance().value( fileCreationPolicy ).value_or( -1 );
 
 }
 

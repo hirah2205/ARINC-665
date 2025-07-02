@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -19,8 +18,7 @@
 
 namespace Arinc665Qt {
 
-SupportedArinc665VersionModel::SupportedArinc665VersionModel(
-  QObject * const parent ) :
+SupportedArinc665VersionModel::SupportedArinc665VersionModel( QObject * const parent ) :
   QAbstractListModel{ parent }
 {
 }
@@ -39,9 +37,7 @@ int SupportedArinc665VersionModel::rowCount( const QModelIndex &parent ) const
       .descriptions().size() );
 }
 
-QVariant SupportedArinc665VersionModel::data(
-  const QModelIndex &index,
-  int role ) const
+QVariant SupportedArinc665VersionModel::data( const QModelIndex &index, const int role ) const
 {
   if ( !index.isValid() )
   {
@@ -68,8 +64,7 @@ QVariant SupportedArinc665VersionModel::data(
   }
 }
 
-std::optional< Arinc665::SupportedArinc665Version >
-SupportedArinc665VersionModel::supportedArinc665Version(
+std::optional< Arinc665::SupportedArinc665Version > SupportedArinc665VersionModel::supportedArinc665Version(
   const QModelIndex &index ) const
 {
   if ( !index.isValid() )
@@ -89,8 +84,8 @@ SupportedArinc665VersionModel::supportedArinc665Version(
     index.row() );
 }
 
-std::optional< Arinc665::SupportedArinc665Version >
-SupportedArinc665VersionModel::supportedArinc665Version( int index ) const
+std::optional< Arinc665::SupportedArinc665Version > SupportedArinc665VersionModel::supportedArinc665Version(
+  const int index ) const
 {
   if ( std::cmp_greater_equal(
     index,
@@ -104,11 +99,9 @@ SupportedArinc665VersionModel::supportedArinc665Version( int index ) const
     index );
 }
 
-int SupportedArinc665VersionModel::supportedArinc665Version(
-  const Arinc665::SupportedArinc665Version version ) const
+int SupportedArinc665VersionModel::supportedArinc665Version( const Arinc665::SupportedArinc665Version version ) const
 {
-  return Arinc665::SupportedArinc665VersionDescription::instance().value(
-    version ).value_or( -1 );
+  return Arinc665::SupportedArinc665VersionDescription::instance().value( version ).value_or( -1 );
 }
 
 }

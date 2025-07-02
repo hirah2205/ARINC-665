@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -29,7 +28,7 @@ class DirectoryWidget;
 }
 
 //! Widget for Directory Presentation
-class ARINC_665_QT_EXPORT DirectoryWidget : public QWidget
+class ARINC_665_QT_EXPORT DirectoryWidget final : public QWidget
 {
     Q_OBJECT
 
@@ -51,7 +50,7 @@ class ARINC_665_QT_EXPORT DirectoryWidget : public QWidget
      * @param[in] model
      *   Media Set Model.
      **/
-    void mediaSetModel( Arinc665Qt::Media::MediaSetModel * model );
+    void mediaSetModel( MediaSetModel * model );
 
   signals:
     /**
@@ -63,12 +62,12 @@ class ARINC_665_QT_EXPORT DirectoryWidget : public QWidget
 
   public slots:
     /**
-     * @brief Slot called, when a Directory is selected.
+     * @brief Slot called when a Directory is selected.
      *
-     * Updated the Table View to show content of selected directory.
+     * Updated the Table View to show the content of the selected directory.
      *
      * @param[in] index
-     *   Model Index of selected Medium.
+     *   Model Index of the selected directory.
      **/
     void selectDirectory( const QModelIndex &index );
 
@@ -82,7 +81,7 @@ class ARINC_665_QT_EXPORT DirectoryWidget : public QWidget
 
   private slots:
     /**
-     * @brief Slot Called, when an Element has been selected
+     * @brief Slot Called when an Element has been selected
      *
      * @param[in] index
      *   Selected model element.

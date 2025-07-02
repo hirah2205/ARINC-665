@@ -25,12 +25,11 @@ namespace Arinc665Qt::Media {
 /**
  * @brief Qt Adaption of ARINC 665 %Media Set.
  *
- * This is a hierarchical model giving access to %Media Sets, %Media,
- * Directories and Files.
+ * This is a hierarchical model giving access to a %Media Set, their %Media, Directories and Files.
  *
- * The Model-Index holds the Pointer to the Arinc665::Media::Base object.
+ * The Model-Index holds the Pointer to the @ref Arinc665::Media::Base object.
  **/
-class ARINC_665_QT_EXPORT MediaSetModel : public QAbstractItemModel
+class ARINC_665_QT_EXPORT MediaSetModel final : public QAbstractItemModel
 {
     Q_OBJECT
 
@@ -70,10 +69,7 @@ class ARINC_665_QT_EXPORT MediaSetModel : public QAbstractItemModel
      *
      * @return Model Index
      **/
-    [[nodiscard]] QModelIndex index(
-      int row,
-      int column,
-      const QModelIndex &parent = {} ) const override;
+    [[nodiscard]] QModelIndex index( int row, int column, const QModelIndex &parent = {} ) const override;
 
     /**
      * @brief Return the parent of the given index.
@@ -125,9 +121,7 @@ class ARINC_665_QT_EXPORT MediaSetModel : public QAbstractItemModel
      *
      * @return Data corresponding to @p index and @p role.
      **/
-    [[nodiscard]] QVariant data(
-      const QModelIndex &index,
-      int role ) const override;
+    [[nodiscard]] QVariant data( const QModelIndex &index, int role ) const override;
 
     /**
      * @brief Returns the header data.
@@ -141,10 +135,7 @@ class ARINC_665_QT_EXPORT MediaSetModel : public QAbstractItemModel
      *
      * @return Corresponding Header Data.
      **/
-    [[nodiscard]] QVariant headerData(
-      int section,
-      ::Qt::Orientation orientation,
-      int role ) const override;
+    [[nodiscard]] QVariant headerData( int section, Qt::Orientation orientation, int role ) const override;
 
     /**
      * @brief Returns the Media Set Element for the given @p index.
@@ -156,8 +147,7 @@ class ARINC_665_QT_EXPORT MediaSetModel : public QAbstractItemModel
      * @retval Arinc665::Media::BasePtr{}
      *   If index is invalid or no model stored.
      **/
-    [[nodiscard]] Arinc665::Media::ConstBasePtr element(
-      const QModelIndex &index ) const;
+    [[nodiscard]] Arinc665::Media::ConstBasePtr element( const QModelIndex &index ) const;
 
     /**
      * @brief Returns the Model Index for the given element.
@@ -167,8 +157,7 @@ class ARINC_665_QT_EXPORT MediaSetModel : public QAbstractItemModel
      *
      * @return Model Index representing @p element.
      **/
-    [[nodiscard]] QModelIndex indexForElement(
-      const Arinc665::Media::ConstBasePtr &element ) const;
+    [[nodiscard]] QModelIndex indexForElement( const Arinc665::Media::ConstBasePtr &element ) const;
 
     /**
      * @name Root Element

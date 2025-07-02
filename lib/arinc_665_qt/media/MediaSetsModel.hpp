@@ -24,11 +24,11 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief Qt Table Model of list of %Media Sets.
+ * @brief Qt Table Model of a list of %Media Sets.
  *
  * For media sets the type Arinc665::Media::MediaSetsVariant is used to allow const and non-const media sets to be used.
  **/
-class ARINC_665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
+class ARINC_665_QT_EXPORT MediaSetsModel final : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -129,7 +129,7 @@ class ARINC_665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
      * @param[in] mediaSets
      *   Media Sets, contained by the model.
      **/
-    void mediaSets( const Arinc665::Media::MediaSetsVariant mediaSets );
+    void mediaSets( Arinc665::Media::MediaSetsVariant mediaSets );
 
     /**
      * @brief Returns the Media Set for the given index.
@@ -142,22 +142,22 @@ class ARINC_665_QT_EXPORT MediaSetsModel : public QAbstractTableModel
     [[nodiscard]] Arinc665::Media::MediaSetVariant mediaSet( const QModelIndex &index ) const;
 
     /**
-     * @brief Return Media Set for given Index.
+     * @brief Return Media Set for a given Index.
      *
      * @param[in] index
      *   Media Set Index
      *
-     * @return Media Set for given Index
+     * @return Media Set for a given Index
      * @retval {}
      *   If index is invalid
      **/
     [[nodiscard]] Arinc665::Media::MediaSetVariant mediaSet( std::size_t index ) const;
 
     /**
-     * @brief Converts given Media Set Variant to Const Media Set Pointer.
+     * @brief Converts a given Media Set Variant to Const Media Set Pointer.
      *
-     * If variant stores a const media set, it is returned directly, otherwise
-     * converts it to const media set pointer.
+     * If the variant stores a const media set, it is returned directly, otherwise converts it to a const media set
+     * pointer.
      *
      * @param[in] mediaSet
      *   Media Set Variant

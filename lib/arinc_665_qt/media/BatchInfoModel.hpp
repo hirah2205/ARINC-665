@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -27,9 +26,9 @@ namespace Arinc665Qt::Media {
 /**
  * @brief Table Model of Batch Qt Information.
  *
- * Presents the List of Batch Information as Table.
+ * Presents the List of Batch Information as a table.
  **/
- class ARINC_665_QT_EXPORT BatchInfoModel : public QAbstractTableModel
+ class ARINC_665_QT_EXPORT BatchInfoModel final : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -88,9 +87,7 @@ namespace Arinc665Qt::Media {
      *
      * @return Data dependent of the index and role.
      **/
-    [[nodiscard]] QVariant data(
-      const QModelIndex &index,
-      int role ) const override;
+    [[nodiscard]] QVariant data( const QModelIndex &index, int role ) const override;
 
     /**
      * @brief Returns the data for the given role and section in the header with
@@ -105,10 +102,7 @@ namespace Arinc665Qt::Media {
      *
      * @return Header data for the given parameters.
      **/
-    [[nodiscard]] QVariant headerData(
-      int section,
-      ::Qt::Orientation orientation,
-      int role ) const override;
+    [[nodiscard]] QVariant headerData( int section, Qt::Orientation orientation, int role ) const override;
 
     /**
      * @name Batch Information
@@ -116,7 +110,7 @@ namespace Arinc665Qt::Media {
      **/
 
     /**
-     * @brief Returns the Number of Batch Information
+     * @brief Returns the number of Batch Information.
      *
      * @return Number of Batch Information
      **/
@@ -127,8 +121,7 @@ namespace Arinc665Qt::Media {
      *
      * @return Batches
      **/
-    [[nodiscard]] const Arinc665::Media::BatchInformationVariant&
-    batchInformation() const;
+    [[nodiscard]] const Arinc665::Media::BatchInformationVariant& batchInformation() const;
 
     /**
      * @brief Updates the Data Model with the given Batch Information.
@@ -136,8 +129,7 @@ namespace Arinc665Qt::Media {
      * @param[in] information
      *   Batch Information, contained by the model.
      **/
-    void batchInformation(
-      const Arinc665::Media::BatchInformationVariant information );
+    void batchInformation( Arinc665::Media::BatchInformationVariant information );
 
     /** @} **/
 
@@ -149,35 +141,32 @@ namespace Arinc665Qt::Media {
      *
      * @return Batch Target Information for the given index.
      **/
-    [[nodiscard]] Arinc665::Media::BatchTargetInformationVariant
-    batchTargetInformation( const QModelIndex &index ) const;
+    [[nodiscard]] Arinc665::Media::BatchTargetInformationVariant batchTargetInformation(
+      const QModelIndex &index ) const;
 
     /**
-     * @brief Return Batch Target Information for given Index.
+     * @brief Return Batch Target Information for a given Index.
      *
      * @param[in] index
      *   Batch Index
      *
-     * @return Batch Target Information for given Index
+     * @return Batch Target Information for a given Index
      * @retval {}
      *   If index is invalid
      **/
-    [[nodiscard]] Arinc665::Media::BatchTargetInformationVariant
-    batchTargetInformation( std::size_t index ) const;
+    [[nodiscard]] Arinc665::Media::BatchTargetInformationVariant batchTargetInformation( std::size_t index ) const;
 
     /**
-     * @brief Converts given Batch Variant to Const Batch Pointer.
+     * @brief Converts a given Batch Variant to Const Batch Pointer.
      *
-     * If variant stores a const batch, it is returned directly, otherwise
-     * converts it to const batch pointer.
+     * If the variant stores a const batch, it is returned directly, otherwise converts it to a const batch pointer.
      *
      * @param[in] batchTargetInformation
      *   Batch Variant
      *
      * @return Const Batch Pointer
      **/
-    [[nodiscard]] Arinc665::Media::ConstBatchTargetInformation
-    constBatchTargetInformation(
+    [[nodiscard]] Arinc665::Media::ConstBatchTargetInformation constBatchTargetInformation(
       const Arinc665::Media::BatchTargetInformationVariant &batchTargetInformation ) const;
 
   private:
