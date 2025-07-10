@@ -132,6 +132,6 @@ configure_file(
 
 install(
   FILES ${CMAKE_CURRENT_BINARY_DIR}/arinc_665_api_doc.html
-  DESTINATION ${CMAKE_INSTALL_DOCDIR}
+  TYPE DOC
   COMPONENT development
   OPTIONAL )
