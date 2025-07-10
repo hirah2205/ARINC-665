@@ -4,6 +4,7 @@
     "boost-asio",
     "boost-crc",
     "boost-endian",
+    "boost-exception",
     "boost-hash2",
     "boost-multi-index",
     "boost-program-options",

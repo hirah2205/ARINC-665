@@ -20,13 +20,13 @@ First level dependencies:
 - [Qt Icon Resources](https://git.thomas-vogt.de/thomas-vogt/qt_icon_resources)
 - [ARINC 645 Tool Suite](https://git.thomas-vogt.de/thomas-vogt/arinc_645)
 - [Commands Library](https://git.thomas-vogt.de/thomas-vogt/commands)
-- Boost Library
+- [Boost Libraries](https://www.boost.org/)
 - libxml++
-- spdlog
-- Qt 6 - Optionally
+- [spdlog](https://github.com/gabime/spdlog)
+- Optionally [Qt 6](https://www.qt.io/)
 
 ## Building
-The library uses CMake to handle build configuration.
+The library uses [CMake](https://cmake.org/) to handle build configuration.
 CMake Presets are provided to generate builds compiling with:
 - GNU GCC,
 - Clang, and
@@ -85,10 +85,9 @@ Move Checksum and Check Value definition to ARINC 645.
 No changes of data format.
 
 ## References
-- ARINC Report 665-5:
+- [ARINC Report 665-5](https://aviation-ia.sae-itc.com/standards/arinc665-5-665-5-loadable-software-standards):
   Loadable Software Standards;
   2019-08-13
-- ARINC Report 645-1:
+- [ARINC Report 645-1](https://aviation-ia.sae-itc.com/standards/arinc645-1-645-1-common-terminology-functions-software-distribution-loading):
   Common Terminology and Functions for Software Distribution and Loading;
   2021-08-11
-- [ARINC 665-5 @ ARINC](https://aviation-ia.sae-itc.com/standards/arinc665-5-665-5-loadable-software-standards)

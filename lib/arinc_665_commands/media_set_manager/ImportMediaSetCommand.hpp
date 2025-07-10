@@ -7,8 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class
- *   Arinc665Commands::MediaSetManager::ImportMediaSetCommand.
+ * @brief Declaration of Class Arinc665Commands::MediaSetManager::ImportMediaSetCommand.
  **/
 
 #ifndef ARINC_665_COMMANDS_MEDIA_SET_MANAGER_IMPORTMEDIASETCOMMAND_HPP
