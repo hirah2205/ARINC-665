@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -33,7 +32,7 @@ class MediaSetViewWidget;
  *
  * This provides a split view of a tree and a detailed window.
  **/
-class ARINC_665_QT_EXPORT MediaSetViewWidget : public QWidget
+class ARINC_665_QT_EXPORT MediaSetViewWidget final : public QWidget
 {
     Q_OBJECT
 
@@ -47,7 +46,7 @@ class ARINC_665_QT_EXPORT MediaSetViewWidget : public QWidget
     };
 
     /**
-     * @brief Initialises the Media Set Dialog.
+     * @brief Initialises the Media Set Widget.
      *
      * @param[in] parent
      *   Widget parent.
@@ -70,13 +69,12 @@ class ARINC_665_QT_EXPORT MediaSetViewWidget : public QWidget
      * @brief Called when a selection has been made within tree-view.
      *
      * @param[in] index
-     *   Index of selected element.
+     *   Index of the selected element.
      **/
     void selectElement( const QModelIndex &index );
 
     /**
-     * @brief Slot called, when an Element (Directory, Regular File, Load,
-     *   Batch) has been selected.
+     * @brief Slot called, when an Element (Directory, Regular File, Load, Batch) has been selected.
      *
      * The given element is focused within the tree view.
      *

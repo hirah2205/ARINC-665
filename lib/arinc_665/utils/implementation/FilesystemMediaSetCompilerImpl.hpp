@@ -78,7 +78,7 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
      * @param[in] mediumNumber
      *   Medium to Create.
      **/
-    void createMedium( const Arinc665::MediumNumber &mediumNumber );
+    void createMedium( const MediumNumber &mediumNumber );
 
     /**
      * @brief Creates the given Directory.
@@ -88,9 +88,7 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
      * @param[in] directory
      *   Directory to Create.
      **/
-    void createDirectory(
-      const Arinc665::MediumNumber &mediumNumber,
-      const Arinc665::Media::ConstDirectoryPtr &directory );
+    void createDirectory( const MediumNumber &mediumNumber, const Media::ConstDirectoryPtr &directory );
 
     /**
      * @brief Check File Existence Handler.
@@ -98,9 +96,9 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
      * @param[in] file
      *   File to Check
      *
-     * @return If file exists
+     * @return If the @p file exists
      **/
-    [[nodiscard]] bool checkFileExistence( const Arinc665::Media::ConstFilePtr &file );
+    [[nodiscard]] bool checkFileExistence( const Media::ConstFilePtr &file );
 
     /**
      * @brief Create File Handler.
@@ -110,7 +108,7 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
      * @param[in] file
      *   File to Create
      **/
-    void createFile( const Arinc665::Media::ConstFilePtr &file );
+    void createFile( const Media::ConstFilePtr &file );
 
     /**
      * @brief Write File Handler
@@ -123,9 +121,9 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
      *   File Content
      **/
     void writeFile(
-      const Arinc665::MediumNumber &mediumNumber,
+      const MediumNumber &mediumNumber,
       const std::filesystem::path &path,
-      const Helper::ConstRawDataSpan file );
+      Helper::ConstRawDataSpan file );
 
     /**
      * @brief Read File Handler
@@ -137,9 +135,7 @@ class FilesystemMediaSetCompilerImpl final : public FilesystemMediaSetCompiler
      *
      * @return File Content
      **/
-    [[nodiscard]] Helper::RawData readFile(
-      const Arinc665::MediumNumber &mediumNumber,
-      const std::filesystem::path &path );
+    [[nodiscard]] Helper::RawData readFile( const MediumNumber &mediumNumber, const std::filesystem::path &path );
 
     //! Media Set Compiler
     MediaSetCompilerPtr mediaSetCompilerV;

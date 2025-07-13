@@ -26,13 +26,10 @@
 
 #include <arinc_665/MediumNumber.hpp>
 
-#include <arinc_645/Arinc645.hpp>
-
 #include <filesystem>
 #include <map>
 #include <memory>
 #include <optional>
-#include <set>
 
 /**
  * @brief ARINC 665 Utilities.
@@ -45,7 +42,7 @@
 namespace Arinc665::Utils {
 
 //! %Media Paths (Medium Number -> Medium Path)
-using MediaPaths = std::map< Arinc665::MediumNumber, std::filesystem::path >;
+using MediaPaths = std::map< MediumNumber, std::filesystem::path >;
 
 //! %Media Set Paths (%Media Set Base Path + %Media Paths)
 using MediaSetPaths = std::pair< std::filesystem::path, MediaPaths >;
@@ -136,7 +133,7 @@ using MediaSetManagerPtr = std::shared_ptr< MediaSetManager >;
 /**
  * @brief Tries to decode the given directory as ARINC 665 Medium.
  *
- * Tries to access the *List of %Files* within @p directory and decodes it.
+ * Tries to access the *List of %Files* within the @p directory and decodes it.
  * If the decoding is successful, the medium information is returned.
  *
  * @param[in] directory
@@ -144,7 +141,7 @@ using MediaSetManagerPtr = std::shared_ptr< MediaSetManager >;
  *
  * @return Medium Information for @p directory.
  * @retval {}
- *   If @p directory is not a valid directory or ARINC 665 Medium
+ *   If the @p directory is not a valid directory or ARINC 665 Medium
  **/
 [[nodiscard]] ARINC_665_EXPORT std::optional< Files::MediaSetInformation > getMediumInformation(
   const std::filesystem::path &directory );

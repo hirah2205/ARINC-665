@@ -205,7 +205,7 @@ class ARINC_665_EXPORT BatchListFile final : public ListFile
     void decodeBatchesInfo( Helper::ConstRawDataSpan rawData );
 
     /**
-     * @brief Checks, if the User Defined Data is a multiple of 2 size.
+     * @brief Checks if the User Defined Data is a multiple of 2 size.
      **/
     void checkUserDefinedData();
 

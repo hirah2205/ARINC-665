@@ -448,7 +448,7 @@ class ARINC_665_EXPORT LoadHeaderFile final : public Arinc665File
     /**
      * @name Load Type
      * The `Load Type Description` string describes the load or the function the load performs (e.g., "EEC Operational
-     * Software," "FMS Navigation Data Base," etc.).
+     * Software," "FMS Navigation Data Base", etc.).
      *
      * The `Load Type ID` is a 16-bit hexadecimal numeric value set by the manufacturer or system integrator.
      * The value in this field should correspond with the content of the `Load Type Description` field.

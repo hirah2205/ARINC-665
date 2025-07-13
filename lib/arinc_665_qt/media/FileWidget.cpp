@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -68,38 +67,28 @@ void FileWidget::selectFile( Arinc665::Media::ConstFilePtr file )
     ui->nameLineEdit->setText( HelperQt::toQString( fileV->name() ) );
 
     ui->mediumNumberGroupBox->setChecked( fileV->mediumNumber().has_value() );
-    ui->mediumNumber->setValue(
-      static_cast< uint8_t >( fileV->effectiveMediumNumber() ) );
+    ui->mediumNumber->setValue( static_cast< uint8_t >( fileV->effectiveMediumNumber() ) );
 
-    ui->checkValueTypeGroupBox->setChecked(
-      fileV->checkValueType().has_value() );
+    ui->checkValueTypeGroupBox->setChecked( fileV->checkValueType().has_value() );
     ui->checkValueType->setCurrentIndex(
-      Arinc645Qt::CheckValueTypeModel::checkValueType(
-        fileV->effectiveCheckValueType() ) );
+      Arinc645Qt::CheckValueTypeModel::checkValueType( fileV->effectiveCheckValueType() ) );
   }
 
   switch ( fileV->fileType() )
   {
     case Arinc665::Media::FileType::RegularFile:
-      ui->detailsStackedWidget->setCurrentIndex(
-        static_cast< int >( FileStackedWidget::RegularFile ) );
-      ui->regularFilePage->selectFile(
-        std::dynamic_pointer_cast< const Arinc665::Media::RegularFile >(
-          fileV ) );
+      ui->detailsStackedWidget->setCurrentIndex( static_cast< int >( FileStackedWidget::RegularFile ) );
+      ui->regularFilePage->selectFile( std::dynamic_pointer_cast< const Arinc665::Media::RegularFile >( fileV ) );
       break;
 
     case Arinc665::Media::FileType::LoadFile:
-      ui->detailsStackedWidget->setCurrentIndex(
-        static_cast< int >( FileStackedWidget::LoadFile ) );
-      ui->loadPage->selectLoad(
-        std::dynamic_pointer_cast< const Arinc665::Media::Load >( fileV ) );
+      ui->detailsStackedWidget->setCurrentIndex( static_cast< int >( FileStackedWidget::LoadFile ) );
+      ui->loadPage->selectLoad( std::dynamic_pointer_cast< const Arinc665::Media::Load >( fileV ) );
       break;
 
     case Arinc665::Media::FileType::BatchFile:
-      ui->detailsStackedWidget->setCurrentIndex(
-        static_cast< int >( FileStackedWidget::BatchFile ) );
-      ui->batchPage->selectBatch(
-        std::dynamic_pointer_cast< const Arinc665::Media::Batch >( fileV ) );
+      ui->detailsStackedWidget->setCurrentIndex( static_cast< int >( FileStackedWidget::BatchFile ) );
+      ui->batchPage->selectBatch( std::dynamic_pointer_cast< const Arinc665::Media::Batch >( fileV ) );
       break;
 
     default:

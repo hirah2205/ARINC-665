@@ -33,7 +33,7 @@ MediaSetModel::MediaSetModel( QObject * const parent ) :
 
 QModelIndex MediaSetModel::index( const int row, const int column, const QModelIndex &parent ) const
 {
-  // check if model contains valid Elements
+  // check if the model contains valid Elements
   if ( !rootV )
   {
     return {};
@@ -46,7 +46,7 @@ QModelIndex MediaSetModel::index( const int row, const int column, const QModelI
   }
 
   // cast internal pointer of parent
-  auto parentBase{ element( parent ) };
+  const auto parentBase{ element( parent ) };
 
   if ( !parentBase )
   {
@@ -243,7 +243,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
   }
 
   // cast internal pointer of parent
-  auto base{ element( parent ) };
+  const auto base{ element( parent ) };
 
   if ( !base )
   {
@@ -257,7 +257,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
     case Arinc665::Media::Type::MediaSet:
     case Arinc665::Media::Type::Directory:
     {
-      auto container{ std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >( base ) };
+      const auto container{ std::dynamic_pointer_cast< const Arinc665::Media::ContainerEntity >( base ) };
 
       if ( !container )
       {
@@ -293,198 +293,23 @@ QVariant MediaSetModel::data( const QModelIndex &index, int const role ) const
     return {};
   }
 
-  // cast internal pointer of parent
-  auto base{ element( index ) };
+  // cast internal pointer of index
+  const auto base{ element( index ) };
 
   if ( !base )
   {
     // should not happen
-    return 0;
+    return {};
   }
 
   switch ( static_cast< Qt::ItemDataRole>( role ) )
   {
     case Qt::DecorationRole:
-      switch ( Columns{ index.column() } )
-      {
-        case Columns::Name:
-        {
-          QIcon icon{};
-
-          switch ( base->type() )
-          {
-            case Arinc665::Media::Type::MediaSet:
-              icon.addFile(
-                QString::fromUtf8( ":/media_set/arinc665_media_set.svg" ),
-                QSize{},
-                QIcon::Normal,
-                QIcon::Off );
-              break;
-
-            case Arinc665::Media::Type::Directory:
-              icon.addFile(
-                QString::fromUtf8( ":/media_set/arinc665_directory.svg" ),
-                QSize{},
-                QIcon::Normal,
-                QIcon::Off );
-              break;
-
-            case Arinc665::Media::Type::File:
-            {
-              auto file{ std::dynamic_pointer_cast< const Arinc665::Media::File >( base ) };
-
-              if ( !file )
-              {
-                // Should not happen
-                SPDLOG_ERROR( "Invalid Cast to File" );
-                return {};
-              }
-
-              switch ( file->fileType() )
-              {
-                case Arinc665::Media::FileType::RegularFile:
-                  icon.addFile(
-                    QString::fromUtf8( ":/media_set/arinc665_file.svg" ),
-                    QSize{},
-                    QIcon::Normal,
-                    QIcon::Off );
-                  break;
-
-                case Arinc665::Media::FileType::LoadFile:
-                  icon.addFile(
-                    QString::fromUtf8( ":/media_set/arinc665_load.svg" ),
-                    QSize{},
-                    QIcon::Normal,
-                    QIcon::Off );
-                  break;
-
-                case Arinc665::Media::FileType::BatchFile:
-                  icon.addFile(
-                    QString::fromUtf8( ":/media_set/arinc665_batch.svg" ),
-                    QSize{},
-                    QIcon::Normal,
-                    QIcon::Off );
-                  break;
-
-                default:
-                  return {};
-              }
-            }
-            break;
-
-            default:
-              return {};
-          }
-
-          return icon;
-        }
-
-        case Columns::Type:
-        default:
-          return {};
-      }
+      return dataDecorationRole( index.column(), base );
 
     case Qt::EditRole:
     case Qt::DisplayRole:
-      switch ( Columns{ index.column() } )
-      {
-        case Columns::Name:
-          switch ( base->type() )
-          {
-            case Arinc665::Media::Type::MediaSet:
-            {
-              auto mediaSet{ std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( base ) };
-
-              if ( !mediaSet )
-              {
-                // Should not happen
-                SPDLOG_ERROR( "Invalid Cast to Media Set" );
-                return {};
-              }
-
-              return HelperQt::toQString( mediaSet->partNumber() );
-            }
-
-            case Arinc665::Media::Type::Directory:
-            {
-              auto directory{ std::dynamic_pointer_cast< const Arinc665::Media::Directory >( base ) };
-
-              if ( !directory )
-              {
-                // Should not happen
-                SPDLOG_ERROR( "Invalid Cast to Directory" );
-                return {};
-              }
-
-              return HelperQt::toQString( directory->name() );
-            }
-
-            case Arinc665::Media::Type::File:
-            {
-              auto file{ std::dynamic_pointer_cast< const Arinc665::Media::File >( base ) };
-
-              if ( !file )
-              {
-                // Should not happen
-                SPDLOG_ERROR( "Invalid Cast to File" );
-                return {};
-              }
-
-              return HelperQt::toQString( file->name() );
-            }
-
-            default:
-              return QString{ "Invalid Type" };
-          }
-
-        case Columns::Type:
-          switch ( base->type())
-          {
-            case Arinc665::Media::Type::MediaSet:
-              return tr( "Media Set" );
-
-            case Arinc665::Media::Type::Directory:
-              return tr(  "Directory" );
-
-            case Arinc665::Media::Type::File:
-            {
-              auto file{ std::dynamic_pointer_cast< const Arinc665::Media::File >( base ) };
-
-              if ( !file )
-              {
-                // Should not happen
-                SPDLOG_ERROR( "Invalid Cast to File" );
-                return {};
-              }
-
-              switch ( file->fileType() )
-              {
-                using enum Arinc665::Media::FileType;
-
-                case RegularFile:
-                  return tr( "Regular File" );
-
-                case LoadFile:
-                  return tr( "Load" );
-
-                case BatchFile:
-                  return tr( "Batch" );
-
-                default:
-                  return tr( "INVALID File Type" );
-              }
-            }
-              /* no break -because inner switch always returns */
-
-            default:
-              // Should never happen
-              return {};
-          }
-          /* no break -because inner switch always returns */
-
-        default:
-          return {};
-      }
+      return dataDisplayEditRole( index.column(), base );
 
     default:
       return {};
@@ -542,11 +367,11 @@ QModelIndex MediaSetModel::indexForElement( const Arinc665::Media::ConstBasePtr 
     return index( 0, 0 );
   }
 
-  auto parent{ element->parent() };
+  const auto parent{ element->parent() };
 
   if ( element->type() == Arinc665::Media::Type::Directory )
   {
-    auto directory{ std::dynamic_pointer_cast< const Arinc665::Media::Directory >( element ) };
+    const auto directory{ std::dynamic_pointer_cast< const Arinc665::Media::Directory >( element ) };
     if ( !directory )
     {
       // should not happen
@@ -554,7 +379,7 @@ QModelIndex MediaSetModel::indexForElement( const Arinc665::Media::ConstBasePtr 
     }
 
     auto subDirectories{ parent->subdirectories() };
-    auto pos( std::ranges::find( subDirectories, directory  ) );
+    const auto pos( std::ranges::find( subDirectories, directory  ) );
 
     if ( pos == subDirectories.end() )
     {
@@ -568,7 +393,7 @@ QModelIndex MediaSetModel::indexForElement( const Arinc665::Media::ConstBasePtr 
       indexForElement( parent ) );
   }
 
-  auto file{ std::dynamic_pointer_cast< const Arinc665::Media::File >( element ) };
+  const auto file{ std::dynamic_pointer_cast< const Arinc665::Media::File >( element ) };
   if ( !file )
   {
     // should not happen
@@ -576,7 +401,7 @@ QModelIndex MediaSetModel::indexForElement( const Arinc665::Media::ConstBasePtr 
   }
 
   auto files{ parent->files() };
-  auto pos( std::ranges::find( files, file ) );
+  const auto pos( std::ranges::find( files, file ) );
 
   if ( pos == files.end() )
   {
@@ -585,8 +410,7 @@ QModelIndex MediaSetModel::indexForElement( const Arinc665::Media::ConstBasePtr 
   }
 
   return index(
-    static_cast< int >(
-      parent->numberOfSubdirectories() + std::distance( files.begin(), pos ) ),
+    static_cast< int >( parent->numberOfSubdirectories() + std::distance( files.begin(), pos ) ),
     0,
     indexForElement( parent ) );
 }
@@ -606,6 +430,196 @@ void MediaSetModel::root( Arinc665::Media::ConstBasePtr root )
 const Arinc665::Media::ConstBasePtr& MediaSetModel::root() const
 {
   return rootV;
+}
+
+QVariant MediaSetModel::dataDecorationRole( const int column, const Arinc665::Media::ConstBasePtr &base ) const
+{
+  assert( base );
+
+  switch ( Columns{ column } )
+  {
+    case Columns::Name:
+    {
+      QIcon icon{};
+
+      switch ( base->type() )
+      {
+        case Arinc665::Media::Type::MediaSet:
+          icon.addFile(
+            QString::fromUtf8( ":/media_set/arinc665_media_set.svg" ),
+            QSize{},
+            QIcon::Normal,
+            QIcon::Off );
+          break;
+
+        case Arinc665::Media::Type::Directory:
+          icon.addFile(
+            QString::fromUtf8( ":/media_set/arinc665_directory.svg" ),
+            QSize{},
+            QIcon::Normal,
+            QIcon::Off );
+          break;
+
+        case Arinc665::Media::Type::File:
+        {
+          const auto file{ std::dynamic_pointer_cast< const Arinc665::Media::File >( base ) };
+
+          if ( !file )
+          {
+            // Should not happen
+            SPDLOG_ERROR( "Invalid Cast to File" );
+            return {};
+          }
+
+          switch ( file->fileType() )
+          {
+            case Arinc665::Media::FileType::RegularFile:
+              icon.addFile(
+                QString::fromUtf8( ":/media_set/arinc665_file.svg" ),
+                QSize{},
+                QIcon::Normal,
+                QIcon::Off );
+              break;
+
+            case Arinc665::Media::FileType::LoadFile:
+              icon.addFile(
+                QString::fromUtf8( ":/media_set/arinc665_load.svg" ),
+                QSize{},
+                QIcon::Normal,
+                QIcon::Off );
+              break;
+
+            case Arinc665::Media::FileType::BatchFile:
+              icon.addFile(
+                QString::fromUtf8( ":/media_set/arinc665_batch.svg" ),
+                QSize{},
+                QIcon::Normal,
+                QIcon::Off );
+              break;
+
+            default:
+              return {};
+          }
+        }
+        break;
+
+        default:
+          return {};
+      }
+
+      return icon;
+    }
+
+    case Columns::Type:
+    default:
+      return {};
+  }
+}
+
+QVariant MediaSetModel::dataDisplayEditRole( const int column, const Arinc665::Media::ConstBasePtr &base ) const
+{
+  assert( base );
+
+  switch ( Columns{ column } )
+  {
+    case Columns::Name:
+      switch ( base->type() )
+      {
+        case Arinc665::Media::Type::MediaSet:
+        {
+          const auto mediaSet{ std::dynamic_pointer_cast< const Arinc665::Media::MediaSet >( base ) };
+
+          if ( !mediaSet )
+          {
+            // Should not happen
+            SPDLOG_ERROR( "Invalid Cast to Media Set" );
+            return {};
+          }
+
+          return HelperQt::toQString( mediaSet->partNumber() );
+        }
+
+        case Arinc665::Media::Type::Directory:
+        {
+          const auto directory{ std::dynamic_pointer_cast< const Arinc665::Media::Directory >( base ) };
+
+          if ( !directory )
+          {
+            // Should not happen
+            SPDLOG_ERROR( "Invalid Cast to Directory" );
+            return {};
+          }
+
+          return HelperQt::toQString( directory->name() );
+        }
+
+        case Arinc665::Media::Type::File:
+        {
+          const auto file{ std::dynamic_pointer_cast< const Arinc665::Media::File >( base ) };
+
+          if ( !file )
+          {
+            // Should not happen
+            SPDLOG_ERROR( "Invalid Cast to File" );
+            return {};
+          }
+
+          return HelperQt::toQString( file->name() );
+        }
+
+        default:
+          return QString{ "Invalid Type" };
+      }
+
+    case Columns::Type:
+      switch ( base->type())
+      {
+        case Arinc665::Media::Type::MediaSet:
+          return tr( "Media Set" );
+
+        case Arinc665::Media::Type::Directory:
+          return tr(  "Directory" );
+
+        case Arinc665::Media::Type::File:
+        {
+          const auto file{ std::dynamic_pointer_cast< const Arinc665::Media::File >( base ) };
+
+          if ( !file )
+          {
+            // Should not happen
+            SPDLOG_ERROR( "Invalid Cast to File" );
+            return {};
+          }
+
+          switch ( file->fileType() )
+          {
+            using enum Arinc665::Media::FileType;
+
+            case RegularFile:
+              return tr( "Regular File" );
+
+            case LoadFile:
+              return tr( "Load" );
+
+            case BatchFile:
+              return tr( "Batch" );
+
+            default:
+              return tr( "INVALID File Type" );
+          }
+        }
+          /* no break -because inner switch always returns */
+
+        default:
+          // Should never happen
+          return {};
+      }
+      /* no break -because inner switch always returns */
+
+    default:
+      return {};
+  }
+
 }
 
 }

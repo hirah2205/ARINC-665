@@ -24,7 +24,7 @@
 namespace Arinc665Qt::Media {
 
 /**
- * @brief Qt Table Model of a list of %Media Sets.
+ * @brief Qt Table Model representing a list of %Media Sets.
  *
  * For media sets the type Arinc665::Media::MediaSetsVariant is used to allow const and non-const media sets to be used.
  **/

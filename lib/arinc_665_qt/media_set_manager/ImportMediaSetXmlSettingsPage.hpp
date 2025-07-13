@@ -2,14 +2,12 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class
- *   Arinc665Qt::MediaSetManager::ImportMediaSetXmlSettingsPage.
+ * @brief Declaration of Class Arinc665Qt::MediaSetManager::ImportMediaSetXmlSettingsPage.
  **/
 
 #ifndef ARINC_665_QT_MEDIA_SET_MANAGER_IMPORTMEDIASETXMLSETTINGSPAGE_HPP
@@ -51,7 +49,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetXmlSettingsPage final : public QWizardPa
     /**
      * @brief Indicates if the page is completed.
      *
-     * checks all input fields for validity.
+     * Checks all input fields for validity.
      *
      * @return if page is completed
      **/
@@ -94,25 +92,20 @@ class ARINC_665_QT_EXPORT ImportMediaSetXmlSettingsPage final : public QWizardPa
      * @brief Emitted the Create Batch Files Flag.
      *
      * @param[in] createBatchFiles
-     *   Defines, if Batch Files are created by exporter or pre-existing ones
-     *   are used.
+     *   Defines if Batch Files are created by exporter or pre-existing ones are used.
      **/
-    void createBatchFiles(
-      Arinc665::Utils::FileCreationPolicy createBatchFiles );
+    void createBatchFiles( Arinc665::Utils::FileCreationPolicy createBatchFiles );
 
     /**
      * @brief Emitted the Create Load Header Files Flag.
      *
      * @param[in] createLoadHeaderFiles
-     *   Defines, if Load Header Files are created by exporter or pre-existing
-     *   ones are used.
+     *   Defines, if Load Header Files are created by exporter or pre-existing ones are used.
      **/
-    void createLoadHeaderFiles(
-      Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles );
+    void createLoadHeaderFiles( Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles );
 
     /**
-     * @brief Signal emitted, when the check file integrity field has been
-     *   selected by user.
+     * @brief Signal emitted when the check file integrity field has been selected by user.
      *
      * @param[in] checkFileIntegrity
      *   Check file integrity indicator.
@@ -121,11 +114,9 @@ class ARINC_665_QT_EXPORT ImportMediaSetXmlSettingsPage final : public QWizardPa
 
   private slots:
     /**
-     * @brief Slot called, when the file integrity changed checkbox has been
-     *   changed.
+     * @brief Slot called, when the file integrity changed checkbox has been changed.
      *
-     * check state is determined and signal @ref checkFileIntegrity() is
-     * emitted.
+     * Check state is determined and signal @ref checkFileIntegrity() is emitted.
      *
      * @param[in] state
      *   Check State.

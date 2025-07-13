@@ -256,7 +256,7 @@ class ARINC_665_EXPORT FileListFile final : public ListFile
     void decodeFilesInfo( Helper::ConstRawDataSpan rawData, bool decodeV3Data );
 
     /**
-     * @brief Checks, if the User Defined Data is a multiple of 2 size.
+     * @brief Checks if the User Defined Data size is a multiple of 2.
      **/
     void checkUserDefinedData();
 

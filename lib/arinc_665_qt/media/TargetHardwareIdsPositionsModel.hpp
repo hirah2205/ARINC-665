@@ -52,8 +52,7 @@ class ARINC_665_QT_EXPORT TargetHardwareIdsPositionsModel final : public QAbstra
     ~TargetHardwareIdsPositionsModel() override = default;
 
     /**
-     * @brief Creates the index for the child identified by its parent and its
-     *   row and column.
+     * @brief Creates the index for the child identified by its parent and its row and column.
      *
      * @param[in] row
      *   Index Row

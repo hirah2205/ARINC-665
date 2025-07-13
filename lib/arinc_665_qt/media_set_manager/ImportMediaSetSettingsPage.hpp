@@ -2,14 +2,12 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class
- *   Arinc665Qt::MediaSetManager::ImportMediaSetSettingsPage.
+ * @brief Declaration of Class Arinc665Qt::MediaSetManager::ImportMediaSetSettingsPage.
  **/
 
 #ifndef ARINC_665_QT_MEDIA_SET_MANAGER_IMPORTMEDIASETSETTINGSPAGE_HPP
@@ -49,7 +47,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetSettingsPage final : public QWizardPage
     /**
      * @brief Indicates if the page is completed.
      *
-     * checks all input fields for validity.
+     * Checks all input fields for validity.
      *
      * @return if page is completed
      **/
@@ -65,7 +63,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetSettingsPage final : public QWizardPage
 
   signals:
     /**
-     * @brief Signal emitted, when the user adds or delete media paths.
+     * @brief Signal emitted when the user adds or delete media paths.
      *
      * @param[in] mediaPaths
      *   Updated Media Paths
@@ -73,8 +71,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetSettingsPage final : public QWizardPage
     void mediaPathsChanged( const Arinc665::Utils::MediaPaths &mediaPaths );
 
     /**
-     * @brief Signal emitted, when the check file integrity field has been
-     *   selected by user.
+     * @brief Signal emitted when the user has selected the _check file integrity field_.
      *
      * @param[in] checkFileIntegrity
      *   Check file integrity indicator.
@@ -83,11 +80,9 @@ class ARINC_665_QT_EXPORT ImportMediaSetSettingsPage final : public QWizardPage
 
   private slots:
     /**
-     * @brief Slot called, when the file integrity changed checkbox has been
-     *   changed.
+     * @brief Slot called, when the file integrity changed checkbox has been changed.
      *
-     * check state is determined and signal @ref checkFileIntegrity() is
-     * emitted.
+     * Check state is determined and signal @ref checkFileIntegrity() is emitted.
      *
      * @param[in] state
      *   Check State.

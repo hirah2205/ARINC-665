@@ -188,9 +188,9 @@ class ARINC_665_EXPORT ContainerEntity : public Base
      *   Subdirectory to be deleted.
      *
      * @throw Arinc665Exception()
-     *   if directory does not exist.
+     *   when the directory does not exist.
      **/
-    void removeSubdirectory( const DirectoryPtr& subDirectory );
+    void removeSubdirectory( const DirectoryPtr &subDirectory );
 
     /** @} **/
 

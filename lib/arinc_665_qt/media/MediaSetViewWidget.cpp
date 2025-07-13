@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -70,11 +69,8 @@ void MediaSetViewWidget::mediaSetModel( Media::MediaSetModel * const model )
       mediaSetModelV,
       &Media::MediaSetModel::modelReset,
       [ this ]{
-        ui->mediaSetTreeView->setCurrentIndex(
-          mediaSetModelV->index( 0, 0 ) );
-        ui->mediaSetTreeView->setExpanded(
-          mediaSetModelV->index( 0, 0 ),
-          true );
+        ui->mediaSetTreeView->setCurrentIndex( mediaSetModelV->index( 0, 0 ) );
+        ui->mediaSetTreeView->setExpanded( mediaSetModelV->index( 0, 0 ), true );
         ui->mediaSetTreeView->resizeColumnToContents( 0 );
 
         // initiate update
@@ -91,7 +87,7 @@ void MediaSetViewWidget::mediaSetModel( Media::MediaSetModel * const model )
 
 void MediaSetViewWidget::selectElement( const QModelIndex &index )
 {
-  auto element{ mediaSetModelV->element( index ) };
+  const auto element{ mediaSetModelV->element( index ) };
 
   if ( !element )
   {
@@ -102,28 +98,22 @@ void MediaSetViewWidget::selectElement( const QModelIndex &index )
   {
     case Arinc665::Media::Type::MediaSet:
     {
-      const auto mediaSet{
-        std::dynamic_pointer_cast< const Arinc665::Media::MediaSet>( element ) };
+      const auto mediaSet{ std::dynamic_pointer_cast< const Arinc665::Media::MediaSet>( element ) };
 
-      ui->detailsStackedWidget->setCurrentIndex(
-        static_cast< int >( DetailsStackedWidget::MediaSet ) );
+      ui->detailsStackedWidget->setCurrentIndex( static_cast< int >( DetailsStackedWidget::MediaSet ) );
       ui->mediaSetWidget->selectMediaSet( mediaSet );
       break;
     }
 
     case Arinc665::Media::Type::Directory:
-      ui->detailsStackedWidget->setCurrentIndex(
-        static_cast< int >( DetailsStackedWidget::Directory ) );
+      ui->detailsStackedWidget->setCurrentIndex( static_cast< int >( DetailsStackedWidget::Directory ) );
       ui->directoryWidget->selectDirectory( index );
-      ui->directoryWidget->selectDirectory(
-        std::dynamic_pointer_cast< const Arinc665::Media::Directory>( element ) );
+      ui->directoryWidget->selectDirectory( std::dynamic_pointer_cast< const Arinc665::Media::Directory>( element ) );
       break;
 
     case Arinc665::Media::Type::File:
-      ui->detailsStackedWidget->setCurrentIndex(
-        static_cast< int >( DetailsStackedWidget::File ) );
-      ui->fileWidget->selectFile(
-        std::dynamic_pointer_cast< const Arinc665::Media::File>( element ) );
+      ui->detailsStackedWidget->setCurrentIndex( static_cast< int >( DetailsStackedWidget::File ) );
+      ui->fileWidget->selectFile( std::dynamic_pointer_cast< const Arinc665::Media::File>( element ) );
       break;
 
     default:

@@ -2,14 +2,12 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class
- *   Arinc665Qt::MediaSetManager::LoadMediaSetManagerAction.
+ * @brief Declaration of Class Arinc665Qt::MediaSetManager::LoadMediaSetManagerAction.
  **/
 
 #ifndef ARINC_665_QT_MEDIA_SET_MANAGER_LOADMEDIASETMANAGERACTION_HPP
@@ -31,9 +29,9 @@ namespace Arinc665Qt::MediaSetManager {
  * @brief Asynchronous Media Set Manager Loader Action.
  *
  * Loads the Media Set Manger in a separate task.
- * For communication with a GUI signals are provided.
+ * For communication with a GUI, signals are provided.
  **/
-class ARINC_665_QT_EXPORT LoadMediaSetManagerAction : public QObject
+class ARINC_665_QT_EXPORT LoadMediaSetManagerAction final : public QObject
 {
     Q_OBJECT
 
@@ -47,7 +45,7 @@ class ARINC_665_QT_EXPORT LoadMediaSetManagerAction : public QObject
     LoadMediaSetManagerAction( QObject * parent = nullptr );
 
     //! Destructor
-    ~LoadMediaSetManagerAction();
+    ~LoadMediaSetManagerAction() override;
 
     /**
      * @brief Sets the media set directory.
@@ -67,7 +65,7 @@ class ARINC_665_QT_EXPORT LoadMediaSetManagerAction : public QObject
 
   signals:
     /**
-     * @brief Signal emitted, when a new progress information is available.
+     * @brief Signal emitted when new progress information is available.
      *
      * @param[in] currentMediaSet
      *   Current Media Set Counter
@@ -76,22 +74,18 @@ class ARINC_665_QT_EXPORT LoadMediaSetManagerAction : public QObject
      * @param[in] partNumber
      *   Part Number of current Media Set.
      **/
-    void mediaSetManagerLoadProgress(
-      size_t currentMediaSet,
-      size_t numberOfMediaSets,
-      const std::string &partNumber );
+    void mediaSetManagerLoadProgress( size_t currentMediaSet, size_t numberOfMediaSets, const std::string &partNumber );
 
     /**
-     * @brief Signal emitted, when the Media Set Manager is loaded successfully.
+     * @brief Signal emitted when the Media Set Manager is loaded successfully.
      *
      * @param[in] mediaSetManager
      *   Media Set Manager instance.
      **/
-    void mediaSetManagerLoaded(
-      const Arinc665::Utils::MediaSetManagerPtr &mediaSetManager );
+    void mediaSetManagerLoaded( const Arinc665::Utils::MediaSetManagerPtr &mediaSetManager );
 
     /**
-     * @brief Signal emitted, when the Media Set Manager could not be loaded.
+     * @brief Signal emitted when the Media Set Manager could not be loaded.
      **/
     void failed();
 

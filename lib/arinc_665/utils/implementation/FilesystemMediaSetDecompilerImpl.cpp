@@ -67,7 +67,7 @@ MediaSetDecompilerResult FilesystemMediaSetDecompilerImpl::operator()()
 }
 
 size_t FilesystemMediaSetDecompilerImpl::getFileSize(
-  const Arinc665::MediumNumber &mediumNumber,
+  const MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {
   const auto mediumPath{ mediaPathsV.find( mediumNumber ) };
@@ -80,7 +80,7 @@ size_t FilesystemMediaSetDecompilerImpl::getFileSize(
       << boost::errinfo_file_name{ path.string() } );
   }
 
-  auto filePath{ mediumPath->second / path.relative_path() };
+  const auto filePath{ mediumPath->second / path.relative_path() };
 
   if ( !std::filesystem::is_regular_file( filePath ) )
   {
@@ -94,7 +94,7 @@ size_t FilesystemMediaSetDecompilerImpl::getFileSize(
 }
 
 Helper::RawData FilesystemMediaSetDecompilerImpl::readFile(
-  const Arinc665::MediumNumber &mediumNumber,
+  const MediumNumber &mediumNumber,
   const std::filesystem::path &path )
 {
   const auto mediumPath{ mediaPathsV.find( mediumNumber ) };
@@ -109,7 +109,7 @@ Helper::RawData FilesystemMediaSetDecompilerImpl::readFile(
 
   auto filePath{ mediumPath->second / path.relative_path() };
 
-  // check existence of file
+  // check existence of the file
   if ( !std::filesystem::is_regular_file( filePath ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()

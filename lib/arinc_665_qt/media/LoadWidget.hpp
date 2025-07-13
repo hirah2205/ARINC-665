@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -30,7 +29,18 @@ namespace Ui {
 class LoadWidget;
 }
 
-//! Widget for Load Presentation
+/**
+ * @brief Widget for Load Presentation.
+ *
+ * This widget displays the load-specific information like:
+ * - Load Part Number,
+ * - Part Flags,
+ * - Load Type and Description,
+ * - List of Target Hardware and Positions,
+ * - Load Check Value Type,
+ * - List of Data and Support files, and
+ * - And References to Batches, which contains the Load.
+ **/
 class ARINC_665_QT_EXPORT LoadWidget final : public QGroupBox
 {
   Q_OBJECT
@@ -49,7 +59,7 @@ class ARINC_665_QT_EXPORT LoadWidget final : public QGroupBox
 
   signals:
     /**
-     * @brief Signal Emitted when user selected a Data or Support File.
+     * @brief Signal Emitted when the user selected a Data or Support File.
      *
      * @param[in] file
      *   Selected Data or Support File.
@@ -57,7 +67,7 @@ class ARINC_665_QT_EXPORT LoadWidget final : public QGroupBox
     void activatedFile( Arinc665::Media::ConstRegularFilePtr file );
 
     /**
-     * @brief Signal Emitted when user selected a Batch.
+     * @brief Signal Emitted when the user selected a Batch.
      *
      * @param[in] batch
      *   Selected Batch.
@@ -68,6 +78,8 @@ class ARINC_665_QT_EXPORT LoadWidget final : public QGroupBox
     /**
      * @brief Called when a Load has been selected.
      *
+     * Stores the load internally and updates the elements of the widget to match the new Load.
+     *
      * @param[in] load
      *   Selected Load
      **/
@@ -75,23 +87,32 @@ class ARINC_665_QT_EXPORT LoadWidget final : public QGroupBox
 
   private slots:
     /**
-     * @brief Slot Called, when a Data File has been selected
+     * @brief Slot Called when a Data File has been selected.
      *
-     * @param index
+     * Gets the selected file and emits the signal @ref activatedFile().
+     *
+     * @param[in] index
+     *   Index of the selected data file.
      **/
     void selectDataFile( const QModelIndex &index );
 
     /**
-     * @brief Slot Called, when a Support File has been selected
+     * @brief Slot Called when a Support File has been selected.
      *
-     * @param index
+     * Gets the selected file and emits the signal @ref activatedFile().
+     *
+     * @param[in] index
+     *   Index of the selected support file.
      **/
     void selectSupportFile( const QModelIndex &index );
 
     /**
-     * @brief Slot Called, when a Batch has been selected.
+     * @brief Slot Called when a Batch has been selected.
      *
-     * @param index
+     * Gets the selected batch and emits the signal @ref activatedBatch().
+     *
+     * @param[in] index
+     *   Index of the selected batch.
      **/
     void selectBatch( const QModelIndex &index );
 
@@ -101,8 +122,7 @@ class ARINC_665_QT_EXPORT LoadWidget final : public QGroupBox
     //! Check Value Type Model
     std::unique_ptr< Arinc645Qt::CheckValueTypeModel > checkValueTypeModelV;
     //! THW ID Positions Model
-    std::unique_ptr< TargetHardwareIdsPositionsModel >
-      targetHardwareIdsPositionsModel;
+    std::unique_ptr< TargetHardwareIdsPositionsModel > targetHardwareIdsPositionsModel;
     //! Data Files Model
     std::unique_ptr< LoadFilesModel > dataFilesModelV;
     //! Support Files Model

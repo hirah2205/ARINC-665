@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -46,16 +45,14 @@ class ARINC_665_QT_EXPORT ImportMediaSetWizard final : public QWizard
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit ImportMediaSetWizard(
-      Arinc665::Utils::MediaSetManagerPtr mediaSetManager,
-      QWidget * parent = nullptr );
+    explicit ImportMediaSetWizard( Arinc665::Utils::MediaSetManagerPtr mediaSetManager, QWidget * parent = nullptr );
 
     //! Destructor
     ~ImportMediaSetWizard() override;
 
   private slots:
     /**
-     * @brief Slot called, whe user updates the Media Paths.
+     * @brief Slot called when the user updates the Media Paths.
      *
      * @param[in] mediaPaths
      *   Media Paths
@@ -63,7 +60,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetWizard final : public QWizard
     void updateMediaPaths( const Arinc665::Utils::MediaPaths &mediaPaths );
 
     /**
-     * @brief Slot called, when user changed the check file integrity handling
+     * @brief Slot called when the user changed the check file integrity handling.
      *
      * @param[in] checkFileIntegrity
      *   Check File Integrity indicator

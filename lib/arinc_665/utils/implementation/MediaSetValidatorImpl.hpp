@@ -42,9 +42,9 @@ class MediaSetValidatorImpl final : public MediaSetValidator
 
   private:
     //! Read File Handler
-    MediaSetValidator::ReadFileHandler readFileHandlerV;
+    ReadFileHandler readFileHandlerV;
     //! Information Handler
-    MediaSetValidator::ValidatorInformationHandler informationHandlerV;
+    ValidatorInformationHandler informationHandlerV;
 };
 
 }

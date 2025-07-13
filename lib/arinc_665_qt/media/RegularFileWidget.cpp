@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -32,8 +31,7 @@ RegularFileWidget::RegularFileWidget( QWidget * const parent ) :
 
   ui->usedInLoads->setModel( usedInLoadsModelV.get() );
 
-  ui->usedInLoads->horizontalHeader()->setSectionResizeMode(
-    QHeaderView::ResizeMode::Stretch );
+  ui->usedInLoads->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
 
   connect(
     ui->usedInLoads,
@@ -56,10 +54,7 @@ void RegularFileWidget::selectFile( Arinc665::Media::ConstRegularFilePtr file )
 
 void RegularFileWidget::activateLoad( const QModelIndex &index )
 {
-  auto load{ usedInLoadsModelV->constLoad(
-    usedInLoadsModelV->load( index ) ) };
-
-  if ( load )
+  if (  auto load{ usedInLoadsModelV->constLoad( usedInLoadsModelV->load( index ) ) }; load )
   {
     emit activatedLoad( std::move( load ) );
   }

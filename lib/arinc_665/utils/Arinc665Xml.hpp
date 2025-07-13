@@ -24,7 +24,7 @@ namespace Arinc665::Utils {
 /**
  * @name ARINC 665 %Media Set XML Representation Handling
  *
- * Handles the representation of %Media Sets as XML file.
+ * Handles the representation of %Media Sets as an XML file.
  *
  * The ARINC 665 XML is an XML-Schema, which can be used to describe ARINC 665 %Media Sets and loads in a human-readable
  * manner.
@@ -47,7 +47,7 @@ using LoadXmlResult = std::tuple< Media::MediaSetPtr, FilePathMapping >;
  * @return Load Media Set information.
  *
  * @throw Arinc665Exception
- *   If file cannot be loaded or is invalid.
+ *   If the file cannot be loaded or is invalid.
  **/
 [[nodiscard]] ARINC_665_EXPORT LoadXmlResult Arinc665Xml_load( const std::filesystem::path &xmlFile );
 

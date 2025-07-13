@@ -37,7 +37,7 @@ class MediaSetManagerImpl final : public MediaSetManager
      * @param[in] directory
      *   Directory for Media Set Manger.
      * @param[in] checkFileIntegrity
-     *   If set to true additional file integrity steps are performed
+     *   If set to @p true, additional file integrity steps are performed
      * @param[in] loadProgressHandler
      *   Handler for load progress.
      **/
@@ -121,7 +121,7 @@ class MediaSetManagerImpl final : public MediaSetManager
      **/
     [[nodiscard]] MediaPaths absoluteMediaPaths( const MediaSetPaths &mediaSetPaths ) const;
 
-    //! Media Set Paths Map ( Part Number -> Media Set Paths )
+    //! Media Set Paths Map (Part Number -> Media Set Paths)
     using MediaSetsPaths = std::map< std::string, MediaSetPaths, std::less<> >;
 
     //! Media Set Manager Directory

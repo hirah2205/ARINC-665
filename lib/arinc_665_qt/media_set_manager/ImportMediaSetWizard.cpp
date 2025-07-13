@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -55,9 +54,7 @@ ImportMediaSetWizard::ImportMediaSetWizard(
     QIcon::Off );
   for ( const auto pageId : pageIds() )
   {
-    page( pageId )->setPixmap(
-      QWizard::WizardPixmap::LogoPixmap,
-      icon.pixmap( 64 ) );
+    page( pageId )->setPixmap( QWizard::WizardPixmap::LogoPixmap, icon.pixmap( 64 ) );
   }
 
   connect(
@@ -77,14 +74,13 @@ ImportMediaSetWizard::ImportMediaSetWizard(
     this,
     &ImportMediaSetWizard::checkFileIntegrity );
 
-  // finally set defaults (signals must be connected)
+  // finally, set defaults (signals must be connected)
   ui->settings->defaults( mediaSetManagerV->mediaSetDefaults() );
 }
 
 ImportMediaSetWizard::~ImportMediaSetWizard() = default;
 
-void ImportMediaSetWizard::updateMediaPaths(
-  const Arinc665::Utils::MediaPaths &mediaPaths )
+void ImportMediaSetWizard::updateMediaPaths( const Arinc665::Utils::MediaPaths &mediaPaths )
 {
   mediaPathsV = mediaPaths;
 }
@@ -98,8 +94,7 @@ void ImportMediaSetWizard::importMediaSet()
 {
   try
   {
-    const auto mediaInformation{
-      Arinc665::Utils::getMediumInformation( mediaPathsV.begin()->second ) };
+    const auto mediaInformation{ Arinc665::Utils::getMediumInformation( mediaPathsV.begin()->second ) };
 
     if ( !mediaInformation )
     {
@@ -121,7 +116,7 @@ void ImportMediaSetWizard::importMediaSet()
       .outputBasePath( mediaSetManagerV->directory() )
       .mediaSetName( mediaInformation->partNumber );
 
-    auto copyResult{ ( * copierV )() };
+    const auto copyResult{ ( * copierV )() };
 
     mediaSetManagerV->registerMediaSet( copyResult, checkFileIntegrityV );
     mediaSetManagerV->saveConfiguration();

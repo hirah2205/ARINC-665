@@ -97,9 +97,7 @@ QVariant MediaSetsModel::headerData( const int section, const ::Qt::Orientation 
 
 size_t MediaSetsModel::numberOfMediaSets() const
 {
-  return std::visit(
-    []( auto &mediaSets ) { return mediaSets.size(); },
-    mediaSetsV );
+  return std::visit( []( auto &mediaSets ) { return mediaSets.size(); }, mediaSetsV );
 }
 
 const Arinc665::Media::MediaSetsVariant& MediaSetsModel::mediaSets() const

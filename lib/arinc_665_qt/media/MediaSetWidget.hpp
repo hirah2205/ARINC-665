@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -74,7 +73,7 @@ class ARINC_665_QT_EXPORT MediaSetWidget : public QWidget
 
   private slots:
     /**
-     * @brief Slot Called, when an Element has been selected
+     * @brief Slot Called when an Element has been selected.
      *
      * @param[in] index
      *   Model Index
@@ -82,7 +81,7 @@ class ARINC_665_QT_EXPORT MediaSetWidget : public QWidget
     void selectElement( const QModelIndex &index );
 
     /**
-     * @brief Slot Called, when a Load has been selected within Load Table
+     * @brief Slot Called when a Load has been selected within Load Table.
      *
      * @param[in] index
      *   Model Index
@@ -90,7 +89,7 @@ class ARINC_665_QT_EXPORT MediaSetWidget : public QWidget
     void selectLoad( const QModelIndex &index );
 
     /**
-     * @brief Slot Called, when an Batch has been selected within Batch Table
+     * @brief Slot Called when a Batch has been selected within Batch Table.
      *
      * @param[in] index
      *   Model Index

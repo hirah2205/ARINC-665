@@ -2,14 +2,12 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class
- *   Arinc665Qt::Media::TargetHardwareIdsPositionsModel.
+ * @brief Definition of Class Arinc665Qt::Media::TargetHardwareIdsPositionsModel.
  **/
 
 #include "TargetHardwareIdsPositionsModel.hpp"
@@ -65,32 +63,31 @@ QModelIndex TargetHardwareIdsPositionsModel::parent(
     return {};
   }
 
-  auto * thwId{ Arinc665::Media::Load::TargetHardwareIdPositions::pointer( index.internalPointer() ) };
+  auto * const thwId{ static_cast< Arinc665::Media::Load::TargetHardwareIdPositions::pointer >( index.internalPointer() ) };
 
   if ( nullptr == thwId )
   {
     return {};
   }
 
-  auto pos{ thwIdsPositionsV.find( thwId->first ) };
+  const auto pos{ thwIdsPositionsV.find( thwId->first ) };
 
   if ( pos == thwIdsPositionsV.end() )
   {
     return {};
   }
 
-  auto row{ std::distance( thwIdsPositionsV.begin(), pos ) };
+  const auto row{ std::distance( thwIdsPositionsV.begin(), pos ) };
 
   return createIndex( static_cast< int >( row ), 0 );
 }
 
-bool TargetHardwareIdsPositionsModel::hasChildren(
-  const QModelIndex &parent ) const
+bool TargetHardwareIdsPositionsModel::hasChildren( const QModelIndex &parent ) const
 {
   // First level (media set)
   if ( !parent.isValid() )
   {
-    // return true, if an element is assigned
+    // return true if an element is assigned
     return !thwIdsPositionsV.empty();
   }
 
@@ -105,7 +102,7 @@ bool TargetHardwareIdsPositionsModel::hasChildren(
     return false;
   }
 
-  auto thwId{ std::next( thwIdsPositionsV.begin(), parent.row() ) };
+  const auto thwId{ std::next( thwIdsPositionsV.begin(), parent.row() ) };
 
   return !thwId->second.empty();
 }
@@ -129,20 +126,17 @@ int TargetHardwareIdsPositionsModel::rowCount( const QModelIndex &parent ) const
     return 0;
   }
 
-  auto thwId{ std::next( thwIdsPositionsV.begin(), parent.row() ) };
+  const auto thwId{ std::next( thwIdsPositionsV.begin(), parent.row() ) };
 
   return static_cast< int >( thwId->second.size() );
 }
 
-int TargetHardwareIdsPositionsModel::columnCount(
-  const QModelIndex &parent [[maybe_unused]] ) const
+int TargetHardwareIdsPositionsModel::columnCount( const QModelIndex &parent [[maybe_unused]] ) const
 {
   return static_cast< int>( Columns::Last );
 }
 
-QVariant TargetHardwareIdsPositionsModel::data(
-  const QModelIndex& index,
-  const int role ) const
+QVariant TargetHardwareIdsPositionsModel::data( const QModelIndex &index, const int role ) const
 {
   if ( !index.isValid() )
   {
@@ -190,16 +184,14 @@ void TargetHardwareIdsPositionsModel::targetHardwareIdsPositions(
   endResetModel();
 }
 
-QVariant TargetHardwareIdsPositionsModel::dataThwId(
-  const QModelIndex &index,
-  const int role ) const
+QVariant TargetHardwareIdsPositionsModel::dataThwId( const QModelIndex &index, const int role ) const
 {
   if ( std::cmp_greater_equal( index.row(), thwIdsPositionsV.size() ) )
   {
     return {};
   }
 
-  auto thwId{ std::next( thwIdsPositionsV.begin(), index.row() ) };
+  const auto thwId{ std::next( thwIdsPositionsV.begin(), index.row() ) };
 
   switch ( static_cast< Qt::ItemDataRole >( role ) )
   {
@@ -219,11 +211,10 @@ QVariant TargetHardwareIdsPositionsModel::dataThwId(
   }
 }
 
-QVariant TargetHardwareIdsPositionsModel::dataPosition(
-  const QModelIndex &index,
-  const int role ) const
+QVariant TargetHardwareIdsPositionsModel::dataPosition( const QModelIndex &index, const int role ) const
 {
-  auto * thwId{ Arinc665::Media::Load::TargetHardwareIdPositions::pointer( index.internalPointer() ) };
+  const auto *thwId{
+    static_cast< Arinc665::Media::Load::TargetHardwareIdPositions::pointer >( index.internalPointer() ) };
 
   if ( nullptr == thwId )
   {
@@ -235,7 +226,7 @@ QVariant TargetHardwareIdsPositionsModel::dataPosition(
     return {};
   }
 
-  auto position{ std::next( thwId->second.begin(), index.row() ) };
+  const auto position{ std::next( thwId->second.begin(), index.row() ) };
 
   switch ( static_cast< Qt::ItemDataRole >( role ) )
   {

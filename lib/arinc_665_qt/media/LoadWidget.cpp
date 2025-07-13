@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -32,10 +31,8 @@ namespace Arinc665Qt::Media {
 LoadWidget::LoadWidget( QWidget * const parent):
   QGroupBox{ parent },
   ui{ std::make_unique< Ui::LoadWidget>() },
-  checkValueTypeModelV{
-    std::make_unique< Arinc645Qt::CheckValueTypeModel >( this ) },
-  targetHardwareIdsPositionsModel{
-    std::make_unique< TargetHardwareIdsPositionsModel >( this ) },
+  checkValueTypeModelV{ std::make_unique< Arinc645Qt::CheckValueTypeModel >( this ) },
+  targetHardwareIdsPositionsModel{ std::make_unique< TargetHardwareIdsPositionsModel >( this ) },
   dataFilesModelV{ std::make_unique< LoadFilesModel >( this ) },
   supportFilesModelV{ std::make_unique< LoadFilesModel >( this ) },
   usedInBatchesModelV{ std::make_unique< BatchesModel >( this ) }
@@ -51,15 +48,12 @@ LoadWidget::LoadWidget( QWidget * const parent):
   ui->loadCheckValueType->setModel( checkValueTypeModelV.get() );
 
   ui->dataFilesCheckValueType->setModel( checkValueTypeModelV.get() );
-  ui->dataFiles->horizontalHeader()->setSectionResizeMode(
-    QHeaderView::ResizeMode::Stretch );
+  ui->dataFiles->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
 
   ui->supportFilesCheckValueType->setModel( checkValueTypeModelV.get() );
-  ui->supportFiles->horizontalHeader()->setSectionResizeMode(
-    QHeaderView::ResizeMode::Stretch );
+  ui->supportFiles->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
 
-  ui->usedInBatches->horizontalHeader()->setSectionResizeMode(
-    QHeaderView::ResizeMode::Stretch );
+  ui->usedInBatches->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
 
   connect(
     ui->dataFiles,
@@ -95,32 +89,24 @@ void LoadWidget::selectLoad( Arinc665::Media::ConstLoadPtr load )
     ui->loadTypeId->setText( "" );
     if ( const auto loadType{ loadV->loadType() }; loadType )
     {
-      ui->loadTypeDescription->setText(
-        QString::fromStdString( loadType->first ) );
+      ui->loadTypeDescription->setText( QString::fromStdString( loadType->first ) );
       ui->loadTypeId->setText( QString::number( loadType->second ) );
     }
 
-    targetHardwareIdsPositionsModel->targetHardwareIdsPositions(
-      loadV->targetHardwareIdPositions() );
+    targetHardwareIdsPositionsModel->targetHardwareIdsPositions( loadV->targetHardwareIdPositions() );
 
-    ui->loadCheckValueTypeGroupBox->setChecked(
-      loadV->loadCheckValueType().has_value() );
+    ui->loadCheckValueTypeGroupBox->setChecked( loadV->loadCheckValueType().has_value() );
     ui->loadCheckValueType->setCurrentIndex(
-      Arinc645Qt::CheckValueTypeModel::checkValueType(
-        loadV->effectiveLoadCheckValueType() ) );
+      Arinc645Qt::CheckValueTypeModel::checkValueType( loadV->effectiveLoadCheckValueType() ) );
 
-    ui->dataFilesCheckValueTypeGroupBox->setChecked(
-      loadV->dataFilesCheckValueType().has_value() );
+    ui->dataFilesCheckValueTypeGroupBox->setChecked( loadV->dataFilesCheckValueType().has_value() );
     ui->dataFilesCheckValueType->setCurrentIndex(
-      Arinc645Qt::CheckValueTypeModel::checkValueType(
-        loadV->effectiveDataFilesCheckValueType() ) );
+      Arinc645Qt::CheckValueTypeModel::checkValueType( loadV->effectiveDataFilesCheckValueType() ) );
     dataFilesModelV->loadFiles( loadV->dataFiles() );
 
-    ui->supportFilesCheckValueTypeGroupBox->setChecked(
-      loadV->supportFilesCheckValueType().has_value() );
+    ui->supportFilesCheckValueTypeGroupBox->setChecked( loadV->supportFilesCheckValueType().has_value() );
     ui->supportFilesCheckValueType->setCurrentIndex(
-      Arinc645Qt::CheckValueTypeModel::checkValueType(
-        loadV->effectiveSupportFilesCheckValueType() ) );
+      Arinc645Qt::CheckValueTypeModel::checkValueType( loadV->effectiveSupportFilesCheckValueType() ) );
     supportFilesModelV->loadFiles( loadV->supportFiles() );
 
     usedInBatchesModelV->batches( loadV->mediaSet()->batchesWithLoad( loadV ) );
@@ -129,9 +115,7 @@ void LoadWidget::selectLoad( Arinc665::Media::ConstLoadPtr load )
 
 void LoadWidget::selectDataFile( const QModelIndex &index )
 {
-  auto file{ dataFilesModelV->loadFile( index ) };
-
-  if ( file )
+  if ( const auto file{ dataFilesModelV->loadFile( index ) }; file )
   {
     emit activatedFile( std::get< 0 >( *file ) );
   }
@@ -139,9 +123,7 @@ void LoadWidget::selectDataFile( const QModelIndex &index )
 
 void LoadWidget::selectSupportFile( const QModelIndex &index )
 {
-  auto file{ supportFilesModelV->loadFile( index ) };
-
-  if ( file )
+  if ( const auto file{ supportFilesModelV->loadFile( index ) }; file )
   {
     emit activatedFile( std::get< 0 >( *file ) );
   }
@@ -149,10 +131,7 @@ void LoadWidget::selectSupportFile( const QModelIndex &index )
 
 void LoadWidget::selectBatch( const QModelIndex &index )
 {
-  auto batch{
-    usedInBatchesModelV->constBatch( usedInBatchesModelV->batch( index ) ) };
-
-  if ( batch )
+  if ( const auto batch{ usedInBatchesModelV->constBatch( usedInBatchesModelV->batch( index ) ) }; batch )
   {
     emit activatedBatch( batch );
   }

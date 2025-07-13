@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -19,8 +18,7 @@
 
 namespace Arinc665Qt::MediaSetManager {
 
-ImportMediaSetSettingsPage::ImportMediaSetSettingsPage(
-  QWidget * const parent ) :
+ImportMediaSetSettingsPage::ImportMediaSetSettingsPage( QWidget * const parent ) :
   QWizardPage{ parent },
   ui{ std::make_unique< Ui::ImportMediaSetSettingsPage >() }
 {
@@ -51,14 +49,12 @@ bool ImportMediaSetSettingsPage::isComplete() const
   return QWizardPage::isComplete() && ui->mediaPaths->completed();
 }
 
-void ImportMediaSetSettingsPage::defaults(
-  const Arinc665::Utils::MediaSetDefaults &defaults )
+void ImportMediaSetSettingsPage::defaults( const Arinc665::Utils::MediaSetDefaults &defaults )
 {
   ui->checkFileIntegrity->setChecked( defaults.checkFileIntegrity );
 }
 
-void ImportMediaSetSettingsPage::checkFileIntegrityStateChanged(
-  const Qt::CheckState state )
+void ImportMediaSetSettingsPage::checkFileIntegrityStateChanged( const Qt::CheckState state )
 {
   switch ( state )
   {

@@ -31,7 +31,7 @@ class ExportMediaSetSettingsWidget;
  * @brief Export ARINC 665 Media Set Settings Widget.
  *
  * Provides a Widget where the user can select:
- *  - ARINC 665 Generator Version
+ *  - ARINC 665 Generator Version,
  *  - Create Batch Files policy, and
  *  - Create Load Header Files policy.
  */

@@ -54,7 +54,7 @@ std::optional< Files::MediaSetInformation > getMediumInformation( const std::fil
     }
 
     Helper::RawData rawFile( fileSize );
-    file.read( (char *)std::data( rawFile ), static_cast< std::streamsize >( fileSize ) );
+    file.read( reinterpret_cast< char * >( std::data( rawFile ) ), static_cast< std::streamsize >( fileSize ) );
 
     if ( file.bad() || ( file.gcount() != static_cast< std::streamsize >( fileSize ) ) )
     {

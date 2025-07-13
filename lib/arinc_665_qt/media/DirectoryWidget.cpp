@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -29,8 +28,7 @@ DirectoryWidget::DirectoryWidget( QWidget * const parent ):
 {
   ui->setupUi( this );
 
-  ui->content->horizontalHeader()->setSectionResizeMode(
-    QHeaderView::ResizeMode::Stretch );
+  ui->content->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
 
   connect(
     ui->content,
@@ -41,8 +39,7 @@ DirectoryWidget::DirectoryWidget( QWidget * const parent ):
 
 DirectoryWidget::~DirectoryWidget() = default;
 
-void DirectoryWidget::mediaSetModel(
-  Arinc665Qt::Media::MediaSetModel * const model )
+void DirectoryWidget::mediaSetModel( MediaSetModel * const model )
 {
   mediaSetModelV = model;
   ui->content->setModel( model );
@@ -53,8 +50,7 @@ void DirectoryWidget::selectDirectory( const QModelIndex &index )
   ui->content->setRootIndex( index );
 }
 
-void DirectoryWidget::selectDirectory(
-  Arinc665::Media::ConstDirectoryPtr directory )
+void DirectoryWidget::selectDirectory( Arinc665::Media::ConstDirectoryPtr directory )
 {
   directoryV = std::move( directory );
 
@@ -62,18 +58,14 @@ void DirectoryWidget::selectDirectory(
   {
     ui->nameLineEdit->setText( HelperQt::toQString( directoryV->name() ) );
 
-    ui->defaultMediumNumberGroupBox->setChecked(
-      directoryV->defaultMediumNumber().has_value() );
-    ui->defaultMediumNumber->setValue(
-      static_cast< uint8_t >( directoryV->effectiveDefaultMediumNumber() ) );
+    ui->defaultMediumNumberGroupBox->setChecked( directoryV->defaultMediumNumber().has_value() );
+    ui->defaultMediumNumber->setValue( static_cast< uint8_t >( directoryV->effectiveDefaultMediumNumber() ) );
   }
 }
 
 void DirectoryWidget::selectElement( const QModelIndex &index )
 {
-  auto element{ mediaSetModelV->element( index ) };
-
-  if ( element )
+  if ( auto element{ mediaSetModelV->element( index ) }; element )
   {
     emit activatedElement( std::move( element ) );
   }

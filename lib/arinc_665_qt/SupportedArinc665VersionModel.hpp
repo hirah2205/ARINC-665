@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -64,9 +63,7 @@ class ARINC_665_QT_EXPORT SupportedArinc665VersionModel final :
      *
      * @return Data dependent of the index and role.
      **/
-    [[nodiscard]] QVariant data(
-      const QModelIndex &index,
-      int role ) const override;
+    [[nodiscard]] QVariant data( const QModelIndex &index, int role ) const override;
 
     /**
      * @brief Return Supported ARINC 665 Version for @p index.
@@ -76,10 +73,10 @@ class ARINC_665_QT_EXPORT SupportedArinc665VersionModel final :
      *
      * @return File Creation Policy for @p index
      * @retval {}
-     *   If @p index is out of range.
+     *   If the @p index is out of range.
      **/
-    [[nodiscard]] std::optional< Arinc665::SupportedArinc665Version >
-    supportedArinc665Version( const QModelIndex &index ) const;
+    [[nodiscard]] std::optional< Arinc665::SupportedArinc665Version > supportedArinc665Version(
+      const QModelIndex &index ) const;
 
     /**
      * @brief Return Supported ARINC 665 Version for @p index.
@@ -91,8 +88,7 @@ class ARINC_665_QT_EXPORT SupportedArinc665VersionModel final :
      * @retval {}
      *   If @p index is out of range.
      **/
-    [[nodiscard]] std::optional< Arinc665::SupportedArinc665Version >
-    supportedArinc665Version( int index ) const;
+    [[nodiscard]] std::optional< Arinc665::SupportedArinc665Version > supportedArinc665Version( int index ) const;
 
     /**
      * @brief Returns Index from ARINC 665 Version value.
@@ -104,8 +100,7 @@ class ARINC_665_QT_EXPORT SupportedArinc665VersionModel final :
      * @retval -1
      *   If ARINC 665 Version value is invalid.
      **/
-    [[nodiscard]] int supportedArinc665Version(
-      Arinc665::SupportedArinc665Version version ) const;
+    [[nodiscard]] int supportedArinc665Version( Arinc665::SupportedArinc665Version version ) const;
 };
 
 }

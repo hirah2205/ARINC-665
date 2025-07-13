@@ -35,7 +35,7 @@ Directory::Directory(
 
 ConstMediaSetPtr Directory::mediaSet() const
 {
-  auto parentPtr{ parent() };
+  const auto parentPtr{ parent() };
 
   if ( !parentPtr )
   {
@@ -47,7 +47,7 @@ ConstMediaSetPtr Directory::mediaSet() const
 
 MediaSetPtr Directory::mediaSet()
 {
-  auto parentPtr{ parent() };
+  const auto parentPtr{ parent() };
 
   if ( !parentPtr )
   {
@@ -67,19 +67,19 @@ ContainerEntityPtr Directory::parent()
   return parentV.lock();
 }
 
-void Directory::parent( const ContainerEntityPtr& parent)
+void Directory::parent( const ContainerEntityPtr &parent )
 {
-  if ( !parent)
+  if ( !parent )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception{} << Helper::AdditionalInfo{ "parent must be valid" } );
   }
 
-  if ( shared_from_this() == parent)
+  if ( shared_from_this() == parent )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception{} << Helper::AdditionalInfo{ "Recursion not allowed" } );
   }
 
-  if ( this->parent() == parent)
+  if ( this->parent() == parent )
   {
     return;
   }
@@ -89,7 +89,7 @@ void Directory::parent( const ContainerEntityPtr& parent)
 
 std::filesystem::path Directory::path() const
 {
-  if ( auto parentPtr{ parent() }; parentPtr )
+  if ( const auto parentPtr{ parent() }; parentPtr )
   {
     return parentPtr->path() / nameV;
   }

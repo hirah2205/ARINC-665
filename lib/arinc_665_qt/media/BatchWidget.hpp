@@ -27,7 +27,14 @@ namespace Ui {
 class BatchWidget;
 }
 
-//! Widget for Batch Presentation
+/**
+ * @brief Widget for Batch Presentation.
+ *
+ * This widget displays the load-specific information like:
+ * - Batch Part Number,
+ * - Comment, and
+ * - List of Target and Load information.
+ **/
 class ARINC_665_QT_EXPORT BatchWidget final : public QGroupBox
 {
     Q_OBJECT
@@ -68,6 +75,8 @@ class ARINC_665_QT_EXPORT BatchWidget final : public QGroupBox
     /**
      * @brief Slot called when the user selects a Target.
      *
+     * Fills the Load List with the loads assigned to the selected target.
+     *
      * @param[in] index
      *   Model Index of the selected Target
      **/
@@ -75,6 +84,8 @@ class ARINC_665_QT_EXPORT BatchWidget final : public QGroupBox
 
     /**
      * @brief Slot called when the user selects a Load.
+     *
+     * Gets the selected load and emits the signal @ref activatedLoad().
      *
      * @param[in] index
      *   Model Index of selected Load

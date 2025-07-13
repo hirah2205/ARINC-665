@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -29,8 +28,7 @@ LoadMediaSetManagerAction::LoadMediaSetManagerAction( QObject * const parent ) :
 {
   qRegisterMetaType< size_t >( "size_t" );
   qRegisterMetaType< std::string >( "std::string" );
-  qRegisterMetaType< Arinc665::Utils::MediaSetManagerPtr >(
-    "Arinc665::Utils::MediaSetManagerPtr" );
+  qRegisterMetaType< Arinc665::Utils::MediaSetManagerPtr >( "Arinc665::Utils::MediaSetManagerPtr" );
 
   moveToThread( threadV );
 
@@ -44,14 +42,12 @@ LoadMediaSetManagerAction::~LoadMediaSetManagerAction()
   threadV->quit();
 }
 
-void LoadMediaSetManagerAction::mediaSetDirectory(
-  std::filesystem::path mediaSetDirectory )
+void LoadMediaSetManagerAction::mediaSetDirectory( std::filesystem::path mediaSetDirectory )
 {
   mediaSetDirectoryV = std::move( mediaSetDirectory );
 }
 
-void LoadMediaSetManagerAction::checkMediaSetIntegrity(
-  const bool checkMediaSetIntegrity )
+void LoadMediaSetManagerAction::checkMediaSetIntegrity( const bool checkMediaSetIntegrity )
 {
   checkMediaSetIntegrityV = checkMediaSetIntegrity;
 }
@@ -63,9 +59,7 @@ void LoadMediaSetManagerAction::start()
     auto mediaSetManager{ Arinc665::Utils::MediaSetManager::loadOrCreate(
       mediaSetDirectoryV,
       checkMediaSetIntegrityV,
-      std::bind_front(
-        &LoadMediaSetManagerAction::loadProgress,
-        this ) ) };
+      std::bind_front( &LoadMediaSetManagerAction::loadProgress, this ) ) };
 
     emit mediaSetManagerLoaded( mediaSetManager );
   }
@@ -108,10 +102,7 @@ void LoadMediaSetManagerAction::loadProgress(
   const std::string_view partNumber,
   [[maybe_unused]] const std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium )
 {
-  emit mediaSetManagerLoadProgress(
-    mediaSet.first,
-    mediaSet.second,
-    std::string{ partNumber } );
+  emit mediaSetManagerLoadProgress( mediaSet.first, mediaSet.second, std::string{ partNumber } );
 }
 
 }

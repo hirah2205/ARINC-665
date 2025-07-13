@@ -188,7 +188,7 @@ class ARINC_665_EXPORT BatchFile final : public Arinc665File
     /**
      * @brief Encodes the target hardware information list.
      *
-     * @return Raw representation of target hardware information list.
+     * @return Raw representation of the _Target Hardware Information_ list.
      **/
     [[nodiscard]] Helper::RawData encodeBatchTargetsInfo() const;
 

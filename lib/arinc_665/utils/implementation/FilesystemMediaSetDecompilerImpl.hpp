@@ -7,8 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class
- *   Arinc665::Utils::FilesystemMediaSetDecompilerImpl.
+ * @brief Declaration of Class Arinc665::Utils::FilesystemMediaSetDecompilerImpl.
  **/
 
 #ifndef ARINC_665_UTILS_IMPLEMENTATION_FILESYSTEMMEDIASETDECOMPILERIMPL_HPP
@@ -49,7 +48,7 @@ class FilesystemMediaSetDecompilerImpl final : public FilesystemMediaSetDecompil
 
   private:
     /**
-     * @brief Returns File Size of given File.
+     * @brief Returns File Size of the given File.
      *
      * @param[in] mediumNumber
      *   Medium Number.
@@ -66,16 +65,14 @@ class FilesystemMediaSetDecompilerImpl final : public FilesystemMediaSetDecompil
      * @param[in] mediumNumber
      *   Medium number.
      * @param[in] path
-     *   Path of file on Medium.
+     *   Path of the file on Medium.
      *
      * @return Read file data.
      *
      * @throw Arinc665Exception
-     *   If file does not exist or cannot be read.
+     *   If the file does not exist or cannot be read.
      **/
-    [[nodiscard]] Helper::RawData readFile(
-      const Arinc665::MediumNumber &mediumNumber,
-      const std::filesystem::path &path );
+    [[nodiscard]] Helper::RawData readFile( const MediumNumber &mediumNumber, const std::filesystem::path &path );
 
     //! Media Set Decompiler
     MediaSetDecompilerPtr mediaSetDecompilerV;

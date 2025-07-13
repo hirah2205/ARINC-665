@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -185,6 +184,26 @@ class ARINC_665_QT_EXPORT MediaSetModel final : public QAbstractItemModel
     /** @} **/
 
   private:
+    /**
+     * @brief Returns the _Decoration_ data for the given element.
+     *
+     * @param[in] column
+     *   Column of data to return.
+     *
+     * @return Decoration data for the given data.
+     **/
+    [[nodiscard]] QVariant dataDecorationRole( int column, const Arinc665::Media::ConstBasePtr &base ) const;
+
+    /**
+     * @brief Returns the _Display_ and _Edit_ data for the given element.
+     *
+     * @param[in] column
+     *   Column of data to return.
+     *
+     * @return Display or edit data for the given data.
+     **/
+    [[nodiscard]] QVariant dataDisplayEditRole( int column, const Arinc665::Media::ConstBasePtr &base ) const;
+
     //! Root Element
     Arinc665::Media::ConstBasePtr rootV;
 };

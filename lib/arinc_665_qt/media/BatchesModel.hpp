@@ -94,8 +94,7 @@ class ARINC_665_QT_EXPORT BatchesModel final : public QAbstractTableModel
     [[nodiscard]] QVariant data( const QModelIndex &index, int role ) const override;
 
     /**
-     * @brief Returns the data for the given role and section in the header with
-     *   the specified orientation.
+     * @brief Returns the data for the given role and section in the header with the specified orientation.
      *
      * @param[in] section
      *   Section Number

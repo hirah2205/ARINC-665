@@ -70,10 +70,9 @@ void BatchWidget::selectBatch( Arinc665::Media::ConstBatchPtr batch )
 
 void BatchWidget::selectTarget( const QModelIndex &index )
 {
-  auto batchTargetInformation{ batchInfoModel->batchTargetInformation( index ) };
+  const auto batchTargetInformation{ batchInfoModel->batchTargetInformation( index ) };
 
-  targetLoadsModel->loads(
-    batchInfoModel->constBatchTargetInformation( batchTargetInformation ).second );
+  targetLoadsModel->loads( batchInfoModel->constBatchTargetInformation( batchTargetInformation ).second );
 }
 
 void BatchWidget::activateLoad( const QModelIndex &index )

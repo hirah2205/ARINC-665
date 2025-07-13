@@ -294,7 +294,7 @@ void Arinc665XmlLoadImpl26::entries(
 
 void Arinc665XmlLoadImpl26::regularFile( const xmlpp::Element &fileElement, Media::ContainerEntity &parent )
 {
-  auto file{ parent.addRegularFile( name( fileElement ), mediumNumber( fileElement ) ) };
+  const auto file{ parent.addRegularFile( name( fileElement ), mediumNumber( fileElement ) ) };
 
   baseFile( fileElement, file );
 }
@@ -318,7 +318,7 @@ void Arinc665XmlLoadImpl26::load( const xmlpp::Element &loadElement, Media::Cont
   // Part Flags
   if ( const auto partFlags{ loadElement.get_attribute_value( "PartFlags" ) }; !partFlags.empty() )
   {
-    uint16_t partFlagsValue{ Helper::safeCast< uint16_t >( std::stoul( partFlags, nullptr, 0 ) ) };
+    const uint16_t partFlagsValue{ Helper::safeCast< uint16_t >( std::stoul( partFlags, nullptr, 0 ) ) };
 
     load->partFlags( partFlagsValue );
   }
@@ -419,7 +419,7 @@ void Arinc665XmlLoadImpl26::load( const xmlpp::Element &loadElement, Media::Cont
     load->supportFilesCheckValueType( supportFilesCheckValue );
   }
 
-  // add load to deferred load list
+  // add the load to the deferred load list
   deferredLoadInfoV.emplace_back( &loadElement, load );
 }
 
@@ -515,7 +515,7 @@ void Arinc665XmlLoadImpl26::batch( const xmlpp::Element &batchElement, Media::Co
 
   // handle batch load file handling in deferred batch loading
 
-  // add load to deferred load list
+  // add the batch to the deferred batch list
   deferredBatchInfoV.emplace_back( &batchElement, batch );
 }
 

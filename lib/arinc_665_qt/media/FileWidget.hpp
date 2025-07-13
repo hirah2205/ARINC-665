@@ -35,7 +35,7 @@ class ARINC_665_QT_EXPORT FileWidget final : public QWidget
     Q_OBJECT
 
   public:
-    //! Enumeration identify the Widgets
+    //! Enumeration which identifies the Widgets
     enum class FileStackedWidget : int
     {
       RegularFile = 0,

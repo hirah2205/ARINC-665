@@ -63,7 +63,7 @@ MediaSetPaths FilesystemMediaSetCopierImpl::operator()()
 
   const auto mediaSetBasePath{ outputBasePathV / mediaSetNameV };
 
-  // Create output directory
+  // Create the output directory
   if ( std::error_code err{};
     !std::filesystem::create_directories( mediaSetBasePath, err ) || err )
   {

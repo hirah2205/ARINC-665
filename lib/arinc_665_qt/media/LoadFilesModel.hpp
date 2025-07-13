@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -90,13 +89,10 @@ class ARINC_665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
      *
      * @return Data dependent of the index and role.
      **/
-    [[nodiscard]] QVariant data(
-      const QModelIndex &index,
-      int role ) const override;
+    [[nodiscard]] QVariant data( const QModelIndex &index, int role ) const override;
 
     /**
-     * @brief Returns the data for the given role and section in the header with
-     *   the specified orientation.
+     * @brief Returns the data for the given role and section in the header with the specified orientation.
      *
      * @param[in] section
      *   Section number
@@ -107,10 +103,7 @@ class ARINC_665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
      *
      * @return Header data for the given parameters.
      **/
-    [[nodiscard]] QVariant headerData(
-      int section,
-      ::Qt::Orientation orientation,
-      int role ) const override;
+    [[nodiscard]] QVariant headerData( int section, ::Qt::Orientation orientation, int role ) const override;
 
     /**
      * @name Load Files
@@ -126,30 +119,28 @@ class ARINC_665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
     void loadFiles( Arinc665::Media::ConstLoadFiles loadFiles );
 
     /**
-     * @brief Return Load File for given Index.
+     * @brief Return Load File for the given Index.
      *
      * @param[in] index
      *   Model Index.
      *
-     * @return Load File for given Index.
+     * @return Load File for the given Index.
      * @retval {}
      *   If @p index is out of range or invalid.
      **/
-    [[nodiscard]] std::optional< Arinc665::Media::ConstLoadFile > loadFile(
-      const QModelIndex &index ) const;
+    [[nodiscard]] std::optional< Arinc665::Media::ConstLoadFile > loadFile( const QModelIndex &index ) const;
 
     /**
-     * @brief Return Load File for given Index.
+     * @brief Return Load File for the given Index.
      *
      * @param[in] index
      *   Index of Element.
      *
-     * @return Load File for given Index.
+     * @return Load File for the given Index.
      * @retval {}
      *   If @p index is out of range.
      **/
-    [[nodiscard]] std::optional< Arinc665::Media::ConstLoadFile > loadFile(
-      size_t index ) const;
+    [[nodiscard]] std::optional< Arinc665::Media::ConstLoadFile > loadFile( size_t index ) const;
 
     /** @} **/
 
