@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -48,8 +47,7 @@ int BatchInfoModel::columnCount( const QModelIndex &parent ) const
 
 QVariant BatchInfoModel::data( const QModelIndex &index, const int role ) const
 {
-  auto batchTargetInfo{
-    constBatchTargetInformation( batchTargetInformation( index ) ) };
+  auto batchTargetInfo{ constBatchTargetInformation( batchTargetInformation( index ) ) };
 
   switch ( role )
   {
@@ -103,22 +101,19 @@ size_t BatchInfoModel::numberOfBatchInformation() const
     batchInformationV );
 }
 
-const Arinc665::Media::BatchInformationVariant&
-BatchInfoModel::batchInformation() const
+const Arinc665::Media::BatchInformationVariant& BatchInfoModel::batchInformation() const
 {
   return batchInformationV;
 }
 
-void BatchInfoModel::batchInformation(
-  Arinc665::Media::BatchInformationVariant information )
+void BatchInfoModel::batchInformation( Arinc665::Media::BatchInformationVariant information )
 {
   beginResetModel();
   batchInformationV = std::move( information );
   endResetModel();
 }
 
-Arinc665::Media::BatchTargetInformationVariant
-BatchInfoModel::batchTargetInformation( const QModelIndex &index ) const
+Arinc665::Media::BatchTargetInformationVariant  BatchInfoModel::batchTargetInformation( const QModelIndex &index ) const
 {
   if ( !index.isValid() )
   {
@@ -128,8 +123,7 @@ BatchInfoModel::batchTargetInformation( const QModelIndex &index ) const
   return batchTargetInformation( index.row() );
 }
 
-Arinc665::Media::BatchTargetInformationVariant
-BatchInfoModel::batchTargetInformation( const std::size_t index ) const
+Arinc665::Media::BatchTargetInformationVariant  BatchInfoModel::batchTargetInformation( const std::size_t index ) const
 {
   if ( index >= numberOfBatchInformation() )
   {
@@ -139,8 +133,7 @@ BatchInfoModel::batchTargetInformation( const std::size_t index ) const
   return std::visit(
     [ index ]( auto &batchInformation ) {
       auto batchTargetInformation{ std::next( batchInformation.begin(), index ) };
-      return Arinc665::Media::BatchTargetInformationVariant{
-        *batchTargetInformation };
+      return Arinc665::Media::BatchTargetInformationVariant{ *batchTargetInformation };
     },
     batchInformationV );
 }
@@ -152,9 +145,7 @@ Arinc665::Media::ConstBatchTargetInformation BatchInfoModel::constBatchTargetInf
     []( const auto &batchTargetInformation ) {
       return Arinc665::Media::ConstBatchTargetInformation{
         batchTargetInformation.first,
-        Arinc665::Media::ConstLoads{
-          batchTargetInformation.second.begin(),
-          batchTargetInformation.second.end() } };
+        Arinc665::Media::ConstLoads{ batchTargetInformation.second.begin(), batchTargetInformation.second.end() } };
     },
     batchTargetInformation );
 }

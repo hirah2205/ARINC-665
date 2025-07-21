@@ -37,7 +37,7 @@ class ARINC_665_QT_EXPORT MediaSetViewWidget final : public QWidget
     Q_OBJECT
 
   public:
-    //! Enumeration identify the Widgets
+    //! Enumeration, which identifies the selected type of Widget.
     enum class DetailsStackedWidget : int
     {
       MediaSet = 0,
@@ -85,7 +85,7 @@ class ARINC_665_QT_EXPORT MediaSetViewWidget final : public QWidget
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaSetViewWidget > ui;
+    std::unique_ptr< Ui::MediaSetViewWidget > uiV;
     //! Media Set Model
     MediaSetModel * mediaSetModelV{ nullptr };
 };

@@ -29,7 +29,20 @@ namespace Ui {
 class FileWidget;
 }
 
-//! Widget for Basic File Presentation
+/**
+ * @brief Widget for handling ARINC 665 Media Set files.
+ *
+ * Displays the filename, medium number, and check value type.
+ * Distinct between:
+ * - Regular file,
+ * - Load, and
+ * - Batch.
+ * For each filetype a specific widget is displayed.
+ *
+ * @sa @ref RegularFileWidget
+ * @sa @ref LoadWidget
+ * @sa @ref BatchWidget
+ **/
 class ARINC_665_QT_EXPORT FileWidget final : public QWidget
 {
     Q_OBJECT
@@ -56,15 +69,18 @@ class ARINC_665_QT_EXPORT FileWidget final : public QWidget
 
   signals:
     /**
-     * @brief Emitted when a file in one of the widgets ist activated.
+     * @brief Emitted when a file in one of the widgets is activated.
      *
-     * @param file
+     * @param[in] file
+     *   Activated file.
      **/
     void activatedFile( Arinc665::Media::ConstFilePtr file );
 
   public slots:
     /**
      * @brief Called when a file has been selected.
+     *
+     * When in the child widgets a file (regular file, load, or batch) has been activated, the selected file is emitted.
      *
      * @param[in] file
      *   Selected File

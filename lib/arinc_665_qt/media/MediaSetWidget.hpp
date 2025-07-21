@@ -30,7 +30,7 @@ class MediaSetWidget;
 }
 
 //! Widget for %Media Set Presentation
-class ARINC_665_QT_EXPORT MediaSetWidget : public QWidget
+class ARINC_665_QT_EXPORT MediaSetWidget final : public QWidget
 {
     Q_OBJECT
 
@@ -52,7 +52,7 @@ class ARINC_665_QT_EXPORT MediaSetWidget : public QWidget
      * @param[in] model
      *   Media Set Model.
      **/
-    void mediaSetModel( Arinc665Qt::Media::MediaSetModel * model );
+    void mediaSetModel( MediaSetModel * model );
 
   signals:
     /**
@@ -98,14 +98,14 @@ class ARINC_665_QT_EXPORT MediaSetWidget : public QWidget
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaSetWidget> ui;
+    std::unique_ptr< Ui::MediaSetWidget> uiV;
 
     //! Check Value Type Model
     std::unique_ptr< Arinc645Qt::CheckValueTypeModel > checkValueTypeModelV;
     //! Loads Model
-    std::unique_ptr< Media::LoadsModel > loadsModelV;
+    std::unique_ptr< LoadsModel > loadsModelV;
     //! Batches Model
-    std::unique_ptr< Media::BatchesModel > batchesModelV;
+    std::unique_ptr< BatchesModel > batchesModelV;
 
     //! Media Set Model
     MediaSetModel * mediaSetModelV{ nullptr };

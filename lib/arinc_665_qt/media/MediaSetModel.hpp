@@ -81,17 +81,19 @@ class ARINC_665_QT_EXPORT MediaSetModel final : public QAbstractItemModel
     [[nodiscard]] QModelIndex parent( const QModelIndex &index ) const override;
 
     /**
-     * @brief Return if the given parent has children.
+     * @brief Return if the given index has children.
      *
      * @param[in] parent
      *   Parent Model Index.
      *
-     * @return If @p parent has children.
+     * @return If the index @p parent has children.
      **/
     [[nodiscard]] bool hasChildren( const QModelIndex &parent ) const override;
 
     /**
-     * @brief Returns the number of rows.
+     * @brief Returns the number of rows for the given index.
+     *
+     * Gets the media element for the given index and returns the number of child directories and files.
      *
      * @param[in] parent
      *   Parent Model Index.
@@ -144,7 +146,7 @@ class ARINC_665_QT_EXPORT MediaSetModel final : public QAbstractItemModel
      *
      * @return Corresponding Media Set Element.
      * @retval Arinc665::Media::BasePtr{}
-     *   If index is invalid or no model stored.
+     *   If the @p index is invalid or no model stored.
      **/
     [[nodiscard]] Arinc665::Media::ConstBasePtr element( const QModelIndex &index ) const;
 
@@ -189,6 +191,8 @@ class ARINC_665_QT_EXPORT MediaSetModel final : public QAbstractItemModel
      *
      * @param[in] column
      *   Column of data to return.
+     * @param[in] base
+     *   ARINC 665 Media Set Element to handle.
      *
      * @return Decoration data for the given data.
      **/
@@ -199,6 +203,8 @@ class ARINC_665_QT_EXPORT MediaSetModel final : public QAbstractItemModel
      *
      * @param[in] column
      *   Column of data to return.
+     * @param[in] base
+     *   ARINC 665 Media Set Element to handle.
      *
      * @return Display or edit data for the given data.
      **/

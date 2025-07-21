@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -33,14 +32,12 @@ class DecompileMediaSetWizard;
 /**
  * @brief Decompile ARINC 665 %Media Set Wizard.
  *
- * This wizard is used to query the Decompile ARINC 665 Media Set settings from
- * the user.
+ * This wizard is used to query the Decompile ARINC 665 Media Set settings from the user.
  *
- * When the dialog is accepted the operation must be initiated by the caller.
+ * When the dialog is accepted, the operation must be initiated by the caller.
  *
  * Media Paths are accessible via the MediaPathsModel.
- * The Check File Integrity Setting is provided cia the signal
- * @ref checkFileIntegrity.
+ * The Check File Integrity Setting is provided via the signal @ref checkFileIntegrity.
  **/
 class ARINC_665_QT_EXPORT DecompileMediaSetWizard final : public QWizard
 {
@@ -60,7 +57,7 @@ class ARINC_665_QT_EXPORT DecompileMediaSetWizard final : public QWizard
 
   signals:
     /**
-     * @brief Signal emitted, when the user adds or delete media paths.
+     * @brief Signal emitted when the user adds or delete media paths.
      *
      * @param[in] mediaPaths
      *   Updated Media Paths
@@ -68,8 +65,7 @@ class ARINC_665_QT_EXPORT DecompileMediaSetWizard final : public QWizard
     void mediaPathsChanged( const Arinc665::Utils::MediaPaths &mediaPaths );
 
     /**
-     * @brief Signal emitted, when the check file integrity field has been
-     *   selected by user.
+     * @brief Signal emitted when the check file integrity field has been selected by user.
      *
      * @param[in] checkFileIntegrity
      *   Check file integrity indicator.

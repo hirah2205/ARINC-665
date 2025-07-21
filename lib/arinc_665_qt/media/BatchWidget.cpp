@@ -26,24 +26,23 @@ namespace Arinc665Qt::Media {
 
 BatchWidget::BatchWidget( QWidget * const parent ) :
   QGroupBox{ parent},
-  ui{ std::make_unique< Ui::BatchWidget>() },
-  batchInfoModel{ std::make_unique< BatchInfoModel >( this ) },
-  targetLoadsModel{ std::make_unique< LoadsModel >( this ) }
+  uiV{ std::make_unique< Ui::BatchWidget>() },
+  batchInfoModelV{ std::make_unique< BatchInfoModel >( this ) },
+  targetLoadsModelV{ std::make_unique< LoadsModel >( this ) }
 {
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
-  ui->targets->setModel( batchInfoModel.get() );
-  ui->loads->setModel( targetLoadsModel.get() );
-  ui->loads->horizontalHeader()->setSectionResizeMode(
-    QHeaderView::ResizeMode::Stretch );
+  uiV->targets->setModel( batchInfoModelV.get() );
+  uiV->loads->setModel( targetLoadsModelV.get() );
+  uiV->loads->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
 
   connect(
-    ui->targets->selectionModel(),
+    uiV->targets->selectionModel(),
     &QItemSelectionModel::currentChanged,
     this,
     &BatchWidget::selectTarget );
   connect(
-    ui->loads,
+    uiV->loads,
     &QTableView::activated,
     this,
     &BatchWidget::activateLoad );
@@ -58,27 +57,26 @@ void BatchWidget::selectBatch( Arinc665::Media::ConstBatchPtr batch )
 
   if ( batchV )
   {
-    ui->partNumber->setText( HelperQt::toQString( batchV->partNumber() ) );
-    ui->comment->setText( HelperQt::toQString( batchV->comment() ) );
+    uiV->partNumber->setText( HelperQt::toQString( batchV->partNumber() ) );
+    uiV->comment->setText( HelperQt::toQString( batchV->comment() ) );
 
-    batchInfoModel->batchInformation( batchV->targets() );
-    targetLoadsModel->loads( {} );
+    batchInfoModelV->batchInformation( batchV->targets() );
+    targetLoadsModelV->loads( {} );
 
-    ui->targets->selectRow( 0 );
+    uiV->targets->selectRow( 0 );
   }
 }
 
 void BatchWidget::selectTarget( const QModelIndex &index )
 {
-  const auto batchTargetInformation{ batchInfoModel->batchTargetInformation( index ) };
+  const auto batchTargetInformation{ batchInfoModelV->batchTargetInformation( index ) };
 
-  targetLoadsModel->loads( batchInfoModel->constBatchTargetInformation( batchTargetInformation ).second );
+  targetLoadsModelV->loads( batchInfoModelV->constBatchTargetInformation( batchTargetInformation ).second );
 }
 
 void BatchWidget::activateLoad( const QModelIndex &index )
 {
-  auto load{ targetLoadsModel->constLoad(
-    targetLoadsModel->load( index ) ) };
+  auto load{ targetLoadsModelV->constLoad( targetLoadsModelV->load( index ) ) };
 
   if ( load )
   {

@@ -14,10 +14,10 @@
 
 #include "ui_FileWidget.h"
 
-#include <arinc_665/media/File.hpp>
-#include <arinc_665/media/RegularFile.hpp>
-#include <arinc_665/media/Load.hpp>
 #include <arinc_665/media/Batch.hpp>
+#include <arinc_665/media/File.hpp>
+#include <arinc_665/media/Load.hpp>
+#include <arinc_665/media/RegularFile.hpp>
 
 #include <arinc_645_qt/CheckValueTypeModel.hpp>
 

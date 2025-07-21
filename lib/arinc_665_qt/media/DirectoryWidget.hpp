@@ -54,7 +54,7 @@ class ARINC_665_QT_EXPORT DirectoryWidget final : public QWidget
 
   signals:
     /**
-     * @brief Emitted when an element in one of the widgets ist activated.
+     * @brief Emitted when an element in one of the widgets is activated.
      *
      * @param element
      **/
@@ -90,7 +90,7 @@ class ARINC_665_QT_EXPORT DirectoryWidget final : public QWidget
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::DirectoryWidget > ui;
+    std::unique_ptr< Ui::DirectoryWidget > uiV;
     //! Media Set Model
     MediaSetModel * mediaSetModelV{ nullptr };
     //! Directory

@@ -94,12 +94,12 @@ class ARINC_665_QT_EXPORT BatchWidget final : public QGroupBox
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::BatchWidget > ui;
+    std::unique_ptr< Ui::BatchWidget > uiV;
 
     //! Batch Target Information Model
-    std::unique_ptr< BatchInfoModel > batchInfoModel;
+    std::unique_ptr< BatchInfoModel > batchInfoModelV;
     //! Batch Target Loads Model
-    std::unique_ptr< LoadsModel > targetLoadsModel;
+    std::unique_ptr< LoadsModel > targetLoadsModelV;
 
     //! Batch
     Arinc665::Media::ConstBatchPtr batchV;

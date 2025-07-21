@@ -31,41 +31,41 @@ namespace Arinc665Qt::Media {
 
 MediaSetWidget::MediaSetWidget( QWidget * const parent ):
   QWidget{ parent },
-  ui{ std::make_unique< Ui::MediaSetWidget>() },
+  uiV{ std::make_unique< Ui::MediaSetWidget>() },
   checkValueTypeModelV{ std::make_unique< Arinc645Qt::CheckValueTypeModel >( this ) },
   loadsModelV{ std::make_unique< Media::LoadsModel >( this ) },
   batchesModelV{ std::make_unique< Media::BatchesModel >( this ) }
 {
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
-  ui->mediaSetCheckValueType->setModel( checkValueTypeModelV.get() );
-  ui->listOfFilesCheckValueType->setModel( checkValueTypeModelV.get() );
-  ui->listOfLoadsCheckValueType->setModel( checkValueTypeModelV.get() );
-  ui->listOfBatchesCheckValueType->setModel( checkValueTypeModelV.get() );
-  ui->filesCheckValueType->setModel( checkValueTypeModelV.get() );
+  uiV->mediaSetCheckValueType->setModel( checkValueTypeModelV.get() );
+  uiV->listOfFilesCheckValueType->setModel( checkValueTypeModelV.get() );
+  uiV->listOfLoadsCheckValueType->setModel( checkValueTypeModelV.get() );
+  uiV->listOfBatchesCheckValueType->setModel( checkValueTypeModelV.get() );
+  uiV->filesCheckValueType->setModel( checkValueTypeModelV.get() );
 
-  ui->loads->setModel( loadsModelV.get() );
-  ui->batches->setModel( batchesModelV.get() );
+  uiV->loads->setModel( loadsModelV.get() );
+  uiV->batches->setModel( batchesModelV.get() );
 
-  ui->content->horizontalHeader()->setSectionResizeMode(
+  uiV->content->horizontalHeader()->setSectionResizeMode(
     QHeaderView::ResizeMode::Stretch );
-  ui->loads->horizontalHeader()->setSectionResizeMode(
+  uiV->loads->horizontalHeader()->setSectionResizeMode(
     QHeaderView::ResizeMode::Stretch );
-  ui->batches->horizontalHeader()->setSectionResizeMode(
+  uiV->batches->horizontalHeader()->setSectionResizeMode(
     QHeaderView::ResizeMode::Stretch );
 
   connect(
-    ui->content,
+    uiV->content,
     &QTableView::activated,
     this,
     &MediaSetWidget::selectElement );
   connect(
-    ui->loads,
+    uiV->loads,
     &QTableView::activated,
     this,
     &MediaSetWidget::selectLoad );
   connect(
-    ui->batches,
+    uiV->batches,
     &QTableView::activated,
     this,
     &MediaSetWidget::selectBatch );
@@ -77,7 +77,7 @@ void MediaSetWidget::mediaSetModel(
   Arinc665Qt::Media::MediaSetModel * const model )
 {
   mediaSetModelV = model;
-  ui->content->setModel( model );
+  uiV->content->setModel( model );
 }
 
 void MediaSetWidget::selectMediaSet(
@@ -87,43 +87,43 @@ void MediaSetWidget::selectMediaSet(
 
   if ( mediaSetV )
   {
-    ui->partNumberLineEdit->setText(
+    uiV->partNumberLineEdit->setText(
       HelperQt::toQString( mediaSetV->partNumber() ) );
 
-    ui->defaultMediumNumber->setValue(
+    uiV->defaultMediumNumber->setValue(
       static_cast< uint8_t >( mediaSetV->effectiveDefaultMediumNumber() ) );
 
-    ui->mediaSetCheckValueTypeGroupBox->setChecked(
+    uiV->mediaSetCheckValueTypeGroupBox->setChecked(
       mediaSetV->mediaSetCheckValueType().has_value() );
-    ui->mediaSetCheckValueType->setCurrentIndex(
+    uiV->mediaSetCheckValueType->setCurrentIndex(
       Arinc645Qt::CheckValueTypeModel::checkValueType(
         mediaSetV->effectiveMediaSetCheckValueType() ) );
 
-    ui->listOfFilesCheckValueTypeGroupBox->setChecked(
+    uiV->listOfFilesCheckValueTypeGroupBox->setChecked(
       mediaSetV->listOfFilesCheckValueType().has_value() );
-    ui->listOfFilesCheckValueType->setCurrentIndex(
+    uiV->listOfFilesCheckValueType->setCurrentIndex(
       Arinc645Qt::CheckValueTypeModel::checkValueType(
         mediaSetV->effectiveListOfFilesCheckValueType() ) );
 
-    ui->listOfLoadsCheckValueTypeGroupBox->setChecked(
+    uiV->listOfLoadsCheckValueTypeGroupBox->setChecked(
       mediaSetV->listOfLoadsCheckValueType().has_value() );
-    ui->listOfLoadsCheckValueType->setCurrentIndex(
+    uiV->listOfLoadsCheckValueType->setCurrentIndex(
       Arinc645Qt::CheckValueTypeModel::checkValueType(
         mediaSetV->effectiveListOfLoadsCheckValueType() ) );
 
-    ui->listOfBatchesCheckValueTypeGroupBox->setChecked(
+    uiV->listOfBatchesCheckValueTypeGroupBox->setChecked(
       mediaSetV->listOfBatchesCheckValueType().has_value() );
-    ui->listOfBatchesCheckValueType->setCurrentIndex(
+    uiV->listOfBatchesCheckValueType->setCurrentIndex(
       Arinc645Qt::CheckValueTypeModel::checkValueType(
         mediaSetV->effectiveListOfBatchesCheckValueType() ) );
 
-    ui->filesCheckValueTypeGroupBox->setChecked(
+    uiV->filesCheckValueTypeGroupBox->setChecked(
       mediaSetV->filesCheckValueType().has_value() );
-    ui->filesCheckValueType->setCurrentIndex(
+    uiV->filesCheckValueType->setCurrentIndex(
       Arinc645Qt::CheckValueTypeModel::checkValueType(
         mediaSetV->effectiveFilesCheckValueType() ) );
 
-    ui->content->setRootIndex( mediaSetModelV->index( 0, 0 ) );
+    uiV->content->setRootIndex( mediaSetModelV->index( 0, 0 ) );
 
     loadsModelV->loads( mediaSetV->recursiveLoads() );
 

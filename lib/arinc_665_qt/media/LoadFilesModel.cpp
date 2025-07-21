@@ -112,28 +112,24 @@ void LoadFilesModel::loadFiles( Arinc665::Media::ConstLoadFiles loadFiles )
   endResetModel();
 }
 
-std::optional< Arinc665::Media::ConstLoadFile > LoadFilesModel::loadFile(
-  const QModelIndex &index ) const
+std::optional< Arinc665::Media::ConstLoadFile > LoadFilesModel::loadFile( const QModelIndex &index ) const
 {
   if ( !index.isValid() )
   {
-    return {};
+    return std::nullopt;
   }
 
   return loadFile( index.row() );
 }
 
-std::optional< Arinc665::Media::ConstLoadFile > LoadFilesModel::loadFile(
-  const size_t index ) const
+std::optional< Arinc665::Media::ConstLoadFile > LoadFilesModel::loadFile( const size_t index ) const
 {
-  if ( index >= loadFilesV.size() )
+  if ( std::cmp_greater_equal( index, loadFilesV.size() ) )
   {
-    return {};
+    return std::nullopt;
   }
 
-  return *std::next(
-    loadFilesV.begin(),
-    static_cast< std::ptrdiff_t >( index ) );
+  return *std::next( loadFilesV.begin(), static_cast< std::ptrdiff_t >( index ) );
 }
 
 }

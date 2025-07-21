@@ -73,7 +73,7 @@ namespace Arinc665Qt::Media {
      *
      * @return Columns::ColumnsCount.
      * @retval 0
-     *   If @p is valid (not root element)
+     *   If the index @p parent is valid (not root element)
      **/
     [[nodiscard]] int columnCount( const QModelIndex &parent ) const override;
 

@@ -63,7 +63,7 @@ class ARINC_665_QT_EXPORT LoadsModel final : public QAbstractTableModel
      *
      * @return Number of loads.
      * @retval 0
-     *   If @p is valid (not root element)
+     *   If the index @p parent is valid (not the root element)
      **/
     [[nodiscard]] int rowCount( const QModelIndex &parent ) const override;
 
@@ -74,7 +74,7 @@ class ARINC_665_QT_EXPORT LoadsModel final : public QAbstractTableModel
      *   Index-parent - assumed to be the root element (invalid).
      *
      * @retval 0
-     *   If @p is valid (not root element)
+     *   If the index @p parent is valid (not root element)
      **/
     [[nodiscard]] int columnCount( const QModelIndex &parent ) const override;
 

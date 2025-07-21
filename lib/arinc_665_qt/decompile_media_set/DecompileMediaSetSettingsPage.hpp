@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -78,7 +77,7 @@ class ARINC_665_QT_EXPORT DecompileMediaSetSettingsPage final :
 
   signals:
     /**
-     * @brief Signal emitted, when the user adds or delete media paths.
+     * @brief Signal emitted when the user adds or delete media paths.
      *
      * @param[in] mediaPaths
      *   Updated Media Paths
@@ -86,8 +85,7 @@ class ARINC_665_QT_EXPORT DecompileMediaSetSettingsPage final :
     void mediaPathsChanged( const Arinc665::Utils::MediaPaths &mediaPaths );
 
     /**
-     * @brief Signal emitted, when the check file integrity field has been
-     *   selected by user.
+     * @brief Signal emitted when the check file integrity field has been selected by user.
      *
      * @param[in] checkFileIntegrity
      *   Check file integrity indicator.
@@ -96,11 +94,9 @@ class ARINC_665_QT_EXPORT DecompileMediaSetSettingsPage final :
 
   private slots:
     /**
-     * @brief Slot called, when the file integrity changed checkbox has been
-     *   changed.
+     * @brief Slot called, when the file integrity changed checkbox has been changed.
      *
-     * check state is determined and signal @ref checkFileIntegrity() is
-     * emitted.
+     * Check state is determined and signal @ref checkFileIntegrity() is emitted.
      *
      * @param[in] state
      *   Check State.

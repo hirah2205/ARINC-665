@@ -26,22 +26,22 @@ namespace Arinc665Qt::Media {
 
 MediaSetViewWidget::MediaSetViewWidget( QWidget * const parent ):
   QWidget{ parent },
-  ui{ std::make_unique< Ui::MediaSetViewWidget >() }
+  uiV{ std::make_unique< Ui::MediaSetViewWidget >() }
 {
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
   connect(
-    ui->mediaSetWidget,
+    uiV->mediaSetWidget,
     &MediaSetWidget::activatedElement,
     this,
     &MediaSetViewWidget::activateElement );
   connect(
-    ui->directoryWidget,
+    uiV->directoryWidget,
     &DirectoryWidget::activatedElement,
     this,
     &MediaSetViewWidget::activateElement );
   connect(
-    ui->fileWidget,
+    uiV->fileWidget,
     &FileWidget::activatedFile,
     this,
     &MediaSetViewWidget::activateElement );
@@ -58,10 +58,10 @@ void MediaSetViewWidget::mediaSetModel( Media::MediaSetModel * const model )
 
   mediaSetModelV = model;
 
-  ui->mediaSetTreeView->setModel( mediaSetModelV );
+  uiV->mediaSetTreeView->setModel( mediaSetModelV );
 
-  ui->mediaSetWidget->mediaSetModel( mediaSetModelV );
-  ui->directoryWidget->mediaSetModel( mediaSetModelV );
+  uiV->mediaSetWidget->mediaSetModel( mediaSetModelV );
+  uiV->directoryWidget->mediaSetModel( mediaSetModelV );
 
   if ( nullptr != mediaSetModelV )
   {
@@ -69,16 +69,16 @@ void MediaSetViewWidget::mediaSetModel( Media::MediaSetModel * const model )
       mediaSetModelV,
       &Media::MediaSetModel::modelReset,
       [ this ]{
-        ui->mediaSetTreeView->setCurrentIndex( mediaSetModelV->index( 0, 0 ) );
-        ui->mediaSetTreeView->setExpanded( mediaSetModelV->index( 0, 0 ), true );
-        ui->mediaSetTreeView->resizeColumnToContents( 0 );
+        uiV->mediaSetTreeView->setCurrentIndex( mediaSetModelV->index( 0, 0 ) );
+        uiV->mediaSetTreeView->setExpanded( mediaSetModelV->index( 0, 0 ), true );
+        uiV->mediaSetTreeView->resizeColumnToContents( 0 );
 
         // initiate update
-        ui->mediaSetTreeView->setCurrentIndex( mediaSetModelV->index( 0, 0 ) );
+        uiV->mediaSetTreeView->setCurrentIndex( mediaSetModelV->index( 0, 0 ) );
       } );
 
     connect(
-      ui->mediaSetTreeView->selectionModel(),
+      uiV->mediaSetTreeView->selectionModel(),
       &QItemSelectionModel::currentChanged,
       this,
       &MediaSetViewWidget::selectElement );
@@ -100,20 +100,20 @@ void MediaSetViewWidget::selectElement( const QModelIndex &index )
     {
       const auto mediaSet{ std::dynamic_pointer_cast< const Arinc665::Media::MediaSet>( element ) };
 
-      ui->detailsStackedWidget->setCurrentIndex( static_cast< int >( DetailsStackedWidget::MediaSet ) );
-      ui->mediaSetWidget->selectMediaSet( mediaSet );
+      uiV->detailsStackedWidget->setCurrentIndex( static_cast< int >( DetailsStackedWidget::MediaSet ) );
+      uiV->mediaSetWidget->selectMediaSet( mediaSet );
       break;
     }
 
     case Arinc665::Media::Type::Directory:
-      ui->detailsStackedWidget->setCurrentIndex( static_cast< int >( DetailsStackedWidget::Directory ) );
-      ui->directoryWidget->selectDirectory( index );
-      ui->directoryWidget->selectDirectory( std::dynamic_pointer_cast< const Arinc665::Media::Directory>( element ) );
+      uiV->detailsStackedWidget->setCurrentIndex( static_cast< int >( DetailsStackedWidget::Directory ) );
+      uiV->directoryWidget->selectDirectory( index );
+      uiV->directoryWidget->selectDirectory( std::dynamic_pointer_cast< const Arinc665::Media::Directory>( element ) );
       break;
 
     case Arinc665::Media::Type::File:
-      ui->detailsStackedWidget->setCurrentIndex( static_cast< int >( DetailsStackedWidget::File ) );
-      ui->fileWidget->selectFile( std::dynamic_pointer_cast< const Arinc665::Media::File>( element ) );
+      uiV->detailsStackedWidget->setCurrentIndex( static_cast< int >( DetailsStackedWidget::File ) );
+      uiV->fileWidget->selectFile( std::dynamic_pointer_cast< const Arinc665::Media::File>( element ) );
       break;
 
     default:
@@ -124,8 +124,8 @@ void MediaSetViewWidget::selectElement( const QModelIndex &index )
 void MediaSetViewWidget::activateElement( Arinc665::Media::ConstBasePtr element )
 {
   auto index{ mediaSetModelV->indexForElement( element ) };
-  ui->mediaSetTreeView->setCurrentIndex( index );
-  ui->mediaSetTreeView->scrollTo( index );
+  uiV->mediaSetTreeView->setCurrentIndex( index );
+  uiV->mediaSetTreeView->scrollTo( index );
 }
 
 }

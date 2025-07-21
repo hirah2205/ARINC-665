@@ -262,7 +262,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
       if ( !container )
       {
         // Should not happen
-        SPDLOG_ERROR( "Invalid Cast to Container" );
+        SPDLOG_ERROR( "Invalid cast to container" );
         return {};
       }
 
@@ -276,7 +276,7 @@ int MediaSetModel::rowCount( const QModelIndex &parent ) const
 
     default:
       // Should not happen
-      SPDLOG_ERROR( "Invalid Container Type" );
+      SPDLOG_ERROR( "Invalid container type" );
       return 0;
   }
 }

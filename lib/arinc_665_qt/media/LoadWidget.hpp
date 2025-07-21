@@ -122,7 +122,7 @@ class ARINC_665_QT_EXPORT LoadWidget final : public QGroupBox
     //! Check Value Type Model
     std::unique_ptr< Arinc645Qt::CheckValueTypeModel > checkValueTypeModelV;
     //! THW ID Positions Model
-    std::unique_ptr< TargetHardwareIdsPositionsModel > targetHardwareIdsPositionsModel;
+    std::unique_ptr< TargetHardwareIdsPositionsModel > targetHardwareIdsPositionsModelV;
     //! Data Files Model
     std::unique_ptr< LoadFilesModel > dataFilesModelV;
     //! Support Files Model
@@ -130,7 +130,7 @@ class ARINC_665_QT_EXPORT LoadWidget final : public QGroupBox
     //! Used in Batches Model
     std::unique_ptr< BatchesModel > usedInBatchesModelV;
     //! Load
-    Arinc665::Media::ConstLoadPtr loadV{};
+    Arinc665::Media::ConstLoadPtr loadV;
 };
 
 }

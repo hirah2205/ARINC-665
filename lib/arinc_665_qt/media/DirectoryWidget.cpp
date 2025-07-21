@@ -22,16 +22,16 @@
 
 namespace Arinc665Qt::Media {
 
-DirectoryWidget::DirectoryWidget( QWidget * const parent ):
+DirectoryWidget::DirectoryWidget( QWidget * const parent ) :
   QWidget{ parent },
-  ui{ std::make_unique< Ui::DirectoryWidget >() }
+  uiV{ std::make_unique< Ui::DirectoryWidget >() }
 {
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
-  ui->content->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
+  uiV->content->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
 
   connect(
-    ui->content,
+    uiV->content,
     &QTableView::activated,
     this,
     &DirectoryWidget::selectElement );
@@ -42,12 +42,12 @@ DirectoryWidget::~DirectoryWidget() = default;
 void DirectoryWidget::mediaSetModel( MediaSetModel * const model )
 {
   mediaSetModelV = model;
-  ui->content->setModel( model );
+  uiV->content->setModel( model );
 }
 
 void DirectoryWidget::selectDirectory( const QModelIndex &index )
 {
-  ui->content->setRootIndex( index );
+  uiV->content->setRootIndex( index );
 }
 
 void DirectoryWidget::selectDirectory( Arinc665::Media::ConstDirectoryPtr directory )
@@ -56,10 +56,10 @@ void DirectoryWidget::selectDirectory( Arinc665::Media::ConstDirectoryPtr direct
 
   if ( directoryV )
   {
-    ui->nameLineEdit->setText( HelperQt::toQString( directoryV->name() ) );
+    uiV->nameLineEdit->setText( HelperQt::toQString( directoryV->name() ) );
 
-    ui->defaultMediumNumberGroupBox->setChecked( directoryV->defaultMediumNumber().has_value() );
-    ui->defaultMediumNumber->setValue( static_cast< uint8_t >( directoryV->effectiveDefaultMediumNumber() ) );
+    uiV->defaultMediumNumberGroupBox->setChecked( directoryV->defaultMediumNumber().has_value() );
+    uiV->defaultMediumNumber->setValue( static_cast< uint8_t >( directoryV->effectiveDefaultMediumNumber() ) );
   }
 }
 

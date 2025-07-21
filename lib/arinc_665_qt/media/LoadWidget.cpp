@@ -32,15 +32,14 @@ LoadWidget::LoadWidget( QWidget * const parent):
   QGroupBox{ parent },
   ui{ std::make_unique< Ui::LoadWidget>() },
   checkValueTypeModelV{ std::make_unique< Arinc645Qt::CheckValueTypeModel >( this ) },
-  targetHardwareIdsPositionsModel{ std::make_unique< TargetHardwareIdsPositionsModel >( this ) },
+  targetHardwareIdsPositionsModelV{ std::make_unique< TargetHardwareIdsPositionsModel >( this ) },
   dataFilesModelV{ std::make_unique< LoadFilesModel >( this ) },
   supportFilesModelV{ std::make_unique< LoadFilesModel >( this ) },
   usedInBatchesModelV{ std::make_unique< BatchesModel >( this ) }
 {
   ui->setupUi( this );
 
-  ui->targetHardwareIdsPositions->setModel(
-    targetHardwareIdsPositionsModel.get() );
+  ui->targetHardwareIdsPositions->setModel( targetHardwareIdsPositionsModelV.get() );
   ui->dataFiles->setModel( dataFilesModelV.get() );
   ui->supportFiles->setModel( supportFilesModelV.get() );
   ui->usedInBatches->setModel( usedInBatchesModelV.get() );
@@ -93,7 +92,7 @@ void LoadWidget::selectLoad( Arinc665::Media::ConstLoadPtr load )
       ui->loadTypeId->setText( QString::number( loadType->second ) );
     }
 
-    targetHardwareIdsPositionsModel->targetHardwareIdsPositions( loadV->targetHardwareIdPositions() );
+    targetHardwareIdsPositionsModelV->targetHardwareIdsPositions( loadV->targetHardwareIdPositions() );
 
     ui->loadCheckValueTypeGroupBox->setChecked( loadV->loadCheckValueType().has_value() );
     ui->loadCheckValueType->setCurrentIndex(

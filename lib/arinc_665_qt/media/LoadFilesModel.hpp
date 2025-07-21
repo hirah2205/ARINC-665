@@ -26,9 +26,9 @@ namespace Arinc665Qt::Media {
 /**
  * @brief Qt Table Model of Load Files.
  *
- * Lists the files, which are part of a load.
+ * Lists the files, which are part of a load (data or support files).
  **/
-class ARINC_665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
+class ARINC_665_QT_EXPORT LoadFilesModel final : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -63,7 +63,7 @@ class ARINC_665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
      *
      * @return Number of Files.
      * @retval 0
-     *   If @p is valid (not root element)
+     *   If the index @p parent is valid (is not the root element)
      **/
     [[nodiscard]] int rowCount( const QModelIndex &parent ) const override;
 
@@ -75,7 +75,7 @@ class ARINC_665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
      *
      * @return Columns::ColumnsCount.
      * @retval 0
-     *   If @p is valid (not root element)
+     *   If index @p parent is valid (not root element)
      **/
     [[nodiscard]] int columnCount( const QModelIndex &parent ) const override;
 
@@ -125,8 +125,8 @@ class ARINC_665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
      *   Model Index.
      *
      * @return Load File for the given Index.
-     * @retval {}
-     *   If @p index is out of range or invalid.
+     * @retval std::nullopt
+     *   If the @p index is out of range or invalid.
      **/
     [[nodiscard]] std::optional< Arinc665::Media::ConstLoadFile > loadFile( const QModelIndex &index ) const;
 
@@ -137,8 +137,8 @@ class ARINC_665_QT_EXPORT LoadFilesModel : public QAbstractTableModel
      *   Index of Element.
      *
      * @return Load File for the given Index.
-     * @retval {}
-     *   If @p index is out of range.
+     * @retval std::nullopt
+     *   If the @p index is out of range.
      **/
     [[nodiscard]] std::optional< Arinc665::Media::ConstLoadFile > loadFile( size_t index ) const;
 
