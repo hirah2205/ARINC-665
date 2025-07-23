@@ -21,7 +21,7 @@ namespace Arinc665::Utils {
  * @brief ARINC 665 %Media Set Copier.
  *
  * Copies a media set from a filesystem source to a filesystem destination.
- * No integrity checks of the media set is performed.
+ * No integrity checks of the media set are performed.
  **/
 class ARINC_665_EXPORT FilesystemMediaSetCopier
 {
@@ -84,7 +84,7 @@ class ARINC_665_EXPORT FilesystemMediaSetCopier
      * @return Media Set Paths relative to Output Directory Base Path.
      *
      * @throw Arinc665Exception
-     *   When copy operation fails
+     *   When the copy operation fails
      **/
     [[nodiscard]] virtual MediaSetPaths operator()() = 0;
 };

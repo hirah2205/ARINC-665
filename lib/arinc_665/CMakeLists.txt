@@ -101,6 +101,8 @@ target_sources(
   arinc_665_test
 
   PRIVATE
+    test/MediumNumber_decrementOperatorTest.cpp
+    test/MediumNumber_incrementOperatorTest.cpp
     test/MediumNumberTest.cpp
     test/PartNumberTest.cpp
     test/VersionTest.cpp )

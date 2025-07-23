@@ -56,12 +56,12 @@ int main( const int argc, char * argv[] )
   }
   catch ( const boost::exception &e )
   {
-    std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
+    std::cerr << std::format( "Error: {}\n", boost::diagnostic_information( e ) );
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
+    std::cerr << std::format( "Error: {}\n", boost::diagnostic_information( e ) );
     return EXIT_FAILURE;
   }
   catch ( ... )

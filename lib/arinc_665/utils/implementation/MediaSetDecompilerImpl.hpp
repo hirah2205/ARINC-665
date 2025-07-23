@@ -69,9 +69,10 @@ class MediaSetDecompilerImpl final : public MediaSetDecompiler
     /**
      * @brief Loads the first Medium of the Media Set.
      *
-     * - Loads the List of Files File and checks it for integrity.
-     * - Loads the List of Loads File and checks it for integrity.
-     * - If present, loads the List of Batches and checks it for integrity.
+     * For the first medium:
+     * - Loads the "List of Files File" and checks it for integrity.
+     * - Loads the "List of Loads File" and checks it for integrity.
+     * - If present, loads the "List of Batches File" and checks it for integrity.
      *
      * @throw Arinc665Exception
      *   When Medium Integrity is not given.
@@ -81,10 +82,10 @@ class MediaSetDecompilerImpl final : public MediaSetDecompiler
     /**
      * @brief Loads and Checks all further Media.
      *
-     * for each further Media:
-     * - Loads the List of Files File and checks it for integrity.
-     * - Loads the List of Loads File and checks it for integrity.
-     * - If present, loads the List of Batches and checks it for integrity.
+     * For each further media:
+     * - Loads the "List of Files File" and checks it for integrity.
+     * - Loads the "List of Loads File" and checks it for integrity.
+     * - If present, loads the "List of Batches File" and checks it for integrity.
      **/
     void loadFurtherMedia() const;
 
@@ -93,12 +94,12 @@ class MediaSetDecompilerImpl final : public MediaSetDecompiler
      *
      * Iterates over the file information and creates the directories and files.
      *
-     * @sa regularFile
-     * @sa loadFile
-     * @sa batchFile
-     * @sa addLoad
-     * @sa addBatch
-     * @sa checkCreateDirectory
+     * @sa @ref regularFile()
+     * @sa @ref loadFile()
+     * @sa @ref batchFile()
+     * @sa @ref addLoad()
+     * @sa @ref addBatch()
+     * @sa @ref checkCreateDirectory()
      **/
     void files();
 
@@ -192,15 +193,15 @@ class MediaSetDecompilerImpl final : public MediaSetDecompiler
      * @return Directory entry.
      *
      * @throw Arinc665Exception
-     *   When subdirectory cannot be created
+     *   When the subdirectory cannot be created
      **/
     [[nodiscard]] Media::ContainerEntityPtr checkCreateDirectory( const std::filesystem::path &directoryPath );
 
     /**
-     * @brief Checks all Files on given Medium.
+     * @brief Checks all Files on the given Medium.
      *
      * Check for file existence and stores file size for later usage.
-     * If file integrity checks is requested read each file and check file CRC and Check Value.
+     * If file integrity checks are requested, read each file and check file CRC and Check Value.
      *
      * @param[in] mediumNumber
      *   Current Medium Number
@@ -210,8 +211,7 @@ class MediaSetDecompilerImpl final : public MediaSetDecompiler
     /**
      * @brief Check File Integrity
      *
-     * Calculates and compares File CRC and File Check Value against stored
-     * ones.
+     * Calculates and compares File CRC and File Check Value against stored ones.
      *
      * @param[in] fileInfo
      *   File Information.
@@ -262,8 +262,8 @@ class MediaSetDecompilerImpl final : public MediaSetDecompiler
      *
      * @return If Checksum Comparison was successful.
      * @retval true
-     *   Check Value of File List and Load File Information from same type and check value are equal or no check value
-     *   provided for load file.
+     *   Check Value of File List and Load File Information from the same type and check value are equal or no check
+     *   value provided for the load file.
      * @retval false
      *   Check Value could not be compared (different check value types).
      *   Check Value should be tested separately.
@@ -289,11 +289,11 @@ class MediaSetDecompilerImpl final : public MediaSetDecompiler
     //! Check Values
     Media::CheckValues checkValuesV;
 
-    //! File List File (Load by loadFirstMedium(), used by loadFurtherMedia() )
+    //! File List File (Load by loadFirstMedium(), used by @ref loadFurtherMedia())
     Files::FileListFile fileListFileV;
-    //! Load List File (Load by loadFirstMedium(), used by loadFurtherMedia() )
+    //! Load List File (Load by loadFirstMedium(), used by @ref loadFurtherMedia())
     Files::LoadListFile loadListFileV;
-    //! Batch List File (Load by loadFirstMedium(), used by loadFurtherMedia() )
+    //! Batch List File (Load by loadFirstMedium(), used by @ref loadFurtherMedia())
     Files::BatchListFile batchListFileV;
     //! Batch List File present indicator
     bool batchListFilePresentV{ false };

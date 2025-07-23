@@ -146,7 +146,7 @@ std::filesystem::path FilesystemMediaSetCompilerImpl::mediumPath( const Arinc665
   if ( mediaPathsV.end() == mediumPath )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << Helper::AdditionalInfo{ "Medium not found" } );
+      << Helper::AdditionalInfo{ std::format( "Medium {} not found", mediumNumber ) } );
   }
 
   return mediaSetBaseDirectoryV / mediumPath->second;
@@ -176,9 +176,9 @@ void FilesystemMediaSetCompilerImpl::createDirectory(
   std::filesystem::create_directory( directoryPath );
 }
 
-bool FilesystemMediaSetCompilerImpl::checkFileExistence( const Arinc665::Media::ConstFilePtr &file )
+bool FilesystemMediaSetCompilerImpl::checkFileExistence( const Media::ConstFilePtr &file )
 {
-  SPDLOG_TRACE( "check existence of [{}]:'{}'", file->effectiveMediumNumber().toString(), file->path().string() );
+  SPDLOG_TRACE( "check existence of [{}]:'{}'", file->effectiveMediumNumber(), file->path().string() );
 
   // search for the file
   const auto fileIt{ filePathMappingV.find( file ) };
@@ -195,7 +195,7 @@ bool FilesystemMediaSetCompilerImpl::checkFileExistence( const Arinc665::Media::
   return std::filesystem::is_regular_file( filePath );
 }
 
-void FilesystemMediaSetCompilerImpl::createFile( const Arinc665::Media::ConstFilePtr &file )
+void FilesystemMediaSetCompilerImpl::createFile( const Media::ConstFilePtr &file )
 {
   // search the file
   const auto fileIt{ filePathMappingV.find( file ) };
@@ -221,11 +221,11 @@ void FilesystemMediaSetCompilerImpl::writeFile(
   const std::filesystem::path &path,
   Helper::ConstRawDataSpan file )
 {
-  auto filePath{ mediumPath( mediumNumber ) / path.relative_path() };
+  const auto filePath{ mediumPath( mediumNumber ) / path.relative_path() };
 
-  SPDLOG_TRACE( "Write file [{}]:'{}' ('{}')", mediumNumber.toString(), path.string(), filePath.string() );
+  SPDLOG_TRACE( "Write file [{}]:'{}' ('{}')", mediumNumber, path.string(), filePath.string() );
 
-  // check existence of the file
+  // check the existence of the file
   if ( std::filesystem::exists( filePath ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
@@ -254,13 +254,12 @@ Helper::RawData FilesystemMediaSetCompilerImpl::readFile(
   // check medium number
   auto filePath{ mediumPath( mediumNumber ) / path.relative_path() };
 
-  SPDLOG_TRACE( "Read file [{}]:'{}' ('{}')", mediumNumber.toString(), path.string(), filePath.string() );
+  SPDLOG_TRACE( "Read file [{}]:'{}' ('{}')", mediumNumber, path.string(), filePath.string() );
 
-  // check existence of the file
+  // check the existence of the file
   if ( !std::filesystem::is_regular_file( filePath ) )
   {
     BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception()
-      << boost::errinfo_file_name{ filePath.string() }
       << Helper::AdditionalInfo{ "File not found" }
       << boost::errinfo_file_name{ filePath.string() } );
   }

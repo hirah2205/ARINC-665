@@ -94,10 +94,10 @@ std::string PartNumber::checkCode() const
     checkCode ^= static_cast< uint8_t >( character );
   }
 
-  return std::format( "{:02X}", (unsigned int) checkCode );
+  return std::format( "{:02X}", static_cast< unsigned int >( checkCode ) );
 }
 
-std::string PartNumber::partNumber() const
+std::string PartNumber::toString() const
 {
   return manufacturerCodeV + checkCode() + productIdentifierV;
 }
@@ -140,7 +140,7 @@ void PartNumber::checkCheckCode( std::string_view checkCode )
 
 std::ostream& operator<<( std::ostream &ostream, const PartNumber &partNumber )
 {
-  ostream << partNumber.partNumber();
+  ostream << partNumber.toString();
   return ostream;
 }
 

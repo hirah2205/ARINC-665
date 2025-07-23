@@ -26,8 +26,9 @@
 
 #include <spdlog/spdlog.h>
 
-#include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
+
+#include <boost/program_options.hpp>
 
 #include <cstdlib>
 #include <filesystem>
@@ -163,20 +164,21 @@ int main( const int argc, char * argv[] )
   }
   catch ( const boost::program_options::error &e )
   {
-    std::cerr
-      << "Error parsing command line: " << e.what() << "\n"
-      << "Enter " << argv[0]
-      << " --help for command line description\n";
+    std::cerr << std::format(
+      "Error parsing command line: {}\n"
+      "Enter '{} --help' for command line description.\n",
+      e.what(),
+      argv[ 0 ] );
     return EXIT_FAILURE;
   }
   catch ( const boost::exception &e )
   {
-    std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
+    std::cerr << std::format( "Error: {}\n", boost::diagnostic_information( e ) );
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "Error: " << boost::diagnostic_information( e ) << "\n";
+    std::cerr << std::format( "Error: {}\n", boost::diagnostic_information( e ) );
     return EXIT_FAILURE;
   }
   catch ( ... )

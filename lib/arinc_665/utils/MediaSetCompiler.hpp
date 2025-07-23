@@ -55,7 +55,7 @@ class ARINC_665_EXPORT MediaSetCompiler
     /**
      * @brief Handler, which checks the existence of a file within the Source.
      *
-     * This callback is used, to check if a file exist on sources.
+     * This callback is used to check if a file exists on sources.
      * This is used for Load Header and Batch Files when the file creation policy is set to
      * @p FileCreationPolicy::NoneExisting.
      *
@@ -89,11 +89,10 @@ class ARINC_665_EXPORT MediaSetCompiler
      * @param[in] file
      *   File data (binary).
      **/
-    using WriteFileHandler =
-      std::function< void(
-        const MediumNumber &mediumNumber,
-        const std::filesystem::path &path,
-        const Helper::ConstRawDataSpan &file ) >;
+    using WriteFileHandler = std::function< void(
+      const MediumNumber &mediumNumber,
+      const std::filesystem::path &path,
+      const Helper::ConstRawDataSpan &file ) >;
 
     /**
      * @brief Handler, which is called to read a File from the Target.
@@ -161,7 +160,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      * @brief Sets the Check File Existence Handler.
      *
      * @param[in] checkFileExistenceHandler
-     *   Called to check if file exists.
+     *   Called to check if a file exists.
      *
      * @return @p *this for chaining.
      **/
@@ -212,7 +211,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      * @brief Sets the Create Batch Files Flag.
      *
      * @param[in] createBatchFiles
-     *   Defines, if Batch Files are created by exporter or pre-existing ones are used.
+     *   Defines if Batch Files are created by exporter or pre-existing ones are used.
      *
      * @return *this for chaining.
      **/
@@ -222,7 +221,7 @@ class ARINC_665_EXPORT MediaSetCompiler
      * @brief Sets the Create Load Header Files Flag.
      *
      * @param[in] createLoadHeaderFiles
-     *   Defines, if Load Header Files are created by exporter or pre-existing ones are used.
+     *   Defines if Load Header Files are created by exporter or pre-existing ones are used.
      *
      * @return *this for chaining.
      **/

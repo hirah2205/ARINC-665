@@ -27,8 +27,9 @@
 
 #include <spdlog/spdlog.h>
 
-#include <boost/program_options.hpp>
 #include <boost/exception/all.hpp>
+
+#include <boost/program_options.hpp>
 
 #include <cstdlib>
 #include <filesystem>
@@ -47,7 +48,7 @@
  **/
 int main( int argc, char * argv[] );
 
-int main( int argc, char * argv[] )
+int main( const int argc, char * argv[] )
 {
   spdlog::set_level( spdlog::level::info );
 
@@ -173,34 +174,28 @@ int main( int argc, char * argv[] )
     std::cout << "Created Media Set " << mediaSetName << " in \n";
     for ( const auto &[ mediumNumber, mediumPath ] : mediaPaths )
     {
-      std::cout << std::format(
-        " * [%1]: %2\n",
-        static_cast< std::string >( mediumNumber ),
-        ( mediaSetPath / mediumPath ).string() );
+      std::cout << std::format( " * [{}]: {}\n", mediumNumber, ( mediaSetPath / mediumPath ).string() );
     }
 
     return EXIT_SUCCESS;
   }
   catch ( const boost::program_options::error &e )
   {
-    std::cerr
-      << "Error parsing command line: " << e.what() << "\n"
-      << "Enter " << argv[0]
-      << " --help for command line description\n";
+    std::cerr << std::format(
+      "Error parsing command line: {}\n"
+      "Enter '{} --help' for command line description.\n",
+      e.what(),
+      argv[ 0 ] );
     return EXIT_FAILURE;
   }
   catch ( const boost::exception &e )
   {
-    std::cerr
-      << "Error: "
-      << boost::diagnostic_information( e ) << "\n";
+    std::cerr << std::format( "Error: {}\n", boost::diagnostic_information( e ) );
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
-    std::cerr
-      << "Error: "
-      << boost::diagnostic_information( e ) << "\n";
+    std::cerr << std::format( "Error: {}\n", boost::diagnostic_information( e ) );
     return EXIT_FAILURE;
   }
   catch ( ... )

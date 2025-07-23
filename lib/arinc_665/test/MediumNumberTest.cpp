@@ -20,93 +20,32 @@ namespace Arinc665 {
 BOOST_AUTO_TEST_SUITE( Arinc665Test )
 BOOST_AUTO_TEST_SUITE( MediumNumberTest )
 
-//! Medium Number Test
-BOOST_AUTO_TEST_CASE( constructor1 )
+//! Check Behaviour of default initialised medium numbers
+BOOST_AUTO_TEST_CASE( defaultInitialised )
 {
   MediumNumber mediumNumber;
   BOOST_CHECK( static_cast< uint8_t >( mediumNumber )  == 1U );
+  BOOST_CHECK( static_cast< std::string >( mediumNumber )  == "001" );
+  BOOST_CHECK( mediumNumber.toString()  == "001" );
 }
 
-//! Constructor Test
-BOOST_AUTO_TEST_CASE( constructor2 )
+//! Check Behaviour of value initialised medium numbers
+BOOST_AUTO_TEST_CASE( valueInitialised )
 {
-  MediumNumber mediumNumber1{ 1U };
+  const MediumNumber mediumNumber0{ 0U };
+  BOOST_CHECK( static_cast< uint8_t >( mediumNumber0 ) == 1U );
+  BOOST_CHECK( static_cast< std::string >( mediumNumber0 )  == "001" );
+  BOOST_CHECK( mediumNumber0.toString()  == "001" );
+
+  const MediumNumber mediumNumber1{ 1U };
   BOOST_CHECK( static_cast< uint8_t >( mediumNumber1 ) == 1U );
+  BOOST_CHECK( static_cast< std::string >( mediumNumber1 )  == "001" );
+  BOOST_CHECK( mediumNumber1.toString()  == "001" );
 
-  MediumNumber mediumNumber2{ 255U };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber2 ) == 255U );
-}
-
-//! Constructor Test
-BOOST_AUTO_TEST_CASE( preIncrement )
-{
-  MediumNumber mediumNumber1{ 1 };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber1 )  == 1U );
-
-  auto mediumNumber2{ ++mediumNumber1 };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber1 )  == 2U );
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber2 )  == 2U );
-
-  MediumNumber mediumNumber3{ 255U };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber3 )  == 255U );
-
-  auto mediumNumber4{ ++mediumNumber3 };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber3 )  == 255U );
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber4 )  == 255U );
-}
-
-//! Post Increment Test
-BOOST_AUTO_TEST_CASE( postIncrement )
-{
-  MediumNumber mediumNumber1{ 1 };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber1 )  == 1U );
-
-  auto mediumNumber2{ mediumNumber1++ };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber1 )  == 2U );
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber2 )  == 1U );
-
-  MediumNumber mediumNumber3{ 255U };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber3 )  == 255U );
-
-  auto mediumNumber4{ mediumNumber3++ };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber3 )  == 255U );
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber4 )  == 255U );
-}
-
-//! Pre Increment Test
-BOOST_AUTO_TEST_CASE( preDecrement )
-{
-  MediumNumber mediumNumber1{ 1 };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber1 )  == 1U );
-
-  auto mediumNumber2{ --mediumNumber1 };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber1 )  == 1U );
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber2 )  == 1U );
-
-  MediumNumber mediumNumber3{ 255U };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber3 )  == 255U );
-
-  auto mediumNumber4{ --mediumNumber3 };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber3 )  == 254U );
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber4 )  == 254U );
-}
-
-//! Post Decrement Test
-BOOST_AUTO_TEST_CASE( postDecrement )
-{
-  MediumNumber mediumNumber1{ 1 };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber1 )  == 1U );
-
-  auto mediumNumber2{ mediumNumber1-- };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber1 )  == 1U );
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber2 )  == 1U );
-
-  MediumNumber mediumNumber3{ 255U };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber3 )  == 255U );
-
-  auto mediumNumber4{ mediumNumber3-- };
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber3 )  == 254U );
-  BOOST_CHECK( static_cast< uint8_t >( mediumNumber4 )  == 255U );
+  const MediumNumber mediumNumber255{ 255U };
+  BOOST_CHECK( static_cast< uint8_t >( mediumNumber255 ) == 255U );
+  BOOST_CHECK( static_cast< std::string >( mediumNumber255 )  == "255" );
+  BOOST_CHECK( mediumNumber255.toString()  == "255" );
 }
 
 //! Pre Decrement Test

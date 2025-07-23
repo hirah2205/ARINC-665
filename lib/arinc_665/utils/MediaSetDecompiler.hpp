@@ -36,7 +36,7 @@ namespace Arinc665::Utils {
  * @par Check File Integrity
  * When the *check file integrity* flag is set to `true` the checksum and check values of all media set member files and
  * the load checksum and load check values of all loads are verified.
- * The file checksum of ARINC 665 files (list of files, list of loads, list of batches, load headers and batch files)
+ * The file checksum of ARINC 665 files (list of files, list of loads, list of batches, load headers, and batch files)
  * are always verified.
  **/
 class ARINC_665_EXPORT MediaSetDecompiler
@@ -65,7 +65,7 @@ class ARINC_665_EXPORT MediaSetDecompiler
      *
      * This handler is also used to read files, which are not represented by Arinc665::Media classes.
      *
-     * This Handler shall throw, when the file does not exist.
+     * This Handler shall throw when the file does not exist.
      *
      * @param[in] mediumNumber
      *   Medium Number
@@ -83,7 +83,7 @@ class ARINC_665_EXPORT MediaSetDecompiler
      * @param[in] partNumber
      *   Media Set Part Number
      * @param[in] medium
-     *   @p std::pair of current medium and number of media.
+     *   A @p std::pair of current medium and number of media.
      **/
     using ProgressHandler =
       std::function< void( std::string_view partNumber, std::pair< MediumNumber, MediumNumber > medium ) >;
@@ -117,7 +117,7 @@ class ARINC_665_EXPORT MediaSetDecompiler
      * @brief Sets the Read File Handler.
      *
      * @param[in] readFileHandler
-     *   Handler which is called to obtain the requested file from the medium.
+     *   Handler which is called to get the requested file from the medium.
      *
      * @return @p *this for chaining.
      **/
@@ -137,7 +137,7 @@ class ARINC_665_EXPORT MediaSetDecompiler
      * @brief Sets the Check File Integrity Flag.
      *
      * @param[in] checkFileIntegrity
-     *   If set to true additional file integrity steps are performed
+     *   If set to true, additional file integrity steps are performed
      *
      * @return @p *this for chaining.
      **/
