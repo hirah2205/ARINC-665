@@ -12,13 +12,12 @@
 
 #include "MediumNumber.hpp"
 
-#include <format>
 #include <ostream>
 
 namespace Arinc665 {
 
 MediumNumber::MediumNumber( const uint8_t mediumNumber ) noexcept :
-  mediumNumberV{ mediumNumber }
+  mediumNumberV{ ( mediumNumber == 0U ) ? static_cast< uint8_t >( 1U ) : mediumNumber }
 {
 }
 
@@ -59,7 +58,7 @@ MediumNumber& MediumNumber::operator++() noexcept
 
 MediumNumber MediumNumber::operator++( int ) noexcept
 {
-  auto old{ *this };
+  const auto old{ *this };
   if ( mediumNumberV < 255U )
   {
     ++mediumNumberV;
@@ -78,7 +77,7 @@ MediumNumber& MediumNumber::operator--() noexcept
 
 MediumNumber MediumNumber::operator--( int ) noexcept
 {
-  auto old{ *this };
+  const auto old{ *this };
   if ( mediumNumberV > 1U )
   {
     --mediumNumberV;
@@ -98,7 +97,7 @@ MediumNumber::operator std::string() const
 
 MediumNumber& MediumNumber::operator =( const uint8_t mediumNumber ) noexcept
 {
-  mediumNumberV = mediumNumber;
+  mediumNumberV = ( mediumNumber == 0U ) ? 1U : mediumNumber;
   return *this;
 }
 

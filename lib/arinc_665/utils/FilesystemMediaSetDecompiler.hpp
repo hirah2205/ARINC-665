@@ -59,7 +59,7 @@ class ARINC_665_EXPORT FilesystemMediaSetDecompiler
      * @brief Sets the Check File Integrity Flag.
      *
      * @param[in] checkFileIntegrity
-     *   If set to true additional file integrity steps are performed
+     *   If set to true, additional file integrity steps are performed.
      *
      * @return @p *this for chaining.
      **/

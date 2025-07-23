@@ -53,11 +53,11 @@ class ARINC_665_EXPORT MediaSetManager
      * @brief Load Media Set Manager Progress Handler.
      *
      * @param[in] mediaSet
-     *   @p std::pair of current media set and number of media sets.
+     *   A @p std::pair of current media set and number of media sets.
      * @param[in] partNumber
      *   Media Set Part Number
      * @param[in] medium
-     *   @p std::pair of current medium and number of media.
+     *   A @p std::pair of current medium and number of media.
      **/
     using LoadProgressHandler =
       std::function< void(
@@ -173,7 +173,7 @@ class ARINC_665_EXPORT MediaSetManager
      **/
 
     /**
-     * @brief Returns true, if the Media Set with the given Part Number is registered to the Media Set Manager.
+     * @brief Returns true if the Media Set with the given Part Number is registered to the Media Set Manager.
      *
      * @param[in] partNumber
      *   Media Set Part Number.
@@ -209,8 +209,7 @@ class ARINC_665_EXPORT MediaSetManager
      * @param[in] mediaSetPaths
      *   Media Set Path Configuration
      * @param[in] checkFileIntegrity
-     *   If set to true additional file integrity steps are performed, when
-     *   loading the Media Set Manager.
+     *   If set to true, additional file integrity steps are performed when loading the Media Set Manager.
      **/
     virtual void registerMediaSet( const MediaSetPaths &mediaSetPaths, bool checkFileIntegrity = true ) = 0;
 

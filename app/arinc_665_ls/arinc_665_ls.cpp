@@ -30,6 +30,7 @@
 #include <spdlog/spdlog.h>
 
 #include <boost/exception/all.hpp>
+
 #include <boost/program_options.hpp>
 
 #include <filesystem>
@@ -108,7 +109,7 @@ static void list_files( const std::filesystem::path &loadDir );
  **/
 static Helper::RawData loadFile( const std::filesystem::path &file );
 
-int main( int argc, char * argv[] )
+int main( const int argc, char * argv[] )
 {
   spdlog::set_level( spdlog::level::info );
 
@@ -155,24 +156,21 @@ int main( int argc, char * argv[] )
   }
   catch ( const boost::program_options::error &e )
   {
-    std::cerr
-      << "Error parsing command line: " << e.what() << "\n"
-      << "Enter " << argv[0]
-      << " --help for command line description\n";
+    std::cerr << std::format(
+      "Error parsing command line: {}\n"
+      "Enter '{} --help' for command line description.\n",
+      e.what(),
+      argv[ 0 ] );
     return EXIT_FAILURE;
   }
   catch ( const boost::exception &e )
   {
-    std::cerr
-      << "Error: "
-      << boost::diagnostic_information( e ) << "\n";
+    std::cerr << std::format( "Error: {}\n", boost::diagnostic_information( e ) );
     return EXIT_FAILURE;
   }
   catch ( const std::exception &e )
   {
-    std::cerr
-      << "Error: "
-      << boost::diagnostic_information( e ) << "\n";
+    std::cerr << std::format( "Error: {}\n", boost::diagnostic_information( e ) );
     return EXIT_FAILURE;
   }
   catch ( ... )
@@ -192,12 +190,11 @@ static void printBatchFile( const std::filesystem::path &lubFile )
   }
   catch ( const boost::exception &e )
   {
-    std::cout
-      << "Boost exception: " << boost::diagnostic_information(e) << "\n";
+    std::cout << std::format( "Boost exception: {}\n", boost::diagnostic_information( e ) );
   }
   catch ( const std::exception &e )
   {
-    std::cout << "std exception: " << e.what() << "\n";
+    std::cout << std::format( "std exception: {}\n", e.what() );
   }
   catch ( ... )
   {
@@ -205,7 +202,7 @@ static void printBatchFile( const std::filesystem::path &lubFile )
   }
 }
 
-static void printLoadHeaderFile( const std::filesystem::path &luhFile)
+static void printLoadHeaderFile( const std::filesystem::path &luhFile )
 {
   try
   {
@@ -228,12 +225,11 @@ static void printLoadHeaderFile( const std::filesystem::path &luhFile)
   }
   catch ( const boost::exception &e )
   {
-    std::cout
-      << "Boost exception: " << boost::diagnostic_information(e) << "\n";
+    std::cout << std::format( "Boost exception: {}\n", boost::diagnostic_information( e ) );
   }
   catch ( const std::exception &e )
   {
-    std::cout << "std exception: " << e.what() << "\n";
+    std::cout << std::format( "std exception: {}\n", e.what() );
   }
   catch ( ... )
   {
@@ -249,12 +245,11 @@ static void printLoadListFile( const std::filesystem::path &loadsLum )
   }
   catch ( const boost::exception &e )
   {
-    std::cout
-      << "Boost exception: " << boost::diagnostic_information( e ) << "\n";
+    std::cout << std::format( "Boost exception: {}\n", boost::diagnostic_information( e ) );
   }
   catch ( const std::exception &e )
   {
-    std::cout << "std exception: " << e.what() << "\n";
+    std::cout << std::format( "std exception: {}\n", e.what() );
   }
   catch ( ... )
   {
@@ -270,12 +265,11 @@ static void printBatchListFile( const std::filesystem::path &filePath )
   }
   catch ( const boost::exception &e )
   {
-    std::cout
-      << "Boost exception: " << boost::diagnostic_information( e ) << "\n";
+    std::cout << std::format( "Boost exception: {}\n", boost::diagnostic_information( e ) );
   }
   catch ( const std::exception &e )
   {
-    std::cout << "std exception: " << e.what() << "\n";
+    std::cout << std::format( "std exception: {}\n", e.what() );
   }
   catch ( ... )
   {
@@ -291,12 +285,11 @@ static void printFileListFile( const std::filesystem::path &filesLum )
   }
   catch ( const boost::exception &e )
   {
-    std::cout
-      << "Boost exception: " << boost::diagnostic_information( e ) << "\n";
+    std::cout << std::format( "Boost exception: {}\n", boost::diagnostic_information( e ) );
   }
   catch ( const std::exception &e )
   {
-    std::cout << "std::exception: " << e.what() << "\n";
+    std::cout << std::format( "std exception: {}\n", e.what() );
   }
   catch ( ... )
   {

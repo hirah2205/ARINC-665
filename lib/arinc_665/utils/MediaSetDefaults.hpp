@@ -55,12 +55,10 @@ class ARINC_665_EXPORT MediaSetDefaults
     void fromProperties( const boost::property_tree::ptree &properties );
 
     /**
-     * @brief Converts the configuration values to a
-     *   boost::property_tree::ptree.
+     * @brief Converts the configuration values to a boost::property_tree::ptree.
      *
      * @param[in] full
-     *   If set to true, all options are added to the property tree, even if
-     *   defaulted.
+     *   If set to true, all options are added to the property tree, even if defaulted.
      *
      * @return Configuration as boost::property_tree::ptree.
      **/

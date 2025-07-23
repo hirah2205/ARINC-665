@@ -58,7 +58,7 @@ class ARINC_665_EXPORT FilesystemMediaSetRemover
      * All parameters must have been set previously.
      *
      * @throw Arinc665Exception
-     *   When copy operation fails
+     *   When the copy operation fails.
      **/
     virtual void operator()() = 0;
 };

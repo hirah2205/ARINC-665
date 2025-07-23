@@ -56,9 +56,9 @@ using MediaSetPaths = std::pair< std::filesystem::path, MediaPaths >;
 //! File creation policy of the compiler for load headers/ batch files
 enum class FileCreationPolicy
 {
-  //! No file (load header/ batch file) is created by the compiler itself.
+  //! The compiler itself creates no file (load header/ batch file).
   None,
-  //! Only non-existing files are created by the compiler itself.
+  //! The compiler itself creates only non-existing files.
   NoneExisting,
   //! All files are created by the compiler itself - even if already existing in source.
   All

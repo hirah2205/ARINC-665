@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE( testPartNumber1 )
   BOOST_CHECK( partNumber.manufacturerCode()  == "PN1" );
   BOOST_CHECK( partNumber.productIdentifier() == "ABCDEFGH" );
 
-  BOOST_CHECK( partNumber.partNumber() ==
+  BOOST_CHECK( partNumber.toString() ==
     std::string{ partNumber.manufacturerCode() } +
     std::string{ partNumber.checkCode() } +
     std::string{ partNumber.productIdentifier() } );
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE( testPartNumber2 )
   BOOST_CHECK( partNumber.manufacturerCode() == "PN1" );
   BOOST_CHECK( partNumber.productIdentifier() == "ABCDEFGH" );
 
-  BOOST_CHECK( partNumber.partNumber() == "PN127ABCDEFGH" );
+  BOOST_CHECK( partNumber.toString() == "PN127ABCDEFGH" );
 
   BOOST_CHECK_THROW( (PartNumber{ "" } ), Arinc665Exception);
   BOOST_CHECK_THROW( (PartNumber{ "0" } ), Arinc665Exception);

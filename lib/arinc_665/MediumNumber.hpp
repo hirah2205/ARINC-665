@@ -16,6 +16,7 @@
 #include <arinc_665/Arinc665.hpp>
 
 #include <cstdint>
+#include <format>
 #include <iosfwd>
 
 namespace Arinc665 {
@@ -38,7 +39,7 @@ class ARINC_665_EXPORT MediumNumber final
     /**
      * @brief Constructs the Medium Number
      *
-     * @todo Handling of initialisation with `0`
+     * If the @p mediumNUmber is set to `0 `, it is automatically initialised to `1`.
      *
      * @param[in] mediumNumber
      *   Medium Number
@@ -129,7 +130,7 @@ class ARINC_665_EXPORT MediumNumber final
     /**
      * @brief Assigns @p uint8_t to medium number.
      *
-     * @todo Handling of initialisation with `0`
+     * If the @p mediumNUmber is set to `0 `, it is automatically initialised to `1`.
      *
      * @param[in] mediumNumber
      *   Medium Number
@@ -167,6 +168,37 @@ class ARINC_665_EXPORT MediumNumber final
  * @sa @ref MediumNumber::toString() const
  **/
 ARINC_665_EXPORT std::ostream& operator<<( std::ostream &stream, const MediumNumber &mediumNumber );
+
+}
+
+namespace std {
+
+/**
+ * @brief Specialisation of @p std::formatter for @ref Arinc665::MediumNumber.
+ *
+ * @sa @ref Arinc665::MediumNumber
+ **/
+template<>
+struct formatter< Arinc665::MediumNumber > : std::formatter< std::string >
+{
+ /**
+  * @brief Arinc665::MediumNumber format routine.
+  *
+  * @tparam FmtContext
+  *   Formatting Context
+  * @param[in] mediumNumber
+  *   ARINC 665 Medium Number
+  * @param[in,out] ctx
+  *   Formatting Context
+  *
+  * @return Iterator to the end of output.
+  **/
+ template< class FmtContext >
+ FmtContext::iterator format( const Arinc665::MediumNumber &mediumNumber, FmtContext &ctx ) const
+ {
+  return std::formatter< string >::format( mediumNumber.toString(), ctx );
+ }
+};
 
 }
 

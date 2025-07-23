@@ -87,8 +87,8 @@ class MediaSetCompilerImpl final : public MediaSetCompiler
     /**
      * @brief Called to export the given Load Header File.
      *
-     * Depending on the file type and Load File Creation Policy, the
-     * file create callback is called or the load header is created.
+     * Depending on the file type and Load File Creation Policy, the file create callback is called or the load header
+     * is created.
      *
      * @param[in] load
      *   Load, which is exported.
@@ -98,8 +98,8 @@ class MediaSetCompilerImpl final : public MediaSetCompiler
     /**
      * @brief Called to export the given Batch File.
      *
-     * Depending on the file type and Batches File Creation Policy, the
-     * file create callback is called or the batch is created.
+     * Depending on the file type and Batches File Creation Policy, the file create callback is called or the batch is
+     * created.
      *
      * @param[in] batch
      *   Batch, which is exported.
@@ -132,8 +132,7 @@ class MediaSetCompilerImpl final : public MediaSetCompiler
     /**
      * @brief Calculate Load file CRC, Check Value and returns File Information.
      *
-     * This operation is used to fill in the data and support file information
-     * within the load header.
+     * This operation is used to fill in the data and support file information within the load header.
      *
      * @param[in] loadFile
      *   Load File.
@@ -151,11 +150,10 @@ class MediaSetCompilerImpl final : public MediaSetCompiler
     void createBatchFile( const Media::Batch &batch ) const;
 
     /**
-     * @brief Calculates CRC16 and Check Value of given file.
+     * @brief Calculates CRC-16 and Check Value of the given file.
      *
      * The file is read with the @ref readFileHandler() from the output medium.
-     * This operation is alo used for Check Value Generation of Load List and
-     * Batches List.
+     * This operation is alo used for Check Value Generation of Load List and Batches List.
      *
      * @param[in] mediumNumber
      *   Medium Number
@@ -167,7 +165,7 @@ class MediaSetCompilerImpl final : public MediaSetCompiler
      * @return CRC16 and Check Value as std::tuple.
      **/
     [[nodiscard]] std::tuple< uint16_t, Arinc645::CheckValue > fileCrcCheckValue(
-      const MediumNumber mediumNumber,
+      MediumNumber mediumNumber,
       const std::filesystem::path &filename,
       Arinc645::CheckValueType checkValueType ) const;
 

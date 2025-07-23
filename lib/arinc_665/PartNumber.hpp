@@ -16,6 +16,7 @@
 #include <arinc_665/Arinc665.hpp>
 #include <arinc_665/Arinc665Exception.hpp>
 
+#include <format>
 #include <string>
 #include <string_view>
 
@@ -33,6 +34,8 @@ namespace Arinc665 {
  *  - `CC` is a two "check characters" generated from the other characters in the part number
  *  - `SSSSSSSS` is a software supplier defined unique product identifier consisting of upper-case alphanumeric
  *    characters except for alpha characters "I", "O", "Q" and "Z".
+ *
+ * @sa ARINC 665-5 Section 2.1.1 "Software Load PN Format"
  **/
 class ARINC_665_EXPORT PartNumber
 {
@@ -69,7 +72,7 @@ class ARINC_665_EXPORT PartNumber
      * @throw Arinc665Exception
      *   If string size is invalid
      * @throw Arinc665Exception
-     *   when calculated check code differs from current
+     *   when calculated, check code differs from provided one.
      **/
     explicit PartNumber( std::string_view partNumber );
 
@@ -129,7 +132,7 @@ class ARINC_665_EXPORT PartNumber
      *
      * @return The part number as string
      **/
-    [[nodiscard]] std::string partNumber() const;
+    [[nodiscard]] std::string toString() const;
 
   private:
     /**
@@ -183,6 +186,37 @@ class ARINC_665_EXPORT PartNumber
  * @sa @ref PartNumber
  **/
 ARINC_665_EXPORT std::ostream &operator<<( std::ostream &ostream, const PartNumber &partNumber );
+
+}
+
+namespace std {
+
+/**
+ * @brief Specialisation of @p std::formatter for @ref Arinc665::PartNumber.
+ *
+ * @sa @ref Arinc665::PartNumber
+ **/
+template<>
+struct formatter< Arinc665::PartNumber > : std::formatter< std::string >
+{
+  /**
+   * @brief Arinc665::PartNumber format routine.
+   *
+   * @tparam FmtContext
+   *   Formatting Context
+   * @param[in] partNumber
+   *   ARINC 665 Part Number
+   * @param[in,out] ctx
+   *   Formatting Context
+   *
+   * @return Iterator to the end of output.
+   **/
+  template< class FmtContext >
+  FmtContext::iterator format( const Arinc665::PartNumber &partNumber, FmtContext &ctx ) const
+  {
+    return std::formatter< string >::format( partNumber.toString(), ctx );
+  }
+};
 
 }
 
