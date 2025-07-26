@@ -25,9 +25,9 @@
 namespace Arinc665Commands::MediaSetManager {
 
 ListLoadsCommand::ListLoadsCommand() :
-  optionsDescription{ "List ARINC 665 Loads Options" }
+  optionsDescriptionV{ "List ARINC 665 Loads Options" }
 {
-  optionsDescription.add_options()
+  optionsDescriptionV.add_options()
   (
     "media-set-manager-dir,d",
     boost::program_options::value( &mediaSetManagerDirectoryV )
@@ -51,7 +51,7 @@ void ListLoadsCommand::execute( const Commands::Parameters &parameters )
 
     boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::command_line_parser( parameters ).options( optionsDescription ).run(),
+      boost::program_options::command_line_parser( parameters ).options( optionsDescriptionV ).run(),
       variablesMap );
     boost::program_options::notify( variablesMap );
 
@@ -96,11 +96,11 @@ void ListLoadsCommand::execute( const Commands::Parameters &parameters )
   catch ( const boost::exception &e )
   {
     std::cerr
-      << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
+      << std::format( "Operation failed: {}\n", boost::diagnostic_information( e ) );
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "Operation failed: " << e.what() << "\n";
+    std::cerr << std::format( "Operation failed: {}\n", e.what() );
   }
   catch ( ... )
   {
@@ -112,7 +112,7 @@ void ListLoadsCommand::help()
 {
   std::cout
     << "List all loads contained with the Media Set Manager.\n\n"
-    << optionsDescription;
+    << optionsDescriptionV;
 }
 
 void ListLoadsCommand::loadProgress(

@@ -45,15 +45,15 @@ namespace Arinc665Qt::MediaSetManager {
 
 MediaSetManagerWindow::MediaSetManagerWindow( QWidget * const parent ) :
   QMainWindow{ parent },
-  ui{ std::make_unique< Ui::MediaSetManagerWindow >() },
-  viewMediaSetDialog{ std::make_unique< ViewMediaSetDialog >( this ) },
-  settingsDialog{ std::make_unique< MediaSetManagerSettingsDialog >( this ) },
-  aboutDialog{ std::make_unique< HelperQt::AboutDialog >( this ) },
+  uiV{ std::make_unique< Ui::MediaSetManagerWindow >() },
+  viewMediaSetDialogV{ std::make_unique< ViewMediaSetDialog >( this ) },
+  settingsDialogV{ std::make_unique< MediaSetManagerSettingsDialog >( this ) },
+  aboutDialogV{ std::make_unique< HelperQt::AboutDialog >( this ) },
   mediaSetsModelV{ std::make_unique< Media::MediaSetsModel >( this ) }
 {
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
-  ui->mediaSets->setModel( mediaSetsModelV.get() );
+  uiV->mediaSets->setModel( mediaSetsModelV.get() );
 
   QIcon icon{};
   icon.addFile(
@@ -61,16 +61,16 @@ MediaSetManagerWindow::MediaSetManagerWindow( QWidget * const parent ) :
     QSize{},
     QIcon::Normal,
     QIcon::Off );
-  aboutDialog->productLogo( icon.pixmap( 64 ) );
-  aboutDialog->productName( QString{ "%1 (%2)" }.arg(
+  aboutDialogV->productLogo( icon.pixmap( 64 ) );
+  aboutDialogV->productName( QString{ "%1 (%2)" }.arg(
     tr( "ARINC 665 Media Set Manager" ),
     QString::fromStdString( Arinc665::Version::Name ) ) );
-  aboutDialog->productVersion(
+  aboutDialogV->productVersion(
     QString::fromStdString( Arinc665::Version::VersionInformation ) );
-  aboutDialog->productLicense(
+  aboutDialogV->productLicense(
     QString::fromStdString( Arinc665::Version::License ) );
-  aboutDialog->productUrl( QString::fromStdString( Arinc665::Version::Url ) );
-  aboutDialog->versions(
+  aboutDialogV->productUrl( QString::fromStdString( Arinc665::Version::Url ) );
+  aboutDialogV->versions(
     {
       Arinc665::arinc665Version(),
       Arinc645::arinc645Version(),
@@ -81,52 +81,52 @@ MediaSetManagerWindow::MediaSetManagerWindow( QWidget * const parent ) :
     } );
 
   connect(
-    ui->mediaSets,
+    uiV->mediaSets,
     &QTableView::activated,
     this,
     &MediaSetManagerWindow::viewMediaSet );
 
   connect(
-    ui->viewMediaSet,
+    uiV->viewMediaSet,
     &QAction::triggered,
     this,
     &MediaSetManagerWindow::viewMediaSet );
   connect(
-    ui->importMediaSet,
+    uiV->importMediaSet,
     &QAction::triggered,
     this,
     &MediaSetManagerWindow::importMediaSet );
   connect(
-    ui->importMediaSetXml,
+    uiV->importMediaSetXml,
     &QAction::triggered,
     this,
     &MediaSetManagerWindow::importMediaSetXml );
   connect(
-    ui->removeMediaSet,
+    uiV->removeMediaSet,
     &QAction::triggered,
     this,
     &MediaSetManagerWindow::removeMediaSet );
   connect(
-    ui->openMediaSetsDirectory,
+    uiV->openMediaSetsDirectory,
     &QAction::triggered,
     this,
     &MediaSetManagerWindow::openMediaSetsDirectory );
 
   connect(
-    ui->mediaSetManagerSettings,
+    uiV->mediaSetManagerSettings,
     &QAction::triggered,
     this,
     &MediaSetManagerWindow::showSettings );
   connect(
-    settingsDialog.get(),
+    settingsDialogV.get(),
     &MediaSetManagerSettingsDialog::accepted,
     this,
     &MediaSetManagerWindow::saveSettings );
 
   connect(
-    ui->about,
+    uiV->about,
     &QAction::triggered,
-    aboutDialog.get(),
+    aboutDialogV.get(),
     QOverload<>::of( &HelperQt::AboutDialog::open ) );
 }
 
@@ -163,12 +163,12 @@ void MediaSetManagerWindow::reloadMediaSetModel()
 
   mediaSetsModelV->mediaSets( std::move( mediaSets ) );
 
-  ui->mediaSets->selectRow( 0 );
+  uiV->mediaSets->selectRow( 0 );
 }
 
 void MediaSetManagerWindow::viewMediaSet()
 {
-  const auto index{ ui->mediaSets->currentIndex() };
+  const auto index{ uiV->mediaSets->currentIndex() };
 
   if ( !index.isValid() )
   {
@@ -183,10 +183,10 @@ void MediaSetManagerWindow::viewMediaSet()
     return;
   }
 
-  viewMediaSetDialog->setWindowTitle(
+  viewMediaSetDialogV->setWindowTitle(
     HelperQt::toQString( mediaSet->partNumber() ) );
-  viewMediaSetDialog->mediaSet( std::move( mediaSet ) );
-  viewMediaSetDialog->show();
+  viewMediaSetDialogV->mediaSet( std::move( mediaSet ) );
+  viewMediaSetDialogV->show();
 }
 
 void MediaSetManagerWindow::importMediaSet()
@@ -243,7 +243,7 @@ void MediaSetManagerWindow::importMediaSetXml()
 
 void MediaSetManagerWindow::removeMediaSet()
 {
-  const auto index{ ui->mediaSets->currentIndex() };
+  const auto index{ uiV->mediaSets->currentIndex() };
 
   if ( !index.isValid() )
   {
@@ -290,13 +290,13 @@ void MediaSetManagerWindow::openMediaSetsDirectory()
 
 void MediaSetManagerWindow::showSettings()
 {
-  settingsDialog->configuration( mediaSetManagerV->mediaSetDefaults() );
-  settingsDialog->open();
+  settingsDialogV->configuration( mediaSetManagerV->mediaSetDefaults() );
+  settingsDialogV->open();
 }
 
 void MediaSetManagerWindow::saveSettings()
 {
-  mediaSetManagerV->mediaSetDefaults( settingsDialog->configuration() );
+  mediaSetManagerV->mediaSetDefaults( settingsDialogV->configuration() );
   mediaSetManagerV->saveConfiguration();
 }
 

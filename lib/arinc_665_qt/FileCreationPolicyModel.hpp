@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -67,9 +66,7 @@ class ARINC_665_QT_EXPORT FileCreationPolicyModel final :
      *
      * @return Data dependent of the index and role.
      **/
-    [[nodiscard]] QVariant data(
-      const QModelIndex &index,
-      int role ) const override;
+    [[nodiscard]] QVariant data( const QModelIndex &index, int role ) const override;
 
     /**
      * @brief Return File Creation Policy for @p index.
@@ -79,10 +76,10 @@ class ARINC_665_QT_EXPORT FileCreationPolicyModel final :
      *
      * @return File Creation Policy for @p index
      * @retval {}
-     *   If @p index is out of range.
+     *   If the @p index is out of range.
      **/
-    [[nodiscard]] std::optional< Arinc665::Utils::FileCreationPolicy >
-    fileCreationPolicy( const QModelIndex &index ) const;
+    [[nodiscard]] std::optional< Arinc665::Utils::FileCreationPolicy > fileCreationPolicy(
+     const QModelIndex &index ) const;
 
     /**
      * @brief Return File Creation Policy for @p index.
@@ -92,10 +89,9 @@ class ARINC_665_QT_EXPORT FileCreationPolicyModel final :
      *
      * @return File Creation Policy for @p index
      * @retval {}
-     *   If @p index is out of range.
+     *   If the @p index is out of range.
      **/
-    [[nodiscard]] std::optional< Arinc665::Utils::FileCreationPolicy >
-    fileCreationPolicy( int row ) const;
+    [[nodiscard]] std::optional< Arinc665::Utils::FileCreationPolicy > fileCreationPolicy( int row ) const;
 
     /**
      * @brief Returns Index from file creation policy value.
@@ -105,10 +101,9 @@ class ARINC_665_QT_EXPORT FileCreationPolicyModel final :
      *
      * @return corresponding index value.
      * @retval -1
-     *   If file creation policy is invalid.
+     *   If the given file creation policy is invalid.
      **/
-    [[nodiscard]] int fileCreationPolicy(
-      Arinc665::Utils::FileCreationPolicy fileCreationPolicy ) const;
+    [[nodiscard]] int fileCreationPolicy( Arinc665::Utils::FileCreationPolicy fileCreationPolicy ) const;
 };
 
 }

@@ -27,30 +27,30 @@ namespace Arinc665Qt::Media {
 
 FileWidget::FileWidget( QWidget * const parent ):
   QWidget{ parent },
-  ui{ std::make_unique< Ui::FileWidget >() },
+  uiV{ std::make_unique< Ui::FileWidget >() },
   checkValueTypeModelV{ std::make_unique< Arinc645Qt::CheckValueTypeModel >( this ) }
 {
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
-  ui->checkValueType->setModel( checkValueTypeModelV.get() );
+  uiV->checkValueType->setModel( checkValueTypeModelV.get() );
 
   connect(
-    ui->regularFilePage,
+    uiV->regularFilePage,
     &RegularFileWidget::activatedLoad,
     this,
     &FileWidget::activatedFile );
   connect(
-    ui->loadPage,
+    uiV->loadPage,
     &LoadWidget::activatedFile,
     this,
     &FileWidget::activatedFile );
   connect(
-    ui->loadPage,
+    uiV->loadPage,
     &LoadWidget::activatedBatch,
     this,
     &FileWidget::activatedFile );
   connect(
-    ui->batchPage,
+    uiV->batchPage,
     QOverload< Arinc665::Media::ConstLoadPtr >::of( &BatchWidget::activatedLoad ),
     this,
     &FileWidget::activatedFile );
@@ -64,31 +64,31 @@ void FileWidget::selectFile( Arinc665::Media::ConstFilePtr file )
 
   if ( fileV )
   {
-    ui->nameLineEdit->setText( HelperQt::toQString( fileV->name() ) );
+    uiV->nameLineEdit->setText( HelperQt::toQString( fileV->name() ) );
 
-    ui->mediumNumberGroupBox->setChecked( fileV->mediumNumber().has_value() );
-    ui->mediumNumber->setValue( static_cast< uint8_t >( fileV->effectiveMediumNumber() ) );
+    uiV->mediumNumberGroupBox->setChecked( fileV->mediumNumber().has_value() );
+    uiV->mediumNumber->setValue( static_cast< uint8_t >( fileV->effectiveMediumNumber() ) );
 
-    ui->checkValueTypeGroupBox->setChecked( fileV->checkValueType().has_value() );
-    ui->checkValueType->setCurrentIndex(
+    uiV->checkValueTypeGroupBox->setChecked( fileV->checkValueType().has_value() );
+    uiV->checkValueType->setCurrentIndex(
       Arinc645Qt::CheckValueTypeModel::checkValueType( fileV->effectiveCheckValueType() ) );
   }
 
   switch ( fileV->fileType() )
   {
     case Arinc665::Media::FileType::RegularFile:
-      ui->detailsStackedWidget->setCurrentIndex( static_cast< int >( FileStackedWidget::RegularFile ) );
-      ui->regularFilePage->selectFile( std::dynamic_pointer_cast< const Arinc665::Media::RegularFile >( fileV ) );
+      uiV->detailsStackedWidget->setCurrentIndex( static_cast< int >( FileStackedWidget::RegularFile ) );
+      uiV->regularFilePage->selectFile( std::dynamic_pointer_cast< const Arinc665::Media::RegularFile >( fileV ) );
       break;
 
     case Arinc665::Media::FileType::LoadFile:
-      ui->detailsStackedWidget->setCurrentIndex( static_cast< int >( FileStackedWidget::LoadFile ) );
-      ui->loadPage->selectLoad( std::dynamic_pointer_cast< const Arinc665::Media::Load >( fileV ) );
+      uiV->detailsStackedWidget->setCurrentIndex( static_cast< int >( FileStackedWidget::LoadFile ) );
+      uiV->loadPage->selectLoad( std::dynamic_pointer_cast< const Arinc665::Media::Load >( fileV ) );
       break;
 
     case Arinc665::Media::FileType::BatchFile:
-      ui->detailsStackedWidget->setCurrentIndex( static_cast< int >( FileStackedWidget::BatchFile ) );
-      ui->batchPage->selectBatch( std::dynamic_pointer_cast< const Arinc665::Media::Batch >( fileV ) );
+      uiV->detailsStackedWidget->setCurrentIndex( static_cast< int >( FileStackedWidget::BatchFile ) );
+      uiV->batchPage->selectBatch( std::dynamic_pointer_cast< const Arinc665::Media::Batch >( fileV ) );
       break;
 
     default:

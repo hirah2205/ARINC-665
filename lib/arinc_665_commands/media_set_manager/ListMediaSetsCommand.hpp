@@ -7,8 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class
- *   Arinc665Commands::MediaSetManager::ListMediaSetsCommand.
+ * @brief Declaration of Class Arinc665Commands::MediaSetManager::ListMediaSetsCommand.
  **/
 
 #ifndef ARINC_665_COMMANDS_MEDIA_SET_MANAGER_LISTMEDIASETSCOMMAND_HPP
@@ -67,7 +66,7 @@ class ARINC_665_COMMANDS_EXPORT ListMediaSetsCommand
       std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium );
 
     //! Program Options Description
-    boost::program_options::options_description optionsDescription;
+    boost::program_options::options_description optionsDescriptionV;
     //! Media Set Manager Directory
     std::filesystem::path mediaSetManagerDirectoryV;
     //! Check Media Set Manager Integrity

@@ -24,17 +24,17 @@ namespace Arinc665Qt::Media {
 
 RegularFileWidget::RegularFileWidget( QWidget * const parent ) :
   QGroupBox{ parent },
-  ui{ std::make_unique< Ui::RegularFileWidget>() },
+  uiV{ std::make_unique< Ui::RegularFileWidget>() },
   usedInLoadsModelV{ std::make_unique< LoadsModel >( this ) }
 {
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
-  ui->usedInLoads->setModel( usedInLoadsModelV.get() );
+  uiV->usedInLoads->setModel( usedInLoadsModelV.get() );
 
-  ui->usedInLoads->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
+  uiV->usedInLoads->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
 
   connect(
-    ui->usedInLoads,
+    uiV->usedInLoads,
     &QTableView::activated,
     this,
     &RegularFileWidget::activateLoad );

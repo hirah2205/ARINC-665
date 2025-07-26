@@ -7,8 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class
- *   Arinc665Commands::MediaSetManager::ImportMediaSetXmlCommand.
+ * @brief Declaration of Class Arinc665Commands::MediaSetManager::ImportMediaSetXmlCommand.
  **/
 
 #ifndef ARINC_665_COMMANDS_MEDIA_SET_MANAGER_IMPORTMEDIASETXMLCOMMAND_HPP
@@ -36,8 +35,7 @@ namespace Arinc665Commands::MediaSetManager {
 /**
  * @brief Import Media Set XML into Media Set Manager %Command
  *
- * Creates a Media Set based on the given XML description and imports them to
- * the media set manager.
+ * Creates a Media Set based on the given XML description and imports them to the media set manager.
  **/
 class ARINC_665_COMMANDS_EXPORT ImportMediaSetXmlCommand
 {
@@ -75,23 +73,23 @@ class ARINC_665_COMMANDS_EXPORT ImportMediaSetXmlCommand
       std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium );
 
     //! Program Options Description
-    boost::program_options::options_description optionsDescription;
+    boost::program_options::options_description optionsDescriptionV;
     //! Media Set Manager Directory
-    std::filesystem::path mediaSetManagerDirectory;
+    std::filesystem::path mediaSetManagerDirectoryV;
     //! Check Media Set Manager Integrity
     bool checkMediaSetManagerIntegrityV{ true };
     //! Media Set XML File
     std::vector< std::filesystem::path > mediaSetXmlFilesV;
     //! Media Set Source Directory
-    std::filesystem::path mediaSetSourceDirectory;
+    std::filesystem::path mediaSetSourceDirectoryV;
     //! Create Batch File Policy
-    boost::optional< Arinc665::Utils::FileCreationPolicy > createBatchFiles;
+    boost::optional< Arinc665::Utils::FileCreationPolicy > createBatchFilesV;
     //! Create Load Header File Policy
-    boost::optional< Arinc665::Utils::FileCreationPolicy > createLoadHeaderFiles;
+    boost::optional< Arinc665::Utils::FileCreationPolicy > createLoadHeaderFilesV;
     //! ARINC 665 Version
-    boost::optional< Arinc665::SupportedArinc665Version > version;
+    boost::optional< Arinc665::SupportedArinc665Version > versionV;
     //! Check File Integrity
-    boost::optional< bool > checkFileIntegrity;
+    boost::optional< bool > checkFileIntegrityV;
 };
 
 }

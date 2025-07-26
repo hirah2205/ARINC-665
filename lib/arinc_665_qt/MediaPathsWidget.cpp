@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -24,42 +23,42 @@ namespace Arinc665Qt {
 MediaPathsWidget::MediaPathsWidget(
   QWidget * const parent ) :
   QGroupBox{ parent },
-  ui{ std::make_unique< Ui::MediaPathsWidget >() },
+  uiV{ std::make_unique< Ui::MediaPathsWidget >() },
   mediaPathsModelV{ std::make_unique< MediaPathsModel >( this ) },
-  selectMediaPathDialog{ std::make_unique< QFileDialog >( this ) }
+  selectMediaPathDialogV{ std::make_unique< QFileDialog >( this ) }
 {
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
-  ui->mediaPaths->setModel( mediaPathsModelV.get() );
-  ui->mediaPaths->horizontalHeader()->setSectionResizeMode(
+  uiV->mediaPaths->setModel( mediaPathsModelV.get() );
+  uiV->mediaPaths->horizontalHeader()->setSectionResizeMode(
     QHeaderView::ResizeMode::ResizeToContents );
 
-  ui->remove->setEnabled( false );
+  uiV->remove->setEnabled( false );
 
-  selectMediaPathDialog->setWindowTitle( tr( "Select Medium Directory" ) );
-  selectMediaPathDialog->setFileMode( QFileDialog::FileMode::Directory );
-  selectMediaPathDialog->setOptions( QFileDialog::Option::ShowDirsOnly );
+  selectMediaPathDialogV->setWindowTitle( tr( "Select Medium Directory" ) );
+  selectMediaPathDialogV->setFileMode( QFileDialog::FileMode::Directory );
+  selectMediaPathDialogV->setOptions( QFileDialog::Option::ShowDirsOnly );
 
   connect(
-    ui->mediaPaths->selectionModel(),
+    uiV->mediaPaths->selectionModel(),
     &QItemSelectionModel::currentChanged,
     this,
     &MediaPathsWidget::updateButtons );
 
   connect(
-    ui->add,
+    uiV->add,
     &QPushButton::pressed,
-    selectMediaPathDialog.get(),
+    selectMediaPathDialogV.get(),
     qOverload<>( &QDialog::open ) );
 
   connect(
-    ui->remove,
+    uiV->remove,
     &QPushButton::pressed,
     this,
     &MediaPathsWidget::removeMediumDirectory );
 
   connect(
-    selectMediaPathDialog.get(),
+    selectMediaPathDialogV.get(),
     &QFileDialog::fileSelected,
     this,
     &MediaPathsWidget::mediumDirectorySelected );
@@ -79,16 +78,16 @@ void MediaPathsWidget::clear()
 
 void MediaPathsWidget::updateButtons( const QModelIndex &current )
 {
-  ui->remove->setEnabled( current.isValid() );
+  uiV->remove->setEnabled( current.isValid() );
 }
 
 void MediaPathsWidget::removeMediumDirectory()
 {
-  mediaPathsModelV->remove( ui->mediaPaths->currentIndex() );
+  mediaPathsModelV->remove( uiV->mediaPaths->currentIndex() );
 
   emit mediaPathsChanged( mediaPathsModelV->mediaPaths() );
 
-  ui->mediaPaths->setCurrentIndex( QModelIndex{} );
+  uiV->mediaPaths->setCurrentIndex( QModelIndex{} );
 }
 
 void MediaPathsWidget::mediumDirectorySelected( const QString &file )
@@ -102,7 +101,7 @@ void MediaPathsWidget::mediumDirectorySelected( const QString &file )
     return;
   }
 
-  ui->mediaPaths->resizeColumnsToContents();
+  uiV->mediaPaths->resizeColumnsToContents();
   emit mediaPathsChanged( mediaPathsModelV->mediaPaths() );
 }
 

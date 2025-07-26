@@ -23,11 +23,11 @@ namespace Arinc665Qt::MediaSetManager {
 
 ViewMediaSetDialog::ViewMediaSetDialog( QWidget * const parent ):
   QDialog{ parent },
-  ui{ std::make_unique< Ui::ViewMediaSetDialog >() },
+  uiV{ std::make_unique< Ui::ViewMediaSetDialog >() },
   mediaSetModelV{ std::make_unique< Media::MediaSetModel >( this ) }
 {
-  ui->setupUi( this );
-  ui->mediaSetView->mediaSetModel( mediaSetModelV.get() );
+  uiV->setupUi( this );
+  uiV->mediaSetView->mediaSetModel( mediaSetModelV.get() );
 }
 
 ViewMediaSetDialog::~ViewMediaSetDialog() = default;

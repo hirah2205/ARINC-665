@@ -25,9 +25,9 @@
 namespace Arinc665Commands::MediaSetManager {
 
 ListBatchesCommand::ListBatchesCommand() :
-  optionsDescription{ "List ARINC 665 Batches Options" }
+  optionsDescriptionV{ "List ARINC 665 Batches Options" }
 {
-  optionsDescription.add_options()
+  optionsDescriptionV.add_options()
   (
     "media-set-manager-dir,d",
     boost::program_options::value( &mediaSetManagerDirectoryV )
@@ -51,16 +51,15 @@ void ListBatchesCommand::execute( const Commands::Parameters &parameters )
 
     boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::command_line_parser( parameters ).options( optionsDescription ).run(),
+      boost::program_options::command_line_parser( parameters ).options( optionsDescriptionV ).run(),
       variablesMap );
     boost::program_options::notify( variablesMap );
 
     // Media Set Manager
-    const auto mediaSetManager{
-      Arinc665::Utils::MediaSetManager::load(
-        mediaSetManagerDirectoryV,
-        checkMediaSetManagerIntegrityV,
-        std::bind_front( &ListBatchesCommand::loadProgress, this ) ) };
+    const auto mediaSetManager{ Arinc665::Utils::MediaSetManager::load(
+      mediaSetManagerDirectoryV,
+      checkMediaSetManagerIntegrityV,
+      std::bind_front( &ListBatchesCommand::loadProgress, this ) ) };
 
     const auto batches{ mediaSetManager->batches() };
 
@@ -92,11 +91,11 @@ void ListBatchesCommand::execute( const Commands::Parameters &parameters )
   catch ( const boost::exception &e )
   {
     std::cerr
-      << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
+      << std::format( "Operation failed: {}\n", boost::diagnostic_information( e ) );
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "Operation failed: " << e.what() << "\n";
+    std::cerr << std::format( "Operation failed: {}\n", e.what() );
   }
   catch ( ... )
   {
@@ -108,7 +107,7 @@ void ListBatchesCommand::help()
 {
   std::cout
     << "List all batches contained with the Media Set Manager.\n\n"
-    << optionsDescription;
+    << optionsDescriptionV;
 }
 
 void ListBatchesCommand::loadProgress(

@@ -29,25 +29,25 @@
 namespace Arinc665Commands::MediaSetManager {
 
 RemoveMediaSetCommand::RemoveMediaSetCommand() :
-  optionsDescription{ "Remove ARINC 665 Media Set Options" }
+  optionsDescriptionV{ "Remove ARINC 665 Media Set Options" }
 {
-  optionsDescription.add_options()
+  optionsDescriptionV.add_options()
   (
     "media-set-manager-dir",
-    boost::program_options::value( &mediaSetManagerDirectory )
+    boost::program_options::value( &mediaSetManagerDirectoryV )
       ->required()
       ->value_name( "Directory" ),
     "ARINC 665 Media Set Manager directory."
   )
   (
-    "check-media-set-manager-integrity",
+    "check-media-set-manager-integrity,i",
     boost::program_options::value( &checkMediaSetManagerIntegrityV )
       ->default_value( true ),
     "Check Media Set Manager integrity during initialisation."
   )
   (
     "media-set-part-number",
-    boost::program_options::value( &mediaSetPartNumber )
+    boost::program_options::value( &mediaSetPartNumberV )
       ->required()
       ->composing(),
     "ARINC 665 Media Set Part Numbers to be deleted.\n"
@@ -63,45 +63,46 @@ void RemoveMediaSetCommand::execute( const Commands::Parameters &parameters )
 
     boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::command_line_parser( parameters ).options( optionsDescription ).run(),
+      boost::program_options::command_line_parser( parameters ).options( optionsDescriptionV ).run(),
       variablesMap );
     boost::program_options::notify( variablesMap );
 
     // Media Set Manager
     const auto mediaSetManager{ Arinc665::Utils::MediaSetManager::load(
-      mediaSetManagerDirectory,
+      mediaSetManagerDirectoryV,
       checkMediaSetManagerIntegrityV,
       std::bind_front( &RemoveMediaSetCommand::loadProgress, this ) ) };
 
-    auto mediaSet{ mediaSetManager->mediaSet( mediaSetPartNumber ) };
+    auto mediaSet{ mediaSetManager->mediaSet( mediaSetPartNumberV ) };
 
     if ( !mediaSet )
     {
       BOOST_THROW_EXCEPTION( Arinc665::Arinc665Exception() << Helper::AdditionalInfo{ "Media Set does not exist" } );
     }
 
-    auto mediaSetPaths{ mediaSetManager->deregisterMediaSet( mediaSetPartNumber ) };
+    auto mediaSetPaths{ mediaSetManager->deregisterMediaSet( mediaSetPartNumberV ) };
     mediaSetManager->saveConfiguration();
 
-    auto remover{ Arinc665::Utils::FilesystemMediaSetRemover::create() };
+    const auto remover{ Arinc665::Utils::FilesystemMediaSetRemover::create() };
     assert( remover );
 
-    mediaSetPaths.first = mediaSetManagerDirectory / mediaSetPaths.first;
+    mediaSetPaths.first = mediaSetManagerDirectoryV / mediaSetPaths.first;
     remover->mediaSetPaths( mediaSetPaths );
     ( *remover )();
   }
-  catch ( boost::program_options::error &e )
+  catch ( const boost::program_options::error & )
   {
-    std::cerr << e.what() << "\n" << optionsDescription << "\n";
+    // parsing errors are handled by command handler
+    throw;
   }
   catch ( const boost::exception &e )
   {
     std::cerr
-      << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
+      << std::format( "Operation failed: {}\n", boost::diagnostic_information( e ) );
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "Operation failed: " << e.what() << "\n";
+    std::cerr << std::format( "Operation failed: {}\n", e.what() );
   }
   catch ( ... )
   {
@@ -113,7 +114,7 @@ void RemoveMediaSetCommand::help()
 {
   std::cout
     << "Remove ARINC 665 Media Set from the Media Set Manager.\n\n"
-    << optionsDescription;
+    << optionsDescriptionV;
 }
 
 void RemoveMediaSetCommand::loadProgress(

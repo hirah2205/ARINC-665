@@ -42,7 +42,7 @@ class ARINC_665_QT_EXPORT LoadMediaSetManagerAction final : public QObject
      * @param[in] parent
      *   Owning Object
      **/
-    LoadMediaSetManagerAction( QObject * parent = nullptr );
+    explicit LoadMediaSetManagerAction( QObject * parent = nullptr );
 
     //! Destructor
     ~LoadMediaSetManagerAction() override;

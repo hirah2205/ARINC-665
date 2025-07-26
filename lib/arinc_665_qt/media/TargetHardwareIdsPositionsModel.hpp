@@ -81,7 +81,7 @@ class ARINC_665_QT_EXPORT TargetHardwareIdsPositionsModel final : public QAbstra
      * @param[in] parent
      *   Parent Model Index.
      *
-     * @return If @p parent has children.
+     * @return If the index @p parent has children.
      **/
     [[nodiscard]] bool hasChildren( const QModelIndex &parent ) const override;
 
@@ -146,7 +146,7 @@ class ARINC_665_QT_EXPORT TargetHardwareIdsPositionsModel final : public QAbstra
      * @param[in] index
      *   Model Index
      * @param[in] role
-     *   Role to siplay
+     *   Role to display
      *
      * @return Data Representation.
      **/

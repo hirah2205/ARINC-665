@@ -61,7 +61,7 @@ namespace Arinc665Qt::Media {
      *
      * @return Number of Batch Information.
      * @retval 0
-     *   If @p is valid (not root element)
+     *   If the index @p parent is valid (is not the root element)
      **/
     [[nodiscard]] int rowCount( const QModelIndex &parent ) const override;
 
@@ -73,7 +73,7 @@ namespace Arinc665Qt::Media {
      *
      * @return Columns::ColumnsCount.
      * @retval 0
-     *   If the index @p parent is valid (not root element)
+     *   If the index @p parent is valid (is not the root element)
      **/
     [[nodiscard]] int columnCount( const QModelIndex &parent ) const override;
 
@@ -90,8 +90,7 @@ namespace Arinc665Qt::Media {
     [[nodiscard]] QVariant data( const QModelIndex &index, int role ) const override;
 
     /**
-     * @brief Returns the data for the given role and section in the header with
-     *   the specified orientation.
+     * @brief Returns the data for the given role and section in the header with the specified orientation.
      *
      * @param[in] section
      *   Section number

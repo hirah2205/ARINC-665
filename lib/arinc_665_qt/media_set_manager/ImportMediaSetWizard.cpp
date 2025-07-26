@@ -37,13 +37,13 @@ ImportMediaSetWizard::ImportMediaSetWizard(
   Arinc665::Utils::MediaSetManagerPtr mediaSetManager,
   QWidget * const parent ) :
   QWizard{ parent },
-  ui{ std::make_unique< Ui::ImportMediaSetWizard >() },
+  uiV{ std::make_unique< Ui::ImportMediaSetWizard >() },
   mediaSetManagerV{ std::move( mediaSetManager ) },
   copierV{ Arinc665::Utils::FilesystemMediaSetCopier::create() }
 {
   assert( copierV );
 
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
   // set Logo of Wizard Pages
   QIcon icon{};
@@ -64,18 +64,18 @@ ImportMediaSetWizard::ImportMediaSetWizard(
     &ImportMediaSetWizard::importMediaSet );
 
   connect(
-    ui->settings,
+    uiV->settings,
     &ImportMediaSetSettingsPage::mediaPathsChanged,
     this,
     &ImportMediaSetWizard::updateMediaPaths );
   connect(
-    ui->settings,
+    uiV->settings,
     &ImportMediaSetSettingsPage::checkFileIntegrity,
     this,
     &ImportMediaSetWizard::checkFileIntegrity );
 
   // finally, set defaults (signals must be connected)
-  ui->settings->defaults( mediaSetManagerV->mediaSetDefaults() );
+  uiV->settings->defaults( mediaSetManagerV->mediaSetDefaults() );
 }
 
 ImportMediaSetWizard::~ImportMediaSetWizard() = default;

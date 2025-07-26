@@ -28,17 +28,17 @@ namespace Arinc665Qt::MediaSetManager {
 MediaSetManagerSettingsDialog::MediaSetManagerSettingsDialog(
   QWidget * const parent ) :
   QDialog{ parent },
-  ui{ std::make_unique< Ui::MediaSetManagerSettingsDialog>() },
+  uiV{ std::make_unique< Ui::MediaSetManagerSettingsDialog>() },
   supportedArinc665VersionModelV{
     std::make_unique< SupportedArinc665VersionModel >( this ) },
   fileCreationPolicyModelV{ std::make_unique< FileCreationPolicyModel >( this ) }
 {
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
-  ui->mediaSetDefaultsVersion->setModel( supportedArinc665VersionModelV.get() );
-  ui->mediaSetDefaultsLoadHeaderFilePolicy->setModel(
+  uiV->mediaSetDefaultsVersion->setModel( supportedArinc665VersionModelV.get() );
+  uiV->mediaSetDefaultsLoadHeaderFilePolicy->setModel(
     fileCreationPolicyModelV.get() );
-  ui->mediaSetDefaultsBatchFilePolicy->setModel(
+  uiV->mediaSetDefaultsBatchFilePolicy->setModel(
     fileCreationPolicyModelV.get() );
 }
 
@@ -49,24 +49,24 @@ MediaSetManagerSettingsDialog::configuration() const
 {
   Arinc665::Utils::MediaSetDefaults defaults{};
 
-  defaults.checkFileIntegrity = ui->mediaSetDefaultsCheckIntegrity->isChecked();
+  defaults.checkFileIntegrity = uiV->mediaSetDefaultsCheckIntegrity->isChecked();
   defaults.version =
     supportedArinc665VersionModelV->supportedArinc665Version(
-      ui->mediaSetDefaultsVersion->currentIndex() ).value_or(
+      uiV->mediaSetDefaultsVersion->currentIndex() ).value_or(
         Arinc665::Utils::MediaSetDefaults::DefaultVersion );
   defaults.loadHeaderFileCreationPolicy =
     fileCreationPolicyModelV->fileCreationPolicy(
-      ui->mediaSetDefaultsLoadHeaderFilePolicy->currentIndex() ).value_or(
+      uiV->mediaSetDefaultsLoadHeaderFilePolicy->currentIndex() ).value_or(
         Arinc665::Utils::MediaSetDefaults::DefaultFileCreationPolicy );
   defaults.batchFileCreationPolicy =
     fileCreationPolicyModelV->fileCreationPolicy(
-      ui->mediaSetDefaultsBatchFilePolicy->currentIndex() ).value_or(
+      uiV->mediaSetDefaultsBatchFilePolicy->currentIndex() ).value_or(
         Arinc665::Utils::MediaSetDefaults::DefaultFileCreationPolicy );
 
   QSettings settings{};
   settings.setValue(
     "CheckIntegrityOnStartup",
-    ui->checkIntegrityOnStartup->isChecked() );
+    uiV->checkIntegrityOnStartup->isChecked() );
 
   return defaults;
 }
@@ -74,19 +74,19 @@ MediaSetManagerSettingsDialog::configuration() const
 void MediaSetManagerSettingsDialog::configuration(
   const Arinc665::Utils::MediaSetDefaults &defaults )
 {
-  ui->mediaSetDefaultsCheckIntegrity->setChecked( defaults.checkFileIntegrity );
-  ui->mediaSetDefaultsVersion->setCurrentIndex(
+  uiV->mediaSetDefaultsCheckIntegrity->setChecked( defaults.checkFileIntegrity );
+  uiV->mediaSetDefaultsVersion->setCurrentIndex(
     supportedArinc665VersionModelV->supportedArinc665Version(
       defaults.version ) );
-  ui->mediaSetDefaultsLoadHeaderFilePolicy->setCurrentIndex(
+  uiV->mediaSetDefaultsLoadHeaderFilePolicy->setCurrentIndex(
     fileCreationPolicyModelV->fileCreationPolicy(
       defaults.loadHeaderFileCreationPolicy ) );
-  ui->mediaSetDefaultsBatchFilePolicy->setCurrentIndex(
+  uiV->mediaSetDefaultsBatchFilePolicy->setCurrentIndex(
     fileCreationPolicyModelV->fileCreationPolicy(
       defaults.batchFileCreationPolicy ) );
 
   QSettings settings{};
-  ui->checkIntegrityOnStartup->setChecked(
+  uiV->checkIntegrityOnStartup->setChecked(
     settings.value( "CheckIntegrityOnStartup", true ).toBool() );
 }
 
