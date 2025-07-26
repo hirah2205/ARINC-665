@@ -30,42 +30,42 @@ namespace Arinc665Qt::Media {
 
 LoadWidget::LoadWidget( QWidget * const parent):
   QGroupBox{ parent },
-  ui{ std::make_unique< Ui::LoadWidget>() },
+  uiV{ std::make_unique< Ui::LoadWidget>() },
   checkValueTypeModelV{ std::make_unique< Arinc645Qt::CheckValueTypeModel >( this ) },
   targetHardwareIdsPositionsModelV{ std::make_unique< TargetHardwareIdsPositionsModel >( this ) },
   dataFilesModelV{ std::make_unique< LoadFilesModel >( this ) },
   supportFilesModelV{ std::make_unique< LoadFilesModel >( this ) },
   usedInBatchesModelV{ std::make_unique< BatchesModel >( this ) }
 {
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
-  ui->targetHardwareIdsPositions->setModel( targetHardwareIdsPositionsModelV.get() );
-  ui->dataFiles->setModel( dataFilesModelV.get() );
-  ui->supportFiles->setModel( supportFilesModelV.get() );
-  ui->usedInBatches->setModel( usedInBatchesModelV.get() );
+  uiV->targetHardwareIdsPositions->setModel( targetHardwareIdsPositionsModelV.get() );
+  uiV->dataFiles->setModel( dataFilesModelV.get() );
+  uiV->supportFiles->setModel( supportFilesModelV.get() );
+  uiV->usedInBatches->setModel( usedInBatchesModelV.get() );
 
-  ui->loadCheckValueType->setModel( checkValueTypeModelV.get() );
+  uiV->loadCheckValueType->setModel( checkValueTypeModelV.get() );
 
-  ui->dataFilesCheckValueType->setModel( checkValueTypeModelV.get() );
-  ui->dataFiles->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
+  uiV->dataFilesCheckValueType->setModel( checkValueTypeModelV.get() );
+  uiV->dataFiles->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
 
-  ui->supportFilesCheckValueType->setModel( checkValueTypeModelV.get() );
-  ui->supportFiles->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
+  uiV->supportFilesCheckValueType->setModel( checkValueTypeModelV.get() );
+  uiV->supportFiles->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
 
-  ui->usedInBatches->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
+  uiV->usedInBatches->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeMode::Stretch );
 
   connect(
-    ui->dataFiles,
+    uiV->dataFiles,
     &QTableView::activated,
     this,
     &LoadWidget::selectDataFile );
   connect(
-    ui->supportFiles,
+    uiV->supportFiles,
     &QTableView::activated,
     this,
     &LoadWidget::selectSupportFile );
   connect(
-    ui->usedInBatches,
+    uiV->usedInBatches,
     &QTableView::activated,
     this,
     &LoadWidget::selectBatch );
@@ -79,32 +79,32 @@ void LoadWidget::selectLoad( Arinc665::Media::ConstLoadPtr load )
 
   if ( loadV )
   {
-    ui->partNumber->setText( HelperQt::toQString( loadV->partNumber() ) );
+    uiV->partNumber->setText( HelperQt::toQString( loadV->partNumber() ) );
 
-    ui->partFlags->setText( QString::number( loadV->partFlags(), 16 ) );
+    uiV->partFlags->setText( QString::number( loadV->partFlags(), 16 ) );
 
-    ui->gbLoadType->setChecked( loadV->loadType().has_value() );
-    ui->loadTypeDescription->setText( "" );
-    ui->loadTypeId->setText( "" );
+    uiV->gbLoadType->setChecked( loadV->loadType().has_value() );
+    uiV->loadTypeDescription->setText( "" );
+    uiV->loadTypeId->setText( "" );
     if ( const auto loadType{ loadV->loadType() }; loadType )
     {
-      ui->loadTypeDescription->setText( QString::fromStdString( loadType->first ) );
-      ui->loadTypeId->setText( QString::number( loadType->second ) );
+      uiV->loadTypeDescription->setText( QString::fromStdString( loadType->first ) );
+      uiV->loadTypeId->setText( QString::number( loadType->second ) );
     }
 
     targetHardwareIdsPositionsModelV->targetHardwareIdsPositions( loadV->targetHardwareIdPositions() );
 
-    ui->loadCheckValueTypeGroupBox->setChecked( loadV->loadCheckValueType().has_value() );
-    ui->loadCheckValueType->setCurrentIndex(
+    uiV->loadCheckValueTypeGroupBox->setChecked( loadV->loadCheckValueType().has_value() );
+    uiV->loadCheckValueType->setCurrentIndex(
       Arinc645Qt::CheckValueTypeModel::checkValueType( loadV->effectiveLoadCheckValueType() ) );
 
-    ui->dataFilesCheckValueTypeGroupBox->setChecked( loadV->dataFilesCheckValueType().has_value() );
-    ui->dataFilesCheckValueType->setCurrentIndex(
+    uiV->dataFilesCheckValueTypeGroupBox->setChecked( loadV->dataFilesCheckValueType().has_value() );
+    uiV->dataFilesCheckValueType->setCurrentIndex(
       Arinc645Qt::CheckValueTypeModel::checkValueType( loadV->effectiveDataFilesCheckValueType() ) );
     dataFilesModelV->loadFiles( loadV->dataFiles() );
 
-    ui->supportFilesCheckValueTypeGroupBox->setChecked( loadV->supportFilesCheckValueType().has_value() );
-    ui->supportFilesCheckValueType->setCurrentIndex(
+    uiV->supportFilesCheckValueTypeGroupBox->setChecked( loadV->supportFilesCheckValueType().has_value() );
+    uiV->supportFilesCheckValueType->setCurrentIndex(
       Arinc645Qt::CheckValueTypeModel::checkValueType( loadV->effectiveSupportFilesCheckValueType() ) );
     supportFilesModelV->loadFiles( loadV->supportFiles() );
 

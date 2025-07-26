@@ -42,9 +42,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetXmlWizard final : public QWizard
      * @param[in] parent
      *   Widget parent.
      **/
-    explicit ImportMediaSetXmlWizard(
-      Arinc665::Utils::MediaSetManagerPtr mediaSetManager,
-      QWidget * parent = nullptr );
+    explicit ImportMediaSetXmlWizard( Arinc665::Utils::MediaSetManagerPtr mediaSetManager, QWidget *parent = nullptr );
 
     //! Destructor
     ~ImportMediaSetXmlWizard() override;
@@ -91,7 +89,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetXmlWizard final : public QWizard
     void createLoadHeaderFiles( Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles );
 
     /**
-     * @brief Slot called, when user changed the check file integrity handling
+     * @brief Slot called when the user changed the check file integrity handling
      *
      * @param[in] checkFileIntegrity
      *   Check File Integrity indicator
@@ -105,7 +103,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetXmlWizard final : public QWizard
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetXmlWizard > ui;
+    std::unique_ptr< Ui::ImportMediaSetXmlWizard > uiV;
     //! Media Set Manager
     Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV;
     //! ARINC 665 Media Set Compiler

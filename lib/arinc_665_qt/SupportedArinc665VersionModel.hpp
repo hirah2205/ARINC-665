@@ -24,8 +24,7 @@ namespace Arinc665Qt {
 /**
  * @brief Supported ARINC 665 Version Qt Model.
  **/
-class ARINC_665_QT_EXPORT SupportedArinc665VersionModel final :
-  public QAbstractListModel
+class ARINC_665_QT_EXPORT SupportedArinc665VersionModel final : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -86,7 +85,7 @@ class ARINC_665_QT_EXPORT SupportedArinc665VersionModel final :
      *
      * @return File Creation Policy for @p index
      * @retval {}
-     *   If @p index is out of range.
+     *   If the @p index is out of range.
      **/
     [[nodiscard]] std::optional< Arinc665::SupportedArinc665Version > supportedArinc665Version( int index ) const;
 

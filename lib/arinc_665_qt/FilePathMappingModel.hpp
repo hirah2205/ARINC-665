@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -25,8 +24,7 @@ namespace Arinc665Qt {
 /**
  * @brief File Path Mapping Qt Model.
  *
- * This model provides a table of Media Set Files and their corresponding file
- * system path.
+ * This model provides a table of Media Set Files and their corresponding file system path.
  **/
 class ARINC_665_QT_EXPORT FilePathMappingModel final : public QAbstractTableModel
 {
@@ -89,9 +87,7 @@ class ARINC_665_QT_EXPORT FilePathMappingModel final : public QAbstractTableMode
      *
      * @return Data dependent of the index and role.
      **/
-    [[nodiscard]] QVariant data(
-      const QModelIndex &index,
-      int role ) const override;
+    [[nodiscard]] QVariant data( const QModelIndex &index, int role ) const override;
 
     /**
      * @brief Returns the data for the given role and section in the header with
@@ -116,8 +112,7 @@ class ARINC_665_QT_EXPORT FilePathMappingModel final : public QAbstractTableMode
      *
      * @return Media Paths.
      **/
-    [[nodiscard]] const Arinc665::Utils::FilePathMapping&
-    filePathMapping() const;
+    [[nodiscard]] const Arinc665::Utils::FilePathMapping &filePathMapping() const;
 
     /**
      * @brief Set File Path Mapping

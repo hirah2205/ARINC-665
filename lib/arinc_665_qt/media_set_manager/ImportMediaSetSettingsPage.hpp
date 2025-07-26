@@ -49,7 +49,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetSettingsPage final : public QWizardPage
      *
      * Checks all input fields for validity.
      *
-     * @return if page is completed
+     * @return if this page is completed
      **/
     [[nodiscard]] bool isComplete() const override;
 
@@ -91,7 +91,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetSettingsPage final : public QWizardPage
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetSettingsPage > ui;
+    std::unique_ptr< Ui::ImportMediaSetSettingsPage > uiV;
 };
 
 }

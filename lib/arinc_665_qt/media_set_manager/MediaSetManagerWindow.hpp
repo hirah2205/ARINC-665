@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -36,8 +35,8 @@ class MediaSetManagerWindow;
 /**
  * @brief %Media Set Manager Window
  *
- * The Media Set Manager Window provides listing of the Media Sets within the
- * Media Set manager and provides operations onto the Media Sets:
+ * The Media Set Manager Window provides listing of the Media Sets within the Media Set manager and provides operations
+ * onto the Media Sets:
  * - View Media Set,
  * - Importing Media Sets,
  * - Import Media Set XML Configuration, and
@@ -63,14 +62,12 @@ class ARINC_665_QT_EXPORT MediaSetManagerWindow final : public QMainWindow
     /**
      * @brief Assigns Media Set Manager.
      *
-     * Reloads the Media Sets from the Media Set manager and updates the
-     *   Media Sets Model.
+     * Reloads the Media Sets from the Media Set manager and updates the Media Sets Model.
      **/
     void mediaSetManger( Arinc665::Utils::MediaSetManagerPtr mediaSetManager );
 
     /**
-     * @brief Reloads the Media Sets from the Media Set manager and updates the
-     *   Media Sets Model.
+     * @brief Reloads the Media Sets from the Media Set manager and updates the Media Sets Model.
      **/
     void reloadMediaSetModel();
 
@@ -112,14 +109,14 @@ class ARINC_665_QT_EXPORT MediaSetManagerWindow final : public QMainWindow
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::MediaSetManagerWindow > ui;
+    std::unique_ptr< Ui::MediaSetManagerWindow > uiV;
 
     //! View Media Set Dialog
-    std::unique_ptr< ViewMediaSetDialog > viewMediaSetDialog;
+    std::unique_ptr< ViewMediaSetDialog > viewMediaSetDialogV;
     //! Settings Dialog
-    std::unique_ptr< MediaSetManagerSettingsDialog > settingsDialog;
+    std::unique_ptr< MediaSetManagerSettingsDialog > settingsDialogV;
     //! About Dialog
-    std::unique_ptr< HelperQt::AboutDialog > aboutDialog;
+    std::unique_ptr< HelperQt::AboutDialog > aboutDialogV;
 
     //! Media Set Manager
     Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV;

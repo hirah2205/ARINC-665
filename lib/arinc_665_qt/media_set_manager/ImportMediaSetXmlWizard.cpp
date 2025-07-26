@@ -36,13 +36,13 @@ ImportMediaSetXmlWizard::ImportMediaSetXmlWizard(
   Arinc665::Utils::MediaSetManagerPtr mediaSetManager,
   QWidget * const parent ) :
   QWizard{ parent },
-  ui{ std::make_unique< Ui::ImportMediaSetXmlWizard >() },
+  uiV{ std::make_unique< Ui::ImportMediaSetXmlWizard >() },
   mediaSetManagerV{ std::move( mediaSetManager ) },
   compilerV{ Arinc665::Utils::FilesystemMediaSetCompiler::create() }
 {
   assert( compilerV );
 
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
   // set Logo of Wizard Pages
   QIcon icon{};
@@ -59,32 +59,32 @@ ImportMediaSetXmlWizard::ImportMediaSetXmlWizard(
   }
 
   connect(
-    ui->settings,
+    uiV->settings,
     &ImportMediaSetXmlSettingsPage::xmlFile,
     this,
     &ImportMediaSetXmlWizard::xmlFile );
   connect(
-    ui->settings,
+    uiV->settings,
     &ImportMediaSetXmlSettingsPage::inputDirectory,
     this,
     &ImportMediaSetXmlWizard::inputDirectory );
   connect(
-    ui->settings,
+    uiV->settings,
     &ImportMediaSetXmlSettingsPage::arinc665Version,
     this,
     &ImportMediaSetXmlWizard::arinc665Version );
   connect(
-    ui->settings,
+    uiV->settings,
     &ImportMediaSetXmlSettingsPage::createBatchFiles,
     this,
     &ImportMediaSetXmlWizard::createBatchFiles );
   connect(
-    ui->settings,
+    uiV->settings,
     &ImportMediaSetXmlSettingsPage::createLoadHeaderFiles,
     this,
     &ImportMediaSetXmlWizard::createLoadHeaderFiles );
   connect(
-    ui->settings,
+    uiV->settings,
     &ImportMediaSetXmlSettingsPage::checkFileIntegrity,
     this,
     &ImportMediaSetXmlWizard::checkFileIntegrity );
@@ -96,7 +96,7 @@ ImportMediaSetXmlWizard::ImportMediaSetXmlWizard(
     &ImportMediaSetXmlWizard::importMediaSetXml );
 
   // finally set defaults (signals must be connected)
-  ui->settings->defaults( mediaSetManagerV->mediaSetDefaults() );
+  uiV->settings->defaults( mediaSetManagerV->mediaSetDefaults() );
 }
 
 ImportMediaSetXmlWizard::~ImportMediaSetXmlWizard() = default;

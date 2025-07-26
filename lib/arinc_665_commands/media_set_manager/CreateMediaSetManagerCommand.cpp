@@ -23,12 +23,12 @@
 namespace Arinc665Commands::MediaSetManager {
 
 CreateMediaSetManagerCommand::CreateMediaSetManagerCommand() :
-  optionsDescription{ "Create ARINC 665 Media Set Manager Options" }
+  optionsDescriptionV{ "Create ARINC 665 Media Set Manager Options" }
 {
-  optionsDescription.add_options()
+  optionsDescriptionV.add_options()
   (
     "media-set-manager-dir",
-    boost::program_options::value( &mediaSetManagerDirectory )
+    boost::program_options::value( &mediaSetManagerDirectoryV )
       ->required()
       ->value_name( "Directory" ),
     "ARINC 665 Media Set Manager directory."
@@ -43,15 +43,14 @@ void CreateMediaSetManagerCommand::execute( const Commands::Parameters &paramete
 
     boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::command_line_parser( parameters ).options( optionsDescription ).run(),
+      boost::program_options::command_line_parser( parameters ).options( optionsDescriptionV ).run(),
       variablesMap );
     boost::program_options::notify( variablesMap );
 
     std::cout
-      << "Media Set Manager directory: "
-      << mediaSetManagerDirectory.string() << "\n";
+      << std::format( "Media Set Manager directory: {}\n", mediaSetManagerDirectoryV.string() );
 
-    auto mediaSetManager{ Arinc665::Utils::MediaSetManager::create( mediaSetManagerDirectory ) };
+    auto mediaSetManager{ Arinc665::Utils::MediaSetManager::create( mediaSetManagerDirectoryV ) };
     assert( mediaSetManager );
   }
   catch ( const boost::program_options::error & )
@@ -62,11 +61,11 @@ void CreateMediaSetManagerCommand::execute( const Commands::Parameters &paramete
   catch ( const boost::exception &e )
   {
     std::cerr
-      << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
+      << std::format( "Operation failed: {}\n", boost::diagnostic_information( e ) );
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "Operation failed: " << e.what() << "\n";
+    std::cerr << std::format( "Operation failed: {}\n", e.what() );
   }
   catch ( ... )
   {
@@ -78,7 +77,7 @@ void CreateMediaSetManagerCommand::help()
 {
   std::cout
     << "Create ARINC 665 Media Set Manager at the given location.\n\n"
-    << optionsDescription;
+    << optionsDescriptionV;
 }
 
 }

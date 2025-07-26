@@ -7,8 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Definition of Class
- *   Arinc665Commands::MediaSetManager::ImportMediaSetXmlCommand.
+ * @brief Definition of Class Arinc665Commands::MediaSetManager::ImportMediaSetXmlCommand.
  **/
 
 #include "ImportMediaSetXmlCommand.hpp"
@@ -34,7 +33,7 @@
 namespace Arinc665Commands::MediaSetManager {
 
 ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
-  optionsDescription{ "Import ARINC 665 Media Set XML Options" }
+  optionsDescriptionV{ "Import ARINC 665 Media Set XML Options" }
 {
   const auto &fileCreatPolDes{
     Arinc665::Utils::FileCreationPolicyDescription::instance() };
@@ -56,10 +55,10 @@ ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
     + "* '" + std::string{ versionDes.name( Arinc665::SupportedArinc665Version::Supplement345 ) }
       + "': ARINC 665-3/4/5" };
 
-  optionsDescription.add_options()
+  optionsDescriptionV.add_options()
   (
     "media-set-manager-dir",
-    boost::program_options::value( &mediaSetManagerDirectory )
+    boost::program_options::value( &mediaSetManagerDirectoryV )
       ->required()
       ->value_name( "Directory" ),
     "ARINC 665 Media Set Manager directory."
@@ -80,27 +79,27 @@ ImportMediaSetXmlCommand::ImportMediaSetXmlCommand() :
   )
   (
     "source-directory",
-    boost::program_options::value( &mediaSetSourceDirectory )->required(),
+    boost::program_options::value( &mediaSetSourceDirectoryV )->required(),
     "ARINC 665 source directory."
   )
   (
     "create-batch-files",
-    boost::program_options::value( &createBatchFiles ),
+    boost::program_options::value( &createBatchFilesV ),
     ( std::string( "batch-files creation policy:\n" ) + fileCreationPolicyValues ).c_str()
   )
   (
     "create-load-header-files",
-    boost::program_options::value( &createLoadHeaderFiles ),
+    boost::program_options::value( &createLoadHeaderFilesV ),
     ( std::string( "Load-headers-files creation policy:\n" ) + fileCreationPolicyValues ).c_str()
   )
   (
     "check-file-integrity",
-    boost::program_options::value( &checkFileIntegrity ),
+    boost::program_options::value( &checkFileIntegrityV ),
     "Check File integrity during media set registration."
   )
   (
     "version",
-    boost::program_options::value( &version ),
+    boost::program_options::value( &versionV ),
     ( std::string( "ARINC 665 Version:\n" ) + versionValues ).c_str()
   );
 }
@@ -113,13 +112,13 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
 
     boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::command_line_parser( parameters ).options( optionsDescription ).run(),
+      boost::program_options::command_line_parser( parameters ).options( optionsDescriptionV ).run(),
       variablesMap );
     boost::program_options::notify( variablesMap );
 
     // Media Set Manager
     const auto mediaSetManager{ Arinc665::Utils::MediaSetManager::load(
-      mediaSetManagerDirectory,
+      mediaSetManagerDirectoryV,
       checkMediaSetManagerIntegrityV,
       std::bind_front( &ImportMediaSetXmlCommand::loadProgress, this ) ) };
 
@@ -137,31 +136,32 @@ void ImportMediaSetXmlCommand::execute( const Commands::Parameters &parameters )
       const auto &defaults{ mediaSetManager->configuration().defaults };
       compiler
         ->mediaSet( mediaSet )
-        .arinc665Version( version.value_or( defaults.version ) )
-        .createBatchFiles( createBatchFiles.value_or( defaults.batchFileCreationPolicy ) )
-        .createLoadHeaderFiles( createLoadHeaderFiles.value_or( defaults.loadHeaderFileCreationPolicy ) )
-        .sourceBasePath( mediaSetSourceDirectory )
+        .arinc665Version( versionV.value_or( defaults.version ) )
+        .createBatchFiles( createBatchFilesV.value_or( defaults.batchFileCreationPolicy ) )
+        .createLoadHeaderFiles( createLoadHeaderFilesV.value_or( defaults.loadHeaderFileCreationPolicy ) )
+        .sourceBasePath( mediaSetSourceDirectoryV )
         .filePathMapping( std::move( filePathMapping ) )
-        .outputBasePath( mediaSetManagerDirectory );
+        .outputBasePath( mediaSetManagerDirectoryV );
 
       auto mediaSetPaths{ ( *compiler )() };
 
-      mediaSetManager->registerMediaSet( mediaSetPaths, checkFileIntegrity.value_or( defaults.checkFileIntegrity ) );
+      mediaSetManager->registerMediaSet( mediaSetPaths, checkFileIntegrityV.value_or( defaults.checkFileIntegrity ) );
       mediaSetManager->saveConfiguration();
     }
   }
-  catch ( const boost::program_options::error &e )
+  catch ( const boost::program_options::error & )
   {
-    std::cerr << e.what() << "\n" << optionsDescription << "\n";
+    // parsing errors are handled by command handler
+    throw;
   }
   catch ( const boost::exception &e )
   {
     std::cerr
-      << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
+      << std::format( "Operation failed: {}\n", boost::diagnostic_information( e ) );
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "Operation failed: " << e.what() << "\n";
+    std::cerr << std::format( "Operation failed: {}\n", e.what() );
   }
   catch ( ... )
   {
@@ -174,7 +174,7 @@ void ImportMediaSetXmlCommand::help()
   std::cout
     << "Compiles Media Set given by XML descriptions and registers it to the "
        "Media Set Manager.\n\n"
-    << optionsDescription;
+    << optionsDescriptionV;
 }
 
 void ImportMediaSetXmlCommand::loadProgress(

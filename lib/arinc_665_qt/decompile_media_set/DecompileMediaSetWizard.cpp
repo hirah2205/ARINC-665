@@ -21,9 +21,9 @@ namespace Arinc665Qt {
 
 DecompileMediaSetWizard::DecompileMediaSetWizard( QWidget * const parent ) :
   QWizard{ parent },
-  ui{ std::make_unique< Ui::DecompileMediaSetWizard >() }
+  uiV{ std::make_unique< Ui::DecompileMediaSetWizard >() }
 {
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
   // set Logo of Wizard Pages
   QIcon icon{};
@@ -40,18 +40,18 @@ DecompileMediaSetWizard::DecompileMediaSetWizard( QWidget * const parent ) :
   }
 
   connect(
-    ui->settings,
+    uiV->settings,
     &DecompileMediaSetSettingsPage::mediaPathsChanged,
     this,
     &DecompileMediaSetWizard::mediaPathsChanged );
   connect(
-    ui->settings,
+    uiV->settings,
     &DecompileMediaSetSettingsPage::checkFileIntegrity,
     this,
     &DecompileMediaSetWizard::checkFileIntegrity );
 
     // finally set defaults (signals must be connected)
-    ui->settings->defaults( Arinc665::Utils::MediaSetDefaults{} );
+    uiV->settings->defaults( Arinc665::Utils::MediaSetDefaults{} );
 }
 
 DecompileMediaSetWizard::~DecompileMediaSetWizard() = default;

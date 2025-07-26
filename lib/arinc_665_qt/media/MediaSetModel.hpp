@@ -56,8 +56,7 @@ class ARINC_665_QT_EXPORT MediaSetModel final : public QAbstractItemModel
     ~MediaSetModel() override = default;
 
     /**
-     * @brief Creates the index for the child identified by its parent and its
-     *   row and column.
+     * @brief Creates the index for the child identified by its parent and its row and column.
      *
      * @param[in] row
      *   Index Row

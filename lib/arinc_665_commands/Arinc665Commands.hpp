@@ -27,8 +27,7 @@
 /**
  * @brief ARINC 665 %Commands.
  *
- * %Commands, which provides ARINC 665 Media Set Manager functionality by using
- * the @ref Commands library.
+ * %Commands, which provides ARINC 665 Media Set Manager functionality by using the @ref Commands library.
  **/
 namespace Arinc665Commands {
 

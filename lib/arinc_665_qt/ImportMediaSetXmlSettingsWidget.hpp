@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -54,6 +53,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetXmlSettingsWidget final :
 
     /**
      * @brief Returns if the widget inputs are valid and completed.
+     *
      * @return if the widget inputs are valid and completed.
      **/
     [[nodiscard]] bool completed() const;
@@ -77,23 +77,23 @@ class ARINC_665_QT_EXPORT ImportMediaSetXmlSettingsWidget final :
 
   private slots:
     /**
-     * @brief Slot called, when XML file has been selected.
+     * @brief Slot called when the given XML file has been selected.
      *
      * @param[in] file
      *   Selected file.
      **/
     void xmlFileSelected( const QString &file );
 
-    //! Slot called, when input directory has been selected.
+    //! Slot called when input directory has been selected.
     void inputDirectorySelected( const QString &file );
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetXmlSettingsWidget > ui;
+    std::unique_ptr< Ui::ImportMediaSetXmlSettingsWidget > uiV;
     //! Select XML File Dialog
-    std::unique_ptr< QFileDialog > selectXmlFileDialog;
+    std::unique_ptr< QFileDialog > selectXmlFileDialogV;
     //! Select Input Directory Dialog
-    std::unique_ptr< QFileDialog > selectInputDirectoryDialog;
+    std::unique_ptr< QFileDialog > selectInputDirectoryDialogV;
 };
 
 }

@@ -7,8 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class
- *   Arinc665Commands::MediaSetManager::CreateMediaSetManagerCommand.
+ * @brief Declaration of Class Arinc665Commands::MediaSetManager::CreateMediaSetManagerCommand.
  **/
 
 #ifndef ARINC_665_COMMANDS_MEDIA_SET_MANAGER_CREATEMEDIASETMANAGERCOMMAND_HPP
@@ -50,9 +49,9 @@ class ARINC_665_COMMANDS_EXPORT CreateMediaSetManagerCommand
 
   private:
     //! Program Options Description
-    boost::program_options::options_description optionsDescription;
+    boost::program_options::options_description optionsDescriptionV;
     //! Media Set Manager Directory
-    std::filesystem::path mediaSetManagerDirectory;
+    std::filesystem::path mediaSetManagerDirectoryV;
 };
 
 }

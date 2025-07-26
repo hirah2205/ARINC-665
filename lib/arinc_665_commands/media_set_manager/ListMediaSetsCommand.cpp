@@ -27,15 +27,15 @@
 namespace Arinc665Commands::MediaSetManager {
 
 ListMediaSetsCommand::ListMediaSetsCommand() :
-  optionsDescription{ "List ARINC 665 Media Sets Options" }
+  optionsDescriptionV{ "List ARINC 665 Media Sets Options" }
 {
-  optionsDescription.add_options()
+  optionsDescriptionV.add_options()
   (
     "media-set-manager-dir,d",
     boost::program_options::value( &mediaSetManagerDirectoryV )
       ->required()
       ->value_name( "Directory" ),
-    "ARINC 665 Media Set Manager directory"
+    "ARINC 665 Media Set Manager directory."
   )
   (
     "check-media-set-manager-integrity,i",
@@ -53,7 +53,7 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
 
     boost::program_options::variables_map variablesMap;
     boost::program_options::store(
-      boost::program_options::command_line_parser( parameters ).options( optionsDescription ).run(),
+      boost::program_options::command_line_parser( parameters ).options( optionsDescriptionV ).run(),
       variablesMap );
     boost::program_options::notify( variablesMap );
 
@@ -71,7 +71,7 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
     }
     else
     {
-      for ( const auto &[partNumber, mediaSet] : mediaSetManager->mediaSets() )
+      for ( const auto &[ partNumber, mediaSet ] : mediaSetManager->mediaSets() )
       {
         std::cout << "Media Set:\n";
 
@@ -89,11 +89,11 @@ void ListMediaSetsCommand::execute( const Commands::Parameters &parameters )
   catch ( const boost::exception &e )
   {
     std::cerr
-      << "Operation failed: " << boost::diagnostic_information( e ) << "\n";
+      << std::format( "Operation failed: {}\n", boost::diagnostic_information( e ) );
   }
   catch ( const std::exception &e )
   {
-    std::cerr << "Operation failed: " << e.what() << "\n";
+    std::cerr << std::format( "Operation failed: {}\n", e.what() );
   }
   catch ( ... )
   {
@@ -105,7 +105,7 @@ void ListMediaSetsCommand::help()
 {
   std::cout
     << "List all Media Sets registered with the Media Set Manager.\n\n"
-    << optionsDescription;
+    << optionsDescriptionV;
 }
 
 void ListMediaSetsCommand::loadProgress(

@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -23,18 +22,18 @@ namespace Arinc665Qt {
 ImportMediaSetXmlSettingsWidget::ImportMediaSetXmlSettingsWidget(
   QWidget * const parent ) :
   QGroupBox{ parent },
-  ui{ std::make_unique< Ui::ImportMediaSetXmlSettingsWidget >() },
-  selectXmlFileDialog{ std::make_unique< QFileDialog >( this ) },
-  selectInputDirectoryDialog{ std::make_unique< QFileDialog >( this ) }
+  uiV{ std::make_unique< Ui::ImportMediaSetXmlSettingsWidget >() },
+  selectXmlFileDialogV{ std::make_unique< QFileDialog >( this ) },
+  selectInputDirectoryDialogV{ std::make_unique< QFileDialog >( this ) }
 {
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
-  QSettings settings{};
+  QSettings settings;
 
-  selectXmlFileDialog->setWindowTitle( tr( "Select ARINC 665 Media Set XML" ) );
-  selectXmlFileDialog->setNameFilter(tr( "ARINC 665 Media Set XML (*.xml)" ) );
-  selectXmlFileDialog->setFileMode( QFileDialog::FileMode::ExistingFile );
-  selectXmlFileDialog->setDirectory(
+  selectXmlFileDialogV->setWindowTitle( tr( "Select ARINC 665 Media Set XML" ) );
+  selectXmlFileDialogV->setNameFilter(tr( "ARINC 665 Media Set XML (*.xml)" ) );
+  selectXmlFileDialogV->setFileMode( QFileDialog::FileMode::ExistingFile );
+  selectXmlFileDialogV->setDirectory(
     settings
       .value(
         "LastImportMediaSetXmlDirectory",
@@ -42,27 +41,27 @@ ImportMediaSetXmlSettingsWidget::ImportMediaSetXmlSettingsWidget(
       .toString() );
 
   connect(
-    ui->selectXmlFile,
+    uiV->selectXmlFile,
     &QPushButton::clicked,
-    selectXmlFileDialog.get(),
+    selectXmlFileDialogV.get(),
     qOverload<>( &QDialog::open ) );
   connect(
-    selectXmlFileDialog.get(),
+    selectXmlFileDialogV.get(),
     &QFileDialog::fileSelected,
     this,
     &ImportMediaSetXmlSettingsWidget::xmlFileSelected );
 
-  selectInputDirectoryDialog->setWindowTitle( tr( "Select Input Base Directory" ) );
-  selectInputDirectoryDialog->setFileMode( QFileDialog::FileMode::Directory );
-  selectInputDirectoryDialog->setOptions( QFileDialog::Option::ShowDirsOnly );
+  selectInputDirectoryDialogV->setWindowTitle( tr( "Select Input Base Directory" ) );
+  selectInputDirectoryDialogV->setFileMode( QFileDialog::FileMode::Directory );
+  selectInputDirectoryDialogV->setOptions( QFileDialog::Option::ShowDirsOnly );
 
   connect(
-    ui->selectInputDirectory,
+    uiV->selectInputDirectory,
     &QPushButton::clicked,
-    selectInputDirectoryDialog.get(),
+    selectInputDirectoryDialogV.get(),
     qOverload<>( &QDialog::open ) );
   connect(
-    selectInputDirectoryDialog.get(),
+    selectInputDirectoryDialogV.get(),
     &QFileDialog::fileSelected,
     this,
     &ImportMediaSetXmlSettingsWidget::inputDirectorySelected );
@@ -72,32 +71,28 @@ ImportMediaSetXmlSettingsWidget::~ImportMediaSetXmlSettingsWidget() = default;
 
 bool ImportMediaSetXmlSettingsWidget::completed() const
 {
-  return !ui->xmlFile->text().isEmpty()
-    && !ui->inputDirectory->text().isEmpty();
+  return !uiV->xmlFile->text().isEmpty() && !uiV->inputDirectory->text().isEmpty();
 }
 
 void ImportMediaSetXmlSettingsWidget::xmlFileSelected( const QString &file )
 {
-  ui->xmlFile->setText( file );
+  uiV->xmlFile->setText( file );
   emit xmlFile( file.toStdString() );
 
   // if not already set, update input directory
-  if ( ui->inputDirectory->text().isEmpty() )
+  if ( uiV->inputDirectory->text().isEmpty() )
   {
-    inputDirectorySelected( selectXmlFileDialog->directory().path() );
-    selectInputDirectoryDialog->setDirectory( selectXmlFileDialog->directory() );
+    inputDirectorySelected( selectXmlFileDialogV->directory().path() );
+    selectInputDirectoryDialogV->setDirectory( selectXmlFileDialogV->directory() );
   }
 
-  QSettings settings{};
-  settings.setValue(
-    "LastImportMediaSetXmlDirectory",
-    selectXmlFileDialog->directory().path() );
+  QSettings settings;
+  settings.setValue( "LastImportMediaSetXmlDirectory", selectXmlFileDialogV->directory().path() );
 }
 
-void ImportMediaSetXmlSettingsWidget::inputDirectorySelected(
-  const QString &file )
+void ImportMediaSetXmlSettingsWidget::inputDirectorySelected( const QString &file )
 {
-  ui->inputDirectory->setText( file );
+  uiV->inputDirectory->setText( file );
   emit inputDirectory( file.toStdString() );
 }
 

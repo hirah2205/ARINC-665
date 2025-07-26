@@ -20,23 +20,23 @@ namespace Arinc665Qt::MediaSetManager {
 
 ImportMediaSetSettingsPage::ImportMediaSetSettingsPage( QWidget * const parent ) :
   QWizardPage{ parent },
-  ui{ std::make_unique< Ui::ImportMediaSetSettingsPage >() }
+  uiV{ std::make_unique< Ui::ImportMediaSetSettingsPage >() }
 {
-  ui->setupUi( this );
+  uiV->setupUi( this );
 
   connect(
-    ui->mediaPaths,
+    uiV->mediaPaths,
     &MediaPathsWidget::mediaPathsChanged,
     this,
     &ImportMediaSetSettingsPage::mediaPathsChanged );
   connect(
-    ui->mediaPaths,
+    uiV->mediaPaths,
     &MediaPathsWidget::mediaPathsChanged,
     this,
     &ImportMediaSetSettingsPage::completeChanged );
 
   connect(
-    ui->checkFileIntegrity,
+    uiV->checkFileIntegrity,
     &QCheckBox::checkStateChanged,
     this,
     &ImportMediaSetSettingsPage::checkFileIntegrityStateChanged );
@@ -46,12 +46,12 @@ ImportMediaSetSettingsPage::~ImportMediaSetSettingsPage() = default;
 
 bool ImportMediaSetSettingsPage::isComplete() const
 {
-  return QWizardPage::isComplete() && ui->mediaPaths->completed();
+  return QWizardPage::isComplete() && uiV->mediaPaths->completed();
 }
 
 void ImportMediaSetSettingsPage::defaults( const Arinc665::Utils::MediaSetDefaults &defaults )
 {
-  ui->checkFileIntegrity->setChecked( defaults.checkFileIntegrity );
+  uiV->checkFileIntegrity->setChecked( defaults.checkFileIntegrity );
 }
 
 void ImportMediaSetSettingsPage::checkFileIntegrityStateChanged( const Qt::CheckState state )

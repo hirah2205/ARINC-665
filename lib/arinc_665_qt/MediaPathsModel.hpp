@@ -145,9 +145,9 @@ class ARINC_665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
     bool mediumPath( std::filesystem::path path );
 
     /**
-     * @brief Removes Medium with given @p index.
+     * @brief Removes Medium with the given @p index.
      *
-     * If @p index is invalid or out of range, the operation returns without modifying the model.
+     * If the @p index is invalid or out of range, the operation returns without modifying the model.
      *
      * @param[in] index
      *   Index identifying the medium
@@ -164,7 +164,7 @@ class ARINC_665_QT_EXPORT MediaPathsModel final : public QAbstractTableModel
     /**
      * Returns if the model is complete, i.e. all media paths are provided.
      *
-     * @return If media path model is complete.
+     * @return If the media path model is complete.
      **/
     bool complete() const;
 

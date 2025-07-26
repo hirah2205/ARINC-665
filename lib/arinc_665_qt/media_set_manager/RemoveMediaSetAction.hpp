@@ -60,7 +60,7 @@ class ARINC_665_QT_EXPORT RemoveMediaSetAction final : public QObject
       Arinc665::Media::ConstMediaSetPtr mediaSet );
 
   signals:
-    //! Emitted, when controller is finished.
+    //! Emitted, when the controller is finished.
     void finished();
 };
 

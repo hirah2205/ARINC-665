@@ -73,15 +73,15 @@ class ARINC_665_COMMANDS_EXPORT ImportMediaSetCommand
       std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium );
 
     //! Program Options Description
-    boost::program_options::options_description optionsDescription;
+    boost::program_options::options_description optionsDescriptionV;
     //! Media Set Manager Directory
-    std::filesystem::path mediaSetManagerDirectory;
+    std::filesystem::path mediaSetManagerDirectoryV;
     //! Check Media Set Manager Integrity
     bool checkMediaSetManagerIntegrityV{ true };
     //! Media Source Directories
-    std::vector< std::filesystem::path > mediaSourceDirectories;
+    std::vector< std::filesystem::path > mediaSourceDirectoriesV;
     //! Check File Integrity
-    boost::optional< bool > checkFileIntegrity;
+    boost::optional< bool > checkFileIntegrityV;
 };
 
 }

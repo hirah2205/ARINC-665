@@ -51,7 +51,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetXmlSettingsPage final : public QWizardPa
      *
      * Checks all input fields for validity.
      *
-     * @return if page is completed
+     * @return if this page is completed
      **/
     [[nodiscard]] bool isComplete() const override;
 
@@ -100,12 +100,12 @@ class ARINC_665_QT_EXPORT ImportMediaSetXmlSettingsPage final : public QWizardPa
      * @brief Emitted the Create Load Header Files Flag.
      *
      * @param[in] createLoadHeaderFiles
-     *   Defines, if Load Header Files are created by exporter or pre-existing ones are used.
+     *   Defines if Load Header Files are created by exporter or pre-existing ones are used.
      **/
     void createLoadHeaderFiles( Arinc665::Utils::FileCreationPolicy createLoadHeaderFiles );
 
     /**
-     * @brief Signal emitted when the check file integrity field has been selected by user.
+     * @brief Signal emitted when the user has selected the _check file integrity field_.
      *
      * @param[in] checkFileIntegrity
      *   Check file integrity indicator.
@@ -125,7 +125,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetXmlSettingsPage final : public QWizardPa
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetXmlSettingsPage > ui;
+    std::unique_ptr< Ui::ImportMediaSetXmlSettingsPage > uiV;
 };
 
 }

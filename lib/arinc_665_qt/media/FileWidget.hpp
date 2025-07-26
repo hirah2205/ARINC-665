@@ -89,7 +89,7 @@ class ARINC_665_QT_EXPORT FileWidget final : public QWidget
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::FileWidget > ui;
+    std::unique_ptr< Ui::FileWidget > uiV;
     //! Check Value Type Model
     std::unique_ptr< Arinc645Qt::CheckValueTypeModel > checkValueTypeModelV;
     //! File

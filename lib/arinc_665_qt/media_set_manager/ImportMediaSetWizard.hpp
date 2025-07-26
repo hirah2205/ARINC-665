@@ -74,7 +74,7 @@ class ARINC_665_QT_EXPORT ImportMediaSetWizard final : public QWizard
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::ImportMediaSetWizard > ui;
+    std::unique_ptr< Ui::ImportMediaSetWizard > uiV;
     //! Media Set Manager
     Arinc665::Utils::MediaSetManagerPtr mediaSetManagerV;
     //! ARINC 665 Media Set Copier

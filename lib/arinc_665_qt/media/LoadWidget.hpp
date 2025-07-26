@@ -118,7 +118,7 @@ class ARINC_665_QT_EXPORT LoadWidget final : public QGroupBox
 
   private:
     //! UI (designer)
-    std::unique_ptr< Ui::LoadWidget> ui;
+    std::unique_ptr< Ui::LoadWidget> uiV;
     //! Check Value Type Model
     std::unique_ptr< Arinc645Qt::CheckValueTypeModel > checkValueTypeModelV;
     //! THW ID Positions Model

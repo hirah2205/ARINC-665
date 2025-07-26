@@ -7,8 +7,7 @@
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
- * @brief Declaration of Class
- *   Arinc665Commands::MediaSetManager::RemoveMediaSetCommand.
+ * @brief Declaration of Class Arinc665Commands::MediaSetManager::RemoveMediaSetCommand.
  **/
 
 #ifndef ARINC_665_COMMANDS_MEDIA_SET_MANAGER_REMOVEMEDIASETCOMMAND_HPP
@@ -68,13 +67,13 @@ class ARINC_665_COMMANDS_EXPORT RemoveMediaSetCommand
       std::pair< Arinc665::MediumNumber, Arinc665::MediumNumber > medium );
 
     //! Program Options Description
-    boost::program_options::options_description optionsDescription;
+    boost::program_options::options_description optionsDescriptionV;
     //! Media Set Manager Directory
-    std::filesystem::path mediaSetManagerDirectory;
+    std::filesystem::path mediaSetManagerDirectoryV;
     //! Check Media Set Manager Integrity
     bool checkMediaSetManagerIntegrityV{ true };
     //! Media Set Part Number
-    std::string mediaSetPartNumber;
+    std::string mediaSetPartNumberV;
 };
 
 }

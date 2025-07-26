@@ -2,9 +2,8 @@
 /**
  * @file
  * @copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @author Thomas Vogt, thomas@thomas-vogt.de
  *
@@ -31,8 +30,7 @@ namespace Arinc665Qt::MediaSetManager {
 /**
  * @brief Open %Media Set Manager Action
  *
- * Asks the User for selecting the Media Set Manager Directory and tries to open
- * it.
+ * Asks the User for selecting the Media Set Manager Directory and tries to open it.
  * During loading of the Media Set Manager a progress dialog is shown.
  **/
 class ARINC_665_QT_EXPORT OpenMediaSetManagerAction : public QObject
@@ -55,8 +53,7 @@ class ARINC_665_QT_EXPORT OpenMediaSetManagerAction : public QObject
     /**
      * @brief Querries for %Media Set Configuration.
      *
-     * Ask the user for the location of the Media Set Manager Configuration and
-     * loads them.
+     * Ask the user for the location of the Media Set Manager Configuration and loads them.
      **/
     void open();
 
@@ -71,11 +68,11 @@ class ARINC_665_QT_EXPORT OpenMediaSetManagerAction : public QObject
       const Arinc665::Utils::MediaSetManagerPtr &mediaSetManager );
 
     /**
-     * @brief Signal emitted, when the Media Set Manager could not be loaded.
+     * @brief Signal emitted when the Media Set Manager could not be loaded.
      **/
     void failed();
 
-    //! Operation canceled by user
+    //! Operation cancelled by the user
     void rejected();
 
   private slots:
