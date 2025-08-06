@@ -84,6 +84,97 @@ Clarification but no changes of data formats.
 Move Checksum and Check Value definition to ARINC 645.
 No changes of data format.
 
+## Python Implementation
+
+This project now includes a Python implementation that provides equivalent functionality to the C++ library and applications. The Python version supports the same ARINC 665 standards (Supplements 2, 3, 4, 5) and provides a more accessible interface for Python developers.
+
+### Python Dependencies
+- Python 3.11 or higher
+- No external dependencies required for basic functionality
+- Optional: `lxml` for enhanced XML processing
+
+### Python Applications
+
+The following command-line applications are available:
+
+#### arinc_665_ls.py
+Lists ARINC 665 files and their contents from directories.
+```bash
+python3 python/apps/arinc_665_ls.py --directory /path/to/media/set
+python3 python/apps/arinc_665_ls.py --file /path/to/FILES.LUM
+```
+
+#### arinc_665_print_xml.py
+Loads and prints Media Set information from XML files.
+```bash
+python3 python/apps/arinc_665_print_xml.py --xml-file mediaset.xml
+```
+
+#### arinc_665_media_set_check.py
+Validates ARINC 665 Media Sets.
+```bash
+python3 python/apps/arinc_665_media_set_check.py --medium-directory /path/to/medium1
+```
+
+#### arinc_665_print_media_set.py
+Prints Media Set information from directories.
+```bash
+python3 python/apps/arinc_665_print_media_set.py --medium-directory /path/to/medium1
+```
+
+#### arinc_665_media_set_decompiler.py
+Decompiles Media Sets to XML format.
+```bash
+python3 python/apps/arinc_665_media_set_decompiler.py --medium-directory /path/to/medium1 --output-file mediaset.xml
+```
+
+#### arinc_665_media_set_manager.py
+Comprehensive command-line manager with multiple operations.
+```bash
+python3 python/apps/arinc_665_media_set_manager.py list --medium-directory /path/to/medium1
+python3 python/apps/arinc_665_media_set_manager.py validate --medium-directory /path/to/medium1
+python3 python/apps/arinc_665_media_set_manager.py export --medium-directory /path/to/medium1 --output-file mediaset.xml
+python3 python/apps/arinc_665_media_set_manager.py import --xml-file mediaset.xml
+```
+
+### Python Library Usage
+
+```python
+from arinc_665.media.media_set import MediaSet
+from arinc_665.utils.media_set_printer import MediaSetPrinter
+from arinc_665.utils.xml_handler import XmlHandler
+
+# Load a media set from directory
+media_set = MediaSet.load_from_directory(Path("/path/to/media/set"))
+
+# Print media set information
+printer = MediaSetPrinter()
+printer.print_media_set(media_set)
+
+# Export to XML
+xml_handler = XmlHandler()
+xml_handler.export_to_xml(media_set, Path("output.xml"))
+
+# Import from XML
+imported_media_set = xml_handler.import_from_xml(Path("input.xml"))
+```
+
+### Installation
+
+From the repository root:
+```bash
+cd python
+pip install -e .
+```
+
+This will install the `arinc-665` package and make the command-line tools available as:
+- `arinc-665-ls`
+- `arinc-665-print-xml`
+- `arinc-665-media-set-check`
+- `arinc-665-print-media-set`
+- `arinc-665-media-set-decompiler`
+- `arinc-665-media-set-manager`
+
 ## References
 - [ARINC Report 665-5](https://aviation-ia.sae-itc.com/standards/arinc665-5-665-5-loadable-software-standards):
   Loadable Software Standards;
