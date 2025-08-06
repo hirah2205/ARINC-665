@@ -5,3 +5,41 @@
 /.idea/
 user-history.db
 symbology-style.db
+
+# Python cache files
+python/**/__pycache__/
+python/**/*.pyc
+python/**/*.pyo
+python/**/*.pyd
+python/**/*.so
+python/**/.Python
+python/**/build/
+python/**/develop-eggs/
+python/**/dist/
+python/**/downloads/
+python/**/eggs/
+python/**/.eggs/
+python/**/lib/
+python/**/lib64/
+python/**/parts/
+python/**/sdist/
+python/**/var/
+python/**/wheels/
+python/**/*.egg-info/
+python/**/.installed.cfg
+python/**/*.egg
+
+# Testing artifacts
+python/**/.pytest_cache/
+python/**/.coverage
+python/**/htmlcov/
+
+# IDE files
+python/**/.vscode/
+python/**/*.swp
+python/**/*.swo
+
+# Virtual environments
+python/**/venv/
+python/**/env/
+python/**/.env
