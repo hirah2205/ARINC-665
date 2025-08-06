@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arinc-665"
+version = "1.0.0"
+description = "Python library and applications for ARINC 665 Media Sets"
+authors = [
+    {name = "ARINC 665 Python Port", email = "example@example.com"}
+]
+license = {text = "MPL-2.0"}
+readme = "README.md"
+requires-python = ">=3.11"
+keywords = ["arinc", "arinc-665", "aviation", "media-set"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Archiving",
+]
+
+[project.scripts]
+arinc-665-ls = "arinc_665.apps.arinc_665_ls:main"
+arinc-665-print-xml = "arinc_665.apps.arinc_665_print_xml:main"
+arinc-665-media-set-check = "arinc_665.apps.arinc_665_media_set_check:main"
+arinc-665-print-media-set = "arinc_665.apps.arinc_665_print_media_set:main"
+arinc-665-media-set-decompiler = "arinc_665.apps.arinc_665_media_set_decompiler:main"
+arinc-665-media-set-manager = "arinc_665.apps.arinc_665_media_set_manager:main"
+
+[project.urls]
+Homepage = "https://github.com/hirah2205/ARINC-665"
+Repository = "https://github.com/hirah2205/ARINC-665"
+"Bug Tracker" = "https://github.com/hirah2205/ARINC-665/issues"
+
+[tool.setuptools.packages.find]
+where = ["python"]
+include = ["arinc_665*"]
+
+[tool.setuptools.package-dir]
+"" = "python"
